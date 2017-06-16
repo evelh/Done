@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CRM\crm_account.cs" />
+    <Compile Include="CRM\crm_account_alert.cs" />
     <Compile Include="CRM\crm_account_note.cs" />
     <Compile Include="CRM\crm_account_todo.cs" />
     <Compile Include="CRM\crm_contact.cs" />
