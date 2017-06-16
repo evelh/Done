@@ -1,0 +1,3225 @@
+﻿<!DOCTYPE html><html><head><meta charset="utf-8"><title>DoneNOW API文档</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<style>@import url(http://fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200);
+.p2{text-indent:2em;} .p3{text-indent:4em;} .p4{text-indent:6em;} .p5{text-indent:8em;} .hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}body{color:black;background:white;font-family:'Roboto',Helvetica,sans-serif;font-size:14px;line-height:1.42}header{border-bottom:1px solid #f2f2f2;margin-bottom:12px}h1,h2,h3,h4,h5{color:black;margin:12px 0}h1 .permalink,h2 .permalink,h3 .permalink,h4 .permalink,h5 .permalink{margin-left:6px;opacity:0;transition:opacity .25s ease}h1:hover .permalink,h2:hover .permalink,h3:hover .permalink,h4:hover .permalink,h5:hover .permalink{opacity:1}h1{font-family:'Raleway',Helvetica,sans-serif;font-size:36px;font-weight:500}h2{font-family:'Raleway',Helvetica,sans-serif;font-size:30px;font-weight:500}h3{font-size:100%;text-transform:uppercase}h5{font-size:100%;font-weight:normal}p{margin:0 0 10px}p.choices{line-height:1.6}a{color:#428bca;text-decoration:none}li p{margin:0}dl dt{float:left;width:160px;clear:left;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}dl dd{margin-left:180px}blockquote{color:rgba(0,0,0,0.5);font-size:15.5px;padding:10px 20px;margin:12px 0;border-left:5px solid #e8e8e8}blockquote p:last-child{margin-bottom:0}pre{background-color:#f5f5f5;padding:12px;border:1px solid #cfcfcf;border-radius:6px}pre code{background-color:transparent;padding:0;border:none}code{color:#444;background-color:#f5f5f5;font-family:'Inconsolata',monospace;padding:1px 4px;border:1px solid #cfcfcf;border-radius:3px}ul,ol{padding-left:2em}table{border-collapse:collapse;border-spacing:0;margin-bottom:12px}table tr:nth-child(2n){background-color:#fafafa}table th,table td{padding:6px 12px;border:1px solid #d9d9d9}nav{position:fixed;top:24px;bottom:0;overflow-y:auto}nav .resource-group{padding:0}nav .resource-group .heading{position:relative}nav .resource-group .heading .chevron{position:absolute;top:12px;right:12px;opacity:.5}nav .resource-group .heading a{display:block;color:black;opacity:.7;border-left:2px solid transparent;margin:0}nav .resource-group .heading a:hover{border-left:2px solid black}nav ul{list-style-type:none;padding-left:0}nav ul a{display:block;font-size:13px;color:rgba(0,0,0,0.7);padding:8px 12px;border-top:1px solid #d9d9d9;border-left:2px solid transparent;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}nav ul a:hover{border-left:2px solid black}nav ul>li{margin:0}nav ul>li:first-child{margin-top:-12px}nav ul>li:last-child{margin-bottom:-12px}nav ul ul a{padding-left:24px}nav ul ul li{margin:0}nav ul ul li:first-child{margin-top:0}nav ul ul li:last-child{margin-bottom:0}nav>div>div>ul>li:first-child>a{border-top:none}.preload *{transition:none !important}.pull-left{float:left}.pull-right{float:right}.badge{display:inline-block;float:right;min-width:10px;min-height:14px;padding:3px 7px;font-size:12px;color:#000;background-color:#f2f2f2;border-radius:10px;margin-top:-2px;margin-bottom:-2px}.badge.get{color:#70bbe1;background-color:#d9edf7}.badge.head{color:#70bbe1;background-color:#d9edf7}.badge.options{color:#70bbe1;background-color:#d9edf7}.badge.put{color:#f0db70;background-color:#fcf8e3}.badge.patch{color:#f0db70;background-color:#fcf8e3}.badge.post{color:#93cd7c;background-color:#dff0d8}.badge.delete{color:#ce8383;background-color:#f2dede}.collapse-button{float:right}.collapse-button .close{display:none;color:#428bca;cursor:pointer}.collapse-button .open{color:#428bca;cursor:pointer}.collapse-button.show .close{display:inline}.collapse-button.show .open{display:none}.collapse-content{max-height:0;overflow:hidden;transition:max-height .3s ease-in-out}nav{width:220px}.container{max-width:940px;margin-left:auto;margin-right:auto}.container .row .content{margin-left:244px;width:696px}.container .row:after{content:'';display:block;clear:both}.container-fluid nav{width:22%}.container-fluid .row .content{margin-left:24%;width:76%}@media (max-width:1200px){nav{width:200px}.container{max-width:840px}.container .row .content{margin-left:224px;width:606px}}@media (max-width:992px){nav{width:170px}.container{max-width:720px}.container .row .content{margin-left:194px;width:526px}}@media (max-width:768px){nav{display:none}.container{width:95%;max-width:none}.container .row .content,.container-fluid .row .content{margin-left:auto;margin-right:auto;width:95%}}.back-to-top{position:fixed;z-index:1;bottom:0;right:24px;padding:4px 8px;color:rgba(0,0,0,0.5);background-color:#f2f2f2;text-decoration:none !important;border-top:1px solid #d9d9d9;border-left:1px solid #d9d9d9;border-right:1px solid #d9d9d9;border-top-left-radius:3px;border-top-right-radius:3px}.resource-group{padding:12px;margin-bottom:12px;background-color:white;border:1px solid #d9d9d9;border-radius:6px}.resource-group h2.group-heading,.resource-group .heading a{padding:12px;margin:-12px -12px 12px -12px;background-color:#f2f2f2;border-bottom:1px solid #d9d9d9;border-top-left-radius:6px;border-top-right-radius:6px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}nav .resource-group .heading a{margin-bottom:0}nav .resource-group .collapse-content{padding:0}.action{margin-bottom:12px;padding:12px 12px 0 12px;overflow:hidden;border:1px solid transparent;border-radius:6px}.action h4{padding:12px;margin:-12px -12px 12px -12px;border-bottom:1px solid transparent;border-top-left-radius:6px;border-top-right-radius:6px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.action h4 .name{float:right;font-weight:normal}.action h4 .method{padding:6px 12px;margin-right:12px;border-radius:3px}.action h4 .method.get{color:#fff;background-color:#337ab7}.action h4 .method.head{color:#fff;background-color:#337ab7}.action h4 .method.options{color:#fff;background-color:#337ab7}.action h4 .method.put{color:#000;background-color:#f0ad4e}.action h4 .method.patch{color:#000;background-color:#f0ad4e}.action h4 .method.post{color:#fff;background-color:#5cb85c}.action h4 .method.delete{color:#fff;background-color:#d9534f}.action h4 code{color:#444;background-color:#f5f5f5;border-color:#cfcfcf;font-weight:normal}.action dl.inner{padding-bottom:2px}.action .title{border-bottom:1px solid white;margin:0 -12px -1px -12px;padding:12px}.action.get{border-color:#bce8f1}.action.get h4{color:#337ab7;background:#d9edf7;border-bottom-color:#bce8f1}.action.head{border-color:#bce8f1}.action.head h4{color:#337ab7;background:#d9edf7;border-bottom-color:#bce8f1}.action.options{border-color:#bce8f1}.action.options h4{color:#337ab7;background:#d9edf7;border-bottom-color:#bce8f1}.action.post{border-color:#d6e9c6}.action.post h4{color:#5cb85c;background:#dff0d8;border-bottom-color:#d6e9c6}.action.put{border-color:#faebcc}.action.put h4{color:#f0ad4e;background:#fcf8e3;border-bottom-color:#faebcc}.action.patch{border-color:#faebcc}.action.patch h4{color:#f0ad4e;background:#fcf8e3;border-bottom-color:#faebcc}.action.delete{border-color:#ebccd1}.action.delete h4{color:#d9534f;background:#f2dede;border-bottom-color:#ebccd1}</style></head>
+<body class="preload">
+<a href="#top" class="text-muted back-to-top">
+<i class="fa fa-toggle-up"></i>&nbsp;Back to top</a><div class="container">
+<div class="row"><nav>
+<div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div>
+<a href="#user">用户端</a></div><div class="collapse-content"><ul>
+<li><a href="#user-login-post"><span class="badge post"><i class="fa fa-plus"></i></span>登录</a></li>
+<li><a href="#user-reg-post"><span class="badge post"><i class="fa fa-plus"></i></span>注册</a></li>
+<li><a href="#user-updatePwd-post"><span class="badge post"><i class="fa fa-plus"></i></span>找回密码</a></li>
+<li><a href="#user-getValCode-post"><span class="badge post"><i class="fa fa-plus"></i></span>获取验证码</a></li>
+	<li><a href="#user-get-post"><span class="badge post"><i class="fa fa-plus"></i></span>获取用户信息</a></li>
+	<li><a href="#user-update-post"><span class="badge post"><i class="fa fa-plus"></i></span>更新用户信息</a></li>
+<li><a href="#user-modPwd-post"><span class="badge post"><i class="fa fa-plus"></i></span>修改密码</a></li>
+<li><a href="#user-preBind-post"><span class="badge post"><i class="fa fa-plus"></i></span>三方登录(手机号是否存在)</a></li>
+<li><a href="#user-bind-post"><span class="badge post"><i class="fa fa-plus"></i></span>三方登录(绑定)</a></li>
+	<li><a href="#user-loginPlus-post"><span class="badge post"><i class="fa fa-plus"></i></span>三方登录(登录)</a></li>
+	<li><a href="#user-index-post"><span class="badge post"><i class="fa fa-plus"></i></span>首页</a></li>
+	<li><a href="#service-create-post"><span class="badge post"><i class="fa fa-plus"></i></span>提交服务</a></li>
+	<li><a href="#service-wantToOwner-post"><span class="badge post"><i class="fa fa-plus"></i></span>成为房东</a></li>
+	<li><a href="#service-list-post"><span class="badge post"><i class="fa fa-plus"></i></span>服务列表</a></li>
+	<li><a href="#service-get-post"><span class="badge post"><i class="fa fa-plus"></i></span>服务详情</a></li>
+	<li><a href="#base-area-post"><span class="badge post"><i class="fa fa-plus"></i></span>区域列表</a></li>
+	<li><a href="#base-businessCircle-post"><span class="badge post"><i class="fa fa-plus"></i></span>商圈列表</a></li>
+	<li><a href="#base-subway-post"><span class="badge post"><i class="fa fa-plus"></i></span>地铁线路列表</a></li>
+	<li><a href="#base-subwayStation-post"><span class="badge post"><i class="fa fa-plus"></i></span>地铁站列表</a></li>
+	<li><a href="#house-searchHistory-post"><span class="badge post"><i class="fa fa-plus"></i></span>搜索历史列表</a></li>
+	<li><a href="#house-clearSearchHistory-post"><span class="badge post"><i class="fa fa-plus"></i></span>清除搜索历史</a></li>
+	<li><a href="#house-list-post"><span class="badge post"><i class="fa fa-plus"></i></span>房源列表</a></li>
+	<li><a href="#house-map-post"><span class="badge post"><i class="fa fa-plus"></i></span>房源列表(地图模式)</a></li>
+	<li><a href="#house-get-post"><span class="badge post"><i class="fa fa-plus"></i></span>房源详情</a></li>
+	<li><a href="#house-similar-post"><span class="badge post"><i class="fa fa-plus"></i></span>相似房源</a></li>
+	<li><a href="#house-buildDish-post"><span class="badge post"><i class="fa fa-plus"></i></span>楼盘信息</a></li>
+	<li><a href="#house-appointment-post"><span class="badge post"><i class="fa fa-plus"></i></span>预约看房</a></li>
+	<li><a href="#house-collect-post"><span class="badge post"><i class="fa fa-plus"></i></span>收藏／取消收藏房源</a></li>
+	<li><a href="#news-list-post"><span class="badge post"><i class="fa fa-plus"></i></span>新闻资讯列表</a></li>
+	<li><a href="#news-get-post"><span class="badge post"><i class="fa fa-plus"></i></span>新闻资讯详情</a></li>
+	<li><a href="#index-billList-post"><span class="badge post"><i class="fa fa-plus"></i></span>账单列表</a></li>
+	<li><a href="#index-billDetail-post"><span class="badge post"><i class="fa fa-plus"></i></span>账单详情</a></li>
+	<li><a href="#index-dsList-post"><span class="badge post"><i class="fa fa-plus"></i></span>东朔小秘书列表</a></li>
+	<li><a href="#index-customerService-post"><span class="badge post"><i class="fa fa-plus"></i></span>客服列表</a></li>
+	<li><a href="#appointment-list-post"><span class="badge post"><i class="fa fa-plus"></i></span>看房日程列表</a></li>
+	<li><a href="#favorites-list-post"><span class="badge post"><i class="fa fa-plus"></i></span>收藏列表</a></li>
+	<li><a href="#sign-index-post"><span class="badge post"><i class="fa fa-plus"></i></span>签到（开门）</a></li>
+	<li><a href="#sign-list-post"><span class="badge post"><i class="fa fa-plus"></i></span>考勤管理（列表）</a></li>
+	<li><a href="#sign-employeeList-post"><span class="badge post"><i class="fa fa-plus"></i></span>考勤明细（日历）</a></li>
+</ul></div>
+    </div>
+<div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div>
+<a href="#">经纪人端</a></div><div class="collapse-content">
+	<ul>
+	<li><a href="#agent-login-post"><span class="badge post"><i class="fa fa-plus"></i></span>登录</a></li>
+	<li><a href="#agent-updatePwd-post"><span class="badge post"><i class="fa fa-plus"></i></span>找回密码</a></li>
+	<li><a href="#agent-getValCode-post"><span class="badge post"><i class="fa fa-plus"></i></span>获取验证码</a></li>
+	<li><a href="#agent-get-post"><span class="badge post"><i class="fa fa-plus"></i></span>获取经纪人信息</a></li>
+	<li><a href="#agent-update-post"><span class="badge post"><i class="fa fa-plus"></i></span>更新经纪人信息</a></li>
+	<li><a href="#agent-modPwd-post"><span class="badge post"><i class="fa fa-plus"></i></span>修改密码</a></li>
+		<li><a href="#agent-index-post"><span class="badge post"><i class="fa fa-plus"></i></span>首页</a></li>
+		<li><a href="#agent-coustomer-post"><span class="badge post"><i class="fa fa-plus"></i></span>客户列表</a></li>
+		<li><a href="#agent-storeMsg-post"><span class="badge post"><i class="fa fa-plus"></i></span>首页消息列表(店长)</a></li>
+		<li><a href="#agent-dsList-post"><span class="badge post"><i class="fa fa-plus"></i></span>东朔小秘书列表</a></li>
+		<li><a href="#agent-profitList-post"><span class="badge post"><i class="fa fa-plus"></i></span>分润对账</a></li>
+		<li><a href="#agent-house-buildDishList-post"><span class="badge post"><i class="fa fa-plus"></i></span>楼盘列表</a></li>
+		<li><a href="#agent-house-findUserByPhone-post"><span class="badge post"><i class="fa fa-plus"></i></span>查找用户／房东</a></li>
+		<li><a href="#agent-house-create-post"><span class="badge post"><i class="fa fa-plus"></i></span>发布房源</a></li>
+		<li><a href="#agent-house-list-post"><span class="badge post"><i class="fa fa-plus"></i></span>我的房源</a></li>
+		<li><a href="#agent-house-store-list-post"><span class="badge post"><i class="fa fa-plus"></i></span>店内房源（店长）</a></li>
+		<li><a href="#agent-house-updStatus-post"><span class="badge post"><i class="fa fa-plus"></i></span>更新房源状态（在租／停租 在售／停售）</a></li>
+		<li><a href="#agent-house-sale-post"><span class="badge post"><i class="fa fa-plus"></i></span>出售／出租 房源（店长）</a></li>
+		<li><a href="#appointment-cancel-post"><span class="badge post"><i class="fa fa-plus"></i></span>取消预约</a></li>
+		<li><a href="#appointment-update-post"><span class="badge post"><i class="fa fa-plus"></i></span>修改预约时间</a></li>
+		<li><a href="#appointment-confirm-post"><span class="badge post"><i class="fa fa-plus"></i></span>确定预约</a></li>
+		<li><a href="#appointment-end-post"><span class="badge post"><i class="fa fa-plus"></i></span>看房结束</a></li>
+		<li><a href="#service-handle-post"><span class="badge post"><i class="fa fa-plus"></i></span>服务已处理</a></li>
+
+		<li><a href="#agentManager-list-post"><span class="badge post"><i class="fa fa-plus"></i></span>店员管理（PC端）</a></li>
+		<li><a href="#agentManager-get-post"><span class="badge post"><i class="fa fa-plus"></i></span>获取店员信息（PC端）</a></li>
+		<li><a href="#agentManager-update-post"><span class="badge post"><i class="fa fa-plus"></i></span>更新店员信息（PC端）</a></li>
+		<li><a href="#agentManager-create-post"><span class="badge post"><i class="fa fa-plus"></i></span>添加店员（PC端）</a></li>
+		<li><a href="#ownerManager-create-post"><span class="badge post"><i class="fa fa-plus"></i></span>注册房东（PC端）</a></li>
+	</ul>
+</div></div>
+	<div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div>
+		<a href="#">房东端</a></div><div class="collapse-content"><ul>
+		<li><a href="#owner-login-post"><span class="badge post"><i class="fa fa-plus"></i></span>登录</a></li>
+		<li><a href="#owner-updatePwd-post"><span class="badge post"><i class="fa fa-plus"></i></span>找回密码</a></li>
+		<li><a href="#owner-getValCode-post"><span class="badge post"><i class="fa fa-plus"></i></span>获取验证码</a></li>
+		<li><a href="#owner-get-post"><span class="badge post"><i class="fa fa-plus"></i></span>获取房东信息</a></li>
+		<li><a href="#owner-update-post"><span class="badge post"><i class="fa fa-plus"></i></span>更新房东信息</a></li>
+		<li><a href="#owner-modPwd-post"><span class="badge post"><i class="fa fa-plus"></i></span>修改密码</a></li>
+		<li><a href="#owner-index-post"><span class="badge post"><i class="fa fa-plus"></i></span>首页</a></li>
+		<li><a href="#owner-index—receiveList-post"><span class="badge post"><i class="fa fa-plus"></i></span>收款账单列表</a></li>
+		<li><a href="#owner-index-receiveInfo"><span class="badge post"><i class="fa fa-plus"></i></span>收款账单详情</a></li>
+		<li><a href="#owner-index-dsList-post"><span class="badge post"><i class="fa fa-plus"></i></span>东朔小秘书</a></li>
+	</ul></div></div>
+</nav><div class="content"><header><h1 id="top">DoneNOW API文档</h1></header><p>version: 0.0.1</p>
+<p>服务器地址：</p>
+<p>图片地址：</p>
+	<p>ip地址+端口：</p>
+<p>返回参数为JSON格式,其基本格式为：{“code” : true , “msg” : “message” , “data” , “data”}</p>
+<p>其中 code 为请求代码（2000：请求成功；4000：请求失败；4001：参数缺失或错误；4002：登录过时，请重新登录；）
+	msg 为后台返回的提示消息；
+	data 为相关格式，试具体接口而定。
+</p><p>设置http请求header为登录时服务器端返回的token</p>
+	<p>房贷计算器：http://121.43.111.114:8280/calculator/index.htm</p>
+<section id="user" class="resource-group">
+<h2 class="group-heading">用户端<a href="#user" class="permalink">&para;</a></h2>
+<div id="user-login" class="resource">
+<h3>用户登录<a href="#user-login" class="permalink">&para;</a></h3>
+<div id="user-login-post" class="action post">
+<h4><div class="name">用户登录</div><a href="#user-login-post" class="method post">POST</a><code class="uri">/user/login</code></h4><p>请求参数:</p>
+<ul>
+<li>
+<p>phone (required, string, <code>13112345678</code>) … 手机号</p>
+</li>
+<li>
+<p>password (required, string, <code>md5(md5(123456)</code>)) … 两次md5后的密码</p>
+</li>
+
+</ul>
+<p>返回参数:</p>
+<ul>
+<li>
+<p>code (int) - 2000/4000</p>
+</li>
+<li>
+<p>msg (string) - 后台提示消息</p>
+</li>
+<li>
+<p>data(String) 每次登录成功返回的token</p>
+</li>
+</ul>
+</div></div>
+
+<div id="user-reg" class="resource"><h3>用户注册<a href="#user-reg" class="permalink">&para;</a></h3><div id="user-reg-post" class="action post"><h4><div class="name">用户注册</div><a href="#user-reg-post" class="method post">POST</a><code class="uri">/user/reg</code></h4><p>请求参数:</p>
+<ul>
+<li>
+<p>phone(required, string, <code>13112345678</code>) …  手机号</p>
+</li>
+<li>
+<p>password(required, string, <code>md5(md5(123456)</code>)) … 两次md5后的密码</p>
+</li>
+<li>
+<p>code(required, string, <code>1234</code>) … 验证码</p>
+</li>
+	<li>
+		<p>userName(optional, string, <code>zxl</code>) …  用户名</p>
+	</li>
+	<li>
+		<p>openid(optional, string, <code>1234567890</code>) … 三方登录注册时传入</p>
+	</li>
+	<li>
+		<p>type(optional, string, <code>1</code>) … 三方登录注册时传入(1qq 2微信 3微博)</p>
+	</li>
+</ul>
+<p>返回参数:</p>
+<ul>
+	<li>
+		<p>code (int) - 2000/4000</p>
+	</li>
+	<li>
+		<p>msg (string) - 后台提示消息</p>
+	</li>
+	<li>
+		<p>data(String) 注册成功返回的token</p>
+	</li>
+</ul>
+</div></div>
+
+<div id="user-getValCode" class="resource"><h3>获取验证码<a href="#user-getValCode" class="permalink">&para;</a></h3>
+<div id="user-getValCode-post" class="action post"><h4><div class="name">获取验证码</div>
+<a href="#user-reg-post" class="method post">POST</a><code class="uri">/user/getValCode</code></h4><p>请求参数:</p>
+<ul>
+<li>
+<p>phone(required, string, <code>13112345678</code>) …  手机号</p>
+</li>
+<li>
+<p>flag(required, int, <code>1</code>) … 1注册；2忘记密码</p>
+</li>
+</ul>
+<p>返回参数:</p>
+<ul>
+	<li>
+		<p>code (int) - 2000/4000</p>
+	</li>
+	<li>
+		<p>msg (string) - 后台提示消息</p>
+	</li>
+</ul>
+
+
+</div></div>
+
+	<div id="user-getInfo" class="resource"><h3>获取用户信息<a href="#user-getInfo" class="permalink">&para;</a></h3>
+		<div id="user-get-post" class="action post"><h4><div class="name">获取用户信息</div>
+			<a href="#user-get-post" class="method post">POST</a><code class="uri">/user/get</code></h4><p>请求参数:</p>
+			<ul>
+
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 用户对象</p>
+					<ul>
+						<li>
+							<p>userName(string, <code>zs</code>) …  用户名</p>
+						</li>
+						<li>
+							<p>birthday(string, <code>2015-01-01</code>) … 出生日期</p>
+						</li>
+						<li>
+							<p>trueName(String, <code>zxl</code>) … 真实姓名</p>
+						</li>
+						<li>
+							<p>certification(int, <code>1</code>) … 实名认证状态（0未上传1正在审核2审核通过3审核失败）</p>
+						</li>
+						<li>
+							<p>idcardNum(String, <code>12345678</code>) … 身份证号码</p>
+						</li>
+						<li>
+							<p>idcardFront(String, <code></code>) … 身份证正面照片</p>
+						</li>
+						<li>
+							<p>idcardBack(string, <code></code>) … 身份证背面照片</p>
+						</li>
+						<li>
+							<p>headPhoto(string, <code></code>) … 头像</p>
+						</li>
+						<li>
+							<p>sex(int, <code>1</code>) … 性别（0女1男）</p>
+						</li>
+						<li>
+							<p>province(string, <code>省</code>) … 所在省</p>
+						</li>
+						<li>
+							<p>city( string, <code>市</code>) … 所在市</p>
+						</li>
+						<li>
+							<p>area(string, <code>区</code>) … 所在区</p>
+						</li>
+						<li>
+							<p>address( string, <code>1</code>) … 详细地址</p>
+						</li>
+						<li>
+							<p>company(string, <code></code>) … 公司</p>
+						</li>
+						<li>
+							<p>ctype(string, <code></code>) … 公司类型</p>
+						</li>
+						<li>
+							<p>cregNum( int, <code>1</code>) … 注册号</p>
+						</li>
+						<li>
+							<p>legalPerson( string, <code></code>) … 法人</p>
+						</li>
+						<li>
+							<p>regCapital( string, <code></code>) … 注册资金</p>
+						</li>
+						<li>
+							<p>establishTime( date, <code>2015-01-01</code>) … 注册日期</p>
+						</li>
+						<li>
+							<p>flag：0员工  1管理者</p>
+						</li>
+					</ul>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+<div id="user-updateInfo" class="resource"><h3>更新用户信息<a href="#user-updateInfo" class="permalink">&para;</a></h3>
+<div id="user-update-post" class="action post"><h4><div class="name">更新用户信息</div>
+<a href="#user-update-post" class="method post">POST</a><code class="uri">/user/update</code></h4><p>请求参数:</p>
+<ul>
+<li>
+<p>userName(optional,string, <code>zs</code>) …  用户名</p>
+</li>
+<li>
+<p>birthday(optional, string, <code>2015-01-01</code>) … 出生日期</p>
+</li>
+	<li>
+		<p>trueName(optional, String, <code>zxl</code>) … 真实姓名</p>
+	</li>
+<li>
+<p>idcardNum(optional, String, <code>12345678</code>) … 身份证号码</p>
+</li>
+	<li>
+		<p>idcardFront(optional, stream, <code></code>) … 身份证正面照片</p>
+	</li>
+	<li>
+		<p>idcardBack(optional, stream, <code></code>) … 身份证背面照片</p>
+	</li>
+	<li>
+		<p>headPhoto(optional, stream, <code></code>) … 头像</p>
+	</li>
+<li>
+<p>sex(optional, int, <code>1</code>) … 性别（0女1男）</p>
+</li>
+	<li>
+		<p>province(optional, string, <code>省</code>) … 所在省</p>
+	</li>
+	<li>
+		<p>city(optional, string, <code>市</code>) … 所在市</p>
+	</li>
+	<li>
+		<p>area(optional, string, <code>区</code>) … 所在区</p>
+	</li>
+	<li>
+		<p>address(optional, string, <code>1</code>) … 详细地址</p>
+	</li>
+	<li>
+		<p>company(optional, string, <code></code>) … 公司</p>
+	</li>
+	<li>
+		<p>ctype(optional, string, <code></code>) … 公司类型</p>
+	</li>
+	<li>
+		<p>cregNum(optional, int, <code>1</code>) … 注册号</p>
+	</li>
+	<li>
+		<p>legalPerson(optional, string, <code></code>) … 法人</p>
+	</li>
+	<li>
+		<p>regCapital(optional, string, <code></code>) … 注册资金</p>
+	</li>
+	<li>
+		<p>establishTime(optional, date, <code>2015-01-01</code>) … 注册日期</p>
+	</li>
+</ul>
+<p>返回参数:</p>
+<ul>
+	<li>
+		<p>code (int) - 2000/4000</p>
+	</li>
+	<li>
+		<p>msg (string) - 后台提示消息</p>
+	</li>
+</ul>
+
+
+</div></div>
+<div id="user-updatePwd" class="resource"><h3>找回密码<a href="#user-updatePwd" class="permalink">&para;</a></h3><div id="user-updatePwd-post" class="action post"><h4><div class="name">找回密码</div><a href="#user-updatePwd-post" class="method post">POST</a><code class="uri">/user/forgotPwd</code></h4><p>请求参数:</p>
+<ul>
+<li>
+<p>phone(required, string, <code>13112345678</code>) …  手机号</p>
+</li>
+<li>
+<p>password(required, string, <code>md5(md5(123456))</code>) … 两次md5后的密码</p>
+</li>
+<li>
+<p>code(required, string, <code>123456</code>) … 验证码</p>
+</li>
+</ul>
+<p>返回参数:</p>
+<ul>
+	<li>
+		<p>code (int) - 2000/4000</p>
+	</li>
+	<li>
+		<p>msg (string) - 后台提示消息</p>
+	</li>
+</ul>
+</div></div>
+
+<div id="user-modPwd" class="resource"><h3>修改密码<a href="#user-modPwd" class="permalink">&para;</a></h3><div id="user-modPwd-post" class="action post"><h4><div class="name">修改密码</div><a href="#user-modPwd-post" class="method post">POST</a><code class="uri">/user/updatePwd</code></h4><p>请求参数:</p>
+<ul>
+<li>
+<p>oldPwd(required, string, <code>123456</code>) …  两次md5后的旧密码</p>
+</li>
+<li>
+<p>newPwd(required, string, <code>123456</code>) … 两次md5后的新密码</p>
+</li>
+</ul>
+<p>返回参数:</p>
+<ul>
+	<li>
+		<p>code (int) - 2000/4000</p>
+	</li>
+	<li>
+		<p>msg (string) - 后台提示消息</p>
+	</li>
+</ul>
+</div></div>
+
+<div id="user-preBind" class="resource"><h3>三方登录(判断手机号是否存在)<a href="#user-preBind" class="permalink">&para;</a></h3><div id="user-preBind-post" class="action post"><h4><div class="name">三方登录</div><a href="#user-preBind-post" class="method post">POST</a><code class="uri">/user/preBind</code></h4>
+	<p>三方登录流程：1。直接登录，判断openid是否已绑定。2。绑定手机号，判断手机号是否已经注册。3。如果注册输入密码进行绑定 4。如果没注册，则进行注册流程,注册时把openid传入</p>
+	<p>请求参数:</p>
+<ul>
+<li>
+<p>phone(required, string, <code>120</code>) …  手机号</p>
+</li>
+</ul>
+<p>返回参数:</p>
+<ul>
+	<li>
+		<p>code (int) - 2000/4000</p>
+	</li>
+	<li>
+		<p>data (boolean) - 是否存在true/false</p>
+	</li>
+</ul>
+</div></div>
+
+	<div id="user-bind" class="resource"><h3>三方登录(已有账号绑定)<a href="#user-bind" class="permalink">&para;</a></h3><div id="user-bind-post" class="action post"><h4><div class="name">三方登录(已有账号绑定)</div><a href="#user-bind-post" class="method post">POST</a><code class="uri">/user/bind</code></h4><p>请求参数:</p>
+		<ul>
+			<li>
+				<p>phone (required, string, <code>1</code>) …  手机号 </p>
+			</li>
+			<li>
+				<p>password (required, string, <code>md5(md5(1234567))</code>) … 两次md5后的密码</p>
+			</li>
+			<li>
+				<p>openid (required, string, <code>1234567</code>) … openid</p>
+			</li>
+			<li>
+				<p>type (required, int, <code>1</code>) … 1qq 2微信 3微博</p>
+			</li>
+		</ul>
+		<p>返回参数:</p>
+		<ul>
+			<li>
+				<p>code (int) - 2000/4000</p>
+			</li>
+			<li>
+				<p>msg (jsonstring) - 后台提示消息</p>
+			</li>
+			<li>
+				<p>data(String) 每次登录成功返回的token</p>
+			</li>
+		</ul>
+	</div></div>
+
+	<div id="user-loginPlus" class="resource">
+		<h3>三方登录(登录)<a href="#user-loginPlus" class="permalink">&para;</a></h3>
+		<div id="user-loginPlus-post" class="action post">
+			<h4><div class="name">三方登录(登录)</div><a href="#user-loginPlus-post" class="method post">POST</a><code class="uri">/user/loginPlus</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>openid (required, string, <code>1234567</code>) … openid</p>
+				</li>
+				<li>
+					<p>type (required, int, <code>1</code>) … 1qq 2微信 3微博</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000登录成功/4003未绑定</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data(String) 每次登录成功返回的token</p>
+				</li>
+			</ul>
+		</div></div>
+
+<div id="user-index" class="resource"><h3>首页数据<a href="#user-index" class="permalink">&para;</a></h3>
+<div id="user-index-post" class="action post"><h4><div class="name">首页数据</div>
+<a href="#user-index-post" class="method post">POST</a><code class="uri">/index</code></h4><p>请求参数:</p>
+<ul>
+<li>
+<p>无 </p>
+</li>
+</ul>
+<p>返回参数:</p>
+<ul>
+<li>
+	<p>code (int) - 2000/4000</p>
+</li>
+	<li>
+		<p>msg (string) - 后台提示消息</p>
+	</li>
+<li>
+<p>data(JSONObject) - 数据列表</p>
+<p class="p2">banner：轮播图列表</p>
+	<p class="p3">title：标题</p>
+	<p class="p3">href：链接</p>
+	<p class="p3">pic：图片地址</p>
+<p class="p2">msg：消息数量列表</p>
+	<p class="p3">houseNum:房源动态数量</p>
+	<p class="p3">houseTime:房源更新时间(13位时间戳)</p>
+	<p class="p3">incomeNum:今日收益动态数量</p>
+	<p class="p3">incomeTime:今日收益更新时间(13位时间戳)</p>
+	<p class="p3">serviceNum:服务动态数量</p>
+	<p class="p3">serviceTime:服务更新时间(13位时间戳)</p>
+	<p class="p3">billNum:账单动态数量</p>
+	<p class="p3">billTime:账单更新时间(13位时间戳)</p>
+	<p class="p3">newsNum:资讯动态数量</p>
+	<p class="p3">newsTime:资讯更新时间(13位时间戳)</p>
+	<p class="p3">dsNum:东朔小秘书动态数量</p>
+	<p class="p3">dsTime:东朔小秘书更新时间(13位时间戳)</p>
+</li>
+</ul>
+
+
+</div></div>
+
+<div id="service-create" class="resource"><h3>提交服务<a href="#service-create" class="permalink">&para;</a></h3>
+<div id="service-create-post" class="action post"><h4><div class="name">提交服务</div>
+<a href="#service-create-post" class="method post">POST</a><code class="uri">/service/create</code></h4><p>请求参数:</p>
+<ul>
+	<li>
+		<p>title (required, string, <code>标题</code>) …  标题 </p>
+	</li>
+	<li>
+		<p>content (required, string, <code>内容</code>) …  内容（如是多选以英文分号";"隔开） </p>
+	</li>
+	<li>
+		<p>type (required, int, <code>服务类型</code>) …  服务类型（0报修1投诉建议2装修3财务记账4IT服务5公司申办） </p>
+	</li>
+	<li>
+		<p>pics (optional, stream, <code></code>) …  图片 </p>
+	</li>
+	<li>
+		<p>questtionType (optional, string, <code>投诉类型</code>) …  投诉类型 </p>
+	</li>
+	<li>
+		<p>contractId (optional, string, <code>合同Id</code>) …  合同Id(先可不传) </p>
+	</li>
+</ul>
+<p>返回参数:</p>
+<ul>
+	<li>
+		<p>code (int) - 2000/4000</p>
+	</li>
+	<li>
+		<p>msg (string) - 后台提示消息</p>
+	</li>
+	<li>
+</ul>
+
+
+</div></div>
+
+	<div id="service-wantToOwner" class="resource"><h3>提交成为房东<a href="#service-wantToOwner" class="permalink">&para;</a></h3>
+		<div id="service-wantToOwner-post" class="action post"><h4><div class="name">提交成为房东</div>
+			<a href="#service-wantToOwner-post" class="method post">POST</a><code class="uri">/service/wantToOwner</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>dishName (required, string, <code>楼盘名</code>) …  楼盘名 </p>
+				</li>
+				<li>
+					<p>address (required, string, <code>地址</code>) …  地址 </p>
+				</li>
+				<li>
+					<p>areaId (required, int, <code>区域ID</code>) …  区域ID </p>
+				</li>
+				<li>
+					<p>saleHouse (required, int, <code>是否想卖房（0否1是）</code>) …  是否想卖房（0否1是） </p>
+				</li>
+				<li>
+					<p>trusteeship (required, int, <code>是否让东朔托管（0否1是</code>) …  是否让东朔托管（0否1是 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="service-list" class="resource"><h3>服务列表<a href="#service-list" class="permalink">&para;</a></h3>
+		<div id="service-list-post" class="action post"><h4><div class="name">服务列表</div>
+			<a href="#service-list-post" class="method post">POST</a><code class="uri">/service/list</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>status (required, int, <code>0</code>) …  状态（0正在处理1已处理） </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+				<li>
+					<p>order (optional, string, <code>排序字段</code>) …  排序字段默认入库时间 </p>
+				</li>
+				<li>
+					<p>sort (optional, int, <code>0desc 1asc</code>) …  0desc降序 1asc升序 </p>
+				</li>
+				<li>
+					<p>type (optional, int, <code>0</code>) …  服务类型（0报修1投诉建议2装修3财务记账4IT服务5公司申办） </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+							<p class="p3">title  …  标题 </p>
+							<p class="p3">content  …  内容 </p>
+							<p class="p3">type  …  服务类型（0报修1投诉建议2装修3财务记账4IT服务5公司申办） </p>
+							<p class="p3">pics  图片（多张以逗号隔开） </p>
+							<p class="p3">questtionType  投诉类型 </p>
+							<p class="p3">contractId  …  合同Id </p>
+							<p class="p3">createTime  …  提交时间 </p>
+					<p class="p3">userName  …  用户名 </p>
+					<p class="p3">userPhone  …  用户手机号 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="service-get" class="resource"><h3>服务详情<a href="#service-list" class="permalink">&para;</a></h3>
+		<div id="service-get-post" class="action post"><h4><div class="name">服务详情</div>
+			<a href="#service-get-post" class="method post">POST</a><code class="uri">/service/get</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id (required, long, <code>1</code>) …  服务ID </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">title  …  标题 </p>
+					<p class="p2">content  …  内容 </p>
+					<p class="p2">type  …  服务类型（0报修1投诉建议2装修3财务记账4IT服务5公司申办） </p>
+					<p class="p2">status  …  状态（0正在处理1已处理） </p>
+					<p class="p2">pics  图片（多张以逗号隔开） </p>
+					<p class="p2">questtionType  投诉类型 </p>
+					<p class="p2">contractId  …  合同Id </p>
+					<p class="p2">createTime  …  提交时间 </p>
+					<p class="p3">userName  …  用户名 </p>
+					<p class="p3">userPhone  …  用户手机号 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="base-area" class="resource"><h3>区域列表<a href="#base-area" class="permalink">&para;</a></h3>
+		<div id="base-area-post" class="action post"><h4><div class="name">区域列表</div>
+			<a href="#base-area-post" class="method post">POST</a><code class="uri">/base/area</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>无</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONArray) - 数据列表</p>
+					<p class="p2">id  …  Id </p>
+					<p class="p2">name  …  区域名 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="base-businessCircle" class="resource"><h3>商圈列表<a href="#base-businessCircle" class="permalink">&para;</a></h3>
+		<div id="base-businessCircle-post" class="action post"><h4><div class="name">商圈列表</div>
+			<a href="#base-businessCircle-post" class="method post">POST</a><code class="uri">/base/businessCircle</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>areaId (required, long, <code>1</code>) …  区域ID </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONArray) - 数据列表</p>
+					<p class="p2">id  …  Id </p>
+					<p class="p2">name  …  商圈名 </p>
+					<p class="p2">areaId  …  区域ID </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="base-subway" class="resource"><h3>地铁线路列表<a href="#base-subway" class="permalink">&para;</a></h3>
+		<div id="base-subway-post" class="action post"><h4><div class="name">地铁线路列表</div>
+			<a href="#base-subway-post" class="method post">POST</a><code class="uri">/base/subway</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>无</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONArray) - 数据列表</p>
+					<p class="p2">id  …  Id </p>
+					<p class="p2">name  …  地铁线路 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="base-subwayStation" class="resource"><h3>地铁站列表<a href="#base-subwayStation" class="permalink">&para;</a></h3>
+		<div id="base-subwayStation-post" class="action post"><h4><div class="name">地铁站列表</div>
+			<a href="#base-subwayStation-post" class="method post">POST</a><code class="uri">/base/subwayStation</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>lineId (required, long, <code>1</code>) …  地铁线路ID </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONArray) - 数据列表</p>
+					<p class="p2">id  …  Id </p>
+					<p class="p2">name  …  地铁站名 </p>
+					<p class="p2">lineId  …  地铁线路ID </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="house-searchHistory" class="resource"><h3>搜索历史列表<a href="#house-searchHistory" class="permalink">&para;</a></h3>
+		<div id="house-searchHistory-post" class="action post"><h4><div class="name">搜索历史列表</div>
+			<a href="#house-searchHistory-post" class="method post">POST</a><code class="uri">/house/searchHistory</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>无</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONArray) - 数据列表</p>
+					<p class="p2">id  …  Id </p>
+					<p class="p2">keyword  …  关键字 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="house-clearSearchHistory" class="resource"><h3>清除搜索历史<a href="#house-searchHistory" class="permalink">&para;</a></h3>
+		<div id="house-clearSearchHistory-post" class="action post"><h4><div class="name">清除搜索历史</div>
+			<a href="#house-clearSearchHistory-post" class="method post">POST</a><code class="uri">/house/clearSearchHistory</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>无</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="house-list" class="resource"><h3>房源列表<a href="#house-list" class="permalink">&para;</a></h3>
+		<div id="house-list-post" class="action post"><h4><div class="name">房源列表</div>
+			<a href="#house-list-post" class="method post">POST</a><code class="uri">/house/list</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>type (optional, int, <code>房源类型（0出租房1二手房2新房）</code>) …  房源类型（0出租房1二手房2新房）默认0 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+				<li>
+					<p>order (optional, string, <code>排序字段</code>) …  排序字段默认入库时间 </p>
+				</li>
+				<li>
+					<p>sort (optional, int, <code>0desc 1asc</code>) …  0desc降序 1asc升序 </p>
+				</li>
+				<li>
+					<p>dishName (optional, string, <code>楼盘名</code>) …  楼盘名 </p>
+				</li>
+				<li>
+					<p>minDayRent (optional, float, <code>最小日租金</code>) …  最小日租金 </p>
+				</li>
+				<li>
+					<p>maxDayRent (optional, float, <code>最大日租金</code>) …  最大日租金 </p>
+				</li>
+				<li>
+					<p>minMonthRent (optional, float, <code>最小月租金</code>) … 最小月租金 </p>
+				</li>
+				<li>
+					<p>maxMonthRent (optional, float, <code>最大月租金</code>) … 最大月租金 </p>
+				</li>
+				<li>
+					<p>minAllArea (optional, int, <code>最小面积</code>) …  最小面积 </p>
+				</li>
+				<li>
+					<p>maxAllArea (optional, int, <code>最大面积</code>) …  最大面积 </p>
+				</li>
+				<li>
+					<p>floorNum (optional, string, <code>楼层</code>) …  高层／中层／低层 </p>
+				</li>
+				<li>
+					<p>areaId (optional, long, <code>区域ID</code>) …  区域ID </p>
+				</li>
+				<li>
+					<p>circleId (optional, long, <code>商圈ID</code>) …  商圈ID </p>
+				</li>
+				<li>
+					<p>renovation (optional, string, <code>装修情况</code>) …  精装修／简装修／毛坯房 </p>
+				</li>
+				<li>
+					<p>lineId (optional, string, <code>地铁线路</code>) … 地铁线路Id </p>
+				</li>
+				<li>
+					<p>stationId (optional, int, <code>地铁站名</code>) …  地铁站Id </p>
+				</li><li>
+				<p>minSalePrice (optional, float, <code>最小售价</code>) …  最小售价 </p>
+			</li>
+				<li>
+					<p>maxSalePrice (optional, float, <code>最大售价</code>) … 最大售价 </p>
+				</li><li>
+				<p>dishId (optional, long, <code>楼盘ID</code>) …  楼盘ID </p>
+			</li>
+				<li>
+					<p>owner (optional, int, <code>0/1</code>) …  查询房东的房源传1其他可不传 </p>
+				</li>
+
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  房源ID </p>
+					<p class="p3">photos  …  照片列表（多张以逗号隔开） </p>
+					<p class="p3">name  …  房源名 </p>
+					<p class="p3">recommend 是否推荐（0否1是） </p>
+					<p class="p3">allArea  面积 </p>
+					<p class="p3">floorNum  …  楼层 </p>
+					<p class="p3">areaId  …  区域ID </p>
+					<p class="p3">circleId  …  商圈ID </p>
+					<p class="p3">dayRent  …  日租金（如是出租房则显示日租金,单位:元/m²•天 ） </p>
+					<p class="p3">salePrice  …  售价(如是二手房／新房则显示售价，单位:万元） </p>
+					<p class="p3">type  …  房源类型（0出租房1二手房2新房） </p>
+					<p class="p3">areaName  …  区域名 </p>
+					<p class="p3">circleName  …  商圈名 </p>
+					<p class="p3">lng  …  经度 </p>
+					<p class="p3">lat  …  纬度 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="house-map" class="resource"><h3>房源列表(地图模式)<a href="#house-map" class="permalink">&para;</a></h3>
+		<div id="house-map-post" class="action post"><h4><div class="name">房源列表(地图模式)</div>
+			<a href="#house-map-post" class="method post">POST</a><code class="uri">/house/map</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>type (optional, int, <code>房源类型（0出租房1二手房2新房）</code>) …  房源类型（0出租房1二手房2新房）默认0 </p>
+				</li>
+				<li>
+					<p>lng (optional, double, <code>经度</code>) …  经度</p>
+				</li>
+				<li>
+					<p>lat (optional, double, <code>纬度</code>) …  纬度 </p>
+				</li>
+				<li>
+					<p>radius (optional, int, <code>查询半径</code>) …  查询半径 默认：5000米 </p>
+				</li>
+				<li>
+					<p>dishName (optional, string, <code>楼盘名</code>) …  楼盘名 </p>
+				</li>
+				<li>
+					<p>minDayRent (optional, float, <code>最小日租金</code>) …  最小日租金 </p>
+				</li>
+				<li>
+					<p>maxDayRent (optional, float, <code>最大日租金</code>) …  最大日租金 </p>
+				</li>
+				<li>
+					<p>minMonthRent (optional, float, <code>最小月租金</code>) … 最小月租金 </p>
+				</li>
+				<li>
+					<p>maxMonthRent (optional, float, <code>最大月租金</code>) … 最大月租金 </p>
+				</li>
+				<li>
+					<p>minAllArea (optional, int, <code>最小面积</code>) …  最小面积 </p>
+				</li>
+				<li>
+					<p>maxAllArea (optional, int, <code>最大面积</code>) …  最大面积 </p>
+				</li>
+				<li>
+					<p>floorNum (optional, string, <code>楼层</code>) …  高层／中层／低层 </p>
+				</li>
+				<li>
+					<p>areaId (optional, long, <code>区域ID</code>) …  区域ID </p>
+				</li>
+				<li>
+					<p>circleId (optional, long, <code>商圈ID</code>) …  商圈ID </p>
+				</li>
+				<li>
+					<p>renovation (optional, string, <code>装修情况</code>) …  精装修／简装修／毛坯房 </p>
+				</li>
+				<li>
+					<p>lineId (optional, string, <code>地铁线路</code>) … 地铁线路Id </p>
+				</li>
+				<li>
+					<p>stationId (optional, int, <code>地铁站名</code>) …  地铁站Id </p>
+				</li><li>
+				<p>minSalePrice (optional, float, <code>最小售价</code>) …  最小售价 </p>
+			</li>
+				<li>
+					<p>maxSalePrice (optional, float, <code>最大售价</code>) … 最大售价 </p>
+				</li><li>
+				<p>dishId (optional, long, <code>楼盘ID</code>) …  楼盘ID </p>
+			</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 数据对象</p>
+					<p class="p2">lng：中心点经度</p>
+					<p class="p2">lat：中心点纬度</p>
+					<p class="p2">count：总数</p>
+					<p class="p2">house（JSONOArray）：楼盘数据列表</p>
+					<p class="p3">id：楼盘ID</p>
+					<p class="p3">name：楼盘名</p>
+					<p class="p3">lng：经度</p>
+					<p class="p3">lat：纬度</p>
+					<p class="p3">num：房源数量</p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="house-get" class="resource"><h3>房源详情<a href="#house-list" class="permalink">&para;</a></h3>
+		<div id="house-get-post" class="action post"><h4><div class="name">房源详情</div>
+			<a href="#house-get-post" class="method post">POST</a><code class="uri">/house/get</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id (required, long, <code>1</code>) …  房源ID </p>
+				</li>
+				<li>
+					<p>owner (optional, int, <code>0/1</code>) …  房东查看房源传1，其他可不传 </p>
+				</li>
+				<li>
+					<p>agent (optional, int, <code>0/1</code>) …  经纪人查看房源传1，其他可不传 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 数据对象</p>
+					<p class="p2">collect：是否收藏true／false</p>
+					<p class="p2">house：房源数据</p>
+					<p class="p3">id  …  房源ID </p>
+					<p class="p3">photos  …  照片列表（多张以逗号隔开） </p>
+					<p class="p3">name  …  房源名 </p>
+					<p class="p3">recommend 是否推荐（0否1是） </p>
+					<p class="p3">allArea  面积 </p>
+					<p class="p3">floorNum  …  楼层 </p>
+					<p class="p3">areaId  …  区域ID </p>
+					<p class="p3">circleId  …  商圈ID </p>
+					<p class="p3">dayRent  …  日租金（如是出租房则显示日租金） </p>
+					<p class="p3">monthRent  …  月租金 </p>
+					<p class="p3">salePrice  …  售价如是二手房／新房则显示售价） </p>
+					<p class="p3">type  …  房源类型（0出租房1二手房2新房） </p>
+					<p class="p3">areaName  …  区域名 </p>
+					<p class="p3">circleName  …  商圈名 </p>
+					<p class="p3">lng  …  经度 </p>
+					<p class="p3">lat  …  纬度 </p>
+					<p class="p3">address  …  详细地址 </p>
+					<p class="p3">orientation  …  朝向 </p>
+					<p class="p3">description  …  描述 </p>
+					<p class="p3">propertyFee  …  物业费 </p>
+					<p class="p3">electricityFee  …  电费 </p>
+					<p class="p3">waterFee  …  水费 </p>
+					<p class="p3">startTime  …  与房东合同开始时间 </p>
+					<p class="p3">endTime  …  与房东合同结束时间 </p>
+					<p class="p3">propertyCompany  …  物业公司 </p>
+					<p class="p3">dishId  …  楼盘ID </p>
+					<p class="p3">dishName  …  楼盘名 </p>
+					<p class="p3">renovation  …  装修情况 </p>
+					<p class="p3">buildYear  …  年代 </p>
+					<p class="p2">customer：租户信息</p>
+					<p class="p3">company  …  公司 </p>
+					<p class="p3">ctype,  …  公司类型 </p>
+					<p class="p3">legalPerson,  …  法人 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="house-similar" class="resource"><h3>相似房源<a href="#house-similar" class="permalink">&para;</a></h3>
+		<div id="house-similar-post" class="action post"><h4><div class="name">相似房源</div>
+			<a href="#house-similar-post" class="method post">POST</a><code class="uri">/house/similar</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li><li>
+				<p>id (optional, long, <code>房源ID</code>) …  房源ID </p>
+			</li>
+
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  房源ID </p>
+					<p class="p3">photos  …  照片列表（多张以逗号隔开） </p>
+					<p class="p3">name  …  房源名 </p>
+					<p class="p3">recommend 是否推荐（0否1是） </p>
+					<p class="p3">allArea  面积 </p>
+					<p class="p3">floorNum  …  楼层 </p>
+					<p class="p3">areaId  …  区域ID </p>
+					<p class="p3">circleId  …  商圈ID </p>
+					<p class="p3">dayRent  …  日租金（如是出租房则显示日租金） </p>
+					<p class="p3">salePrice  …  售价如是二手房／新房则显示售价） </p>
+					<p class="p3">type  …  房源类型（0出租房1二手房2新房） </p>
+					<p class="p3">areaName  …  区域名 </p>
+					<p class="p3">circleName  …  商圈名 </p>
+					<p class="p3">lng  …  经度 </p>
+					<p class="p3">lat  …  纬度 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="house-buildDish" class="resource"><h3>楼盘详情<a href="#house-buildDish" class="permalink">&para;</a></h3>
+		<div id="house-buildDish-post" class="action post"><h4><div class="name">楼盘详情</div>
+			<a href="#house-buildDish-post" class="method post">POST</a><code class="uri">/house/buildDish</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>dishId (required, long, <code>1</code>) …  楼盘ID </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 数据对象</p>
+					<p class="p2">id  …  房源ID </p>
+					<p class="p2">photos  …  照片列表（多张以逗号隔开） </p>
+					<p class="p2">name  …  楼盘名 </p>
+					<p class="p2">introduc 简介 </p>
+					<p class="p2">buildArea  建筑面积 </p>
+					<p class="p2">floorNum  …  楼层 </p>
+					<p class="p2">areaId  …  区域ID </p>
+					<p class="p2">circleId  …  商圈ID </p>
+					<p class="p2">upLayer  …  地上层数 </p>
+					<p class="p2">downLayer  …  地下层数 </p>
+					<p class="p2">floorHeight  …  标准层高 </p>
+					<p class="p2">developer  …  开发商 </p>
+					<p class="p2">areaName  …  区域名 </p>
+					<p class="p2">circleName  …  商圈名 </p>
+					<p class="p2">lng  …  经度 </p>
+					<p class="p2">lat  …  纬度 </p>
+					<p class="p2">address  …  详细地址 </p>
+					<p class="p2">floorArea  …  标准层面积 </p>
+					<p class="p2">greenRate  …  绿化率 </p>
+					<p class="p2">propertyCompany  …  物业公司 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="house-appointment" class="resource"><h3>预约看房<a href="#house-appointment" class="permalink">&para;</a></h3>
+		<div id="house-appointment-post" class="action post"><h4><div class="name">预约看房</div>
+			<a href="#house-appointment-post" class="method post">POST</a><code class="uri">/house/appointment</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>houseId (required, string, <code>房源ID</code>) …  房源ID </p>
+				</li>
+				<li>
+					<p>userName (required, string, <code>用户名</code>) …  用户名 </p>
+				</li>
+				<li>
+					<p>appointTime (required, string, <code>预约时间</code>) …  预约时间 格式必须为：yyyy-MM-dd mm:hh:ss </p>
+				</li>
+				<li>
+					<p>sex (required, int, <code>性别（0女1男）</code>) …  性别（0女1男） </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="house-collect" class="resource"><h3>收藏／取消收藏房源<a href="#house-collect" class="permalink">&para;</a></h3>
+		<div id="house-collect-post" class="action post"><h4><div class="name">收藏／取消收藏房源</div>
+			<a href="#house-collect-post" class="method post">POST</a><code class="uri">/house/collect</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id (required, string, <code>房源ID</code>) …  房源ID </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (boolean) - true/false 是否收藏</p>
+				</li>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="news-list" class="resource"><h3>新闻资讯列表<a href="#house-list" class="permalink">&para;</a></h3>
+		<div id="news-list-post" class="action post"><h4><div class="name">新闻资讯列表</div>
+			<a href="#news-list-post" class="method post">POST</a><code class="uri">/news/list</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  新闻ID </p>
+					<p class="p3">title  …  标题 </p>
+					<p class="p3">pic …  列表图片 </p>
+					<p class="p3">summary 概要 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="news-get" class="resource"><h3>新闻资讯详情<a href="#house-get" class="permalink">&para;</a></h3>
+		<div id="news-get-post" class="action get"><h4><div class="name">新闻资讯详情</div>
+			<a href="#news-get-post" class="method get">GET</a><code class="uri">/news/get/{id}</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>无</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>无</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="index-billList" class="resource"><h3>账单列表<a href="#index-billList" class="permalink">&para;</a></h3>
+		<div id="index-billList-post" class="action post"><h4><div class="name">账单列表</div>
+			<a href="#index-billList-post" class="method post">POST</a><code class="uri">/index/billList</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>status (required, int, <code>0／1</code>) …  0未支付  1已支付 </p>
+				</li>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  账单ID </p>
+					<p class="p3">type  …  账单类型（0电费1水费2物业费） </p>
+					<p class="p3">totalPrice …  总价 </p>
+					<p class="p3">createTime 时间 </p>
+					<p class="p3">name 房源名称 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="index-billDetail" class="resource"><h3>账单详情<a href="#index-billList" class="permalink">&para;</a></h3>
+		<div id="index-billDetail-post" class="action post"><h4><div class="name">账单详情</div>
+			<a href="#index-billDetail-post" class="method post">POST</a><code class="uri">/index/billDetail</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id (required, long, <code>0／1</code>) …  账单ID </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 数据对象</p>
+					<p class="p2">id  …  账单ID </p>
+					<p class="p2">type  …  账单类型（0电费1水费2物业费） </p>
+					<p class="p2">totalPrice …  总价 </p>
+					<p class="p2">createTime 生成时间 </p>
+					<p class="p2">year 年 </p>
+					<p class="p2">month 月 </p>
+					<p class="p2">status 0未支付  1已支付 </p>
+					<p class="p2">payTime 支付时间 </p>
+					<p class="p2">price 单价 </p>
+					<p class="p2">dosage 用量 </p>
+					<p class="p2">curNum 本次抄表刻度 </p>
+					<p class="p2">oldNum 上次抄表刻度 </p>
+
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="index-dsList" class="resource"><h3>东朔小秘书列表<a href="#index-dsList" class="permalink">&para;</a></h3>
+		<div id="index-dsList-post" class="action post"><h4><div class="name">东朔小秘书列表</div>
+			<a href="#index-dsList-post" class="method post">POST</a><code class="uri">/index/dsList</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  账单ID </p>
+					<p class="p3">title  …  标题 </p>
+					<p class="p3">content …  内容 </p>
+					<p class="p3">createTime 时间 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="index-customerService" class="resource"><h3>客服列表<a href="#index-customerService" class="permalink">&para;</a></h3>
+		<div id="index-customerService-post" class="action post"><h4><div class="name">客服列表</div>
+			<a href="#index-customerService-post" class="method post">POST</a><code class="uri">/index/customerService</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>无</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONArray) - 数据列表</p>
+					<p class="p2">id：客服ID</p>
+					<p class="p2">agentId：经纪人ID</p>
+					<p class="p2">name：姓名</p>
+					<p class="p2">phone：手机号</p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="appointment-list" class="resource"><h3>看房日程列表<a href="#appointment-list" class="permalink">&para;</a></h3>
+		<div id="appointment-list-post" class="action post"><h4><div class="name">看房日程列表</div>
+			<a href="#appointment-list-post" class="method post">POST</a><code class="uri">/appointment/list</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+				<li>
+					<p>status (optional, int, <code>1</code>) …  0待确认1已确认2看房结束3今日看房日程(经济人查看传该参数) </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  预约ID </p>
+					<p class="p3">appointTime  …  预约时间（yyyy-MM-dd hh:mm:ss） </p>
+					<p class="p3">status  …  状态（0待确认1已确认2看房结束3已取消） </p>
+					<p class="p3">houseId  …  房源ID </p>
+					<p class="p3">photos  …  照片列表（多张以逗号隔开） </p>
+					<p class="p3">name  …  房源名 </p>
+					<p class="p3">recommend 是否推荐（0否1是） </p>
+					<p class="p3">allArea  面积 </p>
+					<p class="p3">floorNum  …  楼层 </p>
+					<p class="p3">areaId  …  区域ID </p>
+					<p class="p3">circleId  …  商圈ID </p>
+					<p class="p3">dayRent  …  日租金（如是出租房则显示日租金） </p>
+					<p class="p3">salePrice  …  售价如是二手房／新房则显示售价） </p>
+					<p class="p3">type  …  房源类型（0出租房1二手房2新房） </p>
+					<p class="p3">areaName  …  区域名 </p>
+					<p class="p3">circleName  …  商圈名 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="favorites-list" class="resource"><h3>收藏列表<a href="#favorites-list" class="permalink">&para;</a></h3>
+		<div id="favorites-list-post" class="action post"><h4><div class="name">收藏列表</div>
+			<a href="#favorites-list-post" class="method post">POST</a><code class="uri">/favorites/list</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  收藏ID </p>
+					<p class="p3">createTime  …  收藏时间戳 </p>
+					<p class="p3">houseId  …  房源ID </p>
+					<p class="p3">photos  …  照片列表 （多张以逗号隔开）</p>
+					<p class="p3">name  …  房源名 </p>
+					<p class="p3">recommend 是否推荐（0否1是） </p>
+					<p class="p3">allArea  面积 </p>
+					<p class="p3">floorNum  …  楼层 </p>
+					<p class="p3">dayRent  …  日租金（如是出租房则显示日租金） </p>
+					<p class="p3">salePrice  …  售价如是二手房／新房则显示售价） </p>
+					<p class="p3">type  …  房源类型（0出租房1二手房2新房） </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="sign-index" class="resource"><h3>签到（开门）<a href="#favorites-list" class="permalink">&para;</a></h3>
+		<div id="sign-index-post" class="action post"><h4><div class="name">签到（开门）</div>
+			<a href="#sign-index-post" class="method post">POST</a><code class="uri">/sign</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>无 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="sign-list" class="resource"><h3>考勤管理<a href="#favorites-list" class="permalink">&para;</a></h3>
+		<div id="sign-list-post" class="action post"><h4><div class="name">考勤管理</div>
+			<a href="#sign-list-post" class="method post">POST</a><code class="uri">/sign/list</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>year（int）- 年 </p>
+				</li>
+				<li>
+					<p>month（int）- 月 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<!--<p>data(JSONOject) 数据对象</p>-->
+					<!--<p class="p2">flag：0员工  1管理者</p>-->
+					<p class="p2">data：数据列表（0员工，就显示个人的数据日历）</p>
+					<p class="p3">year：年</p>
+					<p class="p3">month：月</p>
+					<p class="p3">day：日</p>
+					<p class="p3">flag：0正常出勤1迟到</p>
+					<p class="p3">createTime：签到时间</p>
+					<p class="p2">data：数据列表（1管理者，显示公司员工的数据列表）</p>
+					<p class="p3">id：用户Id</p>
+					<p class="p3">trueName：真实名</p>
+					<p class="p3">phone：电话</p>
+					<p class="p3">userName：用户名</p>
+					<p class="p3">headPhoto：头像</p>
+					<p class="p3">attendanceNum：出勤次数</p>
+					<p class="p3">lateNum：迟到次数</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="sign-employeeList" class="resource"><h3>考勤明细<a href="#favorites-list" class="permalink">&para;</a></h3>
+		<div id="sign-employeeList-post" class="action post"><h4><div class="name">考勤明细</div>
+			<a href="#sign-employeeList-post" class="method post">POST</a><code class="uri">/sign/employeeList</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>userId（long）- 用户ID </p>
+				</li>
+				<li>
+					<p>year（int）- 年 </p>
+				</li>
+				<li>
+					<p>month（int）- 月 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data(JSONArray) 数据列表</p>
+					<p class="p2">year：年</p>
+					<p class="p2">month：月</p>
+					<p class="p2">day：日</p>
+					<p class="p2">flag：0正常出勤1迟到</p>
+					<p class="p2">createTime：签到时间</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-login" class="resource">
+		<h3>经纪人登录<a href="#agent-login" class="permalink">&para;</a></h3>
+		<div id="agent-login-post" class="action post">
+			<h4><div class="name">经纪人登录</div><a href="#agent-login-post" class="method post">POST</a><code class="uri">/agent/login</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>phone (required, string, <code>13112345678</code>) … 手机号</p>
+				</li>
+				<li>
+					<p>password (required, string, <code>md5(md5(123456)</code>)) … 两次md5后的密码</p>
+				</li>
+
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data(String) 每次登录成功返回的token</p>
+				</li>
+			</ul>
+		</div></div>
+
+	<div id="agent-getValCode" class="resource"><h3>获取验证码<a href="#agent-getValCode" class="permalink">&para;</a></h3>
+		<div id="agent-getValCode-post" class="action post"><h4><div class="name">获取验证码</div>
+			<a href="#agent-getValCode-post" class="method post">POST</a><code class="uri">/agent/getValCode</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>phone(required, string, <code>13112345678</code>) …  手机号</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-getInfo" class="resource"><h3>获取经纪人信息<a href="#user-getInfo" class="permalink">&para;</a></h3>
+		<div id="agent-get-post" class="action post"><h4><div class="name">获取经济人信息</div>
+			<a href="#agent-get-post" class="method post">POST</a><code class="uri">/agent/get</code></h4><p>请求参数:</p>
+			<ul>
+
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 经纪人对象</p>
+					<ul>
+						<li>
+							<p>userName(string, <code>zs</code>) …  用户名</p>
+						</li>
+						<li>
+							<p>headPhoto(string, <code></code>) … 头像</p>
+						</li>
+						<li>
+							<p>sex(int, <code>1</code>) … 性别（0女1男）</p>
+						</li>
+						<li>
+							<p>area(string, <code>区</code>) … 所在区</p>
+						</li>
+					</ul>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-updateInfo" class="resource"><h3>更新经纪人信息<a href="#agent-updateInfo" class="permalink">&para;</a></h3>
+		<div id="agent-update-post" class="action post"><h4><div class="name">更新经纪人信息</div>
+			<a href="#agent-update-post" class="method post">POST</a><code class="uri">/agent/update</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>userName(optional,string, <code>zs</code>) …  用户名</p>
+				</li>
+				<li>
+					<p>headPhoto(optional, stream, <code></code>) … 头像</p>
+				</li>
+				<li>
+					<p>sex(optional, int, <code>1</code>) … 性别（0女1男）</p>
+				</li>
+				<li>
+					<p>area(optional, string, <code>区</code>) … 所在区</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+	<div id="agent-updatePwd" class="resource"><h3>找回密码<a href="#user-updatePwd" class="permalink">&para;</a></h3>
+		<div id="agent-updatePwd-post" class="action post"><h4><div class="name">找回密码</div>
+			<a href="#agent-updatePwd-post" class="method post">POST</a><code class="uri">/agent/forgotPwd</code></h4><p>请求参数:</p>
+		<ul>
+			<li>
+				<p>phone(required, string, <code>13112345678</code>) …  手机号</p>
+			</li>
+			<li>
+				<p>password(required, string, <code>md5(md5(123456))</code>) … 两次md5后的密码</p>
+			</li>
+			<li>
+				<p>code(required, string, <code>123456</code>) … 验证码</p>
+			</li>
+		</ul>
+		<p>返回参数:</p>
+		<ul>
+			<li>
+				<p>code (int) - 2000/4000</p>
+			</li>
+			<li>
+				<p>msg (string) - 后台提示消息</p>
+			</li>
+		</ul>
+	</div></div>
+
+	<div id="agent-modPwd" class="resource"><h3>修改密码<a href="#agent-modPwd" class="permalink">&para;</a></h3>
+		<div id="agent-modPwd-post" class="action post"><h4><div class="name">修改密码</div><a href="#agent-modPwd-post" class="method post">POST</a><code class="uri">/agent/updatePwd</code></h4><p>请求参数:</p>
+		<ul>
+			<li>
+				<p>oldPwd(required, string, <code>123456</code>) …  两次md5后的旧密码</p>
+			</li>
+			<li>
+				<p>newPwd(required, string, <code>123456</code>) … 两次md5后的新密码</p>
+			</li>
+		</ul>
+		<p>返回参数:</p>
+		<ul>
+			<li>
+				<p>code (int) - 2000/4000</p>
+			</li>
+			<li>
+				<p>msg (string) - 后台提示消息</p>
+			</li>
+		</ul>
+	</div></div>
+
+	<div id="agent-index" class="resource"><h3>首页数据<a href="#agent-index" class="permalink">&para;</a></h3>
+		<div id="agent-index-post" class="action post"><h4><div class="name">首页数据</div>
+			<a href="#agent-index-post" class="method post">POST</a><code class="uri">/agentIndex</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>无 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data(JSONObject) - 数据列表</p>
+					<p class="p2">banner：轮播图列表</p>
+					<p class="p3">title：标题</p>
+					<p class="p3">href：链接</p>
+					<p class="p3">pic：图片地址</p>
+					<p class="p2">store：该经纪人是否是店长，如果是店长则有msgNum即消息</p>
+					<p class="p2">msg：消息数量列表</p>
+					<p class="p3">scheduleNum:今日看房日程动态数量</p>
+					<p class="p3">scheduleTime:今日看房日程更新时间(13位时间戳)</p>
+					<p class="p3">appointmentNum:预约动态数量</p>
+					<p class="p3">appointmentTime:预约动态更新时间(13位时间戳)</p>
+					<p class="p3">customerNum:新客户动态数量</p>
+					<p class="p3">customerTime:新客户动态更新时间(13位时间戳)</p>
+					<p class="p3">houseNum:房源动态数量</p>
+					<p class="p3">houseTime:房源更新时间(13位时间戳)</p>
+					<p class="p3">msgNum:消息(新预约通知店长，经纪人确认预约通知店长，看房完毕，成为房东)动态数量</p>
+					<p class="p3">msgTime:消息更新时间(13位时间戳)</p>
+					<p class="p3">serviceNum:服务动态数量</p>
+					<p class="p3">serviceTime:服务动态更新时间(13位时间戳)</p>
+					<p class="p3">incomeNum:今日收益动态数量</p>
+					<p class="p3">incomeTime:今日收益更新时间(13位时间戳)</p>
+					<p class="p3">serviceNum:服务动态数量</p>
+					<p class="p3">serviceTime:服务更新时间(13位时间戳)</p>
+					<p class="p3">newsNum:资讯动态数量</p>
+					<p class="p3">newsTime:资讯更新时间(13位时间戳)</p>
+					<p class="p3">dsNum:东朔小秘书动态数量</p>
+					<p class="p3">dsTime:东朔小秘书更新时间(13位时间戳)</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-coustomer" class="resource"><h3>客户列表<a href="#agent-coustomer" class="permalink">&para;</a></h3>
+		<div id="agent-coustomer-post" class="action post"><h4><div class="name">客户列表</div>
+			<a href="#agent-coustomer-post" class="method post">POST</a><code class="uri">/agentIndex/coustomer</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  客户ID </p>
+					<p class="p3">userId  …  用户ID </p>
+					<p class="p3">remark …  备注 </p>
+					<p class="p3">source …  来源（0预约1合同）</p>
+					<p class="p3">phone …  用户手机号 </p>
+					<p class="p3">userName …  用户名 </p>
+					<p class="p3">headPhoto …  用户头像 </p>
+					<p class="p3">createTime 时间 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-storeMsg" class="resource"><h3>首页消息列表<a href="#agent-storeMsg" class="permalink">&para;</a></h3>
+		<div id="agent-storeMsg-post" class="action post"><h4><div class="name">首页消息列表</div>
+			<a href="#agent-storeMsg-post" class="method post">POST</a><code class="uri">/agentIndex/storeMsg</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  消息ID </p>
+					<p class="p3">type  …  0预约通知1确认预约通知2看房结束通知3成为房东通知 </p>
+					<p class="p3">houseName …  房源名 </p>
+					<p class="p3">houseAddr …  房源地址</p>
+					<p class="p3">agentId  …  经纪人ID </p>
+					<p class="p3">agentName …  经济人姓名 </p>
+					<p class="p3">agentPhone …  经纪人手机号</p>
+					<p class="p3">userId  …  用户ID </p>
+					<p class="p3">userName …  用户名 </p>
+					<p class="p3">userPhone …  用户手机号</p>
+					<p class="p3">createTime 时间 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-dsList" class="resource"><h3>东朔小秘书列表<a href="#agent-dsList" class="permalink">&para;</a></h3>
+		<div id="agent-dsList-post" class="action post"><h4><div class="name">东朔小秘书列表</div>
+			<a href="#agent-dsList-post" class="method post">POST</a><code class="uri">/agentIndex/dsList</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  ID </p>
+					<p class="p3">title  …  标题 </p>
+					<p class="p3">content …  内容 </p>
+					<p class="p3">createTime 时间 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-profitList" class="resource"><h3>分润对账<a href="#agent-businessCircle" class="permalink">&para;</a></h3>
+		<div id="agent-profitList-post" class="action post"><h4><div class="name">分润对账</div>
+			<a href="#agent-profitList-post" class="method post">POST</a><code class="uri">/agentIndex/profitList</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>type (required, int, <code>0当月1历史</code>) …  类型 0当月1历史 </p>
+				</li>
+				<li>
+					<p>output (optional, int, <code>0/1</code>) …  数据输出格式，传0或者1试试看。当type=1时，output参数才生效 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 数据列表</p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-house-buildDishList" class="resource"><h3>楼盘列表<a href="#agent-house-buildDishList" class="permalink">&para;</a></h3>
+		<div id="agent-house-buildDishList-post" class="action post"><h4><div class="name">楼盘列表</div>
+			<a href="#agent-house-buildDishList-post" class="method post">POST</a><code class="uri">/agentHouse/buildDishList</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>areaId (required, long, <code>1</code>) …  区域ID </p>
+				</li>
+				<li>
+					<p>circleId (required, long, <code>1</code>) …  商圈ID </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONArray) - 数据列表</p>
+					<p class="p2">id  …  Id </p>
+					<p class="p2">name  …  楼盘名 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-house-findUserByPhone" class="resource"><h3>查找用户／房东<a href="#agent-house-findUserByPhone" class="permalink">&para;</a></h3>
+		<div id="agent-house-findUserByPhone-post" class="action post"><h4><div class="name">查找用户／房东</div>
+			<a href="#agent-house-findUserByPhone-post" class="method post">POST</a><code class="uri">/agentHouse/findUserByPhone</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>phone (required, string, <code>1</code>) …  手机号 </p>
+				</li>
+				<li>
+					<p>type (required, int, <code>0/1</code>) …  0用户  1房东 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 数据列表</p>
+					<p class="p2">id  …  Id </p>
+					<p class="p2">userName  …  用户名 </p>
+					<p class="p2">phone  …  手机号 </p>
+					<p class="p2">headPhoto  …  头像 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-house-create" class="resource"><h3>发布房源<a href="#agent-house-create" class="permalink">&para;</a></h3>
+		<div id="agent-house-create-post" class="action post"><h4><div class="name">发布房源</div>
+			<a href="#agent-house-create-post" class="method post">POST</a><code class="uri">/agentHouse/create</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>type(required,int, <code>0／1／2</code>) …  房源类型（0出租房1二手房2新房）</p>
+				</li>
+				<li>
+					<p>name(required, string, <code>中国梦谷</code>) … 房源名</p>
+				</li>
+				<li>
+					<p>areaId(required, long, <code>1</code>) … 区域ID</p>
+				</li>
+				<li>
+					<p>circleId(required, long, <code>1</code>) … 商圈ID</p>
+				</li>
+				<li>
+					<p>address(required, string, <code>华徐公路888号</code>) … 地址</p>
+				</li>
+				<li>
+					<p>dayRent(optional, float, <code>90000</code>) … 日租金（元／平方米／天）（出租房必传）</p>
+				</li>
+				<li>
+					<p>monthRent(optional, float, <code>90000</code>) … 月租金（单位元）（日租金*365／12*面积）（出租房必传）</p>
+				</li>
+				<li>
+					<p>salePrice(optional, float, <code>90000</code>) … 售价（单位万元）（二手房必传）</p>
+				</li>
+				<li>
+					<p>propertyFee(required, float, <code>2</code>) … 物业费（元／平米／月）</p>
+				</li>
+				<li>
+					<p>electricityFee(required, float, <code>1</code>) … 电费（元／度）</p>
+				</li>
+				<li>
+					<p>waterFee(required, float, <code>2</code>) … 水费（元／吨）</p>
+				</li>
+				<li>
+					<p>orientation(required, string, <code>朝东</code>) … 朝向（朝东／朝西／朝南／朝北）</p>
+				</li>
+				<li>
+					<p>allArea(required, int, <code>200</code>) … 面积（平方米）</p>
+				</li>
+				<li>
+					<p>renovation(required, string, <code>毛坯房</code>) … 装修情况（毛坯房／简装修／精装修）</p>
+				</li>
+				<li>
+					<p>buildYear(required, int, <code>2016</code>) … 年代</p>
+				</li>
+				<li>
+					<p>propertyCompany(required, string, <code>物业公司</code>) … 物业公司</p>
+				</li>
+				<li>
+					<p>description(required, string, <code>描述</code>) … 房源描述</p>
+				</li>
+				<li>
+					<p>dishId(required, long, <code>楼盘ID</code>) … 楼盘ID</p>
+				</li>
+				<li>
+					<p>ownerId(required, long, <code>房东ID</code>) … 房东ID</p>
+				</li>
+				<li>
+					<p>photos(required, stream, <code></code>) … 照片（key可以为任意非以上字段）</p>
+				</li>
+				<li>
+					<p>startTime(optional, string, <code>yyyy-MM-dd</code>) … 与房东合同开始时间</p>
+				</li>
+				<li>
+					<p>endTime(optional, string, <code>yyyy-MM-dd</code>) … 与房东合同结束时间</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-house-update" class="resource"><h3>更新房源<a href="#agent-house-create" class="permalink">&para;</a></h3>
+		<div id="agent-house-update-post" class="action post"><h4><div class="name">更新房源</div>
+			<a href="#agent-house-update-post" class="method post">POST</a><code class="uri">/agentHouse/update</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id(required,long, <code>1</code>) …  房源ID</p>
+				</li>
+				<li>
+					<p>type(required,int, <code>0／1／2</code>) …  房源类型（0出租房1二手房2新房）</p>
+				</li>
+				<li>
+					<p>name(required, string, <code>中国梦谷</code>) … 房源名</p>
+				</li>
+				<li>
+					<p>areaId(required, long, <code>1</code>) … 区域ID</p>
+				</li>
+				<li>
+					<p>circleId(required, long, <code>1</code>) … 商圈ID</p>
+				</li>
+				<li>
+					<p>address(required, string, <code>华徐公路888号</code>) … 地址</p>
+				</li>
+				<li>
+					<p>dayRent(optional, float, <code>90000</code>) … 日租金（元／平方米／天）（出租房必传）</p>
+				</li>
+				<li>
+					<p>monthRent(optional, float, <code>90000</code>) … 月租金（单位元）（日租金*365／12）（出租房必传）</p>
+				</li>
+				<li>
+					<p>salePrice(optional, float, <code>90000</code>) … 售价（单位万元）（二手房必传）</p>
+				</li>
+				<li>
+					<p>propertyFee(required, float, <code>2</code>) … 物业费（元／平米／月）</p>
+				</li>
+				<li>
+					<p>electricityFee(required, float, <code>1</code>) … 电费（元／度）</p>
+				</li>
+				<li>
+					<p>waterFee(required, float, <code>2</code>) … 水费（元／吨）</p>
+				</li>
+				<li>
+					<p>orientation(required, string, <code>朝东</code>) … 朝向（朝东／朝西／朝南／朝北）</p>
+				</li>
+				<li>
+					<p>allArea(required, int, <code>200</code>) … 面积（平方米）</p>
+				</li>
+				<li>
+					<p>renovation(required, string, <code>毛坯房</code>) … 装修情况（毛坯房／简装修／精装修）</p>
+				</li>
+				<li>
+					<p>buildYear(required, int, <code>2016</code>) … 年代</p>
+				</li>
+				<li>
+					<p>propertyCompany(required, string, <code>物业公司</code>) … 物业公司</p>
+				</li>
+				<li>
+					<p>description(required, string, <code>描述</code>) … 房源描述</p>
+				</li>
+				<li>
+					<p>dishId(required, long, <code>楼盘ID</code>) … 楼盘ID</p>
+				</li>
+				<li>
+					<p>ownerId(required, long, <code>房东ID</code>) … 房东ID</p>
+				</li>
+				<li>
+					<p>photos(required, stream, <code></code>) … 照片（key可以为任意非以上字段）现在只能是一起修改，不能单独修改一张照片</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-house-list" class="resource"><h3>我的房源列表<a href="#agent-house-list" class="permalink">&para;</a></h3>
+		<div id="agent-house-list-post" class="action post"><h4><div class="name">我的房源列表</div>
+			<a href="#agent-house-list-post" class="method post">POST</a><code class="uri">/agentHouse/list</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>type (optional, int, <code>1</code>) …  房源类型（0出租房1二手房2新房）默认0 </p>
+				</li>
+				<li>
+					<p>status (optional, int, <code>1</code>) …  状态（0在租1已租2停租）如果是二手房或者新房则是（0在售1已售2停售））默认0 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+				<li>
+					<p>order (optional, string, <code>排序字段</code>) …  排序字段默认入库时间 </p>
+				</li>
+				<li>
+					<p>sort (optional, int, <code>0desc 1asc</code>) …  0desc降序 1asc升序 </p>
+				</li>
+
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  房源ID </p>
+					<p class="p3">photos  …  照片列表（多张以逗号隔开） </p>
+					<p class="p3">name  …  房源名 </p>
+					<p class="p3">recommend 是否推荐（0否1是） </p>
+					<p class="p3">allArea  面积 </p>
+					<p class="p3">floorNum  …  楼层 </p>
+					<p class="p3">areaId  …  区域ID </p>
+					<p class="p3">circleId  …  商圈ID </p>
+					<p class="p3">dayRent  …  日租金（如是出租房则显示日租金,单位:元/m²•天 ） </p>
+					<p class="p3">salePrice  …  售价(如是二手房／新房则显示售价，单位:万元） </p>
+					<p class="p3">type  …  房源类型（0出租房1二手房2新房） </p>
+					<p class="p3">areaName  …  区域名 </p>
+					<p class="p3">circleName  …  商圈名 </p>
+					<p class="p3">lng  …  经度 </p>
+					<p class="p3">lat  …  纬度 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-house-store-list" class="resource"><h3>店内房源<a href="#agent-store-house-list" class="permalink">&para;</a></h3>
+		<div id="agent-house-store-list-post" class="action post"><h4><div class="name">店内房源</div>
+			<a href="#agent-house-store-list-post" class="method post">POST</a><code class="uri">/agentHouse/store</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>type (optional, int, <code>1</code>) …  房源类型（0出租房1二手房2新房）默认0 </p>
+				</li>
+				<li>
+					<p>status (optional, int, <code>1</code>) …  状态（0在租1已租2停租）如果是二手房或者新房则是（0在售1已售2停售））默认0 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+				<li>
+					<p>order (optional, string, <code>排序字段</code>) …  排序字段默认入库时间 </p>
+				</li>
+				<li>
+					<p>sort (optional, int, <code>0desc 1asc</code>) …  0desc降序 1asc升序 </p>
+				</li>
+
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  房源ID </p>
+					<p class="p3">photos  …  照片列表（多张以逗号隔开） </p>
+					<p class="p3">name  …  房源名 </p>
+					<p class="p3">recommend 是否推荐（0否1是） </p>
+					<p class="p3">allArea  面积 </p>
+					<p class="p3">floorNum  …  楼层 </p>
+					<p class="p3">areaId  …  区域ID </p>
+					<p class="p3">circleId  …  商圈ID </p>
+					<p class="p3">dayRent  …  日租金（如是出租房则显示日租金,单位:元/m²•天 ） </p>
+					<p class="p3">salePrice  …  售价(如是二手房／新房则显示售价，单位:万元） </p>
+					<p class="p3">type  …  房源类型（0出租房1二手房2新房） </p>
+					<p class="p3">areaName  …  区域名 </p>
+					<p class="p3">circleName  …  商圈名 </p>
+					<p class="p3">lng  …  经度 </p>
+					<p class="p3">lat  …  纬度 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-house-updStatus" class="resource"><h3>更新房源状态（在租／停租 在售／停售）<a href="#agent-house-updStatus" class="permalink">&para;</a></h3>
+		<div id="agent-house-updStatus-post" class="action post"><h4><div class="name">更新房源状态（在租／停租 在售／停售）</div>
+			<a href="#agent-house-updStatus-post" class="method post">POST</a><code class="uri">/agentHouse/updStatus</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id(required,long, <code>1</code>) …  房源ID</p>
+				</li>
+				<li>
+					<p>status (optional, int, <code>1</code>) …  状态（0在租2停租）如果是二手房或者新房则是（0在售2停售））</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agent-house-sale" class="resource"><h3>出售／出租 房源<a href="#agent-house-sale" class="permalink">&para;</a></h3>
+		<div id="agent-house-sale-post" class="action post"><h4><div class="name">出售／出租 房源</div>
+			<a href="#agent-house-sale-post" class="method post">POST</a><code class="uri">/agentHouse/sale</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>houseId(required,long, <code>1</code>) …  房源ID</p>
+				</li>
+				<li>
+					<p>userId(required,long, <code>1</code>) …  用户ID（租户／买家）</p>
+				</li>
+				<li>
+					<p>startTime(optional,string, <code>1</code>) …  开始时间（yyyy-MM-dd）</p>
+				</li>
+				<li>
+					<p>endTime(optional,string, <code>1</code>) …  结束时间（yyyy-MM-dd）</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="appointment-cancel" class="resource"><h3>取消预约<a href="#appointment-cancel" class="permalink">&para;</a></h3>
+		<div id="appointment-cancel-post" class="action post"><h4><div class="name">取消预约</div>
+			<a href="#appointment-cancel-post" class="method post">POST</a><code class="uri">/appointment/cancel</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id (required, long, <code>1</code>) …  预约ID </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="appointment-update" class="resource"><h3>修改预约时间<a href="#appointment-confirm" class="permalink">&para;</a></h3>
+		<div id="appointment-update-post" class="action post"><h4><div class="name">修改预约时间</div>
+			<a href="#appointment-update-post" class="method post">POST</a><code class="uri">/appointment/update</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id (required, long, <code>1</code>) …  预约ID </p>
+				</li>
+				<li>
+					<p>appointTime (required, string, <code>yyyy-MM-dd mm:hh:ss</code>) …  预约时间 格式必须为：yyyy-MM-dd mm:hh:ss </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="appointment-confirm" class="resource"><h3>确认预约<a href="#appointment-confirm" class="permalink">&para;</a></h3>
+		<div id="appointment-confirm-post" class="action post"><h4><div class="name">确认预约</div>
+			<a href="#appointment-confirm-post" class="method post">POST</a><code class="uri">/appointment/confirm</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id (required, long, <code>1</code>) …  预约ID </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="appointment-end" class="resource"><h3>看房结束<a href="#appointment-end" class="permalink">&para;</a></h3>
+		<div id="appointment-end-post" class="action post"><h4><div class="name">看房结束</div>
+			<a href="#appointment-end-post" class="method post">POST</a><code class="uri">/appointment/end</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id (required, long, <code>1</code>) …  预约ID </p>
+				</li>
+				<li>
+					<p>lng (required, double, <code>1</code>) …  经度 </p>
+				</li>
+				<li>
+					<p>lat (required, double, <code>1</code>) …  纬度 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="service-handle" class="resource"><h3>服务已处理<a href="#service-handle" class="permalink">&para;</a></h3>
+		<div id="service-handle-post" class="action post"><h4><div class="name">服务已处理</div>
+			<a href="#service-handle-post" class="method post">POST</a><code class="uri">/service/handle</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id (required, long, <code>1</code>) …  服务ID </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agentManager-list" class="resource"><h3>店员列表<a href="#agentManager-list" class="permalink">&para;</a></h3>
+		<div id="agentManager-list-post" class="action post"><h4><div class="name">店员列表</div>
+			<a href="#agentManager-list-post" class="method post">POST</a><code class="uri">/agentManager/list</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+				<li>
+					<p>order (optional, string, <code>排序字段</code>) …  排序字段默认入库时间 </p>
+				</li>
+				<li>
+					<p>sort (optional, int, <code>0desc 1asc</code>) …  0desc降序 1asc升序 </p>
+				</li>
+
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  ID </p>
+					<p class="p3">phone  …  手机号 </p>
+					<p class="p3">headPhoto  …  头像 </p>
+					<p class="p3">sex 男女（0女1男） </p>
+					<p class="p3">area  所在区 </p>
+					<p class="p3">userName  …  姓名 </p>
+					<p class="p3">storeId  …  门店ID </p>
+					<p class="p3">status  …  状态（0正常1暂停） </p>
+					<p class="p3">createTime  …   </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agentManager-get" class="resource"><h3>获取经纪人信息<a href="#agentManager-get" class="permalink">&para;</a></h3>
+		<div id="agentManager-get-post" class="action post"><h4><div class="name">获取经济人信息</div>
+			<a href="#agentManager-get-post" class="method post">POST</a><code class="uri">/agentManager/get</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id (required, long, <code>1</code>) …  ID </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 经纪人对象</p>
+					<ul>
+						<li>
+							<p>userName(string, <code>zs</code>) …  用户名</p>
+						</li>
+						<li>
+							<p>headPhoto(string, <code></code>) … 头像</p>
+						</li>
+						<li>
+							<p>sex(int, <code>1</code>) … 性别（0女1男）</p>
+						</li>
+						<li>
+							<p>area(string, <code>区</code>) … 所在区</p>
+						</li>
+					</ul>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agentManager-update" class="resource"><h3>更新经纪人信息<a href="#agentManager-update" class="permalink">&para;</a></h3>
+		<div id="agentManager-update-post" class="action post"><h4><div class="name">更新经纪人信息</div>
+			<a href="#agentManager-update-post" class="method post">POST</a><code class="uri">/agentManager/update</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id(optional,long, <code>1</code>) …  ID</p>
+				</li>
+				<li>
+					<p>userName(optional,string, <code>zs</code>) …  用户名</p>
+				</li>
+				<li>
+					<p>headPhoto(optional, stream, <code></code>) … 头像</p>
+				</li>
+				<li>
+					<p>sex(optional, int, <code>1</code>) … 性别（0女1男）</p>
+				</li>
+				<li>
+					<p>area(optional, string, <code>区</code>) … 所在区</p>
+				</li>
+				<li>
+					<p>status(optional, int, <code>1</code>) … 状态（0正常1暂停）</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="agentManager-create" class="resource"><h3>添加经纪人<a href="#agentManager-create" class="permalink">&para;</a></h3>
+		<div id="agentManager-create-post" class="action post"><h4><div class="name">添加经纪人</div>
+			<a href="#agentManager-create-post" class="method post">POST</a><code class="uri">/agentManager/create</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>userName(optional,string, <code>zs</code>) …  用户名</p>
+				</li>
+				<li>
+					<p>phone(optional, string, <code></code>) … 手机号</p>
+				</li>
+				<li>
+					<p>sex(optional, int, <code>1</code>) … 性别（0女1男）</p>
+				</li>
+				<li>
+					<p>area(optional, string, <code>区</code>) … 所在区</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="ownerManager-create" class="resource"><h3>注册房东<a href="#ownerManager-create" class="permalink">&para;</a></h3>
+		<div id="ownerManager-create-post" class="action post"><h4><div class="name">注册房东</div>
+			<a href="#ownerManager-create-post" class="method post">POST</a><code class="uri">/ownerManager/create</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>userName(optional,string, <code>zs</code>) …  用户名</p>
+				</li>
+				<li>
+					<p>phone(optional, string, <code></code>) … 手机号</p>
+				</li>
+				<li>
+					<p>sex(optional, int, <code>1</code>) … 性别（0女1男）</p>
+				</li>
+				<li>
+					<p>area(optional, string, <code>区</code>) … 所在区</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="owner-login" class="resource">
+		<h3>房东登录<a href="#owner-login" class="permalink">&para;</a></h3>
+		<div id="owner-login-post" class="action post">
+			<h4><div class="name">房东登录</div><a href="#owner-login-post" class="method post">POST</a><code class="uri">/owner/login</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>phone (required, string, <code>13112345678</code>) … 手机号</p>
+				</li>
+				<li>
+					<p>password (required, string, <code>md5(md5(123456)</code>)) … 两次md5后的密码</p>
+				</li>
+
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data(String) 每次登录成功返回的token</p>
+				</li>
+			</ul>
+		</div></div>
+
+	<div id="owner-getValCode" class="resource"><h3>获取验证码<a href="#agent-getValCode" class="permalink">&para;</a></h3>
+		<div id="owner-getValCode-post" class="action post"><h4><div class="name">获取验证码</div>
+			<a href="#owner-getValCode-post" class="method post">POST</a><code class="uri">/owner/getValCode</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>phone(required, string, <code>13112345678</code>) …  手机号</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="owner-getInfo" class="resource"><h3>获取用户信息<a href="#owner-getInfo" class="permalink">&para;</a></h3>
+		<div id="owner-get-post" class="action post"><h4><div class="name">获取用户信息</div>
+			<a href="#owner-get-post" class="method post">POST</a><code class="uri">/owner/get</code></h4><p>请求参数:</p>
+			<ul>
+
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 用户对象</p>
+					<ul>
+						<li>
+							<p>userName(string, <code>zs</code>) …  用户名</p>
+						</li>
+						<li>
+							<p>birthday(string, <code>2015-01-01</code>) … 出生日期</p>
+						</li>
+						<li>
+							<p>trueName(String, <code>zxl</code>) … 真实姓名</p>
+						</li>
+						<li>
+							<p>certification(int, <code>1</code>) … 实名认证状态（0未上传1正在审核2审核通过3审核失败）</p>
+						</li>
+						<li>
+							<p>idcardNum(String, <code>12345678</code>) … 身份证号码</p>
+						</li>
+						<li>
+							<p>idcardFront(String, <code></code>) … 身份证正面照片</p>
+						</li>
+						<li>
+							<p>idcardBack(string, <code></code>) … 身份证背面照片</p>
+						</li>
+						<li>
+							<p>headPhoto(string, <code></code>) … 头像</p>
+						</li>
+						<li>
+							<p>sex(int, <code>1</code>) … 性别（0女1男）</p>
+						</li>
+						<li>
+							<p>province(string, <code>省</code>) … 所在省</p>
+						</li>
+						<li>
+							<p>city( string, <code>市</code>) … 所在市</p>
+						</li>
+						<li>
+							<p>area(string, <code>区</code>) … 所在区</p>
+						</li>
+					</ul>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="owner-updateInfo" class="resource"><h3>更新房东信息<a href="#owner-updateInfo" class="permalink">&para;</a></h3>
+		<div id="owner-update-post" class="action post"><h4><div class="name">更新房东信息</div>
+			<a href="#owner-update-post" class="method post">POST</a><code class="uri">/owner/update</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>userName(optional,string, <code>zs</code>) …  用户名</p>
+				</li>
+				<li>
+					<p>birthday(optional, string, <code>2015-01-01</code>) … 出生日期</p>
+				</li>
+				<li>
+					<p>trueName(optional, String, <code>zxl</code>) … 真实姓名</p>
+				</li>
+				<li>
+					<p>idcardNum(optional, String, <code>12345678</code>) … 身份证号码</p>
+				</li>
+				<li>
+					<p>idcardFront(optional, stream, <code></code>) … 身份证正面照片</p>
+				</li>
+				<li>
+					<p>idcardBack(optional, stream, <code></code>) … 身份证背面照片</p>
+				</li>
+				<li>
+					<p>headPhoto(optional, stream, <code></code>) … 头像</p>
+				</li>
+				<li>
+					<p>sex(optional, int, <code>1</code>) … 性别（0女1男）</p>
+				</li>
+				<li>
+					<p>province(optional, string, <code>省</code>) … 所在省</p>
+				</li>
+				<li>
+					<p>city(optional, string, <code>市</code>) … 所在市</p>
+				</li>
+				<li>
+					<p>area(optional, string, <code>区</code>) … 所在区</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+	<div id="owner-updatePwd" class="resource"><h3>找回密码<a href="#owner-updatePwd" class="permalink">&para;</a></h3>
+		<div id="owner-updatePwd-post" class="action post"><h4><div class="name">找回密码</div>
+			<a href="#owner-updatePwd-post" class="method post">POST</a><code class="uri">/owner/forgotPwd</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>phone(required, string, <code>13112345678</code>) …  手机号</p>
+				</li>
+				<li>
+					<p>password(required, string, <code>md5(md5(123456))</code>) … 两次md5后的密码</p>
+				</li>
+				<li>
+					<p>code(required, string, <code>123456</code>) … 验证码</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+		</div></div>
+
+	<div id="owner-modPwd" class="resource"><h3>修改密码<a href="#owner-modPwd" class="permalink">&para;</a></h3>
+		<div id="owner-modPwd-post" class="action post"><h4><div class="name">修改密码</div><a href="#owner-modPwd-post" class="method post">POST</a><code class="uri">/owner/updatePwd</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>oldPwd(required, string, <code>123456</code>) …  两次md5后的旧密码</p>
+				</li>
+				<li>
+					<p>newPwd(required, string, <code>123456</code>) … 两次md5后的新密码</p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+			</ul>
+		</div></div>
+
+	<div id="owner-index" class="resource"><h3>首页数据<a href="#owner-index" class="permalink">&para;</a></h3>
+		<div id="owner-index-post" class="action post"><h4><div class="name">首页数据</div>
+			<a href="#owner-index-post" class="method post">POST</a><code class="uri">/ownerIndex</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>无 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data(JSONObject) - 数据列表</p>
+					<p class="p2">banner：轮播图列表</p>
+					<p class="p3">title：标题</p>
+					<p class="p3">href：链接</p>
+					<p class="p3">pic：图片地址</p>
+					<p class="p2">msg：消息数量列表</p>
+					<p class="p3">receivablesNum:今日收款动态数量</p>
+					<p class="p3">receivablesTime:今日收款更新时间(13位时间戳)</p>
+					<p class="p3">newsNum:资讯动态数量</p>
+					<p class="p3">newsTime:资讯更新时间(13位时间戳)</p>
+					<p class="p3">incomeNum:今日收益动态数量</p>
+					<p class="p3">incomeTime:今日收益更新时间(13位时间戳)</p>
+					<p class="p3">serviceNum:服务动态数量</p>
+					<p class="p3">serviceTime:服务动态更新时间(13位时间戳)</p>
+					<p class="p3">dsOwnerNum:东朔小秘书动态数量</p>
+					<p class="p3">dsOwnerTime:东朔小秘书房东更新时间(13位时间戳)</p>
+				</li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="owner-index-receiveList" class="resource"><h3>收款列表<a href="#owner-index-receiveList" class="permalink">&para;</a></h3>
+		<div id="owner-index—receiveList-post" class="action post"><h4><div class="name">收款列表</div>
+			<a href="#owner-index—receiveList-post" class="method post">POST</a><code class="uri">/ownerIndex/receiveList</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>status (required, int, <code>0／1</code>) …  0未支付  1已支付 </p>
+				</li>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  ID </p>
+					<p class="p3">electricityFee  …  电费 </p>
+					<p class="p3">propertyFee …  物业费 </p>
+					<p class="p3">waterFee …  水费</p>
+					<p class="p3">rentFee  …  房租费 </p>
+					<p class="p3">status …  状态（0未支付1支付） </p>
+					<p class="p3">payTime …  支付时间</p>
+					<p class="p3">createTime  …  账单生成时间 </p>
+					<p class="p3">name …  房源名 </p>
+					<p class="p3">address …  地址</p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="owner-index-receiveInfo" class="resource"><h3>收款详情<a href="#owner-index-receiveInfo" class="permalink">&para;</a></h3>
+		<div id="owner-index—receiveInfo-post" class="action post"><h4><div class="name">收款详情</div>
+			<a href="#owner-index—receiveInfo-post" class="method post">POST</a><code class="uri">/ownerIndex/receiveInfo</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>id (required, long, <code>1</code>) …  ID </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 数据对象</p>
+					<p class="p2">id  …  ID </p>
+					<p class="p2">electricityFee  …  电费 </p>
+					<p class="p2">propertyFee …  物业费 </p>
+					<p class="p2">waterFee …  水费</p>
+					<p class="p2">rentFee  …  房租费 </p>
+					<p class="p2">status …  状态（0未支付1支付） </p>
+					<p class="p2">payTime …  支付时间</p>
+					<p class="p2">createTime  …  账单生成时间 </p>
+					<p class="p2">name …  房源名 </p>
+					<p class="p2">address …  地址</p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+	<div id="owner-index-dsList" class="resource"><h3>东朔小秘书列表<a href="#agent-dsList" class="permalink">&para;</a></h3>
+		<div id="owner-index-dsList-post" class="action post"><h4><div class="name">东朔小秘书列表</div>
+			<a href="#owner-index-dsList-post" class="method post">POST</a><code class="uri">/ownerIndex/dsList</code></h4><p>请求参数:</p>
+			<ul>
+				<li>
+					<p>pageNumber (required, int, <code>1</code>) …  当前页码默认1 </p>
+				</li>
+				<li>
+					<p>pageSize (optional, int, <code>单页显示数量</code>) …  单页显示数量默认10 </p>
+				</li>
+			</ul>
+			<p>返回参数:</p>
+			<ul>
+				<li>
+					<p>code (int) - 2000/4000</p>
+				</li>
+				<li>
+					<p>msg (string) - 后台提示消息</p>
+				</li>
+				<li>
+					<p>data (JSONObject) - 分页对象</p>
+					<p class="p2">totalRow：总记录数</p>
+					<p class="p2">pageNumber：页码</p>
+					<p class="p2">firstPage：是否时第一页</p>
+					<p class="p2">lastPage：是否时最后一页</p>
+					<p class="p2">totalPage：总页数</p>
+					<p class="p2">pageSize：单页显示数量</p>
+					<p class="p2">list：数据列表</p>
+					<p class="p3">id  …  ID </p>
+					<p class="p3">title  …  标题 </p>
+					<p class="p3">content …  内容 </p>
+					<p class="p3">createTime 时间 </p>
+				<li>
+			</ul>
+
+
+		</div></div>
+
+
+</section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 26 May 2016</p><script>/* eslint-env browser */
+/* eslint quotes: [2, "single"] */
+'use strict';
+
+/*
+  Determine if a string ends with another string.
+*/
+function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+
+/*
+  Get an array [width, height] of the window.
+*/
+function getWindowDimensions() {
+  var w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.body,
+      x = w.innerWidth || e.clientWidth || g.clientWidth,
+      y = w.innerHeight || e.clientHeight || g.clientHeight;
+
+  return [x, y];
+}
+
+/*
+  Collapse or show a request/response example.
+*/
+function toggleCollapseButton(event) {
+    var button = event.target.parentNode;
+    var content = button.parentNode.nextSibling;
+    var inner = content.children[0];
+
+    if (button.className.indexOf('collapse-button') === -1) {
+      // Clicked without hitting the right element?
+      return;
+    }
+
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+        // Currently showing, so let's hide it
+        button.className = 'collapse-button';
+        content.style.maxHeight = '0px';
+    } else {
+        // Currently hidden, so let's show it
+        button.className = 'collapse-button show';
+        content.style.maxHeight = inner.offsetHeight + 12 + 'px';
+    }
+}
+
+/*
+  Collapse or show a navigation menu. It will not be hidden unless it
+  is currently selected or `force` has been passed.
+*/
+function toggleCollapseNav(event, force) {
+    var heading = event.target.parentNode;
+    var content = heading.nextSibling;
+    var inner = content.children[0];
+
+    if (heading.className.indexOf('heading') === -1) {
+      // Clicked without hitting the right element?
+      return;
+    }
+
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+      // Currently showing, so let's hide it, but only if this nav item
+      // is already selected. This prevents newly selected items from
+      // collapsing in an annoying fashion.
+      if (force || window.location.hash && endsWith(event.target.href, window.location.hash)) {
+        content.style.maxHeight = '0px';
+      }
+    } else {
+      // Currently hidden, so let's show it
+      content.style.maxHeight = inner.offsetHeight + 12 + 'px';
+    }
+}
+
+/*
+  Refresh the page after a live update from the server. This only
+  works in live preview mode (using the `--server` parameter).
+*/
+function refresh(body) {
+    document.querySelector('body').className = 'preload';
+    document.body.innerHTML = body;
+
+    // Re-initialize the page
+    init();
+    autoCollapse();
+
+    document.querySelector('body').className = '';
+}
+
+/*
+  Determine which navigation items should be auto-collapsed to show as many
+  as possible on the screen, based on the current window height. This also
+  collapses them.
+*/
+function autoCollapse() {
+  var windowHeight = getWindowDimensions()[1];
+  var itemsHeight = 64; /* Account for some padding */
+  var itemsArray = Array.prototype.slice.call(
+    document.querySelectorAll('nav .resource-group .heading'));
+
+  // Get the total height of the navigation items
+  itemsArray.forEach(function (item) {
+    itemsHeight += item.parentNode.offsetHeight;
+  });
+
+  // Should we auto-collapse any nav items? Try to find the smallest item
+  // that can be collapsed to show all items on the screen. If not possible,
+  // then collapse the largest item and do it again. First, sort the items
+  // by height from smallest to largest.
+  var sortedItems = itemsArray.sort(function (a, b) {
+    return a.parentNode.offsetHeight - b.parentNode.offsetHeight;
+  });
+
+  while (sortedItems.length && itemsHeight > windowHeight) {
+    for (var i = 0; i < sortedItems.length; i++) {
+      // Will collapsing this item help?
+      var itemHeight = sortedItems[i].nextSibling.offsetHeight;
+      if ((itemsHeight - itemHeight <= windowHeight) || i === sortedItems.length - 1) {
+        // It will, so let's collapse it, remove its content height from
+        // our total and then remove it from our list of candidates
+        // that can be collapsed.
+        itemsHeight -= itemHeight;
+        toggleCollapseNav({target: sortedItems[i].children[0]}, true);
+        sortedItems.splice(i, 1);
+        break;
+      }
+    }
+  }
+}
+
+/*
+  Initialize the interactive functionality of the page.
+*/
+function init() {
+    var i;
+
+    // Make collapse buttons clickable
+    var buttons = document.querySelectorAll('.collapse-button');
+    for (i = 0; i < buttons.length; i++) {
+        buttons[i].onclick = toggleCollapseButton;
+
+        // Show by default? Then toggle now.
+        if (buttons[i].className.indexOf('show') !== -1) {
+            toggleCollapseButton({target: buttons[i].children[0]});
+        }
+    }
+
+    // Make nav items clickable to collapse/expand their content.
+    var navItems = document.querySelectorAll('nav .resource-group .heading');
+    for (i = 0; i < navItems.length; i++) {
+        navItems[i].onclick = toggleCollapseNav;
+
+        // Show all by default
+        toggleCollapseNav({target: navItems[i].children[0]});
+    }
+}
+
+// Initial call to set up buttons
+init();
+
+window.onload = function () {
+    autoCollapse();
+    // Remove the `preload` class to enable animations
+    document.querySelector('body').className = '';
+};
+</script></body></html>

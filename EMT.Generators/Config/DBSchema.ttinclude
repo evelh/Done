@@ -1,0 +1,319 @@
+﻿<#@ assembly name="System.Core"#>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.xml" #>
+<#@ assembly name="MySql.Data.Dll"  #>
+<#@ import namespace="System"#>
+<#@ import namespace="System.Collections.Generic"#>
+<#@ import namespace="System.Data"#>
+<#@ import namespace="System.Data.SqlClient"#>
+<#@ import namespace="MySql.Data.MySqlClient"#>
+<#+ 
+#region Code
+    public class DBSchemaFactory
+    {
+        static readonly string DatabaseType = "MySql";
+        public static IDBSchema GetDBSchema()
+        {
+            IDBSchema dbSchema;
+            switch (DatabaseType) 
+            {
+                case "SqlServer":
+                    {
+                        dbSchema =new SqlServerSchema();
+                        break;
+                    }
+                case "MySql":
+                    {
+                        dbSchema = new MySqlSchema();
+                        break;
+                    }
+                default: 
+                    {
+                        throw new ArgumentException("The input argument of DatabaseType is invalid!");
+                    }
+            }
+            return dbSchema;
+        }
+    }
+
+    public interface IDBSchema : IDisposable
+    {
+        List<string> GetTablesList();
+
+        Table GetTableMetadata(string tableName);
+    }
+
+    public class SqlServerSchema : IDBSchema
+    {
+        public string ConnectionString = "Data Source=192.168.20.143;Initial Catalog=DoneNOWDev;Persist Security Info=True;User ID=sa;Password=Ds_2017;";
+
+        public SqlConnection conn;
+
+        public SqlServerSchema()
+        {
+            conn = new SqlConnection(ConnectionString);
+            conn.Open();
+        }
+
+        public List<string> GetTablesList()
+        {
+            DataTable dt = conn.GetSchema("Tables");
+            List<string> list = new List<string>();
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(row["TABLE_NAME"].ToString());
+            }
+            return list;
+        }
+
+        public Table GetTableMetadata(string tableName)
+        {
+            string selectCmdText = string.Format("SELECT * FROM {0}", tableName); ;
+            SqlCommand command = new SqlCommand(selectCmdText, conn);
+            SqlDataAdapter ad = new SqlDataAdapter(command);
+            System.Data.DataSet ds = new DataSet();
+            ad.FillSchema(ds, SchemaType.Mapped, tableName);
+
+            Table table = new Table(ds.Tables[0]);
+            return table;
+        }
+
+        public void Dispose()
+        {
+            if (conn != null)
+                conn.Close();
+        }
+    }
+
+    public class MySqlSchema : IDBSchema
+    {
+        public string ConnectionString = "Server=192.168.20.143;Port=20177;Database=donenowdev;Uid=dnroot;Pwd=dnroot;";
+
+        public MySqlConnection conn;
+
+        public MySqlSchema()
+        {
+            conn = new MySqlConnection(ConnectionString);
+            conn.Open();
+        }
+
+        public List<string> GetTablesList()
+        {
+            DataTable dt = conn.GetSchema("Tables");
+            List<string> list = new List<string>();
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(row["TABLE_NAME"].ToString());
+            }
+            return list;
+        }
+
+        public Table GetTableMetadata(string tableName)
+        {
+            string selectCmdText = string.Format("SELECT * FROM {0}", tableName); ;
+            MySqlCommand command = new MySqlCommand(selectCmdText, conn);
+            MySqlDataAdapter ad = new MySqlDataAdapter(command);
+            System.Data.DataSet ds = new DataSet();
+            ad.FillSchema(ds, SchemaType.Mapped, tableName);
+
+            Table table = new Table(ds.Tables[0]);
+            return table;
+        }
+
+        public void Dispose()
+        {
+            if (conn != null)
+                conn.Close();
+        }
+    }
+
+    public class Table
+    {
+        public Table(DataTable t)
+        {
+            this.PKs = this.GetPKList(t);
+            this.Columns = this.GetColumnList(t);
+            this.ColumnTypeNames = this.SetColumnNames();
+        }
+
+        public List<Column> PKs;
+
+        public List<Column> Columns;
+
+        public string ColumnTypeNames;
+        public List<Column> GetPKList(DataTable dt)
+        {
+            List<Column> list = new List<Column>();
+            Column c = null;
+            if (dt.PrimaryKey.Length > 0)
+            {
+                list = new List<Column>();
+                foreach (DataColumn dc in dt.PrimaryKey)
+                {
+                    c = new Column(dc);
+                    list.Add(c);
+                }
+            }
+            return list;
+        }
+
+        private List<Column> GetColumnList(DataTable dt)
+        {
+            List<Column> list = new List<Column>();
+            Column c = null;
+            foreach (DataColumn dc in dt.Columns)
+            {
+                c = new Column(dc);
+                list.Add(c);
+            }
+            return list;
+        }
+
+        private string SetColumnNames()
+        {
+            List<string> list = new List<string>();
+            foreach (Column c in this.Columns)
+            {
+                list.Add(string.Format("{0} {1}", c.TypeName, c.LowerColumnName));
+            }
+            return string.Join(",", list.ToArray());
+        }
+    }
+
+    public class Column
+    {
+        DataColumn columnBase;
+
+        public Column(DataColumn columnBase)
+        {
+            this.columnBase = columnBase;
+        }
+
+        public string ColumnName { get { return this.columnBase.ColumnName; } }
+
+        public string MaxLength { get { return this.columnBase.MaxLength.ToString(); } }
+
+        public string TypeName { 
+            get 
+            {
+                string result = string.Empty;
+                if (this.columnBase.DataType.Name == "Guid")//for mysql,因为对于MYSQL如果是CHAR(36),类型自动为Guid
+                    result = "String";
+                else
+                    result = this.columnBase.DataType.Name;
+                return result; 
+            } 
+        }
+
+        public bool AllowDBNull { get { return this.columnBase.AllowDBNull; } }
+
+        public string UpColumnName
+        {
+            get
+            {
+                return string.Format("{0}{1}", this.ColumnName[0].ToString().ToUpper(), this.ColumnName.Substring(1));
+            }
+        }
+
+        public string LowerColumnName
+        {
+            get
+            {
+                return string.Format("{0}{1}", this.ColumnName[0].ToString().ToLower(), this.ColumnName.Substring(1));
+            }
+        }
+
+    }
+
+    public class GeneratorHelper
+    {
+        
+		public static string GetPropertyType(Column col)
+        {
+			string result = col.TypeName;
+			if(col.AllowDBNull && col.TypeName.ToString().ToLower()!="string")
+				result += "?";
+			return result;
+
+        }
+    }
+
+	public class StringUtils
+	{
+		//驼峰命名
+		public static string ToCamelCase( string value)
+		{
+			if (string.IsNullOrEmpty(value))
+			{
+				return value;
+			}
+			string text = ToPascalCase(value);
+			if (text.Length > 2)
+			{
+				return char.ToLower(text[0]) + text.Substring(1);
+			}
+			return text.ToLower();
+		}
+		//pascal命名
+		public static string ToPascalCase(string value)
+		{
+			if (string.IsNullOrEmpty(value))
+			{
+				return value;
+			}
+			bool flag = false;
+			bool flag2 = false;
+			for (int i = 0; i < value.Length; i++)
+			{
+				char c = value[i];
+				if (char.IsUpper(c))
+				{
+					flag = true;
+				}
+				if (char.IsLower(c))
+				{
+					flag2 = true;
+				}
+			}
+			bool flag3 = flag2 && flag;
+			var array1 = Regex.Matches(value, @"([a-zA-Z0-9]+)");
+			var array = new string[] { };
+			StringBuilder stringBuilder = new StringBuilder();
+			if (array1.Count > 1)
+			{
+				for (int j = 0; j < array1.Count; j++)
+				{
+					string text = array1[j].Value;
+					if (text.Length > 1)
+					{
+						stringBuilder.Append(char.ToUpper(text[0]));
+						if (flag3)
+						{
+							stringBuilder.Append(text.Substring(1));
+						}
+						else
+						{
+							stringBuilder.Append(text.Substring(1).ToLower());
+						}
+					}
+					else
+					{
+						stringBuilder.Append(text.ToUpper());
+					}
+				}
+			}
+			else if (value.Length > 1)
+			{
+				stringBuilder.Append(char.ToUpper(value[0]));
+				stringBuilder.Append(flag3 ? value.Substring(1) : value.Substring(1).ToLower());
+			}
+			else
+			{
+				stringBuilder.Append(value.ToUpper());
+			}
+			return stringBuilder.ToString();
+		}
+
+	}
+    #endregion
+#>

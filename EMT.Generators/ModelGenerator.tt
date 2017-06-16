@@ -1,0 +1,68 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Configuration" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Configuration" #>
+<#@ output extension=".cs" #>
+<#@ include file="./Config/DBSchema.ttinclude"#>
+<#
+    var dbSchema=DBSchemaFactory.GetDBSchema();
+    List<string> tableList=dbSchema.GetTablesList();
+	var tableName ="crm_contact";
+    Table table=dbSchema.GetTableMetadata(tableName);
+#>
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+namespace EMT.DoneNOW.Core
+{
+	[Table("<#=tableName#>")]
+    [Serializable]
+    public partial class <#=tableName#>
+    {
+
+<#		
+        foreach(Column c in table.Columns)
+        {
+#>
+<#			
+			if(table.PKs.Exists(x=>x.ColumnName==c.ColumnName))
+            {
+#>
+		[Key]
+<#
+            }
+#>
+	    [Column("<#=c.LowerColumnName#>")]
+        public <#=GeneratorHelper.GetPropertyType(c)#> <#=c.LowerColumnName#>{ get;set;}
+<#
+        }
+#>
+
+       
+    }
+}
+/*
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using EMT.DoneNOW.Core;
+namespace EMT.DoneNOW.DAL
+{
+    public class <#=tableName#>_dal : BaseDAL<<#=tableName#>>
+    {
+    }
+}
+
+*/
+<#
+    dbSchema.Dispose();
+#>
