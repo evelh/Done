@@ -11,6 +11,7 @@ namespace EMT.DoneNOW.DAL
     public abstract  class BaseDAL<T> where T:class
     {
         protected DapperHelper helper = new DapperHelper();
+        private const int _pageSize = 15;     // 默认查询分页大小
         public IDbConnection GetDbConn()
         {
             OrmConfiguration.DefaultDialect = SqlDialect.MySql;
@@ -52,6 +53,39 @@ namespace EMT.DoneNOW.DAL
         public List<T> FindListBySql(string sql, object param = null)
         {
             return helper.GetList<T>(sql, param);
+        }
+
+        /// <summary>
+        /// 返回列表
+        /// </summary>
+        /// <param name="sql">查询字段</param>
+        /// <param name="where">查询条件</param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public List<T> FindListPage(string sql, string where, int page, int pageSize=_pageSize)
+        {
+            int cnt = GetCount(where);
+            if (cnt == 0)
+                return new List<T>();
+            int pageCnt = cnt / pageSize;
+            if (cnt % pageSize != 0)
+                ++pageCnt;
+            if (page < 1)
+                page = 1;
+            if (page > pageCnt)
+                page = pageCnt;
+
+            string name = typeof(T).Name;
+            return FindListBySql($"{sql} FROM {name} WHERE {where}");
+        }
+
+        // 根据条件查询记录总数
+        private int GetCount(string where)
+        {
+            string name = typeof(T).Name;
+            object count = GetSingle($"SELECT COUNT(0) FROM {name} WHERE {where}");
+            return int.Parse(count.ToString());
         }
 
         /// <summary>
@@ -188,7 +222,7 @@ namespace EMT.DoneNOW.DAL
 
         #region 软删除相关
 
-        private const string delete_flag = "";
+        private const string delete_flag = "delete_time";
 
         /// <summary>
         /// 查询条件加上delete标识符
@@ -196,7 +230,7 @@ namespace EMT.DoneNOW.DAL
         /// <param name="where"></param>
         /// <param name="flag0">true:查询flag为0;false:查询flag大于0</param>
         /// <returns></returns>
-        public string QueryStringDeleteFlag(string where, bool flag0)
+        public string QueryStringDeleteFlag(string where, bool flag0 = true)
         {
             string flag = "";
             if (flag0)
@@ -215,6 +249,8 @@ namespace EMT.DoneNOW.DAL
         /// <returns></returns>
         public bool SoftDelete(T ett)
         {
+            (ett as Core.SoftDeleteCore).delete_by_id = 0;
+            (ett as Core.SoftDeleteCore).delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             return Update(ett);
         }
 

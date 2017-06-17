@@ -22,6 +22,23 @@ namespace EMT.Tools.Date
         }
 
         /// <summary>
+        /// 判断字符串是否指定的时间格式
+        /// </summary>
+        /// <param name="datetime"></param>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public static bool IsDatetimeFormat(string datetime, string format = "yyyy-MM-dd")
+        {
+            if (string.IsNullOrEmpty(datetime))
+                return false;
+
+            DateTime dt;
+            IFormatProvider ifp = new CultureInfo("zh-CN", true);
+
+            return DateTime.TryParseExact(datetime, format, ifp, DateTimeStyles.None, out dt);
+        }
+
+        /// <summary>
         /// DateTime转string:yyyy-MM-dd
         /// </summary>
         /// <param name="currdate"></param>

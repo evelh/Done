@@ -31,16 +31,28 @@ namespace EMT.DoneNOW.BLL
             return dic;
         }
 
+        /// <summary>
+        /// 根据id查询客户
+        /// </summary>
+        /// <returns></returns>
         public crm_account GetCompany(long id)
         {
             return _dal.FindById(id);
         }
 
+        /// <summary>
+        /// 获取客户列表
+        /// </summary>
+        /// <returns></returns>
         public List<crm_account> GetList()
         {
             return _dal.FindAll() as List<crm_account>;
         }
 
+        /// <summary>
+        /// 新增客户
+        /// </summary>
+        /// <returns></returns>
         public ERROR_CODE Insert(JObject param)
         {
             crm_account account = param.SelectToken("account").ToObject<crm_account>();
@@ -70,16 +82,34 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;
         }
 
-        public List<crm_account> FindList(CompanyConditionDto condition)
+        /// <summary>
+        /// 按条件查询客户列表
+        /// </summary>
+        /// <returns></returns>
+        public List<crm_account> FindList(JObject jsondata)
         {
-            return null;
+            CompanyConditionDto condition = jsondata.ToObject<CompanyConditionDto>();
+            string orderby = ((JValue)(jsondata.SelectToken("orderby"))).Value.ToString();
+            string page = ((JValue)(jsondata.SelectToken("page"))).Value.ToString();
+            int pagenum;
+            if (!int.TryParse(page, out pagenum))
+                pagenum = 1;
+            return _dal.Find(condition, pagenum, orderby);
         }
 
+        /// <summary>
+        /// 删除客户
+        /// </summary>
+        /// <returns></returns>
         public bool DeleteCompany(long id)
         {
-            return false;
+            return _dal.SoftDelete(GetCompany(id));
         }
 
+        /// <summary>
+        /// 查询客户名是否存在
+        /// </summary>
+        /// <returns></returns>
         public bool ExistCompany(string accountName)
         {
             return _dal.ExistAccountName(accountName);

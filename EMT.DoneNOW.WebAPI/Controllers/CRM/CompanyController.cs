@@ -15,6 +15,11 @@ namespace EMT.DoneNOW.WebAPI.Controllers.CRM
     public class CompanyController : BaseCRMController
     {
         CompanyBLL _bll = new CompanyBLL();
+
+        /// <summary>
+        /// 获取客户相关的字典项
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("company/field")]
         public ApiResultDto Field()
@@ -22,24 +27,27 @@ namespace EMT.DoneNOW.WebAPI.Controllers.CRM
             var data = _bll.GetField();
             return ResultSuccess(data);
         }
-        
+
+        /// <summary>
+        /// 获取客户/客户列表
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("company/company")]
-        public ApiResultDto Company([FromUri] long? id)
+        public ApiResultDto Company([FromUri] long id)
         {
-            if (id == null)
-                return ResultSuccess(_bll.GetList());
-            else
-                return ResultSuccess(_bll.GetCompany((long)id));
+            return ResultSuccess(_bll.GetCompany((long)id));
         }
 
         [HttpPost]
         [Route("company/search")]
         public ApiResultDto SearchCompany([FromBody] JObject param)
         {
-            CompanyConditionDto condition = param.ToObject<CompanyConditionDto>();
+            List<crm_account> list = _bll.FindList(param);
+            if (list == null)
+                return ResultError(ERROR_CODE.PARAMS_ERROR);
 
-            return ResultSuccess(_bll.FindList(condition));
+            return ResultSuccess(list);
         }
 
         [HttpPost]

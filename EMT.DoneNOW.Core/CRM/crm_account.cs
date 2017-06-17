@@ -3,125 +3,117 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+
 namespace EMT.DoneNOW.Core
 {
     [Table("crm_account")]
     [Serializable]
-    public partial class crm_account
+    [DataContract]
+    public partial class crm_account : SoftDeleteCore
     {
 
         [Key]
-        [Column("id")]
+        [DataMember]
         public Int64 id { get; set; }
-        [Column("external_id")]
+        [DataMember]
         public String external_id { get; set; }
-        [Column("parent_id")]
+        [DataMember]
         public Int64? parent_id { get; set; }
-        [Column("territory_id")]
+        [DataMember]
         public Int32? territory_id { get; set; }
-        [Column("market_segment_id")]
+        [DataMember]
         public Int32? market_segment_id { get; set; }
-        [Column("competition_id")]
+        [DataMember]
         public Int32? competition_id { get; set; }
-        [Column("account_name")]
+        [DataMember]
         public String account_name { get; set; }
-        [Column("active")]
+        [DataMember]
         public SByte? active { get; set; }
-        [Column("costed_client")]
+        [DataMember]
         public SByte? costed_client { get; set; }
-        [Column("taxable")]
-        public SByte taxable { get; set; }
-        [Column("block_account")]
+        [DataMember]
+        public SByte? taxable { get; set; }
+        [DataMember]
         public SByte? block_account { get; set; }
-        [Column("curr_block_balance")]
+        [DataMember]
         public Decimal? curr_block_balance { get; set; }
-        [Column("mileage")]
+        [DataMember]
         public Decimal? mileage { get; set; }
-        [Column("addr1")]
+        [DataMember]
         public String addr1 { get; set; }
-        [Column("addr2")]
+        [DataMember]
         public String addr2 { get; set; }
-        [Column("city")]
+        [DataMember]
         public String city { get; set; }
-        [Column("region")]
+        [DataMember]
         public String region { get; set; }
-        [Column("country")]
+        [DataMember]
         public String country { get; set; }
-        [Column("postal_code")]
+        [DataMember]
         public String postal_code { get; set; }
-        [Column("phone")]
+        [DataMember]
         public String phone { get; set; }
-        [Column("fax")]
+        [DataMember]
         public String fax { get; set; }
-        [Column("internet")]
+        [DataMember]
         public String internet { get; set; }
-        [Column("alternate_phone")]
+        [DataMember]
         public String alternate_phone { get; set; }
-        [Column("alternate_phone1")]
+        [DataMember]
         public String alternate_phone1 { get; set; }
-        [Column("stock_symbol")]
+        [DataMember]
         public String stock_symbol { get; set; }
-        [Column("stock_market")]
+        [DataMember]
         public String stock_market { get; set; }
-        [Column("sic_code")]
+        [DataMember]
         public String sic_code { get; set; }
-        [Column("asset_value")]
+        [DataMember]
         public Decimal? asset_value { get; set; }
-        [Column("last_activity")]
-        public DateTime last_activity { get; set; }
-        [Column("date_stamp")]
-        public DateTime date_stamp { get; set; }
-        [Column("cust_type")]
+        [DataMember]
+        public DateTime? last_activity { get; set; }
+        [DataMember]
+        public DateTime? date_stamp { get; set; }
+        [DataMember]
         public Int16? cust_type { get; set; }
-        [Column("opportunity_value")]
+        [DataMember]
         public Decimal? opportunity_value { get; set; }
-        [Column("blockPurchase_total")]
+        [DataMember]
         public Decimal? blockPurchase_total { get; set; }
-        [Column("blockDeduction_total")]
+        [DataMember]
         public Decimal? blockDeduction_total { get; set; }
-        [Column("classification_id")]
+        [DataMember]
         public Int32? classification_id { get; set; }
-        [Column("extAcctCustomer_id")]
+        [DataMember]
         public String extAcctCustomer_id { get; set; }
-        [Column("use_parent_account_contracts")]
-        public SByte use_parent_account_contracts { get; set; }
-        [Column("attention")]
+        [DataMember]
+        public SByte? use_parent_account_contracts { get; set; }
+        [DataMember]
         public String attention { get; set; }
-        [Column("survey_optout_time")]
+        [DataMember]
         public DateTime? survey_optout_time { get; set; }
-        [Column("facebook_url")]
+        [DataMember]
         public String facebook_url { get; set; }
-        [Column("twitter_url")]
+        [DataMember]
         public String twitter_url { get; set; }
-        [Column("linkedin_url")]
+        [DataMember]
         public String linkedin_url { get; set; }
-        [Column("phone_basic")]
+        [DataMember]
         public String phone_basic { get; set; }
-        [Column("country_id")]
+        [DataMember]
         public Int32? country_id { get; set; }
-        [Column("additional_address_information")]
+        [DataMember]
         public String additional_address_information { get; set; }
-        [Column("tax_region_id")]
+        [DataMember]
         public Int32? tax_region_id { get; set; }
-        [Column("tax_identification")]
+        [DataMember]
         public String tax_identification { get; set; }
-        [Column("alternate_phone_basic")]
+        [DataMember]
         public String alternate_phone_basic { get; set; }
-        [Column("alternate_phone1_basic")]
+        [DataMember]
         public String alternate_phone1_basic { get; set; }
-        [Column("delete_time")]
-        public Int64? delete_time { get; set; }
-        [Column("create_time")]
-        public Int64? create_time { get; set; }
-        [Column("create_by_id")]
-        public Int64? create_by_id { get; set; }
-        [Column("update_time")]
-        public Int64? update_time { get; set; }
-        [Column("update_by_id")]
-        public Int64? update_by_id { get; set; }
-        [Column("delete_by_id")]
-        public Int64? delete_by_id { get; set; }
 
 
     }
+
 }

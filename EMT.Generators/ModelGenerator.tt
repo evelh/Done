@@ -12,7 +12,7 @@
 <#
     var dbSchema=DBSchemaFactory.GetDBSchema();
     List<string> tableList=dbSchema.GetTablesList();
-	var tableName ="crm_contact";
+	var tableName ="crm_account";
     Table table=dbSchema.GetTableMetadata(tableName);
 #>
 using System;
@@ -20,11 +20,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+
 namespace EMT.DoneNOW.Core
 {
 	[Table("<#=tableName#>")]
     [Serializable]
-    public partial class <#=tableName#>
+	[DataContract]
+    public partial class <#=tableName#> <# if(table.Columns.Exists(x=>x.ColumnName=="delete_time")){ #>: SoftDeleteCore <# } #>
+
     {
 
 <#		
@@ -38,11 +42,14 @@ namespace EMT.DoneNOW.Core
 		[Key]
 <#
             }
+			if(!(c.ColumnName=="delete_time" || c.ColumnName=="create_time" || c.ColumnName=="update_time"
+			|| c.ColumnName=="update_by_id" || c.ColumnName=="delete_by_id" || c.ColumnName=="create_by_id"))
+			{
 #>
-	    [Column("<#=c.LowerColumnName#>")]
+	    [DataMember]
         public <#=GeneratorHelper.GetPropertyType(c)#> <#=c.LowerColumnName#>{ get;set;}
 <#
-        }
+        }}
 #>
 
        

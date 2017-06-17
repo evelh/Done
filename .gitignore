@@ -6,5 +6,6 @@ obj
 _log
 *.bak
 packages
-# ModelGenerator.cs
+ModelGenerator.cs
+ModelGenerator.tt
 *.suo

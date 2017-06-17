@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,6 +53,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EMT.DoneNOW.Core\EMT.DoneNOW.Core.csproj">
+      <Project>{eb88bbf3-488c-466f-bf7c-02bd01530d18}</Project>
+      <Name>EMT.DoneNOW.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EMT.Tools\EMT.Tools.csproj">
       <Project>{6e53e20f-4b91-4489-a6d5-9d188ddc650d}</Project>
       <Name>EMT.Tools</Name>
