@@ -5,7 +5,8 @@ using System.Text;
 using EMT.DoneNOW.Core;
 namespace EMT.DoneNOW.DAL
 {
-    public class AuthDal : BaseDAL<Auth>
+    public class sys_resource_dal : BaseDAL<sys_resource>
     {
+        
     }
 }

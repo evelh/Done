@@ -8,111 +8,164 @@ using System.Runtime.Serialization;
 
 namespace EMT.DoneNOW.Core
 {
-	[Table("crm_account")]
+	[Table("sys_resource")]
     [Serializable]
 	[DataContract]
-    public partial class crm_account : SoftDeleteCore 
+    public partial class sys_resource : SoftDeleteCore 
     {
 
-		[Key]
 	    [DataMember]
         public Int64 id{ get;set;}
 	    [DataMember]
-        public String external_id{ get;set;}
+        public String user_name{ get;set;}
 	    [DataMember]
-        public Int64? parent_id{ get;set;}
+        public SByte active{ get;set;}
 	    [DataMember]
-        public Int32? territory_id{ get;set;}
+        public String email{ get;set;}
 	    [DataMember]
-        public Int32? market_segment_id{ get;set;}
+        public Int32? default_service_rate{ get;set;}
 	    [DataMember]
-        public Int32? competition_id{ get;set;}
+        public String office_phone{ get;set;}
 	    [DataMember]
-        public String account_name{ get;set;}
+        public String office_ext{ get;set;}
 	    [DataMember]
-        public SByte? active{ get;set;}
+        public String home_phone{ get;set;}
 	    [DataMember]
-        public SByte? costed_client{ get;set;}
+        public String mobile_phone{ get;set;}
 	    [DataMember]
-        public SByte? taxable{ get;set;}
+        public String address1{ get;set;}
 	    [DataMember]
-        public SByte? block_account{ get;set;}
-	    [DataMember]
-        public Decimal? curr_block_balance{ get;set;}
-	    [DataMember]
-        public Decimal? mileage{ get;set;}
-	    [DataMember]
-        public String addr1{ get;set;}
-	    [DataMember]
-        public String addr2{ get;set;}
+        public String address2{ get;set;}
 	    [DataMember]
         public String city{ get;set;}
 	    [DataMember]
-        public String region{ get;set;}
-	    [DataMember]
-        public String country{ get;set;}
+        public String state_province{ get;set;}
 	    [DataMember]
         public String postal_code{ get;set;}
 	    [DataMember]
-        public String phone{ get;set;}
+        public String title{ get;set;}
 	    [DataMember]
-        public String fax{ get;set;}
+        public String sex{ get;set;}
 	    [DataMember]
-        public String internet{ get;set;}
+        public String first_name{ get;set;}
 	    [DataMember]
-        public String alternate_phone{ get;set;}
+        public String last_name{ get;set;}
 	    [DataMember]
-        public String alternate_phone1{ get;set;}
+        public String middle_name{ get;set;}
 	    [DataMember]
-        public String stock_symbol{ get;set;}
+        public Int32? parent_id{ get;set;}
 	    [DataMember]
-        public String stock_market{ get;set;}
+        public Int64? hire_date{ get;set;}
 	    [DataMember]
-        public String sic_code{ get;set;}
+        public Int32? location_id{ get;set;}
 	    [DataMember]
-        public Decimal? asset_value{ get;set;}
+        public Int32? security_role{ get;set;}
 	    [DataMember]
-        public DateTime? last_activity{ get;set;}
+        public Int32? status{ get;set;}
 	    [DataMember]
-        public DateTime? date_stamp{ get;set;}
+        public Decimal? time_vacation{ get;set;}
 	    [DataMember]
-        public Int16? cust_type{ get;set;}
+        public Decimal? time_personal{ get;set;}
 	    [DataMember]
-        public Decimal? opportunity_value{ get;set;}
+        public Decimal? time_sick{ get;set;}
 	    [DataMember]
-        public Decimal? blockPurchase_total{ get;set;}
+        public SByte? oTexempt{ get;set;}
 	    [DataMember]
-        public Decimal? blockDeduction_total{ get;set;}
+        public String initials{ get;set;}
 	    [DataMember]
-        public Int32? classification_id{ get;set;}
+        public SByte? system_account{ get;set;}
 	    [DataMember]
-        public String extAcctCustomer_id{ get;set;}
+        public String external_id{ get;set;}
 	    [DataMember]
-        public SByte? use_parent_account_contracts{ get;set;}
+        public Decimal? time_float{ get;set;}
 	    [DataMember]
-        public String attention{ get;set;}
+        public String travel_restrictions{ get;set;}
 	    [DataMember]
-        public DateTime? survey_optout_time{ get;set;}
+        public SByte? can_edit_skills{ get;set;}
 	    [DataMember]
-        public String facebook_url{ get;set;}
+        public String resource_type{ get;set;}
 	    [DataMember]
-        public String twitter_url{ get;set;}
+        public Int64? outlook_synchronization_date{ get;set;}
 	    [DataMember]
-        public String linkedin_url{ get;set;}
+        public String email2{ get;set;}
 	    [DataMember]
-        public String phone_basic{ get;set;}
+        public String email3{ get;set;}
 	    [DataMember]
-        public Int32? country_id{ get;set;}
+        public String email_type_code{ get;set;}
 	    [DataMember]
-        public String additional_address_information{ get;set;}
+        public String email_type_code2{ get;set;}
 	    [DataMember]
-        public Int32? tax_region_id{ get;set;}
+        public String email_type_code3{ get;set;}
 	    [DataMember]
-        public String tax_identification{ get;set;}
+        public String date_format{ get;set;}
 	    [DataMember]
-        public String alternate_phone_basic{ get;set;}
+        public String time_format{ get;set;}
 	    [DataMember]
-        public String alternate_phone1_basic{ get;set;}
+        public String number_format{ get;set;}
+	    [DataMember]
+        public SByte is_LiveMobile_active{ get;set;}
+	    [DataMember]
+        public Int32 failed_login_count{ get;set;}
+	    [DataMember]
+        public SByte is_locked{ get;set;}
+	    [DataMember]
+        public Int64? first_login_time{ get;set;}
+	    [DataMember]
+        public String accounting_reference_id{ get;set;}
+	    [DataMember]
+        public String outsource_security_role_type_code{ get;set;}
+	    [DataMember]
+        public SByte can_manage_kb_articles{ get;set;}
+	    [DataMember]
+        public SByte is_token_authentication_required{ get;set;}
+	    [DataMember]
+        public SByte is_token_next_login_suspended{ get;set;}
+	    [DataMember]
+        public Int64? token_suspend_until_time{ get;set;}
+	    [DataMember]
+        public SByte can_edit_protected_data{ get;set;}
+	    [DataMember]
+        public SByte can_view_protected_data{ get;set;}
+	    [DataMember]
+        public SByte can_edit_unprotected_data{ get;set;}
+	    [DataMember]
+        public SByte can_view_unprotected_data{ get;set;}
+	    [DataMember]
+        public String encrypted_password{ get;set;}
+	    [DataMember]
+        public SByte allow_send_bulk_email{ get;set;}
+	    [DataMember]
+        public SByte viewed_bulk_email_video{ get;set;}
+	    [DataMember]
+        public String authanvil_username{ get;set;}
+	    [DataMember]
+        public String authanvil_alternate_server_url{ get;set;}
+	    [DataMember]
+        public Int32? authanvil_alternate_site_id{ get;set;}
+	    [DataMember]
+        public String last_conversation_status_text{ get;set;}
+	    [DataMember]
+        public DateTime? last_conversation_status_time{ get;set;}
+	    [DataMember]
+        public DateTime? last_conversation_status_expires_time{ get;set;}
+	    [DataMember]
+        public String quickbooks_vendor_number{ get;set;}
+	    [DataMember]
+        public SByte is_required_to_submit_timesheets{ get;set;}
+	    [DataMember]
+        public String narrative_full_name{ get;set;}
+	    [DataMember]
+        public String sorting_full_name{ get;set;}
+	    [DataMember]
+        public String password_reset_guid{ get;set;}
+	    [DataMember]
+        public DateTime? password_reset_guid_expiration_time{ get;set;}
+	    [DataMember]
+        public Int32? name_salutation_id{ get;set;}
+	    [DataMember]
+        public Int32? name_suffix_id{ get;set;}
+	    [DataMember]
+        public DateTime time_sheet_start_date{ get;set;}
 
        
     }
@@ -126,7 +179,7 @@ using System.Text;
 using EMT.DoneNOW.Core;
 namespace EMT.DoneNOW.DAL
 {
-    public class crm_account_dal : BaseDAL<crm_account>
+    public class sys_resource_dal : BaseDAL<sys_resource>
     {
     }
 }

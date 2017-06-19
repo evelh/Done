@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-
-namespace EMT.DoneNOW.Core
+using EMT.DoneNOW.Core;
+namespace EMT.DoneNOW.DAL
 {
-    public class Auth
+    public class sys_user_dal : BaseDAL<sys_user>
     {
     }
 }

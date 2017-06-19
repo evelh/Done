@@ -24,6 +24,7 @@ namespace EMT.DoneNOW.DTO
         TIME_OUT = 2000,                            // 登录超时
         USER_NOT_FIND,                              // 用户未注册
         PASSWORD_ERROR,                             // 密码错误
+        LOCK,                                       // 限制登录
 
         /* CRM */
         CRM_ACCOUNT_NAME_EXIST = 3000,              // 客户名称已存在

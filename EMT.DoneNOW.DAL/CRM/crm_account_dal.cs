@@ -21,16 +21,6 @@ namespace EMT.DoneNOW.DAL
         }
 
         /// <summary>
-        /// 根据id查找
-        /// </summary>
-        /// <returns></returns>
-        public crm_account FindById(long id)
-        {
-            new Tools.RedisCacheder().AddCache<long>("id", id, DateTime.Now.AddDays(1));
-            return FindSignleBySql<crm_account>("SELECT * FROM crm_account WHERE id=" + id);
-        }
-
-        /// <summary>
         /// 根据条件查找
         /// </summary>
         /// <returns></returns>

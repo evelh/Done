@@ -56,6 +56,16 @@ namespace EMT.DoneNOW.DAL
         }
 
         /// <summary>
+        /// 根据id查找
+        /// </summary>
+        /// <returns></returns>
+        public T FindById(long id)
+        {
+            string name = typeof(T).Name;
+            return FindSignleBySql<T>($"SELECT * FROM {name} WHERE id=" + id);
+        }
+
+        /// <summary>
         /// 返回列表
         /// </summary>
         /// <param name="sql">查询字段</param>
