@@ -37,6 +37,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public crm_account GetCompany(long id)
         {
+           
             return _dal.FindById(id);
         }
 
@@ -80,6 +81,17 @@ namespace EMT.DoneNOW.BLL
             }
             else
                 return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;
+        }
+
+        /// <summary>
+        /// 更新客户信息
+        /// </summary>
+        /// <returns></returns>
+        public bool Update(crm_account account)
+        {
+            if (ExistCompany(account.account_name))
+                return false;
+            return _dal.Update(account);
         }
 
         /// <summary>

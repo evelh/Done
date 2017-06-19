@@ -28,5 +28,13 @@ namespace EMT.DoneNOW.WebAPI.Controllers
 
             return ResultError(code);
         }
+
+        public ApiResultDto Result(bool result, object data = null)
+        {
+            if (result)
+                return ResultSuccess(data);
+
+            return ResultError(ERROR_CODE.ERROR);
+        }
     }
 }

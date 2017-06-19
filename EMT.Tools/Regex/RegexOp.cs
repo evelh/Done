@@ -25,6 +25,19 @@ namespace EMT.Tools
         }
 
         /// <summary>
+        /// 邮箱格式判断
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public bool IsEmail(string email)
+        {
+            if (email.IsNullOrEmpty())
+                return false;
+            Regex reg = new Regex(@"/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/");
+            return reg.Matches(email).Count > 0;
+        }
+
+        /// <summary>
         /// 判断是否为数字字符串
         /// </summary>
         /// <param name="num"></param>

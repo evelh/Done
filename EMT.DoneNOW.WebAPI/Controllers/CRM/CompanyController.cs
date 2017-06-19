@@ -29,7 +29,7 @@ namespace EMT.DoneNOW.WebAPI.Controllers.CRM
         }
 
         /// <summary>
-        /// 获取客户/客户列表
+        /// 查询客户信息
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -57,8 +57,15 @@ namespace EMT.DoneNOW.WebAPI.Controllers.CRM
             return Result(_bll.Insert(param));
         }
 
-        [HttpDelete]
-        [Route("company/company")]
+        [HttpPost]
+        [Route("company/edit")]
+        public ApiResultDto UpdateCompany([FromBody] crm_account account)
+        {
+            return Result(_bll.Update(account));
+        }
+
+        [HttpGet]
+        [Route("company/delete")]
         public ApiResultDto Delete(long id)
         {
             return ResultSuccess(_bll.DeleteCompany(id));

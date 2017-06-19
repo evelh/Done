@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AUTH\AuthBLL.cs" />
     <Compile Include="CRM\CompanyBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -68,9 +69,14 @@
       <Project>{53e7b184-f169-470c-97c6-1674106db581}</Project>
       <Name>EMT.DoneNOW.IDAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EMT.Tools\EMT.Tools.csproj">
+      <Project>{6e53e20f-4b91-4489-a6d5-9d188ddc650d}</Project>
+      <Name>EMT.Tools</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

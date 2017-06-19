@@ -26,6 +26,7 @@ namespace EMT.DoneNOW.DAL
         /// <returns></returns>
         public crm_account FindById(long id)
         {
+            new Tools.RedisCacheder().AddCache<long>("id", id, DateTime.Now.AddDays(1));
             return FindSignleBySql<crm_account>("SELECT * FROM crm_account WHERE id=" + id);
         }
 

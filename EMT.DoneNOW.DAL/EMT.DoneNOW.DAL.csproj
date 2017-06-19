@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AUTH\AuthDAL.cs" />
     <Compile Include="BaseDAL.cs" />
     <Compile Include="Column2PropertyMapping.cs" />
     <Compile Include="CRM\crm_account_alert_dal.cs" />

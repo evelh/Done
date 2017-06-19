@@ -15,12 +15,17 @@ namespace EMT.DoneNOW.DTO
     public enum ERROR_CODE
     {
         SUCCESS = 0,                                // 成功
-
         ERROR = 1,                                  // 错误
 
-        TIME_OUT = 1000,                            // 登录超时
-        PARAMS_ERROR = 1001,                        // 参数缺失或错误
+        /* 通用错误 */
+        PARAMS_ERROR = 1000,                        // 参数缺失或错误
 
-        CRM_ACCOUNT_NAME_EXIST = 2000,              // 客户名称已存在
+        /* 登录验证错误 */
+        TIME_OUT = 2000,                            // 登录超时
+        USER_NOT_FIND,                              // 用户未注册
+        PASSWORD_ERROR,                             // 密码错误
+
+        /* CRM */
+        CRM_ACCOUNT_NAME_EXIST = 3000,              // 客户名称已存在
     }
 }
