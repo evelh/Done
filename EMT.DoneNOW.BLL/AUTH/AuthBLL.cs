@@ -14,6 +14,8 @@ namespace EMT.DoneNOW.BLL
     public class AuthBLL
     {
         private readonly sys_user_dal _dal = new sys_user_dal();
+        private const int expire_time= 60 * 60 * 8;     // token过期时间(8小时)
+        private const string secretKey = "GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk";
 
         public ERROR_CODE Login(string loginName, string password)
         {
@@ -47,7 +49,18 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.LOCK;
             if (resource.active == 0)
                 return ERROR_CODE.LOCK;
-
+            
+            var start = Math.Round((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds);
+            var exp = start + expire_time;
+            var payload = new Dictionary<string, dynamic>()
+                          {
+                              { "uid", resource.id },
+                              { "exp", exp},
+                              { "start", start }
+                          };
+            
+            JwtEncoder encoder = new JwtEncoder(new JWT.Algorithms.HMACSHA512Algorithm(), new JWT.Serializers.JsonNetSerializer(), new JwtBase64UrlEncoder());
+            string token = encoder.Encode(payload, secretKey);
 
             return ERROR_CODE.ERROR;
         }

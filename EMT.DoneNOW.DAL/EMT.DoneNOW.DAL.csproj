@@ -56,7 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AUTH\AuthDAL.cs" />
+    <Compile Include="AUTH\sys_login_log_dal.cs" />
+    <Compile Include="AUTH\sys_user_dal.cs" />
     <Compile Include="BaseDAL.cs" />
     <Compile Include="Column2PropertyMapping.cs" />
     <Compile Include="CRM\crm_account_alert_dal.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="DictionaryEntries\sys_region_dal.cs" />
     <Compile Include="DictionaryEntries\sys_territory_dal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sys_resource_dal.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
