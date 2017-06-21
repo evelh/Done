@@ -33,7 +33,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32 status_id { get; set; }
         public Int64 delete_time { get; set; }
-        public Int64 delete_by_id { get; set; }
+        public Int64 delete_user_id { get; set; }
 
     }
 }

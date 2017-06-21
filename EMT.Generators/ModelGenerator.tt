@@ -12,7 +12,7 @@
 <#
     var dbSchema=DBSchemaFactory.GetDBSchema();
     List<string> tableList=dbSchema.GetTablesList();
-	var tableName ="sys_resource";
+	var tableName ="crm_account";
     Table table=dbSchema.GetTableMetadata(tableName);
 #>
 using System;
@@ -43,7 +43,7 @@ namespace EMT.DoneNOW.Core
 <#
             }
 			if(!(c.ColumnName=="delete_time" || c.ColumnName=="create_time" || c.ColumnName=="update_time"
-			|| c.ColumnName=="update_by_id" || c.ColumnName=="delete_by_id" || c.ColumnName=="create_by_id"))
+			|| c.ColumnName=="update_user_id" || c.ColumnName=="delete_user_id" || c.ColumnName=="create_user_id"))
 			{
 #>
 	    [DataMember]

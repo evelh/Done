@@ -14,11 +14,22 @@ namespace EMT.DoneNOW.BLL
     public class AuthBLL
     {
         private readonly sys_user_dal _dal = new sys_user_dal();
-        private const int expire_time= 60 * 60 * 8;     // token过期时间(8小时)
+        private const int expire_time_mins = 60 * 8;            // token过期时间(8小时)
+        private const int expire_time_mins_refresh = 60 * 16;     // refreshtoken过期时间(16小时)
+        private const int expire_time_secs= 60 * expire_time_mins;            // token过期时间(8小时)
+        private const int expire_time_secs_refresh = 60 * expire_time_mins_refresh;     // refreshtoken过期时间(16小时)
         private const string secretKey = "GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk";
 
-        public ERROR_CODE Login(string loginName, string password)
+        /// <summary>
+        /// 生成token，创建缓存
+        /// </summary>
+        /// <param name="loginName">登录名，邮箱或手机号</param>
+        /// <param name="password">登录密码</param>
+        /// <param name="tokenDto"></param>
+        /// <returns></returns>
+        public ERROR_CODE Login(string loginName, string password, out TokenDto tokenDto)
         {
+            tokenDto = null;
             StringBuilder where = new StringBuilder();
             if (new RegexOp().IsEmail(loginName))
             {
@@ -49,20 +60,119 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.LOCK;
             if (resource.active == 0)
                 return ERROR_CODE.LOCK;
+            // TODO: 更多校验及处理
             
             var start = Math.Round((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds);
-            var exp = start + expire_time;
-            var payload = new Dictionary<string, dynamic>()
-                          {
-                              { "uid", resource.id },
-                              { "exp", exp},
-                              { "start", start }
-                          };
-            
+            var exp = (long)(start + expire_time_secs);
+            var random = new Random();
+            TokenStructDto payload = new TokenStructDto
+            {
+                uid = resource.id,
+                timestamp = (long)start,
+                expire = exp,
+                rand = random.Next(int.MaxValue)
+            };    // 获取token
+            var refreshexp = (long)(start + expire_time_secs_refresh);
+            TokenStructDto refreshPayload = new TokenStructDto
+            {
+                uid = resource.id,
+                timestamp = (long)start,
+                expire = refreshexp,
+                rand = random.Next(int.MaxValue)
+            };   // 获取refreshtoken
+
             JwtEncoder encoder = new JwtEncoder(new JWT.Algorithms.HMACSHA512Algorithm(), new JWT.Serializers.JsonNetSerializer(), new JwtBase64UrlEncoder());
-            string token = encoder.Encode(payload, secretKey);
+            string token = EncodeToken(payload);
+            string refreshToken = EncodeToken(refreshPayload);
+
+            UserInfoDto userinfo = new UserInfoDto();
+            userinfo.id = resource.id;
+            userinfo.name = resource.last_name + resource.first_name;
+            CachedInfoBLL.SetUserInfo(token, userinfo, expire_time_mins);
+            CachedInfoBLL.SetToken(refreshToken, token, expire_time_mins_refresh);
+
+            tokenDto = new TokenDto
+            {
+                token = token,
+                refresh = refreshToken
+            };
 
             return ERROR_CODE.ERROR;
         }
+
+        /// <summary>
+        /// 生成token
+        /// </summary>
+        /// <param name="refreshToken"></param>
+        /// <param name="tokenDto"></param>
+        /// <returns></returns>
+        public bool RefreshToken(string refreshToken, out TokenDto tokenDto)
+        {
+            tokenDto = null;
+            string token = CachedInfoBLL.GetToken(refreshToken);
+            if (string.IsNullOrEmpty(token))
+                return false;
+            UserInfoDto info = CachedInfoBLL.GetUserInfo(token);
+            if (info != null) // token未过期
+            {
+                tokenDto = new TokenDto
+                {
+                    token = token,
+                    refresh = refreshToken
+                };
+                return true;
+            }
+            else  // token过期，refreshtoken未过期，重新生成
+            {
+                var tokeninfo = DecodeToken(refreshToken);
+                if (tokeninfo == null)
+                    return false;
+
+                var start = Math.Round((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds);
+                var random = new Random();
+                TokenStructDto newTokenInfo = new TokenStructDto
+                {
+                    uid = tokeninfo.uid,
+                    timestamp = (long)start,
+                    expire = (long)(start + expire_time_secs),
+                    rand = random.Next(int.MaxValue)
+                };
+                TokenStructDto newRefreshTokenInfo = new TokenStructDto
+                {
+                    uid = tokeninfo.uid,
+                    timestamp = (long)start,
+                    expire = (long)(start + expire_time_secs_refresh),
+                    rand = random.Next(int.MaxValue)
+                };
+                string newToken = EncodeToken(newTokenInfo);
+                string newRefreshToken = EncodeToken(newRefreshTokenInfo);
+
+                UserInfoDto userinfo = new UserInfoDto();
+                userinfo.id = tokeninfo.uid;
+                CachedInfoBLL.SetUserInfo(newToken, userinfo, expire_time_mins);
+                CachedInfoBLL.SetToken(newRefreshToken, newToken, expire_time_mins_refresh);
+
+                tokenDto = new TokenDto
+                {
+                    token = token,
+                    refresh = refreshToken
+                };
+                return true;
+            }
+        }
+
+        private string EncodeToken(TokenStructDto token)
+        {
+            JwtEncoder encoder = new JwtEncoder(new JWT.Algorithms.HMACSHA512Algorithm(), new JWT.Serializers.JsonNetSerializer(), new JwtBase64UrlEncoder());
+            return encoder.Encode(token, secretKey);
+        }
+
+        private TokenStructDto DecodeToken(string token)
+        {
+            var jser = new JWT.Serializers.JsonNetSerializer();
+            JwtDecoder decoder = new JwtDecoder(jser, new JWT.JwtValidator(jser, new JWT.UtcDateTimeProvider()), new JwtBase64UrlEncoder());
+            return decoder.DecodeToObject<TokenStructDto>(token, secretKey, true);
+        }
+        
     }
 }

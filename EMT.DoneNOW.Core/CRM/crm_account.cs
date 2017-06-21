@@ -29,13 +29,13 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String account_name { get; set; }
         [DataMember]
-        public SByte? active { get; set; }
+        public SByte? is_active { get; set; }
         [DataMember]
-        public SByte? costed_client { get; set; }
+        public SByte? is_costed_client { get; set; }
         [DataMember]
-        public SByte? taxable { get; set; }
+        public SByte? is_taxable { get; set; }
         [DataMember]
-        public SByte? block_account { get; set; }
+        public SByte? is_block_account { get; set; }
         [DataMember]
         public Decimal? curr_block_balance { get; set; }
         [DataMember]
@@ -45,11 +45,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String addr2 { get; set; }
         [DataMember]
-        public String city { get; set; }
-        [DataMember]
-        public String region { get; set; }
-        [DataMember]
-        public String country { get; set; }
+        public Int32? district_id { get; set; }
         [DataMember]
         public String postal_code { get; set; }
         [DataMember]
@@ -57,7 +53,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String fax { get; set; }
         [DataMember]
-        public String internet { get; set; }
+        public String web_site { get; set; }
         [DataMember]
         public String alternate_phone { get; set; }
         [DataMember]
@@ -75,17 +71,17 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public DateTime? date_stamp { get; set; }
         [DataMember]
-        public Int16? cust_type { get; set; }
+        public Int32? account_type_id { get; set; }
         [DataMember]
         public Decimal? opportunity_value { get; set; }
         [DataMember]
-        public Decimal? blockPurchase_total { get; set; }
+        public Decimal? block_purchase_total { get; set; }
         [DataMember]
-        public Decimal? blockDeduction_total { get; set; }
+        public Decimal? block_deduction_total { get; set; }
         [DataMember]
-        public Int32? classification_id { get; set; }
+        public Int32? account_classification_id { get; set; }
         [DataMember]
-        public String extAcctCustomer_id { get; set; }
+        public String extacct_customer_id { get; set; }
         [DataMember]
         public SByte? use_parent_account_contracts { get; set; }
         [DataMember]
@@ -98,6 +94,12 @@ namespace EMT.DoneNOW.Core
         public String twitter_url { get; set; }
         [DataMember]
         public String linkedin_url { get; set; }
+        [DataMember]
+        public String weibo_url { get; set; }
+        [DataMember]
+        public String wechat_mp_subscription { get; set; }
+        [DataMember]
+        public String wechat_mp_service { get; set; }
         [DataMember]
         public String phone_basic { get; set; }
         [DataMember]

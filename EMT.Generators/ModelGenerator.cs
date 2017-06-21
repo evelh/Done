@@ -8,164 +8,113 @@ using System.Runtime.Serialization;
 
 namespace EMT.DoneNOW.Core
 {
-	[Table("sys_resource")]
+	[Table("crm_account")]
     [Serializable]
 	[DataContract]
-    public partial class sys_resource : SoftDeleteCore 
+    public partial class crm_account : SoftDeleteCore 
     {
 
+		[Key]
 	    [DataMember]
         public Int64 id{ get;set;}
 	    [DataMember]
-        public String user_name{ get;set;}
+        public String external_id{ get;set;}
 	    [DataMember]
-        public SByte active{ get;set;}
+        public Int64? parent_id{ get;set;}
 	    [DataMember]
-        public String email{ get;set;}
+        public Int32? territory_id{ get;set;}
 	    [DataMember]
-        public Int32? default_service_rate{ get;set;}
+        public Int32? market_segment_id{ get;set;}
 	    [DataMember]
-        public String office_phone{ get;set;}
+        public Int32? competition_id{ get;set;}
 	    [DataMember]
-        public String office_ext{ get;set;}
+        public String account_name{ get;set;}
 	    [DataMember]
-        public String home_phone{ get;set;}
+        public SByte? is_active{ get;set;}
 	    [DataMember]
-        public String mobile_phone{ get;set;}
+        public SByte? is_costed_client{ get;set;}
 	    [DataMember]
-        public String address1{ get;set;}
+        public SByte? is_taxable{ get;set;}
 	    [DataMember]
-        public String address2{ get;set;}
+        public SByte? is_block_account{ get;set;}
 	    [DataMember]
-        public String city{ get;set;}
+        public Decimal? curr_block_balance{ get;set;}
 	    [DataMember]
-        public String state_province{ get;set;}
+        public Decimal? mileage{ get;set;}
+	    [DataMember]
+        public String addr1{ get;set;}
+	    [DataMember]
+        public String addr2{ get;set;}
+	    [DataMember]
+        public Int32? district_id{ get;set;}
 	    [DataMember]
         public String postal_code{ get;set;}
 	    [DataMember]
-        public String title{ get;set;}
+        public String phone{ get;set;}
 	    [DataMember]
-        public String sex{ get;set;}
+        public String fax{ get;set;}
 	    [DataMember]
-        public String first_name{ get;set;}
+        public String web_site{ get;set;}
 	    [DataMember]
-        public String last_name{ get;set;}
+        public String alternate_phone{ get;set;}
 	    [DataMember]
-        public String middle_name{ get;set;}
+        public String alternate_phone1{ get;set;}
 	    [DataMember]
-        public Int32? parent_id{ get;set;}
+        public String stock_symbol{ get;set;}
 	    [DataMember]
-        public Int64? hire_date{ get;set;}
+        public String stock_market{ get;set;}
 	    [DataMember]
-        public Int32? location_id{ get;set;}
+        public String sic_code{ get;set;}
 	    [DataMember]
-        public Int32? security_role{ get;set;}
+        public Decimal? asset_value{ get;set;}
 	    [DataMember]
-        public Int32? status{ get;set;}
+        public DateTime? last_activity{ get;set;}
 	    [DataMember]
-        public Decimal? time_vacation{ get;set;}
+        public DateTime? date_stamp{ get;set;}
 	    [DataMember]
-        public Decimal? time_personal{ get;set;}
+        public Int32? account_type_id{ get;set;}
 	    [DataMember]
-        public Decimal? time_sick{ get;set;}
+        public Decimal? opportunity_value{ get;set;}
 	    [DataMember]
-        public SByte? oTexempt{ get;set;}
+        public Decimal? block_purchase_total{ get;set;}
 	    [DataMember]
-        public String initials{ get;set;}
+        public Decimal? block_deduction_total{ get;set;}
 	    [DataMember]
-        public SByte? system_account{ get;set;}
+        public Int32? account_classification_id{ get;set;}
 	    [DataMember]
-        public String external_id{ get;set;}
+        public String extacct_customer_id{ get;set;}
 	    [DataMember]
-        public Decimal? time_float{ get;set;}
+        public SByte? use_parent_account_contracts{ get;set;}
 	    [DataMember]
-        public String travel_restrictions{ get;set;}
+        public String attention{ get;set;}
 	    [DataMember]
-        public SByte? can_edit_skills{ get;set;}
+        public DateTime? survey_optout_time{ get;set;}
 	    [DataMember]
-        public String resource_type{ get;set;}
+        public String facebook_url{ get;set;}
 	    [DataMember]
-        public Int64? outlook_synchronization_date{ get;set;}
+        public String twitter_url{ get;set;}
 	    [DataMember]
-        public String email2{ get;set;}
+        public String linkedin_url{ get;set;}
 	    [DataMember]
-        public String email3{ get;set;}
+        public String weibo_url{ get;set;}
 	    [DataMember]
-        public String email_type_code{ get;set;}
+        public String wechat_mp_subscription{ get;set;}
 	    [DataMember]
-        public String email_type_code2{ get;set;}
+        public String wechat_mp_service{ get;set;}
 	    [DataMember]
-        public String email_type_code3{ get;set;}
+        public String phone_basic{ get;set;}
 	    [DataMember]
-        public String date_format{ get;set;}
+        public Int32? country_id{ get;set;}
 	    [DataMember]
-        public String time_format{ get;set;}
+        public String additional_address_information{ get;set;}
 	    [DataMember]
-        public String number_format{ get;set;}
+        public Int32? tax_region_id{ get;set;}
 	    [DataMember]
-        public SByte is_LiveMobile_active{ get;set;}
+        public String tax_identification{ get;set;}
 	    [DataMember]
-        public Int32 failed_login_count{ get;set;}
+        public String alternate_phone_basic{ get;set;}
 	    [DataMember]
-        public SByte is_locked{ get;set;}
-	    [DataMember]
-        public Int64? first_login_time{ get;set;}
-	    [DataMember]
-        public String accounting_reference_id{ get;set;}
-	    [DataMember]
-        public String outsource_security_role_type_code{ get;set;}
-	    [DataMember]
-        public SByte can_manage_kb_articles{ get;set;}
-	    [DataMember]
-        public SByte is_token_authentication_required{ get;set;}
-	    [DataMember]
-        public SByte is_token_next_login_suspended{ get;set;}
-	    [DataMember]
-        public Int64? token_suspend_until_time{ get;set;}
-	    [DataMember]
-        public SByte can_edit_protected_data{ get;set;}
-	    [DataMember]
-        public SByte can_view_protected_data{ get;set;}
-	    [DataMember]
-        public SByte can_edit_unprotected_data{ get;set;}
-	    [DataMember]
-        public SByte can_view_unprotected_data{ get;set;}
-	    [DataMember]
-        public String encrypted_password{ get;set;}
-	    [DataMember]
-        public SByte allow_send_bulk_email{ get;set;}
-	    [DataMember]
-        public SByte viewed_bulk_email_video{ get;set;}
-	    [DataMember]
-        public String authanvil_username{ get;set;}
-	    [DataMember]
-        public String authanvil_alternate_server_url{ get;set;}
-	    [DataMember]
-        public Int32? authanvil_alternate_site_id{ get;set;}
-	    [DataMember]
-        public String last_conversation_status_text{ get;set;}
-	    [DataMember]
-        public DateTime? last_conversation_status_time{ get;set;}
-	    [DataMember]
-        public DateTime? last_conversation_status_expires_time{ get;set;}
-	    [DataMember]
-        public String quickbooks_vendor_number{ get;set;}
-	    [DataMember]
-        public SByte is_required_to_submit_timesheets{ get;set;}
-	    [DataMember]
-        public String narrative_full_name{ get;set;}
-	    [DataMember]
-        public String sorting_full_name{ get;set;}
-	    [DataMember]
-        public String password_reset_guid{ get;set;}
-	    [DataMember]
-        public DateTime? password_reset_guid_expiration_time{ get;set;}
-	    [DataMember]
-        public Int32? name_salutation_id{ get;set;}
-	    [DataMember]
-        public Int32? name_suffix_id{ get;set;}
-	    [DataMember]
-        public DateTime time_sheet_start_date{ get;set;}
+        public String alternate_phone1_basic{ get;set;}
 
        
     }
@@ -179,7 +128,7 @@ using System.Text;
 using EMT.DoneNOW.Core;
 namespace EMT.DoneNOW.DAL
 {
-    public class sys_resource_dal : BaseDAL<sys_resource>
+    public class crm_account_dal : BaseDAL<crm_account>
     {
     }
 }

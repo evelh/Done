@@ -21,12 +21,12 @@ namespace EMT.DoneNOW.BLL
         public Dictionary<string,object> GetField()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("company_type", new sys_organization_type_dal().GetDictionary());   // 客户类型
-            dic.Add("country", new sys_country_dal().GetDictionary());                  // 国家表
-            dic.Add("competition", new sys_competition_dal().GetDictionary());          // 竞争对手
-            dic.Add("market_segment", new sys_market_segment_dal().GetDictionary());    // 行业
-            dic.Add("region", new sys_region_dal().GetDictionary());                    // 大区
-            dic.Add("territory", new sys_territory_dal().GetDictionary());              // 销售区域
+            dic.Add("company_type", new d_account_classification_dal().GetDictionary());    // 客户类型
+            dic.Add("country", new d_country_dal().GetDictionary());                        // 国家表
+            dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByRemark("competition")));          // 竞争对手
+            dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByRemark("market_segment")));    // 行业
+            dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByRemark("district")));                // 行政区
+            dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByRemark("territory")));              // 销售区域
 
             return dic;
         }
@@ -37,7 +37,6 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public crm_account GetCompany(long id)
         {
-           
             return _dal.FindById(id);
         }
 
@@ -62,17 +61,19 @@ namespace EMT.DoneNOW.BLL
 
             crm_account_note note = param.SelectToken("note").ToObject<crm_account_note>();
             crm_account_todo todo = param.SelectToken("todo").ToObject<crm_account_todo>();
-
+            
             account.id = _dal.GetNextId();
+            account.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            account.create_user_id = CachedInfoBLL.GetUserInfo("").id;
             _dal.Insert(account);
             if (_dal.FindById(account.id) != null)
             {
-                if (note!=null)
+                if (note != null)
                 {
                     note.account_id = account.id;
                     new crm_account_note_dal().Insert(note);
                 }
-                if (todo!=null)
+                if (todo != null)
                 {
                     todo.account_id = account.id;
                     new crm_account_todo_dal().Insert(todo);

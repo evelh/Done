@@ -8,7 +8,7 @@ using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.DAL
 {
-    public class sys_market_segment_dal : BaseDAL<sys_market_segment>
+    public class d_country_dal : BaseDAL<d_country>
     {
         public List<DictionaryEntryDto> GetDictionary()
         {
@@ -16,7 +16,10 @@ namespace EMT.DoneNOW.DAL
             List<DictionaryEntryDto> list = new List<DictionaryEntryDto>();
             foreach (var entry in all)
             {
-                list.Add(new DictionaryEntryDto(entry.id.ToString(), entry.name));
+                if (entry.is_default == 1)
+                    list.Add(new DictionaryEntryDto(entry.country_name_display, entry.country_name_display, 1));
+                else
+                    list.Add(new DictionaryEntryDto(entry.country_name_display, entry.country_name_display));
             }
 
             return list;

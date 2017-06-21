@@ -8,11 +8,11 @@ using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.DAL
 {
-    public class sys_competition_dal : BaseDAL<sys_competition>
+    public class d_account_classification_dal : BaseDAL<d_account_classification>
     {
         public List<DictionaryEntryDto> GetDictionary()
         {
-            var all = this.FindAll();
+            var all = FindAll();
             List<DictionaryEntryDto> list = new List<DictionaryEntryDto>();
             foreach (var entry in all)
             {

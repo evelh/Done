@@ -44,6 +44,8 @@
     <Compile Include="CompanyConditionDto.cs" />
     <Compile Include="DictionaryEntryDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TokenDto.cs" />
+    <Compile Include="UserInfoDto.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

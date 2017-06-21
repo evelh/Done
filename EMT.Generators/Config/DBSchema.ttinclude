@@ -87,7 +87,7 @@
 
     public class MySqlSchema : IDBSchema
     {
-        public string ConnectionString = "Server=192.168.20.143;Port=20177;Database=donenowdev;Uid=dnroot;Pwd=dnroot;";
+        public string ConnectionString = "Server=192.168.20.45;Port=20177;Database=donenow;Uid=dnroot;Pwd=dnroot;";
 
         public MySqlConnection conn;
 

@@ -43,23 +43,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AUTH\sys_login_log.cs" />
+    <Compile Include="AUTH\sys_token.cs" />
     <Compile Include="AUTH\sys_user.cs" />
     <Compile Include="CRM\crm_account.cs" />
     <Compile Include="CRM\crm_account_alert.cs" />
     <Compile Include="CRM\crm_account_note.cs" />
     <Compile Include="CRM\crm_account_todo.cs" />
     <Compile Include="CRM\crm_contact.cs" />
-    <Compile Include="DictionaryEntries\sys_account_classification.cs" />
-    <Compile Include="DictionaryEntries\sys_competition.cs" />
-    <Compile Include="DictionaryEntries\sys_country.cs" />
-    <Compile Include="DictionaryEntries\sys_market_segment.cs" />
-    <Compile Include="DictionaryEntries\sys_organization_type.cs" />
-    <Compile Include="DictionaryEntries\sys_region.cs" />
-    <Compile Include="DictionaryEntries\sys_territory.cs" />
+    <Compile Include="Dictionary\d_account_classification.cs" />
+    <Compile Include="Dictionary\d_general.cs" />
+    <Compile Include="Dictionary\d_general_table.cs" />
+    <Compile Include="Dictionary\d_country.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoftDeleteCore.cs" />
     <Compile Include="sys_resource.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SYS\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
