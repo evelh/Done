@@ -53,30 +53,48 @@ namespace EMT.DoneNOW.BLL
         /// 新增客户
         /// </summary>
         /// <returns></returns>
-        public ERROR_CODE Insert(JObject param)
+        public ERROR_CODE Insert(JObject param, string token)
         {
             crm_account account = param.SelectToken("account").ToObject<crm_account>();
             if (_dal.ExistAccountName(account.account_name))
                 return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;
 
+            crm_contact contact = param.SelectToken("contact").ToObject<crm_contact>();
             crm_account_note note = param.SelectToken("note").ToObject<crm_account_note>();
             crm_account_todo todo = param.SelectToken("todo").ToObject<crm_account_todo>();
             
             account.id = _dal.GetNextId();
             account.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            account.create_user_id = CachedInfoBLL.GetUserInfo("").id;
+            account.create_user_id = CachedInfoBLL.GetUserInfo(token).id;
+            account.update_time = account.create_time;
+            account.update_user_id = account.update_user_id;
             _dal.Insert(account);
+
+            if (contact != null)    // 增加联系人
+            {
+                contact.account_id = account.id;
+                contact.id = _dal.GetNextId();
+                contact.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                contact.create_user_id = account.create_user_id;
+                contact.update_time = contact.create_time;
+                contact.update_user_id = contact.create_user_id;
+                // TODO: 主联系人设置
+                new crm_contact_dal().Insert(contact);  // TODO:
+            }
+            // TODO: 客户和联系人自定义字段
+
+            // TODO: 日志
             if (_dal.FindById(account.id) != null)
             {
                 if (note != null)
                 {
                     note.account_id = account.id;
-                    new crm_account_note_dal().Insert(note);
+                    new crm_account_note_dal().Insert(note);    // TODO:
                 }
                 if (todo != null)
                 {
                     todo.account_id = account.id;
-                    new crm_account_todo_dal().Insert(todo);
+                    new crm_account_todo_dal().Insert(todo);    // TODO:
                 }
                 return ERROR_CODE.SUCCESS;
             }
@@ -88,10 +106,15 @@ namespace EMT.DoneNOW.BLL
         /// 更新客户信息
         /// </summary>
         /// <returns></returns>
-        public bool Update(crm_account account)
+        public bool Update(crm_account account, string token)
         {
             if (ExistCompany(account.account_name))
                 return false;
+
+            account.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            account.update_user_id = CachedInfoBLL.GetUserInfo(token).id;
+
+            // TODO: 日志
             return _dal.Update(account);
         }
 
@@ -114,9 +137,13 @@ namespace EMT.DoneNOW.BLL
         /// 删除客户
         /// </summary>
         /// <returns></returns>
-        public bool DeleteCompany(long id)
+        public bool DeleteCompany(long id, string token)
         {
-            return _dal.SoftDelete(GetCompany(id));
+            crm_account account = GetCompany(id);
+            account.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            account.delete_user_id = CachedInfoBLL.GetUserInfo(token).id;
+            // TODO: 日志
+            return _dal.SoftDelete(account);
         }
 
         /// <summary>

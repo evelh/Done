@@ -10,7 +10,7 @@ using EMT.DoneNOW.DTO;
 using EMT.DoneNOW.BLL;
 using Newtonsoft.Json.Linq;
 
-namespace EMT.DoneNOW.WebAPI.Controllers.CRM
+namespace EMT.DoneNOW.WebAPI.Controllers
 {
     public class CompanyController : BaseCRMController
     {
@@ -36,7 +36,7 @@ namespace EMT.DoneNOW.WebAPI.Controllers.CRM
         [Route("company/company")]
         public ApiResultDto Company([FromUri] long id)
         {
-            return ResultSuccess(_bll.GetCompany((long)id));
+            return ResultSuccess(_bll.GetCompany(id));
         }
 
         [HttpPost]
@@ -51,36 +51,24 @@ namespace EMT.DoneNOW.WebAPI.Controllers.CRM
         }
 
         [HttpPost]
-        [Route("company/company")]
+        [Route("company/add")]
         public ApiResultDto AddCompany([FromBody] JObject param)
         {
-            return Result(_bll.Insert(param));
+            return Result(_bll.Insert(param, GetToken()));
         }
 
         [HttpPost]
         [Route("company/edit")]
         public ApiResultDto UpdateCompany([FromBody] crm_account account)
         {
-            return Result(_bll.Update(account));
+            return Result(_bll.Update(account, GetToken()));
         }
 
         [HttpGet]
         [Route("company/delete")]
         public ApiResultDto Delete(long id)
         {
-            return ResultSuccess(_bll.DeleteCompany(id));
+            return ResultSuccess(_bll.DeleteCompany(id, GetToken()));
         }
-
-        /*
-        // POST: api/Company
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT: api/Company/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-        */
     }
 }

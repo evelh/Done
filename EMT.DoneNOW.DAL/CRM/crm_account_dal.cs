@@ -12,12 +12,12 @@ namespace EMT.DoneNOW.DAL
     public class crm_account_dal : BaseDAL<crm_account>
     {
         /// <summary>
-        /// 根据id查找
+        /// 查找指定字段
         /// </summary>
         /// <returns></returns>
         private string CompanyListQueryString()
         {
-            return "SELECT * FROM crm_account WHERE 1=1";
+            return " * ";
         }
 
         /// <summary>
@@ -70,8 +70,7 @@ namespace EMT.DoneNOW.DAL
 
             if (!string.IsNullOrEmpty(orderby))
                 sql.Append($" ORDER BY {orderby}");
-
-            //string orderby = jsondata.SelectToken("");
+            
             return FindListPage(CompanyListQueryString(), sql.ToString(), pageNum);
         }
 

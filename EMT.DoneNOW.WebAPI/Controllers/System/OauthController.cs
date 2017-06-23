@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace EMT.DoneNOW.WebAPI.Controllers.System
+namespace EMT.DoneNOW.WebAPI.Controllers
 {
     public class OauthController : BaseController
     {

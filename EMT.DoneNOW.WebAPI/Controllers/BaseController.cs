@@ -36,5 +36,10 @@ namespace EMT.DoneNOW.WebAPI.Controllers
 
             return ResultError(ERROR_CODE.ERROR);
         }
+
+        protected string GetToken()
+        {
+            return ActionContext.Request.Headers.Where(h => h.Key.ToLower().Equals("token")).FirstOrDefault().Value.First();
+        }
     }
 }

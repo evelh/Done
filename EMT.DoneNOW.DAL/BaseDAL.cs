@@ -70,24 +70,25 @@ namespace EMT.DoneNOW.DAL
         /// </summary>
         /// <param name="sql">查询字段</param>
         /// <param name="where">查询条件</param>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
+        /// <param name="page">查询页</param>
+        /// <param name="pageSize">每页大小</param>
         /// <returns></returns>
-        public List<T> FindListPage(string sql, string where, int page, int pageSize=_pageSize)
+        public List<T> FindListPage(string sql, string where, int page, int pageSize = _pageSize)
         {
-            int cnt = GetCount(where);
+            int cnt = GetCount(where);  // 总记录数
             if (cnt == 0)
                 return new List<T>();
-            int pageCnt = cnt / pageSize;
+            int pageCnt = cnt / pageSize;   // 总页数
             if (cnt % pageSize != 0)
                 ++pageCnt;
             if (page < 1)
                 page = 1;
             if (page > pageCnt)
                 page = pageCnt;
+            int offset = (page - 1) * pageSize;
 
             string name = typeof(T).Name;
-            return FindListBySql($"{sql} FROM {name} WHERE {where}");
+            return FindListBySql($"SELECT {sql} FROM {name} WHERE {where} LIMIT {offset},{pageSize}");
         }
 
         // 根据条件查询记录总数
@@ -259,6 +260,8 @@ namespace EMT.DoneNOW.DAL
         /// <returns></returns>
         public bool SoftDelete(T ett)
         {
+            if (ett == null)
+                return false;
             (ett as Core.SoftDeleteCore).delete_user_id = 0;
             (ett as Core.SoftDeleteCore).delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             return Update(ett);

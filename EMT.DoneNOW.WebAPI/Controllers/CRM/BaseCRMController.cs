@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace EMT.DoneNOW.WebAPI.Controllers.CRM
+namespace EMT.DoneNOW.WebAPI.Controllers
 {
     public class BaseCRMController : BaseController
     {

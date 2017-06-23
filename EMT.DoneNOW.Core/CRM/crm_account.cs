@@ -41,9 +41,9 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? mileage { get; set; }
         [DataMember]
-        public String addr1 { get; set; }
+        public String address1 { get; set; }
         [DataMember]
-        public String addr2 { get; set; }
+        public String address2 { get; set; }
         [DataMember]
         public Int32? district_id { get; set; }
         [DataMember]
@@ -55,9 +55,9 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String web_site { get; set; }
         [DataMember]
-        public String alternate_phone { get; set; }
-        [DataMember]
         public String alternate_phone1 { get; set; }
+        [DataMember]
+        public String alternate_phone2 { get; set; }
         [DataMember]
         public String stock_symbol { get; set; }
         [DataMember]
@@ -67,9 +67,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? asset_value { get; set; }
         [DataMember]
-        public DateTime? last_activity { get; set; }
-        [DataMember]
-        public DateTime? date_stamp { get; set; }
+        public Int64? last_activity_time { get; set; }
         [DataMember]
         public Int32? account_type_id { get; set; }
         [DataMember]
@@ -87,7 +85,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String attention { get; set; }
         [DataMember]
-        public DateTime? survey_optout_time { get; set; }
+        public Int64? survey_optout_time { get; set; }
         [DataMember]
         public String facebook_url { get; set; }
         [DataMember]
@@ -111,9 +109,9 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String tax_identification { get; set; }
         [DataMember]
-        public String alternate_phone_basic { get; set; }
-        [DataMember]
         public String alternate_phone1_basic { get; set; }
+        [DataMember]
+        public String alternate_phone2_basic { get; set; }
 
 
     }
