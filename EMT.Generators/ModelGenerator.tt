@@ -12,7 +12,7 @@
 <#
     var dbSchema=DBSchemaFactory.GetDBSchema();
     List<string> tableList=dbSchema.GetTablesList();
-	var tableName ="crm_account";
+	var tableName ="crm_opportunity";
     Table table=dbSchema.GetTableMetadata(tableName);
 #>
 using System;
@@ -66,7 +66,35 @@ namespace EMT.DoneNOW.DAL
 {
     public class <#=tableName#>_dal : BaseDAL<<#=tableName#>>
     {
+		/// <summary>
+        /// 比较两个对象的属性，记录不同的属性及属性值
+        /// </summary>
+        /// <param name="oldObj"></param>
+        /// <param name="newObj"></param>
+        /// <returns></returns>
+		public string UpdateDetail(<#=tableName#> oldObj, <#=tableName#> newObj)
+		{
+			if (oldObj == null || newObj == null)
+                return null;
+			List<ObjUpdateDto> list = new List<ObjUpdateDto>();
+<#		
+			foreach(Column c in table.Columns)
+			{
+			if(!(c.ColumnName=="delete_time" || c.ColumnName=="create_time" || c.ColumnName=="update_time"
+			|| c.ColumnName=="update_user_id" || c.ColumnName=="delete_user_id" || c.ColumnName=="create_user_id"))
+			{
+#>
+			if (!Object.Equals(oldObj.<#=c.ColumnName#>, newObj.<#=c.ColumnName#>))
+				list.Add(new ObjUpdateDto { field = "<#=c.ColumnName#>", old_val = oldObj.<#=c.ColumnName#>, new_val = newObj.<#=c.ColumnName#> });
+<#
+			}}
+#>
+			if (list.Count == 0)
+                return "";
+            return new Tools.Serialize().SerializeJson(list);
+		}
     }
+
 }
 
 */

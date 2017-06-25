@@ -33,7 +33,7 @@ namespace EMT.DoneNOW.WebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("contact/contact")]
-        public ApiResultDto Company([FromUri] long id)
+        public ApiResultDto Contact([FromUri] long id)
         {
             return ResultSuccess(_bll.GetContact(id));
         }
@@ -48,14 +48,14 @@ namespace EMT.DoneNOW.WebAPI.Controllers
 
         [HttpPost]
         [Route("contact/add")]
-        public ApiResultDto AddCompany([FromBody] crm_contact contact)
+        public ApiResultDto AddContact([FromBody] crm_contact contact)
         {
             return Result(_bll.Insert(contact, GetToken()));
         }
 
         [HttpPost]
         [Route("contact/update")]
-        public ApiResultDto UpdateCompany([FromBody] crm_contact contact)
+        public ApiResultDto UpdateContact([FromBody] crm_contact contact)
         {
             return Result(_bll.Update(contact, GetToken()));
         }

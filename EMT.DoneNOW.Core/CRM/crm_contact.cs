@@ -27,9 +27,9 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String fax { get; set; }
         [DataMember]
-        public String alternate_phone { get; set; }
-        [DataMember]
         public String alternate_phone1 { get; set; }
+        [DataMember]
+        public String alternate_phone2 { get; set; }
         [DataMember]
         public String mobile_phone { get; set; }
         [DataMember]
@@ -41,7 +41,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String name { get; set; }
         [DataMember]
-        public String email_address { get; set; }
+        public String email { get; set; }
         [DataMember]
         public SByte wants_email { get; set; }
         [DataMember]
@@ -106,6 +106,10 @@ namespace EMT.DoneNOW.Core
         public String alternate_phone2_basic { get; set; }
         [DataMember]
         public String cell_phone_basic { get; set; }
+        [DataMember]
+        public String first_name { get; set; }
+        [DataMember]
+        public String last_name { get; set; }
 
 
     }

@@ -184,6 +184,7 @@
     <Compile Include="Controllers\System\OauthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Filter\WebApiErrorHandleAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -274,6 +275,10 @@
     <ProjectReference Include="..\EMT.DoneNOW.DTO\EMT.DoneNOW.DTO.csproj">
       <Project>{4cbd682d-bd97-4d4e-b552-a7e4d4dd6b09}</Project>
       <Name>EMT.DoneNOW.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMT.Tools\EMT.Tools.csproj">
+      <Project>{6e53e20f-4b91-4489-a6d5-9d188ddc650d}</Project>
+      <Name>EMT.Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -18,6 +18,9 @@ namespace EMT.DoneNOW.WebAPI
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // 异常处理
+            GlobalConfiguration.Configuration.Filters.Add(new WebApiErrorHandleAttribute());
         }
     }
 }

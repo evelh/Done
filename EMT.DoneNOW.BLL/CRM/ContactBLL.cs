@@ -58,7 +58,7 @@ namespace EMT.DoneNOW.BLL
             contact.update_time = contact.create_time;
             contact.update_user_id = contact.create_user_id;
             // TODO: 主联系人设置
-            new crm_contact_dal().Insert(contact);  // TODO:
+            _dal.Insert(contact);  // TODO:
 
             return ERROR_CODE.ERROR;
         }

@@ -26,6 +26,7 @@ namespace EMT.DoneNOW.WebAPI
             //);
 
             config.Formatters.Add(new Util.BrowserJsonFormatter());
+            config.Filters.Add(new WebApiErrorHandleAttribute());
         }
     }
 }

@@ -108,9 +108,17 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public bool Update(crm_account account, string token)
         {
-            if (ExistCompany(account.account_name))
-                return false;
+            // TODO: 是否可以修改客户名称 account_name，需要做检查
 
+            if (account.id == 0)
+                return false;
+            var oldValue = GetCompany(account.id);
+            var updateDetail = _dal.UpdateDetail(oldValue, account);
+            if (updateDetail == null)
+                return false;
+            if (updateDetail.Equals(""))     // 未做修改
+                return true;
+            
             account.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             account.update_user_id = CachedInfoBLL.GetUserInfo(token).id;
 

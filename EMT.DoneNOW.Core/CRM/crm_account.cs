@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32? market_segment_id { get; set; }
         [DataMember]
-        public Int32? competition_id { get; set; }
+        public Int32? competitor_id { get; set; }
         [DataMember]
         public String account_name { get; set; }
         [DataMember]

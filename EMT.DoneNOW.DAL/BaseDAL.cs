@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using Dapper.FastCrud;
+using System.Reflection;
 
 namespace EMT.DoneNOW.DAL
 {
@@ -218,13 +219,13 @@ namespace EMT.DoneNOW.DAL
         {
             return helper.ExecuteStoredProcedure<T1>(name, param);
         }
+
         /// <summary>
         /// 根据sql更新
         /// </summary>
         /// <param name="sql"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-
         public bool Update(string sql, object param = null)
         {
             return helper.Update(sql, param);
@@ -268,6 +269,7 @@ namespace EMT.DoneNOW.DAL
         }
 
         #endregion
+
 
     }
 }
