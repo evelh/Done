@@ -12,7 +12,7 @@
 <#
     var dbSchema=DBSchemaFactory.GetDBSchema();
     List<string> tableList=dbSchema.GetTablesList();
-	var tableName ="crm_opportunity";
+	var tableName ="sys_form_tmpl_opportunity";
     Table table=dbSchema.GetTableMetadata(tableName);
 #>
 using System;

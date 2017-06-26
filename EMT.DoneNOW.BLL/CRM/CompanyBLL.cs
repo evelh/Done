@@ -63,7 +63,7 @@ namespace EMT.DoneNOW.BLL
             crm_account_note note = param.SelectToken("note").ToObject<crm_account_note>();
             crm_account_todo todo = param.SelectToken("todo").ToObject<crm_account_todo>();
             
-            account.id = _dal.GetNextId();
+            account.id = _dal.GetNextIdCom();
             account.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             account.create_user_id = CachedInfoBLL.GetUserInfo(token).id;
             account.update_time = account.create_time;
@@ -73,7 +73,7 @@ namespace EMT.DoneNOW.BLL
             if (contact != null)    // 增加联系人
             {
                 contact.account_id = account.id;
-                contact.id = _dal.GetNextId();
+                contact.id = _dal.GetNextIdCom();
                 contact.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 contact.create_user_id = account.create_user_id;
                 contact.update_time = contact.create_time;

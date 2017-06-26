@@ -32,20 +32,6 @@ namespace EMT.DoneNOW.DAL
         }
 
         /// <summary>
-        /// 从数据库获取sequence
-        /// </summary>
-        /// <param name="seq_name">sequence名字</param>
-        /// <returns></returns>
-        public long GetNextId(string seq_name = "object_id")
-        {
-            string sql = $"SELECT get_next_id('{seq_name}')";
-            object obj = helper.GetSingle(sql);
-            long id = 0;
-            long.TryParse(obj.ToString(), out id);
-            return id;
-        }
-
-        /// <summary>
         /// 返回列表
         /// </summary>
         /// <param name="sql"></param>
@@ -270,6 +256,41 @@ namespace EMT.DoneNOW.DAL
 
         #endregion
 
+        #region sequence
+        
+        /// <summary>
+        /// 从数据库获取sequence
+        /// </summary>
+        /// <returns></returns>
+        public long GetNextIdCom()
+        {
+            return GetNextId("seq_com");
+        }
+
+        /// <summary>
+        /// 从数据库获取sequence
+        /// </summary>
+        /// <returns></returns>
+        public long GetNextIdSys()
+        {
+            return GetNextId("seq_sys");
+        }
+
+        /// <summary>
+        /// 从数据库获取sequence
+        /// </summary>
+        /// <param name="seq_name">sequence名字</param>
+        /// <returns></returns>
+        public long GetNextId(string seq_name)
+        {
+            string sql = $"SELECT f_nextval('{seq_name}')";
+            object obj = helper.GetSingle(sql);
+            long id = 0;
+            long.TryParse(obj.ToString(), out id);
+            return id;
+        }
+
+        #endregion
 
     }
 }

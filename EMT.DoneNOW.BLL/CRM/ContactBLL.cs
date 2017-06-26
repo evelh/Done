@@ -52,7 +52,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Insert(crm_contact contact, string token)
         {
-            contact.id = _dal.GetNextId();
+            contact.id = _dal.GetNextIdCom();
             contact.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             contact.create_user_id = CachedInfoBLL.GetUserInfo(token).id;
             contact.update_time = contact.create_time;
@@ -82,7 +82,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public List<crm_contact> FindList(JObject jsondata)
         {
-            ContactCondition condition = jsondata.ToObject<ContactCondition>();
+            ContactConditionDto condition = jsondata.ToObject<ContactConditionDto>();
             string orderby = ((JValue)(jsondata.SelectToken("orderby"))).Value.ToString();
             string page = ((JValue)(jsondata.SelectToken("page"))).Value.ToString();
             int pagenum;

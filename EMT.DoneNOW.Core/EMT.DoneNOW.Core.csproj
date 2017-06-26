@@ -50,16 +50,17 @@
     <Compile Include="CRM\crm_account_note.cs" />
     <Compile Include="CRM\crm_account_todo.cs" />
     <Compile Include="CRM\crm_contact.cs" />
+    <Compile Include="CRM\crm_opportunity.cs" />
     <Compile Include="Dictionary\d_account_classification.cs" />
     <Compile Include="Dictionary\d_general.cs" />
     <Compile Include="Dictionary\d_general_table.cs" />
     <Compile Include="Dictionary\d_country.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoftDeleteCore.cs" />
+    <Compile Include="SYS\sys_form_tmpl.cs" />
+    <Compile Include="SYS\sys_form_tmpl_opportunity.cs" />
     <Compile Include="sys_resource.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SYS\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,23 +8,25 @@ using System.Runtime.Serialization;
 
 namespace EMT.DoneNOW.Core
 {
-	[Table("crm_opportunity")]
+	[Table("sys_form_tmpl_opportunity")]
     [Serializable]
 	[DataContract]
-    public partial class crm_opportunity : SoftDeleteCore 
+    public partial class sys_form_tmpl_opportunity : SoftDeleteCore 
     {
 
 		[Key]
 	    [DataMember]
-        public Int64 id{ get;set;}
+        public Int32 id{ get;set;}
+	    [DataMember]
+        public Int32 form_tmpl_id{ get;set;}
 	    [DataMember]
         public String opportunity_no{ get;set;}
 	    [DataMember]
-        public Int64 resource_id{ get;set;}
+        public Int64? resource_id{ get;set;}
 	    [DataMember]
         public Int64? contact_id{ get;set;}
 	    [DataMember]
-        public Int64 account_id{ get;set;}
+        public Int64? account_id{ get;set;}
 	    [DataMember]
         public String name{ get;set;}
 	    [DataMember]
@@ -42,7 +44,9 @@ namespace EMT.DoneNOW.Core
 	    [DataMember]
         public DateTime? projected_begin_date{ get;set;}
 	    [DataMember]
-        public DateTime? projected_close_date{ get;set;}
+        public Int32? projected_close_date_type_id{ get;set;}
+	    [DataMember]
+        public Int32? projected_close_date_type_value{ get;set;}
 	    [DataMember]
         public Int64? primary_product_id{ get;set;}
 	    [DataMember]
@@ -124,7 +128,7 @@ using System.Text;
 using EMT.DoneNOW.Core;
 namespace EMT.DoneNOW.DAL
 {
-    public class crm_opportunity_dal : BaseDAL<crm_opportunity>
+    public class sys_form_tmpl_opportunity_dal : BaseDAL<sys_form_tmpl_opportunity>
     {
 		/// <summary>
         /// 比较两个对象的属性，记录不同的属性及属性值
@@ -132,13 +136,15 @@ namespace EMT.DoneNOW.DAL
         /// <param name="oldObj"></param>
         /// <param name="newObj"></param>
         /// <returns></returns>
-		public string UpdateDetail(crm_opportunity oldObj, crm_opportunity newObj)
+		public string UpdateDetail(sys_form_tmpl_opportunity oldObj, sys_form_tmpl_opportunity newObj)
 		{
 			if (oldObj == null || newObj == null)
                 return null;
 			List<ObjUpdateDto> list = new List<ObjUpdateDto>();
 			if (!Object.Equals(oldObj.id, newObj.id))
 				list.Add(new ObjUpdateDto { field = "id", old_val = oldObj.id, new_val = newObj.id });
+			if (!Object.Equals(oldObj.form_tmpl_id, newObj.form_tmpl_id))
+				list.Add(new ObjUpdateDto { field = "form_tmpl_id", old_val = oldObj.form_tmpl_id, new_val = newObj.form_tmpl_id });
 			if (!Object.Equals(oldObj.opportunity_no, newObj.opportunity_no))
 				list.Add(new ObjUpdateDto { field = "opportunity_no", old_val = oldObj.opportunity_no, new_val = newObj.opportunity_no });
 			if (!Object.Equals(oldObj.resource_id, newObj.resource_id))
@@ -163,8 +169,10 @@ namespace EMT.DoneNOW.DAL
 				list.Add(new ObjUpdateDto { field = "interest_degree_id", old_val = oldObj.interest_degree_id, new_val = newObj.interest_degree_id });
 			if (!Object.Equals(oldObj.projected_begin_date, newObj.projected_begin_date))
 				list.Add(new ObjUpdateDto { field = "projected_begin_date", old_val = oldObj.projected_begin_date, new_val = newObj.projected_begin_date });
-			if (!Object.Equals(oldObj.projected_close_date, newObj.projected_close_date))
-				list.Add(new ObjUpdateDto { field = "projected_close_date", old_val = oldObj.projected_close_date, new_val = newObj.projected_close_date });
+			if (!Object.Equals(oldObj.projected_close_date_type_id, newObj.projected_close_date_type_id))
+				list.Add(new ObjUpdateDto { field = "projected_close_date_type_id", old_val = oldObj.projected_close_date_type_id, new_val = newObj.projected_close_date_type_id });
+			if (!Object.Equals(oldObj.projected_close_date_type_value, newObj.projected_close_date_type_value))
+				list.Add(new ObjUpdateDto { field = "projected_close_date_type_value", old_val = oldObj.projected_close_date_type_value, new_val = newObj.projected_close_date_type_value });
 			if (!Object.Equals(oldObj.primary_product_id, newObj.primary_product_id))
 				list.Add(new ObjUpdateDto { field = "primary_product_id", old_val = oldObj.primary_product_id, new_val = newObj.primary_product_id });
 			if (!Object.Equals(oldObj.promotion_name, newObj.promotion_name))

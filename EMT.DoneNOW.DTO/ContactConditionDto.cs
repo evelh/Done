@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EMT.DoneNOW.DTO
 {
-    public class ContactCondition
+    public class ContactConditionDto
     {
         public string name;
         public string company_name;

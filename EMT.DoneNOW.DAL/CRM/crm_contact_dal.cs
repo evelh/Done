@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.DAL
         /// <param name="orderby"></param>
         /// <param name="pageNum"></param>
         /// <returns></returns>
-        public List<crm_contact> Find(ContactCondition condition, int pageNum, string orderby)
+        public List<crm_contact> Find(ContactConditionDto condition, int pageNum, string orderby)
         {
             StringBuilder sql = new StringBuilder();
             sql.Append(" 1=1 ");
