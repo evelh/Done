@@ -12,6 +12,9 @@ using Newtonsoft.Json.Linq;
 
 namespace EMT.DoneNOW.WebAPI.Controllers
 {
+    /// <summary>
+    /// 客户
+    /// </summary>
     public class CompanyController : BaseCRMController
     {
         CompanyBLL _bll = new CompanyBLL();
@@ -29,8 +32,9 @@ namespace EMT.DoneNOW.WebAPI.Controllers
         }
 
         /// <summary>
-        /// 查询客户信息
+        /// 获取客户信息
         /// </summary>
+        /// <param name="id">客户id</param>
         /// <returns></returns>
         [HttpGet]
         [Route("company/company")]
@@ -39,6 +43,11 @@ namespace EMT.DoneNOW.WebAPI.Controllers
             return ResultSuccess(_bll.GetCompany(id));
         }
 
+        /// <summary>
+        /// 按条件查找客户信息列表
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("company/search")]
         public ApiResultDto SearchCompany([FromBody] JObject param)

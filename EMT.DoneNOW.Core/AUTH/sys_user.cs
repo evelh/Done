@@ -17,7 +17,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]
-        public Int32? user_type { get; set; }
+        public Int32? cate_id { get; set; }
         [DataMember]
         public Int64? person_id { get; set; }
         [DataMember]
@@ -32,8 +32,7 @@ namespace EMT.DoneNOW.Core
         public Int64? organization_id { get; set; }
         [DataMember]
         public Int32 status_id { get; set; }
-        public Int64 delete_time { get; set; }
-        public Int64 delete_user_id { get; set; }
+
 
     }
 }

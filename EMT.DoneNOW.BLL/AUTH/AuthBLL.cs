@@ -14,7 +14,7 @@ namespace EMT.DoneNOW.BLL
     public class AuthBLL
     {
         private readonly sys_user_dal _dal = new sys_user_dal();
-        private const int expire_time_mins = 60 * 8;            // token过期时间(8小时)
+        private const int expire_time_mins = 2;//60 * 8;            // token过期时间(8小时)
         private const int expire_time_mins_refresh = 60 * 16;     // refreshtoken过期时间(16小时)
         private const int expire_time_secs= 60 * expire_time_mins;            // token过期时间(8小时)
         private const int expire_time_secs_refresh = 60 * expire_time_mins_refresh;     // refreshtoken过期时间(16小时)
@@ -37,13 +37,12 @@ namespace EMT.DoneNOW.BLL
             }
             else if (new RegexOp().IsMobilePhone(loginName))
             {
-                where.Append($" mobile='{loginName}' ");
+                where.Append($" mobile_phone='{loginName}' ");
             }
             else
             {
                 return ERROR_CODE.PARAMS_ERROR;
             }
-            where.Append($" AND delete_time=0 ");
 
             List<sys_user> user = _dal.FindListBySql($"SELECT * FROM sys_user WHERE {where.ToString()}");
             if (user.Count < 1)
@@ -53,7 +52,14 @@ namespace EMT.DoneNOW.BLL
                 // TODO: 输入错误密码处理
                 return ERROR_CODE.PASSWORD_ERROR;
             }
+            // TODO: user status判断
 
+            // TODO: 读resource信息用以下注释
+            sys_resource resource = new sys_resource();
+            resource.id = user[0].id;
+            resource.first_name = "A";
+            resource.last_name = "a";
+            /*
             // 根据user表信息进入租户数据库获取详细信息，以判断用户状态
             sys_resource resource = new sys_resource_dal().FindById(user[0].id);
             if (resource.is_locked == 1)
@@ -61,7 +67,7 @@ namespace EMT.DoneNOW.BLL
             if (resource.active == 0)
                 return ERROR_CODE.LOCK;
             // TODO: 更多校验及处理
-            
+            */
             var start = Math.Round((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds);
             var exp = (long)(start + expire_time_secs);
             var random = new Random();
@@ -81,7 +87,7 @@ namespace EMT.DoneNOW.BLL
                 rand = random.Next(int.MaxValue)
             };   // 获取refreshtoken
 
-            JwtEncoder encoder = new JwtEncoder(new JWT.Algorithms.HMACSHA512Algorithm(), new JWT.Serializers.JsonNetSerializer(), new JwtBase64UrlEncoder());
+            //JwtEncoder encoder = new JwtEncoder(new JWT.Algorithms.HMACSHA512Algorithm(), new JWT.Serializers.JsonNetSerializer(), new JwtBase64UrlEncoder());
             string token = EncodeToken(payload);
             string refreshToken = EncodeToken(refreshPayload);
 
@@ -97,7 +103,7 @@ namespace EMT.DoneNOW.BLL
                 refresh = refreshToken
             };
 
-            return ERROR_CODE.ERROR;
+            return ERROR_CODE.SUCCESS;
         }
 
         /// <summary>
@@ -163,7 +169,7 @@ namespace EMT.DoneNOW.BLL
 
         private string EncodeToken(TokenStructDto token)
         {
-            JwtEncoder encoder = new JwtEncoder(new JWT.Algorithms.HMACSHA512Algorithm(), new JWT.Serializers.JsonNetSerializer(), new JwtBase64UrlEncoder());
+            JwtEncoder encoder = new JwtEncoder(new JWT.Algorithms.HMACSHA256Algorithm(), new JWT.Serializers.JsonNetSerializer(), new JwtBase64UrlEncoder());
             return encoder.Encode(token, secretKey);
         }
 

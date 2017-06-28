@@ -37,7 +37,7 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
-        /// 新增商机模板
+        /// 新增商机表单模板
         /// </summary>
         /// <param name="param"></param>
         /// <param name="token"></param>
@@ -69,19 +69,58 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 更新商机表单模板
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public bool UpdateOpportunityTmpl(JObject param, string token)
+        {
+            sys_form_tmpl formTmpl = param.ToObject<sys_form_tmpl>();
+            if (formTmpl == null || formTmpl.speed_code.Equals(""))
+                return false;
+            sys_form_tmpl tmplFind = _dal.FindById(formTmpl.id);
+            if (tmplFind == null || formTmpl.form_type_id != tmplFind.form_type_id) // form_type不可修改
+                return false;
+
+            sys_form_tmpl_opportunity opportunityTmpl = param.ToObject<sys_form_tmpl_opportunity>();
+            formTmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            formTmpl.update_user_id = CachedInfoBLL.GetUserInfo(token).id;
+            opportunityTmpl.update_time = formTmpl.update_time;
+            opportunityTmpl.update_user_id = formTmpl.update_user_id;
+            _dal.Update(formTmpl);
+            new sys_form_tmpl_opportunity_dal().Update(opportunityTmpl);
+
+            return true;
+        }
+
+        /// <summary>
         /// 获取商机表单模板信息
         /// </summary>
-        /// <param name="tmplId"></param>
+        /// <param name="tmplId">表单模板id</param>
         /// <returns></returns>
         public FormTmplOpportunityDto GetOpportunityFormTmpl(int tmplId)
         {
-            return null;
+            var tmplDto = new sys_form_tmpl_opportunity_dal().GetSingle($"SELECT * FROM sys_form_tmpl_opportunity WHERE form_tmpl_id={tmplId}") as FormTmplOpportunityDto;
+            if (tmplDto == null)
+                return null;
+            var tmpl = _dal.FindById(tmplId);
+            tmplDto.id = tmpl.id;
+            tmplDto.form_type_id = tmpl.form_type_id;
+            tmplDto.range_type_id = tmpl.range_type_id;
+            tmplDto.range_department_id = tmpl.range_department_id;
+            tmplDto.speed_code = tmpl.speed_code;
+            tmplDto.remark = tmpl.remark;
+            tmplDto.tmpl_name = tmpl.tmpl_name;
+            tmplDto.tmpl_is_active = tmpl.tmpl_is_active;
+
+            return tmplDto;
         }
 
         /// <summary>
         /// 根据商机模板的form_tmpl_id获取商机模板信息
         /// </summary>
-        /// <param name="formTmplId"></param>
+        /// <param name="formTmplId">表单模板id</param>
         /// <returns></returns>
         public sys_form_tmpl_opportunity GetOpportunityTmpl(int formTmplId)
         {

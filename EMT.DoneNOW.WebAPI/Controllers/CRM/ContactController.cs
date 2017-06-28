@@ -30,6 +30,7 @@ namespace EMT.DoneNOW.WebAPI.Controllers
         /// <summary>
         /// 查询客户信息
         /// </summary>
+        /// <param name="id">客户id</param>
         /// <returns></returns>
         [HttpGet]
         [Route("contact/contact")]
@@ -38,6 +39,11 @@ namespace EMT.DoneNOW.WebAPI.Controllers
             return ResultSuccess(_bll.GetContact(id));
         }
 
+        /// <summary>
+        /// 客户搜索
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("contact/search")]
         public ApiResultDto SearchContact([FromBody] JObject param)
