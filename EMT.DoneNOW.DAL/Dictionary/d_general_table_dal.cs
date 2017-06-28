@@ -7,9 +7,9 @@ namespace EMT.DoneNOW.DAL
 {
     public class d_general_table_dal : BaseDAL<d_general_table>
     {
-        public d_general_table GetGeneralTableByRemark(string remark)
+        public d_general_table GetGeneralTableByName(string name)
         {
-            return FindSignleBySql<d_general_table>($"SELECT * FROM d_general_table WHERE remark='{remark}'");
+            return FindSignleBySql<d_general_table>($"SELECT * FROM d_general_table WHERE name='{name}'");
         }
     }
 }

@@ -23,10 +23,10 @@ namespace EMT.DoneNOW.BLL
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("company_type", new d_account_classification_dal().GetDictionary());    // 客户类型
             dic.Add("country", new d_country_dal().GetDictionary());                        // 国家表
-            dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByRemark("competition")));          // 竞争对手
-            dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByRemark("market_segment")));    // 行业
-            dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByRemark("district")));                // 行政区
-            dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByRemark("territory")));              // 销售区域
+            dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("竞争对手")));          // 竞争对手
+            dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行业")));    // 行业
+            dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行政区")));                // 行政区
+            dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("销售区")));              // 销售区域
 
             return dic;
         }

@@ -189,7 +189,8 @@
     <Compile Include="Controllers\CRM\BaseCRMController.cs" />
     <Compile Include="Controllers\CRM\CompanyController.cs" />
     <Compile Include="Controllers\CRM\ContactController.cs" />
-    <Compile Include="Controllers\System\OauthController.cs" />
+    <Compile Include="Controllers\SYS\FormTemplateController.cs" />
+    <Compile Include="Controllers\SYS\OauthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filter\ActionFilter.cs" />
     <Compile Include="Filter\WebApiErrorHandleAttribute.cs" />
