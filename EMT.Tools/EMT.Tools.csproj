@@ -7,8 +7,8 @@
     <ProjectGuid>{6E53E20F-4B91-4489-A6D5-9D188DDC650D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DSGroup.Tools</RootNamespace>
-    <AssemblyName>DSGroup.Tools</AssemblyName>
+    <RootNamespace>EMT.Tools</RootNamespace>
+    <AssemblyName>EMT.Tools</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

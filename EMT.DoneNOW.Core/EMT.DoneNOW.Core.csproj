@@ -52,6 +52,7 @@
     <Compile Include="CRM\crm_contact.cs" />
     <Compile Include="CRM\crm_opportunity.cs" />
     <Compile Include="Dictionary\d_account_classification.cs" />
+    <Compile Include="Dictionary\d_district.cs" />
     <Compile Include="Dictionary\d_general.cs" />
     <Compile Include="Dictionary\d_general_table.cs" />
     <Compile Include="Dictionary\d_country.cs" />

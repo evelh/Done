@@ -7,8 +7,8 @@
     <ProjectGuid>{CF95CBFC-6CDC-4C53-897B-919022F08CAD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DSGroup.Generators</RootNamespace>
-    <AssemblyName>DSGroup.Generators</AssemblyName>
+    <RootNamespace>EMT.Generators</RootNamespace>
+    <AssemblyName>EMT.Generators</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

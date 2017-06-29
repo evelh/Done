@@ -7,8 +7,8 @@
     <ProjectGuid>{D7704A5B-1D30-4CA1-A222-5C58DE00C860}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DSGroup.DSM2.HA.DTOMapper</RootNamespace>
-    <AssemblyName>DSGroup.DSM2.HA.DTOMapper</AssemblyName>
+    <RootNamespace>EMT.DoneNOW.DTOMapper</RootNamespace>
+    <AssemblyName>EMT.DoneNOW.DTOMapper</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
