@@ -7,29 +7,27 @@ using System.Runtime.Serialization;
 
 namespace EMT.DoneNOW.Core
 {
-    [Table("sys_login_log")]
+    [Table("d_district")]
     [Serializable]
     [DataContract]
-    public partial class sys_login_log
+    public partial class d_district
     {
 
         [Key]
         [DataMember]
-        public Int64 id { get; set; }
-        [DataMember]
-        public Int64 user_id { get; set; }
+        public Int32 id { get; set; }
         [DataMember]
         public String name { get; set; }
         [DataMember]
-        public String email { get; set; }
+        public String code { get; set; }
         [DataMember]
-        public String mobile_phone { get; set; }
+        public String remark { get; set; }
         [DataMember]
-        public DateTime login_time { get; set; }
+        public Int32? parent_id { get; set; }
         [DataMember]
-        public String ip { get; set; }
+        public SByte status_id { get; set; }
         [DataMember]
-        public String agent { get; set; }
+        public String all_name { get; set; }
 
 
     }

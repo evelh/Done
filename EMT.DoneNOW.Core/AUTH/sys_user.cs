@@ -19,8 +19,6 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32? cate_id { get; set; }
         [DataMember]
-        public Int64? person_id { get; set; }
-        [DataMember]
         public String email { get; set; }
         [DataMember]
         public String mobile_phone { get; set; }

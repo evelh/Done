@@ -9,7 +9,7 @@ namespace EMT.DoneNOW.DTO
     /// <summary>
     /// 字典表字典项对应的id值
     /// </summary>
-    public enum DictionaryEnum
+    public enum DICTIONARY_ENUM
     {
         // 表单模板应用范围
         FORM_TEMPLATE_RANG_TYPE_OWN = 88,
@@ -17,6 +17,9 @@ namespace EMT.DoneNOW.DTO
         FORM_TEMPLATE_RANG_TYPE_ALL = 90,
 
         // 表单模板类型
+        /// <summary>
+        /// 表单模板类型-商机
+        /// </summary>
         FORM_TEMPLATE_TYPE_OPPORTUNITY = 451,
     }
 }
