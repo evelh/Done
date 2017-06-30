@@ -193,6 +193,7 @@
     <Compile Include="Controllers\SYS\OauthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filter\ActionFilter.cs" />
+    <Compile Include="Filter\HeaderOperationFilter.cs" />
     <Compile Include="Filter\WebApiErrorHandleAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
