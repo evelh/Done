@@ -22,7 +22,8 @@ namespace EMT.DoneNOW.WebAPI
             var token = actionContext.Request.Headers.Where(h => h.Key.ToLower().Equals("token")).FirstOrDefault().Value;
             if (token != null)
             {
-                if (token.First() != null && BLL.CachedInfoBLL.GetUserInfo(token.First()) != null)
+                string accessToken = token.First();
+                if (accessToken != null && BLL.CachedInfoBLL.GetUserInfo(accessToken) != null)
                     return;
             }
 
