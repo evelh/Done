@@ -23,7 +23,24 @@ namespace EMT.DoneNOW.WebAPI.Controllers
         public ApiResultDto GetToken(string name, string password)
         {
             TokenDto token;
-            var rslt = new AuthBLL().Login(name, password, out token);
+            string userAgent = "";
+            if (Request.Headers.Contains("User-Agent"))
+            {
+                var headers = Request.Headers.GetValues("User-Agent");
+
+                var sb = new System.Text.StringBuilder();
+
+                foreach (var header in headers)
+                {
+                    sb.Append(header);
+
+                    // Re-add spaces stripped when user agent string was split up.
+                    sb.Append(" ");
+                }
+
+                userAgent = sb.ToString().Trim();
+            }
+            var rslt = new AuthBLL().Login(name, password, userAgent, out token);
             if (rslt == ERROR_CODE.SUCCESS)
                 return ResultSuccess(token);
             return ResultError(rslt);

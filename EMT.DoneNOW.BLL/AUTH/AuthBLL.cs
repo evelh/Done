@@ -27,7 +27,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="password">登录密码</param>
         /// <param name="tokenDto"></param>
         /// <returns></returns>
-        public ERROR_CODE Login(string loginName, string password, out TokenDto tokenDto)
+        public ERROR_CODE Login(string loginName, string password, string userAgent, out TokenDto tokenDto)
         {
             tokenDto = null;
             StringBuilder where = new StringBuilder();
