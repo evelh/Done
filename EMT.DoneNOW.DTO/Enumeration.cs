@@ -34,6 +34,8 @@ namespace EMT.DoneNOW.DTO
         FORM_TEMPLATE_OBJECT_TYPE_CONTACTS_EXTENSION_INFORMATION = 763,      // 联系人扩展信息
         FORM_TEMPLATE_OBJECT_TYPE_CUSTOMER_SITE = 764,                       // 客户站点    
         FORM_TEMPLATE_OBJECT_TYPE_TODO=765,                                  // 待办
+        FORM_TEMPLATE_OBJECT_TYPE_FROM=766,                                  // 表单模板
+        FORM_TEMPLATE_OBJECT_TYPE_FROMOPPORTUNITY = 767,                     // 商机表单模板
 
 
 
