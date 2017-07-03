@@ -30,19 +30,16 @@ namespace EMT.DoneNOW.WebAPI.Controllers
             if (Request.Headers.Contains("User-Agent"))
             {
                 var headers = Request.Headers.GetValues("User-Agent");
-
                 var sb = new System.Text.StringBuilder();
-
                 foreach (var header in headers)
                 {
                     sb.Append(header);
-
                     // Re-add spaces stripped when user agent string was split up.
                     sb.Append(" ");
                 }
-
                 userAgent = sb.ToString().Trim();
             }
+
             var rslt = new AuthBLL().Login(param.name, param.password, userAgent, ip, out token);
             if (rslt == ERROR_CODE.SUCCESS)
                 return ResultSuccess(token);
@@ -69,27 +66,26 @@ namespace EMT.DoneNOW.WebAPI.Controllers
         /// 获取用户IP地址
         /// </summary>
         /// <returns></returns>
-        public  string GetIPAddress()
+        private string GetIPAddress()
         {
             string user_IP = string.Empty;
-            if (System.Web.HttpContext.Current.Request.ServerVariables["HTTP_VIA"] != null)
+            if (HttpContext.Current.Request.ServerVariables["HTTP_VIA"] != null)
             {
-                if (System.Web.HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"] != null)
+                if (HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"] != null)
                 {
-                    user_IP = System.Web.HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"].ToString();
+                    user_IP = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"].ToString();
                 }
                 else
                 {
-                    user_IP = System.Web.HttpContext.Current.Request.UserHostAddress;
+                    user_IP = HttpContext.Current.Request.UserHostAddress;
                 }
             }
             else
             {
-                user_IP = System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"].ToString();
+                user_IP = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"].ToString();
             }
             return user_IP;
-
-          
+            
         }
     }
 }

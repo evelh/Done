@@ -66,6 +66,9 @@
     <Compile Include="SYS\sys_form_tmpl_opportunity.cs" />
     <Compile Include="SYS\sys_oper_log.cs" />
     <Compile Include="SYS\sys_query_type_user.cs" />
+    <Compile Include="SYS\sys_udf_field.cs" />
+    <Compile Include="SYS\sys_udf_group_field.cs" />
+    <Compile Include="SYS\sys_udf_list.cs" />
     <Compile Include="sys_resource.cs" />
   </ItemGroup>
   <ItemGroup />
