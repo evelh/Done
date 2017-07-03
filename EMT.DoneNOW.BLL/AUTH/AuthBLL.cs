@@ -14,7 +14,7 @@ namespace EMT.DoneNOW.BLL
     public class AuthBLL
     {
         private readonly sys_user_dal _dal = new sys_user_dal();
-        private const int expire_time_mins = 2;//60 * 8;            // token过期时间(8小时)
+        private const int expire_time_mins = 60;//60 * 8;            // token过期时间(8小时)
         private const int expire_time_mins_refresh = 60 * 16;     // refreshtoken过期时间(16小时)
         private const int expire_time_secs= 60 * expire_time_mins;            // token过期时间(8小时)
         private const int expire_time_secs_refresh = 60 * expire_time_mins_refresh;     // refreshtoken过期时间(16小时)
@@ -27,17 +27,20 @@ namespace EMT.DoneNOW.BLL
         /// <param name="password">登录密码</param>
         /// <param name="tokenDto"></param>
         /// <returns></returns>
-        public ERROR_CODE Login(string loginName, string password, string userAgent, out TokenDto tokenDto)
+        public ERROR_CODE Login(string loginName, string password, string userAgent,string ip, out TokenDto tokenDto)
         {
             tokenDto = null;
             StringBuilder where = new StringBuilder();
+            string loginType = "";
             if (new RegexOp().IsEmail(loginName))
             {
                 where.Append($" email='{loginName}' ");
+                loginType = "email";
             }
             else if (new RegexOp().IsMobilePhone(loginName))
             {
                 where.Append($" mobile_phone='{loginName}' ");
+                loginType = "mobile_phone";
             }
             else
             {
@@ -52,6 +55,10 @@ namespace EMT.DoneNOW.BLL
                 // TODO: 输入错误密码处理
                 return ERROR_CODE.PASSWORD_ERROR;
             }
+
+           
+
+
             // TODO: user status判断
 
             // TODO: 读resource信息用以下注释
@@ -102,6 +109,46 @@ namespace EMT.DoneNOW.BLL
                 token = token,
                 refresh = refreshToken
             };
+
+
+            #region 插入日志
+            //1.判断token中用户数量
+            if (_dal.IsBeyond(user[0].id))  //未超过登陆限制
+            {
+                sys_login_log login_log = new sys_login_log {
+                    agent =userAgent,id= Convert.ToInt64(_dal.GetNextIdSys()),
+                    ip =ip,login_time= DateTime.Now,name="",user_id=user[0].id};
+                if (loginType.Equals("email"))
+                {
+                    login_log.email = loginName;
+                }
+                else if (loginType.Equals("mobile_phone"))
+                {
+                    login_log.mobile_phone = loginName; 
+                }
+                new sys_login_log_dal().Insert(login_log); //向sys_login_log表中插入日志
+
+                sys_token token_log = new sys_token() {
+                    expire_time = DateTime.Now.AddMinutes(expire_time_mins),
+                    id = Convert.ToInt64(_dal.GetNextIdSys()),
+                    user_id =user[0].id,
+                      port=1,//端口1web 2APP 目前只有web，赋默认值1
+                    //  product=user[0].cate_id,
+                    token = token,
+                    refresh_token=refreshToken
+                };
+                new sys_token_dal().Insert(token_log); //向sys_token表中插入日志
+
+            }
+            else  //超出登陆限制，返回登陆数量超出
+            {
+                return ERROR_CODE.USER_LIMITCOUNT;
+            }
+
+
+
+
+            #endregion
 
             return ERROR_CODE.SUCCESS;
         }

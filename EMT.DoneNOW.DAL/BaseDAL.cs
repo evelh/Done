@@ -236,9 +236,9 @@ namespace EMT.DoneNOW.DAL
             else
                 flag = $" {delete_flag}>0 ";
             if (where == null || where.Equals(""))
-                return flag;
+                return where + flag;
             else
-                return $" AND {flag}";
+                return where + $" AND {flag}";
         }
 
         /// <summary>

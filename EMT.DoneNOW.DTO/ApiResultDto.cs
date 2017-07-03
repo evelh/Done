@@ -25,6 +25,8 @@ namespace EMT.DoneNOW.DTO
         USER_NOT_FIND,                              // 用户未注册
         PASSWORD_ERROR,                             // 密码错误
         LOCK,                                       // 限制登录
+        USER_LIMITCOUNT,                             // 登录人数超过登录限制人数
+
 
         /* CRM */
         CRM_ACCOUNT_NAME_EXIST = 3000,              // 客户名称已存在

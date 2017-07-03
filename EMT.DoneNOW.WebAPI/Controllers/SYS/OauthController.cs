@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using EMT.DoneNOW.DTO;
 using EMT.DoneNOW.BLL;
+using System.Web;
 
 namespace EMT.DoneNOW.WebAPI.Controllers
 {
@@ -22,8 +23,11 @@ namespace EMT.DoneNOW.WebAPI.Controllers
         [Route("auth/token")]
         public ApiResultDto GetToken(string name, string password)
         {
+          
             TokenDto token;
             string userAgent = "";
+            var ip = GetIPAddress();
+           
             if (Request.Headers.Contains("User-Agent"))
             {
                 var headers = Request.Headers.GetValues("User-Agent");
@@ -40,7 +44,7 @@ namespace EMT.DoneNOW.WebAPI.Controllers
 
                 userAgent = sb.ToString().Trim();
             }
-            var rslt = new AuthBLL().Login(name, password, userAgent, out token);
+            var rslt = new AuthBLL().Login(name, password, userAgent,ip, out token);
             if (rslt == ERROR_CODE.SUCCESS)
                 return ResultSuccess(token);
             return ResultError(rslt);
@@ -61,6 +65,40 @@ namespace EMT.DoneNOW.WebAPI.Controllers
             if (rslt)
                 return ResultSuccess(token);
             return ResultError(ERROR_CODE.PARAMS_ERROR);
+        }
+        /// <summary>
+        /// 获取用户IP地址
+        /// </summary>
+        /// <returns></returns>
+        public  string GetIPAddress()
+        {
+            //HttpRequest request = HttpContext.Current.Request;
+
+            //string result = request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            //if (string.IsNullOrEmpty(result)) { result = request.ServerVariables["REMOTE_ADDR"]; }
+            //if (string.IsNullOrEmpty(result))
+            //{ result = request.UserHostAddress; }
+            //if (string.IsNullOrEmpty(result))
+            //{ result = "0.0.0.0"; }
+            string user_IP = string.Empty;
+            if (System.Web.HttpContext.Current.Request.ServerVariables["HTTP_VIA"] != null)
+            {
+                if (System.Web.HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"] != null)
+                {
+                    user_IP = System.Web.HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"].ToString();
+                }
+                else
+                {
+                    user_IP = System.Web.HttpContext.Current.Request.UserHostAddress;
+                }
+            }
+            else
+            {
+                user_IP = System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"].ToString();
+            }
+            return user_IP;
+
+          
         }
     }
 }
