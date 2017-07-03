@@ -73,9 +73,14 @@
     <Compile Include="Dictionary\d_general_table_dal.cs" />
     <Compile Include="Dictionary\d_account_classification_dal.cs" />
     <Compile Include="Dictionary\d_country_dal.cs" />
+    <Compile Include="Dictionary\d_query_para_dal.cs" />
+    <Compile Include="Dictionary\d_query_result_dal.cs" />
+    <Compile Include="Dictionary\d_query_sql_dal.cs" />
+    <Compile Include="Dictionary\d_query_type_dal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SYS\sys_form_tmpl_dal.cs" />
     <Compile Include="SYS\sys_form_tmpl_opportunity_dal.cs" />
+    <Compile Include="SYS\sys_query_type_user_dal.cs" />
     <Compile Include="sys_resource_dal.cs" />
   </ItemGroup>
   <ItemGroup>
