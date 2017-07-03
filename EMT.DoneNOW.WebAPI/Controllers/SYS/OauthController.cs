@@ -15,13 +15,12 @@ namespace EMT.DoneNOW.WebAPI.Controllers
         /// <summary>
         /// 获取token和refresh token
         /// </summary>
-        /// <param name="name">登录名（用户手机号或邮箱）</param>
-        /// <param name="password">密码（用户密码的md5值）</param>
+        /// <param name="param"></param>
         /// <returns>token和refresh token值</returns>
         [AllowAnonymousAttribute]
-        [HttpGet]
+        [HttpPost]
         [Route("auth/token")]
-        public ApiResultDto GetToken(string name, string password)
+        public ApiResultDto GetToken([FromBody] UserAuthDto param)
         {
           
             TokenDto token;
@@ -44,7 +43,7 @@ namespace EMT.DoneNOW.WebAPI.Controllers
 
                 userAgent = sb.ToString().Trim();
             }
-            var rslt = new AuthBLL().Login(name, password, userAgent,ip, out token);
+            var rslt = new AuthBLL().Login(param.name, param.password, userAgent, ip, out token);
             if (rslt == ERROR_CODE.SUCCESS)
                 return ResultSuccess(token);
             return ResultError(rslt);
