@@ -113,7 +113,7 @@ namespace EMT.DoneNOW.BLL
             sys_form_tmpl formTmpl = param.ToObject<sys_form_tmpl>();
             if (formTmpl == null || formTmpl.speed_code.Equals(""))
                 return false;
-            sys_form_tmpl tmplFind = _dal.FindById(formTmpl.id);
+            sys_form_tmpl tmplFind = _dal.FindById(formTmpl.id); // 查询到的修改之前的数据
             if (tmplFind == null || formTmpl.form_type_id != tmplFind.form_type_id) // form_type不可修改
                 return false;
 
@@ -125,6 +125,48 @@ namespace EMT.DoneNOW.BLL
             _dal.Update(formTmpl);
             new sys_form_tmpl_opportunity_dal().Update(opportunityTmpl);
 
+            //var user = CachedInfoBLL.GetUserInfo(token);// 获取到用户信息之后，将更改的数据内容存储到数据库中
+            //// var user = new UserInfoDto() { id=1,dbid=1,name="123",department_id=1,email="liuhai_dsjt@shdsjt.cn",mobile= "18217750743" ,security_Level_id=2};
+            //var description = _dal.CompareValue(formTmpl, tmplFind);
+            //if (user != null)
+            //{
+            //    sys_oper_log log = new sys_oper_log()
+            //    {
+            //        user_cate = "用户",
+            //        user_id = (int)user.id,
+            //        name = user.name,
+            //        phone = user.mobile==null?"":user.mobile,
+            //        oper_time = DateTime.Now,
+            //        oper_object_cate_id = 737,// 商机对应id d_general表中定义
+            //        oper_object_id = formTmpl.id,// 操作对象ID
+            //        oper_type_id =(int)DICTIONARY_ENUM.FORM_TEMPLATE_OPERATION_TYPE_UPDATE,// 800 增  801 删  802 改
+            //        oper_description = description,
+            //        remark = ""
+            //    };
+            //    new sys_oper_log_dal().Insert(log);
+            //}
+
+
+            //// 新增时添加日志的测试
+            //var val = new sys_form_tmpl() {id=(int)_dal.GetNextIdSys(),create_time=123,create_user_id=1,form_type_id=1,tmpl_name="1" };
+            //var content = _dal.AddValue(val);
+            //var addLog = new sys_oper_log()
+            //{
+            //    user_cate = "用户",
+            //    user_id = (int)user.id,
+            //    name = "",
+            //    phone = user.mobile == null ? "" : user.mobile,
+            //    oper_time = DateTime.Now,
+            //    oper_object_cate_id = 737,// 商机对应id d_general表中定义
+            //    oper_object_id = val.id,// 操作对象ID
+            //    oper_type_id = (int)DICTIONARY_ENUM.FORM_TEMPLATE_OPERATION_TYPE_ADD,
+            //    oper_description = content,
+            //    remark = ""
+
+            //};
+            //new sys_oper_log_dal().Insert(addLog);
+
+       
             return true;
         }
 

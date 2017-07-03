@@ -46,6 +46,7 @@
     <Compile Include="DictionaryEntryDto.cs" />
     <Compile Include="Enumeration.cs" />
     <Compile Include="FormTmplOpportunityDto.cs" />
+    <Compile Include="ObjAddDto.cs" />
     <Compile Include="ObjUpdateDto.cs" />
     <Compile Include="OpportunityConditionDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

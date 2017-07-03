@@ -71,14 +71,6 @@ namespace EMT.DoneNOW.WebAPI.Controllers
         /// <returns></returns>
         public  string GetIPAddress()
         {
-            //HttpRequest request = HttpContext.Current.Request;
-
-            //string result = request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-            //if (string.IsNullOrEmpty(result)) { result = request.ServerVariables["REMOTE_ADDR"]; }
-            //if (string.IsNullOrEmpty(result))
-            //{ result = request.UserHostAddress; }
-            //if (string.IsNullOrEmpty(result))
-            //{ result = "0.0.0.0"; }
             string user_IP = string.Empty;
             if (System.Web.HttpContext.Current.Request.ServerVariables["HTTP_VIA"] != null)
             {

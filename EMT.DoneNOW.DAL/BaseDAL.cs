@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace EMT.DoneNOW.DAL
 {
-    public abstract  class BaseDAL<T> where T:class
+    public abstract class BaseDAL<T> where T : class
     {
         protected DapperHelper helper = new DapperHelper();
         private const int _pageSize = 15;     // 默认查询分页大小
@@ -257,7 +257,7 @@ namespace EMT.DoneNOW.DAL
         #endregion
 
         #region sequence
-        
+
         /// <summary>
         /// 从数据库获取sequence
         /// </summary>
@@ -292,5 +292,74 @@ namespace EMT.DoneNOW.DAL
 
         #endregion
 
+        /// <summary>
+        /// 比较两个类中的属性值是否有变化,返回有变化的属性，并将旧的和新的值记录下来
+        /// </summary>
+        /// <param name="old_value">旧的值</param>
+        /// <param name="new_value">新的值</param>
+        /// <returns></returns>
+        public string CompareValue<T1>(T1 old_value, T1 new_value)
+        {
+            if (old_value == null || new_value == null)
+                return null;
+            List<ObjUpdateDto> list = new List<ObjUpdateDto>();// 类型更改的类集合
+            Type t = typeof(T1);// 首先获取T的类
+            PropertyInfo[] properties = t.GetProperties();// 获取到T中的所有的属性
+
+            foreach (PropertyInfo p in properties)// 循环遍历所有的属性
+            {
+                if (!GetObjectPropertyValue(old_value, p.Name).Equals(GetObjectPropertyValue(new_value, p.Name)))// 将旧的和新的进行比较，将不同放入集合中
+                {
+                    list.Add(new ObjUpdateDto() { field = p.Name, old_val = GetObjectPropertyValue(old_value, p.Name), new_val = GetObjectPropertyValue(new_value, p.Name) });
+                }
+            }
+            if (list.Count == 0)
+                return "";
+            return new Tools.Serialize().SerializeJson(list);
+        }
+        /// <summary>
+        /// 将类中所有的非空的属性和属性的值记录下来，并且返回
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public string AddValue<T1>(T1 t)
+        {
+            if (t == null)
+                return null;
+            List<ObjAddDto> addList = new List<ObjAddDto>();
+            Type type = typeof(T1);
+            PropertyInfo[] properties = type.GetProperties();// 获取到T中的所有的属性
+            foreach (PropertyInfo p in properties)
+            {
+                addList.Add(new ObjAddDto() { field = p.Name, val = GetObjectPropertyValue(t, p.Name) });
+            }
+            if (addList.Count == 0)
+                return "";
+            return new Tools.Serialize().SerializeJson(addList);
+        }
+
+        /// <summary>
+        /// 获取到T模板中的属性的值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <param name="propertyname"></param>
+        /// <returns></returns>
+        public static string GetObjectPropertyValue<T1>(T1 t, string propertyname)
+        {
+            // T模板类型
+            Type type = typeof(T1);
+            // 获得属性
+            PropertyInfo property = type.GetProperty(propertyname);
+            // 属性非空判断
+            if (property == null) return string.Empty;
+            // 获取Value
+            object o = property.GetValue(t, null);
+            // Value非空判断
+            if (o == null) return string.Empty;
+            // 返回Value
+            return o.ToString();
+        }
     }
 }
