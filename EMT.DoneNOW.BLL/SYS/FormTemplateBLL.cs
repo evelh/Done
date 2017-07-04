@@ -22,7 +22,7 @@ namespace EMT.DoneNOW.BLL
         public List<sys_form_tmpl> GetAllFormTemplate(JObject param)
         {
             // TODO: param取得分页和排序信息
-            return _dal.FindListBySql(_dal.QueryStringDeleteFlag($"SELECT * FROM sys_form_tmpl WHERE form_type_id={DICTIONARY_ENUM.FORM_TEMPLATE_TYPE_OPPORTUNITY}"));
+            return _dal.FindListBySql(_dal.QueryStringDeleteFlag($"SELECT * FROM sys_form_tmpl WHERE form_type_id={DicEnum.FORM_TMPL_TYPE.OPPORTUNITY}"));
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace EMT.DoneNOW.BLL
             bool delRslt = false;
             switch (tmpl.form_type_id)  // 判断表单类型
             {
-                case (int)DICTIONARY_ENUM.FORM_TEMPLATE_TYPE_OPPORTUNITY:
+                case (int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY:
                     delRslt = DeleteOpportunityFormTmpl(tmplId, userid);
                     break;
                 default:
@@ -86,7 +86,7 @@ namespace EMT.DoneNOW.BLL
             formTmpl.create_user_id = CachedInfoBLL.GetUserInfo(token).id;
             formTmpl.update_time = formTmpl.create_time;
             formTmpl.update_user_id = formTmpl.create_user_id;
-            formTmpl.form_type_id = (int)DICTIONARY_ENUM.FORM_TEMPLATE_TYPE_OPPORTUNITY;
+            formTmpl.form_type_id = (int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY;
             formTmpl.id = (int)_dal.GetNextIdSys();
             _dal.Insert(formTmpl);
 
@@ -180,7 +180,7 @@ namespace EMT.DoneNOW.BLL
             var tmpl = _dal.FindById(tmplId);
             switch (tmpl.form_type_id)  // 判断表单类型
             {
-                case (int)DICTIONARY_ENUM.FORM_TEMPLATE_TYPE_OPPORTUNITY:
+                case (int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY:
                     return GetOpportunityFormTmpl(tmplId);
                 default:
                     return null;
@@ -248,7 +248,7 @@ namespace EMT.DoneNOW.BLL
         {
             // TODO: 获取用户部门，得到该部门可见的表单模板
             var userinfo = CachedInfoBLL.GetUserInfo(token);
-            string sql = $"SELECT * FROM sys_form_tmpl WHERE form_type_id={DICTIONARY_ENUM.FORM_TEMPLATE_TYPE_OPPORTUNITY} AND (range_type_id={DICTIONARY_ENUM.FORM_TEMPLATE_RANG_TYPE_ALL} OR (create_user_id={userinfo.id} AND range_type_id={DICTIONARY_ENUM.FORM_TEMPLATE_RANG_TYPE_OWN}))";   // TODO: 部门可见的模板
+            string sql = $"SELECT * FROM sys_form_tmpl WHERE form_type_id={DicEnum.FORM_TMPL_TYPE.OPPORTUNITY} AND (range_type_id={DicEnum.RANG_TYPE.ALL} OR (create_user_id={userinfo.id} AND range_type_id={DicEnum.RANG_TYPE.OWN}))";   // TODO: 部门可见的模板
             return _dal.FindListBySql(_dal.QueryStringDeleteFlag(sql));
         }
     }
