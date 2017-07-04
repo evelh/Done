@@ -53,6 +53,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TokenDto.cs" />
     <Compile Include="UserAuthDto.cs" />
+    <Compile Include="UserDefinedFieldDto.cs" />
+    <Compile Include="UserDefinedFieldValue.cs" />
     <Compile Include="UserInfoDto.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
