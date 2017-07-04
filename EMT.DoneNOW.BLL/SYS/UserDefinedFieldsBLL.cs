@@ -15,7 +15,7 @@ namespace EMT.DoneNOW.BLL
     public class UserDefinedFieldsBLL
     {
         /// <summary>
-        /// 获取一个对象包含的用户自定义字段
+        /// 获取一个对象包含的用户自定义字段信息
         /// </summary>
         /// <param name="cate">对象分类</param>
         /// <returns></returns>
@@ -36,6 +36,24 @@ namespace EMT.DoneNOW.BLL
             }
 
             return list;
+        }
+
+        public bool SaveUdfValue(List<UserDefinedFieldDto> fields, List<UserDefinedFieldValue> value)
+        {
+            if (value == null || value.Count == 0)
+                return true;
+
+            StringBuilder select = new StringBuilder();
+            StringBuilder values = new StringBuilder();
+            foreach (var val in value)
+            {
+                var field = fields.FindAll(s => s.id == val.id);
+                if (field == null || field.Count == 0)
+                    continue;
+                select.Append(field.First().col_name).Append(",");
+            }
+
+            return true;
         }
     }
 }
