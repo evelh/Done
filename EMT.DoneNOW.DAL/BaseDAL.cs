@@ -186,7 +186,7 @@ namespace EMT.DoneNOW.DAL
             return helper.Single<T1>(sql, param);
         }
         /// <summary>
-        /// 执行sql语句
+        /// 执行sql语句，返回影响的行数
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>

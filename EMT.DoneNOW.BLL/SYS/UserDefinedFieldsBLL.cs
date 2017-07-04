@@ -38,7 +38,15 @@ namespace EMT.DoneNOW.BLL
             return list;
         }
 
-        public bool SaveUdfValue(List<UserDefinedFieldDto> fields, List<UserDefinedFieldValue> value)
+        /// <summary>
+        /// 保存记录中的自定义字段值
+        /// </summary>
+        /// <param name="cate">客户、联系人等类别</param>
+        /// <param name="objId">记录的id</param>
+        /// <param name="fields">自定义字段信息</param>
+        /// <param name="value">自定义字段值</param>
+        /// <returns></returns>
+        public bool SaveUdfValue(DicEnum.UDF_CATE cate, long objId, List<UserDefinedFieldDto> fields, List<UserDefinedFieldValue> value)
         {
             if (value == null || value.Count == 0)
                 return true;
@@ -50,8 +58,28 @@ namespace EMT.DoneNOW.BLL
                 var field = fields.FindAll(s => s.id == val.id);
                 if (field == null || field.Count == 0)
                     continue;
-                select.Append(field.First().col_name).Append(",");
+                select.Append(",").Append(field.First().col_name);
+                values.Append(",").Append(val.value);
             }
+            if (values.Length == 0)
+                return false;
+
+            string table = "";
+            switch (cate)
+            {
+                case DicEnum.UDF_CATE.COMPANY:
+                    table = "crm_account_ext";
+                    break;
+                case DicEnum.UDF_CATE.CONTACT:
+                    table = "crm_contact_ext";
+                    break;
+                    // TODO: 其他类别
+                default:
+                    break;
+            }
+            var dal = new sys_udf_field_dal();
+            string insert = $"INSERT INTO {table} (id,parent_id{select.ToString()}) VALUES ({dal.GetNextIdSys()},{objId}{values.ToString()})";
+            dal.ExecuteSQL(insert);
 
             return true;
         }
