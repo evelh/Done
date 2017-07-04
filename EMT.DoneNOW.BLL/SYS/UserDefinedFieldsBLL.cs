@@ -64,6 +64,74 @@ namespace EMT.DoneNOW.BLL
             if (values.Length == 0)
                 return false;
 
+            string table = GetTableName(cate);
+            var dal = new sys_udf_field_dal();
+            string insert = $"INSERT INTO {table} (id,parent_id{select.ToString()}) VALUES ({dal.GetNextIdSys()},{objId}{values.ToString()})";
+            dal.ExecuteSQL(insert);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 根据记录id获取字段值
+        /// </summary>
+        /// <param name="cate"></param>
+        /// <param name="objId"></param>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public List<UserDefinedFieldValue> GetUdfValue(DicEnum.UDF_CATE cate, long objId, List<UserDefinedFieldDto> fields)
+        {
+            var list = new List<UserDefinedFieldValue>();
+            string table = GetTableName(cate);
+            string sql = $"SELECT * FROM {table} WHERE parent_id={objId}";
+            var reader = new sys_udf_field_dal().ExecuteReader(sql);
+            while (reader.Read())
+            {
+                foreach (var field in fields)
+                {
+                    int index = reader.GetOrdinal(field.col_name);
+                    string val = reader.GetString(index);
+                    list.Add(new UserDefinedFieldValue { id = field.id, value = val });
+                }
+                return list;
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 根据多个记录id获取字段值
+        /// </summary>
+        /// <param name="cate"></param>
+        /// <param name="ids">记录的id值，如 2,5,6</param>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public Dictionary<long, List<UserDefinedFieldValue>> GetUdfValue(DicEnum.UDF_CATE cate, string ids, List<UserDefinedFieldDto> fields)
+        {
+            var dic = new Dictionary<long, List<UserDefinedFieldValue>>();
+            string table = GetTableName(cate);
+            string sql = $"SELECT * FROM {table} WHERE parent_id IN ({ids})";
+            var reader = new sys_udf_field_dal().ExecuteReader(sql);
+            while (reader.Read())
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach (var field in fields)
+                {
+                    int index = reader.GetOrdinal(field.col_name);
+                    string val = reader.GetString(index);
+                    list.Add(new UserDefinedFieldValue { id = field.id, value = val });
+                }
+                dic.Add(reader.GetInt64(1), list);
+            }
+            return dic;
+        }
+
+        /// <summary>
+        /// 获取用户自定义字段表名
+        /// </summary>
+        /// <param name="cate"></param>
+        /// <returns></returns>
+        private string GetTableName(DicEnum.UDF_CATE cate)
+        {
             string table = "";
             switch (cate)
             {
@@ -73,15 +141,11 @@ namespace EMT.DoneNOW.BLL
                 case DicEnum.UDF_CATE.CONTACT:
                     table = "crm_contact_ext";
                     break;
-                    // TODO: 其他类别
+                // TODO: 其他类别
                 default:
                     break;
             }
-            var dal = new sys_udf_field_dal();
-            string insert = $"INSERT INTO {table} (id,parent_id{select.ToString()}) VALUES ({dal.GetNextIdSys()},{objId}{values.ToString()})";
-            dal.ExecuteSQL(insert);
-
-            return true;
+            return table;
         }
     }
 }

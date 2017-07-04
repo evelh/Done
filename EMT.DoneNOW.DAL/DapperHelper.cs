@@ -100,6 +100,19 @@ namespace EMT.DoneNOW.DAL
             }
         }
         /// <summary>
+        /// Execute parameterized SQL and return an System.Data.IDataReader
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public IDataReader ExecuteReader(string sql, object param = null)
+        {
+            using (IDbConnection connect = BuildConnection())
+            {
+                return connect.ExecuteReader(sql, param);
+            }
+        }
+        /// <summary>
         /// 添加
         /// </summary>
         /// <param name="sql"></param>

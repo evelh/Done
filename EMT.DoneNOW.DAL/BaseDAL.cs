@@ -195,6 +195,15 @@ namespace EMT.DoneNOW.DAL
             return helper.ExecuteSQL(sql);
         }
         /// <summary>
+        /// 执行sql语句，返回IDataReader
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public IDataReader ExecuteReader(string sql)
+        {
+            return helper.ExecuteReader(sql);
+        }
+        /// <summary>
         /// 执行存储过程
         /// </summary>
         /// <typeparam name="T1"></typeparam>

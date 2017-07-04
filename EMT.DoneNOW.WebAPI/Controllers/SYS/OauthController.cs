@@ -22,7 +22,6 @@ namespace EMT.DoneNOW.WebAPI.Controllers
         [Route("auth/token")]
         public ApiResultDto GetToken([FromBody] UserAuthDto param)
         {
-          
             TokenDto token;
             string userAgent = "";
             var ip = GetIPAddress();
