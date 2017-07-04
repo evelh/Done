@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiResultDto.cs" />
+    <Compile Include="CompanyAddDto.cs" />
     <Compile Include="CompanyConditionDto.cs" />
     <Compile Include="ContactConditionDto.cs" />
     <Compile Include="DictionaryEntryDto.cs" />
