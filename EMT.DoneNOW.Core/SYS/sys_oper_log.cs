@@ -13,23 +13,24 @@ namespace EMT.DoneNOW.Core
     public partial class sys_oper_log
     {
 
+
         [Key]
         [DataMember]
-        public Int32 id { get; set; }
+        public Int64 id { get; set; }
         [DataMember]
         public String user_cate { get; set; }
         [DataMember]
-        public Int32 user_id { get; set; }
+        public Int64 user_id { get; set; }
         [DataMember]
         public String name { get; set; }
         [DataMember]
         public String phone { get; set; }
         [DataMember]
-        public DateTime oper_time { get; set; }
+        public Int64 oper_time { get; set; }
         [DataMember]
         public Int32 oper_object_cate_id { get; set; }
         [DataMember]
-        public Int32 oper_object_id { get; set; }
+        public Int64 oper_object_id { get; set; }
         [DataMember]
         public Int32 oper_type_id { get; set; }
         [DataMember]
