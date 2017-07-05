@@ -27,7 +27,7 @@ namespace EMT.DoneNOW.BLL
             var list = dal.FindListBySql<UserDefinedFieldDto>(sql);
             foreach (var udf in list)
             {
-                if (udf.cate == (int)DicEnum.UDF_DATA_TYPE.LIST)
+                if (udf.data_type == (int)DicEnum.UDF_DATA_TYPE.LIST)
                 {
                     var valList = udfListDal.FindListBySql<DictionaryEntryDto>(udfListDal.QueryStringDeleteFlag($"SELECT id as 'val',name as 'show',is_default as 'select' FROM sys_udf_list WHERE udf_field_id={udf.id} status_id=0"));
                     if (valList != null && valList.Count != 0)
@@ -36,6 +36,59 @@ namespace EMT.DoneNOW.BLL
             }
 
             return list;
+        }
+
+        /// <summary>
+        /// 增加自定义字段
+        /// </summary>
+        /// <param name="cate"></param>
+        /// <param name="udf"></param>
+        /// <returns></returns>
+        public bool AddUdf(DicEnum.UDF_CATE cate, UserDefinedFieldDto udf, string token)
+        {
+            string table = GetTableName(cate);
+            var dal = new sys_udf_field_dal();
+
+            var field = new sys_udf_field();
+            field.id = dal.GetNextIdSys();
+            field.col_name = GetNextColName();
+            field.col_comment = udf.name;
+            field.description = udf.description;
+            field.cate_id = udf.cate;
+            field.data_type_id = udf.data_type;
+            field.default_value = udf.default_value;
+            field.is_protected = 0;
+            field.is_required = udf.required;
+            field.is_active = 1;
+            field.display_format_id = udf.display_format;
+            field.decimal_length = udf.decimal_length;
+            field.create_user_id = CachedInfoBLL.GetUserInfo(token).id;
+            field.update_user_id = field.create_user_id;
+            field.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            field.update_time = field.create_time;
+            dal.Insert(field);
+
+            if (udf.data_type == (int)DicEnum.UDF_DATA_TYPE.LIST)       // 字段为列表类型，保存列表值
+            {
+                if (udf.value_list != null && udf.value_list.Count > 0)
+                {
+                    var listDal = new sys_udf_list_dal();
+                    foreach(var listVal in udf.value_list)
+                    {
+                        sys_udf_list val = new sys_udf_list();
+                        val.id = listDal.GetNextIdSys();
+                        val.is_default = (sbyte)listVal.select;
+                        val.name = listVal.show;
+                        val.status_id = 0;
+                        val.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        val.update_time = val.create_time;
+                        val.create_user_id = field.create_user_id;
+                        val.update_user_id = val.create_user_id;
+                        listDal.Insert(val);
+                    }
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -146,6 +199,22 @@ namespace EMT.DoneNOW.BLL
                     break;
             }
             return table;
+        }
+
+        /// <summary>
+        /// 获取一个未使用的字段名
+        /// </summary>
+        /// <returns></returns>
+        private string GetNextColName()
+        {
+            var dal = new sys_udf_field_dal();
+            var field = dal.FindSignleBySql<sys_udf_field>($"SELECT * FROM sys_udf_field ORDER BY id DESC LIMIT 1");
+            if (field == null)
+                return "col001";
+            int index = int.Parse(field.col_name.Remove(0, 3));
+            ++index;
+            
+            return "col" + index.ToString().PadLeft(3, '0');
         }
     }
 }

@@ -63,6 +63,16 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
+        /// 自定义字段显示样式
+        /// </summary>
+        public enum UDF_DISPLAY_FORMAT
+        {
+            UNDEFINED = 547,        // 未定义
+            SINGLE_LINE = 548,      // 单行
+            MUILTI_LINE = 549,      // 多行
+        }
+
+        /// <summary>
         /// 操作日志：对象种类-68
         /// </summary>
         public enum OPER_LOG_OBJ_CATE
