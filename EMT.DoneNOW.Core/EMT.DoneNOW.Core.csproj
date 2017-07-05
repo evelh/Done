@@ -45,6 +45,8 @@
     <Compile Include="AUTH\sys_login_log.cs" />
     <Compile Include="AUTH\sys_token.cs" />
     <Compile Include="AUTH\sys_user.cs" />
+    <Compile Include="COM\com_note.cs" />
+    <Compile Include="COM\com_todo.cs" />
     <Compile Include="CRM\crm_account.cs" />
     <Compile Include="CRM\crm_account_alert.cs" />
     <Compile Include="CRM\crm_account_note.cs" />

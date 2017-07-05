@@ -53,6 +53,15 @@ namespace EMT.DoneNOW.DTO
             LIST = 530,                 // 列表
         }
 
+        public enum OBJECT_TYPE
+        {
+            CUSTOMER = 735,     // 客户
+            CONTACT = 736,      // 联系人
+            OPPORTUNITY = 737,  // 商机
+            QUOTE = 738,        // 报价
+            CONTRACT = 739,     // 合同
+        }
+
         /// <summary>
         /// 操作日志：对象种类-68
         /// </summary>

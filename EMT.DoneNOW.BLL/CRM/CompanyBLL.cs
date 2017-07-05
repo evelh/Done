@@ -68,7 +68,7 @@ namespace EMT.DoneNOW.BLL
 
             var user = new UserInfoDto()
             {
-                id = 1,email="123@test.com",mobile="123",name="zhufei_test",
+                id = 1,email="1zhufei@test.com",mobile="10086",name="zhufei_test",
                 security_Level_id=0
             };
             if (user == null)
@@ -107,9 +107,9 @@ namespace EMT.DoneNOW.BLL
                 //asset_value=0,  //  市值
                 last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 type_id = param.general.company_type,
-                opportunity_value = 0, // 当前商机汇总值
-                block_purchase_total = 0,  //  预定时段采购总额，时长
-                block_deduction_total = 0, //  扣除
+                // opportunity_value = 0, // 当前商机汇总值
+                // block_purchase_total = 0,  //  预定时段采购总额，时长
+                // block_deduction_total = 0, //  扣除
                 classification_id = param.general.classification,
                 // use_parent_account_contracts = (sbyte)0, // 是否使用母公司合同
 
@@ -126,7 +126,7 @@ namespace EMT.DoneNOW.BLL
                 user_id = (int)user.id,
                 name = "",
                 phone = user.mobile == null ? "" : user.mobile,
-                oper_time = DateTime.Now,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
                 oper_object_id = (int)_account.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.ADD,
@@ -139,7 +139,7 @@ namespace EMT.DoneNOW.BLL
 
             #region 2.保存联系人
             // 联系人的姓和名只输入一个时，不创建联系人  
-            // 联系人相关信息的修改不影响客户上相关字段
+            // 联系人相关信息的修改不影响客户上相关字段 
             crm_contact _contact = null;
             if (!string.IsNullOrEmpty(param.contact.first_name)) // 联系人填写了姓
             {
@@ -164,16 +164,15 @@ namespace EMT.DoneNOW.BLL
                     name = param.contact.first_name + param.contact.last_name,
                     email = param.contact.email,
                     //其余字段暂定  todo
-
                 };
                 new crm_contact_dal().Insert(_contact);
                 var add_contact_log = new sys_oper_log()
                 {
                     user_cate = "用户",
-                    user_id = (int)user.id,
+                    user_id = user.id,
                     name = "",
                     phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = DateTime.Now,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
                     oper_object_id = (int)_contact.id,// 操作对象id
                     oper_type_id = (int)OPER_LOG_TYPE.ADD,
@@ -195,10 +194,10 @@ namespace EMT.DoneNOW.BLL
                 var add_accout_udf_log = new sys_oper_log()
                 {
                     user_cate = "用户",
-                    user_id = (int)user.id,
+                    user_id = user.id,
                     name = "",
                     phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = DateTime.Now,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
                     oper_object_id = (int)_account.id,// 操作对象id
                     oper_type_id = (int)OPER_LOG_TYPE.ADD,
@@ -220,10 +219,10 @@ namespace EMT.DoneNOW.BLL
                     var add_contact_udf_log = new sys_oper_log()
                     {
                         user_cate = "用户",
-                        user_id = (int)user.id,
+                        user_id = user.id,
                         name = "",
                         phone = user.mobile == null ? "" : user.mobile,
-                        oper_time = DateTime.Now,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
                         oper_object_id = (int)_contact.id,// 操作对象id
                         oper_type_id = (int)OPER_LOG_TYPE.ADD,
@@ -244,10 +243,10 @@ namespace EMT.DoneNOW.BLL
                 sys_oper_log add_site_udf_log = new sys_oper_log()
                 {
                     user_cate = "用户",
-                    user_id = (int)user.id,
+                    user_id = user.id,
                     name = "",
                     phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = DateTime.Now,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
                     oper_object_id = (int)_account.id,// 操作对象id
                     oper_type_id = (int)OPER_LOG_TYPE.ADD,
@@ -282,10 +281,10 @@ namespace EMT.DoneNOW.BLL
             sys_oper_log add_location_log = new sys_oper_log()
             {
                 user_cate = "用户",
-                user_id = (int)user.id,
+                user_id = user.id,
                 name = "",
                 phone = user.mobile == null ? "" : user.mobile,
-                oper_time = DateTime.Now,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
                 oper_object_id = (int)_location.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.ADD,
@@ -301,31 +300,34 @@ namespace EMT.DoneNOW.BLL
                 if (param.note.end_time != null && param.note.start_time != null && !string.IsNullOrEmpty(param.note.description))
                 {
                     // 进行非空校验之后，创建备注对象，并将日志插入表中 
-                    crm_account_note _note = new crm_account_note()
+                    com_note _note = new com_note()
                     {
                         id = _dal.GetNextIdCom(),
                         account_id = _account.id,
-                        contact_id = _contact == null ? 0 : _contact.id,
-                        classification_id = param.general.classification,
+                       // contact_id = _contact == null ? 0 : _contact.id,
+                        object_id = _account.id,
+                        object_type_id = (int)OBJECT_TYPE.CUSTOMER,
                         action_type_id = param.note.action_type,
                         start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(param.note.start_time),
                         end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(param.note.end_time),
-                        detail = param.note.description,
+                        description = param.note.description,
                         create_user_id = user.id,
                         create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         update_user_id = user.id,
                         update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        name = "",
-                        priority = 0,  // todo 
+                        delete_time = 0 ,
+                       // name = "",
+                       // priority = 0,  // todo 
+                        
                     };
-                    new crm_account_note_dal().Insert(_note);
+                    new com_note_dal().Insert(_note);
                     sys_oper_log add_note_log = new sys_oper_log()
                     {
                         user_cate = "用户",
-                        user_id = (int)user.id,
+                        user_id = user.id,
                         name = "",
                         phone = user.mobile == null ? "" : user.mobile,
-                        oper_time = DateTime.Now,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
                         oper_object_id = (int)_note.id,// 操作对象id
                         oper_type_id = (int)OPER_LOG_TYPE.ADD,
@@ -345,31 +347,34 @@ namespace EMT.DoneNOW.BLL
             {
                 if (param.todo.assigned_to != 0 && param.todo.start_time != null && param.todo.end_time != null && !string.IsNullOrEmpty(param.todo.description))
                 {
-                    crm_account_todo _todo = new crm_account_todo()
+                    com_todo _todo = new com_todo()
                     {
                         id = _dal.GetNextIdCom(),
-                        account_id = user.id,
-                        contact_id = _contact == null ? 0 : _contact.id,
-                        resource_id = 0, //  todo
+                        account_id = _account.id,
+                        //contact_id = _contact == null ? 0 : _contact.id,
+                        resource_id = user.id,  // 负责人 id
+                        //status_id = 0,  // 激活状态 0 未激活 1 激活
                         //classification_id = param._general.classification,
                         action_type_id = param.todo.action_type,
+                        object_id = (int)OBJECT_TYPE.CUSTOMER,
                         start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(param.todo.start_time),
                         end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(param.todo.end_time),
-                        priority = 0,//  todo 
+                        description = param.todo.description,
+                        //priority = 0,// 优先级
                         create_user_id = user.id,
                         create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         update_user_id = user.id,
                         update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        name = "",
+                        delete_time = 0,
                     };
-                    new crm_account_todo_dal().Insert(_todo);
+                    new com_todo_dal().Insert(_todo);
                     var add_todo_log = new sys_oper_log()
                     {
                         user_cate = "用户",
-                        user_id = (int)user.id,
+                        user_id = user.id,
                         name = "",
                         phone = user.mobile == null ? "" : user.mobile,
-                        oper_time = DateTime.Now,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
                         oper_object_id = (int)_todo.id,// 操作对象id
                         oper_type_id = (int)OPER_LOG_TYPE.ADD,

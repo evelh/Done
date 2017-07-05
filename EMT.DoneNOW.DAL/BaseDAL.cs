@@ -320,7 +320,7 @@ namespace EMT.DoneNOW.DAL
             {
                 if (!GetObjectPropertyValue(old_value, p.Name).Equals(GetObjectPropertyValue(new_value, p.Name)))// 将旧的和新的进行比较，将不同放入集合中
                 {
-                    dict.Add(p.Name, GetObjectPropertyValue(old_value, p.Name) + "->" + GetObjectPropertyValue(new_value, p.Name));
+                    dict.Add(p.Name, GetObjectPropertyValue(old_value, p.Name) + "→" + GetObjectPropertyValue(new_value, p.Name));
                 }
             }
             if (dict.Count == 0)
