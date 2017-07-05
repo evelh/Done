@@ -311,7 +311,8 @@ namespace EMT.DoneNOW.DAL
         {
             if (old_value == null || new_value == null)
                 return null;
-            List<ObjUpdateDto> list = new List<ObjUpdateDto>();// 类型更改的类集合
+            //  List<ObjUpdateDto> list = new List<ObjUpdateDto>();// 类型更改的类集合
+            Dictionary<string, string> dict = new Dictionary<string, string>();
             Type t = typeof(T1);// 首先获取T的类
             PropertyInfo[] properties = t.GetProperties();// 获取到T中的所有的属性
 
@@ -319,12 +320,12 @@ namespace EMT.DoneNOW.DAL
             {
                 if (!GetObjectPropertyValue(old_value, p.Name).Equals(GetObjectPropertyValue(new_value, p.Name)))// 将旧的和新的进行比较，将不同放入集合中
                 {
-                    list.Add(new ObjUpdateDto() { field = p.Name, old_val = GetObjectPropertyValue(old_value, p.Name), new_val = GetObjectPropertyValue(new_value, p.Name) });
+                    dict.Add(p.Name, GetObjectPropertyValue(old_value, p.Name) + "->" + GetObjectPropertyValue(new_value, p.Name));
                 }
             }
-            if (list.Count == 0)
+            if (dict.Count == 0)
                 return "";
-            return new Tools.Serialize().SerializeJson(list);
+            return new Tools.Serialize().SerializeJson(dict);
         }
         /// <summary>
         /// 将类中所有的非空的属性和属性的值记录下来，并且返回
@@ -336,16 +337,17 @@ namespace EMT.DoneNOW.DAL
         {
             if (t == null)
                 return null;
-            List<ObjAddDto> addList = new List<ObjAddDto>();
+            // List<ObjAddDto> addList = new List<ObjAddDto>();
+            Dictionary<string, string> dict = new Dictionary<string, string>();
             Type type = typeof(T1);
             PropertyInfo[] properties = type.GetProperties();// 获取到T中的所有的属性
             foreach (PropertyInfo p in properties)
             {
-                addList.Add(new ObjAddDto() { field = p.Name, val = GetObjectPropertyValue(t, p.Name) });
+                dict.Add(p.Name, GetObjectPropertyValue(t, p.Name));
             }
-            if (addList.Count == 0)
+            if (dict.Count == 0)
                 return "";
-            return new Tools.Serialize().SerializeJson(addList);
+            return new Tools.Serialize().SerializeJson(dict);
         }
 
         /// <summary>

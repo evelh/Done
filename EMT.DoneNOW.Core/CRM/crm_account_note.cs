@@ -29,7 +29,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32 action_type_id { get; set; }
         [DataMember]
-        public Int32? status { get; set; }
+        public Int32? status_id { get; set; }
         [DataMember]
         public Int64 start_date { get; set; }
         [DataMember]

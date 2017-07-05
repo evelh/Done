@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? contact_id { get; set; }
         [DataMember]
-        public Int64 user_id { get; set; }
+        public Int64 resource_id { get; set; }
         [DataMember]
         public Int64? proposal_id { get; set; }
         [DataMember]
@@ -31,7 +31,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32 action_type_id { get; set; }
         [DataMember]
-        public Int32? status { get; set; }
+        public Int32? status_id { get; set; }
         [DataMember]
         public Int64 start_date { get; set; }
         [DataMember]

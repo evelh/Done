@@ -12,7 +12,6 @@ namespace EMT.DoneNOW.Core
     [DataContract]
     public partial class crm_contact : SoftDeleteCore
     {
-
         [Key]
         [DataMember]
         public Int64 id { get; set; }
@@ -22,6 +21,8 @@ namespace EMT.DoneNOW.Core
         public String cust_link { get; set; }
         [DataMember]
         public Int64 account_id { get; set; }
+        [DataMember]
+        public Int64? location_id { get; set; }
         [DataMember]
         public String phone { get; set; }
         [DataMember]
@@ -33,11 +34,17 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String mobile_phone { get; set; }
         [DataMember]
+        public Int32? suffix_id { get; set; }
+        [DataMember]
         public String title { get; set; }
         [DataMember]
         public String extra_notes { get; set; }
         [DataMember]
         public String room_number { get; set; }
+        [DataMember]
+        public String first_name { get; set; }
+        [DataMember]
+        public String last_name { get; set; }
         [DataMember]
         public String name { get; set; }
         [DataMember]
@@ -52,14 +59,6 @@ namespace EMT.DoneNOW.Core
         public SByte is_web_user { get; set; }
         [DataMember]
         public Int32? ca_security_group_id { get; set; }
-        [DataMember]
-        public String address1 { get; set; }
-        [DataMember]
-        public String address2 { get; set; }
-        [DataMember]
-        public Int32? district_id { get; set; }
-        [DataMember]
-        public String post_code { get; set; }
         [DataMember]
         public Int64? last_activity_time { get; set; }
         [DataMember]
@@ -95,10 +94,6 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32? name_suffix_id { get; set; }
         [DataMember]
-        public Int32? country_id { get; set; }
-        [DataMember]
-        public String additional_address_information { get; set; }
-        [DataMember]
         public String phone_basic { get; set; }
         [DataMember]
         public String alternate_phone1_basic { get; set; }
@@ -106,10 +101,6 @@ namespace EMT.DoneNOW.Core
         public String alternate_phone2_basic { get; set; }
         [DataMember]
         public String cell_phone_basic { get; set; }
-        [DataMember]
-        public String first_name { get; set; }
-        [DataMember]
-        public String last_name { get; set; }
 
 
     }

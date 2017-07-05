@@ -66,6 +66,7 @@
     <Compile Include="CRM\crm_account_note_dal.cs" />
     <Compile Include="CRM\crm_account_todo_dal.cs" />
     <Compile Include="CRM\crm_contact_dal.cs" />
+    <Compile Include="CRM\crm_location_dal.cs" />
     <Compile Include="CRM\crm_opportunity_dal.cs" />
     <Compile Include="DapperHelper.cs" />
     <Compile Include="Dictionary\d_district_dal.cs" />
