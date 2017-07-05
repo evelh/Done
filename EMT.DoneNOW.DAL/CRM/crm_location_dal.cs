@@ -5,10 +5,7 @@ using System.Text;
 using EMT.DoneNOW.Core;
 namespace EMT.DoneNOW.DAL
 {
-    public class sys_form_tmpl_dal : BaseDAL<sys_form_tmpl>
+    public class crm_location_dal : BaseDAL<crm_location>
     {
-       
-      
     }
-
 }

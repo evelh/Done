@@ -61,7 +61,7 @@ namespace EMT.DoneNOW.WebAPI.Controllers
 
         [HttpPost]
         [Route("company/add")]
-        public ApiResultDto AddCompany([FromBody] JObject param)
+        public ApiResultDto AddCompany([FromBody] CompanyAddDto param)
         {
             return Result(_bll.Insert(param, GetToken()));
         }

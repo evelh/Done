@@ -35,6 +35,7 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum UDF_CATE
         {
+            SITE = 513,             // 站点
             COMPANY = 517,          // 客户
             CONTACT = 518,          // 联系人
             OPPORTUNITY = 519,      // 商机

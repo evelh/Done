@@ -50,6 +50,7 @@
     <Compile Include="CRM\crm_account_note.cs" />
     <Compile Include="CRM\crm_account_todo.cs" />
     <Compile Include="CRM\crm_contact.cs" />
+    <Compile Include="CRM\crm_location.cs" />
     <Compile Include="CRM\crm_opportunity.cs" />
     <Compile Include="Dictionary\d_account_classification.cs" />
     <Compile Include="Dictionary\d_district.cs" />
