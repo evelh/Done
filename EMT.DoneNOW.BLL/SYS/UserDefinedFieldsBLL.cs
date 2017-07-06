@@ -101,8 +101,9 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public bool SaveUdfValue(DicEnum.UDF_CATE cate, long objId, List<UserDefinedFieldDto> fields, List<UserDefinedFieldValue> value)
         {
+            // 无自定义字段信息
             if (value == null)
-                return true;
+                value = new List<UserDefinedFieldValue>();
 
             StringBuilder select = new StringBuilder();
             StringBuilder values = new StringBuilder();
