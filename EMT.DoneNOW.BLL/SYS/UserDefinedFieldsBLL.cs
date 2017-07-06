@@ -101,8 +101,9 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public bool SaveUdfValue(DicEnum.UDF_CATE cate, long objId, List<UserDefinedFieldDto> fields, List<UserDefinedFieldValue> value)
         {
-            if (value == null || value.Count == 0)
-                return true;
+            // 无自定义字段信息
+            if (value == null)
+                value = new List<UserDefinedFieldValue>();
 
             StringBuilder select = new StringBuilder();
             StringBuilder values = new StringBuilder();
@@ -114,8 +115,6 @@ namespace EMT.DoneNOW.BLL
                 select.Append(",").Append(field.First().col_name);
                 values.Append(",").Append(val.value);
             }
-            if (values.Length == 0)
-                return false;
 
             string table = GetTableName(cate);
             var dal = new sys_udf_field_dal();
