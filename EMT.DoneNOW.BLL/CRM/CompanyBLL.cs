@@ -128,7 +128,7 @@ namespace EMT.DoneNOW.BLL
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                oper_object_id = (int)_account.id,// 操作对象id
+                oper_object_id = _account.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.ADD,
                 oper_description = _dal.AddValue(_account),
                 remark = ""
@@ -174,7 +174,7 @@ namespace EMT.DoneNOW.BLL
                     phone = user.mobile == null ? "" : user.mobile,
                     oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
-                    oper_object_id = (int)_contact.id,// 操作对象id
+                    oper_object_id = _contact.id,// 操作对象id
                     oper_type_id = (int)OPER_LOG_TYPE.ADD,
                     oper_description = _dal.AddValue(_contact),
                     remark = ""
@@ -199,7 +199,7 @@ namespace EMT.DoneNOW.BLL
                     phone = user.mobile == null ? "" : user.mobile,
                     oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                    oper_object_id = (int)_account.id,// 操作对象id
+                    oper_object_id = _account.id,// 操作对象id
                     oper_type_id = (int)OPER_LOG_TYPE.ADD,
                     oper_description = _dal.AddValue(new Tools.Serialize().SerializeJson(udf_general_list)),
                     remark = ""
@@ -224,7 +224,7 @@ namespace EMT.DoneNOW.BLL
                         phone = user.mobile == null ? "" : user.mobile,
                         oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
-                        oper_object_id = (int)_contact.id,// 操作对象id
+                        oper_object_id = _contact.id,// 操作对象id
                         oper_type_id = (int)OPER_LOG_TYPE.ADD,
                         oper_description = _dal.AddValue(new Tools.Serialize().SerializeJson(udf_con_list)),
                         remark = ""
@@ -248,7 +248,7 @@ namespace EMT.DoneNOW.BLL
                     phone = user.mobile == null ? "" : user.mobile,
                     oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
-                    oper_object_id = (int)_account.id,// 操作对象id
+                    oper_object_id = _account.id,// 操作对象id
                     oper_type_id = (int)OPER_LOG_TYPE.ADD,
                     oper_description = _dal.AddValue(new Tools.Serialize().SerializeJson(udf_site)),
                     remark = ""
@@ -286,7 +286,7 @@ namespace EMT.DoneNOW.BLL
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                oper_object_id = (int)_location.id,// 操作对象id
+                oper_object_id = _location.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.ADD,
                 oper_description = _dal.AddValue(_location),
                 remark = ""
@@ -329,7 +329,7 @@ namespace EMT.DoneNOW.BLL
                         phone = user.mobile == null ? "" : user.mobile,
                         oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                        oper_object_id = (int)_note.id,// 操作对象id
+                        oper_object_id = _note.id,// 操作对象id
                         oper_type_id = (int)OPER_LOG_TYPE.ADD,
                         oper_description = _dal.AddValue(_note),
                         remark = ""
@@ -376,7 +376,7 @@ namespace EMT.DoneNOW.BLL
                         phone = user.mobile == null ? "" : user.mobile,
                         oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                        oper_object_id = (int)_todo.id,// 操作对象id
+                        oper_object_id = _todo.id,// 操作对象id
                         oper_type_id = (int)OPER_LOG_TYPE.ADD,
                         oper_description = _dal.AddValue(_todo),
                         remark = ""

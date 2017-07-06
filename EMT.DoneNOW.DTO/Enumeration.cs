@@ -73,6 +73,15 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
+        /// 查询页面分类-65
+        /// </summary>
+        public enum QUERY_TYPE
+        {
+            CUSTOMER = 726,         // 客户
+            CONTACT = 727,          // 联系人
+        }
+
+        /// <summary>
         /// 操作日志：对象种类-68
         /// </summary>
         public enum OPER_LOG_OBJ_CATE
@@ -95,6 +104,20 @@ namespace EMT.DoneNOW.DTO
             ADD = 800,          // 新增
             DELETE = 801,       // 删除
             UPDATE = 802,       // 修改
+        }
+
+        /// <summary>
+        /// 查询条件类型-70
+        /// </summary>
+        public enum QUERY_PARA_TYPE
+        {
+            SINGLE_LINE = 805,      // 单行文本
+            NUMBER = 806,           // 数值
+            DATE = 807,             // 日期
+            DATETIME = 808,         // 日期时间
+            DROPDOWN = 809,         // 下拉选择框
+            MULTI_DROPDOWN = 810,   // 多选下拉框
+            AREA = 811,             // 行政区
         }
     }
 }

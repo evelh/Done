@@ -179,6 +179,57 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 更新自定义字段值，并记录日志
+        /// </summary>
+        /// <param name="cate"></param>
+        /// <param name="fields"></param>
+        /// <param name="id"></param>
+        /// <param name="vals"></param>
+        /// <param name="userId"></param>
+        /// <param name="userMobile"></param>
+        /// <returns></returns>
+        public bool UpdateUdfValue(DicEnum.UDF_CATE cate, List<UserDefinedFieldDto> fields, long id, List<UserDefinedFieldValue> vals, long userId, string userMobile)
+        {
+            var oldVal = GetUdfValue(cate, id, fields);
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            StringBuilder updateSb = new StringBuilder();
+            foreach (var val in vals)
+            {
+                var oldv = oldVal.Find(f => f.id == val.id);
+                if (object.Equals(oldv.value, val.value))
+                    continue;
+                var fld = fields.Find(f => f.id == val.id);
+                updateSb.Append(fld.col_name).Append("='").Append(val.value).Append("',"); // 组合sql更新语句
+                dict.Add(fld.col_name, oldv.value + "→" + val.value);       // 生成操作日志
+            }
+            if (dict.Count == 0)        // 无修改
+                return true;
+            
+            string updateStr = updateSb.Remove(updateSb.Length - 1, 1).ToString();
+            string sql = $"UPDATE {GetTableName(cate)} SET {updateStr} WHERE parent_id={id}";
+            if (new sys_udf_field_dal().ExecuteSQL(sql) <= 0)
+                return false;
+
+            sys_oper_log log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = userId,
+                name = "",
+                phone = userMobile == null ? "" : userMobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER,
+                oper_object_id = id,        // 操作对象id
+                oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
+                oper_description = new Tools.Serialize().SerializeJson(dict),
+                remark = ""
+
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(log);       // 插入日志
+
+            return true;
+        }
+
+        /// <summary>
         /// 获取用户自定义字段表名
         /// </summary>
         /// <param name="cate"></param>

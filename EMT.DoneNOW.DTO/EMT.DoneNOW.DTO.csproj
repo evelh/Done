@@ -50,6 +50,7 @@
     <Compile Include="FormTmplOpportunityDto.cs" />
     <Compile Include="OpportunityConditionDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryParaDto.cs" />
     <Compile Include="TokenDto.cs" />
     <Compile Include="UserAuthDto.cs" />
     <Compile Include="UserDefinedFieldDto.cs" />
