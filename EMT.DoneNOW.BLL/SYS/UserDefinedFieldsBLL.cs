@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.BLL
         {
             var dal = new sys_udf_field_dal();
             var udfListDal = new sys_udf_list_dal();
-            string sql=dal.QueryStringDeleteFlag($"SELECT id,col_comment as name,description,data_type_id as cate,default_value,decimal_length,is_required as required FROM sys_udf_field WHERE is_active=1");
+            string sql=dal.QueryStringDeleteFlag($"SELECT id,col_name,col_comment as name,description,data_type_id as cate,default_value,decimal_length,is_required as required FROM sys_udf_field WHERE is_active=1 and cate_id = {(int)cate}");
             var list = dal.FindListBySql<UserDefinedFieldDto>(sql);
             foreach (var udf in list)
             {
@@ -228,7 +228,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_id = id,        // 操作对象id
                 oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
                 oper_description = new Tools.Serialize().SerializeJson(dict),
-                remark = ""
+                remark = "修改自定义字段"
 
             };          // 创建日志
             new sys_oper_log_dal().Insert(log);       // 插入日志
