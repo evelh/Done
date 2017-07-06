@@ -13,6 +13,16 @@ namespace EMT.DoneNOW.DTO
     public class DicEnum
     {
         /// <summary>
+        /// 客户告警类型 - 10
+        /// </summary>
+        public enum ACCOUNT_ALERT_TYPE  
+        {
+            COMPANY_DETAIL_ALERT = 36,
+            NEW_TICKET_ALERT = 37,
+            TICKET_DETAIL_ALERT = 38,
+        }
+
+        /// <summary>
         /// 表单模板应用范围-18
         /// </summary>
         public enum RANG_TYPE
@@ -53,6 +63,18 @@ namespace EMT.DoneNOW.DTO
             LIST = 530,                 // 列表
         }
 
+        /// <summary>
+        /// 自定义字段显示样式-34
+        /// </summary>
+        public enum UDF_DISPLAY_FORMAT
+        {
+            UNDEFINED = 547,        // 未定义
+            SINGLE_LINE = 548,      // 单行
+            MUILTI_LINE = 549,      // 多行
+        }
+        /// <summary>
+        /// 显示对象类型-67
+        /// </summary>
         public enum OBJECT_TYPE
         {
             CUSTOMER = 735,     // 客户
@@ -60,16 +82,6 @@ namespace EMT.DoneNOW.DTO
             OPPORTUNITY = 737,  // 商机
             QUOTE = 738,        // 报价
             CONTRACT = 739,     // 合同
-        }
-
-        /// <summary>
-        /// 自定义字段显示样式
-        /// </summary>
-        public enum UDF_DISPLAY_FORMAT
-        {
-            UNDEFINED = 547,        // 未定义
-            SINGLE_LINE = 548,      // 单行
-            MUILTI_LINE = 549,      // 多行
         }
 
         /// <summary>

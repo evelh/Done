@@ -91,6 +91,16 @@ namespace EMT.DoneNOW.DAL
             return false;
         }
 
-  
+        /// <summary>
+        /// 根据客户名称获取客户信息
+        /// </summary>
+        /// <param name="accountName">客户名称</param>
+        /// <returns></returns>
+        public crm_account GetAccountByName(string accountName)
+        {           
+            return FindSignleBySql<crm_account>($"select * from crm_account WHERE account_name='{accountName}' and delete_time = 0");
+        }
+
+
     }
 }

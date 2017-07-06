@@ -29,7 +29,7 @@ namespace EMT.DoneNOW.DTO
 
         public string fax;                 // 传真
         public int company_type;           // 公司类型
-        public Int32? classification;      // 分类类别
+        public int classification;      // 分类类别
         public int account_manage;         // 客户经理
         public int territory_name;         // 地域名称
         public int market_segment;         // 市场领域
