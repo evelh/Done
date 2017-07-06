@@ -98,7 +98,7 @@ namespace EMT.DoneNOW.DAL
         /// <returns></returns>
         public crm_account GetAccountByName(string accountName)
         {           
-            return FindSignleBySql<crm_account>($"select * from crm_account WHERE account_name='{accountName}' and delete_time = 0");
+            return FindSignleBySql<crm_account>($"select * from crm_account WHERE name='{accountName}' and delete_time = 0");
         }
 
 

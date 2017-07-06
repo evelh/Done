@@ -436,7 +436,7 @@ namespace EMT.DoneNOW.BLL
             var user = new UserInfoDto()
             {
                 id = 1,
-                email = "1zhufei@test.com",
+                email = "zhufei@test.com",
                 mobile = "10086",
                 name = "zhufei_test",
                 security_Level_id = 0
@@ -504,29 +504,17 @@ namespace EMT.DoneNOW.BLL
 
 
             #region 2.保存客户扩展信息  TODO-TEST
-            var udf_account_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);
-            if (udf_account_list != null && udf_account_list.Count > 0)
+            var udf_account_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);  // 获取到所有的自定义的字段信息
+            if (udf_account_list != null && udf_account_list.Count > 0)   // 首先判断客户是否设置自定义字段
             {
-                var udf_account = param.general_update.udf;
-                var udf_list = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.COMPANY, new_company_value.id, udf_account_list);  // 根据字段获取到相对应的值，取到值代表有值，则更改，没有值，则插入。
-
+                var udf_account = param.general_update.udf;  // 获取到客户传过来的自定义字段的值
+                var udf_list = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.COMPANY, new_company_value.id, udf_account_list);  // 根据字段从数据库中获取自定义字段的值，用于判断插入还是更改操作
                 // todo 重点测试
                 if (udf_list != null && udf_list.Count > 0)  // // 可以根据客户ID获取到相对应的自定义字段的值，代表数据库中存在自定义字段值，这时候做update操作。
                 {
-                    new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY, new_company_value.id, udf_account_list, udf_list, udf_account);
-                    new sys_oper_log_dal().Insert(new sys_oper_log()
-                    {
-                        user_cate = "用户",
-                        user_id = user.id,
-                        name = user.name,
-                        phone = user.mobile == null ? "" : user.mobile,
-                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                        oper_object_id = new_company_value.id,
-                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                        oper_description = _dal.CompareValue(udf_list, udf_account),// todo 两个自定义字段作比较？？？
-                        remark = "修改用户信息",
-                    });
+                    // UpdateUdfValue 中含有插入修改日志的操作，无需再插入日志
+                    //new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY,  udf_account_list, new_company_value.id, udf_account,user.id,user.mobile==null?"":user.mobile);
+                    new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY, udf_account_list, new_company_value.id, udf_account, user.id, user.mobile);
                 }
                 else  // 未获取到数据，插入
                 {
@@ -558,20 +546,8 @@ namespace EMT.DoneNOW.BLL
                 var udf_list = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.SITE, new_company_value.id, udf_site_list);
                 if (udf_list != null && udf_list.Count > 0)  // // 可以根据客户ID获取到相对应的自定义字段的值，代表数据库中存在自定义字段值，这时候做update操作。
                 {
-                    new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.SITE, new_company_value.id, udf_site_list, udf_list, udf_site);
-                    new sys_oper_log_dal().Insert(new sys_oper_log()
-                    {
-                        user_cate = "用户",
-                        user_id = user.id,
-                        name = user.name,
-                        phone = user.mobile == null ? "" : user.mobile,
-                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                        oper_object_id = new_company_value.id,
-                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                        //oper_description = _dal.CompareValue(udf_list, udf_site),// todo 两个自定义字段作比较？？？
-                        remark = "修改用户信息",
-                    });
+                    // UpdateUdfValue 中含有插入修改日志的操作，无需再插入日志
+                    new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.SITE, udf_site_list, new_company_value.id, udf_site, user.id,user.mobile);     
                 }
                 else  // 未获取到数据，插入
                 {
