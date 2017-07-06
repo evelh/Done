@@ -72,6 +72,16 @@ namespace EMT.DoneNOW.DTO
             SINGLE_LINE = 548,      // 单行
             MUILTI_LINE = 549,      // 多行
         }
+
+        /// <summary>
+        /// 查询页面分类-65
+        /// </summary>
+        public enum QUERY_TYPE
+        {
+            CUSTOMER = 726,         // 客户
+            CONTACT = 727,          // 联系人
+        }
+
         /// <summary>
         /// 显示对象类型-67
         /// </summary>
@@ -82,15 +92,6 @@ namespace EMT.DoneNOW.DTO
             OPPORTUNITY = 737,  // 商机
             QUOTE = 738,        // 报价
             CONTRACT = 739,     // 合同
-        }
-
-        /// <summary>
-        /// 查询页面分类-65
-        /// </summary>
-        public enum QUERY_TYPE
-        {
-            CUSTOMER = 726,         // 客户
-            CONTACT = 727,          // 联系人
         }
 
         /// <summary>

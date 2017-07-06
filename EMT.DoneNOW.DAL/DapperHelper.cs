@@ -112,6 +112,31 @@ namespace EMT.DoneNOW.DAL
                 return connect.ExecuteReader(sql, param);
             }
         }
+        public DataTable ExecuteDataTable(string sql, object param = null)
+        {
+            DataTable dt = null;
+            using (IDbConnection connect = BuildConnection())
+            {
+                var reader = connect.ExecuteReader(sql, param);
+                if (reader.FieldCount>0)
+                {
+                    dt = new DataTable();
+                    DataTable dtTmp = reader.GetSchemaTable();
+                    foreach (DataRow row in dtTmp.Rows)
+                    {
+                        DataColumn dc = new DataColumn(row["ColumnName"].ToString(), row["DataType"] as Type);
+                        dt.Columns.Add(dc);
+                    }
+                    object[] value = new object[reader.FieldCount];
+                    while (reader.Read())
+                    {
+                        reader.GetValues(value);
+                        dt.LoadDataRow(value, true);
+                    }
+                }
+            }
+            return dt;
+        }
         /// <summary>
         /// 添加
         /// </summary>

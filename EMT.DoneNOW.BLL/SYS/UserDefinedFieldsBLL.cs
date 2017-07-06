@@ -136,17 +136,20 @@ namespace EMT.DoneNOW.BLL
         {
             var list = new List<UserDefinedFieldValue>();
             string table = GetTableName(cate);
+
             string sql = $"SELECT * FROM {table} WHERE parent_id={objId}";
-            var reader = new sys_udf_field_dal().ExecuteReader(sql);
-            while (reader.Read())
+            var tb = new sys_udf_field_dal().ExecuteDataTable(sql);
+            if (tb == null)
+                return list;
+
+            if (tb.Rows.Count>0)
             {
+                var dal = new sys_udf_field_dal();
                 foreach (var field in fields)
                 {
-                    int index = reader.GetOrdinal(field.col_name);
-                    string val = reader.GetString(index);
-                    list.Add(new UserDefinedFieldValue { id = field.id, value = val });
+                    var udfField = dal.FindById(field.id);
+                    list.Add(new UserDefinedFieldValue { id = field.id, value = tb.Rows[0][udfField.col_name] });
                 }
-                return list;
             }
             return list;
         }
@@ -162,19 +165,24 @@ namespace EMT.DoneNOW.BLL
         {
             var dic = new Dictionary<long, List<UserDefinedFieldValue>>();
             string table = GetTableName(cate);
+
             string sql = $"SELECT * FROM {table} WHERE parent_id IN ({ids})";
-            var reader = new sys_udf_field_dal().ExecuteReader(sql);
-            while (reader.Read())
+            var tb = new sys_udf_field_dal().ExecuteDataTable(sql);
+            if (tb == null)
+                return dic;
+
+            var dal = new sys_udf_field_dal();
+            foreach (System.Data.DataRow row in tb.Rows)
             {
                 var list = new List<UserDefinedFieldValue>();
                 foreach (var field in fields)
                 {
-                    int index = reader.GetOrdinal(field.col_name);
-                    string val = reader.GetString(index);
-                    list.Add(new UserDefinedFieldValue { id = field.id, value = val });
+                    var udfField = dal.FindById(field.id);
+                    list.Add(new UserDefinedFieldValue { id = field.id, value = row[udfField.col_name] });
                 }
-                dic.Add(reader.GetInt64(1), list);
+                dic.Add(long.Parse(row["parent_id"].ToString()), list);
             }
+
             return dic;
         }
 

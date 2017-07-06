@@ -203,6 +203,10 @@ namespace EMT.DoneNOW.DAL
         {
             return helper.ExecuteReader(sql);
         }
+        public DataTable ExecuteDataTable(string sql)
+        {
+            return helper.ExecuteDataTable(sql);
+        }
         /// <summary>
         /// 执行存储过程
         /// </summary>
