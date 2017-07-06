@@ -10,10 +10,16 @@ namespace EMT.DoneNOW.DAL
 {
     public class sys_query_type_user_dal : BaseDAL<sys_query_type_user>
     {
-        public string GetQuerySql(int type, long userId, string condition, string orderBy, out int count)
+        /// <summary>
+        /// 执行f_rpt_getsql，生成查询sql语句
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="userId"></param>
+        /// <param name="condition"></param>
+        /// <param name="orderBy"></param>
+        /// <returns></returns>
+        public string GetQuerySql(long type, long userId, string condition, string orderBy)
         {
-            // TODO: 记录总数
-            count = 0;
             using (IDbConnection conn = DapperHelper.BuildConnection())
             {
                 var p = new DynamicParameters();
@@ -25,6 +31,29 @@ namespace EMT.DoneNOW.DAL
                 p.Add("@srtn", 0, DbType.String, ParameterDirection.ReturnValue);
                 var result = conn.Query(funcName, p, null, true, null, CommandType.StoredProcedure).FirstOrDefault();
                 return p.Get<string>("@srtn");
+            }
+
+        }
+
+        /// <summary>
+        /// 执行p_rpt_getsql_count，获取查询总记录数
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="userId"></param>
+        /// <param name="condition"></param>
+        /// <returns></returns>
+        public int GetQueryCount(long type, long userId, string condition)
+        {
+            using (IDbConnection conn = DapperHelper.BuildConnection())
+            {
+                var p = new DynamicParameters();
+                string funcName = "p_rpt_getsql_count";
+                p.Add("in_type_id", type);
+                p.Add("in_user_id", userId);
+                p.Add("in_user_condition", condition);
+                p.Add("@out_count", 0, DbType.String, ParameterDirection.Output);
+                var result = conn.Query(funcName, p, null, true, null, CommandType.StoredProcedure).FirstOrDefault();
+                return p.Get<int>("@out_count");
             }
 
         }
