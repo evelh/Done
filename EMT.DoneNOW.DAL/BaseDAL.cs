@@ -258,11 +258,11 @@ namespace EMT.DoneNOW.DAL
         /// 删除表中指定的记录
         /// </summary>
         /// <returns></returns>
-        public bool SoftDelete(T ett)
+        public bool SoftDelete(T ett,long user_id)
         {
             if (ett == null)
                 return false;
-            (ett as Core.SoftDeleteCore).delete_user_id = 0;
+            (ett as Core.SoftDeleteCore).delete_user_id = user_id;
             (ett as Core.SoftDeleteCore).delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             return Update(ett);
         }

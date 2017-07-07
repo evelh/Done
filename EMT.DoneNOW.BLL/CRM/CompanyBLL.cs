@@ -8,6 +8,7 @@ using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
+using System.Text.RegularExpressions;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -63,9 +64,7 @@ namespace EMT.DoneNOW.BLL
             // TODO  名称相似校验
 
             //var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
-
-            // 测试
-
+            // 测试用户
             var user = new UserInfoDto()
             {
                 id = 1,
@@ -88,7 +87,7 @@ namespace EMT.DoneNOW.BLL
                 update_user_id = user.id,
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 no = param.general.company_number,
-                // parent_id = param.general.parent_company_name,  // todo 上级客户， 传进来父客户id，不是名字？？？
+                parent_id =param.general.parent_company_name,  // todo 上级客户， 传进来父客户id，不是名字？？？
                 territory_id = param.general.territory_name,
                 market_segment_id = param.general.market_segment,
                 competitor_id = param.general.competitor,
@@ -126,6 +125,42 @@ namespace EMT.DoneNOW.BLL
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
             #endregion
 
+
+            #region 6.保存地址信息
+            crm_location _location = new crm_location()
+            {
+                id = _dal.GetNextIdCom(),
+                account_id = _account.id,
+                address = param.location.address,
+                district_id = param.location.district_id,
+                city_id = param.location.city_id,
+                provice_id = param.location.provice_id,
+                postal_code = param.location.postal_code,
+                country_id = param.location.country_id,
+                additional_address = param.location.additional_address,
+                is_default = 1,  // 是否默认
+                create_user_id = user.id,
+                update_user_id = user.id,
+                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            };
+            new crm_location_dal().Insert(_location);
+            sys_oper_log add_location_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                oper_object_id = _location.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = _dal.AddValue(_location),
+                remark = ""
+            };
+            new sys_oper_log_dal().Insert(add_location_log);       // 插入日志
+            #endregion
+
             #region 2.保存联系人
             // 联系人的姓和名只输入一个时，不创建联系人  
             // 联系人相关信息的修改不影响客户上相关字段 
@@ -151,6 +186,7 @@ namespace EMT.DoneNOW.BLL
                     last_name = param.contact.last_name == null ? "" : param.contact.last_name,
                     name = param.contact.first_name + param.contact.last_name,
                     email = param.contact.email,
+                   location_id = _location.id,
                 };
                 new crm_contact_dal().Insert(_contact);
                 var add_contact_log = new sys_oper_log()
@@ -245,40 +281,7 @@ namespace EMT.DoneNOW.BLL
 
             #endregion
 
-            #region 6.保存地址信息
-            crm_location _location = new crm_location()
-            {
-                id = _dal.GetNextIdCom(),
-                account_id = _account.id,
-                address = param.location.address,
-                district_id = param.location.district_id,
-                city_id = param.location.city_id,
-                provice_id = param.location.provice_id,
-                postal_code = param.location.postal_code,
-                country_id = param.location.country_id,
-                additional_address = param.location.additional_address,
-                is_default = 1,  // 是否默认
-                create_user_id = user.id,
-                update_user_id = user.id,
-                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-            };
-            new crm_location_dal().Insert(_location);
-            sys_oper_log add_location_log = new sys_oper_log()
-            {
-                user_cate = "用户",
-                user_id = user.id,
-                name = "",
-                phone = user.mobile == null ? "" : user.mobile,
-                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                oper_object_id = _location.id,// 操作对象id
-                oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                oper_description = _dal.AddValue(_location),
-                remark = ""
-            };
-            new sys_oper_log_dal().Insert(add_location_log);       // 插入日志
-            #endregion
+         
 
             #region 7.保存记录信息
             if (param.note.action_type != 0)
@@ -423,9 +426,13 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public bool Update(CompanyUpdateDto param, string token)
         {
+            // Dictionary<bool,List<crm_contact>>
+            // Dictionary<bool, List<crm_contact>> dic = new Dictionary<bool, List<crm_contact>>();
             // 对必填的字段进行非空验证
             if (string.IsNullOrEmpty(param.general_update.company_name) || string.IsNullOrEmpty(param.general_update.phone) || string.IsNullOrEmpty(param.general_update.address))
             {
+                //dic.Add(false, null);
+                //return dic;
                 return false;
             }
             if (param.general_update.country_id == 0 || param.general_update.provice_id == 0 || param.general_update.city_id == 0 || param.general_update.company_type == 0 || param.general_update.account_manage == 0)
@@ -443,10 +450,10 @@ namespace EMT.DoneNOW.BLL
             };
 
             #region 1.保存客户
+            crm_account old_company_value  =GetCompany(param.general_update.id);
+            // crm_account old_company_value = _dal.GetCompany(param.general_update.company_name); // 
 
-            crm_account old_company_value = _dal.GetAccountByName(param.general_update.company_name); // 
-
-            if (old_company_value == null) // 并发操作时已经将用户删除的情况
+            if (old_company_value == null) // 并发操作时已经将客户删除的情况
             {
                 return false;
             }
@@ -483,6 +490,9 @@ namespace EMT.DoneNOW.BLL
                 weibo_url = param.additional_info.weibo_url,
                 wechat_mp_subscription = param.additional_info.wechat_mp_subscription,
                 wechat_mp_service = param.additional_info.wechat_mp_service,
+                create_user_id = old_company_value.create_user_id,
+                create_time = old_company_value .create_time,
+               
             };
             if (_dal.Update(new_company_value)) // 如果修改成功，则添加日志
             {
@@ -497,81 +507,30 @@ namespace EMT.DoneNOW.BLL
                     oper_object_id = new_company_value.id,
                     oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
                     oper_description = _dal.CompareValue(old_company_value, new_company_value),
-                    remark = "修改用户信息",
+                    remark = "修改客户信息",
                 });
             } // crm_account 更新数据结束
+
             #endregion
-
-
-            #region 2.保存客户扩展信息  TODO-TEST
+            #region 2.保存客户扩展信息 
             var udf_account_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);  // 获取到所有的自定义的字段信息
             if (udf_account_list != null && udf_account_list.Count > 0)   // 首先判断客户是否设置自定义字段
             {
                 var udf_account = param.general_update.udf;  // 获取到客户传过来的自定义字段的值
-                var udf_list = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.COMPANY, new_company_value.id, udf_account_list);  // 根据字段从数据库中获取自定义字段的值，用于判断插入还是更改操作
-                // todo 重点测试
-                if (udf_list != null && udf_list.Count > 0)  // // 可以根据客户ID获取到相对应的自定义字段的值，代表数据库中存在自定义字段值，这时候做update操作。
-                {
-                    // UpdateUdfValue 中含有插入修改日志的操作，无需再插入日志
-                    //new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY,  udf_account_list, new_company_value.id, udf_account,user.id,user.mobile==null?"":user.mobile);
-                    new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY, udf_account_list, new_company_value.id, udf_account, user.id, user.mobile);
-                }
-                else  // 未获取到数据，插入
-                {
-                    if (new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.COMPANY, new_company_value.id, udf_account_list, udf_account))
-                    {
-                        new sys_oper_log_dal().Insert(new sys_oper_log()
-                        {
-                            user_cate = "用户",
-                            user_id = user.id,
-                            name = user.name,
-                            phone = user.mobile == null ? "" : user.mobile,
-                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                            oper_object_id = new_company_value.id,
-                            oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                            oper_description = _dal.AddValue(udf_account),
-                            remark = "修改用户信息",
-                        });
-                    }
-                }
+                // UpdateUdfValue 中含有插入修改日志的操作，无需再插入日志
+                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY, udf_account_list, new_company_value.id, udf_account, user.id, user.mobile);
             }
             #endregion
-
             #region 3.保存客户站点信息  TODO-TEST
             var udf_site_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.SITE);
             if (udf_site_list != null && udf_site_list.Count > 0)
             {
                 var udf_site = param.site_configuration.udf;
-                var udf_list = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.SITE, new_company_value.id, udf_site_list);
-                if (udf_list != null && udf_list.Count > 0)  // // 可以根据客户ID获取到相对应的自定义字段的值，代表数据库中存在自定义字段值，这时候做update操作。
-                {
-                    // UpdateUdfValue 中含有插入修改日志的操作，无需再插入日志
-                    new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.SITE, udf_site_list, new_company_value.id, udf_site, user.id,user.mobile);     
-                }
-                else  // 未获取到数据，插入
-                {
-                    if (new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.COMPANY, new_company_value.id, udf_account_list, udf_site))
-                    {
-                        new sys_oper_log_dal().Insert(new sys_oper_log()
-                        {
-                            user_cate = "用户",
-                            user_id = user.id,
-                            name = user.name,
-                            phone = user.mobile == null ? "" : user.mobile,
-                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                            oper_object_id = new_company_value.id,
-                            oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                            // oper_description = _dal.AddValue(udf_site),
-                            remark = "修改用户信息",
-                        });
-                    }
-                }
+                // UpdateUdfValue 中含有插入修改日志的操作，无需再插入日志
+                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.SITE, udf_site_list, new_company_value.id, udf_site, user.id, user.mobile);
             }
 
             #endregion
-
             #region 4.保存客户提醒信息
             var alert_site = new crm_account_alert_dal().FindByAccount(new_company_value.id);  // 从crm_account_alert表中获取到用户的所有提醒信息
             if (!string.IsNullOrEmpty(param.alerts.Company_Detail_Alert))
@@ -769,6 +728,82 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
 
+
+            #region 保存客户地址信息
+            crm_location old_location = new crm_location_dal().GetLocationByAccountId(old_company_value.id);  // 根据客户id去获取到客户的地址，然后判断地址是否修改
+            crm_location new_location = new crm_location()   
+            {
+                id=old_location.id,
+                account_id = old_location.account_id,
+                address = param.general_update.address,
+                city_id = param.general_update.city_id,
+                country_id = param.general_update.country_id,
+                provice_id = param.general_update.provice_id,
+                district_id = param.general_update.district_id,
+                additional_address = param.general_update.additional_address,
+                is_default = param.general_update.is_default ,
+                create_user_id = old_location.create_user_id,
+                create_time = old_location.create_time,
+                update_user_id = user.id,
+                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                postal_code  = param.general_update.postal_code,
+                cate_id = old_location.cate_id,
+                delete_time = old_location.delete_time,
+                delete_user_id = old_location.delete_user_id,
+                location_label = old_location.location_label,
+                town_id = old_location.town_id,
+            };   // 生成新的地址的实体类
+            
+            if(new_location.is_default == (sbyte)1)   // 代表用户将这个地址设置为默认地址
+            {
+                new crm_location_dal().UpdateDefaultLocation(new_company_value.id,user); // 首先将原来的默认地址取消   是否插入日志
+                new crm_location_dal().Update(new_location);             // 更改地址信息
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                    oper_object_id = new_location.id,
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_description = _dal.CompareValue(old_location, new_location),
+                    remark = "修改客户地址",
+                });    // 插入更改日志
+            }
+            else
+            {
+                new crm_location_dal().Update(new_location);             // 更改地址信息
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                    oper_object_id = new_location.id,
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_description = _dal.CompareValue(old_location, new_location),
+                    remark = "修改客户地址",
+                });    // 插入更改日志
+            }
+          
+            #endregion
+            if (new_location.Equals(old_location))      // 如果修改了地址，该地被其他联系人引用，则弹出窗口，提示用户会同步修改的联系人 TODO-- 如何提示
+            {
+                var contactAllList = new crm_contact_dal().GetContactByAccounAndLocationId(new_company_value.id,old_location.id);  // 这个客户所有的联系人
+            }
+            // 如果修改了电话和传真，则弹出窗口，显示联系人列表供用户用户选择是否同步替换。    TODO
+            if ((!old_company_value.phone.Equals(new_company_value)) || (!old_company_value.fax.Equals(new_company_value.fax)))   // 电话和传真有一个有更改时
+            {
+                var contactList = new crm_contact_dal().GetContactByAccountId(new_company_value.id);    // 
+            }
+
+
+
+
             // TODO: 是否可以修改客户名称 account_name，需要做检查
 
             //if (account.id == 0)
@@ -788,41 +823,171 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
 
-    /// <summary>
-    /// 按条件查询客户列表
-    /// </summary>
-    /// <returns></returns>
-    public List<crm_account> FindList(JObject jsondata)
-    {
-        CompanyConditionDto condition = jsondata.ToObject<CompanyConditionDto>();
-        string orderby = ((JValue)(jsondata.SelectToken("orderby"))).Value.ToString();
-        string page = ((JValue)(jsondata.SelectToken("page"))).Value.ToString();
-        int pagenum;
-        if (!int.TryParse(page, out pagenum))
-            pagenum = 1;
-        return _dal.Find(condition, pagenum, orderby);
-    }
+        /// <summary>
+        /// 按条件查询客户列表
+        /// </summary>
+        /// <returns></returns>
+        public List<crm_account> FindList(JObject jsondata)
+        {
+            CompanyConditionDto condition = jsondata.ToObject<CompanyConditionDto>();
+            string orderby = ((JValue)(jsondata.SelectToken("orderby"))).Value.ToString();
+            string page = ((JValue)(jsondata.SelectToken("page"))).Value.ToString();
+            int pagenum;
+            if (!int.TryParse(page, out pagenum))
+                pagenum = 1;
+            return _dal.Find(condition, pagenum, orderby);
+        }
 
-    /// <summary>
-    /// 删除客户
-    /// </summary>
-    /// <returns></returns>
-    public bool DeleteCompany(long id, string token)
-    {
-        crm_account account = GetCompany(id);
-        account.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-        account.delete_user_id = CachedInfoBLL.GetUserInfo(token).id;
-        // TODO: 日志
-        return _dal.SoftDelete(account);
-    }
+        /// <summary>
+        /// 删除客户
+        /// </summary>
+        /// <returns></returns>
+        public bool DeleteCompany(long id, string token)
+        {
 
-    /// <summary>
-    /// 查询客户名是否存在
-    /// </summary>
-    /// <returns></returns>
-    public bool ExistCompany(string accountName)
-    {
-        return _dal.ExistAccountName(accountName);
+            // 1)	Company Detail客户信息：逻辑删除                    ✓
+            // 2)	Outsource Management外部资源管理：逻辑删除
+            // 3)	Outsource Networks外部网络：逻辑删除
+            // 4)	Contacts联系人：逻辑删除                            ✓
+            // 5)	Posted Billing Items：逻辑删除
+            // 9)	Configuration Items配置项：逻辑删除
+            // 18)	Products产品：逻辑删除
+            // 20)	Services服务：逻辑删除
+            // 21)	Inventory Transfer：逻辑删除
+
+            //var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
+            var user = new UserInfoDto()
+            {
+                id = 1,
+                email = "zhufei@test.com",
+                mobile = "10086",
+                name = "zhufei_test",
+                security_Level_id = 0
+            };
+            crm_account account = GetCompany(id);
+            if (account == null)
+                return false;
+
+            #region  1.Company Detail客户信息：逻辑删除                   ✓
+            account.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            account.delete_user_id = user.id;
+            _dal.SoftDelete(account, user.id);
+            new sys_oper_log_dal().Insert(new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = user.id,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                oper_object_id = account.id,
+                oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                oper_description = _dal.AddValue(account), // 删除时和新增时记录的字段相同。通过同一个方法进行处理
+                remark = "删除客户信息",
+            });
+            #endregion
+
+            #region  4.Contacts联系人：逻辑删除                     ✓
+            var contact_list = new crm_contact_dal().GetContactByAccountId(account.id);
+            if (contact_list != null && contact_list.Count > 0)
+            {
+                var contact_dal = new crm_contact_dal();
+                foreach (var contact in contact_list)
+                {
+                    contact_dal.SoftDelete(contact, user.id);
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = user.id,
+                        name = user.name,
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
+                        oper_object_id = account.id,
+                        oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                        oper_description = contact_dal.AddValue(contact), // 删除时和新增时记录的字段相同。通过同一个方法进行处理
+                        remark = "删除联系人信息",
+                    });
+                }
+            }
+            #endregion
+
+            // todo 其余的逻辑删除
+
+            return true;
+
+
+            //crm_account account = GetCompany(id);
+            //account.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            //account.delete_user_id = CachedInfoBLL.GetUserInfo(token).id;
+            //// TODO: 日志
+            //return _dal.SoftDelete(account);
+        }
+
+        /// <summary>
+        /// 查询客户名是否存在
+        /// </summary>
+        /// <returns></returns>
+        public bool ExistCompany(string accountName)
+        {
+            return _dal.ExistAccountName(accountName);
+        }
+
+
+        /// <summary>
+        /// 删除地址信息
+        /// </summary>
+        /// <param name="location_id"></param>
+        /// <returns></returns>
+        public bool DeleteLocation(long location_id,long account_id,string token)
+        {
+            var user = CachedInfoBLL.GetUserInfo(token);   
+            crm_location location = new crm_location_dal().FindById(location_id);
+            if (location == null)
+            {
+                return false;
+            }
+            var contactList = new crm_contact_dal().GetContactByAccounAndLocationId(account_id,location.id);
+            if (contactList!=null&&contactList.Count>0)
+            {
+                return false; // 此地址还在被联系人所使用，不可以被删除
+            }
+            new crm_location_dal().SoftDelete(location,user.id);
+            new sys_oper_log_dal().Insert(new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = user.id,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
+                oper_object_id = location.id,
+                oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                oper_description = _dal.AddValue(location), // 删除时和新增时记录的字段相同。通过同一个方法进行处理
+                remark = "删除地址信息",
+            });
+            return true;
+        }
+
+
+        /// <summary>
+        ///   Test--公司名称去除掉冗余的字符
+        /// </summary>
+        /// <param name="companyName">公司名称</param>
+        /// <returns></returns>
+        public string CompanyNameDeal(string companyName)
+        {
+            var nameList = new List<string>() { "股份", "有限", "信息", "科技", "公司", "技术"   };  // 后缀名称处理   todo—— 前缀名称处理
+            foreach (var item in nameList)
+            {
+                //Regex r = new Regex(item);
+                //Match m = r.Match(companyName);
+                if (companyName.Contains(item))
+                {
+                    companyName = companyName.Replace(item, "");
+                }
+            }
+            return companyName;
+        }
     }
-}
 }

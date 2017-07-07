@@ -18,6 +18,7 @@ namespace EMT.DoneNOW.DTO
     public class General_Update
     {
         // 1.联系方式和地址信息
+        public long id;
         public string company_name;        // 客户名称
         public sbyte is_active;            // 是否激活
         public string company_number;      // 客户编号
@@ -35,6 +36,7 @@ namespace EMT.DoneNOW.DTO
         public string web_site;            // 官网
         public sbyte is_optout_survey;     // 是否拒绝问卷
         public int mileage;                // 全程距离
+        public sbyte is_default;           // 是否是默认地址  1 是  0 不是
 
 
         // 2.管理信息
@@ -71,15 +73,6 @@ namespace EMT.DoneNOW.DTO
 
     public class Site_Configuration
     {
-        public string Building_Security_Code;
-        public string DNS_Password;
-        public string DNS_Provuder;
-        public string DNS_Username;
-        public string Email_Certificates_HostName;
-        public string Email_Certificates_Provider;
-        public string ISP_Provider_Phone_Number;
-        public string Web_Hosting_Contact;
-        public string Web_Hosting_Primary_Phone;
         public List<UserDefinedFieldValue> udf;   // 客户站点自定义字段
 
     }

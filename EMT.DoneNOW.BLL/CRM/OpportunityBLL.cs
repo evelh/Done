@@ -114,7 +114,7 @@ namespace EMT.DoneNOW.BLL.CRM
             contact.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             contact.delete_user_id = CachedInfoBLL.GetUserInfo(token).id;
             // TODO: 日志
-            return _dal.SoftDelete(contact);
+            return _dal.SoftDelete(contact,id);
         }
     }
 }

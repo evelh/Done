@@ -50,6 +50,28 @@ namespace EMT.DoneNOW.DAL
             return FindListPage(ContactListQueryString(), sql.ToString(), pageNum);
         }
 
+        /// <summary>
+        /// 根据客户id查找到客户的所有联系人信息
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <returns></returns>
+        public List<crm_contact> GetContactByAccountId(long account_id)
+        {
+            string sql = $"select * from crm_contact where account_id={account_id}  and delete_time = 0";
+            return FindListBySql(sql);
+        }
+        /// <summary>
+        /// 根据客户id和地址id获取到相对应的联系人信息
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <param name="location_id"></param>
+        /// <returns></returns>
+        public List<crm_contact> GetContactByAccounAndLocationId(long account_id,long location_id)
+        {
+            string sql = $"select * from crm_contact where account_id={account_id} and location_id = {location_id}  and delete_time = 0";
+            return FindListBySql(sql);
+        }
+
   
     }
 }

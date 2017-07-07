@@ -7,6 +7,7 @@ using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DAL;
 using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
+using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -66,7 +67,7 @@ namespace EMT.DoneNOW.BLL
 
             tmpl.delete_time = time;
             tmpl.delete_user_id = userid;
-            return _dal.SoftDelete(tmpl);
+            return _dal.SoftDelete(tmpl, userid);
         }
 
         /// <summary>
@@ -126,20 +127,22 @@ namespace EMT.DoneNOW.BLL
             new sys_form_tmpl_opportunity_dal().Update(opportunityTmpl);
 
             //var user = CachedInfoBLL.GetUserInfo(token);// 获取到用户信息之后，将更改的数据内容存储到数据库中
-            //// var user = new UserInfoDto() { id=1,dbid=1,name="123",department_id=1,email="liuhai_dsjt@shdsjt.cn",mobile= "18217750743" ,security_Level_id=2};
-            //var description = _dal.CompareValue(formTmpl, tmplFind);
+            //var user = new UserInfoDto() { id=1,dbid=1,name="zhufei_test",department_id=1,email="liuhai_dsjt@shdsjt.cn",mobile= "18217750743" ,security_Level_id=2};
+            //var old_val = new sys_form_tmpl() { id = (int)_dal.GetNextIdSys(), create_time = 123, create_user_id = 1, tmpl_name = "1",remark="备注" };
+            //var new_val = new sys_form_tmpl() { id = (int)_dal.GetNextIdSys(), create_time = 321, create_user_id = 1, form_type_id = 1, tmpl_name = "2" ,};
+            //var description = _dal.CompareValue(old_val, new_val);
             //if (user != null)
             //{
             //    sys_oper_log log = new sys_oper_log()
             //    {
             //        user_cate = "用户",
-            //        user_id = (int)user.id,
+            //        user_id = user.id,
             //        name = user.name,
-            //        phone = user.mobile==null?"":user.mobile,
-            //        oper_time = DateTime.Now,
-            //        oper_object_cate_id = 737,// 商机对应id d_general表中定义
-            //        oper_object_id = formTmpl.id,// 操作对象ID
-            //        oper_type_id =(int)DICTIONARY_ENUM.FORM_TEMPLATE_OPERATION_TYPE_UPDATE,// 800 增  801 删  802 改
+            //        phone = user.mobile == null ? "" : user.mobile,
+            //        oper_time =  Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.FROMOPPORTUNITY,// 商机对应id d_general表中定义
+            //        oper_object_id = new_val.id,// 操作对象ID
+            //        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,// 800 增  801 删  802 改
             //        oper_description = description,
             //        remark = ""
             //    };
@@ -148,25 +151,25 @@ namespace EMT.DoneNOW.BLL
 
 
             //// 新增时添加日志的测试
-            //var val = new sys_form_tmpl() {id=(int)_dal.GetNextIdSys(),create_time=123,create_user_id=1,form_type_id=1,tmpl_name="1" };
+            //var val = new sys_form_tmpl() { id = (int)_dal.GetNextIdSys(), create_time = 123, create_user_id = 1, form_type_id = 1, tmpl_name = "1" };
             //var content = _dal.AddValue(val);
             //var addLog = new sys_oper_log()
             //{
             //    user_cate = "用户",
-            //    user_id = (int)user.id,
+            //    user_id = user.id,
             //    name = "",
             //    phone = user.mobile == null ? "" : user.mobile,
-            //    oper_time = DateTime.Now,
-            //    oper_object_cate_id = 737,// 商机对应id d_general表中定义
+            //    oper_time =  Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.FROMOPPORTUNITY,// 商机对应id d_general表中定义
             //    oper_object_id = val.id,// 操作对象ID
-            //    oper_type_id = (int)DICTIONARY_ENUM.FORM_TEMPLATE_OPERATION_TYPE_ADD,
+            //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
             //    oper_description = content,
             //    remark = ""
 
             //};
             //new sys_oper_log_dal().Insert(addLog);
 
-       
+
             return true;
         }
 
@@ -225,7 +228,7 @@ namespace EMT.DoneNOW.BLL
             oppTmpl.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             oppTmpl.delete_user_id = userid;
 
-            return dal.SoftDelete(oppTmpl);
+            return dal.SoftDelete(oppTmpl,userid);
         }
 
         /// <summary>
