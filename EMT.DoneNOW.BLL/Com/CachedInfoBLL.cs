@@ -33,9 +33,14 @@ namespace EMT.DoneNOW.BLL
             redis.AddCache<string>(refreshToken, token, minites);
         }
 
-        public List<DictionaryEntryDto> GetDictionary(string dicname)
+        public static void SetQuerySql(string key, CacheQuerySqlDto sql, int minitues)
         {
-            return null;
+            redis.AddCache<CacheQuerySqlDto>(key, sql, minitues);
+        }
+
+        public static CacheQuerySqlDto GetQuerySql(string key)
+        {
+            return redis.GetCache<CacheQuerySqlDto>(key);
         }
     }
 }

@@ -1,0 +1,111 @@
+body{min-width: 1200px;}
+.index-titleLeft{width: 150px;background: #13273b;position: fixed;left: 0;top: 0;z-index: 9;height: 100%;}
+.index-titleLeft dl{border-bottom:1px solid #546675 ;}
+    .index-titleLeft dt {
+        height: 107px;
+        background: url(../Images/logotitle.png) no-repeat center;
+    }
+.index-titleLeft dd{height: 69px;border-top:1px solid #546675;line-height:98px ;text-align: center;color: #daf1f9;
+background-repeat:no-repeat ;background-position:center 15px; }
+.index-titleLeft dd:hover{background-color:#34485c;position: relative;}
+.index-titleLeft dd div{right:-297px;top:0;position: absolute;padding: 30px;box-shadow: 0px 1px 15px 0px #4c4c4c;display: none;background: #FFFFFF;}
+.index-titleLeft dd:hover div{display: block;}
+.index-titleLeft dd div dl{border-right: 1px solid #a1a9b1 ;padding: 0 18px;float: left;border-bottom: none;}
+.index-titleLeft dd div dl:last-child{border: none;}
+.index-titleLeft dd div dl dt{height: 30px;line-height: 30px;color: #13273b;font-size: 14px;background: none;}
+.index-titleLeft dd div dl dd{height: 25px;line-height: 25px;color: #13273b;font-size: 12px;border: none;}
+.index-titleLeft dd div dl dd:hover{background-color:#CCCCCC;}
+.index-titleLeft dd div dl dd a{height: 25px;line-height: 25px;color: #13273b;font-size: 12px;border: none;display: block;}
+
+.index-titleTop{width: 100%;height: 87px;position: fixed;right :0px;top: 0;padding: 0 35px; box-shadow: 0px 1px 15px 0px #4c4c4c;z-index: 8;background: #FFFFFF;}
+.titleTop-up{border-bottom: 1px solid #89939d;margin-left: 207px;min-width: 1004px;}
+.titleTop-up li{cursor: pointer;}
+    .titleTop-up .up-left li {
+        width: 50px;
+        height: 49px;
+        float: left;
+        background: url(../Images/icon.png) no-repeat;
+    }
+.titleTop-up .up-left li input{margin: 15px 0 0 15px;width: 151px;height: 20px;padding-left: 10px;float: left;border: 1px solid #aab1b8;outline: none;}
+.titleTop-up .up-left li button{width: 26px;height: 22px;float: left;margin-top: 15px;border: 1px solid #aab1b8;border-left: none;
+background:url(../img/icon.png) no-repeat -309px -31px  ;outline: none;cursor: pointer;}
+.titleTop-up .up-left li span{width:1px;height: 11px;float: right;display: block;margin: 20px auto 0;background: #13273b;}
+.titleTop-up .up-left li:nth-child(1){background-position:-11px -16px ;}
+.titleTop-up .up-left li:nth-child(2){background-position:-58px -16px ;}
+.titleTop-up .up-left li:nth-child(3){background-position:-106px -16px ;}
+.titleTop-up .up-left li:nth-child(4){background-position:-153px -16px ;}
+.titleTop-up .up-left li:nth-child(5){background-position:-200px -16px ;}
+.titleTop-up .up-left li:nth-child(6){background-position:-247px -16px ;}
+.titleTop-up .up-left li:nth-child(7){background:none;width: auto;}
+.titleTop-up .up-right .name{width:auto;background: none;}
+.titleTop-up .up-right .name span{width:1px;height: 11px;display: block;margin: 20px 8px;background: #13273b;float: left;}
+.titleTop-up .up-right .name p{float: left;height: 49px;line-height: 49px;font-size: 12px;color: #2e3f4d;}
+.titleTop-up .up-right .name a{float: left;line-height: 49px;font-size: 12px;color: #2e3f4d;}
+    .titleTop-up .up-right li {
+        width: 50px;
+        height: 49px;
+        float: left;
+        background: url(../Images/icon.png) no-repeat;
+    }
+.titleTop-up .up-right li span{width:1px;height: 11px;float: right;display: block;margin: 20px auto 0;background: #13273b;}
+.titleTop-up .up-right li:nth-child(2){background-position:-391px -16px ;}
+.titleTop-up .up-right li:nth-child(3){background-position:-438px -16px ;}
+.titleTop-up .up-right li:nth-child(4){background-position:-11px -62px ;}
+
+.titleTop-down{margin-left: 185px;min-width: 1004px;}
+.titleTop-down ul{white-space:nowrap}
+.titleTop-down li{cursor: pointer;display:inline-block;}
+.titleTop-down .up-left li{height: 37px;float: left;}
+.titleTop-down .up-left li p{float: left;height: 37px;line-height: 37px;width: 90px;text-align: center;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
+.titleTop-down .up-left li span{width:1px;height: 22px;float: right;display: block;margin: 8px auto 0;background: #a1a9b1;}
+    .titleTop-down .up-left li:last-child i {
+        background: url(../Images/icon.png) no-repeat -345px -22px;
+        width: 50px;
+        height: 37px;
+        display: block;
+    }
+    .titleTop-down .up-right li {
+        width: 50px;
+        height: 37px;
+        float: left;
+        background: url(../Images/icon.png) no-repeat;
+    }
+.titleTop-down .up-right li:nth-child(1){background-position:-60px -65px ;}
+.titleTop-down .up-right li:nth-child(2){background-position:-108px -65px ;}
+
+.index-titleRight{width: 34px;height: 100%;border-left:1px solid #bbc2c8;position: fixed;right: 0;top: 0;z-index: 8;background: #F5F5F5;}
+.men-top{ background: #464646;padding: 19px 3px 15px;cursor: pointer;border-radius:5px 0px 0px 5px;}
+.men-top i{background: url(../img/icon.png) no-repeat;}
+.men-top i:nth-child(1){background-position:-168px -75px ;}
+.men-top i:nth-child(2){background:none;}
+.men-top i:nth-child(3){background-position:-215px -75px ;}
+.men-down{background: #464646;margin-top: 9px;}
+.titleRight-men{top:105px ;right: 0;}
+.titleRight-men i{width: 22px; height: 22px;display: block;}
+
+.men-down{padding: 20px 3px;cursor: pointer;border-radius:5px 0px 0px 5px;}
+    .men-down i {
+        background: url(../Images/icon.png) no-repeat -262px -75px;
+    }
+
+.cont{padding: 110px 60px 60px 170px;position: relative;z-index: 1;}
+.cont-title{background: #346A95;}
+.title-left i {
+    width: 40px;
+    height: 40px;
+    display: block;
+    float: left;
+    background: url(../Images/icon.png) no-repeat -305px -130px;
+    cursor: pointer;
+}
+.title-left p{height:40px; line-height: 40px;display: block;float: left;font-size: 16px;color: #FFFFFF;float: left;}
+.title-right i {
+    background: url(../Images/icon.png) no-repeat;
+    width: 40px;
+    height: 40px;
+    display: block;
+    float: right;
+    cursor: pointer;
+}
+.title-right .collect{background-position:-205px -20px ;}
+.title-right .help{background-position:-207px -64px ;}

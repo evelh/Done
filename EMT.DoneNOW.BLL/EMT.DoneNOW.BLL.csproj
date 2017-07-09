@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AUTH\AuthBLL.cs" />
-    <Compile Include="CachedInfoBLL.cs" />
+    <Compile Include="Com\CachedInfoBLL.cs" />
     <Compile Include="Com\QueryCommonBLL.cs" />
     <Compile Include="CRM\CompanyBLL.cs" />
     <Compile Include="CRM\ContactBLL.cs" />

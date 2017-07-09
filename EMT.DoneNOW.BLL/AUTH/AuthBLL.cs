@@ -154,6 +154,56 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 登录（不使用token）
+        /// </summary>
+        /// <param name="loginName"></param>
+        /// <param name="password"></param>
+        /// <param name="userInfo"></param>
+        /// <returns></returns>
+        public ERROR_CODE Login(string loginName, string password, out sys_user userInfo)
+        {
+            userInfo = null;
+            StringBuilder where = new StringBuilder();
+            string loginType = "";
+            if (new RegexOp().IsEmail(loginName))
+            {
+                where.Append($" email='{loginName}' ");
+                loginType = "email";
+            }
+            else if (new RegexOp().IsMobilePhone(loginName))
+            {
+                where.Append($" mobile_phone='{loginName}' ");
+                loginType = "mobile_phone";
+            }
+            else
+            {
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+
+            List<sys_user> user = _dal.FindListBySql($"SELECT * FROM sys_user WHERE {where.ToString()}");
+            if (user.Count < 1)
+                return ERROR_CODE.USER_NOT_FIND;
+            if (!new Cryptographys().SHA1Encrypt(password).Equals(user[0].password))
+            {
+                // TODO: 输入错误密码处理
+                return ERROR_CODE.PASSWORD_ERROR;
+            }
+
+            userInfo = user[0];
+            SaveLoginLog();
+
+            return ERROR_CODE.SUCCESS;
+        }
+
+        /// <summary>
+        /// 记录登录日志
+        /// </summary>
+        private void SaveLoginLog()
+        {
+            // TODO:
+        }
+
+        /// <summary>
         /// 生成token
         /// </summary>
         /// <param name="refreshToken"></param>

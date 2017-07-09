@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiResultDto.cs" />
+    <Compile Include="CacheQuerySqlDto.cs" />
     <Compile Include="CompanyAddDto.cs" />
     <Compile Include="CompanyConditionDto.cs" />
     <Compile Include="CompanyUpdateDto.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryConditionParaDto.cs" />
     <Compile Include="QueryParaDto.cs" />
+    <Compile Include="QueryResultDto.cs" />
     <Compile Include="QueryResultParaDto.cs" />
     <Compile Include="TokenDto.cs" />
     <Compile Include="UserAuthDto.cs" />
