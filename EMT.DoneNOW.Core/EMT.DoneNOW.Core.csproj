@@ -46,12 +46,12 @@
     <Compile Include="AUTH\sys_token.cs" />
     <Compile Include="AUTH\sys_user.cs" />
     <Compile Include="COM\com_note.cs" />
+    <Compile Include="COM\com_notify_email.cs" />
     <Compile Include="COM\com_todo.cs" />
     <Compile Include="CRM\crm_account.cs" />
     <Compile Include="CRM\crm_account_alert.cs" />
-    <Compile Include="CRM\crm_account_note.cs" />
-    <Compile Include="CRM\crm_account_todo.cs" />
     <Compile Include="CRM\crm_contact.cs" />
+    <Compile Include="CRM\crm_installed_product.cs" />
     <Compile Include="CRM\crm_location.cs" />
     <Compile Include="CRM\crm_opportunity.cs" />
     <Compile Include="Dictionary\d_account_classification.cs" />

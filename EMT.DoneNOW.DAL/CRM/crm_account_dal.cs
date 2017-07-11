@@ -80,7 +80,7 @@ namespace EMT.DoneNOW.DAL
         /// <returns>true:已存在</returns>
         public bool ExistAccountName(string accountName)
         {
-            string sql = $"SELECT COUNT(0) FROM crm_account WHERE account_name='{accountName}'";
+            string sql = $"SELECT COUNT(0) FROM crm_account WHERE name='{accountName}'";
             object obj = GetSingle(sql);
             int cnt = -1;
             if (int.TryParse(obj.ToString(), out cnt))
@@ -101,6 +101,18 @@ namespace EMT.DoneNOW.DAL
             return FindSignleBySql<crm_account>($"select * from crm_account WHERE name='{accountName}' and delete_time = 0");
         }
 
+        /// <summary>
+        /// 根据客户ID去获取到所有的子公司信息
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <returns></returns>
+        public List<crm_account> GetSubsidiariesById(long account_id)
+        {
+            // 查找指定的列
+            string sql = $"select c.name as '公司名称',d.name as '类型',last_activity_time as '最后活跃时间' from crm_account c,d_general   WHERE c.parent_id = {account_id} and c.delete_time = 0  and c.type_id = d.id"; 
+
+            return FindListBySql<crm_account>($"select * from crm_account WHERE parent_id='{account_id}' and delete_time = 0");
+        }
 
     }
 }

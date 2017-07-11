@@ -51,13 +51,13 @@ namespace EMT.DoneNOW.DAL
         }
 
         /// <summary>
-        /// 根据客户id查找到客户的所有联系人信息
+        /// 根据客户id查找到客户的所有联系人信息，按照姓名升序排列
         /// </summary>
         /// <param name="account_id"></param>
         /// <returns></returns>
         public List<crm_contact> GetContactByAccountId(long account_id)
         {
-            string sql = $"select * from crm_contact where account_id={account_id}  and delete_time = 0";
+            string sql = $"select * from crm_contact where account_id={account_id}  and delete_time = 0 order by name ";
             return FindListBySql(sql);
         }
         /// <summary>

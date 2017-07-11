@@ -31,6 +31,15 @@ namespace EMT.DoneNOW.DTO
             DEPARTMENT = 89,    // 指定部门
             ALL = 90,           // 任何人
         }
+        /// <summary>
+        /// 通知发送邮箱来源类型-24
+        /// </summary>
+        public enum FROM_EMAIL_TYPE
+        {
+            FROM_EMAIL = 251,              // 发起人
+            PLATFORM_SUPPORT_EMAIL = 252,  // 平台支撑邮箱
+            OTHER_EMAIL = 253,             // 其他指定邮箱
+        }
 
         /// <summary>
         /// 表单模板类型-27
@@ -45,10 +54,19 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum UDF_CATE
         {
+            TASK = 511,
+            TICKETS = 512,
             SITE = 513,             // 站点
+            CONFIGURATION = 514,
+            PRODUCTS = 515,
+            CONTRACTS = 516,        // 合同
             COMPANY = 517,          // 客户
             CONTACT = 518,          // 联系人
             OPPORTUNITY = 519,      // 商机
+            SALES = 520,
+            ORDERS = 521,
+            PROJECTS = 522,           
+            CONFIGURATION_ITEMS=523,// 配置项
         }
 
         /// <summary>

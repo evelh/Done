@@ -252,6 +252,12 @@ namespace EMT.DoneNOW.BLL
                 case DicEnum.UDF_CATE.CONTACT:
                     table = "crm_contact_ext";
                     break;
+                case DicEnum.UDF_CATE.SITE:
+                    table = "crm_account_site_ext";
+                    break;
+                case DicEnum.UDF_CATE.CONFIGURATION_ITEMS:
+                    table = "crm_installed_product";
+                    break;
                 // TODO: 其他类别
                 default:
                     break;
