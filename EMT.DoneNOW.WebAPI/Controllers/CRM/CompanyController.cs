@@ -68,7 +68,7 @@ namespace EMT.DoneNOW.WebAPI.Controllers
 
         [HttpPost]
         [Route("company/edit")]
-        public ApiResultDto UpdateCompany([FromBody] crm_account account)
+        public ApiResultDto UpdateCompany([FromBody] CompanyUpdateDto account)
         {
             return Result(_bll.Update(account, GetToken()));
         }

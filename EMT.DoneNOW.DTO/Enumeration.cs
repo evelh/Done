@@ -74,6 +74,16 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
+        /// user状态-46
+        /// </summary>
+        public enum USER_STATUS
+        {
+            NORMAL = 616,     // 正常
+            FREEZE = 617,     // 冻结
+            EXPIRED = 618,    // 过期
+        }
+
+        /// <summary>
         /// 查询页面分类-65
         /// </summary>
         public enum QUERY_TYPE
@@ -132,5 +142,17 @@ namespace EMT.DoneNOW.DTO
             MULTI_DROPDOWN = 810,   // 多选下拉框
             AREA = 811,             // 行政区
         }
+    }
+
+    public enum ActionEnum
+    {
+        /// <summary>
+        /// 登录
+        /// </summary>
+        Login,
+        /// <summary>
+        /// 退出
+        /// </summary>
+        Logout,
     }
 }

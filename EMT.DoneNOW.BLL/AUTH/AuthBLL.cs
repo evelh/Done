@@ -157,14 +157,17 @@ namespace EMT.DoneNOW.BLL
         /// 登录（不使用token）
         /// </summary>
         /// <param name="loginName"></param>
-        /// <param name="password"></param>
+        /// <param name="password">md5后的登录密码</param>
+        /// <param name="ip"></param>
+        /// <param name="agent"></param>
         /// <param name="userInfo"></param>
         /// <returns></returns>
-        public ERROR_CODE Login(string loginName, string password, out sys_user userInfo)
+        public ERROR_CODE Login(string loginName, string password, string ip, string agent, out sys_user userInfo)
         {
             userInfo = null;
             StringBuilder where = new StringBuilder();
             string loginType = "";
+            // 判断登录类型是邮箱还是手机号
             if (new RegexOp().IsEmail(loginName))
             {
                 where.Append($" email='{loginName}' ");
@@ -183,24 +186,36 @@ namespace EMT.DoneNOW.BLL
             List<sys_user> user = _dal.FindListBySql($"SELECT * FROM sys_user WHERE {where.ToString()}");
             if (user.Count < 1)
                 return ERROR_CODE.USER_NOT_FIND;
-            if (!new Cryptographys().SHA1Encrypt(password).Equals(user[0].password))
+            if (!new Cryptographys().SHA1Encrypt(password).Equals(user[0].password))    // 密码错误
             {
-                // TODO: 输入错误密码处理
                 return ERROR_CODE.PASSWORD_ERROR;
             }
+            if (user[0].status_id != (int)DicEnum.USER_STATUS.NORMAL)       // 用户状态不可用
+                return ERROR_CODE.USER_NOT_FIND;
+
+            //向sys_login_log表中插入日志
+            sys_login_log login_log = new sys_login_log
+            {
+                id = _dal.GetNextIdSys(),
+                ip = ip,
+                agent = agent,
+                login_time = DateTime.Now,
+                name = "",
+                user_id = user[0].id
+            };
+            if (loginType.Equals("email"))
+            {
+                login_log.email = loginName;
+            }
+            else if (loginType.Equals("mobile_phone"))
+            {
+                login_log.mobile_phone = loginName;
+            }
+            new sys_login_log_dal().Insert(login_log); 
 
             userInfo = user[0];
-            SaveLoginLog();
 
             return ERROR_CODE.SUCCESS;
-        }
-
-        /// <summary>
-        /// 记录登录日志
-        /// </summary>
-        private void SaveLoginLog()
-        {
-            // TODO:
         }
 
         /// <summary>
