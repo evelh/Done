@@ -53,6 +53,17 @@ namespace EMT.DoneNOW.DAL
         }
 
         /// <summary>
+        /// 根据客户ID返回集合
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <returns></returns>
+        public List<T> FindByAccountId(long account_id)
+        {
+            string name = typeof(T).Name;
+            return FindListBySql<T>($"SELECT * FROM {name} WHERE account_id={account_id} and delete_time = 0 ");
+        }
+
+        /// <summary>
         /// 返回列表
         /// </summary>
         /// <param name="sql">查询字段</param>

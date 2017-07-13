@@ -9,6 +9,7 @@ namespace EMT.DoneNOW.DAL
 {
     public class crm_opportunity_dal : BaseDAL<crm_opportunity>
     {
+
         public List<crm_opportunity> Find(OpportunityConditionDto condition, int pageNum, string orderby)
         {
             StringBuilder sql = new StringBuilder();
@@ -28,6 +29,16 @@ namespace EMT.DoneNOW.DAL
                 sql.Append($" ORDER BY {orderby}");
             return null;
             //return FindListPage(CompanyListQueryString(), sql.ToString(), pageNum);
+        }
+
+        /// <summary>
+        /// 通过客户id查询商机历史，按照名称升序排序
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <returns></returns>
+        public List<crm_opportunity> FindOpHistoryByAccountId(long account_id)
+        {
+            return FindListBySql($"SELECT * from crm_opportunity where account_id = {account_id} and delete_time = 0 ORDER BY name");
         }
 
        
