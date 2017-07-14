@@ -7,12 +7,6 @@
 		<title>DoneNOW</title>
 		<link rel="stylesheet" type="text/css" href="Content/base.css"/>
 		<link rel="stylesheet" type="text/css" href="Content/index.css"/>
-<script type="text/javascript">
-function open_win()
-{
-window.open("NewCompany.html","_blank","toolbar=yes, location=yes,directories=no,status=no, menubar=yes, scrollbars=yes,resizable=no, copyhistory=yes, width=600, height=600,top=150,left=300")
-}
-</script>
 	</head>
 	<body>
 		<div class="index-titleLeft">
@@ -83,7 +77,7 @@ window.open("NewCompany.html","_blank","toolbar=yes, location=yes,directories=no
 				<div class="up-right fr">
 					<ul>
 						<li class="name">
-							<p><a href="javaScript:" onclick="open_win()" ><%=(Session["dn_session_user_info"] as EMT.DoneNOW.Core.sys_user).email %></a></p>
+							<p><a href="javaScript:"><%=(Session["dn_session_user_info"] as EMT.DoneNOW.Core.sys_user).email %></a></p>
 							<span></span>
 							<a onclick="javaScript:window.location.href='login?action=<%=EMT.DoneNOW.DTO.ActionEnum.Logout %>'">退出</a>
 						</li>
@@ -124,413 +118,34 @@ window.open("NewCompany.html","_blank","toolbar=yes, location=yes,directories=no
 			</div>
 		</div>
 		<div class="cont">
-			<div class="cont-innter">
-				<div class="cont-title clear">
-					<div class="title-left fl">
-						<i></i>
-						<p>	COMPANY SEARCH</p>
-					</div>
-					<div class="title-right fr">
-						<i class="help"></i>
-						<i class="collect"></i>
-					</div>
-			</div>
-				<div class="information clear">
-					<p class="informationTitle"> <i></i>GENERAL INFORMATION</p>
-					<div class="left fl">
-						<ul>
-							<li>
-								<label>Company Name<span class="red">*</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Contact Name <span class="num">1</span></label>
-								<input type="text" name="" id="" value=""  style="width: 75px;"/>
-								<input type="text" name="" id="" value="" maxlength="2"  style="width: 32px;"/>
-								<input type="text" name="" id="" value=""  style="width: 75px;"/>
-							</li>
-							<li class="clear">
-								<ul class="clear">
-									<li class="fl">
-										<label>Prefix<span class="num">1</span></label>
-										<select name=""  style="width: 92px; ">
-											<option value="">1111</option>
-											<option value="">1111</option>
-											<option value="">1111</option>
-										</select>
-									</li>
-									<li class="fl" style="margin-left: 20px;">
-										<label>Suffix<span class="num">1</span></label>
-										<select name=""  style="width: 92px; ">
-											<option value="">2222</option>
-											<option value="">2222</option>
-											<option value="">2222</option>
-										</select>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<label>Title<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li class="clear">
-								<ul class="clear">
-									<li class="fl">
-										<label>Phone<span class=" red">*</span></label>
-										<input type="text" name="" id="" value="" style="width: 88px;"/>
-									</li>
-									<li class="fl" style="margin-left:20px;">
-										<label>Ext.<span class="num">1</span></label>
-										<input type="text" name="" id="" value="" style="width: 88px;"/>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<label>Email<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Address <span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Address <span class="num">2</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>City<span class="num"></span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li class="clear">
-								<ul class="clear">
-									<li class="fl">
-										<label>State<span class=" red"></span></label>
-										<input type="text" name="" id="" value="" style="width: 88px;"/>
-									</li>
-									<li class="fl" style="margin-left:20px;">
-										<label>Post Code<span class="num"></span></label>
-										<input type="text" name="" id="" value="" style="width: 88px;"/>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<label>Country<span class="num"></span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-		
-							<li>
-								<label>Additional Address Information<span class="num"></span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Country<span class="num"></span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Tax ID<span class="num"></span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<input type="checkbox" name="" id="" value="" style="width: auto;"/> Tax Exempt
-							</li>
-						</ul>
-					</div>
-					<div class="left fl">
-						<ul>
-							<li>
-								<label>Alternate Phone<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Alternate Phone<span class="num">2</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Mobile Phone<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Fax<span class="red"></span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Company Type<span class="red">*</span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Classification<span class="red"></span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Account Manager<span class="red">*</span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Territory Name<span class="red"></span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Market Segment<span class="red">*</span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Competitor<span class="red"></span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Parent Company Name<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Web Site<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Company Number<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-		
-						</ul>
-					</div>
-				
-					<div class="left fl">
-						<ul>
-							<li>
-								<label>Company Name<span class="red">*</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Contact Name <span class="num">1</span></label>
-								<input type="text" name="" id="" value=""  style="width: 75px;"/>
-								<input type="text" name="" id="" value="" maxlength="2"  style="width: 32px;"/>
-								<input type="text" name="" id="" value=""  style="width: 75px;"/>
-							</li>
-							<li class="clear">
-								<ul class="clear">
-									<li class="fl">
-										<label>Prefix<span class="num">1</span></label>
-										<select name=""  style="width: 92px; ">
-											<option value="">1111</option>
-											<option value="">1111</option>
-											<option value="">1111</option>
-										</select>
-									</li>
-									<li class="fl" style="margin-left: 20px;">
-										<label>Suffix<span class="num">1</span></label>
-										<select name=""  style="width: 92px; ">
-											<option value="">2222</option>
-											<option value="">2222</option>
-											<option value="">2222</option>
-										</select>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<label>Title<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li class="clear">
-								<ul class="clear">
-									<li class="fl">
-										<label>Phone<span class=" red">*</span></label>
-										<input type="text" name="" id="" value="" style="width: 88px;"/>
-									</li>
-									<li class="fl" style="margin-left:20px;">
-										<label>Ext.<span class="num">1</span></label>
-										<input type="text" name="" id="" value="" style="width: 88px;"/>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<label>Email<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Address <span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Address <span class="num">2</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>City<span class="num"></span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li class="clear">
-								<ul class="clear">
-									<li class="fl">
-										<label>State<span class=" red"></span></label>
-										<input type="text" name="" id="" value="" style="width: 88px;"/>
-									</li>
-									<li class="fl" style="margin-left:20px;">
-										<label>Post Code<span class="num"></span></label>
-										<input type="text" name="" id="" value="" style="width: 88px;"/>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<label>Country<span class="num"></span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-		
-							<li>
-								<label>Additional Address Information<span class="num"></span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Country<span class="num"></span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Tax ID<span class="num"></span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<input type="checkbox" name="" id="" value="" style="width: auto;"/> Tax Exempt
-							</li>
-						</ul>
-					</div>
-					<div class="left fl">
-						<ul>
-							<li>
-								<label>Alternate Phone<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Alternate Phone<span class="num">2</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Mobile Phone<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Fax<span class="red"></span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Company Type<span class="red">*</span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Classification<span class="red"></span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Account Manager<span class="red">*</span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Territory Name<span class="red"></span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Market Segment<span class="red">*</span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Competitor<span class="red"></span></label>
-								<select name="" style="width: 205px;">
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-									<option value="">11111111111</option>
-								</select>
-							</li>
-							<li>
-								<label>Parent Company Name<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Web Site<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-							<li>
-								<label>Company Number<span class="num">1</span></label>
-								<input type="text" name="" id="" value="" />
-							</li>
-		
-						</ul>
-					</div>
-				
-				</div>
-			</div>
+            <iframe id="PageFrame" name="PageFrame" style="width:100%;height:100%;" src="Common/SearchFrameSet.aspx"></iframe>
+            <form runat="server" visible="false">
+			    <div runat="server" id="query_para" class="cont-innter" style="border:1px;">
+                    <ul>
+                        <li>
+                            客戶名称或编号<asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+                            客户类型<asp:DropDownList ID="DropDownList1" runat="server"></asp:DropDownList>
+                        </li>
+                    </ul>
+				    <ul>
+                        <li>
+                            最近活动时间>=<asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
+                            最近活动时间<=<asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            客戶问卷调查分数>=<asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+                            客戶问卷调查分数<=<asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            地域名称<asp:DropDownList ID="DropDownList2" runat="server"></asp:DropDownList>
+                        </li>
+                    </ul>
+			    </div>
+            </form>
 		</div>
 	</body>
 	<script src="Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
