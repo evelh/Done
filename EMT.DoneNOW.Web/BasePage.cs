@@ -44,8 +44,9 @@ namespace EMT.DoneNOW.Web
             return false;
         }
 
+        #region 表单填充对象
         /// <summary>
-        /// 根据NameValueCollection 自动装配
+        /// 根据当前请求上下文自动填充对象
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
@@ -57,14 +58,17 @@ namespace EMT.DoneNOW.Web
                 return default(T);
 
             object obj = Activator.CreateInstance(typeof(T), null); // 创建指定类型实例
+            var propertyList = propertyInfoList.ToList();
+            var fieldList = typeof(T).GetFields().ToList();
             foreach (string key in valueCollection.Keys)    // 所有上下文的值
             {
-                foreach (var PropertyInfo in propertyInfoList)  // 所有实体属性
+                if (propertyList.Exists(p=>p.Name.ToLower().Equals(key.ToLower())))     // 属性
                 {
-                    if (key.ToLower() == PropertyInfo.Name.ToLower())
-                    {
-                        PropertyInfo.SetValue(obj, valueCollection[key], null); // 给对象赋值
-                    }
+                    propertyList.Find(p => p.Name.ToLower().Equals(key.ToLower())).SetValue(obj, valueCollection[key], null);
+                }
+                else if (fieldList.Exists(p => p.Name.ToLower().Equals(key.ToLower()))) // 字段
+                {
+                    fieldList.Find(p => p.Name.ToLower().Equals(key.ToLower())).SetValue(obj, valueCollection[key]);
                 }
             }
             return (T)obj;
@@ -88,5 +92,6 @@ namespace EMT.DoneNOW.Web
             }
             return props;
         }
+        #endregion
     }
 }
