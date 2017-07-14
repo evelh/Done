@@ -72,6 +72,61 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql(sql);
         }
 
-  
+        public List<crm_contact> GetContactByStatus(long account_id,int is_active)
+        {
+            string sql = $"SELECT * FROM crm_contact WHERE account_id='{account_id}' and delete_time = 0  ";
+            string where = "";
+            switch (is_active)
+            {
+                case 0:
+                    where += " and is_active = 0 ";
+                    break;
+                case 1:
+                    where += " and is_active = 1 ";
+                    break;
+                default:
+                    break;
+            }
+
+            return FindListBySql(sql+where);
+        }
+
+        /// <summary>
+        /// 根据客户ID去获取到这个客户的主要联系人
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <returns></returns>
+        public crm_contact GetPrimaryContactByAccountId(long account_id)
+        {
+            string sql = $"select * from crm_contact where account_id = {account_id} and is_primary_contact = 1 AND delete_time = 0";
+            return FindSignleBySql<crm_contact>(sql);
+        }
+
+        /// <summary>
+        /// 通过联系人姓名和客户ID获取联系人信息,修改操作验证时排除自己
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <param name="contact_name"></param>
+        /// <returns></returns>
+        public List<crm_contact> GetContactByName(long account_id,string contact_name ,long contact_id = 0 )
+        {
+            string sql = $"select * from crm_contact where account_id = {account_id} and name = '{contact_name}' and delete_time = 0";
+            if (contact_id == 0)
+                sql += " and id <> '{contact_id}' ";
+            return FindListBySql(sql);
+        }
+
+        /// <summary>
+        /// 验证手机是否已经被别的联系人使用,修改操作验证时排除自己
+        /// </summary>
+        /// <param name="mobile_phone"></param>
+        /// <returns></returns>
+        public List<crm_contact> GetContactByPhone(string mobile_phone,long contact_id = 0)
+        {
+            string sql = $"select * from crm_contact where mobile_phone = '{mobile_phone}' and delete_time = 0";
+            if (contact_id != 0)
+                sql += $" and id <> '{contact_id}' ";
+            return FindListBySql(sql);
+        }
     }
 }

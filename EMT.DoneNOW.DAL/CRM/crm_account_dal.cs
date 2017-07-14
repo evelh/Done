@@ -78,9 +78,11 @@ namespace EMT.DoneNOW.DAL
         /// 查找account_name记录是否已经存在
         /// </summary>
         /// <returns>true:已存在</returns>
-        public bool ExistAccountName(string accountName)
+        public bool ExistAccountName(string accountName,long account_id = 0)
         {
-            string sql = $"SELECT COUNT(0) FROM crm_account WHERE name='{accountName}'";
+            string sql = $"SELECT COUNT(0) FROM crm_account WHERE name='{accountName}' and delete_time = 0 ";
+            if (account_id == 0)
+                sql += $" and id <> {account_id} ";
             object obj = GetSingle(sql);
             int cnt = -1;
             if (int.TryParse(obj.ToString(), out cnt))
@@ -112,6 +114,25 @@ namespace EMT.DoneNOW.DAL
             string sql = $"select c.name as '公司名称',d.name as '类型',last_activity_time as '最后活跃时间' from crm_account c,d_general   WHERE c.parent_id = {account_id} and c.delete_time = 0  and c.type_id = d.id"; 
 
             return FindListBySql<crm_account>($"select * from crm_account WHERE parent_id='{account_id}' and delete_time = 0");
+        }
+        /// <summary>
+        /// 判断电话是否已经有客户在使用
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public bool ExistAccountPhone(string phone,long id=0)
+        {
+            string sql = $"SELECT count(0) from crm_account where delete_time = 0 AND  phone = '{phone}' ";
+            if (id == 0)
+                sql += $" and id <> {id}";
+            object obj = GetSingle(sql);
+            int cnt = -1;
+            if (int.TryParse(obj.ToString(), out cnt))
+            {
+                if (cnt > 0)
+                    return true;
+            }
+            return false;
         }
 
     }

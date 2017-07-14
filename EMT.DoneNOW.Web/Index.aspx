@@ -527,6 +527,7 @@ window.open("NewCompany.html","_blank","toolbar=yes, location=yes,directories=no
 							</li>
 		
 						</ul>
+                        <a href="#" onclick="openNewWin('http://localhost:60242/addcompany')"> 点击这里添加新的公司</a>
 					</div>
 				
 				</div>
@@ -536,3 +537,9 @@ window.open("NewCompany.html","_blank","toolbar=yes, location=yes,directories=no
 	<script src="Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="Scripts/index.js" type="text/javascript" charset="utf-8"></script>
 </html>
+<script type="text/javascript">  
+    function openNewWin(url) {
+        
+        window.open(url, "", "modal=yes,width=500,height=500,resizable=no,scrollbars=no"); 
+    }  
+</script> 

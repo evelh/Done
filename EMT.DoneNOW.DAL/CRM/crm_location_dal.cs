@@ -37,7 +37,7 @@ namespace EMT.DoneNOW.DAL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
                 oper_object_id = account_id,
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = string.Format("{{0}is_default{0}:{0}1→0{0}}", '"'),  // {"is_default":"1→0"},
+                oper_description = @"{""is_default"":""1→0""}",  // {"is_default":"1→0"},
                 remark = "修改客户默认地址",
             });
             return ExecuteSQL(sql);

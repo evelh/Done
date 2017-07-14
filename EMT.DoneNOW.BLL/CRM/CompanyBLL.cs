@@ -57,14 +57,19 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Insert(CompanyAddDto param, string token)
         {
-            if (string.IsNullOrEmpty(param.general.company_name) || string.IsNullOrEmpty(param.general.phone))  // 必填项校验
+            if (string.IsNullOrEmpty(param.general.company_name) || string.IsNullOrEmpty(param.general.phone)||string.IsNullOrEmpty(param.location.address))  // string必填项校验
                 return ERROR_CODE.PARAMS_ERROR;       // 返回参数丢失
-            if (_dal.ExistAccountName(param.general.company_name))    // 唯一性校验
-                return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;   // 返回客户名已存在
+            if (param.location.country_id == 0 || param.location.provice_id == 0 || param.location.city_id == 0)
+                return ERROR_CODE.PARAMS_ERROR;         // int 必填项校验
+            if (_dal.ExistAccountName(param.general.company_name)||_dal.ExistAccountPhone(param.general.phone))    // 客户名称与客户电话的唯一性校验
+                return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;   // 返回客户名已存在      
+            
             // TODO  名称相似校验
             var compareAccountName = CompareCompanyName(CompanyNameDeal(param.general.company_name), _dal.FindAll().Select(_ => _.name).ToList());    // 处理后的名字超过两个字相同（不包括两个字）即视为相似名称
             if (compareAccountName != null && compareAccountName.Count > 0)
                 return ERROR_CODE.ERROR;
+
+
             //var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
             // 测试用户
             var user = new UserInfoDto()
@@ -121,7 +126,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_id = _account.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.ADD,
                 oper_description = _dal.AddValue(_account),
-                remark = ""
+                remark = "保存客户信息"
 
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
@@ -179,7 +184,7 @@ namespace EMT.DoneNOW.BLL
                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     fax = _account.fax,
-                    alternate_phone1 = _account.alternate_phone1,
+                    //alternate_phone1 = _account.alternate_phone1,
                     alternate_phone2 = _account.alternate_phone2,
                     mobile_phone = param.contact.mobile_phone,
                     suffix_id = param.contact.sufix,
@@ -422,6 +427,12 @@ namespace EMT.DoneNOW.BLL
             return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;
         }
 
+
+        public List<string> CheckCompanyName(string companyName)
+        {
+            return CompareCompanyName(CompanyNameDeal(companyName), _dal.FindAll().Select(_ => _.name).ToList());    // 处理后的名字超过两个字相同（不包括两个字）即视为相似名称
+           
+        }
         /// <summary>
         /// 更新客户信息
         /// </summary>
@@ -441,6 +452,10 @@ namespace EMT.DoneNOW.BLL
             {
                 return false;
             }
+            if ( _dal.ExistAccountPhone(param.general_update.phone,param.general_update.id))    // 客户电话的唯一性校验 todo - 修改时 客户名称的唯一校验 
+                return false;   //  查找到重复信息，返回错误
+
+
             //var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
             var user = new UserInfoDto()
             {
@@ -543,7 +558,7 @@ namespace EMT.DoneNOW.BLL
             {
                 var udf_account = param.general_update.udf;  // 获取到客户传过来的自定义字段的值
                 // UpdateUdfValue 中含有插入修改日志的操作，无需再插入日志
-                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY, udf_account_list, new_company_value.id, udf_account, user.id, user.mobile);
+                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY, udf_account_list, new_company_value.id, udf_account, user,DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION);
             }
             #endregion
 
@@ -553,7 +568,7 @@ namespace EMT.DoneNOW.BLL
             {
                 var udf_site = param.site_configuration.udf;
                 // UpdateUdfValue 中含有插入修改日志的操作，无需再插入日志
-                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.SITE, udf_site_list, new_company_value.id, udf_site, user.id, user.mobile);
+                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.SITE, udf_site_list, new_company_value.id, udf_site, user,DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER_SITE);
             }
 
             #endregion
@@ -828,7 +843,33 @@ namespace EMT.DoneNOW.BLL
             // 如果修改了电话和传真，则弹出窗口，显示联系人列表供用户用户选择是否同步替换。    TODO
             if ((!old_company_value.phone.Equals(new_company_value)) || (!old_company_value.fax.Equals(new_company_value.fax)))   // 电话和传真有一个有更改时
             {
-                var contactList = new crm_contact_dal().GetContactByAccountId(new_company_value.id);    // 
+                var contactList = new crm_contact_dal().GetContactByAccountId(new_company_value.id);    // 获取到所有的这个客户的联系人
+                var update_contacts = "1,2,3,4,5,6,7,8,9";    // 首先定义有九个联系人信息被更改
+                var con_list = update_contacts.Split(',');
+                foreach (var item in con_list)
+                {
+                    var contact = new crm_contact_dal().FindById(Convert.ToInt64(item));   // 获取到对应的联系人信息
+                    if (contact != null)
+                    {
+                        contact.phone = param.general_update.phone;
+                        contact.fax = param.general_update.fax;
+                        new crm_contact_dal().Update(contact);                   // 修改联系人
+                        new sys_oper_log_dal().Insert(new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
+                            oper_object_id = contact.id,
+                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                            oper_description = _dal.CompareValue(contactList.FirstOrDefault(_=>_.id ==contact.id), contact),
+                            remark = "修改联系人电话或传真",
+                        });    // 插入更改日志
+                    }
+                }
+
             }
 
 
@@ -1066,28 +1107,18 @@ namespace EMT.DoneNOW.BLL
             List<string> similar_names = new List<string>();
             if (allCompanyName != null && allCompanyName.Count > 0)
             {
-                int nameCount = 0;
-                foreach (var companyName in allCompanyName)        // 遍历所有公司的名字
+                //int nameCount = 0;
+
+                for (int i = 0; i < newCompanyName.Length-2; i++)
                 {
-                    foreach (var item in CompanyNameDeal(companyName))
+                    var  subName = newCompanyName.Substring(i,2); // 截取判断的相似字段
+                    var containSubName = allCompanyName.Where(_ => _.Contains(subName)).ToList();   // 获取含有相对应字段的公司名称
+                    if(containSubName!=null && containSubName.Count > 0)
                     {
-                        if (newCompanyName.Contains(item))
-                        {
-                            nameCount++;
-                        }
-                        if (nameCount > 2)  // 名字相似字超过两个字，这里当作相似
-                        {
-                            break;
-                        }
+                        similar_names.AddRange(containSubName);                       // 如果查询到，将公司名称批量添加进相似公司名称里面
+                        containSubName.ForEach(_=> allCompanyName.Remove(_));         // 并且将相似的公司名称从集合中移除，以免重复添加
                     }
-                    if (nameCount > 2)
-                    {
-                        similar_names.Add(companyName);
-                        nameCount = 0;
-                        continue;
-                    }
-                    nameCount = 0;
-                }
+                }    
             }
             return similar_names;
         }

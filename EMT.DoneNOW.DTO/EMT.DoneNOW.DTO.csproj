@@ -48,6 +48,7 @@
     <Compile Include="CompanyReportDto.cs" />
     <Compile Include="CompanyUpdateDto.cs" />
     <Compile Include="ConfigurationItemAddDto.cs" />
+    <Compile Include="ContactAddDto.cs" />
     <Compile Include="ContactConditionDto.cs" />
     <Compile Include="DictionaryEntryDto.cs" />
     <Compile Include="Enumeration.cs" />

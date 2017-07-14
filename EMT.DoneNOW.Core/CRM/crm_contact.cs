@@ -12,35 +12,18 @@ namespace EMT.DoneNOW.Core
     [DataContract]
     public partial class crm_contact : SoftDeleteCore
     {
+
         [Key]
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]
-        public String external_id { get; set; }
-        [DataMember]
-        public String cust_link { get; set; }
+        public Int32 client_portal_is_active { get; set; }
         [DataMember]
         public Int64 account_id { get; set; }
         [DataMember]
-        public Int64? location_id { get; set; }
+        public Int32 is_active { get; set; }
         [DataMember]
-        public String phone { get; set; }
-        [DataMember]
-        public String fax { get; set; }
-        [DataMember]
-        public String alternate_phone1 { get; set; }
-        [DataMember]
-        public String alternate_phone2 { get; set; }
-        [DataMember]
-        public String mobile_phone { get; set; }
-        [DataMember]
-        public Int32? suffix_id { get; set; }
-        [DataMember]
-        public String title { get; set; }
-        [DataMember]
-        public String extra_notes { get; set; }
-        [DataMember]
-        public String room_number { get; set; }
+        public String external_id { get; set; }
         [DataMember]
         public String first_name { get; set; }
         [DataMember]
@@ -48,27 +31,65 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String name { get; set; }
         [DataMember]
+        public Int32? suffix_id { get; set; }
+        [DataMember]
+        public String title { get; set; }
+        [DataMember]
+        public SByte is_primary_contact { get; set; }
+        [DataMember]
+        public Int64? location_id { get; set; }
+        [DataMember]
+        public Int64? location_id2 { get; set; }
+        [DataMember]
         public String email { get; set; }
         [DataMember]
-        public SByte wants_email { get; set; }
+        public SByte? email2 { get; set; }
         [DataMember]
-        public Int32? email_freq { get; set; }
+        public String avatar { get; set; }
         [DataMember]
-        public Int32 is_active { get; set; }
+        public SByte allow_notify_email_task_ticket { get; set; }
         [DataMember]
-        public SByte is_web_user { get; set; }
+        public SByte is_optout_survey { get; set; }
         [DataMember]
-        public Int32? ca_security_group_id { get; set; }
+        public SByte is_optout_contact_group_email { get; set; }
+        [DataMember]
+        public String phone { get; set; }
+        [DataMember]
+        public String alternate_phone { get; set; }
+        [DataMember]
+        public String mobile_phone { get; set; }
+        [DataMember]
+        public String fax { get; set; }
+        [DataMember]
+        public String qq { get; set; }
+        [DataMember]
+        public String wechat { get; set; }
+        [DataMember]
+        public String weibo_url { get; set; }
         [DataMember]
         public Int64? last_activity_time { get; set; }
         [DataMember]
-        public String date_format { get; set; }
+        public Decimal? surrvey_rating { get; set; }
         [DataMember]
-        public String time_format { get; set; }
+        public Int32? security_level_id { get; set; }
         [DataMember]
-        public String number_format { get; set; }
+        public Int32? date_display_format_id { get; set; }
         [DataMember]
-        public SByte is_primary_contact { get; set; }
+        public Int32? time_display_format_id { get; set; }
+        [DataMember]
+        public Int32? number_display_format_id { get; set; }
+        [DataMember]
+        public String room_number { get; set; }
+        [DataMember]
+        public String cust_link { get; set; }
+        [DataMember]
+        public SByte? is_web_user { get; set; }
+        [DataMember]
+        public String alternate_phone2 { get; set; }
+        [DataMember]
+        public Int32? ca_security_group_id { get; set; }
+        [DataMember]
+        public String extra_notes { get; set; }
         [DataMember]
         public Int64? bulk_email_optout_time { get; set; }
         [DataMember]
@@ -79,12 +100,6 @@ namespace EMT.DoneNOW.Core
         public String twitter_url { get; set; }
         [DataMember]
         public String linkedin_url { get; set; }
-        [DataMember]
-        public String qq { get; set; }
-        [DataMember]
-        public String wechat { get; set; }
-        [DataMember]
-        public String weibo_url { get; set; }
         [DataMember]
         public String narrative_full_name { get; set; }
         [DataMember]
