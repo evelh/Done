@@ -195,7 +195,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="userId"></param>
         /// <param name="userMobile"></param>
         /// <returns></returns>
-        public bool UpdateUdfValue(DicEnum.UDF_CATE cate, List<UserDefinedFieldDto> fields, long id, List<UserDefinedFieldValue> vals, long userId, string userMobile)
+        public bool UpdateUdfValue(DicEnum.UDF_CATE cate, List<UserDefinedFieldDto> fields, long id, List<UserDefinedFieldValue> vals, UserInfoDto user, DicEnum.OPER_LOG_OBJ_CATE oper_log_cate)
         {
             var oldVal = GetUdfValue(cate, id, fields);
             Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -206,8 +206,8 @@ namespace EMT.DoneNOW.BLL
                 if (object.Equals(oldv.value, val.value))
                     continue;
                 var fld = fields.Find(f => f.id == val.id);
-                updateSb.Append(fld.col_name).Append("='").Append(val.value).Append("',"); // 组合sql更新语句
-                dict.Add(fld.col_name, oldv.value + "→" + val.value);       // 生成操作日志
+                updateSb.Append(fld.col_name).Append("='").Append(val.value).Append("',");    // 组合sql更新语句
+                dict.Add(fld.col_name, oldv.value + "→" + val.value);                         // 生成操作日志
             }
             if (dict.Count == 0)        // 无修改
                 return true;
@@ -220,11 +220,11 @@ namespace EMT.DoneNOW.BLL
             sys_oper_log log = new sys_oper_log()
             {
                 user_cate = "用户",
-                user_id = userId,
-                name = "",
-                phone = userMobile == null ? "" : userMobile,
+                user_id = user.id,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER,
+                oper_object_cate_id = (int)oper_log_cate,
                 oper_object_id = id,        // 操作对象id
                 oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
                 oper_description = new Tools.Serialize().SerializeJson(dict),
