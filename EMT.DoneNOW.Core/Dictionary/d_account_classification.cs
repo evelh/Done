@@ -19,16 +19,17 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String name { get; set; }
         [DataMember]
-        public String description { get; set; }
+        public String remark { get; set; }
         [DataMember]
         public Int32? sort_order { get; set; }
         [DataMember]
-        public SByte? status { get; set; }
+        public SByte? status_id { get; set; }
         [DataMember]
         public String icon_path { get; set; }
         [DataMember]
         public String font_style { get; set; }
-
+        [DataMember]
+        public Int64 create_time2 { get; set; }
 
     }
 }

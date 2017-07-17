@@ -15,7 +15,7 @@ namespace EMT.DoneNOW.Web
         }
 
         private void BasePage_Load(object sender, EventArgs e)
-        {
+         {
             // 判断用户是否登录
             if (!IsUserLogin())
             {
@@ -60,15 +60,28 @@ namespace EMT.DoneNOW.Web
             object obj = Activator.CreateInstance(typeof(T), null); // 创建指定类型实例
             var propertyList = propertyInfoList.ToList();
             var fieldList = typeof(T).GetFields().ToList();
+            //var test = typeof(T).GetNestedTypes();
+            //foreach (var item in test)
+            //{
+            //    Type nestedType = typeof(T).GetNestedType(item.Name);
+            //    if (nestedType != null)
+            //    {
+            //        fieldList.AddRange(nestedType.GetFields());
+            //    }
+            //}
             foreach (string key in valueCollection.Keys)    // 所有上下文的值
             {
                 if (propertyList.Exists(p=>p.Name.ToLower().Equals(key.ToLower())))     // 属性
                 {
-                    propertyList.Find(p => p.Name.ToLower().Equals(key.ToLower())).SetValue(obj, valueCollection[key], null);
+                    var pro = propertyList.Find(p => p.Name.ToLower().Equals(key.ToLower()));
+                    object value = Convert.ChangeType(valueCollection[key],Nullable.GetUnderlyingType(pro.PropertyType)??pro.PropertyType);
+                    pro.SetValue(obj, value, null);
                 }
                 else if (fieldList.Exists(p => p.Name.ToLower().Equals(key.ToLower()))) // 字段
                 {
-                    fieldList.Find(p => p.Name.ToLower().Equals(key.ToLower())).SetValue(obj, valueCollection[key]);
+                    var fld = fieldList.Find(p => p.Name.ToLower().Equals(key.ToLower()));
+                    Object value = Convert.ChangeType(valueCollection[key], Nullable.GetUnderlyingType(fld.FieldType) ?? fld.FieldType);
+                    fld.SetValue(obj, value);
                 }
             }
             return (T)obj;
