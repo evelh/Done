@@ -171,22 +171,8 @@ namespace EMT.DoneNOW.BLL
 
             var udf_contact_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT); // 联系人的自定义字段
             var udf_con_list = contactAddDto.udf;                                               // 传过来的联系人的自定义参数
-            if (new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTACT, contactAddDto.contact.id, udf_contact_list, udf_con_list)) // 保存成功即插入日志
-            {
-                new sys_oper_log_dal().Insert(new sys_oper_log()
-                {
-                    user_cate = "用户",
-                    user_id = user.id,
-                    name = user.name,
-                    phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION,
-                    oper_object_id = contactAddDto.contact.id,// 操作对象id
-                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                    oper_description = new Tools.Serialize().SerializeJson(udf_con_list),
-                    remark = "新增联系人扩展信息"
-                });       // 插入日志
-            }
+            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTACT, user.id, contactAddDto.contact.id, udf_contact_list, udf_con_list, OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION); // 保存成功即插入日志
+            
 
             #endregion
 

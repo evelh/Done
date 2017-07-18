@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.BLL
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("classification", new d_account_classification_dal().GetDictionary());    // 分类类别
             dic.Add("country", new d_country_dal().GetDictionary());                          // 国家表
-           // dic.Add("sys_resource", new sys_resource_dal().GetDictionary());                // 客户经理
+            dic.Add("sys_resource", new sys_resource_dal().GetDictionary());                // 客户经理
             dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("竞争对手")));          // 竞争对手
             dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行业")));    // 行业
             dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行政区")));                // 行政区
@@ -60,20 +60,20 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Insert(CompanyAddDto param, string token)
         {
-            if (string.IsNullOrEmpty(param.general.company_name) || string.IsNullOrEmpty(param.general.phone)||string.IsNullOrEmpty(param.location.address))  // string必填项校验
+            if (string.IsNullOrEmpty(param.general.company_name) || string.IsNullOrEmpty(param.general.phone) || string.IsNullOrEmpty(param.location.address))  // string必填项校验
                 return ERROR_CODE.PARAMS_ERROR;       // 返回参数丢失
             if (param.location.country_id == 0 || param.location.province_id == 0 || param.location.city_id == 0)
                 return ERROR_CODE.PARAMS_ERROR;         // int 必填项校验
-            if (_dal.ExistAccountName(param.general.company_name)||_dal.ExistAccountPhone(param.general.phone))    // 客户名称与客户电话的唯一性校验
+            if (_dal.ExistAccountName(param.general.company_name.Trim()) || _dal.ExistAccountPhone(param.general.phone))    // 客户名称与客户电话的唯一性校验
                 return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;   // 返回客户名已存在      
-            
+
             // TODO  名称相似校验
-            var compareAccountName = CompareCompanyName(CompanyNameDeal(param.general.company_name), _dal.FindAll().Select(_ => _.name).ToList());    // 处理后的名字超过两个字相同（不包括两个字）即视为相似名称
+            var compareAccountName = CompareCompanyName(CompanyNameDeal(param.general.company_name.Trim()), _dal.FindAll().Select(_ => _.name).ToList());    // 处理后的名字超过两个字相同（不包括两个字）即视为相似名称
             if (compareAccountName != null && compareAccountName.Count > 0)
                 return ERROR_CODE.ERROR;
 
 
-            //var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
+           // var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
             // 测试用户
             var user = new UserInfoDto()
             {
@@ -97,10 +97,10 @@ namespace EMT.DoneNOW.BLL
                 update_user_id = user.id,
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 no = param.general.company_number,
-                parent_id = param.general.parent_company_name,  
+                parent_id = param.general.parent_company_name,
                 territory_id = param.general.territory_name,
-                market_segment_id = param.general.market_segment==0?null: param.general.market_segment,
-                competitor_id = param.general.competitor==0?null: param.general.competitor,
+                market_segment_id = param.general.market_segment == 0 ? null : param.general.market_segment,
+                competitor_id = param.general.competitor == 0 ? null : param.general.competitor,
                 name = param.general.company_name.Trim(),
                 is_active = 1,                         // 0未激活 1 激活
                 //is_taxable = param.general.tax_exempt ? 1 : 0,// 是否免税 0 否 1 是
@@ -110,11 +110,11 @@ namespace EMT.DoneNOW.BLL
                 alternate_phone1 = param.general.alternate_phone1,
                 alternate_phone2 = param.general.alternate_phone2,
                 last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                type_id = param.general.company_type==0?null: param.general.company_type,
-                classification_id = param.general.classification==0?null: param.general.classification,
-                tax_region_id = param.general.tax_region==0?null: param.general.tax_region,
+                type_id = param.general.company_type == 0 ? null : param.general.company_type,
+                classification_id = param.general.classification == 0 ? null : param.general.classification,
+                tax_region_id = param.general.tax_region == 0 ? null : param.general.tax_region,
                 tax_identification = param.general.tax_id,
-                resource_id = param.general.account_manage==null?1:(long)param.general.account_manage,
+                resource_id = param.general.account_manage == null ? 1 : (long)param.general.account_manage,
             };  //  创建客户实体类
             _dal.Insert(_account);                         // 将客户实体插入到表中
 
@@ -147,7 +147,7 @@ namespace EMT.DoneNOW.BLL
                 provice_id = param.location.province_id,
                 postal_code = param.location.postal_code,
                 country_id = param.location.country_id,
-                additional_address = param.location.additional_address==null?"": param.location.additional_address,
+                additional_address = param.location.additional_address == null ? "" : param.location.additional_address,
                 is_default = 1,  // 是否默认
                 create_user_id = user.id,
                 update_user_id = user.id,
@@ -181,13 +181,13 @@ namespace EMT.DoneNOW.BLL
                 {
                     id = _dal.GetNextIdCom(),
                     account_id = _account.id,
-                    is_primary_contact = 1, // 主联系人 0不是 1是
+                    is_primary_contact = 1,   // 主联系人 0不是 1是
                     create_user_id = user.id,
                     update_user_id = user.id,
                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     fax = _account.fax,
-                    //alternate_phone1 = _account.alternate_phone1,
+                    alternate_phone = _account.alternate_phone1,
                     alternate_phone2 = _account.alternate_phone2,
                     mobile_phone = param.contact.mobile_phone,
                     suffix_id = param.contact.sufix,
@@ -221,24 +221,24 @@ namespace EMT.DoneNOW.BLL
             //new UserDefinedFieldsBLL().SaveUdfValue();
             var udf_account_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);  // 获取到所有关于客户的自定义字段
             var udf_general_list = param.general.udf;
-            if (new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.COMPANY, _account.id, udf_account_list, udf_general_list)) // 保存自定义字段，保存成功，插入日志
-            {
-                var add_accout_udf_log = new sys_oper_log()
-                {
-                    user_cate = "用户",
-                    user_id = user.id,
-                    name = "",
-                    phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION,
-                    oper_object_id = _account.id,// 操作对象id
-                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                    oper_description = new Tools.Serialize().SerializeJson(udf_general_list),
-                    remark = "保存客户扩展信息"
+            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.COMPANY, user.id, _account.id, udf_account_list, udf_general_list, OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION); // 保存自定义字段，保存成功，插入日志
+            //{
+            //    var add_accout_udf_log = new sys_oper_log()
+            //    {
+            //        user_cate = "用户",
+            //        user_id = user.id,
+            //        name = "",
+            //        phone = user.mobile == null ? "" : user.mobile,
+            //        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION,
+            //        oper_object_id = _account.id,// 操作对象id
+            //        oper_type_id = (int)OPER_LOG_TYPE.ADD,
+            //        oper_description = new Tools.Serialize().SerializeJson(udf_general_list),
+            //        remark = "保存客户扩展信息"
 
-                };          // 创建日志
-                new sys_oper_log_dal().Insert(add_accout_udf_log);       // 插入日志
-            }
+            //    };          // 创建日志
+            //    new sys_oper_log_dal().Insert(add_accout_udf_log);       // 插入日志
+            //}
             #endregion
 
             #region 4.保存联系人扩展信息
@@ -246,48 +246,17 @@ namespace EMT.DoneNOW.BLL
             {
                 var udf_contact_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT); // 联系人的自定义字段
                 var udf_con_list = param.contact.udf;     // 传过来的联系人的自定义参数
-                if (new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTACT, _contact.id, udf_contact_list, udf_con_list))
-                {
-                    var add_contact_udf_log = new sys_oper_log()
-                    {
-                        user_cate = "用户",
-                        user_id = user.id,
-                        name = "",
-                        phone = user.mobile == null ? "" : user.mobile,
-                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION,
-                        oper_object_id = _contact.id,// 操作对象id
-                        oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                        oper_description = new Tools.Serialize().SerializeJson(udf_con_list),
-                        remark = "保存联系人扩展信息"
-
-                    };          // 创建日志
-                    new sys_oper_log_dal().Insert(add_contact_udf_log);       // 插入日志
-                }
+                new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTACT, user.id, _contact.id, udf_contact_list, udf_con_list, OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION);
+    
             }
             #endregion
 
             #region 5.保存客户站点的扩展信息
             var udf_site_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.SITE);
             var udf_site = param.site.udf;
-            if (new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.SITE, _account.id, udf_site_list, udf_site))
-            {
-                sys_oper_log add_site_udf_log = new sys_oper_log()
-                {
-                    user_cate = "用户",
-                    user_id = user.id,
-                    name = "",
-                    phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER_SITE,
-                    oper_object_id = _account.id,// 操作对象id
-                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                    oper_description = new Tools.Serialize().SerializeJson(udf_site),
-                    remark = "保存客户站点的扩展信息"
-
-                };          // 创建日志
-                new sys_oper_log_dal().Insert(add_site_udf_log);       // 插入日志
-            }
+            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.SITE, user.id, _account.id, udf_site_list, udf_site, OPER_LOG_OBJ_CATE.CUSTOMER_SITE);
+           
+            
 
             #endregion
 
@@ -434,7 +403,7 @@ namespace EMT.DoneNOW.BLL
         public List<string> CheckCompanyName(string companyName)
         {
             return CompareCompanyName(CompanyNameDeal(companyName), _dal.FindAll().Select(_ => _.name).ToList());    // 处理后的名字超过两个字相同（不包括两个字）即视为相似名称
-           
+
         }
         /// <summary>
         /// 更新客户信息
@@ -455,7 +424,7 @@ namespace EMT.DoneNOW.BLL
             {
                 return false;
             }
-            if ( _dal.ExistAccountPhone(param.general_update.phone,param.general_update.id))    // 客户电话的唯一性校验 todo - 修改时 客户名称的唯一校验 
+            if (_dal.ExistAccountPhone(param.general_update.phone, param.general_update.id))    // 客户电话的唯一性校验 todo - 修改时 客户名称的唯一校验 
                 return false;   //  查找到重复信息，返回错误
 
 
@@ -561,7 +530,7 @@ namespace EMT.DoneNOW.BLL
             {
                 var udf_account = param.general_update.udf;  // 获取到客户传过来的自定义字段的值
                 // UpdateUdfValue 中含有插入修改日志的操作，无需再插入日志
-                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY, udf_account_list, new_company_value.id, udf_account, user,DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION);
+                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY, udf_account_list, new_company_value.id, udf_account, user, DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION);
             }
             #endregion
 
@@ -571,7 +540,7 @@ namespace EMT.DoneNOW.BLL
             {
                 var udf_site = param.site_configuration.udf;
                 // UpdateUdfValue 中含有插入修改日志的操作，无需再插入日志
-                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.SITE, udf_site_list, new_company_value.id, udf_site, user,DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER_SITE);
+                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.SITE, udf_site_list, new_company_value.id, udf_site, user, DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER_SITE);
             }
 
             #endregion
@@ -867,7 +836,7 @@ namespace EMT.DoneNOW.BLL
                             oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
                             oper_object_id = contact.id,
                             oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                            oper_description = _dal.CompareValue(contactList.FirstOrDefault(_=>_.id ==contact.id), contact),
+                            oper_description = _dal.CompareValue(contactList.FirstOrDefault(_ => _.id == contact.id), contact),
                             remark = "修改联系人电话或传真",
                         });    // 插入更改日志
                     }
@@ -1075,9 +1044,11 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public string CompanyNameDeal(string companyName)
         {
-            var nameList = new List<string>() { "股份", "有限", "信息", "科技", "公司", "技术", "责任", "集团", "贸易", "工贸", "工程", "网络", "实业", "营业部", "事业部", "办事处", "分公司", "管理" };  // 后缀名称处理   todo—— 前缀名称处理
-
-            var areaList = new List<string> { "北京", "上海", "广州", "深圳", "杭州"};
+            // var nameList = new List<string>() { "股份", "有限", "信息", "科技", "公司", "技术", "责任", "集团", "贸易", "工贸", "工程", "网络", "实业", "营业部", "事业部", "办事处", "分公司", "管理" };  // 后缀名称处理   todo—— 前缀名称处理
+            // 客户：名称后缀
+            var List = new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("客户：名称后缀"));
+            var nameList =  List.Select(_ => _.show);
+            var areaList = new List<string> { "北京", "上海", "广州", "深圳", "杭州" };
 
             foreach (var item in nameList)
             {
@@ -1112,16 +1083,16 @@ namespace EMT.DoneNOW.BLL
             {
                 //int nameCount = 0;
 
-                for (int i = 0; i < newCompanyName.Length-2; i++)
+                for (int i = 0; i < newCompanyName.Length - 1; i++)
                 {
-                    var  subName = newCompanyName.Substring(i,2); // 截取判断的相似字段
+                    var subName = newCompanyName.Substring(i, 2); // 截取判断的相似字段
                     var containSubName = allCompanyName.Where(_ => _.Contains(subName)).ToList();   // 获取含有相对应字段的公司名称
-                    if(containSubName!=null && containSubName.Count > 0)
+                    if (containSubName != null && containSubName.Count > 0)
                     {
                         similar_names.AddRange(containSubName);                       // 如果查询到，将公司名称批量添加进相似公司名称里面
-                        containSubName.ForEach(_=> allCompanyName.Remove(_));         // 并且将相似的公司名称从集合中移除，以免重复添加
+                        containSubName.ForEach(_ => allCompanyName.Remove(_));         // 并且将相似的公司名称从集合中移除，以免重复添加
                     }
-                }    
+                }
             }
             return similar_names;
         }
@@ -1200,22 +1171,8 @@ namespace EMT.DoneNOW.BLL
             });                       // 插入操作日志
             var udf_configuration_items_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONFIGURATION_ITEMS);   // 查询自定义信息
             var udf_configuration_items = param.udf;
-            if (new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, account_id, udf_configuration_items_list, udf_configuration_items))  // 保存自定义扩展信息
-            {
-                new sys_oper_log_dal().Insert(new sys_oper_log()
-                {
-                    user_cate = "用户",
-                    user_id = user.id,
-                    name = user.name,
-                    phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                    oper_object_id = installed_product.id,
-                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                    oper_description = new Tools.Serialize().SerializeJson(udf_configuration_items),
-                    remark = "新增配置项自定义信息",
-                });  // 插入日志
-            }
+            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, user.id, account_id, udf_configuration_items_list, udf_configuration_items, OPER_LOG_OBJ_CATE.CUSTOMER);  // 保存自定义扩展信息
+       
             #endregion
 
             #region 2.保存通知
