@@ -14,21 +14,19 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
-
-            
-{
+            {
                 var dic = new CompanyBLL().GetField();
 
                 // 分类类别
                 classification.DataTextField = "show";
                 classification.DataValueField = "val";
-                classification.DataSource= dic.FirstOrDefault(_ => _.Key == "classification").Value;
+                classification.DataSource = dic.FirstOrDefault(_ => _.Key == "classification").Value;
                 classification.DataBind();
                 classification.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 // 公司类型
                 CompanyType.DataTextField = "show";
                 CompanyType.DataValueField = "val";
-                CompanyType.DataSource = dic.FirstOrDefault(_ => _.Key == "company_type").Value;               
+                CompanyType.DataSource = dic.FirstOrDefault(_ => _.Key == "company_type").Value;
                 CompanyType.DataBind();
                 CompanyType.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
 
@@ -45,11 +43,11 @@ namespace EMT.DoneNOW.Web
                 TerritoryName.DataBind();
                 TerritoryName.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 // 客户经理
-                //AccountManger.DataTextField = "show";
-                //AccountManger.DataValueField = "val";
-                //AccountManger.DataSource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value;
-                //AccountManger.DataBind();
-                //AccountManger.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                AccountManger.DataTextField = "show";
+                AccountManger.DataValueField = "val";
+                AccountManger.DataSource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value;
+                AccountManger.DataBind();
+                AccountManger.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 // 税区
                 TaxRegion.DataTextField = "show";
                 TaxRegion.DataValueField = "val";
@@ -69,6 +67,19 @@ namespace EMT.DoneNOW.Web
                 sufix.DataBind();
                 sufix.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
 
+                // note_action_type
+                note_action_type.DataTextField = "show";
+                note_action_type.DataValueField = "val";
+                note_action_type.DataSource = dic.FirstOrDefault(_ => _.Key == "action_type").Value;
+                note_action_type.DataBind();
+                note_action_type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+                // todo_action_type
+                todo_action_type.DataTextField = "show";
+                todo_action_type.DataValueField = "val";
+                todo_action_type.DataSource = dic.FirstOrDefault(_ => _.Key == "action_type").Value;
+                todo_action_type.DataBind();
+                todo_action_type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             }
         }
 
@@ -79,8 +90,6 @@ namespace EMT.DoneNOW.Web
         /// <param name="e"></param>
         protected void save_Click(object sender, EventArgs e)
         {
-
-        
             var param = new CompanyAddDto();
             param.general = AssembleModel<CompanyAddDto.General>();
             param.contact = AssembleModel<CompanyAddDto.Contact>();
@@ -90,8 +99,8 @@ namespace EMT.DoneNOW.Web
             param.todo = AssembleModel<CompanyAddDto.Todo>();
             // var param = AssembleModel<CompanyAddDto>();
 
-            var result = new CompanyBLL().Insert(param,"");
-            if(result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
+            var result = new CompanyBLL().Insert(param, "");
+            if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
                 Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
             }
@@ -99,20 +108,38 @@ namespace EMT.DoneNOW.Web
             {
                 Response.Write("<script>alert('客户已存在。'); </script>");
             }
-            else if(result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+            else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
             {
-                Response.Write("<script>alert('查询不到用户，请重新登陆'); </script>");
+                Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                 Response.Redirect("Login.aspx");
             }
             else if (result == ERROR_CODE.ERROR)                      // 出现相似名称,弹出新窗口，让用户决定修改还是新增
             {
-                Response.Write("<script>alert('含有相似名称的公司'); </script>");
+                Response.Write("<script>alert('含有相似名称的公司');</script>");
             }
-            else if(result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+            else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
             {
                 Response.Write("<script>alert('添加客户成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
 
             }
+        }
+        /// <summary>
+        /// 保存并新建
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void save_newAdd_Click(object sender, EventArgs e)
+        {
+
+        }
+        /// <summary>
+        /// 保存并创建商机
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void save_create_opportunity_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

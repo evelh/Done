@@ -26,9 +26,10 @@ namespace EMT.DoneNOW.DTO
         PASSWORD_ERROR,                             // 密码错误
         LOCK,                                       // 限制登录
         USER_LIMITCOUNT,                             // 登录人数超过登录限制人数
-
+        // Occupy
 
         /* CRM */
         CRM_ACCOUNT_NAME_EXIST = 3000,              // 客户名称已存在
+        PHONE_OCCUPY,                               // 电话被占用
     }
 }

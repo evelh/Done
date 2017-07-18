@@ -128,7 +128,7 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="Common\SearchFrameSet.aspx" />
-    <Content Include="AddCompany.aspx" />
+    <Content Include="Company\AddCompany.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\base.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
@@ -140,6 +140,7 @@
     <Content Include="Content\NewContact.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
+    <Content Include="Company\EditCompany.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -213,11 +214,11 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddCompany.aspx.cs">
+    <Compile Include="Company\AddCompany.aspx.cs">
       <DependentUpon>AddCompany.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AddCompany.aspx.designer.cs">
+    <Compile Include="Company\AddCompany.aspx.designer.cs">
       <DependentUpon>AddCompany.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -252,6 +253,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Company\EditCompany.aspx.cs">
+      <DependentUpon>EditCompany.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\EditCompany.aspx.designer.cs">
+      <DependentUpon>EditCompany.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -332,6 +340,10 @@
     <ProjectReference Include="..\EMT.DoneNOW.Core\EMT.DoneNOW.Core.csproj">
       <Project>{eb88bbf3-488c-466f-bf7c-02bd01530d18}</Project>
       <Name>EMT.DoneNOW.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMT.DoneNOW.DAL\EMT.DoneNOW.DAL.csproj">
+      <Project>{ADC67B7E-FE81-4832-B5B7-E0B931171F4F}</Project>
+      <Name>EMT.DoneNOW.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\EMT.DoneNOW.DTO\EMT.DoneNOW.DTO.csproj">
       <Project>{4cbd682d-bd97-4d4e-b552-a7e4d4dd6b09}</Project>
