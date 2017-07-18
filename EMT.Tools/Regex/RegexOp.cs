@@ -33,7 +33,8 @@ namespace EMT.Tools
         {
             if (email.IsNullOrEmpty())
                 return false;
-            Regex reg = new Regex(@"/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/");
+            //Regex reg = new Regex(@"/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/");
+            Regex reg = new Regex(@"^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
             return reg.Matches(email).Count > 0;
         }
 

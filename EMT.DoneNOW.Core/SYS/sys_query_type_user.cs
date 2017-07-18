@@ -13,6 +13,7 @@ namespace EMT.DoneNOW.Core
     public partial class sys_query_type_user
     {
 
+        [Key]
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]
@@ -21,6 +22,8 @@ namespace EMT.DoneNOW.Core
         public String query_para_ids { get; set; }
         [DataMember]
         public String query_result_ids { get; set; }
+        [DataMember]
+        public Int64? user_id { get; set; }
 
 
     }

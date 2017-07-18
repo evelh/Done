@@ -24,12 +24,12 @@ namespace EMT.DoneNOW.BLL
         /// <param name="userId"></param>
         /// <param name="para"></param>
         /// <returns></returns>
-        public QueryResultDto GetQueryResult(long userId, QueryParaDto para)
+        public QueryResultDto GetResult(long userId, QueryParaDto para)
         {
             QueryResultDto result = new QueryResultDto();
             int count = 0;
 
-            string sql = GetQuerySql(userId, para, out count);      // 根据查询条件获取查询sql语句
+            string sql = GetSql(userId, para, out count);      // 根据查询条件获取查询sql语句
             result.count = count;
             result.query_page_name = para.query_page_name;
             if (count == 0)     // 查询记录总数为0
@@ -72,7 +72,7 @@ namespace EMT.DoneNOW.BLL
                 }
                 list.Add(column);
             }
-            
+
             result.order_by = para.order_by;
             result.page = para.page;
             result.page_count = totalPage;
@@ -92,7 +92,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="orderBy"></param>
         /// <param name="pagesize"></param>
         /// <returns></returns>
-        public QueryResultDto GetQueryResult(long userId, string queryId, int page, string orderBy, int pagesize=0)
+        public QueryResultDto GetResult(long userId, string queryId, int page, string orderBy, int pagesize = 0)
         {
             // 获取缓存的查询信息
             CacheQuerySqlDto cacheSql = CachedInfoBLL.GetQuerySql(queryId);
@@ -148,7 +148,7 @@ namespace EMT.DoneNOW.BLL
 
             cacheSql.query_sql = sql;
             CachedInfoBLL.SetQuerySql(queryId, cacheSql, _sqlExpireMins);   // 更新查询sql缓存
-            
+
             result.count = cacheSql.count;
             result.order_by = orderBy;
             result.page = page;
@@ -167,10 +167,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="para">搜索条件</param>
         /// <param name="count">查询结果总数</param>
         /// <returns>查询没有结果时，返回空字符串</returns>
-        private string GetQuerySql(long userId, QueryParaDto para, out int count)
+        private string GetSql(long userId, QueryParaDto para, out int count)
         {
             count = 0;
-            string sqlPara = GetQueryPara(userId, para);
+            string sqlPara = GetPara(userId, para);
             if (sqlPara == "")
                 return "";
             d_query_type queryType = GetQueryType(para.query_page_name);
@@ -189,7 +189,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="userId"></param>
         /// <param name="para"></param>
         /// <returns></returns>
-        private string GetQueryPara(long userId, QueryParaDto para)
+        private string GetPara(long userId, QueryParaDto para)
         {
             if (para == null || para.query_params == null)
                 return "";
@@ -249,7 +249,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="userId"></param>
         /// <param name="queryPageName">查询页面名称</param>
         /// <returns></returns>
-        public List<QueryConditionParaDto> GetQueryConditionPara(long userId, string queryPageName)
+        public List<QueryConditionParaDto> GetConditionPara(long userId, string queryPageName)
         {
             var result = new List<QueryConditionParaDto>();
             d_query_type queryType = GetQueryType(queryPageName);
@@ -306,7 +306,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="userId"></param>
         /// <param name="queryPageName">查询页面名称</param>
         /// <returns></returns>
-        public List<QueryResultParaDto> GetQueryResultPara(long userId, string queryPageName)
+        public List<QueryResultParaDto> GetResultPara(long userId, string queryPageName)
         {
             var result = new List<QueryResultParaDto>();
             d_query_type queryType = GetQueryType(queryPageName);
@@ -322,7 +322,7 @@ namespace EMT.DoneNOW.BLL
             // 获取显示结果列信息并按顺序填充
             var list = new d_query_result_dal().FindListBySql($"SELECT * FROM d_query_result WHERE id IN ({queryUser.query_result_ids}) AND query_type_id={queryType.id} AND is_visible=1");
             string[] ids = queryUser.query_result_ids.Split(',');
-            for(int i=0;i<ids.Length;++i)
+            for (int i = 0; i < ids.Length; ++i)
             {
                 long id = long.Parse(ids[i]);
                 var col = list.Find(c => c.id == id);
@@ -341,14 +341,97 @@ namespace EMT.DoneNOW.BLL
             return result;
         }
 
-        /*
-        public List<DictionaryEntryDto> GetQueryResultParaSelect(long userId, string queryPageName)
+        #region 查询结果选择功能
+        /// <summary>
+        /// 获取用户已选择的结果显示列
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="queryPageName"></param>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetResultSelect(long userId, string queryPageName)
+        {
+            var list = GetResultPara(userId, queryPageName);
+            List<DictionaryEntryDto> result = new List<DictionaryEntryDto>();
+            foreach (var qr in list)
+            {
+                result.Add(new DictionaryEntryDto(qr.id.ToString(), qr.name));
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 获取一个查询页面可选的所有结果显示列
+        /// </summary>
+        /// <param name="queryPageName"></param>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetResultAll(string queryPageName)
         {
             List<DictionaryEntryDto> result = new List<DictionaryEntryDto>();
             d_query_type queryType = GetQueryType(queryPageName);
+            if (queryType == null)
+                return result;
+            string sql = $"SELECT id,col_comment FROM d_query_result WHERE query_type_id={queryType.id} AND is_visible=1 ORDER BY col_order ASC";
+            var queryResultList = new d_query_result_dal().FindListBySql(sql);
+            foreach (var qr in queryResultList)
+            {
+                result.Add(new DictionaryEntryDto(qr.id.ToString(), qr.col_comment));
+            }
 
-        }*/
+            return result;
+        }
 
+        /// <summary>
+        /// 修改用户所选的查询结果显示列
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="queryPageName"></param>
+        /// <param name="ids">修改的查询结果显示列字符串（如：2,3,5）</param>
+        public void EditResultSelect(long userId, string queryPageName, string ids)
+        {
+            if (string.IsNullOrEmpty(ids))
+                return;
+
+            // 检查输入参数是否合法
+            var resultAll = GetResultAll(queryPageName);
+            string[] idArr = ids.Split(',');
+            foreach (string id in idArr)
+            {
+                // 字符串中有非法内容，直接返回
+                if (!resultAll.Exists(r => r.val.Equals(id)))
+                    return;
+            }
+
+            d_query_type queryType = GetQueryType(queryPageName);
+            if (queryType == null)
+                return;
+
+            var dal = new sys_query_type_user_dal();
+            sys_query_type_user queryUser = dal.FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id={userId} AND query_type_id={queryType.id}");
+            // 用户第一次修改，新增记录
+            if (queryUser == null)
+            {
+                sys_query_type_user queryDefault = dal.FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id is null AND query_type_id={queryType.id}");
+                queryUser = new sys_query_type_user
+                {
+                    id = dal.GetNextIdSys(),
+                    query_para_ids = queryDefault.query_para_ids,
+                    query_result_ids = ids,
+                    query_type_id = queryType.id,
+                    user_id = userId
+                };
+                dal.Insert(queryUser);
+            }
+            // 用户已修改过，修改记录
+            else
+            {
+                queryUser.query_result_ids = ids;
+                dal.Update(queryUser);
+            }
+        }
+        #endregion
+
+        private static IList<d_query_type> list;
         /// <summary>
         /// 根据查询页面名称获取查询页面信息
         /// </summary>
@@ -356,9 +439,11 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         private d_query_type GetQueryType(string queryPageName)
         {
-            if (queryPageName == null)
+            if (string.IsNullOrEmpty(queryPageName))
                 return null;
-            return new d_query_type_dal().FindSignleBySql<d_query_type>($"SELECT * FROM d_query_type WHERE name='{queryPageName}'");
+            if (list == null)
+                list = new d_query_type_dal().FindAll();
+            return list.First(q => q.name.Equals(queryPageName));
         }
     }
 }

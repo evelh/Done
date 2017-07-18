@@ -13,6 +13,7 @@ namespace EMT.DoneNOW.Core
     public partial class d_query_para
     {
 
+        [Key]
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]
@@ -24,7 +25,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String col_comment { get; set; }
         [DataMember]
-        public SByte col_length { get; set; }
+        public Int32 col_length { get; set; }
         [DataMember]
         public Int32 data_type_id { get; set; }
         [DataMember]
