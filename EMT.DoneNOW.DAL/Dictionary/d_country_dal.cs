@@ -12,7 +12,7 @@ namespace EMT.DoneNOW.DAL
     {
         public List<DictionaryEntryDto> GetDictionary()
         {
-            var all = this.FindAll();
+            var all = this.FindAll().OrderBy(_ => _.id); ;
             List<DictionaryEntryDto> list = new List<DictionaryEntryDto>();
             foreach (var entry in all)
             {

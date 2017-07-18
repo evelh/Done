@@ -9,7 +9,7 @@ namespace EMT.DoneNOW.DAL
     {
         public d_general_table GetGeneralTableByName(string name)
         {
-            return FindSignleBySql<d_general_table>($"SELECT * FROM d_general_table WHERE name='{name}'");
+            return FindSignleBySql<d_general_table>($"SELECT * FROM d_general_table WHERE name='{name}' order by id");
         }
     }
 }

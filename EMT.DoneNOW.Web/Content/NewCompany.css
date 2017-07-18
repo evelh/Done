@@ -1,0 +1,24 @@
+body{background: #F5F5F5;}
+.hide{display: none;}
+.ba{background: #F3F3F3 !important;}
+.jia{background: url(../Images/jia.png) no-repeat center !important;}
+.header{height: 40px;line-height: 40px; width: 100%;background: #346A95;padding:0 10px ;font-size: 18px;color: #FFFFFF;}
+.ment{height: 100px;width: 100%;line-height: 100px;text-align: center;}
+.text{line-height: 30px;width: 100%;padding:  0 20px ;text-align: left;color: #666;}
+.information{background: #fff;border: 1px solid #E5E5E5;padding: 10px 0;min-width: 1200px;}
+.informationTitle{padding-left: 10px;height: 30px;line-height: 30px;}
+.informationTitle i{width: 15px; height:30px;display: block; background: url(../Images/jian.png) no-repeat  center;float: left;margin-right: 10px;cursor: pointer;}
+.information .left{width:48%;}
+.information .left ul{padding-left:20px ;float: left;}
+.information .left ul ul{padding:0px ;width: 100%;}
+.information .left ul li{padding: 5px 0;}
+.information .left ul li input{width:300px;}
+.information .left ul li select{width: 205px;height: 28px;}
+label{display:inline-block;color: #151515;font-size:14px;width:170px;text-align: right;padding-right: 30px;}
+label .red{color: red ;  vertical-align: super; }
+label .num{color: #666666;font-size: 12px;  vertical-align: super; }
+.cont-innter{padding: 0 20px;}
+/*.information .left ul li ul li select{width: 70px;}
+.information .left ul li ul li input{width: 70px;}
+*/
+.labelFloat{width: auto;padding: 0;}

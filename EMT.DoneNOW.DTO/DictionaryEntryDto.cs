@@ -14,9 +14,11 @@ namespace EMT.DoneNOW.DTO
             show = display;
             select = isDefault;
         }
-
-        public string val;
-        public string show;
-        public int select;
+        public string show { get; set; }
+        public string val { get; set; }
+        public int select { get; set; }
+        // public string val;
+        // public string show;
+        // public int select;
     }
 }
