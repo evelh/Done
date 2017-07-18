@@ -11,13 +11,13 @@ namespace EMT.DoneNOW.DAL
     public class crm_location_dal : BaseDAL<crm_location>
     {
         /// <summary>
-        /// 通过客户id去获取地址
+        /// 通过客户id去获取默认地址
         /// </summary>
         /// <param name="account_id"></param>
         /// <returns></returns>
         public crm_location GetLocationByAccountId(long account_id)
         {
-            return FindSignleBySql<crm_location>($"SELECT * from crm_location where account_id = {account_id} and delete_time = 0" );
+            return FindSignleBySql<crm_location>($"SELECT * from crm_location where account_id = {account_id} and delete_time = 0 and is_default = 1 " );
         }
 
         /// <summary>
