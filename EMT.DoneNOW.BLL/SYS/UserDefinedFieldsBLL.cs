@@ -92,14 +92,16 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
-        /// 保存记录中的自定义字段值
+        /// 保存记录中的自定义字段值，并记录日志
         /// </summary>
         /// <param name="cate">客户、联系人等类别</param>
+        /// <param name="userId">操作用户id</param>
         /// <param name="objId">记录的id</param>
         /// <param name="fields">自定义字段信息</param>
         /// <param name="value">自定义字段值</param>
+        /// <param name="oper_log_cate"></param>
         /// <returns></returns>
-        public bool SaveUdfValue(DicEnum.UDF_CATE cate, long objId, List<UserDefinedFieldDto> fields, List<UserDefinedFieldValue> value)
+        public bool SaveUdfValue(DicEnum.UDF_CATE cate, long userId, long objId, List<UserDefinedFieldDto> fields, List<UserDefinedFieldValue> value, DicEnum.OPER_LOG_OBJ_CATE oper_log_cate)
         {
             // 无自定义字段信息
             if (value == null)
@@ -107,19 +109,48 @@ namespace EMT.DoneNOW.BLL
 
             StringBuilder select = new StringBuilder();
             StringBuilder values = new StringBuilder();
+            Dictionary<string, object> dict = new Dictionary<string, object>();
             foreach (var val in value)
             {
                 var field = fields.FindAll(s => s.id == val.id);
                 if (field == null || field.Count == 0)
                     continue;
-                select.Append(",").Append(field.First().col_name);
+                string fieldName = field.First().col_name;
+                select.Append(",").Append(fieldName);
                 values.Append(",").Append(val.value);
+                dict.Add(fieldName, val.value);
             }
 
             string table = GetTableName(cate);
             var dal = new sys_udf_field_dal();
             string insert = $"INSERT INTO {table} (id,parent_id{select.ToString()}) VALUES ({dal.GetNextIdSys()},{objId}{values.ToString()})";
-            dal.ExecuteSQL(insert);
+            try
+            {
+                int rslt = dal.ExecuteSQL(insert);
+                if (rslt <= 0)
+                    return false;
+                
+                var user = new sys_resource_dal().FindById(userId);
+                sys_oper_log log = new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user.id,
+                    name = user.name,
+                    phone = user.mobile_phone == null ? "" : user.mobile_phone,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)oper_log_cate,
+                    oper_object_id = objId,        // 操作对象id
+                    oper_type_id = (int)DicEnum.OPER_LOG_TYPE.ADD,
+                    oper_description = new Tools.Serialize().SerializeJson(dict),
+                    remark = "新增自定义字段值"
+
+                };          // 创建日志
+                new sys_oper_log_dal().Insert(log);       // 插入日志
+            }
+            catch
+            {
+                return false;   // TODO: 异常处理
+            }
 
             return true;
         }
@@ -192,8 +223,8 @@ namespace EMT.DoneNOW.BLL
         /// <param name="fields"></param>
         /// <param name="id"></param>
         /// <param name="vals"></param>
-        /// <param name="userId"></param>
-        /// <param name="userMobile"></param>
+        /// <param name="user"></param>
+        /// <param name="oper_log_cate"></param>
         /// <returns></returns>
         public bool UpdateUdfValue(DicEnum.UDF_CATE cate, List<UserDefinedFieldDto> fields, long id, List<UserDefinedFieldValue> vals, UserInfoDto user, DicEnum.OPER_LOG_OBJ_CATE oper_log_cate)
         {
@@ -228,7 +259,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_id = id,        // 操作对象id
                 oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
                 oper_description = new Tools.Serialize().SerializeJson(dict),
-                remark = "修改自定义字段"
+                remark = "修改自定义字段值"
 
             };          // 创建日志
             new sys_oper_log_dal().Insert(log);       // 插入日志
