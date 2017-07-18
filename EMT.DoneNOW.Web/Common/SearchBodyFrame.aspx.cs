@@ -30,10 +30,13 @@ namespace EMT.DoneNOW.Web
             int page = string.IsNullOrEmpty(keys["search_page"]) ? 1 : int.Parse(keys["search_page"]);  // 查询页数
 
             // 检查order
-            order = order.Trim();
-            string[] strs = order.Split(' ');
-            if (strs.Length != 2 || strs[1].ToLower().Equals("asc") || strs[1].ToLower().Equals("desc"))
-                order = "";
+            if (order != null)
+            {
+                order = order.Trim();
+                string[] strs = order.Split(' ');
+                if (strs.Length != 2 || strs[1].ToLower().Equals("asc") || strs[1].ToLower().Equals("desc"))
+                    order = "";
+            }
 
             if (!string.IsNullOrEmpty(keys["search_id"]))   // 使用缓存查询条件
             {
