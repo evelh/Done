@@ -12,7 +12,10 @@ namespace EMT.DoneNOW.Web
     public partial class SearchBodyFrame : BasePage
     {
         private QueryCommonBLL bll = new QueryCommonBLL();
-        private string queryPage;
+        protected string queryPage;     // 查询页名称
+        protected string addBtn;        // 根据不同查询页得到的新增按钮名
+        protected QueryResultDto queryResult = null;            // 查询结果数据
+        protected List<QueryResultParaDto> resultPara = null;   // 查询结果列信息
         protected void Page_Load(object sender, EventArgs e)
         {
             queryPage = HttpContext.Current.Request.QueryString["type"];
@@ -21,9 +24,28 @@ namespace EMT.DoneNOW.Web
             QueryData();
         }
 
+        /// <summary>
+        /// 数据初始化
+        /// </summary>
+        private void InitData()
+        {
+            switch(queryPage)
+            {
+                case "客户查询":
+                    addBtn = "新增客户";
+                    break;
+                default:
+                    addBtn = "新增客户";
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 根据查询条件获取查询结果
+        /// </summary>
         private void QueryData()
         {
-            QueryResultDto queryResult = null;
+            resultPara = bll.GetResultParaSelect(GetLoginUserId(), queryPage);    // 获取查询结果列信息
 
             var keys = HttpContext.Current.Request.QueryString;
             string order = keys["order"];   // order by 条件
@@ -42,20 +64,49 @@ namespace EMT.DoneNOW.Web
             {
                 queryResult = bll.GetResult(GetLoginUserId(), keys["search_id"], page, order);
             }
-            
-            if (queryResult==null)  // 不使用缓存或缓存过期
+
+            if (queryResult == null)  // 不使用缓存或缓存过期
             {
                 var para = bll.GetConditionPara(GetLoginUserId(), queryPage);
                 QueryParaDto queryPara = new QueryParaDto();
-                foreach(var p in para)
+                queryPara.query_params = new List<Para>();
+                foreach (var p in para)
                 {
+                    Para pa = new Para();
                     if (p.data_type == (int)DicEnum.QUERY_PARA_TYPE.NUMBER
                         || p.data_type == (int)DicEnum.QUERY_PARA_TYPE.DATE
                         || p.data_type == (int)DicEnum.QUERY_PARA_TYPE.DATETIME)    // 数值和日期类型是范围值
                     {
+                        string ql = keys[p.id.ToString() + "_l"];
+                        string qh = keys[p.id.ToString() + "_h"];
+                        if (string.IsNullOrEmpty(ql) && string.IsNullOrEmpty(qh))   // 空值，跳过
+                            continue;
+                        if (!string.IsNullOrEmpty(ql))
+                            pa.value = ql;
+                        if (!string.IsNullOrEmpty(qh))
+                            pa.value2 = qh;
+                        pa.id = p.id;
 
+                        queryPara.query_params.Add(pa);
+                    }
+                    else
+                    {
+                        string val = keys[p.id.ToString()];
+                        if (string.IsNullOrEmpty(val))
+                            continue;
+                        pa.id = p.id;
+                        pa.value = val;
+
+                        queryPara.query_params.Add(pa);
                     }
                 }
+
+                queryPara.query_page_name = queryPage;
+                queryPara.page = page;
+                queryPara.order_by = order;
+                queryPara.page_size = 0;
+
+                queryResult = bll.GetResult(GetLoginUserId(), queryPara);
             }
         }
     }

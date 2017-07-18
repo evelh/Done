@@ -15,8 +15,8 @@
 <body>
     <form id="form1">
         <div class="information clear">
-            <input type="button" class="Search" id="SearchBtn" value="搜索" />
-			<p class="informationTitle"> <i></i>GENERAL INFORMATION</p>
+            <button class="Search" id="SearchBtn">搜索</button>
+			<p class="informationTitle"> <i></i>搜索</p>
 			<div class="content clear">
 				<table border="none" cellspacing="" cellpadding="" style="width: 400px;">
                 <% for (int i = 0; i < condition.Count; i += 3) {%> 
@@ -149,15 +149,5 @@
 	<script src="../Scripts/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Scripts/index.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchFrame.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript">
-		$(".form_datetime").datetimepicker({
-				language: 'zh-CN',//显示中文
-				format: 'yyyy-mm-dd',//显示格式
-				minView: "month",//设置只显示到月份
-				initialDate: new Date(),//初始化当前日期
-				autoclose: true,//选中自动关闭
-				todayBtn: true//显示今日按钮
-		});
-	</script>
 </body>
 </html>

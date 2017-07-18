@@ -154,6 +154,7 @@
     <Content Include="Images\data-selector.png" />
     <Content Include="Images\fwt.png" />
     <Content Include="Images\gly.png" />
+    <Content Include="Images\glyphicons-halflings-white.png" />
     <Content Include="Images\glyphicons-halflings.png" />
     <Content Include="Images\icon.png" />
     <Content Include="Images\jia.png" />
@@ -163,6 +164,7 @@
     <Content Include="Images\logo.png" />
     <Content Include="Images\logotitle.png" />
     <Content Include="Images\ml.png" />
+    <Content Include="Images\new.png" />
     <Content Include="Images\sjb.png" />
     <Content Include="Images\title.png" />
     <Content Include="Images\wb.png" />
@@ -183,6 +185,7 @@
     <Content Include="Scripts\NewContact.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\SearchBody.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />

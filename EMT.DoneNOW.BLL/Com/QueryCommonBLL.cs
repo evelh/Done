@@ -301,12 +301,12 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
-        /// 获取查询结果列信息
+        /// 获取用户已选择的查询结果列信息，保留id
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="queryPageName">查询页面名称</param>
         /// <returns></returns>
-        public List<QueryResultParaDto> GetResultPara(long userId, string queryPageName)
+        public List<QueryResultParaDto> GetResultParaSelect(long userId, string queryPageName)
         {
             var result = new List<QueryResultParaDto>();
             d_query_type queryType = GetQueryType(queryPageName);
@@ -343,17 +343,19 @@ namespace EMT.DoneNOW.BLL
 
         #region 查询结果选择功能
         /// <summary>
-        /// 获取用户已选择的结果显示列
+        /// 获取用户已选择的结果显示列，过滤id （查询结果选择器用）
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="queryPageName"></param>
         /// <returns></returns>
         public List<DictionaryEntryDto> GetResultSelect(long userId, string queryPageName)
         {
-            var list = GetResultPara(userId, queryPageName);
+            var list = GetResultParaSelect(userId, queryPageName);
             List<DictionaryEntryDto> result = new List<DictionaryEntryDto>();
             foreach (var qr in list)
             {
+                if (qr.name.Equals("id"))   // 过滤id
+                    continue;
                 result.Add(new DictionaryEntryDto(qr.id.ToString(), qr.name));
             }
 
@@ -405,6 +407,13 @@ namespace EMT.DoneNOW.BLL
             d_query_type queryType = GetQueryType(queryPageName);
             if (queryType == null)
                 return;
+
+            // 向查询结果列添加id列
+            string sql = $"SELECT * FROM d_query_result WHERE col_comment='id' AND query_type_id={queryType.id}";
+            d_query_result rsltParaId = new d_query_result_dal().FindSignleBySql<d_query_result>(sql);
+            if (rsltParaId == null)
+                throw new Exception($"query_type_id:{queryType.id}数据库未添加d_query_result记录:id");
+            ids += "," + rsltParaId.id;
 
             var dal = new sys_query_type_user_dal();
             sys_query_type_user queryUser = dal.FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id={userId} AND query_type_id={queryType.id}");
