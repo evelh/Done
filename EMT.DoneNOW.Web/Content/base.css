@@ -10,8 +10,8 @@ h1{font-size:24px}h2{font-size:20px}h3{font-size:18px}h4{font-size:16px}h5{font-
 i,b,em{font-style:normal;font-weight:normal}
 table{border-collapse:collapse;border-spacing:0; width:100%; background:#fff}
 td{padding:3px 5px;}
-th{font-weight:normal; background:#e7f4fe; height:40px}
-table,td,th{ border:1px solid #ddd}
+/*th{font-weight:normal; background:#e7f4fe; height:40px}*/
+/*table,td,th{ border:1px solid #ddd}*/
 table caption{ font-size:16px; text-align:left; padding-bottom:10px;}
 a{text-decoration: none;outline: none;   }
 .fl{float:left;_display:inline}

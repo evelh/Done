@@ -118,34 +118,7 @@
 			</div>
 		</div>
 		<div class="cont">
-            <iframe id="PageFrame" name="PageFrame" style="width:100%;height:100%;" src="Common/SearchFrameSet.aspx"></iframe>
-            <form runat="server" visible="false">
-			    <div runat="server" id="query_para" class="cont-innter" style="border:1px;">
-                    <ul>
-                        <li>
-                            客戶名称或编号<asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
-                            客户类型<asp:DropDownList ID="DropDownList1" runat="server"></asp:DropDownList>
-                        </li>
-                    </ul>
-				    <ul>
-                        <li>
-                            最近活动时间>=<asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
-                            最近活动时间<=<asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            客戶问卷调查分数>=<asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
-                            客戶问卷调查分数<=<asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            地域名称<asp:DropDownList ID="DropDownList2" runat="server"></asp:DropDownList>
-                        </li>
-                    </ul>
-			    </div>
-            </form>
+            <iframe id="PageFrame" name="PageFrame" style="width:100%;height:800px;" src="Common/SearchFrameSet.aspx?entity=客户查询"></iframe>
 		</div>
 	</body>
 	<script src="Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>

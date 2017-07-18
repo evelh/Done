@@ -24,7 +24,7 @@ alert("开发中，敬请期待")
 $.each($('.index-titleLeft dd'),function(i){
 	var className=$('.index-titleLeft dd').eq(i).attr('class');//获取类名
 	if($(this).hasClass(className)){
-		$(this).css("background-image","url(img/"+$(this).attr('class')+".png)");//添加icon
+		$(this).css("background-image","url(Images/"+$(this).attr('class')+".png)");//添加icon
 	}
 })
 

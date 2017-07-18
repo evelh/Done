@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using EMT.Tools;
 using System.Reflection;
+using EMT.DoneNOW.Core;
 
 namespace EMT.DoneNOW.Web
 {
@@ -38,10 +39,16 @@ namespace EMT.DoneNOW.Web
                 if (username != "" && userpwd != "")
                 {
                     // TODO: 验证用户名密码
-                    return true;
+                    return false;
                 }
             }
             return false;
+        }
+
+        public long GetLoginUserId()
+        {
+            sys_user user = Session["dn_session_user_info"] as sys_user;
+            return user.id;
         }
 
         #region 表单填充对象

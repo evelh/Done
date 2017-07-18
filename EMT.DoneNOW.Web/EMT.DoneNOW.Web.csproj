@@ -127,12 +127,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Common\SearchFrameSet.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\base.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\index.css" />
     <Content Include="Content\login.css" />
+    <Content Include="Content\NewContact.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
@@ -145,15 +148,30 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Images\crm.png" />
+    <Content Include="Images\data-selector.png" />
+    <Content Include="Images\fwt.png" />
+    <Content Include="Images\gly.png" />
+    <Content Include="Images\glyphicons-halflings.png" />
     <Content Include="Images\icon.png" />
+    <Content Include="Images\jia.png" />
+    <Content Include="Images\jian.png" />
+    <Content Include="Images\kc.png" />
     <Content Include="Images\loginbg.jpg" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\logotitle.png" />
+    <Content Include="Images\ml.png" />
+    <Content Include="Images\sjb.png" />
     <Content Include="Images\title.png" />
+    <Content Include="Images\wb.png" />
+    <Content Include="Images\xm.png" />
     <Content Include="Index.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Common\SearchFrame.js" />
     <Content Include="Scripts\index.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -182,6 +200,8 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Common\SearchConditionFrame.aspx" />
+    <Content Include="Common\SearchBodyFrame.aspx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
@@ -200,6 +220,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\SearchFrameSet.aspx.cs">
+      <DependentUpon>SearchFrameSet.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\SearchFrameSet.aspx.designer.cs">
+      <DependentUpon>SearchFrameSet.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
@@ -233,6 +260,20 @@
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Common\SearchConditionFrame.aspx.cs">
+      <DependentUpon>SearchConditionFrame.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\SearchConditionFrame.aspx.designer.cs">
+      <DependentUpon>SearchConditionFrame.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\SearchBodyFrame.aspx.cs">
+      <DependentUpon>SearchBodyFrame.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\SearchBodyFrame.aspx.designer.cs">
+      <DependentUpon>SearchBodyFrame.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
