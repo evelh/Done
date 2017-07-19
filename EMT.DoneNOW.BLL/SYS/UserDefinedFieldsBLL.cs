@@ -228,6 +228,8 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public bool UpdateUdfValue(DicEnum.UDF_CATE cate, List<UserDefinedFieldDto> fields, long id, List<UserDefinedFieldValue> vals, UserInfoDto user, DicEnum.OPER_LOG_OBJ_CATE oper_log_cate)
         {
+            if (vals == null || vals.Count == 0)
+                return true;
             var oldVal = GetUdfValue(cate, id, fields);
             Dictionary<string, string> dict = new Dictionary<string, string>();
             StringBuilder updateSb = new StringBuilder();
