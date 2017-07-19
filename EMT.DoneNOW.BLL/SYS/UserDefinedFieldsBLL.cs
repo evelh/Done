@@ -116,9 +116,13 @@ namespace EMT.DoneNOW.BLL
                 if (field == null || field.Count == 0)
                     continue;
                 string fieldName = field.First().col_name;
-                select.Append(",").Append(fieldName);
-                values.Append(",").Append(val.value);
-                dict.Add(fieldName, val.value);
+                if (val.value != null)
+                {
+                    select.Append(",").Append(fieldName);
+                    string v = val.value.ToString().Replace("'", "''"); // 转义单引号
+                    values.Append(",'").Append(v).Append("'");
+                    dict.Add(fieldName, val.value);
+                }
             }
 
             string table = GetTableName(cate);
@@ -239,7 +243,16 @@ namespace EMT.DoneNOW.BLL
                 if (object.Equals(oldv.value, val.value))
                     continue;
                 var fld = fields.Find(f => f.id == val.id);
-                updateSb.Append(fld.col_name).Append("='").Append(val.value).Append("',");    // 组合sql更新语句
+                if (val.value == null)
+                {
+                    updateSb.Append(fld.col_name).Append("=null,");    // 组合sql更新语句
+                }
+                else
+                {
+                    string v = val.value.ToString().Replace("'", "''"); // 转义单引号
+                    updateSb.Append(fld.col_name).Append("='").Append(val.value).Append("',");    // 组合sql更新语句
+                }
+                
                 dict.Add(fld.col_name, oldv.value + "→" + val.value);                         // 生成操作日志
             }
             if (dict.Count == 0)        // 无修改
