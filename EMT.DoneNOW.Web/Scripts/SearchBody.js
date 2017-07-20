@@ -1,18 +1,24 @@
-﻿var menu = document.getElementById("menu");
-$("#searchcontent td").bind("contextmenu", function (ev) {
-    /*
+﻿
+var entityid;
+var menu = document.getElementById("menu");
+function OpenConMenu(ev,id) {
+    entityid = id;
     var oEvent = ev || event;
-    //自定义的菜单显示
     menu.style.display = "block";
-    //让自定义菜单随鼠标的箭头位置移动
     var Top = $(document).scrollTop() + oEvent.clientY
     var Left = $(document).scrollLeft() + oEvent.clientX
     menu.style.top = Top + "px";
     menu.style.left = Left + "px";
-    //return false阻止系统自带的菜单，
-    */
     return false;
-});
+}
+
+document.onclick = function () {
+    menu.style.display = "none";
+}
+
+function OpenWindow(winname) {
+    window.open(winname, "_blank", "toolbar=yes, location=yes,directories=no,status=no, menubar=yes, scrollbars=yes,resizable=no, copyhistory=yes, width=600, height=600,top=150,left=300")
+}
 
 //实现点击document，自定义菜单消失
 document.onclick = function () {
