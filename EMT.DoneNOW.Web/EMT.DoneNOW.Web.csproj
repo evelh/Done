@@ -129,6 +129,7 @@
     <Content Include="About.aspx" />
     <Content Include="Common\SearchFrameSet.aspx" />
     <Content Include="Company\AddCompany.aspx" />
+    <Content Include="Company\ViewCompany.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\base.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
@@ -246,6 +247,13 @@
     <Compile Include="Common\SearchFrameSet.aspx.designer.cs">
       <DependentUpon>SearchFrameSet.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Company\ViewCompany.aspx.cs">
+      <DependentUpon>ViewCompany.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\ViewCompany.aspx.designer.cs">
+      <DependentUpon>ViewCompany.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -347,7 +355,6 @@
       <Project>{eb88bbf3-488c-466f-bf7c-02bd01530d18}</Project>
       <Name>EMT.DoneNOW.Core</Name>
     </ProjectReference>
-    
     <ProjectReference Include="..\EMT.DoneNOW.DTO\EMT.DoneNOW.DTO.csproj">
       <Project>{4cbd682d-bd97-4d4e-b552-a7e4d4dd6b09}</Project>
       <Name>EMT.DoneNOW.DTO</Name>
@@ -368,7 +375,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60242</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

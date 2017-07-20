@@ -383,7 +383,16 @@ namespace EMT.DoneNOW.BLL
             return new crm_contact_dal().GetContactByStatus(account_id, is_active);
         }
 
-
+        /// <summary>
+        /// 获取到用户的默认地址
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <returns></returns>
+        public crm_contact GetDefaultByAccountId(long account_id)
+        {
+            
+            return _dal.FindSignleBySql<crm_contact>($"select * from crm_contact where account_id = {account_id} and is_primary_contact = 1 and delete_time = 0");
+        }
 
 
 

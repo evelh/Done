@@ -17,9 +17,9 @@ namespace EMT.DoneNOW.DAL
             foreach (var entry in all)
             {
                 if (entry.is_default == 1)
-                    list.Add(new DictionaryEntryDto(entry.country_name_display, entry.country_name_display, 1));
+                    list.Add(new DictionaryEntryDto(entry.id.ToString(), entry.country_name_display, 1));
                 else
-                    list.Add(new DictionaryEntryDto(entry.country_name_display, entry.country_name_display));
+                    list.Add(new DictionaryEntryDto(entry.id.ToString(), entry.country_name_display));
             }
 
             return list;

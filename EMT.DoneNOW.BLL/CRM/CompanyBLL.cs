@@ -25,6 +25,7 @@ namespace EMT.DoneNOW.BLL
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("classification", new d_account_classification_dal().GetDictionary());    // 分类类别
             dic.Add("country", new d_country_dal().GetDictionary());                          // 国家表
+            dic.Add("addressdistrict", new d_district_dal().GetDictionary());                       // 地址表（省市县区）
             dic.Add("sys_resource", new sys_resource_dal().GetDictionary());                // 客户经理
             dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("竞争对手")));          // 竞争对手
             dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行业")));    // 行业
@@ -43,7 +44,8 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public crm_account GetCompany(long id)
         {
-            return _dal.FindById(id);
+            string sql = $"select * from crm_account where id = {id} and delete_time = 0 ";
+            return _dal.FindSignleBySql<crm_account>(sql);
         }
 
         /// <summary>

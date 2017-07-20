@@ -138,5 +138,17 @@ namespace EMT.Tools.Date
             return solar;
         }
 
+        /// <summary>
+        /// 时间戳转时间
+        /// </summary>
+        /// <param name="timeStamp"></param>
+        /// <returns></returns>
+        public static DateTime ConvertStringToDateTime(long timeStamp)
+        {
+            DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+            long lTime = long.Parse(timeStamp.ToString() + "0000");
+            TimeSpan toNow = new TimeSpan(lTime);
+            return dtStart.Add(toNow);
+        }
     }
 }
