@@ -44,7 +44,7 @@ float: left;overflow: hidden;}
 .content label .red{color: red ;  vertical-align: super; position: absolute;right: -10px;top: 0;}
 .content label .num{color: #666666;font-size: 12px;  vertical-align: super; }
 .content input{float: left;width:45%;margin-left: 5%;}
-.content select{float: left;width:49%;height:28px;line-height: 28px;margin-left: 5%;}
+.content select{float: left;width:47%;height:28px;line-height: 28px;margin-left: 5%;}
 .content .selectTwo{float: left;width:50%;height:28px;line-height: 28px;margin-left: 5%;}
 .content .selectTwo select{float: left;width:45%;height:28px;line-height: 28px;margin: 0;}
 .content .selectTwo span{float: left;margin: 0 3%;}

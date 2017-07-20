@@ -52,6 +52,7 @@
     <Compile Include="Com\QueryCommonBLL.cs" />
     <Compile Include="CRM\CompanyBLL.cs" />
     <Compile Include="CRM\ContactBLL.cs" />
+    <Compile Include="CRM\LocationBLL.cs" />
     <Compile Include="CRM\OpportunityBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SYS\FormTemplateBLL.cs" />

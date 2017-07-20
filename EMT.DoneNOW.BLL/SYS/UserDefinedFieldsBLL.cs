@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.BLL
         {
             var dal = new sys_udf_field_dal();
             var udfListDal = new sys_udf_list_dal();
-            string sql=dal.QueryStringDeleteFlag($"SELECT id,col_name,col_comment as name,description,data_type_id as cate,default_value,decimal_length,is_required as required FROM sys_udf_field WHERE is_active=1 and cate_id = {(int)cate}");
+            string sql=dal.QueryStringDeleteFlag($"SELECT id,col_name,col_comment as name,description,data_type_id as data_type,default_value,decimal_length,is_required as required FROM sys_udf_field WHERE is_active=1 and cate_id = {(int)cate}");
             var list = dal.FindListBySql<UserDefinedFieldDto>(sql);
             foreach (var udf in list)
             {
@@ -250,7 +250,7 @@ namespace EMT.DoneNOW.BLL
                 else
                 {
                     string v = val.value.ToString().Replace("'", "''"); // 转义单引号
-                    updateSb.Append(fld.col_name).Append("='").Append(val.value).Append("',");    // 组合sql更新语句
+                    updateSb.Append(fld.col_name).Append("='").Append(v).Append("',");    // 组合sql更新语句
                 }
                 
                 dict.Add(fld.col_name, oldv.value + "→" + val.value);                         // 生成操作日志

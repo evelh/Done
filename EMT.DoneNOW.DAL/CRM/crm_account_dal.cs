@@ -81,7 +81,7 @@ namespace EMT.DoneNOW.DAL
         public bool ExistAccountName(string accountName,long account_id = 0)
         {
             string sql = $"SELECT COUNT(0) FROM crm_account WHERE name='{accountName}' and delete_time = 0 ";
-            if (account_id == 0)
+            if (account_id != 0)
                 sql += $" and id <> {account_id} ";
             object obj = GetSingle(sql);
             int cnt = -1;
@@ -123,7 +123,7 @@ namespace EMT.DoneNOW.DAL
         public bool ExistAccountPhone(string phone,long id=0)
         {
             string sql = $"SELECT count(0) from crm_account where delete_time = 0 AND  phone = '{phone}' ";
-            if (id == 0)
+            if (id != 0)
                 sql += $" and id <> {id}";
             object obj = GetSingle(sql);
             int cnt = -1;

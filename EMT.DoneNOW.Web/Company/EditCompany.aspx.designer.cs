@@ -13,15 +13,6 @@ namespace EMT.DoneNOW.Web {
     public partial class EditCompany {
         
         /// <summary>
-        /// form1 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
-        /// <summary>
         /// save_close 控件。
         /// </summary>
         /// <remarks>
@@ -56,6 +47,15 @@ namespace EMT.DoneNOW.Web {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox company_name;
+        
+        /// <summary>
+        /// isactive 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox isactive;
         
         /// <summary>
         /// CompanyNumber 控件。
@@ -184,13 +184,13 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.TextBox WebSite;
         
         /// <summary>
-        /// is_optout_survey 控件。
+        /// is_optoutSurvey 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox is_optout_survey;
+        protected global::System.Web.UI.WebControls.CheckBox is_optoutSurvey;
         
         /// <summary>
         /// mileage 控件。
@@ -256,13 +256,13 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.DropDownList Competitor;
         
         /// <summary>
-        /// TaxExempt 控件。
+        /// Tax_Exempt 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox TaxExempt;
+        protected global::System.Web.UI.WebControls.CheckBox Tax_Exempt;
         
         /// <summary>
         /// TaxRegion 控件。
@@ -283,12 +283,84 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.TextBox TaxId;
         
         /// <summary>
-        /// ParentComoanyName 控件。
+        /// stock_symbol 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ParentComoanyName;
+        protected global::System.Web.UI.WebControls.TextBox stock_symbol;
+        
+        /// <summary>
+        /// sic_code 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox sic_code;
+        
+        /// <summary>
+        /// asset_value 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox asset_value;
+        
+        /// <summary>
+        /// weibo_url 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox weibo_url;
+        
+        /// <summary>
+        /// wechat_mp_subscription 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox wechat_mp_subscription;
+        
+        /// <summary>
+        /// wechat_mp_service 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox wechat_mp_service;
+        
+        /// <summary>
+        /// Company_Detail_Alert 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Company_Detail_Alert;
+        
+        /// <summary>
+        /// New_Ticket_Alert 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox New_Ticket_Alert;
+        
+        /// <summary>
+        /// Ticket_Detail_Alert 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Ticket_Detail_Alert;
     }
 }

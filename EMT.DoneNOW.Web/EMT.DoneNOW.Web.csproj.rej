@@ -1,0 +1,9 @@
+diff a/EMT.DoneNOW.Web/EMT.DoneNOW.Web.csproj b/EMT.DoneNOW.Web/EMT.DoneNOW.Web.csproj	(rejected hunks)
+@@ -345,7 +345,6 @@
+       <Project>{eb88bbf3-488c-466f-bf7c-02bd01530d18}</Project>
+       <Name>EMT.DoneNOW.Core</Name>
+     </ProjectReference>
+-      <Project>{ADC67B7E-FE81-4832-B5B7-E0B931171F4F}</Project>
+     <ProjectReference Include="..\EMT.DoneNOW.DTO\EMT.DoneNOW.DTO.csproj">
+       <Project>{4cbd682d-bd97-4d4e-b552-a7e4d4dd6b09}</Project>
+       <Name>EMT.DoneNOW.DTO</Name>

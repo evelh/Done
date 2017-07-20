@@ -41,6 +41,15 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte is_default { get; set; }
 
-
+        /// <summary>
+        /// test 重写下equal方法
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            crm_location p = (crm_location)obj;
+            return (this.id == p.id) && (this.account_id == p.account_id) && (this.cate_id == p.cate_id) && (this.address == p.address) && (this.town_id == p.town_id) && (this.district_id == p.district_id) && (this.city_id == p.city_id) && (this.provice_id == p.provice_id) && (this.postal_code == p.postal_code) && (this.country_id == p.country_id) && (this.additional_address == p.additional_address) && (this.location_label == p.location_label) && (this.is_default == p.is_default);
+        }
     }
 }

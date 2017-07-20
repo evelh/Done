@@ -11,10 +11,15 @@ namespace EMT.DoneNOW.Web
 {
     public partial class AddCompany : BasePage
     {
+        protected List<UserDefinedFieldDto> company_udfList = null;      // 客户自定义
+        protected List<UserDefinedFieldDto> contact_udfList = null;      // 联系人自定义
+        protected List<UserDefinedFieldDto> site_udfList = null; // 站点自定义
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                #region 下拉框赋值
+
                 var dic = new CompanyBLL().GetField();
 
                 // 分类类别
@@ -80,7 +85,11 @@ namespace EMT.DoneNOW.Web
                 todo_action_type.DataSource = dic.FirstOrDefault(_ => _.Key == "action_type").Value;
                 todo_action_type.DataBind();
                 todo_action_type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                #endregion
             }
+            company_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);
+            contact_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT);
+            site_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.SITE);
         }
 
         /// <summary>
@@ -98,6 +107,22 @@ namespace EMT.DoneNOW.Web
             param.site = AssembleModel<CompanyAddDto.Site>();
             param.todo = AssembleModel<CompanyAddDto.Todo>();
             // var param = AssembleModel<CompanyAddDto>();
+            if(company_udfList!=null&& company_udfList.Count > 0)                      // 首先判断是否有自定义信息
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach (var udf in company_udfList)                            // 循环添加
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()]==null?"": Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
+                   
+                }
+                param.general.udf = list;
+            }
+
 
             var result = new CompanyBLL().Insert(param, "");
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写

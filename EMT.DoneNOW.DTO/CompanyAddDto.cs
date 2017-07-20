@@ -56,8 +56,8 @@ namespace EMT.DoneNOW.DTO
         public class Note
         {
             public int note_action_type;       // 活动类型
-            public DateTime note_start_time;   // 开始时间
-            public DateTime note_end_time;     // 结束时间
+            public string note_start_time;   // 开始时间
+            public string note_end_time;     // 结束时间
             public string note_description;    // 描述
 
         }
@@ -66,8 +66,8 @@ namespace EMT.DoneNOW.DTO
         {
             public int todo_action_type;       // 活动类型
             public long assigned_to;      // 负责人的id
-            public DateTime todo_start_time;   // 开始时间
-            public DateTime todo_end_time;     // 结束时间
+            public string todo_start_time;   // 开始时间
+            public string todo_end_time;     // 结束时间
             public string todo_description;    // 描述
         }
 

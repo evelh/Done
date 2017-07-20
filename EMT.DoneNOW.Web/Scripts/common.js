@@ -45,5 +45,42 @@ function requestData(url, type, data, calBackFunction, bAsync) {
     });
 }
 
+// 校验电话格式
+function checkPhone(str) {
+    var re = /^0\d{2,3}-?\d{7,8}$/;
+    if (re.test(str)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
+// 校验邮箱
+function checkEmail(str) {
+    var re = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+    if (re.test(str)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// 校验邮编
+function checkPostalCode(str) {
+    var re = /^[1-9][0-9]{5}$/;
+    if (re.test(str)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+// 去除多余空格 可以更换第二个参数去替换别的
+function Trim(str, is_global) {
+    var result;
+    result = str.replace(/(^\s+)|(\s+$)/g, "");
+    if (is_global.toLowerCase() == "g") {
+        result = result.replace(/\s/g, "");
+    }
+    return result;
+}
 

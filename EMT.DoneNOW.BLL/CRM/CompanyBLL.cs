@@ -69,6 +69,10 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;   // 返回客户名已存在   
             if (_dal.ExistAccountPhone(param.general.phone))
                 return ERROR_CODE.PHONE_OCCUPY;              // 返回电话被占用
+            if (!string.IsNullOrEmpty(param.contact.mobile_phone))     // 移动电话不为空时，进行唯一性校验
+            {
+
+            }
 
 
             // TODO  名称相似校验
@@ -77,7 +81,7 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.ERROR;
 
 
-           // var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
+            // var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
             // 测试用户
             var user = new UserInfoDto()
             {
@@ -251,7 +255,7 @@ namespace EMT.DoneNOW.BLL
                 var udf_contact_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT); // 联系人的自定义字段
                 var udf_con_list = param.contact.udf;     // 传过来的联系人的自定义参数
                 new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTACT, user.id, _contact.id, udf_contact_list, udf_con_list, OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION);
-    
+
             }
             #endregion
 
@@ -259,8 +263,8 @@ namespace EMT.DoneNOW.BLL
             var udf_site_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.SITE);
             var udf_site = param.site.udf;
             new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.SITE, user.id, _account.id, udf_site_list, udf_site, OPER_LOG_OBJ_CATE.CUSTOMER_SITE);
-           
-            
+
+
 
             #endregion
 
@@ -280,8 +284,8 @@ namespace EMT.DoneNOW.BLL
                         object_id = _account.id,
                         object_type_id = (int)OBJECT_TYPE.CUSTOMER,
                         action_type_id = param.note.note_action_type,
-                        start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(param.note.note_start_time),
-                        end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(param.note.note_end_time),
+                        start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.note.note_start_time)),
+                        end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.note.note_end_time)),
                         description = param.note.note_description,
                         create_user_id = user.id,
                         create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -325,8 +329,8 @@ namespace EMT.DoneNOW.BLL
                         action_type_id = param.todo.todo_action_type,
                         object_id = _account.id,
                         object_type_id = (int)OBJECT_TYPE.CUSTOMER,
-                        start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(param.todo.todo_start_time),
-                        end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(param.todo.todo_end_time),
+                        start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.todo.todo_start_time)),
+                        end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.todo.todo_end_time)),
                         description = param.todo.todo_description,
                         create_user_id = user.id,
                         create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -415,8 +419,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Update(CompanyUpdateDto param, string token)
         {
-            // Dictionary<bool,List<crm_contact>>
-            // Dictionary<bool, List<crm_contact>> dic = new Dictionary<bool, List<crm_contact>>();
+
             // 对必填的字段进行非空验证
             if (string.IsNullOrEmpty(param.general_update.company_name) || string.IsNullOrEmpty(param.general_update.phone) || string.IsNullOrEmpty(param.general_update.address))
             {
@@ -424,11 +427,11 @@ namespace EMT.DoneNOW.BLL
                 //return dic;
                 return ERROR_CODE.PARAMS_ERROR;
             }
-            if (param.general_update.country_id == 0 || param.general_update.province_id == 0 || param.general_update.city_id == 0 || param.general_update.company_type == 0 || param.general_update.account_manage == 0)
+            if (param.general_update.country_id == 0 || param.general_update.province_id == 0 || param.general_update.city_id == 0 || param.general_update.companyType == 0 || param.general_update.accountManger == 0)
             {
                 return ERROR_CODE.PARAMS_ERROR;
             }
-            if (_dal.ExistAccountName(param.general_update.company_name.Trim(),param.general_update.id))    // 客户名称与客户电话的唯一性校验
+            if (_dal.ExistAccountName(param.general_update.company_name.Trim(), param.general_update.id))    // 客户名称与客户电话的唯一性校验
                 return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;   // 返回客户名已存在   
             if (_dal.ExistAccountPhone(param.general_update.phone, param.general_update.id))    // 客户电话的唯一性校验 todo - 修改时 客户名称的唯一校验 
                 return ERROR_CODE.PHONE_OCCUPY;   //  查找到重复信息，返回电话名称被占用
@@ -459,34 +462,35 @@ namespace EMT.DoneNOW.BLL
                 update_user_id = user.id,
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 name = param.general_update.company_name,
-                no = param.general_update.company_number,
-                territory_id = param.general_update.territory_name,
-                market_segment_id = param.general_update.market_segment,
-                competitor_id = param.general_update.competitor,
-                is_active = param.general_update.is_active,
+                no = param.general_update.companyNumber,
+                territory_id = param.general_update.territoryName == 0 ? null : param.general_update.territoryName,
+                market_segment_id = param.general_update.marketSegment == 0 ? null : param.general_update.marketSegment,
+                competitor_id = param.general_update.competitor == 0 ? null : param.general_update.competitor,
+                // is_active = param.general_update.is_active?1:0,
                 phone = param.general_update.phone,
                 fax = param.general_update.fax,
-                web_site = param.general_update.web_site,
-                alternate_phone1 = param.general_update.alternate_phone1,
-                alternate_phone2 = param.general_update.alternate_phone2,
+                web_site = param.general_update.webSite,
+                alternate_phone1 = param.general_update.alternatePhone1,
+                alternate_phone2 = param.general_update.alternatePhone2,
                 last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                parent_id = param.general_update.parent_company_name ,
-                type_id = param.general_update.company_type,
-                classification_id = param.general_update.classification,
-                tax_region_id = param.general_update.tax_region,
-                tax_identification = param.general_update.tax_id,
-                resource_id = param.general_update.account_manage,
+                // parent_id = param.general_update.parent_company_name ,
+                type_id = param.general_update.companyType,
+                classification_id = param.general_update.classification == 0 ? null : param.general_update.classification,
+                tax_region_id = param.general_update.taxRegion,
+                tax_identification = param.general_update.taxId,
+                resource_id = param.general_update.accountManger,
                 is_optout_survey = param.general_update.is_optout_survey,
                 mileage = param.general_update.mileage,
                 stock_symbol = param.additional_info.stock_symbol,
                 stock_market = param.additional_info.stock_market,
                 sic_code = param.additional_info.sic_code,
-                asset_value = param.additional_info.asset_value,
+                asset_value = param.additional_info.asset_value == "" ? 0 : Convert.ToDecimal(param.additional_info.asset_value),
                 weibo_url = param.additional_info.weibo_url,
                 wechat_mp_subscription = param.additional_info.wechat_mp_subscription,
                 wechat_mp_service = param.additional_info.wechat_mp_service,
                 create_user_id = old_company_value.create_user_id,
                 create_time = old_company_value.create_time,
+
                 #region 有没有必要写的字段？ 
                 alternate_phone1_basic = old_company_value.alternate_phone1_basic,
                 alternate_phone2_basic = old_company_value.alternate_phone2_basic,
@@ -536,7 +540,11 @@ namespace EMT.DoneNOW.BLL
             {
                 var udf_account = param.general_update.udf;  // 获取到客户传过来的自定义字段的值
                 // UpdateUdfValue 中含有插入修改日志的操作，无需再插入日志
-                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY, udf_account_list, new_company_value.id, udf_account, user, DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION);
+                if (udf_account != null && udf_account.Count > 0)   // todo 用户未填写自定义信息为null，是否算更改插日志
+                {
+                    new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY, udf_account_list, new_company_value.id, udf_account, user, DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION);
+                }
+
             }
             #endregion
 
@@ -760,12 +768,14 @@ namespace EMT.DoneNOW.BLL
                 country_id = param.general_update.country_id,
                 provice_id = param.general_update.province_id,
                 district_id = param.general_update.district_id,
-                additional_address = param.general_update.additional_address,
+                additional_address = param.general_update.additionalAddress,
                 is_default = old_location.is_default,
                 create_user_id = old_location.create_user_id,
                 create_time = old_location.create_time,
-                update_user_id = user.id,
-                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                update_user_id = old_location.update_user_id,
+                update_time = old_location.update_time,
+                //update_user_id = user.id,
+                //update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 postal_code = param.general_update.postal_code,
                 cate_id = old_location.cate_id,
                 delete_time = old_location.delete_time,
@@ -776,7 +786,10 @@ namespace EMT.DoneNOW.BLL
 
             if (!old_location.Equals(new_location))   // 代表用户更改了地址
             {
-                new crm_location_dal().UpdateDefaultLocation(new_company_value.id, user); // 首先将原来的默认地址取消  操作日志在方法内插入
+                new_location.update_user_id = user.id;
+                new_location.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                // 修改客户显示默认地址，默认地址不能主动移除
+                // new crm_location_dal().UpdateDefaultLocation(new_company_value.id, user); // 首先将原来的默认地址取消  操作日志在方法内插入
                 new crm_location_dal().Update(new_location);             // 更改地址信息
                 new sys_oper_log_dal().Insert(new sys_oper_log()
                 {
@@ -813,62 +826,45 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
 
+            #region TODO 修改地址或者电话，传真的时候对页面的反馈
+            //if (!new_location.Equals(old_location))      // 如果修改了地址，该地被其他联系人引用，则弹出窗口，提示用户会同步修改的联系人 TODO-- 如何提示
+            //{
+            //    var contactAllList = new crm_contact_dal().GetContactByAccounAndLocationId(new_company_value.id, old_location.id);  // 这个客户所有的联系人
+            //}
+            //// 如果修改了电话和传真，则弹出窗口，显示联系人列表供用户用户选择是否同步替换。    TODO
+            //if ((!old_company_value.phone.Equals(new_company_value.phone)) || (!old_company_value.fax.Equals(new_company_value.fax)))   // 电话和传真有一个有更改时
+            //{
+            //    var contactList = new crm_contact_dal().GetContactByAccountId(new_company_value.id);    // 获取到所有的这个客户的联系人
+            //    var update_contacts = "1,2,3,4,5,6,7,8,9";    // 首先定义有九个联系人信息被更改
+            //    var con_list = update_contacts.Split(',');
+            //    foreach (var item in con_list)
+            //    {
+            //        var contact = new crm_contact_dal().FindById(Convert.ToInt64(item));   // 获取到对应的联系人信息
+            //        if (contact != null)
+            //        {
+            //            contact.phone = param.general_update.phone;
+            //            contact.fax = param.general_update.fax;
+            //            new crm_contact_dal().Update(contact);                   // 修改联系人
+            //            new sys_oper_log_dal().Insert(new sys_oper_log()
+            //            {
+            //                user_cate = "用户",
+            //                user_id = user.id,
+            //                name = user.name,
+            //                phone = user.mobile == null ? "" : user.mobile,
+            //                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
+            //                oper_object_id = contact.id,
+            //                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+            //                oper_description = _dal.CompareValue(contactList.FirstOrDefault(_ => _.id == contact.id), contact),
+            //                remark = "修改联系人电话或传真",
+            //            });    // 插入更改日志
+            //        }
+            //    }
 
-            if (!new_location.Equals(old_location))      // 如果修改了地址，该地被其他联系人引用，则弹出窗口，提示用户会同步修改的联系人 TODO-- 如何提示
-            {
-                var contactAllList = new crm_contact_dal().GetContactByAccounAndLocationId(new_company_value.id, old_location.id);  // 这个客户所有的联系人
-            }
-            // 如果修改了电话和传真，则弹出窗口，显示联系人列表供用户用户选择是否同步替换。    TODO
-            if ((!old_company_value.phone.Equals(new_company_value)) || (!old_company_value.fax.Equals(new_company_value.fax)))   // 电话和传真有一个有更改时
-            {
-                var contactList = new crm_contact_dal().GetContactByAccountId(new_company_value.id);    // 获取到所有的这个客户的联系人
-                var update_contacts = "1,2,3,4,5,6,7,8,9";    // 首先定义有九个联系人信息被更改
-                var con_list = update_contacts.Split(',');
-                foreach (var item in con_list)
-                {
-                    var contact = new crm_contact_dal().FindById(Convert.ToInt64(item));   // 获取到对应的联系人信息
-                    if (contact != null)
-                    {
-                        contact.phone = param.general_update.phone;
-                        contact.fax = param.general_update.fax;
-                        new crm_contact_dal().Update(contact);                   // 修改联系人
-                        new sys_oper_log_dal().Insert(new sys_oper_log()
-                        {
-                            user_cate = "用户",
-                            user_id = user.id,
-                            name = user.name,
-                            phone = user.mobile == null ? "" : user.mobile,
-                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
-                            oper_object_id = contact.id,
-                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                            oper_description = _dal.CompareValue(contactList.FirstOrDefault(_ => _.id == contact.id), contact),
-                            remark = "修改联系人电话或传真",
-                        });    // 插入更改日志
-                    }
-                }
-
-            }
+            //}
+            #endregion
 
 
-
-
-            // TODO: 是否可以修改客户名称 account_name，需要做检查
-
-            //if (account.id == 0)
-            //    return false;
-            //var oldValue = GetCompany(account.id);
-            ////var updateDetail = _dal.UpdateDetail(oldValue, account);
-            ////if (updateDetail == null)
-            ////    return false;
-            ////if (updateDetail.Equals(""))     // 未做修改
-            ////    return true;
-
-            //account.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            //account.update_user_id = CachedInfoBLL.GetUserInfo(token).id;
-
-            //// TODO: 日志
-            //return _dal.Update(account);
             return ERROR_CODE.SUCCESS;
         }
 
@@ -1053,7 +1049,7 @@ namespace EMT.DoneNOW.BLL
             // var nameList = new List<string>() { "股份", "有限", "信息", "科技", "公司", "技术", "责任", "集团", "贸易", "工贸", "工程", "网络", "实业", "营业部", "事业部", "办事处", "分公司", "管理" };  // 后缀名称处理   todo—— 前缀名称处理
             // 客户：名称后缀
             var List = new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("客户：名称后缀"));
-            var nameList =  List.Select(_ => _.show);
+            var nameList = List.Select(_ => _.show);
             var areaList = new List<string> { "北京", "上海", "广州", "深圳", "杭州" };
 
             foreach (var item in nameList)
@@ -1178,7 +1174,7 @@ namespace EMT.DoneNOW.BLL
             var udf_configuration_items_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONFIGURATION_ITEMS);   // 查询自定义信息
             var udf_configuration_items = param.udf;
             new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, user.id, account_id, udf_configuration_items_list, udf_configuration_items, OPER_LOG_OBJ_CATE.CUSTOMER);  // 保存自定义扩展信息
-       
+
             #endregion
 
             #region 2.保存通知
