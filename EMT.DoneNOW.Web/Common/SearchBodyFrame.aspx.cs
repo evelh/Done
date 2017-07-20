@@ -16,12 +16,21 @@ namespace EMT.DoneNOW.Web
         protected string addBtn;        // 根据不同查询页得到的新增按钮名
         protected QueryResultDto queryResult = null;            // 查询结果数据
         protected List<QueryResultParaDto> resultPara = null;   // 查询结果列信息
+        protected string flag;
         protected void Page_Load(object sender, EventArgs e)
         {
             queryPage = HttpContext.Current.Request.QueryString["type"];
             if (string.IsNullOrEmpty(queryPage))
-                queryPage = "客户查询";
-            QueryData();
+            {
+                queryPage = HttpContext.Current.Request.QueryString["search_page"];
+                if (string.IsNullOrEmpty(queryPage))
+                    queryPage = "客户查询";
+            }
+            flag = HttpContext.Current.Request.QueryString["page"];
+            if (flag != null && flag.Equals("1"))
+                QueryData();
+            else
+                flag = "";
         }
 
         /// <summary>
@@ -49,16 +58,18 @@ namespace EMT.DoneNOW.Web
 
             var keys = HttpContext.Current.Request.QueryString;
             string order = keys["order"];   // order by 条件
-            int page = string.IsNullOrEmpty(keys["search_page"]) ? 1 : int.Parse(keys["search_page"]);  // 查询页数
+            int page = string.IsNullOrEmpty(keys["page_num"]) ? 1 : int.Parse(keys["page_num"]);  // 查询页数
 
             // 检查order
             if (order != null)
             {
                 order = order.Trim();
                 string[] strs = order.Split(' ');
-                if (strs.Length != 2 || strs[1].ToLower().Equals("asc") || strs[1].ToLower().Equals("desc"))
+                if (strs.Length != 2 || (!strs[1].ToLower().Equals("asc") && !strs[1].ToLower().Equals("desc")))
                     order = "";
             }
+            if (string.IsNullOrEmpty(order))
+                order = null;
 
             if (!string.IsNullOrEmpty(keys["search_id"]))   // 使用缓存查询条件
             {

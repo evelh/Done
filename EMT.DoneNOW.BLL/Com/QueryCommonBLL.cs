@@ -48,6 +48,7 @@ namespace EMT.DoneNOW.BLL
             int offset = (para.page - 1) * para.page_size;
 
             // 缓存查询sql语句
+            /*
             CacheQuerySqlDto sqlCache = new CacheQuerySqlDto
             {
                 query_page_name = para.query_page_name,
@@ -58,6 +59,7 @@ namespace EMT.DoneNOW.BLL
             };
             string queryId = userId + new Random().Next(1000, 9999).ToString();
             CachedInfoBLL.SetQuerySql(queryId, sqlCache, _sqlExpireMins);
+            */
 
             // 获取查询结果
             sql = sql + $" LIMIT {offset},{para.page_size}";
@@ -77,7 +79,8 @@ namespace EMT.DoneNOW.BLL
             result.page = para.page;
             result.page_count = totalPage;
             result.page_size = para.page_size;
-            result.query_id = queryId;
+            //result.query_id = queryId;
+            result.query_id = "";
             result.result = list;
 
             return result;
@@ -197,7 +200,7 @@ namespace EMT.DoneNOW.BLL
             if (queryType == null)
                 return "";
             StringBuilder queryPara = new StringBuilder();
-            queryPara.Append("{");
+            queryPara.Append("'{");
 
             // 组合查询条件
             d_query_para_dal paraDal = new d_query_para_dal();
@@ -235,10 +238,10 @@ namespace EMT.DoneNOW.BLL
             }
 
             // 移除最后条件末尾的,
-            if (queryPara.Length > 1)
+            if (queryPara.Length > 2)
                 queryPara = queryPara.Remove(queryPara.Length - 1, 1);
 
-            queryPara.Append("}");
+            queryPara.Append("}'");
 
             return queryPara.ToString();
         }

@@ -168,6 +168,8 @@
     <Content Include="Images\ml.png" />
     <Content Include="Images\new.png" />
     <Content Include="Images\sjb.png" />
+    <Content Include="Images\sort-asc.png" />
+    <Content Include="Images\sort-desc.png" />
     <Content Include="Images\title.png" />
     <Content Include="Images\wb.png" />
     <Content Include="Images\xm.png" />
