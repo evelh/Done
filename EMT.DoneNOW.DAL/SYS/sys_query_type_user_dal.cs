@@ -51,7 +51,7 @@ namespace EMT.DoneNOW.DAL
                 p.Add("in_type_id", type);
                 p.Add("in_user_id", userId);
                 p.Add("in_user_condition", condition);
-                p.Add("@out_count", 0, DbType.String, ParameterDirection.Output);
+                p.Add("@out_count", 0, DbType.Int32, ParameterDirection.Output);
                 var result = conn.Query(funcName, p, null, true, null, CommandType.StoredProcedure).FirstOrDefault();
                 return p.Get<int>("@out_count");
             }
