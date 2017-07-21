@@ -112,10 +112,9 @@ namespace EMT.DoneNOW.Web
                 var list = new List<UserDefinedFieldValue>();
                 foreach (var udf in company_udfList)                            // 循环添加
                 {
-                    var new_udf = new UserDefinedFieldValue()
-                    {
+                    var new_udf = new UserDefinedFieldValue() {
                         id = udf.id,
-                        value = Request.Form[udf.id.ToString()]==null?"": Request.Form[udf.id.ToString()],
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
                     };
                     list.Add(new_udf);
                    

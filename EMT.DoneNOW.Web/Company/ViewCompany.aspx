@@ -14,6 +14,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+       
         <%  var account = GetAccount();
             var location = GetDefaultLocation();
             var taxRegion = dic.FirstOrDefault(_ => _.Key == "taxRegion").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
@@ -47,17 +48,19 @@
                     <asp:Button ID="LiveLink" runat="server" Text="友情链接" BorderStyle="None" /></li>
             </ul>
         </div>
-        <div id="ShowCompany_Left" style="float:left;">
+
+        <div runat="server" id="activity"></div>
+        <div id="ShowCompany_Left" style="float: left;">
             <div id="GeneralInformation" style="float: left; width: 300px; margin-left: 40px; background-color: #f1eaea;">
                 <%-- 客户的基本信息 --%>
 
                 <label><%=account.name %> <span>类别图标</span> <span>自助服务台图标</span></label>
-                 
+
                 <p><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></p>
                 <p><%=addressdistrict.First(_=>_.val.ToString()==location.provice_id.ToString()).show  %></p>
                 <p><%=addressdistrict.First(_=>_.val.ToString()==location.city_id.ToString()).show  %></p>
                 <p><%=addressdistrict.First(_=>_.val.ToString()==location.district_id.ToString()).show  %></p>
-               
+
 
 
                 <% if (!string.IsNullOrEmpty(location.address))
@@ -70,8 +73,13 @@
                 <p><%=location.additional_address %></p>
                 <%} %>
 
-
                 <p>可以根据链接，跳转到百度或其他地图，显示该客户位置</p>
+
+                <% if (account.parent_id != null)
+                    { %>
+                <p> <a href="ViewCompany.aspx?id=<%=account.parent_id %>"><%=companyBll.GetCompany((long)account.parent_id).name %> </a></p>
+                <%} %>
+
                 <p><%=account.phone %></p>
                 <p>(P) <%=location.postal_code %></p>
                 <p>(F) <%=account.fax %></p>
@@ -329,46 +337,59 @@
             </div>
             <div id="ViewCompanyPower" style="clear: both; float: left; margin-top: 40px; margin-left: 40px; width: 300px;">
                 <p>可以查看本客户的员工</p>
-            
+
 
             </div>
         </div>
-        <div id="ShowCompany_Right" style="float:left;margin-left:35px;">
-          <table>
-              <tr>
-                  <td colspan="2"> 
-                      <%--<input type="text" onkeydown="Prompt()"/>--%>
-                      <asp:TextBox ID="insert" runat="server"  TextMode="MultiLine" MaxLength="1000" Rows="5" Width="500px" Height="25%" Wrap="true" Style="overflow-y: visible" ></asp:TextBox>
-                  </td>
-              </tr>
-              <tr>
-                  <td style="padding-right:5px; padding-top:10px; width:350px;">
-                      <span id="WordNumber"></span>
-                  </td>
-                  <td align="right" style="padding-top:10px;">
-                      <%
-                          Type.DataValueField = "val";
-                          Type.DataTextField = "show";
-                          Type.DataSource = action_type;
-                          Type.DataBind();
-                          Type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-                          %>
-                      <asp:DropDownList ID="Type" runat="server" Width="100px">
+        <div id="ShowCompany_Right" style="float: left; margin-left: 35px;">
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <%--<input type="text" onkeydown="Prompt()"/>--%>
+                        <asp:TextBox ID="insert" runat="server" TextMode="MultiLine" MaxLength="1000" Rows="5" Width="500px" Height="25%" Wrap="true" Style="overflow-y: visible"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-right: 5px; padding-top: 10px; width: 350px;">
+                        <span id="WordNumber"></span>
+                    </td>
+                    <td align="right" style="padding-top: 10px;">
+                        <%
+                            Type.DataValueField = "val";
+                            Type.DataTextField = "show";
+                            Type.DataSource = action_type;
+                            Type.DataBind();
+                            Type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                        %>
+                        <asp:DropDownList ID="Type" runat="server" Width="100px">
+                        </asp:DropDownList>
+                        <asp:Button ID="add" runat="server" Text="添加" /></td>
+                </tr>
+            </table>
+            <div>
+                <asp:CheckBox ID="Todos" runat="server" />
+                <span>待办</span>
+                <asp:CheckBox ID="Notes" runat="server" />
+                <span>备注</span>
+                <asp:CheckBox ID="Opportunities" runat="server" />
+                <span>商机</span>
+                <asp:CheckBox ID="SalesOrders" runat="server" />
+                <span>销售单</span>
+                <asp:CheckBox ID="Tickets" runat="server" />
+                <span>工单</span>
+                <asp:CheckBox ID="Contacts" runat="server" />
+                <span>合同</span>
+                <asp:CheckBox ID="Projects" runat="server" />
+                <span>项目</span>
 
-                      </asp:DropDownList>
-                      `<asp:Button ID="add" runat="server" Text="添加" /></td>
-              </tr>
-          </table>
-          <div>
-              <asp:CheckBox ID="Todos" runat="server" /> <span>待办</span>
-              <asp:CheckBox ID="Notes" runat="server" /> <span>备注</span>
-              <asp:CheckBox ID="Opportunities" runat="server" /> <span>商机</span>
-              <asp:CheckBox ID="SalesOrders" runat="server" /> <span>销售单</span>
-              <asp:CheckBox ID="Tickets" runat="server" /> <span>工单</span>
-              <asp:CheckBox ID="Contacts" runat="server" /> <span>合同</span>
-              <asp:CheckBox ID="Projects" runat="server" /> <span>项目</span>
-              
-          </div>
+            </div>
+            <div>
+                <span>排序方式：</span>
+                <asp:DropDownList ID="OrderBy" runat="server">
+                    <asp:ListItem Value="1">时间从早到晚</asp:ListItem>
+                    <asp:ListItem Value="2">时间从晚到早</asp:ListItem>
+                </asp:DropDownList>
+            </div>
         </div>
 
     </form>
@@ -384,17 +405,17 @@
         var maxNumber = 2000;
         $("#WordNumber").text(maxNumber);
         $("#insert").keyup(function () {
-            var insert = $("#insert").val();           
+            var insert = $("#insert").val();
             if (insert != '') {
                 var length = insert.length;
                 $("#WordNumber").text(maxNumber - length);
                 if (length > 2000) {
-                    $(this).val($(this).val().substring(0, 1999));
+                    $(this).val($(this).val().substring(0, 2000));
                 }
             }
-            
+
         });
     })
 
- 
+
 </script>

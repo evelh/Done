@@ -26,15 +26,15 @@ namespace EMT.DoneNOW.DTO
             public int city_id;                // 市
             public int district_id;            // 区县
             public string address;             // 详细地址
-            public string additionalAddress;  // 地址标签
+            public string additionalAddress;   // 地址标签
             public string postal_code;         // 邮编
             public string phone;               // 电话
-            public string alternatePhone1;    // 备用电话1
-            public string alternatePhone2;    // 备用电话2
+            public string alternatePhone1;     // 备用电话1
+            public string alternatePhone2;     // 备用电话2
             public string fax;                 // 传真
-            public string webSite;            // 官网
+            public string webSite;             // 官网
             public sbyte is_optout_survey;     // 是否拒绝问卷
-            public decimal mileage;                // 全程距离
+            public decimal mileage;            // 全程距离
             public sbyte is_default;           // 是否是默认地址  1 是  0 不是
 
 
@@ -49,11 +49,11 @@ namespace EMT.DoneNOW.DTO
 
             // 3.税收
             public bool taxExempt;            // 是否免税
-            public int taxRegion;             // 税区域
+            public int? taxRegion;             // 税区域
             public string taxId;              // 税编号
 
             // 4.父客户
-            public long parentComoanyName;    // 父客户名称
+            public string parent_company_name;    // 父客户名称
 
             public List<UserDefinedFieldValue> udf; // 客户自定义字段
         }

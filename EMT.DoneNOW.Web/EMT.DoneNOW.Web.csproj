@@ -127,8 +127,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Company\CompanyFindBack.aspx" />
     <Content Include="Common\SearchFrameSet.aspx" />
     <Content Include="Company\AddCompany.aspx" />
+    <Content Include="Company\DeleteCompany.aspx" />
     <Content Include="Company\ViewCompany.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\base.css" />
@@ -221,6 +223,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Company\CompanyFindBack.aspx.cs">
+      <DependentUpon>CompanyFindBack.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\CompanyFindBack.aspx.designer.cs">
+      <DependentUpon>CompanyFindBack.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Company\AddCompany.aspx.cs">
       <DependentUpon>AddCompany.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -246,6 +255,13 @@
     </Compile>
     <Compile Include="Common\SearchFrameSet.aspx.designer.cs">
       <DependentUpon>SearchFrameSet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Company\DeleteCompany.aspx.cs">
+      <DependentUpon>DeleteCompany.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\DeleteCompany.aspx.designer.cs">
+      <DependentUpon>DeleteCompany.aspx</DependentUpon>
     </Compile>
     <Compile Include="Company\ViewCompany.aspx.cs">
       <DependentUpon>ViewCompany.aspx</DependentUpon>

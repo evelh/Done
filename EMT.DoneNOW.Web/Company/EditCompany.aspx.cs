@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using EMT.DoneNOW.DTO;
 using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.BLL.CRM;
+using EMT.DoneNOW.Core;
 
 namespace EMT.DoneNOW.Web
 {
@@ -16,20 +17,22 @@ namespace EMT.DoneNOW.Web
         /// 客户自定义字段
         /// </summary>
         protected List<UserDefinedFieldDto> company_udfList = null;
-        protected List<UserDefinedFieldValue> company_udfValueList = null;
+        protected List<UserDefinedFieldValue> company_udfValueList = null; //company
+        protected crm_account account = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             var company_id = Convert.ToInt64(Request.QueryString["id"]);
             company_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);
             company_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.COMPANY, company_id, company_udfList);
+            var company = new CompanyBLL().GetCompany(company_id);
+            account = company;
             if (!IsPostBack)
             {
-
                 // var company_id = Convert.ToInt64(Request.QueryString["id"]);
-                var company = new CompanyBLL().GetCompany(company_id);
+              
                 if (company != null)
                 {
-                    
+                  
                     #region 为下拉框获取数据源
                     var dic = new CompanyBLL().GetField();
 
@@ -101,7 +104,12 @@ namespace EMT.DoneNOW.Web
                         TaxRegion.Enabled = true;
                     }
                     TaxId.Text = company.tax_identification;
-                    // ParentComoanyName.Text = company.parent_id;  父客户
+                    if (company.parent_id != null)
+                    {
+                        var parCompany = new CompanyBLL().GetCompany((long)account.parent_id);
+                        ParentComoanyName.Text = parCompany == null ? "" : parCompany.name;  //父客户
+                    }
+                    asset_value.Text = company.asset_value.ToString();
 
                     var location = new LocationBLL().GetLocationByAccountId(company.id);
                     if (location != null)        // 如果该客户的地址是默认地址，不可更改为非默认，只能通过添加别的地址设置为默认这种方式去更改默认地址
@@ -181,7 +189,7 @@ namespace EMT.DoneNOW.Web
             //}
             else if (result == ERROR_CODE.SUCCESS)                    // 修改用户成功
             {
-                Response.Write("<script>alert('修改客户成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                Response.Write("<script>alert('修改客户成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
             }
             //}
             //catch (Exception)
@@ -200,16 +208,7 @@ namespace EMT.DoneNOW.Web
         protected void delete_Click(object sender, EventArgs e)
         {
             var id = Convert.ToInt64(Request.QueryString["id"]);
-            var result = new CompanyBLL().DeleteCompany(id, "");
-            if (result)
-            {
-                Response.Write("<script>alert('删除客户成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
-                // self.opener.location.reload();
-            }
-            else
-            {
-                Response.Write("<script>alert('删除客户失败！');</script>");
-            }
+            Response.Redirect("deletecompany.aspx?id="+id);
         }
     }
 }

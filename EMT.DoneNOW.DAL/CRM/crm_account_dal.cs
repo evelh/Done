@@ -135,5 +135,12 @@ namespace EMT.DoneNOW.DAL
             return false;
         }
 
+
+        public List<crm_account> GetAccountByFindBack(long? id)
+        {
+            if (id == null)
+                return FindListBySql("select id,name from crm_account where delete_time = 0");
+            return FindListBySql($"select id,name from crm_account where delete_time = 0  and id <> {id}");
+        }
     }
 }

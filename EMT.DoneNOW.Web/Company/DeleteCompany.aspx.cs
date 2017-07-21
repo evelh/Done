@@ -11,7 +11,7 @@ using EMT.DoneNOW.BLL.CRM;
 
 namespace EMT.DoneNOW.Web.Company
 {
-    public partial class ViewCompany : System.Web.UI.Page
+    public partial class DeleteCompany : BasePage
     {
         protected crm_account crm_account = null;
         protected Dictionary<string, object> dic = null;
@@ -22,10 +22,10 @@ namespace EMT.DoneNOW.Web.Company
             if (id != null)
             {
                 crm_account = new CompanyBLL().GetCompany(Convert.ToInt64(id));
+                dic = companyBll.GetField();
                 if (crm_account != null)
                 {
-                    dic = new CompanyBLL().GetField();    // 获取字典
-                    
+
                 }
                 else
                 {
@@ -36,18 +36,16 @@ namespace EMT.DoneNOW.Web.Company
             {
                 Response.End();
             }
-
         }
 
         /// <summary>
         /// 获取到当前操作的客户
         /// </summary>
         /// <returns></returns>
-        public crm_account GetAccount()
+        public  crm_account GetAccount()
         {
             return crm_account;
         }
-
         /// <summary>
         /// 获取到客户的默认地址
         /// </summary>
@@ -64,6 +62,21 @@ namespace EMT.DoneNOW.Web.Company
         public crm_contact GetDefaultContact()
         {
             return new ContactBLL().GetDefaultByAccountId(crm_account.id);
+        }
+
+        protected void Delete_Click(object sender, EventArgs e)
+        {
+            var id = Convert.ToInt64(Request.QueryString["id"]);
+            var result = new CompanyBLL().DeleteCompany(id, "");
+            if (result)
+            {
+                Response.Write("<script>alert('删除客户成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
+                // self.opener.location.reload();
+            }
+            else
+            {
+                Response.Write("<script>alert('删除客户失败！');</script>");
+            }
         }
     }
 }

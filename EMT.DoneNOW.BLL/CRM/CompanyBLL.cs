@@ -58,6 +58,18 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 查找带回取到所有客户，修改的时候去掉自己
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<crm_account> GetAccountByFindBack(long? id)
+        {
+            return _dal.GetAccountByFindBack(id);
+        }
+
+
+
+        /// <summary>
         /// 新增客户
         /// </summary>
         /// <returns></returns>
@@ -475,10 +487,9 @@ namespace EMT.DoneNOW.BLL
                 alternate_phone1 = param.general_update.alternatePhone1,
                 alternate_phone2 = param.general_update.alternatePhone2,
                 last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                // parent_id = param.general_update.parent_company_name ,
                 type_id = param.general_update.companyType,
                 classification_id = param.general_update.classification == 0 ? null : param.general_update.classification,
-                tax_region_id = param.general_update.taxRegion,
+                tax_region_id = param.general_update.taxRegion == 0 ? null : param.general_update.taxRegion,
                 tax_identification = param.general_update.taxId,
                 resource_id = param.general_update.accountManger,
                 is_optout_survey = param.general_update.is_optout_survey,
@@ -486,12 +497,13 @@ namespace EMT.DoneNOW.BLL
                 stock_symbol = param.additional_info.stock_symbol,
                 stock_market = param.additional_info.stock_market,
                 sic_code = param.additional_info.sic_code,
-                asset_value = param.additional_info.asset_value == "" ? 0 : Convert.ToDecimal(param.additional_info.asset_value),
                 weibo_url = param.additional_info.weibo_url,
                 wechat_mp_subscription = param.additional_info.wechat_mp_subscription,
                 wechat_mp_service = param.additional_info.wechat_mp_service,
                 create_user_id = old_company_value.create_user_id,
                 create_time = old_company_value.create_time,
+                //parent_id =  == null ? null : param.general_update.parent_company_name,
+               // asset_value = param.additional_info.asset_value == "" ? null: Convert.ToDecimal(param.additional_info.asset_value),
 
                 #region 有没有必要写的字段？ 
                 alternate_phone1_basic = old_company_value.alternate_phone1_basic,
@@ -517,6 +529,19 @@ namespace EMT.DoneNOW.BLL
                 #endregion
 
             };
+            if (!string.IsNullOrEmpty(param.general_update.parent_company_name))
+            {
+                new_company_value.parent_id = Convert.ToInt64(new_company_value);
+            }
+
+            if (!string.IsNullOrEmpty(param.additional_info.asset_value))
+            {
+
+                new_company_value.asset_value =Convert.ToDecimal(param.additional_info.asset_value);
+            }
+
+
+
             if (_dal.Update(new_company_value)) // 如果修改成功，则添加日志
             {
                 new sys_oper_log_dal().Insert(new sys_oper_log()

@@ -14,7 +14,7 @@ body{background: #F5F5F5;}
 .information .left ul li{padding: 5px 0;}
 .information .left ul li input{width:300px;}
 .information .left ul li select{width: 205px;height: 28px;}
-label{display:inline-block;color: #151515;font-size:14px;width:170px;text-align: right;padding-right: 30px;}
+label{display:inline-block;color: #151515;font-size:14px;width:150px;text-align: right;padding-right: 30px;}
 label .red{color: red ;  vertical-align: super; }
 label .num{color: #666666;font-size: 12px;  vertical-align: super; }
 .cont-innter{padding: 0 20px;}

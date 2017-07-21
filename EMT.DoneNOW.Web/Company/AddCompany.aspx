@@ -306,7 +306,8 @@
                         <td>
                             <div class="clear">
                                 <label>父客户名称</label>
-                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" />
+                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><span onclick="chooseCompany('CompanyFindBack.aspx');" style="width:30px;float:left;margin-left:-5px;">查找</span>
+                                <input type="hidden" id="ParentComoanyNameHide" name="parent_company_name" />                              
                             </div>
                         </td>
                     </tr>
@@ -315,6 +316,7 @@
                         <div class="clear">
                             <label>客户编号</label>
                             <input type="text" name="CompanyNumber" id="CompanyNumber" value="" />
+                            
                         </div>
                     </td>
                 </tr>
@@ -394,6 +396,7 @@
                                 <label>负责人</label>
                                 <asp:DropDownList ID="assigned_to" runat="server" Width="205px">
                                     <asp:ListItem Value="1">测试</asp:ListItem>
+                                    <asp:ListItem Value="0">     </asp:ListItem>
                                 </asp:DropDownList>
                             </div>
 
@@ -793,6 +796,9 @@
         });  // 直接关闭窗口
     })
 
-
+    function chooseCompany(url) {
+        window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
+        //这些要写在一行
+    }
 
 </script>

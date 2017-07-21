@@ -84,3 +84,8 @@ function Trim(str, is_global) {
     return result;
 }
 
+// 客户的查找带回
+function chooseCompany(url) {
+    window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
+    //这些要写在一行
+}

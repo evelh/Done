@@ -202,9 +202,9 @@
                 <tr>
                     <td>
                         <div class="clear">
-                             <label>是否接受问卷调查<span class="red">*</span></label>
+                            <label>是否接受问卷调查<span class="red">*</span></label>
                             <asp:CheckBox ID="is_optoutSurvey" runat="server" />
-                           
+
                         </div>
                     </td>
                 </tr>
@@ -229,7 +229,7 @@
                         <div class="clear">
                             <label>分类类别<span class="red"></span></label>
 
-                            <asp:DropDownList ID="classification" runat="server"  AutoPostBack="False">
+                            <asp:DropDownList ID="classification" runat="server" AutoPostBack="False">
                             </asp:DropDownList>
                         </div>
                     </td>
@@ -253,7 +253,7 @@
                     <td>
                         <div class="clear">
                             <label>销售区域<span class="red"></span></label>
-                            <asp:DropDownList ID="TerritoryName" runat="server" ></asp:DropDownList>
+                            <asp:DropDownList ID="TerritoryName" runat="server"></asp:DropDownList>
                         </div>
                     </td>
                 </tr>
@@ -261,7 +261,7 @@
                     <td>
                         <div class="clear">
                             <label>市场领域</label>
-                            <asp:DropDownList ID="MarketSegment" runat="server" ></asp:DropDownList>
+                            <asp:DropDownList ID="MarketSegment" runat="server"></asp:DropDownList>
                         </div>
                     </td>
                 </tr>
@@ -276,10 +276,10 @@
                 <tr>
                     <td>
                         <div class="clear">
-                             <label>是否免税<span class="red">*</span></label>
+                            <label>是否免税<span class="red">*</span></label>
                             <asp:CheckBox ID="Tax_Exempt" runat="server" />
 
-                            
+
                         </div>
                     </td>
                 </tr>
@@ -300,7 +300,16 @@
                         </div>
                     </td>
                 </tr>
-
+                <tr>
+                    <td>
+                        <div class="clear">
+                            <label>父客户名称</label>
+                            <asp:TextBox ID="ParentComoanyName" runat="server"></asp:TextBox>
+                            <span onclick="chooseCompany('CompanyFindBack.aspx?id=<%=account.id %>');" style="width: 30px; float: left; margin-left: -5px;">查找</span>
+                            <input type="hidden" id="parent_company_name" name="parent_company_name" value="<%=account.parent_id %>" />
+                        </div>
+                    </td>
+                </tr>
             </table>
 
         </div>
@@ -361,7 +370,7 @@
         </div>
 
 
-         <div class="content clear">
+        <div class="content clear">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
 
@@ -421,25 +430,25 @@
                         </div>
                     </td>
                 </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
-                            {%>
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                    {%>
 
-        <%}
-                }
-            } %>
-                   
+                <%}
+                        }
+                    } %>
             </table>
 
         </div>
 
 
 
-          <div class="content clear">
-              <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
-              </table>
+        <div class="content clear">
+            <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+            </table>
 
-          </div>    <% //子公司 预留  %>
+        </div>
+        <% //子公司 预留  %>
 
 
 
@@ -447,12 +456,13 @@
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
             </table>
 
-        </div>      <% //站点信息 预留   %>
+        </div>
+        <% //站点信息 预留   %>
 
 
         <div class="content clear">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
-                 <tr>
+                <tr>
                     <td>
                         <div class="clear">
                             <label>客户信息提示<span class="red"></span></label>
@@ -461,19 +471,19 @@
                         </div>
                     </td>
                 </tr>
-                 <tr>
+                <tr>
                     <td>
                         <div class="clear">
-                           <label>新建工单提示<span class="red"></span></label>
+                            <label>新建工单提示<span class="red"></span></label>
                             <asp:TextBox ID="New_Ticket_Alert" runat="server" Rows="5" Width="100%" Height="25%" TextMode="MultiLine" Wrap="true"
                                 Style="overflow-y: visible"></asp:TextBox>
                         </div>
                     </td>
                 </tr>
-                 <tr>
+                <tr>
                     <td>
                         <div class="clear">
-                           <label>工单信息提示<span class="red"></span></label>
+                            <label>工单信息提示<span class="red"></span></label>
                             <asp:TextBox ID="Ticket_Detail_Alert" runat="server" Rows="5" Width="100%" Height="25%" TextMode="MultiLine" Wrap="true"
                                 Style="overflow-y: visible"></asp:TextBox>
 
@@ -484,9 +494,9 @@
 
         </div>
 
-   
 
-  
+
+
     </form>
 </body>
 </html>
@@ -498,14 +508,10 @@
     $(function () {
 
         var old_company_type = $("#CompanyType").find("option:selected").text();
-        //if ($('#TaxExempt').is(':checked')) {
-        //    // 禁用
-        //    $("#TaxRegion").attr("disabled", "disabled");
 
-        //}
-        $("#TaxExempt").click(function () {
+        $("#Tax_Exempt").click(function () {
 
-            if ($('#TaxExempt').is(':checked')) {
+            if ($('#Tax_Exempt').is(':checked')) {
                 // 禁用
                 $("#TaxRegion").attr("disabled", "disabled");
 
@@ -571,7 +577,7 @@
 
         });   // 保存并关闭的事件
 
- 
+
 
         $("#close").click(function () {
             if (navigator.userAgent.indexOf("MSIE") > 0) {
@@ -592,5 +598,5 @@
             }
         });  // 直接关闭窗口
     })
-  
+
 </script>
