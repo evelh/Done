@@ -49,25 +49,35 @@ namespace EMT.DoneNOW.BLL.CRM
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public crm_opportunity GetOpportunity(long id)
+        public OpportunityAddOrUpdateDto GetOpportunity(long id)
         {
-            return _dal.FindById(id);
+            var bll = new UserDefinedFieldsBLL();
+            crm_opportunity optu = _dal.FindById(id);
+            var udf = bll.GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
+            var udfValue = bll.GetUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, id, udf);
+            // TODO: activity，notify
+            return new OpportunityAddOrUpdateDto { general = optu, udf = udfValue };
         }
 
         /// <summary>
         /// 新增商机
         /// </summary>
         /// <returns></returns>
-        public ERROR_CODE Insert(crm_opportunity optnt, string token)
+        public ERROR_CODE Insert(OpportunityAddOrUpdateDto opt, long userId)
         {
+            var optnt = opt.general;
             optnt.id = _dal.GetNextIdCom();
             optnt.opportunity_no = ""; // TODO: 商机号码生成
             optnt.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            optnt.create_user_id = CachedInfoBLL.GetUserInfo(token).id;
+            optnt.create_user_id = userId;
             optnt.update_time = optnt.create_time;
             optnt.update_user_id = optnt.create_user_id;
             
-            _dal.Insert(optnt);  // TODO: log
+            _dal.Insert(optnt);     // 新增商机
+            // 记录日志
+            sys_oper_log_dal.InsertLog<crm_opportunity>(optnt, optnt.id, userId, DicEnum.OPER_LOG_TYPE.ADD, DicEnum.OPER_LOG_OBJ_CATE.OPPORTUNITY);
+
+
 
             return ERROR_CODE.ERROR;
         }
@@ -78,10 +88,10 @@ namespace EMT.DoneNOW.BLL.CRM
         /// <param name="optnt"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public bool Update(crm_opportunity optnt, string token)
+        public bool Update(crm_opportunity optnt, long userId)
         {
             optnt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            optnt.update_user_id = CachedInfoBLL.GetUserInfo(token).id;
+            optnt.update_user_id = userId;
 
             // TODO: 日志
             return _dal.Update(optnt);
@@ -110,11 +120,14 @@ namespace EMT.DoneNOW.BLL.CRM
         /// <returns></returns>
         public bool DeleteContact(long id, string token)
         {
+            return false;
+            /*
             crm_opportunity contact = GetOpportunity(id);
             contact.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             contact.delete_user_id = CachedInfoBLL.GetUserInfo(token).id;
             // TODO: 日志
             return _dal.SoftDelete(contact,id);
+            */
         }
     }
 }

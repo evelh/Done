@@ -58,6 +58,7 @@
     <Compile Include="SYS\FormTemplateBLL.cs" />
     <Compile Include="SYS\GeneralBLL.cs" />
     <Compile Include="SYS\UserDefinedFieldsBLL.cs" />
+    <Compile Include="SYS\UserInfoBLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EMT.DoneNOW.Core\EMT.DoneNOW.Core.csproj">

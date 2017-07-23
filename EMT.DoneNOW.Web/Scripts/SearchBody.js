@@ -1,9 +1,9 @@
 ﻿
 var entityid;
 var menu = document.getElementById("menu");
-function OpenConMenu(ev,id) {
+function OpenConMenu(event,id) {
     entityid = id;
-    var oEvent = ev || event;
+    var oEvent = event;
     menu.style.display = "block";
     var Top = $(document).scrollTop() + oEvent.clientY
     var Left = $(document).scrollLeft() + oEvent.clientX

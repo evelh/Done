@@ -53,7 +53,7 @@
 						<th style="background:red url(../Images/data-selector.png) no-repeat center;display:none;">11</th>
 					</tr>
                     <%foreach (var rslt in queryResult.result) { %>
-					<tr title="右键显示操作菜单" oncontextmenu="OpenConMenu(<%=rslt["id"] %>)">
+					<tr title="右键显示操作菜单" oncontextmenu="OpenConMenu(event,<%=rslt["id"] %>)">
                         <%foreach (var para in resultPara) { %>
 						<td><%=rslt[para.name] %></td>
                         <%} %>

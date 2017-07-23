@@ -53,6 +53,7 @@
     <Compile Include="DictionaryEntryDto.cs" />
     <Compile Include="Enumeration.cs" />
     <Compile Include="FormTmplOpportunityDto.cs" />
+    <Compile Include="OpportunityAddOrUpdateDto.cs" />
     <Compile Include="OpportunityConditionDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryConditionParaDto.cs" />

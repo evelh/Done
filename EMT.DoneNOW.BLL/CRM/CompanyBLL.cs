@@ -1209,7 +1209,7 @@ namespace EMT.DoneNOW.BLL
             var notify_email = new com_notify_email()
             {
                 id = 1,
-                cate_id = (int)FROM_EMAIL_TYPE.FROM_EMAIL,
+                cate_id = (int)NOTIFY_CATE.CRM,
                 event_id = 1,             // todo
                 to_email = param.notice.contacts,                  // 接受人地址？？联系人地址   
                 notify_tmpl_id = param.notice.notification_template,

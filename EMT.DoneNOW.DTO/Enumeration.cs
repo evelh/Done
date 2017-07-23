@@ -31,6 +31,23 @@ namespace EMT.DoneNOW.DTO
             DEPARTMENT = 89,    // 指定部门
             ALL = 90,           // 任何人
         }
+
+        /// <summary>
+        /// 通知大类-20
+        /// </summary>
+        public enum NOTIFY_CATE
+        {
+            CRM = 96,               // CRM
+            PROJECT = 97,           // 项目
+            SERVICE_DESK = 98,      // 服务台
+            SERVICE_BOOK = 99,      // 服务预定
+            CONTACT = 100,          // 合同
+            TIME_SHEET = 101,       // 工时表
+            INVENTORY = 102,        // 库存
+            TICKETS = 103,          // Taskfire工单
+            OTHERS = 104,           // 杂项
+        }
+
         /// <summary>
         /// 通知发送邮箱来源类型-24
         /// </summary>
@@ -127,14 +144,15 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum OPER_LOG_OBJ_CATE
         {
-            CUSTOMER = 760,                               // 客户
-            CUSTOMER_EXTENSION_INFORMATION = 761,         // 客户扩展信息
-            CONTACTS = 762,                               // 联系人
-            CONTACTS_EXTENSION_INFORMATION = 763,         // 联系人扩展信息
-            CUSTOMER_SITE = 764,                          // 客户站点    
-            TODO = 765,                                   // 待办
-            FROM = 766,                                   // 表单模板
-            FROMOPPORTUNITY = 767,                        // 商机表单模板
+            CUSTOMER = 760,                             // 客户
+            CUSTOMER_EXTENSION_INFORMATION = 761,       // 客户扩展信息
+            CONTACTS = 762,                             // 联系人
+            CONTACTS_EXTENSION_INFORMATION = 763,       // 联系人扩展信息
+            CUSTOMER_SITE = 764,                        // 客户站点    
+            TODO = 765,                                 // 待办
+            FROM = 766,                                 // 表单模板
+            FROMOPPORTUNITY = 767,                      // 商机表单模板
+            OPPORTUNITY = 768,                          // 商机
         }
 
         /// <summary>
