@@ -10,18 +10,13 @@ namespace EMT.DoneNOW.DAL
 {
     public class d_country_dal : BaseDAL<d_country>
     {
-        public List<DictionaryEntryDto> GetDictionary()
+        /// <summary>
+        /// 获取可用的国家列表
+        /// </summary>
+        /// <returns></returns>
+        public List<d_country> GetCountryListActive()
         {
-            var all = this.FindAll().OrderBy(_ => _.id); ;
-            List<DictionaryEntryDto> list = new List<DictionaryEntryDto>();
-            foreach (var entry in all)
-            {
-                if (entry.is_default == 1)
-                    list.Add(new DictionaryEntryDto(entry.id.ToString(), entry.country_name_display, 1));
-                else
-                    list.Add(new DictionaryEntryDto(entry.id.ToString(), entry.country_name_display));
-            }
-
+            var list = FindListBySql("SELECT * FROM d_country WHERE is_active=1");
             return list;
         }
     }

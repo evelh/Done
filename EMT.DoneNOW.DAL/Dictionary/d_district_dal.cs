@@ -9,17 +9,15 @@ namespace EMT.DoneNOW.DAL
 {
     public class d_district_dal : BaseDAL<d_district>
     {
-        public List<DictionaryEntryDto> GetDictionary()
+        /// <summary>
+        /// 根据父id获取可见的行政区列表
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
+        public List<d_district> GetDistrictByParent(int parentId)
         {
-            var all = this.FindAll().OrderBy(_ => _.id); ;
-            List<DictionaryEntryDto> list = new List<DictionaryEntryDto>();
-            foreach (var entry in all)
-            {
-                
-                    list.Add(new DictionaryEntryDto(entry.id.ToString(), entry.name));
-            }
-
-            return list;
+            string sql = $"SELECT * FROM d_district WHERE parent_id={parentId} AND status_id=0";
+            return FindListBySql(sql);
         }
     }
 }

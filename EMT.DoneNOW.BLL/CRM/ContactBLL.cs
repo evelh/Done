@@ -22,7 +22,7 @@ namespace EMT.DoneNOW.BLL
         public Dictionary<string, object> GetField()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("country", new d_country_dal().GetDictionary());                        // 国家表
+            dic.Add("country", new DistrictBLL().GetCountryList());                        // 国家表
 
             return dic;
         }
