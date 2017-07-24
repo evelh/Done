@@ -46,7 +46,7 @@
             <h4>1 .   公司简介</h4>
             <p><%=account.name %></p>
             <p><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></p>
-            <p><%=addressdistrict.First(_=>_.val.ToString()==location.provice_id.ToString()).show  %></p>
+            <p><%=addressdistrict.First(_=>_.val.ToString()==location.province_id.ToString()).show  %></p>
             <p><%=addressdistrict.First(_=>_.val.ToString()==location.city_id.ToString()).show  %></p>
             <p><%=addressdistrict.First(_=>_.val.ToString()==location.district_id.ToString()).show  %></p>
             <% if (!string.IsNullOrEmpty(location.address))

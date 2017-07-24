@@ -81,7 +81,7 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.PARAMS_ERROR;                // string类型的非空校验
             }
 
-            if (contactAddDto.location.country_id == 0 || contactAddDto.location.provice_id == 0 || contactAddDto.location.city_id == 0)
+            if (contactAddDto.location.country_id == 0 || contactAddDto.location.province_id == 0 || contactAddDto.location.city_id == 0)
             {
                 return ERROR_CODE.PARAMS_ERROR;                // int类型的非空校验
             }
@@ -222,7 +222,7 @@ namespace EMT.DoneNOW.BLL
                 return false;                // string类型的非空校验
             }
 
-            if (contact_update.location.country_id == 0 || contact_update.location.provice_id == 0 || contact_update.location.city_id == 0)
+            if (contact_update.location.country_id == 0 || contact_update.location.province_id == 0 || contact_update.location.city_id == 0)
             {
                 return false;                // int类型的非空校验
             }

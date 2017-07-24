@@ -12,11 +12,12 @@ namespace EMT.DoneNOW.Core
     [DataContract]
     public partial class crm_account : SoftDeleteCore
     {
+
         [Key]
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]
-        public Int64 account_id { get; set; }
+        public Int64 oid { get; set; }
         [DataMember]
         public String name { get; set; }
         [DataMember]
@@ -110,5 +111,4 @@ namespace EMT.DoneNOW.Core
 
 
     }
-
 }

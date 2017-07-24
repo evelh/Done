@@ -123,7 +123,7 @@ namespace EMT.DoneNOW.Web
             }
 
 
-            var result = new CompanyBLL().Insert(param, "");
+            var result = new CompanyBLL().Insert(param, GetLoginUserId());
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
                 Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");

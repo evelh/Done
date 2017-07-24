@@ -17,6 +17,8 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]
+        public Int64 oid { get; set; }
+        [DataMember]
         public Int64? account_id { get; set; }
         [DataMember]
         public Int32? cate_id { get; set; }
@@ -29,7 +31,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32 city_id { get; set; }
         [DataMember]
-        public Int32 provice_id { get; set; }
+        public Int32 province_id { get; set; }
         [DataMember]
         public String postal_code { get; set; }
         [DataMember]
@@ -49,7 +51,7 @@ namespace EMT.DoneNOW.Core
         public override bool Equals(object obj)
         {
             crm_location p = (crm_location)obj;
-            return (this.id == p.id) && (this.account_id == p.account_id) && (this.cate_id == p.cate_id) && (this.address == p.address) && (this.town_id == p.town_id) && (this.district_id == p.district_id) && (this.city_id == p.city_id) && (this.provice_id == p.provice_id) && (this.postal_code == p.postal_code) && (this.country_id == p.country_id) && (this.additional_address == p.additional_address) && (this.location_label == p.location_label) && (this.is_default == p.is_default);
+            return (this.id == p.id) && (this.account_id == p.account_id) && (this.cate_id == p.cate_id) && (this.address == p.address) && (this.town_id == p.town_id) && (this.district_id == p.district_id) && (this.city_id == p.city_id) && (this.province_id == p.province_id) && (this.postal_code == p.postal_code) && (this.country_id == p.country_id) && (this.additional_address == p.additional_address) && (this.location_label == p.location_label) && (this.is_default == p.is_default);
         }
     }
 }

@@ -26,11 +26,11 @@
             <input id="AreaProvinceInit" value='5' type="hidden" />
             <input id="AreaCityInit" value='6' type="hidden" />
             <input id="AreaCountyInit" value='8' type="hidden" />
-            <select id="AreaProvince" name="D1">
+            <select id="province_id" name="D1">
             </select>
-            <select id="AreaCity" name="D2">
+            <select id="city_id" name="D2">
             </select>
-            <select id="AreaCounty" name="D3">
+            <select id="district_id" name="D3">
             </select>
             <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
             <script type="text/javascript">
