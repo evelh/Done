@@ -1,3 +1,8 @@
+
+ul, ul li {
+    margin: 0;
+    padding: 0;
+}
 .header{
 	height: 40px;
     line-height: 40px;
@@ -28,8 +33,72 @@
 .boders{border: 1px solid #000000;border-bottom: 1px solid #FFFFFF !important;}    
     
 .header-title{width: 100%;padding:10px;width: auto;height: 26px;}
-.header-title ul li{height: 22px;line-height: 22px;padding: 0 10px;float: left;margin-right: 10px;border: 1px solid #CCCCCC;background: #F5F5F5;cursor:pointer;}
+
 .header-title ul li i{width: 16px;height:16px;display: block;float: left;margin-top: 3px;margin-right: 5px;}
+
+
+.boders {
+    border: 1px solid #000000;
+    border-bottom: 1px solid #FFFFFF !important;
+}
+
+
+    .header-title ul li {
+        position: relative;
+        height: 22px;
+        line-height: 22px;
+        padding: 0 10px;
+        float: left;
+        margin-right: 10px;
+        border: 1px solid #CCCCCC;
+        background: #F5F5F5;
+        cursor: pointer;
+    }
+
+        .header-title ul li:hover ul {
+            display: block;
+        }
+
+        .header-title ul li .icon-1 {
+            width: 16px;
+            height: 16px;
+            display: block;
+            float: left;
+            margin-top: 3px;
+            margin-right: 5px;
+        }
+
+        .header-title ul li .icon-2 {
+            width: 10px;
+            height: 10px;
+            display: block;
+            float: right;
+            margin-top: 5px;
+            margin-left: 10px;
+        }
+
+        .header-title ul li ul {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 22px;
+            border: 1px solid #CCCCCC;
+            background: #F5F5F5;
+            width: 150px;
+            padding: 15px 10px;
+            z-index: 99;
+        }
+
+            .header-title ul li ul li {
+                float: none;
+                border: none;
+            }
+
+                .header-title ul li ul li:hover {
+                    background: #E5E5E5;
+                }
+
+
 .nav-title{}
 .nav-title ul{border-bottom: 1px solid #000000;padding:10px 0 0 10px;}
 .nav-title ul li{background: #e5e5e5;float: left;margin-right: 10px;padding: 5px 10px;margin-bottom: -1px;cursor: pointer;}
@@ -52,6 +121,34 @@ float: left;overflow: hidden;}
 .content .inputTwo input{float: left;width:38%;margin: 0;}
 .content .inputTwo span{float: left;margin: 0 3%;}
 .content input[type=checkbox]{width:auto;height:auto;margin-top: 4px;margin-left: 5%;}
+.text {
+    line-height: 30px;
+    padding: 0 20px;
+    text-align: left;
+    color: #666;
+    margin-left: 10px;
+}
+
+.savecontent table, .savecontent td, .savecontent th {
+    border: 1px solid #98b4ca;
+}
+
+.savecontent th {
+    height: 28px;
+    line-height: 28px;
+}
+
+.savecontent table th:first-child, .savecontent table td:first-child {
+    width: 30px;
+}
+
+.savecontent input[type=checkbox] {
+    margin-left: 30%;
+}
+
+.warn {
+    background: #FFFFCC url(../Images/alert.png) no-repeat left center;
+}
 
 
 

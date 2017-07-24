@@ -132,6 +132,7 @@
     <Content Include="Common\SearchFrameSet.aspx" />
     <Content Include="Company\AddCompany.aspx" />
     <Content Include="Company\DeleteCompany.aspx" />
+    <Content Include="Company\LocationManage.aspx" />
     <Content Include="Company\ViewCompany.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\base.css" />
@@ -275,6 +276,13 @@
     </Compile>
     <Compile Include="Company\DeleteCompany.aspx.designer.cs">
       <DependentUpon>DeleteCompany.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Company\LocationManage.aspx.cs">
+      <DependentUpon>LocationManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\LocationManage.aspx.designer.cs">
+      <DependentUpon>LocationManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Company\ViewCompany.aspx.cs">
       <DependentUpon>ViewCompany.aspx</DependentUpon>
