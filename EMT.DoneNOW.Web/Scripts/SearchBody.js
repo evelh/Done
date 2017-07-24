@@ -22,7 +22,7 @@ function OpenWindow(winname) {
 
 //实现点击document，自定义菜单消失
 document.onclick = function () {
-    //menu.style.display = "none";
+    menu.style.display = "none";
 }
 
 // 修改排序列

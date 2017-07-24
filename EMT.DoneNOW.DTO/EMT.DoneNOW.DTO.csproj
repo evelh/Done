@@ -55,6 +55,7 @@
     <Compile Include="FormTmplOpportunityDto.cs" />
     <Compile Include="OpportunityAddOrUpdateDto.cs" />
     <Compile Include="OpportunityConditionDto.cs" />
+    <Compile Include="PageQueryConditionNameDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryConditionParaDto.cs" />
     <Compile Include="PageContextMenuDto.cs" />

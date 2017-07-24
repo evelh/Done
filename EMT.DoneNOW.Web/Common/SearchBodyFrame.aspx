@@ -52,8 +52,14 @@
                         <%} %>
 						<th style="background:red url(../Images/data-selector.png) no-repeat center;display:none;">11</th>
 					</tr>
-                    <%foreach (var rslt in queryResult.result) { %>
-					<tr title="右键显示操作菜单" oncontextmenu="OpenConMenu(event,<%=rslt["id"] %>)">
+                    <%
+                        var idPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID);
+                        foreach (var rslt in queryResult.result) {
+                            string id = "0";
+                            if (idPara != null)
+                                id = rslt[idPara.name].ToString();
+                            %>
+					<tr title="右键显示操作菜单" oncontextmenu="OpenConMenu(event,<%=id %>)">
                         <%foreach (var para in resultPara) { %>
 						<td><%=rslt[para.name] %></td>
                         <%} %>

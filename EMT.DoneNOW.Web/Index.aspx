@@ -15,9 +15,9 @@
 				<dd class="crm">C R M
 					<div class="crmcont clear">
 						<dl>
-							<dt>服务台</dt>
-							<dd><a href="javaScript:">服务台</a></dd>
-							<dd><a href="javaScript:">服务台</a></dd>
+							<dt>查询</dt>
+							<dd><a href="Common/SearchFrameSet.aspx?entity=客户查询" target="PageFrame">客户</a></dd>
+							<dd><a href="Common/SearchFrameSet.aspx?entity=联系人查询" target="PageFrame">联系人</a></dd>
 							<dd><a href="javaScript:">服务台</a></dd>
 							<dd><a href="javaScript:">服务台</a></dd>
 							<dd><a href="javaScript:">服务台</a></dd>
