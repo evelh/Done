@@ -6,6 +6,27 @@ using System.Threading.Tasks;
 
 namespace EMT.DoneNOW.DTO
 {
+    /// <summary>
+    /// 字典表索引表
+    /// </summary>
+    public enum GeneralTableEnum
+    {
+        REGION = 1,             // 客户区域
+        TERRITORY = 2,          // 客户地域
+        MARKET_SEGMENT = 3,
+        COMPETITOR = 4,
+        TAX_REGION = 5,
+        OPPORTUNITY_STAGE = 11,
+        OPPORTUNITY_SOURCE = 12,
+        OPPORTUNITY_INTEREST_DEGREE = 13,
+        OPPORTUNITY_WIN_REASON_TYPE = 14,
+        OPPORTUNITY_LOSS_REASON_TYPE = 15,
+        OPPORTUNITY_ADVANCED_FIELD = 16,
+        OPPORTUNITY_STATUS = 17,
+        FORM_TEMPLATE_RANGE_TYPE = 18,
+        PROJECTED_CLOSED_DATE = 19,
+        FORM_TEMPLATE_TYPE = 27,
+    }
 
     /// <summary>
     /// 字典表字典项对应的id值
