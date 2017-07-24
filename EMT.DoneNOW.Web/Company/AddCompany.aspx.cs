@@ -112,10 +112,9 @@ namespace EMT.DoneNOW.Web
                 var list = new List<UserDefinedFieldValue>();
                 foreach (var udf in company_udfList)                            // 循环添加
                 {
-                    var new_udf = new UserDefinedFieldValue()
-                    {
+                    var new_udf = new UserDefinedFieldValue() {
                         id = udf.id,
-                        value = Request.Form[udf.id.ToString()]==null?"": Request.Form[udf.id.ToString()],
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
                     };
                     list.Add(new_udf);
                    
@@ -153,7 +152,7 @@ namespace EMT.DoneNOW.Web
                 param.site.udf = list;
             }
 
-            var result = new CompanyBLL().Insert(param, "");
+            var result = new CompanyBLL().Insert(param, GetLoginUserId());
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
                 Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");

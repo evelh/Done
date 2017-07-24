@@ -29,9 +29,10 @@ $.each($('.index-titleLeft dd'),function(i){
 })
 
 $(".informationTitle i").click(function(){
-	$(".information").toggleClass("ba");
-	$(this).toggleClass("jia");
-	$(".information").children("div").toggleClass("hide");
+	//$(".information").toggleClass("ba");
+    $(this).toggleClass("jia");
+    $(this).parent().next("div").toggleClass("hide");
+	//$(".information").children("div").toggleClass("hide");
 })
 
 var  informationWidth=$(".information").width();

@@ -34,8 +34,8 @@ namespace EMT.DoneNOW.BLL
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             // TODO: 获取部门列表
-            dic.Add("template_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("表单模板类型")));          // 表单模板类型
-            dic.Add("range_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("表单模板应用范围")));    // 表单模板应用范围
+            dic.Add("template_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.FORM_TEMPLATE_TYPE)));          // 表单模板类型
+            dic.Add("range_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.FORM_TEMPLATE_RANGE_TYPE)));    // 表单模板应用范围
 
             return dic;
         }
@@ -44,12 +44,12 @@ namespace EMT.DoneNOW.BLL
         /// 删除表单模板
         /// </summary>
         /// <param name="tmplId"></param>
-        /// <param name="token"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public bool DeleteFormTmpl(int tmplId, string token)
+        public bool DeleteFormTmpl(int tmplId, long userId)
         {
             long time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            long userid = CachedInfoBLL.GetUserInfo(token).id;
+            //long userId = CachedInfoBLL.GetUserInfo(token).id;
             var tmpl = _dal.FindById(tmplId);
             if (tmpl == null)
                 return false;
@@ -57,7 +57,7 @@ namespace EMT.DoneNOW.BLL
             switch (tmpl.form_type_id)  // 判断表单类型
             {
                 case (int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY:
-                    delRslt = DeleteOpportunityFormTmpl(tmplId, userid);
+                    delRslt = DeleteOpportunityFormTmpl(tmplId, userId);
                     break;
                 default:
                     break;
@@ -66,17 +66,17 @@ namespace EMT.DoneNOW.BLL
                 return false;
 
             tmpl.delete_time = time;
-            tmpl.delete_user_id = userid;
-            return _dal.SoftDelete(tmpl, userid);
+            tmpl.delete_user_id = userId;
+            return _dal.SoftDelete(tmpl, userId);
         }
 
         /// <summary>
         /// 新增商机表单模板
         /// </summary>
         /// <param name="param"></param>
-        /// <param name="token"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public bool AddOpportunityTmpl(JObject param, string token)
+        public bool AddOpportunityTmpl(JObject param, long userId)
         {
             sys_form_tmpl formTmpl = param.ToObject<sys_form_tmpl>();
             sys_form_tmpl tmplFind = _dal.GetSingle(_dal.QueryStringDeleteFlag($"SELECT * FROM sys_form_tmpl WHERE speed_code='{formTmpl.speed_code}'")) as sys_form_tmpl;
@@ -84,7 +84,7 @@ namespace EMT.DoneNOW.BLL
                 return false;
 
             formTmpl.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            formTmpl.create_user_id = CachedInfoBLL.GetUserInfo(token).id;
+            formTmpl.create_user_id = userId;//CachedInfoBLL.GetUserInfo(token).id;
             formTmpl.update_time = formTmpl.create_time;
             formTmpl.update_user_id = formTmpl.create_user_id;
             formTmpl.form_type_id = (int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY;
@@ -107,9 +107,9 @@ namespace EMT.DoneNOW.BLL
         /// 更新商机表单模板
         /// </summary>
         /// <param name="param"></param>
-        /// <param name="token"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public bool UpdateOpportunityTmpl(JObject param, string token)
+        public bool UpdateOpportunityTmpl(JObject param, long userId)
         {
             sys_form_tmpl formTmpl = param.ToObject<sys_form_tmpl>();
             if (formTmpl == null || formTmpl.speed_code.Equals(""))
@@ -120,7 +120,7 @@ namespace EMT.DoneNOW.BLL
 
             sys_form_tmpl_opportunity opportunityTmpl = param.ToObject<sys_form_tmpl_opportunity>();
             formTmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            formTmpl.update_user_id = CachedInfoBLL.GetUserInfo(token).id;
+            formTmpl.update_user_id = userId;//CachedInfoBLL.GetUserInfo(token).id;
             opportunityTmpl.update_time = formTmpl.update_time;
             opportunityTmpl.update_user_id = formTmpl.update_user_id;
             _dal.Update(formTmpl);
@@ -245,13 +245,12 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 获取一个用户可见的商机表单模板（包括该用户个人可见模板、该用户所在部门可见模板和所有人可见模板）
         /// </summary>
-        /// <param name="token"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public List<sys_form_tmpl> GetTemplateOpportunityByUser(string token)
+        public List<sys_form_tmpl> GetTemplateOpportunityByUser(long userId)
         {
             // TODO: 获取用户部门，得到该部门可见的表单模板
-            var userinfo = CachedInfoBLL.GetUserInfo(token);
-            string sql = $"SELECT * FROM sys_form_tmpl WHERE form_type_id={DicEnum.FORM_TMPL_TYPE.OPPORTUNITY} AND (range_type_id={DicEnum.RANG_TYPE.ALL} OR (create_user_id={userinfo.id} AND range_type_id={DicEnum.RANG_TYPE.OWN}))";   // TODO: 部门可见的模板
+            string sql = $"SELECT * FROM sys_form_tmpl WHERE form_type_id={DicEnum.FORM_TMPL_TYPE.OPPORTUNITY} AND (range_type_id={DicEnum.RANG_TYPE.ALL} OR (create_user_id={userId} AND range_type_id={DicEnum.RANG_TYPE.OWN}))";   // TODO: 部门可见的模板
             return _dal.FindListBySql(_dal.QueryStringDeleteFlag(sql));
         }
     }

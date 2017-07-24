@@ -42,5 +42,24 @@ namespace EMT.DoneNOW.DAL
             });
             return ExecuteSQL(sql);
         }
+
+        /// <summary>
+        /// 根据ID获取到未删除的地址信息
+        /// </summary>
+        /// <returns></returns>
+        public crm_location GetLocationById(long location_id)
+        {
+            return FindSignleBySql<crm_location>($"select * from crm_location where id = {location_id} and delete_time = 0 ");
+        }
+
+        /// <summary>
+        /// 获取到用户的所有未删除的地址
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <returns></returns>
+        public List<crm_location> GetLocationByCompany(long account_id)
+        {
+            return FindListBySql($"select * from crm_location where account_id = {account_id} and delete_time = 0  order by province_id,city_id,district_id ");
+        }
     }
 }

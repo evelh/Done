@@ -34,8 +34,8 @@ namespace EMT.DoneNOW.Web
             else
             {
                 //检查Cookies
-                string username = Common.GetCookie("UserName", "DoneNOW");
-                string userpwd = Common.GetCookie("UserPwd", "DoneNOW");
+                string username = EMT.Tools.Common.GetCookie("UserName", "DoneNOW");
+                string userpwd = EMT.Tools.Common.GetCookie("UserPwd", "DoneNOW");
                 if (username != "" && userpwd != "")
                 {
                     // TODO: 验证用户名密码

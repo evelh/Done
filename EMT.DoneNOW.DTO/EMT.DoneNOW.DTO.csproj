@@ -53,9 +53,12 @@
     <Compile Include="DictionaryEntryDto.cs" />
     <Compile Include="Enumeration.cs" />
     <Compile Include="FormTmplOpportunityDto.cs" />
+    <Compile Include="OpportunityAddOrUpdateDto.cs" />
     <Compile Include="OpportunityConditionDto.cs" />
+    <Compile Include="PageQueryConditionNameDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryConditionParaDto.cs" />
+    <Compile Include="PageContextMenuDto.cs" />
     <Compile Include="QueryParaDto.cs" />
     <Compile Include="QueryResultDto.cs" />
     <Compile Include="QueryResultParaDto.cs" />

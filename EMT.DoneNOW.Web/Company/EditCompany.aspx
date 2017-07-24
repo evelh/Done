@@ -34,6 +34,7 @@
         <div class="nav-title">
             <ul class="clear">
                 <li class="boders">通用</li>
+                <li>地址信息</li>
                 <li>附加信息</li>
                 <li>用户自定义</li>
                 <li>子公司</li>
@@ -43,6 +44,7 @@
         </div>
 
         <div class="content clear">
+
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
                 <tr>
@@ -202,9 +204,9 @@
                 <tr>
                     <td>
                         <div class="clear">
-                             <label>是否接受问卷调查<span class="red">*</span></label>
+                            <label>是否接受问卷调查<span class="red">*</span></label>
                             <asp:CheckBox ID="is_optoutSurvey" runat="server" />
-                           
+
                         </div>
                     </td>
                 </tr>
@@ -229,7 +231,7 @@
                         <div class="clear">
                             <label>分类类别<span class="red"></span></label>
 
-                            <asp:DropDownList ID="classification" runat="server"  AutoPostBack="False">
+                            <asp:DropDownList ID="classification" runat="server" AutoPostBack="False">
                             </asp:DropDownList>
                         </div>
                     </td>
@@ -253,7 +255,7 @@
                     <td>
                         <div class="clear">
                             <label>销售区域<span class="red"></span></label>
-                            <asp:DropDownList ID="TerritoryName" runat="server" ></asp:DropDownList>
+                            <asp:DropDownList ID="TerritoryName" runat="server"></asp:DropDownList>
                         </div>
                     </td>
                 </tr>
@@ -261,7 +263,7 @@
                     <td>
                         <div class="clear">
                             <label>市场领域</label>
-                            <asp:DropDownList ID="MarketSegment" runat="server" ></asp:DropDownList>
+                            <asp:DropDownList ID="MarketSegment" runat="server"></asp:DropDownList>
                         </div>
                     </td>
                 </tr>
@@ -276,10 +278,10 @@
                 <tr>
                     <td>
                         <div class="clear">
-                             <label>是否免税<span class="red">*</span></label>
+                            <label>是否免税<span class="red">*</span></label>
                             <asp:CheckBox ID="Tax_Exempt" runat="server" />
 
-                            
+
                         </div>
                     </td>
                 </tr>
@@ -300,11 +302,66 @@
                         </div>
                     </td>
                 </tr>
-
+                <tr>
+                    <td>
+                        <div class="clear">
+                            <label>父客户名称</label>
+                            <asp:TextBox ID="ParentComoanyName" runat="server"></asp:TextBox>
+                            <span onclick="chooseCompany('CompanyFindBack.aspx?id=<%=account.id %>');" style="width: 30px; float: left; margin-left: -5px;">查找</span>
+                            <input type="hidden" id="parent_company_name" name="parent_company_name" value="<%=account.parent_id %>" />
+                        </div>
+                    </td>
+                </tr>
             </table>
 
         </div>
-
+        <%--// location_list--%>
+        <div class="content clear">
+            <table style="text-align: left;" class="table table-hover">
+                <tr>
+                    <th>地址类型</th>
+                    <th>国家</th>
+                    <th>省份</th>
+                    <th>城市</th>
+                    <th>区县</th>
+                    <th>地址</th>
+                    <th>地址附加信息</th>
+                    <th>邮编</th>
+                    <th>标签</th>
+                    <th>默认地址</th>
+                    <th>操作</th>
+                </tr>
+                <% var location_cate = dic.FirstOrDefault(_ => _.Key == "").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+                    var district = dic.FirstOrDefault(_ => _.Key == "district").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+                    var country = dic.FirstOrDefault(_ => _.Key == "country").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;//district
+                %>
+                <%if (location_list != null && location_list.Count > 0)
+                    {
+                        foreach (var location in location_list)
+                        {%>
+                <tr>
+                    <% if (location_cate != null)
+                        {%>
+                    <td><%=location_cate.FirstOrDefault(_ => _.val == location.cate_id.ToString()).show %></td>
+                    <%}
+                    else
+                    { %><td></td>
+                    <%} %>
+                    <td><%=country.FirstOrDefault(_=>_.val == location.country_id.ToString()).show %></td>
+                    <td><%=district.FirstOrDefault(_=>_.val == location.province_id.ToString()).show %></td>
+                    <td><%=district.FirstOrDefault(_=>_.val == location.city_id.ToString()).show %></td>
+                    <td><%=district.FirstOrDefault(_=>_.val == location.district_id.ToString()).show %></td>
+                    <td><%=location.address %></td>
+                    <td><%=location.additional_address %></td>
+                    <td><%=location.postal_code %></td>
+                    <td><%=location.location_label %></td>
+                    <td><%=location.is_default==1?"是":"否" %></td>
+                    <td><a href="LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>">修改</a> <a href="">删除</a></td>
+                </tr>
+                <% }%>
+                <%} %>
+            </table>
+        </div>
 
         <div class="content clear">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
@@ -361,7 +418,7 @@
         </div>
 
 
-         <div class="content clear">
+        <div class="content clear">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
 
@@ -421,25 +478,25 @@
                         </div>
                     </td>
                 </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
-                            {%>
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                    {%>
 
-        <%}
-                }
-            } %>
-                   
+                <%}
+                        }
+                    } %>
             </table>
 
         </div>
 
 
 
-          <div class="content clear">
-              <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
-              </table>
+        <div class="content clear">
+            <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+            </table>
 
-          </div>    <% //子公司 预留  %>
+        </div>
+        <% //子公司 预留  %>
 
 
 
@@ -447,12 +504,13 @@
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
             </table>
 
-        </div>      <% //站点信息 预留   %>
+        </div>
+        <% //站点信息 预留   %>
 
 
         <div class="content clear">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
-                 <tr>
+                <tr>
                     <td>
                         <div class="clear">
                             <label>客户信息提示<span class="red"></span></label>
@@ -461,19 +519,19 @@
                         </div>
                     </td>
                 </tr>
-                 <tr>
+                <tr>
                     <td>
                         <div class="clear">
-                           <label>新建工单提示<span class="red"></span></label>
+                            <label>新建工单提示<span class="red"></span></label>
                             <asp:TextBox ID="New_Ticket_Alert" runat="server" Rows="5" Width="100%" Height="25%" TextMode="MultiLine" Wrap="true"
                                 Style="overflow-y: visible"></asp:TextBox>
                         </div>
                     </td>
                 </tr>
-                 <tr>
+                <tr>
                     <td>
                         <div class="clear">
-                           <label>工单信息提示<span class="red"></span></label>
+                            <label>工单信息提示<span class="red"></span></label>
                             <asp:TextBox ID="Ticket_Detail_Alert" runat="server" Rows="5" Width="100%" Height="25%" TextMode="MultiLine" Wrap="true"
                                 Style="overflow-y: visible"></asp:TextBox>
 
@@ -484,9 +542,9 @@
 
         </div>
 
-   
 
-  
+
+
     </form>
 </body>
 </html>
@@ -498,14 +556,10 @@
     $(function () {
 
         var old_company_type = $("#CompanyType").find("option:selected").text();
-        //if ($('#TaxExempt').is(':checked')) {
-        //    // 禁用
-        //    $("#TaxRegion").attr("disabled", "disabled");
 
-        //}
-        $("#TaxExempt").click(function () {
+        $("#Tax_Exempt").click(function () {
 
-            if ($('#TaxExempt').is(':checked')) {
+            if ($('#Tax_Exempt').is(':checked')) {
                 // 禁用
                 $("#TaxRegion").attr("disabled", "disabled");
 
@@ -571,7 +625,7 @@
 
         });   // 保存并关闭的事件
 
- 
+
 
         $("#close").click(function () {
             if (navigator.userAgent.indexOf("MSIE") > 0) {
@@ -592,5 +646,5 @@
             }
         });  // 直接关闭窗口
     })
-  
+
 </script>

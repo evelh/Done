@@ -6,12 +6,46 @@ using System.Threading.Tasks;
 
 namespace EMT.DoneNOW.DTO
 {
+    /// <summary>
+    /// 字典表索引表
+    /// </summary>
+    public enum GeneralTableEnum
+    {
+        REGION = 1,             // 客户区域
+        TERRITORY = 2,          // 客户地域
+        MARKET_SEGMENT = 3,
+        COMPETITOR = 4,
+        TAX_REGION = 5,
+        ACCOUNT_TYPE = 6,
+        ACTION_TYPE = 7,
+        OPPORTUNITY_STAGE = 11,
+        OPPORTUNITY_SOURCE = 12,
+        OPPORTUNITY_INTEREST_DEGREE = 13,
+        OPPORTUNITY_WIN_REASON_TYPE = 14,
+        OPPORTUNITY_LOSS_REASON_TYPE = 15,
+        OPPORTUNITY_ADVANCED_FIELD = 16,
+        OPPORTUNITY_STATUS = 17,
+        FORM_TEMPLATE_RANGE_TYPE = 18,
+        PROJECTED_CLOSED_DATE = 19,
+        FORM_TEMPLATE_TYPE = 27,
+        NAME_SUFFIX = 48,
+    }
 
     /// <summary>
     /// 字典表字典项对应的id值
     /// </summary>
     public class DicEnum
     {
+        /// <summary>
+        /// 活动种类 - 8
+        /// </summary>
+        public enum ACTIVITY_CATE
+        {
+            TODO = 30,
+            NOTE = 31,
+        }
+
+
         /// <summary>
         /// 客户告警类型 - 10
         /// </summary>
@@ -31,6 +65,23 @@ namespace EMT.DoneNOW.DTO
             DEPARTMENT = 89,    // 指定部门
             ALL = 90,           // 任何人
         }
+
+        /// <summary>
+        /// 通知大类-20
+        /// </summary>
+        public enum NOTIFY_CATE
+        {
+            CRM = 96,               // CRM
+            PROJECT = 97,           // 项目
+            SERVICE_DESK = 98,      // 服务台
+            SERVICE_BOOK = 99,      // 服务预定
+            CONTACT = 100,          // 合同
+            TIME_SHEET = 101,       // 工时表
+            INVENTORY = 102,        // 库存
+            TICKETS = 103,          // Taskfire工单
+            OTHERS = 104,           // 杂项
+        }
+
         /// <summary>
         /// 通知发送邮箱来源类型-24
         /// </summary>
@@ -111,6 +162,19 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
+        /// 查询结果列字段显示类型-66
+        /// </summary>
+        public enum QUERY_RESULT_DISPLAY_TYPE
+        {
+            RETURN_VALUE = 729,     // 查找带回返回值
+            ID = 730,               // id
+            NUM = 731,              // 数值
+            TXT = 732,              // 文本
+            PIC = 733,              // 图片
+            TOOLTIP = 734,          // title
+        }
+
+        /// <summary>
         /// 显示对象类型-67
         /// </summary>
         public enum OBJECT_TYPE
@@ -127,14 +191,15 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum OPER_LOG_OBJ_CATE
         {
-            CUSTOMER = 760,                               // 客户
-            CUSTOMER_EXTENSION_INFORMATION = 761,         // 客户扩展信息
-            CONTACTS = 762,                               // 联系人
-            CONTACTS_EXTENSION_INFORMATION = 763,         // 联系人扩展信息
-            CUSTOMER_SITE = 764,                          // 客户站点    
-            TODO = 765,                                   // 待办
-            FROM = 766,                                   // 表单模板
-            FROMOPPORTUNITY = 767,                        // 商机表单模板
+            CUSTOMER = 760,                             // 客户
+            CUSTOMER_EXTENSION_INFORMATION = 761,       // 客户扩展信息
+            CONTACTS = 762,                             // 联系人
+            CONTACTS_EXTENSION_INFORMATION = 763,       // 联系人扩展信息
+            CUSTOMER_SITE = 764,                        // 客户站点    
+            TODO = 765,                                 // 待办
+            FROM = 766,                                 // 表单模板
+            FROMOPPORTUNITY = 767,                      // 商机表单模板
+            OPPORTUNITY = 768,                          // 商机
         }
 
         /// <summary>

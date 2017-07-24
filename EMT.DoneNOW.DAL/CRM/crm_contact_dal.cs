@@ -128,5 +128,16 @@ namespace EMT.DoneNOW.DAL
                 sql += $" and id <> '{contact_id}' ";
             return FindListBySql(sql);
         }
+
+        /// <summary>
+        /// 通过联系人的引用的地址去获取到所有引用这个地址的联系人
+        /// </summary>
+        /// <param name="location_id"></param>
+        /// <returns></returns>
+        public List<crm_contact> GetContectByLocation(long location_id)
+        {
+            string sql = $"select * from crm_contact where location_id = {location_id} and delete_time = 0";
+            return FindListBySql(sql);
+        }
     }
 }

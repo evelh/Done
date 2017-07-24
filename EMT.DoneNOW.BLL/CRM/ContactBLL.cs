@@ -8,6 +8,7 @@ using EMT.DoneNOW.DAL;
 using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
+using EMT.DoneNOW.BLL.CRM;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -22,8 +23,10 @@ namespace EMT.DoneNOW.BLL
         public Dictionary<string, object> GetField()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("country", new d_country_dal().GetDictionary());                        // 国家表         
-            dic.Add("sufix", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("员工：名字后缀")));  //称谓
+
+            dic.Add("country", new DistrictBLL().GetCountryList());                        // 国家表
+            dic.Add("sufix", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.NAME_SUFFIX)));
+
             return dic;
         }
 
@@ -51,7 +54,7 @@ namespace EMT.DoneNOW.BLL
         /// 新增联系人
         /// </summary>
         /// <returns></returns>
-        public ERROR_CODE Insert(ContactAddAndUpdateDto contactAddDto, string token)
+        public ERROR_CODE Insert(ContactAddAndUpdateDto contactAddDto, long user_id)
         {
             //contact.id = _dal.GetNextIdCom();
             //contact.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -67,14 +70,8 @@ namespace EMT.DoneNOW.BLL
             // todo  当时使用客户为‘客户’时，会出现自助服务台页面，里面的数据处理？？
             // 自助台未激活时，页面其余字段不可填写，此外安全等级（security_level_id）是标准安全等级和自定义安全等级选择其中一个。
             // var user = CachedInfoBLL.GetUserInfo(token);
-            var user = new UserInfoDto()
-            {
-                id = 1,
-                email = "zhufei@test.com",
-                mobile = "10086",
-                name = "zhufei_test",
-                security_Level_id = 0
-            };
+            var user = UserInfoBLL.GetUserInfo(user_id);
+
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
 
@@ -86,7 +83,7 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.PARAMS_ERROR;                // string类型的非空校验
             }
 
-            if (contactAddDto.location.country_id == 0 || contactAddDto.location.provice_id == 0 || contactAddDto.location.city_id == 0)
+            if (contactAddDto.location.country_id == 0 || contactAddDto.location.province_id == 0 || contactAddDto.location.city_id == 0)
             {
                 return ERROR_CODE.PARAMS_ERROR;                // int类型的非空校验
             }
@@ -117,6 +114,28 @@ namespace EMT.DoneNOW.BLL
             }
             #endregion
 
+            if (contactAddDto.location != null)
+            {
+                var _location = contactAddDto.location;
+                new LocationBLL().Insert(_location, user_id);
+            }
+            // _location.id = _location.id == 0 ? _dal.GetNextIdCom() : _location.id;
+            //new crm_location_dal().Insert(_location);
+            //sys_oper_log add_location_log = new sys_oper_log()
+            //{
+            //    user_cate = "用户",
+            //    user_id = user.id,
+            //    name = "",
+            //    phone = user.mobile == null ? "" : user.mobile,
+            //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+            //    oper_object_id = _location.id,// 操作对象id
+            //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+            //    oper_description = _dal.AddValue(_location),
+            //    remark = "保存地址信息"
+            //};
+            //new sys_oper_log_dal().Insert(add_location_log);       // 插入日志
+
             #region 如果是主要联系人，首先将原主要联系人设置为普通联系人
 
             if (contactAddDto.contact.is_primary_contact == 1)  // 客户将当前联系人设置为主要联系人，此时将原有的主要联系人更改为普通联系人
@@ -146,7 +165,7 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
             #region  保存联系人信息
-            contactAddDto.contact.id = _dal.GetNextIdCom();
+            contactAddDto.contact.id = contactAddDto.contact.id==0? _dal.GetNextIdCom(): contactAddDto.contact.id;
             contactAddDto.contact.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             contactAddDto.contact.create_user_id = user.id;
             contactAddDto.contact.update_time = contactAddDto.contact.create_time;
@@ -163,7 +182,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_id = contactAddDto.contact.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.ADD,
                 oper_description = _dal.AddValue(contactAddDto.contact),
-                remark = "保存联系人信息"
+                remark = "新增联系人"
             });       // 插入日志
             #endregion
 
@@ -172,8 +191,6 @@ namespace EMT.DoneNOW.BLL
             var udf_contact_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT); // 联系人的自定义字段
             var udf_con_list = contactAddDto.udf;                                               // 传过来的联系人的自定义参数
             new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTACT, user.id, contactAddDto.contact.id, udf_contact_list, udf_con_list, OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION); // 保存成功即插入日志
-            
-
             #endregion
 
             return ERROR_CODE.SUCCESS;
@@ -207,7 +224,7 @@ namespace EMT.DoneNOW.BLL
                 return false;                // string类型的非空校验
             }
 
-            if (contact_update.location.country_id == 0 || contact_update.location.provice_id == 0 || contact_update.location.city_id == 0)
+            if (contact_update.location.country_id == 0 || contact_update.location.province_id == 0 || contact_update.location.city_id == 0)
             {
                 return false;                // int类型的非空校验
             }
@@ -383,7 +400,16 @@ namespace EMT.DoneNOW.BLL
             return new crm_contact_dal().GetContactByStatus(account_id, is_active);
         }
 
-
+        /// <summary>
+        /// 获取到用户的默认地址
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <returns></returns>
+        public crm_contact GetDefaultByAccountId(long account_id)
+        {
+            
+            return _dal.FindSignleBySql<crm_contact>($"select * from crm_contact where account_id = {account_id} and is_primary_contact = 1 and delete_time = 0");
+        }
 
 
 

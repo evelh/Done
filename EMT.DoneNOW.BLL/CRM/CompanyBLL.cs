@@ -9,6 +9,8 @@ using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
 using System.Text.RegularExpressions;
+using EMT.DoneNOW.BLL.CRM;
+
 
 namespace EMT.DoneNOW.BLL
 {
@@ -24,16 +26,18 @@ namespace EMT.DoneNOW.BLL
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("classification", new d_account_classification_dal().GetDictionary());    // 分类类别
-            dic.Add("country", new d_country_dal().GetDictionary());                          // 国家表
+            dic.Add("country", new DistrictBLL().GetCountryList());                          // 国家表
+            //dic.Add("addressdistrict", new d_district_dal().GetDictionary());                       // 地址表（省市县区）
             dic.Add("sys_resource", new sys_resource_dal().GetDictionary());                // 客户经理
-            dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("竞争对手")));          // 竞争对手
-            dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行业")));    // 行业
-            dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行政区")));                // 行政区
-            dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("销售区")));              // 销售区域
-            dic.Add("company_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("客户类型")));              // 客户类型
-            dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("税区")));              // 税区
-            dic.Add("sufix", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("员工：名字后缀")));              // 
-            dic.Add("action_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("活动类型")));
+            dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.COMPETITOR)));          // 竞争对手
+            dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.MARKET_SEGMENT)));    // 行业
+            //dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行政区")));                // 行政区
+            dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TERRITORY)));              // 销售区域
+            dic.Add("company_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACCOUNT_TYPE)));              // 客户类型
+            dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));              // 税区
+            dic.Add("sufix", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.NAME_SUFFIX)));              // 名字后缀
+            dic.Add("action_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACTION_TYPE)));        // 活动类型
+
             return dic;
         }
 
@@ -43,7 +47,8 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public crm_account GetCompany(long id)
         {
-            return _dal.FindById(id);
+            string sql = $"select * from crm_account where id = {id} and delete_time = 0 ";
+            return _dal.FindSignleBySql<crm_account>(sql);
         }
 
         /// <summary>
@@ -74,15 +79,27 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 查找带回取到所有客户，修改的时候去掉自己
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<crm_account> GetAccountByFindBack(long? id)
+        {
+            return _dal.GetAccountByFindBack(id);
+        }
+
+
+
+        /// <summary>
         /// 新增客户
         /// </summary>
         /// <returns></returns>
-        public ERROR_CODE Insert(CompanyAddDto param, string token)
+        public ERROR_CODE Insert(CompanyAddDto param, long user_id)
         {
-            if (string.IsNullOrEmpty(param.general.company_name) || string.IsNullOrEmpty(param.general.phone) || string.IsNullOrEmpty(param.location.address))  // string必填项校验
-                return ERROR_CODE.PARAMS_ERROR;       // 返回参数丢失
+            if (string.IsNullOrEmpty(param.general.company_name) || string.IsNullOrEmpty(param.general.phone) || string.IsNullOrEmpty(param.location.address))                     // string必填项校验
+                return ERROR_CODE.PARAMS_ERROR;             // 返回参数丢失
             if (param.location.country_id == 0 || param.location.province_id == 0 || param.location.city_id == 0)
-                return ERROR_CODE.PARAMS_ERROR;         // int 必填项校验
+                return ERROR_CODE.PARAMS_ERROR;             // int 必填项校验
             if (_dal.ExistAccountName(param.general.company_name.Trim()))    // 客户名称与客户电话的唯一性校验
                 return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;   // 返回客户名已存在   
             if (_dal.ExistAccountPhone(param.general.phone))
@@ -98,17 +115,8 @@ namespace EMT.DoneNOW.BLL
             if (compareAccountName != null && compareAccountName.Count > 0)
                 return ERROR_CODE.ERROR;
 
+            var user = UserInfoBLL.GetUserInfo(user_id);
 
-            // var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
-            // 测试用户
-            var user = new UserInfoDto()
-            {
-                id = 1,
-                email = "1zhufei@test.com",
-                mobile = "10086",
-                name = "zhufei_test",
-                security_Level_id = 0
-            };
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;           // 查询不到用户，用户丢失
 
@@ -116,7 +124,7 @@ namespace EMT.DoneNOW.BLL
             crm_account _account = new crm_account()
             {
                 id = _dal.GetNextIdCom(),
-                account_id = _dal.GetNextIdCom(), // todo account_id 与 id 的区别 
+                // account_id = _dal.GetNextIdCom(), // todo account_id 与 id 的区别 
                 // external_id = "",   //   外部关联用ID【预留】  
                 create_user_id = user.id,
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -170,7 +178,7 @@ namespace EMT.DoneNOW.BLL
                 address = param.location.address,
                 district_id = param.location.district_id,
                 city_id = param.location.city_id,
-                provice_id = param.location.province_id,
+                province_id = param.location.province_id,
                 postal_code = param.location.postal_code,
                 country_id = param.location.country_id,
                 additional_address = param.location.additional_address == null ? "" : param.location.additional_address,
@@ -180,22 +188,28 @@ namespace EMT.DoneNOW.BLL
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
             };
-            new crm_location_dal().Insert(_location);
-            sys_oper_log add_location_log = new sys_oper_log()
-            {
-                user_cate = "用户",
-                user_id = user.id,
-                name = "",
-                phone = user.mobile == null ? "" : user.mobile,
-                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                oper_object_id = _location.id,// 操作对象id
-                oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                oper_description = _dal.AddValue(_location),
-                remark = "保存地址信息"
-            };
-            new sys_oper_log_dal().Insert(add_location_log);       // 插入日志
+            new LocationBLL().Insert(_location, user_id);
+
+
+            //new crm_location_dal().Insert(_location);
+            //sys_oper_log add_location_log = new sys_oper_log()
+            //{
+            //    user_cate = "用户",
+            //    user_id = user.id,
+            //    name = "",
+            //    phone = user.mobile == null ? "" : user.mobile,
+            //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+            //    oper_object_id = _location.id,// 操作对象id
+            //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+            //    oper_description = _dal.AddValue(_location),
+            //    remark = "保存地址信息"
+            //};
+            //new sys_oper_log_dal().Insert(add_location_log);       // 插入日志
             #endregion
+
+
+
 
             #region 2.保存联系人
             // 联系人的姓和名只输入一个时，不创建联系人  
@@ -224,21 +238,34 @@ namespace EMT.DoneNOW.BLL
                     email = param.contact.email,
                     location_id = _location.id,
                 };
-                new crm_contact_dal().Insert(_contact);
-                var add_contact_log = new sys_oper_log()
+
+
+                var insertContactParam = new ContactAddAndUpdateDto()
                 {
-                    user_cate = "用户",
-                    user_id = user.id,
-                    name = "",
-                    phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
-                    oper_object_id = _contact.id,// 操作对象id
-                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                    oper_description = _dal.AddValue(_contact),
-                    remark = "保存联系人信息"
-                };          // 创建日志
-                new sys_oper_log_dal().Insert(add_contact_log);       // 插入日志
+                    company_name = _account.name,
+                    contact = _contact,
+                    //location = _location,  // 可能出现不添加联系人的情乱，地址单独插入
+                    udf = param.contact.udf
+                };  // 调用联系人新增的方法去新增联系人
+                new ContactBLL().Insert(insertContactParam, user.id);
+
+
+
+                //new crm_contact_dal().Insert(_contact);
+                //var add_contact_log = new sys_oper_log()
+                //{
+                //    user_cate = "用户",
+                //    user_id = user.id,
+                //    name = user.name,
+                //    phone = user.mobile == null ? "" : user.mobile,
+                //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
+                //    oper_object_id = _contact.id,// 操作对象id
+                //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                //    oper_description = _dal.AddValue(_contact),
+                //    remark = "保存联系人信息"
+                //};          // 创建日志
+                //new sys_oper_log_dal().Insert(add_contact_log);       // 插入日志
             }
 
             #endregion
@@ -288,45 +315,88 @@ namespace EMT.DoneNOW.BLL
 
 
 
-            #region 7.保存记录信息
+            #region 7.保存备注信息
             if (param.note.note_action_type != 0)
             {
                 if (param.note.note_end_time != null && param.note.note_start_time != null && !string.IsNullOrEmpty(param.note.note_description))
                 {
-                    // 进行非空校验之后，创建备注对象，并将日志插入表中 
-                    com_note _note = new com_note()
+                    com_activity note_activity = new com_activity()
                     {
                         id = _dal.GetNextIdCom(),
+                        cate_id = (int)ACTIVITY_CATE.NOTE,
                         account_id = _account.id,
-                        // contact_id = _contact == null ? 0 : _contact.id,
+                        // contact_id = null,
+                        // resource_id = null,
                         object_id = _account.id,
-                        object_type_id = (int)OBJECT_TYPE.CUSTOMER,
+                        object_type_id = (int)OBJECT_TYPE.CUSTOMER, // todo 待确认
                         action_type_id = param.note.note_action_type,
                         start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.note.note_start_time)),
                         end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.note.note_end_time)),
                         description = param.note.note_description,
+                        // contract_id = null,
+                        // opportunity_id = null,
+                        // ticket_id = null,
+                        // status_id = null,
+                        // complete_time = null,
+                        // complete_description = null,
+                        // parent_id = null,
                         create_user_id = user.id,
                         create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         update_user_id = user.id,
                         update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         delete_time = 0,
                     };
-                    new com_note_dal().Insert(_note);
-                    sys_oper_log add_note_log = new sys_oper_log()
+                    new com_activity_dal().Insert(note_activity);
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
                     {
                         user_cate = "用户",
                         user_id = user.id,
-                        name = "",
+                        name = user.name,
                         phone = user.mobile == null ? "" : user.mobile,
                         oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                        oper_object_id = _note.id,// 操作对象id
+                        oper_object_id = note_activity.id,// 操作对象id
                         oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                        oper_description = _dal.AddValue(_note),
-                        remark = "保存记录信息"
+                        oper_description = _dal.AddValue(note_activity),
+                        remark = "保存备注信息"
 
-                    };          // 创建日志
-                    new sys_oper_log_dal().Insert(add_note_log);       // 插入日志
+                    });          // 创建日志);
+
+
+                    // 进行非空校验之后，创建备注对象，并将日志插入表中 
+                    //com_note _note = new com_note()
+                    //{
+                    //    id = _dal.GetNextIdCom(),
+                    //    account_id = _account.id,
+                    //    // contact_id = _contact == null ? 0 : _contact.id,
+                    //    object_id = _account.id,
+                    //    object_type_id = (int)OBJECT_TYPE.CUSTOMER,
+                    //    action_type_id = param.note.note_action_type,
+                    //    start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.note.note_start_time)),
+                    //    end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.note.note_end_time)),
+                    //    description = param.note.note_description,
+                    //    create_user_id = user.id,
+                    //    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    //    update_user_id = user.id,
+                    //    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    //    delete_time = 0,
+                    //};
+                    //new com_note_dal().Insert(_note);
+                    //sys_oper_log add_note_log = new sys_oper_log()
+                    //{
+                    //    user_cate = "用户",
+                    //    user_id = user.id,
+                    //    name = user.name,
+                    //    phone = user.mobile == null ? "" : user.mobile,
+                    //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                    //    oper_object_id = _note.id,// 操作对象id
+                    //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                    //    oper_description = _dal.AddValue(_note),
+                    //    remark = "保存记录信息"
+
+                    //};          // 创建日志
+                    //new sys_oper_log_dal().Insert(add_note_log);       // 插入日志
                 }
 
             }
@@ -338,26 +408,34 @@ namespace EMT.DoneNOW.BLL
             {
                 if (param.todo.assigned_to != 0 && param.todo.todo_start_time != null && param.todo.todo_end_time != null && !string.IsNullOrEmpty(param.todo.todo_description))
                 {
-                    com_todo _todo = new com_todo()
+                    com_activity todo_activity = new com_activity()
                     {
                         id = _dal.GetNextIdCom(),
+                        cate_id = (int)ACTIVITY_CATE.TODO,
                         account_id = _account.id,
-                        //contact_id = _contact == null ? 0 : _contact.id,
-                        resource_id = user.id,  // 负责人 id
-                        action_type_id = param.todo.todo_action_type,
+                        // contact_id = null,
+                        resource_id = param.todo.assigned_to,
                         object_id = _account.id,
-                        object_type_id = (int)OBJECT_TYPE.CUSTOMER,
-                        start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.todo.todo_start_time)),
-                        end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.todo.todo_end_time)),
+                        object_type_id = (int)OBJECT_TYPE.CUSTOMER, // todo 待确认
+                        action_type_id = param.todo.todo_action_type,
+                        start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.note.note_start_time)),
+                        end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.note.note_end_time)),
                         description = param.todo.todo_description,
+                        // contract_id = null,
+                        // opportunity_id = null,
+                        // ticket_id = null,
+                        // status_id = null,
+                        // complete_time = null,
+                        // complete_description = null,
+                        // parent_id = null,
                         create_user_id = user.id,
                         create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         update_user_id = user.id,
                         update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         delete_time = 0,
                     };
-                    new com_todo_dal().Insert(_todo);
-                    var add_todo_log = new sys_oper_log()
+                    new com_activity_dal().Insert(todo_activity);
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
                     {
                         user_cate = "用户",
                         user_id = user.id,
@@ -365,12 +443,48 @@ namespace EMT.DoneNOW.BLL
                         phone = user.mobile == null ? "" : user.mobile,
                         oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                        oper_object_id = _todo.id,// 操作对象id
+                        oper_object_id = todo_activity.id,// 操作对象id
                         oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                        oper_description = _dal.AddValue(_todo),
-                        remark = "保存待办信息"
-                    };
-                    new sys_oper_log_dal().Insert(add_todo_log);
+                        oper_description = _dal.AddValue(todo_activity),
+                        remark = "保存备注信息"
+
+                    });
+
+
+
+                    //com_todo _todo = new com_todo()
+                    //{
+                    //    id = _dal.GetNextIdCom(),
+                    //    account_id = _account.id,
+                    //    //contact_id = _contact == null ? 0 : _contact.id,
+                    //    resource_id = user.id,  // 负责人 id
+                    //    action_type_id = param.todo.todo_action_type,
+                    //    object_id = _account.id,
+                    //    object_type_id = (int)OBJECT_TYPE.CUSTOMER,
+                    //    start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.todo.todo_start_time)),
+                    //    end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(Convert.ToDateTime(param.todo.todo_end_time)),
+                    //    description = param.todo.todo_description,
+                    //    create_user_id = user.id,
+                    //    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    //    update_user_id = user.id,
+                    //    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    //    delete_time = 0,
+                    //};
+                    //new com_todo_dal().Insert(_todo);
+                    //var add_todo_log = new sys_oper_log()
+                    //{
+                    //    user_cate = "用户",
+                    //    user_id = user.id,
+                    //    name = user.name,
+                    //    phone = user.mobile == null ? "" : user.mobile,
+                    //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                    //    oper_object_id = _todo.id,// 操作对象id
+                    //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                    //    oper_description = _dal.AddValue(_todo),
+                    //    remark = "保存待办信息"
+                    //};
+                    //new sys_oper_log_dal().Insert(add_todo_log);
                 }
             }
             #endregion
@@ -435,7 +549,7 @@ namespace EMT.DoneNOW.BLL
         /// 更新客户信息
         /// </summary>
         /// <returns></returns>
-        public ERROR_CODE Update(CompanyUpdateDto param, string token)
+        public ERROR_CODE Update(CompanyUpdateDto param, long user_id)
         {
 
             // 对必填的字段进行非空验证
@@ -456,14 +570,18 @@ namespace EMT.DoneNOW.BLL
 
 
             //var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
-            var user = new UserInfoDto()
-            {
-                id = 1,
-                email = "zhufei@test.com",
-                mobile = "10086",
-                name = "zhufei_test",
-                security_Level_id = 0
-            };
+            //var user = new UserInfoDto()
+            //{
+            //    id = 1,
+            //    email = "zhufei@test.com",
+            //    mobile = "10086",
+            //    name = "zhufei_test",
+            //    security_Level_id = 0
+            //};
+
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+                return ERROR_CODE.USER_NOT_FIND;           // 查询不到用户，用户丢失
 
             #region 1.保存客户
             crm_account old_company_value = GetCompany(param.general_update.id);
@@ -476,7 +594,8 @@ namespace EMT.DoneNOW.BLL
             crm_account new_company_value = new crm_account()
             {
                 id = old_company_value.id,
-                account_id = old_company_value.account_id,
+                oid = old_company_value.oid,
+              
                 update_user_id = user.id,
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 name = param.general_update.company_name,
@@ -491,10 +610,9 @@ namespace EMT.DoneNOW.BLL
                 alternate_phone1 = param.general_update.alternatePhone1,
                 alternate_phone2 = param.general_update.alternatePhone2,
                 last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                // parent_id = param.general_update.parent_company_name ,
                 type_id = param.general_update.companyType,
                 classification_id = param.general_update.classification == 0 ? null : param.general_update.classification,
-                tax_region_id = param.general_update.taxRegion,
+                tax_region_id = param.general_update.taxRegion == 0 ? null : param.general_update.taxRegion,
                 tax_identification = param.general_update.taxId,
                 resource_id = param.general_update.accountManger,
                 is_optout_survey = param.general_update.is_optout_survey,
@@ -502,12 +620,13 @@ namespace EMT.DoneNOW.BLL
                 stock_symbol = param.additional_info.stock_symbol,
                 stock_market = param.additional_info.stock_market,
                 sic_code = param.additional_info.sic_code,
-                asset_value = param.additional_info.asset_value == "" ? 0 : Convert.ToDecimal(param.additional_info.asset_value),
                 weibo_url = param.additional_info.weibo_url,
                 wechat_mp_subscription = param.additional_info.wechat_mp_subscription,
                 wechat_mp_service = param.additional_info.wechat_mp_service,
                 create_user_id = old_company_value.create_user_id,
                 create_time = old_company_value.create_time,
+                //parent_id =  == null ? null : param.general_update.parent_company_name,
+                // asset_value = param.additional_info.asset_value == "" ? null: Convert.ToDecimal(param.additional_info.asset_value),
 
                 #region 有没有必要写的字段？ 
                 alternate_phone1_basic = old_company_value.alternate_phone1_basic,
@@ -533,6 +652,19 @@ namespace EMT.DoneNOW.BLL
                 #endregion
 
             };
+            if (!string.IsNullOrEmpty(param.general_update.parent_company_name))
+            {
+                new_company_value.parent_id = Convert.ToInt64(new_company_value);
+            }
+
+            if (!string.IsNullOrEmpty(param.additional_info.asset_value))
+            {
+
+                new_company_value.asset_value = Convert.ToDecimal(param.additional_info.asset_value);
+            }
+
+
+
             if (_dal.Update(new_company_value)) // 如果修改成功，则添加日志
             {
                 new sys_oper_log_dal().Insert(new sys_oper_log()
@@ -784,7 +916,7 @@ namespace EMT.DoneNOW.BLL
                 address = param.general_update.address,
                 city_id = param.general_update.city_id,
                 country_id = param.general_update.country_id,
-                provice_id = param.general_update.province_id,
+                province_id = param.general_update.province_id,
                 district_id = param.general_update.district_id,
                 additional_address = param.general_update.additionalAddress,
                 is_default = old_location.is_default,
@@ -801,28 +933,30 @@ namespace EMT.DoneNOW.BLL
                 location_label = old_location.location_label,
                 town_id = old_location.town_id,
             };   // 生成新的地址的实体类
+            new LocationBLL().Update(new_location, user_id);
 
-            if (!old_location.Equals(new_location))   // 代表用户更改了地址
-            {
-                new_location.update_user_id = user.id;
-                new_location.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                // 修改客户显示默认地址，默认地址不能主动移除
-                // new crm_location_dal().UpdateDefaultLocation(new_company_value.id, user); // 首先将原来的默认地址取消  操作日志在方法内插入
-                new crm_location_dal().Update(new_location);             // 更改地址信息
-                new sys_oper_log_dal().Insert(new sys_oper_log()
-                {
-                    user_cate = "用户",
-                    user_id = user.id,
-                    name = user.name,
-                    phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                    oper_object_id = new_location.id,
-                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                    oper_description = _dal.CompareValue(old_location, new_location),
-                    remark = "修改客户地址",
-                });    // 插入更改日志
-            }
+            #region 备用代码
+            //if (!old_location.Equals(new_location))   // 代表用户更改了地址
+            //{
+            //    new_location.update_user_id = user.id;
+            //    new_location.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            //    // 修改客户显示默认地址，默认地址不能主动移除
+            //    // new crm_location_dal().UpdateDefaultLocation(new_company_value.id, user); // 首先将原来的默认地址取消  操作日志在方法内插入
+            //    new crm_location_dal().Update(new_location);             // 更改地址信息
+            //    new sys_oper_log_dal().Insert(new sys_oper_log()
+            //    {
+            //        user_cate = "用户",
+            //        user_id = user.id,
+            //        name = user.name,
+            //        phone = user.mobile == null ? "" : user.mobile,
+            //        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+            //        oper_object_id = new_location.id,
+            //        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+            //        oper_description = _dal.CompareValue(old_location, new_location),
+            //        remark = "修改客户地址",
+            //    });    // 插入更改日志
+            //}
             //else
             //{
             //    new crm_location_dal().Update(new_location);             // 更改地址信息
@@ -840,6 +974,7 @@ namespace EMT.DoneNOW.BLL
             //        remark = "修改客户地址",
             //    });    // 插入更改日志
             //}
+            #endregion
 
             #endregion
 
@@ -1066,7 +1201,7 @@ namespace EMT.DoneNOW.BLL
         {
             // var nameList = new List<string>() { "股份", "有限", "信息", "科技", "公司", "技术", "责任", "集团", "贸易", "工贸", "工程", "网络", "实业", "营业部", "事业部", "办事处", "分公司", "管理" };  // 后缀名称处理   todo—— 前缀名称处理
             // 客户：名称后缀
-            var List = new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("客户：名称后缀"));
+            var List = new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.NAME_SUFFIX));
             var nameList = List.Select(_ => _.show);
             var areaList = new List<string> { "北京", "上海", "广州", "深圳", "杭州" };
 
@@ -1200,7 +1335,7 @@ namespace EMT.DoneNOW.BLL
             var notify_email = new com_notify_email()
             {
                 id = 1,
-                cate_id = (int)FROM_EMAIL_TYPE.FROM_EMAIL,
+                cate_id = (int)NOTIFY_CATE.CRM,
                 event_id = 1,             // todo
                 to_email = param.notice.contacts,                  // 接受人地址？？联系人地址   
                 notify_tmpl_id = param.notice.notification_template,

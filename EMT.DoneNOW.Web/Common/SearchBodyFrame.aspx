@@ -22,13 +22,13 @@
             <div id="conditions"></div>
         </div>
         <div class="contenttitle">
-				<ul class="clear">
-					<li><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
-					<li><i style="background-image: url(../Images/new.png);"></i></li>
-					<li><i style="background-image: url(../Images/new.png);"></i></li>
-					<li><i style="background-image: url(../Images/new.png);"></i></li>
-				</ul>
-			</div>
+			<ul class="clear">
+				<li><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
+				<li><i style="background-image: url(../Images/new.png);"></i></li>
+				<li><i style="background-image: url(../Images/new.png);"></i></li>
+				<li><i style="background-image: url(../Images/new.png);"></i></li>
+			</ul>
+		</div>
         <%if (queryResult != null) { %>
 			<div class="searchcontent" id="searchcontent">
 				<table border="" cellspacing="" cellpadding="">
@@ -52,8 +52,14 @@
                         <%} %>
 						<th style="background:red url(../Images/data-selector.png) no-repeat center;display:none;">11</th>
 					</tr>
-                    <%foreach (var rslt in queryResult.result) { %>
-					<tr title="右键显示操作菜单" onclick="OpenNewWindow(<%=rslt["id"] %>)">
+                    <%
+                        var idPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID);
+                        foreach (var rslt in queryResult.result) {
+                            string id = "0";
+                            if (idPara != null)
+                                id = rslt[idPara.name].ToString();
+                            %>
+					<tr title="右键显示操作菜单" oncontextmenu="OpenConMenu(event,<%=id %>)">
                         <%foreach (var para in resultPara) { %>
 						<td><%=rslt[para.name] %></td>
                         <%} %>
@@ -63,7 +69,32 @@
 			</div>
         <%} %>
     </form>
+    <div id="menu">
+		<ul>
+            <%foreach (var menu in contextMenu) { %>
+            <li onclick="<%=menu.click_function %>"><%=menu.text %>
+                <%if (menu.submenu != null) { %>
+                <ul>
+                    <%foreach (var submenu in menu.submenu) { %>
+                    <li onclick="<%=submenu.click_function %>"><%=submenu.text %></li>
+                    <%} %>
+			    </ul>
+            <%} %>
+            </li>
+            <%} %>
+		</ul>
+	</div>
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/SearchBody.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        <% if (queryPage.Equals("客户查询")){ %>
+        function EditCompany() {
+            OpenWindow("../Company/EditCompany.aspx?id=" + entityid);
+        }
+        function AddCompany() {
+            OpenWindow("../Company/AddCompany.aspx?id=" + entityid);
+        }
+        <%}%>
+    </script>
 </body>
 </html>

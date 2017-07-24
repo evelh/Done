@@ -304,7 +304,7 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
-        /// 获取用户已选择的查询结果列信息，保留id
+        /// 获取用户已选择的查询结果列信息
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="queryPageName">查询页面名称</param>
@@ -323,7 +323,7 @@ namespace EMT.DoneNOW.BLL
             }
 
             // 获取显示结果列信息并按顺序填充
-            var list = new d_query_result_dal().FindListBySql($"SELECT * FROM d_query_result WHERE id IN ({queryUser.query_result_ids}) AND query_type_id={queryType.id} AND is_visible=1");
+            var list = new d_query_result_dal().FindListBySql($"SELECT * FROM d_query_result WHERE id IN ({queryUser.query_result_ids}) AND query_type_id={queryType.id}");
             string[] ids = queryUser.query_result_ids.Split(',');
             for (int i = 0; i < ids.Length; ++i)
             {
@@ -346,7 +346,7 @@ namespace EMT.DoneNOW.BLL
 
         #region 查询结果选择功能
         /// <summary>
-        /// 获取用户已选择的结果显示列，过滤id （查询结果选择器用）
+        /// 获取用户已选择的结果显示列 （查询结果选择器用）
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="queryPageName"></param>
@@ -357,8 +357,6 @@ namespace EMT.DoneNOW.BLL
             List<DictionaryEntryDto> result = new List<DictionaryEntryDto>();
             foreach (var qr in list)
             {
-                if (qr.name.Equals("id"))   // 过滤id
-                    continue;
                 result.Add(new DictionaryEntryDto(qr.id.ToString(), qr.name));
             }
 
@@ -411,12 +409,14 @@ namespace EMT.DoneNOW.BLL
             if (queryType == null)
                 return;
 
+            /*
             // 向查询结果列添加id列
             string sql = $"SELECT * FROM d_query_result WHERE col_comment='id' AND query_type_id={queryType.id}";
             d_query_result rsltParaId = new d_query_result_dal().FindSignleBySql<d_query_result>(sql);
             if (rsltParaId == null)
                 throw new Exception($"query_type_id:{queryType.id}数据库未添加d_query_result记录:id");
             ids += "," + rsltParaId.id;
+            */
 
             var dal = new sys_query_type_user_dal();
             sys_query_type_user queryUser = dal.FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id={userId} AND query_type_id={queryType.id}");
@@ -455,7 +455,7 @@ namespace EMT.DoneNOW.BLL
                 return null;
             if (list == null)
                 list = new d_query_type_dal().FindAll();
-            return list.First(q => q.name.Equals(queryPageName));
+            return list.FirstOrDefault(q => q.name.Equals(queryPageName));
         }
     }
 }

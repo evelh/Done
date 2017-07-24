@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using EMT.DoneNOW.DTO;
 using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.BLL.CRM;
+using EMT.DoneNOW.Core;
 
 namespace EMT.DoneNOW.Web
 {
@@ -15,23 +16,28 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 客户自定义字段
         /// </summary>
-        protected List<UserDefinedFieldDto> company_udfList = null;
-        protected List<UserDefinedFieldValue> company_udfValueList = null;
+        protected List<UserDefinedFieldDto> company_udfList = null;      
+        protected List<UserDefinedFieldValue> company_udfValueList = null; //company
+        protected crm_account account = null; 
+        protected List<crm_location> location_list = null;   // 用户的所有地址
+        protected Dictionary<string, object> dic = null;        
         protected void Page_Load(object sender, EventArgs e)
         {
             var company_id = Convert.ToInt64(Request.QueryString["id"]);
             company_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);
             company_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.COMPANY, company_id, company_udfList);
+            account = new CompanyBLL().GetCompany(company_id);
+            location_list = new LocationBLL().GetLocationByCompany(company_id);
+      
             if (!IsPostBack)
             {
-
                 // var company_id = Convert.ToInt64(Request.QueryString["id"]);
-                var company = new CompanyBLL().GetCompany(company_id);
-                if (company != null)
+              
+                if (account != null)
                 {
-                    
+                  
                     #region 为下拉框获取数据源
-                    var dic = new CompanyBLL().GetField();
+                     dic = new CompanyBLL().GetField();
 
                     // 分类类别
                     classification.DataTextField = "show";
@@ -78,36 +84,41 @@ namespace EMT.DoneNOW.Web
                     Competitor.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                     #endregion
 
-                    company_name.Text = company.name;
-                    isactive.Checked = company.is_active == 1;
-                    CompanyNumber.Text = company.no;
-                    Phone.Text = company.phone;
-                    AlternatePhone1.Text = company.alternate_phone1;
-                    AlternatePhone2.Text = company.alternate_phone2;
-                    Fax.Text = company.fax;
-                    WebSite.Text = company.web_site;
-                    is_optoutSurvey.Checked = company.is_optout_survey == 1;
-                    mileage.Text = company.mileage == null ? "" : company.mileage.ToString();// todo decmail? 保留两位小数点？？
-                    CompanyType.SelectedValue = company.type_id == null ? "0" : company.type_id.ToString();
-                    AccountManger.SelectedValue = company.resource_id.ToString();
-                    TerritoryName.SelectedValue = company.territory_id == null ? "0" : company.territory_id.ToString();
-                    MarketSegment.SelectedValue = company.market_segment_id == null ? "0" : company.market_segment_id.ToString();
-                    Competitor.SelectedValue = company.competitor_id == null ? "0" : company.competitor_id.ToString();
-                    Tax_Exempt.Checked = company.is_tax_exempt == 1;
-                    TaxRegion.SelectedValue = company.tax_region_id == null ? "0" : company.tax_region_id.ToString();
-                    classification.SelectedValue=company.classification_id == null ? "0" : company.classification_id.ToString();
+                    company_name.Text = account.name;
+                    isactive.Checked = account.is_active == 1;
+                    CompanyNumber.Text = account.no;
+                    Phone.Text = account.phone;
+                    AlternatePhone1.Text = account.alternate_phone1;
+                    AlternatePhone2.Text = account.alternate_phone2;
+                    Fax.Text = account.fax;
+                    WebSite.Text = account.web_site;
+                    is_optoutSurvey.Checked = account.is_optout_survey == 1;
+                    mileage.Text = account.mileage == null ? "" : account.mileage.ToString();// todo decmail? 保留两位小数点？？
+                    CompanyType.SelectedValue = account.type_id == null ? "0" : account.type_id.ToString();
+                    AccountManger.SelectedValue = account.resource_id.ToString();
+                    TerritoryName.SelectedValue = account.territory_id == null ? "0" : account.territory_id.ToString();
+                    MarketSegment.SelectedValue = account.market_segment_id == null ? "0" : account.market_segment_id.ToString();
+                    Competitor.SelectedValue = account.competitor_id == null ? "0" : account.competitor_id.ToString();
+                    Tax_Exempt.Checked = account.is_tax_exempt == 1;
+                    TaxRegion.SelectedValue = account.tax_region_id == null ? "0" : account.tax_region_id.ToString();
+                    classification.SelectedValue=account.classification_id == null ? "0" : account.classification_id.ToString();
                     if (Tax_Exempt.Checked)
                     {
                         TaxRegion.Enabled = true;
                     }
-                    TaxId.Text = company.tax_identification;
-                    // ParentComoanyName.Text = company.parent_id;  父客户
+                    TaxId.Text = account.tax_identification;
+                    if (account.parent_id != null)
+                    {
+                        var parCompany = new CompanyBLL().GetCompany((long)this.account.parent_id);
+                        ParentComoanyName.Text = parCompany == null ? "" : parCompany.name;  //父客户
+                    }
+                    asset_value.Text = account.asset_value.ToString();
 
-                    var location = new LocationBLL().GetLocationByAccountId(company.id);
+                    var location = new LocationBLL().GetLocationByAccountId(account.id);
                     if (location != null)        // 如果该客户的地址是默认地址，不可更改为非默认，只能通过添加别的地址设置为默认这种方式去更改默认地址
                     {
                         country_id.SelectedValue = location.country_id == null ? "0" : location.country_id.ToString();
-                        province_id.SelectedValue = location.provice_id.ToString();
+                        province_id.SelectedValue = location.province_id.ToString();
                         city_id.SelectedValue = location.city_id.ToString();
                         district_id.SelectedValue = location.district_id == null ? "0" : location.district_id.ToString();
                         address.Text = location.address;
@@ -119,8 +130,7 @@ namespace EMT.DoneNOW.Web
                     Response.Write("<script>alert('客户不存在！');</script>");
                     Response.Redirect("index.aspx");
                 }
-            }
-           
+            }           
         }
 
         /// <summary>
@@ -157,7 +167,7 @@ namespace EMT.DoneNOW.Web
             }
             //try
             //{
-            var result = new CompanyBLL().Update(param, "");
+            var result = new CompanyBLL().Update(param, GetLoginUserId());
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
                 Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
@@ -181,7 +191,7 @@ namespace EMT.DoneNOW.Web
             //}
             else if (result == ERROR_CODE.SUCCESS)                    // 修改用户成功
             {
-                Response.Write("<script>alert('修改客户成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                Response.Write("<script>alert('修改客户成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
             }
             //}
             //catch (Exception)
@@ -200,16 +210,7 @@ namespace EMT.DoneNOW.Web
         protected void delete_Click(object sender, EventArgs e)
         {
             var id = Convert.ToInt64(Request.QueryString["id"]);
-            var result = new CompanyBLL().DeleteCompany(id, "");
-            if (result)
-            {
-                Response.Write("<script>alert('删除客户成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
-                // self.opener.location.reload();
-            }
-            else
-            {
-                Response.Write("<script>alert('删除客户失败！');</script>");
-            }
+            Response.Redirect("deletecompany.aspx?id="+id);
         }
     }
 }

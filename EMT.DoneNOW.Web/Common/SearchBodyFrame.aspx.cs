@@ -16,6 +16,7 @@ namespace EMT.DoneNOW.Web
         protected string addBtn;        // 根据不同查询页得到的新增按钮名
         protected QueryResultDto queryResult = null;            // 查询结果数据
         protected List<QueryResultParaDto> resultPara = null;   // 查询结果列信息
+        protected List<PageContextMenuDto> contextMenu = null;  // 右键菜单信息
         protected string flag;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,6 +27,8 @@ namespace EMT.DoneNOW.Web
                 if (string.IsNullOrEmpty(queryPage))
                     queryPage = "客户查询";
             }
+            InitData();
+            GetMenus();
             flag = HttpContext.Current.Request.QueryString["page"];
             if (flag != null && flag.Equals("1"))
                 QueryData();
@@ -42,6 +45,9 @@ namespace EMT.DoneNOW.Web
             {
                 case "客户查询":
                     addBtn = "新增客户";
+                    break;
+                case "联系人查询":
+                    addBtn = "新增联系人";
                     break;
                 default:
                     addBtn = "新增客户";
@@ -118,6 +124,54 @@ namespace EMT.DoneNOW.Web
                 queryPara.page_size = 0;
 
                 queryResult = bll.GetResult(GetLoginUserId(), queryPara);
+            }
+        }
+
+        /// <summary>
+        /// 根据查询页面类型获取右键菜单
+        /// </summary>
+        private void GetMenus()
+        {
+            contextMenu = new List<PageContextMenuDto>();
+            Dictionary<string, object> dics = null;
+            switch(queryPage)
+            {
+                case "客户查询":
+                    dics = new CompanyBLL().GetField();
+                    contextMenu.Add(new PageContextMenuDto { text = "修改客户", click_function = "EditCompany()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增记录", click_function = "AddCompany()" });
+
+                    PageContextMenuDto classcate = new PageContextMenuDto { text = "设置类别", click_function = "" };
+                    // 设置公司类别子菜单
+                    var classification = dics["classification"] as List<DictionaryEntryDto>;
+                    if (classification != null)
+                    {
+                        List<PageContextMenuDto> classsub = new List<PageContextMenuDto>();
+                        foreach(var c in classification)
+                        {
+                            classsub.Add(new PageContextMenuDto { text = c.show, click_function = $"openopenopen({c.val})" });
+                        }
+                        classcate.submenu = classsub;
+                    }
+                    contextMenu.Add(classcate);
+
+                    contextMenu.Add(new PageContextMenuDto { text = "关闭商机向导", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "丢失商机向导", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "重新指定客户经理向导", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "注销客户向导", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除客户", click_function = "openopenopen()" });
+                    break;
+                case "联系人查询":
+                    contextMenu.Add(new PageContextMenuDto { text = "修改联系人", click_function = "EditContact()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看联系人", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "AddCompany()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除联系人", click_function = "openopenopen()" });
+                    break;
+                default:
+                    break;
             }
         }
     }

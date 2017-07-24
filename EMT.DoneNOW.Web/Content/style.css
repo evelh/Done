@@ -1,0 +1,86 @@
+
+
+
+.header i{width: 40px;height: 30px;display: block;background:#F5F5F5 url(../Images/ico_page_menu.png) no-repeat center;float: left;
+margin-top: 5px;margin-right:10px;cursor: pointer;}
+.header i:hover ul{display: block;}
+.header i ul{min-width:100px;padding: 15px 10px;background: #F5F5F5;margin-top: 30px;position: relative;display: none;z-index: 99;  margin: 30px 0 0 0px;}
+.header i ul li{color: #333;font-size: 12px;padding: 0 5px;}
+.header i ul li:hover{background: #E5E5E5;padding: 0 5px;}
+.savecontent{width: 1200px;}
+.activityTitleleft{width: 250px;}
+.activityTitleleft h1{font-size: 15px;font-weight: bolder;color: #4F4F4F;}
+.address{    background-color: #F0F5FB;
+    border: 1px solid #d3d3d3;
+    margin: 0 10px 10px 0;
+    padding: 10px 4px 4px 0;
+    padding-left: 10px; 
+    }
+    
+.address p{font-weight: bold;color: #4F4F4F;margin: 0;font-size: 12px;}
+.address p img{padding-left: 5px;}
+.address p a{ color: #376597;    text-decoration: none;font-size: 12px;}   
+.viewleftTitle1{ margin: 0 10px 10px 0;padding: 10px 4px 4px 0;padding-left: 10px; font-size: 12px;}
+.viewleftTitle1 p{font-size: 12px;margin: 0;}
+.viewleftTitle1 span{display: block;width:49%;text-align: left;font-size: 12px;}
+.viewleftTitle1 p a{ color: #376597;    text-decoration: none;font-size: 12px;display: inline-block;}
+.viewleftTitle1hr{margin: 0;height: 2px;clear: both;border: none;border-top: 1px solid #d3d3d3;}
+.activityTitleright{
+    margin-left: 20px;
+    width: 920px;
+}
+.NewRootNote{
+	width: 420px;
+    height: 65px;
+    color: #AEAEAE;
+    border: solid 1px #D7D7D7;
+
+}
+.NewRootNote textarea{	width: 400px;height: 45px;margin: 0;padding: 0;border: 0;resize: none;overflow-y: scroll;padding: 10px;}
+.null{height: 60px;}
+.add{margin-top: 15px;width: 420px;}
+.add span{float: left;}
+.add input{float: right;width: auto;margin-left: 10px;padding: 0 10px;}
+.add select{float: right;width: 175px;}
+.checkboxs{width:420px;}
+.checkboxs label{margin: 0;width: auto;}
+.checkboxs input[type=checkbox]{margin:10px 0 0 20px ;width: auto;}
+.checkboxs div{float: left;width: 130px;margin-right: 10px;}
+.addselect{width: 420px;margin: 15px 0;}
+.addselect label{width:auto;}
+.addselect select{width: 115px;}
+.activityTitlerighthr{margin: 0;height: 2px;clear: both;border: none;border-top: 1px solid #d3d3d3;}
+.Opportunity{width: 50px;height: 50px;margin: 0 10px 6px 0;}
+.PostContent{display: table-cell;   vertical-align: top;}
+.PostContent a{color: #376597;font-size: 12px;}
+.PostContent h1{color: #333;font-size: 12px;height: 16px;line-height: 16px;margin: 0;padding: 0;}
+.PostContent p{color: #666;font-size: 12px;height: 16px;line-height: 16px;margin: 0;padding: 0;}
+.EntityFeedLevebottom{min-height: 50px;margin-bottom: 10px;padding: 10px 0 3px 10px;background-color: #F2F2F2;margin-left: 60px;border: 1px solid #E4E4E4; margin-right: 10px;}
+.EntityFeedLevebottom .profile{width: 32px;height: 32px;margin: 0 10px 6px 0;}
+.noteText span{display:block;float: none;margin: 0;padding: 0;}
+.noteText span a{margin: 0 5px;}
+.noteText .spanA a{color: gray;font-size: 12px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

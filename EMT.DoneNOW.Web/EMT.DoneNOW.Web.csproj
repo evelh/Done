@@ -128,8 +128,13 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="Contact\AddContact.aspx" />
+    <Content Include="Activity\ViewActivity.aspx" />
+    <Content Include="Company\CompanyFindBack.aspx" />
     <Content Include="Common\SearchFrameSet.aspx" />
     <Content Include="Company\AddCompany.aspx" />
+    <Content Include="Company\DeleteCompany.aspx" />
+    <Content Include="Company\LocationManage.aspx" />
+    <Content Include="Company\ViewCompany.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\base.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
@@ -140,6 +145,7 @@
     <Content Include="Content\NewCompany.css" />
     <Content Include="Content\NewContact.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\style.css" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
     <Content Include="favicon.ico" />
@@ -151,7 +157,9 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="AddressTest.aspx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Images\alert.png" />
     <Content Include="Images\ButtonBarIcons.png" />
     <Content Include="Images\crm.png" />
     <Content Include="Images\data-selector.png" />
@@ -160,6 +168,7 @@
     <Content Include="Images\glyphicons-halflings-white.png" />
     <Content Include="Images\glyphicons-halflings.png" />
     <Content Include="Images\icon.png" />
+    <Content Include="Images\ico_page_menu.png" />
     <Content Include="Images\jia.png" />
     <Content Include="Images\jian.png" />
     <Content Include="Images\kc.png" />
@@ -176,6 +185,7 @@
     <Content Include="Images\xm.png" />
     <Content Include="Index.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="Scripts\Common\Address.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -228,6 +238,19 @@
     </Compile>
     <Compile Include="Contact\AddContact.aspx.designer.cs">
       <DependentUpon>AddContact.aspx</DependentUpon>
+    <Compile Include="Activity\ViewActivity.aspx.cs">
+      <DependentUpon>ViewActivity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Activity\ViewActivity.aspx.designer.cs">
+      <DependentUpon>ViewActivity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Company\CompanyFindBack.aspx.cs">
+      <DependentUpon>CompanyFindBack.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\CompanyFindBack.aspx.designer.cs">
+      <DependentUpon>CompanyFindBack.aspx</DependentUpon>
     </Compile>
     <Compile Include="Company\AddCompany.aspx.cs">
       <DependentUpon>AddCompany.aspx</DependentUpon>
@@ -254,6 +277,27 @@
     </Compile>
     <Compile Include="Common\SearchFrameSet.aspx.designer.cs">
       <DependentUpon>SearchFrameSet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Company\DeleteCompany.aspx.cs">
+      <DependentUpon>DeleteCompany.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\DeleteCompany.aspx.designer.cs">
+      <DependentUpon>DeleteCompany.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Company\LocationManage.aspx.cs">
+      <DependentUpon>LocationManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\LocationManage.aspx.designer.cs">
+      <DependentUpon>LocationManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Company\ViewCompany.aspx.cs">
+      <DependentUpon>ViewCompany.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\ViewCompany.aspx.designer.cs">
+      <DependentUpon>ViewCompany.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
@@ -332,12 +376,22 @@
     <Compile Include="Test.ashx.cs">
       <DependentUpon>Test.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\AddressAjax.ashx.cs">
+      <DependentUpon>AddressAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AddressTest.aspx.cs">
+      <DependentUpon>AddressTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddressTest.aspx.designer.cs">
+      <DependentUpon>AddressTest.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -347,6 +401,7 @@
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Test.ashx" />
+    <Content Include="Tools\AddressAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

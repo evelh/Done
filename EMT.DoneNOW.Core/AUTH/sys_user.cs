@@ -23,6 +23,8 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String mobile_phone { get; set; }
         [DataMember]
+        public String name { get; set; }
+        [DataMember]
         public String password { get; set; }
         [DataMember]
         public String salt { get; set; }

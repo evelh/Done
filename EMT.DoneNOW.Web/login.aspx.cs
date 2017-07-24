@@ -26,8 +26,8 @@ namespace EMT.DoneNOW.Web
             if (ActionEnum.Logout.ToString().Equals(_action))
             {
                 Session["dn_session_user_info"] = null;
-                Common.WriteCookie("UserName", "DoneNOW", -14400);
-                Common.WriteCookie("UserPwd", "DoneNOW", -14400);
+                EMT.Tools.Common.WriteCookie("UserName", "DoneNOW", -14400);
+                EMT.Tools.Common.WriteCookie("UserPwd", "DoneNOW", -14400);
             }
         }
 
@@ -45,8 +45,8 @@ namespace EMT.DoneNOW.Web
             if (result== DTO.ERROR_CODE.SUCCESS)
             {
                 Session["dn_session_user_info"] = user;
-                Common.WriteCookie("UserName", "DoneNOW", userName);
-                Common.WriteCookie("UserPwd", "DoneNOW", pwdMd5);
+                EMT.Tools.Common.WriteCookie("UserName", "DoneNOW", userName);
+                EMT.Tools.Common.WriteCookie("UserPwd", "DoneNOW", pwdMd5);
                 Response.Redirect("index.aspx");
             }
             else
