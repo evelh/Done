@@ -130,7 +130,7 @@ namespace EMT.DoneNOW.Web
                     var new_udf = new UserDefinedFieldValue()
                     {
                         id = udf.id,
-                        value = Request.Form[udf.id.ToString()] == null ? "" : Request.Form[udf.id.ToString()],
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
                     };
                     list.Add(new_udf);
                 }
@@ -145,7 +145,7 @@ namespace EMT.DoneNOW.Web
                     var new_udf = new UserDefinedFieldValue()
                     {
                         id = udf.id,
-                        value = Request.Form[udf.id.ToString()] == null ? "" : Request.Form[udf.id.ToString()],
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
                     };
                     list.Add(new_udf);
                 }
@@ -183,7 +183,83 @@ namespace EMT.DoneNOW.Web
         /// <param name="e"></param>
         protected void save_newAdd_Click(object sender, EventArgs e)
         {
+            var param = new CompanyAddDto();
+            param.general = AssembleModel<CompanyAddDto.General>();
+            param.contact = AssembleModel<CompanyAddDto.Contact>();
+            param.location = AssembleModel<CompanyAddDto.Location>();
+            param.note = AssembleModel<CompanyAddDto.Note>();
+            param.site = AssembleModel<CompanyAddDto.Site>();
+            param.todo = AssembleModel<CompanyAddDto.Todo>();
+            // var param = AssembleModel<CompanyAddDto>();
+            if (company_udfList != null && company_udfList.Count > 0)                      // 首先判断是否有自定义信息
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach (var udf in company_udfList)                            // 循环添加
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
 
+                }
+                param.general.udf = list;
+            }
+
+            if (contact_udfList != null && contact_udfList.Count > 0)
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach (var udf in contact_udfList)
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
+                }
+                param.contact.udf = list;
+            }
+
+            if (site_udfList != null && site_udfList.Count > 0)
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach (var udf in site_udfList)
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
+                }
+                param.site.udf = list;
+            }
+
+            var result = new CompanyBLL().Insert(param, GetLoginUserId());
+            if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
+            {
+                Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
+            }
+            else if (result == ERROR_CODE.CRM_ACCOUNT_NAME_EXIST)      // 用户名称已经存在，重新填写用户名称
+            {
+                Response.Write("<script>alert('客户已存在。'); </script>");
+            }
+            else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+            {
+                Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                Response.Redirect("Login.aspx");
+            }
+            else if (result == ERROR_CODE.ERROR)                      // 出现相似名称,弹出新窗口，让用户决定修改还是新增
+            {
+                Response.Write("<script>alert('含有相似名称的公司');</script>");
+            }
+            else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+            {
+                Response.Write("<script>alert('添加客户成功！');history.go(0);</script>");  //  关闭添加页面的同时，刷新父页面
+
+            }
         }
         /// <summary>
         /// 保存并创建商机
@@ -192,7 +268,84 @@ namespace EMT.DoneNOW.Web
         /// <param name="e"></param>
         protected void save_create_opportunity_Click(object sender, EventArgs e)
         {
+            var param = new CompanyAddDto();
+            param.general = AssembleModel<CompanyAddDto.General>();
+            param.contact = AssembleModel<CompanyAddDto.Contact>();
+            param.location = AssembleModel<CompanyAddDto.Location>();
+            param.note = AssembleModel<CompanyAddDto.Note>();
+            param.site = AssembleModel<CompanyAddDto.Site>();
+            param.todo = AssembleModel<CompanyAddDto.Todo>();
+            // var param = AssembleModel<CompanyAddDto>();
+            if (company_udfList != null && company_udfList.Count > 0)                      // 首先判断是否有自定义信息
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach (var udf in company_udfList)                            // 循环添加
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
 
+                }
+                param.general.udf = list;
+            }
+
+            if (contact_udfList != null && contact_udfList.Count > 0)
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach (var udf in contact_udfList)
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
+                }
+                param.contact.udf = list;
+            }
+
+            if (site_udfList != null && site_udfList.Count > 0)
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach (var udf in site_udfList)
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
+                }
+                param.site.udf = list;
+            }
+
+            var result = new CompanyBLL().Insert(param, GetLoginUserId());
+            if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
+            {
+                Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
+            }
+            else if (result == ERROR_CODE.CRM_ACCOUNT_NAME_EXIST)      // 用户名称已经存在，重新填写用户名称
+            {
+                Response.Write("<script>alert('客户已存在。'); </script>");
+            }
+            else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+            {
+                Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                Response.Redirect("Login.aspx");
+            }
+            else if (result == ERROR_CODE.ERROR)                      // 出现相似名称,弹出新窗口，让用户决定修改还是新增
+            {
+                Response.Write("<script>alert('含有相似名称的公司');</script>");
+            }
+            else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+            {
+                Response.Write("<script>alert('添加客户成功！');</script>");  //  关闭添加页面的同时，刷新父页面
+                Response.Redirect("Login.aspx"); // 跳转到商机
+
+            }
         }
     }
 }

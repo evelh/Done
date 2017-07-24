@@ -61,5 +61,17 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql($"select * from crm_location where account_id = {account_id} and delete_time = 0  order by province_id,city_id,district_id ");
         }
+        /// <summary>
+        /// 查询所有被引用的地址--删除地址时使用
+        /// </summary>
+        /// <param name="location_id"></param>
+        /// <returns></returns>
+        public List<crm_location> GetAllQuoteLocation(long location_id)
+        {
+            // 2017-07-24 目前只有联系人引用地址，所以只关联联系人表进行查询
+            return FindListBySql($"SELECT loca.* from crm_location loca ,crm_contact con where con.location_id = loca.id and con.delete_time = 0 AND loca.delete_time = 0 and loca.id = {location_id} ");
+        }
+
+
     }
 }

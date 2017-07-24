@@ -132,5 +132,16 @@ namespace EMT.DoneNOW.BLL.CRM
         }
 
 
+        public List<crm_location> GetAllQuoteLocation(long location_id)
+        {
+            return _dal.GetAllQuoteLocation(location_id);
+        }
+
+
+        public bool DeleteLocation(long location_id,long user_id)
+        {
+            return _dal.SoftDelete(_dal.GetLocationById(location_id), user_id);
+        }
+
     }
 }

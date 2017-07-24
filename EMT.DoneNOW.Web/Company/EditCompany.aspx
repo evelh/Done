@@ -76,14 +76,11 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>
-                                国家<span class=" red">*</span>
-                            </label>
-                            <asp:DropDownList ID="country_id" runat="server">
-                                <asp:ListItem Value="1">111111</asp:ListItem>
-                                <asp:ListItem Value="2">222222</asp:ListItem>
-                                <asp:ListItem Value="3">333333</asp:ListItem>
-                            </asp:DropDownList>
+                            <label>国家<span class=" red">*</span></label>
+                            <input id="country_idInit" value='1' type="hidden" runat="server" />
+                            <select name="country_id" id="country_id">
+                                <option value="1">中国</option>
+                            </select>
                         </div>
                     </td>
                 </tr>
@@ -91,11 +88,9 @@
                     <td>
                         <div class="clear">
                             <label>省份<span class=" red">*</span></label>
-                            <asp:DropDownList ID="province_id" runat="server">
-                                <asp:ListItem Value="1">11111</asp:ListItem>
-                                <asp:ListItem Value="2">22222</asp:ListItem>
-                                <asp:ListItem Value="3">33333</asp:ListItem>
-                            </asp:DropDownList>
+                            <input id="province_idInit" value='<%=account.province_id %>' type="hidden" runat="server" />
+                            <select name="province_id" id="province_id">
+                            </select>
                         </div>
                     </td>
                 </tr>
@@ -103,11 +98,9 @@
                     <td>
                         <div class="clear">
                             <label>城市<span class=" red">*</span></label>
-                            <asp:DropDownList ID="city_id" runat="server">
-                                <asp:ListItem Value="1">11111</asp:ListItem>
-                                <asp:ListItem Value="2">22222</asp:ListItem>
-                                <asp:ListItem Value="3">33333</asp:ListItem>
-                            </asp:DropDownList>
+                            <input id="city_idInit" value='<%=account.city_id %>' type="hidden" runat="server" />
+                            <select name="city_id" id="city_id">
+                            </select>
                         </div>
                     </td>
                 </tr>
@@ -115,12 +108,9 @@
                     <td>
                         <div class="clear">
                             <label>区县<span class=" red">*</span></label>
-
-                            <asp:DropDownList ID="district_id" runat="server">
-                                <asp:ListItem Value="1">11111</asp:ListItem>
-                                <asp:ListItem Value="2">22222</asp:ListItem>
-                                <asp:ListItem Value="3">33333</asp:ListItem>
-                            </asp:DropDownList>
+                            <input id="district_idInit" value='<%=account.district_id %>' type="hidden" runat="server" />
+                            <select name="district_id" id="district_id">
+                            </select>
                         </div>
                     </td>
                 </tr>
@@ -142,7 +132,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <%--      <tr>
                     <td>
                         <div class="clear">
                             <label>是否是默认地址<span class="num"></span></label>
@@ -152,7 +142,7 @@
                             </asp:DropDownList>
                         </div>
                     </td>
-                </tr>
+                </tr>--%>
                 <tr>
                     <td>
                         <div class="clear">
@@ -332,7 +322,7 @@
                     <th>操作</th>
                 </tr>
                 <% var location_cate = dic.FirstOrDefault(_ => _.Key == "").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-                    var district = dic.FirstOrDefault(_ => _.Key == "district").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+                    var district = dic.FirstOrDefault(_ => _.Key == "addressdistrict").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
                     var country = dic.FirstOrDefault(_ => _.Key == "country").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;//district
                 %>
                 <%if (location_list != null && location_list.Count > 0)
@@ -344,11 +334,14 @@
                         {%>
                     <td><%=location_cate.FirstOrDefault(_ => _.val == location.cate_id.ToString()).show %></td>
                     <%}
-                    else
-                    { %><td></td>
+                        else
+                        { %>
+                    <td>
+
+                            </td>
                     <%} %>
                     <td><%=country.FirstOrDefault(_=>_.val == location.country_id.ToString()).show %></td>
-                    <td><%=district.FirstOrDefault(_=>_.val == location.province_id.ToString()).show %></td>
+                         <td><%=district.FirstOrDefault(_=>_.val == location.province_id.ToString()).show %></td>
                     <td><%=district.FirstOrDefault(_=>_.val == location.city_id.ToString()).show %></td>
                     <td><%=district.FirstOrDefault(_=>_.val == location.district_id.ToString()).show %></td>
                     <td><%=location.address %></td>
@@ -356,7 +349,14 @@
                     <td><%=location.postal_code %></td>
                     <td><%=location.location_label %></td>
                     <td><%=location.is_default==1?"是":"否" %></td>
-                    <td><a href="LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>">修改</a> <a href="">删除</a></td>
+                    <%if (location.is_default == 1)
+                        { %>
+                    <td><a href="LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>">修改</a> <a href="#" onclick="deleteLocation(<%=location.id %>)">删除</a></td>
+                    <%}
+                    else
+                    { %>
+                     <td><a href="LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>">修改</a></td>
+                    <%} %>
                 </tr>
                 <% }%>
                 <%} %>
@@ -552,6 +552,12 @@
 <script src="../Scripts/NewContact.js" type="text/javascript" charset="utf-8"></script>
 <script src="../Scripts/index.js"></script>
 <script src="../Scripts/common.js"></script>
+<script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        InitArea();
+    });
+</script>
 <script type="text/javascript">
     $(function () {
 
@@ -645,6 +651,51 @@
                 window.close();
             }
         });  // 直接关闭窗口
+
+
     })
+    function deleteLocation(location_id) {
+        if (confirm("确认删除地址吗？")) {
+            var url = "Tools/AddressAjax.ashx?LocationId =" + location_id;
+            //requestData(url, "", function (data) {
+            //    if (data == "Occupy") {
+            //        alert('该地址已被引用，请更改后删除');
+            //    }
+            //    else if (data == "Fail") {
+            //        alert('地址删除失败');
+            //    }
+            //    else if (data == "Success") {
+            //        alert('地址删除成功');
+            //    }
+            //})
+            $.ajax({
+                type: "GET",
+                url: "../Tools/AddressAjax.ashx?act=delete&LocationId=" + location_id,
+                //data: { LocationId: location_id },
+                success: function (data) {
+                    debugger;
+                    if (data == "Occupy") {
+                        alert('该地址已被引用，请更改后删除');
+                    }
+                    else if (data == "Fail") {
+                        alert('地址删除失败');
+                    }
+                    else if (data == "Success") {
+                        alert('地址删除成功');
+                        history.go(0);
+                    }// LoseUser
+                    else if (data == "LoseUser") {
+                        alert('用户丢失');
+                    }
+                    else {
+                        alert(data);
+                    }
+
+                }
+
+            })
+        }
+
+    }
 
 </script>

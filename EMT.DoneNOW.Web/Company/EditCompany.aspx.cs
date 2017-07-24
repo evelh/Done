@@ -117,10 +117,10 @@ namespace EMT.DoneNOW.Web
                     var location = new LocationBLL().GetLocationByAccountId(account.id);
                     if (location != null)        // 如果该客户的地址是默认地址，不可更改为非默认，只能通过添加别的地址设置为默认这种方式去更改默认地址
                     {
-                        country_id.SelectedValue = location.country_id == null ? "0" : location.country_id.ToString();
-                        province_id.SelectedValue = location.province_id.ToString();
-                        city_id.SelectedValue = location.city_id.ToString();
-                        district_id.SelectedValue = location.district_id == null ? "0" : location.district_id.ToString();
+                        //country_id.SelectedValue = location.country_id == null ? "0" : location.country_id.ToString();
+                        //province_id.SelectedValue = location.province_id.ToString();
+                        //city_id.SelectedValue = location.city_id.ToString();
+                        //district_id.SelectedValue = location.district_id == null ? "0" : location.district_id.ToString();
                         address.Text = location.address;
                         AdditionalAddress.Text = location.additional_address;
                     }

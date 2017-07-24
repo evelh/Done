@@ -238,6 +238,7 @@
     </Compile>
     <Compile Include="Contact\AddContact.aspx.designer.cs">
       <DependentUpon>AddContact.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Activity\ViewActivity.aspx.cs">
       <DependentUpon>ViewActivity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -417,6 +418,10 @@
     <ProjectReference Include="..\EMT.DoneNOW.Core\EMT.DoneNOW.Core.csproj">
       <Project>{eb88bbf3-488c-466f-bf7c-02bd01530d18}</Project>
       <Name>EMT.DoneNOW.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMT.DoneNOW.DAL\EMT.DoneNOW.DAL.csproj">
+      <Project>{ADC67B7E-FE81-4832-B5B7-E0B931171F4F}</Project>
+      <Name>EMT.DoneNOW.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\EMT.DoneNOW.DTO\EMT.DoneNOW.DTO.csproj">
       <Project>{4cbd682d-bd97-4d4e-b552-a7e4d4dd6b09}</Project>

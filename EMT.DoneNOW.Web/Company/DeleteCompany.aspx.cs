@@ -67,7 +67,7 @@ namespace EMT.DoneNOW.Web.Company
         protected void Delete_Click(object sender, EventArgs e)
         {
             var id = Convert.ToInt64(Request.QueryString["id"]);
-            var result = new CompanyBLL().DeleteCompany(id, "");
+            var result = new CompanyBLL().DeleteCompany(id, GetLoginUserId());
             if (result)
             {
                 Response.Write("<script>alert('删除客户成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
