@@ -22,8 +22,8 @@ namespace EMT.DoneNOW.BLL
         public Dictionary<string, object> GetField()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("country", new d_country_dal().GetDictionary());                        // 国家表
-
+            dic.Add("country", new d_country_dal().GetDictionary());                        // 国家表         
+            dic.Add("sufix", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("员工：名字后缀")));  //称谓
             return dic;
         }
 
@@ -81,7 +81,7 @@ namespace EMT.DoneNOW.BLL
             #region 对联系人必填项的校验
 
             // 必填项校验
-            if (string.IsNullOrEmpty(contactAddDto.company_name) || string.IsNullOrEmpty(contactAddDto.contact.name) || string.IsNullOrEmpty(contactAddDto.contact.phone) || string.IsNullOrEmpty(contactAddDto.location.address) || string.IsNullOrEmpty(contactAddDto.contact.first_name))
+            if (string.IsNullOrEmpty(contactAddDto.contact.name) || string.IsNullOrEmpty(contactAddDto.contact.phone) || string.IsNullOrEmpty(contactAddDto.location.address) || string.IsNullOrEmpty(contactAddDto.contact.first_name))
             {
                 return ERROR_CODE.PARAMS_ERROR;                // string类型的非空校验
             }
@@ -202,7 +202,7 @@ namespace EMT.DoneNOW.BLL
             #region 对联系人必填项的校验
 
             // 必填项校验
-            if (string.IsNullOrEmpty(contact_update.company_name) || string.IsNullOrEmpty(contact_update.contact.name) || string.IsNullOrEmpty(contact_update.contact.phone) || string.IsNullOrEmpty(contact_update.location.address) || string.IsNullOrEmpty(contact_update.contact.first_name))
+            if (string.IsNullOrEmpty(contact_update.contact.name) || string.IsNullOrEmpty(contact_update.contact.phone) || string.IsNullOrEmpty(contact_update.location.address) || string.IsNullOrEmpty(contact_update.contact.first_name))
             {
                 return false;                // string类型的非空校验
             }

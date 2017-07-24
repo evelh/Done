@@ -55,6 +55,24 @@ namespace EMT.DoneNOW.BLL
             return _dal.FindAll() as List<crm_account>;
         }
 
+        //
+        public List<DictionaryEntryDto> GetCompanyName(long userId)
+        {
+            // TODO: 根据userid权限过滤
+            string sql = "SELECT id,name FROM crm_account where 1=1";
+            var company = _dal.FindListBySql<crm_account>(_dal.QueryStringDeleteFlag(sql));
+            var list = new List<DictionaryEntryDto>();
+
+            if (company == null)
+                return list;
+
+            foreach (var c in company)
+            {
+                list.Add(new DictionaryEntryDto(c.id.ToString(), c.name));
+            }
+            return list;
+        }
+
         /// <summary>
         /// 新增客户
         /// </summary>

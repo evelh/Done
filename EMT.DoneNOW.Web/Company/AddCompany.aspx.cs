@@ -123,6 +123,35 @@ namespace EMT.DoneNOW.Web
                 param.general.udf = list;
             }
 
+            if(contact_udfList!=null&& contact_udfList.Count > 0)
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach( var udf in contact_udfList)
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == null ? "" : Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
+                }
+                param.contact.udf = list;
+            }
+
+            if (site_udfList != null && site_udfList.Count > 0)
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach (var udf in site_udfList)
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == null ? "" : Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
+                }
+                param.site.udf = list;
+            }
 
             var result = new CompanyBLL().Insert(param, "");
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写

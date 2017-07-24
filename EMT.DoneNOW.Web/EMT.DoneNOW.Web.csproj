@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Contact\AddContact.aspx" />
     <Content Include="Common\SearchFrameSet.aspx" />
     <Content Include="Company\AddCompany.aspx" />
     <Content Include="Contact.aspx" />
@@ -213,6 +214,7 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Common\SearchConditionFrame.aspx" />
     <Content Include="Common\SearchBodyFrame.aspx" />
+    <Content Include="Common\SelectCallBack.aspx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
@@ -220,6 +222,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contact\AddContact.aspx.cs">
+      <DependentUpon>AddContact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact\AddContact.aspx.designer.cs">
+      <DependentUpon>AddContact.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Company\AddCompany.aspx.cs">
       <DependentUpon>AddCompany.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -299,6 +308,13 @@
     <Compile Include="Common\SearchBodyFrame.aspx.designer.cs">
       <DependentUpon>SearchBodyFrame.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Common\SelectCallBack.aspx.cs">
+      <DependentUpon>SelectCallBack.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\SelectCallBack.aspx.designer.cs">
+      <DependentUpon>SelectCallBack.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -347,7 +363,6 @@
       <Project>{eb88bbf3-488c-466f-bf7c-02bd01530d18}</Project>
       <Name>EMT.DoneNOW.Core</Name>
     </ProjectReference>
-    
     <ProjectReference Include="..\EMT.DoneNOW.DTO\EMT.DoneNOW.DTO.csproj">
       <Project>{4cbd682d-bd97-4d4e-b552-a7e4d4dd6b09}</Project>
       <Name>EMT.DoneNOW.DTO</Name>
@@ -368,7 +383,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60242</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
