@@ -34,6 +34,16 @@ namespace EMT.DoneNOW.DTO
     public class DicEnum
     {
         /// <summary>
+        /// 活动种类 - 8
+        /// </summary>
+        public enum ACTIVITY_CATE
+        {
+            TODO = 30,
+            NOTE = 31,
+        }
+
+
+        /// <summary>
         /// 客户告警类型 - 10
         /// </summary>
         public enum ACCOUNT_ALERT_TYPE  

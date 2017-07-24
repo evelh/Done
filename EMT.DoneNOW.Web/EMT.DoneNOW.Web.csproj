@@ -127,10 +127,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Activity\ViewActivity.aspx" />
     <Content Include="Company\CompanyFindBack.aspx" />
     <Content Include="Common\SearchFrameSet.aspx" />
     <Content Include="Company\AddCompany.aspx" />
     <Content Include="Company\DeleteCompany.aspx" />
+    <Content Include="Company\LocationManage.aspx" />
     <Content Include="Company\ViewCompany.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\base.css" />
@@ -156,6 +158,7 @@
     </Content>
     <Content Include="AddressTest.aspx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Images\alert.png" />
     <Content Include="Images\ButtonBarIcons.png" />
     <Content Include="Images\crm.png" />
     <Content Include="Images\data-selector.png" />
@@ -227,6 +230,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\ViewActivity.aspx.cs">
+      <DependentUpon>ViewActivity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Activity\ViewActivity.aspx.designer.cs">
+      <DependentUpon>ViewActivity.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Company\CompanyFindBack.aspx.cs">
       <DependentUpon>CompanyFindBack.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -266,6 +276,13 @@
     </Compile>
     <Compile Include="Company\DeleteCompany.aspx.designer.cs">
       <DependentUpon>DeleteCompany.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Company\LocationManage.aspx.cs">
+      <DependentUpon>LocationManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\LocationManage.aspx.designer.cs">
+      <DependentUpon>LocationManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Company\ViewCompany.aspx.cs">
       <DependentUpon>ViewCompany.aspx</DependentUpon>
