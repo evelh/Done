@@ -34,8 +34,8 @@ namespace EMT.DoneNOW.BLL
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             // TODO: 获取部门列表
-            dic.Add("template_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("表单模板类型")));          // 表单模板类型
-            dic.Add("range_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("表单模板应用范围")));    // 表单模板应用范围
+            dic.Add("template_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.FORM_TEMPLATE_TYPE)));          // 表单模板类型
+            dic.Add("range_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.FORM_TEMPLATE_RANGE_TYPE)));    // 表单模板应用范围
 
             return dic;
         }

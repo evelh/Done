@@ -16,6 +16,8 @@ namespace EMT.DoneNOW.DTO
         MARKET_SEGMENT = 3,
         COMPETITOR = 4,
         TAX_REGION = 5,
+        ACCOUNT_TYPE = 6,
+        ACTION_TYPE = 7,
         OPPORTUNITY_STAGE = 11,
         OPPORTUNITY_SOURCE = 12,
         OPPORTUNITY_INTEREST_DEGREE = 13,
@@ -26,6 +28,7 @@ namespace EMT.DoneNOW.DTO
         FORM_TEMPLATE_RANGE_TYPE = 18,
         PROJECTED_CLOSED_DATE = 19,
         FORM_TEMPLATE_TYPE = 27,
+        NAME_SUFFIX = 48,
     }
 
     /// <summary>

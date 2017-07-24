@@ -27,14 +27,14 @@ namespace EMT.DoneNOW.BLL
             dic.Add("country", new DistrictBLL().GetCountryList());                          // 国家表
             //dic.Add("addressdistrict", new d_district_dal().GetDictionary());                       // 地址表（省市县区）
             dic.Add("sys_resource", new sys_resource_dal().GetDictionary());                // 客户经理
-            dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("竞争对手")));          // 竞争对手
-            dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行业")));    // 行业
+            dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.COMPETITOR)));          // 竞争对手
+            dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.MARKET_SEGMENT)));    // 行业
             //dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行政区")));                // 行政区
-            dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("客户：地域")));              // 销售区域
-            dic.Add("company_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("客户类型")));              // 客户类型
-            dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("税区")));              // 税区
-            dic.Add("sufix", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("员工：名字后缀")));              // 
-            dic.Add("action_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("活动类型")));
+            dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TERRITORY)));              // 销售区域
+            dic.Add("company_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACCOUNT_TYPE)));              // 客户类型
+            dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));              // 税区
+            dic.Add("sufix", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.NAME_SUFFIX)));              // 名字后缀
+            dic.Add("action_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACTION_TYPE)));        // 活动类型
             return dic;
         }
 
@@ -1075,7 +1075,7 @@ namespace EMT.DoneNOW.BLL
         {
             // var nameList = new List<string>() { "股份", "有限", "信息", "科技", "公司", "技术", "责任", "集团", "贸易", "工贸", "工程", "网络", "实业", "营业部", "事业部", "办事处", "分公司", "管理" };  // 后缀名称处理   todo—— 前缀名称处理
             // 客户：名称后缀
-            var List = new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("客户：名称后缀"));
+            var List = new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.NAME_SUFFIX));
             var nameList = List.Select(_ => _.show);
             var areaList = new List<string> { "北京", "上海", "广州", "深圳", "杭州" };
 

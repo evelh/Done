@@ -21,15 +21,15 @@ namespace EMT.DoneNOW.BLL.CRM
         public Dictionary<string, object> GetField()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("opportunity_stage", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("商机阶段")));          // 商机阶段
-            dic.Add("opportunity_source", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("商机来源")));          // 商机来源
-            dic.Add("opportunity_interest_degree", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("商机客户感兴趣程度")));          // 商机客户感兴趣程度
-            dic.Add("oppportunity_win_reason_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("商机赢单原因类型")));          // 商机赢单原因类型
-            dic.Add("oppportunity_loss_reason_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("商机丢单原因类型")));          // 商机丢单原因类型
-            dic.Add("oppportunity_advanced_field", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("商机扩展字段")));          // 商机扩展字段
-            dic.Add("oppportunity_status", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("商机状态")));          // 商机状态
-            dic.Add("oppportunity_range_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("表单模板应用范围")));          // 表单模板应用范围
-            dic.Add("projected_close_date", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("商机模板项目关闭日期")));          // 商机模板项目关闭日期
+            dic.Add("opportunity_stage", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STAGE)));          // 商机阶段
+            dic.Add("opportunity_source", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_SOURCE)));          // 商机来源
+            dic.Add("opportunity_interest_degree", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_INTEREST_DEGREE)));          // 商机客户感兴趣程度
+            dic.Add("oppportunity_win_reason_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_WIN_REASON_TYPE)));          // 商机赢单原因类型
+            dic.Add("oppportunity_loss_reason_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_LOSS_REASON_TYPE)));          // 商机丢单原因类型
+            dic.Add("oppportunity_advanced_field", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD)));          // 商机扩展字段
+            dic.Add("oppportunity_status", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STATUS)));          // 商机状态
+            dic.Add("oppportunity_range_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.FORM_TEMPLATE_RANGE_TYPE)));          // 表单模板应用范围
+            dic.Add("projected_close_date", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.PROJECTED_CLOSED_DATE)));          // 商机模板项目关闭日期
 
             return dic;
         }
