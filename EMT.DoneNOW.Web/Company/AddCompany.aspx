@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <%--    <link rel="stylesheet" type="text/css" href="../Content/NewCompany.css" />--%>
     <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
+    <link href="../Content/index.css" rel="stylesheet" />
     <style>
     </style>
 </head>
@@ -41,496 +42,519 @@
         </div>
 
         <div class="content clear">
-
-
-            <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
-                <%--  <tr>
+            <div class="information clear">
+                <p class="informationTitle"><i></i>基本信息</p>
+                <div>
+                    <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                        <%--  <tr>
                     <th>
                         <h1>Client Portal Status</h1>
                         <p>Inactive</p>
                     </th>
                 </tr>--%>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>客户名称<span class="red">*</span></label>
-                            <input type="text" name="company_name" id="company_name" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>称谓<span class="num">1</span></label>
-                            <asp:DropDownList ID="sufix" runat="server">
-                            </asp:DropDownList>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>电话<span class=" red">*</span></label>
-                            <input type="text" name="Phone" id="Phone" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>国家<span class=" red">*</span></label>
-                            <select name="country_id" id="country_id">
-                                <option value="1">11111111111</option>
-                                <option value="2">22222222222</option>
-                                <option value="3">33333333333</option>
-                                <option value="4">44444444444</option>
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>省份<span class=" red">*</span></label>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>客户名称<span class="red">*</span></label>
+                                    <input type="text" name="company_name" id="company_name" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>称谓<span class="num">1</span></label>
+                                    <asp:DropDownList ID="sufix" runat="server">
+                                    </asp:DropDownList>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>电话<span class=" red">*</span></label>
+                                    <input type="text" name="Phone" id="Phone" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>国家<span class=" red">*</span></label>
+                                    <input id="country_idInit" value='1' type="hidden" runat="server" />
+                                    <select name="country_id" id="country_id">
+                                        <option value="1">中国</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>省份<span class=" red">*</span></label>
+                                    <input id="province_idInit" value='5' type="hidden" runat="server" />
+                                    <select name="province_id" id="province_id">
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>城市<span class=" red">*</span></label>
+                                    <input id="city_idInit" value='6' type="hidden" runat="server" />
+                                    <select name="city_id" id="city_id">
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>区县<span class=" red">*</span></label>
+                                    <input id="district_idInit" value='8' type="hidden" runat="server" />
+                                    <select name="district_id" id="district_id">
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>税区<span class="num"></span></label>
+                                    <asp:DropDownList ID="TaxRegion" runat="server">
+                                    </asp:DropDownList>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>税号<span class="num"></span></label>
+                                    <input type="text" name="TaxId" id="TaxId" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>是否免税</label>
+                                    <input type="checkbox" name="TaxExempt" id="TaxExempt" value="" />
+                                    <%--  <div style="clear: both; margin-top: -20px; margin-left: 200px;"></div>--%>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>传真<span class="red"></span></label>
+                                    <input type="text" name="Fax" id="Fax" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>分类类别<span class="red"></span></label>
 
-                            <select name="province_id" id="province_id">
-                                <option value="1">11111111111</option>
-                                <option value="2">22222222222</option>
-                                <option value="3">33333333333</option>
-                                <option value="4">44444444444</option>
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>城市<span class=" red">*</span></label>
+                                    <asp:DropDownList ID="classification" runat="server" AutoPostBack="False">
+                                    </asp:DropDownList>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>销售区域<span class="red"></span></label>
+                                    <asp:DropDownList ID="TerritoryName" runat="server"></asp:DropDownList>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>竞争对手<span class="red"></span></label>
+                                    <asp:DropDownList ID="Competitor" runat="server"></asp:DropDownList>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>官网</label>
+                                    <input type="text" name="WebSite" id="WebSite" value="" />
+                                </div>
+                            </td>
+                        </tr>
 
-                            <select name="city_id" id="city_id">
-                                <option value="1">11111111111</option>
-                                <option value="2">22222222222</option>
-                                <option value="3">33333333333</option>
-                                <option value="4">44444444444</option>
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>区县<span class=" red">*</span></label>
-                            <select name="district_id" id="district_id">
-                                <option value="1">11111111111</option>
-                                <option value="2">22222222222</option>
-                                <option value="3">33333333333</option>
-                                <option value="4">44444444444</option>
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>税区<span class="num"></span></label>
-                            <asp:DropDownList ID="TaxRegion" runat="server">
-                            </asp:DropDownList>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>税号<span class="num"></span></label>
-                            <input type="text" name="TaxId" id="TaxId" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <input type="checkbox" name="TaxExempt" id="TaxExempt" value="" />
-                            <div style="clear: both; margin-top: -20px; margin-left: 200px;">是否免税</div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>传真<span class="red"></span></label>
-                            <input type="text" name="Fax" id="Fax" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>分类类别<span class="red"></span></label>
-
-                            <asp:DropDownList ID="classification" runat="server" AutoPostBack="False">
-                            </asp:DropDownList>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>销售区域<span class="red"></span></label>
-                            <asp:DropDownList ID="TerritoryName" runat="server"></asp:DropDownList>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>竞争对手<span class="red"></span></label>
-                            <asp:DropDownList ID="Competitor" runat="server"></asp:DropDownList>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>官网</label>
-                            <input type="text" name="WebSite" id="WebSite" value="" />
-                        </div>
-                    </td>
-                </tr>
-
-            </table>
+                    </table>
 
 
-            <table border="none" cellspacing="" cellpadding="" style="width: 850px; margin-left: 40px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width: 850px; margin-left: 40px;">
 
 
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>联系人姓名<span class="num">1</span></label>
-                            <input type="text" name="first_name" id="first_name" value="" style="width: 160px;" />
-                           <%-- <input type="text" name="" id="" value="" maxlength="2" style="width: 32px;" />--%>
-                            <input type="text" name="last_name" id="last_name" value="" style="width: 165px;" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>头衔<span class="num">1</span></label>
-                            <input type="text" name="Title" id="Title" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>Email<span class="num">1</span></label>
-                            <input type="text" name="Email" id="Email" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>邮编<span class="num"></span></label>
-                            <input type="text" name="postal_code" id="postal_code" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>
-                                地址
-                            </label>
-                            <input type="text" name="address" id="address" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>地址附加信息<span class="num"></span></label>
-                            <input type="text" name="AdditionalAddress" id="AdditionalAddress" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>备用电话1</label>
-                            <input type="text" name="AlternatePhone1" id="AlternatePhone1" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>备用电话2</label>
-                            <input type="text" name="AlternatePhone2" id="AlternatePhone2" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>移动电话<span class="num">1</span></label>
-                            <input type="text" name="MobilePhone" id="MobilePhone" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>公司类型</label>
-                            <asp:DropDownList ID="CompanyType" runat="server"></asp:DropDownList>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>客户经理</label>
-                            <asp:DropDownList ID="AccountManger" runat="server"></asp:DropDownList>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>市场领域</label>
-                            <asp:DropDownList ID="MarketSegment" runat="server"></asp:DropDownList>
-                        </div>
-                    </td>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>父客户名称</label>
-                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><span onclick="chooseCompany('CompanyFindBack.aspx');" style="width:30px;float:left;margin-left:-5px;">查找</span>
-                                <input type="hidden" id="ParentComoanyNameHide" name="parent_company_name" />                              
-                            </div>
-                        </td>
-                    </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>客户编号</label>
-                            <input type="text" name="CompanyNumber" id="CompanyNumber" value="" />
-                            
-                        </div>
-                    </td>
-                </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>联系人姓名<span class="num">1</span></label>
+                                    <input type="text" name="first_name" id="first_name" value="" style="width: 160px;" />
+                                    <%-- <input type="text" name="" id="" value="" maxlength="2" style="width: 32px;" />--%>
+                                    <input type="text" name="last_name" id="last_name" value="" style="width: 165px;" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>头衔<span class="num">1</span></label>
+                                    <input type="text" name="Title" id="Title" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>Email<span class="num">1</span></label>
+                                    <input type="text" name="Email" id="Email" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>邮编<span class="num"></span></label>
+                                    <input type="text" name="postal_code" id="postal_code" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>
+                                        地址
+                                    </label>
+                                    <input type="text" name="address" id="address" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>地址附加信息<span class="num"></span></label>
+                                    <input type="text" name="AdditionalAddress" id="AdditionalAddress" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>备用电话1</label>
+                                    <input type="text" name="AlternatePhone1" id="AlternatePhone1" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>备用电话2</label>
+                                    <input type="text" name="AlternatePhone2" id="AlternatePhone2" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>移动电话<span class="num">1</span></label>
+                                    <input type="text" name="MobilePhone" id="MobilePhone" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>公司类型</label>
+                                    <asp:DropDownList ID="CompanyType" runat="server"></asp:DropDownList>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>客户经理</label>
+                                    <asp:DropDownList ID="AccountManger" runat="server"></asp:DropDownList>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>市场领域</label>
+                                    <asp:DropDownList ID="MarketSegment" runat="server"></asp:DropDownList>
+                                </div>
+                            </td>
+                       <%--     <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>父客户名称</label>
+                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><span onclick="chooseCompany('CompanyFindBack.aspx');" style="width: 30px; float: left; margin-left: -5px;">查找</span>
+                                        <input type="hidden" id="ParentComoanyNameHide" name="parent_company_name" value="" />
+                                    </div>
+                                </td>
+                            </tr>--%>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>客户编号</label>
+                                    <input type="text" name="CompanyNumber" id="CompanyNumber" value="" />
+
+                                </div>
+                            </td>
+                        </tr>
 
 
 
-            </table>
+                    </table>
+                </div>
 
-
-            <div style="clear: both;">
-                <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>活动类型</label>
-                                <asp:DropDownList ID="note_action_type" runat="server"></asp:DropDownList>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>备注描述</label>
-                                <textarea id="note_description" name="note_description" cols="20" rows="2"></textarea>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>开始时间</label>
-                                <input type="datetime-local" name="note_start_time" id="note_start_time" value="" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>结束时间</label>
-                                <input type="datetime-local" name="note_end_time" id="note_end_time" value="" />
-                            </div>
-                        </td>
-                    </tr>
-                </table>
             </div>
+            <div class="information clear">
+                <p class="informationTitle"><i></i>客户自定义</p>
+                <div>
+                    <div>
+                        <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
+                            <% if (company_udfList != null && company_udfList.Count > 0)
+                                {
+                                    foreach (var udf in company_udfList)
+                                    {
+                                        if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                                        {%>
+                            <tr>
+                                <td>
+                                    <label><%=udf.col_name %></label>
+                                    <input type="text" name="<%=udf.id %>" class="sl_cdt" />
 
-
-            <div style="clear: both; margin-top: 20px;">
-                <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>活动类型</label>
-                                <asp:DropDownList ID="todo_action_type" runat="server"></asp:DropDownList>
-                            </div>
-
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>活动描述</label>
-                                <textarea id="todo_description" name="todo_description" cols="20" rows="2"></textarea>
-                            </div>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>负责人</label>
-                                <asp:DropDownList ID="assigned_to" runat="server" Width="205px">
-                                    <asp:ListItem Value="1">测试</asp:ListItem>
-                                    <asp:ListItem Value="0">     </asp:ListItem>
-                                </asp:DropDownList>
-                            </div>
-
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>开始时间</label>
-                                <input type="datetime-local" name="todo_start_time" id="todo_start_time" value="" />
-                            </div>
-
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>结束时间</label>
-                                <input type="datetime-local" name="todo_end_time" id="todo_end_time" value="" />
-                            </div>
-
-                        </td>
-
-                    </tr>
-                </table>
-            </div>
-
-
-            <div>
-                <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
-
-                    <% if (company_udfList != null && company_udfList.Count > 0)
-                        {
-                            foreach (var udf in company_udfList)
-                            {
-                                if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                                </td>
+                            </tr>
+                            <%}
+                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
                                 {%>
-                    <tr>
-                        <td>
-                            <label><%=udf.col_name %></label>
-                            <input type="text" name="<%=udf.id %>" class="sl_cdt" />
+                            <tr>
+                                <td>
+                                    <label><%=udf.col_name %></label>
+                                    <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
 
-                        </td>
-                    </tr>
-                    <%}
-                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
-                        {%>
-                    <tr>
-                        <td>
-                            <label><%=udf.col_name %></label>
-                            <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
+                                </td>
+                            </tr>
+                            <%}
+                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
+                                {%><tr>
+                                    <td>
+                                        <label><%=udf.col_name %></label>
 
-                        </td>
-                    </tr>
-                    <%}
-                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
-                        {%><tr>
-                        <td>
-                            <label><%=udf.col_name %></label>
+                                        <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
 
-                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
-
-                        </td>
-                    </tr>
-                    <%}
-                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
-                        {%>
-                    <tr>
-                        <td>
-                            <label><%=udf.col_name %></label>
-
-                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
-                        </td>
-                    </tr>
-                    <%}
-                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
-                        {%>
-
-                    <%}
-                            }
-                        } %>
-                </table>
-
-            </div>
-
-            <div >
-                <ul>
-                    <% if (contact_udfList != null && contact_udfList.Count > 0)
-                        {
-                            foreach (var udf in contact_udfList)
-                            {
-                                if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                                    </td>
+                                </tr>
+                            <%}
+                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
                                 {%>
-                    <li>
-                        <label><%=udf.col_name %></label>
-                        <input type="text" name="<%=udf.id %>" class="sl_cdt" />
+                            <tr>
+                                <td>
+                                    <label><%=udf.col_name %></label>
 
-                    </li>
-                    <%}
-                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
-                        {%>
-                    <li>
-                        <label><%=udf.col_name %></label>
-                        <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
+                                    <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                                </td>
+                            </tr>
+                            <%}
+                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                                {%>
 
-                    </li>
-                    <%}
-                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
-                        {%><li>
-                        <label><%=udf.col_name %></label>
+                            <%}
+                                    }
+                                } %>
+                        </table>
 
-                        <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
-
-                    </li>
-                    <%}
-                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
-                        {%>
-                    <li>
-                        <label><%=udf.col_name %></label>
-
-                        <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
-                    </li>
-                    <%}
-                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
-                        {%>
-
-                    <%}
-                            }
-                        } %>
-                </ul>
+                    </div>
+                </div>
 
             </div>
+            <div class="information clear">
+                <p class="informationTitle"><i></i>联系人自定义</p>
+                <div>
+                    <div>
+                        <ul>
+                            <% if (contact_udfList != null && contact_udfList.Count > 0)
+                                {
+                                    foreach (var udf in contact_udfList)
+                                    {
+                                        if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                                        {%>
+                            <li>
+                                <label><%=udf.col_name %></label>
+                                <input type="text" name="<%=udf.id %>" class="sl_cdt" />
+
+                            </li>
+                            <%}
+                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
+                                {%>
+                            <li>
+                                <label><%=udf.col_name %></label>
+                                <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
+
+                            </li>
+                            <%}
+                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
+                                {%><li>
+                                    <label><%=udf.col_name %></label>
+
+                                    <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
+
+                                </li>
+                            <%}
+                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
+                                {%>
+                            <li>
+                                <label><%=udf.col_name %></label>
+
+                                <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                            </li>
+                            <%}
+                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                                {%>
+
+                            <%}
+                                    }
+                                } %>
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="information clear">
+                <p class="informationTitle"><i></i>备注</p>
+                <div>
+
+
+                    <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                        <tr>
+                            <th></th>
+
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>活动类型</label>
+                                    <asp:DropDownList ID="note_action_type" runat="server"></asp:DropDownList>
+                                </div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>开始时间</label>
+                                    <input type="datetime-local" name="note_start_time" id="note_start_time" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>结束时间</label>
+                                    <input type="datetime-local" name="note_end_time" id="note_end_time" value="" />
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>备注描述</label>
+                                    <textarea id="todo_description" name="todo_description" cols="20" rows="2"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+
+            <div class="information clear">
+                <p class="informationTitle"><i></i>待办</p>
+                <div>
+                    <div style="clear: both; margin-top: 20px;">
+                        <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                            <tr>
+                                <th></th>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>活动类型</label>
+                                        <asp:DropDownList ID="todo_action_type" runat="server"></asp:DropDownList>
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>负责人</label>
+                                        <asp:DropDownList ID="assigned_to" runat="server" Width="205px">
+                                            <asp:ListItem Value="1">测试</asp:ListItem>
+                                            <asp:ListItem Value="0">    </asp:ListItem>
+                                        </asp:DropDownList>
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>开始时间</label>
+                                        <input type="datetime-local" name="todo_start_time" id="todo_start_time" value="" />
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>结束时间</label>
+                                        <input type="datetime-local" name="todo_end_time" id="todo_end_time" value="" />
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        </table>
+                        <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                            <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>活动描述</label>
+                                        <textarea id="note_description" name="note_description" cols="20" rows="2"></textarea>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
 
 
@@ -598,6 +622,12 @@
 <script src="../Scripts/NewContact.js" type="text/javascript" charset="utf-8"></script>
 <script src="../Scripts/index.js"></script>
 <script src="../Scripts/common.js"></script>
+<script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        InitArea();
+    });
+</script>
 </html>
 <script type="text/javascript">
     $(function () {
@@ -615,165 +645,21 @@
         });  // 选中免税，税区不可在进行编辑的事件处理
 
         $("#save_close").click(function () {
-            var companyName = $("#company_name").val();          //  公司名称--必填项校验
-            if (companyName == null || companyName == '') {
-                alert("请输入公司名称");
-                // alert(companyName);
+            if (!submitcheck()) {
                 return false;
             }
-            var phone = $("#Phone").val();                        //  电话-- 必填项校验
-            if (phone == null || phone == '') {
-                alert("请输入电话名称");
-                return false;
-            }
-            if (!checkPhone(phone)) {
-                alert("请输入正确格式的电话！");
-                return false;
-            }
-            var firstName = $("#first_name").val();                                  // 姓
-            var lastName = $("#last_name").val();                                    // 名
-            var country = $("#country_id").val();                                      // 国家
-            var province = $("#province_id").val();                                    // 省份
-            var city = $("#City").val();                                            // 城市
-            if (country == 0 || province == 0 || city == 0) {
-                alert("请填写选择地址");                                           // 地址下拉框的必填校验
-                return false;
-            }
-            var address = $("#address").val();                                      // 地址信息
-            if (address == null || address == '') {
-                alert("请完善地址信息");                                              // 地址的必填校验
-                return false;
-            }
-
-            //$("#AddCompany").submit();
-            debugger;
-            var email = $("#Email").val();
-            //alert(Trim(email,'g'));
-            if (email != '') {
-                if (!checkEmail(email)) {
-                    alert("请输入正确格式的邮箱！");
-                    return false;
-                }
-            }
-
-            // 邮编验证
-            var postal_code = $("#postal_code").val();
-            //alert(Trim(email, 'g'));
-            if (postal_code != '') {
-                if (!checkPostalCode(postal_code)) {
-                    alert("请输入正确的邮编！");
-                    return false;
-                }
-            }
-
         });   // 保存并关闭的事件
 
         $("#save_newAdd").click(function () {
-            var companyName = $("#company_name").val();          //  公司名称--必填项校验
-            if (companyName == null || companyName == '') {
-                alert("请输入公司名称");
-                // alert(companyName);
+            if (!submitcheck()) {
                 return false;
             }
-            var phone = $("#Phone").val();                        //  电话-- 必填项校验
-            if (phone == null || phone == '') {
-                alert("请输入电话名称");
-                return false;
-            }
-            if (!checkPhone(phone)) {
-                alert("请输入正确格式的电话！");
-                return false;
-            }
-            var firstName = $("#first_name").val();                                  // 姓
-            var lastName = $("#last_name").val();                                    // 名
-            var country = $("#country_id").val();                                      // 国家
-            var province = $("#province_id").val();                                    // 省份
-            var city = $("#City").val();                                            // 城市
-            if (country == 0 || province == 0 || city == 0) {
-                alert("请填写选择地址");                                           // 地址下拉框的必填校验
-                return false;
-            }
-            var address = $("#address").val();                                      // 地址信息
-            if (address == null || address == '') {
-                alert("请完善地址信息");                                              // 地址的必填校验
-                return false;
-            }
-
-            //$("#AddCompany").submit();
-            debugger;
-            var email = $("#Email").val();
-            //alert(Trim(email,'g'));
-            if (email != '') {
-                if (!checkEmail(email)) {
-                    alert("请输入正确格式的邮箱！");
-                    return false;
-                }
-            }
-
-            // 邮编验证
-            var postal_code = $("#postal_code").val();
-            //alert(Trim(email, 'g'));
-            if (postal_code != '') {
-                if (!checkPostalCode(postal_code)) {
-                    alert("请输入正确的邮编！");
-                    return false;
-                }
-            }
-
         });   // 保存并新建的事件
 
         $("#save_create_opportunity").click(function () {
-            var companyName = $("#company_name").val();          //  公司名称--必填项校验
-            if (companyName == null || companyName == '') {
-                alert("请输入公司名称");
-                // alert(companyName);
+            if (!submitcheck()) {
                 return false;
             }
-            var phone = $("#Phone").val();                        //  电话-- 必填项校验
-            if (phone == null || phone == '') {
-                alert("请输入电话名称");
-                return false;
-            }
-            if (!checkPhone(phone)) {
-                alert("请输入正确格式的电话！");
-                return false;
-            }
-            var firstName = $("#first_name").val();                                  // 姓
-            var lastName = $("#last_name").val();                                    // 名
-            var country = $("#country_id").val();                                      // 国家
-            var province = $("#province_id").val();                                    // 省份
-            var city = $("#City").val();                                            // 城市
-            if (country == 0 || province == 0 || city == 0) {
-                alert("请填写选择地址");                                           // 地址下拉框的必填校验
-                return false;
-            }
-            var address = $("#address").val();                                      // 地址信息
-            if (address == null || address == '') {
-                alert("请完善地址信息");                                              // 地址的必填校验
-                return false;
-            }
-
-            //$("#AddCompany").submit();
-            debugger;
-            var email = $("#Email").val();
-            //alert(Trim(email,'g'));
-            if (email != '') {
-                if (!checkEmail(email)) {
-                    alert("请输入正确格式的邮箱！");
-                    return false;
-                }
-            }
-
-            // 邮编验证
-            var postal_code = $("#postal_code").val();
-            //alert(Trim(email, 'g'));
-            if (postal_code != '') {
-                if (!checkPostalCode(postal_code)) {
-                    alert("请输入正确的邮编！");
-                    return false;
-                }
-            }
-
         });   // 保存并创建商机的事件
 
         $("#close").click(function () {
@@ -794,6 +680,61 @@
                 window.close();
             }
         });  // 直接关闭窗口
+
+        function submitcheck() {
+            var companyName = $("#company_name").val();          //  公司名称--必填项校验
+            if (companyName == null || companyName == '') {
+                alert("请输入公司名称");
+                // alert(companyName);
+                return false;
+            }
+            var phone = $("#Phone").val();                        //  电话-- 必填项校验
+            if (phone == null || phone == '') {
+                alert("请输入电话名称");
+                return false;
+            }
+            if (!checkPhone(phone)) {
+                alert("请输入正确格式的电话！");
+                return false;
+            }
+            var firstName = $("#first_name").val();                                  // 姓
+            var lastName = $("#last_name").val();                                    // 名
+            var country = $("#country_id").val();                                      // 国家
+            var province = $("#province_id").val();                                    // 省份
+            var city = $("#City").val();                                            // 城市
+            if (country == 0 || province == 0 || city == 0) {
+                alert("请填写选择地址");                                           // 地址下拉框的必填校验
+                return false;
+            }
+            var address = $("#address").val();                                      // 地址信息
+            if (address == null || address == '') {
+                alert("请完善地址信息");                                              // 地址的必填校验
+                return false;
+            }
+
+
+
+            var email = $("#Email").val();
+            //alert(Trim(email,'g'));
+            if (email != '') {
+                if (!checkEmail(email)) {
+                    alert("请输入正确格式的邮箱！");
+                    return false;
+                }
+            }
+
+            // 邮编验证
+            var postal_code = $("#postal_code").val();
+            //alert(Trim(email, 'g'));
+            if (postal_code != '') {
+                if (!checkPostalCode(postal_code)) {
+                    alert("请输入正确的邮编！");
+                    return false;
+                }
+            }
+            return true;
+        }
+
     })
 
     function chooseCompany(url) {

@@ -11,7 +11,7 @@ using EMT.DoneNOW.BLL.CRM;
 
 namespace EMT.DoneNOW.Web.Company
 {
-    public partial class ViewCompany : System.Web.UI.Page
+    public partial class ViewCompany : BasePage
     {
         protected crm_account crm_account = null;
         protected Dictionary<string, object> dic = null;
@@ -19,13 +19,34 @@ namespace EMT.DoneNOW.Web.Company
         protected void Page_Load(object sender, EventArgs e)
         {
             var id = Request.QueryString["id"];
+            var type = Request.QueryString["type"];
             if (id != null)
             {
                 crm_account = new CompanyBLL().GetCompany(Convert.ToInt64(id));
                 if (crm_account != null)
                 {
                     dic = new CompanyBLL().GetField();    // 获取字典
-                    
+                    if (type == "activity" || type == "note" || type == "todo")
+                    {
+                        isHide.Value = "show";
+                       //  Response.Write("<script>document.getElementById('showCompanyGeneral').style.display='none';</script>");
+                    }
+                    switch (type)    // 根据传过来的不同的类型，为页面中的iframe控件选择不同的src
+                    {
+                        case "activity":
+                            viewCompany_iframe.Src = "../Activity/ViewActivity.aspx?id="+crm_account.id.ToString();  // 活动
+                            break;
+                        case "todo":
+                            viewCompany_iframe.Src = "";  // 待办
+                            break;
+                        case "note":
+                            viewCompany_iframe.Src = "";  // 备注
+                            break;
+                        default:
+                            viewCompany_iframe.Src = "";  // 默认
+                            break;
+                    }
+                    //viewCompany_iframe.Src = "";  // 
                 }
                 else
                 {

@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
-    <%--    <link rel="stylesheet" type="text/css" href="../Content/NewCompany.css" />--%>
     <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/style.css" />
 </head>
 <body>
     <form id="form1" runat="server">
-       
+
         <%  var account = GetAccount();
             var location = GetDefaultLocation();
             var taxRegion = dic.FirstOrDefault(_ => _.Key == "taxRegion").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
@@ -31,37 +31,82 @@
             var addressdistrict = dic.FirstOrDefault(_ => _.Key == "addressdistrict").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
         %>
         <div class="header">
-            <label>COMPANY-<%=account.name+"(ID:"+account.account_id+")" %></label>
+            <i>
+                <ul>
+                    <li>活动</li>
+                    <li>待办</li>
+                    <li>备注</li>
+                    <li>商机</li>
+                    <li>销售订单</li>
+                    <li>联系人</li>
+                    <li>联系人组</li>
+                    <li>工单</li>
+                    <li>项目</li>
+                    <li>配置项</li>
+                    <li>financials财务</li>
+                    <li>合同</li>
+                    <li>发票</li>
+                    <li>Invoice发票参数设定</li>
+                    <li>Quote reference报价参数设定</li>
+                    <li>附件</li>
+                    <li>子客户</li>
+                </ul>
+            </i>
+            COMPANY-<%=account.name %>
         </div>
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
                     <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" />
                 </li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
-                    <asp:Button ID="tianjia" runat="server" Text="添加" BorderStyle="None" /></li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
-                    <asp:Button ID="Tools" runat="server" Text="工具" BorderStyle="None" /></li>
+
+
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
+                    <asp:Button ID="tianjia" runat="server" Text="添加" BorderStyle="None" />
+                    <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
+                    <ul>
+                        <li>客户</li>
+                        <li>工单</li>
+                        <li>待办</li>
+                        <li>客户备注</li>
+                        <li>商机</li>
+                        <li>联系人</li>
+                        <li>子客户</li>
+                        <li>配置项</li>
+                        <li>附件</li>
+                    </ul>
+                </li>
+
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
+                    <asp:Button ID="Tools" runat="server" Text="工具" BorderStyle="None" />
+                    <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
+                    <ul>
+                        <li>关闭商机向导</li>
+                        <li>丢失商机向导</li>
+                        <li>Resign lead wizard重新分配商机所有人</li>
+                        <li>注销客户向导</li>
+                        <li>Microsoft word merge wizard</li>
+                        <li>Reset quick books company mapping</li>
+                    </ul>
+                </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
                     <asp:Button ID="Report" runat="server" Text="客户报告" BorderStyle="None" /></li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
                     <asp:Button ID="LiveLink" runat="server" Text="友情链接" BorderStyle="None" /></li>
             </ul>
         </div>
+        <div class="text warn">离开这些领域的空白。所有标有“1”的字段只适用于联系人。</div>
 
-        <div runat="server" id="activity"></div>
-        <div id="ShowCompany_Left" style="float: left;">
-            <div id="GeneralInformation" style="float: left; width: 300px; margin-left: 40px; background-color: #f1eaea;">
-                <%-- 客户的基本信息 --%>
-
+        <div class="activityTitleleft fl" id="showCompanyGeneral">
+            <input type="hidden" id="isHide" runat="server" value="hide"/>
+            <%-- 客户的基本信息 --%>
+            <h1><%=account.name %>活动</h1>
+            <div class="address ">
                 <label><%=account.name %> <span>类别图标</span> <span>自助服务台图标</span></label>
-
                 <p><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></p>
-                <p><%=addressdistrict.First(_=>_.val.ToString()==location.provice_id.ToString()).show  %></p>
+                <p><%=addressdistrict.First(_=>_.val.ToString()==location.province_id.ToString()).show  %></p>
                 <p><%=addressdistrict.First(_=>_.val.ToString()==location.city_id.ToString()).show  %></p>
                 <p><%=addressdistrict.First(_=>_.val.ToString()==location.district_id.ToString()).show  %></p>
-
-
 
                 <% if (!string.IsNullOrEmpty(location.address))
                     { %>
@@ -77,319 +122,197 @@
 
                 <% if (account.parent_id != null)
                     { %>
-                <p> <a href="ViewCompany.aspx?id=<%=account.parent_id %>"><%=companyBll.GetCompany((long)account.parent_id).name %> </a></p>
+                <p><a href="ViewCompany.aspx?id=<%=account.parent_id %>"><%=companyBll.GetCompany((long)account.parent_id).name %> </a></p>
                 <%} %>
 
                 <p><%=account.phone %></p>
                 <p>(P) <%=location.postal_code %></p>
                 <p>(F) <%=account.fax %></p>
                 <p><%=account.web_site %></p>
-                <hr />
             </div>
 
-            <div id="TaxInformation" style="clear: both; float: left; margin-top: 40px; margin-left: 40px; width: 300px;">
-                <table>
-                    <%if (account.is_tax_exempt != null)
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>是否免税 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=account.is_tax_exempt == 1 ? "是" : "否" %></p>
-                        </td>
-                    </tr>
-                    <%} %>
-                    <%if (account.tax_region_id != null)
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>税区</label>
-                            </p>
-                        </td>
-                        <td>
+            <div class="viewleftTitle1">
+                <%if (account.is_tax_exempt != null)
+                    { %>
 
-                            <p><%=taxRegion.FirstOrDefault(_=>_.val==account.tax_region_id.ToString()).show %></p>
-                        </td>
-                    </tr>
-                    <%} %>
-                    <%if (!string.IsNullOrEmpty(account.tax_identification))
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>税号</label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=account.tax_identification %></p>
-                        </td>
-                    </tr>
-                    <%} %>
-                </table>
-                <hr />
+                <p class="clear">
+                    <span class="fl">是否免税 </span>
+                    <span class="fr"><%=account.is_tax_exempt == 1 ? "是" : "否" %> </span>
+                </p>
 
+                <%} %>
+
+
+                <%if (account.tax_region_id != null)
+                    { %>
+
+                <p class="clear">
+                    <span class="fl">税区 </span>
+                    <span class="fr"><%=taxRegion.FirstOrDefault(_=>_.val==account.tax_region_id.ToString()).show %></span>
+                </p>
+
+                <%} %>
+
+                <%if (!string.IsNullOrEmpty(account.tax_identification))
+                    { %>
+                <p class="clear">
+                    <span class="fl">税号 </span>
+                    <span class="fr"><%=account.tax_identification %></span>
+                </p>
+                <%} %>
+
+
+                <hr class="viewleftTitle1hr" />
             </div>
 
-            <div id="AreaInformation" style="clear: both; float: left; margin-top: 40px; margin-left: 40px; width: 300px;">
-                <table>
-                    <%if (!string.IsNullOrEmpty(account.no))
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>客户编号 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=account.no %></p>
-                        </td>
-                    </tr>
-                    <%} %>
+            <div class="viewleftTitle1">
+                <%if (!string.IsNullOrEmpty(account.no))
+                    { %>
 
-                    <tr>
-                        <td>
-                            <p>
-                                <label>客户经理 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=sys_resource.First(_=>_.val == account.resource_id.ToString()).show %></p>
-                        </td>
-                    </tr>
+                <p class="clear">
+                    <span class="fl">客户编号 </span>
+                    <span class="fr"><%=account.no %></span>
+                </p>
+
+                <%} %>
 
 
-                    <tr>
-                        <td>
-                            <p>
-                                <label>客户ID </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=account.account_id %></p>
-                        </td>
-                    </tr>
+                <p class="clear">
+                    <span class="fl">客户经理 </span>
+                    <span class="fr"><%=sys_resource.First(_=>_.val == account.resource_id.ToString()).show %></span>
+                </p>
+             <%--   <p class="clear">
+                    <span class="fl">客户ID </span>
+                    <span class="fr"><%=account.account_id %></span>
+                </p>--%>
+                <% var primary_contact = GetDefaultContact();
+                    if (primary_contact != null)
+                    {%>
 
-                    <% var primary_contact = GetDefaultContact();
-                        if (primary_contact != null)
-                        {%>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>主要联系人 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=primary_contact.name %></p>
-                        </td>
-                    </tr>
-                    <%} %>
-                    <%if (account.territory_id != null)
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>地域 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=territory.First(_=>_.val==account.territory_id.ToString()).show %></p>
-                        </td>
-                    </tr>
-                    <%} %>
-                    <%if (account.market_segment_id != null)
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>市场领域 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=market_segment.First(_=>_.val==account.market_segment_id.ToString()).show %></p>
-                        </td>
-                    </tr>
-                    <%} %>
-                </table>
-                <hr />
+                <p class="clear">
+                    <span class="fl">主要联系人 </span>
+                    <span class="fr"><%=primary_contact.name %></span>
 
+                </p>
+
+                <%} %>
+
+
+                <%if (account.territory_id != null)
+                    { %>
+
+                <p class="clear">
+                    <span class="fl">地域 </span>
+                    <span class="fr"><%=territory.First(_=>_.val==account.territory_id.ToString()).show %></span>
+
+                </p>
+                <%} %>
+
+
+
+                <%if (account.market_segment_id != null)
+                    { %>
+
+                <p class="clear">
+                    <span class="fl">市场领域 </span>
+                    <span class="fr"><%=market_segment.First(_=>_.val==account.market_segment_id.ToString()).show %></span>
+                </p>
+                <%} %>
+
+                <hr class="viewleftTitle1hr" />
+            </div>
+
+
+            <div class="viewleftTitle1">
             </div>
             <div id="Group" style="clear: both; float: left; margin-top: 40px; margin-left: 40px; width: 300px;">
                 <%--显示群组的人的头像 --%>
                 <hr />
 
             </div>
-            <div id="OtherInformation" style="clear: both; float: left; margin-top: 40px; margin-left: 40px; width: 300px;">
-                <table>
-                    <tr>
-                        <td>
-                            <p>有效商机总值</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>关闭商机总值</p>
-                        </td>
-                    </tr>
 
-                    <%if (account.asset_value != null)
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>市值 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=account.asset_value %></p>
-                        </td>
-                    </tr>
-                    <%} %>
+            <div class="viewleftTitle1">
+                <p class="clear">
+                    有效商机总值
+                </p>
+                <p class="clear">
+                    关闭商机总值
+                </p>
+                <%if (account.asset_value != null)
+                    { %>
+                <p class="clear">
+                    <span class="fl">市值 </span>
+                    <span class="fr"><%=account.asset_value %></span>
+                </p>
+                <%} %>
 
-                    <%if (account.competitor_id != null)
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>竞争对手 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=competition.First(_=>_.val==account.competitor_id.ToString()).show %></p>
-                        </td>
-                    </tr>
-                    <%} %>
+                <%if (account.competitor_id != null)
+                    { %>
+                <p class="clear">
+                    <span class="fl">竞争对手 </span>
+                    <span class="fr"><%=competition.First(_=>_.val==account.competitor_id.ToString()).show %></span>
+                </p>
+                <%} %>
 
-                    <%if (!string.IsNullOrEmpty(account.alternate_phone1))
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>备用电话1 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=account.alternate_phone1%></p>
-                        </td>
-                    </tr>
-                    <%} %>
+                <%if (!string.IsNullOrEmpty(account.alternate_phone1))
+                    { %>
+                <p class="clear">
+                    <span class="fl">备用电话1 </span>
+                    <span class="fr"><%=account.alternate_phone1%></span>
+                </p>
+                <%} %>
+                <%if (!string.IsNullOrEmpty(account.alternate_phone2))
+                    { %>
+                <p class="clear">
+                    <span class="fl">备用电话2 </span>
+                    <span class="fr"><%=account.alternate_phone2%></span>
+                </p>
+                <%} %>
+                <%if (account.last_activity_time != null)
+                    { %>
+                <p class="clear">
+                    <span class="fl">最后活动时间 </span>
+                    <span class="fr"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)account.last_activity_time).ToString("yyyy-MM-dd") %></span>
+                </p>
+                <%} %>
 
-                    <%if (!string.IsNullOrEmpty(account.alternate_phone2))
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>备用电话2 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=account.alternate_phone2 %></p>
-                        </td>
-                    </tr>
-                    <%} %>
-                    <%if (account.last_activity_time != null)
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>最后活动时间 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p>时间戳转时间 <%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)account.last_activity_time).ToString("yyyy-MM-dd") %></p>
-                        </td>
-                    </tr>
-                    <%} %>
-                    <%if (!string.IsNullOrEmpty(account.sic_code))
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>客户股票代码 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=account.sic_code %></p>
-                        </td>
-                    </tr>
-                    <%} %>
-                    <%if (!string.IsNullOrEmpty(account.stock_market))
-                        { %>
-                    <tr>
-                        <td>
-                            <p>
-                                <label>客户股票市场 </label>
-                            </p>
-                        </td>
-                        <td>
-                            <p><%=account.stock_market %></p>
-                        </td>
-                    </tr>
-                    <%} %>
+                <%if (!string.IsNullOrEmpty(account.sic_code))
+                    { %>
+                <p class="clear">
+                    <span class="fl">客户股票代码 </span>
+                    <span class="fr"><%=account.sic_code %></span>
+                </p>
+                <%} %>
 
-                    <p>客户标准产业分类代码</p>
-                </table>
-                <hr />
+                
+                <%if (!string.IsNullOrEmpty(account.stock_market))
+                    { %>
+                <p class="clear">
+                    <span class="fl">客户股票市场 </span>
+                    <span class="fr"><%=account.stock_market %></span>
+                </p>
+                <%} %>
 
+                  <p>客户标准产业分类代码</p>
+
+                <hr class="viewleftTitle1hr" />
             </div>
-            <div id="ViewCompanyPower" style="clear: both; float: left; margin-top: 40px; margin-left: 40px; width: 300px;">
-                <p>可以查看本客户的员工</p>
 
+             <div class="viewleftTitle1">  
+                   <p>可以查看本客户的员工</p>
 
-            </div>
+             </div>
         </div>
-        <div id="ShowCompany_Right" style="float: left; margin-left: 35px;">
-            <table>
-                <tr>
-                    <td colspan="2">
-                        <%--<input type="text" onkeydown="Prompt()"/>--%>
-                        <asp:TextBox ID="insert" runat="server" TextMode="MultiLine" MaxLength="1000" Rows="5" Width="500px" Height="25%" Wrap="true" Style="overflow-y: visible"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding-right: 5px; padding-top: 10px; width: 350px;">
-                        <span id="WordNumber"></span>
-                    </td>
-                    <td align="right" style="padding-top: 10px;">
-                        <%
-                            Type.DataValueField = "val";
-                            Type.DataTextField = "show";
-                            Type.DataSource = action_type;
-                            Type.DataBind();
-                            Type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-                        %>
-                        <asp:DropDownList ID="Type" runat="server" Width="100px">
-                        </asp:DropDownList>
-                        <asp:Button ID="add" runat="server" Text="添加" /></td>
-                </tr>
-            </table>
-            <div>
-                <asp:CheckBox ID="Todos" runat="server" />
-                <span>待办</span>
-                <asp:CheckBox ID="Notes" runat="server" />
-                <span>备注</span>
-                <asp:CheckBox ID="Opportunities" runat="server" />
-                <span>商机</span>
-                <asp:CheckBox ID="SalesOrders" runat="server" />
-                <span>销售单</span>
-                <asp:CheckBox ID="Tickets" runat="server" />
-                <span>工单</span>
-                <asp:CheckBox ID="Contacts" runat="server" />
-                <span>合同</span>
-                <asp:CheckBox ID="Projects" runat="server" />
-                <span>项目</span>
 
-            </div>
-            <div>
-                <span>排序方式：</span>
-                <asp:DropDownList ID="OrderBy" runat="server">
-                    <asp:ListItem Value="1">时间从早到晚</asp:ListItem>
-                    <asp:ListItem Value="2">时间从晚到早</asp:ListItem>
-                </asp:DropDownList>
-            </div>
+
+
+
+        <div id="ShowCompany_Right" style="float: left; margin-left: 35px;">
+            
+        <iframe runat="server" id="viewCompany_iframe" width="800" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" >
+
+        </iframe>
+        
         </div>
 
     </form>
@@ -401,21 +324,23 @@
 <script src="../Scripts/common.js"></script>
 <script>
     $(function () {
-        // WordNumber
-        var maxNumber = 2000;
-        $("#WordNumber").text(maxNumber);
-        $("#insert").keyup(function () {
-            var insert = $("#insert").val();
-            if (insert != '') {
-                var length = insert.length;
-                $("#WordNumber").text(maxNumber - length);
-                if (length > 2000) {
-                    $(this).val($(this).val().substring(0, 2000));
-                }
-            }
 
-        });
+        var hide = $("#isHide").val();
+        if (hide == "hide") {
+            $("#showCompanyGeneral").hide();
+        }
+        $("#viewCompany_iframe").attr("onLoad", iFrameHeight);
+     
     })
+
+    function iFrameHeight() {
+        var ifm = document.getElementById("viewCompany_iframe");
+        var subWeb = document.frames ? document.frames["viewCompany_iframe"].document : ifm.contentDocument;
+        if (ifm != null && subWeb != null) {
+            ifm.height = subWeb.body.scrollHeight;
+            ifm.width = subWeb.body.scrollWidth;
+        }
+    } 
 
 
 </script>

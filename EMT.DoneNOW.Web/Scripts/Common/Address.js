@@ -1,4 +1,4 @@
-﻿var s = ["AreaProvince", "AreaCity", "AreaCounty"];//三个select的id
+﻿var s = ["province_id", "city_id", "district_id"];//三个select的id
 
 function change(index) {
     var sel = $("#" + s[index]).val();

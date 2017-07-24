@@ -34,6 +34,7 @@
         <div class="nav-title">
             <ul class="clear">
                 <li class="boders">通用</li>
+                <li>地址信息</li>
                 <li>附加信息</li>
                 <li>用户自定义</li>
                 <li>子公司</li>
@@ -43,6 +44,7 @@
         </div>
 
         <div class="content clear">
+
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
                 <tr>
@@ -313,7 +315,53 @@
             </table>
 
         </div>
-
+        <%--// location_list--%>
+        <div class="content clear">
+            <table style="text-align: left;" class="table table-hover">
+                <tr>
+                    <th>地址类型</th>
+                    <th>国家</th>
+                    <th>省份</th>
+                    <th>城市</th>
+                    <th>区县</th>
+                    <th>地址</th>
+                    <th>地址附加信息</th>
+                    <th>邮编</th>
+                    <th>标签</th>
+                    <th>默认地址</th>
+                    <th>操作</th>
+                </tr>
+                <% var location_cate = dic.FirstOrDefault(_ => _.Key == "").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+                    var district = dic.FirstOrDefault(_ => _.Key == "district").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+                    var country = dic.FirstOrDefault(_ => _.Key == "country").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;//district
+                %>
+                <%if (location_list != null && location_list.Count > 0)
+                    {
+                        foreach (var location in location_list)
+                        {%>
+                <tr>
+                    <% if (location_cate != null)
+                        {%>
+                    <td><%=location_cate.FirstOrDefault(_ => _.val == location.cate_id.ToString()).show %></td>
+                    <%}
+                    else
+                    { %><td></td>
+                    <%} %>
+                    <td><%=country.FirstOrDefault(_=>_.val == location.country_id.ToString()).show %></td>
+                    <td><%=district.FirstOrDefault(_=>_.val == location.province_id.ToString()).show %></td>
+                    <td><%=district.FirstOrDefault(_=>_.val == location.city_id.ToString()).show %></td>
+                    <td><%=district.FirstOrDefault(_=>_.val == location.district_id.ToString()).show %></td>
+                    <td><%=location.address %></td>
+                    <td><%=location.additional_address %></td>
+                    <td><%=location.postal_code %></td>
+                    <td><%=location.location_label %></td>
+                    <td><%=location.is_default==1?"是":"否" %></td>
+                    <td><a href="LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>">修改</a> <a href="">删除</a></td>
+                </tr>
+                <% }%>
+                <%} %>
+            </table>
+        </div>
 
         <div class="content clear">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">

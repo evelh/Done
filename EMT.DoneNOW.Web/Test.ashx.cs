@@ -53,15 +53,15 @@ namespace EMT.DoneNOW.Web
             param.general.company_number = context.Request.Form["CompanyNumber"];
             var companyBll = new CompanyBLL();
 
-            var result = companyBll.Insert(param, "");
-            if (result == ERROR_CODE.PARAMS_ERROR)                    // 必要参数丢失
-            {
+            //var result = companyBll.Insert(param, "");
+            //if (result == ERROR_CODE.PARAMS_ERROR)                    // 必要参数丢失
+            //{
 
-            }
-            else if (result == ERROR_CODE.CRM_ACCOUNT_NAME_EXIST)      // 用户名称已经存在
-            {
+            //}
+            //else if (result == ERROR_CODE.CRM_ACCOUNT_NAME_EXIST)      // 用户名称已经存在
+            //{
 
-            }
+            //}
 
 
 
