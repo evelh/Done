@@ -46,6 +46,9 @@ namespace EMT.DoneNOW.Web
                 case "客户查询":
                     addBtn = "新增客户";
                     break;
+                case "联系人查询":
+                    addBtn = "新增联系人";
+                    break;
                 default:
                     addBtn = "新增客户";
                     break;
@@ -130,10 +133,11 @@ namespace EMT.DoneNOW.Web
         private void GetMenus()
         {
             contextMenu = new List<PageContextMenuDto>();
+            Dictionary<string, object> dics = null;
             switch(queryPage)
             {
                 case "客户查询":
-                    var dics = new CompanyBLL().GetField();
+                    dics = new CompanyBLL().GetField();
                     contextMenu.Add(new PageContextMenuDto { text = "修改客户", click_function = "EditCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "新增记录", click_function = "AddCompany()" });
@@ -158,6 +162,13 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "注销客户向导", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除客户", click_function = "openopenopen()" });
+                    break;
+                case "联系人查询":
+                    contextMenu.Add(new PageContextMenuDto { text = "修改联系人", click_function = "EditContact()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看联系人", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "AddCompany()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除联系人", click_function = "openopenopen()" });
                     break;
                 default:
                     break;

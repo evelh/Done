@@ -39,18 +39,18 @@
 .content td h1{color: #4F4F4F;font-size: 12px;height: 14px;text-align: left;width:45%;text-align: right;} 
 .content td img{width: 200px;height: 200px;display:block;} 
 .content td .Change{color: #376597;text-decoration: none;display:block;} 
-.content label{display:inline-block;color: #151515;font-size:14px;width:45%;text-align: right;height: 30px;line-height: 30px;position: relative;
+.content label{display:inline-block;color: #151515;font-size:14px;width:170px;text-align: right;height: 30px;line-height: 30px;position: relative;
 float: left;overflow: hidden;}
 .content label .red{color: red ;  vertical-align: super; position: absolute;right: -10px;top: 0;}
 .content label .num{color: #666666;font-size: 12px;  vertical-align: super; }
-.content input{float: left;width:45%;margin-left: 5%;}
-.content select{float: left;width:47%;height:28px;line-height: 28px;margin-left: 5%;}
-.content .selectTwo{float: left;width:50%;height:28px;line-height: 28px;margin-left: 5%;}
+.content input{float: left;width:190px;margin-left: 15px;}
+.content select{float: left;width:204px;height:28px;line-height: 28px;margin-left: 15px;}
+.content .selectTwo{float: left;width:205px;height:28px;line-height: 28px;margin-left:15px;}
 .content .selectTwo select{float: left;width:45%;height:28px;line-height: 28px;margin: 0;}
-.content .selectTwo span{float: left;margin: 0 3%;}
-.content .inputTwo{float: left;width:50%;height:28px;line-height: 28px;margin-left: 5%;}
-.content .inputTwo input{float: left;width:38%;margin: 0;}
-.content .inputTwo span{float: left;margin: 0 3%;}
+.content .selectTwo span{float: left;margin: 0 6px;}
+.content .inputTwo{float: left;width:205px;height:28px;line-height: 28px;margin-left:15px;}
+.content .inputTwo input{float: left;width:80px;margin: 0;}
+.content .inputTwo span{float: left;margin: 0 6px;}
 .content input[type=checkbox]{width:auto;height:auto;margin-top: 4px;margin-left: 5%;}
 
 

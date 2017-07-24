@@ -142,6 +142,7 @@
     <Content Include="Content\NewCompany.css" />
     <Content Include="Content\NewContact.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\style.css" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
     <Content Include="favicon.ico" />
@@ -163,6 +164,7 @@
     <Content Include="Images\glyphicons-halflings-white.png" />
     <Content Include="Images\glyphicons-halflings.png" />
     <Content Include="Images\icon.png" />
+    <Content Include="Images\ico_page_menu.png" />
     <Content Include="Images\jia.png" />
     <Content Include="Images\jian.png" />
     <Content Include="Images\kc.png" />

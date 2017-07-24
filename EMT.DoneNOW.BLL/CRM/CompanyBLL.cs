@@ -29,8 +29,8 @@ namespace EMT.DoneNOW.BLL
             dic.Add("sys_resource", new sys_resource_dal().GetDictionary());                // 客户经理
             dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("竞争对手")));          // 竞争对手
             dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行业")));    // 行业
-            dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行政区")));                // 行政区
-            dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("销售区")));              // 销售区域
+            //dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行政区")));                // 行政区
+            dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("客户：地域")));              // 销售区域
             dic.Add("company_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("客户类型")));              // 客户类型
             dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("税区")));              // 税区
             dic.Add("sufix", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("员工：名字后缀")));              // 

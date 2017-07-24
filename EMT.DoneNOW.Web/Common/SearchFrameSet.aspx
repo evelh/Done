@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
 </head>
-<frameset id="SearchFrameSet" name="SearchFrameSet">
+<frameset id="SearchFrameSet" name="SearchFrameSet" rows="400,*" cols="100%">
     <frame src="SearchConditionFrame.aspx?type=<%=this.searchName %>" id="SearchCondition"></frame>
     <frame src="SearchBodyFrame.aspx?type=<%=this.searchName %>" id="SearchBody"></frame>
 </frameset>

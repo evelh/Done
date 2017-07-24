@@ -128,6 +128,19 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
+        /// 查询结果列字段显示类型-66
+        /// </summary>
+        public enum QUERY_RESULT_DISPLAY_TYPE
+        {
+            RETURN_VALUE = 729,     // 查找带回返回值
+            ID = 730,               // id
+            NUM = 731,              // 数值
+            TXT = 732,              // 文本
+            PIC = 733,              // 图片
+            TOOLTIP = 734,          // title
+        }
+
+        /// <summary>
         /// 显示对象类型-67
         /// </summary>
         public enum OBJECT_TYPE
