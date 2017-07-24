@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Activity\ViewActivity.aspx" />
     <Content Include="Company\CompanyFindBack.aspx" />
     <Content Include="Common\SearchFrameSet.aspx" />
     <Content Include="Company\AddCompany.aspx" />
@@ -142,6 +143,7 @@
     <Content Include="Content\NewCompany.css" />
     <Content Include="Content\NewContact.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\style.css" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
     <Content Include="favicon.ico" />
@@ -154,6 +156,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Images\alert.png" />
     <Content Include="Images\ButtonBarIcons.png" />
     <Content Include="Images\crm.png" />
     <Content Include="Images\data-selector.png" />
@@ -162,6 +165,7 @@
     <Content Include="Images\glyphicons-halflings-white.png" />
     <Content Include="Images\glyphicons-halflings.png" />
     <Content Include="Images\icon.png" />
+    <Content Include="Images\ico_page_menu.png" />
     <Content Include="Images\jia.png" />
     <Content Include="Images\jian.png" />
     <Content Include="Images\kc.png" />
@@ -223,6 +227,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\ViewActivity.aspx.cs">
+      <DependentUpon>ViewActivity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Activity\ViewActivity.aspx.designer.cs">
+      <DependentUpon>ViewActivity.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Company\CompanyFindBack.aspx.cs">
       <DependentUpon>CompanyFindBack.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

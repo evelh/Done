@@ -9,6 +9,7 @@ using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
 using System.Text.RegularExpressions;
+using EMT.DoneNOW.BLL.CRM;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -73,12 +74,12 @@ namespace EMT.DoneNOW.BLL
         /// 新增客户
         /// </summary>
         /// <returns></returns>
-        public ERROR_CODE Insert(CompanyAddDto param, string token)
+        public ERROR_CODE Insert(CompanyAddDto param, long user_id)
         {
-            if (string.IsNullOrEmpty(param.general.company_name) || string.IsNullOrEmpty(param.general.phone) || string.IsNullOrEmpty(param.location.address))  // string必填项校验
-                return ERROR_CODE.PARAMS_ERROR;       // 返回参数丢失
+            if (string.IsNullOrEmpty(param.general.company_name) || string.IsNullOrEmpty(param.general.phone) || string.IsNullOrEmpty(param.location.address))                     // string必填项校验
+                return ERROR_CODE.PARAMS_ERROR;             // 返回参数丢失
             if (param.location.country_id == 0 || param.location.province_id == 0 || param.location.city_id == 0)
-                return ERROR_CODE.PARAMS_ERROR;         // int 必填项校验
+                return ERROR_CODE.PARAMS_ERROR;             // int 必填项校验
             if (_dal.ExistAccountName(param.general.company_name.Trim()))    // 客户名称与客户电话的唯一性校验
                 return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;   // 返回客户名已存在   
             if (_dal.ExistAccountPhone(param.general.phone))
@@ -93,18 +94,9 @@ namespace EMT.DoneNOW.BLL
             var compareAccountName = CompareCompanyName(CompanyNameDeal(param.general.company_name.Trim()), _dal.FindAll().Select(_ => _.name).ToList());    // 处理后的名字超过两个字相同（不包括两个字）即视为相似名称
             if (compareAccountName != null && compareAccountName.Count > 0)
                 return ERROR_CODE.ERROR;
-
-
-            // var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
-            // 测试用户
-            var user = new UserInfoDto()
-            {
-                id = 1,
-                email = "1zhufei@test.com",
-                mobile = "10086",
-                name = "zhufei_test",
-                security_Level_id = 0
-            };
+               
+            var user = UserInfoBLL.GetUserInfo(user_id);
+ 
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;           // 查询不到用户，用户丢失
 
@@ -176,22 +168,28 @@ namespace EMT.DoneNOW.BLL
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
             };
-            new crm_location_dal().Insert(_location);
-            sys_oper_log add_location_log = new sys_oper_log()
-            {
-                user_cate = "用户",
-                user_id = user.id,
-                name = "",
-                phone = user.mobile == null ? "" : user.mobile,
-                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                oper_object_id = _location.id,// 操作对象id
-                oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                oper_description = _dal.AddValue(_location),
-                remark = "保存地址信息"
-            };
-            new sys_oper_log_dal().Insert(add_location_log);       // 插入日志
+            new LocationBLL().Insert(_location, user_id);
+
+
+            //new crm_location_dal().Insert(_location);
+            //sys_oper_log add_location_log = new sys_oper_log()
+            //{
+            //    user_cate = "用户",
+            //    user_id = user.id,
+            //    name = "",
+            //    phone = user.mobile == null ? "" : user.mobile,
+            //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+            //    oper_object_id = _location.id,// 操作对象id
+            //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+            //    oper_description = _dal.AddValue(_location),
+            //    remark = "保存地址信息"
+            //};
+            //new sys_oper_log_dal().Insert(add_location_log);       // 插入日志
             #endregion
+
+
+
 
             #region 2.保存联系人
             // 联系人的姓和名只输入一个时，不创建联系人  
@@ -220,21 +218,34 @@ namespace EMT.DoneNOW.BLL
                     email = param.contact.email,
                     location_id = _location.id,
                 };
-                new crm_contact_dal().Insert(_contact);
-                var add_contact_log = new sys_oper_log()
+
+
+                var insertContactParam = new ContactAddAndUpdateDto()
                 {
-                    user_cate = "用户",
-                    user_id = user.id,
-                    name = "",
-                    phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
-                    oper_object_id = _contact.id,// 操作对象id
-                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                    oper_description = _dal.AddValue(_contact),
-                    remark = "保存联系人信息"
-                };          // 创建日志
-                new sys_oper_log_dal().Insert(add_contact_log);       // 插入日志
+                    company_name = _account.name,
+                    contact = _contact,
+                    //location = _location,  // 可能出现不添加联系人的情乱，地址单独插入
+                    udf = param.contact.udf
+                };  // 调用联系人新增的方法去新增联系人
+                new ContactBLL().Insert(insertContactParam,user.id);
+
+
+
+                //new crm_contact_dal().Insert(_contact);
+                //var add_contact_log = new sys_oper_log()
+                //{
+                //    user_cate = "用户",
+                //    user_id = user.id,
+                //    name = user.name,
+                //    phone = user.mobile == null ? "" : user.mobile,
+                //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
+                //    oper_object_id = _contact.id,// 操作对象id
+                //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                //    oper_description = _dal.AddValue(_contact),
+                //    remark = "保存联系人信息"
+                //};          // 创建日志
+                //new sys_oper_log_dal().Insert(add_contact_log);       // 插入日志
             }
 
             #endregion
