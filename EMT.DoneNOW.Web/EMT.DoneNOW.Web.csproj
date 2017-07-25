@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Company\UpdateContact.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
     <Content Include="Company\CompanyFindBack.aspx" />
@@ -237,6 +238,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Company\UpdateContact.aspx.cs">
+      <DependentUpon>UpdateContact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\UpdateContact.aspx.designer.cs">
+      <DependentUpon>UpdateContact.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contact\AddContact.aspx.cs">
       <DependentUpon>AddContact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
