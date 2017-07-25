@@ -135,7 +135,7 @@
     <Content Include="Company\DeleteCompany.aspx" />
     <Content Include="Company\LocationManage.aspx" />
     <Content Include="Company\ViewCompany.aspx" />
-    <Content Include="Contact.aspx" />
+    <Content Include="Contact\ViewContact.aspx" />
     <Content Include="Content\base.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -185,6 +185,8 @@
     <Content Include="Images\xm.png" />
     <Content Include="Index.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="Opportunity\LoseOpportunity.aspx" />
+    <Content Include="Opportunity\OpportunityAdd.aspx" />
     <Content Include="Scripts\Common\Address.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.zh-CN.js" />
@@ -300,12 +302,12 @@
     <Compile Include="Company\ViewCompany.aspx.designer.cs">
       <DependentUpon>ViewCompany.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Contact.aspx.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
+    <Compile Include="Contact\ViewContact.aspx.cs">
+      <DependentUpon>ViewContact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Contact.aspx.designer.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
+    <Compile Include="Contact\ViewContact.aspx.designer.cs">
+      <DependentUpon>ViewContact.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -337,6 +339,20 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Opportunity\LoseOpportunity.aspx.cs">
+      <DependentUpon>LoseOpportunity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\LoseOpportunity.aspx.designer.cs">
+      <DependentUpon>LoseOpportunity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityAdd.aspx.cs">
+      <DependentUpon>OpportunityAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityAdd.aspx.designer.cs">
+      <DependentUpon>OpportunityAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\SearchConditionFrame.aspx.cs">
