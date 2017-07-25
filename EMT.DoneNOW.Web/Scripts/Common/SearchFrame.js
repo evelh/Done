@@ -13,6 +13,14 @@
     formbody.getElementById("form1").submit();
 });
 
+$(function () {
+    $('#ms').change(function () {
+        console.log($(this).val());
+    }).multipleSelect({
+        width: '100%'
+    });
+});
+
 $(".form_datetime").datetimepicker({
     language: 'zh-CN',//显示中文
     format: 'yyyy-mm-dd',//显示格式

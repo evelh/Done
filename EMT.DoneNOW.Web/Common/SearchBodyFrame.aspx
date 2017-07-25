@@ -8,7 +8,8 @@
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/index.css" />
 	<link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../Content/NewContact.css"/>
+    <link rel="stylesheet" type="text/css" href="../Content/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../Content/searchList.css"/>
     <title></title>
 </head>
 <body>
@@ -59,7 +60,7 @@
                                 { %><img src="../Images/sort-<%=order %>.png" /> 
                             <%} %></th>
                         <%} %>
-						<th style="background:red url(../Images/data-selector.png) no-repeat center;display:none;">11</th>
+						<th style="background:red url(../Images/data-selector.png) no-repeat center;display:none;"><!--客户类型--></th>
 					</tr>
                     <%
                         var idPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID);
