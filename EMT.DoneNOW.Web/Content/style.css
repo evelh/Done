@@ -52,7 +52,7 @@ margin-top: 5px;margin-right:10px;cursor: pointer;}
 .activityTitlerighthr{margin: 0;height: 2px;clear: both;border: none;border-top: 1px solid #d3d3d3;}
 .Opportunity{width: 50px;height: 50px;margin: 0 10px 6px 0;}
 .PostContent{display: table-cell;   vertical-align: top;}
-.PostContent a{color: #376597;font-size: 12px;}
+.PostContent a{color: #376597;font-size: 12px;margin-right: 5px;}
 .PostContent h1{color: #333;font-size: 12px;height: 16px;line-height: 16px;margin: 0;padding: 0;}
 .PostContent p{color: #666;font-size: 12px;height: 16px;line-height: 16px;margin: 0;padding: 0;}
 .EntityFeedLevebottom{min-height: 50px;margin-bottom: 10px;padding: 10px 0 3px 10px;background-color: #F2F2F2;margin-left: 60px;border: 1px solid #E4E4E4; margin-right: 10px;}
@@ -60,7 +60,7 @@ margin-top: 5px;margin-right:10px;cursor: pointer;}
 .noteText span{display:block;float: none;margin: 0;padding: 0;}
 .noteText span a{margin: 0 5px;}
 .noteText .spanA a{color: gray;font-size: 12px;}
-
+.EntityFeedLevebottom2{margin-left: 100px;}
 
 
 

@@ -85,7 +85,7 @@
 		</ul>
 	</div>
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../Scripts/SearchBody.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         <% if (queryPage.Equals("客户查询")){ %>
         function EditCompany() {

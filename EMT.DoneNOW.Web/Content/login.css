@@ -3,29 +3,13 @@ body{background: url(../Images/loginbg.jpg) left top; position: relative;}
 .header{background: rgba(9,29,46,0.85);height: 60px;}
 .header .header-logo{padding: 10px 0 0 24px;}
 .header .header-login{height: 60px;padding: 0 24px 0 0;}
-    .header .header-login a i {
-        width: 15px;
-        height: 16px;
-        background: url(../Images/icon.png);
-        background-position: -313px -79px;
-        display: block;
-        overflow: hidden;
-        position: absolute;
-        left: 0;
-        top: 22px;
-    }
+.header .header-login a i{ width: 15px;height:16px;background: url(../Images/icon.png);background-position:-313px -79px ;display: block;overflow: hidden;
+position: absolute;left: 0;top: 22px;}
 .header .header-login a{height: 60px;line-height: 60px;color: #FFFFFF;font-size: 12px;padding:0 25px 0 25px;display: block;}
 .main-login{width: 400px;height: 320px;left: 50%;top: 50%;margin: -160px 0 0 -200px;background: #FFFFFF;}
-    .main-login .login-title {
-        background: #13273b url(../Images/title.png) no-repeat 125px 20px;
-        height: 64px;
-        width: 100%;
-    }
+.main-login .login-title{background: #13273b url(../Images/title.png) no-repeat 125px 20px;height: 64px;width: 100%;}
 .main-login li{width: 284px;margin: 13px auto 0;}
 .main-login li p{text-align: left;font-size:12px ;color: #0d3168;height: 21px;line-height: 21px;padding-left: 5px;}
-
-
-
 .layout-footer{max-width: 1150px;margin:0 auto;padding: 0 25px;}
 .layout-content {min-height: 600px;padding-bottom: 80px;}
 .layout-center {width: 1200px;text-align: left;margin: 0 auto;position: relative;}
@@ -41,11 +25,9 @@ body{background: url(../Images/loginbg.jpg) left top; position: relative;}
     background:rgba(255,255,255,0.9);
     box-shadow: 0px 5px 25px 5px #4c4c4c;
 }
-    .loginwrap .login-title {
-        background: #13273b url(../Images/title.png) no-repeat 125px 20px;
-        height: 64px;
-        width: 100%;
-    }
+.loginwrap .login-title{
+background: #13273b url(../Images/title.png) no-repeat 125px 20px;height: 64px;width: 100%;
+}
 .loginwrap .login-cnt{
     padding: 14px 58px 0 58px;
     
@@ -68,9 +50,10 @@ body{background: url(../Images/loginbg.jpg) left top; position: relative;}
     padding-left: 5px;
 }
 .forgetBtns{
-    color: #0d3168;
+    color: red;
     font-size: 14px;
-    float: right;
+    float: left;
+    display: none;
 }
 .login-submit{
     width: 100%;
