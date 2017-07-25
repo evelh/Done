@@ -139,7 +139,7 @@ namespace EMT.DoneNOW.Web
                 case "客户查询":
                     dics = new CompanyBLL().GetField();
                     contextMenu.Add(new PageContextMenuDto { text = "修改客户", click_function = "EditCompany()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "新增记录", click_function = "AddCompany()" });
 
                     PageContextMenuDto classcate = new PageContextMenuDto { text = "设置类别", click_function = "" };

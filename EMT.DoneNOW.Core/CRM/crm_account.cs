@@ -53,7 +53,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String no { get; set; }
         [DataMember]
-        public SByte? is_active { get; set; }
+        public SByte is_active { get; set; }
         [DataMember]
         public SByte? is_optout_survey { get; set; }
         [DataMember]

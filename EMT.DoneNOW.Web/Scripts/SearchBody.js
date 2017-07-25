@@ -1,6 +1,7 @@
 ﻿
 var entityid;
 var menu = document.getElementById("menu");
+
 function OpenConMenu(event,id) {
     entityid = id;
     var oEvent = event;
@@ -11,6 +12,17 @@ function OpenConMenu(event,id) {
     menu.style.left = Left + "px";
     return false;
 }
+
+$(".dn_tr").bind("contextmenu", function (event) {
+    var oEvent = event;
+    entityid = $(this).data("val");
+    menu.style.display = "block";
+    var Top = $(document).scrollTop() + oEvent.clientY
+    var Left = $(document).scrollLeft() + oEvent.clientX
+    menu.style.top = Top + "px";
+    menu.style.left = Left + "px";
+    return false;
+});
 
 document.onclick = function () {
     menu.style.display = "none";

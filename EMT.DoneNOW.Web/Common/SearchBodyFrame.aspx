@@ -59,7 +59,7 @@
                             if (idPara != null)
                                 id = rslt[idPara.name].ToString();
                             %>
-					<tr title="右键显示操作菜单" oncontextmenu="OpenConMenu(event,<%=id %>)">
+					<tr title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
                         <%foreach (var para in resultPara) { %>
 						<td><%=rslt[para.name] %></td>
                         <%} %>
@@ -90,6 +90,9 @@
         <% if (queryPage.Equals("客户查询")){ %>
         function EditCompany() {
             OpenWindow("../Company/EditCompany.aspx?id=" + entityid);
+        }
+        function ViewCompany() {
+            OpenWindow("../Company/ViewCompany.aspx?id=" + entityid);
         }
         function AddCompany() {
             OpenWindow("../Company/AddCompany.aspx?id=" + entityid);
