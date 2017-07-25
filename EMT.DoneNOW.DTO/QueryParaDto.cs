@@ -18,6 +18,9 @@ namespace EMT.DoneNOW.DTO
         public List<Para> query_params;     // 查询条件及查询值
     }
 
+    /// <summary>
+    /// 查询条件id和值
+    /// </summary>
     public class Para
     {
         public long id;             // 查询条件id
