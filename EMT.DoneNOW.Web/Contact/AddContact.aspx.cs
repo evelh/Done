@@ -60,7 +60,7 @@ namespace EMT.DoneNOW.Web
                 param.udf = list;
             }
 
-            var result = new ContactBLL().Insert(param, "");
+            var result = new ContactBLL().Insert(param, GetLoginUserId());
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
                 Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
