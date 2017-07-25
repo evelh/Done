@@ -10,9 +10,8 @@
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
-    <%--    <link rel="stylesheet" type="text/css" href="../Content/NewCompany.css" />--%>
-    <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
     <link href="../Content/index.css" rel="stylesheet" />
+    <link href="../Content/style.css" rel="stylesheet" />
     <style>
 
     </style>
@@ -577,8 +576,8 @@
 
 
 
-        <div class="content clear">22</div>
-        <div class="content clear">
+        <div class="content clear" style="display:none;"></div>
+        <div class="content clear" style="display:none;">
 
             <div class="left fl">
                 <ul>

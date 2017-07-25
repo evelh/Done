@@ -22,6 +22,7 @@ namespace EMT.DoneNOW.Web
         protected List<UserDefinedFieldValue> site_udfValueList = null; // 
         protected crm_account account = null;
         protected List<crm_location> location_list = null;   // 用户的所有地址
+       // protected crm_location defaultLocation = null;
         protected Dictionary<string, object> dic = null;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -34,7 +35,7 @@ namespace EMT.DoneNOW.Web
                 site_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.SITE, company_id, site_udfList);
                 account = new CompanyBLL().GetCompany(company_id);
                 location_list = new LocationBLL().GetLocationByCompany(company_id);
-
+               // defaultLocation = new LocationBLL().GetLocationByAccountId(company_id);
                 if (!IsPostBack)
                 {
                     // var company_id = Convert.ToInt64(Request.QueryString["id"]);
@@ -123,6 +124,10 @@ namespace EMT.DoneNOW.Web
                         var location = new LocationBLL().GetLocationByAccountId(account.id);
                         if (location != null)        // 如果该客户的地址是默认地址，不可更改为非默认，只能通过添加别的地址设置为默认这种方式去更改默认地址
                         {
+                            country_idInit.Value = location.country_id.ToString();
+                            province_idInit.Value = location.province_id.ToString();
+                            city_idInit.Value = location.city_id.ToString();
+                            district_idInit.Value = location.district_id.ToString();
                             //country_id.SelectedValue = location.country_id == null ? "0" : location.country_id.ToString();
                             //province_id.SelectedValue = location.province_id.ToString();
                             //city_id.SelectedValue = location.city_id.ToString();
@@ -181,8 +186,10 @@ namespace EMT.DoneNOW.Web
                 param.general_update.udf = list;
             }
             //try
-            //{
-            var result = new CompanyBLL().Update(param, GetLoginUserId());
+            //{out string updateLocationContact,out string updateFaxPhoneContact
+            string updateLocationContact = "";
+            string updateFaxPhoneContact = "";
+            var result = new CompanyBLL().Update(param, GetLoginUserId(),out updateLocationContact, out updateFaxPhoneContact);
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
                 Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
@@ -198,22 +205,21 @@ namespace EMT.DoneNOW.Web
             else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
             {
                 Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
-                Response.Redirect("Login.aspx");
+                Response.Redirect("../Login.aspx");
             }
-            //else if (result == ERROR_CODE.ERROR)                      //  出现相似名称,弹出新窗口，让用户决定修改还是新增
-            //{
-            //    Response.Write("<script>alert('含有相似名称的公司');</script>");
-            //}
             else if (result == ERROR_CODE.SUCCESS)                    // 修改用户成功
             {
-                Response.Write("<script>alert('修改客户成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
+                if(updateLocationContact==""&& updateFaxPhoneContact == "")
+                {
+                    Response.Write("<script>alert('修改客户成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
+                }
+                else
+                {
+                    Response.Redirect("UpdateContact.aspx?account_id="+param.general_update.id+"&updateLocationContact="+ updateLocationContact+ "&updateFaxPhoneContact="+ updateFaxPhoneContact);
+                }
+            
             }
-            //}
-            //catch (Exception)
-            //{
-            //    Response.Write("<script>alert('修改客户发生未知错误！');</script>");
-
-            //}
+          
 
         }
 

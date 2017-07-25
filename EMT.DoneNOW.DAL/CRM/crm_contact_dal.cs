@@ -139,5 +139,15 @@ namespace EMT.DoneNOW.DAL
             string sql = $"select * from crm_contact where location_id = {location_id} and delete_time = 0";
             return FindListBySql(sql);
         }
+
+        /// <summary>
+        /// 通过多个id去获取相对应的联系人信息
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public List<crm_contact> GetContactByIds(string ids)
+        {
+            return FindListBySql($"select * from crm_contact where id in ({ids}) and delete_time = 0 ");
+        }
     }
 }

@@ -88,7 +88,7 @@
                     <td>
                         <div class="clear">
                             <label>省份<span class=" red">*</span></label>
-                            <input id="province_idInit" value='<%=account.province_id %>' type="hidden" runat="server" />
+                            <input id="province_idInit" value='' type="hidden" runat="server" />
                             <select name="province_id" id="province_id">
                             </select>
                         </div>
@@ -98,7 +98,7 @@
                     <td>
                         <div class="clear">
                             <label>城市<span class=" red">*</span></label>
-                            <input id="city_idInit" value='<%=account.city_id %>' type="hidden" runat="server" />
+                            <input id="city_idInit" value='' type="hidden" runat="server" />
                             <select name="city_id" id="city_id">
                             </select>
                         </div>
@@ -108,7 +108,7 @@
                     <td>
                         <div class="clear">
                             <label>区县<span class=" red">*</span></label>
-                            <input id="district_idInit" value='<%=account.district_id %>' type="hidden" runat="server" />
+                            <input id="district_idInit" value='' type="hidden" runat="server" />
                             <select name="district_id" id="district_id">
                             </select>
                         </div>
@@ -306,7 +306,7 @@
 
         </div>
         <%--// location_list--%>
-        <div class="content clear">
+        <div class="content clear"  style="display:none;">
             <table style="text-align: left;" class="table table-hover">
                 <tr>
                     <th>地址类型</th>
@@ -363,7 +363,7 @@
             </table>
         </div>
 
-        <div class="content clear">
+        <div class="content clear"  style="display:none;">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
                 <tr>
                     <td>
@@ -421,7 +421,7 @@
         </div>
 
 
-        <div class="content clear">
+        <div class="content clear"  style="display:none;">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
 
@@ -494,7 +494,7 @@
 
 
 
-        <div class="content clear">
+        <div class="content clear"  style="display:none;">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
             </table>
 
@@ -503,7 +503,7 @@
 
 
 
-        <div class="content clear">
+        <div class="content clear"  style="display:none;">
                  <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
 
@@ -576,7 +576,7 @@
         <% //站点信息 预留   %>
 
 
-        <div class="content clear">
+        <div class="content clear"  style="display:none;">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
                 <tr>
                     <td>
