@@ -394,6 +394,7 @@
                         <div class="clear">
                             <label>新浪微博地址<span class="red"></span></label>
                             <asp:TextBox ID="weibo_url" runat="server"></asp:TextBox>
+                            <input type="button" class="Jump" value="跳转"/>
                         </div>
                     </td>
                 </tr>
@@ -402,6 +403,7 @@
                         <div class="clear">
                             <label>微信订阅号<span class="red"></span></label>
                             <asp:TextBox ID="wechat_mp_subscription" runat="server"></asp:TextBox>
+                            <input type="button" class="Jump" value="跳转"/>
                         </div>
                     </td>
                 </tr>
@@ -410,6 +412,7 @@
                         <div class="clear">
                             <label>微信服务号<span class="red"></span></label>
                             <asp:TextBox ID="wechat_mp_service" runat="server"></asp:TextBox>
+                            <input type="button" class="Jump" value="跳转"/>
                         </div>
                     </td>
                 </tr>
@@ -501,7 +504,72 @@
 
 
         <div class="content clear">
-            <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                 <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+
+
+                <% if (site_udfList != null && site_udfList.Count > 0)
+                    {
+
+                        foreach (var udf in site_udfList)
+                        {
+                            if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                            {%>
+                <tr>
+                    <td>
+                        <div class="clear">
+                            <label><%=udf.col_name %></label>
+                            <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+
+                        </div>
+                    </td>
+                </tr>
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
+                    {%>
+                <tr>
+                    <td>
+                        <div class="clear">
+                            <label><%=udf.col_name %></label>
+                            <textarea id="<%=udf.id %>" rows="2" cols="20">
+                                <%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>
+
+                            </textarea>
+
+                        </div>
+                    </td>
+                </tr>
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
+                    {%>
+                <tr>
+                    <td>
+                        <div class="clear">
+                            <label><%=udf.col_name %></label>
+
+                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+
+                        </div>
+                    </td>
+                </tr>
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
+                    {%>
+                <tr>
+                    <td>
+                        <div class="clear">
+                            <label><%=udf.col_name %></label>
+
+                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
+                        </div>
+                    </td>
+                </tr>
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                    {%>
+
+                <%}
+                        }
+                    } %>
             </table>
 
         </div>
@@ -652,6 +720,12 @@
             }
         });  // 直接关闭窗口
 
+
+        $(".Jump").click(function () {
+            $("a").attr("target", "_blank"); 
+            var url = $(this).prev().val();
+            window.open("http://"+url);
+        })
 
     })
     function deleteLocation(location_id) {

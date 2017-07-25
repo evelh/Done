@@ -131,7 +131,7 @@ namespace EMT.DoneNOW.BLL
                 update_user_id = user.id,
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 no = param.general.company_number,
-                parent_id = param.general.parent_company_name,
+               // parent_id = param.general.parent_company_name,
                 territory_id = param.general.territory_name,
                 market_segment_id = param.general.market_segment == 0 ? null : param.general.market_segment,
                 competitor_id = param.general.competitor == 0 ? null : param.general.competitor,
@@ -150,6 +150,11 @@ namespace EMT.DoneNOW.BLL
                 tax_identification = param.general.tax_id,
                 resource_id = param.general.account_manage == null ? 1 : (long)param.general.account_manage,
             };  //  创建客户实体类
+
+            if (!string.IsNullOrEmpty(param.general.parent_company_name))
+            {
+                _account.parent_id = Convert.ToInt64(param.general.parent_company_name);
+            }
             _dal.Insert(_account);                         // 将客户实体插入到表中
 
             var add_account_log = new sys_oper_log()

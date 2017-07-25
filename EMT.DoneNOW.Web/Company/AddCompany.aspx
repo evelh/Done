@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
     <link href="../Content/index.css" rel="stylesheet" />
     <style>
+
     </style>
 </head>
 <body runat="server">
@@ -81,7 +82,7 @@
                             <td>
                                 <div class="clear">
                                     <label>国家<span class=" red">*</span></label>
-                                    <input id="country_idInit" value='1' type="hidden" runat="server" />
+                                    <%--<input id="country_idInit" value='1' type="hidden" runat="server" />--%>
                                     <select name="country_id" id="country_id">
                                         <option value="1">中国</option>
                                     </select>
@@ -92,7 +93,7 @@
                             <td>
                                 <div class="clear">
                                     <label>省份<span class=" red">*</span></label>
-                                    <input id="province_idInit" value='5' type="hidden" runat="server" />
+                                    <%--<input id="province_idInit" value='5' type="hidden" runat="server" />--%>
                                     <select name="province_id" id="province_id">
                                     </select>
                                 </div>
@@ -102,7 +103,7 @@
                             <td>
                                 <div class="clear">
                                     <label>城市<span class=" red">*</span></label>
-                                    <input id="city_idInit" value='6' type="hidden" runat="server" />
+                                    <%--<input id="city_idInit" value='6' type="hidden" runat="server" />--%>
                                     <select name="city_id" id="city_id">
                                     </select>
                                 </div>
@@ -197,9 +198,9 @@
                             <td>
                                 <div class="clear">
                                     <label>联系人姓名<span class="num">1</span></label>
-                                    <input type="text" name="first_name" id="first_name" value="" style="width: 160px;" />
+                                    <input type="text" name="first_name" id="first_name" value="" style="width: 80px;" />
                                     <%-- <input type="text" name="" id="" value="" maxlength="2" style="width: 32px;" />--%>
-                                    <input type="text" name="last_name" id="last_name" value="" style="width: 165px;" />
+                                    <input type="text" name="last_name" id="last_name" value="" style="width: 80px;" />
                                 </div>
                             </td>
                         </tr>
@@ -292,7 +293,18 @@
                                     <asp:DropDownList ID="MarketSegment" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
-                       <%--     <tr>
+                            <%if (parent_account != null) { %>
+                                    <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>父客户名称</label>
+                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=parent_account.name %>" /><span onclick="chooseCompany('CompanyFindBack.aspx');" style="width: 30px; float: left; margin-left: -5px;">查找</span>
+                                        <input type="hidden" id="ParentComoanyNameHide" name="parent_company_name" value="<%=parent_account.id %>" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <%}else{ %>
+                               <%--     <tr>
                                 <td>
                                     <div class="clear">
                                         <label>父客户名称</label>
@@ -301,6 +313,8 @@
                                     </div>
                                 </td>
                             </tr>--%>
+                            <%} %>
+                    
                         <tr>
                             <td>
                                 <div class="clear">
@@ -575,7 +589,7 @@
                                 if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
                                 {%>
                     <li>
-                        <label><%=udf.col_name %></label>
+                        <label><%=udf.name %></label>
                         <input type="text" name="<%=udf.id %>" class="sl_cdt" />
 
                     </li>
@@ -583,23 +597,21 @@
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
                         {%>
                     <li>
-                        <label><%=udf.col_name %></label>
+                        <label><%=udf.name %></label>
                         <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
 
                     </li>
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
                         {%><li>
-                            <label><%=udf.col_name %></label>
-
+                            <label><%=udf.name %></label>
                             <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
-
                         </li>
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
                         {%>
                     <li>
-                        <label><%=udf.col_name %></label>
+                        <label><%=udf.name %></label>
 
                         <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
                     </li>
@@ -680,6 +692,16 @@
                 window.close();
             }
         });  // 直接关闭窗口
+
+        $("#first_name").blur(function () {
+            var firstName = $(this).val();
+            var lastName = $("#last_name").val();
+            if (firstName.length > 1 && lastName == "") {
+                var subName = firstName.substring(1, firstName.length)
+                $("#last_name").val(subName);
+                $(this).val(firstName.substring(0,1));
+            }
+        });
 
         function submitcheck() {
             var companyName = $("#company_name").val();          //  公司名称--必填项校验

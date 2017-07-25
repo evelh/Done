@@ -34,7 +34,7 @@ namespace EMT.DoneNOW.DTO
             public int? territory_name;         // 地域名称
             public int? market_segment;         // 市场领域
             public int? competitor;             // 竞争对手
-            public int? parent_company_name;    // 父客户名称
+            public string parent_company_name;    // 父客户名称
             public string web_site;            // 官网
             public string company_number;        // 客户编号
 
