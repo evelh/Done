@@ -9,7 +9,7 @@ h1,h2,h3,h4,h5,h6{font-weight:normal}
 h1{font-size:24px}h2{font-size:20px}h3{font-size:18px}h4{font-size:16px}h5{font-size:14px}h6{font-size:14px}
 i,b,em{font-style:normal;font-weight:normal}
 table{border-collapse:collapse;border-spacing:0; width:100%; background:#fff}
-td{padding:3px 5px;}
+td{padding:3px 5px;text-align: center;}
 /*th{font-weight:normal; background:#e7f4fe; height:40px}*/
 /*table,td,th{ border:1px solid #ddd}*/
 table caption{ font-size:16px; text-align:left; padding-bottom:10px;}

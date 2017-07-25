@@ -126,7 +126,8 @@ background:url(../Images/icon.png) no-repeat -309px -26px  ;outline: none;cursor
 #menu ul li ul li:hover{background: #e5e5e5;}
 #menu ul li:hover{background: #e5e5e5;}
 #menu ul li:hover ul {display: block;}
-
-
+#menu ul li .menu-i1{width: 20px;height: 100%;display: block;float: left;}
+#menu ul li .menu-i2{width: 20px;height: 100%;display: block;float: right;}
+#menu ul .disabled{color: #AAAAAA;}
 
 

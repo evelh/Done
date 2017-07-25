@@ -142,6 +142,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\index.css" />
     <Content Include="Content\login.css" />
+    <Content Include="Content\multiple-select.css" />
     <Content Include="Content\NewCompany.css" />
     <Content Include="Content\NewContact.css" />
     <Content Include="Content\Site.css" />
@@ -176,6 +177,7 @@
     <Content Include="Images\logo.png" />
     <Content Include="Images\logotitle.png" />
     <Content Include="Images\ml.png" />
+    <Content Include="Images\multiple-select.png" />
     <Content Include="Images\new.png" />
     <Content Include="Images\sjb.png" />
     <Content Include="Images\sort-asc.png" />
@@ -190,6 +192,7 @@
     <Content Include="Scripts\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Common\multiple-select.js" />
     <Content Include="Scripts\Common\SearchFrame.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\index.js" />
@@ -200,7 +203,7 @@
     <Content Include="Scripts\NewContact.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\SearchBody.js" />
+    <Content Include="Scripts\Common\SearchBody.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />

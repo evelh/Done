@@ -150,6 +150,26 @@ float: left;overflow: hidden;}
     background: #FFFFCC url(../Images/alert.png) no-repeat left center;
 }
 
+.ms-drop input[type="checkbox"] {
+    vertical-align: middle;
+	float: none;
+	margin: 0 !important;
+}
+.ms-parent {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    width: 49%  !important;
+    margin-left: 4%;
+}
+.ms-drop ul > li label {
+    font-weight: normal;
+    display: block;
+    white-space: nowrap;
+        width: auto;
+    float: none;
+}
+
 
 
 
