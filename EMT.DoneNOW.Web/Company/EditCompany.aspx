@@ -33,13 +33,13 @@
 
         <div class="nav-title">
             <ul class="clear">
-                <li class="boders">通用</li>
-                <li>地址信息</li>
-                <li>附加信息</li>
-                <li>用户自定义</li>
-                <li>子公司</li>
-                <li>站点配置</li>
-                <li>提醒</li>
+                <li class="boders" id="general">通用</li>
+                <li id="Location">地址信息</li>
+                <li id="Additional">附加信息</li>
+                <li id="UserDefined">用户自定义</li>
+                <li id="Subsidiaries">子公司</li>
+                <li id="SiteConfiguration">站点配置</li>
+                <li id="Alerts">提醒</li>
             </ul>
         </div>
 
@@ -502,7 +502,6 @@
         <% //子公司 预留  %>
 
 
-
         <div class="content clear"  style="display:none;">
                  <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
@@ -617,7 +616,7 @@
 </body>
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="../Scripts/NewContact.js" type="text/javascript" charset="utf-8"></script>
+<%--<script src="../Scripts/NewContact.js" type="text/javascript" charset="utf-8"></script>--%>
 <script src="../Scripts/index.js"></script>
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
@@ -643,7 +642,6 @@
                 $("#TaxRegion").removeAttr("disabled");
             }
         });  // 选中免税，税区不可在进行编辑的事件处理
-
 
         $("#save_close").click(function () {
             var companyName = $("#company_name").val();          //  公司名称--必填项校验
@@ -699,8 +697,6 @@
 
         });   // 保存并关闭的事件
 
-
-
         $("#close").click(function () {
             if (navigator.userAgent.indexOf("MSIE") > 0) {
                 if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
@@ -726,22 +722,76 @@
             var url = $(this).prev().val();
             window.open("http://"+url);
         })
+        var conteneClickTimes = 0;       // 定义tab页跳转点击次数，免得一直提醒
+        $.each($(".nav-title li"), function (i) {
+            $(this).click(function () {
+               
+                if ($(this).attr("id") != "general") {
+                    var companyName = $("#company_name").val();
+                    if (companyName == "") {
+                        alert("请输入客户名称");
+                        return false;
+                    }
+                    var country = $("#country_id").val();
+                    if (country == 0){
+                        alert("请选择国家");
+                        return false;
+                    }
+                    var province = $("#province_id").val();
+                    if (province == 0){
+                        alert("请选择省份");
+                        return false;
+                    }
+                    var city = $("#city_id").val();
+                    if (city == 0){
+                        alert("请选择城市");
+                        return false;
+                    }
+                    var district = $("#district_id").val();
+                    if (district == 0){
+                        alert("请选择区县");
+                        return false;
+                    }
+                    var address = $("#address").val();
+                    if (address == ""){
+                        alert("请输入地址");
+                        return false;
+                    }
+                    var phone = $("#Phone").val();
+                    if (phone == ""){
+                        alert("请输入电话");
+                        return false;
+                    }
+                    var companytype = $("#CompanyType").val();
+                    if (companytype == 0){
+                        alert("请选择公司类型");
+                        return false;
+                    }
+                    var accountManger = $("#AccountManger").val();
+                    if (accountManger == 0){
+                        alert("请选择客户经理");
+                        return false;
+                    }
 
+                    $(this).addClass("boders").siblings("li").removeClass("boders");
+                    $(".content").eq(i).show().siblings(".content").hide();
+
+                }
+                else {
+                    $(this).addClass("boders").siblings("li").removeClass("boders");
+                    $(".content").eq(i).show().siblings(".content").hide();
+                }
+
+               
+
+
+            })
+        });
     })
     function deleteLocation(location_id) {
         if (confirm("确认删除地址吗？")) {
             var url = "Tools/AddressAjax.ashx?LocationId =" + location_id;
-            //requestData(url, "", function (data) {
-            //    if (data == "Occupy") {
-            //        alert('该地址已被引用，请更改后删除');
-            //    }
-            //    else if (data == "Fail") {
-            //        alert('地址删除失败');
-            //    }
-            //    else if (data == "Success") {
-            //        alert('地址删除成功');
-            //    }
-            //})
+
             $.ajax({
                 type: "GET",
                 url: "../Tools/AddressAjax.ashx?act=delete&LocationId=" + location_id,
