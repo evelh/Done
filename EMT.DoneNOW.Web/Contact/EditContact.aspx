@@ -1,18 +1,17 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddContact.aspx.cs" Inherits="EMT.DoneNOW.Web.AddContact" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditContact.aspx.cs" Inherits="EMT.DoneNOW.Web.EditContact" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>New Contact</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Edit Contact</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/index.css" />
     <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/contact.css" />
 </head>
-
 <body runat="server">
    <form id="AddCompany" name="AddCompany" runat="server">
          <div class="header">添加联系人</div>
@@ -39,7 +38,7 @@
         </div>
           
         <div class="content clear">
-			<table border="none" cellspacing="" cellpadding="" style="width:400px;margin-left: 40px;">
+			<table border="none" cellspacing="" cellpadding="" style="width: 380px;margin-left: 40px;">
 				<tr>
 					<th>
 						<h1>自助服务台状态</h1>
@@ -70,11 +69,8 @@
                     <td>
                         <div class="clear">
                             <label>联系人姓名<span class="num"></span></label>
-                            <div class="inputTwo">
-										<input type="text" name="first_name" id="first_name" value="">
-										<span>-</span>
-										<input type="text" name="last_name" id="last_name" value="">
-								</div>
+                            <input type="text" name="first_name" id="first_name" value="" style="width: 160px;" />                       
+                            <input type="text" name="last_name" id="last_name" value="" style="width: 165px;" />
                         </div>
                     </td>
                 </tr>
@@ -93,9 +89,11 @@
                     <td>
                         <div class="clear">
                             <label>国家<span class=" red">*</span></label>
-                            <input id="country_idInit" value='1' type="hidden" runat="server" />
                             <select name="country_id" id="country_id">
-                                <option value="1">中国</option>
+                                <option value="1">11111111111</option>
+                                <option value="2">22222222222</option>
+                                <option value="3">33333333333</option>
+                                <option value="4">44444444444</option>
                             </select>
                         </div>
                     </td>
@@ -104,8 +102,12 @@
                     <td>
                         <div class="clear">
                             <label>省份<span class=" red">*</span></label>
-                            <input id="province_idInit" type="hidden" runat="server" />
+
                             <select name="province_id" id="province_id">
+                                <option value="1">11111111111</option>
+                                <option value="2">22222222222</option>
+                                <option value="3">33333333333</option>
+                                <option value="4">44444444444</option>
                             </select>
                         </div>
                     </td>
@@ -114,8 +116,12 @@
                     <td>
                         <div class="clear">
                             <label>城市<span class=" red">*</span></label>
-                            <input id="city_idInit" type="hidden" runat="server" />
+
                             <select name="city_id" id="city_id">
+                                <option value="1">11111111111</option>
+                                <option value="2">22222222222</option>
+                                <option value="3">33333333333</option>
+                                <option value="4">44444444444</option>
                             </select>
                         </div>
                     </td>
@@ -124,8 +130,11 @@
                     <td>
                         <div class="clear">
                             <label>区县<span class=" red">*</span></label>
-                            <input id="district_idInit" type="hidden" runat="server" />
                             <select name="district_id" id="district_id">
+                                <option value="1">11111111111</option>
+                                <option value="2">22222222222</option>
+                                <option value="3">33333333333</option>
+                                <option value="4">44444444444</option>
                             </select>
                         </div>
                     </td>
@@ -135,7 +144,7 @@
 					<td>
 						<div class="clear">
 							<label>激活<span class="red">*</span></label>
-							<input type="checkbox" name="active" id="active" value="" />
+							<input type="checkbox" name="" id="" value="" />
 						</div>
 					</td>
 				</tr>
@@ -167,6 +176,9 @@
 					</td>
 				</tr>
 
+
+
+
                 <tr>
 					<td>
 						<div class="clear">
@@ -187,7 +199,7 @@
                
 			</table>
            
-			<table border="none" cellspacing="" cellpadding="" style="width:400px;margin-left: 40px;">
+			<table border="none" cellspacing="" cellpadding="" style="width: 380px;margin-left: 40px;">
 				<tr>
 					<td>
 						<img src="img/pop.jpg" />
@@ -196,10 +208,14 @@
 				</tr>
 				<tr>
 					<td>
-                        <div class="clear"><p class="font">提示</p></div>			
-                        <asp:CheckBox ID="CheckBox1" runat="server" /> 任务和工单中允许发邮件<br/>
+                        <div class="clear"><p class="font">提示</p></div>
+					<%--	<div class="clear"><p class="font">提示</p></div>
+						<div class="clear">	--%>			
+                          <%--<form  method="get"> --%>  <asp:CheckBox ID="CheckBox1" runat="server" /> 任务和工单中允许发邮件<br/>
                         <asp:CheckBox ID="CheckBox2" runat="server" />拒绝满意度调查 <br/>
-                        <asp:CheckBox ID="CheckBox3" runat="server" />拒绝联系人组邮件<br/                                                                         					
+                        <asp:CheckBox ID="CheckBox3" runat="server" />拒绝联系人组邮件<br/                                                 
+                           <%--</form> --%>
+						<%--</div>--%>
                     </td>
                 </tr>
                 <tr>
@@ -239,102 +255,13 @@
 				</tr>
 															
 			</table>
-		</div>
-
-       <div class="content clear" style="display:none">
-            <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">             
-                 <tr>
-                    <td>
-                        <div class="clear">
-                            <label>微博地址<span class="red"></span></label>
-                            <asp:TextBox ID="weibo_url" runat="server"></asp:TextBox>
-                        </div>
-                    </td>
-                </tr>
-
-                 <tr>
-					<td>
-						<div class="clear">
-							<label>QQ号<span class="red">*</span></label>
-                            <asp:TextBox ID="QQ_url" runat="server"></asp:TextBox>							
-						</div>
-					</td>
-				 </tr>
-
-                <tr>
-					<td>
-						<div class="clear">
-							<label>微信号<span class="red">*</span></label>
-							<asp:TextBox ID="WeChat_url" runat="server"></asp:TextBox>		
-						</div>
-					</td>
-				 </tr>
-            </table>
-       </div>   
-
-       <div class="content clear" style="display:none">
-                <p class="informationTitle"><i></i>联系人自定义</p>
-                <div>
-                    <div>
-                        <ul>
-                            <% if (contact_udfList != null && contact_udfList.Count > 0)
-                                {
-                                    foreach (var udf in contact_udfList)
-                                    {
-                                        if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
-                                        {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
-                                <input type="text" name="<%=udf.id %>" class="sl_cdt" />
-                            </li>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
-                                {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
-                                <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
-                            </li>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
-                                {%><li>
-                                    <label><%=udf.col_name %></label>
-                                    <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
-                                </li>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
-                                {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
-                                <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
-                            </li>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
-                                {%>
-                            <%}
-                                    }
-                                } %>
-                        </ul>
-                    </div>
-                </div>
-       </div>
-
-       <div class="content clear" style="display:none">
-       </div>
-    </form>
-
-    <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../Scripts/NewContact.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript">
-     $(document).ready(function () {
-        InitArea();
-        });
-
-     </script>
+		</div>   
+   </form>
     <script>
         function OpenWindowCompany() {
             window.open("../Common/SelectCallBack.aspx", "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
         }
     </script>
 </body>
+   
 </html>
