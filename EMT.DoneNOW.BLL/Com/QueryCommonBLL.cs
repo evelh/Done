@@ -18,6 +18,36 @@ namespace EMT.DoneNOW.BLL
         private const int _pageSize = 20;     // 默认查询分页大小
         private const int _sqlExpireMins = 1 * 60;   // sql查询语句缓存时间
 
+        public QueryResultDto getDataTest()
+        {
+            string sql = "select id as 客户id,name as 客户名称,(select name from d_general where  id=type_id) as 客户类型,no as 客户编号,name as 客户名称return from crm_account where delete_time=0";
+            QueryResultDto result = new QueryResultDto();
+
+            var table = new sys_query_type_user_dal().ExecuteDataTable(sql);
+            List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
+            foreach (DataRow row in table.Rows)
+            {
+                Dictionary<string, object> column = new Dictionary<string, object>();
+                foreach (DataColumn col in table.Columns)
+                {
+                    column.Add(col.ColumnName, row[col.ColumnName]);
+                }
+                list.Add(column);
+            }
+
+            result.count = table.Rows.Count;
+            result.query_page_name = "";
+            result.order_by = "";
+            result.page = 1;
+            result.page_count = 1;
+            result.page_size = 50;
+            //result.query_id = queryId;
+            result.query_id = "";
+            result.result = list;
+
+            return result;
+        }
+
         /// <summary>
         /// 根据查询条件查询数据
         /// </summary>

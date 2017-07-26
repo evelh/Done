@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @author zhixin wen <wenzhixin2010@gmail.com>
  * @version 1.2.0
  *
@@ -611,8 +611,8 @@
         filterAcceptOnEnter: false,
         hideOptgroupCheckboxes: false,
 
-        selectAllText: 'Select all',
-        allSelected: 'All selected',
+        selectAllText: '全选',
+        allSelected: '选择全部',
         countSelected: '# of % selected',
         noMatchesFound: 'No matches found',
 

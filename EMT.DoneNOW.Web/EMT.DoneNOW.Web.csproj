@@ -158,7 +158,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="AddressTest.aspx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
     <Content Include="Images\ButtonBarIcons.png" />
@@ -179,6 +178,7 @@
     <Content Include="Images\ml.png" />
     <Content Include="Images\multiple-select.png" />
     <Content Include="Images\new.png" />
+    <Content Include="Images\search.png" />
     <Content Include="Images\sjb.png" />
     <Content Include="Images\sort-asc.png" />
     <Content Include="Images\sort-desc.png" />
@@ -422,13 +422,6 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="AddressTest.aspx.cs">
-      <DependentUpon>AddressTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AddressTest.aspx.designer.cs">
-      <DependentUpon>AddressTest.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

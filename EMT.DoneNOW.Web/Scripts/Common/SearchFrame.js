@@ -9,16 +9,7 @@
     }
     formbody.getElementById("conditions").innerHTML = inner;
     formbody.getElementById("search_id").value = "";
-    formbody.getElementById("show").value = "1";
     formbody.getElementById("form1").submit();
-});
-
-$(function () {
-    $('#ms').change(function () {
-        console.log($(this).val());
-    }).multipleSelect({
-        width: '100%'
-    });
 });
 
 $(".form_datetime").datetimepicker({

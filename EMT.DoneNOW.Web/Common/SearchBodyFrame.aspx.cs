@@ -17,24 +17,19 @@ namespace EMT.DoneNOW.Web
         protected QueryResultDto queryResult = null;            // 查询结果数据
         protected List<QueryResultParaDto> resultPara = null;   // 查询结果列信息
         protected List<PageContextMenuDto> contextMenu = null;  // 右键菜单信息
-        protected List<DictionaryEntryDto> queryParaValue = new List<DictionaryEntryDto>();  // 查询条件
-        protected string flag;
+        protected List<DictionaryEntryDto> queryParaValue = new List<DictionaryEntryDto>();  // 查询条件和条件值
         protected void Page_Load(object sender, EventArgs e)
         {
             queryPage = HttpContext.Current.Request.QueryString["type"];
             if (string.IsNullOrEmpty(queryPage))
             {
-                queryPage = HttpContext.Current.Request.QueryString["search_page"];
-                if (string.IsNullOrEmpty(queryPage))
-                    queryPage = "客户查询";
+                queryPage = "客户查询";
             }
             InitData();
             GetMenus();
-            flag = HttpContext.Current.Request.QueryString["show"];
-            if (flag != null && flag.Equals("1"))
+            string flag = HttpContext.Current.Request.QueryString["show"];
+            if (string.IsNullOrEmpty(flag) || !flag.Equals("1"))
                 QueryData();
-            else
-                flag = "";
         }
 
         /// <summary>
@@ -86,7 +81,7 @@ namespace EMT.DoneNOW.Web
 
             if (queryResult == null)  // 不使用缓存或缓存过期
             {
-                var para = bll.GetConditionPara(GetLoginUserId(), queryPage);
+                var para = bll.GetConditionPara(GetLoginUserId(), queryPage);   // 查询条件信息
                 QueryParaDto queryPara = new QueryParaDto();
                 queryPara.query_params = new List<Para>();
                 foreach (var p in para)

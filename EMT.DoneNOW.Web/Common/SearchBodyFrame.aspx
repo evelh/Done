@@ -18,8 +18,7 @@
             <input type="hidden" name="page_num" <%if (queryResult != null) {%>value="<%=queryResult.page %>"<%} %> />
             <input type="hidden" id="search_id" name="search_id" <%if (queryResult != null) {%>value="<%=queryResult.query_id %>"<%} %> />
             <input type="hidden" id="order" name="order" <%if (queryResult != null) {%>value="<%=queryResult.order_by %>"<%} %> />
-            <input type="hidden" id="show" name="show" value="<%=flag %>" />
-            <input type="hidden" id="search_page" name="search_page" value="<%=queryPage %>" />
+            <input type="hidden" id="type" name="type" value="<%=queryPage %>" />
             <div id="conditions">
                 <%foreach (var para in queryParaValue)
                     { %>
@@ -60,26 +59,36 @@
                                 { %><img src="../Images/sort-<%=order %>.png" /> 
                             <%} %></th>
                         <%} %>
-						<th style="background:red url(../Images/data-selector.png) no-repeat center;display:none;"><!--客户类型--></th>
 					</tr>
                     <%
-                        var idPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID);
-                        foreach (var rslt in queryResult.result) {
-                            string id = "0";
-                            if (idPara != null)
-                                id = rslt[idPara.name].ToString();
+                        if (queryResult.count==0)
+                        {
                             %>
-					<tr title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
-                        <%foreach (var para in resultPara) { 
-                                if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
-                                    || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
-                                    || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
-                                    continue;
+                    <tr><td align="center" style="color:red;">选定的条件未查找到结果</td></tr>
+                    <%
+                        }
+                        else
+                        { 
+                            var idPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID);
+                            foreach (var rslt in queryResult.result) {
+                                string id = "0";
+                                if (idPara != null)
+                                    id = rslt[idPara.name].ToString();
                                 %>
-						<td><%=rslt[para.name] %></td>
-                        <%} %>
-					</tr>
-                    <%} %>
+					    <tr title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
+                            <%foreach (var para in resultPara) { 
+                                    if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
+                                        || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
+                                        || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
+                                        continue;
+                                    %>
+						    <td><%=rslt[para.name] %></td>
+                            <%} // foreach
+                                %>
+					    </tr>
+                        <%} // foreach
+                    } // else
+                        %>
 				</table>
 			</div>
         <%} %>
@@ -111,7 +120,7 @@
             OpenWindow("../Company/ViewCompany.aspx?id=" + entityid);
         }
         function AddCompany() {
-            OpenWindow("../Company/AddCompany.aspx?id=" + entityid);
+            OpenWindow("../Company/AddCompany.aspx");
         }
         <%}%>
     </script>
