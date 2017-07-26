@@ -9,6 +9,6 @@
 </head>
 <frameset id="SearchFrameSet" name="SearchFrameSet" rows="400,*" cols="100%">
     <frame src="SearchConditionFrame.aspx?type=<%=this.searchName %>" id="SearchCondition"></frame>
-    <frame src="SearchBodyFrame.aspx?type=<%=this.searchName %>" id="SearchBody"></frame>
+    <frame src="SearchBodyFrame.aspx?type=<%=this.searchName %>&show=1" id="SearchBody"></frame>
 </frameset>
 </html>

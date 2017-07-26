@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css"/>
     <link rel="stylesheet" type="text/css" href="../Content/multiple-select.css"/>
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+    <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <title></title>
 </head>
 <body>
@@ -62,7 +63,7 @@
 								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
-							<select id="ms" multiple="multiple">
+							<select id="cms" multiple="multiple">
                                 <%foreach (var v in condition[i].values) { %>
                                 <option value="<%=v.val %>"><%=v.show %></option>
                                 <%} %>
@@ -104,11 +105,21 @@
 								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
-							<select id="ms" multiple="multiple">
+                            <input type="hidden" id="cmsh<%=condition[i].id %>" name="<%=condition[i].id %>" class="sl_cdt" />
+							<select id="cms<%=condition[i].id %>" multiple="multiple">
                                 <%foreach (var v in condition[i].values) { %>
                                 <option value="<%=v.val %>"><%=v.show %></option>
                                 <%} %>
 				            </select>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#cms<%=condition[i].id %>').change(function () {
+                                        $('#cmsh<%=condition[i].id %>').val($(this).val());
+                                    }).multipleSelect({
+                                        width: '100%'
+                                    });
+                                });
+                            </script>
                         <%}%>
 						</div>
 					</td>
@@ -146,7 +157,7 @@
 								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
-							<select id="ms" multiple="multiple">
+							<select id="cms" multiple="multiple">
                                 <%foreach (var v in condition[i].values) { %>
                                 <option value="<%=v.val %>"><%=v.show %></option>
                                 <%} %>
@@ -159,7 +170,6 @@
 			</table>
 		</div>
 	</div>
-    <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Scripts/bootstrap-datetimepicker.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Scripts/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Scripts/index.js" type="text/javascript" charset="utf-8"></script>

@@ -34,7 +34,8 @@ document.onclick = function () {
 }
 
 function OpenWindow(winname) {
-    window.open(winname, "_blank", "toolbar=yes, location=yes,directories=no,status=no, menubar=yes, scrollbars=yes,resizable=no, copyhistory=yes, width=600, height=600,top=150,left=300")
+    window.open(winname, 'new', 'left=200,top=200,width=600,height=800', false);
+    //window.open(winname, "_blank", "toolbar=yes, location=yes,directories=no,status=no, menubar=yes, scrollbars=yes,resizable=no, copyhistory=yes, width=600, height=600,top=150,left=300")
 }
 
 //实现点击document，自定义菜单消失
@@ -55,9 +56,4 @@ function ChangeOrder(para) {
         $("#order").val(para + " asc");
     }
     $("#form1").submit();
-}
-
-// 打开窗口查看实体
-function OpenNewWindow(id) {
-
 }
