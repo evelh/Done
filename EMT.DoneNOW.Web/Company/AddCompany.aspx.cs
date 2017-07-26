@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using EMT.DoneNOW.BLL;
+using EMT.DoneNOW.Core;
 
 namespace EMT.DoneNOW.Web
 {
@@ -14,6 +15,7 @@ namespace EMT.DoneNOW.Web
         protected List<UserDefinedFieldDto> company_udfList = null;      // 客户自定义
         protected List<UserDefinedFieldDto> contact_udfList = null;      // 联系人自定义
         protected List<UserDefinedFieldDto> site_udfList = null; // 站点自定义
+        protected crm_account parent_account = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -86,6 +88,12 @@ namespace EMT.DoneNOW.Web
                 todo_action_type.DataBind();
                 todo_action_type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 #endregion
+            }
+            var parent_id = Request.QueryString["parent_id"];
+            if (!string.IsNullOrEmpty(parent_id))
+            {
+                parent_account = new CompanyBLL().GetCompany(Convert.ToInt64(parent_id));
+
             }
             company_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);
             contact_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT);

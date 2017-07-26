@@ -131,7 +131,7 @@ namespace EMT.DoneNOW.BLL
                 update_user_id = user.id,
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 no = param.general.company_number,
-                parent_id = param.general.parent_company_name,
+               // parent_id = param.general.parent_company_name,
                 territory_id = param.general.territory_name,
                 market_segment_id = param.general.market_segment == 0 ? null : param.general.market_segment,
                 competitor_id = param.general.competitor == 0 ? null : param.general.competitor,
@@ -150,6 +150,11 @@ namespace EMT.DoneNOW.BLL
                 tax_identification = param.general.tax_id,
                 resource_id = param.general.account_manage == null ? 1 : (long)param.general.account_manage,
             };  //  创建客户实体类
+
+            if (!string.IsNullOrEmpty(param.general.parent_company_name))
+            {
+                _account.parent_id = Convert.ToInt64(param.general.parent_company_name);
+            }
             _dal.Insert(_account);                         // 将客户实体插入到表中
 
             var add_account_log = new sys_oper_log()
@@ -549,12 +554,14 @@ namespace EMT.DoneNOW.BLL
         /// 更新客户信息
         /// </summary>
         /// <returns></returns>
-        public ERROR_CODE Update(CompanyUpdateDto param, long user_id)
+        public ERROR_CODE Update(CompanyUpdateDto param, long user_id, out string updateLocationContact,out string updateFaxPhoneContact)
         {
-
+            updateFaxPhoneContact = "";
+            updateLocationContact = "";
             // 对必填的字段进行非空验证
             if (string.IsNullOrEmpty(param.general_update.company_name) || string.IsNullOrEmpty(param.general_update.phone) || string.IsNullOrEmpty(param.general_update.address))
             {
+             
                 //dic.Add(false, null);
                 //return dic;
                 return ERROR_CODE.PARAMS_ERROR;
@@ -568,16 +575,6 @@ namespace EMT.DoneNOW.BLL
             if (_dal.ExistAccountPhone(param.general_update.phone, param.general_update.id))    // 客户电话的唯一性校验 todo - 修改时 客户名称的唯一校验 
                 return ERROR_CODE.PHONE_OCCUPY;   //  查找到重复信息，返回电话名称被占用
 
-
-            //var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
-            //var user = new UserInfoDto()
-            //{
-            //    id = 1,
-            //    email = "zhufei@test.com",
-            //    mobile = "10086",
-            //    name = "zhufei_test",
-            //    security_Level_id = 0
-            //};
 
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
@@ -980,41 +977,36 @@ namespace EMT.DoneNOW.BLL
 
 
             #region TODO 修改地址或者电话，传真的时候对页面的反馈
-            //if (!new_location.Equals(old_location))      // 如果修改了地址，该地被其他联系人引用，则弹出窗口，提示用户会同步修改的联系人 TODO-- 如何提示
-            //{
-            //    var contactAllList = new crm_contact_dal().GetContactByAccounAndLocationId(new_company_value.id, old_location.id);  // 这个客户所有的联系人
-            //}
-            //// 如果修改了电话和传真，则弹出窗口，显示联系人列表供用户用户选择是否同步替换。    TODO
-            //if ((!old_company_value.phone.Equals(new_company_value.phone)) || (!old_company_value.fax.Equals(new_company_value.fax)))   // 电话和传真有一个有更改时
-            //{
-            //    var contactList = new crm_contact_dal().GetContactByAccountId(new_company_value.id);    // 获取到所有的这个客户的联系人
-            //    var update_contacts = "1,2,3,4,5,6,7,8,9";    // 首先定义有九个联系人信息被更改
-            //    var con_list = update_contacts.Split(',');
-            //    foreach (var item in con_list)
-            //    {
-            //        var contact = new crm_contact_dal().FindById(Convert.ToInt64(item));   // 获取到对应的联系人信息
-            //        if (contact != null)
-            //        {
-            //            contact.phone = param.general_update.phone;
-            //            contact.fax = param.general_update.fax;
-            //            new crm_contact_dal().Update(contact);                   // 修改联系人
-            //            new sys_oper_log_dal().Insert(new sys_oper_log()
-            //            {
-            //                user_cate = "用户",
-            //                user_id = user.id,
-            //                name = user.name,
-            //                phone = user.mobile == null ? "" : user.mobile,
-            //                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-            //                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
-            //                oper_object_id = contact.id,
-            //                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-            //                oper_description = _dal.CompareValue(contactList.FirstOrDefault(_ => _.id == contact.id), contact),
-            //                remark = "修改联系人电话或传真",
-            //            });    // 插入更改日志
-            //        }
-            //    }
+            if (!new_location.Equals(old_location))      // 如果修改了地址，该地被其他联系人引用，则弹出窗口，提示用户会同步修改的联系人 TODO-- 如何提示
+            {
+                var contactAllList = new crm_contact_dal().GetContactByAccounAndLocationId(new_company_value.id, old_location.id);  // 这个客户所有的联系人
+                //updateLocationContact = contactAllList.Select(_ => _.id).ToList().ToString();
+                if (contactAllList != null && contactAllList.Count > 0)
+                {
+                    foreach (var item in contactAllList)
+                    {
+                        updateLocationContact += item.id.ToString()+",";
+                    }                 
+                }
+            }
+            // 如果修改了电话和传真，则弹出窗口，显示联系人列表供用户用户选择是否同步替换。    TODO
+            if ((!old_company_value.phone.Equals(new_company_value.phone)) || (!old_company_value.fax.Equals(new_company_value.fax)))   // 电话和传真有一个有更改时
+            {
+                var contactList = new crm_contact_dal().GetContactByAccountId(new_company_value.id);    // 获取到所有的这个客户的联系人
+                if (contactList != null && contactList.Count > 0)
+                {
+                    //  updateFaxPhoneContact
+                    foreach (var item in contactList)
+                    {
+                        updateFaxPhoneContact += item.id.ToString() + ",";
+                    }
+                }
 
-            //}
+            }
+            if (updateLocationContact != "")
+                updateLocationContact = updateLocationContact.Substring(0, updateLocationContact.Length - 1);
+            if (updateFaxPhoneContact != "")
+                updateFaxPhoneContact = updateFaxPhoneContact.Substring(0, updateFaxPhoneContact.Length-1);
             #endregion
 
 

@@ -58,33 +58,6 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.DropDownList sufix;
         
         /// <summary>
-        /// country_idInit 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden country_idInit;
-        
-        /// <summary>
-        /// province_idInit 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden province_idInit;
-        
-        /// <summary>
-        /// city_idInit 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden city_idInit;
-        
-        /// <summary>
         /// district_idInit 控件。
         /// </summary>
         /// <remarks>

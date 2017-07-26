@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Company\UpdateContact.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
     <Content Include="Company\CompanyFindBack.aspx" />
@@ -137,16 +138,15 @@
     <Content Include="Company\ViewCompany.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Contact\EditContact.aspx" />
+    <Content Include="Contact\ViewContact.aspx" />
     <Content Include="Content\base.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
-    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\index.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\multiple-select.css" />
-    <Content Include="Content\NewCompany.css" />
-    <Content Include="Content\NewContact.css" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\searchList.css" />
     <Content Include="Content\style.css" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
@@ -188,6 +188,8 @@
     <Content Include="Images\xm.png" />
     <Content Include="Index.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="Opportunity\LoseOpportunity.aspx" />
+    <Content Include="Opportunity\OpportunityAdd.aspx" />
     <Content Include="Scripts\Common\Address.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.zh-CN.js" />
@@ -236,6 +238,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Company\UpdateContact.aspx.cs">
+      <DependentUpon>UpdateContact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\UpdateContact.aspx.designer.cs">
+      <DependentUpon>UpdateContact.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contact\AddContact.aspx.cs">
       <DependentUpon>AddContact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -304,12 +313,12 @@
     <Compile Include="Company\ViewCompany.aspx.designer.cs">
       <DependentUpon>ViewCompany.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Contact.aspx.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
+    <Compile Include="Contact\ViewContact.aspx.cs">
+      <DependentUpon>ViewContact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Contact.aspx.designer.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
+    <Compile Include="Contact\ViewContact.aspx.designer.cs">
+      <DependentUpon>ViewContact.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contact\EditContact.aspx.cs">
       <DependentUpon>EditContact.aspx</DependentUpon>
@@ -348,6 +357,20 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Opportunity\LoseOpportunity.aspx.cs">
+      <DependentUpon>LoseOpportunity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\LoseOpportunity.aspx.designer.cs">
+      <DependentUpon>LoseOpportunity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityAdd.aspx.cs">
+      <DependentUpon>OpportunityAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityAdd.aspx.designer.cs">
+      <DependentUpon>OpportunityAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\SearchConditionFrame.aspx.cs">

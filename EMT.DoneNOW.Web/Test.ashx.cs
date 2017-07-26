@@ -48,7 +48,7 @@ namespace EMT.DoneNOW.Web
             param.general.territory_name = Convert.ToInt32(context.Request.Form["TerritoryName"]);
             param.general.market_segment = Convert.ToInt32(context.Request.Form["MarketSegment"]);
             param.general.competitor = Convert.ToInt32(context.Request.Form["Competitor"]);
-            param.general.parent_company_name = Convert.ToInt32(context.Request.Form["ParentComoanyName"]);
+            param.general.parent_company_name = context.Request.Form["ParentComoanyName"];
             param.general.web_site = context.Request.Form["WebSite"];
             param.general.company_number = context.Request.Form["CompanyNumber"];
             var companyBll = new CompanyBLL();

@@ -88,7 +88,7 @@
                     <td>
                         <div class="clear">
                             <label>省份<span class=" red">*</span></label>
-                            <input id="province_idInit" value='<%=account.province_id %>' type="hidden" runat="server" />
+                            <input id="province_idInit" value='' type="hidden" runat="server" />
                             <select name="province_id" id="province_id">
                             </select>
                         </div>
@@ -98,7 +98,7 @@
                     <td>
                         <div class="clear">
                             <label>城市<span class=" red">*</span></label>
-                            <input id="city_idInit" value='<%=account.city_id %>' type="hidden" runat="server" />
+                            <input id="city_idInit" value='' type="hidden" runat="server" />
                             <select name="city_id" id="city_id">
                             </select>
                         </div>
@@ -108,7 +108,7 @@
                     <td>
                         <div class="clear">
                             <label>区县<span class=" red">*</span></label>
-                            <input id="district_idInit" value='<%=account.district_id %>' type="hidden" runat="server" />
+                            <input id="district_idInit" value='' type="hidden" runat="server" />
                             <select name="district_id" id="district_id">
                             </select>
                         </div>
@@ -306,7 +306,7 @@
 
         </div>
         <%--// location_list--%>
-        <div class="content clear">
+        <div class="content clear"  style="display:none;">
             <table style="text-align: left;" class="table table-hover">
                 <tr>
                     <th>地址类型</th>
@@ -363,7 +363,7 @@
             </table>
         </div>
 
-        <div class="content clear">
+        <div class="content clear"  style="display:none;">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
                 <tr>
                     <td>
@@ -394,6 +394,7 @@
                         <div class="clear">
                             <label>新浪微博地址<span class="red"></span></label>
                             <asp:TextBox ID="weibo_url" runat="server"></asp:TextBox>
+                            <input type="button" class="Jump" value="跳转"/>
                         </div>
                     </td>
                 </tr>
@@ -402,6 +403,7 @@
                         <div class="clear">
                             <label>微信订阅号<span class="red"></span></label>
                             <asp:TextBox ID="wechat_mp_subscription" runat="server"></asp:TextBox>
+                            <input type="button" class="Jump" value="跳转"/>
                         </div>
                     </td>
                 </tr>
@@ -410,6 +412,7 @@
                         <div class="clear">
                             <label>微信服务号<span class="red"></span></label>
                             <asp:TextBox ID="wechat_mp_service" runat="server"></asp:TextBox>
+                            <input type="button" class="Jump" value="跳转"/>
                         </div>
                     </td>
                 </tr>
@@ -418,7 +421,7 @@
         </div>
 
 
-        <div class="content clear">
+        <div class="content clear"  style="display:none;">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
 
@@ -491,7 +494,7 @@
 
 
 
-        <div class="content clear">
+        <div class="content clear"  style="display:none;">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
             </table>
 
@@ -500,15 +503,80 @@
 
 
 
-        <div class="content clear">
-            <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+        <div class="content clear"  style="display:none;">
+                 <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+
+
+                <% if (site_udfList != null && site_udfList.Count > 0)
+                    {
+
+                        foreach (var udf in site_udfList)
+                        {
+                            if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                            {%>
+                <tr>
+                    <td>
+                        <div class="clear">
+                            <label><%=udf.col_name %></label>
+                            <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+
+                        </div>
+                    </td>
+                </tr>
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
+                    {%>
+                <tr>
+                    <td>
+                        <div class="clear">
+                            <label><%=udf.col_name %></label>
+                            <textarea id="<%=udf.id %>" rows="2" cols="20">
+                                <%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>
+
+                            </textarea>
+
+                        </div>
+                    </td>
+                </tr>
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
+                    {%>
+                <tr>
+                    <td>
+                        <div class="clear">
+                            <label><%=udf.col_name %></label>
+
+                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+
+                        </div>
+                    </td>
+                </tr>
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
+                    {%>
+                <tr>
+                    <td>
+                        <div class="clear">
+                            <label><%=udf.col_name %></label>
+
+                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
+                        </div>
+                    </td>
+                </tr>
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                    {%>
+
+                <%}
+                        }
+                    } %>
             </table>
 
         </div>
         <% //站点信息 预留   %>
 
 
-        <div class="content clear">
+        <div class="content clear"  style="display:none;">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
                 <tr>
                     <td>
@@ -652,6 +720,12 @@
             }
         });  // 直接关闭窗口
 
+
+        $(".Jump").click(function () {
+            $("a").attr("target", "_blank"); 
+            var url = $(this).prev().val();
+            window.open("http://"+url);
+        })
 
     })
     function deleteLocation(location_id) {

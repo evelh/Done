@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/index.css" />
 	<link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../Content/NewContact.css"/>
+    <link rel="stylesheet" type="text/css" href="../Content/multiple-select.css"/>
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <title></title>
 </head>
@@ -35,12 +35,7 @@
             <% for (int i = 0; i < condition.Count; i += 3) {%> 
 				<tr>
 					<td>
-                        <%if (condition[i].data_type != 0)
-                            { %>
 						<div class="clear">
-                        <%} else { %>
-                        <div class="clear input-append">
-                        <%}%>
 							<label><%=condition[i].description %></label>
                         <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
                             || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA)
@@ -67,7 +62,11 @@
 								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
-							
+							<select id="ms" multiple="multiple">
+                                <%foreach (var v in condition[i].values) { %>
+                                <option value="<%=v.val %>"><%=v.show %></option>
+                                <%} %>
+				            </select>
                         <%}%>
 						</div>
 					</td>
@@ -78,12 +77,7 @@
             <% for (int i = 1; i < condition.Count; i += 3) {%> 
 				<tr>
 					<td>
-                        <%if (condition[i].data_type != 0)
-                            { %>
-						<div class="clear">
-                        <%} else { %>
-                        <div class="clear input-append">
-                        <%}%>
+                        <div class="clear">
 							<label><%=condition[i].description %></label>
                         <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
                             || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA)
@@ -110,7 +104,11 @@
 								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
-							
+							<select id="ms" multiple="multiple">
+                                <%foreach (var v in condition[i].values) { %>
+                                <option value="<%=v.val %>"><%=v.show %></option>
+                                <%} %>
+				            </select>
                         <%}%>
 						</div>
 					</td>
@@ -121,12 +119,7 @@
             <% for (int i = 2; i < condition.Count; i += 3) {%> 
 				<tr>
 					<td>
-                        <%if (condition[i].data_type != 0)
-                            { %>
-						<div class="clear">
-                        <%} else { %>
-                        <div class="clear input-append">
-                        <%}%>
+                        <div class="clear">
 							<label><%=condition[i].description %></label>
                         <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
                             || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA)
@@ -153,7 +146,11 @@
 								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
-							
+							<select id="ms" multiple="multiple">
+                                <%foreach (var v in condition[i].values) { %>
+                                <option value="<%=v.val %>"><%=v.show %></option>
+                                <%} %>
+				            </select>
                         <%}%>
 						</div>
 					</td>
@@ -166,6 +163,7 @@
 	<script src="../Scripts/bootstrap-datetimepicker.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Scripts/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Scripts/index.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../Scripts/Common/multiple-select.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchFrame.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

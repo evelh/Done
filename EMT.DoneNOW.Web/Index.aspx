@@ -77,7 +77,7 @@
 				<div class="up-right fr">
 					<ul>
 						<li class="name">
-							<p><a href="javaScript:"><%=(Session["dn_session_user_info"] as EMT.DoneNOW.Core.sys_user).email %></a></p>
+							<p><a href="javaScript:"><%=(Session["dn_session_user_info"] as EMT.DoneNOW.Core.sys_user).name %></a></p>
 							<span></span>
 							<a onclick="javaScript:window.location.href='login?action=<%=EMT.DoneNOW.DTO.ActionEnum.Logout %>'">退出</a>
 						</li>

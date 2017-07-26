@@ -1,0 +1,11 @@
+/*搜索列表*/
+.searchcontent{min-width: 1200px;max-height: 410px;overflow: scroll;}
+.searchcontent::-webkit-scrollbar{width:0px;opacity:0; -webkit-overflow-scrolling: touch;}
+.searchcontent table{border:1px solid #98b4ca;}
+.searchcontent table tr{text-align: center;}
+.searchcontent table th{ background-color: #cbd9e4;border-color: #98b4ca;color: #64727a;height: 28px;line-height: 28px;}
+.searchcontent table td {padding: 4px 4px 4px 4px;vertical-align: top;word-wrap: break-word;font-size: 12px;color: #333;height: 28px;line-height: 28px;cursor: pointer;}
+.searchcontent table tr {border: 1px solid #98b4ca;}
+.searchcontent table td,.searchcontent table th {border: 1px solid #98b4ca;}
+.searchcontent table tr:hover {background: #e0e3e4;}
+.searchcontent table .firstwidth{width:20px ;}

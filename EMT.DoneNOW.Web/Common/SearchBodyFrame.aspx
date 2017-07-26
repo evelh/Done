@@ -8,7 +8,8 @@
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/index.css" />
 	<link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../Content/NewContact.css"/>
+    <link rel="stylesheet" type="text/css" href="../Content/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../Content/searchList.css"/>
     <title></title>
 </head>
 <body>
@@ -17,9 +18,14 @@
             <input type="hidden" name="page_num" <%if (queryResult != null) {%>value="<%=queryResult.page %>"<%} %> />
             <input type="hidden" id="search_id" name="search_id" <%if (queryResult != null) {%>value="<%=queryResult.query_id %>"<%} %> />
             <input type="hidden" id="order" name="order" <%if (queryResult != null) {%>value="<%=queryResult.order_by %>"<%} %> />
-            <input type="hidden" id="page" name="page" value="<%=flag %>" />
+            <input type="hidden" id="show" name="show" value="<%=flag %>" />
             <input type="hidden" id="search_page" name="search_page" value="<%=queryPage %>" />
-            <div id="conditions"></div>
+            <div id="conditions">
+                <%foreach (var para in queryParaValue)
+                    { %>
+                <input type="hidden" name="<%=para.val %>" value="<%=para.show %>" />
+                <%} %>
+            </div>
         </div>
         <div class="contenttitle">
 			<ul class="clear">
@@ -35,6 +41,10 @@
 					<tr>
                         <%foreach(var para in resultPara)
                             {
+                                if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
+                                    || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
+                                    || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
+                                    continue;
                                 string orderby = null;
                                 string order = null;
                                 if (!string.IsNullOrEmpty(queryResult.order_by))
@@ -50,7 +60,7 @@
                                 { %><img src="../Images/sort-<%=order %>.png" /> 
                             <%} %></th>
                         <%} %>
-						<th style="background:red url(../Images/data-selector.png) no-repeat center;display:none;">11</th>
+						<th style="background:red url(../Images/data-selector.png) no-repeat center;display:none;"><!--客户类型--></th>
 					</tr>
                     <%
                         var idPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID);
@@ -60,7 +70,12 @@
                                 id = rslt[idPara.name].ToString();
                             %>
 					<tr title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
-                        <%foreach (var para in resultPara) { %>
+                        <%foreach (var para in resultPara) { 
+                                if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
+                                    || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
+                                    || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
+                                    continue;
+                                %>
 						<td><%=rslt[para.name] %></td>
                         <%} %>
 					</tr>
@@ -72,8 +87,9 @@
     <div id="menu">
 		<ul>
             <%foreach (var menu in contextMenu) { %>
-            <li onclick="<%=menu.click_function %>"><%=menu.text %>
+            <li onclick="<%=menu.click_function %>"><i class="menu-i1"></i><%=menu.text %>
                 <%if (menu.submenu != null) { %>
+                <i class="menu-i2">>></i>
                 <ul>
                     <%foreach (var submenu in menu.submenu) { %>
                     <li onclick="<%=submenu.click_function %>"><%=submenu.text %></li>

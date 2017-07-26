@@ -398,7 +398,15 @@ namespace EMT.DoneNOW.BLL
         }
 
 
-
+        /// <summary>
+        /// 通过id集合返回多个联系人
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public List<crm_contact> GetContactByIds(string ids)
+        {
+            return _dal.GetContactByIds(ids);
+        }
 
 
 

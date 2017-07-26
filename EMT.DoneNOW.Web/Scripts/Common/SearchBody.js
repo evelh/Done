@@ -1,22 +1,27 @@
 ﻿
 var entityid;
 var menu = document.getElementById("menu");
-
-function OpenConMenu(event,id) {
-    entityid = id;
-    var oEvent = event;
-    menu.style.display = "block";
-    var Top = $(document).scrollTop() + oEvent.clientY
-    var Left = $(document).scrollLeft() + oEvent.clientX
-    menu.style.top = Top + "px";
-    menu.style.left = Left + "px";
-    return false;
-}
+var Times = 0;
 
 $(".dn_tr").bind("contextmenu", function (event) {
+    clearInterval(Times);
     var oEvent = event;
     entityid = $(this).data("val");
-    menu.style.display = "block";
+    (function () {
+        menu.style.display = "block";
+        Times = setTimeout(function () {
+            menu.style.display = "none";
+        }, 1000);
+    }());
+    menu.onmouseenter = function () {
+        clearInterval(Times);
+        menu.style.display = "block";
+    };
+    menu.onmouseleave = function () {
+        Times = setTimeout(function () {
+            menu.style.display = "none";
+        }, 1000);
+    };
     var Top = $(document).scrollTop() + oEvent.clientY
     var Left = $(document).scrollLeft() + oEvent.clientX
     menu.style.top = Top + "px";

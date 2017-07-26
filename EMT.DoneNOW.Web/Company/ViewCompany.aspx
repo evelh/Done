@@ -36,9 +36,9 @@
                     <li>活动</li>
                     <li>待办</li>
                     <li>备注</li>
-                    <li>商机</li>
+                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=opportunity"  target="view_window">商机</a></li>
                     <li>销售订单</li>
-                    <li>联系人</li>
+                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=contact"  target="view_window">联系人</a></li>
                     <li>联系人组</li>
                     <li>工单</li>
                     <li>项目</li>
@@ -49,7 +49,7 @@
                     <li>Invoice发票参数设定</li>
                     <li>Quote reference报价参数设定</li>
                     <li>附件</li>
-                    <li>子客户</li>
+                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=Subsidiaries"  target="view_window">子客户</a></li>
                 </ul>
             </i>
             COMPANY-<%=account.name %>
@@ -65,13 +65,13 @@
                     <asp:Button ID="tianjia" runat="server" Text="添加" BorderStyle="None" />
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
-                        <li>客户</li>
+                        <li><a href="AddCompany.aspx"  target="view_window">客户</a></li>
                         <li>工单</li>
                         <li>待办</li>
                         <li>客户备注</li>
-                        <li>商机</li>
-                        <li>联系人</li>
-                        <li>子客户</li>
+                        <li><a href="../Opportunity/OpportunityAdd.aspx?account_id=<%=account.id %>" target="view_window">商机</a></li>
+                        <li><a href="../Contact/AddContact.aspx?parent_id=<%=account.id %>" target="view_window">联系人</a></li>
+                        <li><a href="AddCompany.aspx?parent_id=<%=account.id %>" target="view_window">子客户</a></li>
                         <li>配置项</li>
                         <li>附件</li>
                     </ul>
@@ -82,7 +82,7 @@
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
                         <li>关闭商机向导</li>
-                        <li>丢失商机向导</li>
+                        <li><a href="../Opportunity/LoseOpportunity.aspx?account_id=<%=account.id %>">丢失商机向导</a></li>
                         <li>Resign lead wizard重新分配商机所有人</li>
                         <li>注销客户向导</li>
                         <li>Microsoft word merge wizard</li>
@@ -97,10 +97,11 @@
         </div>
         <div class="text warn">离开这些领域的空白。所有标有“1”的字段只适用于联系人。</div>
 
-        <div class="activityTitleleft fl" id="showCompanyGeneral">
+        <div class="activityTitleleft fl" id="showCompanyGeneral" style="margin-left:20px;">
             <input type="hidden" id="isHide" runat="server" value="hide"/>
+            <input type="hidden" id="activetytype" runat="server" value=""/>
             <%-- 客户的基本信息 --%>
-            <h1><%=account.name %>活动</h1>
+            <h1 id="acType"><%=account.name %>活动</h1>
             <div class="address ">
                 <label><%=account.name %> <span>类别图标</span> <span>自助服务台图标</span></label>
                 <p><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></p>
@@ -110,15 +111,16 @@
 
                 <% if (!string.IsNullOrEmpty(location.address))
                     { %>
-                <p><%=location.address %></p>
+                
+                 <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=location.address %>"  target="view_window"><%=location.address %></a></p>
                 <%} %>
 
                 <% if (!string.IsNullOrEmpty(location.additional_address))
                     { %>
                 <p><%=location.additional_address %></p>
                 <%} %>
-
-                <p>可以根据链接，跳转到百度或其他地图，显示该客户位置</p>
+               
+                <%--<p>可以根据链接，跳转到百度或其他地图，显示该客户位置</p>--%>
 
                 <% if (account.parent_id != null)
                     { %>
@@ -330,7 +332,14 @@
             $("#showCompanyGeneral").hide();
         }
         $("#viewCompany_iframe").attr("onLoad", iFrameHeight);
-     
+        var type = $("#activetytype").val();
+        if (type == "activity") {
+            $("#acType").text("活动");
+        } else if (type == "note") {
+            $("#acType").text("备注");
+        } else if (type == "todo") {
+            $("#acType").text("待办");
+        }
     })
 
     function iFrameHeight() {
