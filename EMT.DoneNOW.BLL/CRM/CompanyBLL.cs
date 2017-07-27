@@ -106,14 +106,17 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.PHONE_OCCUPY;              // 返回电话被占用
             if (!string.IsNullOrEmpty(param.contact.mobile_phone))     // 移动电话不为空时，进行唯一性校验
             {
-
+               if( new crm_contact_dal().ExistContactMobilePhone(param.contact.mobile_phone))       // 移动电话唯一校验
+                {
+                    return ERROR_CODE.MOBILE_PHONE_OCCUPY;           // 返回错误
+                }
             }
 
 
             // TODO  名称相似校验
-            var compareAccountName = CompareCompanyName(CompanyNameDeal(param.general.company_name.Trim()), _dal.FindAll().Select(_ => _.name).ToList());    // 处理后的名字超过两个字相同（不包括两个字）即视为相似名称
-            if (compareAccountName != null && compareAccountName.Count > 0)
-                return ERROR_CODE.ERROR;
+            //var compareAccountName = CompareCompanyName(CompanyNameDeal(param.general.company_name.Trim()), _dal.FindAll().ToList());    // 处理后的名字超过两个字相同（不包括两个字）即视为相似名称
+            //if (compareAccountName != null && compareAccountName.Count > 0)
+            //    return ERROR_CODE.ERROR;
 
             var user = UserInfoBLL.GetUserInfo(user_id);
 
@@ -545,9 +548,9 @@ namespace EMT.DoneNOW.BLL
         }
 
 
-        public List<string> CheckCompanyName(string companyName)
+        public List<crm_account> CheckCompanyName(string companyName)
         {
-            return CompareCompanyName(CompanyNameDeal(companyName), _dal.FindAll().Select(_ => _.name).ToList());    // 处理后的名字超过两个字相同（不包括两个字）即视为相似名称
+            return CompareCompanyName(CompanyNameDeal(companyName), _dal.GetAllCompany());    // 处理后的名字超过两个字相同（不包括两个字）即视为相似名称
 
         }
         /// <summary>
@@ -1223,9 +1226,9 @@ namespace EMT.DoneNOW.BLL
         /// <param name="newCompanyName"></param>
         /// <param name="allCompanyName"></param>
         /// <returns></returns>
-        public List<string> CompareCompanyName(string newCompanyName, List<string> allCompanyName)
+        public List<crm_account> CompareCompanyName(string newCompanyName, List<crm_account> allCompanyName)
         {
-            List<string> similar_names = new List<string>();
+            List<crm_account> similar_names = new List<crm_account>();
             if (allCompanyName != null && allCompanyName.Count > 0)
             {
                 //int nameCount = 0;
@@ -1233,7 +1236,7 @@ namespace EMT.DoneNOW.BLL
                 for (int i = 0; i < newCompanyName.Length - 1; i++)
                 {
                     var subName = newCompanyName.Substring(i, 2); // 截取判断的相似字段
-                    var containSubName = allCompanyName.Where(_ => _.Contains(subName)).ToList();   // 获取含有相对应字段的公司名称
+                    var containSubName = allCompanyName.Where(_ => _.name.Contains(subName)).ToList();   // 获取含有相对应字段的公司名称
                     if (containSubName != null && containSubName.Count > 0)
                     {
                         similar_names.AddRange(containSubName);                       // 如果查询到，将公司名称批量添加进相似公司名称里面

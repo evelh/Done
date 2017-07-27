@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web.Contact {
+namespace EMT.DoneNOW.Web.Company {
     
     
-    public partial class ViewContact {
+    public partial class CompanyNameSimilar {
         
         /// <summary>
         /// form1 控件。

@@ -411,6 +411,47 @@ namespace EMT.DoneNOW.BLL
 
 
 
+        public bool UpdateContacts(string updateIds,string phone,string fax,long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+                return false;
+            var con_list = updateIds.Split(',');
+            var contactList = _dal.GetContactByIds(updateIds);
+            if(contactList!=null&& contactList.Count > 0)
+            {
+                foreach (var item in con_list)
+                {
+                    var contact = new crm_contact_dal().FindById(Convert.ToInt64(item));   // 获取到对应的联系人信息
+                    if (contact != null)
+                    {
+                        contact.phone = phone;
+                        contact.fax = fax;
+                        contact.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        contact.update_user_id = user.id;
+                        new crm_contact_dal().Update(contact);                   // 修改联系人
+                        new sys_oper_log_dal().Insert(new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
+                            oper_object_id = contact.id,
+                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                            oper_description = _dal.CompareValue(contactList.FirstOrDefault(_ => _.id == contact.id), contact),
+                            remark = "修改联系人电话或传真",
+                        });    // 插入更改日志
+                    }
+                }
+            }
+
+            return true;
+        }
+
+
+
 
         #region 联系人群组管理
         public void test()

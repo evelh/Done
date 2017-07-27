@@ -136,11 +136,31 @@ namespace EMT.DoneNOW.DAL
         }
 
 
+
         public List<crm_account> GetAccountByFindBack(long? id)
         {
             if (id == null)
                 return FindListBySql("select id,name from crm_account where delete_time = 0");
             return FindListBySql($"select id,name from crm_account where delete_time = 0  and id <> {id}");
+        }
+
+        /// <summary>
+        /// 获取所有未删除的公司
+        /// </summary>
+        /// <returns></returns>
+        public List<crm_account> GetAllCompany()
+        {
+            return FindListBySql("select * from crm_account where delete_time = 0 ");
+        }
+
+        /// <summary>
+        /// 根据多个id返回客户list
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public List<crm_account> GetCompanyByIds(string ids)
+        {
+            return FindListBySql($"select * from crm_account where id in ({ids}) and delete_time = 0  ");
         }
     }
 }

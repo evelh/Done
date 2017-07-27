@@ -149,5 +149,19 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql($"select * from crm_contact where id in ({ids}) and delete_time = 0 ");
         }
+        public bool ExistContactMobilePhone(string mobile, long id = 0)
+        {
+            string sql = $"SELECT count(0) from crm_contact where delete_time = 0 AND  mobile_phone = '{mobile}' ";
+            if (id != 0)
+                sql += $" and id <> {id}";
+            object obj = GetSingle(sql);
+            int cnt = -1;
+            if (int.TryParse(obj.ToString(), out cnt))
+            {
+                if (cnt > 0)
+                    return true;
+            }
+            return false;
+        }
     }
 }
