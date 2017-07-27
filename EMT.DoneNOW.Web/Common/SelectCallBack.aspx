@@ -63,14 +63,18 @@
                     <%
                         }
                         else
-                        { 
+                        {
                             var idPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID);
+                            var rtnPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE);
                             foreach (var rslt in queryResult.result) {
-                                string id = "0";
+                                string id = "";
+                                string rtn = "";
                                 if (idPara != null)
                                     id = rslt[idPara.name].ToString();
+                                if (rtnPara != null)
+                                    rtn = rslt[rtnPara.name].ToString();
                                 %>
-					    <tr class="dn_cbd" title="右键选择" data-val="<%=id %>" data-show="<%=id %>">
+					    <tr class="dn_cbd" title="右键选择" data-val="<%=id %>" data-show="<%=rtn %>">
                             <%foreach (var para in resultPara) { 
                                     if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
                                         || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
