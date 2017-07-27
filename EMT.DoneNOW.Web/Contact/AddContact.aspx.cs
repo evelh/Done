@@ -42,7 +42,7 @@ namespace EMT.DoneNOW.Web
             var param = new ContactAddAndUpdateDto();
             param.contact = AssembleModel<crm_contact>();
             param.location = AssembleModel<crm_location>();
-
+            param.contact.name = param.contact.first_name + param.contact.last_name;
             if (contact_udfList != null && contact_udfList.Count > 0)                      // 首先判断是否有自定义信息
             {
                 var list = new List<UserDefinedFieldValue>();
@@ -57,7 +57,7 @@ namespace EMT.DoneNOW.Web
                 }
                 param.udf = list;
             }
-
+            
             var result = new ContactBLL().Insert(param, GetLoginUserId());
             if (result == ERROR_CODE.USER_NOT_FIND)   // 联系人为空，重写
             {

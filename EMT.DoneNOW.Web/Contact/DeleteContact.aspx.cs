@@ -7,11 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace EMT.DoneNOW.Web
 {
-    public partial class Contact : Page
+    public partial class DeleteContact : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+          
         }
     }
 }

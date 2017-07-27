@@ -41,7 +41,8 @@ function checkPhone(str) {
 
 // 校验邮箱
 function checkEmail(str) {
-    var re = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+    //var re = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+    var re = '^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$';
     if (re.test(str)) {
         return true;
     } else {

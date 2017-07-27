@@ -137,7 +137,6 @@
     <Content Include="Company\DeleteCompany.aspx" />
     <Content Include="Company\LocationManage.aspx" />
     <Content Include="Company\ViewCompany.aspx" />
-    <Content Include="Contact.aspx" />
     <Content Include="Contact\EditContact.aspx" />
     <Content Include="Contact\ViewContact.aspx" />
     <Content Include="Content\base.css" />
@@ -151,6 +150,7 @@
     <Content Include="Content\style.css" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
+    <Content Include="Contact\DeleteContact.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -348,6 +348,13 @@
     </Compile>
     <Compile Include="Company\EditCompany.aspx.designer.cs">
       <DependentUpon>EditCompany.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contact\DeleteContact.aspx.cs">
+      <DependentUpon>DeleteContact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact\DeleteContact.aspx.designer.cs">
+      <DependentUpon>DeleteContact.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

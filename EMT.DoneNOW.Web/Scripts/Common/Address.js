@@ -30,6 +30,7 @@ function change(index) {
 }
 
 function InitArea() {
+    //debugger;
     $("#" + s[0]).empty();
     $("#" + s[1]).empty();
     $("#" + s[2]).empty();

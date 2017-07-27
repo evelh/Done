@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/index.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/style.css" />
 </head>
 
 <body runat="server">
@@ -50,8 +50,8 @@
 					<td>
 						<div class="clear input-dh">
 							<label>客户名称<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="companyName" value="" />
-                            <input type="hidden" name="account_id" id="account_id" />
+							<input type="text" disabled="disabled" id="accCallBack" value="" />
+                            <input type="hidden" name="account_id" id="accCallBackHidden" />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowCompany()"></i></span>
 						</div>
 					</td>
@@ -61,7 +61,7 @@
 					<td>
 						<div class="clear">
 							<label>外部资源ID<span class="red">*</span></label>
-							<input type="text" name="" id="" value="" />
+							<input type="text" name="external_id" id="" value="" />
 						</div>
 					</td>
 				</tr>
@@ -71,9 +71,9 @@
                         <div class="clear">
                             <label>联系人姓名<span class="num"></span></label>
                             <div class="inputTwo">
-										<input type="text" name="first_name" id="first_name" value="">
+										<input type="text" name="first_name" id="first_name" value=""/>
 										<span>-</span>
-										<input type="text" name="last_name" id="last_name" value="">
+										<input type="text" name="last_name" id="last_name" value=""/>
 								</div>
                         </div>
                     </td>
@@ -135,7 +135,7 @@
 					<td>
 						<div class="clear">
 							<label>激活<span class="red">*</span></label>
-							<input type="checkbox" name="active" id="active" value="" />
+							<input type="checkbox" name="is_active" id="active" value="" />
 						</div>
 					</td>
 				</tr>
@@ -144,7 +144,7 @@
 					<td>
 						<div class="clear">
 							<label>头衔<span class="red">*</span></label>
-							<input type="text" name="" id="" value="" />
+							<input type="text" name="title" id="" value="" />
 						</div>
 					</td>
 				 </tr>
@@ -153,16 +153,29 @@
 					<td>
 						<div class="clear">
 							<label>主联系人<span class="red">*</span></label>
-							<input type="checkbox" name="" id="" value="" />
+							<input type="checkbox" name="is_primary_contact" id="" value="" />
 						</div>
 					</td>
 				</tr>
 
                 <tr>
 					<td>
-						<div class="clear">
+						<div class="clear input-dh">
 							<label>地址<span class="red">*</span></label>
-							<input type="text" name="" id="" value="" />
+							<input type="text" disabled="disabled" id="locCallBack" value="" />
+                            <input type="hidden" name="location_id" id="locCallBackHidden" />
+                            <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('locCallBack')"></i></span>
+						</div>
+					</td>
+				</tr> 
+                
+                <tr>
+					<td>
+						<div class="clear input-dh">
+							<label>备用地址<span class="red">*</span></label>
+							<input type="text" disabled="disabled" id="loc1CallBack" value="" />
+                            <input type="hidden" name="location_id2" id="loc1CallBackHidden" />
+                            <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('loc1CallBack')"></i></span>
 						</div>
 					</td>
 				</tr>
@@ -171,7 +184,7 @@
 					<td>
 						<div class="clear">
 							<label>Email<span class="red">*</span></label>
-							<input type="text" name="" id="" value="" />
+							<input type="text" name="email" id="" value="" />
 						</div>
 					</td>
 				</tr>
@@ -180,7 +193,7 @@
 					<td>
 						<div class="clear">
 							<label>备用Email<span class="red">*</span></label>
-							<input type="text" name="" id="" value="" />
+							<input type="text" name="email2" id="" value="" />
 						</div>
 					</td>
 				</tr>
@@ -206,7 +219,7 @@
 					<td>
 						<div class="clear">
 							<label>电话<span class="red">*</span></label>
-							<input type="text" name="" id="" value="" />
+							<input type="text" name="phone" id="Phone" value="" />
 						</div>
 					</td>
 				</tr>
@@ -215,7 +228,7 @@
 					<td>
 						<div class="clear">
 							<label>备用电话<span class="red">*</span></label>
-							<input type="text" name="" id="" value="" />
+							<input type="text" name="alternate_phone" id="" value="" />
 						</div>
 					</td>
 				</tr>
@@ -224,7 +237,7 @@
 					<td>
 						<div class="clear">
 							<label>移动电话<span class="red">*</span></label>
-							<input type="text" name="" id="" value="" />
+							<input type="text" name="mobile_phone" id="" value="" />
 						</div>
 					</td>
 				</tr>
@@ -233,7 +246,7 @@
 					<td>
 						<div class="clear">
 							<label>传真<span class="red">*</span></label>
-							<input type="text" name="" id="" value="" />
+							<input type="text" name="fax" id="" value="" />
 						</div>
 					</td>
 				</tr>
@@ -248,6 +261,8 @@
                         <div class="clear">
                             <label>微博地址<span class="red"></span></label>
                             <asp:TextBox ID="weibo_url" runat="server"></asp:TextBox>
+                            <input type="button" class="Jump" value="跳转"/>
+
                         </div>
                     </td>
                 </tr>
@@ -256,7 +271,8 @@
 					<td>
 						<div class="clear">
 							<label>QQ号<span class="red">*</span></label>
-                            <asp:TextBox ID="QQ_url" runat="server"></asp:TextBox>							
+                            <asp:TextBox ID="QQ_url" runat="server"></asp:TextBox>	
+                            <input type="button" class="Jump" value="跳转"/>
 						</div>
 					</td>
 				 </tr>
@@ -265,7 +281,8 @@
 					<td>
 						<div class="clear">
 							<label>微信号<span class="red">*</span></label>
-							<asp:TextBox ID="WeChat_url" runat="server"></asp:TextBox>		
+							<asp:TextBox ID="WeChat_url" runat="server"></asp:TextBox>
+                            <input type="button" class="Jump" value="跳转"/>
 						</div>
 					</td>
 				 </tr>
@@ -310,6 +327,20 @@
                             <%}
                                 else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
                                 {%>
+                            <li>
+                                <label><%=udf.col_name %></label>
+                                <select name="<%=udf.id %>">
+                                    <%
+                                        if (udf.value_list != null) {
+                                            foreach (var v in udf.value_list) {
+                                                %>
+                                    <option value="<%=v.val %>"><%=v.show %></option>
+                                    <%
+                                            } // foreach
+                                        } // if
+                                        %>
+                                </select>
+                            </li>
                             <%}
                                     }
                                 } %>
@@ -325,15 +356,110 @@
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/NewContact.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../Scripts/common.js"></script>
     <script type="text/javascript">
      $(document).ready(function () {
         InitArea();
         });
 
+        $(".Jump").click(function () {
+            $("a").attr("target", "_blank");
+            var url = $(this).prev().val();
+            window.open("http://" + url);
+        })
+
+        $(function () {          
+            $("#save_close").click(function () {
+                if (!submitcheck()) {
+                    return false;
+                }
+            });   // 保存并关闭的事件
+
+            $("#save_newAdd").click(function () {
+                if (!submitcheck()) {
+                    return false;
+                }
+            });   // 保存并新建的事件
+          
+            $("#close").click(function () {
+                if (navigator.userAgent.indexOf("MSIE") > 0) {
+                    if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
+                        window.opener = null;
+                        window.close();
+                    } else {
+                        window.open('', '_top');
+                        window.top.close();
+                    }
+                }
+                else if (navigator.userAgent.indexOf("Firefox") > 0) {
+                    window.location.href = 'about:blank ';
+                } else {
+                    window.opener = null;
+                    window.open('', '_self', '');
+                    window.close();
+                }
+            });  // 直接关闭窗口
+
+            $("#first_name").blur(function () {
+                var firstName = $(this).val();
+                var lastName = $("#last_name").val();
+                if (firstName.length > 1 && lastName == "") {
+                    var subName = firstName.substring(1, firstName.length)
+                    $("#last_name").val(subName);
+                    $(this).val(firstName.substring(0, 1));
+                }
+            });
+
+            function submitcheck() {
+                var companyName = $("#accCallBack").val();          //  客户名称--必填项校验
+                if (companyName == null || companyName == '') {
+                    alert("请输入客户名称");
+                    // alert(companyName);
+                    return false;
+                }
+                var phone = $("#Phone").val();                        //  电话-- 必填项校验
+                if (phone == null || phone == '') {
+                    alert("请输入电话名称");
+                    return false;
+                }
+                if (!checkPhone(phone)) {
+                    alert("请输入正确格式的电话！");
+                    return false;
+                }
+                var firstName = $("#first_name").val();                                  // 姓
+                var lastName = $("#last_name").val();                                    // 名
+                var country = $("#country_id").val();                                      // 国家
+                var province = $("#province_id").val();                                    // 省份
+                var city = $("#City").val();                                            // 城市
+                if (firstName == undefined || firstName == null || firstName == "") {
+                    alert("请输入正确的姓"); 
+                }
+                if (country == 0 || province == 0 || city == 0) {
+                    alert("请填写选择地址");                                           // 地址下拉框的必填校验
+                    return false;
+                }
+               
+
+                var email = $("#Email").val();
+                //alert(Trim(email,'g'));
+                if (email != '') {
+                    if (!checkEmail(email)) {
+                        alert("请输入正确格式的邮箱！");
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+        })
      </script>
     <script>
         function OpenWindowCompany() {
-            window.open("../Common/SelectCallBack.aspx", "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
+            window.open("../Common/SelectCallBack.aspx?type=查找客户&field=accCallBack", "newwindow", 'left=200,top=200,width=600,height=800', false);
+        }
+        function OpenWindowLocation(fld) {
+            window.open("../Common/SelectCallBack.aspx?type=查找客户&field=" + fld, "newwindow", 'left=200,top=200,width=600,height=800', false);
         }
     </script>
 </body>

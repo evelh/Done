@@ -1,0 +1,21 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DeleteContact.aspx.cs" Inherits="EMT.DoneNOW.Web.DeleteContact" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>删除联系人</title>
+    <link rel="stylesheet" type="text/css" href="../Content/base.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+
+        </div>
+    </form>
+</body>
+</html>
