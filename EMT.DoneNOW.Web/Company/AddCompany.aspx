@@ -18,6 +18,7 @@
 </head>
 <body runat="server">
     <form id="AddCompany" name="AddCompany" runat="server">
+        <input type="hidden" id="isCheckCompanyName" value="yes" />
         <div class="header">添加客户</div>
         <div class="header-title">
             <ul>
@@ -35,13 +36,13 @@
         <div class="text">若要添加此帐户的第一个联系人，请提供名称和姓氏。如果此时您不希望添加新联系人，则可以将这些字段留空。所有标有“1”的字段只适用于联系人。</div>
         <div class="nav-title">
             <ul class="clear">
-                <li class="boders">通用</li>
-                <li>子客户</li>
-                <li>站点信息</li>
+                <li class="boders" id="general">通用</li>
+                <li id="Subsidiaries">子客户</li>
+                <li id="accountUDF">站点信息</li>
             </ul>
         </div>
 
-        <div class="content clear">
+        <div class="content clear" >
             <div class="information clear">
                 <p class="informationTitle"><i></i>基本信息</p>
                 <div>
@@ -570,14 +571,8 @@
 
         </div>
 
-
-
-
-
-
-
-        <div class="content clear" style="display:none;"></div>
-        <div class="content clear" style="display:none;">
+        <div class="content clear" style="display:none;" ></div>
+        <div class="content clear" style="display:none;" >
 
             <div class="left fl">
                 <ul>
@@ -630,7 +625,7 @@
     </form>
 </body>
 <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="../Scripts/NewContact.js" type="text/javascript" charset="utf-8"></script>
+
 <script src="../Scripts/index.js"></script>
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
@@ -722,8 +717,9 @@
             var lastName = $("#last_name").val();                                    // 名
             var country = $("#country_id").val();                                      // 国家
             var province = $("#province_id").val();                                    // 省份
-            var city = $("#City").val();                                            // 城市
-            if (country == 0 || province == 0 || city == 0) {
+            var city = $("#city_id").val();                                            // 城市
+            var district = $("#district_id").val();
+            if (country == "" || province == "" || city == "") {
                 alert("请填写选择地址");                                           // 地址下拉框的必填校验
                 return false;
             }
@@ -753,9 +749,59 @@
                     return false;
                 }
             }
+
+            debugger;
+            if ($("#isCheckCompanyName").val() == "yes") {
+                var isPass = "pass";
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: "../Tools/CompanyAjax.ashx?act=name&companyName=" + companyName,
+                    // data: { CompanyName: companyName },
+                    success: function (data) {
+                        //alert(data);
+                        debugger;
+                        if (data != "") {
+                            isPass = "noPass";
+                            window.open("CompanyNameSimilar.aspx?ids=" + data +"&reason=name", "newwindow", "height=600,width=800", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no"); 
+                        }
+                    },
+                    error: function (XMLHttpRequest) {
+                    },
+                    
+                });
+                debugger;
+                if (isPass == "noPass") {
+                    return false;
+                }    
+            }
             return true;
         }
 
+        var conteneClickTimes = 0;       // 定义tab页跳转点击次数，免得一直提醒
+        $.each($(".nav-title li"), function (i) {
+            $(this).click(function () {
+                var firstName = $("#first_name").val();
+                if ($(this).attr("id") != "general" && conteneClickTimes == 0) {
+                    if (firstName == "") {
+                        if (confirm("请输入姓。如果继续，则该联系人不会生成")) {
+                            conteneClickTimes += 1;
+                            $(this).addClass("boders").siblings("li").removeClass("boders");
+                            $(".content").eq(i).show().siblings(".content").hide();
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                  
+                }
+              
+                $(this).addClass("boders").siblings("li").removeClass("boders");
+                $(".content").eq(i).show().siblings(".content").hide();
+             
+
+            })
+        });
     })
 
     function chooseCompany(url) {
@@ -764,3 +810,4 @@
     }
 
 </script>
+

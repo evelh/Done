@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Company\CompanyNameSimilar.aspx" />
     <Content Include="Company\UpdateContact.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
@@ -236,6 +237,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Company\CompanyNameSimilar.aspx.cs">
+      <DependentUpon>CompanyNameSimilar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\CompanyNameSimilar.aspx.designer.cs">
+      <DependentUpon>CompanyNameSimilar.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Company\UpdateContact.aspx.cs">
       <DependentUpon>UpdateContact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -405,6 +413,9 @@
     <Compile Include="Tools\AddressAjax.ashx.cs">
       <DependentUpon>AddressAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\CompanyAjax.ashx.cs">
+      <DependentUpon>CompanyAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -421,6 +432,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Test.ashx" />
     <Content Include="Tools\AddressAjax.ashx" />
+    <Content Include="Tools\CompanyAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
