@@ -253,6 +253,7 @@
     </Compile>
     <Compile Include="Common\ColumnSelector.aspx.designer.cs">
       <DependentUpon>ColumnSelector.aspx</DependentUpon>
+	</Compile>
     <Compile Include="Activity\AddActivity.aspx.cs">
       <DependentUpon>AddActivity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
