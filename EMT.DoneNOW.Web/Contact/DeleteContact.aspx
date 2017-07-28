@@ -13,9 +13,23 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-
+        <div class="header-title">
+            <ul>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                    <asp:Button ID="Delete" runat="server" Text="删除客户" BorderStyle="None" OnClick="deleteContact()" />                    
+                </li>              
+            </ul>
         </div>
     </form>
+
+    <script>
+        function deleteContact() {
+            if (confirm("确认要删除吗？")) {
+
+            } else {
+                return false;
+            }
+        }
+    </script>
 </body>
 </html>
