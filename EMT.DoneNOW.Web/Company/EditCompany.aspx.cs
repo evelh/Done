@@ -127,11 +127,7 @@ namespace EMT.DoneNOW.Web
                             country_idInit.Value = location.country_id.ToString();
                             province_idInit.Value = location.province_id.ToString();
                             city_idInit.Value = location.city_id.ToString();
-                            district_idInit.Value = location.district_id.ToString();
-                            //country_id.SelectedValue = location.country_id == null ? "0" : location.country_id.ToString();
-                            //province_id.SelectedValue = location.province_id.ToString();
-                            //city_id.SelectedValue = location.city_id.ToString();
-                            //district_id.SelectedValue = location.district_id == null ? "0" : location.district_id.ToString();
+                            district_idInit.Value = location.district_id.ToString();                           
                             address.Text = location.address;
                             AdditionalAddress.Text = location.additional_address;
                         }
