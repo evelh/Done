@@ -55,21 +55,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <returns></returns>
         public ERROR_CODE Insert(ContactAddAndUpdateDto contactAddDto, long user_id)
-        {
-            //contact.id = _dal.GetNextIdCom();
-            //contact.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            //contact.create_user_id = CachedInfoBLL.GetUserInfo(token).id;
-            //contact.update_time = contact.create_time;
-            //contact.update_user_id = contact.create_user_id;
-            //// TODO: 主联系人设置
-            //_dal.Insert(contact);  // TODO:
-
-
-
-
-            // todo  当时使用客户为‘客户’时，会出现自助服务台页面，里面的数据处理？？
-            // 自助台未激活时，页面其余字段不可填写，此外安全等级（security_level_id）是标准安全等级和自定义安全等级选择其中一个。
-            // var user = CachedInfoBLL.GetUserInfo(token);
+        {          
             var user = UserInfoBLL.GetUserInfo(user_id);
 
             if (user == null)

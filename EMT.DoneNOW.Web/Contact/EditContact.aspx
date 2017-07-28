@@ -1,28 +1,26 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddContact.aspx.cs" Inherits="EMT.DoneNOW.Web.AddContact" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditContact.aspx.cs" Inherits="EMT.DoneNOW.Web.EditContact" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>New Contact</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Edit Contact</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/index.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
 </head>
-
 <body runat="server">
    <form id="AddCompany" name="AddCompany" runat="server">
-         <div class="header">添加联系人</div>
          <div class="header-title">
            <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
-                    <asp:Button ID="save_close" runat="server" Text="保存并关闭" OnClick="save_Click" BorderStyle="None" />
+                    <asp:Button ID="save_close" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="save_close_Click" />
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
-                    <asp:Button ID="save_newAdd" runat="server" Text="保存并新建" OnClick="save_newAdd_Click" BorderStyle="None" /></li>
+                    <asp:Button ID="save_newAdd" runat="server" Text="保存并新建"  BorderStyle="None" OnClick="save_newAdd_Click" /></li>
              
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
                     <asp:Button ID="close" runat="server" Text="关闭" BorderStyle="None" /></li>
@@ -35,11 +33,12 @@
                 <li>附件信息</li>
                 <li>用户自定义信息</li>
                 <li>自助服务台</li>
+         <div class="header">添加联系人</div>
             </ul>
         </div>
           
         <div class="content clear">
-			<table border="none" cellspacing="" cellpadding="" style="width:400px;margin-left: 40px;">
+			<table border="none" cellspacing="" cellpadding="" style="width: 380px;margin-left: 40px;">
 				<tr>
 					<th>
 						<h1>自助服务台状态</h1>
@@ -50,8 +49,8 @@
 					<td>
 						<div class="clear input-dh">
 							<label>客户名称<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="accCallBack" value="" />
-                            <input type="hidden" name="account_id" id="accCallBackHidden" />
+							<input type="text" disabled="disabled" id="companyName" value="" runat="server"/>
+                            <input type="hidden" name="account_id" id="account_id" />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowCompany()"></i></span>
 						</div>
 					</td>
@@ -61,7 +60,8 @@
 					<td>
 						<div class="clear">
 							<label>外部资源ID<span class="red">*</span></label>
-							<input type="text" name="external_id" id="" value="" />
+							 <%-- <input type="text" name="" id="" value="" />--%>
+                            <asp:TextBox ID="externalID" runat="server"></asp:TextBox>
 						</div>
 					</td>
 				</tr>
@@ -70,11 +70,8 @@
                     <td>
                         <div class="clear">
                             <label>联系人姓名<span class="num"></span></label>
-                            <div class="inputTwo">
-										<input type="text" name="first_name" id="first_name" value=""/>
-										<span>-</span>
-										<input type="text" name="last_name" id="last_name" value=""/>
-								</div>
+                            <input type="text" name="first_name" id="first_name" value="" style="width: 160px;" runat="server" />                       
+                            <input type="text" name="last_name" id="last_name" value="" style="width: 165px;" runat="server"/>
                         </div>
                     </td>
                 </tr>
@@ -89,7 +86,7 @@
 					</td>
 				</tr>
 
-                <tr>
+                 <tr>
                     <td>
                         <div class="clear">
                             <label>国家<span class=" red">*</span></label>
@@ -135,7 +132,7 @@
 					<td>
 						<div class="clear">
 							<label>激活<span class="red">*</span></label>
-							<input type="checkbox" name="is_active" id="active" value="" />
+							<input type="checkbox" name="" id="active" value="" runat="server"/>
 						</div>
 					</td>
 				</tr>
@@ -144,7 +141,7 @@
 					<td>
 						<div class="clear">
 							<label>头衔<span class="red">*</span></label>
-							<input type="text" name="title" id="" value="" />
+							<input type="text" name="" id="title" value="" runat="server"/>
 						</div>
 					</td>
 				 </tr>
@@ -153,29 +150,7 @@
 					<td>
 						<div class="clear">
 							<label>主联系人<span class="red">*</span></label>
-							<input type="checkbox" name="is_primary_contact" id="" value="" />
-						</div>
-					</td>
-				</tr>
-
-                <tr>
-					<td>
-						<div class="clear input-dh">
-							<label>地址<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="locCallBack" value="" />
-                            <input type="hidden" name="location_id" id="locCallBackHidden" />
-                            <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('locCallBack')"></i></span>
-						</div>
-					</td>
-				</tr> 
-                
-                <tr>
-					<td>
-						<div class="clear input-dh">
-							<label>备用地址<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="loc1CallBack" value="" />
-                            <input type="hidden" name="location_id2" id="loc1CallBackHidden" />
-                            <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('loc1CallBack')"></i></span>
+							<input type="checkbox" name="" id="primaryContact" value="" runat="server"/>
 						</div>
 					</td>
 				</tr>
@@ -183,8 +158,27 @@
                 <tr>
 					<td>
 						<div class="clear">
+							<label>地址<span class="red">*</span></label>
+							<input type="text" name="address" id="address" value="" runat="server"/>
+						</div>
+					</td>
+				</tr>
+
+                <tr>
+					<td>
+						<div class="clear">
+							<label>备用地址<span class="red">*</span></label>
+							<input type="text" name="AdditionalAddress" id="AdditionalAddress" value="" runat="server"/>
+						</div>
+					</td>
+				</tr>
+
+
+                <tr>
+					<td>
+						<div class="clear">
 							<label>Email<span class="red">*</span></label>
-							<input type="text" name="email" id="" value="" />
+							<input type="text" name="" id="email" value="" runat="server"/>
 						</div>
 					</td>
 				</tr>
@@ -193,14 +187,14 @@
 					<td>
 						<div class="clear">
 							<label>备用Email<span class="red">*</span></label>
-							<input type="text" name="email2" id="" value="" />
+							<input type="text" name="" id="email2" value="" runat="server"/>
 						</div>
 					</td>
 				</tr>
                
 			</table>
            
-			<table border="none" cellspacing="" cellpadding="" style="width:400px;margin-left: 40px;">
+			<table border="none" cellspacing="" cellpadding="" style="width: 380px;margin-left: 40px;">
 				<tr>
 					<td>
 						<img src="img/pop.jpg" />
@@ -209,17 +203,17 @@
 				</tr>
 				<tr>
 					<td>
-                        <div class="clear"><p class="font">提示</p></div>			
-                        <asp:CheckBox ID="CheckBox1" runat="server" /> 任务和工单中允许发邮件<br/>
+                        <div class="clear"><p class="font">提示</p></div>
+				        <asp:CheckBox ID="CheckBox1" runat="server" /> 任务和工单中允许发邮件<br/>
                         <asp:CheckBox ID="CheckBox2" runat="server" />拒绝满意度调查 <br/>
-                        <asp:CheckBox ID="CheckBox3" runat="server" />拒绝联系人组邮件<br/                                                                         					
+                        <asp:CheckBox ID="CheckBox3" runat="server" />拒绝联系人组邮件<br/                                                 
                     </td>
                 </tr>
                 <tr>
 					<td>
 						<div class="clear">
 							<label>电话<span class="red">*</span></label>
-							<input type="text" name="phone" id="Phone" value="" />
+							<input type="text" name="" id="phone" value="" runat="server"/>
 						</div>
 					</td>
 				</tr>
@@ -228,7 +222,7 @@
 					<td>
 						<div class="clear">
 							<label>备用电话<span class="red">*</span></label>
-							<input type="text" name="alternate_phone" id="" value="" />
+							<input type="text" name="" id="alternatePhone" value="" runat="server"/>
 						</div>
 					</td>
 				</tr>
@@ -237,7 +231,7 @@
 					<td>
 						<div class="clear">
 							<label>移动电话<span class="red">*</span></label>
-							<input type="text" name="mobile_phone" id="" value="" />
+							<input type="text" name="" id="mobilePhone" value="" runat="server"/>
 						</div>
 					</td>
 				</tr>
@@ -246,120 +240,27 @@
 					<td>
 						<div class="clear">
 							<label>传真<span class="red">*</span></label>
-							<input type="text" name="fax" id="" value="" />
+							<input type="text" name="" id="fax" value="" runat="server"/>
 						</div>
 					</td>
 				</tr>
 															
 			</table>
-		</div>
-
-       <div class="content clear" style="display:none">
-            <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">             
-                 <tr>
-                    <td>
-                        <div class="clear">
-                            <label>微博地址<span class="red"></span></label>
-                            <asp:TextBox ID="weibo_url" runat="server"></asp:TextBox>
-                            <input type="button" class="Jump" value="跳转"/>
-
-                        </div>
-                    </td>
-                </tr>
-
-                 <tr>
-					<td>
-						<div class="clear">
-							<label>QQ号<span class="red">*</span></label>
-                            <asp:TextBox ID="QQ_url" runat="server"></asp:TextBox>	
-                            <input type="button" class="Jump" value="跳转"/>
-						</div>
-					</td>
-				 </tr>
-
-                <tr>
-					<td>
-						<div class="clear">
-							<label>微信号<span class="red">*</span></label>
-							<asp:TextBox ID="WeChat_url" runat="server"></asp:TextBox>
-                            <input type="button" class="Jump" value="跳转"/>
-						</div>
-					</td>
-				 </tr>
-            </table>
-       </div>   
-
-       <div class="content clear" style="display:none">
-                <p class="informationTitle"><i></i>联系人自定义</p>
-                <div>
-                    <div>
-                        <ul>
-                            <% if (contact_udfList != null && contact_udfList.Count > 0)
-                                {
-                                    foreach (var udf in contact_udfList)
-                                    {
-                                        if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
-                                        {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
-                                <input type="text" name="<%=udf.id %>" class="sl_cdt" />
-                            </li>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
-                                {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
-                                <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
-                            </li>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
-                                {%><li>
-                                    <label><%=udf.col_name %></label>
-                                    <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
-                                </li>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
-                                {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
-                                <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
-                            </li>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
-                                {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
-                                <select name="<%=udf.id %>">
-                                    <%
-                                        if (udf.value_list != null) {
-                                            foreach (var v in udf.value_list) {
-                                                %>
-                                    <option value="<%=v.val %>"><%=v.show %></option>
-                                    <%
-                                            } // foreach
-                                        } // if
-                                        %>
-                                </select>
-                            </li>
-                            <%}
-                                    }
-                                } %>
-                        </ul>
-                    </div>
-                </div>
-       </div>
-
-       <div class="content clear" style="display:none">
-       </div>
-    </form>
+		</div>   
+   </form>
+    <script>
+        function OpenWindowCompany() {
+            window.open("../Common/SelectCallBack.aspx", "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
+        }
+    </script>
 
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/NewContact.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/common.js"></script>
     <script type="text/javascript">
-     $(document).ready(function () {
-        InitArea();
+        $(document).ready(function () {
+            InitArea();
         });
 
         $(".Jump").click(function () {
@@ -368,7 +269,7 @@
             window.open("http://" + url);
         })
 
-        $(function () {          
+        $(function () {
             $("#save_close").click(function () {
                 if (!submitcheck()) {
                     return false;
@@ -380,7 +281,7 @@
                     return false;
                 }
             });   // 保存并新建的事件
-          
+
             $("#close").click(function () {
                 if (navigator.userAgent.indexOf("MSIE") > 0) {
                     if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
@@ -411,9 +312,9 @@
             });
 
             function submitcheck() {
-                var companyName = $("#accCallBack").val();          //  客户名称--必填项校验
+                var companyName = $("#company_name").val();          //  公司名称--必填项校验
                 if (companyName == null || companyName == '') {
-                    alert("请输入客户名称");
+                    alert("请输入公司名称");
                     // alert(companyName);
                     return false;
                 }
@@ -431,14 +332,15 @@
                 var country = $("#country_id").val();                                      // 国家
                 var province = $("#province_id").val();                                    // 省份
                 var city = $("#City").val();                                            // 城市
-                if (firstName == undefined || firstName == null || firstName == "") {
-                    alert("请输入正确的姓"); 
-                }
                 if (country == 0 || province == 0 || city == 0) {
                     alert("请填写选择地址");                                           // 地址下拉框的必填校验
                     return false;
                 }
-               
+                var address = $("#address").val();                                      // 地址信息
+                if (address == null || address == '') {
+                    alert("请完善地址信息");                                              // 地址的必填校验
+                    return false;
+                }
 
                 var email = $("#Email").val();
                 //alert(Trim(email,'g'));
@@ -449,18 +351,19 @@
                     }
                 }
 
+                // 邮编验证
+                var postal_code = $("#postal_code").val();
+                //alert(Trim(email, 'g'));
+                if (postal_code != '') {
+                    if (!checkPostalCode(postal_code)) {
+                        alert("请输入正确的邮编！");
+                        return false;
+                    }
+                }
                 return true;
             }
-
         })
      </script>
-    <script>
-        function OpenWindowCompany() {
-            window.open("../Common/SelectCallBack.aspx?type=查找客户&field=accCallBack", "newwindow", 'left=200,top=200,width=600,height=800', false);
-        }
-        function OpenWindowLocation(fld) {
-            window.open("../Common/SelectCallBack.aspx?type=查找客户&field=" + fld, "newwindow", 'left=200,top=200,width=600,height=800', false);
-        }
-    </script>
 </body>
+   
 </html>

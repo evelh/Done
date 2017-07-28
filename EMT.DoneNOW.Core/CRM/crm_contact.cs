@@ -43,7 +43,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String email { get; set; }
         [DataMember]
-        public SByte? email2 { get; set; }
+        public String email2 { get; set; }
         [DataMember]
         public String avatar { get; set; }
         [DataMember]
