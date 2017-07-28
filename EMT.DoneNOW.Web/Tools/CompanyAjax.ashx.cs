@@ -8,6 +8,7 @@ using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.DTO;
 using EMT.Tools;
 using EMT.DoneNOW.DAL;
+using System.Text;
 
 namespace EMT.DoneNOW.Web
 {
@@ -18,19 +19,20 @@ namespace EMT.DoneNOW.Web
     {
 
         public void ProcessRequest(HttpContext context)
-
-
         {
             //context.Response.ContentType = "text/plain";
             //context.Response.Write("Hello World");
             string act = DNRequest.GetQueryString("act");
             switch (act)
             {
-                case "name": //国家
+                case "name": // 代表用于校验用户的名称
                     var companyName = context.Request.QueryString["companyName"];
                     companyNameCheck(context, companyName);
                     break;
- 
+                case "contact":    // 通过客户id去获取联系人列表
+                    var account_id = context.Request.QueryString["account_id"];
+                    GetCompanyContact(context,account_id);
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     return;
@@ -59,6 +61,34 @@ namespace EMT.DoneNOW.Web
             context.Response.Write(similar);
 
         }
+
+        /// <summary>
+        /// 获取联系人列表
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="account_id"></param>
+        public void GetCompanyContact(HttpContext context, string account_id)
+        {
+            try
+            {
+                var contactList = new ContactBLL().GetContactByCompany(Convert.ToInt64(account_id));
+                if (contactList != null && contactList.Count > 0)
+                {
+                    StringBuilder contacts = new StringBuilder("<option value='0'>     </option>");
+                    foreach (var contact in contactList)
+                    {
+                        contacts.Append("<option value="+contact.id+"'>"+contact.name+"</option>");
+                    }
+                    context.Response.Write(contacts);
+                }
+            }
+            catch (Exception)
+            {
+
+                context.Response.End();
+            }
+        }
+
 
         public bool IsReusable
         {

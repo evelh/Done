@@ -304,6 +304,9 @@ namespace EMT.DoneNOW.BLL
                 case DicEnum.UDF_CATE.CONFIGURATION_ITEMS:
                     table = "crm_installed_product";
                     break;
+                case DicEnum.UDF_CATE.OPPORTUNITY:
+                    table= "crm_opportunity_ext";
+                    break;
                 // TODO: 其他类别
                 default:
                     break;

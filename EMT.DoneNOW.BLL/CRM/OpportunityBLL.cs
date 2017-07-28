@@ -30,8 +30,25 @@ namespace EMT.DoneNOW.BLL.CRM
             dic.Add("oppportunity_advanced_field", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD)));          // 商机扩展字段
             dic.Add("oppportunity_status", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STATUS)));          // 商机状态
             dic.Add("oppportunity_range_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.FORM_TEMPLATE_RANGE_TYPE)));          // 表单模板应用范围
-            dic.Add("projected_close_date", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.PROJECTED_CLOSED_DATE)));          // 商机模板项目关闭日期
+            dic.Add("projected_close_date", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)
+                GeneralTableEnum.PROJECTED_CLOSED_DATE)));          // 商机模板项目关闭日期
+          
+                
+                dic.Add("classification", new d_account_classification_dal().GetDictionary());    // 分类类别
+                dic.Add("country", new DistrictBLL().GetCountryList());                          // 国家表
+                dic.Add("addressdistrict", new d_district_dal().GetDictionary());                       // 地址表（省市县区）
+                dic.Add("sys_resource", new sys_resource_dal().GetDictionary());                // 客户经理
+                dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.COMPETITOR)));          // 竞争对手
+                dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.MARKET_SEGMENT)));    // 行业
+                                                                                                                                                          //dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行政区")));                // 行政区
+                dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TERRITORY)));              // 销售区域
+                dic.Add("company_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACCOUNT_TYPE)));              // 客户类型
+                dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));              // 税区
+                dic.Add("sufix", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.NAME_SUFFIX)));              // 名字后缀
+                dic.Add("action_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACTION_TYPE)));        // 活动类型
 
+           
+            
             return dic;
         }
 
@@ -112,6 +129,7 @@ namespace EMT.DoneNOW.BLL.CRM
             param.notify.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             param.notify.update_user_id = user.id;
             param.notify.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            new com_notify_email_dal().Insert(param.notify);
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
                 user_cate = "用户",

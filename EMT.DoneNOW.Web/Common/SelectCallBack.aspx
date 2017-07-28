@@ -105,6 +105,12 @@
         function GetBack() {
             window.opener.document.getElementById("<%=callBackField %>").value = entityname;
             window.opener.document.getElementById("<%=callBackField %>Hidden").value = entityid;
+            debugger;
+         
+            if (typeof (window.opener.GetContactList) != "undefined") {
+                window.opener.GetContactList();
+            }  
+            
             window.close();
         }
         Times = 0;

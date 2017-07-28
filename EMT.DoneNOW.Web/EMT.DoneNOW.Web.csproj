@@ -253,7 +253,7 @@
     </Compile>
     <Compile Include="Common\ColumnSelector.aspx.designer.cs">
       <DependentUpon>ColumnSelector.aspx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Activity\AddActivity.aspx.cs">
       <DependentUpon>AddActivity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -440,6 +440,9 @@
     <Compile Include="Tools\CompanyAjax.ashx.cs">
       <DependentUpon>CompanyAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ContactAjax.ashx.cs">
+      <DependentUpon>ContactAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -457,6 +460,7 @@
     <Content Include="Test.ashx" />
     <Content Include="Tools\AddressAjax.ashx" />
     <Content Include="Tools\CompanyAjax.ashx" />
+    <Content Include="Tools\ContactAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

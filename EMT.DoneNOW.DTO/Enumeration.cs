@@ -41,15 +41,15 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum ACTIVITY_TYPE
         {
-            OPPORTUNITYUPDATE=21,          // 商机更新
+            OPPORTUNITYUPDATE = 21,          // 商机更新
             PHONE = 22,                    // 电话
             MEETING = 23,                  // 会议
-            OUTLINE=24,                    // 概要
-            GRAFFITI_RECORD=25,            // 涂鸦记录
-            EMAIL=26,                      // 邮件
-            IN_CHARGE=27,                  // 计费中
-            SALES=28,                      // 销售
-            CANCELLATION=29,               // 注销
+            OUTLINE = 24,                    // 概要
+            GRAFFITI_RECORD = 25,            // 涂鸦记录
+            EMAIL = 26,                      // 邮件
+            IN_CHARGE = 27,                  // 计费中
+            SALES = 28,                      // 销售
+            CANCELLATION = 29,               // 注销
 
         }
 
@@ -67,11 +67,50 @@ namespace EMT.DoneNOW.DTO
         /// <summary>
         /// 客户告警类型 - 10
         /// </summary>
-        public enum ACCOUNT_ALERT_TYPE  
+        public enum ACCOUNT_ALERT_TYPE
         {
             COMPANY_DETAIL_ALERT = 36,
             NEW_TICKET_ALERT = 37,
             TICKET_DETAIL_ALERT = 38,
+        }
+
+        /// <summary>
+        /// 商机阶段-11
+        /// </summary>
+        public enum OPPORTUNITY_STAGE
+        {
+            NEW_CLUE = 39,                        // 新线索
+            INITIAL_CONTACT = 40,                 // 初次联系
+            BY_IDENTIFICATION = 41,               // 通过鉴定
+            PROPOSAL_MAKING = 42,                 // 制定建议书
+            SENDING_CONTRACT = 43,                // 发送合同
+            CLOSE = 44                            // 关闭
+        }
+        /// <summary>
+        /// 商机来源-12
+        /// </summary>
+        public enum OPPORTUNITY_SOURCE
+        {
+            COLD_CALL = 45,                            // 
+            CUSTOMER_REFERRAL = 46,                    // 
+            DIRECT_MAIL = 47,                          // 
+            EMAIL_CAMPAIGN = 48,                       // 
+            EMPLOYEE_REFERRAL = 49,                    // 
+            EXISTING_CUSTOMER = 50,                    // 
+            GOOGLE = 51,                               // 谷歌
+            INTERNET = 52,                             // 互联网
+            MAIL_CAMPAIGN = 53,                        // 
+            MICROSOFT = 54,                            // 微软
+            NETWORKING_EVENT = 55,                     // 
+            PARTNER_REFERRAL = 56,                     // 
+            PROSPECTING = 57,                          // 勘探
+            PUBLIC_SPEAKING_SEMINAR = 58,              // 
+            SURVEY = 59,                               // 调查
+            TELEMARKETING = 60,                        // 电话营销
+            TRADE_SHOW = 61,                           // 
+            VENDOR = 62,                               // 供应商
+            WEBSITE = 63                               // 网站
+
         }
 
         /// <summary>
@@ -174,8 +213,8 @@ namespace EMT.DoneNOW.DTO
             OPPORTUNITY = 519,      // 商机
             SALES = 520,
             ORDERS = 521,
-            PROJECTS = 522,           
-            CONFIGURATION_ITEMS=523,// 配置项
+            PROJECTS = 522,
+            CONFIGURATION_ITEMS = 523,// 配置项
         }
 
         /// <summary>
@@ -258,8 +297,8 @@ namespace EMT.DoneNOW.DTO
             FROM = 766,                                 // 表单模板
             FROMOPPORTUNITY = 767,                      // 商机表单模板
             OPPORTUNITY = 768,                          // 商机
-            NOTIFY=769,                                 // 通知
-            ACTIVITY=770,                               // 活动   // todo数据库添加
+            NOTIFY = 769,                                 // 通知
+            ACTIVITY = 770,                               // 活动   // todo数据库添加
         }
 
         /// <summary>

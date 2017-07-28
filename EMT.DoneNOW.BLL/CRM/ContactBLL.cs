@@ -186,19 +186,12 @@ namespace EMT.DoneNOW.BLL
         /// 更新联系人信息
         /// </summary>
         /// <returns></returns>
-        public bool Update(ContactAddAndUpdateDto contact_update, string token)
+        public bool Update(ContactAddAndUpdateDto contact_update, long user_id)
         {
             //contact.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             //contact.update_user_id = CachedInfoBLL.GetUserInfo(token).id;
-            // var user = CachedInfoBLL.GetUserInfo(token);
-            var user = new UserInfoDto()
-            {
-                id = 1,
-                email = "zhufei@test.com",
-                mobile = "10086",
-                name = "zhufei_test",
-                security_Level_id = 0
-            };
+            var user = UserInfoBLL.GetUserInfo(user_id);
+        
             if (user == null)
                 return false;
 
@@ -325,7 +318,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DeleteContact(long id, string token)
+        public bool DeleteContact(long id, long user_id)
         {
 
             // var user = CachedInfoBLL.GetUserInfo(token);

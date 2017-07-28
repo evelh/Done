@@ -8,7 +8,6 @@
 
 
     <title><%=isAdd?"新增商机":"修改商机" %></title>
-
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
@@ -31,7 +30,7 @@
                     <asp:Button ID="save" runat="server" Text="保存" BorderStyle="None" OnClick="save_Click" />
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
-                    <asp:Button ID="save_close" runat="server" Text="保存并关闭" BorderStyle="None" />
+                    <asp:Button ID="save_close" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="save_close_Click" />
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
                     <asp:Button ID="save_newAdd" runat="server" Text="保存并新建报价" BorderStyle="None" /></li>
@@ -53,7 +52,7 @@
         <div class="content clear">
             <div class="information clear">
                 <p class="informationTitle"><i></i>基本信息</p>
-                <table border="none" cellspacing="" cellpadding="" style="width: 500px; margin-left: 40px;">
+                <table border="none" cellspacing="" cellpadding="" style="width: 900px; margin-left: 40px;">
                     <tr>
                         <td colspan="2">
                             <div class="clear">
@@ -66,10 +65,8 @@
                         <td>
                             <div class="clear">
                                 <label>客户名称</label>
-                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/data-selector.png);"></i>
-                                <i onclick="" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -78px 0;"></i>
-
-
+                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                <i onclick="javascript:window.open('../Company/AddCompany.aspx')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":opportunity.account_id.ToString() %>" />
                             </div>
                         </td>
@@ -84,9 +81,10 @@
                     <tr>
                         <td>
                             <div class="clear">
-                                <label>联系人</label>
+                                <label>联系人</label> 
                                 <select name="contact_id" id="contact_id">
                                 </select>
+                                <i onclick="javascript:window.open('../Contact/AddContact.aspx')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                             </div>
                         </td>
                         <td>
@@ -119,7 +117,7 @@
                         </td>
                         <td>
                             <div class="clear">
-                                <label>等级</label>
+                                <label>客户感兴趣等级</label>
 
                                 <asp:DropDownList ID="interest_degree_id" runat="server"></asp:DropDownList>
                             </div>
@@ -167,7 +165,7 @@
             </div>
             <div class="information clear">
                 <p class="informationTitle"><i></i>商机值</p>
-                <table border="none" cellspacing="" cellpadding="" style="width: 500px; margin-left: 40px;">
+                <table border="none" cellspacing="" cellpadding="" style="width: 900px; margin-left: 40px;">
                     <tr>
                         <td>
                             <div class="clear">
@@ -181,13 +179,13 @@
                         <td>
                             <div class="clear">
                                 <label>一次性收益</label>
-                                <input type="checkbox" name="one_time_revenue" id="one_time_revenue" value="<%=(!isAdd)&&(opportunity.one_time_revenue!=null)?opportunity.one_time_revenue.ToString():"" %>" />
+                                <input type="text" name="one_time_revenue" id="one_time_revenue" value="<%=(!isAdd)&&(opportunity.one_time_revenue!=null)?opportunity.one_time_revenue.ToString():"" %>" />
                             </div>
                         </td>
                         <td>
                             <div class="clear">
                                 <label>一次性成本</label>
-                                <input type="checkbox" name="one_time_cost" id="one_time_cost" value="<%=(!isAdd)&&(opportunity.one_time_cost!=null)?opportunity.one_time_cost.ToString():"" %>" />
+                                <input type="text" name="one_time_cost" id="one_time_cost" value="<%=(!isAdd)&&(opportunity.one_time_cost!=null)?opportunity.one_time_cost.ToString():"" %>" />
                             </div>
                         </td>
                     </tr>
@@ -195,13 +193,13 @@
                         <td>
                             <div class="clear">
                                 <label>月度收益</label>
-                                <input type="checkbox" name="monthly_revenue" id="monthly_revenue" value="<%=(!isAdd)&&(opportunity.monthly_revenue!=null)?opportunity.monthly_revenue.ToString():"" %>" />
+                                <input type="text" name="monthly_revenue" id="monthly_revenue" value="<%=(!isAdd)&&(opportunity.monthly_revenue!=null)?opportunity.monthly_revenue.ToString():"" %>" />
                             </div>
                         </td>
                         <td>
                             <div class="clear">
                                 <label>月度成本</label>
-                                <input type="checkbox" name="monthly_cost" id="monthly_cost" value="<%=(!isAdd)&&(opportunity.monthly_cost!=null)?opportunity.monthly_cost.ToString():"" %>" />
+                                <input type="text" name="monthly_cost" id="monthly_cost" value="<%=(!isAdd)&&(opportunity.monthly_cost!=null)?opportunity.monthly_cost.ToString():"" %>" />
                             </div>
                         </td>
                     </tr>
@@ -209,13 +207,13 @@
                         <td>
                             <div class="clear">
                                 <label>季度收益</label>
-                                <input type="checkbox" name="quarterly_revenue" id="quarterly_revenue" value="<%=(!isAdd)&&(opportunity.quarterly_revenue!=null)?opportunity.quarterly_revenue.ToString():"" %>" />
+                                <input type="text" name="quarterly_revenue" id="quarterly_revenue" value="<%=(!isAdd)&&(opportunity.quarterly_revenue!=null)?opportunity.quarterly_revenue.ToString():"" %>" />
                             </div>
                         </td>
                         <td>
                             <div class="clear">
                                 <label>季度成本</label>
-                                <input type="checkbox" name="quarterly_cost" id="quarterly_cost" value="<%=(!isAdd)&&(opportunity.quarterly_cost!=null)?opportunity.quarterly_cost.ToString():"" %>" />
+                                <input type="text" name="quarterly_cost" id="quarterly_cost" value="<%=(!isAdd)&&(opportunity.quarterly_cost!=null)?opportunity.quarterly_cost.ToString():"" %>" />
                             </div>
                         </td>
                     </tr>
@@ -223,13 +221,13 @@
                         <td>
                             <div class="clear">
                                 <label>半年收益</label>
-                                <input type="checkbox" name="semi_annual_revenue" id="semi_annual_revenue" value="<%=(!isAdd)&&(opportunity.semi_annual_revenue!=null)?opportunity.semi_annual_revenue.ToString():"" %>" />
+                                <input type="text" name="semi_annual_revenue" id="semi_annual_revenue" value="<%=(!isAdd)&&(opportunity.semi_annual_revenue!=null)?opportunity.semi_annual_revenue.ToString():"" %>" />
                             </div>
                         </td>
                         <td>
                             <div class="clear">
                                 <label>半年成本</label>
-                                <input type="checkbox" name="semi_annual_cost" id="semi_annual_cost" value="<%=(!isAdd)&&(opportunity.semi_annual_cost!=null)?opportunity.semi_annual_cost.ToString():"" %>" />
+                                <input type="text" name="semi_annual_cost" id="semi_annual_cost" value="<%=(!isAdd)&&(opportunity.semi_annual_cost!=null)?opportunity.semi_annual_cost.ToString():"" %>" />
                             </div>
                         </td>
                     </tr>
@@ -237,13 +235,13 @@
                         <td>
                             <div class="clear">
                                 <label>年收益</label>
-                                <input type="checkbox" name="yearly_revenue" id="yearly_revenue" value="<%=(!isAdd)&&(opportunity.yearly_revenue!=null)?opportunity.yearly_revenue.ToString():"" %>" />
+                                <input type="text" name="yearly_revenue" id="yearly_revenue" value="<%=(!isAdd)&&(opportunity.yearly_revenue!=null)?opportunity.yearly_revenue.ToString():"" %>" />
                             </div>
                         </td>
                         <td>
                             <div class="clear">
                                 <label>年成本</label>
-                                <input type="checkbox" name="yearly_cost" id="yearly_cost" value="<%=(!isAdd)&&(opportunity.yearly_cost!=null)?opportunity.yearly_cost.ToString():"" %>" />
+                                <input type="text" name="yearly_cost" id="yearly_cost" value="<%=(!isAdd)&&(opportunity.yearly_cost!=null)?opportunity.yearly_cost.ToString():"" %>" />
                             </div>
                         </td>
                     </tr>
@@ -251,13 +249,13 @@
                         <td>
                             <div class="clear">
                                 <label>总收益</label>
-                                <input type="checkbox" name="Total_Revenue" id="Total_Revenue" value="" />
+                                <input type="" name="Total_Revenue" id="Total_Revenue" value="" />
                             </div>
                         </td>
                         <td>
                             <div class="clear">
                                 <label>总成本</label>
-                                <input type="checkbox" name="Total_Cost" id="Total_Cost" value="" />
+                                <span name="Total_Cost" id="Total_Cost"></span>
                             </div>
                         </td>
                     </tr>
@@ -265,7 +263,7 @@
                         <td>
                             <div class="clear">
                                 <label>毛利</label>
-                                <input type="checkbox" name="Gross_Profit" id="Gross_Profit" value="" />
+                                <label name="Gross_Profit" id="Gross_Profit"></label>
                             </div>
 
                         </td>
@@ -285,73 +283,59 @@
             </div>
             <div class="information clear">
                 <p class="informationTitle"><i></i>高级字段</p>
-                <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 400px; margin-left: 40px;">
+                <%
+                     var   advanced_field = dic.FirstOrDefault(_ => _.Key == "oppportunity_advanced_field").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+                    if (advanced_field != null && advanced_field.Count > 0)
+                    {
+                %>
+                <table border="none" cellspacing="" cellpadding="" style="width: 600px; margin-left: 40px;">
 
-                        <% if (opportunity_udfList != null && opportunity_udfList.Count > 0)
-                            {
-                                foreach (var udf in opportunity_udfList)
-                                {
-
-                                    if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
-                                    {%>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label><%=udf.col_name %></label>
-                                    <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=(!isAdd)&&opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
-                                </div>
-
-                            </td>
-                        </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
-                            {%>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label><%=udf.col_name %></label>
-                                    <textarea name="<%=udf.id %>" rows="2" cols="20">
-                                        <%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>
-                                    </textarea>
-                                </div>
-
-                            </td>
-                        </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
-                            {%><tr>
-                                    <td>
-                                        <div class="clear">
-                                            <label><%=udf.col_name %></label>
-
-                                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value.ToString():"" %>" />
-                                        </div>
-
-                                    </td>
-                                </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
-                            {%>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label><%=udf.col_name %></label>
-
-                                    <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
-                                </div>
-                            </td>
-                        </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
-                            {%>
-
-                        <%}
-                                }
-                            } %>
-                    </table>
-
-                </div>
+                    <%foreach (var item in advanced_field)
+                        {%>
+                    <tr>
+                        <td>
+                            <div class="clear">
+                                <label><%=item.show %><span class="red">*</span></label>
+                                <%switch (item.val)
+                                    {
+                                        case "78":
+                                %>
+                                <input type="text" name="ext1" id="ext1" value="<%=(!isAdd)&&opportunity.ext1!=null?opportunity.ext1.ToString():"" %>" />
+                                <%
+                                        break;
+                                    case "79":
+                                %>
+                                <input type="text" name="ext2" id="ext2" value="<%=(!isAdd)&&opportunity.ext2!=null?opportunity.ext2.ToString():"" %>" />
+                                <%
+                                        break;
+                                    case "80":
+                                %>
+                                <input type="text" name="ext3" id="ext3" value="<%=(!isAdd)&&opportunity.ext3!=null?opportunity.ext3.ToString():"" %>" />
+                                <%
+                                        break;
+                                    case "81":
+                                %>
+                                <input type="text" name="ext4" id="ext4" value="<%=(!isAdd)&&opportunity.ext4!=null?opportunity.ext4.ToString():"" %>" />
+                                <%
+                                        break;
+                                    case "82":
+                                %>
+                                <input type="text" name="ext5" id="ext5" value="<%=(!isAdd)&&opportunity.ext5!=null?opportunity.ext5.ToString():"" %>" />
+                                <%
+                                        break;
+                                    default:
+                                %>
+                                <input type="text" name="" id="" value="" />
+                                <%
+                                        break;
+                                    }%>
+                            </div>
+                        </td>
+                    </tr>
+                    <%  
+                        } %>
+                </table>
+                <%} %>
             </div>
         </div>
         <div class="content clear">
@@ -364,123 +348,185 @@
                 <input type="datetime-local" name="end_date" id="end_date" value="<%=(!isAdd)&&opportunity.end_date!=null?((DateTime)opportunity.end_date).ToString("dd/MM/yyyy"):"" %>" />
 
             </div>
-              <div class="clear">
+            <div class="clear">
                 <label>市场情况</label>
-                  <textarea name="market" id="market" cols="20" rows="2">
+                <textarea name="market" id="market" cols="20" rows="2">
                       <%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.market))?opportunity.market:"" %>
                   </textarea>
-              </div>
+            </div>
             <div class="clear">
                 <label>当前困难</label>
-                  <textarea name="barriers" id="barriers" cols="20" rows="2">
+                <textarea name="barriers" id="barriers" cols="20" rows="2">
                       <%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.barriers))?opportunity.barriers:"" %>
                   </textarea>
-              </div> 
-              <div class="clear">
+            </div>
+            <div class="clear">
                 <label>所需帮助</label>
-                  <textarea name="help_needed" id="help_needed" cols="20" rows="2">
+                <textarea name="help_needed" id="help_needed" cols="20" rows="2">
                       <%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.help_needed))?opportunity.help_needed:"" %>
                   </textarea>
-              </div>
-              <div class="clear">
+            </div>
+            <div class="clear">
                 <label>后续跟进</label>
-                  <textarea name="next_step" id="next_step" cols="20" rows="2">
+                <textarea name="next_step" id="next_step" cols="20" rows="2">
                       <%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.next_step))?opportunity.next_step:"" %>
                   </textarea>
-              </div>
-               <div class="clear">
-                   <label>赢单原因</label>
-                   <asp:DropDownList ID="win_reason_type_id" runat="server"></asp:DropDownList>
-              </div>
-               <div class="clear">
+            </div>
+            <div class="clear">
+                <label>赢单原因</label>
+                <asp:DropDownList ID="win_reason_type_id" runat="server"></asp:DropDownList>
+            </div>
+            <div class="clear">
                 <label>赢单原因描述</label>
-                  <textarea name="win_reason" id="win_reason" cols="20" rows="2">
+                <textarea name="win_reason" id="win_reason" cols="20" rows="2">
                       <%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.win_reason))?opportunity.win_reason:"" %>
                   </textarea>
-              </div>
-              <div class="clear">
-                   <label>赢单原因</label>
-                   <asp:DropDownList ID="loss_reason_type_id" runat="server"></asp:DropDownList>
-              </div>
-               <div class="clear">
-                <label>赢单原因描述</label>
-                  <textarea name="win_reason" id="loss_reason" cols="20" rows="2">
+            </div>
+            <div class="clear">
+                <label>丢单原因</label>
+                <asp:DropDownList ID="loss_reason_type_id" runat="server"></asp:DropDownList>
+            </div>
+            <div class="clear">
+                <label>丢单原因描述</label>
+                <textarea name="loss_reason" id="loss_reason" cols="20" rows="2">
                       <%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.loss_reason))?opportunity.loss_reason:"" %>
                   </textarea>
-              </div>
+            </div>
         </div>
         <div class="content clear">
-             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
+            <div>
+                <table border="none" cellspacing="" cellpadding="" style="width: 400px; margin-left: 40px;">
 
-                <% if (company_udfList != null && company_udfList.Count > 0)
-                    {
-
-                        foreach (var udf in company_udfList)
+                    <% if (opportunity_udfList != null && opportunity_udfList.Count > 0)
                         {
-                            if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
-                            {%>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label><%=udf.col_name %></label>
-                            <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=(!isAdd)&&company_udfValueList!=null&&company_udfValueList.Count>0?company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
+                            foreach (var udf in opportunity_udfList)
+                            {
 
-                        </div>
-                    </td>
-                </tr>
-                <%}
-                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
-                    {%>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label><%=udf.col_name %></label>
-                            <textarea id="<%=udf.id %>" rows="2" cols="20">
-                                <%=(!isAdd)&&company_udfValueList!=null&&company_udfValueList.Count>0?company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>
+                                if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                                {%>
+                    <tr>
+                        <td>
+                            <div class="clear">
+                                <label><%=udf.col_name %></label>
+                                <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=(!isAdd)&&opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
+                            </div>
 
-                            </textarea>
+                        </td>
+                    </tr>
+                    <%}
+                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
+                        {%>
+                    <tr>
+                        <td>
+                            <div class="clear">
+                                <label><%=udf.col_name %></label>
+                                <textarea name="<%=udf.id %>" rows="2" cols="20">
+                                        <%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>
+                                    </textarea>
+                            </div>
 
-                        </div>
-                    </td>
-                </tr>
-                <%}
-                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
-                    {%>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label><%=udf.col_name %></label>
+                        </td>
+                    </tr>
+                    <%}
+                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
+                        {%><tr>
+                            <td>
+                                <div class="clear">
+                                    <label><%=udf.col_name %></label>
 
-                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=(!isAdd)&&company_udfValueList!=null&&company_udfValueList.Count>0?company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
+                                    <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value.ToString():"" %>" />
+                                </div>
 
-                        </div>
-                    </td>
-                </tr>
-                <%}
-                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
-                    {%>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label><%=udf.col_name %></label>
+                            </td>
+                        </tr>
+                    <%}
+                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
+                        {%>
+                    <tr>
+                        <td>
+                            <div class="clear">
+                                <label><%=udf.col_name %></label>
 
-                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=(!isAdd)&&company_udfValueList!=null&&company_udfValueList.Count>0?company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
-                        </div>
-                    </td>
-                </tr>
-                <%}
-                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
-                    {%>
+                                <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
+                            </div>
+                        </td>
+                    </tr>
+                    <%}
+                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                        {%>
 
-                <%}
-                        }
-                    } %>
-            </table>
+                    <%}
+                            }
+                        } %>
+                </table>
+
+            </div>
+
 
         </div>
         <div class="content clear">
+            <%var user = EMT.DoneNOW.BLL.UserInfoBLL.GetUserInfo(GetLoginUserId()); %>
+            <div class="clear">
+                <input type="checkbox" name="" id="checkUser" />
+                <label><%=user.name %></label>
+                <input type="hidden" name="from_email" value="<%=user.email %>"/>
+                <input type="checkbox" name="" id="CheckAccountManage" />
+                <label>客户经理</label>
+            </div>
+            <div class="clear">
+                <label>员工<a href="#">（加载员工）</a></label>
+                <select></select>
+            </div>
+            <div class="clear">
+                <label>其他邮件</label>
+                <input type="text" name="to_email" id="to_email" />
+            </div>
+            <div class="clear">
+                <label>通知模板</label>
+                <asp:DropDownList ID="notify_tmpl_id" runat="server"></asp:DropDownList>
+            </div>
+            <div class="clear">
+                <label>主题</label>
+                <input type="text" name="subject" id="subject" />
+            </div>
+            <div class="clear">
+                <label>附加信息</label>
+                <input type="text" name="body_text" id="body_text" />
+            </div>
         </div>
     </form>
 </body>
 </html>
+<script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../Scripts/index.js"></script>
+<script src="../Scripts/common.js"></script>
+<script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    $(function () {
+
+
+    })
+
+    function GetContactList() {
+        debugger;
+        var account_id = $("#ParentComoanyNameHidden").val();
+        if (account_id != "") {
+            $("#contact_id").html("");
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+
+                    if (data != "") {
+                        $("#contact_id").html(data);
+                    }
+                },
+
+
+            });
+        }
+    }
+</script>
