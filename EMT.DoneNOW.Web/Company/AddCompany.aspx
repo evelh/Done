@@ -6,7 +6,7 @@
 
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>New Company</title>
+    <title>添加客户</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
@@ -46,7 +46,7 @@
             <div class="information clear">
                 <p class="informationTitle"><i></i>基本信息</p>
                 <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width: 500px; margin-left: 40px;">
                         <%--  <tr>
                     <th>
                         <h1>Client Portal Status</h1>
@@ -190,8 +190,7 @@
 
                     </table>
 
-
-                    <table border="none" cellspacing="" cellpadding="" style="width: 850px; margin-left: 40px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width: 500px; margin-left: 40px;">
 
 
                         <tr>
@@ -298,21 +297,21 @@
                                 <td>
                                     <div class="clear">
                                         <label>父客户名称</label>
-                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=parent_account.name %>" /><span onclick="chooseCompany('CompanyFindBack.aspx');" style="width: 30px; float: left; margin-left: -5px;">查找</span>
-                                        <input type="hidden" id="ParentComoanyNameHide" name="parent_company_name" value="<%=parent_account.id %>" />
+                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 20px;height:20px; float: left; margin-left: -1px;margin-top:5px; background: url(../Images/data-selector.png);"></i>
+                                        <input type="hidden" id="ParentComoanyNameHidden" name="parent_company_name" value="<%=parent_account.id %>" />
                                     </div>
                                 </td>
                             </tr>
                             <%}else{ %>
-                               <%--     <tr>
+                             <tr>
                                 <td>
                                     <div class="clear">
                                         <label>父客户名称</label>
-                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><span onclick="chooseCompany('CompanyFindBack.aspx');" style="width: 30px; float: left; margin-left: -5px;">查找</span>
-                                        <input type="hidden" id="ParentComoanyNameHide" name="parent_company_name" value="" />
+                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 20px;height:20px; float: left; margin-left: -1px;margin-top:5px; background: url(../Images/data-selector.png);"></i>
+                                        <input type="hidden" id="ParentComoanyNameHidden" name="parent_company_name" value="" />
                                     </div>
                                 </td>
-                            </tr>--%>
+                            </tr>
                             <%} %>
                     
                         <tr>
@@ -804,8 +803,9 @@
         });
     })
 
-    function chooseCompany(url) {
-        window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
+    function chooseCompany() {
+        window.open("../Common/SelectCallBack.aspx?type=查找客户&field=ParentComoanyName", 'new', 'left=200,top=200,width=600,height=800', false);
+        //window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
         //这些要写在一行
     }
 

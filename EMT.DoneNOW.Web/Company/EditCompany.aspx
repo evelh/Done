@@ -297,8 +297,9 @@
                         <div class="clear">
                             <label>父客户名称</label>
                             <asp:TextBox ID="ParentComoanyName" runat="server"></asp:TextBox>
-                            <span onclick="chooseCompany('CompanyFindBack.aspx?id=<%=account.id %>');" style="width: 30px; float: left; margin-left: -5px;">查找</span>
-                            <input type="hidden" id="parent_company_name" name="parent_company_name" value="<%=account.parent_id %>" />
+                            <i onclick="chooseCompany();" style="width: 15px;height:15px; float: left; margin-left: -1px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                            
+                            <input type="hidden" id="ParentComoanyNameHidden" name="parent_company_name" value="<%=account.parent_id %>" />
                         </div>
                     </td>
                 </tr>

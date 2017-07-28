@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ViewContact.aspx.cs" Inherits="EMT.DoneNOW.Web.Contact.ViewContact" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ViewContact.aspx.cs" Inherits="EMT.DoneNOW.Web.ViewContact" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-       <title>查看联系人</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>查看联系人</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
@@ -14,35 +14,211 @@
 </head>
 <body>
     <form id="form1" runat="server">
-         <%  
-             var defaultLocation = locationBLL.GetLocationByAccountId(account.id);
-             var taxRegion = dic.FirstOrDefault(_ => _.Key == "taxRegion").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-             var classification = dic.FirstOrDefault(_ => _.Key == "classification").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-             var sys_resource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-             var competition = dic.FirstOrDefault(_ => _.Key == "competition").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-             var market_segment = dic.FirstOrDefault(_ => _.Key == "market_segment").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-             var district = dic.FirstOrDefault(_ => _.Key == "district").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-             var territory = dic.FirstOrDefault(_ => _.Key == "territory").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-             var company_type = dic.FirstOrDefault(_ => _.Key == "company_type").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-             var sufix = dic.FirstOrDefault(_ => _.Key == "sufix").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-             var action_type = dic.FirstOrDefault(_ => _.Key == "action_type").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-             var country = dic.FirstOrDefault(_ => _.Key == "country").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;//district
-             var addressdistrict = dic.FirstOrDefault(_ => _.Key == "addressdistrict").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+        <%  
+            var defaultLocation = locationBLL.GetLocationByAccountId(account.id);
+            var contactLocation = locationBLL.GetLocation((long)contact.location_id);
+            var taxRegion = dic.FirstOrDefault(_ => _.Key == "taxRegion").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+            var classification = dic.FirstOrDefault(_ => _.Key == "classification").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+            var sys_resource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+            var competition = dic.FirstOrDefault(_ => _.Key == "competition").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+            var market_segment = dic.FirstOrDefault(_ => _.Key == "market_segment").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+            var district = dic.FirstOrDefault(_ => _.Key == "district").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+            var territory = dic.FirstOrDefault(_ => _.Key == "territory").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+            var company_type = dic.FirstOrDefault(_ => _.Key == "company_type").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+            var sufix = dic.FirstOrDefault(_ => _.Key == "sufix").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+            var action_type = dic.FirstOrDefault(_ => _.Key == "action_type").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+            var country = dic.FirstOrDefault(_ => _.Key == "country").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;//district
+            var addressdistrict = dic.FirstOrDefault(_ => _.Key == "addressdistrict").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
         %>
-           <div class="header">
+        <div class="header">
             <i>
                 <ul>
-                    <li>活动</li>
-                    <li>待办</li>
-                    <li>备注</li>
-                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=opportunity"  target="view_window">商机</a></li>                      
-                    <li>联系人组</li>
-                    <li>工单</li>                 
-                    <li>配置项</li> 
+                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=activity" target="view_window">活动</a></li>
+                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=todo" target="view_window">待办</a></li>
+                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=note" target="view_window">备注</a></li>
+                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=opportunity" target="view_window">商机</a></li>
+                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=contactGroup" target="view_window">联系人组</a></li>
+                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=ticket" target="view_window">工单</a></li>
+                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=configura" target="view_window">配置项</a></li>
                 </ul>
             </i>
-            COMPANY-<%=account.name %>
+            CONTACT-<%=contact.name %>
+        </div>
+
+        <div class="header-title">
+            <ul>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                    <input type="button" id="Edit" value="修改" onclick="window.open('EditContact.aspx?id=<%=contact.id %>');" />
+                    <%--  <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" />--%>
+                </li>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
+                    <input type="button" id="Add" value="添加" />
+                    <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
+                    <ul>
+                        <li><a href="../Activity/AddActivity.aspx?account_id=<%=account.id %>&type=todo">待办</a></li>
+                        <li><a href="../Activity/AddActivity.aspx?account_id=<%=account.id %>&type=note">客户备注</a></li>
+                        <li><a href="../Opportunity/OpportunityAddAndEdit.aspx?account_id=<%=account.id %>" target="view_window">商机</a></li>
+                    </ul>
+                </li>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
+                    <asp:Button ID="LiveLink" runat="server" Text="友情链接" BorderStyle="None" /></li>
+            </ul>
+        </div>
+
+
+        <div class="activityTitleleft fl" id="showGeneralInformation" style="margin-left: 20px;">
+            <input type="hidden" id="isHide" runat="server" value="hide" />
+            <%switch (type)
+                {
+                    case "activity":%>
+            <h1>活动-<%=contact.name %></h1>
+            <%break;
+                case "todo":%>
+            <h1>待办-<%=contact.name %></h1>
+            <%break;
+                case "note":%>
+            <h1>备注-<%=contact.name %></h1>
+            <%break;
+                    default:
+                        break;
+                } %>
+
+            <div class="contact">
+                <label><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %></label>
+                <%if (!string.IsNullOrEmpty(contact.title))
+                    { %>
+                <p class="clear">
+                    <span class="fl">头衔</span>
+                    <span class="fr"><%=contact.title %> </span>
+                </p>
+                <%} %>
+                <p><%=country.First(_=>_.val.ToString()==contactLocation.country_id.ToString()).show  %></p>
+                <p><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.province_id.ToString()).show  %></p>
+                <p><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.city_id.ToString()).show  %></p>
+                <p><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.district_id.ToString()).show  %></p>
+
+                <% if (!string.IsNullOrEmpty(contactLocation.address))
+                    { %>
+
+                <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=contactLocation.address %>" target="view_window"><%=contactLocation.address %></a></p>
+                <%} %>
+                <% if (!string.IsNullOrEmpty(contactLocation.postal_code))
+                    { %>
+                <p class="clear">
+                    <span class="fl">邮编</span>
+                    <span class="fr"><%=contactLocation.address %> </span>
+                </p>
+                <%} %>
+                <% if (!string.IsNullOrEmpty(contactLocation.additional_address))
+                    { %>
+                <p><%=contactLocation.additional_address %></p>
+                <%} %>
+                <% if (!string.IsNullOrEmpty(contact.phone))
+                    { %>
+                <p class="clear">
+                    <span class="fl">电话</span>
+                    <span class="fr"><%=contact.phone %> </span>
+                </p>
+                <%} %>
+                <% if (!string.IsNullOrEmpty(contact.mobile_phone))
+                    { %>
+                <p class="clear">
+                    <span class="fl">移动电话</span>
+                    <span class="fr"><%=contact.mobile_phone %> </span>
+                </p>
+                <%} %>
+                <% if (!string.IsNullOrEmpty(contact.email))
+                    { %>
+                <p class="clear">
+                    <span class="fl">邮箱</span>
+                    <span class="fr"><%=contact.email %> </span>
+                </p>
+                <%} %>
+            </div>
+
+
+
+            <div class="address ">
+                <label><%=account.name %> <span>类别图标</span> <span>自助服务台图标</span></label>
+                <p><%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %></p>
+                <p><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.province_id.ToString()).show  %></p>
+                <p><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.city_id.ToString()).show  %></p>
+                <p><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.district_id.ToString()).show  %></p>
+
+                <% if (!string.IsNullOrEmpty(defaultLocation.address))
+                    { %>
+
+                <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=defaultLocation.address %>" target="view_window"><%=defaultLocation.address %></a></p>
+                <%} %>
+
+                <% if (!string.IsNullOrEmpty(defaultLocation.additional_address))
+                    { %>
+                <p><%=defaultLocation.additional_address %></p>
+                <%} %>
+
+                <%--<p>可以根据链接，跳转到百度或其他地图，显示该客户位置</p>--%>
+
+                <% if (account.parent_id != null)
+                    { %>
+                <p><a href="ViewCompany.aspx?id=<%=account.parent_id %>"><%=companyBll.GetCompany((long)account.parent_id).name %> </a></p>
+                <%} %>
+
+                <p><%=account.phone %></p>
+                <p>(P) <%=defaultLocation.postal_code %></p>
+                <p>(F) <%=account.fax %></p>
+                <p><%=account.web_site %></p>
+            </div>
+
+
+            <div class="other">
+                <%if (contactUDFList != null && contactUDFList.Count > 0)
+                    {
+                        foreach (var item in contactUDFList)
+                        { %>
+                <p class="clear">
+                    <span class="fl"><%=item.name %> </span>
+                    <span class="fr"><%=contactEDFValueList.FirstOrDefault(_=>_.id==item.id).value %></span>
+                </p>
+
+                <%}
+                    }%>
+                <p class="clear">
+                    <span class="fl">最后活动时间 </span>
+                    <span class="fr"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)contact.last_activity_time).ToString("yyyy-MM-dd") %></span>
+                </p>
+            </div>
+        </div>
+
+
+        <div id="ShowContact_Right" style="float: left; margin-left: 35px;" class="activityTitleright f1">
+            <iframe runat="server" id="viewContact_iframe" width="800" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
         </div>
     </form>
 </body>
 </html>
+<script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../Scripts/NewContact.js" type="text/javascript" charset="utf-8"></script>
+<script src="../Scripts/index.js"></script>
+<script src="../Scripts/common.js"></script>
+<script>
+    $(function () {
+
+        var hide = $("#isHide").val();
+        if (hide == "hide") {
+            $("#showGeneralInformation").hide();
+        }
+        $("#viewContact_iframe").attr("onLoad", iFrameHeight);
+    })
+
+    // 这个方法可以使iframe适应源页面的大小
+    function iFrameHeight() {
+        var ifm = document.getElementById("viewContact_iframe");
+        var subWeb = document.frames ? document.frames["viewContact_iframe"].document : ifm.contentDocument;
+        if (ifm != null && subWeb != null) {
+            ifm.height = subWeb.body.scrollHeight;
+            ifm.width = subWeb.body.scrollWidth;
+        }
+    }
+
+
+</script>

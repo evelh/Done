@@ -57,10 +57,9 @@
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
-                    <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" />
+                    <input type="button" id="Edit" value="修改" onclick="window.open('EditCompany.aspx?id=<%=account.id %>');"/>
+                   <%-- <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" OnClientClick="" />--%>
                 </li>
-
-
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
                     <asp:Button ID="tianjia" runat="server" Text="添加" BorderStyle="None" />
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
@@ -69,7 +68,7 @@
                         <li>工单</li>
                         <li>待办</li>
                         <li>客户备注</li>
-                        <li><a href="../Opportunity/OpportunityAdd.aspx?account_id=<%=account.id %>" target="view_window">商机</a></li>
+                        <li><a href="../Opportunity/OpportunityAddAndEdit.aspx?account_id=<%=account.id %>" target="view_window">商机</a></li>
                         <li><a href="../Contact/AddContact.aspx?parent_id=<%=account.id %>" target="view_window">联系人</a></li>
                         <li><a href="AddCompany.aspx?parent_id=<%=account.id %>" target="view_window">子客户</a></li>
                         <li>配置项</li>
@@ -115,6 +114,12 @@
                  <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=location.address %>"  target="view_window"><%=location.address %></a></p>
                 <%} %>
 
+                 <% if (!string.IsNullOrEmpty(location.postal_code))
+                    { %>
+                 <span class="fl">邮编</span>
+                 <span class="fr"><%=location.address %> </span>
+               
+                <%} %>
                 <% if (!string.IsNullOrEmpty(location.additional_address))
                     { %>
                 <p><%=location.additional_address %></p>
@@ -309,7 +314,7 @@
 
 
 
-        <div id="ShowCompany_Right" style="float: left; margin-left: 35px;">
+        <div id="ShowCompany_Right" class="activityTitleright f1" style="float: left; margin-left: 35px;">
             
         <iframe runat="server" id="viewCompany_iframe" width="800" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" >
 
@@ -348,6 +353,7 @@
         if (ifm != null && subWeb != null) {
             ifm.height = subWeb.body.scrollHeight;
             ifm.width = subWeb.body.scrollWidth;
+            
         }
     } 
 

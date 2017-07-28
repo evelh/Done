@@ -5,6 +5,7 @@ using System.Text;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 
+
 namespace EMT.DoneNOW.DAL
 {
     public class crm_opportunity_dal : BaseDAL<crm_opportunity>
@@ -41,6 +42,15 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql($"SELECT * from crm_opportunity where account_id = {account_id} and delete_time = 0 ORDER BY name");
         }
 
+        /// <summary>
+        /// 根据商机ID去获取商机
+        /// </summary>
+        /// <param name="opportunity_id"></param>
+        /// <returns></returns>
+        public crm_opportunity GetOpportunityById(long opportunity_id)
+        {
+            return FindSignleBySql<crm_opportunity>($"SELECT * from crm_opportunity where id = {opportunity_id}  AND delete_time = 0");
+        }
        
     }
 

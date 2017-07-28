@@ -27,6 +27,7 @@ namespace EMT.DoneNOW.Web.Company
                     crm_account = new CompanyBLL().GetCompany(Convert.ToInt64(id));
                     if (crm_account != null)
                     {
+                        //Edit.OnClientClick = $"window.open(EditCompany.aspx?id={crm_account.id});";
                         dic = new CompanyBLL().GetField();    // 获取字典
                         if (type == "activity" || type == "note" || type == "todo")
                         {

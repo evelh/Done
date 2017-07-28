@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.DTO
         OPPORTUNITY_INTEREST_DEGREE = 13,
         OPPORTUNITY_WIN_REASON_TYPE = 14,
         OPPORTUNITY_LOSS_REASON_TYPE = 15,
-        OPPORTUNITY_ADVANCED_FIELD = 16,
+        OPPORTUNITY_ADVANCED_FIELD = 16,        // 商机扩展字段
         OPPORTUNITY_STATUS = 17,
         FORM_TEMPLATE_RANGE_TYPE = 18,
         PROJECTED_CLOSED_DATE = 19,
@@ -36,6 +36,24 @@ namespace EMT.DoneNOW.DTO
     /// </summary>
     public class DicEnum
     {
+        /// <summary>
+        /// 活动类型 - 7
+        /// </summary>
+        public enum ACTIVITY_TYPE
+        {
+            OPPORTUNITYUPDATE=21,          // 商机更新
+            PHONE = 22,                    // 电话
+            MEETING = 23,                  // 会议
+            OUTLINE=24,                    // 概要
+            GRAFFITI_RECORD=25,            // 涂鸦记录
+            EMAIL=26,                      // 邮件
+            IN_CHARGE=27,                  // 计费中
+            SALES=28,                      // 销售
+            CANCELLATION=29,               // 注销
+
+        }
+
+
         /// <summary>
         /// 活动种类 - 8
         /// </summary>
@@ -80,6 +98,46 @@ namespace EMT.DoneNOW.DTO
             INVENTORY = 102,        // 库存
             TICKETS = 103,          // Taskfire工单
             OTHERS = 104,           // 杂项
+        }
+        /// <summary>
+        /// 通知事件-21
+        /// </summary>
+        public enum NOTIFY_EVENT
+        {
+            OPPORTUNITY_CREATEDOREDITED,                          // 商机-创建或编辑
+            OPPORTUNITY_CLOSED,                                   // 商机-达成
+            OPPORTUNITY_RE_ASSIGNED,                              // 商机-再分配
+            OPPORTUNITY_LOST,                                     // 商机-丢失
+            //OPPORTUNITY ATTACHMENT - ADDED,                     // 
+            //QUOTE - CREATED OR EDITED,                          // 
+            //SALES ORDER - CREATED OR EDITED,                    // 
+            //SALES ORDER ATTACHMENT - ADDED,                     // 
+            //TO-DO - CREATED OR EDITED,                          // 
+            //NOTE - CREATED OR EDITED,                           // 
+            //ACCOUNT - CANCELED,                                 // 
+            //ACCOUNT ATTACHMENT - ADDED,                         // 
+            //CONFIGURATION ITEM - CREATED,                       // 
+            //CONFIGURATION ITEM ATTACHMENT - ADDED,              // 
+            //PROJECT - CREATED,                                  // 
+            //PROJECT - COMPLETED,                                // 
+            //PROJECT ATTACHMENT - ADDED,                         // 
+            //PROJECT NOTE - CREATED OR EDITED,                   // 
+            //TASK - CREATED OR EDITED,                           // 
+            //TASK - COPIED,                                      // 
+            //TASK ATTACHMENT - ADDED,                            // 
+            //TASK TIME ENTRY - CREATED OR EDITED,                // 
+            //TASK NOTE - CREATED OR EDITED,                      // 
+            //ISSUE - CREATED OR EDITED,                          // 
+            //TICKET - CREATED OR EDITED,                         // 
+            //TICKET - FORWARDED,                                 // 
+            //TICKET ATTACHMENT - ADDED,                          // 
+            //TICKET TIME ENTRY - CREATED OR EDITED,              // 
+            //TICKET NOTE - CREATED OR EDITED,                    // 
+            //RECURRENCE MASTER - CREATED OR EDITED,              // 
+            //QUICK CALL - CREATED,                               // 
+            //SERVICE CALL - CREATED OR EDITED,                   // 
+            //BLOCK HOUR CONTRACT - NOTIFICATION RULE,            // 
+            //PER TICKET CONTRACT - NOTIFICATION RULE,            // 
         }
 
         /// <summary>
@@ -200,6 +258,8 @@ namespace EMT.DoneNOW.DTO
             FROM = 766,                                 // 表单模板
             FROMOPPORTUNITY = 767,                      // 商机表单模板
             OPPORTUNITY = 768,                          // 商机
+            NOTIFY=769,                                 // 通知
+            ACTIVITY=770,                               // 活动   // todo数据库添加
         }
 
         /// <summary>
