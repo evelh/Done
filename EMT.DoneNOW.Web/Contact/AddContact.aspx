@@ -93,7 +93,7 @@
 					<td>
 						<div class="clear">
 							<label>激活<span class="red">*</span></label>
-							<input type="checkbox" name="is_active" id="active" value="<%=active %>" />
+							<input type="checkbox"  checked="checked" name="is_active" id="active" value="<%=active %>" />
 						</div>
 					</td>
 				</tr>
