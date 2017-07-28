@@ -28,8 +28,7 @@ position: relative;
 float: left;overflow: hidden;}
 .content label .red{color: red ;  vertical-align: super; position: absolute;right: -10px;top: 0;}
 .content label .num{color: #666666;font-size: 12px;  vertical-align: super; }
-.content input{float: left;margin-left:15px;
-}
+.content input{float: left;width:180px;margin-left:15px;}
 .content select{float: left;width:195px;height:28px;line-height: 28px;margin-left:15px;}
 .content .selectTwo{float: left;width:50%;height:28px;line-height: 28px;margin-left:15px;}
 .content .selectTwo select{float: left;width:90px;height:28px;line-height: 28px;margin: 0;}
