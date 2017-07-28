@@ -12,6 +12,22 @@
     <link rel="stylesheet" type="text/css" href="../Content/searchList.css"/>
     <title></title>
 </head>
+<style>
+    .searchcontent{
+  OVERFLOW:   scroll;   width:   1800px;   height:   100%;
+    }
+    table{width:100%;
+         
+    }
+    th{
+        widht:100%;
+        display: table-cell;
+    }
+    td{
+         widht:20px;
+            display: table-cell;
+    }
+</style>
 <body>
     <form id="form1">
         <div id="search_list">
@@ -28,15 +44,15 @@
         </div>
         <div class="contenttitle">
 			<ul class="clear">
-				<li><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
+				<li onclick="AddContact()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
 				<li><i style="background-image: url(../Images/new.png);"></i></li>
-				<li><i style="background-image: url(../Images/new.png);"></i></li>
+				<li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryPage %>', 'ColumnSelect', 'left=200,top=200,width=820,height=350', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
 				<li><i style="background-image: url(../Images/new.png);"></i></li>
 			</ul>
 		</div>
         <%if (queryResult != null) { %>
 			<div class="searchcontent" id="searchcontent">
-				<table border="" cellspacing="" cellpadding="">
+				<table border="" cellspacing="0" cellpadding="0">
 					<tr>
                         <%foreach(var para in resultPara)
                             {
@@ -53,7 +69,7 @@
                                     order = strs[1].ToLower();
                                 }
                                 %>
-                        <th title="点击按此列排序" style="width:<%=para.length %>px;" onclick="ChangeOrder('<%=para.name %>')">
+                        <th title="点击按此列排序"  onclick="ChangeOrder('<%=para.name %>')">
                             <%=para.name %>
                             <%if (orderby!=null && para.name.Equals(orderby))
                                 { %><img src="../Images/sort-<%=order %>.png" /> 
@@ -112,7 +128,8 @@
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
-        <% if (queryPage.Equals("客户查询")){ %>
+        <% if (queryPage.Equals("客户查询"))
+        { %>
         function EditCompany() {
             OpenWindow("../Company/EditCompany.aspx?id=" + entityid);
         }
@@ -122,7 +139,23 @@
         function AddCompany() {
             OpenWindow("../Company/AddCompany.aspx");
         }
-        <%}%>
+        <%}
+        else if (queryPage.Equals("联系人查询")) {
+            %>
+        function EditContact() {
+            OpenWindow("../Contact/EditContact.aspx?id=" + entityid);
+        }
+        function ViewContact() {
+            OpenWindow("../Contact/ViewContact.aspx?id=" + entityid);
+        }
+        function AddContact() {
+            OpenWindow("../Contact/AddContact.aspx");
+        }
+        function DeleteContact() {
+            OpenWindow("../Contact/DeleteContact.aspx?id=" + entityid);
+        }
+        <%
+        }%>
     </script>
 </body>
 </html>

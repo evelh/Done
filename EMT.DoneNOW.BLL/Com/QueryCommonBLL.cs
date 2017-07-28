@@ -374,6 +374,28 @@ namespace EMT.DoneNOW.BLL
             return result;
         }
 
+        /// <summary>
+        /// 获取一个查询页面所有结果显示列
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="queryPageName"></param>
+        /// <returns></returns>
+        public List<QueryResultParaDto> GetResultParaAll(string queryPageName)
+        {
+            List<QueryResultParaDto> result = new List<QueryResultParaDto>();
+            d_query_type queryType = GetQueryType(queryPageName);
+            if (queryType == null)
+                return result;
+            string sql = $"SELECT * FROM d_query_result WHERE query_type_id={queryType.id} ORDER BY col_order ASC";
+            var queryResultList = new d_query_result_dal().FindListBySql(sql);
+            foreach (var qr in queryResultList)
+            {
+                result.Add(new QueryResultParaDto { id = qr.id, name = qr.col_comment, length = qr.col_length, type = qr.display_type_id });
+            }
+
+            return result;
+        }
+
         #region 查询结果选择功能
         /// <summary>
         /// 获取用户已选择的结果显示列 （查询结果选择器用）
@@ -387,6 +409,10 @@ namespace EMT.DoneNOW.BLL
             List<DictionaryEntryDto> result = new List<DictionaryEntryDto>();
             foreach (var qr in list)
             {
+                if (qr.type == (int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
+                    || qr.type == (int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
+                    || qr.type == (int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
+                    continue;
                 result.Add(new DictionaryEntryDto(qr.id.ToString(), qr.name));
             }
 
@@ -401,14 +427,14 @@ namespace EMT.DoneNOW.BLL
         public List<DictionaryEntryDto> GetResultAll(string queryPageName)
         {
             List<DictionaryEntryDto> result = new List<DictionaryEntryDto>();
-            d_query_type queryType = GetQueryType(queryPageName);
-            if (queryType == null)
-                return result;
-            string sql = $"SELECT id,col_comment FROM d_query_result WHERE query_type_id={queryType.id} AND is_visible=1 ORDER BY col_order ASC";
-            var queryResultList = new d_query_result_dal().FindListBySql(sql);
+            var queryResultList = GetResultParaAll(queryPageName);
             foreach (var qr in queryResultList)
             {
-                result.Add(new DictionaryEntryDto(qr.id.ToString(), qr.col_comment));
+                if (qr.type == (int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
+                    || qr.type == (int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
+                    || qr.type == (int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
+                    continue;
+                result.Add(new DictionaryEntryDto(qr.id.ToString(), qr.name));
             }
 
             return result;
@@ -438,15 +464,14 @@ namespace EMT.DoneNOW.BLL
             d_query_type queryType = GetQueryType(queryPageName);
             if (queryType == null)
                 return;
-
-            /*
-            // 向查询结果列添加id列
-            string sql = $"SELECT * FROM d_query_result WHERE col_comment='id' AND query_type_id={queryType.id}";
-            d_query_result rsltParaId = new d_query_result_dal().FindSignleBySql<d_query_result>(sql);
-            if (rsltParaId == null)
-                throw new Exception($"query_type_id:{queryType.id}数据库未添加d_query_result记录:id");
-            ids += "," + rsltParaId.id;
-            */
+            
+            // 向查询结果列添加不可见列
+            string sql = $"SELECT * FROM d_query_result WHERE query_type_id={queryType.id} AND display_type_id IN ({(int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID},{(int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP},{(int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE})";
+            var paras = new d_query_result_dal().FindListBySql(sql);
+            if (paras == null || paras.Count == 0)
+                throw new Exception($"query_type_id:{queryType.id}-数据库未添加d_query_result记录:id");
+            foreach (var p in paras)
+                ids += "," + p.id;
 
             var dal = new sys_query_type_user_dal();
             sys_query_type_user queryUser = dal.FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id={userId} AND query_type_id={queryType.id}");

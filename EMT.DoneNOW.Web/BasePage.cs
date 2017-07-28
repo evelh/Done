@@ -27,6 +27,9 @@ namespace EMT.DoneNOW.Web
 
         public bool IsUserLogin()
         {
+            sys_user user = new sys_user { id = 1, email = "liuhai_dsjt@shdsjt.cn", name="刘海", mobile_phone = "18217750743" };
+            //sys_user user = new sys_user { id = 2, email = "zhufei_dsjt@shdsjt.cn", name = "朱飞", mobile_phone = "12" };
+            Session["dn_session_user_info"] = user;
             if (Session["dn_session_user_info"] != null)
             {
                 return true;
@@ -81,13 +84,25 @@ namespace EMT.DoneNOW.Web
                 if (propertyList.Exists(p=>p.Name.ToLower().Equals(key.ToLower())))     // 属性
                 {
                     var pro = propertyList.Find(p => p.Name.ToLower().Equals(key.ToLower()));
-                    object value = Convert.ChangeType(valueCollection[key],Nullable.GetUnderlyingType(pro.PropertyType)??pro.PropertyType);
+                    Type t = Nullable.GetUnderlyingType(pro.PropertyType) ?? pro.PropertyType;
+                    object value = null;
+                    if (valueCollection[key] == null || valueCollection[key].ToString().Equals(""))
+                        value = default(T);
+                    else
+                        value = Convert.ChangeType(valueCollection[key], t);
+                    //value = Convert.ChangeType(valueCollection[key],Nullable.GetUnderlyingType(pro.PropertyType)??pro.PropertyType);
                     pro.SetValue(obj, value, null);
                 }
                 else if (fieldList.Exists(p => p.Name.ToLower().Equals(key.ToLower()))) // 字段
                 {
                     var fld = fieldList.Find(p => p.Name.ToLower().Equals(key.ToLower()));
-                    Object value = Convert.ChangeType(valueCollection[key], Nullable.GetUnderlyingType(fld.FieldType) ?? fld.FieldType);
+                    Type t = Nullable.GetUnderlyingType(fld.FieldType) ?? fld.FieldType;
+                    object value = null;
+                    if (valueCollection[key] == null || valueCollection[key].ToString().Equals(""))
+                        value = default(T);
+                    else
+                        value = Convert.ChangeType(valueCollection[key], t);
+                    //Object value = Convert.ChangeType(valueCollection[key], Nullable.GetUnderlyingType(fld.FieldType) ?? fld.FieldType);
                     fld.SetValue(obj, value);
                 }
             }

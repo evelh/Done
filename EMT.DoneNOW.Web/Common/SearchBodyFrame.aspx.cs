@@ -169,10 +169,10 @@ namespace EMT.DoneNOW.Web
                     break;
                 case "联系人查询":
                     contextMenu.Add(new PageContextMenuDto { text = "修改联系人", click_function = "EditContact()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看联系人", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看联系人", click_function = "ViewContact()" });
                     contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "AddCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除联系人", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除联系人", click_function = "DeleteContact()" });
                     break;
                 default:
                     break;
