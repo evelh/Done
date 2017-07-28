@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web.Opportunity {
+namespace EMT.DoneNOW.Web.Activity {
     
     
-    public partial class OopportunityAdd {
+    public partial class AddActivity {
         
         /// <summary>
         /// form1 控件。
