@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web.Common {
+namespace EMT.DoneNOW.Web {
     
     
-    public partial class CompanyFindBack {
+    public partial class ColumnSelector {
         
         /// <summary>
         /// form1 控件。

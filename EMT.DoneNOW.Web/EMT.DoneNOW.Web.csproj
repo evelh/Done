@@ -126,12 +126,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="About.aspx" />
+    <Content Include="Common\ColumnSelector.aspx" />
+    <Content Include="Activity\AddActivity.aspx" />
     <Content Include="Company\CompanyNameSimilar.aspx" />
     <Content Include="Company\UpdateContact.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
-    <Content Include="Company\CompanyFindBack.aspx" />
     <Content Include="Common\SearchFrameSet.aspx" />
     <Content Include="Company\AddCompany.aspx" />
     <Content Include="Company\DeleteCompany.aspx" />
@@ -143,9 +143,11 @@
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.min3.3.4.css" />
     <Content Include="Content\index.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\multiple-select.css" />
+    <Content Include="Content\multipleList.css" />
     <Content Include="Content\searchList.css" />
     <Content Include="Content\style.css" />
     <Content Include="Default.aspx" />
@@ -163,6 +165,8 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
     <Content Include="Images\ButtonBarIcons.png" />
+    <Content Include="Images\cancel.png" />
+    <Content Include="Images\column-chooser.png" />
     <Content Include="Images\crm.png" />
     <Content Include="Images\data-selector.png" />
     <Content Include="Images\fwt.png" />
@@ -180,6 +184,8 @@
     <Content Include="Images\ml.png" />
     <Content Include="Images\multiple-select.png" />
     <Content Include="Images\new.png" />
+    <Content Include="Images\pop.jpg" />
+    <Content Include="Images\save.png" />
     <Content Include="Images\search.png" />
     <Content Include="Images\sjb.png" />
     <Content Include="Images\sort-asc.png" />
@@ -190,7 +196,8 @@
     <Content Include="Index.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Opportunity\LoseOpportunity.aspx" />
-    <Content Include="Opportunity\OpportunityAdd.aspx" />
+    <Content Include="Scripts\bootstrap.min-3.3.4.js" />
+    <Content Include="Opportunity\OpportunityAddAndEdit.aspx" />
     <Content Include="Scripts\Common\Address.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.zh-CN.js" />
@@ -204,6 +211,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-3.1.0.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\multiselect.min.js" />
     <Content Include="Scripts\NewContact.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -239,6 +247,19 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ColumnSelector.aspx.cs">
+      <DependentUpon>ColumnSelector.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\ColumnSelector.aspx.designer.cs">
+      <DependentUpon>ColumnSelector.aspx</DependentUpon>
+    <Compile Include="Activity\AddActivity.aspx.cs">
+      <DependentUpon>AddActivity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Activity\AddActivity.aspx.designer.cs">
+      <DependentUpon>AddActivity.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Company\CompanyNameSimilar.aspx.cs">
       <DependentUpon>CompanyNameSimilar.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -267,13 +288,6 @@
     <Compile Include="Activity\ViewActivity.aspx.designer.cs">
       <DependentUpon>ViewActivity.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Company\CompanyFindBack.aspx.cs">
-      <DependentUpon>CompanyFindBack.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Company\CompanyFindBack.aspx.designer.cs">
-      <DependentUpon>CompanyFindBack.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Company\AddCompany.aspx.cs">
       <DependentUpon>AddCompany.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -282,13 +296,6 @@
       <DependentUpon>AddCompany.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="About.aspx.cs">
-      <DependentUpon>About.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="About.aspx.designer.cs">
-      <DependentUpon>About.aspx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -380,12 +387,12 @@
     <Compile Include="Opportunity\LoseOpportunity.aspx.designer.cs">
       <DependentUpon>LoseOpportunity.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Opportunity\OpportunityAdd.aspx.cs">
-      <DependentUpon>OpportunityAdd.aspx</DependentUpon>
+    <Compile Include="Opportunity\OpportunityAddAndEdit.aspx.cs">
+      <DependentUpon>OpportunityAddAndEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Opportunity\OpportunityAdd.aspx.designer.cs">
-      <DependentUpon>OpportunityAdd.aspx</DependentUpon>
+    <Compile Include="Opportunity\OpportunityAddAndEdit.aspx.designer.cs">
+      <DependentUpon>OpportunityAddAndEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\SearchConditionFrame.aspx.cs">

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OpportunityAdd.aspx.cs" Inherits="EMT.DoneNOW.Web.Opportunity.OopportunityAdd" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddActivity.aspx.cs" Inherits="EMT.DoneNOW.Web.Activity.AddActivity" %>
 
 <!DOCTYPE html>
 
