@@ -126,6 +126,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Common\ColumnSelector.aspx" />
     <Content Include="Activity\AddActivity.aspx" />
     <Content Include="Company\CompanyNameSimilar.aspx" />
     <Content Include="Company\UpdateContact.aspx" />
@@ -142,9 +143,11 @@
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.min3.3.4.css" />
     <Content Include="Content\index.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\multiple-select.css" />
+    <Content Include="Content\multipleList.css" />
     <Content Include="Content\searchList.css" />
     <Content Include="Content\style.css" />
     <Content Include="Default.aspx" />
@@ -162,6 +165,8 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
     <Content Include="Images\ButtonBarIcons.png" />
+    <Content Include="Images\cancel.png" />
+    <Content Include="Images\column-chooser.png" />
     <Content Include="Images\crm.png" />
     <Content Include="Images\data-selector.png" />
     <Content Include="Images\fwt.png" />
@@ -179,6 +184,8 @@
     <Content Include="Images\ml.png" />
     <Content Include="Images\multiple-select.png" />
     <Content Include="Images\new.png" />
+    <Content Include="Images\pop.jpg" />
+    <Content Include="Images\save.png" />
     <Content Include="Images\search.png" />
     <Content Include="Images\sjb.png" />
     <Content Include="Images\sort-asc.png" />
@@ -189,6 +196,7 @@
     <Content Include="Index.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Opportunity\LoseOpportunity.aspx" />
+    <Content Include="Scripts\bootstrap.min-3.3.4.js" />
     <Content Include="Opportunity\OpportunityAddAndEdit.aspx" />
     <Content Include="Scripts\Common\Address.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
@@ -203,6 +211,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-3.1.0.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\multiselect.min.js" />
     <Content Include="Scripts\NewContact.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -238,6 +247,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ColumnSelector.aspx.cs">
+      <DependentUpon>ColumnSelector.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\ColumnSelector.aspx.designer.cs">
+      <DependentUpon>ColumnSelector.aspx</DependentUpon>
+	</Compile>
     <Compile Include="Activity\AddActivity.aspx.cs">
       <DependentUpon>AddActivity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

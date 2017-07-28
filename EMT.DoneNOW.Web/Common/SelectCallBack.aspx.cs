@@ -34,7 +34,7 @@ namespace EMT.DoneNOW.Web
         {
             queryParaValue.Clear();
             resultPara = bll.GetResultParaSelect(GetLoginUserId(), queryPage);    // 获取查询结果列信息
-            queryResult = bll.getDataTest();return;
+            //queryResult = bll.getDataTest();return;
             var keys = HttpContext.Current.Request.QueryString;
             string order = keys["order"];   // order by 条件
             int page = string.IsNullOrEmpty(keys["page_num"]) ? 1 : int.Parse(keys["page_num"]);  // 查询页数

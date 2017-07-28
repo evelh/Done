@@ -64,7 +64,7 @@ namespace EMT.DoneNOW.BLL
             #region 对联系人必填项的校验
 
             // 必填项校验
-            if (string.IsNullOrEmpty(contactAddDto.contact.name) || string.IsNullOrEmpty(contactAddDto.contact.phone) || string.IsNullOrEmpty(contactAddDto.location.address) || string.IsNullOrEmpty(contactAddDto.contact.first_name))
+            if (string.IsNullOrEmpty(contactAddDto.contact.name) || string.IsNullOrEmpty(contactAddDto.contact.phone) || string.IsNullOrEmpty(contactAddDto.contact.first_name))
             {
                 return ERROR_CODE.PARAMS_ERROR;                // string类型的非空校验
             }

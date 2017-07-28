@@ -50,8 +50,8 @@
 					<td>
 						<div class="clear input-dh">
 							<label>客户名称<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="accCallBack" value="" />
-                            <input type="hidden" name="account_id" id="accCallBackHidden" />
+							<input type="text" disabled="disabled" id="accCallBack" name="account_name" value="<%=aName %>" />
+                            <input type="hidden" name="account_id" id="accCallBackHidden" value="<%=account_id %>" />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowCompany()"></i></span>
 						</div>
 					</td>
@@ -61,7 +61,7 @@
 					<td>
 						<div class="clear">
 							<label>外部资源ID<span class="red">*</span></label>
-							<input type="text" name="external_id" id="" value="" />
+							<input type="text" name="external_id" id="" value="<%=extId %>" />
 						</div>
 					</td>
 				</tr>
@@ -71,9 +71,9 @@
                         <div class="clear">
                             <label>联系人姓名<span class="num"></span></label>
                             <div class="inputTwo">
-										<input type="text" name="first_name" id="first_name" value=""/>
+										<input type="text" name="first_name" id="first_name" value="<%=fName %>"/>
 										<span>-</span>
-										<input type="text" name="last_name" id="last_name" value=""/>
+										<input type="text" name="last_name" id="last_name" value="<%=lName %>"/>
 								</div>
                         </div>
                     </td>
@@ -89,53 +89,11 @@
 					</td>
 				</tr>
 
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>国家<span class=" red">*</span></label>
-                            <input id="country_idInit" value='1' type="hidden" runat="server" />
-                            <select name="country_id" id="country_id">
-                                <option value="1">中国</option>
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>省份<span class=" red">*</span></label>
-                            <input id="province_idInit" type="hidden" runat="server" />
-                            <select name="province_id" id="province_id">
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>城市<span class=" red">*</span></label>
-                            <input id="city_idInit" type="hidden" runat="server" />
-                            <select name="city_id" id="city_id">
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="clear">
-                            <label>区县<span class=" red">*</span></label>
-                            <input id="district_idInit" type="hidden" runat="server" />
-                            <select name="district_id" id="district_id">
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-
 				<tr>
 					<td>
 						<div class="clear">
 							<label>激活<span class="red">*</span></label>
-							<input type="checkbox" name="is_active" id="active" value="" />
+							<input type="checkbox" name="is_active" id="active" value="<%=active %>" />
 						</div>
 					</td>
 				</tr>
@@ -144,7 +102,7 @@
 					<td>
 						<div class="clear">
 							<label>头衔<span class="red">*</span></label>
-							<input type="text" name="title" id="" value="" />
+							<input type="text" name="title" id="" value="<%=title %>" />
 						</div>
 					</td>
 				 </tr>
@@ -153,7 +111,7 @@
 					<td>
 						<div class="clear">
 							<label>主联系人<span class="red">*</span></label>
-							<input type="checkbox" name="is_primary_contact" id="" value="" />
+							<input type="checkbox" name="is_primary_contact" id="" value="<%=pContact %>" />
 						</div>
 					</td>
 				</tr>
@@ -162,7 +120,7 @@
 					<td>
 						<div class="clear input-dh">
 							<label>地址<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="locCallBack" value="" />
+							<input type="text" disabled="disabled" id="locCallBack" name="location" value="<%=location %>" />
                             <input type="hidden" name="location_id" id="locCallBackHidden" />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('locCallBack')"></i></span>
 						</div>
@@ -173,7 +131,7 @@
 					<td>
 						<div class="clear input-dh">
 							<label>备用地址<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="loc1CallBack" value="" />
+							<input type="text" disabled="disabled" id="loc1CallBack" name="location2" value="<%=location2 %>" />
                             <input type="hidden" name="location_id2" id="loc1CallBackHidden" />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('loc1CallBack')"></i></span>
 						</div>
@@ -184,7 +142,7 @@
 					<td>
 						<div class="clear">
 							<label>Email<span class="red">*</span></label>
-							<input type="text" name="email" id="" value="" />
+							<input type="text" name="email" id="" value="<%=email %>" />
 						</div>
 					</td>
 				</tr>
@@ -193,7 +151,7 @@
 					<td>
 						<div class="clear">
 							<label>备用Email<span class="red">*</span></label>
-							<input type="text" name="email2" id="" value="" />
+							<input type="text" name="email2" id="" value="<%=email2 %>" />
 						</div>
 					</td>
 				</tr>
@@ -203,8 +161,11 @@
 			<table border="none" cellspacing="" cellpadding="" style="width:400px;margin-left: 40px;">
 				<tr>
 					<td>
-						<img src="img/pop.jpg" />
-						<a href="javaScript:" class="Change">修改照片</a>
+						
+                        <asp:Image ID="pic" ImageUrl="pop.jpg" runat="server" />
+                        <input type="hidden" name="avatar" value="<%=fileAvatar %>"/>
+                        <asp:FileUpload ID="pic_upload" runat="server" Width="123px" />
+                        <asp:Button ID="Button1" runat="server"  OnClick="Button1_Click" Text="修改照片" />                      
 					</td>
 				</tr>
 				<tr>
@@ -219,7 +180,7 @@
 					<td>
 						<div class="clear">
 							<label>电话<span class="red">*</span></label>
-							<input type="text" name="phone" id="Phone" value="" />
+							<input type="text" name="phone" id="Phone" value="<%=phone %>" />
 						</div>
 					</td>
 				</tr>
@@ -228,7 +189,7 @@
 					<td>
 						<div class="clear">
 							<label>备用电话<span class="red">*</span></label>
-							<input type="text" name="alternate_phone" id="" value="" />
+							<input type="text" name="alternate_phone" id="" value="<%=al_phone %>" />
 						</div>
 					</td>
 				</tr>
@@ -237,7 +198,7 @@
 					<td>
 						<div class="clear">
 							<label>移动电话<span class="red">*</span></label>
-							<input type="text" name="mobile_phone" id="" value="" />
+							<input type="text" name="mobile_phone" id="" value="<%=mobile_phone %>" />
 						</div>
 					</td>
 				</tr>
@@ -246,7 +207,7 @@
 					<td>
 						<div class="clear">
 							<label>传真<span class="red">*</span></label>
-							<input type="text" name="fax" id="" value="" />
+							<input type="text" name="fax" id="" value="<%=fax %>" />
 						</div>
 					</td>
 				</tr>
@@ -355,12 +316,8 @@
 
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/NewContact.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/common.js"></script>
     <script type="text/javascript">
-     $(document).ready(function () {
-        InitArea();
-        });
 
         $(".Jump").click(function () {
             $("a").attr("target", "_blank");
