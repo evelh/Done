@@ -13,6 +13,7 @@ namespace EMT.DoneNOW.Web
     public partial class SelectCallBack : BasePage
     {
         private QueryCommonBLL bll = new QueryCommonBLL();
+        protected string callBackFunc;  // 回调方法
         protected string queryPage;     // 查询页名称
         protected string callBackField; // 回调字段名
         protected QueryResultDto queryResult = null;            // 查询结果数据
@@ -20,6 +21,8 @@ namespace EMT.DoneNOW.Web
         protected List<DictionaryEntryDto> queryParaValue = new List<DictionaryEntryDto>();  // 查询条件和条件值
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(Request.QueryString["callBack"]))
+                callBackFunc = Request.QueryString["callBack"];
             queryPage = HttpContext.Current.Request.QueryString["type"];
             callBackField = HttpContext.Current.Request.QueryString["field"];
             if (string.IsNullOrEmpty(queryPage) || string.IsNullOrEmpty(callBackField))

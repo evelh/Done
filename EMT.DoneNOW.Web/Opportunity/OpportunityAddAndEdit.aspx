@@ -65,7 +65,7 @@
                         <td>
                             <div class="clear">
                                 <label>客户名称</label>
-                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCallBack();" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
                                 <i onclick="javascript:window.open('../Company/AddCompany.aspx')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":opportunity.account_id.ToString() %>" />
                             </div>
@@ -503,10 +503,9 @@
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
 <script>
-    $(function () {
-
-
-    })
+    function chooseCallBack() {
+        window.open("../Common/SelectCallBack.aspx?type=查找客户&field=ParentComoanyName&callBack=GetContactList", 'new', 'left=200,top=200,width=600,height=800', false);
+    }
 
     function GetContactList() {
         debugger;
