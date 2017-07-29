@@ -25,7 +25,7 @@
                     <asp:Button ID="save_newAdd" runat="server" Text="保存并新建" OnClick="save_newAdd_Click" BorderStyle="None" /></li>
              
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
-                    <asp:Button ID="close" runat="server" Text="关闭" BorderStyle="None" /></li>
+                    <asp:Button ID="close" runat="server" Text="关闭" BorderStyle="None" OnClick="close_Click" /></li>
             </ul>
         </div>
 
@@ -43,15 +43,15 @@
 				<tr>
 					<th>
 						<h1>自助服务台状态</h1>
-						<p>Inactive</p>
+						<p>未激活</p>
 					</th>
 				</tr>
 				<tr>
 					<td>
 						<div class="clear input-dh">
 							<label>客户名称<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="accCallBack" name="account_name" value="<%=aName %>" />
-                            <input type="hidden" name="account_id" id="accCallBackHidden" value="<%=account_id %>" />
+							<input type="text" disabled="disabled" id="accCallBack" name="account_name" value="<%=dto.company_name %>" />
+                            <input type="hidden" name="account_id" id="accCallBackHidden" value="<%=dto.contact.account_id %>" />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowCompany()"></i></span>
 						</div>
 					</td>
@@ -61,7 +61,7 @@
 					<td>
 						<div class="clear">
 							<label>外部资源ID<span class="red">*</span></label>
-							<input type="text" name="external_id" id="" value="<%=extId %>" />
+							<input type="text" name="external_id" id="" value="<%=dto.contact.external_id %>" />
 						</div>
 					</td>
 				</tr>
@@ -71,9 +71,9 @@
                         <div class="clear">
                             <label>联系人姓名<span class="num"></span></label>
                             <div class="inputTwo">
-										<input type="text" name="first_name" id="first_name" value="<%=fName %>"/>
+										<input type="text" name="first_name" id="first_name" value="<%=dto.contact.first_name %>"/>
 										<span>-</span>
-										<input type="text" name="last_name" id="last_name" value="<%=lName %>"/>
+										<input type="text" name="last_name" id="last_name" value="<%=dto.contact.last_name %>"/>
 								</div>
                         </div>
                     </td>
@@ -93,7 +93,7 @@
 					<td>
 						<div class="clear">
 							<label>激活<span class="red">*</span></label>
-							<input type="checkbox" name="is_active" id="active" value="<%=active %>" />
+							<input type="checkbox" name="is_active" id="active" value="<%=dto.contact.is_active %>" />
 						</div>
 					</td>
 				</tr>
@@ -102,7 +102,7 @@
 					<td>
 						<div class="clear">
 							<label>头衔<span class="red">*</span></label>
-							<input type="text" name="title" id="" value="<%=title %>" />
+							<input type="text" name="title" id="" value="<%=dto.contact.title %>" />
 						</div>
 					</td>
 				 </tr>
@@ -111,7 +111,7 @@
 					<td>
 						<div class="clear">
 							<label>主联系人<span class="red">*</span></label>
-							<input type="checkbox" name="is_primary_contact" id="" value="<%=pContact %>" />
+							<input type="checkbox" name="is_primary_contact" id="" value="<%=dto.contact.is_primary_contact %>" />
 						</div>
 					</td>
 				</tr>
@@ -120,8 +120,8 @@
 					<td>
 						<div class="clear input-dh">
 							<label>地址<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="locCallBack" name="location" value="<%=location %>" />
-                            <input type="hidden" name="location_id" id="locCallBackHidden" />
+							<input type="text" disabled="disabled" id="locCallBack" name="location" value="<%=dto.location.address %>" />
+                            <input type="hidden" name="location_id" id="locCallBackHidden" value="<%=dto.location.id %>" />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('locCallBack')"></i></span>
 						</div>
 					</td>
@@ -131,8 +131,8 @@
 					<td>
 						<div class="clear input-dh">
 							<label>备用地址<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="loc1CallBack" name="location2" value="<%=location2 %>" />
-                            <input type="hidden" name="location_id2" id="loc1CallBackHidden" />
+							<input type="text" disabled="disabled" id="loc1CallBack" name="location2" value="<%=dto.location2.address %>" />
+                            <input type="hidden" name="location_id2" id="loc1CallBackHidden" value="<%=dto.location2.id %>" />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('loc1CallBack')"></i></span>
 						</div>
 					</td>
@@ -142,7 +142,7 @@
 					<td>
 						<div class="clear">
 							<label>Email<span class="red">*</span></label>
-							<input type="text" name="email" id="" value="<%=email %>" />
+							<input type="text" name="email" id="" value="<%=dto.contact.email %>" />
 						</div>
 					</td>
 				</tr>
@@ -151,7 +151,7 @@
 					<td>
 						<div class="clear">
 							<label>备用Email<span class="red">*</span></label>
-							<input type="text" name="email2" id="" value="<%=email2 %>" />
+							<input type="text" name="email2" id="" value="<%=dto.contact.email2 %>" />
 						</div>
 					</td>
 				</tr>
@@ -161,17 +161,16 @@
 			<table border="none" cellspacing="" cellpadding="" style="width:400px;margin-left: 40px;">
 				<tr>
 					<td>
-						
-                        <asp:Image ID="pic" ImageUrl="pop.jpg" runat="server" />
-                        <input type="hidden" name="avatar" value="<%=fileAvatar %>"/>
+                        <asp:Image ID="pic" ImageUrl="~/Images/pop.jpg" runat="server" />
+                        <input type="hidden" name="avatar" />
                         <asp:FileUpload ID="pic_upload" runat="server" Width="123px" />
-                        <asp:Button ID="Button1" runat="server"  OnClick="Button1_Click" Text="修改照片" />                      
+                        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="修改照片" />                      
 					</td>
 				</tr>
 				<tr>
 					<td>
                         <div class="clear"><p class="font">提示</p></div>			
-                        <asp:CheckBox ID="CheckBox1" runat="server" /> 任务和工单中允许发邮件<br/>
+                        <asp:CheckBox ID="CheckBox1" runat="server" />任务和工单中允许发邮件<br/>
                         <asp:CheckBox ID="CheckBox2" runat="server" />拒绝满意度调查 <br/>
                         <asp:CheckBox ID="CheckBox3" runat="server" />拒绝联系人组邮件<br/                                                                         					
                     </td>
@@ -180,7 +179,7 @@
 					<td>
 						<div class="clear">
 							<label>电话<span class="red">*</span></label>
-							<input type="text" name="phone" id="Phone" value="<%=phone %>" />
+							<input type="text" name="phone" id="Phone" value="<%=dto.contact.phone %>" />
 						</div>
 					</td>
 				</tr>
@@ -189,7 +188,7 @@
 					<td>
 						<div class="clear">
 							<label>备用电话<span class="red">*</span></label>
-							<input type="text" name="alternate_phone" id="" value="<%=al_phone %>" />
+							<input type="text" name="alternate_phone" id="" value="<%=dto.contact.alternate_phone %>" />
 						</div>
 					</td>
 				</tr>
@@ -198,7 +197,7 @@
 					<td>
 						<div class="clear">
 							<label>移动电话<span class="red">*</span></label>
-							<input type="text" name="mobile_phone" id="" value="<%=mobile_phone %>" />
+							<input type="text" name="mobile_phone" id="" value="<%=dto.contact.mobile_phone %>" />
 						</div>
 					</td>
 				</tr>
@@ -207,7 +206,7 @@
 					<td>
 						<div class="clear">
 							<label>传真<span class="red">*</span></label>
-							<input type="text" name="fax" id="" value="<%=fax %>" />
+							<input type="text" name="fax" id="" value="<%=dto.contact.fax %>" />
 						</div>
 					</td>
 				</tr>
@@ -251,63 +250,62 @@
        </div>   
 
        <div class="content clear" style="display:none">
-                <p class="informationTitle"><i></i>联系人自定义</p>
+            <div>
                 <div>
-                    <div>
-                        <ul>
-                            <% if (contact_udfList != null && contact_udfList.Count > 0)
+                    <ul>
+                        <% if (contact_udfList != null && contact_udfList.Count > 0)
+                            {
+                                foreach (var udf in contact_udfList)
                                 {
-                                    foreach (var udf in contact_udfList)
-                                    {
-                                        if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
-                                        {%>
-                            <li>
+                                    if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                                    {%>
+                        <li>
+                            <label><%=udf.col_name %></label>
+                            <input type="text" name="<%=udf.id %>" class="sl_cdt" />
+                        </li>
+                        <%}
+                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
+                            {%>
+                        <li>
+                            <label><%=udf.col_name %></label>
+                            <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
+                        </li>
+                        <%}
+                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
+                            {%><li>
                                 <label><%=udf.col_name %></label>
-                                <input type="text" name="<%=udf.id %>" class="sl_cdt" />
+                                <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
                             </li>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
-                                {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
-                                <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
-                            </li>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
-                                {%><li>
-                                    <label><%=udf.col_name %></label>
-                                    <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
-                                </li>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
-                                {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
-                                <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
-                            </li>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
-                                {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
-                                <select name="<%=udf.id %>">
-                                    <%
-                                        if (udf.value_list != null) {
-                                            foreach (var v in udf.value_list) {
-                                                %>
-                                    <option value="<%=v.val %>"><%=v.show %></option>
-                                    <%
-                                            } // foreach
-                                        } // if
-                                        %>
-                                </select>
-                            </li>
-                            <%}
-                                    }
-                                } %>
-                        </ul>
-                    </div>
+                        <%}
+                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
+                            {%>
+                        <li>
+                            <label><%=udf.col_name %></label>
+                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                        </li>
+                        <%}
+                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                            {%>
+                        <li>
+                            <label><%=udf.col_name %></label>
+                            <select name="<%=udf.id %>">
+                                <%
+                                    if (udf.value_list != null) {
+                                        foreach (var v in udf.value_list) {
+                                            %>
+                                <option value="<%=v.val %>"><%=v.show %></option>
+                                <%
+                                        } // foreach
+                                    } // if
+                                    %>
+                            </select>
+                        </li>
+                        <%}
+                                }
+                            } %>
+                    </ul>
                 </div>
+            </div>
        </div>
 
        <div class="content clear" style="display:none">
