@@ -297,7 +297,7 @@
                                 <td>
                                     <div class="clear">
                                         <label>父客户名称</label>
-                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 20px;height:20px; float: left; margin-left: -1px;margin-top:5px; background: url(../Images/data-selector.png);"></i>
+                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 20px;height:20px; float: left; margin-left: -1px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;"></i>
                                         <input type="hidden" id="ParentComoanyNameHidden" name="parent_company_name" value="<%=parent_account.id %>" />
                                     </div>
                                 </td>
@@ -307,7 +307,7 @@
                                 <td>
                                     <div class="clear">
                                         <label>父客户名称</label>
-                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 20px;height:20px; float: left; margin-left: -1px;margin-top:5px; background: url(../Images/data-selector.png);"></i>
+                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 20px;height:20px; float: left; margin-left: -1px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;"></i>
                                         <input type="hidden" id="ParentComoanyNameHidden" name="parent_company_name" value="" />
                                     </div>
                                 </td>

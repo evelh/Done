@@ -92,7 +92,6 @@ namespace EMT.DoneNOW.Web
             }
             else
             {
-                var test = context.Session["dn_session_user_info"];
                 var res = context.Session["dn_session_user_info"];
                 if (res != null)
                 {

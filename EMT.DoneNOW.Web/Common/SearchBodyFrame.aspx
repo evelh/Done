@@ -150,9 +150,18 @@
         }
         function AddContact() {
             OpenWindow("../Contact/AddContact.aspx");
-        }
+        } 
         function DeleteContact() {
-            OpenWindow("../Contact/DeleteContact.aspx?id=" + entityid);
+
+          //  OpenWindow("../Contact/DeleteContact.aspx?id=" + entityid);
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ContactAjax.ashx?act=delete&id=" + entityid,             
+                success: function (data) {
+                    alert(data);
+                }
+
+            })
         }
         <%
         }%>
