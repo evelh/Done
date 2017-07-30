@@ -33,6 +33,10 @@ namespace EMT.DoneNOW.Web
                     var account_id = context.Request.QueryString["account_id"];
                     GetCompanyContact(context,account_id);
                     break;
+                case "companyPhone":
+                    var id = context.Request.QueryString["account_id"];
+                    GetCompanyPhone(context, id);
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     return;
@@ -94,6 +98,17 @@ namespace EMT.DoneNOW.Web
             }
         }
 
+        /// <summary>
+        /// 根据客户id获取客户phone
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="account_id"></param>
+        private void GetCompanyPhone(HttpContext context, string account_id)
+        {
+            var company = new CompanyBLL().GetCompany(long.Parse(account_id));
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(company.phone));
+            context.Response.End();
+        }
 
         public bool IsReusable
         {

@@ -99,18 +99,17 @@
             </li>
 		</ul>
 	</div>
-    <script>
+    <script type="text/javascript">
         var entityid;
         var entityname;
         function GetBack() {
             window.opener.document.getElementById("<%=callBackField %>").value = entityname;
             window.opener.document.getElementById("<%=callBackField %>Hidden").value = entityid;
-            debugger;
-         
-            if (typeof (window.opener.GetContactList) != "undefined") {
-                window.opener.GetContactList();
+            <%if (!string.IsNullOrEmpty(callBackFunc)){ %>
+            if (typeof (window.opener.<%=callBackFunc %>) != "undefined") {
+                window.opener.<%=callBackFunc %>();
             }  
-            
+            <%}%>
             window.close();
         }
         Times = 0;

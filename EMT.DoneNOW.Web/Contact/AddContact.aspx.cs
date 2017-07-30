@@ -17,45 +17,45 @@ namespace EMT.DoneNOW.Web
     {
         protected List<UserDefinedFieldDto> contact_udfList = null;      // 联系人自定义
 
-        protected string aName;
-        protected string account_id;
-        protected string extId;
-        protected string fName;
-        protected string lName;
-        protected string active;
-        protected string title;
-        protected string pContact;
-        protected string location;
-        protected string location2;
-        protected string email;
-        protected string email2;
-        protected string phone;
-        protected string al_phone;
-        protected string mobile_phone;
-        protected string fax;
-        protected string fileAvatar;
+        protected ContactAddAndUpdateDto dto = new ContactAddAndUpdateDto();
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            contact_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT);
+            dto.contact = new crm_contact();
+            dto.udf = new List<UserDefinedFieldValue>();
+            dto.location = new crm_location();
+            dto.location2 = new crm_location();
             if (IsPostBack)
             {
-                aName = HttpContext.Current.Request.Form["account_name"];
-                account_id= HttpContext.Current.Request.Form["account_id"];
-                extId = HttpContext.Current.Request.Form["external_id"];
-                fName = HttpContext.Current.Request.Form["first_name"];
-                lName = HttpContext.Current.Request.Form["last_name"];
-                active = HttpContext.Current.Request.Form["is_active"];
-                title = HttpContext.Current.Request.Form["title"];
-                pContact = HttpContext.Current.Request.Form["is_primary_contact"];
-                location = HttpContext.Current.Request.Form["location"];
-                location2 = HttpContext.Current.Request.Form["location2"];
-                email = HttpContext.Current.Request.Form["email"];
-                email2 = HttpContext.Current.Request.Form["email2"];
-                phone = HttpContext.Current.Request.Form["phone"];
-                al_phone = HttpContext.Current.Request.Form["alternate_phone"];
-                mobile_phone = HttpContext.Current.Request.Form["mobile_phone"];
-                fax = HttpContext.Current.Request.Form["fax"];
+                // 保存已输入值
+                dto.contact = AssembleModel<crm_contact>();
+                if (contact_udfList != null && contact_udfList.Count > 0)                      // 首先判断是否有自定义信息
+                {
+                    foreach (var udf in contact_udfList)                            // 循环添加
+                    {
+                        var new_udf = new UserDefinedFieldValue()
+                        {
+                            id = udf.id,
+                            value = Request.Form[udf.id.ToString()] == null ? "" : Request.Form[udf.id.ToString()],
+                        };
+                        dto.udf.Add(new_udf);
+                    }
+                }
+                dto.company_name = Request.Form["account_name"];
+                if (!string.IsNullOrEmpty(Request.Form["location_id"]))
+                {
+                    dto.location.id = long.Parse(Request.Form["location_id"]);
+                    dto.location.address = Request.Form["location"];
+                }
+                if (!string.IsNullOrEmpty(Request.Form["location_id2"]))
+                {
+                    dto.location2.id = long.Parse(Request.Form["location_id2"]);
+                    dto.location2.address = Request.Form["location2"];
+                }
             }
-            else { 
+            else
+            { 
                 var dic = new ContactBLL().GetField();
                 // 称谓
                 sufix.DataTextField = "show";
@@ -64,7 +64,6 @@ namespace EMT.DoneNOW.Web
                 sufix.DataBind();
                 sufix.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });             
             }
-            contact_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT);
         }
 
         /// <summary>
@@ -77,7 +76,6 @@ namespace EMT.DoneNOW.Web
         {
             var param = new ContactAddAndUpdateDto();
             param.contact = AssembleModel<crm_contact>();
-            param.location = AssembleModel<crm_location>();
             param.contact.name = param.contact.first_name + param.contact.last_name;
             if (contact_udfList != null && contact_udfList.Count > 0)                      // 首先判断是否有自定义信息
             {
@@ -97,15 +95,15 @@ namespace EMT.DoneNOW.Web
             var result = new ContactBLL().Insert(param, GetLoginUserId());
             if (result == ERROR_CODE.USER_NOT_FIND)   // 联系人为空，重写
             {
-                Response.Write("<script>alert('联系人为空，请重新填写'); </script>");
+                Response.Write("<script>alert('请重新登录！');window.close();</script>");
             }
             else if (result == ERROR_CODE.PARAMS_ERROR)      // 必填项校验
             {
-                Response.Write("<script>alert('必填项错误。'); </script>");
+                Response.Write("<script>alert('必填项错误！'); </script>");
             }
-            else if (result == ERROR_CODE.ERROR)               // 联系人已将存在
+            else if (result == ERROR_CODE.ERROR)               // 联系人已存在
             {
-                Response.Write("<script>alert('联系人已将存在');</script>");
+                Response.Write("<script>alert('联系人已存在！');</script>");
                 //Response.Redirect("Login.aspx");
             }           
             else if (result == ERROR_CODE.SUCCESS)                    // 插入联系人成功，刷新前一个页面
@@ -114,6 +112,7 @@ namespace EMT.DoneNOW.Web
 
             }
         }
+
         /// <summary>
         /// 保存并新建
         /// </summary>
@@ -123,7 +122,6 @@ namespace EMT.DoneNOW.Web
         {
             var param = new ContactAddAndUpdateDto();
             param.contact = AssembleModel<crm_contact>();
-            param.location = AssembleModel<crm_location>();
 
             if (contact_udfList != null && contact_udfList.Count > 0)                      // 首先判断是否有自定义信息
             {
@@ -157,10 +155,20 @@ namespace EMT.DoneNOW.Web
             else if (result == ERROR_CODE.SUCCESS)                    // 插入联系人成功，刷新前一个页面
             {
                 Response.Write("<script>alert('添加客户成功！');history.go(0);</script>");  //  关闭添加页面的同时，刷新父页面
-
             }
         }
 
+        /// <summary>
+        /// 关闭
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void close_Click(object sender, EventArgs e)
+        {
+            Response.Write("<script>window.close();</script>");
+        }
+
+        #region 头像上传
         protected void Button1_Click(object sender, EventArgs e)
         {
             Boolean fileOk = false;
@@ -185,7 +193,7 @@ namespace EMT.DoneNOW.Web
                         pic_upload.PostedFile.SaveAs(mappath);//保存图片
                         //显示图片
                         pic.ImageUrl = virpath;
-                        fileAvatar = virpath;
+                        dto.contact.avatar = virpath;
                     }
                     else
                     {
@@ -207,7 +215,7 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public bool IsImage(string str)
+        private bool IsImage(string str)
         {
             bool isimage = false;
             string thestr = str.ToLower();
@@ -227,7 +235,7 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 创建一个指定长度的随机salt值
         /// </summary>
-        public string CreateSalt(int saltLenght)
+        private string CreateSalt(int saltLenght)
         {
             //生成一个加密的随机数
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
@@ -239,7 +247,7 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 返回加密后的字符串
         /// </summary>
-        public string CreatePasswordHash(string pwd, int saltLenght)
+        private string CreatePasswordHash(string pwd, int saltLenght)
         {
             string strSalt = CreateSalt(saltLenght);
             //把密码和Salt连起来
@@ -251,6 +259,7 @@ namespace EMT.DoneNOW.Web
             //返回哈希后的值
             return hashenPwd;
         }
+        #endregion
     }
 
 
