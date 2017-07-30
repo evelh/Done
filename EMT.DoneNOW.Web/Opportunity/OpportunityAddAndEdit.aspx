@@ -52,223 +52,226 @@
         <div class="content clear">
             <div class="information clear">
                 <p class="informationTitle"><i></i>基本信息</p>
-                <table border="none" cellspacing="" cellpadding="" style="width: 900px; margin-left: 40px;">
-                    <tr>
-                        <td colspan="2">
-                            <div class="clear">
-                                <label>商机名称<span class="red">*</span></label>
-                                <input type="text" style="width: 100%;" name="name" id="name" value="<%=isAdd?"":opportunity.name %>" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>客户名称</label>
-                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                <i onclick="javascript:window.open('../Company/AddCompany.aspx')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
-                                <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":opportunity.account_id.ToString() %>" />
-                            </div>
-                        </td>
+                <div>
+                    <table border="none" cellspacing="" cellpadding="" style="width: 900px; margin-left: 40px;">
+                        <tr>
+                            <td colspan="2">
+                                <div class="clear">
+                                    <label>商机名称<span class="red">*</span></label>
+                                    <input type="text" style="width: 100%;" name="name" id="name" value="<%=isAdd?"":opportunity.name %>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>客户名称</label>
+                                    <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd?"":conpamyBll.GetCompany(opportunity.account_id).name %>"" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                    <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":opportunity.account_id.ToString() %>" />
+                                </div>
+                            </td>
 
-                        <td>
-                            <div class="clear">
-                                <label>计划开始日期</label>
-                                <input type="datetime-local" name="projected_begin_date" id="projected_begin_date" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>联系人</label> 
-                                <select name="contact_id" id="contact_id">
-                                </select>
-                                <i onclick="javascript:window.open('../Contact/AddContact.aspx')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>项目关闭时间</label>
-                                <input type="datetime-local" name="projected_close_date" id="projected_close_date" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>商机负责人</label>
-                                <asp:DropDownList ID="resource_id" runat="server"></asp:DropDownList>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>成交概率</label>
-                                <input type="text" name="probability" id="probability" value="<%=(!isAdd)&&(opportunity.probability!=null)?opportunity.probability.ToString():"" %>" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>当前阶段</label>
-                                <asp:DropDownList ID="stage_id" runat="server"></asp:DropDownList>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>客户感兴趣等级</label>
+                            <td>
+                                <div class="clear">
+                                    <label>计划开始日期</label>
+                                    <input type="datetime-local" name="projected_begin_date" id="projected_begin_date" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>联系人</label>
+                                    <select name="contact_id" id="contact_id">
+                                    </select>
+                                    <i onclick="javascript:window.open('../Contact/AddContact.aspx')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="clear">
+                                    <label>项目关闭时间</label>
+                                    <input type="datetime-local" name="projected_close_date" id="projected_close_date" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>商机负责人</label>
+                                    <asp:DropDownList ID="resource_id" runat="server"></asp:DropDownList>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="clear">
+                                    <label>成交概率</label>
+                                    <input type="text" name="probability" id="probability" value="<%=(!isAdd)&&(opportunity.probability!=null)?opportunity.probability.ToString():"" %>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>当前阶段</label>
+                                    <asp:DropDownList ID="stage_id" runat="server"></asp:DropDownList>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="clear">
+                                    <label>客户感兴趣等级</label>
 
-                                <asp:DropDownList ID="interest_degree_id" runat="server"></asp:DropDownList>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>商机来源</label>
-                                <asp:DropDownList ID="source_id" runat="server"></asp:DropDownList>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>主要产品</label>
-                                <input type="text" name="primary_product_id" id="primary_product_id" /><%-- todo 主要产品的查找带回--%>
-                            </div>
-                        </td>
-                    </tr>
+                                    <asp:DropDownList ID="interest_degree_id" runat="server"></asp:DropDownList>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>商机来源</label>
+                                    <asp:DropDownList ID="source_id" runat="server"></asp:DropDownList>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="clear">
+                                    <label>主要产品</label>
+                                    <input type="text" name="primary_product_id" id="primary_product_id" /><%-- todo 主要产品的查找带回--%>
+                                </div>
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>状态</label>
-                                <asp:DropDownList ID="status_id" runat="server"></asp:DropDownList>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>促销名称</label>
-                                <input type="text" name="promotion_name" id="promotion_name" value="<%=(!isAdd)&&!string.IsNullOrEmpty(opportunity.promotion_name)?opportunity.promotion_name:"" %>" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>主要竞争对手</label>
-                                <asp:DropDownList ID="competitor_id" runat="server"></asp:DropDownList>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>状态</label>
+                                    <asp:DropDownList ID="status_id" runat="server"></asp:DropDownList>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="clear">
+                                    <label>促销名称</label>
+                                    <input type="text" name="promotion_name" id="promotion_name" value="<%=(!isAdd)&&!string.IsNullOrEmpty(opportunity.promotion_name)?opportunity.promotion_name:"" %>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>主要竞争对手</label>
+                                    <asp:DropDownList ID="competitor_id" runat="server"></asp:DropDownList>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="information clear">
                 <p class="informationTitle"><i></i>商机值</p>
-                <table border="none" cellspacing="" cellpadding="" style="width: 900px; margin-left: 40px;">
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>使用报价条目收入/成本<span class="red">*</span></label>
-                                <input type="checkbox" name="use_quote" id="use_quote" value="" />
-                            </div>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>一次性收益</label>
-                                <input type="text" name="one_time_revenue" id="one_time_revenue" value="<%=(!isAdd)&&(opportunity.one_time_revenue!=null)?opportunity.one_time_revenue.ToString():"" %>" />
-                            </div>
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>一次性成本</label>
-                                <input type="text" name="one_time_cost" id="one_time_cost" value="<%=(!isAdd)&&(opportunity.one_time_cost!=null)?opportunity.one_time_cost.ToString():"" %>" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>月度收益</label>
-                                <input type="text" name="monthly_revenue" id="monthly_revenue" value="<%=(!isAdd)&&(opportunity.monthly_revenue!=null)?opportunity.monthly_revenue.ToString():"" %>" />
-                            </div>
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>月度成本</label>
-                                <input type="text" name="monthly_cost" id="monthly_cost" value="<%=(!isAdd)&&(opportunity.monthly_cost!=null)?opportunity.monthly_cost.ToString():"" %>" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>季度收益</label>
-                                <input type="text" name="quarterly_revenue" id="quarterly_revenue" value="<%=(!isAdd)&&(opportunity.quarterly_revenue!=null)?opportunity.quarterly_revenue.ToString():"" %>" />
-                            </div>
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>季度成本</label>
-                                <input type="text" name="quarterly_cost" id="quarterly_cost" value="<%=(!isAdd)&&(opportunity.quarterly_cost!=null)?opportunity.quarterly_cost.ToString():"" %>" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>半年收益</label>
-                                <input type="text" name="semi_annual_revenue" id="semi_annual_revenue" value="<%=(!isAdd)&&(opportunity.semi_annual_revenue!=null)?opportunity.semi_annual_revenue.ToString():"" %>" />
-                            </div>
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>半年成本</label>
-                                <input type="text" name="semi_annual_cost" id="semi_annual_cost" value="<%=(!isAdd)&&(opportunity.semi_annual_cost!=null)?opportunity.semi_annual_cost.ToString():"" %>" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>年收益</label>
-                                <input type="text" name="yearly_revenue" id="yearly_revenue" value="<%=(!isAdd)&&(opportunity.yearly_revenue!=null)?opportunity.yearly_revenue.ToString():"" %>" />
-                            </div>
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>年成本</label>
-                                <input type="text" name="yearly_cost" id="yearly_cost" value="<%=(!isAdd)&&(opportunity.yearly_cost!=null)?opportunity.yearly_cost.ToString():"" %>" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>总收益</label>
-                                <input type="" name="Total_Revenue" id="Total_Revenue" value="" />
-                            </div>
-                        </td>
-                        <td>
-                            <div class="clear">
-                                <label>总成本</label>
-                                <span name="Total_Cost" id="Total_Cost"></span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>毛利</label>
-                                <label name="Gross_Profit" id="Gross_Profit"></label>
-                            </div>
+                <div>
+                    <table border="none" cellspacing="" cellpadding="" style="width: 900px; margin-left: 40px;">
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>使用报价条目收入/成本<span class="red">*</span></label>
+                                    <input type="checkbox" name="use_quote" id="use_quote" value="" />
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>一次性收益</label>
+                                    <input type="text" name="one_time_revenue" id="one_time_revenue" value="<%=(!isAdd)&&(opportunity.one_time_revenue!=null)?opportunity.one_time_revenue.ToString():"" %>" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="clear">
+                                    <label>一次性成本</label>
+                                    <input type="text" name="one_time_cost" id="one_time_cost" value="<%=(!isAdd)&&(opportunity.one_time_cost!=null)?opportunity.one_time_cost.ToString():"" %>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>月度收益</label>
+                                    <input type="text" name="monthly_revenue" id="monthly_revenue" value="<%=(!isAdd)&&(opportunity.monthly_revenue!=null)?opportunity.monthly_revenue.ToString():"" %>" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="clear">
+                                    <label>月度成本</label>
+                                    <input type="text" name="monthly_cost" id="monthly_cost" value="<%=(!isAdd)&&(opportunity.monthly_cost!=null)?opportunity.monthly_cost.ToString():"" %>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>季度收益</label>
+                                    <input type="text" name="quarterly_revenue" id="quarterly_revenue" value="<%=(!isAdd)&&(opportunity.quarterly_revenue!=null)?opportunity.quarterly_revenue.ToString():"" %>" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="clear">
+                                    <label>季度成本</label>
+                                    <input type="text" name="quarterly_cost" id="quarterly_cost" value="<%=(!isAdd)&&(opportunity.quarterly_cost!=null)?opportunity.quarterly_cost.ToString():"" %>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>半年收益</label>
+                                    <input type="text" name="semi_annual_revenue" id="semi_annual_revenue" value="<%=(!isAdd)&&(opportunity.semi_annual_revenue!=null)?opportunity.semi_annual_revenue.ToString():"" %>" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="clear">
+                                    <label>半年成本</label>
+                                    <input type="text" name="semi_annual_cost" id="semi_annual_cost" value="<%=(!isAdd)&&(opportunity.semi_annual_cost!=null)?opportunity.semi_annual_cost.ToString():"" %>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>年收益</label>
+                                    <input type="text" name="yearly_revenue" id="yearly_revenue" value="<%=(!isAdd)&&(opportunity.yearly_revenue!=null)?opportunity.yearly_revenue.ToString():"" %>" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="clear">
+                                    <label>年成本</label>
+                                    <input type="text" name="yearly_cost" id="yearly_cost" value="<%=(!isAdd)&&(opportunity.yearly_cost!=null)?opportunity.yearly_cost.ToString():"" %>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>总收益</label>
+                                    <input type="" name="Total_Revenue" id="Total_Revenue" value="" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="clear">
+                                    <label>总成本</label>
+                                    <span name="Total_Cost" id="Total_Cost"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>毛利</label>
+                                    <label name="Gross_Profit" id="Gross_Profit"></label>
+                                </div>
 
-                        </td>
-                    </tr>
-                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="information clear">
                 <p class="informationTitle"><i></i>周期收益</p>
@@ -284,61 +287,63 @@
             <div class="information clear">
                 <p class="informationTitle"><i></i>高级字段</p>
                 <%
-                     var   advanced_field = dic.FirstOrDefault(_ => _.Key == "oppportunity_advanced_field").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+                    var advanced_field = dic.FirstOrDefault(_ => _.Key == "oppportunity_advanced_field").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
                     if (advanced_field != null && advanced_field.Count > 0)
                     {
                 %>
-                <table border="none" cellspacing="" cellpadding="" style="width: 600px; margin-left: 40px;">
+                <div>
+                    <table border="none" cellspacing="" cellpadding="" style="width: 600px; margin-left: 40px;">
 
-                    <%foreach (var item in advanced_field)
-                        {%>
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label><%=item.show %><span class="red">*</span></label>
-                                <%switch (item.val)
-                                    {
-                                        case "78":
-                                %>
-                                <input type="text" name="ext1" id="ext1" value="<%=(!isAdd)&&opportunity.ext1!=null?opportunity.ext1.ToString():"" %>" />
-                                <%
-                                        break;
-                                    case "79":
-                                %>
-                                <input type="text" name="ext2" id="ext2" value="<%=(!isAdd)&&opportunity.ext2!=null?opportunity.ext2.ToString():"" %>" />
-                                <%
-                                        break;
-                                    case "80":
-                                %>
-                                <input type="text" name="ext3" id="ext3" value="<%=(!isAdd)&&opportunity.ext3!=null?opportunity.ext3.ToString():"" %>" />
-                                <%
-                                        break;
-                                    case "81":
-                                %>
-                                <input type="text" name="ext4" id="ext4" value="<%=(!isAdd)&&opportunity.ext4!=null?opportunity.ext4.ToString():"" %>" />
-                                <%
-                                        break;
-                                    case "82":
-                                %>
-                                <input type="text" name="ext5" id="ext5" value="<%=(!isAdd)&&opportunity.ext5!=null?opportunity.ext5.ToString():"" %>" />
-                                <%
-                                        break;
-                                    default:
-                                %>
-                                <input type="text" name="" id="" value="" />
-                                <%
-                                        break;
-                                    }%>
-                            </div>
-                        </td>
-                    </tr>
-                    <%  
-                        } %>
-                </table>
+                        <%foreach (var item in advanced_field)
+                            {%>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label><%=item.show %><span class="red">*</span></label>
+                                    <%switch (item.val)
+                                        {
+                                            case "78":
+                                    %>
+                                    <input type="text" name="ext1" id="ext1" value="<%=(!isAdd)&&opportunity.ext1!=null?opportunity.ext1.ToString():"" %>" />
+                                    <%
+                                            break;
+                                        case "79":
+                                    %>
+                                    <input type="text" name="ext2" id="ext2" value="<%=(!isAdd)&&opportunity.ext2!=null?opportunity.ext2.ToString():"" %>" />
+                                    <%
+                                            break;
+                                        case "80":
+                                    %>
+                                    <input type="text" name="ext3" id="ext3" value="<%=(!isAdd)&&opportunity.ext3!=null?opportunity.ext3.ToString():"" %>" />
+                                    <%
+                                            break;
+                                        case "81":
+                                    %>
+                                    <input type="text" name="ext4" id="ext4" value="<%=(!isAdd)&&opportunity.ext4!=null?opportunity.ext4.ToString():"" %>" />
+                                    <%
+                                            break;
+                                        case "82":
+                                    %>
+                                    <input type="text" name="ext5" id="ext5" value="<%=(!isAdd)&&opportunity.ext5!=null?opportunity.ext5.ToString():"" %>" />
+                                    <%
+                                            break;
+                                        default:
+                                    %>
+                                    <input type="text" name="" id="" value="" />
+                                    <%
+                                            break;
+                                        }%>
+                                </div>
+                            </td>
+                        </tr>
+                        <%  
+                            } %>
+                    </table>
+                </div>
                 <%} %>
             </div>
         </div>
-        <div class="content clear">
+        <div class="content clear" style="display: none;">
             <div class="clear">
                 <label>承诺履行时间</label>
                 <input type="datetime-local" name="start_date" id="start_date" value="<%=(!isAdd)&&opportunity.start_date!=null?((DateTime)opportunity.start_date).ToString("dd/MM/yyyy"):"" %>" />
@@ -393,7 +398,7 @@
                   </textarea>
             </div>
         </div>
-        <div class="content clear">
+        <div class="content clear" style="display: none;">
 
             <div>
                 <table border="none" cellspacing="" cellpadding="" style="width: 400px; margin-left: 40px;">
@@ -465,12 +470,12 @@
 
 
         </div>
-        <div class="content clear">
+        <div class="content clear" style="display: none;">
             <%var user = EMT.DoneNOW.BLL.UserInfoBLL.GetUserInfo(GetLoginUserId()); %>
             <div class="clear">
                 <input type="checkbox" name="" id="checkUser" />
                 <label><%=user.name %></label>
-                <input type="hidden" name="from_email" value="<%=user.email %>"/>
+                <input type="hidden" name="from_email" value="<%=user.email %>" />
                 <input type="checkbox" name="" id="CheckAccountManage" />
                 <label>客户经理</label>
             </div>
@@ -488,11 +493,11 @@
             </div>
             <div class="clear">
                 <label>主题</label>
-                <input type="text" name="subject" id="subject" />
+                <input type="text" name="subject" id="subject" value ="" />
             </div>
             <div class="clear">
                 <label>附加信息</label>
-                <input type="text" name="body_text" id="body_text" />
+                <input type="text" name="body_text" id="body_text" value=""/>
             </div>
         </div>
     </form>
@@ -501,13 +506,57 @@
 <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="../Scripts/index.js"></script>
 <script src="../Scripts/common.js"></script>
+<script src="../Scripts/NewContact.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
 <script>
     $(function () {
-
+        $("#save").click(function () {
+            if (!SubmitCheck()) {
+                return false;
+            }
+            return true;
+        });
 
     })
+    function SubmitCheck() {
 
+        var opportunityName = $("#name").val();
+        if (opportunityName == "") {
+            alert("请输入商机名称");
+            return false;
+        }
+
+        var ParentComoanyName = $("#ParentComoanyNameHidden").val();
+        if (ParentComoanyName == "") {
+            alert("请通过查找功能查找客户");
+            return false;
+        }
+
+        var resource_id = $("#resource_id").val();
+        if (resource_id == 0) {
+            alert("请选择商机负责人");
+            return false;
+        }
+
+        var status_id = $("#status_id").val();
+        if (status_id == 0) {
+            alert("请选择状态");
+            return false;
+        }
+
+        //var notify_tmpl = $("#notify_tmpl_id").val();
+        //if (notify_tmpl == "") {
+        //    alert("请选择通知模板");
+        //    return false;
+        //}
+        //var subject = $("#subject").val();
+        //if (subject == "") {
+        //    alert("请填写通知主题");
+        //    return false;
+        //}
+
+        return true;
+    }
     function GetContactList() {
         debugger;
         var account_id = $("#ParentComoanyNameHidden").val();
@@ -519,7 +568,6 @@
                 url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
-
                     if (data != "") {
                         $("#contact_id").html(data);
                     }

@@ -172,11 +172,13 @@ namespace EMT.DoneNOW.Web
 
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
-                Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
+              
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('丢失');</script>");
             }
             else if (result == ERROR_CODE.CRM_ACCOUNT_NAME_EXIST)      // 用户名称已经存在，重新填写用户名称
             {
-                Response.Write("<script>alert('客户已存在。');close(); </script>");
+             
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('客户已经存在');</script>");
             }
             else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
             {
@@ -185,14 +187,13 @@ namespace EMT.DoneNOW.Web
             }
             else if (result == ERROR_CODE.MOBILE_PHONE_OCCUPY)
             {
-                Response.Write("<script>alert('移动电话名称重复');</script>");
+              
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('电话名称重复');</script>");
             }
             else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
             {
                 Response.Write("<script>alert('添加客户成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
-
             }
-
         }
         /// <summary>
         /// 保存并新建

@@ -68,6 +68,7 @@
     <Compile Include="SoftDeleteCore.cs" />
     <Compile Include="SYS\sys_form_tmpl.cs" />
     <Compile Include="SYS\sys_form_tmpl_opportunity.cs" />
+    <Compile Include="SYS\sys_notify_tmpl.cs" />
     <Compile Include="SYS\sys_oper_log.cs" />
     <Compile Include="SYS\sys_query_type_user.cs" />
     <Compile Include="SYS\sys_udf_field.cs" />

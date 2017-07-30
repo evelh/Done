@@ -570,7 +570,9 @@
 
         </div>
 
-        <div class="content clear" style="display:none;" ></div>
+        <div class="content clear" style="display:none;" >
+
+        </div>
         <div class="content clear" style="display:none;" >
 
             <div class="left fl">
@@ -760,10 +762,14 @@
                     success: function (data) {
                         //alert(data);
                         debugger;
-                        if (data != "") {
+                        if (data == "repeat") {
+                            alert('客户名称重复');
                             isPass = "noPass";
-                            window.open("CompanyNameSimilar.aspx?ids=" + data +"&reason=name", "newwindow", "height=600,width=800", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no"); 
                         }
+                        else if (data != "") {
+                            isPass = "noPass";
+                            window.open("CompanyNameSimilar.aspx?ids=" + data + "&reason=name", "newwindow", "height=600,width=800", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no"); 
+                        }  //
                     },
                     error: function (XMLHttpRequest) {
                     },
@@ -802,6 +808,8 @@
             })
         });
     })
+
+    
 
     function chooseCompany() {
         window.open("../Common/SelectCallBack.aspx?type=查找客户&field=ParentComoanyName", 'new', 'left=200,top=200,width=600,height=800', false);

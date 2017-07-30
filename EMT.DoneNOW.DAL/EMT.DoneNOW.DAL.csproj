@@ -84,6 +84,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SYS\sys_form_tmpl_dal.cs" />
     <Compile Include="SYS\sys_form_tmpl_opportunity_dal.cs" />
+    <Compile Include="SYS\sys_notify_tmpl_dal.cs" />
     <Compile Include="SYS\sys_oper_log_dal.cs" />
     <Compile Include="SYS\sys_query_type_user_dal.cs" />
     <Compile Include="SYS\sys_udf_field_dal.cs" />
