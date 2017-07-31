@@ -22,6 +22,7 @@ namespace EMT.DoneNOW.Web.Opportunity
         protected List<UserDefinedFieldDto> company_udfList = null;
         protected List<UserDefinedFieldValue> company_udfValueList = null;
         protected Dictionary<string, object> dic = null;
+        protected CompanyBLL conpamyBll = new CompanyBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -61,7 +62,8 @@ namespace EMT.DoneNOW.Web.Opportunity
                 status_id.DataValueField = "val";
                 status_id.DataSource = dic.FirstOrDefault(_ => _.Key == "oppportunity_status").Value;
                 status_id.DataBind();
-                status_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                status_id.SelectedValue = ((int)OPPORTUNITY_STATUS.ACTIVE).ToString();
+                //status_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 // 主要竞争对手
                 competitor_id.DataTextField = "show";
                 competitor_id.DataValueField = "val";
@@ -80,7 +82,12 @@ namespace EMT.DoneNOW.Web.Opportunity
                 loss_reason_type_id.DataSource = dic.FirstOrDefault(_ => _.Key == "oppportunity_loss_reason_type").Value;
                 loss_reason_type_id.DataBind();
                 loss_reason_type_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-
+                // 通知模板   --todo 需要过滤商机创建或编辑相关的通知模板
+                notify_tmpl_id.DataTextField = "show";
+                notify_tmpl_id.DataValueField = "val";
+                notify_tmpl_id.DataSource = dic.FirstOrDefault(_ => _.Key == "notify_tmpl").Value;
+                notify_tmpl_id.DataBind();
+                notify_tmpl_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 #endregion
 
 
@@ -111,7 +118,83 @@ namespace EMT.DoneNOW.Web.Opportunity
             }
         }
 
+        /// <summary>
+        /// 保存不关闭
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void save_Click(object sender, EventArgs e)
+        {
+            //var param = new OpportunityAddOrUpdateDto()
+            //{
+            //    general = AssembleModel<crm_opportunity>(),
+            //    notify = AssembleModel<com_notify_email>(),
+            //};
+            //if (opportunity_udfList != null && opportunity_udfList.Count > 0)                      // 首先判断是否有自定义信息
+            //{
+            //    var list = new List<UserDefinedFieldValue>();
+            //    foreach (var udf in opportunity_udfList)                            // 循环添加
+            //    {
+            //        var new_udf = new UserDefinedFieldValue()
+            //        {
+            //            id = udf.id,
+            //            value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
+            //        };
+            //        list.Add(new_udf);
+            //    }
+            //    param.udf = list;
+            //}
+
+            var param = GetParam();
+
+            if (isAdd)
+            {
+                var result = new OpportunityBLL().Insert(param, GetLoginUserId());   // 根据参数插入商机
+                if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
+                {
+                    Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("Login.aspx");
+                }
+                else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+                {
+                    Response.Write("<script>alert('添加商机成功！');window.location.href=window.location.href;</script>");  //  关闭添加页面的同时，刷新父页面
+                }
+            }
+            else
+            {
+                param.general.id = opportunity.id;
+                var result = new OpportunityBLL().Update(param, GetLoginUserId());
+                if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
+                {
+                    Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("Login.aspx");
+                }
+                else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+                {
+                    Response.Write("<script>alert('修改商机成功！');</script>");  //  关闭添加页面的同时，刷新父页面
+                }
+            }
+        }
+
+        protected void save_close_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        /// <summary>
+        /// 获取到表单参数
+        /// </summary>
+        /// <returns></returns>
+        protected OpportunityAddOrUpdateDto GetParam()
         {
             var param = new OpportunityAddOrUpdateDto()
             {
@@ -132,32 +215,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 }
                 param.udf = list;
             }
-            if (isAdd)
-            {
-                var result = new OpportunityBLL().Insert(param, GetLoginUserId());   // 根据参数插入商机
-                if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
-                {
-                    Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
-                }
-                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
-                {
-                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
-                    Response.Redirect("Login.aspx");
-                }
-                else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
-                {
-                    Response.Write("<script>alert('添加商机成功！');</script>");  //  关闭添加页面的同时，刷新父页面
-                }
-            }
-            else
-            {
-                // todo 修改操作
-            }
-        }
-
-        protected void save_close_Click(object sender, EventArgs e)
-        {
-
+            return param;
         }
     }
 }

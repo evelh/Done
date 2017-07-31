@@ -112,6 +112,20 @@ namespace EMT.DoneNOW.DTO
             WEBSITE = 63                               // 网站
 
         }
+        /// <summary>
+        /// 商机状态-17
+        /// </summary>
+        public enum OPPORTUNITY_STATUS
+        {
+            NOTREADYTOBUY=83,                              // 考虑中
+            ACTIVE=84,                                     // 激活
+            LOST=85,                                       // 丢失
+            CLOSED=86,                                     // 关闭
+            IMPLEMENTED=87,                                // 实施          
+        }
+
+
+
 
         /// <summary>
         /// 表单模板应用范围-18

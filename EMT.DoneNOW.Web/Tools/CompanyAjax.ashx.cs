@@ -52,6 +52,11 @@ namespace EMT.DoneNOW.Web
             // var companyList = new crm_account_dal().GetAllCompany();
             var similar = "";
             CompanyBLL comBLL = new CompanyBLL();
+            if (comBLL.ExistCompany(companyName))   // 客户名称重复，返回错误信息
+            {
+                context.Response.Write("repeat");
+                return;
+            }
             var compareAccountName = comBLL.CheckCompanyName(comBLL.CompanyNameDeal(companyName.Trim()));
             if(compareAccountName != null && compareAccountName.Count > 0)
             {
