@@ -143,7 +143,7 @@
         else if (queryPage.Equals("联系人查询")) {
             %>
         function EditContact() {
-            OpenWindow("../Contact/EditContact.aspx?id=" + entityid);
+            OpenWindow("../Contact/AddContact.aspx?id=" + entityid);
         }
         function ViewContact() {
             OpenWindow("../Contact/ViewContact.aspx?id=" + entityid);
@@ -165,6 +165,9 @@
         }
         <%
         }%>
+        function openopenopen() {
+            alert("暂未实现");
+        }
     </script>
 </body>
 </html>

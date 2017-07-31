@@ -50,6 +50,24 @@ namespace EMT.DoneNOW.BLL
             return _dal.FindById(id);
         }
 
+        public ContactAddAndUpdateDto GetContactDto(long id)
+        {
+            ContactAddAndUpdateDto dto = new ContactAddAndUpdateDto();
+            dto.contact = GetContact(id);
+            if (dto.contact == null)
+                return null;
+            var bll = new UserDefinedFieldsBLL();
+            dto.udf = bll.GetUdfValue(UDF_CATE.CONTACT, id, bll.GetUdf(UDF_CATE.CONTACT));
+            if (dto.contact.location_id != null)
+                dto.location = new LocationBLL().GetLocation((long)dto.contact.location_id);
+            if (dto.contact.location_id2 != null)
+                dto.location2 = new LocationBLL().GetLocation((long)dto.contact.location_id2);
+            var company = new CompanyBLL().GetCompany(dto.contact.account_id);
+            dto.company_name = company.name;
+
+            return dto;
+        }
+
         /// <summary>
         /// 新增联系人
         /// </summary>
@@ -67,11 +85,6 @@ namespace EMT.DoneNOW.BLL
             if (string.IsNullOrEmpty(contactAddDto.contact.name) || string.IsNullOrEmpty(contactAddDto.contact.phone) || string.IsNullOrEmpty(contactAddDto.contact.first_name))
             {
                 return ERROR_CODE.PARAMS_ERROR;                // string类型的非空校验
-            }
-
-            if (contactAddDto.location.country_id == 0 || contactAddDto.location.province_id == 0 || contactAddDto.location.city_id == 0)
-            {
-                return ERROR_CODE.PARAMS_ERROR;                // int类型的非空校验
             }
             if (contactAddDto.contact.allow_notify_email_task_ticket == 1)
             {
@@ -105,22 +118,6 @@ namespace EMT.DoneNOW.BLL
                 var _location = contactAddDto.location;
                 new LocationBLL().Insert(_location, user_id);
             }
-            // _location.id = _location.id == 0 ? _dal.GetNextIdCom() : _location.id;
-            //new crm_location_dal().Insert(_location);
-            //sys_oper_log add_location_log = new sys_oper_log()
-            //{
-            //    user_cate = "用户",
-            //    user_id = user.id,
-            //    name = "",
-            //    phone = user.mobile == null ? "" : user.mobile,
-            //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-            //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-            //    oper_object_id = _location.id,// 操作对象id
-            //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-            //    oper_description = _dal.AddValue(_location),
-            //    remark = "保存地址信息"
-            //};
-            //new sys_oper_log_dal().Insert(add_location_log);       // 插入日志
 
             #region 如果是主要联系人，首先将原主要联系人设置为普通联系人
 
@@ -186,14 +183,14 @@ namespace EMT.DoneNOW.BLL
         /// 更新联系人信息
         /// </summary>
         /// <returns></returns>
-        public bool Update(ContactAddAndUpdateDto contact_update, long user_id)
+        public ERROR_CODE Update(ContactAddAndUpdateDto contact_update, long user_id)
         {
             //contact.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             //contact.update_user_id = CachedInfoBLL.GetUserInfo(token).id;
             var user = UserInfoBLL.GetUserInfo(user_id);
         
             if (user == null)
-                return false;
+                return ERROR_CODE.PARAMS_ERROR;
 
             #region 对联系人必填项的校验
 
@@ -295,22 +292,7 @@ namespace EMT.DoneNOW.BLL
 
             #endregion
 
-            return true;
-        }
-
-        /// <summary>
-        /// 按条件查询
-        /// </summary>
-        /// <returns></returns>
-        public List<crm_contact> FindList(JObject jsondata)
-        {
-            ContactConditionDto condition = jsondata.ToObject<ContactConditionDto>();
-            string orderby = ((JValue)(jsondata.SelectToken("orderby"))).Value.ToString();
-            string page = ((JValue)(jsondata.SelectToken("page"))).Value.ToString();
-            int pagenum;
-            if (!int.TryParse(page, out pagenum))
-                pagenum = 1;
-            return _dal.Find(condition, pagenum, orderby);
+            return ERROR_CODE.SUCCESS;
         }
 
         /// <summary>

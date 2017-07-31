@@ -18,41 +18,15 @@ namespace EMT.DoneNOW.Web
         protected List<UserDefinedFieldDto> contact_udfList = null;      // 联系人自定义
 
         protected ContactAddAndUpdateDto dto = new ContactAddAndUpdateDto();
+        protected long id = 0;
+        protected string avatarPath = "../Images/pop.jpg";
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            contact_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT);
-            dto.contact = new crm_contact();
-            dto.udf = new List<UserDefinedFieldValue>();
-            dto.location = new crm_location();
-            dto.location2 = new crm_location();
+            bool is_edit = long.TryParse(Request.QueryString["id"], out id);
             if (IsPostBack)
             {
-                // 保存已输入值
-                dto.contact = AssembleModel<crm_contact>();
-                if (contact_udfList != null && contact_udfList.Count > 0)                      // 首先判断是否有自定义信息
-                {
-                    foreach (var udf in contact_udfList)                            // 循环添加
-                    {
-                        var new_udf = new UserDefinedFieldValue()
-                        {
-                            id = udf.id,
-                            value = Request.Form[udf.id.ToString()] == null ? "" : Request.Form[udf.id.ToString()],
-                        };
-                        dto.udf.Add(new_udf);
-                    }
-                }
-                dto.company_name = Request.Form["account_name"];
-                if (!string.IsNullOrEmpty(Request.Form["location_id"]))
-                {
-                    dto.location.id = long.Parse(Request.Form["location_id"]);
-                    dto.location.address = Request.Form["location"];
-                }
-                if (!string.IsNullOrEmpty(Request.Form["location_id2"]))
-                {
-                    dto.location2.id = long.Parse(Request.Form["location_id2"]);
-                    dto.location2.address = Request.Form["location2"];
-                }
+                SaveFormData();
             }
             else
             { 
@@ -62,7 +36,28 @@ namespace EMT.DoneNOW.Web
                 sufix.DataValueField = "val";
                 sufix.DataSource = dic.FirstOrDefault(_ => _.Key == "sufix").Value;
                 sufix.DataBind();
-                sufix.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });             
+                sufix.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+                contact_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT);
+
+                if (is_edit)
+                {
+                    dto = new ContactBLL().GetContactDto(long.Parse(Request.QueryString["id"]));
+                    active.Checked = dto.contact.is_active == 1 ? true : false;
+                    primary.Checked = dto.contact.is_primary_contact == 1 ? true : false;
+                    allowEmail.Checked = dto.contact.allow_notify_email_task_ticket == 1 ? true : false;
+                    optoutEmail.Checked = dto.contact.is_optout_contact_group_email == 1 ? true : false;
+                    optoutSurvey.Checked = dto.contact.is_optout_survey == 1 ? true : false;
+                }
+                else
+                {
+                    dto.contact = new crm_contact();
+                    dto.udf = new List<UserDefinedFieldValue>();
+                    dto.location = new crm_location();
+                    dto.location2 = new crm_location();
+                    active.Checked = true;
+                    allowEmail.Checked = true;
+                }
             }
         }
 
@@ -74,25 +69,8 @@ namespace EMT.DoneNOW.Web
         /// 
         protected void save_Click(object sender, EventArgs e)
         {
-            var param = new ContactAddAndUpdateDto();
-            param.contact = AssembleModel<crm_contact>();
-            param.contact.name = param.contact.first_name + param.contact.last_name;
-            if (contact_udfList != null && contact_udfList.Count > 0)                      // 首先判断是否有自定义信息
-            {
-                var list = new List<UserDefinedFieldValue>();
-                foreach (var udf in contact_udfList)                            // 循环添加
-                {
-                    var new_udf = new UserDefinedFieldValue()
-                    {
-                        id = udf.id,
-                        value = Request.Form[udf.id.ToString()] == null ? "" : Request.Form[udf.id.ToString()],
-                    };
-                    list.Add(new_udf);
-                }
-                param.udf = list;
-            }
-            
-            var result = new ContactBLL().Insert(param, GetLoginUserId());
+            var result = SaveContact();
+
             if (result == ERROR_CODE.USER_NOT_FIND)   // 联系人为空，重写
             {
                 Response.Write("<script>alert('请重新登录！');window.close();</script>");
@@ -104,12 +82,10 @@ namespace EMT.DoneNOW.Web
             else if (result == ERROR_CODE.ERROR)               // 联系人已存在
             {
                 Response.Write("<script>alert('联系人已存在！');</script>");
-                //Response.Redirect("Login.aspx");
             }           
             else if (result == ERROR_CODE.SUCCESS)                    // 插入联系人成功，刷新前一个页面
             {
                 Response.Write("<script>alert('添加联系人成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
-
             }
         }
 
@@ -120,25 +96,8 @@ namespace EMT.DoneNOW.Web
         /// <param name="e"></param>
         protected void save_newAdd_Click(object sender, EventArgs e)
         {
-            var param = new ContactAddAndUpdateDto();
-            param.contact = AssembleModel<crm_contact>();
+            var result = SaveContact();
 
-            if (contact_udfList != null && contact_udfList.Count > 0)                      // 首先判断是否有自定义信息
-            {
-                var list = new List<UserDefinedFieldValue>();
-                foreach (var udf in contact_udfList)                            // 循环添加
-                {
-                    var new_udf = new UserDefinedFieldValue()
-                    {
-                        id = udf.id,
-                        value = Request.Form[udf.id.ToString()] == null ? "" : Request.Form[udf.id.ToString()],
-                    };
-                    list.Add(new_udf);
-                }
-                param.udf = list;
-            }
-
-            var result = new ContactBLL().Insert(param, GetLoginUserId());
             if (result == ERROR_CODE.USER_NOT_FIND)   // 联系人为空，重写
             {
                 Response.Write("<script>alert('联系人为空，请重新填写'); </script>");
@@ -150,7 +109,6 @@ namespace EMT.DoneNOW.Web
             else if (result == ERROR_CODE.ERROR)               // 联系人已将存在
             {
                 Response.Write("<script>alert('联系人已将存在');</script>");
-                //Response.Redirect("Login.aspx");
             }
             else if (result == ERROR_CODE.SUCCESS)                    // 插入联系人成功，刷新前一个页面
             {
@@ -168,48 +126,84 @@ namespace EMT.DoneNOW.Web
             Response.Write("<script>window.close();</script>");
         }
 
-        #region 头像上传
-        protected void Button1_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 保存联系人信息
+        /// </summary>
+        /// <returns></returns>
+        private ERROR_CODE SaveContact()
         {
-            Boolean fileOk = false;
-            if (pic_upload.HasFile)//验证是否包含文件
-            {
-                //取得文件的扩展名,并转换成小写
-                string fileExtension = Path.GetExtension(pic_upload.FileName).ToLower();
-                //验证上传文件是否图片格式
-                fileOk = IsImage(fileExtension);
-                if (fileOk)
-                {
-                    //对上传文件的大小进行检测，限定文件最大不超过8M
-                    if (pic_upload.PostedFile.ContentLength < 8192000)
-                    {
-                        string filepath = "/images/";
-                        if (Directory.Exists(Server.MapPath(filepath)) == false)//如果不存在就创建file文件夹
-                        {
-                            Directory.CreateDirectory(Server.MapPath(filepath));
-                        }
-                        string virpath = filepath + CreatePasswordHash(pic_upload.FileName, 4) + fileExtension;//这是存到服务器上的虚拟路径
-                        string mappath = Server.MapPath(virpath);//转换成服务器上的物理路径
-                        pic_upload.PostedFile.SaveAs(mappath);//保存图片
-                        //显示图片
-                        pic.ImageUrl = virpath;
-                        dto.contact.avatar = virpath;
-                    }
-                    else
-                    {
-                        pic.ImageUrl = "";
-                    }
-                }
-                else
-                {
-                    pic.ImageUrl = "";
-                }
-            }
+            SaveFormData();
+            if (dto.contact.id == 0)
+                return new ContactBLL().Insert(dto, GetLoginUserId());
             else
-            {
-                pic.ImageUrl = "";
-            }
+                return new ContactBLL().Update(dto, GetLoginUserId());
         }
+
+        /// <summary>
+        /// 保存表单数据到对象
+        /// </summary>
+        private void SaveFormData()
+        {
+            var param = new ContactAddAndUpdateDto();
+            param.contact = AssembleModel<crm_contact>();
+            param.contact.name = param.contact.first_name + param.contact.last_name;
+            param.contact.avatar = SavePic();
+            param.contact.is_active = active.Checked ? 1 : 0;
+            param.contact.is_primary_contact = (sbyte)(primary.Checked ? 1 : 0);
+            param.contact.is_optout_survey = (sbyte)(optoutSurvey.Checked ? 1 : 0);
+            param.contact.is_optout_contact_group_email = (sbyte)(optoutEmail.Checked ? 1 : 0);
+            param.contact.allow_notify_email_task_ticket = (sbyte)(allowEmail.Checked ? 1 : 0);
+            if (contact_udfList != null && contact_udfList.Count > 0)                      // 首先判断是否有自定义信息
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach (var udf in contact_udfList)                            // 循环添加
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == null ? "" : Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
+                }
+                param.udf = list;
+            }
+            dto = param;
+        }
+
+        #region 头像上传
+        /// <summary>
+        /// 保存头像图片到服务器
+        /// </summary>
+        /// <returns></returns>
+        private string SavePic()
+        {
+            var fileForm = Request.Files["browsefile"];
+            if (fileForm == null)
+                return avatarPath;
+            if (fileForm.ContentLength == 0)    // 判断是否选择了文件
+                return avatarPath;
+            if (fileForm.ContentType.ToLower().IndexOf("image") != 0)   // 判断文件类型
+                return avatarPath;
+            
+            string fileExtension = Path.GetExtension(fileForm.FileName).ToLower();    //取得文件的扩展名,并转换成小写
+            if (!IsImage(fileExtension))    //验证上传文件是否图片格式
+                return avatarPath;
+
+            if (fileForm.ContentLength > (8 << 20))     // 判断文件大小不超过8M
+                return avatarPath;
+
+            string filepath = $"/Upload/{DateTime.Now.Year.ToString()}{DateTime.Now.Month.ToString()}/Images/Avatar/";
+            if (Directory.Exists(Server.MapPath(filepath)) == false)//如果不存在就创建file文件夹
+            {
+                Directory.CreateDirectory(Server.MapPath(filepath));
+            }
+            string virpath = filepath + Guid.NewGuid().ToString() + fileExtension;//这是存到服务器上的虚拟路径
+            string mappath = Server.MapPath(virpath);//转换成服务器上的物理路径
+            fileForm.SaveAs(mappath);//保存图片
+
+            return virpath;
+        }
+        
         /// <summary>
         /// 验证是否指定的图片格式
         /// </summary>
@@ -232,35 +226,7 @@ namespace EMT.DoneNOW.Web
             }
             return isimage;
         }
-        /// <summary>
-        /// 创建一个指定长度的随机salt值
-        /// </summary>
-        private string CreateSalt(int saltLenght)
-        {
-            //生成一个加密的随机数
-            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-            byte[] buff = new byte[saltLenght];
-            rng.GetBytes(buff);
-            //返回一个Base64随机数的字符串
-            return Convert.ToBase64String(buff);
-        }
-        /// <summary>
-        /// 返回加密后的字符串
-        /// </summary>
-        private string CreatePasswordHash(string pwd, int saltLenght)
-        {
-            string strSalt = CreateSalt(saltLenght);
-            //把密码和Salt连起来
-            string saltAndPwd = String.Concat(pwd, strSalt);
-            //对密码进行哈希
-            string hashenPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(saltAndPwd, "sha1");
-            //转为小写字符并截取前16个字符串
-            hashenPwd = hashenPwd.ToLower().Substring(0, 16);
-            //返回哈希后的值
-            return hashenPwd;
-        }
+        
         #endregion
     }
-
-
 }

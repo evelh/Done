@@ -15,15 +15,16 @@
 
 <body runat="server">
    <form id="AddCompany" name="AddCompany" runat="server">
-         <div class="header">添加联系人</div>
+         <div class="header"><%if (dto.contact.id == 0) { %>添加联系人<%} else { %>编辑联系人<%} %></div>
          <div class="header-title">
            <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
                     <asp:Button ID="save_close" runat="server" Text="保存并关闭" OnClick="save_Click" BorderStyle="None" />
                 </li>
+               <% if (dto.contact.id == 0) {%>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
                     <asp:Button ID="save_newAdd" runat="server" Text="保存并新建" OnClick="save_newAdd_Click" BorderStyle="None" /></li>
-             
+             <%} %>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
                     <asp:Button ID="close" runat="server" Text="关闭" BorderStyle="None" OnClick="close_Click" /></li>
             </ul>
@@ -71,10 +72,10 @@
                         <div class="clear">
                             <label>联系人姓名<span class="num"></span></label>
                             <div class="inputTwo">
-										<input type="text" name="first_name" id="first_name" value="<%=dto.contact.first_name %>"/>
-										<span>-</span>
-										<input type="text" name="last_name" id="last_name" value="<%=dto.contact.last_name %>"/>
-								</div>
+								<input type="text" name="first_name" id="first_name" value="<%=dto.contact.first_name %>"/>
+								<span>-</span>
+								<input type="text" name="last_name" id="last_name" value="<%=dto.contact.last_name %>"/>
+							</div>
                         </div>
                     </td>
                 </tr>
@@ -93,7 +94,8 @@
 					<td>
 						<div class="clear">
 							<label>激活<span class="red">*</span></label>
-							<input type="checkbox" name="is_active" id="active" value="<%=dto.contact.is_active %>" />
+                            <asp:CheckBox ID="active" runat="server" />
+                            <input type="hidden" name="id" value="<%=dto.contact.id %>" />
 						</div>
 					</td>
 				</tr>
@@ -111,7 +113,7 @@
 					<td>
 						<div class="clear">
 							<label>主联系人<span class="red">*</span></label>
-							<input type="checkbox" name="is_primary_contact" id="" value="<%=dto.contact.is_primary_contact %>" />
+                            <asp:CheckBox ID="primary" runat="server" />
 						</div>
 					</td>
 				</tr>
@@ -160,19 +162,19 @@
            
 			<table border="none" cellspacing="" cellpadding="" style="width:400px;margin-left: 40px;">
 				<tr>
-					<td>
-                        <asp:Image ID="pic" ImageUrl="~/Images/pop.jpg" runat="server" />
-                        <input type="hidden" name="avatar" />
-                        <asp:FileUpload ID="pic_upload" runat="server" Width="123px" />
-                        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="修改照片" />                      
-					</td>
+                    <td>
+                        <img id="imgshow" src="<%=avatarPath %>" />
+                        <a href="#" style="display:inline-block; width:100px; height:24px; position:relative; overflow:hidden;">点击修改头像
+                            <input type="file" value="浏览" id="browsefile" name="browsefile" style="position:absolute;right:0; top:0; opacity:0;filter:alpha(opacity=0);" />
+                        </a>
+                    </td>
 				</tr>
 				<tr>
 					<td>
                         <div class="clear"><p class="font">提示</p></div>			
-                        <asp:CheckBox ID="CheckBox1" runat="server" />任务和工单中允许发邮件<br/>
-                        <asp:CheckBox ID="CheckBox2" runat="server" />拒绝满意度调查 <br/>
-                        <asp:CheckBox ID="CheckBox3" runat="server" />拒绝联系人组邮件<br/                                                                         					
+                        <asp:CheckBox ID="allowEmail" runat="server" />任务和工单中允许发邮件<br/>
+                        <asp:CheckBox ID="optoutSurvey" runat="server" />拒绝满意度调查 <br/>
+                        <asp:CheckBox ID="optoutEmail" runat="server" />拒绝联系人组邮件<br />
                     </td>
                 </tr>
                 <tr>
@@ -408,13 +410,38 @@
             }
 
         })
-     </script>
-    <script>
+
+        $("#browsefile").change(function (e) {
+            for (var i = 0; i < e.target.files.length; i++) {
+                var file = e.target.files.item(i);
+                //允许文件MIME类型 也可以在input标签中指定accept属性
+                //console.log(/^image\/.*$/i.test(file.type));
+                if (!(/^image\/.*$/i.test(file.type))) {
+                    continue;            //不是图片 就跳出这一次循环
+                }
+
+                //实例化FileReader API
+                var freader = new FileReader();
+                freader.readAsDataURL(file);
+                freader.onload = function (e) {
+                    $("#imgshow").attr("src", e.target.result);
+                    //var img = '<img src="' + e.target.result + '" width="200px" height="200px"/>';
+                    //$("#images_show").empty().append(img);
+                }
+            }
+        });
+        
         function OpenWindowCompany() {
-            window.open("../Common/SelectCallBack.aspx?type=查找客户&field=accCallBack", "newwindow", 'left=200,top=200,width=600,height=800', false);
+            window.open("../Common/SelectCallBack.aspx?type=查找客户&field=accCallBack&callBack=GetCompany", "newwindow", 'left=200,top=200,width=600,height=800', false);
         }
         function OpenWindowLocation(fld) {
             window.open("../Common/SelectCallBack.aspx?type=查找客户&field=" + fld, "newwindow", 'left=200,top=200,width=600,height=800', false);
+        }
+        function GetCompany() {
+            requestData("Tools/CompanyAjax.ashx?act=companyPhone&account_id=" + $("#accCallBackHidden").val(), "", function (data) {
+                if ($("#Phone").val() == "")
+                    $("#Phone").val(data);
+            })
         }
     </script>
 </body>

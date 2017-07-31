@@ -14,6 +14,5 @@ namespace EMT.DoneNOW.DTO
         public string company_name;                 // 客户名称
         public crm_location location;               // 联系人地址
         public crm_location location2;              // 联系人备用地址
-
     }
 }

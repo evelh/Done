@@ -59,25 +59,7 @@ namespace EMT.DoneNOW.BLL
         {
             return _dal.FindAll() as List<crm_account>;
         }
-
-        //
-        public List<DictionaryEntryDto> GetCompanyName(long userId)
-        {
-            // TODO: 根据userid权限过滤
-            string sql = "SELECT id,name FROM crm_account where 1=1";
-            var company = _dal.FindListBySql<crm_account>(_dal.QueryStringDeleteFlag(sql));
-            var list = new List<DictionaryEntryDto>();
-
-            if (company == null)
-                return list;
-
-            foreach (var c in company)
-            {
-                list.Add(new DictionaryEntryDto(c.id.ToString(), c.name));
-            }
-            return list;
-        }
-
+        
         /// <summary>
         /// 查找带回取到所有客户，修改的时候去掉自己
         /// </summary>
@@ -87,9 +69,7 @@ namespace EMT.DoneNOW.BLL
         {
             return _dal.GetAccountByFindBack(id);
         }
-
-
-
+        
         /// <summary>
         /// 新增客户
         /// </summary>
@@ -546,8 +526,7 @@ namespace EMT.DoneNOW.BLL
             //else
             return ERROR_CODE.SUCCESS;
         }
-
-
+        
         public List<crm_account> CheckCompanyName(string companyName)
         {
             return CompareCompanyName(CompanyNameDeal(companyName), _dal.GetAllCompany());    // 处理后的名字超过两个字相同（不包括两个字）即视为相似名称

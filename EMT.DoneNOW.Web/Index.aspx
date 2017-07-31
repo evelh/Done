@@ -117,8 +117,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="cont">
-            <iframe id="PageFrame" name="PageFrame" style="width:100%;height:800px;" src="Common/SearchFrameSet.aspx?entity=客户查询"></iframe>
+		<div class="cont" style="height:100%;">
+            <iframe id="PageFrame" name="PageFrame" style="width:100%;height:1200px;" src="Common/SearchFrameSet.aspx?entity=客户查询"></iframe>
 		</div>
 	</body>
 	<script src="Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>

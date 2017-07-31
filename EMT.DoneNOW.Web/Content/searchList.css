@@ -1,5 +1,5 @@
 /*搜索列表*/
-.searchcontent{min-width: 1200px;max-height: 410px;overflow: scroll;}
+.searchcontent{min-width: 1200px;overflow: scroll;}
 .searchcontent::-webkit-scrollbar{width:0px;opacity:0; -webkit-overflow-scrolling: touch;}
 .searchcontent table{border:1px solid #98b4ca;}
 .searchcontent table tr{text-align: center;}
