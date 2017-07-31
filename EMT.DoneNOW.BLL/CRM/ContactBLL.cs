@@ -195,20 +195,15 @@ namespace EMT.DoneNOW.BLL
             #region 对联系人必填项的校验
 
             // 必填项校验
-            if (string.IsNullOrEmpty(contact_update.contact.name) || string.IsNullOrEmpty(contact_update.contact.phone) || string.IsNullOrEmpty(contact_update.location.address) || string.IsNullOrEmpty(contact_update.contact.first_name))
+            if (string.IsNullOrEmpty(contact_update.contact.name) || string.IsNullOrEmpty(contact_update.contact.phone) || string.IsNullOrEmpty(contact_update.contact.first_name))
             {
-                return false;                // string类型的非空校验
-            }
-
-            if (contact_update.location.country_id == 0 || contact_update.location.province_id == 0 || contact_update.location.city_id == 0)
-            {
-                return false;                // int类型的非空校验
+                return ERROR_CODE.PARAMS_ERROR;                // string类型的非空校验
             }
             if (contact_update.contact.allow_notify_email_task_ticket == 1)
             {
                 if (string.IsNullOrEmpty(contact_update.contact.email))
                 {
-                    return false;           // 如果任务和工单中允许发邮件，那么联系人的邮箱为必填项 
+                    return ERROR_CODE.PARAMS_ERROR;           // 如果任务和工单中允许发邮件，那么联系人的邮箱为必填项 
                 }
             }
             #endregion
@@ -219,7 +214,7 @@ namespace EMT.DoneNOW.BLL
                 var same_phone_contact = _dal.GetContactByPhone(contact_update.contact.mobile_phone,contact_update.contact.id);
                 if (same_phone_contact != null && same_phone_contact.Count > 0)    // 查询到此手机号已经有联系人在使用，不可重复使用，返回错误
                 {
-                    return false;
+                    return ERROR_CODE.ERROR;
                 }
             }
 
@@ -227,7 +222,7 @@ namespace EMT.DoneNOW.BLL
             var compare_contact = _dal.GetContactByName(contact_update.contact.account_id, contact_update.contact.name, contact_update.contact.id);
             if (compare_contact != null && compare_contact.Count > 0)  // 该客户如果存在名称一样的未删除的用户，返回错误，提醒用户
             {
-                return false;
+                return ERROR_CODE.ERROR;
             }
             #endregion
 
