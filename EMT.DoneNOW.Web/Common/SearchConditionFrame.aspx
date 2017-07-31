@@ -63,11 +63,13 @@
 								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
-							<select id="cms" multiple="multiple">
-                                <%foreach (var v in condition[i].values) { %>
-                                <option value="<%=v.val %>"><%=v.show %></option>
-                                <%} %>
-				            </select>
+                            <div class="multiplebox">
+							    <select id="cms" multiple="multiple">
+                                    <%foreach (var v in condition[i].values) { %>
+                                    <option value="<%=v.val %>"><%=v.show %></option>
+                                    <%} %>
+				                </select>
+                            </div>
                         <%}%>
 						</div>
 					</td>
@@ -106,11 +108,13 @@
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
                             <input type="hidden" id="cmsh<%=condition[i].id %>" name="<%=condition[i].id %>" class="sl_cdt" />
-							<select id="cms<%=condition[i].id %>" multiple="multiple">
-                                <%foreach (var v in condition[i].values) { %>
-                                <option value="<%=v.val %>"><%=v.show %></option>
-                                <%} %>
-				            </select>
+                            <div class="multiplebox">
+							    <select id="cms<%=condition[i].id %>" multiple="multiple">
+                                    <%foreach (var v in condition[i].values) { %>
+                                    <option value="<%=v.val %>"><%=v.show %></option>
+                                    <%} %>
+				                </select>
+                            </div>
                             <script type="text/javascript">
                                 $(function () {
                                     $('#cms<%=condition[i].id %>').change(function () {

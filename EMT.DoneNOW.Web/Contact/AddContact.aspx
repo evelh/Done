@@ -18,14 +18,14 @@
          <div class="header"><%if (dto.contact.id == 0) { %>添加联系人<%} else { %>编辑联系人<%} %></div>
          <div class="header-title">
            <ul>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                <li><i  style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <asp:Button ID="save_close" runat="server" Text="保存并关闭" OnClick="save_Click" BorderStyle="None" />
                 </li>
                <% if (dto.contact.id == 0) {%>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
                     <asp:Button ID="save_newAdd" runat="server" Text="保存并新建" OnClick="save_newAdd_Click" BorderStyle="None" /></li>
              <%} %>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <asp:Button ID="close" runat="server" Text="关闭" BorderStyle="None" OnClick="close_Click" /></li>
             </ul>
         </div>
@@ -39,7 +39,7 @@
             </ul>
         </div>
           
-        <div class="content clear">
+        <div class="content clear" style="width:880px;">
 			<table border="none" cellspacing="" cellpadding="" style="width:400px;margin-left: 40px;">
 				<tr>
 					<th>
@@ -170,11 +170,21 @@
                     </td>
 				</tr>
 				<tr>
-					<td>
-                        <div class="clear"><p class="font">提示</p></div>			
-                        <asp:CheckBox ID="allowEmail" runat="server" />任务和工单中允许发邮件<br/>
-                        <asp:CheckBox ID="optoutSurvey" runat="server" />拒绝满意度调查 <br/>
-                        <asp:CheckBox ID="optoutEmail" runat="server" />拒绝联系人组邮件<br />
+					<td><p class="font">提示</p>
+                        <div class="clear" style="padding-left:140px;">		
+                            <asp:CheckBox ID="allowEmail" runat="server"  />
+                            <label style="text-align:left;margin-left:20px;">任务和工单中允许发邮件</label>
+                        </div>	
+                        <div class="clear" style="padding-left:140px;">	
+                            <asp:CheckBox ID="optoutSurvey" runat="server" />                           
+                            <label style="text-align:left;margin-left:20px;">拒绝满意度调查</label>
+                        </div>	
+                        <div class="clear" style="padding-left:140px;">	
+                            <asp:CheckBox ID="optoutEmail" runat="server" />                      
+                            <label style="text-align:left;margin-left:20px;">拒绝联系人组邮件</label>
+                        </div>	
+
+                        
                     </td>
                 </tr>
                 <tr>
