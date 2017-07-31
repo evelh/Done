@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="../Content/base.css"/>
     <link rel="stylesheet" type="text/css" href="../Content/multipleList.css"/>
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min3.3.4.css"/>
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="../Content/style.css"/>
     <title></title>
 </head>

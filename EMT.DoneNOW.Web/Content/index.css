@@ -1,4 +1,4 @@
-body{min-width: 1200px;}
+
 
 .index-titleLeft{width: 150px;background: #13273b;position: fixed;left: 0;top: 0;z-index: 9;height: 100%;}
 .index-titleLeft dl{border-bottom:1px solid #546675 ;}
@@ -80,11 +80,12 @@ background:url(../Images/icon.png) no-repeat -309px -26px  ;outline: none;cursor
 .information{background: #fff;border: 1px solid #E5E5E5;padding: 10px 0;min-width: 1200px;position: relative;}
 .informationTitle{padding-left: 10px;height: 30px;line-height: 30px;margin: 0;}
 .informationTitle i{width: 15px; height:30px;display: block; background: url(../Images/jian.png) no-repeat  center;float: left;margin-right: 10px;cursor: pointer;}
-.information button{position: absolute;right:5px;top: 5px;}
+.information .Search{position: absolute;right:5px;top: 5px;}
 
 .input-dh{position: relative;}
-.input-dh .on{position: absolute;right: -20px; top: 5px;}
-.icon-dh {background-image:url(../Images/data-selector.png);background-position:0 0 ;width: 16px;height: 20px;cursor: pointer;}
+.input-dh .on{position: absolute;right: 10px; top: 5px;}
+.icon-dh {background-image:url(../Images/data-selector.png);background-position:0 0 ;width: 16px;height: 20px;
+cursor: pointer;background-repeat:no-repeat ;display: block;}
 .add-on{position: relative;}
 
 .contenttitle ul{margin: 15px 0 ;}
