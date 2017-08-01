@@ -124,7 +124,7 @@ namespace EMT.DoneNOW.BLL
             if (contactAddDto.contact.is_primary_contact == 1)  // 客户将当前联系人设置为主要联系人，此时将原有的主要联系人更改为普通联系人
             {
                 var old_primary_contact = _dal.GetPrimaryContactByAccountId(contactAddDto.contact.account_id); // 获取到客户的主要联系人
-                if (old_primary_contact != null)
+                if (old_primary_contact != null&&old_primary_contact.id!= contactAddDto.contact.id)
                 {
                     old_primary_contact.is_primary_contact = 0;
                     if (_dal.Update(old_primary_contact))  // 更改主要联系人，插入操作日志
