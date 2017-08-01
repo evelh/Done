@@ -83,7 +83,7 @@
                         break;
                 } %>
 
-            <div class="contact">
+            <div class="contact address">
                 <label><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %></label>
                 <%if (!string.IsNullOrEmpty(contact.title))
                     { %>

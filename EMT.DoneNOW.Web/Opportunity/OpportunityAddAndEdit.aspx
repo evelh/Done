@@ -47,8 +47,11 @@
                 <li id="">信息</li>
                 <li id="">自定义信息</li>
                 <li id="">通知</li>
+                <li style="float:right;"> <div style="float:right;"><asp:DropDownList ID="formTemplate" runat="server"></asp:DropDownList></div> </li>
             </ul>
+  
         </div>
+                
         <div class="content clear">
             <div class="information clear">
                 <p class="informationTitle"><i></i>基本信息</p>
@@ -58,7 +61,7 @@
                             <td colspan="2">
                                 <div class="clear">
                                     <label>商机名称<span class="red">*</span></label>
-                                    <input type="text" style="width: 100%;" name="name" id="name" value="<%=isAdd?"":opportunity.name %>" />
+                                    <input type="text" style="width: 72%;" name="name" id="name" value="<%=isAdd?"":opportunity.name %>" />
                                 </div>
                             </td>
                         </tr>
@@ -280,7 +283,9 @@
                     <label>商机收入周期范围</label>
                     <input type="text" name="spread_value" id="spread_value" value="" />
                     <select name="spread_unit" id="spread_unit">
-                        <option></option>
+                        <option value="Day">日</option>
+                        <option value="Months" selected>月</option>
+                        <option value="Years">年</option>
                     </select>
                 </div>
             </div>
@@ -510,12 +515,94 @@
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
 <script>
     $(function () {
+        $.fn.populateForm = function (data) {
+            return this.each(function () {
+                var formElem, name;
+                if (data == null) { this.reset(); return; }
+                for (var i = 0; i < this.length; i++) {
+                    formElem = this.elements[i];
+                    //checkbox的name可能是name[]数组形式
+                    name = (formElem.type == "checkbox") ? formElem.name.replace(/(.+)\[\]$/, "$1") : formElem.name;
+                    if (data[name] == undefined) continue;
+                    switch (formElem.type) {
+                        case "checkbox":
+                            if (data[name] == "") {
+                                formElem.checked = false;
+                            } else {
+                                //数组查找元素
+                                if (data[name].indexOf(formElem.value) > -1) {
+                                    formElem.checked = true;
+                                } else {
+                                    formElem.checked = false;
+                                }
+                            }
+                            break;
+                        case "radio":
+                            if (data[name] == "") {
+                                formElem.checked = false;
+                            } else if (formElem.value == data[name]) {
+                                formElem.checked = true;
+                            }
+                            break;
+                        case "button": break;
+                        case "select": formElem.value = data[name].value; break;
+                        default: formElem.value = data[name];
+                    }
+                }
+            });
+        };
         $("#save").click(function () {
             if (!SubmitCheck()) {
                 return false;
             }
             return true;
         });
+
+        $("#formTemplate").change(function () {
+            var formTemplate_id = $("#formTemplate").val();
+            if (formTemplate_id != 0)       // 
+            {
+                //<a href="../Tools/OpportunityAjax.ashx">../Tools/OpportunityAjax.ashx</a>
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: "../Tools/OpportunityAjax.ashx?act=formTemplate&id=" + formTemplate_id,   
+                    dataType: "json",
+                    success: function (data) {
+                        debugger;
+                        if (data != "" || data != undefined) {
+                            $("#form1").populateForm(data);
+                            //if (data.account_id != null) {
+                            //    $("#ParentComoanyNameHidden").val(data.account_id);   // 为表单赋值
+                            //}
+                            //if (data.contact_id != null) {
+                            //    $("#contact_id").val(data.contact_id);   // 为表单赋值
+                            //}
+                            //if (data.resource_id != null) {
+                            //    $("#resource_id").val(data.resource_id);   // 为表单赋值
+                            //}
+                            //if (data.account_id != null) {
+                            //    $("#ParentComoanyNameHidden").val();   // 为表单赋值
+                            //}
+                            //if (data.account_id != null) {
+                            //    $("#ParentComoanyNameHidden").val();   // 为表单赋值
+                            //}
+                            //if (data.account_id != null) {
+                            //    $("#ParentComoanyNameHidden").val();   // 为表单赋值
+                            //}
+                            //if (data.account_id != null) {
+                            //    $("#ParentComoanyNameHidden").val();   // 为表单赋值
+
+                            //}
+                          
+                         
+                        }
+                    },
+               
+
+                });
+            }
+        })
 
     })
     function SubmitCheck() {

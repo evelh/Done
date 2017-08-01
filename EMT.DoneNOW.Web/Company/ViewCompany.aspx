@@ -9,7 +9,6 @@
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
 </head>
 <body>
@@ -52,11 +51,11 @@
                     <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=Subsidiaries"  target="view_window">子客户</a></li>
                 </ul>
             </i>
-            COMPANY-<%=account.name %>
+            客户-<%=account.name %>
         </div>
         <div class="header-title">
             <ul>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <input type="button" id="Edit" value="修改" onclick="window.open('EditCompany.aspx?id=<%=account.id %>');"/>
                    <%-- <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" OnClientClick="" />--%>
                 </li>
@@ -167,11 +166,9 @@
                     <span class="fr"><%=account.tax_identification %></span>
                 </p>
                 <%} %>
-
-
-                <hr class="viewleftTitle1hr" />
+               
             </div>
-
+            <hr class="viewleftTitle1hr" />
             <div class="viewleftTitle1">
                 <%if (!string.IsNullOrEmpty(account.no))
                     { %>
@@ -225,18 +222,16 @@
                     <span class="fr"><%=market_segment.First(_=>_.val==account.market_segment_id.ToString()).show %></span>
                 </p>
                 <%} %>
-
-                <hr class="viewleftTitle1hr" />
             </div>
+            <hr class="viewleftTitle1hr" />
 
-
-            <div class="viewleftTitle1">
+<%--            <div class="viewleftTitle1">
             </div>
-            <div id="Group" style="clear: both; float: left; margin-top: 40px; margin-left: 40px; width: 300px;">
-                <%--显示群组的人的头像 --%>
+            <div id="Group" style="clear: both; float: left; margin-top: 40px; margin-left: 40px; width: 300px;"> /* -- todo 群组头像 */
+           
                 <hr />
 
-            </div>
+            </div>--%>
 
             <div class="viewleftTitle1">
                 <p class="clear">
@@ -300,19 +295,13 @@
                 </p>
                 <%} %>
 
-                  <p>客户标准产业分类代码</p>
-
-                <hr class="viewleftTitle1hr" />
+                <p>客户标准产业分类代码</p>            
             </div>
-
+             <hr class="viewleftTitle1hr" />
              <div class="viewleftTitle1">  
-                   <p>可以查看本客户的员工</p>
-
+                <p>可以查看本客户的员工</p>
              </div>
         </div>
-
-
-
 
         <div id="ShowCompany_Right" class="activityTitleright f1" style="float: left; margin-left: 35px;">
             

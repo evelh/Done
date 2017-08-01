@@ -28,12 +28,12 @@
         <div class="header">
             <i>
                 <ul>
-                    <li>活动</li>
-                    <li>待办</li>
-                    <li>备注</li>
-                    <li>工单</li>
-                    <li>附件</li>
-                    <li>报价项</li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=activity" target="view_window">活动</a></li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=todo" target="view_window">待办</a></li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=note" target="view_window">备注</a></li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=ticket" target="view_window">工单</a></li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=att" target="view_window">附件</a></li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=baojia" target="view_window">报价项</a></li>
                 </ul>
             </i>
             COMPANY

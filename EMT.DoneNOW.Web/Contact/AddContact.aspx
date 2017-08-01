@@ -95,7 +95,6 @@
 						<div class="clear">
 							<label>激活<span class="red">*</span></label>
                             <asp:CheckBox ID="active" runat="server" />
-                            <input type="hidden" name="id" value="<%=dto.contact.id %>" />
 						</div>
 					</td>
 				</tr>
@@ -389,10 +388,10 @@
                     alert("请输入电话名称");
                     return false;
                 }
-                if (!checkPhone(phone)) {
-                    alert("请输入正确格式的电话！");
-                    return false;
-                }
+                //if (!checkPhone(phone)) {
+                //    alert("请输入正确格式的电话！");
+                //    return false;
+                //}
                 var firstName = $("#first_name").val();                                  // 姓
                 var lastName = $("#last_name").val();                                    // 名
                 var country = $("#country_id").val();                                      // 国家
