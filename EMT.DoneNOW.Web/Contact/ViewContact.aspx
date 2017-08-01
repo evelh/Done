@@ -33,13 +33,13 @@
         <div class="header">
             <i>
                 <ul>
-                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=activity" target="view_window">活动</a></li>
-                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=todo" target="view_window">待办</a></li>
-                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=note" target="view_window">备注</a></li>
-                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=opportunity" target="view_window">商机</a></li>
-                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=contactGroup" target="view_window">联系人组</a></li>
-                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=ticket" target="view_window">工单</a></li>
-                    <li><a href="ViewContact.aspx?contact_id=<%=contact.id %>&account_id=<%=account.id %>&type=configura" target="view_window">配置项</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=activity" target="view_window">活动</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=todo" target="view_window">待办</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=note" target="view_window">备注</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=opportunity" target="view_window">商机</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=contactGroup" target="view_window">联系人组</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=ticket" target="view_window">工单</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=configura" target="view_window">配置项</a></li>
                 </ul>
             </i>
             CONTACT-<%=contact.name %>
