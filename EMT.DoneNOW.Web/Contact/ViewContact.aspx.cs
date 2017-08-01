@@ -35,6 +35,10 @@ namespace EMT.DoneNOW.Web
                     account = companyBll.GetCompany(contact.account_id);
                 }
                 type = Request.QueryString["type"];
+                if (string.IsNullOrEmpty(type))
+                {
+                    type = "activity";
+                }
                 if (type == "activity" || type == "note" || type == "todo")
                 {
                     isHide.Value = "show";                                    
