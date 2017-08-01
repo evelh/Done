@@ -363,6 +363,7 @@
     <Compile Include="Contact\DeleteContact.aspx.designer.cs">
       <DependentUpon>DeleteContact.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ErrorHandlerModule.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

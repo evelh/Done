@@ -16,7 +16,8 @@
     .searchcontent{
   OVERFLOW:   scroll;   width:   1800px;   height:   100%;
     }
-    table{width:100%;
+    table{
+        width:100%;
          
     }
     th{
@@ -27,6 +28,14 @@
          widht:20px;
             display: table-cell;
     }
+    .searchcontent table th {
+    background-color: #cbd9e4;
+    border-color: #98b4ca;
+    color: #64727a;
+    height: 28px;
+    line-height: 28px;
+    text-align:center;
+}
 </style>
 <body>
     <form id="form1">
@@ -44,9 +53,9 @@
         </div>
         <div class="contenttitle">
 			<ul class="clear">
-				<li onclick="AddContact()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
+				<li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
 				<li><i style="background-image: url(../Images/new.png);"></i></li>
-				<li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryPage %>', 'ColumnSelect', 'left=200,top=200,width=820,height=350', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
+				<li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryPage %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
 				<li><i style="background-image: url(../Images/new.png);"></i></li>
 			</ul>
 		</div>
@@ -110,7 +119,7 @@
         <%} %>
     </form>
     <div id="menu">
-		<ul>
+		<ul style="width:220px;">
             <%foreach (var menu in contextMenu) { %>
             <li onclick="<%=menu.click_function %>"><i class="menu-i1"></i><%=menu.text %>
                 <%if (menu.submenu != null) { %>
@@ -136,8 +145,11 @@
         function ViewCompany() {
             OpenWindow("../Company/ViewCompany.aspx?id=" + entityid);
         }
-        function AddCompany() {
+        function Add() {
             OpenWindow("../Company/AddCompany.aspx");
+        }
+        function DeleteCompany() {
+            OpenWindow("../Company/DeleteCompany.aspx?id=" + entityid);
         }
         <%}
         else if (queryPage.Equals("联系人查询")) {
@@ -148,7 +160,7 @@
         function ViewContact() {
             OpenWindow("../Contact/ViewContact.aspx?id=" + entityid);
         }
-        function AddContact() {
+        function Add() {
             OpenWindow("../Contact/AddContact.aspx");
         } 
         function DeleteContact() {

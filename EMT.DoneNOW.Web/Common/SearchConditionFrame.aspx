@@ -14,6 +14,14 @@
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <title></title>
 </head>
+<style>
+    #SearchCondition{
+        height: 100%;
+    }
+    #SearchCondition>html{
+        height: 100%;
+    }
+</style>
 <body>
     <div class="header">
 		<i>
@@ -30,7 +38,7 @@
 	</div>
     <div class="information clear">
         <button class="Search" id="SearchBtn">搜索</button>
-		<p class="informationTitle"> <i></i>搜索</p>
+		<p class="informationTitle"> <i id="Icon"></i>搜索</p>
 		<div class="content clear">
 			<table border="none" cellspacing="" cellpadding="" style="width: 400px;">
             <% for (int i = 0; i < condition.Count; i += 3) {%> 
@@ -179,5 +187,18 @@
 	<script src="../Scripts/index.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/multiple-select.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchFrame.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../Scripts/jquery-3.1.0.min.js"  type="text/javascript" charset="utf-8"></script>
+    <script>
+        var colors = ["#efefef", "white"];
+        var index = 0;
+        $("#Icon").on("click", function () {
+            $(this).find(".content").toggle();
+            var color = colors[index++];
+            $(".informationTitle").css("background", color);
+            if (index == colors.length) {
+                index = 0;
+            }
+        })
+    </script>
 </body>
 </html>

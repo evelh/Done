@@ -34,7 +34,7 @@ document.onclick = function () {
 }
 
 function OpenWindow(winname) {
-    window.open(winname, 'new', 'left=200,top=200,width=600,height=800', false);
+    window.open(winname, 'new', 'left=200,top=200,width=900,height=750', false);
     //window.open(winname, "_blank", "toolbar=yes, location=yes,directories=no,status=no, menubar=yes, scrollbars=yes,resizable=no, copyhistory=yes, width=600, height=600,top=150,left=300")
 }
 

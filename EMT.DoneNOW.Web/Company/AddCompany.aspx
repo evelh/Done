@@ -197,9 +197,11 @@
                             <td>
                                 <div class="clear">
                                     <label>联系人姓名<span class="num">1</span></label>
-                                    <input type="text" name="first_name" id="first_name" value="" style="width: 80px;" />
-                                    <%-- <input type="text" name="" id="" value="" maxlength="2" style="width: 32px;" />--%>
-                                    <input type="text" name="last_name" id="last_name" value="" style="width: 80px;" />
+                                    <div class="inputTwo">
+                                        <input type="text" name="first_name" id="first_name" value="" />
+                                        <span>-</span>
+                                        <input type="text" name="last_name" id="last_name" value="" />
+                                    </div>
                                 </div>
                             </td>
                         </tr>

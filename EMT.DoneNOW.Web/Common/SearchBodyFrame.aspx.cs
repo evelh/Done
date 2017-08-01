@@ -144,7 +144,7 @@ namespace EMT.DoneNOW.Web
                     dics = new CompanyBLL().GetField();
                     contextMenu.Add(new PageContextMenuDto { text = "修改客户", click_function = "EditCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "新增记录", click_function = "AddCompany()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增记录", click_function = "Add()" });
 
                     PageContextMenuDto classcate = new PageContextMenuDto { text = "设置类别", click_function = "" };
                     // 设置公司类别子菜单
@@ -165,12 +165,12 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "重新指定客户经理向导", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "注销客户向导", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除客户", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除客户", click_function = "DeleteCompany()" });
                     break;
                 case "联系人查询":
                     contextMenu.Add(new PageContextMenuDto { text = "修改联系人", click_function = "EditContact()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看联系人", click_function = "ViewContact()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "AddCompany()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除联系人", click_function = "DeleteContact()" });
                     break;
