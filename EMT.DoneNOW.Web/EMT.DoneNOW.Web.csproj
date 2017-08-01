@@ -199,6 +199,7 @@
     <Content Include="Login.aspx" />
     <Content Include="Opportunity\LoseOpportunity.aspx" />
     <Content Include="Opportunity\ViewOpportunity.aspx" />
+    <Content Include="Quote\QuoteAddAndUpdate.aspx" />
     <Content Include="Scripts\bootstrap.min-3.3.4.js" />
     <Content Include="Opportunity\OpportunityAddAndEdit.aspx" />
     <Content Include="Scripts\Common\Address.js" />
@@ -427,6 +428,13 @@
     </Compile>
     <Compile Include="Common\SelectCallBack.aspx.designer.cs">
       <DependentUpon>SelectCallBack.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Quote\QuoteAddAndUpdate.aspx.cs">
+      <DependentUpon>QuoteAddAndUpdate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Quote\QuoteAddAndUpdate.aspx.designer.cs">
+      <DependentUpon>QuoteAddAndUpdate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

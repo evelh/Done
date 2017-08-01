@@ -33,13 +33,13 @@
         <div class="header">
             <i>
                 <ul>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=activity" target="view_window">活动</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=todo" target="view_window">待办</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=note" target="view_window">备注</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=opportunity" target="view_window">商机</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=contactGroup" target="view_window">联系人组</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=ticket" target="view_window">工单</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=configura" target="view_window">配置项</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=activity">活动</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=todo">待办</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=note">备注</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=opportunity" >商机</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=contactGroup" >联系人组</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=ticket" >工单</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=configura" >配置项</a></li>
                 </ul>
             </i>
             CONTACT-<%=contact.name %>
@@ -48,20 +48,19 @@
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
-                    <input type="button" id="Edit" value="修改" onclick="window.open('EditContact.aspx?id=<%=contact.id %>');" />
+                    <input type="button" id="Edit" value="修改" onclick="window.open('AddContact.aspx?id=<%=contact.id %>');" />
                     <%--  <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" />--%>
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
-                    <input type="button" id="Add" value="添加" />
+                   添加
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
-                        <li><a href="../Activity/AddActivity.aspx?account_id=<%=account.id %>&type=todo">待办</a></li>
-                        <li><a href="../Activity/AddActivity.aspx?account_id=<%=account.id %>&type=note">客户备注</a></li>
-                        <li><a href="../Opportunity/OpportunityAddAndEdit.aspx?account_id=<%=account.id %>" target="view_window">商机</a></li>
+                        <li><a href="../Activity/AddActivity.aspx?contact_id=<%=account.id %>&type=todo">待办</a></li>
+                        <li><a href="../Activity/AddActivity.aspx?contact_id=<%=account.id %>&type=note">客户备注</a></li>
+                        <li><a href="../Opportunity/OpportunityAddAndEdit.aspx?oppo_contact_id=<%=contact.account_id %>">商机</a></li>
                     </ul>
                 </li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
-                    <asp:Button ID="LiveLink" runat="server" Text="友情链接" BorderStyle="None" /></li>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>友情链接</li>
             </ul>
         </div>
 
@@ -92,10 +91,11 @@
                     <span class="fr"><%=contact.title %> </span>
                 </p>
                 <%} %>
-                <p><%=country.First(_=>_.val.ToString()==contactLocation.country_id.ToString()).show  %></p>
-                <p><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.province_id.ToString()).show  %></p>
-                <p><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.city_id.ToString()).show  %></p>
-                <p><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.district_id.ToString()).show  %></p>
+                <p>
+                <span><%=country.First(_=>_.val.ToString()==contactLocation.country_id.ToString()).show  %></span>
+                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.province_id.ToString()).show  %></span>
+                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.city_id.ToString()).show  %></span>
+                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.district_id.ToString()).show  %></span></p>
 
                 <% if (!string.IsNullOrEmpty(contactLocation.address))
                     { %>
@@ -139,11 +139,12 @@
 
 
             <div class="address ">
-                <label><%=account.name %> <span>类别图标</span> <span>自助服务台图标</span></label>
-                <p><%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %></p>
-                <p><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.province_id.ToString()).show  %></p>
-                <p><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.city_id.ToString()).show  %></p>
-                <p><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.district_id.ToString()).show  %></p>
+                <label><%=account.name %> <%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
+                <p>
+                <span><%=country.First(_=>_.val.ToString()==contactLocation.country_id.ToString()).show  %></span>
+                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.province_id.ToString()).show  %></span>
+                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.city_id.ToString()).show  %></span>
+                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.district_id.ToString()).show  %></span></p>
 
                 <% if (!string.IsNullOrEmpty(defaultLocation.address))
                     { %>
@@ -184,7 +185,7 @@
                     }%>
                 <p class="clear">
                     <span class="fl">最后活动时间 </span>
-                    <span class="fr"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)contact.last_activity_time).ToString("yyyy-MM-dd") %></span>
+                    <span class="fr"><%=contact.last_activity_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)contact.last_activity_time).ToString("yyyy-MM-dd"):"" %></span>
                 </p>
             </div>
         </div>
@@ -202,6 +203,13 @@
 <script src="../Scripts/common.js"></script>
 <script>
     $(function () {
+
+        var targetTimes = 0;
+        // $("a").attr('target', '_blank' + targetTimes);
+        $("a").click(function () {
+            $(this).attr('target', '_blank' + targetTimes);
+            targetTimes = Number(targetTimes) + 1;
+        })
 
         var hide = $("#isHide").val();
         if (hide == "hide") {

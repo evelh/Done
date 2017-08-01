@@ -19,6 +19,9 @@
             width: 131px;
         }
     </style>
+    <link href="../Content/index.css" rel="stylesheet" />
+    <link href="../Content/style.css" rel="stylesheet" />
+    <link href="../Content/bootstrap.min2.2.2.css" rel="stylesheet" />
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/common.js" type="text/javascript" charset="utf-8"></script>
 </head>
@@ -37,12 +40,12 @@
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
                     <asp:Button ID="save" runat="server" Text="保存"  BorderStyle="None" OnClick="save_Click" />
                 </li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i></li>
+                <li id="close"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>关闭</li>
 
             </ul>
         </div>
         <div>
-            <table class="table">
+            <table class="table table-bordered table-hover" style="width:40%;">
                 <tr>
                     <td>
                         <label>是否默认</label></td>
@@ -69,7 +72,8 @@
                     <td>
                         <input id="province_idInit" value='5' type="hidden" runat="server" />
                         <select id="province_id" name="province_id">
-                        </select></td>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <td>城市</td>
@@ -120,3 +124,23 @@
     </form>
 </body>
 </html>
+<script>
+    $("#close").click(function () {
+        if (navigator.userAgent.indexOf("MSIE") > 0) {
+            if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
+                window.opener = null;
+                window.close();
+            } else {
+                window.open('', '_top');
+                window.top.close();
+            }
+        }
+        else if (navigator.userAgent.indexOf("Firefox") > 0) {
+            window.location.href = 'about:blank ';
+        } else {
+            window.opener = null;
+            window.open('', '_self', '');
+            window.close();
+        }
+    }); 
+</script>

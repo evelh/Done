@@ -582,7 +582,7 @@ namespace EMT.DoneNOW.BLL
                 territory_id = param.general_update.territoryName == 0 ? null : param.general_update.territoryName,
                 market_segment_id = param.general_update.marketSegment == 0 ? null : param.general_update.marketSegment,
                 competitor_id = param.general_update.competitor == 0 ? null : param.general_update.competitor,
-                // is_active = param.general_update.is_active?1:0,
+                is_active = param.general_update.is_active,
                 phone = param.general_update.phone,
                 fax = param.general_update.fax,
                 web_site = param.general_update.webSite,

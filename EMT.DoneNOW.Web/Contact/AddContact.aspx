@@ -132,8 +132,8 @@
 					<td>
 						<div class="clear input-dh">
 							<label>备用地址<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="loc1CallBack" name="location2" value="<%=dto.location2.address %>" />
-                            <input type="hidden" name="location_id2" id="loc1CallBackHidden" value="<%=dto.location2.id %>" />
+							<input type="text" disabled="disabled" id="loc1CallBack" name="location2" value="<%=dto.location2==null?"":dto.location2.address %>" />
+                            <input type="hidden" name="location_id2" id="loc1CallBackHidden" value="<%=dto.location2==null?"":dto.location2.id.ToString() %>" />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('loc1CallBack')"></i></span>
 						</div>
 					</td>

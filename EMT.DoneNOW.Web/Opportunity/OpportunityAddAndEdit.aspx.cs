@@ -23,10 +23,14 @@ namespace EMT.DoneNOW.Web.Opportunity
         protected List<UserDefinedFieldValue> company_udfValueList = null;
         protected Dictionary<string, object> dic = null;
         protected CompanyBLL conpamyBll = new CompanyBLL();
+
+        protected crm_contact contact = new crm_contact();
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+               
+              
                 var opportunity_id = Request.QueryString["opportunity_id"];
                 opportunity = new crm_opportunity_dal().GetOpportunityById(Convert.ToInt64(opportunity_id));
                 dic = new OpportunityBLL().GetField();
@@ -105,8 +109,10 @@ namespace EMT.DoneNOW.Web.Opportunity
                     isAdd = false;
                     //  opportunity_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
                     company_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);
+            
+
                 }
-       
+
                 if (!isAdd)
                 {
                  //   opportunity_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, opportunity.id, opportunity_udfList);
@@ -118,7 +124,17 @@ namespace EMT.DoneNOW.Web.Opportunity
                     competitor_id.SelectedValue = opportunity.competitor_id == null ? "0" : opportunity.competitor_id.ToString();
                     win_reason_type_id.SelectedValue = opportunity.win_reason_type_id == null ? "0" : opportunity.win_reason_type_id.ToString();
                     loss_reason_type_id.SelectedValue = opportunity.loss_reason_type_id == null ? "0" : opportunity.loss_reason_type_id.ToString();
-                    spread_unit.SelectedValue = opportunity.spread_unit;
+                    spread_unit.SelectedValue = opportunity.spread_unit;               
+                }
+                else
+                {
+                    //  联系人查看的时候穿过来客户ID，和联系人ID，联系人不能更改，只有更改客户才可以更改联系人
+                    var contact_id = Request.QueryString["oppo_contact_id"];
+                    if (!string.IsNullOrEmpty(contact_id))
+                    {
+                        contact = new ContactBLL().GetContact(Convert.ToInt64(contact_id));
+
+                    }
                 }
             }
             catch (Exception)
@@ -162,7 +178,8 @@ namespace EMT.DoneNOW.Web.Opportunity
                 var result = new OpportunityBLL().Insert(param, GetLoginUserId());   // 根据参数插入商机
                 if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
                 {
-                    Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写'); </script>");
+                    //Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
                 }
                 else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
                 {
@@ -180,7 +197,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 var result = new OpportunityBLL().Update(param, GetLoginUserId());
                 if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
                 {
-                    Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写'); </script>");
                 }
                 else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
                 {
@@ -189,16 +206,77 @@ namespace EMT.DoneNOW.Web.Opportunity
                 }
                 else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
-                    Response.Write("<script>alert('修改商机成功！');</script>");  //  关闭添加页面的同时，刷新父页面
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改商机成功！');</script>");
+                    //Response.Write("<script>alert('修改商机成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
+                }
+            }
+        }
+        /// <summary>
+        /// 保存并关闭
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void save_close_Click(object sender, EventArgs e)
+        {
+            var param = GetParam();
+
+            if (isAdd)
+            {
+                var result = new OpportunityBLL().Insert(param, GetLoginUserId());   // 根据参数插入商机
+                if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写'); </script>");
+                    //Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("Login.aspx");
+                }
+                else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+                {
+                    Response.Write("<script>alert('添加商机成功！');window.close();</script>");  //  
+                }
+            }
+            else
+            {
+                param.general.id = opportunity.id;
+                var result = new OpportunityBLL().Update(param, GetLoginUserId());
+                if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写'); </script>");
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("Login.aspx");
+                }
+                else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改商机成功！');window.close();</script>");
+                    //Response.Write("<script>alert('修改商机成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
                 }
             }
         }
 
-        protected void save_close_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 保存并新增报价
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void save_newAdd_Click(object sender, EventArgs e)
         {
 
         }
+        /// <summary>
+        /// 保存并新增备注
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void save_create_note_Click(object sender, EventArgs e)
+        {
 
+        }
 
         /// <summary>
         /// 获取到表单参数
@@ -227,5 +305,6 @@ namespace EMT.DoneNOW.Web.Opportunity
             }
             return param;
         }
+
     }
 }
