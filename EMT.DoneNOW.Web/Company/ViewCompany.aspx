@@ -35,9 +35,9 @@
                     <li>活动</li>
                     <li>待办</li>
                     <li>备注</li>
-                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=opportunity"  target="view_window">商机</a></li>
+                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=opportunity"  target="view_window1">商机</a></li>
                     <li>销售订单</li>
-                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=contact"  target="view_window">联系人</a></li>
+                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=contact"  target="view_window2">联系人</a></li>
                     <li>联系人组</li>
                     <li>工单</li>
                     <li>项目</li>
@@ -81,10 +81,10 @@
                     <ul>
                         <li>关闭商机向导</li>
                         <li><a href="../Opportunity/LoseOpportunity.aspx?account_id=<%=account.id %>">丢失商机向导</a></li>
-                        <li>Resign lead wizard重新分配商机所有人</li>
+                        <li>重新分配商机所有人</li>
                         <li>注销客户向导</li>
                         <li>Microsoft word merge wizard</li>
-                        <li>Reset quick books company mapping</li>
+                        <%--<li>Reset quick books company mapping</li>--%>
                     </ul>
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>

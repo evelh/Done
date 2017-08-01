@@ -98,14 +98,15 @@ namespace EMT.DoneNOW.Web.Opportunity
                 formTemplate.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 #endregion
 
-
+                spread_unit.SelectedValue = "Months";
 
                 if (opportunity != null)
                 {
                     isAdd = false;
-                  //  opportunity_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
+                    //  opportunity_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
                     company_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);
                 }
+       
                 if (!isAdd)
                 {
                  //   opportunity_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, opportunity.id, opportunity_udfList);
@@ -117,12 +118,13 @@ namespace EMT.DoneNOW.Web.Opportunity
                     competitor_id.SelectedValue = opportunity.competitor_id == null ? "0" : opportunity.competitor_id.ToString();
                     win_reason_type_id.SelectedValue = opportunity.win_reason_type_id == null ? "0" : opportunity.win_reason_type_id.ToString();
                     loss_reason_type_id.SelectedValue = opportunity.loss_reason_type_id == null ? "0" : opportunity.loss_reason_type_id.ToString();
+                    spread_unit.SelectedValue = opportunity.spread_unit;
                 }
             }
             catch (Exception)
             {
 
-                throw;
+                Response.End();
             }
         }
 
@@ -169,7 +171,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 }
                 else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
-                    Response.Write("<script>alert('添加商机成功！');window.location.href=window.location.href;</script>");  //  关闭添加页面的同时，刷新父页面
+                    Response.Write("<script>alert('添加商机成功！');window.location.href=window.location.href;</script>");  //  
                 }
             }
             else

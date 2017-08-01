@@ -184,13 +184,13 @@
                             <td>
                                 <div class="clear">
                                     <label>一次性收益</label>
-                                    <input type="text" name="one_time_revenue" id="one_time_revenue" value="<%=(!isAdd)&&(opportunity.one_time_revenue!=null)?opportunity.one_time_revenue.ToString():"" %>" />
+                                    <input type="text" class="Calculation" name="one_time_revenue" id="one_time_revenue" value="<%=(!isAdd)&&(opportunity.one_time_revenue!=null)?opportunity.one_time_revenue.ToString():"" %>" />
                                 </div>
                             </td>
                             <td>
                                 <div class="clear">
                                     <label>一次性成本</label>
-                                    <input type="text" name="one_time_cost" id="one_time_cost" value="<%=(!isAdd)&&(opportunity.one_time_cost!=null)?opportunity.one_time_cost.ToString():"" %>" />
+                                    <input type="text" class="Calculation" name="one_time_cost" id="one_time_cost" value="<%=(!isAdd)&&(opportunity.one_time_cost!=null)?opportunity.one_time_cost.ToString():"" %>" />
                                 </div>
                             </td>
                         </tr>
@@ -198,13 +198,13 @@
                             <td>
                                 <div class="clear">
                                     <label>月度收益</label>
-                                    <input type="text" name="monthly_revenue" id="monthly_revenue" value="<%=(!isAdd)&&(opportunity.monthly_revenue!=null)?opportunity.monthly_revenue.ToString():"" %>" />
+                                    <input type="text" class="Calculation" name="monthly_revenue" id="monthly_revenue" value="<%=(!isAdd)&&(opportunity.monthly_revenue!=null)?opportunity.monthly_revenue.ToString():"" %>" />
                                 </div>
                             </td>
                             <td>
                                 <div class="clear">
                                     <label>月度成本</label>
-                                    <input type="text" name="monthly_cost" id="monthly_cost" value="<%=(!isAdd)&&(opportunity.monthly_cost!=null)?opportunity.monthly_cost.ToString():"" %>" />
+                                    <input type="text" class="Calculation" name="monthly_cost" id="monthly_cost" value="<%=(!isAdd)&&(opportunity.monthly_cost!=null)?opportunity.monthly_cost.ToString():"" %>" />
                                 </div>
                             </td>
                         </tr>
@@ -212,13 +212,13 @@
                             <td>
                                 <div class="clear">
                                     <label>季度收益</label>
-                                    <input type="text" name="quarterly_revenue" id="quarterly_revenue" value="<%=(!isAdd)&&(opportunity.quarterly_revenue!=null)?opportunity.quarterly_revenue.ToString():"" %>" />
+                                    <input type="text" class="Calculation" name="quarterly_revenue" id="quarterly_revenue" value="<%=(!isAdd)&&(opportunity.quarterly_revenue!=null)?opportunity.quarterly_revenue.ToString():"" %>" />
                                 </div>
                             </td>
                             <td>
                                 <div class="clear">
                                     <label>季度成本</label>
-                                    <input type="text" name="quarterly_cost" id="quarterly_cost" value="<%=(!isAdd)&&(opportunity.quarterly_cost!=null)?opportunity.quarterly_cost.ToString():"" %>" />
+                                    <input type="text" class="Calculation" name="quarterly_cost" id="quarterly_cost" value="<%=(!isAdd)&&(opportunity.quarterly_cost!=null)?opportunity.quarterly_cost.ToString():"" %>" />
                                 </div>
                             </td>
                         </tr>
@@ -226,13 +226,13 @@
                             <td>
                                 <div class="clear">
                                     <label>半年收益</label>
-                                    <input type="text" name="semi_annual_revenue" id="semi_annual_revenue" value="<%=(!isAdd)&&(opportunity.semi_annual_revenue!=null)?opportunity.semi_annual_revenue.ToString():"" %>" />
+                                    <input type="text" class="Calculation" name="semi_annual_revenue" id="semi_annual_revenue" value="<%=(!isAdd)&&(opportunity.semi_annual_revenue!=null)?opportunity.semi_annual_revenue.ToString():"" %>" />
                                 </div>
                             </td>
                             <td>
                                 <div class="clear">
                                     <label>半年成本</label>
-                                    <input type="text" name="semi_annual_cost" id="semi_annual_cost" value="<%=(!isAdd)&&(opportunity.semi_annual_cost!=null)?opportunity.semi_annual_cost.ToString():"" %>" />
+                                    <input type="text" class="Calculation" name="semi_annual_cost" id="semi_annual_cost" value="<%=(!isAdd)&&(opportunity.semi_annual_cost!=null)?opportunity.semi_annual_cost.ToString():"" %>" />
                                 </div>
                             </td>
                         </tr>
@@ -240,13 +240,21 @@
                             <td>
                                 <div class="clear">
                                     <label>年收益</label>
-                                    <input type="text" name="yearly_revenue" id="yearly_revenue" value="<%=(!isAdd)&&(opportunity.yearly_revenue!=null)?opportunity.yearly_revenue.ToString():"" %>" />
+                                    <input type="text" class="Calculation" name="yearly_revenue" id="yearly_revenue" value="<%=(!isAdd)&&(opportunity.yearly_revenue!=null)?opportunity.yearly_revenue.ToString():"" %>" />
                                 </div>
                             </td>
                             <td>
                                 <div class="clear">
                                     <label>年成本</label>
-                                    <input type="text" name="yearly_cost" id="yearly_cost" value="<%=(!isAdd)&&(opportunity.yearly_cost!=null)?opportunity.yearly_cost.ToString():"" %>" />
+                                    <input type="text" class="Calculation" name="yearly_cost" id="yearly_cost" value="<%=(!isAdd)&&(opportunity.yearly_cost!=null)?opportunity.yearly_cost.ToString():"" %>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>计算总额</label>
+                                    <input type="text" name="CalculationMonths" id="CalculationMonths" value="10" /><span>月</span>
                                 </div>
                             </td>
                         </tr>
@@ -254,7 +262,8 @@
                             <td>
                                 <div class="clear">
                                     <label>总收益</label>
-                                    <input type="" name="Total_Revenue" id="Total_Revenue" value="" />
+                                    <span name="Total_Revenue" id="Total_Revenue"></span>
+                                   
                                 </div>
                             </td>
                             <td>
@@ -281,12 +290,17 @@
                 <div class="clear">
                     <input type="checkbox" name="" id="opportunity" />
                     <label>商机收入周期范围</label>
-                    <input type="text" name="spread_value" id="spread_value" value="" />
-                    <select name="spread_unit" id="spread_unit">
+                    <input type="text" name="spread_value" id="spread_value" value="<%=(!isAdd)&&(opportunity.spread_value!=null)?opportunity.spread_value.ToString():"" %>" />
+                    <asp:DropDownList ID="spread_unit" runat="server">
+                        <asp:ListItem Value="Days">日</asp:ListItem>
+                        <asp:ListItem Value="Months">月</asp:ListItem>
+                        <asp:ListItem Value="Years">年</asp:ListItem>
+                    </asp:DropDownList>
+                <%--    <select name="spread_unit" id="spread_unit">
                         <option value="Day">日</option>
                         <option value="Months" selected>月</option>
                         <option value="Years">年</option>
-                    </select>
+                    </select>--%>
                 </div>
             </div>
             <div class="information clear">
@@ -566,43 +580,114 @@
                 $.ajax({
                     type: "GET",
                     async: false,
-                    url: "../Tools/OpportunityAjax.ashx?act=formTemplate&id=" + formTemplate_id,   
+                    url: "../Tools/OpportunityAjax.ashx?act=formTemplate&id=" + formTemplate_id,
                     dataType: "json",
                     success: function (data) {
                         debugger;
-                        if (data != "" || data != undefined) {
+                        if (data != "" && data != undefined) {
                             $("#form1").populateForm(data);
-                            //if (data.account_id != null) {
-                            //    $("#ParentComoanyNameHidden").val(data.account_id);   // 为表单赋值
-                            //}
-                            //if (data.contact_id != null) {
-                            //    $("#contact_id").val(data.contact_id);   // 为表单赋值
-                            //}
-                            //if (data.resource_id != null) {
-                            //    $("#resource_id").val(data.resource_id);   // 为表单赋值
-                            //}
-                            //if (data.account_id != null) {
-                            //    $("#ParentComoanyNameHidden").val();   // 为表单赋值
-                            //}
-                            //if (data.account_id != null) {
-                            //    $("#ParentComoanyNameHidden").val();   // 为表单赋值
-                            //}
-                            //if (data.account_id != null) {
-                            //    $("#ParentComoanyNameHidden").val();   // 为表单赋值
-                            //}
-                            //if (data.account_id != null) {
-                            //    $("#ParentComoanyNameHidden").val();   // 为表单赋值
-
-                            //}
-                          
-                         
                         }
                     },
-               
+
 
                 });
             }
         })
+
+        $(".Calculation").blur(function () {
+            Calculation_Gross_Profit();
+        })
+
+        Calculation_Gross_Profit();
+
+        function Calculation_Gross_Profit()   // 计算毛利和毛利率,年收益和年成本
+        {
+            var CalculationMonths = $("#CalculationMonths").val();
+            if (!isNaN(CalculationMonths))   // 计算的月份时数字开始计算
+            {
+                debugger;
+                var total_income = 0.00;                    // 总收益
+                var total_expenditure = 0.00;               // 总支出
+                var one_time_revenue = $("#one_time_revenue").val();   // 一次性收益
+                var one_time_cost = $("#one_time_cost").val();         // 一次性支出
+                if (one_time_revenue != "" && !isNaN(one_time_revenue))       // 收益和支出是数字时开始计算
+                {
+                    total_income = Number(total_income.toFixed(2)) + Number(toDecimal2(one_time_revenue));
+                    $("#one_time_revenue").val(toDecimal2(one_time_revenue));
+                }
+                if (one_time_cost != "" && !isNaN(one_time_cost)) {
+                    total_expenditure = Number(total_expenditure.toFixed(2)) + Number(toDecimal2(one_time_cost));
+                   // total_expenditure += toDecimal2(one_time_cost);
+                    $("#one_time_cost").val(toDecimal2(one_time_cost));
+                }
+
+                var monthly_revenue = $("#monthly_revenue").val();   // 月收益
+                var monthly_cost = $("#monthly_cost").val();         // 月支出
+                if (monthly_revenue != "" && !isNaN(monthly_revenue))       // 收益和支出是数字时开始计算
+                {
+                    total_income = Number(total_income.toFixed(2)) + Number(toDecimal2(monthly_revenue) * CalculationMonths);
+                    $("#monthly_revenue").val(toDecimal2(monthly_revenue));
+                }
+                if (monthly_cost != "" && !isNaN(monthly_cost)) {
+                    total_expenditure = Number(total_expenditure.toFixed(2)) + Number(toDecimal2(monthly_cost) * CalculationMonths);
+                   // total_expenditure += toDecimal2(monthly_cost) * CalculationMonths;
+                    $("#monthly_cost").val(toDecimal2(monthly_cost));
+                }
+
+                var quarterly_revenue = $("#quarterly_revenue").val();   // 季收益
+                var quarterly_cost = $("#quarterly_cost").val();         // 季支出
+                if (quarterly_revenue != "" && !isNaN(quarterly_revenue))       // 收益和支出是数字时开始计算
+                {
+                    total_income = Number(total_income.toFixed(2)) + Number(toDecimal2((quarterly_revenue / 4)) * CalculationMonths);
+                  //  total_income += toDecimal2((quarterly_revenue / 4)) * CalculationMonths;
+                    $("#quarterly_revenue").val(toDecimal2(quarterly_revenue));
+                }
+                if (quarterly_cost != "" && !isNaN(quarterly_cost)) {
+                    total_expenditure = Number(total_expenditure.toFixed(2)) + Number(toDecimal2((quarterly_cost / 4)) * CalculationMonths);
+                    //total_expenditure += toDecimal2((quarterly_cost / 4)) * CalculationMonths;
+                    $("#quarterly_cost").val(toDecimal2(quarterly_cost));
+                }
+
+                var semi_annual_revenue = $("#semi_annual_revenue").val();   // 半年收益
+                var semi_annual_cost = $("#semi_annual_cost").val();         // 半年支出
+                if (semi_annual_revenue != "" &&!isNaN(semi_annual_revenue))       // 收益和支出是数字时开始计算
+                {
+                    total_income = Number(total_income.toFixed(2)) + Number(toDecimal2((semi_annual_revenue / 6)) * CalculationMonths);
+                    //total_income += toDecimal2((semi_annual_revenue / 6)) * CalculationMonths;
+                    $("#semi_annual_revenue").val(toDecimal2(semi_annual_revenue));
+                }
+                if (semi_annual_cost != "" && !isNaN(semi_annual_cost)) {
+                    total_expenditure = Number(total_expenditure.toFixed(2)) + Number(toDecimal2((semi_annual_cost / 6)) * CalculationMonths);
+                    // total_expenditure += toDecimal2((semi_annual_cost / 6)) * CalculationMonths;
+                    $("#semi_annual_cost").val(toDecimal2(semi_annual_cost));
+                }
+
+                var yearly_revenue = $("#yearly_revenue").val();   // 年收益
+                var yearly_cost = $("#yearly_cost").val();         // 年支出
+                if (yearly_revenue != "" &&!isNaN(yearly_revenue))       // 收益和支出是数字时开始计算
+                {
+                    total_income = Number(total_income.toFixed(2)) + Number(toDecimal2((yearly_revenue / 12)) * CalculationMonths);
+                    //total_income += toDecimal2((yearly_revenue / 12)) * CalculationMonths;
+                    $("#yearly_revenue").val(toDecimal2(yearly_revenue));
+                }
+                if (yearly_cost != "" && !isNaN(yearly_cost)) {
+                    total_expenditure = Number(total_expenditure.toFixed(2)) + Number(toDecimal2((yearly_cost / 12)) * CalculationMonths);
+                    //total_expenditure += toDecimal2((yearly_cost / 12)) * CalculationMonths;
+                    $("#yearly_cost").val(toDecimal2(yearly_cost));
+                }
+
+                $("#Total_Revenue").text(toDecimal2(total_income));
+                $("#Total_Cost").text(toDecimal2(total_expenditure));
+
+                var Gross_Profit = Number(total_income) - Number(total_expenditure);
+               // Math.round(num / total * 10000) / 100.00 + "%"
+                if (Number(total_income) != 0) {
+                    $("#Gross_Profit").text( toDecimal2(Gross_Profit) + "(" + Math.round(Gross_Profit / total_income * 10000) / 100.00 + "%)");
+                }
+               
+            }
+        }
+
 
     })
     function SubmitCheck() {
@@ -664,4 +749,24 @@
             });
         }
     }
+
+    // 强制保留两位小数
+    function toDecimal2(x) {
+        var f = parseFloat(x);
+        if (isNaN(f)) {
+            return false;
+        }
+        var f = Math.round(x * 100) / 100;
+        var s = f.toString();
+        var rs = s.indexOf('.');
+        if (rs < 0) {
+            rs = s.length;
+            s += '.';
+        }
+        while (s.length <= rs + 2) {
+            s += '0';
+        }
+        return s;
+    }
+
 </script>
