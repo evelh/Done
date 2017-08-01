@@ -121,8 +121,8 @@
 					<td>
 						<div class="clear input-dh">
 							<label>地址<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="locCallBack" name="location" value="<%=dto.location.address %>" />
-                            <input type="hidden" name="location_id" id="locCallBackHidden" value="<%=dto.location.id %>" />
+							<input type="text" disabled="disabled" id="locCallBack" name="location" <%if (dto.location != null) { %> value="<%=dto.location.address %>" <%} %> />
+                            <input type="hidden" name="location_id" id="locCallBackHidden" <%if (dto.location != null) { %> value="<%=dto.location.id %>" <%} %> />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('locCallBack')"></i></span>
 						</div>
 					</td>
@@ -132,8 +132,8 @@
 					<td>
 						<div class="clear input-dh">
 							<label>备用地址<span class="red">*</span></label>
-							<input type="text" disabled="disabled" id="loc1CallBack" name="location2" value="<%=dto.location2.address %>" />
-                            <input type="hidden" name="location_id2" id="loc1CallBackHidden" value="<%=dto.location2.id %>" />
+							<input type="text" disabled="disabled" id="loc1CallBack" name="location2" <%if (dto.location2 != null) { %> value="<%=dto.location2.address %>" <%} %> />
+                            <input type="hidden" name="location_id2" id="loc1CallBackHidden" <%if (dto.location2 != null) { %> value="<%=dto.location2.id %>" <%} %> />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('loc1CallBack')"></i></span>
 						</div>
 					</td>

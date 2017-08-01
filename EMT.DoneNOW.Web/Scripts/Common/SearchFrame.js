@@ -1,6 +1,11 @@
 ﻿$("#SearchBtn").click(function () {
     var vals = $(".sl_cdt");
-    var formbody = window.parent.frames["SearchBody"].contentWindow.document;
+
+    var formbody = window.parent.frames["SearchBody"].contentWindow;
+    if (formbody == undefined)
+        formbody = window.parent.frames["SearchBody"].document;
+    else
+        formbody = formbody.document;
     var inner = "";
     for (var i = 0; i < vals.length; ++i) {
         if (vals[i].value == "")

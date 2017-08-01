@@ -31,7 +31,7 @@ namespace EMT.DoneNOW.Web
                 query = new PageQueryConditionNameDto();
                 query.page_name = "客户查询";
                 query.page_query = new List<PageQueryConditionNameDto.PageQuery>() {
-                    new PageQueryConditionNameDto.PageQuery { query_name="查询",query_url= "Common/SearchFrameSet.aspx?entity=客户查询" }
+                    new PageQueryConditionNameDto.PageQuery { query_name="查询", query_url= "Common/SearchFrameSet.aspx?entity=客户查询" }
                 };
                 queryNameList.Add(query);
 
@@ -39,6 +39,13 @@ namespace EMT.DoneNOW.Web
                 query.page_name = "联系人查询";
                 query.page_query = new List<PageQueryConditionNameDto.PageQuery>() {
                     new PageQueryConditionNameDto.PageQuery { query_name = "查询", query_url = "Common/SearchFrameSet.aspx?entity=联系人查询" }
+                };
+                queryNameList.Add(query);
+
+                query = new PageQueryConditionNameDto();
+                query.page_name = "商机查询";
+                query.page_query = new List<PageQueryConditionNameDto.PageQuery>() {
+                    new PageQueryConditionNameDto.PageQuery { query_name = "查询", query_url = "Common/SearchFrameSet.aspx?entity=商机查询" }
                 };
                 queryNameList.Add(query);
             }

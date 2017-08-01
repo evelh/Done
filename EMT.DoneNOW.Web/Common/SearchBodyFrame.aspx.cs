@@ -45,6 +45,9 @@ namespace EMT.DoneNOW.Web
                 case "联系人查询":
                     addBtn = "新增联系人";
                     break;
+                case "商机查询":
+                    addBtn = "新增商机";
+                    break;
                 default:
                     addBtn = "新增客户";
                     break;
@@ -61,7 +64,11 @@ namespace EMT.DoneNOW.Web
 
             var keys = HttpContext.Current.Request.QueryString;
             string order = keys["order"];   // order by 条件
-            int page = string.IsNullOrEmpty(keys["page_num"]) ? 1 : int.Parse(keys["page_num"]);  // 查询页数
+            int page;
+            if (!int.TryParse(keys["page_num"], out page))
+                page = 1;
+            //int page = string.IsNullOrEmpty(keys["page_num"]) ? 1 : int.Parse(keys["page_num"]);  // 查询页数
+            int pageSize = string.IsNullOrEmpty(keys["page_size"]) ? 0 : int.Parse(keys["page_size"]);  // 查询每页个数
 
             // 检查order
             if (order != null)
@@ -125,7 +132,7 @@ namespace EMT.DoneNOW.Web
                 queryPara.query_page_name = queryPage;
                 queryPara.page = page;
                 queryPara.order_by = order;
-                queryPara.page_size = 0;
+                queryPara.page_size = pageSize;
 
                 queryResult = bll.GetResult(GetLoginUserId(), queryPara);
             }
@@ -173,6 +180,18 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除联系人", click_function = "DeleteContact()" });
+                    break;
+                case "商机查询":
+                    contextMenu.Add(new PageContextMenuDto { text = "修改商机", click_function = "EditOpp()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看商机", click_function = "ViewOpp()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增报价", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "修改报价", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "关闭商机", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "丢失商机", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "重新指定商机负责人", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除商机", click_function = "DeleteOpp()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
                     break;
                 default:
                     break;

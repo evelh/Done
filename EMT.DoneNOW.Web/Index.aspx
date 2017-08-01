@@ -18,6 +18,7 @@
 							<dt>查询</dt>
 							<dd><a href="Common/SearchFrameSet.aspx?entity=客户查询" target="PageFrame">客户管理</a></dd>
 							<dd><a href="Common/SearchFrameSet.aspx?entity=联系人查询" target="PageFrame">联系人管理</a></dd>
+                            <dd><a href="Common/SearchFrameSet.aspx?entity=商机查询" target="PageFrame">商机管理</a></dd>
 						</dl>
 						<dl>
 							<dt>服务台</dt>

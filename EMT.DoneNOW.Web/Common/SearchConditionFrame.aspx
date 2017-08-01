@@ -182,12 +182,12 @@
 			</table>
 		</div>
 	</div>
+    <script src="../Scripts/jquery-3.1.0.min.js"  type="text/javascript" charset="utf-8"></script>
 	<script src="../Scripts/bootstrap-datetimepicker.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Scripts/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Scripts/index.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/multiple-select.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchFrame.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../Scripts/jquery-3.1.0.min.js"  type="text/javascript" charset="utf-8"></script>
     <script>
         var colors = ["#efefef", "white"];
         var index = 0;

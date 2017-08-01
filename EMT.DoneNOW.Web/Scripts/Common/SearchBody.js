@@ -43,6 +43,24 @@ document.onclick = function () {
     menu.style.display = "none";
 }
 
+function ChangePageSize(num) {
+    $("#page_size").val(num);
+    $("#form1").submit();
+}
+
+function ChangePage(num) {
+    $("#page_num").val(num);
+    $("#form1").submit();
+}
+
+$(".page input").blur(function () {
+    var page = $(this).val();
+    var crtpage = $("#page_num").val();
+    if (page == crtpage)
+        return;
+    ChangePage(page);
+});
+
 // 修改排序列
 function ChangeOrder(para) {
     var order = $("#order").val();

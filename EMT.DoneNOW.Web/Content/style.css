@@ -6,7 +6,7 @@ ul,ul li{margin: 0;padding: 0;}
 	src: url(../fonts/glyphicons-halflings-regular.ttf);
 	src: url(../fonts/glyphicons-halflings-regular.woff);
 }
-.header{height: 40px;line-height: 40px;background: #346A95;padding: 0 10px;font-size: 18px;color: #FFFFFF;}
+.header{height: 40px;line-height: 40px;background: #346A95;padding: 0 10px;font-size: 18px;color: #FFFFFF; min-width: 1200px;}
 .content table, td, th {border:none;}
 .content table {border-collapse: collapse;border-spacing: 0;width: 100%;background: #fff;float: left;} 
 .content th {font-weight: normal;background: none;height: auto;} 
@@ -17,8 +17,8 @@ ul,ul li{margin: 0;padding: 0;}
 .header-title ul li:hover ul{display: block;}
 .header-title ul li .icon-1{width: 16px;height:16px;display: block;float: left;margin-top: 3px;margin-right: 5px;}
 .header-title ul li .icon-2{width: 10px;height:10px;display: block;float: right;margin-top: 5px;margin-left:10px;}
-.header-title ul li ul{display: none; position:absolute; left: 0;top: 22px;border: 1px solid #CCCCCC;background: #F5F5F5;width: 150px;padding: 15px 10px;z-index: 99;}
-.header-title ul li ul li{float: none;border: none;background: #F5F5F5;}
+.header-title ul li ul{display: none; position:absolute; left: 0;top: 22px;border: 1px solid #CCCCCC;background: #F5F5F5;width:260px;padding: 15px 10px;z-index: 99;}
+.header-title ul li ul li{float: none;border: none;background: #F5F5F5;height:28px;line-height:28px;}
 .header-title ul li input{outline:none; border: none;}
 .header-title ul li ul li:hover{background: #E5E5E5;}
 
@@ -34,9 +34,10 @@ ul,ul li{margin: 0;padding: 0;}
 .content label{display:inline-block;color: #151515;font-size:14px;width:170px;text-align: right;height: 30px;line-height: 30px;
 position: relative;
 float: left;overflow: hidden;}
-.content label .red{color: red ;  vertical-align: super; position: absolute;right: -10px;top: 0;}
+.content label .red{color: red ;  vertical-align: super; right: -10px;top: 0;} /*position: absolute;*/
 .content label .num{color: #666666;font-size: 12px;  vertical-align: super; }
 .content input{float: left;width:180px;margin-left:15px;height:28px;}
+.content textarea{float: left;width:180px;margin-left:15px;resize:none;height: 100px;}
 .content select{float: left;width:180px;height:28px;line-height: 28px;margin-left:15px;}
 .content .selectTwo{float: left;width:50%;height:28px;line-height: 28px;margin-left:15px;}
 .content .selectTwo select{float: left;width:82px;height:28px;line-height: 28px;margin: 0;}
@@ -61,8 +62,8 @@ float: left;overflow: hidden;}
 .header i{width: 40px;height: 30px;display: block;background:#F5F5F5 url(../Images/ico_page_menu.png) no-repeat center;float: left;
 margin-top: 5px;margin-right:10px;cursor: pointer;}
 .header i:hover ul{display: block;}
-.header i ul{min-width:100px;padding: 15px 10px;background: #F5F5F5;margin-top: 30px;position: relative;display: none;z-index: 99;}
-.header i ul li{color: #333;font-size: 12px;padding: 0 5px;}
+.header i ul{min-width:260px;padding: 15px 10px;background: #F5F5F5;margin-top: 30px;position: relative;display: none;z-index: 99;}
+.header i ul li{color: #333;font-size: 12px;padding: 0 5px;height:28px;line-height:28px;}
 .header i ul li:hover{background: #E5E5E5;padding: 0 5px;}
 .savecontent{width: 1220px;}
 .activityTitleleft{width: 250px;}
@@ -120,8 +121,8 @@ margin-top: 5px;margin-right:10px;cursor: pointer;}
 /*ÓÒ¼ü²Ëµ¥*/
 #menu { position: absolute;z-index: 999;display: none;}
 #menu ul{margin: 0 ;padding: 0;position: relative;width: 150px;border: 1px solid gray;background-color: #F5F5F5;padding: 10px 0;}
-#menu ul li{padding-left: 20px;height: 25px;line-height: 25px;}
-#menu ul li ul {display: none; position: absolute;right:-152px;top: -1px;background-color: #F5F5F5;min-height: 90%;}
+#menu ul li{padding-left: 20px;height: 25px;line-height: 25px;cursor:pointer;}
+#menu ul li ul {display: none; position: absolute;right:-150px;top: -1px;background-color: #F5F5F5;min-height: 90%;}
 #menu ul li ul li:hover{background: #e5e5e5;}
 #menu ul li:hover{background: #e5e5e5;}
 #menu ul li:hover ul {display: block;}
@@ -151,7 +152,13 @@ border: 1px solid #a9a9a9;border-left:none ;}
 .opportunityaddress .switch .switchicon2{background:url(../Images/jia.png) no-repeat center;}
 .allswitch{height: 18px;overflow: hidden; }
     
-    
+/*分页*/
+.page{height: 26px;line-height: 26px; margin: 15px 0;float: right;}
+.page span{margin-right: 10px;}
+.page span a{margin:0 5px;}
+.page i{display:inline-block;cursor: pointer;text-align: center;padding: 0 5px;}
+.page i:hover{background: #ddd;}
+.page select{padding: 0 20px 0 10px;margin: 0 10px;}
    
 
 
