@@ -88,6 +88,14 @@ namespace EMT.DoneNOW.Web.Opportunity
                 notify_tmpl_id.DataSource = dic.FirstOrDefault(_ => _.Key == "notify_tmpl").Value;
                 notify_tmpl_id.DataBind();
                 notify_tmpl_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+
+                var formTemplateList = new FormTemplateBLL().GetTemplateOpportunityByUser(GetLoginUserId());
+                formTemplate.DataTextField = "speed_code";
+                formTemplate.DataValueField = "id";
+                formTemplate.DataSource = formTemplateList;
+                formTemplate.DataBind();
+                formTemplate.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 #endregion
 
 

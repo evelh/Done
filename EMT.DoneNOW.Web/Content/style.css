@@ -18,7 +18,8 @@ ul,ul li{margin: 0;padding: 0;}
 .header-title ul li .icon-1{width: 16px;height:16px;display: block;float: left;margin-top: 3px;margin-right: 5px;}
 .header-title ul li .icon-2{width: 10px;height:10px;display: block;float: right;margin-top: 5px;margin-left:10px;}
 .header-title ul li ul{display: none; position:absolute; left: 0;top: 22px;border: 1px solid #CCCCCC;background: #F5F5F5;width: 150px;padding: 15px 10px;z-index: 99;}
-.header-title ul li ul li{float: none;border: none;}
+.header-title ul li ul li{float: none;border: none;background: #F5F5F5;}
+.header-title ul li input{outline:none; border: none;}
 .header-title ul li ul li:hover{background: #E5E5E5;}
 
 .nav-title{}
@@ -148,7 +149,7 @@ border: 1px solid #a9a9a9;border-left:none ;}
  cursor: pointer;}
 .opportunityaddress .switch .switchicon1{background:url(../Images/jian.png) no-repeat center;}
 .opportunityaddress .switch .switchicon2{background:url(../Images/jia.png) no-repeat center;}
-.allswitch{height: 35px;overflow: hidden; }
+.allswitch{height: 18px;overflow: hidden; }
     
     
    

@@ -38,7 +38,7 @@ namespace EMT.DoneNOW.Web.Company
                         switch (type)    // 根据传过来的不同的类型，为页面中的iframe控件选择不同的src
                         {
                             case "activity":
-                                viewCompany_iframe.Src = "../Activity/ViewActivity.aspx?id=" + crm_account.id.ToString();  // 活动
+                                //viewCompany_iframe.Src = "../Activity/ViewActivity.aspx?id=" + crm_account.id.ToString();  // 活动
                                 break;
                             case "todo":
                                 viewCompany_iframe.Src = "";  // 待办

@@ -11,7 +11,7 @@ using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.Web
 {
-    public partial class ViewContact : System.Web.UI.Page
+    public partial class ViewContact : BasePage
     {
         protected crm_account account = null;
         protected crm_contact contact = null;
