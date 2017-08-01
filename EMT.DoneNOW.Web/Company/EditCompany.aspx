@@ -10,7 +10,11 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
-
+    <style>
+        #addressManage th{
+            text-align:center;
+        }
+    </style>
 </head>
 <body>
     <form id="EditCompany" runat="server">
@@ -24,7 +28,8 @@
                     <asp:Button ID="delete" runat="server" Text="删除" OnClick="delete_Click" BorderStyle="None" />
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
-                    <asp:Button ID="close" runat="server" Text="关闭" />
+                    <%--<asp:Button ID="close" runat="server" Text="关闭" />--%>
+                    关闭
                 </li>
             </ul>
         </div>
@@ -61,7 +66,15 @@
                     <td>
                         <div class="clear">
                             <label>是否激活<span class="red">*</span></label>
-                            <asp:CheckBox ID="isactive" runat="server" />
+                            <% if (account.is_active == 1)
+                                { %>
+                               <input  type="checkbox" name="is_default" data-val="1" value="1" checked="checked"/>
+                            <%}
+                            else
+                            { %>
+                               <input  type="checkbox" name="is_default" data-val="1" value="1"/>
+                            <%} %>
+                            <%--<asp:CheckBox ID="isactive" runat="server" />--%>
                         </div>
                     </td>
                 </tr>
@@ -297,8 +310,8 @@
                         <div class="clear">
                             <label>父客户名称</label>
                             <asp:TextBox ID="ParentComoanyName" runat="server"></asp:TextBox>
-                            <i onclick="chooseCompany();" style="width: 15px;height:15px; float: left; margin-left: -1px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                            
+                            <i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+
                             <input type="hidden" id="ParentComoanyNameHidden" name="parent_company_name" value="<%=account.parent_id %>" />
                         </div>
                     </td>
@@ -307,9 +320,10 @@
 
         </div>
         <%--// location_list--%>
-        <div class="content clear"  style="display:none;">
-            <table style="text-align: left;" class="table table-hover">
-                <tr>
+        <div class="content clear" style="display: none;">
+            <a href="LocationManage.aspx?account_id=<%=account.id %>" style="margin-left:10px;">新增地址</a>
+            <table style="text-align: center;" class="table table-hover" id="addressManage">
+                <tr style="text-align: center;">
                     <th>地址类型</th>
                     <th>国家</th>
                     <th>省份</th>
@@ -337,12 +351,10 @@
                     <%}
                         else
                         { %>
-                    <td>
-
-                            </td>
+                    <td></td>
                     <%} %>
                     <td><%=country.FirstOrDefault(_=>_.val == location.country_id.ToString()).show %></td>
-                         <td><%=district.FirstOrDefault(_=>_.val == location.province_id.ToString()).show %></td>
+                    <td><%=district.FirstOrDefault(_=>_.val == location.province_id.ToString()).show %></td>
                     <td><%=district.FirstOrDefault(_=>_.val == location.city_id.ToString()).show %></td>
                     <td><%=district.FirstOrDefault(_=>_.val == location.district_id.ToString()).show %></td>
                     <td><%=location.address %></td>
@@ -350,13 +362,13 @@
                     <td><%=location.postal_code %></td>
                     <td><%=location.location_label %></td>
                     <td><%=location.is_default==1?"是":"否" %></td>
-                    <%if (location.is_default == 1)
+                    <%if (location.is_default != 1)
                         { %>
                     <td><a href="LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>">修改</a> <a href="#" onclick="deleteLocation(<%=location.id %>)">删除</a></td>
                     <%}
-                    else
-                    { %>
-                     <td><a href="LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>">修改</a></td>
+                        else
+                        { %>
+                    <td><a href="LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>">修改</a></td>
                     <%} %>
                 </tr>
                 <% }%>
@@ -364,7 +376,7 @@
             </table>
         </div>
 
-        <div class="content clear"  style="display:none;">
+        <div class="content clear" style="display: none;">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
                 <tr>
                     <td>
@@ -395,7 +407,7 @@
                         <div class="clear">
                             <label>新浪微博地址<span class="red"></span></label>
                             <asp:TextBox ID="weibo_url" runat="server"></asp:TextBox>
-                            <input type="button" class="Jump" value="跳转"/>
+                            <input type="button" class="Jump" value="跳转" />
                         </div>
                     </td>
                 </tr>
@@ -404,7 +416,7 @@
                         <div class="clear">
                             <label>微信订阅号<span class="red"></span></label>
                             <asp:TextBox ID="wechat_mp_subscription" runat="server"></asp:TextBox>
-                            <input type="button" class="Jump" value="跳转"/>
+                            <input type="button" class="Jump" value="跳转" />
                         </div>
                     </td>
                 </tr>
@@ -413,7 +425,7 @@
                         <div class="clear">
                             <label>微信服务号<span class="red"></span></label>
                             <asp:TextBox ID="wechat_mp_service" runat="server"></asp:TextBox>
-                            <input type="button" class="Jump" value="跳转"/>
+                            <input type="button" class="Jump" value="跳转" />
                         </div>
                     </td>
                 </tr>
@@ -422,7 +434,7 @@
         </div>
 
 
-        <div class="content clear"  style="display:none;">
+        <div class="content clear" style="display: none;">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
 
@@ -495,7 +507,7 @@
 
 
 
-        <div class="content clear"  style="display:none;">
+        <div class="content clear" style="display: none;">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
             </table>
 
@@ -503,8 +515,8 @@
         <% //子公司 预留  %>
 
 
-        <div class="content clear"  style="display:none;">
-                 <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+        <div class="content clear" style="display: none;">
+            <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
 
                 <% if (site_udfList != null && site_udfList.Count > 0)
@@ -576,7 +588,7 @@
         <% //站点信息 预留   %>
 
 
-        <div class="content clear"  style="display:none;">
+        <div class="content clear" style="display: none;">
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
                 <tr>
                     <td>
@@ -628,6 +640,13 @@
 </script>
 <script type="text/javascript">
     $(function () {
+
+        var targetTimes = 0;
+        // $("a").attr('target', '_blank' + targetTimes);
+        $("a").click(function () {
+            $(this).attr('target', '_blank' + targetTimes);
+            targetTimes = Number(targetTimes) + 1;
+        })
 
         var old_company_type = $("#CompanyType").find("option:selected").text();
 
@@ -719,14 +738,14 @@
 
 
         $(".Jump").click(function () {
-            $("a").attr("target", "_blank"); 
+            $("a").attr("target", "_blank");
             var url = $(this).prev().val();
-            window.open("http://"+url);
+            window.open("http://" + url);
         })
         var conteneClickTimes = 0;       // 定义tab页跳转点击次数，免得一直提醒
         $.each($(".nav-title li"), function (i) {
             $(this).click(function () {
-               
+
                 if ($(this).attr("id") != "general") {
                     var companyName = $("#company_name").val();
                     if (companyName == "") {
@@ -734,42 +753,42 @@
                         return false;
                     }
                     var country = $("#country_id").val();
-                    if (country == 0){
+                    if (country == 0) {
                         alert("请选择国家");
                         return false;
                     }
                     var province = $("#province_id").val();
-                    if (province == 0){
+                    if (province == 0) {
                         alert("请选择省份");
                         return false;
                     }
                     var city = $("#city_id").val();
-                    if (city == 0){
+                    if (city == 0) {
                         alert("请选择城市");
                         return false;
                     }
                     var district = $("#district_id").val();
-                    if (district == 0){
+                    if (district == 0) {
                         alert("请选择区县");
                         return false;
                     }
                     var address = $("#address").val();
-                    if (address == ""){
+                    if (address == "") {
                         alert("请输入地址");
                         return false;
                     }
                     var phone = $("#Phone").val();
-                    if (phone == ""){
+                    if (phone == "") {
                         alert("请输入电话");
                         return false;
                     }
                     var companytype = $("#CompanyType").val();
-                    if (companytype == 0){
+                    if (companytype == 0) {
                         alert("请选择公司类型");
                         return false;
                     }
                     var accountManger = $("#AccountManger").val();
-                    if (accountManger == 0){
+                    if (accountManger == 0) {
                         alert("请选择客户经理");
                         return false;
                     }
@@ -783,7 +802,7 @@
                     $(".content").eq(i).show().siblings(".content").hide();
                 }
 
-               
+
 
 
             })

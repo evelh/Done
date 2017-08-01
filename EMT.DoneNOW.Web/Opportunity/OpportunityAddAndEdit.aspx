@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link href="../Content/index.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
+     <link rel="stylesheet" type="text/css" href="../Content/multiple-select.css"/>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -33,11 +34,11 @@
                     <asp:Button ID="save_close" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="save_close_Click" />
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
-                    <asp:Button ID="save_newAdd" runat="server" Text="保存并新建报价" BorderStyle="None" /></li>
+                    <asp:Button ID="save_newAdd" runat="server" Text="保存并新建报价" BorderStyle="None" OnClick="save_newAdd_Click" /></li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
-                    <asp:Button ID="save_create_opportunity" runat="server" Text="保存并新增备注" BorderStyle="None" /></li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
-                    <asp:Button ID="close" runat="server" Text="关闭" BorderStyle="None" /></li>
+                    <asp:Button ID="save_create_note" runat="server" Text="保存并新增备注" BorderStyle="None" OnClick="save_create_note_Click" /></li>
+                <li id="close"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
+                   关闭</li>
             </ul>
         </div>
 
@@ -78,7 +79,9 @@
                             <td>
                                 <div class="clear">
                                     <label>计划开始日期</label>
-                                    <input type="datetime-local" name="projected_begin_date" id="projected_begin_date" />
+                                    <%--<input type="datetime-local" name="projected_begin_date" id="projected_begin_date" />--%>
+                                    
+                                    <%--<input type="text" class="form_datetime sl_cdt" name="projected_begin_date" id="projected_begin_date" value="<%=(!isAdd)&&(opportunity.projected_begin_date!=null)?opportunity.projected_begin_date.ToString():"" %>"/>--%>
                                 </div>
                             </td>
                         </tr>
@@ -86,8 +89,18 @@
                             <td>
                                 <div class="clear">
                                     <label>联系人</label>
-                                    <select name="contact_id" id="contact_id">
+                                    <%if (contact != null)
+                                        { %>
+                                      <select name="contact_id" id="contact_id" disabled="disabled">
+                                          <option value="<%=contact.id %>" selected="selected"><%=contact.name %></option>
                                     </select>
+                                    <%}
+                                    else
+                                    { %>
+                                      <select name="contact_id" id="contact_id">
+                                    </select>
+                                    <%} %>
+                                  
                                     <i onclick="javascript:window.open('../Contact/AddContact.aspx')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 </div>
                             </td>
@@ -253,8 +266,8 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <label>计算总额</label>
-                                    <input type="text" name="CalculationMonths" id="CalculationMonths" value="10" /><span>月</span>
+                                    <label>计算总额</label> 
+                                    <input type="text" name="CalculationMonths" id="number_months" value="<%=(!isAdd)&&(opportunity.number_months!=null)?opportunity.number_months:10 %>" /><span>月</span>
                                 </div>
                             </td>
                         </tr>
@@ -527,6 +540,10 @@
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/NewContact.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
+<%--    <script src="../Scripts/Common/SearchFrame.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../Scripts/bootstrap-datetimepicker.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../Scripts/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
+<script src="../Scripts/Common/multiple-select.js" type="text/javascript" charset="utf-8"></script>--%>
 <script>
     $(function () {
         $.fn.populateForm = function (data) {
@@ -602,7 +619,7 @@
 
         function Calculation_Gross_Profit()   // 计算毛利和毛利率,年收益和年成本
         {
-            var CalculationMonths = $("#CalculationMonths").val();
+            var CalculationMonths = $("#number_months").val();
             if (!isNaN(CalculationMonths))   // 计算的月份时数字开始计算
             {
                 debugger;
@@ -617,7 +634,7 @@
                 }
                 if (one_time_cost != "" && !isNaN(one_time_cost)) {
                     total_expenditure = Number(total_expenditure.toFixed(2)) + Number(toDecimal2(one_time_cost));
-                   // total_expenditure += toDecimal2(one_time_cost);
+                    // total_expenditure += toDecimal2(one_time_cost);
                     $("#one_time_cost").val(toDecimal2(one_time_cost));
                 }
 
@@ -630,7 +647,7 @@
                 }
                 if (monthly_cost != "" && !isNaN(monthly_cost)) {
                     total_expenditure = Number(total_expenditure.toFixed(2)) + Number(toDecimal2(monthly_cost) * CalculationMonths);
-                   // total_expenditure += toDecimal2(monthly_cost) * CalculationMonths;
+                    // total_expenditure += toDecimal2(monthly_cost) * CalculationMonths;
                     $("#monthly_cost").val(toDecimal2(monthly_cost));
                 }
 
@@ -639,7 +656,7 @@
                 if (quarterly_revenue != "" && !isNaN(quarterly_revenue))       // 收益和支出是数字时开始计算
                 {
                     total_income = Number(total_income.toFixed(2)) + Number(toDecimal2((quarterly_revenue / 4)) * CalculationMonths);
-                  //  total_income += toDecimal2((quarterly_revenue / 4)) * CalculationMonths;
+                    //  total_income += toDecimal2((quarterly_revenue / 4)) * CalculationMonths;
                     $("#quarterly_revenue").val(toDecimal2(quarterly_revenue));
                 }
                 if (quarterly_cost != "" && !isNaN(quarterly_cost)) {
@@ -650,7 +667,7 @@
 
                 var semi_annual_revenue = $("#semi_annual_revenue").val();   // 半年收益
                 var semi_annual_cost = $("#semi_annual_cost").val();         // 半年支出
-                if (semi_annual_revenue != "" &&!isNaN(semi_annual_revenue))       // 收益和支出是数字时开始计算
+                if (semi_annual_revenue != "" && !isNaN(semi_annual_revenue))       // 收益和支出是数字时开始计算
                 {
                     total_income = Number(total_income.toFixed(2)) + Number(toDecimal2((semi_annual_revenue / 6)) * CalculationMonths);
                     //total_income += toDecimal2((semi_annual_revenue / 6)) * CalculationMonths;
@@ -664,7 +681,7 @@
 
                 var yearly_revenue = $("#yearly_revenue").val();   // 年收益
                 var yearly_cost = $("#yearly_cost").val();         // 年支出
-                if (yearly_revenue != "" &&!isNaN(yearly_revenue))       // 收益和支出是数字时开始计算
+                if (yearly_revenue != "" && !isNaN(yearly_revenue))       // 收益和支出是数字时开始计算
                 {
                     total_income = Number(total_income.toFixed(2)) + Number(toDecimal2((yearly_revenue / 12)) * CalculationMonths);
                     //total_income += toDecimal2((yearly_revenue / 12)) * CalculationMonths;
@@ -680,11 +697,11 @@
                 $("#Total_Cost").text(toDecimal2(total_expenditure));
 
                 var Gross_Profit = Number(total_income) - Number(total_expenditure);
-               // Math.round(num / total * 10000) / 100.00 + "%"
+                // Math.round(num / total * 10000) / 100.00 + "%"
                 if (Number(total_income) != 0) {
-                    $("#Gross_Profit").text( toDecimal2(Gross_Profit) + "(" + Math.round(Gross_Profit / total_income * 10000) / 100.00 + "%)");
+                    $("#Gross_Profit").text(toDecimal2(Gross_Profit) + "(" + Math.round(Gross_Profit / total_income * 10000) / 100.00 + "%)");
                 }
-               
+
             }
         }
 
@@ -733,6 +750,8 @@
         debugger;
         var account_id = $("#ParentComoanyNameHidden").val();
         if (account_id != "") {
+            $("#contact_id").removeAttr("disabled");
+
             $("#contact_id").html("");
             $.ajax({
                 type: "GET",
@@ -740,9 +759,15 @@
                 url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
+                    debugger;
                     if (data != "") {
                         $("#contact_id").html(data);
-                    }
+                        //if ($('#contact_id').prop('disable'))  // 更换客户可以解除联系人的只读
+                        //{
+                   
+                        //}
+                    } 
+
                 },
 
 

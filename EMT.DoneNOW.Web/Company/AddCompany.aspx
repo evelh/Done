@@ -309,7 +309,7 @@
                                 <td>
                                     <div class="clear">
                                         <label>父客户名称</label>
-                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 20px;height:20px; float: left; margin-left: -1px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 20px;height:20px; float: left; margin-left: 10px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;"></i>
                                         <input type="hidden" id="ParentComoanyNameHidden" name="parent_company_name" value="" />
                                     </div>
                                 </td>
@@ -398,42 +398,52 @@
                 <p class="informationTitle"><i></i>联系人自定义</p>
                 <div>
                     <div>
-                        <ul>
+
+                             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+
                             <% if (contact_udfList != null && contact_udfList.Count > 0)
                                 {
                                     foreach (var udf in contact_udfList)
                                     {
                                         if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
                                         {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
-                                <input type="text" name="<%=udf.id %>" class="sl_cdt" />
+                            <tr>
+                                <td>
+                                    <label><%=udf.col_name %></label>
+                                    <input type="text" name="<%=udf.id %>" class="sl_cdt" />
 
-                            </li>
+                                </td>
+                            </tr>
                             <%}
                                 else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
                                 {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
-                                <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
+                            <tr>
+                                <td>
+                                    <label><%=udf.col_name %></label>
+                                    <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
 
-                            </li>
+                                </td>
+                            </tr>
                             <%}
                                 else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
-                                {%><li>
-                                    <label><%=udf.col_name %></label>
+                                {%><tr>
+                                    <td>
+                                        <label><%=udf.col_name %></label>
 
-                                    <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
+                                        <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
 
-                                </li>
+                                    </td>
+                                </tr>
                             <%}
                                 else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
                                 {%>
-                            <li>
-                                <label><%=udf.col_name %></label>
+                            <tr>
+                                <td>
+                                    <label><%=udf.col_name %></label>
 
-                                <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
-                            </li>
+                                    <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                                </td>
+                            </tr>
                             <%}
                                 else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
                                 {%>
@@ -441,7 +451,8 @@
                             <%}
                                     }
                                 } %>
-                        </ul>
+                        </table>
+                 
 
                     </div>
                 </div>
@@ -524,7 +535,7 @@
                                 <td>
                                     <div class="clear">
                                         <label>负责人</label>
-                                        <asp:DropDownList ID="assigned_to" runat="server" Width="205px">
+                                        <asp:DropDownList ID="assigned_to" runat="server">
                                             <asp:ListItem Value="1">测试</asp:ListItem>
                                             <asp:ListItem Value="0">    </asp:ListItem>
                                         </asp:DropDownList>

@@ -112,7 +112,7 @@ ul, ul li {
 float: left;overflow: hidden;}
 .content label .red{color: red ;  vertical-align: super; position: absolute;right: -10px;top: 0;}
 .content label .num{color: #666666;font-size: 12px;  vertical-align: super; }
-.content input{float: left;width:190px;margin-left: 15px;}
+.content input{float: left;width:205px;margin-left: 15px;}
 .content select{float: left;width:204px;height:28px;line-height: 28px;margin-left: 15px;}
 .content .selectTwo{float: left;width:205px;height:28px;line-height: 28px;margin-left:15px;}
 .content .selectTwo select{float: left;width:45%;height:28px;line-height: 28px;margin: 0;}

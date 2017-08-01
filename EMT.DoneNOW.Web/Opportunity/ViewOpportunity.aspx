@@ -23,7 +23,7 @@
             var country = dic.FirstOrDefault(_ => _.Key == "country").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;//district
             var addressdistrict = dic.FirstOrDefault(_ => _.Key == "addressdistrict").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var sufix = dic.FirstOrDefault(_ => _.Key == "sufix").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-
+            //  var country = dic.FirstOrDefault(_ => _.Key == "country").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;//district
         %>
         <div class="header">
             <i>
@@ -128,7 +128,7 @@
 
                     <%} %>
                     <p class="clear"><span class="fl">毛利</span><span class="fr"> todo </span></p>
-                    <p class="clear"><span class="fl">创建日期</span><span class="fr"><%=((DateTime)opportunity.projected_close_date).ToString("dd/MM/yyyy") %>（距今<%=((DateTime)opportunity.projected_begin_date).Subtract(DateTime.Now).Days %>天）  </span></p>
+                    <p class="clear"><span class="fl">创建日期</span><span class="fr"><%=opportunity.projected_close_date!=null?((DateTime)opportunity.projected_close_date).ToString("dd/MM/yyyy"):"" %>（距今<%=opportunity.projected_begin_date!=null?((DateTime)opportunity.projected_begin_date).Subtract(DateTime.Now).Days.ToString():"" %>天）  </span></p>
                     <%if (opportunity.status_id != null)
                         {%>
                     <p class="clear"><span class="fl">状态</span><span class="fr"> <%=oppportunity_status.FirstOrDefault(_=>_.val==opportunity.status_id.ToString()).show %> </span></p>
@@ -318,7 +318,13 @@
 
 <script>
     $(function () {
-        $("a").attr('target', '_blank');
+        var targetTimes = 0;
+      
+        $("a").click(function () {
+            $(this).attr('target', '_blank' + targetTimes);
+            targetTimes = Number(targetTimes) + 1;
+        })
+      
         var hide = $("#isHide").val();
         if (hide == "hide") {
             $("#showGeneralInformation").hide();

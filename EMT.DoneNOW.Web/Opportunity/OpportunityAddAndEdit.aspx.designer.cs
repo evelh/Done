@@ -49,22 +49,13 @@ namespace EMT.DoneNOW.Web.Opportunity {
         protected global::System.Web.UI.WebControls.Button save_newAdd;
         
         /// <summary>
-        /// save_create_opportunity 控件。
+        /// save_create_note 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button save_create_opportunity;
-        
-        /// <summary>
-        /// close 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button close;
+        protected global::System.Web.UI.WebControls.Button save_create_note;
         
         /// <summary>
         /// formTemplate 控件。

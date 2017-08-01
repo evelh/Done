@@ -35,8 +35,8 @@
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
                     <asp:Button ID="Delete" runat="server" Text="删除客户" BorderStyle="None" OnClick="Delete_Click" />
                 </li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
-                    <asp:Button ID="tianjia" runat="server" Text="关闭" BorderStyle="None" /></li>
+                <li id="close"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
+                    关闭</li>
             </ul>
         </div>
         <div class="text">该客户有以下关联信息，如果你确定删除该客户，请点击【删除客户】按钮</div>
@@ -119,3 +119,9 @@
     </form>
 </body>
 </html>
+<script src="../Scripts/jquery-3.1.0.min.js"></script>
+<script>
+    $("#close").click(function () {
+        window.close();
+    })
+</script>

@@ -32,12 +32,12 @@
         <div class="header">
             <i>
                 <ul>
-                    <li>活动</li>
-                    <li>待办</li>
-                    <li>备注</li>
-                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=opportunity"  target="view_window1">商机</a></li>
+                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=activity">活动</a></li>
+                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=todo">待办</a></li>
+                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=note">备注</a></li>
+                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=opportunity">商机</a></li>
                     <li>销售订单</li>
-                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=contact"  target="view_window2">联系人</a></li>
+                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=contact">联系人</a></li>
                     <li>联系人组</li>
                     <li>工单</li>
                     <li>项目</li>
@@ -60,15 +60,15 @@
                    <%-- <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" OnClientClick="" />--%>
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
-                    <asp:Button ID="tianjia" runat="server" Text="添加" BorderStyle="None" />
+                  <%--  <asp:Button ID="tianjia" runat="server" Text="添加" BorderStyle="None" />--%>添加
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
                         <li><a href="AddCompany.aspx"  target="view_window">客户</a></li>
                         <li>工单</li>
                         <li>待办</li>
                         <li>客户备注</li>
-                        <li><a href="../Opportunity/OpportunityAddAndEdit.aspx?account_id=<%=account.id %>" target="view_window">商机</a></li>
-                        <li><a href="../Contact/AddContact.aspx?parent_id=<%=account.id %>" target="view_window">联系人</a></li>
+                        <li><a href="../Opportunity/OpportunityAddAndEdit.aspx?account_id=<%=account.id %>" >商机</a></li>
+                        <li><a href="../Contact/AddContact.aspx?parent_id=<%=account.id %>" >联系人</a></li>
                         <li><a href="AddCompany.aspx?parent_id=<%=account.id %>" target="view_window">子客户</a></li>
                         <li>配置项</li>
                         <li>附件</li>
@@ -76,7 +76,7 @@
                 </li>
 
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
-                    <asp:Button ID="Tools" runat="server" Text="工具" BorderStyle="None" />
+                    <%--<asp:Button ID="Tools" runat="server" Text="工具" BorderStyle="None" />--%>工具
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
                         <li>关闭商机向导</li>
@@ -100,39 +100,44 @@
             <input type="hidden" id="activetytype" runat="server" value=""/>
             <%-- 客户的基本信息 --%>
             <h1 id="acType"><%=account.name %>活动</h1>
-            <div class="address ">
-                <label><%=account.name %> <span>类别图标</span> <span>自助服务台图标</span></label>
-                <p><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></p>
-                <p><%=addressdistrict.First(_=>_.val.ToString()==location.province_id.ToString()).show  %></p>
-                <p><%=addressdistrict.First(_=>_.val.ToString()==location.city_id.ToString()).show  %></p>
-                <p><%=addressdistrict.First(_=>_.val.ToString()==location.district_id.ToString()).show  %></p>
+            <div class="address">
+                <label><%=account.name %> <%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
+                <p><span><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></span> 
+                <span><%=addressdistrict.First(_=>_.val.ToString()==location.province_id.ToString()).show  %></span> 
+                <span><%=addressdistrict.First(_=>_.val.ToString()==location.city_id.ToString()).show  %></span> 
+                <span><%=addressdistrict.First(_=>_.val.ToString()==location.district_id.ToString()).show  %></span> </p>
 
                 <% if (!string.IsNullOrEmpty(location.address))
                     { %>
                 
-                 <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=location.address %>"  target="view_window"><%=location.address %></a></p>
+                 <p class="clear">
+                      <span class="fl"><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=location.address %>"  target="view_window"><%=location.address %></a></span>
+               </p>
                 <%} %>
 
                  <% if (!string.IsNullOrEmpty(location.postal_code))
                     { %>
-                 <span class="fl">邮编</span>
-                 <span class="fr"><%=location.address %> </span>
-               
+                <p>
+                 <span >邮编</span>
+                 <span ><%=location.postal_code %> </span>
+               </p>
                 <%} %>
                 <% if (!string.IsNullOrEmpty(location.additional_address))
                     { %>
-                <p><%=location.additional_address %></p>
+                <p class="clear">
+                    
+                 <%=location.additional_address %> </p>
                 <%} %>
                
                 <%--<p>可以根据链接，跳转到百度或其他地图，显示该客户位置</p>--%>
 
                 <% if (account.parent_id != null)
                     { %>
-                <p><a href="ViewCompany.aspx?id=<%=account.parent_id %>"><%=companyBll.GetCompany((long)account.parent_id).name %> </a></p>
+                <p class="clear"><a href="ViewCompany.aspx?id=<%=account.parent_id %>"><%=companyBll.GetCompany((long)account.parent_id).name %> </a></p>
                 <%} %>
 
                 <p><%=account.phone %></p>
-                <p>(P) <%=location.postal_code %></p>
+                <%--<p>(P) <%=location.postal_code %></p>--%>
                 <p>(F) <%=account.fax %></p>
                 <p><%=account.web_site %></p>
             </div>
@@ -320,6 +325,13 @@
 <script src="../Scripts/common.js"></script>
 <script>
     $(function () {
+
+        var targetTimes = 0;
+        // $("a").attr('target', '_blank' + targetTimes);
+        $("a").click(function () {
+            $(this).attr('target', '_blank' + targetTimes);
+            targetTimes = Number(targetTimes) + 1;
+        })
 
         var hide = $("#isHide").val();
         if (hide == "hide") {

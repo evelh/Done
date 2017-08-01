@@ -29,6 +29,10 @@ namespace EMT.DoneNOW.Web.Company
                     {
                         //Edit.OnClientClick = $"window.open(EditCompany.aspx?id={crm_account.id});";
                         dic = new CompanyBLL().GetField();    // 获取字典
+                        if (string.IsNullOrEmpty(type))
+                        {
+                            type = "activity";
+                        }
                         if (type == "activity" || type == "note" || type == "todo")
                         {
                             isHide.Value = "show";
