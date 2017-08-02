@@ -238,7 +238,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public sys_form_tmpl_opportunity GetOpportunityTmpl(int formTmplId)
         {
-            var tmpl = _dal.GetSingle(_dal.QueryStringDeleteFlag($"SELECT * FROM sys_form_tmpl_opportunity WHERE form_tmpl_id={formTmplId}")) as sys_form_tmpl_opportunity;
+            var tmpl = _dal.FindSignleBySql<sys_form_tmpl_opportunity>(_dal.QueryStringDeleteFlag($"SELECT * FROM sys_form_tmpl_opportunity WHERE form_tmpl_id={formTmplId}"));
             return tmpl;
         }
 
@@ -250,7 +250,7 @@ namespace EMT.DoneNOW.BLL
         public List<sys_form_tmpl> GetTemplateOpportunityByUser(long userId)
         {
             // TODO: 获取用户部门，得到该部门可见的表单模板
-            string sql = $"SELECT * FROM sys_form_tmpl WHERE form_type_id={DicEnum.FORM_TMPL_TYPE.OPPORTUNITY} AND (range_type_id={DicEnum.RANG_TYPE.ALL} OR (create_user_id={userId} AND range_type_id={DicEnum.RANG_TYPE.OWN}))";   // TODO: 部门可见的模板
+            string sql = $"SELECT * FROM sys_form_tmpl WHERE form_type_id={(int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY} AND (range_type_id={(int)DicEnum.RANG_TYPE.ALL} OR (create_user_id={userId} AND range_type_id={(int)DicEnum.RANG_TYPE.OWN}))";   // TODO: 部门可见的模板
             return _dal.FindListBySql(_dal.QueryStringDeleteFlag(sql));
         }
     }

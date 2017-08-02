@@ -29,6 +29,10 @@ namespace EMT.DoneNOW.Web.Company
                     {
                         //Edit.OnClientClick = $"window.open(EditCompany.aspx?id={crm_account.id});";
                         dic = new CompanyBLL().GetField();    // 获取字典
+                        if (string.IsNullOrEmpty(type))
+                        {
+                            type = "activity";
+                        }
                         if (type == "activity" || type == "note" || type == "todo")
                         {
                             isHide.Value = "show";
@@ -38,7 +42,7 @@ namespace EMT.DoneNOW.Web.Company
                         switch (type)    // 根据传过来的不同的类型，为页面中的iframe控件选择不同的src
                         {
                             case "activity":
-                                viewCompany_iframe.Src = "../Activity/ViewActivity.aspx?id=" + crm_account.id.ToString();  // 活动
+                                //viewCompany_iframe.Src = "../Activity/ViewActivity.aspx?id=" + crm_account.id.ToString();  // 活动
                                 break;
                             case "todo":
                                 viewCompany_iframe.Src = "";  // 待办

@@ -75,7 +75,8 @@ namespace EMT.DoneNOW.Web.Company
             }
             else
             {
-                Response.Write("<script>alert('删除客户失败！');</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('删除客户失败!');</script>");
+                //Response.Write("<script>alert('删除客户失败！');</script>");
             }
         }
     }

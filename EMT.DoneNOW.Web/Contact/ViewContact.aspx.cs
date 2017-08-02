@@ -11,7 +11,7 @@ using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.Web
 {
-    public partial class ViewContact : System.Web.UI.Page
+    public partial class ViewContact : BasePage
     {
         protected crm_account account = null;
         protected crm_contact contact = null;
@@ -26,11 +26,19 @@ namespace EMT.DoneNOW.Web
         {
             try
             {
-                var account_id = Request.QueryString["account_id"];      // 客户ID
-                var contact_id = Request.QueryString["contact_id"];      // 联系人ID
-                account = companyBll.GetCompany(Convert.ToInt64(account_id));
+                // var account_id = Request.QueryString["account_id"];      // 客户ID
+                var contact_id = Request.QueryString["id"];      // 联系人ID
+                
                 contact = contactBLL.GetContact(Convert.ToInt64(contact_id));
+                if (contact != null)
+                {
+                    account = companyBll.GetCompany(contact.account_id);
+                }
                 type = Request.QueryString["type"];
+                if (string.IsNullOrEmpty(type))
+                {
+                    type = "activity";
+                }
                 if (type == "activity" || type == "note" || type == "todo")
                 {
                     isHide.Value = "show";                                    

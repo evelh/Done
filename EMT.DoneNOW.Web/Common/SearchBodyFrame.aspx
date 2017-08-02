@@ -16,22 +16,24 @@
     .searchcontent{
   OVERFLOW:   scroll;   width:   1800px;   height:   100%;
     }
-    table{width:100%;
+    table{
+        width:100%;
          
     }
-    th{
-        widht:100%;
-        display: table-cell;
-    }
-    td{
-         widht:20px;
-            display: table-cell;
-    }
+    .searchcontent table th {
+    background-color: #cbd9e4;
+    border-color: #98b4ca;
+    color: #64727a;
+    height: 28px;
+    line-height: 28px;
+    text-align:center;
+}
 </style>
 <body>
     <form id="form1">
         <div id="search_list">
-            <input type="hidden" name="page_num" <%if (queryResult != null) {%>value="<%=queryResult.page %>"<%} %> />
+            <input type="hidden" id="page_num" name="page_num" <%if (queryResult != null) {%>value="<%=queryResult.page %>"<%} %> />
+            <input type="hidden" id="page_size" name="page_size" <%if (queryResult != null) {%>value="<%=queryResult.page_size %>"<%} %> />
             <input type="hidden" id="search_id" name="search_id" <%if (queryResult != null) {%>value="<%=queryResult.query_id %>"<%} %> />
             <input type="hidden" id="order" name="order" <%if (queryResult != null) {%>value="<%=queryResult.order_by %>"<%} %> />
             <input type="hidden" id="type" name="type" value="<%=queryPage %>" />
@@ -42,13 +44,47 @@
                 <%} %>
             </div>
         </div>
-        <div class="contenttitle">
-			<ul class="clear">
-				<li onclick="AddContact()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
+        <div class="contenttitle clear">
+			<ul class="clear fl">
+				<li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
 				<li><i style="background-image: url(../Images/new.png);"></i></li>
-				<li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryPage %>', 'ColumnSelect', 'left=200,top=200,width=820,height=350', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
+				<li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryPage %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
 				<li><i style="background-image: url(../Images/new.png);"></i></li>
 			</ul>
+            <%if (queryResult != null && queryResult.count>0)
+                { %>
+            <div class="page fl">
+                <%
+                                 int indexFrom = queryResult.page_size * (queryResult.page - 1) + 1;
+                                 int indexTo = queryResult.page_size * queryResult.page;
+                                 if (indexFrom > queryResult.count)
+                                     indexFrom = queryResult.count;
+                                 if (indexTo > queryResult.count)
+                                     indexTo = queryResult.count;
+                    %>
+				<span>第<%=indexFrom %>-<%=indexTo %>&nbsp;总数&nbsp;<%=queryResult.count %></span>
+				<span><%if (queryResult.page_size == 20)
+                                 {
+                      %>20<%}
+                                 else
+                                 {
+                      %><a href="#" onclick="ChangePageSize(20)">20</a><%}
+                      %>|<%if (queryResult.page_size == 50)
+                                 {
+                      %>50<%}
+                                 else
+                                 {
+                      %><a href="#" onclick="ChangePageSize(50)">50</a><%}
+                      %>|<%if (queryResult.page_size == 100)
+                                 { %>100<%}
+                                 else
+                                 { %><a href="#" onclick="ChangePageSize(100)">100</a><%} %></span>
+				<i onclick="ChangePage(1)"><<</i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page-1 %>)"><</i>
+				<input type="text" style="width:30px;" value="<%=queryResult.page %>" />
+                <span>&nbsp;/&nbsp;<%=queryResult.page_count %></span>
+				<i onclick="ChangePage(<%=queryResult.page+1 %>)">></i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page_count %>)">>></i>
+			</div>
+            <%} %>
 		</div>
         <%if (queryResult != null) { %>
 			<div class="searchcontent" id="searchcontent">
@@ -91,7 +127,7 @@
                                 if (idPara != null)
                                     id = rslt[idPara.name].ToString();
                                 %>
-					    <tr title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
+					    <tr onclick="View(<%=id %>)" title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
                             <%foreach (var para in resultPara) { 
                                     if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
                                         || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
@@ -110,7 +146,7 @@
         <%} %>
     </form>
     <div id="menu">
-		<ul>
+		<ul style="width:220px;">
             <%foreach (var menu in contextMenu) { %>
             <li onclick="<%=menu.click_function %>"><i class="menu-i1"></i><%=menu.text %>
                 <%if (menu.submenu != null) { %>
@@ -134,10 +170,16 @@
             OpenWindow("../Company/EditCompany.aspx?id=" + entityid);
         }
         function ViewCompany() {
-            OpenWindow("../Company/ViewCompany.aspx?id=" + entityid);
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
         }
-        function AddCompany() {
+        function Add() {
             OpenWindow("../Company/AddCompany.aspx");
+        }
+        function DeleteCompany() {
+            OpenWindow("../Company/DeleteCompany.aspx?id=" + entityid);
+        }
+        function View(id) {
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + id);
         }
         <%}
         else if (queryPage.Equals("联系人查询")) {
@@ -146,14 +188,12 @@
             OpenWindow("../Contact/AddContact.aspx?id=" + entityid);
         }
         function ViewContact() {
-            OpenWindow("../Contact/ViewContact.aspx?id=" + entityid);
+            OpenWindow("../Contact/ViewContact.aspx?type=todo&id=" + entityid);
         }
-        function AddContact() {
-            OpenWindow("../Contact/AddContact.aspx");
-        } 
+        function View(id) {
+            OpenWindow("../Contact/ViewContact.aspx?type=todo&id=" + id);
+        }
         function DeleteContact() {
-
-          //  OpenWindow("../Contact/DeleteContact.aspx?id=" + entityid);
             $.ajax({
                 type: "GET",
                 url: "../Tools/ContactAjax.ashx?act=delete&id=" + entityid,             
@@ -161,6 +201,27 @@
                     alert(data);
                 }
 
+            })
+        }
+        <%}
+        else if (queryPage.Equals("商机查询")) {
+            %>
+        function EditOpp() {
+            OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + entityid);
+        }
+        function ViewOpp() {
+            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid);
+        }
+        function View(id) {
+            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + id);
+        }
+        function DeleteOpp() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/OpportunityAjax.ashx?act=delete&id=" + entityid,
+                success: function (data) {
+                    alert(data);
+                }
             })
         }
         <%

@@ -137,17 +137,18 @@
     <Content Include="Company\DeleteCompany.aspx" />
     <Content Include="Company\LocationManage.aspx" />
     <Content Include="Company\ViewCompany.aspx" />
+    <Content Include="Content\bootstrap.min2.2.2.css" />
     <Content Include="Contact\EditContact.aspx" />
     <Content Include="Contact\ViewContact.aspx" />
     <Content Include="Content\base.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\bootstrap.min3.3.4.css" />
     <Content Include="Content\index.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\multiple-select.css" />
     <Content Include="Content\multipleList.css" />
+    <Content Include="Content\NewContact.css" />
     <Content Include="Content\searchList.css" />
     <Content Include="Content\style.css" />
     <Content Include="Default.aspx" />
@@ -164,6 +165,7 @@
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
+    <Content Include="Images\at16.png" />
     <Content Include="Images\ButtonBarIcons.png" />
     <Content Include="Images\cancel.png" />
     <Content Include="Images\column-chooser.png" />
@@ -196,7 +198,12 @@
     <Content Include="Index.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Opportunity\LoseOpportunity.aspx" />
+<<<<<<< HEAD
     <Content Include="QuoteTemplate\QuoteTemplateAdd.aspx" />
+=======
+    <Content Include="Opportunity\ViewOpportunity.aspx" />
+    <Content Include="Quote\QuoteAddAndUpdate.aspx" />
+>>>>>>> ef40b231ec3110c665f96ee389afdf0e88af6f22
     <Content Include="Scripts\bootstrap.min-3.3.4.js" />
     <Content Include="Opportunity\OpportunityAddAndEdit.aspx" />
     <Content Include="Scripts\Common\Address.js" />
@@ -365,6 +372,7 @@
     <Compile Include="Contact\DeleteContact.aspx.designer.cs">
       <DependentUpon>DeleteContact.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ErrorHandlerModule.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -396,6 +404,13 @@
     <Compile Include="Opportunity\OpportunityAddAndEdit.aspx.designer.cs">
       <DependentUpon>OpportunityAddAndEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Opportunity\ViewOpportunity.aspx.cs">
+      <DependentUpon>ViewOpportunity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\ViewOpportunity.aspx.designer.cs">
+      <DependentUpon>ViewOpportunity.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\SearchConditionFrame.aspx.cs">
       <DependentUpon>SearchConditionFrame.aspx</DependentUpon>
@@ -424,6 +439,13 @@
     </Compile>
     <Compile Include="QuoteTemplate\QuoteTemplateAdd.aspx.designer.cs">
       <DependentUpon>QuoteTemplateAdd.aspx</DependentUpon>
+	</Compile>
+    <Compile Include="Quote\QuoteAddAndUpdate.aspx.cs">
+      <DependentUpon>QuoteAddAndUpdate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Quote\QuoteAddAndUpdate.aspx.designer.cs">
+      <DependentUpon>QuoteAddAndUpdate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

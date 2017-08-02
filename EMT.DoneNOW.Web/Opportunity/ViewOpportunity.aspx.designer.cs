@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web {
+namespace EMT.DoneNOW.Web.Opportunity {
     
     
-    public partial class ViewContact {
+    public partial class ViewOpportunity {
         
         /// <summary>
         /// form1 控件。
@@ -31,12 +31,12 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden isHide;
         
         /// <summary>
-        /// viewContact_iframe 控件。
+        /// viewOpportunity_iframe 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe viewContact_iframe;
+        protected global::System.Web.UI.HtmlControls.HtmlIframe viewOpportunity_iframe;
     }
 }

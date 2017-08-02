@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="../Content/base.css"/>
     <link rel="stylesheet" type="text/css" href="../Content/multipleList.css"/>
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min3.3.4.css"/>
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="../Content/style.css"/>
     <title></title>
 </head>
@@ -35,7 +35,7 @@
 		</div>
 		<div class="row"  style="width:800px;margin-left: 20px;">
 		    <div class="col-sm-5">
-		        <select name="from[]" id="multiselect" class="form-control" size="8" multiple="multiple">
+		        <select name="from[]" id="multiselect" class="form-control" size="8" style="height:320px;" multiple="multiple">
                     <%foreach (var c in allPara) {
                             if (selectedPara.Exists(_ => _.val.Equals(c.val)))  // 已选择列不显示
                                 continue;
@@ -52,7 +52,7 @@
 		        <button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
 		    </div>
 		    <div class="col-sm-5">
-		        <select name="to[]" id="multiselect_to" class="form-control" size="8" multiple="multiple">
+		        <select name="to[]" id="multiselect_to" class="form-control" size="8" style="height:320px;" multiple="multiple">
                     <%foreach (var c in selectedPara) {
                             %>
                     <option value="<%=c.val %>"><%=c.show %></option>

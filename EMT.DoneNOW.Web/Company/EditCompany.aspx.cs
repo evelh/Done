@@ -36,8 +36,8 @@ namespace EMT.DoneNOW.Web
                 account = new CompanyBLL().GetCompany(company_id);
                 location_list = new LocationBLL().GetLocationByCompany(company_id);
                // defaultLocation = new LocationBLL().GetLocationByAccountId(company_id);
-                if (!IsPostBack)
-                {
+                //if (!IsPostBack)
+                //{
                     // var company_id = Convert.ToInt64(Request.QueryString["id"]);
 
                     if (account != null)
@@ -92,7 +92,7 @@ namespace EMT.DoneNOW.Web
                         #endregion
 
                         company_name.Text = account.name;
-                        isactive.Checked = account.is_active == 1;
+                        //isactive.Checked = account.is_active == 1;
                         CompanyNumber.Text = account.no;
                         Phone.Text = account.phone;
                         AlternatePhone1.Text = account.alternate_phone1;
@@ -137,7 +137,7 @@ namespace EMT.DoneNOW.Web
                         Response.Write("<script>alert('客户不存在！');</script>");
                         Response.Redirect("index.aspx");
                     }
-                }
+                //}
             }
             catch (Exception)
             {
@@ -158,7 +158,7 @@ namespace EMT.DoneNOW.Web
         {
             var param = new CompanyUpdateDto();
             param.general_update = AssembleModel<CompanyUpdateDto.General_Update>();
-            param.general_update.is_active = (sbyte)(isactive.Checked ? 1 : 0);
+           // param.general_update.is_active = (sbyte)(isactive.Checked ? 1 : 0);
             param.general_update.is_optout_survey = (sbyte)(is_optoutSurvey.Checked ? 1 : 0);
             param.general_update.taxExempt = Tax_Exempt.Checked;
             param.additional_info = AssembleModel<CompanyUpdateDto.Additional_Info>();
@@ -188,15 +188,16 @@ namespace EMT.DoneNOW.Web
             var result = new CompanyBLL().Update(param, GetLoginUserId(),out updateLocationContact, out updateFaxPhoneContact);
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
-                Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
             }
             else if (result == ERROR_CODE.CRM_ACCOUNT_NAME_EXIST)      // 用户名称已经存在，重新填写用户名称
             {
-                Response.Write("<script>alert('客户已存在。'); </script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('客户已经存在');</script>");
             }
             else if (result == ERROR_CODE.PHONE_OCCUPY)      // 用户名称已经存在，重新填写用户名称
             {
-                Response.Write("<script>alert('电话已有人在使用，请更换电话。'); </script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('电话已有人在使用，请更换电话。');</script>");
+                //Response.Write("<script>alert('电话已有人在使用，请更换电话。'); </script>");
             }
             else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
             {
@@ -207,7 +208,7 @@ namespace EMT.DoneNOW.Web
             {
                 if(updateLocationContact==""&& updateFaxPhoneContact == "")
                 {
-                    Response.Write("<script>alert('修改客户成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
+                    Response.Write("<script>alert('修改客户成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
                 }
                 else
                 {
