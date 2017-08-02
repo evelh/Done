@@ -198,12 +198,9 @@
     <Content Include="Index.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Opportunity\LoseOpportunity.aspx" />
-<<<<<<< HEAD
     <Content Include="QuoteTemplate\QuoteTemplateAdd.aspx" />
-=======
     <Content Include="Opportunity\ViewOpportunity.aspx" />
     <Content Include="Quote\QuoteAddAndUpdate.aspx" />
->>>>>>> ef40b231ec3110c665f96ee389afdf0e88af6f22
     <Content Include="Scripts\bootstrap.min-3.3.4.js" />
     <Content Include="Opportunity\OpportunityAddAndEdit.aspx" />
     <Content Include="Scripts\Common\Address.js" />
