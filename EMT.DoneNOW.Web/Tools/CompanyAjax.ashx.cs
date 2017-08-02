@@ -9,6 +9,7 @@ using EMT.DoneNOW.DTO;
 using EMT.Tools;
 using EMT.DoneNOW.DAL;
 using System.Text;
+using EMT.DoneNOW.BLL.CRM;
 
 namespace EMT.DoneNOW.Web
 {
@@ -17,7 +18,7 @@ namespace EMT.DoneNOW.Web
     /// </summary>
     public class CompanyAjax : IHttpHandler
     {
-
+        private crm_account_dal _dal = new crm_account_dal();
         public void ProcessRequest(HttpContext context)
         {
             //context.Response.ContentType = "text/plain";
@@ -31,11 +32,23 @@ namespace EMT.DoneNOW.Web
                     break;
                 case "contact":    // 通过客户id去获取联系人列表
                     var account_id = context.Request.QueryString["account_id"];
-                    GetCompanyContact(context,account_id);
+                    GetCompanyContact(context, account_id);
                     break;
                 case "companyPhone":
                     var id = context.Request.QueryString["account_id"];
                     GetCompanyPhone(context, id);
+                    break;
+                case "opportunity":
+                    var opportunity_account_id = context.Request.QueryString["account_id"];
+                    GetOpportunity(context, opportunity_account_id);
+                    break;
+                case "property":
+                    var property_account_id = context.Request.QueryString["account_id"];
+                    var propertyName = context.Request.QueryString["property"];
+                    GetCompanyProperty(context, property_account_id, propertyName);
+                    break;
+                case "Location":
+                    var location_account_id = context.Request.QueryString["account_id"];
                     break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -47,7 +60,7 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <param name="context"></param>
         /// <param name="companyName"></param>
-        public void companyNameCheck(HttpContext context,string companyName)
+        private void companyNameCheck(HttpContext context, string companyName)
         {
             // var companyList = new crm_account_dal().GetAllCompany();
             var similar = "";
@@ -58,13 +71,13 @@ namespace EMT.DoneNOW.Web
                 return;
             }
             var compareAccountName = comBLL.CheckCompanyName(comBLL.CompanyNameDeal(companyName.Trim()));
-            if(compareAccountName != null && compareAccountName.Count > 0)
+            if (compareAccountName != null && compareAccountName.Count > 0)
             {
-               
-                compareAccountName.ForEach(_ => { similar += _.id.ToString()+","; });
+
+                compareAccountName.ForEach(_ => { similar += _.id.ToString() + ","; });
                 if (similar != "")
                 {
-                    similar = similar.Substring(0, similar.Length - 1);                   
+                    similar = similar.Substring(0, similar.Length - 1);
                 }
             }
             context.Response.Write(similar);
@@ -76,7 +89,7 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <param name="context"></param>
         /// <param name="account_id"></param>
-        public void GetCompanyContact(HttpContext context, string account_id)
+        private void GetCompanyContact(HttpContext context, string account_id)
         {
             try
             {
@@ -86,14 +99,13 @@ namespace EMT.DoneNOW.Web
                     StringBuilder contacts = new StringBuilder("<option value='0'>     </option>");
                     foreach (var contact in contactList)
                     {
-                        contacts.Append("<option value="+contact.id+"'>"+contact.name+"</option>");
+                        contacts.Append("<option value='" + contact.id + "'>" + contact.name + "</option>");
                     }
                     context.Response.Write(contacts);
                 }
             }
             catch (Exception)
             {
-
                 context.Response.End();
             }
         }
@@ -109,6 +121,58 @@ namespace EMT.DoneNOW.Web
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(company.phone));
             context.Response.End();
         }
+
+        /// <summary>
+        /// 得到该用户下的所有商机
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="account_id"></param>
+        private void GetOpportunity(HttpContext context, string account_id)
+        {
+            try
+            {
+                var opportunityList = new OpportunityBLL().GetOpportunityByCompany(Convert.ToInt64(account_id));
+                if (opportunityList != null && opportunityList.Count > 0)
+                {
+                    StringBuilder opportunitys = new StringBuilder("<option value='0'>     </option>");
+                    foreach (var opportunity in opportunityList)
+                    {
+                        opportunitys.Append("<option value='" + opportunity.id + "'>" + opportunity.name + "</option>");
+                    }
+                    context.Response.Write(opportunitys);
+                }
+            }
+            catch (Exception)
+            {
+
+                context.Response.End();
+            }
+        }
+
+        /// <summary>
+        /// 获取到客户下的某个属性的值   // todo 待测试
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="account_id"></param>
+        /// <param name="propertyName"></param>
+        private void GetCompanyProperty(HttpContext context, string account_id, string propertyName)
+        {
+            var account = new CompanyBLL().GetCompany(long.Parse(account_id));
+            if (account != null)
+            {
+                context.Response.Write(BaseDAL<Core.crm_account>.GetObjectPropertyValue(account, propertyName));
+            }
+        }
+
+        private void GetCompanyDefaultLocation(HttpContext context, string account_id)
+        {
+            var location = new LocationBLL().GetLocationByAccountId(long.Parse(account_id));
+            if (location != null)
+            {
+                context.Response.Write(new EMT.Tools.Serialize().SerializeJson(location));
+            }
+        }
+
 
         public bool IsReusable
         {

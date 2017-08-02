@@ -133,7 +133,6 @@ namespace EMT.DoneNOW.Web.Opportunity
                     if (!string.IsNullOrEmpty(contact_id))
                     {
                         contact = new ContactBLL().GetContact(Convert.ToInt64(contact_id));
-
                     }
                 }
             }
