@@ -22,7 +22,7 @@
 			    <li onclick="javascript:window.close()"><i style="background: url(../Images/cancel.png) no-repeat -48px 0;"></i>取消</li>
 		    </ul>
             <input type="hidden" id="ids" name="ids" />
-            <input type="hidden" name="type" value="<%=queryPage %>" />
+            <%--<input type="hidden" name="type" value="<%=queryPage %>" />--%>
         </form>
 	</div>
 

@@ -79,6 +79,7 @@
     <Compile Include="Dictionary\d_account_classification_dal.cs" />
     <Compile Include="Dictionary\d_country_dal.cs" />
     <Compile Include="Dictionary\d_query_para_dal.cs" />
+    <Compile Include="Dictionary\d_query_para_group_dal.cs" />
     <Compile Include="Dictionary\d_query_result_dal.cs" />
     <Compile Include="Dictionary\d_query_sql_dal.cs" />
     <Compile Include="Dictionary\d_query_type_dal.cs" />

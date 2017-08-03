@@ -29,7 +29,7 @@
                     {
                     %>
             <ul>
-				<li onclick="<%=q.query_url %>"><%=q.query_name %></li>
+				<li onclick="OpenQuery(<%=catId %>,<%=queryTypeId %>,<%=paraGroupId %>);"><%=q.query_name %></li>
 			</ul>
             <%
                 } %>

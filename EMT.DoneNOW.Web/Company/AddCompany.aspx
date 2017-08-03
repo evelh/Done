@@ -825,7 +825,7 @@
     
 
     function chooseCompany() {
-        window.open("../Common/SelectCallBack.aspx?type=查找客户&field=ParentComoanyName", 'chsCmp', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.QueryCate.CompanyCallBack %>&field=ParentComoanyName", 'chsCmp', 'left=200,top=200,width=600,height=800', false);
         //window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
         //这些要写在一行
     }

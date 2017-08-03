@@ -16,9 +16,9 @@
 					<div class="crmcont clear">
 						<dl>
 							<dt>查询</dt>
-							<dd><a href="Common/SearchFrameSet.aspx?entity=客户查询" target="PageFrame">客户管理</a></dd>
-							<dd><a href="Common/SearchFrameSet.aspx?entity=联系人查询" target="PageFrame">联系人管理</a></dd>
-                            <dd><a href="Common/SearchFrameSet.aspx?entity=商机查询" target="PageFrame">商机管理</a></dd>
+							<dd><a href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.QueryCate.Company %>" target="PageFrame">客户管理</a></dd>
+							<dd><a href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.QueryCate.Contact %>" target="PageFrame">联系人管理</a></dd>
+                            <dd><a href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.QueryCate.Opportunity %>" target="PageFrame">商机管理</a></dd>
 						</dl>
 						<dl>
 							<dt>服务台</dt>
@@ -97,7 +97,7 @@
 			</div>
 		</div>
 		<div class="cont" style="height:100%;">
-            <iframe id="PageFrame" name="PageFrame" style="width:100%;height:1200px;" src="Common/SearchFrameSet.aspx?entity=客户查询"></iframe>
+            <iframe id="PageFrame" name="PageFrame" style="width:100%;height:1200px;" src="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.QueryCate.Company %>"></iframe>
 		</div>
 	</body>
 	<script src="Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>

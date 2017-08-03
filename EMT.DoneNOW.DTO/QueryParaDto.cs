@@ -11,7 +11,8 @@ namespace EMT.DoneNOW.DTO
     /// </summary>
     public class QueryParaDto
     {
-        public string query_page_name;      // 查询类型（d_query_type:name）
+        public long query_type_id;          // 查询类型（d_query_type:id）
+        public long para_group_id;          // 查询条件分组id
         public int page_size;               // 每页大小
         public int page;                    // 页号
         public string order_by;             // 排序规则
