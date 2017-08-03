@@ -8,7 +8,8 @@ namespace EMT.DoneNOW.DTO
 {
     public class QueryResultDto
     {
-        public string query_page_name;      // 查询类型（d_query_type:name）
+        public long query_type_id;          // 查询类型（d_query_type:id）
+        public long para_group_id;          // 查询条件分组id
         public int count;                   // 查询结果总数
         public int page;                    // 页号
         public int page_size;               // 每页大小

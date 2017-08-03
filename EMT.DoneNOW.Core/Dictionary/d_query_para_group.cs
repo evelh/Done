@@ -7,10 +7,10 @@ using System.Runtime.Serialization;
 
 namespace EMT.DoneNOW.Core
 {
-    [Table("sys_query_type_user")]
+    [Table("d_query_para_group")]
     [Serializable]
     [DataContract]
-    public partial class sys_query_type_user
+    public partial class d_query_para_group
     {
 
         [Key]
@@ -19,13 +19,13 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 query_type_id { get; set; }
         [DataMember]
-        public String query_para_ids { get; set; }
+        public Int32 cate_id { get; set; }
         [DataMember]
-        public String query_result_ids { get; set; }
+        public String name { get; set; }
         [DataMember]
-        public Int64? user_id { get; set; }
+        public String description { get; set; }
         [DataMember]
-        public Int64? query_para_group_id { get; set; }
+        public Int32? sort_order { get; set; }
 
 
     }

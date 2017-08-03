@@ -14,7 +14,9 @@ namespace EMT.DoneNOW.Web
     {
         private QueryCommonBLL bll = new QueryCommonBLL();
         protected string callBackFunc;  // 回调方法
-        protected string queryPage;     // 查询页名称
+        //protected string queryPage;     // 查询页名称
+        protected long queryTypeId;     // 查询页id
+        protected long paraGroupId;     // 查询条件分组id
         protected string callBackField; // 回调字段名
         protected QueryResultDto queryResult = null;            // 查询结果数据
         protected List<QueryResultParaDto> resultPara = null;   // 查询结果列信息
@@ -23,10 +25,31 @@ namespace EMT.DoneNOW.Web
         {
             if (!string.IsNullOrEmpty(Request.QueryString["callBack"]))
                 callBackFunc = Request.QueryString["callBack"];
-            queryPage = HttpContext.Current.Request.QueryString["type"];
-            callBackField = HttpContext.Current.Request.QueryString["field"];
-            if (string.IsNullOrEmpty(queryPage) || string.IsNullOrEmpty(callBackField))
+            //queryPage = HttpContext.Current.Request.QueryString["type"];
+            int catId = 0;
+            if (!int.TryParse(Request.QueryString["cat"], out catId))
+            {
                 Response.Close();
+                return;
+            }
+
+            var group = bll.GetQueryGroup(catId);
+            if (group == null || group.Count == 0)
+            {
+                Response.Close();
+                return;
+            }
+
+            queryTypeId = group[0].query_type_id;
+            paraGroupId = group[0].id;
+
+            callBackField = HttpContext.Current.Request.QueryString["field"];
+            if (string.IsNullOrEmpty(callBackField))
+            {
+                Response.Close();
+                return;
+            }
+
             QueryData();
         }
 
@@ -36,7 +59,7 @@ namespace EMT.DoneNOW.Web
         private void QueryData()
         {
             queryParaValue.Clear();
-            resultPara = bll.GetResultParaSelect(GetLoginUserId(), queryPage);    // 获取查询结果列信息
+            resultPara = bll.GetResultParaSelect(GetLoginUserId(), paraGroupId);    // 获取查询结果列信息
             //queryResult = bll.getDataTest();return;
             var keys = HttpContext.Current.Request.QueryString;
             string order = keys["order"];   // order by 条件
@@ -60,7 +83,7 @@ namespace EMT.DoneNOW.Web
 
             if (queryResult == null)  // 不使用缓存或缓存过期
             {
-                var para = bll.GetConditionPara(GetLoginUserId(), queryPage);   // 查询条件信息
+                var para = bll.GetConditionPara(GetLoginUserId(), paraGroupId);   // 查询条件信息
                 QueryParaDto queryPara = new QueryParaDto();
                 queryPara.query_params = new List<Para>();
                 foreach (var p in para)
@@ -101,7 +124,8 @@ namespace EMT.DoneNOW.Web
                     }
                 }
 
-                queryPara.query_page_name = queryPage;
+                queryPara.query_type_id = queryTypeId;
+                queryPara.para_group_id = paraGroupId;
                 queryPara.page = page;
                 queryPara.order_by = order;
                 queryPara.page_size = 0;

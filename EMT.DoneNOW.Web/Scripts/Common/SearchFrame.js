@@ -17,6 +17,10 @@
     formbody.getElementById("form1").submit();
 });
 
+function OpenQuery(catId, typeId, groupId) {
+
+}
+
 $(".form_datetime").datetimepicker({
     language: 'zh-CN',//显示中文
     format: 'yyyy-mm-dd',//显示格式

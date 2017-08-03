@@ -398,6 +398,31 @@ namespace EMT.DoneNOW.DTO
         Logout,
     }
 
+    /// <summary>
+    /// 查询页面
+    /// </summary>
+    public enum QueryCate
+    {
+        Company = 726,          // 客户
+        Contact = 727,          // 联系人
+        CompanyCallBack = 728,  // 客户查找带回
+        Opportunity = 865,      // 商机
+    }
+
+    /// <summary>
+    /// 查询分页面
+    /// </summary>
+    public enum QueryType
+    {
+        CompanyOpportunity = 1,     // 客户管理-商机查询
+        CompanyTicket = 2,          // 客户管理-工单查询
+        CompanyConfiguration = 3,   // 客户管理-配置项查询
+        Company = 4,                // 客户管理-客户查询
+        Contact = 5,                // 联系人管理-联系人查询
+        CallBackCompany = 6,        // 查找带回客户
+        Opportunity = 7,            // 商机管理-商机查询
+    }
+
     public enum OpenWindow
     {                                         
         CompanyAdd=101,                           // 
@@ -421,4 +446,5 @@ namespace EMT.DoneNOW.DTO
 
        
     }                                         
+
 }

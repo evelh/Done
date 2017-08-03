@@ -13,65 +13,105 @@ namespace EMT.DoneNOW.Web
     public partial class SearchConditionFrame : BasePage
     {
         private QueryCommonBLL bll = new QueryCommonBLL();
-        protected string queryPage;     // 查询页名称
+        //protected string queryPage;     // 查询页名称
+        protected int catId = 0;
+        protected long queryTypeId;     // 查询页id
+        protected long paraGroupId;     // 查询条件分组id
         protected List<QueryConditionParaDto> condition;    // 根据不同页面类型获取的查询条件列表
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!int.TryParse(Request.QueryString["cat"], out catId))
+                catId = 0;
+            if (!long.TryParse(Request.QueryString["type"], out queryTypeId))
+                queryTypeId = 0;
+            if (!long.TryParse(Request.QueryString["group"], out paraGroupId))
+                paraGroupId = 0;
+            if (catId == 0 || queryTypeId == 0 || paraGroupId == 0)
+            {
+                Response.Close();
+                return;
+            }
+
             InitData();
-            condition = bll.GetConditionPara(GetLoginUserId(), DNRequest.GetQueryString("type"));
+            condition = bll.GetConditionPara(GetLoginUserId(), paraGroupId);
         }
 
         private void InitData()
         {
-            if (queryNameList==null)
+            currentQuery = new PageQueryConditionNameDto();
+            currentQuery.page_query = new List<PageQueryConditionNameDto.PageQuery>();
+
+            switch (catId)
             {
-                queryNameList = new List<PageQueryConditionNameDto>();
-                PageQueryConditionNameDto query;
-
-                query = new PageQueryConditionNameDto();
-                query.page_name = "客户查询";
-                query.page_query = new List<PageQueryConditionNameDto.PageQuery>() {
-                    new PageQueryConditionNameDto.PageQuery { query_name="查询", query_url= "Common/SearchFrameSet.aspx?entity=客户查询" }
-                };
-                queryNameList.Add(query);
-
-                query = new PageQueryConditionNameDto();
-                query.page_name = "联系人查询";
-                query.page_query = new List<PageQueryConditionNameDto.PageQuery>() {
-                    new PageQueryConditionNameDto.PageQuery { query_name = "查询", query_url = "Common/SearchFrameSet.aspx?entity=联系人查询" }
-                };
-                queryNameList.Add(query);
-
-                query = new PageQueryConditionNameDto();
-                query.page_name = "商机查询";
-                query.page_query = new List<PageQueryConditionNameDto.PageQuery>() {
-                    new PageQueryConditionNameDto.PageQuery { query_name = "查询", query_url = "Common/SearchFrameSet.aspx?entity=商机查询" }
-                };
-                queryNameList.Add(query);
+                case (int)QueryCate.Company:
+                    currentQuery.page_name = "客户查询";
+                    break;
+                case (int)QueryCate.Contact:
+                    currentQuery.page_name = "联系人查询";
+                    break;
+                case (int)QueryCate.Opportunity:
+                    currentQuery.page_name = "商机查询";
+                    break;
+                default:
+                    currentQuery.page_name = "客户查询";
+                    break;
             }
 
-            string name = DNRequest.GetQueryString("type");
-            foreach (var page in queryNameList)
+            var info = new QueryCommonBLL().GetQueryGroup(catId);
+            foreach (var v in info)
             {
-                if (page.page_name.Equals(name))
-                {
-                    currentQuery = page;
-                    queryPage = page.page_name;
-                }
-                /*
-                foreach (var q in page.page_query)
-                {
-                    if (q.query_name.Equals(name))
-                    {
-                        currentQuery = page;
-                        queryPage = page.page_name;
-                    }
-                }
-                */
+                currentQuery.page_query.Add(new PageQueryConditionNameDto.PageQuery { query_name = v.name, typeId = v.query_type_id, groupId = v.id });
             }
+
+            //if (queryNameList==null)
+            //{
+            //    queryNameList = new List<PageQueryConditionNameDto>();
+            //    PageQueryConditionNameDto query;
+
+            //    query = new PageQueryConditionNameDto();
+            //    query.page_name = "客户查询";
+            //    query.page_query = new List<PageQueryConditionNameDto.PageQuery>() {
+            //        new PageQueryConditionNameDto.PageQuery { query_name="查询", query_url= "Common/SearchFrameSet.aspx?entity=客户查询" }
+            //    };
+            //    queryNameList.Add(query);
+
+            //    query = new PageQueryConditionNameDto();
+            //    query.page_name = "联系人查询";
+            //    query.page_query = new List<PageQueryConditionNameDto.PageQuery>() {
+            //        new PageQueryConditionNameDto.PageQuery { query_name = "查询", query_url = "Common/SearchFrameSet.aspx?entity=联系人查询" }
+            //    };
+            //    queryNameList.Add(query);
+
+            //    query = new PageQueryConditionNameDto();
+            //    query.page_name = "商机查询";
+            //    query.page_query = new List<PageQueryConditionNameDto.PageQuery>() {
+            //        new PageQueryConditionNameDto.PageQuery { query_name = "查询", query_url = "Common/SearchFrameSet.aspx?entity=商机查询" }
+            //    };
+            //    queryNameList.Add(query);
+            //}
+
+            //string name = DNRequest.GetQueryString("type");
+            //foreach (var page in queryNameList)
+            //{
+            //    if (page.page_name.Equals(name))
+            //    {
+            //        currentQuery = page;
+            //        queryPage = page.page_name;
+            //    }
+            //    /*
+            //    foreach (var q in page.page_query)
+            //    {
+            //        if (q.query_name.Equals(name))
+            //        {
+            //            currentQuery = page;
+            //            queryPage = page.page_name;
+            //        }
+            //    }
+            //    */
+            //}
         }
 
-        private static List<PageQueryConditionNameDto> queryNameList;     // 所有查询页的标题、链接等信息
+        //private static List<PageQueryConditionNameDto> queryNameList;     // 所有查询页的标题、链接等信息
         protected PageQueryConditionNameDto currentQuery;   // 当前查询页的标题、链接等信息
     }
 }

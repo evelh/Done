@@ -36,7 +36,9 @@
             <input type="hidden" id="page_size" name="page_size" <%if (queryResult != null) {%>value="<%=queryResult.page_size %>"<%} %> />
             <input type="hidden" id="search_id" name="search_id" <%if (queryResult != null) {%>value="<%=queryResult.query_id %>"<%} %> />
             <input type="hidden" id="order" name="order" <%if (queryResult != null) {%>value="<%=queryResult.order_by %>"<%} %> />
-            <input type="hidden" id="type" name="type" value="<%=queryPage %>" />
+            <input type="hidden" id="cat" name="cat" value="<%=catId %>" />
+            <input type="hidden" id="type" name="type" value="<%=queryTypeId %>" />
+            <input type="hidden" id="group" name="group" value="<%=paraGroupId %>" />
             <div id="conditions">
                 <%foreach (var para in queryParaValue)
                     { %>
@@ -48,7 +50,7 @@
 			<ul class="clear fl">
 				<li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
 				<li><i style="background-image: url(../Images/new.png);"></i></li>
-				<li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryPage %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
+				<li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
 				<li><i style="background-image: url(../Images/new.png);"></i></li>
 			</ul>
             <%if (queryResult != null && queryResult.count>0)
@@ -164,7 +166,7 @@
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
-        <% if (queryPage.Equals("客户查询"))
+        <% if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Company)
         { %>
         function EditCompany() {
             OpenWindow("../Company/EditCompany.aspx?id=" + entityid);
@@ -182,7 +184,7 @@
             OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + id);
         }
         <%}
-        else if (queryPage.Equals("联系人查询")) {
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contact) {
             %>
         function EditContact() {
             OpenWindow("../Contact/AddContact.aspx?id=" + entityid);
@@ -204,7 +206,7 @@
             })
         }
         <%}
-        else if (queryPage.Equals("商机查询")) {
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Opportunity) {
             %>
         function EditOpp() {
             OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + entityid);

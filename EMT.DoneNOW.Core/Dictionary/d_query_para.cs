@@ -34,6 +34,8 @@ namespace EMT.DoneNOW.Core
         public String ref_url { get; set; }
         [DataMember]
         public SByte is_visible { get; set; }
+        [DataMember]
+        public Int64 query_para_group_id { get; set; }
 
 
     }
