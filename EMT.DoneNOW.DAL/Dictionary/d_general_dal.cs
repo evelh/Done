@@ -25,5 +25,26 @@ namespace EMT.DoneNOW.DAL
 
             return list;
         }
+
+        public List<DictionaryEntryDto> GetDictionaryByCode(d_general_table tableInfo)
+        {
+            string where = $"SELECT * FROM d_general WHERE general_table_id='{tableInfo.id}'";
+            List<d_general> all = FindListBySql(QueryStringDeleteFlag(where));
+            List<DictionaryEntryDto> list = new List<DictionaryEntryDto>();
+            if (all == null)
+                return list;
+            foreach (var entry in all)
+            {
+                //if (entry.is_default == 1)
+                //    list.Add(new DictionaryEntryDto(entry.code.ToString(), entry.name, 1));
+                //else
+                    list.Add(new DictionaryEntryDto(entry.code, entry.name));
+            }
+
+            return list;
+        }
+
+
+
     }
 }

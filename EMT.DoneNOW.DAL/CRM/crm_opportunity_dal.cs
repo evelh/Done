@@ -51,7 +51,27 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<crm_opportunity>($"SELECT * from crm_opportunity where id = {opportunity_id}  AND delete_time = 0");
         }
-       
+
+        /// <summary>
+        /// 获取到该客户下所有有报价的商机
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <returns></returns>
+        public List<crm_opportunity> GetHasQuoteOppo(long account_id)
+        {
+            return FindListBySql<crm_opportunity>($"SELECT o.* FROM crm_opportunity o,crm_quote q  WHERE o.account_id={account_id} and o.delete_time=0 and q.delete_time = 0 and q.opportunity_id=o.id");
+        }
+
+        /// <summary>
+        /// 获取到该客户下所有没有报价的商机
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <returns></returns>
+        public List<crm_opportunity> GetNoQuoteOppo(long account_id)
+        {
+            return FindListBySql<crm_opportunity>($"SELECT o.* FROM crm_opportunity o,crm_quote q  WHERE o.account_id={account_id} and o.delete_time=0 and q.delete_time = 0 and q.opportunity_id<>o.id");
+        }
+
     }
 
 }

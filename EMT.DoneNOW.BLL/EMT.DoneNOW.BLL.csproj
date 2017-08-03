@@ -55,6 +55,7 @@
     <Compile Include="CRM\LocationBLL.cs" />
     <Compile Include="CRM\OpportunityBLL.cs" />
     <Compile Include="CRM\QuoteBLL.cs" />
+    <Compile Include="CRM\QuoteItemBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SYS\DistrictBLL.cs" />
     <Compile Include="SYS\FormTemplateBLL.cs" />

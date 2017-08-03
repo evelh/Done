@@ -199,6 +199,7 @@
     <Content Include="Login.aspx" />
     <Content Include="Opportunity\LoseOpportunity.aspx" />
     <Content Include="Opportunity\ViewOpportunity.aspx" />
+    <Content Include="QuoteItem\QuoteItemAddAndUpdate.aspx" />
     <Content Include="Quote\QuoteAddAndUpdate.aspx" />
     <Content Include="Scripts\bootstrap.min-3.3.4.js" />
     <Content Include="Opportunity\OpportunityAddAndEdit.aspx" />
@@ -429,6 +430,13 @@
     <Compile Include="Common\SelectCallBack.aspx.designer.cs">
       <DependentUpon>SelectCallBack.aspx</DependentUpon>
     </Compile>
+    <Compile Include="QuoteItem\QuoteItemAddAndUpdate.aspx.cs">
+      <DependentUpon>QuoteItemAddAndUpdate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteItem\QuoteItemAddAndUpdate.aspx.designer.cs">
+      <DependentUpon>QuoteItemAddAndUpdate.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Quote\QuoteAddAndUpdate.aspx.cs">
       <DependentUpon>QuoteAddAndUpdate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -465,6 +473,9 @@
     <Compile Include="Tools\OpportunityAjax.ashx.cs">
       <DependentUpon>OpportunityAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\QuoteAjax.ashx.cs">
+      <DependentUpon>QuoteAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -484,6 +495,7 @@
     <Content Include="Tools\CompanyAjax.ashx" />
     <Content Include="Tools\ContactAjax.ashx" />
     <Content Include="Tools\OpportunityAjax.ashx" />
+    <Content Include="Tools\QuoteAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

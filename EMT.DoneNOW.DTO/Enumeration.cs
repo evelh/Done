@@ -31,7 +31,10 @@ namespace EMT.DoneNOW.DTO
         PAYMENT_TERM=29,                         // 报价：付款期限           
         PAYMENT_TYPE=30,                         // 报价：付款类型
         PAYMENT_SHIP_TYPE=31,                    // 报价：配送类型
-        NAME_SUFFIX = 48,
+        QUOTE_ITEM_TYPE=42,                      // 报价项：类型
+        QUOTE_ITEM_PERIOD_TYPE=43,               // 报价项：付费周期类型
+        QUOTE_ITEM_TAX_CATE=44,                  // 报价项：税收种类
+        NAME_SUFFIX = 48,                        
     }
 
     /// <summary>
@@ -255,6 +258,40 @@ namespace EMT.DoneNOW.DTO
             SINGLE_LINE = 548,      // 单行
             MUILTI_LINE = 549,      // 多行
         }
+        /// <summary>
+        /// 报价项：类型-42
+        /// </summary>
+        public enum QUOTE_ITEM_TYPE
+        {
+            PRODUCT=600,                 // 产品
+            DEGRESSION=601,              // 成本
+            WORKING_HOURS=602,           // 工时
+            COST=603,                    // 费用
+            DISTRIBUTION_EXPENSES=604,   // 配送费用
+            DISCOUNT=605,                // 折扣   
+            SERVICE=606,                 // 服务
+            SERVICE_PACK=607,            // 服务包
+            START_COST=608,              // 初始费用
+
+        }
+        /// <summary>
+        /// 报价项：付费周期类型-43
+        /// </summary>
+        public enum QUOTE_ITEM_PERIOD_TYPE
+        {
+            ONE_TIME=609,    // 一次性收费
+            MONTH=610,       // 按月收费
+            QUARTER=611,     // 按季度收费
+            YEAR=612,        // 按年收费
+
+        }
+        /// <summary>
+        /// 报价项：税收种类-44
+        /// </summary>
+        public enum QUOTE_ITEM_TAX_CATE
+        {
+            TAXABLE=599,       // 应纳税
+        }
 
         /// <summary>
         /// user状态-46
@@ -265,6 +302,10 @@ namespace EMT.DoneNOW.DTO
             FREEZE = 617,     // 冻结
             EXPIRED = 618,    // 过期
         }
+
+
+
+
 
         /// <summary>
         /// 查询页面分类-65
@@ -317,6 +358,7 @@ namespace EMT.DoneNOW.DTO
             NOTIFY = 769,                               // 通知
             ACTIVITY = 760,                             // 活动   // todo 数据库添加
             QUOTE = 761,                                // 报价   todo 数据库添加
+            QUOTE_ITEM=762,                             // 报价项   todo 数据库添加
         }
 
         /// <summary>

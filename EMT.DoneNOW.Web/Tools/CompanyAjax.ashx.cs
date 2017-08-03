@@ -10,6 +10,7 @@ using EMT.Tools;
 using EMT.DoneNOW.DAL;
 using System.Text;
 using EMT.DoneNOW.BLL.CRM;
+using EMT.DoneNOW.Core;
 
 namespace EMT.DoneNOW.Web
 {
@@ -49,6 +50,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case "Location":
                     var location_account_id = context.Request.QueryString["account_id"];
+                    GetCompanyDefaultLocation(context, location_account_id);
                     break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -131,16 +133,33 @@ namespace EMT.DoneNOW.Web
         {
             try
             {
-                var opportunityList = new OpportunityBLL().GetOpportunityByCompany(Convert.ToInt64(account_id));
-                if (opportunityList != null && opportunityList.Count > 0)
+               
+                StringBuilder opportunitys = new StringBuilder();
+
+
+                var NoQuoteOpportinotyList = new crm_opportunity_dal().GetNoQuoteOppo(Convert.ToInt64(account_id));
+                if (NoQuoteOpportinotyList != null && NoQuoteOpportinotyList.Count > 0)
                 {
-                    StringBuilder opportunitys = new StringBuilder("<option value='0'>     </option>");
-                    foreach (var opportunity in opportunityList)
+                    opportunitys.Append("<option value='0'>---无报价商机---</option>");
+                    foreach (var opportunity in NoQuoteOpportinotyList)
                     {
                         opportunitys.Append("<option value='" + opportunity.id + "'>" + opportunity.name + "</option>");
                     }
-                    context.Response.Write(opportunitys);
                 }
+
+                var HasQuoteOpportinotyList = new crm_opportunity_dal().GetHasQuoteOppo(Convert.ToInt64(account_id));
+                if (HasQuoteOpportinotyList != null && HasQuoteOpportinotyList.Count > 0)
+                {
+                    opportunitys.Append("<option value='0'>---有报价商机---</option>");
+                    foreach (var opportunity in HasQuoteOpportinotyList)
+                    {
+                        opportunitys.Append("<option value='" + opportunity.id + "'>" + opportunity.name + "</option>");
+
+                    }
+                }
+                          
+                context.Response.Write(opportunitys);
+               
             }
             catch (Exception)
             {

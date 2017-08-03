@@ -101,7 +101,7 @@ namespace EMT.DoneNOW.Web.Quote
                 switch (result)
                 {
                     case ERROR_CODE.SUCCESS:
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改商机成功！');window.close();</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价成功！');window.close();</script>");
                         break;
                     case ERROR_CODE.ERROR:
                         break;
@@ -118,14 +118,30 @@ namespace EMT.DoneNOW.Web.Quote
             }
             else
             {
-
-            }
-           
-
-         
+                var result = new QuoteBLL().Update(quote, GetLoginUserId());
+                switch (result)
+                {
+                    case ERROR_CODE.SUCCESS:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改报价成功！');window.close();</script>");
+                        break;
+                    case ERROR_CODE.ERROR:
+                        break;
+                    case ERROR_CODE.PARAMS_ERROR:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写！');</script>");
+                        break;
+                    case ERROR_CODE.USER_NOT_FIND:
+                        Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                        Response.Redirect("Login.aspx");
+                        break;
+                    default:
+                        break;
+                }
+            }                    
         }
 
+        protected void save_open_quote_Click(object sender, EventArgs e)
+        {
 
-
+        }
     }
 }

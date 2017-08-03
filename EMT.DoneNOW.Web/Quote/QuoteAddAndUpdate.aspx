@@ -21,7 +21,7 @@
                     <asp:Button ID="save_close" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="save_close_Click" />
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
-                    <asp:Button ID="save_open_quote" runat="server" Text="保存并打开报价" BorderStyle="None" />
+                    <asp:Button ID="save_open_quote" runat="server" Text="保存并打开报价" BorderStyle="None" OnClick="save_open_quote_Click" />
                 </li>
                 <li id="close">关闭</li>
             </ul>
@@ -46,7 +46,9 @@
                                 <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd?"":companyBLL.GetCompany(quote.account_id).name %>" />
                                 <i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
                                 <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
-                                <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":quote.account_id.ToString() %>" />
+                                <%--<input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":quote.account_id.ToString() %>" />--%>
+                                <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="157" />
+
                             </div>
                         </td>
                         <td></td>
@@ -125,7 +127,7 @@
                                 <input type="date" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd)&&(quote.projected_close_date!=null)?quote.projected_close_date.ToString("dd/MM/yyyy"):"" %>" />
                             </div>
                             <div style="margin-top: -30px; display: -webkit-box;">
-                                <a href="#">今天</a>|<a href="#">7</a>|<a href="#">30</a>|<a href="#">60</a>
+                                <a href="#" onclick="AddTime(0)">今天</a>|<a href="#"  onclick="AddTime(7)">7</a>|<a href="#"  onclick="AddTime(30)">30</a>|<a href="#"  onclick="AddTime(60)">60</a>
                             </div>
                         </td>
                     </tr>
@@ -153,6 +155,7 @@
                                 <label>项目提案名称</label>
                                 <select name="project_id" id="project_id">
                                 </select>
+                                   <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                             </div>
                         </td>
                     </tr>
@@ -169,7 +172,7 @@
                         <td>
                             <div class="clear">
                                 <label>激活的电子报价单</label>
-                                <input type="checkbox" name="is_active" id="is_active" checked="<%=(!isAdd)&&(quote.is_active==1)?"checked":"" %>" />
+                                <input type="checkbox" name="is_active" id="is_active"  data-val="1" value="1" checked="<%=(!isAdd)&&(quote.is_active==1)?"checked":"" %>" />
                             </div>
                         </td>
                     </tr>
@@ -186,7 +189,8 @@
                     <tr>
                         <td>
                             <div class="clear" style="text-align: left;">
-                                <span style="margin-left: 30px;">税的显示方式在<a href="#">报价模板</a>中设置</span>
+                                <label>  </label>
+                                <span style="margin-left:10px;">税的显示方式在<a href="#">报价模板</a>中设置</span>
                             </div>
                         </td>
                     </tr>
@@ -267,6 +271,7 @@
                             <td>
                                 <div class="clear">
                                     <label>省份</label>
+                                     <input id="province_idInit" value='5' type="hidden" runat="server" />
                                     <select name="province_id" id="province_id">
                                     </select>
                                 </div>
@@ -276,6 +281,7 @@
                             <td>
                                 <div class="clear">
                                     <label>城市</label>
+                                    <input id="city_idInit" value='' type="hidden" runat="server" />
                                     <select name="city_id" id="city_id">
                                     </select>
                                 </div>
@@ -285,6 +291,7 @@
                             <td>
                                 <div class="clear">
                                     <label>区县</label>
+                                    <input id="district_idInit" value='' type="hidden" runat="server" />
                                     <select name="district_id" id="district_id">
                                     </select>
                                 </div>
@@ -320,7 +327,7 @@
                     <table>
                         <tr>
                             <td>账单地址  
-                                <input type="checkbox" name="BillLocation" />
+                                <input type="checkbox" name="BillLocation" id="BillLocation" />
                                 和销售地址相同</td>
                         </tr>
                         <tr>
@@ -450,7 +457,9 @@
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
 <script src="../Scripts/NewContact.js"></script>
 <script>
+
     $(function () {
+        InitArea();  // 地址下拉框
         GetDataBySelectCompany();  // 用于修改的时候赋值
 
         $("#opportunity_id").change(function () {
@@ -474,7 +483,7 @@
 
         $("#save_close").click(function () {
             if (!SubmitCheck()) {
-                return false;
+              //  return false;
             }
             return true;
         })
@@ -485,6 +494,20 @@
             }
             return true;
         })
+
+        $("#BillLocation").click(function () {
+            if ($(this).is(":checked")) {
+
+                // todo 
+                $("#bill_province_id").val($("#province_id").val());
+                $("#bill_city_id").val($("#city_id").val());
+                $("#bill_district_id").val($("#district_id").val());
+                $("#bill_address").val($("#address").val());
+                $("#bill_address2").val($("#address2").val());
+                $("#bill_postcode").val($("#postcode").val());
+            }
+        })
+ 
     })
 
     // 根据查找带回的客户，为页面上的基本信息赋值
@@ -497,11 +520,12 @@
             // 根据客户ID 获取到客户信息，为税区赋值  ✔                            待测试
             // 商机下拉框赋值之后，根据商机的预计完成时间为预计完成时间赋值   ✔      待测试
             // todo 客户的报价模板？？？？
-            // 为销售地址信息赋值
+            // 为销售地址信息赋值                                         ✔      待测试
+            // 为项目提案赋值                       
             $("#contact_id").html("");
             $.ajax({
                 type: "GET",
-                //async: false,
+                async: false,
                 url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
@@ -514,7 +538,7 @@
             $("#opportunity_id").html("");
             $.ajax({
                 type: "GET",
-                //async: false,
+                async: false,
                 url: "../Tools/CompanyAjax.ashx?act=opportunity&account_id=" + account_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
@@ -528,7 +552,7 @@
             // 根据客户选择税区
             $.ajax({
                 type: "GET",
-                //async: false,
+                async: false,
                 url: "../Tools/CompanyAjax.ashx?act=property&property=tax_region_id&account_id=" + account_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
@@ -543,14 +567,25 @@
             // 获取到用户的默认地址并赋值给界面
             $.ajax({
                 type: "GET",
-                //async: false,
+                async: false,
+                dataType: "json",   // 返回json数据需要这样接收下
                 url: "../Tools/CompanyAjax.ashx?act=Location&account_id=" + account_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
+                   
+                    
                     if (data != "") {
-                        $("#locationID").val(data.id);
+
                         $("#province_id").val(data.province_id);
+                        $("#province_idInit").val(data.province_id);
+                        debugger;
+
+                        $("#city_idInit").val(data.city_id);
                         $("#city_id").val(data.city_id);
+                    
+                        $("#locationID").val(data.id);
+
+                        $("#district_idInit").val(data.district_id);
                         $("#district_id").val(data.district_id);
                         $("#address").val(data.address);
                         $("#address2").val(data.address2);
@@ -562,6 +597,21 @@
         }
     }
 
+    function AddTime(time)
+    {
+        var date = new Date();
+        date.setDate( Number(date.getDate())+ Number(time));
+
+        var newDate = date.getFullYear() + '-' + returnNumber((date.getMonth() + 1)) + '-' + returnNumber(date.getDate());
+        $("#projected_close_date").val(newDate);
+       // $("#projected_close_date").datebox('setValue', newDate);       
+    }
+    function returnNumber(param) {
+        if (param < 10) {
+            return "0" + param
+        }
+        return param;
+    }
 
 
     function chooseCompany() {

@@ -13,13 +13,13 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link href="../Content/index.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
-     <%--<link rel="stylesheet" type="text/css" href="../Content/multiple-select.css"/>--%>
+    <%--<link rel="stylesheet" type="text/css" href="../Content/multiple-select.css"/>--%>
 </head>
 <body>
     <form id="form1" runat="server">
-      
+
         <div class="header"><%=isAdd?"添加商机":"修改商机" %></div>
-      
+
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
@@ -33,7 +33,7 @@
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
                     <asp:Button ID="save_create_note" runat="server" Text="保存并新增备注" BorderStyle="None" OnClick="save_create_note_Click" /></li>
                 <li id="close"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
-                   关闭</li>
+                    关闭</li>
             </ul>
         </div>
 
@@ -43,11 +43,14 @@
                 <li id="">信息</li>
                 <li id="">自定义信息</li>
                 <li id="">通知</li>
-                <li style="float:right;"> <div style="float:right;"><asp:DropDownList ID="formTemplate" runat="server"></asp:DropDownList></div> </li>
+                <li style="float: right;">
+                    <div style="float: right;">
+                        <asp:DropDownList ID="formTemplate" runat="server"></asp:DropDownList></div>
+                </li>
             </ul>
-  
+
         </div>
-                
+
         <div class="content clear">
             <div class="information clear">
                 <p class="informationTitle"><i></i>基本信息</p>
@@ -65,23 +68,22 @@
                             <td>
                                 <div class="clear">
 
-                                    <%if (isAdd&&contact != null)
+                                    <%if (isAdd && contact != null)
                                         {
                                             var company = conpamyBll.GetCompany(contact.account_id);
-                                            %>
-                                      <label>客户名称</label>
+                                    %>
+                                    <label>客户名称</label>
                                     <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=company.name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
                                     <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                     <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=company.id %>" />
                                     <%}
-                                    else
-                                    { %>
-                                        <label>客户名称</label>
+                                        else
+                                        { %>
+                                    <label>客户名称</label>
                                     <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd?"":conpamyBll.GetCompany(opportunity.account_id).name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
                                     <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                     <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":opportunity.account_id.ToString() %>" />
                                     <%} %>
-                                
                                 </div>
                             </td>
 
@@ -89,7 +91,7 @@
                                 <div class="clear">
                                     <label>计划开始日期</label>
                                     <%--<input type="datetime-local" name="projected_begin_date" id="projected_begin_date" />--%>
-                                    
+
                                     <%--<input type="text" class="form_datetime sl_cdt" name="projected_begin_date" id="projected_begin_date" value="<%=(!isAdd)&&(opportunity.projected_begin_date!=null)?opportunity.projected_begin_date.ToString():"" %>"/>--%>
                                 </div>
                             </td>
@@ -100,16 +102,16 @@
                                     <label>联系人</label>
                                     <%if (contact != null)
                                         { %>
-                                      <select name="contact_id" id="contact_id" disabled="disabled">
-                                          <option value="<%=contact.id %>" selected="selected"><%=contact.name %></option>
+                                    <select name="contact_id" id="contact_id" disabled="disabled">
+                                        <option value="<%=contact.id %>" selected="selected"><%=contact.name %></option>
                                     </select>
                                     <%}
                                         else
                                         { %>
-                                      <select name="contact_id" id="contact_id">
+                                    <select name="contact_id" id="contact_id">
                                     </select>
                                     <%} %>
-                                  
+
                                     <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 </div>
                             </td>
@@ -275,7 +277,7 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <label>计算总额</label> 
+                                    <label>计算总额</label>
                                     <input type="text" name="CalculationMonths" id="number_months" value="<%=(!isAdd)&&(opportunity.number_months!=null)?opportunity.number_months:10 %>" /><span>月</span>
                                 </div>
                             </td>
@@ -285,7 +287,7 @@
                                 <div class="clear">
                                     <label>总收益</label>
                                     <span name="Total_Revenue" id="Total_Revenue"></span>
-                                   
+
                                 </div>
                             </td>
                             <td>
@@ -318,7 +320,7 @@
                         <asp:ListItem Value="Months">月</asp:ListItem>
                         <asp:ListItem Value="Years">年</asp:ListItem>
                     </asp:DropDownList>
-                <%--    <select name="spread_unit" id="spread_unit">
+                    <%--    <select name="spread_unit" id="spread_unit">
                         <option value="Day">日</option>
                         <option value="Months" selected>月</option>
                         <option value="Years">年</option>
@@ -334,51 +336,49 @@
                 %>
                 <div>
                     <table border="none" cellspacing="" cellpadding="" style="width: 600px; margin-left: 40px;">
-
-                        <%foreach (var item in advanced_field)
-                            {%>
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <label><%=item.show %><span class="red">*</span></label>
-                                    <%switch (item.val)
-                                        {
-                                            case "78":
-                                    %>
-                                    <input type="text" name="ext1" id="ext1" value="<%=(!isAdd)&&opportunity.ext1!=null?opportunity.ext1.ToString():"" %>" />
-                                    <%
-                                            break;
-                                        case "79":
-                                    %>
-                                    <input type="text" name="ext2" id="ext2" value="<%=(!isAdd)&&opportunity.ext2!=null?opportunity.ext2.ToString():"" %>" />
-                                    <%
-                                            break;
-                                        case "80":
-                                    %>
-                                    <input type="text" name="ext3" id="ext3" value="<%=(!isAdd)&&opportunity.ext3!=null?opportunity.ext3.ToString():"" %>" />
-                                    <%
-                                            break;
-                                        case "81":
-                                    %>
-                                    <input type="text" name="ext4" id="ext4" value="<%=(!isAdd)&&opportunity.ext4!=null?opportunity.ext4.ToString():"" %>" />
-                                    <%
-                                            break;
-                                        case "82":
-                                    %>
-                                    <input type="text" name="ext5" id="ext5" value="<%=(!isAdd)&&opportunity.ext5!=null?opportunity.ext5.ToString():"" %>" />
-                                    <%
-                                            break;
-                                        default:
-                                    %>
-                                    <input type="text" name="" id="" value="" />
-                                    <%
-                                            break;
-                                        }%>
+                                      <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext1").show %><span class="red">*</span></label>
+                                           <input type="text" name="ext1" id="ext1" value="<%=(!isAdd)&&opportunity.ext1!=null?opportunity.ext1.ToString():"" %>" />
                                 </div>
                             </td>
                         </tr>
-                        <%  
-                            } %>
+                            <tr>
+                            <td>
+                                <div class="clear">
+                                      <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext2").show %><span class="red">*</span></label>
+                                           <input type="text" name="ext2" id="ext2" value="<%=(!isAdd)&&opportunity.ext2!=null?opportunity.ext2.ToString():"" %>" />
+                                </div>
+                            </td>
+                        </tr>
+                            <tr>
+                            <td>
+                                <div class="clear">
+                                      <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext3").show %><span class="red">*</span></label>
+                                           <input type="text" name="ext3" id="ext3ext3" value="<%=(!isAdd)&&opportunity.ext3!=null?opportunity.ext3.ToString():"" %>" />
+                                </div>
+                            </td>
+                        </tr>
+                            <tr>
+                            <td>
+                                <div class="clear">
+                                      <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext4").show %><span class="red">*</span></label>
+                                           <input type="text" name="ext4" id="ext4" value="<%=(!isAdd)&&opportunity.ext4!=null?opportunity.ext4.ToString():"" %>" />
+                                </div>
+                            </td>
+                        </tr>
+                            <tr>
+                            <td>
+                                <div class="clear">
+                                      <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext5").show %><span class="red">*</span></label>
+                                           <input type="text" name="ext5" id="ext5ext5" value="<%=(!isAdd)&&opportunity.ext5!=null?opportunity.ext5.ToString():"" %>" />
+                                </div>
+                            </td>
+                        </tr>
+
+
+
                     </table>
                 </div>
                 <%} %>
@@ -534,11 +534,11 @@
             </div>
             <div class="clear">
                 <label>主题</label>
-                <input type="text" name="subject" id="subject" value ="" />
+                <input type="text" name="subject" id="subject" value="" />
             </div>
             <div class="clear">
                 <label>附加信息</label>
-                <input type="text" name="body_text" id="body_text" value=""/>
+                <input type="text" name="body_text" id="body_text" value="" />
             </div>
         </div>
     </form>
@@ -756,11 +756,11 @@
         return true;
     }
     function GetContactList() {
-    
+
         var account_id = $("#ParentComoanyNameHidden").val();
         if (account_id != "") {
             $("#contact_id").removeAttr("disabled");
-     
+
             $("#contact_id").html("");
             $.ajax({
                 type: "GET",
@@ -768,9 +768,9 @@
                 url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
-                 
+
                     if (data != "") {
-                        $("#contact_id").html(data);              
+                        $("#contact_id").html(data);
                     }
 
                 },
