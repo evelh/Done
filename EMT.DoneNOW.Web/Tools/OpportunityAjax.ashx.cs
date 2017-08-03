@@ -29,6 +29,11 @@ namespace EMT.DoneNOW.Web
                         var formTemp_id = context.Request.QueryString["id"];
                         GetFormTemplate(context,Convert.ToInt64(formTemp_id));
                         break;
+                    case "property":
+                        var id = context.Request.QueryString["id"];
+                        var propertyName = context.Request.QueryString["property"];
+                        GetOpportunityProperty(context,id,propertyName);
+                        break;
                     default:
                         break;
                 }
@@ -86,6 +91,15 @@ namespace EMT.DoneNOW.Web
             }
         }
 
+
+        private void GetOpportunityProperty(HttpContext context, string opportunity_id, string propertyName)
+        {
+            var opportunity = new OpportunityBLL().GetOpportunity(long.Parse(opportunity_id));
+            if (opportunity != null)
+            {
+                context.Response.Write(DAL.BaseDAL<crm_opportunity>.GetObjectPropertyValue(opportunity, propertyName));
+            }
+        }
         public bool IsReusable
         {
             get

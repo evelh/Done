@@ -13,18 +13,13 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link href="../Content/index.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
-     <link rel="stylesheet" type="text/css" href="../Content/multiple-select.css"/>
+     <%--<link rel="stylesheet" type="text/css" href="../Content/multiple-select.css"/>--%>
 </head>
 <body>
     <form id="form1" runat="server">
-        <%if (isAdd)
-            {%>
-        <div class="header">添加商机</div>
-        <%}
-            else
-            { %>
-        <div class="header">修改商机</div>
-        <%} %>
+      
+        <div class="header"><%=isAdd?"添加商机":"修改商机" %></div>
+      
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
@@ -69,10 +64,24 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <label>客户名称</label>
-                                    <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd?"":conpamyBll.GetCompany(opportunity.account_id).name %>"" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+
+                                    <%if (isAdd&&contact != null)
+                                        {
+                                            var company = conpamyBll.GetCompany(contact.account_id);
+                                            %>
+                                      <label>客户名称</label>
+                                    <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=company.name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                    <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=company.id %>" />
+                                    <%}
+                                    else
+                                    { %>
+                                        <label>客户名称</label>
+                                    <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd?"":conpamyBll.GetCompany(opportunity.account_id).name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                     <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":opportunity.account_id.ToString() %>" />
+                                    <%} %>
+                                
                                 </div>
                             </td>
 
@@ -95,13 +104,13 @@
                                           <option value="<%=contact.id %>" selected="selected"><%=contact.name %></option>
                                     </select>
                                     <%}
-                                    else
-                                    { %>
+                                        else
+                                        { %>
                                       <select name="contact_id" id="contact_id">
                                     </select>
                                     <%} %>
                                   
-                                    <i onclick="javascript:window.open('../Contact/AddContact.aspx')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                    <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 </div>
                             </td>
                             <td>
@@ -747,11 +756,11 @@
         return true;
     }
     function GetContactList() {
-        debugger;
+    
         var account_id = $("#ParentComoanyNameHidden").val();
         if (account_id != "") {
             $("#contact_id").removeAttr("disabled");
-
+     
             $("#contact_id").html("");
             $.ajax({
                 type: "GET",
@@ -759,14 +768,10 @@
                 url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
-                    debugger;
+                 
                     if (data != "") {
-                        $("#contact_id").html(data);
-                        //if ($('#contact_id').prop('disable'))  // 更换客户可以解除联系人的只读
-                        //{
-                   
-                        //}
-                    } 
+                        $("#contact_id").html(data);              
+                    }
 
                 },
 
@@ -794,4 +799,9 @@
         return s;
     }
 
+    function chooseCompany() {
+        window.open("../Common/SelectCallBack.aspx?type=查找客户&field=ParentComoanyName&callBack=GetContactList", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+        //window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
+        //这些要写在一行
+    }
 </script>

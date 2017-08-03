@@ -31,7 +31,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public DateTime expiration_date { get; set; }
         [DataMember]
-        public DateTime prohected_close_date { get; set; }
+        public DateTime projected_close_date { get; set; }
         [DataMember]
         public Int64? contact_id { get; set; }
         [DataMember]

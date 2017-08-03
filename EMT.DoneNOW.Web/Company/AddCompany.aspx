@@ -781,7 +781,7 @@
                         }
                         else if (data != "") {
                             isPass = "noPass";
-                            window.open("CompanyNameSimilar.aspx?ids=" + data + "&reason=name", "newwindow", "height=600,width=800", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no"); 
+                            window.open("CompanyNameSimilar.aspx?ids=" + data + "&reason=name", "<%=EMT.DoneNOW.DTO.OpenWindow.CompanyNameSmilar %>", "height=600,width=800", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no"); 
                         }  //
                     },
                     error: function (XMLHttpRequest) {
@@ -825,7 +825,7 @@
     
 
     function chooseCompany() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.QueryCate.CompanyCallBack %>&field=ParentComoanyName", 'chsCmp', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.QueryCate.CompanyCallBack %>&field=ParentComoanyName", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
         //window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
         //这些要写在一行
     }

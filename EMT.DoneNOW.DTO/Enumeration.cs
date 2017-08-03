@@ -28,6 +28,9 @@ namespace EMT.DoneNOW.DTO
         FORM_TEMPLATE_RANGE_TYPE = 18,
         PROJECTED_CLOSED_DATE = 19,
         FORM_TEMPLATE_TYPE = 27,
+        PAYMENT_TERM=29,                         // 报价：付款期限           
+        PAYMENT_TYPE=30,                         // 报价：付款类型
+        PAYMENT_SHIP_TYPE=31,                    // 报价：配送类型
         NAME_SUFFIX = 48,
     }
 
@@ -311,8 +314,9 @@ namespace EMT.DoneNOW.DTO
             FROM = 766,                                 // 表单模板
             FROMOPPORTUNITY = 767,                      // 商机表单模板
             OPPORTUNITY = 768,                          // 商机
-            NOTIFY = 769,                                 // 通知
-            ACTIVITY = 770,                               // 活动   // todo数据库添加
+            NOTIFY = 769,                               // 通知
+            ACTIVITY = 760,                             // 活动   // todo 数据库添加
+            QUOTE = 761,                                // 报价   todo 数据库添加
         }
 
         /// <summary>
@@ -376,4 +380,29 @@ namespace EMT.DoneNOW.DTO
         CallBackCompany = 6,        // 查找带回客户
         Opportunity = 7,            // 商机管理-商机查询
     }
+
+    public enum OpenWindow
+    {                                         
+        CompanyAdd=101,                           // 
+        CompanyEdit=102,                          // 
+        CompanyDelete=103,                        // 
+        CompanyNameSmilar=104,                    // 名称相似
+        CompanySelect=105,                        // 查找带回客户
+
+
+        ContactAdd=111,                           //
+        ContactEdit=112,                          //
+        ContactLocationSelect=113,                // 联系人页面地址的查找带回
+
+
+        OpportunityAdd=121,                       //
+        OpportunityEdit=122,                      //
+
+
+        QuoteAdd=131,                             //
+        QuoteEdit=132,                            //
+
+       
+    }                                         
+
 }
