@@ -48,7 +48,7 @@
                     <li>Invoice发票参数设定</li>
                     <li>Quote reference报价参数设定</li>
                     <li>附件</li>
-                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=Subsidiaries"  target="view_window">子客户</a></li>
+                    <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=Subsidiaries">子客户</a></li>
                 </ul>
             </i>
             客户-<%=account.name %>
@@ -63,13 +63,13 @@
                   <%--  <asp:Button ID="tianjia" runat="server" Text="添加" BorderStyle="None" />--%>添加
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
-                        <li><a href="AddCompany.aspx"  target="view_window">客户</a></li>
+                        <li><a href="#" onclick="window.open('AddCompany.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=960,height=750', false);">客户</a></li>
                         <li>工单</li>
                         <li>待办</li>
                         <li>客户备注</li>
-                        <li><a href="../Opportunity/OpportunityAddAndEdit.aspx?account_id=<%=account.id %>" >商机</a></li>
-                        <li><a href="../Contact/AddContact.aspx?parent_id=<%=account.id %>" >联系人</a></li>
-                        <li><a href="AddCompany.aspx?parent_id=<%=account.id %>" target="view_window">子客户</a></li>
+                        <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);" >商机</a></li>
+                        <li><a href="#" onclick="window.open('../Contact/AddContact.aspx?parent_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left=200,top=200,width=900,height=750', false);" >联系人</a></li>
+                        <li><a href="#" onclick="window.open('AddCompany.aspx?parent_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.Subsidiaries %>','left=200,top=200,width=900,height=750', false);" >子客户</a></li>
                         <li>配置项</li>
                         <li>附件</li>
                     </ul>
@@ -80,7 +80,7 @@
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
                         <li>关闭商机向导</li>
-                        <li><a href="../Opportunity/LoseOpportunity.aspx?account_id=<%=account.id %>">丢失商机向导</a></li>
+                        <li><a href="#" onclick="window.open('../Opportunity/LoseOpportunity.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityLose %>','left=200,top=200,width=900,height=750', false);">丢失商机向导</a></li>
                         <li>重新分配商机所有人</li>
                         <li>注销客户向导</li>
                         <li>Microsoft word merge wizard</li>
@@ -326,12 +326,12 @@
 <script>
     $(function () {
 
-        var targetTimes = 0;
-        // $("a").attr('target', '_blank' + targetTimes);
-        $("a").click(function () {
-            $(this).attr('target', '_blank' + targetTimes);
-            targetTimes = Number(targetTimes) + 1;
-        })
+        //var targetTimes = 0;
+        //// $("a").attr('target', '_blank' + targetTimes);
+        //$("a").click(function () {
+        //    $(this).attr('target', '_blank' + targetTimes);
+        //    targetTimes = Number(targetTimes) + 1;
+        //})
 
         var hide = $("#isHide").val();
         if (hide == "hide") {

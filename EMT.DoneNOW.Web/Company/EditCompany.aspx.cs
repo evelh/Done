@@ -174,7 +174,7 @@ namespace EMT.DoneNOW.Web
                     var new_udf = new UserDefinedFieldValue()
                     {
                         id = udf.id,
-                        value = Request.Form[udf.id.ToString()] == null ? "" : Request.Form[udf.id.ToString()],
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
                     };
                     list.Add(new_udf);
 

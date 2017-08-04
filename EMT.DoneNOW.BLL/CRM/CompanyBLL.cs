@@ -121,6 +121,7 @@ namespace EMT.DoneNOW.BLL
                 name = param.general.company_name.Trim(),
                 is_active = 1,                         // 0未激活 1 激活
                 //is_taxable = param.general.tax_exempt ? 1 : 0,// 是否免税 0 否 1 是
+                is_optout_survey=0,            // 是否拒绝问卷调查 0 否 1 是
                 phone = param.general.phone,
                 fax = param.general.fax,
                 web_site = param.general.web_site,
@@ -972,6 +973,8 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             // 如果修改了电话和传真，则弹出窗口，显示联系人列表供用户用户选择是否同步替换。    TODO
+            old_company_value.fax = string.IsNullOrEmpty(old_company_value.fax) ? "" : old_company_value.fax;
+            new_company_value.fax = string.IsNullOrEmpty(new_company_value.fax) ? "" : new_company_value.fax;
             if ((!old_company_value.phone.Equals(new_company_value.phone)) || (!old_company_value.fax.Equals(new_company_value.fax)))   // 电话和传真有一个有更改时
             {
                 var contactList = new crm_contact_dal().GetContactByAccountId(new_company_value.id);    // 获取到所有的这个客户的联系人

@@ -46,11 +46,17 @@ namespace EMT.DoneNOW.Web.Company
 
             if (location.id==0)
             {
-                new LocationBLL().Insert(location, GetLoginUserId());
+                if(new LocationBLL().Insert(location, GetLoginUserId()))
+                {
+                    Response.Write("<script>alert('添加地址成功！');window.close();self.opener.location.reload();</script>");
+                }
             }
             else
             {
-                new LocationBLL().Update(location,GetLoginUserId());
+               if(new LocationBLL().Update(location, GetLoginUserId()))
+                {
+                    Response.Write("<script>alert('修改地址成功！');window.close();self.opener.location.reload();</script>");
+                }
             }
         }
     }
