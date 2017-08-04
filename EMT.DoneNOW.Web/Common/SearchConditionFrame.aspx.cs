@@ -43,14 +43,20 @@ namespace EMT.DoneNOW.Web
 
             switch (catId)
             {
-                case (int)QueryCate.Company:
+                case (int)DicEnum.QUERY_CATE.COMPANY:
                     currentQuery.page_name = "客户查询";
                     break;
-                case (int)QueryCate.Contact:
+                case (int)DicEnum.QUERY_CATE.CONTACT:
                     currentQuery.page_name = "联系人查询";
                     break;
-                case (int)QueryCate.Opportunity:
+                case (int)DicEnum.QUERY_CATE.OPPORTUNITY:
                     currentQuery.page_name = "商机查询";
+                    break;
+                case (int)DicEnum.QUERY_CATE.QUOTE:
+                    currentQuery.page_name = "报价查询";
+                    break;
+                case (int)DicEnum.QUERY_CATE.QUOTE_TEMPLATE:
+                    currentQuery.page_name = "报价模板查询";
                     break;
                 default:
                     currentQuery.page_name = "客户查询";

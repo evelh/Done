@@ -303,17 +303,18 @@ namespace EMT.DoneNOW.DTO
             EXPIRED = 618,    // 过期
         }
 
-
-
-
-
         /// <summary>
-        /// 查询页面分类-65
+        /// 查询页面cat_id-65
         /// </summary>
-        public enum QUERY_TYPE
+        public enum QUERY_CATE
         {
-            CUSTOMER = 726,         // 客户
+            COMPANY = 726,          // 客户
             CONTACT = 727,          // 联系人
+            COMPANY_CALLBACK = 728, // 客户查找带回
+            OPPORTUNITY = 865,      // 商机
+            QUOTE = 866,            // 报价
+            ROLL_CALLBACK = 867,    // 角色查找带回
+            QUOTE_TEMPLATE = 868,   // 报价模板
         }
 
         /// <summary>
@@ -399,17 +400,6 @@ namespace EMT.DoneNOW.DTO
     }
 
     /// <summary>
-    /// 查询页面
-    /// </summary>
-    public enum QueryCate
-    {
-        Company = 726,          // 客户
-        Contact = 727,          // 联系人
-        CompanyCallBack = 728,  // 客户查找带回
-        Opportunity = 865,      // 商机
-    }
-
-    /// <summary>
     /// 查询分页面
     /// </summary>
     public enum QueryType
@@ -423,6 +413,9 @@ namespace EMT.DoneNOW.DTO
         Opportunity = 7,            // 商机管理-商机查询
     }
 
+    /// <summary>
+    /// 打开窗口的target
+    /// </summary>
     public enum OpenWindow
     {                                         
         CompanyAdd=101,                           // 
@@ -430,21 +423,17 @@ namespace EMT.DoneNOW.DTO
         CompanyDelete=103,                        // 
         CompanyNameSmilar=104,                    // 名称相似
         CompanySelect=105,                        // 查找带回客户
-
-
+        
         ContactAdd=111,                           //
         ContactEdit=112,                          //
         ContactLocationSelect=113,                // 联系人页面地址的查找带回
-
-
+        
         OpportunityAdd=121,                       //
         OpportunityEdit=122,                      //
-
-
+        
         QuoteAdd=131,                             //
         QuoteEdit=132,                            //
-
-       
+        
     }                                         
 
 }

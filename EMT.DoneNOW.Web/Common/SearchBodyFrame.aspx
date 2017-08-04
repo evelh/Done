@@ -205,6 +205,9 @@
 
             })
         }
+        function Add() {
+            OpenWindow("../Contact/AddContact.aspx");
+        }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Opportunity) {
             %>
@@ -225,6 +228,9 @@
                     alert(data);
                 }
             })
+        }
+        function Add() {
+            OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx");
         }
         <%
         }%>
