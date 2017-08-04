@@ -413,9 +413,6 @@ namespace EMT.DoneNOW.DTO
         Opportunity = 7,            // 商机管理-商机查询
     }
 
-    /// <summary>
-    /// 打开窗口的target
-    /// </summary>
     public enum OpenWindow
     {                                         
         CompanyAdd=101,                           // 
@@ -423,17 +420,26 @@ namespace EMT.DoneNOW.DTO
         CompanyDelete=103,                        // 
         CompanyNameSmilar=104,                    // 名称相似
         CompanySelect=105,                        // 查找带回客户
-        
-        ContactAdd=111,                           //
+        Subsidiaries=106,                         // 添加子客户
+
+
+        ContactAdd =111,                           //
         ContactEdit=112,                          //
         ContactLocationSelect=113,                // 联系人页面地址的查找带回
-        
-        OpportunityAdd=121,                       //
+
+
+        OpportunityAdd=121,                       // 
         OpportunityEdit=122,                      //
-        
-        QuoteAdd=131,                             //
+        OpportunityLose = 123,                    // 
+
+
+        QuoteAdd =131,                             //
         QuoteEdit=132,                            //
-        
+
+        LocationAdd = 141,                         // 地址新增
+        LoactionEdit = 142,                        // 地址修改
+
+       
     }                                         
 
 }
