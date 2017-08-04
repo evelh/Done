@@ -78,7 +78,7 @@
                 <tr>
                     <td>城市</td>
                     <td>
-                        <input id="city_idInit" value='6' type="hidden" runat="server" />
+                        <input id="city_idInit" value='' type="hidden" runat="server" />
                         <select id="city_id" name="city_id">
                         </select>
                     </td>
@@ -86,7 +86,7 @@
                 <tr>
                     <td>区县</td>
                     <td>
-                        <input id="district_idInit" value='8' type="hidden" runat="server" />
+                        <input id="district_idInit" value='' type="hidden" runat="server" />
                         <select id="district_id" name="district_id">
                         </select>
                     </td>

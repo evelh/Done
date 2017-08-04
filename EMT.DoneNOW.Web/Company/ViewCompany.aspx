@@ -56,7 +56,7 @@
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
-                    <input type="button" id="Edit" value="修改" onclick="window.open('EditCompany.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyEdit %>');"/>
+                    <input type="button" id="Edit" value="修改" onclick="window.open('EditCompany.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyEdit %>','left= 200, top = 200, width = 960, height = 750', false);"/>
                    <%-- <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" OnClientClick="" />--%>
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
@@ -93,8 +93,12 @@
                     <asp:Button ID="LiveLink" runat="server" Text="友情链接" BorderStyle="None" /></li>
             </ul>
         </div>
-        <div class="text warn">离开这些领域的空白。所有标有“1”的字段只适用于联系人。</div>
-
+        <% 
+            var alert = new EMT.DoneNOW.DAL.crm_account_alert_dal().FindAlert(account.id, EMT.DoneNOW.DTO.DicEnum.ACCOUNT_ALERT_TYPE.COMPANY_DETAIL_ALERT);
+            if (alert != null)
+            { %>
+        <div class="text warn"><%=alert.alert_text %></div>
+        <%} %>
         <div class="activityTitleleft fl" id="showCompanyGeneral" style="margin-left:20px;">
             <input type="hidden" id="isHide" runat="server" value="hide"/>
             <input type="hidden" id="activetytype" runat="server" value=""/>
