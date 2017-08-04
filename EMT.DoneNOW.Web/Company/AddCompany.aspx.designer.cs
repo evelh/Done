@@ -67,13 +67,13 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden district_idInit;
         
         /// <summary>
-        /// TaxRegion 控件。
+        /// tax_region 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList TaxRegion;
+        protected global::System.Web.UI.WebControls.DropDownList tax_region;
         
         /// <summary>
         /// classification 控件。
@@ -85,49 +85,49 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.DropDownList classification;
         
         /// <summary>
-        /// TerritoryName 控件。
+        /// territory_name 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList TerritoryName;
+        protected global::System.Web.UI.WebControls.DropDownList territory_name;
         
         /// <summary>
-        /// Competitor 控件。
+        /// competitor 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Competitor;
+        protected global::System.Web.UI.WebControls.DropDownList competitor;
         
         /// <summary>
-        /// CompanyType 控件。
+        /// company_type 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList CompanyType;
+        protected global::System.Web.UI.WebControls.DropDownList company_type;
         
         /// <summary>
-        /// AccountManger 控件。
+        /// account_manage 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList AccountManger;
+        protected global::System.Web.UI.WebControls.DropDownList account_manage;
         
         /// <summary>
-        /// MarketSegment 控件。
+        /// market_segment 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList MarketSegment;
+        protected global::System.Web.UI.WebControls.DropDownList market_segment;
         
         /// <summary>
         /// note_action_type 控件。

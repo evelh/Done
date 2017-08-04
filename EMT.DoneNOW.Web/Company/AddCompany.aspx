@@ -74,7 +74,7 @@
                             <td>
                                 <div class="clear">
                                     <label>电话<span class=" red">*</span></label>
-                                    <input type="text" name="Phone" id="Phone" value="" />
+                                    <input type="text" name="phone" id="Phone" value="" />
                                 </div>
                             </td>
                         </tr>
@@ -123,7 +123,7 @@
                             <td>
                                 <div class="clear">
                                     <label>税区<span class="num"></span></label>
-                                    <asp:DropDownList ID="TaxRegion" runat="server">
+                                    <asp:DropDownList ID="tax_region" runat="server">
                                     </asp:DropDownList>
                                 </div>
                             </td>
@@ -132,7 +132,7 @@
                             <td>
                                 <div class="clear">
                                     <label>税号<span class="num"></span></label>
-                                    <input type="text" name="TaxId" id="TaxId" value="" />
+                                    <input type="text" name="tax_id" id="TaxId" value="" />
                                 </div>
                             </td>
                         </tr>
@@ -140,7 +140,7 @@
                             <td>
                                 <div class="clear">
                                     <label>是否免税</label>
-                                    <input type="checkbox" name="TaxExempt" id="TaxExempt" value="" />
+                                    <input type="checkbox" name="tax_exempt" id="TaxExempt" value="" />
                                     <%--  <div style="clear: both; margin-top: -20px; margin-left: 200px;"></div>--%>
                                 </div>
                             </td>
@@ -149,7 +149,7 @@
                             <td>
                                 <div class="clear">
                                     <label>传真<span class="red"></span></label>
-                                    <input type="text" name="Fax" id="Fax" value="" />
+                                    <input type="text" name="fax" id="Fax" value="" />
                                 </div>
                             </td>
                         </tr>
@@ -167,7 +167,7 @@
                             <td>
                                 <div class="clear">
                                     <label>销售区域<span class="red"></span></label>
-                                    <asp:DropDownList ID="TerritoryName" runat="server"></asp:DropDownList>
+                                    <asp:DropDownList ID="territory_name" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
                         </tr>
@@ -175,7 +175,7 @@
                             <td>
                                 <div class="clear">
                                     <label>竞争对手<span class="red"></span></label>
-                                    <asp:DropDownList ID="Competitor" runat="server"></asp:DropDownList>
+                                    <asp:DropDownList ID="competitor" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
                         </tr>
@@ -183,7 +183,7 @@
                             <td>
                                 <div class="clear">
                                     <label>官网</label>
-                                    <input type="text" name="WebSite" id="WebSite" value="" />
+                                    <input type="text" name="web_site" id="WebSite" value="" />
                                 </div>
                             </td>
                         </tr>
@@ -209,7 +209,7 @@
                             <td>
                                 <div class="clear">
                                     <label>头衔<span class="num">1</span></label>
-                                    <input type="text" name="Title" id="Title" value="" />
+                                    <input type="text" name="title" id="Title" value="" />
                                 </div>
                             </td>
                         </tr>
@@ -217,7 +217,7 @@
                             <td>
                                 <div class="clear">
                                     <label>Email<span class="num">1</span></label>
-                                    <input type="text" name="Email" id="Email" value="" />
+                                    <input type="text" name="email" id="Email" value="" />
                                 </div>
                             </td>
                         </tr>
@@ -243,7 +243,7 @@
                             <td>
                                 <div class="clear">
                                     <label>地址附加信息<span class="num"></span></label>
-                                    <input type="text" name="AdditionalAddress" id="AdditionalAddress" value="" />
+                                    <input type="text" name="additional_address" id="AdditionalAddress" value="" />
                                 </div>
                             </td>
                         </tr>
@@ -251,7 +251,7 @@
                             <td>
                                 <div class="clear">
                                     <label>备用电话1</label>
-                                    <input type="text" name="AlternatePhone1" id="AlternatePhone1" value="" />
+                                    <input type="text" name="alternate_phone1" id="AlternatePhone1" value="" />
                                 </div>
                             </td>
                         </tr>
@@ -259,7 +259,7 @@
                             <td>
                                 <div class="clear">
                                     <label>备用电话2</label>
-                                    <input type="text" name="AlternatePhone2" id="AlternatePhone2" value="" />
+                                    <input type="text" name="alternate_phone2" id="AlternatePhone2" value="" />
                                 </div>
                             </td>
                         </tr>
@@ -267,7 +267,7 @@
                             <td>
                                 <div class="clear">
                                     <label>移动电话<span class="num">1</span></label>
-                                    <input type="text" name="MobilePhone" id="MobilePhone" value="" />
+                                    <input type="text" name="mobile_phone" id="MobilePhone" value="" />
                                 </div>
                             </td>
                         </tr>
@@ -275,7 +275,7 @@
                             <td>
                                 <div class="clear">
                                     <label>公司类型</label>
-                                    <asp:DropDownList ID="CompanyType" runat="server"></asp:DropDownList>
+                                    <asp:DropDownList ID="company_type" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
                         </tr>
@@ -283,7 +283,7 @@
                             <td>
                                 <div class="clear">
                                     <label>客户经理</label>
-                                    <asp:DropDownList ID="AccountManger" runat="server"></asp:DropDownList>
+                                    <asp:DropDownList ID="account_manage" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
                         </tr>
@@ -291,7 +291,7 @@
                             <td>
                                 <div class="clear">
                                     <label>市场领域</label>
-                                    <asp:DropDownList ID="MarketSegment" runat="server"></asp:DropDownList>
+                                    <asp:DropDownList ID="market_segment" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
                             <%if (parent_account != null) { %>
@@ -320,7 +320,7 @@
                             <td>
                                 <div class="clear">
                                     <label>客户编号</label>
-                                    <input type="text" name="CompanyNumber" id="CompanyNumber" value="" />
+                                    <input type="text" name="company_number" id="CompanyNumber" value="" />
 
                                 </div>
                             </td>
@@ -723,10 +723,10 @@
                 alert("请输入电话名称");
                 return false;
             }
-            if (!checkPhone(phone)) {
-                alert("请输入正确格式的电话！");
-                return false;
-            }
+            //if (!checkPhone(phone)) {
+            //    alert("请输入正确格式的电话！");
+            //    return false;
+            //}
             var firstName = $("#first_name").val();                                  // 姓
             var lastName = $("#last_name").val();                                    // 名
             var country = $("#country_id").val();                                      // 国家
