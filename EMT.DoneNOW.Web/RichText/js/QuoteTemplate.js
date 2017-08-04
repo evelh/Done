@@ -1,0 +1,81 @@
+$("#SaveAndCloneButton").on("mouseover",function(){
+    $("#SaveAndCloneButton").css("background","#fff");
+})
+$("#SaveAndCloneButton").on("mouseout",function(){
+    $("#SaveAndCloneButton").css("background","#f0f0f0");
+})
+$("#SaveButton").on("mouseover",function(){
+    $("#SaveButton").css("background","#fff");
+})
+$("#SaveButton").on("mouseout",function(){
+    $("#SaveButton").css("background","#f0f0f0");
+})
+$("#ViewPdfButton").on("mouseover",function(){
+    $("#ViewPdfButton").css("background","#fff");
+})
+$("#ViewPdfButton").on("mouseout",function(){
+    $("#ViewPdfButton").css("background","#f0f0f0");
+})
+$("#EditPropertiesButton").on("mouseover",function(){
+    $("#EditPropertiesButton").css("background","#fff");
+})
+$("#EditPropertiesButton").on("mouseout",function(){
+    $("#EditPropertiesButton").css("background","#f0f0f0");
+})
+$("#EditAppendixButton").on("mouseover",function(){
+    $("#EditAppendixButton").css("background","#fff");
+})
+$("#EditAppendixButton").on("mouseout",function(){
+    $("#EditAppendixButton").css("background","#f0f0f0");
+})
+$("#CancelButton").on("mouseover",function(){
+    $("#CancelButton").css("background","#fff");
+})
+$("#CancelButton").on("mouseout",function(){
+    $("#CancelButton").css("background","#f0f0f0");
+})
+
+$("#a1").on("mouseover",function(){
+    $("#b1").hide();
+    $("#c1").show();
+})
+$("#a1").on("mouseout",function(){
+    $("#b1").show();
+    $("#c1").hide();
+})
+$("#a2").on("mouseover",function(){
+    $("#b2").hide();
+    $("#c2").show();
+})
+$("#a2").on("mouseout",function(){
+    $("#b2").show();
+    $("#c2").hide();
+})
+$("#a3").on("mouseover",function(){
+    $("#b3").hide();
+    $("#c3").show();
+})
+$("#a3").on("mouseout",function(){
+    $("#b3").show();
+    $("#c3").hide();
+})
+$("#a4").on("mouseover",function(){
+    $("#b4").hide();
+    $("#c4").show();
+})
+$("#a4").on("mouseout",function(){
+    $("#b4").show();
+    $("#c4").hide();
+})
+$("#a5").on("mouseover",function(){
+    $("#b5").hide();
+    $("#c5").show();
+})
+$("#a5").on("mouseout",function(){
+    $("#b5").show();
+    $("#c5").hide();
+})
+
+
+
+

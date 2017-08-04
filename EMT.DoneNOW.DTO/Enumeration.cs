@@ -28,6 +28,14 @@ namespace EMT.DoneNOW.DTO
         FORM_TEMPLATE_RANGE_TYPE = 18,
         PROJECTED_CLOSED_DATE = 19,
         FORM_TEMPLATE_TYPE = 27,
+
+
+        DATE_DISPLAY_FORMAT = 35,
+        TIME_DISPLAY_FORMAT = 36,
+        NUMBER_DISPLAY_FORMAT = 37,
+        CURRENCY_POSITIVE_FORMAT = 38,
+        CURRENCY_NEGATIVE_FORMAT = 39,
+        PAGE_NUMBER_LOCATION = 41,
         NAME_SUFFIX = 48,
     }
 
@@ -117,11 +125,11 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum OPPORTUNITY_STATUS
         {
-            NOTREADYTOBUY=83,                              // 考虑中
-            ACTIVE=84,                                     // 激活
-            LOST=85,                                       // 丢失
-            CLOSED=86,                                     // 关闭
-            IMPLEMENTED=87,                                // 实施          
+            NOTREADYTOBUY = 83,                              // 考虑中
+            ACTIVE = 84,                                     // 激活
+            LOST = 85,                                       // 丢失
+            CLOSED = 86,                                     // 关闭
+            IMPLEMENTED = 87,                                // 实施          
         }
 
 
@@ -253,6 +261,27 @@ namespace EMT.DoneNOW.DTO
             MUILTI_LINE = 549,      // 多行
         }
 
+
+        /// <summary>
+        /// 报价模板纸张尺寸-40
+        /// </summary>
+        public enum PAGE_SIZE
+        {
+           LETTER = 584,         //信纸：8.5" x 11" （215.9 mm x 279.4 mm）
+            A4 = 585,            //A4：8.25" x 11.75 （210 mm x 297 mm）
+        }
+
+        /// <summary>
+        /// 报价模板：页码位置-41
+        /// </summary>
+        public enum PAGE_NUMBER_LOCATION
+        {
+            NO = 588,                //不显示
+            BOTTOMLEFT = 589,         //底部靠左
+            BOTTOMCENTER = 590,        //底部居中
+            BOTTOMRIGHT = 591,        //底部靠右
+        }
+
         /// <summary>
         /// user状态-46
         /// </summary>
@@ -313,6 +342,7 @@ namespace EMT.DoneNOW.DTO
             OPPORTUNITY = 768,                          // 商机
             NOTIFY = 769,                                 // 通知
             ACTIVITY = 770,                               // 活动   // todo数据库添加
+
         }
 
         /// <summary>
@@ -351,4 +381,6 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         Logout,
     }
+
+
 }

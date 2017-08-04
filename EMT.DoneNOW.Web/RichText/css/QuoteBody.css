@@ -1,0 +1,650 @@
+body{
+    overflow: hidden;
+}
+/*顶部内容和帮助*/
+.TitleBar{
+    color: #fff;
+    background-color: #346a95;
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.TitleBar>.Title{
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 95%;
+}
+.text2{
+    margin-left: 5px;
+}
+.help{
+    background-image: url(../img/help.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 16px;
+    border-radius: 50%;
+}
+/*按钮*/
+.ButtonContainer{
+    padding: 0 10px 10px 10px;
+    width: auto;
+    height: 26px;
+}
+.ButtonContainer ul li .Button{
+    margin-right: 5px;
+    vertical-align: top;
+}
+li.Button{
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+    border: 1px solid #d7d7d7;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: #4f4f4f;
+    cursor: pointer;
+    height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-decoration: none;
+}
+.Button>.Icon{
+    display: inline-block;
+    flex: 0 0 auto;
+    height: 16px;
+    margin: 0 3px;
+    width: 16px;
+}
+.Ok{
+    background-image: url("../img/ok.png");
+}
+.Button>.Text{
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.ScrollingContainer {
+    top: 82px;
+    bottom: 0;
+    left: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: absolute;
+    right: 0;
+    padding: 0 10px 0 10px;
+}
+.ScrollingContainer .Instructions {
+    margin: 0 0 11px 0;
+    color: #666;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 0 0 5px 0;
+}
+.Section {
+    border: 1px solid #d3d3d3;
+    margin: 0 0 12px 0;
+    padding: 4px 0 4px 0;
+    width: 836px;
+}
+.Section>.Heading {
+    overflow: hidden;
+    padding: 2px 4px 8px 6px;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Section>.Heading>.Toggle {
+    background: #d7d7d7;
+    background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #c6c6c6;
+    cursor: pointer;
+    height: 14px;
+    margin: 0 6px 0 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 14px;
+}
+.Section>.Heading>.Text {
+    color: #666;
+    height: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 17px;
+    text-transform: uppercase;
+    cursor:pointer;
+}
+.Section>.Heading>div, .Section>.Heading>span {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+}
+.Section>.Heading>.Toggle>.Vertical {
+    background-color: #888;
+    height: 8px;
+    left: 6px;
+    position: absolute;
+    top: 3px;
+    width: 2px;
+    display: none;
+}
+.Section>.Heading>.Toggle>.Horizontal {
+    background-color: #888;
+    height: 2px;
+    left: 3px;
+    position: absolute;
+    top: 6px;
+    width: 8px;
+}
+.Section>.DescriptionText {
+    color: #666;
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: -4px;
+    padding: 0 28px 8px 28px;
+}
+.Section>.Content {
+    padding-top: 12px;
+    padding-left: 28px;
+    padding-right: 28px;
+}
+.Section .Grid {
+    border-bottom: solid 1px #98b4ca;
+    margin-right: 70px;
+    margin-bottom: 10px;
+    border-top: solid 1px #98b4ca;
+    font-size: 12px;
+}
+.Grid .HeaderContainer {
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    overflow: hidden;
+    background-color: #cbd9e4;
+    border-left-color: #98b4ca;
+    border-right-color: #98b4ca;
+}
+.Grid .HeaderContainer table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.Grid .HeaderContainer td {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    font-size: 12px;
+    font-weight: bold;
+    height: 15px;
+    padding: 3px 0 3px 0;
+    vertical-align: top;
+    word-wrap: break-word;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-bottom-color: #98b4ca;
+    border-right-color: #98b4ca;
+    color: #64727a;
+}
+.Grid .HeaderContainer td>.Standard {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+.Grid .HeaderContainer td .Heading {
+    word-wrap: break-word;
+    margin-left: 5px;
+}
+.tc{
+    text-align: center;
+}
+.Required {
+     color: #e51937;
+     padding-left: 2px;
+ }
+
+.Section .Grid.Medium .RowContainer {
+    height: 400px;
+}
+.Grid .RowContainer {
+    border-left: 1px solid #d7d7d7;
+    border-right: 1px solid #d7d7d7;
+    overflow: auto;
+    overflow-y: scroll;
+}
+.Grid .RowContainer table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    border-spacing: 0;
+}
+.Grid .RowContainer tr:first-child td {
+    border-top: none;
+}
+.Grid .RowContainer td.Interaction, .Grid .RowContainer tr.HighImportance td.Interaction {
+    background-color: #ebebeb;
+    border-bottom-color: #ccc;
+    border-left-color: #ebebeb;
+    border-right-color: #ccc;
+    border-top-color: #ccc;
+}
+.Grid .RowContainer .Interaction>div {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+.Grid .RowContainer .Interaction>div>div {
+    display: table-cell;
+    word-wrap: break-word;
+    padding: 0 6px 0 6px;
+}
+.Decoration.Icon.DragHandle, tr.Selected .Decoration.Icon.DragHandle {
+    width: 16px;
+    height: 16px;
+}
+.Decoration.Icon.DragHandle{
+    background-repeat: no-repeat;
+}
+.prev{
+    cursor: pointer;
+}
+.next{
+    cursor: pointer;
+}
+.Grid .RowContainer .Interaction>div>div.Text {
+    padding-left: 7px;
+    display: table-cell;
+    word-wrap: break-word;
+    margin-left: 5px;
+}
+.Grid .RowContainer td.E {
+    cursor: pointer;
+}
+.Grid .RowContainer td {
+    border: solid 1px #e8e8e8;
+    border-left-color: #f8f8f8;
+    border-right-color: #f8f8f8;
+    padding: 4px 4px 4px 4px;
+    vertical-align: top;
+    word-wrap: break-word;
+}
+.Decoration.Icon.CheckMark {
+    height: 16px;
+    width: 16px;
+    margin: auto;
+}
+.Decoration.Icon.CM{
+    background-image: url(../img/choose.png);
+}
+.Grid .RowContainer tr.ValidationResultRow, .Grid .RowContainer tr.DisplayEditingRow {
+    display: none;
+}
+.Grid .RowContainer tr.EditingRow td, .Grid .RowContainer tr.ValidationResultRow td, .Grid .RowContainer tr.CustomValidationResultRow td, .Grid .RowContainer tr.EditingButtonRow td {
+    background-color: #e9f0f8;
+    border-left-color: #e9f0f8;
+    border-right-color: #e9f0f8;
+}
+.Grid .RowContainer tr.EditingRow td, .Grid .RowContainer tr.ValidationResultRow td, .Grid .RowContainer tr.CustomValidationResultRow td {
+    border-bottom: 0;
+}
+.Grid .RowContainer tr.EditingRow td {
+     padding-bottom: 0;
+ }
+.Grid td.EditingFormatPreservation .Editor.TextBox, .Grid td.EditingNesting .Editor.TextBox, .Grid td.XL .Editor.TextBox, .Grid td.XL .Editor.SingleSelect, .Grid td.XL .Editor.DataSelector {
+    width: 190px;
+}
+.Editor {
+    display: inline-block;
+    vertical-align: top;
+}
+.Grid .Editor>.InputField {
+    font-size: 0;
+}
+.Grid td.EditingFormatPreservation .Editor.TextBox input, .Grid td.EditingNesting .Editor.TextBox input, .Grid td.XL .Editor.TextBox input {
+    width: 152px;
+}
+input[type="text"] {
+    height: 22px;
+    padding: 0 6px;
+    resize: none;
+}
+input[type="text"], select, textarea {
+    border: 1px solid #d7d7d7;
+    font-size: 12px;
+    resize: vertical;
+}
+input {
+    color: #333;
+    margin: 0;
+}
+.Section .Editor.CheckBox {
+    padding-bottom: 14px;
+}
+.Grid td.BooleanEditing {
+    text-align: center;
+}
+.Grid .RowContainer tr.EditingButtonRow td {
+    border-top-width: 0;
+}
+.Grid .EditingButtonRow li.Button {
+    margin-right: 8px;
+}
+li.Button {
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+    border: 1px solid #d7d7d7;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: #4f4f4f;
+    cursor: pointer;
+    height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-decoration: none;
+}
+li.Button>.Icon {
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    height: 16px;
+    margin: 0 3px;
+    width: 16px;
+}
+.save{
+    background: transparent url(../img/save.png) no-repeat scroll;
+}
+.cancel{
+    background: transparent url(../img/cancel.png) no-repeat scroll;
+}
+.D{
+    position: relative;
+    z-index:1000;
+}
+.Section .Column.Normal, .Section .Column.Normal>.Editor, .Section .Column.Normal>.CheckBoxGroupContainer>.Editor, .Section .Column.Normal>.RadioButtonGroupContainer>.Editor, .Section .Column.Normal>.Attachment_TypeContainer>.Editor {
+    width: 390px;
+}
+.Column, .ReplaceableColumnContainer {
+    display: inline-block;
+    vertical-align: top;
+}
+input[type="checkbox"], input[type="radio"] {
+    margin: 0;
+    display: block;
+    float: left;
+    clear: left;
+    padding: 0;
+    margin-right: 3px;
+}
+.Editor.CheckBox .InputField>.EditorLabelContainer>.Label label, .Editor.RadioButton .InputField>.EditorLabelContainer>.Label label {
+    color: #333;
+    cursor: pointer;
+}
+.Section .Column.Large, .Section .Column.Large>.Editor, .Section .Column.Large>.CheckBoxGroupContainer>.Editor, .Section .Column.Large>.RadioButtonGroupContainer>.Editor {
+    width: 780px;
+}
+.Column.Normal>.EditorLabelContainer {
+    width: 380px;
+}
+.fl>.EditorLabelContainer>.Label {
+    color: #4f4f4f;
+    font-weight: 700;
+    height: 14px;
+    overflow: hidden;
+    padding-bottom: 1px;
+    padding-right: 5px;
+    vertical-align: bottom;
+    white-space: nowrap;
+}
+.Editor.TextBox input, .Editor.TextBox .Value, .Editor.DataSelector input {
+    width: 306px;
+}
+.fl{
+    float: left;
+}
+.Large{
+    overflow: hidden;
+}
+body.AutotaskBlueTheme .Grid .HeaderContainer td, body .DashboardTab.AutotaskBlueTheme .Grid .HeaderContainer td, body.AutotaskBlueTheme .Table .HeaderContainer td, body .DashboardTab.AutotaskBlueTheme .Table .HeaderContainer td {
+    border-bottom-color: #98b4ca;
+    border-right-color: #98b4ca;
+    color: #64727a;
+}
+.Grid .RowContainer td:last-child {
+    border-right-color: #fff;
+}
+.Grid .RowContainer .FormatPreservation {
+    white-space: pre-wrap;
+}
+.Edit{
+    background: transparent url(../img/edit.png) no-repeat scroll;
+    cursor: pointer;
+}
+#containerHead>div{
+    width: 876px;
+    height:300px;
+    margin:auto;
+    position: absolute;
+    top:-138px;
+    left:0;
+    bottom:0;
+    right: 0;
+}
+.addText{
+    width: 876px;
+    height:600px;
+    margin-left: -442px;
+    margin-top: -304px;
+    z-index: 980;
+    display: block;
+    left: 50%;
+    position: fixed;
+    top: 50%;
+    background-color: #b9b9b9;
+    border: solid 4px #b9b9b9;
+}
+.addText>div {
+    background-color: #fff;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.CancelDialogButton {
+    background-image: url(../img/cancel1.png);
+    background-position: 0 -32px;
+    border: none;
+    cursor: pointer;
+    height: 32px;
+    position: absolute;
+    right: -14px;
+    top: -14px;
+    width: 32px;
+    z-index: 100;
+    border-radius: 50%;
+}
+.Reset{
+    background-image: url(../img/reset.png);
+}
+.addDescriptionText{
+    margin-left: 38px;
+}
+.addButtonIcon{
+    margin-left: 5px;
+}
+/*弹出框的图标*/
+.Dialog{
+    width:21px;
+    height:20px;
+    background:#fafafa;
+    position: absolute;
+    left: 540px;
+    top: 44px;
+    z-index:1000;
+    border:1px solid #fafafa;
+}
+.Dialog:hover{
+    border:1px solid #dcac6c;
+    background: #ffe69f;
+}
+/*弹出框内容*/
+.AlertBox{
+    width: 486px;height: 450px;
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom:0;
+    right: 0;
+    margin: auto;
+    background-color: #b9b9b9;
+    border: solid 4px #b9b9b9;
+    z-index:2000;
+    display: none;
+}
+.AlertBox>div {
+    background-color: #fff;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.CancelDialogButton1{
+    background-image: url(../img/cancel1.png);
+    background-position: 0 -32px;
+    border-radius:50%;
+    cursor: pointer;
+    height: 32px;
+    position: absolute;
+    right: -14px;
+    top: -14px;
+    width: 32px;
+}
+.AlertTitleBar{
+    color: #fff;
+    background-color: #346a95;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.AlertTitle {
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 80%;
+}
+.AlertContent{
+    top: 46px;
+    bottom: 0px;
+    left: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: absolute;
+    right: 0;
+    padding: 0 10px 0 10px;
+}
+.AlertContentTitle{
+    padding-bottom: 5px;
+    color: #666;
+    font-size: 12px;
+    overflow: hidden;
+}
+select {
+    color: #333;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    border: 1px solid #d7d7d7;
+    font-size: 12px;
+    resize: vertical;
+}
+#AlertVariableFilter{
+    margin-bottom: 5px;
+    width: 410px;
+}
+#AlertVariableList{
+    height: 249px;
+    width: 410px;
+}
+select option {
+    line-height: 16px;
+}
+#BackgroundOverLay1{
+    width:100%;
+    height:100%;
+    background: black;
+    opacity: 0.6;
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+/*加载的css样式*/
+#BackgroundOverLay{
+    width:100%;
+    height:100%;
+    background: black;
+    opacity: 0.6;
+    z-index: 25;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+#LoadingIndicator {
+    width: 100px;
+    height:100px;
+    background-image: url(../img/Loading.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    z-index: 30;
+    margin:auto;
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    display: none;
+}

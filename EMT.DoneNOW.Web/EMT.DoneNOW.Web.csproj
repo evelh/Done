@@ -163,6 +163,35 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="QuoteTemplate\test.aspx" />
+    <Content Include="RichText\css\FootEdit.css" />
+    <Content Include="RichText\css\HeadEdit.css" />
+    <Content Include="RichText\css\QuoteBody.css" />
+    <Content Include="RichText\css\QuoteBottom.css" />
+    <Content Include="RichText\css\QuoteTemplate.css" />
+    <Content Include="RichText\css\QuoteTop.css" />
+    <Content Include="RichText\css\reset.css" />
+    <Content Include="RichText\img\book.png" />
+    <Content Include="RichText\img\cancel.png" />
+    <Content Include="RichText\img\cancel1.png" />
+    <Content Include="RichText\img\choose.png" />
+    <Content Include="RichText\img\details.png" />
+    <Content Include="RichText\img\Dialog.png" />
+    <Content Include="RichText\img\dian.png" />
+    <Content Include="RichText\img\edit.png" />
+    <Content Include="RichText\img\help.png" />
+    <Content Include="RichText\img\Loading.gif" />
+    <Content Include="RichText\img\next.png" />
+    <Content Include="RichText\img\ok.png" />
+    <Content Include="RichText\img\prev.png" />
+    <Content Include="RichText\img\reset.png" />
+    <Content Include="RichText\img\save.png" />
+    <Content Include="RichText\img\view.png" />
+    <Content Include="RichText\js\php\config.json" />
+    <Content Include="RichText\js\third-party\jquery-1.10.2.min.map" />
+    <Content Include="RichText\js\third-party\video-js\font\vjs.eot" />
+    <Content Include="RichText\js\third-party\video-js\font\vjs.ttf" />
+    <Content Include="RichText\js\third-party\video-js\font\vjs.woff" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
     <Content Include="Images\at16.png" />
@@ -198,8 +227,287 @@
     <Content Include="Index.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Opportunity\LoseOpportunity.aspx" />
+    <Content Include="RichText\js\dialogs\anchor\anchor.html" />
+    <Content Include="RichText\js\dialogs\attachment\attachment.css" />
+    <Content Include="RichText\js\dialogs\attachment\attachment.html" />
+    <Content Include="RichText\js\dialogs\attachment\attachment.js" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_chm.gif" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_default.png" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_doc.gif" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_exe.gif" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_jpg.gif" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_mp3.gif" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_mv.gif" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_pdf.gif" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_ppt.gif" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_psd.gif" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_rar.gif" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_txt.gif" />
+    <Content Include="RichText\js\dialogs\attachment\fileTypeImages\icon_xls.gif" />
+    <Content Include="RichText\js\dialogs\attachment\images\alignicon.gif" />
+    <Content Include="RichText\js\dialogs\attachment\images\alignicon.png" />
+    <Content Include="RichText\js\dialogs\attachment\images\bg.png" />
+    <Content Include="RichText\js\dialogs\attachment\images\file-icons.gif" />
+    <Content Include="RichText\js\dialogs\attachment\images\file-icons.png" />
+    <Content Include="RichText\js\dialogs\attachment\images\icons.gif" />
+    <Content Include="RichText\js\dialogs\attachment\images\icons.png" />
+    <Content Include="RichText\js\dialogs\attachment\images\image.png" />
+    <Content Include="RichText\js\dialogs\attachment\images\progress.png" />
+    <Content Include="RichText\js\dialogs\attachment\images\success.gif" />
+    <Content Include="RichText\js\dialogs\attachment\images\success.png" />
+    <Content Include="RichText\js\dialogs\background\background.css" />
+    <Content Include="RichText\js\dialogs\background\background.html" />
+    <Content Include="RichText\js\dialogs\background\background.js" />
+    <Content Include="RichText\js\dialogs\background\images\bg.png" />
+    <Content Include="RichText\js\dialogs\background\images\success.png" />
+    <Content Include="RichText\js\dialogs\charts\chart.config.js" />
+    <Content Include="RichText\js\dialogs\charts\charts.css" />
+    <Content Include="RichText\js\dialogs\charts\charts.html" />
+    <Content Include="RichText\js\dialogs\charts\charts.js" />
+    <Content Include="RichText\js\dialogs\charts\images\charts0.png" />
+    <Content Include="RichText\js\dialogs\charts\images\charts1.png" />
+    <Content Include="RichText\js\dialogs\charts\images\charts2.png" />
+    <Content Include="RichText\js\dialogs\charts\images\charts3.png" />
+    <Content Include="RichText\js\dialogs\charts\images\charts4.png" />
+    <Content Include="RichText\js\dialogs\charts\images\charts5.png" />
+    <Content Include="RichText\js\dialogs\emotion\emotion.css" />
+    <Content Include="RichText\js\dialogs\emotion\emotion.html" />
+    <Content Include="RichText\js\dialogs\emotion\emotion.js" />
+    <Content Include="RichText\js\dialogs\emotion\images\0.gif" />
+    <Content Include="RichText\js\dialogs\emotion\images\bface.gif" />
+    <Content Include="RichText\js\dialogs\emotion\images\cface.gif" />
+    <Content Include="RichText\js\dialogs\emotion\images\fface.gif" />
+    <Content Include="RichText\js\dialogs\emotion\images\jxface2.gif" />
+    <Content Include="RichText\js\dialogs\emotion\images\neweditor-tab-bg.png" />
+    <Content Include="RichText\js\dialogs\emotion\images\tface.gif" />
+    <Content Include="RichText\js\dialogs\emotion\images\wface.gif" />
+    <Content Include="RichText\js\dialogs\emotion\images\yface.gif" />
+    <Content Include="RichText\js\dialogs\gmap\gmap.html" />
+    <Content Include="RichText\js\dialogs\help\help.css" />
+    <Content Include="RichText\js\dialogs\help\help.html" />
+    <Content Include="RichText\js\dialogs\help\help.js" />
+    <Content Include="RichText\js\dialogs\image\image.css" />
+    <Content Include="RichText\js\dialogs\image\image.html" />
+    <Content Include="RichText\js\dialogs\image\image.js" />
+    <Content Include="RichText\js\dialogs\image\images\alignicon.jpg" />
+    <Content Include="RichText\js\dialogs\image\images\bg.png" />
+    <Content Include="RichText\js\dialogs\image\images\icons.gif" />
+    <Content Include="RichText\js\dialogs\image\images\icons.png" />
+    <Content Include="RichText\js\dialogs\image\images\image.png" />
+    <Content Include="RichText\js\dialogs\image\images\progress.png" />
+    <Content Include="RichText\js\dialogs\image\images\success.gif" />
+    <Content Include="RichText\js\dialogs\image\images\success.png" />
+    <Content Include="RichText\js\dialogs\insertframe\insertframe.html" />
+    <Content Include="RichText\js\dialogs\internal.js" />
+    <Content Include="RichText\js\dialogs\link\link.html" />
+    <Content Include="RichText\js\dialogs\map\map.html" />
+    <Content Include="RichText\js\dialogs\map\show.html" />
+    <Content Include="RichText\js\dialogs\music\music.css" />
+    <Content Include="RichText\js\dialogs\music\music.html" />
+    <Content Include="RichText\js\dialogs\music\music.js" />
+    <Content Include="RichText\js\dialogs\preview\preview.html" />
+    <Content Include="RichText\js\dialogs\scrawl\images\addimg.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\brush.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\delimg.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\delimgH.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\empty.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\emptyH.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\eraser.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\redo.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\redoH.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\scale.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\scaleH.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\size.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\undo.png" />
+    <Content Include="RichText\js\dialogs\scrawl\images\undoH.png" />
+    <Content Include="RichText\js\dialogs\scrawl\scrawl.css" />
+    <Content Include="RichText\js\dialogs\scrawl\scrawl.html" />
+    <Content Include="RichText\js\dialogs\scrawl\scrawl.js" />
+    <Content Include="RichText\js\dialogs\searchreplace\searchreplace.html" />
+    <Content Include="RichText\js\dialogs\searchreplace\searchreplace.js" />
+    <Content Include="RichText\js\dialogs\snapscreen\snapscreen.html" />
+    <Content Include="RichText\js\dialogs\spechars\spechars.html" />
+    <Content Include="RichText\js\dialogs\spechars\spechars.js" />
+    <Content Include="RichText\js\dialogs\table\dragicon.png" />
+    <Content Include="RichText\js\dialogs\table\edittable.css" />
+    <Content Include="RichText\js\dialogs\table\edittable.html" />
+    <Content Include="RichText\js\dialogs\table\edittable.js" />
+    <Content Include="RichText\js\dialogs\table\edittd.html" />
+    <Content Include="RichText\js\dialogs\table\edittip.html" />
+    <Content Include="RichText\js\dialogs\template\config.js" />
+    <Content Include="RichText\js\dialogs\template\images\bg.gif" />
+    <Content Include="RichText\js\dialogs\template\images\pre0.png" />
+    <Content Include="RichText\js\dialogs\template\images\pre1.png" />
+    <Content Include="RichText\js\dialogs\template\images\pre2.png" />
+    <Content Include="RichText\js\dialogs\template\images\pre3.png" />
+    <Content Include="RichText\js\dialogs\template\images\pre4.png" />
+    <Content Include="RichText\js\dialogs\template\template.css" />
+    <Content Include="RichText\js\dialogs\template\template.html" />
+    <Content Include="RichText\js\dialogs\template\template.js" />
+    <Content Include="RichText\js\dialogs\video\images\bg.png" />
+    <Content Include="RichText\js\dialogs\video\images\center_focus.jpg" />
+    <Content Include="RichText\js\dialogs\video\images\file-icons.gif" />
+    <Content Include="RichText\js\dialogs\video\images\file-icons.png" />
+    <Content Include="RichText\js\dialogs\video\images\icons.gif" />
+    <Content Include="RichText\js\dialogs\video\images\icons.png" />
+    <Content Include="RichText\js\dialogs\video\images\image.png" />
+    <Content Include="RichText\js\dialogs\video\images\left_focus.jpg" />
+    <Content Include="RichText\js\dialogs\video\images\none_focus.jpg" />
+    <Content Include="RichText\js\dialogs\video\images\progress.png" />
+    <Content Include="RichText\js\dialogs\video\images\right_focus.jpg" />
+    <Content Include="RichText\js\dialogs\video\images\success.gif" />
+    <Content Include="RichText\js\dialogs\video\images\success.png" />
+    <Content Include="RichText\js\dialogs\video\video.css" />
+    <Content Include="RichText\js\dialogs\video\video.html" />
+    <Content Include="RichText\js\dialogs\video\video.js" />
+    <Content Include="RichText\js\dialogs\webapp\webapp.html" />
+    <Content Include="RichText\js\dialogs\wordimage\fClipboard_ueditor.swf" />
+    <Content Include="RichText\js\dialogs\wordimage\imageUploader.swf" />
+    <Content Include="RichText\js\dialogs\wordimage\tangram.js" />
+    <Content Include="RichText\js\dialogs\wordimage\wordimage.html" />
+    <Content Include="RichText\js\dialogs\wordimage\wordimage.js" />
+    <Content Include="RichText\js\lang\en\en.js" />
+    <Content Include="RichText\js\lang\en\images\addimage.png" />
+    <Content Include="RichText\js\lang\en\images\alldeletebtnhoverskin.png" />
+    <Content Include="RichText\js\lang\en\images\alldeletebtnupskin.png" />
+    <Content Include="RichText\js\lang\en\images\background.png" />
+    <Content Include="RichText\js\lang\en\images\button.png" />
+    <Content Include="RichText\js\lang\en\images\copy.png" />
+    <Content Include="RichText\js\lang\en\images\deletedisable.png" />
+    <Content Include="RichText\js\lang\en\images\deleteenable.png" />
+    <Content Include="RichText\js\lang\en\images\listbackground.png" />
+    <Content Include="RichText\js\lang\en\images\localimage.png" />
+    <Content Include="RichText\js\lang\en\images\music.png" />
+    <Content Include="RichText\js\lang\en\images\rotateleftdisable.png" />
+    <Content Include="RichText\js\lang\en\images\rotateleftenable.png" />
+    <Content Include="RichText\js\lang\en\images\rotaterightdisable.png" />
+    <Content Include="RichText\js\lang\en\images\rotaterightenable.png" />
+    <Content Include="RichText\js\lang\en\images\upload.png" />
+    <Content Include="RichText\js\lang\zh-cn\images\copy.png" />
+    <Content Include="RichText\js\lang\zh-cn\images\localimage.png" />
+    <Content Include="RichText\js\lang\zh-cn\images\music.png" />
+    <Content Include="RichText\js\lang\zh-cn\images\upload.png" />
+    <Content Include="RichText\js\lang\zh-cn\zh-cn.js" />
+    <Content Include="RichText\js\php\action_crawler.php" />
+    <Content Include="RichText\js\php\action_list.php" />
+    <Content Include="RichText\js\php\action_upload.php" />
+    <Content Include="RichText\js\php\controller.php" />
+    <Content Include="RichText\js\php\Uploader.class.php" />
+    <Content Include="RichText\js\themes\default\css\ueditor.css" />
+    <Content Include="RichText\js\themes\default\css\ueditor.min.css" />
+    <Content Include="RichText\js\themes\default\dialogbase.css" />
+    <Content Include="RichText\js\themes\default\images\anchor.gif" />
+    <Content Include="RichText\js\themes\default\images\arrow.png" />
+    <Content Include="RichText\js\themes\default\images\arrow_down.png" />
+    <Content Include="RichText\js\themes\default\images\arrow_up.png" />
+    <Content Include="RichText\js\themes\default\images\button-bg.gif" />
+    <Content Include="RichText\js\themes\default\images\cancelbutton.gif" />
+    <Content Include="RichText\js\themes\default\images\charts.png" />
+    <Content Include="RichText\js\themes\default\images\cursor_h.gif" />
+    <Content Include="RichText\js\themes\default\images\cursor_h.png" />
+    <Content Include="RichText\js\themes\default\images\cursor_v.gif" />
+    <Content Include="RichText\js\themes\default\images\cursor_v.png" />
+    <Content Include="RichText\js\themes\default\images\dialog-title-bg.png" />
+    <Content Include="RichText\js\themes\default\images\filescan.png" />
+    <Content Include="RichText\js\themes\default\images\highlighted.gif" />
+    <Content Include="RichText\js\themes\default\images\icons-all.gif" />
+    <Content Include="RichText\js\themes\default\images\icons.gif" />
+    <Content Include="RichText\js\themes\default\images\icons.png" />
+    <Content Include="RichText\js\themes\default\images\loaderror.png" />
+    <Content Include="RichText\js\themes\default\images\loading.gif" />
+    <Content Include="RichText\js\themes\default\images\lock.gif" />
+    <Content Include="RichText\js\themes\default\images\neweditor-tab-bg.png" />
+    <Content Include="RichText\js\themes\default\images\pagebreak.gif" />
+    <Content Include="RichText\js\themes\default\images\scale.png" />
+    <Content Include="RichText\js\themes\default\images\sortable.png" />
+    <Content Include="RichText\js\themes\default\images\spacer.gif" />
+    <Content Include="RichText\js\themes\default\images\sparator_v.png" />
+    <Content Include="RichText\js\themes\default\images\table-cell-align.png" />
+    <Content Include="RichText\js\themes\default\images\tangram-colorpicker.png" />
+    <Content Include="RichText\js\themes\default\images\toolbar_bg.png" />
+    <Content Include="RichText\js\themes\default\images\unhighlighted.gif" />
+    <Content Include="RichText\js\themes\default\images\upload.png" />
+    <Content Include="RichText\js\themes\default\images\videologo.gif" />
+    <Content Include="RichText\js\themes\default\images\word.gif" />
+    <Content Include="RichText\js\themes\default\images\wordpaste.png" />
+    <Content Include="RichText\js\themes\iframe.css" />
+    <Content Include="RichText\js\third-party\codemirror\codemirror.css" />
+    <Content Include="RichText\js\third-party\codemirror\codemirror.js" />
+    <Content Include="RichText\js\third-party\highcharts\adapters\mootools-adapter.js" />
+    <Content Include="RichText\js\third-party\highcharts\adapters\mootools-adapter.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\adapters\prototype-adapter.js" />
+    <Content Include="RichText\js\third-party\highcharts\adapters\prototype-adapter.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\adapters\standalone-framework.js" />
+    <Content Include="RichText\js\third-party\highcharts\adapters\standalone-framework.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\highcharts-more.js" />
+    <Content Include="RichText\js\third-party\highcharts\highcharts-more.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\highcharts.js" />
+    <Content Include="RichText\js\third-party\highcharts\highcharts.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\annotations.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\annotations.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\canvas-tools.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\canvas-tools.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\data.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\data.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\drilldown.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\drilldown.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\exporting.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\exporting.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\funnel.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\funnel.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\heatmap.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\heatmap.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\map.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\map.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\no-data-to-display.js" />
+    <Content Include="RichText\js\third-party\highcharts\modules\no-data-to-display.src.js" />
+    <Content Include="RichText\js\third-party\highcharts\themes\dark-blue.js" />
+    <Content Include="RichText\js\third-party\highcharts\themes\dark-green.js" />
+    <Content Include="RichText\js\third-party\highcharts\themes\gray.js" />
+    <Content Include="RichText\js\third-party\highcharts\themes\grid.js" />
+    <Content Include="RichText\js\third-party\highcharts\themes\skies.js" />
+    <Content Include="RichText\js\third-party\jquery-1.10.2.js" />
+    <Content Include="RichText\js\third-party\jquery-1.10.2.min.js" />
+    <Content Include="RichText\js\third-party\snapscreen\UEditorSnapscreen.exe" />
+    <Content Include="RichText\js\third-party\SyntaxHighlighter\shCore.js" />
+    <Content Include="RichText\js\third-party\SyntaxHighlighter\shCoreDefault.css" />
+    <Content Include="RichText\js\third-party\video-js\font\vjs.svg" />
+    <Content Include="RichText\js\third-party\video-js\video-js.css" />
+    <Content Include="RichText\js\third-party\video-js\video-js.min.css" />
+    <Content Include="RichText\js\third-party\video-js\video-js.swf" />
+    <Content Include="RichText\js\third-party\video-js\video.dev.js" />
+    <Content Include="RichText\js\third-party\video-js\video.js" />
+    <Content Include="RichText\js\third-party\webuploader\Uploader.swf" />
+    <Content Include="RichText\js\third-party\webuploader\webuploader.css" />
+    <Content Include="RichText\js\third-party\webuploader\webuploader.custom.js" />
+    <Content Include="RichText\js\third-party\webuploader\webuploader.custom.min.js" />
+    <Content Include="RichText\js\third-party\webuploader\webuploader.flashonly.js" />
+    <Content Include="RichText\js\third-party\webuploader\webuploader.flashonly.min.js" />
+    <Content Include="RichText\js\third-party\webuploader\webuploader.html5only.js" />
+    <Content Include="RichText\js\third-party\webuploader\webuploader.html5only.min.js" />
+    <Content Include="RichText\js\third-party\webuploader\webuploader.js" />
+    <Content Include="RichText\js\third-party\webuploader\webuploader.min.js" />
+    <Content Include="RichText\js\third-party\webuploader\webuploader.withoutimage.js" />
+    <Content Include="RichText\js\third-party\webuploader\webuploader.withoutimage.min.js" />
+    <Content Include="RichText\js\third-party\xss.min.js" />
+    <Content Include="RichText\js\third-party\zeroclipboard\ZeroClipboard.js" />
+    <Content Include="RichText\js\third-party\zeroclipboard\ZeroClipboard.min.js" />
+    <Content Include="RichText\js\third-party\zeroclipboard\ZeroClipboard.swf" />
+    <Content Include="RichText\js\QuoteBody.js" />
+    <Content Include="RichText\js\QuoteTemplate.js" />
+    <Content Include="RichText\js\ueditor.all.js" />
+    <Content Include="RichText\js\ueditor.all.min.js" />
+    <Content Include="RichText\js\ueditor.config.js" />
+    <Content Include="RichText\js\ueditor.parse.js" />
+    <Content Include="RichText\js\ueditor.parse.min.js" />
     <Content Include="QuoteTemplate\QuoteTemplateAdd.aspx" />
     <Content Include="Opportunity\ViewOpportunity.aspx" />
+    <Content Include="QuoteTemplate\QuoteTemplateBodyEdit.aspx" />
+    <Content Include="QuoteTemplate\QuoteTemplateBottomEdit.aspx" />
+    <Content Include="QuoteTemplate\QuoteTemplateEdit.aspx" />
+    <Content Include="QuoteTemplate\QuoteTemplateFootEdit.aspx" />
+    <Content Include="QuoteTemplate\QuoteTemplateHeadEdit.aspx" />
+    <Content Include="QuoteTemplate\QuoteTemplateTopEdit.aspx" />
     <Content Include="Quote\QuoteAddAndUpdate.aspx" />
     <Content Include="Scripts\bootstrap.min-3.3.4.js" />
     <Content Include="Opportunity\OpportunityAddAndEdit.aspx" />
@@ -436,7 +744,56 @@
     </Compile>
     <Compile Include="QuoteTemplate\QuoteTemplateAdd.aspx.designer.cs">
       <DependentUpon>QuoteTemplateAdd.aspx</DependentUpon>
-	</Compile>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateBodyEdit.aspx.cs">
+      <DependentUpon>QuoteTemplateBodyEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateBodyEdit.aspx.designer.cs">
+      <DependentUpon>QuoteTemplateBodyEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateBottomEdit.aspx.cs">
+      <DependentUpon>QuoteTemplateBottomEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateBottomEdit.aspx.designer.cs">
+      <DependentUpon>QuoteTemplateBottomEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateEdit.aspx.cs">
+      <DependentUpon>QuoteTemplateEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateEdit.aspx.designer.cs">
+      <DependentUpon>QuoteTemplateEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateFootEdit.aspx.cs">
+      <DependentUpon>QuoteTemplateFootEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateFootEdit.aspx.designer.cs">
+      <DependentUpon>QuoteTemplateFootEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateHeadEdit.aspx.cs">
+      <DependentUpon>QuoteTemplateHeadEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateHeadEdit.aspx.designer.cs">
+      <DependentUpon>QuoteTemplateHeadEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateTopEdit.aspx.cs">
+      <DependentUpon>QuoteTemplateTopEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateTopEdit.aspx.designer.cs">
+      <DependentUpon>QuoteTemplateTopEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="QuoteTemplate\test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteTemplate\test.aspx.designer.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Quote\QuoteAddAndUpdate.aspx.cs">
       <DependentUpon>QuoteAddAndUpdate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

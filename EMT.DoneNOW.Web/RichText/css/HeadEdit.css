@@ -1,0 +1,234 @@
+body{
+    overflow: hidden;
+}
+/*顶部内容和帮助*/
+.TitleBar{
+    color: #fff;
+    background-color: #346a95;
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.TitleBar>.Title{
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 95%;
+}
+.text2{
+    margin-left: 5px;
+}
+.help{
+    background-image: url(../img/help.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 16px;
+    border-radius: 50%;
+}
+/*按钮*/
+.ButtonContainer{
+    padding: 0 10px 10px 10px;
+    width: auto;
+    height: 26px;
+}
+.ButtonContainer ul li .Button{
+    margin-right: 5px;
+    vertical-align: top;
+}
+li.Button{
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+    border: 1px solid #d7d7d7;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: #4f4f4f;
+    cursor: pointer;
+    height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-decoration: none;
+}
+.Button>.Icon{
+    display: inline-block;
+    flex: 0 0 auto;
+    height: 16px;
+    margin: 0 3px;
+    width: 16px;
+}
+.Ok{
+    background-image: url("../img/ok.png");
+}
+.Cancel{
+    background-image: url("../img/cancel.png");
+}
+.Button>.Text{
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Section {
+    border: 1px solid #d3d3d3;
+    margin: 0 0 12px 10px;
+    padding: 4px 0 4px 0;
+    width: 836px;
+    height:400px;
+}
+.Section>.Heading {
+    overflow: hidden;
+    padding: 2px 4px 8px 6px;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Section>.Content {
+    padding-left: 28px;
+    padding-right: 28px;
+}
+.Section>.DescriptionText {
+    color: #666;
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: -4px;
+    padding: 0 0 8px 28px;
+}
+/*弹出框的图标*/
+.Dialog{
+    width:21px;
+    height:20px;
+    background:#fafafa;
+    position: absolute;
+    left: 555px;
+    top: 139px;
+    z-index:1000;
+    border:1px solid #fafafa;
+}
+.Dialog:hover{
+    border:1px solid #dcac6c;
+    background: #ffe69f;
+}
+/*弹出框内容*/
+.AlertBox{
+    width: 486px;height: 450px;
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom:0;
+    right: 0;
+    margin: auto;
+    background-color: #b9b9b9;
+    border: solid 4px #b9b9b9;
+    z-index:2000;
+    display: none;
+}
+.AlertBox>div {
+    background-color: #fff;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.CancelDialogButton{
+    background-image: url(../img/cancel1.png);
+    background-position: 0 -32px;
+    border-radius:50%;
+    cursor: pointer;
+    height: 32px;
+    position: absolute;
+    right: -14px;
+    top: -14px;
+    width: 32px;
+}
+.AlertTitleBar{
+    color: #fff;
+    background-color: #346a95;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.AlertTitle {
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 80%;
+}
+.AlertContent{
+    top: 46px;
+    bottom: 0px;
+    left: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: absolute;
+    right: 0;
+    padding: 0 10px 0 10px;
+}
+.AlertContentTitle{
+    padding-bottom: 5px;
+    color: #666;
+    font-size: 12px;
+    overflow: hidden;
+}
+select {
+    color: #333;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    border: 1px solid #d7d7d7;
+    font-size: 12px;
+    resize: vertical;
+}
+#AlertVariableFilter{
+    margin-bottom: 5px;
+    width: 410px;
+}
+#AlertVariableList{
+    height: 249px;
+    width: 410px;
+}
+select option {
+    line-height: 16px;
+}
+/*黑色背景*/
+#BackgroundOverLay{
+    width:100%;
+    height:100%;
+    background: black;
+    opacity: 0.6;
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+
+
