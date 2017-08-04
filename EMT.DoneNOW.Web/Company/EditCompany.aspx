@@ -18,7 +18,7 @@
 </head>
 <body>
     <form id="EditCompany" runat="server">
-        <div class="header">添加客户</div>
+        <div class="header">修改客户</div>
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
@@ -27,7 +27,7 @@
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
                     <asp:Button ID="delete" runat="server" Text="删除" OnClick="delete_Click" BorderStyle="None" />
                 </li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                <li id="close"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
                     <%--<asp:Button ID="close" runat="server" Text="关闭" />--%>
                     关闭
                 </li>
@@ -321,7 +321,7 @@
         </div>
         <%--// location_list--%>
         <div class="content clear" style="display: none;">
-            <a href="LocationManage.aspx?account_id=<%=account.id %>" style="margin-left:10px;">新增地址</a>
+            <a href="#" style="margin-left:10px;" onclick="window.open('LocationManage.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.LocationAdd %>','left=200,top=200,width=900,height=750', false);">新增地址</a>
             <table style="text-align: center;" class="table table-hover" id="addressManage">
                 <tr style="text-align: center;">
                     <th>地址类型</th>
@@ -364,11 +364,11 @@
                     <td><%=location.is_default==1?"是":"否" %></td>
                     <%if (location.is_default != 1)
                         { %>
-                    <td><a href="LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>">修改</a> <a href="#" onclick="deleteLocation(<%=location.id %>)">删除</a></td>
+                    <td><a href="#" onclick="window.open('LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.LoactionEdit %>','left=200,top=200,width=900,height=750', false);">修改</a> <a href="#" onclick="deleteLocation(<%=location.id %>)">删除</a></td>
                     <%}
                         else
                         { %>
-                    <td><a href="LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>">修改</a></td>
+                    <td><a href="#" onclick="window.open('LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.LoactionEdit %>','left=200,top=200,width=900,height=750', false);">修改</a></td>
                     <%} %>
                 </tr>
                 <% }%>
@@ -641,12 +641,12 @@
 <script type="text/javascript">
     $(function () {
 
-        var targetTimes = 0;
-        // $("a").attr('target', '_blank' + targetTimes);
-        $("a").click(function () {
-            $(this).attr('target', '_blank' + targetTimes);
-            targetTimes = Number(targetTimes) + 1;
-        })
+        //var targetTimes = 0;
+        //// $("a").attr('target', '_blank' + targetTimes);
+        //$("a").click(function () {
+        //    $(this).attr('target', '_blank' + targetTimes);
+        //    targetTimes = Number(targetTimes) + 1;
+        //})
 
         var old_company_type = $("#CompanyType").find("option:selected").text();
 
@@ -675,10 +675,10 @@
                 alert("请输入电话名称");
                 return false;
             }
-            if (!checkPhone(phone)) {
-                alert("请输入正确格式的电话！");
-                return false;
-            }
+            //if (!checkPhone(phone)) {
+            //    alert("请输入正确格式的电话！");
+            //    return false;
+            //}
             var firstName = $("#first_name").val();                                  // 姓
             var lastName = $("#last_name").val();                                    // 名
             var country = $("#country_id").val();                                      // 国家
@@ -691,6 +691,17 @@
             var address = $("#address").val();                                      // 地址信息
             if (address == null || address == '') {
                 alert("请完善地址信息");                                              // 地址的必填校验
+                return false;
+            }
+            var CompanyType = $("#CompanyType").val();
+            if (CompanyType == 0) {
+                alert("请选择客户类型");
+                return false;
+            }
+
+            var AccountManger = $("#AccountManger").val();
+            if (AccountManger == 0) {
+                alert("请选择客户经理");
                 return false;
             }
 

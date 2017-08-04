@@ -24,7 +24,8 @@
             <input type="hidden" name="page_num" <%if (queryResult != null) {%>value="<%=queryResult.page %>"<%} %> />
             <input type="hidden" id="search_id" name="search_id" <%if (queryResult != null) {%>value="<%=queryResult.query_id %>"<%} %> />
             <input type="hidden" id="order" name="order" <%if (queryResult != null) {%>value="<%=queryResult.order_by %>"<%} %> />
-            <input type="hidden" id="type" name="type" value="<%=queryPage %>" />
+            <input type="hidden" id="type" name="type" value="<%=queryTypeId %>" />
+            <input type="hidden" id="group" name="group" value="<%=paraGroupId %>" />
             <div id="conditions">
             </div>
         </div>

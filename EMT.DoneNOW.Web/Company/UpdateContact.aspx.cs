@@ -27,10 +27,17 @@ namespace EMT.DoneNOW.Web.Company
                 var updateLocationContact = Request.QueryString["updateLocationContact"];
                 var updateFaxPhoneContact = Request.QueryString["updateFaxPhoneContact"];
                 var account_id = Request.QueryString["account_id"];
-                    
+
                 // GetContactByIds
-                locationContactList = new ContactBLL().GetContactByIds(updateLocationContact);
-                faxPhoneContactList = new ContactBLL().GetContactByIds(updateFaxPhoneContact);
+                if (!string.IsNullOrEmpty(updateLocationContact))
+                {
+                    locationContactList = new ContactBLL().GetContactByIds(updateLocationContact);
+                }
+                if (!string.IsNullOrEmpty(updateFaxPhoneContact))
+                {
+                    faxPhoneContactList = new ContactBLL().GetContactByIds(updateFaxPhoneContact);
+                }
+                
                 account = new CompanyBLL().GetCompany(Convert.ToInt64(account_id));
                 defaultLocation = new LocationBLL().GetLocationByAccountId(Convert.ToInt64(account_id));
                 if (account != null)

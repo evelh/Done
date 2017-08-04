@@ -17,7 +17,8 @@ namespace EMT.DoneNOW.DTO
         public class PageQuery
         {
             public string query_name;
-            public string query_url;
+            public long typeId;
+            public long groupId;
         }
     }
 }

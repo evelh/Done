@@ -57,12 +57,14 @@
     <Compile Include="CRM\crm_opportunity.cs" />
     <Compile Include="CRM\sys_quote_tmpl.cs" />
     <Compile Include="CRM\crm_quote.cs" />
+    <Compile Include="CRM\crm_quote_item.cs" />
     <Compile Include="Dictionary\d_account_classification.cs" />
     <Compile Include="Dictionary\d_district.cs" />
     <Compile Include="Dictionary\d_general.cs" />
     <Compile Include="Dictionary\d_general_table.cs" />
     <Compile Include="Dictionary\d_country.cs" />
     <Compile Include="Dictionary\d_query_para.cs" />
+    <Compile Include="Dictionary\d_query_para_group.cs" />
     <Compile Include="Dictionary\d_query_result.cs" />
     <Compile Include="Dictionary\d_query_sql.cs" />
     <Compile Include="Dictionary\d_query_type.cs" />

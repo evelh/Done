@@ -12,7 +12,10 @@ namespace EMT.DoneNOW.Web
     public partial class SearchBodyFrame : BasePage
     {
         private QueryCommonBLL bll = new QueryCommonBLL();
-        protected string queryPage;     // 查询页名称
+        protected int catId = 0;
+        //protected string queryPage;     // 查询页名称
+        protected long queryTypeId;     // 查询页id
+        protected long paraGroupId;     // 查询条件分组id
         protected string addBtn;        // 根据不同查询页得到的新增按钮名
         protected QueryResultDto queryResult = null;            // 查询结果数据
         protected List<QueryResultParaDto> resultPara = null;   // 查询结果列信息
@@ -20,14 +23,21 @@ namespace EMT.DoneNOW.Web
         protected List<DictionaryEntryDto> queryParaValue = new List<DictionaryEntryDto>();  // 查询条件和条件值
         protected void Page_Load(object sender, EventArgs e)
         {
-            queryPage = HttpContext.Current.Request.QueryString["type"];
-            if (string.IsNullOrEmpty(queryPage))
+            if (!int.TryParse(Request.QueryString["cat"], out catId))
+                catId = 0;
+            if (!long.TryParse(Request.QueryString["type"], out queryTypeId))
+                queryTypeId = 0;
+            if (!long.TryParse(Request.QueryString["group"], out paraGroupId))
+                paraGroupId = 0;
+            if (catId == 0 || queryTypeId == 0 || paraGroupId == 0)
             {
-                queryPage = "客户查询";
+                Response.Close();
+                return;
             }
+            
             InitData();
             GetMenus();
-            string flag = HttpContext.Current.Request.QueryString["show"];
+            string flag = Request.QueryString["show"];
             if (string.IsNullOrEmpty(flag) || !flag.Equals("1"))
                 QueryData();
         }
@@ -37,16 +47,22 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void InitData()
         {
-            switch(queryPage)
+            switch(catId)
             {
-                case "客户查询":
+                case (int)DicEnum.QUERY_CATE.COMPANY:
                     addBtn = "新增客户";
                     break;
-                case "联系人查询":
+                case (int)DicEnum.QUERY_CATE.CONTACT:
                     addBtn = "新增联系人";
                     break;
-                case "商机查询":
+                case (int)DicEnum.QUERY_CATE.OPPORTUNITY:
                     addBtn = "新增商机";
+                    break;
+                case (int)DicEnum.QUERY_CATE.QUOTE:
+                    addBtn = "新增报价";
+                    break;
+                case (int)DicEnum.QUERY_CATE.QUOTE_TEMPLATE:
+                    addBtn = "新增报价模板";
                     break;
                 default:
                     addBtn = "新增客户";
@@ -60,8 +76,9 @@ namespace EMT.DoneNOW.Web
         private void QueryData()
         {
             queryParaValue.Clear();
-            resultPara = bll.GetResultParaSelect(GetLoginUserId(), queryPage);    // 获取查询结果列信息
+            resultPara = bll.GetResultParaSelect(GetLoginUserId(), paraGroupId);    // 获取查询结果列信息
 
+            //var keys = Request.Form;
             var keys = HttpContext.Current.Request.QueryString;
             string order = keys["order"];   // order by 条件
             int page;
@@ -88,7 +105,7 @@ namespace EMT.DoneNOW.Web
 
             if (queryResult == null)  // 不使用缓存或缓存过期
             {
-                var para = bll.GetConditionPara(GetLoginUserId(), queryPage);   // 查询条件信息
+                var para = bll.GetConditionPara(GetLoginUserId(), paraGroupId);   // 查询条件信息
                 QueryParaDto queryPara = new QueryParaDto();
                 queryPara.query_params = new List<Para>();
                 foreach (var p in para)
@@ -129,7 +146,8 @@ namespace EMT.DoneNOW.Web
                     }
                 }
 
-                queryPara.query_page_name = queryPage;
+                queryPara.query_type_id = queryTypeId;
+                queryPara.para_group_id = paraGroupId;
                 queryPara.page = page;
                 queryPara.order_by = order;
                 queryPara.page_size = pageSize;
@@ -145,9 +163,9 @@ namespace EMT.DoneNOW.Web
         {
             contextMenu = new List<PageContextMenuDto>();
             Dictionary<string, object> dics = null;
-            switch(queryPage)
+            switch(queryTypeId)
             {
-                case "客户查询":
+                case (long)QueryType.Company:
                     dics = new CompanyBLL().GetField();
                     contextMenu.Add(new PageContextMenuDto { text = "修改客户", click_function = "EditCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
@@ -174,14 +192,14 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除客户", click_function = "DeleteCompany()" });
                     break;
-                case "联系人查询":
+                case (long)QueryType.Contact:
                     contextMenu.Add(new PageContextMenuDto { text = "修改联系人", click_function = "EditContact()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看联系人", click_function = "ViewContact()" });
                     contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除联系人", click_function = "DeleteContact()" });
                     break;
-                case "商机查询":
+                case (long)QueryType.Opportunity:
                     contextMenu.Add(new PageContextMenuDto { text = "修改商机", click_function = "EditOpp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看商机", click_function = "ViewOpp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });

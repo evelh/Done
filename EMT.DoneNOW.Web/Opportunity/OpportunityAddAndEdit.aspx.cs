@@ -24,7 +24,7 @@ namespace EMT.DoneNOW.Web.Opportunity
         protected Dictionary<string, object> dic = null;
         protected CompanyBLL conpamyBll = new CompanyBLL();
 
-        protected crm_contact contact = new crm_contact();
+        protected crm_contact contact = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -133,7 +133,6 @@ namespace EMT.DoneNOW.Web.Opportunity
                     if (!string.IsNullOrEmpty(contact_id))
                     {
                         contact = new ContactBLL().GetContact(Convert.ToInt64(contact_id));
-
                     }
                 }
             }

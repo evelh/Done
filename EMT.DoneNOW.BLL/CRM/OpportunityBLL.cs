@@ -27,7 +27,7 @@ namespace EMT.DoneNOW.BLL.CRM
             dic.Add("opportunity_interest_degree", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_INTEREST_DEGREE)));          // 商机客户感兴趣程度
             dic.Add("oppportunity_win_reason_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_WIN_REASON_TYPE)));          // 商机赢单原因类型
             dic.Add("oppportunity_loss_reason_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_LOSS_REASON_TYPE)));          // 商机丢单原因类型
-            dic.Add("oppportunity_advanced_field", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD)));          // 商机扩展字段
+            dic.Add("oppportunity_advanced_field", new d_general_dal().GetDictionaryByCode(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD)));          // 商机扩展字段
             dic.Add("oppportunity_status", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STATUS)));          // 商机状态
             dic.Add("oppportunity_range_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.FORM_TEMPLATE_RANGE_TYPE)));          // 表单模板应用范围
             dic.Add("projected_close_date", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)
@@ -334,8 +334,18 @@ namespace EMT.DoneNOW.BLL.CRM
                 });
 
 
-                // todo 删除crm_quote 相关记录
-                // todo 删除crm_quote_item 相关记录
+        
+                var quoteBLL = new QuoteBLL();
+                var quoteList = new crm_quote_dal().GetQuoteByWhere(" and opportunity_id="+opportunity.id);
+                if (quoteList != null && quoteList.Count > 0)
+                {
+                    quoteList.ForEach(_ =>
+                    {
+                        //_.delete_user_id = user_id;
+                        //_.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        quoteBLL.DeleteQuote(_.id,user.id);
+                    });
+                }
 
 
             }

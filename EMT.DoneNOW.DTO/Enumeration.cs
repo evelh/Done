@@ -28,15 +28,19 @@ namespace EMT.DoneNOW.DTO
         FORM_TEMPLATE_RANGE_TYPE = 18,
         PROJECTED_CLOSED_DATE = 19,
         FORM_TEMPLATE_TYPE = 27,
-
-
+        PAYMENT_TERM=29,                         // 报价：付款期限           
+        PAYMENT_TYPE=30,                         // 报价：付款类型
+        PAYMENT_SHIP_TYPE=31,                    // 报价：配送类型
         DATE_DISPLAY_FORMAT = 35,
         TIME_DISPLAY_FORMAT = 36,
         NUMBER_DISPLAY_FORMAT = 37,
         CURRENCY_POSITIVE_FORMAT = 38,
         CURRENCY_NEGATIVE_FORMAT = 39,
         PAGE_NUMBER_LOCATION = 41,
-        NAME_SUFFIX = 48,
+        QUOTE_ITEM_TYPE=42,                      // 报价项：类型
+        QUOTE_ITEM_PERIOD_TYPE=43,               // 报价项：付费周期类型
+        QUOTE_ITEM_TAX_CATE=44,                  // 报价项：税收种类
+        NAME_SUFFIX = 48,                        
     }
 
     /// <summary>
@@ -260,6 +264,40 @@ namespace EMT.DoneNOW.DTO
             SINGLE_LINE = 548,      // 单行
             MUILTI_LINE = 549,      // 多行
         }
+        /// <summary>
+        /// 报价项：类型-42
+        /// </summary>
+        public enum QUOTE_ITEM_TYPE
+        {
+            PRODUCT=600,                 // 产品
+            DEGRESSION=601,              // 成本
+            WORKING_HOURS=602,           // 工时
+            COST=603,                    // 费用
+            DISTRIBUTION_EXPENSES=604,   // 配送费用
+            DISCOUNT=605,                // 折扣   
+            SERVICE=606,                 // 服务
+            SERVICE_PACK=607,            // 服务包
+            START_COST=608,              // 初始费用
+
+        }
+        /// <summary>
+        /// 报价项：付费周期类型-43
+        /// </summary>
+        public enum QUOTE_ITEM_PERIOD_TYPE
+        {
+            ONE_TIME=609,    // 一次性收费
+            MONTH=610,       // 按月收费
+            QUARTER=611,     // 按季度收费
+            YEAR=612,        // 按年收费
+
+        }
+        /// <summary>
+        /// 报价项：税收种类-44
+        /// </summary>
+        public enum QUOTE_ITEM_TAX_CATE
+        {
+            TAXABLE=599,       // 应纳税
+        }
 
 
         /// <summary>
@@ -293,12 +331,17 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
-        /// 查询页面分类-65
+        /// 查询页面cat_id-65
         /// </summary>
-        public enum QUERY_TYPE
+        public enum QUERY_CATE
         {
-            CUSTOMER = 726,         // 客户
+            COMPANY = 726,          // 客户
             CONTACT = 727,          // 联系人
+            COMPANY_CALLBACK = 728, // 客户查找带回
+            OPPORTUNITY = 865,      // 商机
+            QUOTE = 866,            // 报价
+            ROLL_CALLBACK = 867,    // 角色查找带回
+            QUOTE_TEMPLATE = 868,   // 报价模板
         }
 
         /// <summary>
@@ -340,9 +383,10 @@ namespace EMT.DoneNOW.DTO
             FROM = 766,                                 // 表单模板
             FROMOPPORTUNITY = 767,                      // 商机表单模板
             OPPORTUNITY = 768,                          // 商机
-            NOTIFY = 769,                                 // 通知
-            ACTIVITY = 770,                               // 活动   // todo数据库添加
-
+            NOTIFY = 769,                               // 通知
+            ACTIVITY = 760,                             // 活动   // todo 数据库添加
+            QUOTE = 761,                                // 报价   todo 数据库添加
+            QUOTE_ITEM=762,                             // 报价项   todo 数据库添加
         }
 
         /// <summary>
@@ -382,5 +426,43 @@ namespace EMT.DoneNOW.DTO
         Logout,
     }
 
+    /// <summary>
+    /// 查询分页面
+    /// </summary>
+    public enum QueryType
+    {
+        CompanyOpportunity = 1,     // 客户管理-商机查询
+        CompanyTicket = 2,          // 客户管理-工单查询
+        CompanyConfiguration = 3,   // 客户管理-配置项查询
+        Company = 4,                // 客户管理-客户查询
+        Contact = 5,                // 联系人管理-联系人查询
+        CallBackCompany = 6,        // 查找带回客户
+        Opportunity = 7,            // 商机管理-商机查询
+    }
+
+    public enum OpenWindow
+    {                                         
+        CompanyAdd=101,                           // 
+        CompanyEdit=102,                          // 
+        CompanyDelete=103,                        // 
+        CompanyNameSmilar=104,                    // 名称相似
+        CompanySelect=105,                        // 查找带回客户
+        Subsidiaries=106,                         // 添加子客户
+
+        ContactAdd =111,                           //
+        ContactEdit=112,                          //
+        ContactLocationSelect=113,                // 联系人页面地址的查找带回
+
+        OpportunityAdd=121,                       // 
+        OpportunityEdit=122,                      //
+        OpportunityLose = 123,                    // 
+
+        QuoteAdd =131,                             //
+        QuoteEdit=132,                            //
+
+        LocationAdd = 141,                         // 地址新增
+        LoactionEdit = 142,                        // 地址修改
+
+    }                                         
 
 }

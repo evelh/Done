@@ -84,6 +84,7 @@ namespace EMT.DoneNOW.BLL.CRM
                 var user = UserInfoBLL.GetUserInfo(user_id);
                 new_location.update_user_id = user.id;
                 new_location.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                new_location.additional_address = string.IsNullOrEmpty(new_location.additional_address) ? "" : new_location.additional_address;
                 // 修改客户显示默认地址，默认地址不能主动移除
                 if (new_location.is_default == 1&&old_location.is_default!=1)   //  默认地址不进行修改的时候，忽略不计
                 {

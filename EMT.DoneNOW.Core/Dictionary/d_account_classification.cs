@@ -28,8 +28,6 @@ namespace EMT.DoneNOW.Core
         public String icon_path { get; set; }
         [DataMember]
         public String font_style { get; set; }
-        [DataMember]
-        public Int64 create_time2 { get; set; }
 
     }
 }

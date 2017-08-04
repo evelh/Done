@@ -16,38 +16,120 @@ namespace EMT.DoneNOW.BLL
     public class QueryCommonBLL
     {
         private const int _pageSize = 20;     // 默认查询分页大小
-        private const int _sqlExpireMins = 1 * 60;   // sql查询语句缓存时间
+        private const int _sqlExpireMins = 1 * 60;   // sql查询语句缓存时间(分钟)
 
-        public QueryResultDto getDataTest()
+
+        #region 初始化获取页面信息
+        /// <summary>
+        /// 根据查询页面获取该查询页面内所有查询分组信息
+        /// </summary>
+        /// <param name="cateId"></param>
+        /// <returns></returns>
+        public List<d_query_para_group> GetQueryGroup(int cateId)
         {
-            string sql = "select id as 客户id,name as 客户名称,(select name from d_general where  id=type_id) as 客户类型,no as 客户编号,name as 客户名称return from crm_account where delete_time=0";
-            QueryResultDto result = new QueryResultDto();
+            return new d_query_para_group_dal().GetListByCate(cateId);
+        }
+        #endregion
 
-            var table = new sys_query_type_user_dal().ExecuteDataTable(sql);
-            List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
-            foreach (DataRow row in table.Rows)
+        #region 获取查询条件列查询结果列信息
+        /// <summary>
+        /// 获取查询条件信息
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="groupId">查询条件组id</param>
+        /// <returns></returns>
+        public List<QueryConditionParaDto> GetConditionPara(long userId, long groupId)
+        {
+            var result = new List<QueryConditionParaDto>();
+
+            sys_query_type_user queryUser = new sys_query_type_user_dal().GetQueryTypeUser(userId, groupId);
+            if (queryUser == null)  // 用户未修改查询结果列，使用默认值
             {
-                Dictionary<string, object> column = new Dictionary<string, object>();
-                foreach (DataColumn col in table.Columns)
-                {
-                    column.Add(col.ColumnName, row[col.ColumnName]);
-                }
-                list.Add(column);
+                queryUser = new sys_query_type_user_dal().GetQueryTypeUser(0, groupId);
             }
+            if (queryUser == null)
+                return result;
 
-            result.count = table.Rows.Count;
-            result.query_page_name = "";
-            result.order_by = "";
-            result.page = 1;
-            result.page_count = 1;
-            result.page_size = 50;
-            //result.query_id = queryId;
-            result.query_id = "";
-            result.result = list;
+            // 获取查询条件列信息并按顺序填充
+            var list = new d_query_para_dal().FindListBySql($"SELECT * FROM d_query_para WHERE id IN ({queryUser.query_para_ids}) AND query_para_group_id={groupId} AND is_visible=1");
+            string[] ids = queryUser.query_para_ids.Split(',');
+            for (int i = 0; i < ids.Length; ++i)
+            {
+                long id = long.Parse(ids[i]);
+                var col = list.Find(c => c.id == id);
+                if (col == null)
+                    continue;
+
+                QueryConditionParaDto para = new QueryConditionParaDto
+                {
+                    id = id,
+                    data_type = col.data_type_id,
+                    description = col.col_comment,
+                };
+
+                // 下拉框和多选下拉框，获取列表值
+                if (col.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DROPDOWN
+                    || col.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN)
+                {
+                    var dt = new d_query_para_dal().ExecuteDataTable(col.ref_sql);
+                    if (dt != null)
+                    {
+                        para.values = new List<DictionaryEntryDto>();
+                        foreach (System.Data.DataRow row in dt.Rows)
+                        {
+                            para.values.Add(new DictionaryEntryDto(row[0].ToString(), row[1].ToString()));
+                        }
+                    }
+                }
+
+                result.Add(para);
+            }
 
             return result;
         }
 
+        /// <summary>
+        /// 获取用户已选择的查询结果列信息
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="groupId">查询条件组id</param>
+        /// <returns></returns>
+        public List<QueryResultParaDto> GetResultParaSelect(long userId, long groupId)
+        {
+            var result = new List<QueryResultParaDto>();
+            
+            sys_query_type_user queryUser = new sys_query_type_user_dal().GetQueryTypeUser(userId, groupId);
+            if (queryUser == null)  // 用户未修改查询结果列，使用默认值
+            {
+                queryUser = new sys_query_type_user_dal().GetQueryTypeUser(0, groupId);
+            }
+            if (queryUser == null)
+                return result;
+
+            // 获取显示结果列信息并按顺序填充
+            var list = new d_query_result_dal().FindListBySql($"SELECT * FROM d_query_result WHERE id IN ({queryUser.query_result_ids}) AND query_type_id={queryUser.query_type_id}");
+            string[] ids = queryUser.query_result_ids.Split(',');
+            for (int i = 0; i < ids.Length; ++i)
+            {
+                long id = long.Parse(ids[i]);
+                var col = list.Find(c => c.id == id);
+                if (col == null)
+                    continue;
+                QueryResultParaDto para = new QueryResultParaDto
+                {
+                    id = id,
+                    name = col.col_comment,
+                    length = col.col_length,
+                    type = col.display_type_id
+                };
+                result.Add(para);
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region 组合查询语句、查询结果
         /// <summary>
         /// 根据查询条件查询数据
         /// </summary>
@@ -61,7 +143,8 @@ namespace EMT.DoneNOW.BLL
 
             string sql = GetSql(userId, para, out count);      // 根据查询条件获取查询sql语句
             result.count = count;
-            result.query_page_name = para.query_page_name;
+            result.query_type_id = para.query_type_id;
+            result.para_group_id = para.para_group_id;
             if (count == 0)     // 查询记录总数为0
                 return result;
 
@@ -127,6 +210,8 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public QueryResultDto GetResult(long userId, string queryId, int page, string orderBy, int pagesize = 0)
         {
+            return null;
+            /*
             // 获取缓存的查询信息
             CacheQuerySqlDto cacheSql = CachedInfoBLL.GetQuerySql(queryId);
             if (cacheSql == null)   // 参数错误或者缓存过期
@@ -191,6 +276,7 @@ namespace EMT.DoneNOW.BLL
             result.result = list;
 
             return result;
+            */
         }
 
         /// <summary>
@@ -206,12 +292,11 @@ namespace EMT.DoneNOW.BLL
             string sqlPara = GetPara(userId, para);
             if (sqlPara == "")
                 return "";
-            d_query_type queryType = GetQueryType(para.query_page_name);
 
-            count = new sys_query_type_user_dal().GetQueryCount(queryType.id, userId, sqlPara);
+            count = new sys_query_type_user_dal().GetQueryCount(para.para_group_id, para.query_type_id, userId, sqlPara);
             if (count == 0)
                 return "";
-            string sql = new sys_query_type_user_dal().GetQuerySql(queryType.id, userId, sqlPara, para.order_by);
+            string sql = new sys_query_type_user_dal().GetQuerySql(para.para_group_id, para.query_type_id, userId, sqlPara, para.order_by);
 
             return sql;
         }
@@ -226,9 +311,6 @@ namespace EMT.DoneNOW.BLL
         {
             if (para == null || para.query_params == null)
                 return "";
-            d_query_type queryType = GetQueryType(para.query_page_name);
-            if (queryType == null)
-                return "";
             StringBuilder queryPara = new StringBuilder();
             queryPara.Append("'{");
 
@@ -238,7 +320,7 @@ namespace EMT.DoneNOW.BLL
             {
                 if (p.value == null && p.value2 == null)
                     continue;
-                var param = paraDal.FindSignleBySql<d_query_para>($"SELECT * FROM d_query_para WHERE id={p.id} AND query_type_id={queryType.id}");
+                var param = paraDal.FindSignleBySql<d_query_para>($"SELECT * FROM d_query_para WHERE id={p.id} AND query_type_id={para.query_type_id}");
                 if (param == null)
                     continue;
                 if (param.query_type_id == (int)DicEnum.QUERY_PARA_TYPE.DATE
@@ -275,137 +357,18 @@ namespace EMT.DoneNOW.BLL
 
             return queryPara.ToString();
         }
+        #endregion
 
-        /// <summary>
-        /// 获取查询条件信息
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="queryPageName">查询页面名称</param>
-        /// <returns></returns>
-        public List<QueryConditionParaDto> GetConditionPara(long userId, string queryPageName)
-        {
-            var result = new List<QueryConditionParaDto>();
-            d_query_type queryType = GetQueryType(queryPageName);
-            if (queryType == null)
-                return result;
-
-            sys_query_type_user queryUser = new sys_query_type_user_dal().FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id={userId} AND query_type_id={queryType.id}");
-            if (queryUser == null)  // 用户未修改查询条件列，使用默认值
-            {
-                queryUser = new sys_query_type_user_dal().FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id is null AND query_type_id={queryType.id}");
-            }
-
-            // 获取查询条件列信息并按顺序填充
-            var list = new d_query_para_dal().FindListBySql($"SELECT * FROM d_query_para WHERE id IN ({queryUser.query_para_ids}) AND query_type_id={queryType.id} AND is_visible=1");
-            string[] ids = queryUser.query_para_ids.Split(',');
-            for (int i = 0; i < ids.Length; ++i)
-            {
-                long id = long.Parse(ids[i]);
-                var col = list.Find(c => c.id == id);
-                if (col == null)
-                    continue;
-
-                QueryConditionParaDto para = new QueryConditionParaDto
-                {
-                    id = id,
-                    data_type = col.data_type_id,
-                    description = col.col_comment,
-                };
-
-                // 下拉框和多选下拉框，获取列表值
-                if (col.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DROPDOWN
-                    || col.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN)
-                {
-                    var dt = new d_query_para_dal().ExecuteDataTable(col.ref_sql);
-                    if (dt != null)
-                    {
-                        para.values = new List<DictionaryEntryDto>();
-                        foreach (System.Data.DataRow row in dt.Rows)
-                        {
-                            para.values.Add(new DictionaryEntryDto(row[0].ToString(), row[1].ToString()));
-                        }
-                    }
-                }
-
-                result.Add(para);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// 获取用户已选择的查询结果列信息
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="queryPageName">查询页面名称</param>
-        /// <returns></returns>
-        public List<QueryResultParaDto> GetResultParaSelect(long userId, string queryPageName)
-        {
-            var result = new List<QueryResultParaDto>();
-            d_query_type queryType = GetQueryType(queryPageName);
-            if (queryType == null)
-                return result;
-            sys_query_type_user queryUser = new sys_query_type_user_dal().FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id={userId} AND query_type_id={queryType.id}");
-
-            if (queryUser == null)  // 用户未修改查询结果列，使用默认值
-            {
-                queryUser = new sys_query_type_user_dal().FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id is null AND query_type_id={queryType.id}");
-            }
-
-            // 获取显示结果列信息并按顺序填充
-            var list = new d_query_result_dal().FindListBySql($"SELECT * FROM d_query_result WHERE id IN ({queryUser.query_result_ids}) AND query_type_id={queryType.id}");
-            string[] ids = queryUser.query_result_ids.Split(',');
-            for (int i = 0; i < ids.Length; ++i)
-            {
-                long id = long.Parse(ids[i]);
-                var col = list.Find(c => c.id == id);
-                if (col == null)
-                    continue;
-                QueryResultParaDto para = new QueryResultParaDto
-                {
-                    id = id,
-                    name = col.col_comment,
-                    length = col.col_length,
-                    type = col.display_type_id
-                };
-                result.Add(para);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// 获取一个查询页面所有结果显示列
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="queryPageName"></param>
-        /// <returns></returns>
-        public List<QueryResultParaDto> GetResultParaAll(string queryPageName)
-        {
-            List<QueryResultParaDto> result = new List<QueryResultParaDto>();
-            d_query_type queryType = GetQueryType(queryPageName);
-            if (queryType == null)
-                return result;
-            string sql = $"SELECT * FROM d_query_result WHERE query_type_id={queryType.id} ORDER BY col_order ASC";
-            var queryResultList = new d_query_result_dal().FindListBySql(sql);
-            foreach (var qr in queryResultList)
-            {
-                result.Add(new QueryResultParaDto { id = qr.id, name = qr.col_comment, length = qr.col_length, type = qr.display_type_id });
-            }
-
-            return result;
-        }
-
-        #region 查询结果选择功能
+        #region 修改查询结果列
         /// <summary>
         /// 获取用户已选择的结果显示列 （查询结果选择器用）
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="queryPageName"></param>
+        /// <param name="groupId">查询条件组id</param>
         /// <returns></returns>
-        public List<DictionaryEntryDto> GetResultSelect(long userId, string queryPageName)
+        public List<DictionaryEntryDto> GetResultSelect(long userId, long groupId)
         {
-            var list = GetResultParaSelect(userId, queryPageName);
+            var list = GetResultParaSelect(userId, groupId);
             List<DictionaryEntryDto> result = new List<DictionaryEntryDto>();
             foreach (var qr in list)
             {
@@ -420,14 +383,14 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
-        /// 获取一个查询页面可选的所有结果显示列
+        /// 获取一个查询页面可选的所有结果显示列 （查询结果选择器用）
         /// </summary>
-        /// <param name="queryPageName"></param>
+        /// <param name="queryTypeId"></param>
         /// <returns></returns>
-        public List<DictionaryEntryDto> GetResultAll(string queryPageName)
+        public List<DictionaryEntryDto> GetResultAll(long queryTypeId)
         {
             List<DictionaryEntryDto> result = new List<DictionaryEntryDto>();
-            var queryResultList = GetResultParaAll(queryPageName);
+            var queryResultList = GetResultParaAll(queryTypeId);
             foreach (var qr in queryResultList)
             {
                 if (qr.type == (int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
@@ -444,15 +407,15 @@ namespace EMT.DoneNOW.BLL
         /// 修改用户所选的查询结果显示列
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="queryPageName"></param>
+        /// <param name="groupId">查询条件组id</param>
         /// <param name="ids">修改的查询结果显示列字符串（如：2,3,5）</param>
-        public void EditResultSelect(long userId, string queryPageName, string ids)
+        public void EditResultSelect(long userId, long queryTypeId, long groupId, string ids)
         {
             if (string.IsNullOrEmpty(ids))
                 return;
 
             // 检查输入参数是否合法
-            var resultAll = GetResultAll(queryPageName);
+            var resultAll = GetResultAll(queryTypeId);
             string[] idArr = ids.Split(',');
             foreach (string id in idArr)
             {
@@ -461,43 +424,94 @@ namespace EMT.DoneNOW.BLL
                     return;
             }
 
-            d_query_type queryType = GetQueryType(queryPageName);
-            if (queryType == null)
-                return;
-            
             // 向查询结果列添加不可见列
-            string sql = $"SELECT * FROM d_query_result WHERE query_type_id={queryType.id} AND display_type_id IN ({(int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID},{(int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP},{(int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE})";
+            string sql = $"SELECT * FROM d_query_result WHERE query_type_id={queryTypeId} AND display_type_id IN ({(int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID},{(int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP},{(int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE})";
             var paras = new d_query_result_dal().FindListBySql(sql);
             if (paras == null || paras.Count == 0)
-                throw new Exception($"query_type_id:{queryType.id}-数据库未添加d_query_result记录:id");
+                throw new Exception($"query_type_id:{queryTypeId}-数据库未添加d_query_result记录:id");
             foreach (var p in paras)
                 ids += "," + p.id;
 
             var dal = new sys_query_type_user_dal();
-            sys_query_type_user queryUser = dal.FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id={userId} AND query_type_id={queryType.id}");
+
+            // 同时修改所有相同query_type_id的查询结果
+            sql = $"UPDATE sys_query_type_user SET query_result_ids='{ids}' WHERE user_id={userId} AND query_type_id={queryTypeId}";
+            dal.ExecuteSQL(sql);
+
+            sys_query_type_user queryUser = dal.FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id={userId} AND query_para_group_id={groupId}");
             // 用户第一次修改，新增记录
             if (queryUser == null)
             {
-                sys_query_type_user queryDefault = dal.FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id is null AND query_type_id={queryType.id}");
+                sys_query_type_user queryDefault = dal.FindSignleBySql<sys_query_type_user>($"SELECT * FROM sys_query_type_user WHERE user_id is null AND query_para_group_id={groupId}");
                 queryUser = new sys_query_type_user
                 {
                     id = dal.GetNextIdSys(),
                     query_para_ids = queryDefault.query_para_ids,
                     query_result_ids = ids,
-                    query_type_id = queryType.id,
+                    query_type_id = queryTypeId,
+                    query_para_group_id = groupId,
                     user_id = userId
                 };
                 dal.Insert(queryUser);
             }
-            // 用户已修改过，修改记录
-            else
-            {
-                queryUser.query_result_ids = ids;
-                dal.Update(queryUser);
-            }
+            
         }
         #endregion
 
+        /// <summary>
+        /// 获取一个查询页面所有结果显示列信息
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="queryTypeId"></param>
+        /// <returns></returns>
+        public List<QueryResultParaDto> GetResultParaAll(long queryTypeId)
+        {
+            List<QueryResultParaDto> result = new List<QueryResultParaDto>();
+
+            string sql = $"SELECT * FROM d_query_result WHERE query_type_id={queryTypeId} ORDER BY col_order ASC";
+            var queryResultList = new d_query_result_dal().FindListBySql(sql);
+            foreach (var qr in queryResultList)
+            {
+                result.Add(new QueryResultParaDto { id = qr.id, name = qr.col_comment, length = qr.col_length, type = qr.display_type_id });
+            }
+
+            return result;
+        }
+
+
+        /*
+        public QueryResultDto getDataTest()
+        {
+            string sql = "select id as 客户id,name as 客户名称,(select name from d_general where  id=type_id) as 客户类型,no as 客户编号,name as 客户名称return from crm_account where delete_time=0";
+            QueryResultDto result = new QueryResultDto();
+
+            var table = new sys_query_type_user_dal().ExecuteDataTable(sql);
+            List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
+            foreach (DataRow row in table.Rows)
+            {
+                Dictionary<string, object> column = new Dictionary<string, object>();
+                foreach (DataColumn col in table.Columns)
+                {
+                    column.Add(col.ColumnName, row[col.ColumnName]);
+                }
+                list.Add(column);
+            }
+
+            result.count = table.Rows.Count;
+            result.query_page_name = "";
+            result.order_by = "";
+            result.page = 1;
+            result.page_count = 1;
+            result.page_size = 50;
+            //result.query_id = queryId;
+            result.query_id = "";
+            result.result = list;
+
+            return result;
+        }
+        */
+        
+        /*
         private static IList<d_query_type> list;
         /// <summary>
         /// 根据查询页面名称获取查询页面信息
@@ -512,5 +526,6 @@ namespace EMT.DoneNOW.BLL
                 list = new d_query_type_dal().FindAll();
             return list.FirstOrDefault(q => q.name.Equals(queryPageName));
         }
+        */
     }
 }

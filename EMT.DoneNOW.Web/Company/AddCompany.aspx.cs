@@ -30,42 +30,42 @@ namespace EMT.DoneNOW.Web
             classification.DataBind();
             classification.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             // 公司类型
-            CompanyType.DataTextField = "show";
-            CompanyType.DataValueField = "val";
-            CompanyType.DataSource = dic.FirstOrDefault(_ => _.Key == "company_type").Value;
-            CompanyType.DataBind();
-            CompanyType.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            company_type.DataTextField = "show";
+            company_type.DataValueField = "val";
+            company_type.DataSource = dic.FirstOrDefault(_ => _.Key == "company_type").Value;
+            company_type.DataBind();
+            company_type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
 
             // 市场领域
-            MarketSegment.DataTextField = "show";
-            MarketSegment.DataValueField = "val";
-            MarketSegment.DataSource = dic.FirstOrDefault(_ => _.Key == "market_segment").Value;
-            MarketSegment.DataBind();
-            MarketSegment.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            market_segment.DataTextField = "show";
+            market_segment.DataValueField = "val";
+            market_segment.DataSource = dic.FirstOrDefault(_ => _.Key == "market_segment").Value;
+            market_segment.DataBind();
+            market_segment.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             // 销售区域
-            TerritoryName.DataTextField = "show";
-            TerritoryName.DataValueField = "val";
-            TerritoryName.DataSource = dic.FirstOrDefault(_ => _.Key == "territory").Value;
-            TerritoryName.DataBind();
-            TerritoryName.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            territory_name.DataTextField = "show";
+            territory_name.DataValueField = "val";
+            territory_name.DataSource = dic.FirstOrDefault(_ => _.Key == "territory").Value;
+            territory_name.DataBind();
+            territory_name.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             // 客户经理
-            AccountManger.DataTextField = "show";
-            AccountManger.DataValueField = "val";
-            AccountManger.DataSource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value;
-            AccountManger.DataBind();
-            AccountManger.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            account_manage.DataTextField = "show";
+            account_manage.DataValueField = "val";
+            account_manage.DataSource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value;
+            account_manage.DataBind();
+            account_manage.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             // 税区
-            TaxRegion.DataTextField = "show";
-            TaxRegion.DataValueField = "val";
-            TaxRegion.DataSource = dic.FirstOrDefault(_ => _.Key == "taxRegion").Value;
-            TaxRegion.DataBind();
-            TaxRegion.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            tax_region.DataTextField = "show";
+            tax_region.DataValueField = "val";
+            tax_region.DataSource = dic.FirstOrDefault(_ => _.Key == "taxRegion").Value;
+            tax_region.DataBind();
+            tax_region.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             // 竞争对手
-            Competitor.DataTextField = "show";
-            Competitor.DataValueField = "val";
-            Competitor.DataSource = dic.FirstOrDefault(_ => _.Key == "competition").Value;
-            Competitor.DataBind();
-            Competitor.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            competitor.DataTextField = "show";
+            competitor.DataValueField = "val";
+            competitor.DataSource = dic.FirstOrDefault(_ => _.Key == "competition").Value;
+            competitor.DataBind();
+            competitor.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             // 称谓
             sufix.DataTextField = "show";
             sufix.DataValueField = "val";
