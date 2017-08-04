@@ -1,0 +1,190 @@
+body{
+    overflow: hidden;
+}
+/*顶部内容和帮助*/
+.TitleBar{
+    color: #fff;
+    background-color: #346a95;
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.TitleBar>.Title{
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 95%;
+}
+.text2{
+    margin-left: 5px;
+}
+.help{
+    background-image: url(../img/help.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 16px;
+    border-radius: 50%;
+}
+/*中间form表单*/
+.ButtonContainer{
+    padding: 0 10px 10px 10px;
+    width: auto;
+    height: 26px;
+}
+.ButtonContainer ul li .Button{
+    margin-right: 5px;
+    vertical-align: top;
+}
+li.Button{
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+    border: 1px solid #d7d7d7;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: #4f4f4f;
+    cursor: pointer;
+    height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-decoration: none;
+}
+.Button>.Icon{
+    display: inline-block;
+    flex: 0 0 auto;
+    height: 16px;
+    margin: 0 3px;
+    width: 16px;
+}
+.SaveAndClone{
+    background-image: url("../img/save.png");
+}
+.Save{
+    background-image: url("../img/save.png");
+}
+.ViewPdf{
+    background-image: url("../img/view.png");
+}
+.EditProperties{
+    background-image: url("../img/edit.png");
+}
+.EditAppendix{
+    background-image: url("../img/book.png");
+}
+.CancelButton{
+    background-image: url("../img/cancel.png");
+}
+.Button>.Text{
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/*中间主体部分*/
+.ScrollingContainer{
+    left: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: absolute;
+    right: 0;
+    top: 82px;
+    bottom: 0px;
+    padding: 0 10px 0 10px;
+    margin-top: 30px;
+}
+.ImageHotspotContainer {
+    display: block;
+    height: 1086px;
+    width: 818px;
+    position: relative;
+    border: 1px solid #ccc;
+}
+.ImageHotspotContainer>.Image{
+    position: relative;
+    margin: 30px 0;
+    height: 1056px;
+    width: 816px;
+    background-image: url(../img/details.png);
+}
+.ImageHotspotContainer .Image .ImageHotspot {
+    border-top: 2px dashed rgba(0,0,0,0.2);
+    left: 0;
+    position: absolute;
+    right: 0;
+}
+.ImageHotspotContainer .Image .ImageHotspot .SimpleLabel {
+    background: rgba(0,0,0,0.3);
+    border-radius: 0 0 5px 5px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    height: 25px;
+    padding-top: 5px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 250px;
+}
+.ImageHotspotContainer .Image .ImageHotspot .CompleteLabel {
+    background: rgba(0,0,0,0.5);
+    bottom: 0;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    display: none;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+}
+.ImageHotspotContainer .Image .ImageHotspot .CompleteLabel .Information.Compact {
+    height: 16px;
+    margin-top: -8px;
+}
+.ImageHotspotContainer .Image .ImageHotspot .CompleteLabel .Information {
+    height: 70px;
+    left: 0;
+    margin-top: -35px;
+    padding: 0 100px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+}
+.ImageHotspotContainer .Image .ImageHotspot .SimpleLabel.Small {
+    height: 20px;
+    padding-top: 3px;
+}
+.ImageHotspotContainer .Image .ImageHotspot .CompleteLabel .Title1 {
+    font-size: 36px;
+    font-weight: bold;
+}
+.ImageHotspotContainer .Image .ImageHotspot .CompleteLabel .IntendedAction {
+    text-decoration: underline;
+}
+.Hide{
+    display: none;
+}
+.Active{
+    display: block;
+}
