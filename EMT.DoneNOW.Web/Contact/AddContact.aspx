@@ -271,34 +271,34 @@
                                     if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
                                     {%>
                         <li>
-                            <label><%=udf.col_name %></label>
+                            <label><%=udf.name %></label>
                             <input type="text" name="<%=udf.id %>" class="sl_cdt" />
                         </li>
                         <%}
                             else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
                             {%>
                         <li>
-                            <label><%=udf.col_name %></label>
+                            <label><%=udf.name %></label>
                             <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
                         </li>
                         <%}
                             else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
                             {%><li>
-                                <label><%=udf.col_name %></label>
+                                <label><%=udf.name %></label>
                                 <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
                             </li>
                         <%}
                             else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
                             {%>
                         <li>
-                            <label><%=udf.col_name %></label>
+                            <label><%=udf.name %></label>
                             <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
                         </li>
                         <%}
                             else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
                             {%>
                         <li>
-                            <label><%=udf.col_name %></label>
+                            <label><%=udf.name %></label>
                             <select name="<%=udf.id %>">
                                 <%
                                     if (udf.value_list != null) {

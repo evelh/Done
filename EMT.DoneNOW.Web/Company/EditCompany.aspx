@@ -448,7 +448,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label><%=udf.col_name %></label>
+                            <label><%=udf.name %></label>
                             <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
 
                         </div>
@@ -460,7 +460,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label><%=udf.col_name %></label>
+                            <label><%=udf.name %></label>
                             <textarea id="<%=udf.id %>" rows="2" cols="20">
                                 <%=company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>
 
@@ -475,7 +475,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label><%=udf.col_name %></label>
+                            <label><%=udf.name %></label>
 
                             <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
 
@@ -488,7 +488,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label><%=udf.col_name %></label>
+                            <label><%=udf.name %></label>
 
                             <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
                         </div>
@@ -529,7 +529,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label><%=udf.col_name %></label>
+                            <label><%=udf.name %></label>
                             <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
 
                         </div>
@@ -541,7 +541,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label><%=udf.col_name %></label>
+                            <label><%=udf.name %></label>
                             <textarea id="<%=udf.id %>" rows="2" cols="20">
                                 <%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>
 
@@ -556,7 +556,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label><%=udf.col_name %></label>
+                            <label><%=udf.name %></label>
 
                             <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
 
@@ -569,7 +569,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label><%=udf.col_name %></label>
+                            <label><%=udf.name %></label>
 
                             <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
                         </div>

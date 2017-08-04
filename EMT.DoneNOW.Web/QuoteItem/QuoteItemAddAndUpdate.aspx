@@ -167,7 +167,11 @@
             color: #333;
             margin: 0;
         }
-        blockquote,body,button,dd,dl,dt,fieldset,form,h1,h2,h3,h4,h5,h6,hr,input,legend,li,ol,p,pre,td,textarea,th,ul {margin:0;padding:0}  
+        blockquote,body,button,dd,dl,dt,fieldset,form,h1,h2,h3,h4,h5,h6,hr,input,legend,li,ol,p,pre,td,textarea,th,ul {padding:0;
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 0;
+        }  
 body,button,input,select,textarea { font:12px/1.5 tahoma,arial,'Hiragansino S GB',\5b8b\4f53,sans-serif}  
 h1,h2,h3,h4,h5,h6 {font-size:100%}  
 address,cite,dfn,em,var {font-style:normal}  
@@ -182,6 +186,9 @@ legend {color:#000}
 fieldset,img {border:0}  
 button,input,select,textarea {font-size:100%}  
 table {border-collapse:collapse;border-spacing:0}
+        select {
+            width:150px;
+        }
     </style>
 </head>
 <body>
@@ -194,7 +201,7 @@ table {border-collapse:collapse;border-spacing:0}
                     <asp:Button ID="save_close" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="save_close_Click" />
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
-                    <asp:Button ID="save_new" runat="server" Text="保存并新增" BorderStyle="None" />
+                    <asp:Button ID="save_new" runat="server" Text="保存并新增" BorderStyle="None" OnClick="save_new_Click" />
                 </li>
 
                 <li id="close"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
@@ -214,8 +221,8 @@ table {border-collapse:collapse;border-spacing:0}
                                             <td class="FieldLabels">报价项名称
                                             <span id="errorSmall">*</span>
                                                 <div>
-                                                    <input type="text" name="name" id="name" />
-                                                   <i onclick="" style="width: 20px;height:20px; float: left; margin-left: 10px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                                    <input type="text" name="name" id="name" value="<%=isAdd?"":quote_item.name %>" />
+                                                   <i onclick="chooseRole()" style="width: 20px;height:20px; margin-left: 10px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                 </div>
                                             </td>
                                         </tr>
@@ -223,7 +230,7 @@ table {border-collapse:collapse;border-spacing:0}
                                             <td class="FieldLabels">报价项描述
                                             <div>
                                                 <textarea name="description" id="description">
-
+                                                        <%=(!isAdd)&&(!string.IsNullOrEmpty(quote_item.description))?quote_item.description:"" %>
                         </textarea>
                                             </div>
                                             </td>
@@ -241,7 +248,7 @@ table {border-collapse:collapse;border-spacing:0}
                                                 <span class="CheckBoxLabels">项目提案工时</span>
                                                 <div>
                                                     <input type="text" name="project_id" id="project_id" />
-                                                    <i onclick="" style="width: 20px;height:20px; float: left; margin-left: 10px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                                    <i onclick="" style="width: 20px;height:20px;  margin-left: 10px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                 </div>
                                             </td>
                                         </tr>
@@ -564,6 +571,10 @@ table {border-collapse:collapse;border-spacing:0}
 
     }
 
+
+    function chooseRole() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=EMT.DoneNOW.DTO.OpenWindow.RoleSelect %>&field=name", 'new', 'left=200,top=200,width=600,height=800', false);
+    }
 
 
 

@@ -22,7 +22,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
             try
             {
                 type = Request.QueryString["type_id"];             // 报价项类型
-                var quote_id = Request.QueryString["quote_id"];    // 报价ID
+                var quote_id = Request.QueryString["quote_id"];    // 报价ID 需要根据报价ID 添加报价项
                 var quote_item_id = Request.QueryString["id"];
 
                 dic = new QuoteItemBLL().GetField();
@@ -34,10 +34,10 @@ namespace EMT.DoneNOW.Web.QuoteItem
                         isAdd = false;
                     }
                 }
-                if (string.IsNullOrEmpty(quote_id))
-                {
-                    //Response.End();
-                }
+                //if (string.IsNullOrEmpty(quote_id))
+                //{
+                //    //Response.End();
+                //}
 
 
                // var type_id = Convert.ToInt64(type);
@@ -110,25 +110,96 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 switch (result)
                 {
                     case DTO.ERROR_CODE.SUCCESS:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价项成功');window.close();</script>");
                         break;
                     case DTO.ERROR_CODE.ERROR:
                         break;
                     case DTO.ERROR_CODE.PARAMS_ERROR:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
                         break;
-
                     case DTO.ERROR_CODE.USER_NOT_FIND:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('用户信息丢失');</script>");
+                        Response.Redirect("../login.aspx");
                         break;
-
                     default:
                         break;
                 }
             }
             else
             {
-
+                var result = new QuoteItemBLL().Update(quote_item, GetLoginUserId());
+                switch (result)
+                {
+                    case DTO.ERROR_CODE.SUCCESS:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改报价项成功');window.close();</script>");
+                        break;
+                    case DTO.ERROR_CODE.ERROR:
+                        break;
+                    case DTO.ERROR_CODE.PARAMS_ERROR:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
+                        break;
+                    case DTO.ERROR_CODE.USER_NOT_FIND:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('用户信息丢失');</script>");
+                        Response.Redirect("../login.aspx");
+                        break;
+                    default:
+                        break;
+                }
             }
 
 
+
+        }
+
+        protected void save_new_Click(object sender, EventArgs e)
+        {
+            var quote_item = AssembleModel<crm_quote_item>();
+
+            if (isAdd)
+            {
+                var result = new QuoteItemBLL().Insert(quote_item, GetLoginUserId());
+                switch (result)
+                {
+                    case DTO.ERROR_CODE.SUCCESS:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价项成功');</script>");
+                        Response.Write("QuoteItemAddAndUpdate.aspx?type_id="+type+ "&quote_id"+quote_item.quote_id);
+                       // E:\DoneNOW\EMT.DoneNOW.Web\QuoteItem\QuoteItemAddAndUpdate.aspx
+                        break;
+                    case DTO.ERROR_CODE.ERROR:
+                        break;
+                    case DTO.ERROR_CODE.PARAMS_ERROR:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
+                        break;
+                    case DTO.ERROR_CODE.USER_NOT_FIND:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('用户信息丢失');</script>");
+                        Response.Redirect("../login.aspx");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                var result = new QuoteItemBLL().Update(quote_item, GetLoginUserId());
+                switch (result)
+                {
+                    case DTO.ERROR_CODE.SUCCESS:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改报价项成功');</script>");
+                        Response.Write("QuoteItemAddAndUpdate.aspx?type_id=" + type+"&id="+quote_item.id + "&quote_id" + quote_item.quote_id);
+                        break;
+                    case DTO.ERROR_CODE.ERROR:
+                        break;
+                    case DTO.ERROR_CODE.PARAMS_ERROR:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
+                        break;
+                    case DTO.ERROR_CODE.USER_NOT_FIND:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('用户信息丢失');</script>");
+                        Response.Redirect("../login.aspx");
+                        break;
+                    default:
+                        break;
+                }
+            }
 
         }
     }

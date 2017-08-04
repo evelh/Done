@@ -442,8 +442,8 @@ namespace EMT.DoneNOW.DTO
         TodoAdd = 150,                          // 新增活动
         NoteAdd = 151,                          // 备注新增
 
+        RoleSelect = 160,                        // 角色查询
 
-       
     }                                         
 
 }
