@@ -36,7 +36,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 }
                 if (string.IsNullOrEmpty(quote_id))
                 {
-                    Response.End();
+                    //Response.End();
                 }
 
 

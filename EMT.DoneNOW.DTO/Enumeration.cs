@@ -439,6 +439,10 @@ namespace EMT.DoneNOW.DTO
         LocationAdd = 141,                         // 地址新增
         LoactionEdit = 142,                        // 地址修改
 
+        TodoAdd = 150,                          // 新增活动
+        NoteAdd = 151,                          // 备注新增
+
+
        
     }                                         
 
