@@ -18,7 +18,10 @@
 });
 
 function OpenQuery(catId, typeId, groupId) {
-
+    var formbody = window.parent.frames["SearchBody"];
+    var formcondition = window.parent.frames["SearchCondition"];
+    formbody.src = "SearchBodyFrame.aspx?cat=" + catId + "&type=" + typeId + "&group=" + groupId;
+    formcondition.src = "SearchConditionFrame.aspx?cat=" + catId + "&show=1&type=" + typeId + "&group=" + groupId;
 }
 
 $(".form_datetime").datetimepicker({

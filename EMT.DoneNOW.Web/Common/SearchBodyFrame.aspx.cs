@@ -49,14 +49,20 @@ namespace EMT.DoneNOW.Web
         {
             switch(catId)
             {
-                case (int)QueryCate.Company:
+                case (int)DicEnum.QUERY_CATE.COMPANY:
                     addBtn = "新增客户";
                     break;
-                case (int)QueryCate.Contact:
+                case (int)DicEnum.QUERY_CATE.CONTACT:
                     addBtn = "新增联系人";
                     break;
-                case (int)QueryCate.Opportunity:
+                case (int)DicEnum.QUERY_CATE.OPPORTUNITY:
                     addBtn = "新增商机";
+                    break;
+                case (int)DicEnum.QUERY_CATE.QUOTE:
+                    addBtn = "新增报价";
+                    break;
+                case (int)DicEnum.QUERY_CATE.QUOTE_TEMPLATE:
+                    addBtn = "新增报价模板";
                     break;
                 default:
                     addBtn = "新增客户";

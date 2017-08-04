@@ -303,17 +303,18 @@ namespace EMT.DoneNOW.DTO
             EXPIRED = 618,    // 过期
         }
 
-
-
-
-
         /// <summary>
-        /// 查询页面分类-65
+        /// 查询页面cat_id-65
         /// </summary>
-        public enum QUERY_TYPE
+        public enum QUERY_CATE
         {
-            CUSTOMER = 726,         // 客户
+            COMPANY = 726,          // 客户
             CONTACT = 727,          // 联系人
+            COMPANY_CALLBACK = 728, // 客户查找带回
+            OPPORTUNITY = 865,      // 商机
+            QUOTE = 866,            // 报价
+            ROLL_CALLBACK = 867,    // 角色查找带回
+            QUOTE_TEMPLATE = 868,   // 报价模板
         }
 
         /// <summary>
@@ -396,17 +397,6 @@ namespace EMT.DoneNOW.DTO
         /// 退出
         /// </summary>
         Logout,
-    }
-
-    /// <summary>
-    /// 查询页面
-    /// </summary>
-    public enum QueryCate
-    {
-        Company = 726,          // 客户
-        Contact = 727,          // 联系人
-        CompanyCallBack = 728,  // 客户查找带回
-        Opportunity = 865,      // 商机
     }
 
     /// <summary>
