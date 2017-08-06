@@ -412,7 +412,9 @@ namespace EMT.DoneNOW.DTO
         CallBackCompany = 6,        // 查找带回客户
         Opportunity = 7,            // 商机管理-商机查询
     }
-
+    /// <summary>
+    /// 打开新窗口的名称
+    /// </summary>
     public enum OpenWindow
     {                                         
         CompanyAdd=101,                           // 
@@ -428,13 +430,14 @@ namespace EMT.DoneNOW.DTO
         ContactLocationSelect=113,                // 联系人页面地址的查找带回
 
 
-        OpportunityAdd=121,                       // 
-        OpportunityEdit=122,                      //
-        OpportunityLose = 123,                    // 
+        OpportunityAdd=121,                       // 添加商机
+        OpportunityEdit=122,                      // 修改商机
+        OpportunityLose = 123,                    // 丢失商机
+        OpportunityView = 124,                    // 查看商机
 
 
-        QuoteAdd =131,                             //
-        QuoteEdit=132,                            //
+        QuoteAdd =131,                            // 报价新增
+        QuoteEdit=132,                            // 报价修改
 
         LocationAdd = 141,                         // 地址新增
         LoactionEdit = 142,                        // 地址修改
@@ -443,6 +446,10 @@ namespace EMT.DoneNOW.DTO
         NoteAdd = 151,                          // 备注新增
 
         RoleSelect = 160,                        // 角色查询
+
+        QuoteItemAdd = 170,                      // 报价项新增
+        QuoteItemEdit = 171,                     // 报价项修改
+        QuoteItemManage = 172,                   // 报价项管理
 
     }                                         
 

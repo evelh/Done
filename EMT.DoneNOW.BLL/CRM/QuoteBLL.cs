@@ -283,5 +283,15 @@ namespace EMT.DoneNOW.BLL
             return false;
         }
 
+        /// <summary>
+        /// 获取到报价项
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public crm_quote GetQuote(long id)
+        {
+            return _dal.FindSignleBySql<crm_quote>($"select * from crm_quote WHERE id = {id} and delete_time = 0 ");
+        }
+
     }
 }

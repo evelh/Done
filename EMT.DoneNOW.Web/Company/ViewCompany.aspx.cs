@@ -24,7 +24,7 @@ namespace EMT.DoneNOW.Web.Company
                 var type = Request.QueryString["type"];
                 if (id != null)
                 {
-                    crm_account = new CompanyBLL().GetCompany(Convert.ToInt64(id));
+                    crm_account = new CompanyBLL().GetCompanyByOpportunityOrId(Convert.ToInt64(id));
                     if (crm_account != null)
                     {
                        
