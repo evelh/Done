@@ -163,6 +163,9 @@ namespace EMT.DoneNOW.DTO
             INVENTORY = 102,        // 库存
             TICKETS = 103,          // Taskfire工单
             OTHERS = 104,           // 杂项
+            quote_template_body=106,
+            quote_template_others=105,
+
         }
         /// <summary>
         /// 通知事件-21
@@ -264,6 +267,27 @@ namespace EMT.DoneNOW.DTO
             SINGLE_LINE = 548,      // 单行
             MUILTI_LINE = 549,      // 多行
         }
+
+        /// <summary>
+        /// 报价模板纸张尺寸-40
+        /// </summary>
+        public enum PAGE_SIZE
+        {
+           LETTER = 584,         //信纸：8.5" x 11" （215.9 mm x 279.4 mm）
+            A4 = 585,            //A4：8.25" x 11.75 （210 mm x 297 mm）
+        }
+
+        /// <summary>
+        /// 报价模板：页码位置-41
+        /// </summary>
+        public enum PAGE_NUMBER_LOCATION
+        {
+            NO = 588,                //不显示
+            BOTTOMLEFT = 589,         //底部靠左
+            BOTTOMCENTER = 590,        //底部居中
+            BOTTOMRIGHT = 591,        //底部靠右
+        }
+
         /// <summary>
         /// 报价项：类型-42
         /// </summary>
@@ -299,26 +323,6 @@ namespace EMT.DoneNOW.DTO
             TAXABLE=599,       // 应纳税
         }
 
-
-        /// <summary>
-        /// 报价模板纸张尺寸-40
-        /// </summary>
-        public enum PAGE_SIZE
-        {
-           LETTER = 584,         //信纸：8.5" x 11" （215.9 mm x 279.4 mm）
-            A4 = 585,            //A4：8.25" x 11.75 （210 mm x 297 mm）
-        }
-
-        /// <summary>
-        /// 报价模板：页码位置-41
-        /// </summary>
-        public enum PAGE_NUMBER_LOCATION
-        {
-            NO = 588,                //不显示
-            BOTTOMLEFT = 589,         //底部靠左
-            BOTTOMCENTER = 590,        //底部居中
-            BOTTOMRIGHT = 591,        //底部靠右
-        }
 
         /// <summary>
         /// user状态-46
