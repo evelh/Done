@@ -27,6 +27,7 @@ namespace EMT.DoneNOW.DTO
         OPPORTUNITY_STATUS = 17,
         FORM_TEMPLATE_RANGE_TYPE = 18,
         PROJECTED_CLOSED_DATE = 19,
+        NOTIFICATION_TEMPLATE_CATE_DATE_GROUP=23,//通知大类对应的变量分组
         FORM_TEMPLATE_TYPE = 27,
         PAYMENT_TERM=29,                         // 报价：付款期限           
         PAYMENT_TYPE=30,                         // 报价：付款类型
@@ -163,8 +164,9 @@ namespace EMT.DoneNOW.DTO
             INVENTORY = 102,        // 库存
             TICKETS = 103,          // Taskfire工单
             OTHERS = 104,           // 杂项
-            quote_template_body=106,
-            quote_template_others=105,
+            QUOTE_TEMPLATE_OTHERS = 105, //报价模板-其他
+            QUOTE_TEMPLATE_BODY =106,  //报价模板-body           
+
 
         }
         /// <summary>
