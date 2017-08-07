@@ -66,13 +66,15 @@
                     <td>
                         <div class="clear">
                             <label>是否激活<span class="red">*</span></label>
+                        
+
                             <% if (account.is_active == 1)
                                 { %>
-                               <input  type="checkbox" name="is_default" data-val="1" value="1" checked="checked"/>
+                               <input  type="checkbox" name="is_active" data-val="1" value="1" checked="checked"/>
                             <%}
                             else
                             { %>
-                               <input  type="checkbox" name="is_default" data-val="1" value="1"/>
+                               <input  type="checkbox" name="is_active" data-val="1" value="1"/>
                             <%} %>
                             <%--<asp:CheckBox ID="isactive" runat="server" />--%>
                         </div>

@@ -452,10 +452,10 @@ namespace EMT.DoneNOW.DTO
         CallBackRoll = 9,           // 角色查找带回
         QuoteTemplate = 10,         // 报价模板管理-查询
         AddressCallBack = 11,      // 地址查找带回
-        OpportunityCompanyView = 870,       // 客户管理-详情-商机查询
-        ContactCompanyView = 871,           // 客户管理-详情-联系人查询
-        SubcompanyCompanyView = 872,        // 客户管理-详情-子客户查询
-        OpportunityContactView = 873,       // 联系人管理-详情-商机查询
+        OpportunityCompanyView = 12,       // 客户管理-详情-商机查询
+        ContactCompanyView = 13,           // 客户管理-详情-联系人查询
+        SubcompanyCompanyView = 14,        // 客户管理-详情-子客户查询
+        OpportunityContactView = 15,       // 联系人管理-详情-商机查询
     }
     /// <summary>
     /// 打开新窗口的名称

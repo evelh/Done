@@ -81,8 +81,9 @@ namespace EMT.DoneNOW.BLL.CRM
         /// 新增商机
         /// </summary>
         /// <returns></returns>
-        public ERROR_CODE Insert(OpportunityAddOrUpdateDto param, long user_id)
+        public ERROR_CODE Insert(OpportunityAddOrUpdateDto param, long user_id,out string id)
         {
+            id = "";
             if (string.IsNullOrEmpty(param.general.name))                     // string必填项校验   || string.IsNullOrEmpty(param.notify.subject)
                 return ERROR_CODE.PARAMS_ERROR;             // 返回参数丢失
             if (param.general.account_id == 0 || param.general.resource_id == 0 || param.general.stage_id == 0 || param.general.status_id == 0 )  // int 必填项校验
@@ -119,7 +120,7 @@ namespace EMT.DoneNOW.BLL.CRM
             }
 
             _dal.Insert(param.general);
-
+            id = param.general.id.ToString();
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
                 user_cate = "用户",
@@ -252,6 +253,12 @@ namespace EMT.DoneNOW.BLL.CRM
                 return ERROR_CODE.USER_NOT_FIND;           // 查询不到用户，用户丢失
 
             var old_opportunity = _dal.GetOpportunityById(param.general.id);
+
+            param.general.competitor_id = param.general.competitor_id == 0 ? null : param.general.competitor_id;
+            param.general.source_id = param.general.source_id == 0 ? null : param.general.source_id;
+            param.general.stage_id = param.general.stage_id == 0 ? null : param.general.stage_id;
+            param.general.status_id = param.general.status_id == 0 ? null : param.general.status_id;
+            param.general.interest_degree_id = param.general.interest_degree_id == 0 ? null : param.general.interest_degree_id;
             if (param.general.win_reason_type_id == 0)
             {
                 param.general.win_reason_type_id = null;

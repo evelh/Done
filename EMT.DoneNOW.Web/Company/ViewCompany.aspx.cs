@@ -24,7 +24,7 @@ namespace EMT.DoneNOW.Web.Company
                 var type = Request.QueryString["type"];
                 if (id != null)
                 {
-                    crm_account = new CompanyBLL().GetCompanyByOpportunityOrId(Convert.ToInt64(id));
+                    crm_account = new CompanyBLL().GetCompanyByOtherId(Convert.ToInt64(id));
                     if (crm_account != null)
                     {
                        
@@ -36,7 +36,7 @@ namespace EMT.DoneNOW.Web.Company
                         if (type == "activity" || type == "note" || type == "todo")
                         {
                             isHide.Value = "show";
-                            activetytype.Value = type;
+                            activitytype.Value = type;
                             //  Response.Write("<script>document.getElementById('showCompanyGeneral').style.display='none';</script>");
                         }
                         switch (type)    // 根据传过来的不同的类型，为页面中的iframe控件选择不同的src
@@ -51,7 +51,8 @@ namespace EMT.DoneNOW.Web.Company
                                 viewCompany_iframe.Src = "";  // 备注
                                 break;
                             case "opportunity":
-                                viewCompany_iframe.Src = "";  // 商机
+                                viewCompany_iframe.Src = "../Common/SearchBodyFrame.aspx?cat="+(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY_COMPANY_VIEW +"&type="+(int)EMT.DoneNOW.DTO.QueryType.OpportunityCompanyView +"&group=18";  
+                                // 商机 ../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY_COMPANY_VIEW %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.OpportunityCompanyView %>&group=18
                                 break;//
                             case "contact":
                                 viewCompany_iframe.Src = "";  // 联系人

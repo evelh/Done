@@ -56,20 +56,20 @@
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
-                    <input type="button" id="Edit" value="修改" onclick="window.open('EditCompany.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyEdit %>','left= 200, top = 200, width = 960, height = 750', false);"/>
-                   <%-- <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" OnClientClick="" />--%>
+                    <input type="button" id="Edit" value="修改" onclick="window.open('EditCompany.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyEdit %>','left= 200, top = 200, width = 960, height = 750', false);" />
+                    <%-- <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" OnClientClick="" />--%>
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
-                  <%--  <asp:Button ID="tianjia" runat="server" Text="添加" BorderStyle="None" />--%>添加
+                    <%--  <asp:Button ID="tianjia" runat="server" Text="添加" BorderStyle="None" />--%>添加
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
                         <li><a href="#" onclick="window.open('AddCompany.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=960,height=750', false);">客户</a></li>
                         <li>工单</li>
                         <li>待办</li>
                         <li>客户备注</li>
-                        <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);" >商机</a></li>
-                        <li><a href="#" onclick="window.open('../Contact/AddContact.aspx?parent_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left=200,top=200,width=900,height=750', false);" >联系人</a></li>
-                        <li><a href="#" onclick="window.open('AddCompany.aspx?parent_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.Subsidiaries %>','left=200,top=200,width=900,height=750', false);" >子客户</a></li>
+                        <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
+                        <li><a href="#" onclick="window.open('../Contact/AddContact.aspx?parent_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left=200,top=200,width=900,height=750', false);">联系人</a></li>
+                        <li><a href="#" onclick="window.open('AddCompany.aspx?parent_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.Subsidiaries %>','left=200,top=200,width=900,height=750', false);">子客户</a></li>
                         <li>配置项</li>
                         <li>附件</li>
                     </ul>
@@ -99,45 +99,48 @@
             { %>
         <div class="text warn"><%=alert.alert_text %></div>
         <%} %>
-        <div class="activityTitleleft fl" id="showCompanyGeneral" style="margin-left:20px;">
-            <input type="hidden" id="isHide" runat="server" value="hide"/>
-            <input type="hidden" id="activetytype" runat="server" value=""/>
+        <div class="activityTitleleft fl" id="showCompanyGeneral" style="margin-left: 20px;">
+            <input type="hidden" id="isHide" runat="server" value="hide" />
+            <input type="hidden" id="activitytype" runat="server" value="" />
             <%-- 客户的基本信息 --%>
             <h1><span id="acType">活动</span>-<%=account.name %></h1>
             <div class="address">
                 <label><%=account.name %> <%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
-                <p><span><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></span> 
-                <span><%=addressdistrict.First(_=>_.val.ToString()==location.province_id.ToString()).show  %></span> 
-                <span><%=addressdistrict.First(_=>_.val.ToString()==location.city_id.ToString()).show  %></span> 
-                <span><%=addressdistrict.First(_=>_.val.ToString()==location.district_id.ToString()).show  %></span> </p>
+                <p>
+                    <span><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></span>
+                    <span><%=addressdistrict.First(_=>_.val.ToString()==location.province_id.ToString()).show  %></span>
+                    <span><%=addressdistrict.First(_=>_.val.ToString()==location.city_id.ToString()).show  %></span>
+                    <span><%=addressdistrict.First(_=>_.val.ToString()==location.district_id.ToString()).show  %></span>
+                    <span class="fl"><%=location.address %></span><span><%=location.additional_address %></span>
+                </p>
 
                 <% if (!string.IsNullOrEmpty(location.address))
                     { %>
-                
-                 <p class="clear">
-                      <span class="fl"><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=location.address %>"  target="view_window"><%=location.address %></a></span>
-               </p>
+
+                <p class="clear">
+                    <span class="fl"><a href="#" onclick="window.open('http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=location.address %>','map','left=200,top=200,width=960,height=750', false);">地图</a></span>
+                </p>
                 <%} %>
 
-                 <% if (!string.IsNullOrEmpty(location.postal_code))
+                <% if (!string.IsNullOrEmpty(location.postal_code))
                     { %>
                 <p>
-                 <span >邮编</span>
-                 <span ><%=location.postal_code %> </span>
-               </p>
+                    <%--<span>邮编</span>--%>
+                    <span><%=location.postal_code %> </span>
+                </p>
                 <%} %>
                 <% if (!string.IsNullOrEmpty(location.additional_address))
                     { %>
-                <p class="clear">
-                    
-                 <%=location.additional_address %> </p>
+           <%--     <p class="clear">
+                        <%=location.additional_address %>
+                </p>--%>
                 <%} %>
-               
+
                 <%--<p>可以根据链接，跳转到百度或其他地图，显示该客户位置</p>--%>
 
                 <% if (account.parent_id != null)
                     { %>
-                <p class="clear"><a href="ViewCompany.aspx?id=<%=account.parent_id %>"><%=companyBll.GetCompany((long)account.parent_id).name %> </a></p>
+                <p class="clear"><a href="#" onclick="window.open('ViewCompany.aspx?id=<%=account.parent_id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ParentCompanyView %>','left=200,top=200,width=960,height=750', false);"><%=companyBll.GetCompany((long)account.parent_id).name %> </a></p>
                 <%} %>
 
                 <p><%=account.phone %></p>
@@ -147,15 +150,14 @@
             </div>
 
             <div class="viewleftTitle1">
-                <%if (account.is_tax_exempt != null)
-                    { %>
+               
 
                 <p class="clear">
                     <span class="fl">是否免税 </span>
                     <span class="fr"><%=account.is_tax_exempt == 1 ? "是" : "否" %> </span>
                 </p>
 
-                <%} %>
+       
 
 
                 <%if (account.tax_region_id != null)
@@ -175,7 +177,6 @@
                     <span class="fr"><%=account.tax_identification %></span>
                 </p>
                 <%} %>
-               
             </div>
             <hr class="viewleftTitle1hr" />
             <div class="viewleftTitle1">
@@ -194,10 +195,10 @@
                     <span class="fl">客户经理 </span>
                     <span class="fr"><%=sys_resource.First(_=>_.val == account.resource_id.ToString()).show %></span>
                 </p>
-             <%--   <p class="clear">
+                   <p class="clear">
                     <span class="fl">客户ID </span>
-                    <span class="fr"><%=account.account_id %></span>
-                </p>--%>
+                    <span class="fr"><%=account.oid %></span>
+                </p>
                 <% var primary_contact = GetDefaultContact();
                     if (primary_contact != null)
                     {%>
@@ -234,7 +235,7 @@
             </div>
             <hr class="viewleftTitle1hr" />
 
-<%--            <div class="viewleftTitle1">
+            <%--            <div class="viewleftTitle1">
             </div>
             <div id="Group" style="clear: both; float: left; margin-top: 40px; margin-left: 40px; width: 300px;"> /* -- todo 群组头像 */
            
@@ -295,7 +296,7 @@
                 </p>
                 <%} %>
 
-                
+
                 <%if (!string.IsNullOrEmpty(account.stock_market))
                     { %>
                 <p class="clear">
@@ -304,20 +305,18 @@
                 </p>
                 <%} %>
 
-                <p>客户标准产业分类代码</p>            
+                <p>客户标准产业分类代码</p>
             </div>
-             <hr class="viewleftTitle1hr" />
-             <div class="viewleftTitle1">  
-                <p><a href="#" onclick="alert('暂未实现');return false;"> 可以查看本客户的员工</a></p>
-             </div>
+            <hr class="viewleftTitle1hr" />
+            <div class="viewleftTitle1">
+                <p><a href="#" onclick="alert('暂未实现');return false;">可以查看本客户的员工</a></p>
+            </div>
         </div>
 
         <div id="ShowCompany_Right" class="activityTitleright f1" style="float: left; margin-left: 35px;">
-            
-        <iframe runat="server" id="viewCompany_iframe" width="800" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" >
 
-        </iframe>
-        
+            <iframe runat="server" id="viewCompany_iframe" width="800" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+
         </div>
 
     </form>
@@ -342,7 +341,7 @@
             $("#showCompanyGeneral").hide();
         }
         $("#viewCompany_iframe").attr("onLoad", iFrameHeight);
-        var type = $("#activetytype").val();
+        var type = $("#activitytype").val();
         if (type == "activity") {
             $("#acType").text("活动");
         } else if (type == "note") {
@@ -358,9 +357,9 @@
         if (ifm != null && subWeb != null) {
             ifm.height = subWeb.body.scrollHeight;
             ifm.width = subWeb.body.scrollWidth;
-            
+
         }
-    } 
+    }
 
 
 </script>

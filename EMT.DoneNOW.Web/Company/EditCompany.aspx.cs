@@ -93,6 +93,7 @@ namespace EMT.DoneNOW.Web
 
                     company_name.Text = account.name;
                     //isactive.Checked = account.is_active == 1;
+                    
                     CompanyNumber.Text = account.no;
                     Phone.Text = account.phone;
                     AlternatePhone1.Text = account.alternate_phone1;
@@ -151,8 +152,7 @@ namespace EMT.DoneNOW.Web
                 }
                 else
                 {
-                    Response.Write("<script>alert('客户不存在！');</script>");
-                    Response.Redirect("index.aspx");
+                    Response.End();
                 }
                 //}
             }

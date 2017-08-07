@@ -233,7 +233,7 @@
                             <td>
                                 <div class="clear">
                                     <label>
-                                        地址
+                                        地址<span class="red">*</span>
                                     </label>
                                     <input type="text" name="address" id="address" value="" />
                                 </div>
@@ -652,15 +652,15 @@
 <script type="text/javascript">
     $(function () {
         $("#TaxExempt").click(function () {
-            debugger;
+       
             if ($('#TaxExempt').is(':checked')) {
                 // 禁用
-                $("#TaxRegion").attr("disabled", "disabled");
+                $("#tax_region").attr("disabled", "disabled");
 
             }
             else {
                 // 解除禁用
-                $("#TaxRegion").removeAttr("disabled");
+                $("#tax_region").removeAttr("disabled");
             }
         });  // 选中免税，税区不可在进行编辑的事件处理
 
@@ -764,7 +764,7 @@
                 }
             }
 
-            debugger;
+         
             if ($("#isCheckCompanyName").val() == "yes") {
                 var isPass = "pass";
                 $.ajax({
@@ -774,7 +774,7 @@
                     // data: { CompanyName: companyName },
                     success: function (data) {
                         //alert(data);
-                        debugger;
+                 
                         if (data == "repeat") {
                             alert('客户名称重复');
                             isPass = "noPass";
@@ -788,7 +788,7 @@
                     },
                     
                 });
-                debugger;
+     
                 if (isPass == "noPass") {
                     return false;
                 }    
