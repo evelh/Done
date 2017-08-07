@@ -27,8 +27,8 @@ namespace EMT.DoneNOW.BLL
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("classification", new d_account_classification_dal().GetDictionary());    // 分类类别
             dic.Add("country", new DistrictBLL().GetCountryList());                          // 国家表
-            dic.Add("addressdistrict", new d_district_dal().GetDictionary());                       // 地址表（省市县区）
-            dic.Add("sys_resource", new sys_resource_dal().GetDictionary());                // 客户经理
+            dic.Add("addressdistrict", new d_district_dal().GetDictionary());                 // 地址表（省市县区）
+            dic.Add("sys_resource", new sys_resource_dal().GetDictionary());                  // 客户经理
             dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.COMPETITOR)));          // 竞争对手
             dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.MARKET_SEGMENT)));    // 行业
             //dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行政区")));                // 行政区
@@ -50,6 +50,16 @@ namespace EMT.DoneNOW.BLL
             string sql = $"select * from crm_account where id = {id} and delete_time = 0 ";
             return _dal.FindSignleBySql<crm_account>(sql);
         }
+        /// <summary>
+        /// 根据商机ID 或者客户ID去获取客户信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public crm_account GetCompanyByOpportunityOrId(long id)
+        {
+            return _dal.FindSignleBySql<crm_account>($"SELECT a.* FROM crm_account a LEFT JOIN crm_opportunity o on a.id = o.account_id where(a.id = {id} AND a.delete_time = 0) or(o.account_id = {id} and o.delete_time = 0)");
+        }
+
 
         /// <summary>
         /// 获取客户列表

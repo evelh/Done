@@ -112,7 +112,7 @@ namespace EMT.DoneNOW.DAL
         {
             string sql = $"select * from crm_contact where account_id = {account_id} and name = '{contact_name}' and delete_time = 0";
             if (contact_id == 0)
-                sql += " and id <> '{contact_id}' ";
+                sql += $" and id <> '{contact_id}' ";
             return FindListBySql(sql);
         }
 

@@ -211,6 +211,26 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除商机", click_function = "DeleteOpp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
                     break;
+                case (long)QueryType.Quote:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑报价", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "报价参数设定", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "报价项管理", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看商机", click_function = "ViewOpp()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看报价", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制报价", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "关闭报价", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "丢失报价", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除报价", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.QuoteTemplate:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设为默认", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "未激活", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()" });
+                    break;
                 default:
                     break;
             }

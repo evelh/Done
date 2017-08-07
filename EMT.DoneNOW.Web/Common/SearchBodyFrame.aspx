@@ -16,10 +16,6 @@
     .searchcontent{
   OVERFLOW:   scroll;   width:   1800px;   height:   100%;
     }
-    table{
-        width:100%;
-         
-    }
     .searchcontent table th {
     background-color: #cbd9e4;
     border-color: #98b4ca;
@@ -90,7 +86,7 @@
 		</div>
         <%if (queryResult != null) { %>
 			<div class="searchcontent" id="searchcontent">
-				<table border="" cellspacing="0" cellpadding="0">
+				<table border="" cellspacing="0" cellpadding="0" width="100%;">
 					<tr>
                         <%foreach(var para in resultPara)
                             {
@@ -107,8 +103,8 @@
                                     order = strs[1].ToLower();
                                 }
                                 %>
-                        <th title="点击按此列排序"  onclick="ChangeOrder('<%=para.name %>')">
-                            <%=para.name %>
+                        <th title="点击按此列排序" width="<%=para.length*10 %>px" <%if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.PIC) { %>style="background:url(../Images/classfication.png) no-repeat center;"<%} %> onclick="ChangeOrder('<%=para.name %>')">
+                            <%=para.type==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.PIC?"": para.name %>
                             <%if (orderby!=null && para.name.Equals(orderby))
                                 { %><img src="../Images/sort-<%=order %>.png" /> 
                             <%} %></th>
@@ -130,13 +126,20 @@
                                     id = rslt[idPara.name].ToString();
                                 %>
 					    <tr onclick="View(<%=id %>)" title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
-                            <%foreach (var para in resultPara) { 
+                            <%foreach (var para in resultPara) {
                                     if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
                                         || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
                                         || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
                                         continue;
+                                    string tooltip = null;
+                                    if (resultPara.Exists(_ => _.name.Equals(para.name + "tooltip")))
+                                        tooltip = para.name + "tooltip";
                                     %>
+                            <%if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.PIC) { %>
+                            <td <%if (tooltip != null) { %>title="<%=rslt[tooltip] %>"<%} %> style="background:url(..<%=rslt[para.name] %>) no-repeat center;"></td>
+                            <%} else { %>
 						    <td><%=rslt[para.name] %></td>
+                            <%} %>
                             <%} // foreach
                                 %>
 					    </tr>
@@ -231,6 +234,30 @@
         }
         function Add() {
             OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx");
+        }
+        <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Quote) {
+            %>
+        function Edit() {
+            OpenWindow("../Quote/QuoteAddAndUpdate.aspx?id=" + entityid);
+        }
+        function ViewOpp() {
+            //OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid);
+        }
+        function ViewCompany(id) {
+            //OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + id);
+        }
+        //function DeleteOpp() {
+        //    $.ajax({
+        //        type: "GET",
+        //        url: "../Tools/OpportunityAjax.ashx?act=delete&id=" + entityid,
+        //        success: function (data) {
+        //            alert(data);
+        //        }
+        //    })
+        //}
+        function Add() {
+            OpenWindow("../Quote/QuoteAddAndUpdate.aspx");
         }
         <%
         }%>
