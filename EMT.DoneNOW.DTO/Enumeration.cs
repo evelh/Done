@@ -429,7 +429,7 @@ namespace EMT.DoneNOW.DTO
         Subsidiaries=106,                         // 添加子客户
 
 
-        ContactAdd =111,                           //
+        ContactAdd =111,                          //
         ContactEdit=112,                          //
         ContactLocationSelect=113,                // 联系人页面地址的查找带回
 
