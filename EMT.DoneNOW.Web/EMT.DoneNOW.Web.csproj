@@ -163,6 +163,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="QuoteTemplate\QuoteTemplateAppendixEdit.aspx" />
+    <Content Include="QuoteTemplate\QuoteTemplatePropertiesEdit.aspx" />
     <Content Include="QuoteTemplate\test.aspx" />
     <Content Include="RichText\css\FootEdit.css" />
     <Content Include="RichText\css\HeadEdit.css" />
@@ -746,6 +748,13 @@
     <Compile Include="QuoteTemplate\QuoteTemplateAdd.aspx.designer.cs">
       <DependentUpon>QuoteTemplateAdd.aspx</DependentUpon>
     </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateAppendixEdit.aspx.cs">
+      <DependentUpon>QuoteTemplateAppendixEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateAppendixEdit.aspx.designer.cs">
+      <DependentUpon>QuoteTemplateAppendixEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="QuoteTemplate\QuoteTemplateBodyEdit.aspx.cs">
       <DependentUpon>QuoteTemplateBodyEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -781,6 +790,13 @@
     <Compile Include="QuoteTemplate\QuoteTemplateHeadEdit.aspx.designer.cs">
       <DependentUpon>QuoteTemplateHeadEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplatePropertiesEdit.aspx.cs">
+      <DependentUpon>QuoteTemplatePropertiesEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplatePropertiesEdit.aspx.designer.cs">
+      <DependentUpon>QuoteTemplatePropertiesEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="QuoteTemplate\QuoteTemplateTopEdit.aspx.cs">
       <DependentUpon>QuoteTemplateTopEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -794,7 +810,7 @@
     </Compile>
     <Compile Include="QuoteTemplate\test.aspx.designer.cs">
       <DependentUpon>test.aspx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="QuoteItem\QuoteItemAddAndUpdate.aspx.cs">
       <DependentUpon>QuoteItemAddAndUpdate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
