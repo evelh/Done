@@ -32,7 +32,12 @@ namespace EMT.DoneNOW.DTO
         PAYMENT_TERM=29,                         // 报价：付款期限           
         PAYMENT_TYPE=30,                         // 报价：付款类型
         PAYMENT_SHIP_TYPE=31,                    // 报价：配送类型
-        QUOTE_ITEM_TYPE=42,                      // 报价项：类型
+        DATE_DISPLAY_FORMAT = 35,
+        TIME_DISPLAY_FORMAT = 36,
+        NUMBER_DISPLAY_FORMAT = 37,
+        CURRENCY_POSITIVE_FORMAT = 38,
+        CURRENCY_NEGATIVE_FORMAT = 39,
+        QUOTE_ITEM_TYPE =42,                      // 报价项：类型
         QUOTE_ITEM_PERIOD_TYPE=43,               // 报价项：付费周期类型
         QUOTE_ITEM_TAX_CATE=44,                  // 报价项：税收种类
         NAME_SUFFIX = 48,                        
