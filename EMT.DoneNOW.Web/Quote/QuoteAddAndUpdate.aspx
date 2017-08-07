@@ -615,7 +615,7 @@
 
 
     function chooseCompany() {
-        window.open("../Common/SelectCallBack.aspx?type=查找客户&field=ParentComoanyName&callBack=GetDataBySelectCompany", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName&callBack=GetDataBySelectCompany", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
     function SubmitCheck() {

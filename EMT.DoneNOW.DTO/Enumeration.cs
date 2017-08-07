@@ -346,6 +346,7 @@ namespace EMT.DoneNOW.DTO
             QUOTE = 866,            // 报价
             ROLL_CALLBACK = 867,    // 角色查找带回
             QUOTE_TEMPLATE = 868,   // 报价模板
+            ADDRESS_CALLBACK = 869, // 地址查找带回
         }
 
         /// <summary>
