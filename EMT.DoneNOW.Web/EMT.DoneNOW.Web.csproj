@@ -164,6 +164,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\classfication.png" />
+    <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\test.aspx" />
     <Content Include="RichText\css\FootEdit.css" />
     <Content Include="RichText\css\HeadEdit.css" />
@@ -739,6 +740,13 @@
     </Compile>
     <Compile Include="Common\SelectCallBack.aspx.designer.cs">
       <DependentUpon>SelectCallBack.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="QuoteItem\QuoteItemManage.aspx.cs">
+      <DependentUpon>QuoteItemManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteItem\QuoteItemManage.aspx.designer.cs">
+      <DependentUpon>QuoteItemManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="QuoteTemplate\QuoteTemplateAdd.aspx.cs">
       <DependentUpon>QuoteTemplateAdd.aspx</DependentUpon>

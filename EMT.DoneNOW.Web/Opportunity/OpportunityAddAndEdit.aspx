@@ -454,7 +454,7 @@
                     <tr>
                         <td>
                             <div class="clear">
-                                <label><%=udf.col_name %></label>
+                                <label><%=udf.name %></label>
                                 <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=(!isAdd)&&opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
                             </div>
 
@@ -466,7 +466,7 @@
                     <tr>
                         <td>
                             <div class="clear">
-                                <label><%=udf.col_name %></label>
+                                <label><%=udf.name %></label>
                                 <textarea name="<%=udf.id %>" rows="2" cols="20">
                                         <%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>
                                     </textarea>
@@ -479,7 +479,7 @@
                         {%><tr>
                             <td>
                                 <div class="clear">
-                                    <label><%=udf.col_name %></label>
+                                    <label><%=udf.name %></label>
 
                                     <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value.ToString():"" %>" />
                                 </div>
@@ -492,7 +492,7 @@
                     <tr>
                         <td>
                             <div class="clear">
-                                <label><%=udf.col_name %></label>
+                                <label><%=udf.name %></label>
 
                                 <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
                             </div>

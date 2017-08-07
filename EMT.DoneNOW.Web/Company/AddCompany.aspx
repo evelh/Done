@@ -346,7 +346,7 @@
                                         {%>
                             <tr>
                                 <td>
-                                    <label><%=udf.col_name %></label>
+                                    <label><%=udf.name %></label>
                                     <input type="text" name="<%=udf.id %>" class="sl_cdt" />
 
                                 </td>
@@ -356,7 +356,7 @@
                                 {%>
                             <tr>
                                 <td>
-                                    <label><%=udf.col_name %></label>
+                                    <label><%=udf.name %></label>
                                     <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
 
                                 </td>
@@ -365,7 +365,7 @@
                                 else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
                                 {%><tr>
                                     <td>
-                                        <label><%=udf.col_name %></label>
+                                        <label><%=udf.name %></label>
 
                                         <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
 
@@ -376,7 +376,7 @@
                                 {%>
                             <tr>
                                 <td>
-                                    <label><%=udf.col_name %></label>
+                                    <label><%=udf.name %></label>
 
                                     <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
                                 </td>
@@ -409,7 +409,7 @@
                                         {%>
                             <tr>
                                 <td>
-                                    <label><%=udf.col_name %></label>
+                                    <label><%=udf.name %></label>
                                     <input type="text" name="<%=udf.id %>" class="sl_cdt" />
 
                                 </td>
@@ -419,7 +419,7 @@
                                 {%>
                             <tr>
                                 <td>
-                                    <label><%=udf.col_name %></label>
+                                    <label><%=udf.name %></label>
                                     <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
 
                                 </td>
@@ -428,7 +428,7 @@
                                 else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
                                 {%><tr>
                                     <td>
-                                        <label><%=udf.col_name %></label>
+                                        <label><%=udf.name %></label>
 
                                         <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
 
@@ -439,7 +439,7 @@
                                 {%>
                             <tr>
                                 <td>
-                                    <label><%=udf.col_name %></label>
+                                    <label><%=udf.name %></label>
 
                                     <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
                                 </td>

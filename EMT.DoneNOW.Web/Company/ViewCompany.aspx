@@ -103,7 +103,7 @@
             <input type="hidden" id="isHide" runat="server" value="hide"/>
             <input type="hidden" id="activetytype" runat="server" value=""/>
             <%-- 客户的基本信息 --%>
-            <h1 id="acType"><%=account.name %>活动</h1>
+            <h1><span id="acType">活动</span>-<%=account.name %></h1>
             <div class="address">
                 <label><%=account.name %> <%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
                 <p><span><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></span> 
@@ -308,7 +308,7 @@
             </div>
              <hr class="viewleftTitle1hr" />
              <div class="viewleftTitle1">  
-                <p>可以查看本客户的员工</p>
+                <p><a href="#" onclick="alert('暂未实现');return false;"> 可以查看本客户的员工</a></p>
              </div>
         </div>
 

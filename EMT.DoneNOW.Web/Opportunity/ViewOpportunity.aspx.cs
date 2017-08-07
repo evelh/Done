@@ -29,10 +29,7 @@ namespace EMT.DoneNOW.Web.Opportunity
 
                 opportunity = new crm_opportunity_dal().GetOpportunityById(Convert.ToInt64(id));
                 type = Request.QueryString["type"];
-                if (type == "activity" || type == "note" || type == "todo")
-                {
-                    isHide.Value = "show";
-                }
+             
                 if (opportunity != null)
                 {
                     dic = new OpportunityBLL().GetField();
@@ -59,7 +56,12 @@ namespace EMT.DoneNOW.Web.Opportunity
                             break;
                         default:
                             viewOpportunity_iframe.Src = "";  // 默认
+                            type = "activity";
                             break;
+                    }
+                    if (type == "activity" || type == "note" || type == "todo")
+                    {
+                        isHide.Value = "show";
                     }
                 }
             }

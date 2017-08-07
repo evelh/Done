@@ -141,7 +141,52 @@ namespace EMT.DoneNOW.Web.Quote
 
         protected void save_open_quote_Click(object sender, EventArgs e)
         {
+            var quote = new crm_quote();
+            quote = AssembleModel<crm_quote>();
 
+            if (isAdd)
+            {
+                var result = new QuoteBLL().Insert(quote, GetLoginUserId());
+                switch (result)
+                {
+                    case ERROR_CODE.SUCCESS:  //E:\DoneNOW\EMT.DoneNOW.Web\QuoteItem\QuoteItemManage.aspx
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价成功！');window.open('../QuoteItem/QuoteItemManage.aspx?quote_id="+quote.id.ToString()+"','"+ OpenWindow.QuoteItemManage + "','left=200,top=200,width=960,height=750', false);</script>");
+                        break;
+                    case ERROR_CODE.ERROR:
+                        break;
+                    case ERROR_CODE.PARAMS_ERROR:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写！');</script>");
+                        break;
+                    case ERROR_CODE.USER_NOT_FIND:
+                        Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                        Response.Redirect("Login.aspx");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                var result = new QuoteBLL().Update(quote, GetLoginUserId());
+                switch (result)
+                {
+                    case ERROR_CODE.SUCCESS:
+                       // ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改报价成功！');window.close();</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改报价成功！');window.open('../QuoteItem/QuoteItemManage.aspx?quote_id=" + quote.id.ToString() + "','" + OpenWindow.QuoteItemManage + "','left=200,top=200,width=960,height=750', false);</script>");
+                        break;
+                    case ERROR_CODE.ERROR:
+                        break;
+                    case ERROR_CODE.PARAMS_ERROR:
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写！');</script>");
+                        break;
+                    case ERROR_CODE.USER_NOT_FIND:
+                        Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                        Response.Redirect("Login.aspx");
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

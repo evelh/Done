@@ -31,12 +31,6 @@ namespace EMT.DoneNOW.DTO
         PAYMENT_TERM=29,                         // 报价：付款期限           
         PAYMENT_TYPE=30,                         // 报价：付款类型
         PAYMENT_SHIP_TYPE=31,                    // 报价：配送类型
-        DATE_DISPLAY_FORMAT = 35,
-        TIME_DISPLAY_FORMAT = 36,
-        NUMBER_DISPLAY_FORMAT = 37,
-        CURRENCY_POSITIVE_FORMAT = 38,
-        CURRENCY_NEGATIVE_FORMAT = 39,
-        PAGE_NUMBER_LOCATION = 41,
         QUOTE_ITEM_TYPE=42,                      // 报价项：类型
         QUOTE_ITEM_PERIOD_TYPE=43,               // 报价项：付费周期类型
         QUOTE_ITEM_TAX_CATE=44,                  // 报价项：税收种类
@@ -129,11 +123,11 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum OPPORTUNITY_STATUS
         {
-            NOTREADYTOBUY = 83,                              // 考虑中
-            ACTIVE = 84,                                     // 激活
-            LOST = 85,                                       // 丢失
-            CLOSED = 86,                                     // 关闭
-            IMPLEMENTED = 87,                                // 实施          
+            NOTREADYTOBUY=83,                              // 考虑中
+            ACTIVE=84,                                     // 激活
+            LOST=85,                                       // 丢失
+            CLOSED=86,                                     // 关闭
+            IMPLEMENTED=87,                                // 实施          
         }
 
 
@@ -299,27 +293,6 @@ namespace EMT.DoneNOW.DTO
             TAXABLE=599,       // 应纳税
         }
 
-
-        /// <summary>
-        /// 报价模板纸张尺寸-40
-        /// </summary>
-        public enum PAGE_SIZE
-        {
-           LETTER = 584,         //信纸：8.5" x 11" （215.9 mm x 279.4 mm）
-            A4 = 585,            //A4：8.25" x 11.75 （210 mm x 297 mm）
-        }
-
-        /// <summary>
-        /// 报价模板：页码位置-41
-        /// </summary>
-        public enum PAGE_NUMBER_LOCATION
-        {
-            NO = 588,                //不显示
-            BOTTOMLEFT = 589,         //底部靠左
-            BOTTOMCENTER = 590,        //底部居中
-            BOTTOMRIGHT = 591,        //底部靠右
-        }
-
         /// <summary>
         /// user状态-46
         /// </summary>
@@ -443,7 +416,9 @@ namespace EMT.DoneNOW.DTO
         CallBackRoll = 9,           // 角色查找带回
         QuoteTemplate = 10,         // 报价模板管理-查询
     }
-
+    /// <summary>
+    /// 打开新窗口的名称
+    /// </summary>
     public enum OpenWindow
     {                                         
         CompanyAdd=101,                           // 
@@ -453,19 +428,32 @@ namespace EMT.DoneNOW.DTO
         CompanySelect=105,                        // 查找带回客户
         Subsidiaries=106,                         // 添加子客户
 
+
         ContactAdd =111,                           //
         ContactEdit=112,                          //
         ContactLocationSelect=113,                // 联系人页面地址的查找带回
 
-        OpportunityAdd=121,                       // 
-        OpportunityEdit=122,                      //
-        OpportunityLose = 123,                    // 
 
-        QuoteAdd =131,                             //
-        QuoteEdit=132,                            //
+        OpportunityAdd=121,                       // 添加商机
+        OpportunityEdit=122,                      // 修改商机
+        OpportunityLose = 123,                    // 丢失商机
+        OpportunityView = 124,                    // 查看商机
+
+
+        QuoteAdd =131,                            // 报价新增
+        QuoteEdit=132,                            // 报价修改
 
         LocationAdd = 141,                         // 地址新增
         LoactionEdit = 142,                        // 地址修改
+
+        TodoAdd = 150,                          // 新增活动
+        NoteAdd = 151,                          // 备注新增
+
+        RoleSelect = 160,                        // 角色查询
+
+        QuoteItemAdd = 170,                      // 报价项新增
+        QuoteItemEdit = 171,                     // 报价项修改
+        QuoteItemManage = 172,                   // 报价项管理
 
     }                                         
 

@@ -40,7 +40,7 @@
         </div>
         <div class="header-title">
             <ul>
-                <li><a href="OpportunityAddAndEdit.aspx?opportunity_id=<%=opportunity.id %>">修改</a>
+                <li><a href="#" onclick="window.open('OpportunityAddAndEdit.aspx?opportunity_id=<%=opportunity.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityEdit %>','left=200,top=200,width=900,height=750', false);">修改</a>
 
                 </li>
                 <li>
@@ -48,8 +48,8 @@
                     New
 					<i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
-                        <li><a href="../Activity/AddActivity.aspx">待办</a></li>
-                        <li><a href="../Activity/AddActivity.aspx">备注</a></li>
+                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=900,height=750', false);">待办</a></li>
+                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=900,height=750', false);">备注</a></li>
                         <li>工单</li>
                         <li>附件</li>
                         <li>报价</li>
