@@ -221,7 +221,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "复制报价", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "关闭报价", click_function = "openopenopen()" });
                     contextMenu.Add(new PageContextMenuDto { text = "丢失报价", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除报价", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除报价", click_function = "openopenopen()" });
                     break;
                 case (long)QueryType.QuoteTemplate:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "openopenopen()" });

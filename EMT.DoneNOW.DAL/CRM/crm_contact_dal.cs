@@ -111,7 +111,7 @@ namespace EMT.DoneNOW.DAL
         public List<crm_contact> GetContactByName(long account_id,string contact_name ,long contact_id = 0 )
         {
             string sql = $"select * from crm_contact where account_id = {account_id} and name = '{contact_name}' and delete_time = 0";
-            if (contact_id == 0)
+            if (contact_id != 0)
                 sql += $" and id <> '{contact_id}' ";
             return FindListBySql(sql);
         }
