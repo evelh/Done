@@ -163,6 +163,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\classfication.png" />
     <Content Include="QuoteTemplate\test.aspx" />
     <Content Include="RichText\css\FootEdit.css" />
     <Content Include="RichText\css\HeadEdit.css" />
@@ -794,7 +795,7 @@
     </Compile>
     <Compile Include="QuoteTemplate\test.aspx.designer.cs">
       <DependentUpon>test.aspx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="QuoteItem\QuoteItemAddAndUpdate.aspx.cs">
       <DependentUpon>QuoteItemAddAndUpdate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

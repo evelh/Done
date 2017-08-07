@@ -65,6 +65,7 @@ namespace EMT.DoneNOW.BLL
                     id = id,
                     data_type = col.data_type_id,
                     description = col.col_comment,
+                    ref_url = col.ref_url,
                 };
 
                 // 下拉框和多选下拉框，获取列表值

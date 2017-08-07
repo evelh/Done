@@ -61,7 +61,7 @@
                 <tr>
 					<td>
 						<div class="clear">
-							<label>外部资源ID<span class="red">*</span></label>
+							<label>外部资源ID</label>
 							<input type="text" name="external_id" id="" value="<%=dto.contact.external_id %>" />
 						</div>
 					</td>
@@ -70,7 +70,7 @@
                  <tr>
                     <td>
                         <div class="clear">
-                            <label>联系人姓名<span class="num"></span></label>
+                            <label>联系人姓名<span class="num"></span><span class="red">*</span></label>
                             <div class="inputTwo">
 								<input type="text" name="first_name" id="first_name" value="<%=dto.contact.first_name %>"/>
 								<span>-</span>
@@ -83,7 +83,7 @@
 				<tr>
 					<td>
 						<div class="clear">
-							<label>称谓<span class="red">*</span></label>
+							<label>称谓</label>
 							 <asp:DropDownList ID="sufix" runat="server">
                              </asp:DropDownList>
 						</div>
@@ -93,7 +93,7 @@
 				<tr>
 					<td>
 						<div class="clear">
-							<label>激活<span class="red">*</span></label>
+							<label>激活</label>
                             <asp:CheckBox ID="active" runat="server" />
 						</div>
 					</td>
@@ -102,7 +102,7 @@
                   <tr>
 					<td>
 						<div class="clear">
-							<label>头衔<span class="red">*</span></label>
+							<label>头衔</label>
 							<input type="text" name="title" id="" value="<%=dto.contact.title %>" />
 						</div>
 					</td>
@@ -111,7 +111,7 @@
                 <tr>
 					<td>
 						<div class="clear">
-							<label>主联系人<span class="red">*</span></label>
+							<label>主联系人</label>
                             <asp:CheckBox ID="primary" runat="server" />
 						</div>
 					</td>
@@ -120,7 +120,7 @@
                 <tr>
 					<td>
 						<div class="clear input-dh">
-							<label>地址<span class="red">*</span></label>
+							<label>地址</label>
 							<input type="text" disabled="disabled" id="locCallBack" name="location" <%if (dto.location != null) { %> value="<%=dto.location.address %>" <%} %> />
                             <input type="hidden" name="location_id" id="locCallBackHidden" <%if (dto.location != null) { %> value="<%=dto.location.id %>" <%} %> />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('locCallBack')"></i></span>
@@ -131,7 +131,7 @@
                 <tr>
 					<td>
 						<div class="clear input-dh">
-							<label>备用地址<span class="red">*</span></label>
+							<label>备用地址</label>
 							<input type="text" disabled="disabled" id="loc1CallBack" name="location2" <%if (dto.location2 != null) { %> value="<%=dto.location2.address %>" <%} %> />
                             <input type="hidden" name="location_id2" id="loc1CallBackHidden" <%if (dto.location2 != null) { %> value="<%=dto.location2.id %>" <%} %> />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('loc1CallBack')"></i></span>
@@ -142,7 +142,7 @@
                 <tr>
 					<td>
 						<div class="clear">
-							<label>Email<span class="red">*</span></label>
+							<label>Email</label>
 							<input type="text" name="email" id="" value="<%=dto.contact.email %>" />
 						</div>
 					</td>
@@ -151,7 +151,7 @@
                 <tr>
 					<td>
 						<div class="clear">
-							<label>备用Email<span class="red">*</span></label>
+							<label>备用Email</label>
 							<input type="text" name="email2" id="" value="<%=dto.contact.email2 %>" />
 						</div>
 					</td>
@@ -198,7 +198,7 @@
                 <tr>
 					<td>
 						<div class="clear">
-							<label>备用电话<span class="red">*</span></label>
+							<label>备用电话</label>
 							<input type="text" name="alternate_phone" id="" value="<%=dto.contact.alternate_phone %>" />
 						</div>
 					</td>
@@ -207,7 +207,7 @@
                 <tr>
 					<td>
 						<div class="clear">
-							<label>移动电话<span class="red">*</span></label>
+							<label>移动电话</label>
 							<input type="text" name="mobile_phone" id="" value="<%=dto.contact.mobile_phone %>" />
 						</div>
 					</td>
@@ -216,7 +216,7 @@
                 <tr>
 					<td>
 						<div class="clear">
-							<label>传真<span class="red">*</span></label>
+							<label>传真</label>
 							<input type="text" name="fax" id="" value="<%=dto.contact.fax %>" />
 						</div>
 					</td>
@@ -230,7 +230,7 @@
                  <tr>
                     <td>
                         <div class="clear">
-                            <label>微博地址<span class="red"></span></label>
+                            <label>微博地址</label>
                             <asp:TextBox ID="weibo_url" runat="server"></asp:TextBox>
                             <input type="button" class="Jump" value="跳转"/>
 
@@ -241,9 +241,8 @@
                  <tr>
 					<td>
 						<div class="clear">
-							<label>QQ号<span class="red">*</span></label>
-                            <asp:TextBox ID="QQ_url" runat="server"></asp:TextBox>	
-                            <input type="button" class="Jump" value="跳转"/>
+							<label>QQ号</label>
+                            <asp:TextBox ID="QQ_url" runat="server"></asp:TextBox>
 						</div>
 					</td>
 				 </tr>
@@ -251,9 +250,8 @@
                 <tr>
 					<td>
 						<div class="clear">
-							<label>微信号<span class="red">*</span></label>
+							<label>微信号</label>
 							<asp:TextBox ID="WeChat_url" runat="server"></asp:TextBox>
-                            <input type="button" class="Jump" value="跳转"/>
 						</div>
 					</td>
 				 </tr>

@@ -411,6 +411,7 @@ namespace EMT.DoneNOW.DTO
             DROPDOWN = 809,         // 下拉选择框
             MULTI_DROPDOWN = 810,   // 多选下拉框
             AREA = 811,             // 行政区
+            CALLBACK = 812,         // 查找带回
         }
     }
 
@@ -438,6 +439,9 @@ namespace EMT.DoneNOW.DTO
         Contact = 5,                // 联系人管理-联系人查询
         CallBackCompany = 6,        // 查找带回客户
         Opportunity = 7,            // 商机管理-商机查询
+        Quote = 8,                  // 报价管理-报价查询
+        CallBackRoll = 9,           // 角色查找带回
+        QuoteTemplate = 10,         // 报价模板管理-查询
     }
 
     public enum OpenWindow

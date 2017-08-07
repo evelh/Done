@@ -106,9 +106,9 @@ namespace EMT.DoneNOW.Web
             {
                 Response.Write("<script>alert('必填项错误。'); </script>");
             }
-            else if (result == ERROR_CODE.ERROR)               // 联系人已将存在
+            else if (result == ERROR_CODE.ERROR)               // 联系人已经存在
             {
-                Response.Write("<script>alert('联系人已将存在');</script>");
+                Response.Write("<script>alert('联系人已经存在');</script>");
             }
             else if (result == ERROR_CODE.SUCCESS)                    // 插入联系人成功，刷新前一个页面
             {
