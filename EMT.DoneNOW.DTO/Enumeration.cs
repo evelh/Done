@@ -458,7 +458,9 @@ namespace EMT.DoneNOW.DTO
         CompanyNameSmilar=104,                    // 名称相似
         CompanySelect=105,                        // 查找带回客户
         Subsidiaries=106,                         // 添加子客户
-
+        CompanyView = 107,
+        ParentCompanyView = 108, 
+        CompanySiteConfiguration=109,             // 客户站点页面
 
         ContactAdd =111,                          //
         ContactEdit=112,                          //

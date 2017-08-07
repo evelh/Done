@@ -45,7 +45,7 @@
                                 <label>客户名称<span class="red">*</span></label>
                                 <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd?"":companyBLL.GetCompany(quote.account_id).name %>" />
                                 <i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>', 'left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <%--<input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":quote.account_id.ToString() %>" />--%>
                                 <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="157" />
 
@@ -496,7 +496,7 @@
         })
 
         $("#BillLocation").click(function () {
-            if ($(this).is(":checked")) {
+            if (!$(this).is(":checked")) {
 
                 // todo 
                 $("#bill_province_id").val($("#province_id").val());
@@ -615,7 +615,7 @@
 
 
     function chooseCompany() {
-        window.open("../Common/SelectCallBack.aspx?type=查找客户&field=ParentComoanyName&callBack=GetDataBySelectCompany", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName&callBack=GetDataBySelectCompany", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
     function SubmitCheck() {
