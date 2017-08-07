@@ -143,7 +143,7 @@ namespace EMT.DoneNOW.BLL
                 classification_id = param.general.classification == 0 ? null : param.general.classification,
                 tax_region_id = param.general.tax_region == 0 ? null : param.general.tax_region,
                 tax_identification = param.general.tax_id,
-                resource_id = param.general.account_manage == 0 ? 1 : (long)param.general.account_manage,
+                resource_id = param.general.account_manage == 0 ? null : param.general.account_manage,
             };  //  创建客户实体类
 
             if (!string.IsNullOrEmpty(param.general.parent_company_name))
@@ -273,10 +273,10 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
             #region 3.保存客户扩展信息
-            //new UserDefinedFieldsBLL().SaveUdfValue();
-           //  var udf_account_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);  // 获取到所有关于客户的自定义字段
-           //  var udf_general_list = param.general.udf;
-           //  new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.COMPANY, user.id, _account.id, udf_account_list, udf_general_list, OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION); // 保存自定义字段，保存成功，插入日志
+          //  new UserDefinedFieldsBLL().SaveUdfValue();
+            var udf_account_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);  // 获取到所有关于客户的自定义字段
+            var udf_general_list = param.general.udf;
+            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.COMPANY, user.id, _account.id, udf_account_list, udf_general_list, OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION); // 保存自定义字段，保存成功，插入日志
             //{
             //    var add_accout_udf_log = new sys_oper_log()
             //    {
@@ -296,14 +296,14 @@ namespace EMT.DoneNOW.BLL
             //}
             #endregion
 
-            #region 4.保存联系人扩展信息
-            if (!string.IsNullOrEmpty(param.contact.first_name))  // 判断
-            {
-                var udf_contact_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT); // 联系人的自定义字段
-                var udf_con_list = param.contact.udf;     // 传过来的联系人的自定义参数
-                new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTACT, user.id, _contact.id, udf_contact_list, udf_con_list, OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION);
+            #region 4.保存联系人扩展信息  
+            //if (!string.IsNullOrEmpty(param.contact.first_name))  // 判断
+            //{
+            //    //var udf_contact_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT); // 联系人的自定义字段
+            //    //var udf_con_list = param.contact.udf;     // 传过来的联系人的自定义参数
+            //    //new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTACT, user.id, _contact.id, udf_contact_list, udf_con_list, OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION);
 
-            }
+            //}
             #endregion
 
             #region 5.保存客户站点的扩展信息
@@ -647,7 +647,7 @@ namespace EMT.DoneNOW.BLL
             };
             if (!string.IsNullOrEmpty(param.general_update.parent_company_name))
             {
-                new_company_value.parent_id = Convert.ToInt64(new_company_value);
+                new_company_value.parent_id = Convert.ToInt64(param.general_update.parent_company_name);
             }
 
             if (!string.IsNullOrEmpty(param.additional_info.asset_value))

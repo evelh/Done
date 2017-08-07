@@ -147,6 +147,7 @@
                 <%--<p>(P) <%=location.postal_code %></p>--%>
                 <p>(F) <%=account.fax %></p>
                 <p><%=account.web_site %></p>
+               <p> <a href="#" onclick="window.open('CompanySiteManage.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>','left=200,top=200,width=960,height=750', false);">站点配置</a></p>
             </div>
 
             <div class="viewleftTitle1">

@@ -599,6 +599,7 @@
                 }
             });
         };
+
         $("#save").click(function () {
             if (!SubmitCheck()) {
                 return false;
@@ -633,7 +634,7 @@
         })
 
         Calculation_Gross_Profit();
-
+        GetContactList();
         function Calculation_Gross_Profit()   // 计算毛利和毛利率,年收益和年成本
         {
             var CalculationMonths = $("#number_months").val();

@@ -78,7 +78,12 @@ namespace EMT.DoneNOW.BLL.CRM
         public bool Update(crm_location new_location,long user_id)
         {
             crm_location old_location = new crm_location_dal().GetLocationById(new_location.id);  // 根据客户id去获取到客户的地址，然后判断地址是否修改
-        
+
+            new_location.oid = old_location.oid;
+            new_location.create_user_id = old_location.create_user_id;
+            new_location.create_time = old_location.create_time;
+            new_location.update_user_id = old_location.update_user_id;
+            new_location.update_time = old_location.update_time;
             if (!old_location.Equals(new_location))   // 代表用户更改了地址
             {
                 var user = UserInfoBLL.GetUserInfo(user_id);

@@ -103,7 +103,7 @@ namespace EMT.DoneNOW.Web
                     is_optoutSurvey.Checked = account.is_optout_survey == 1;
                     mileage.Text = account.mileage == null ? "" : account.mileage.ToString();// todo decmail? 保留两位小数点？？
                     CompanyType.SelectedValue = account.type_id == null ? "0" : account.type_id.ToString();
-                    AccountManger.SelectedValue = account.resource_id.ToString();
+                    AccountManger.SelectedValue =  account.resource_id == null ? "0" : account.resource_id.ToString();
                     TerritoryName.SelectedValue = account.territory_id == null ? "0" : account.territory_id.ToString();
                     MarketSegment.SelectedValue = account.market_segment_id == null ? "0" : account.market_segment_id.ToString();
                     Competitor.SelectedValue = account.competitor_id == null ? "0" : account.competitor_id.ToString();
@@ -229,7 +229,8 @@ namespace EMT.DoneNOW.Web
                 }
                 else
                 {
-                    Response.Redirect("UpdateContact.aspx?account_id=" + param.general_update.id + "&updateLocationContact=" + updateLocationContact + "&updateFaxPhoneContact=" + updateFaxPhoneContact);
+                    Response.Write("<script>alert('修改客户成功！');window.close();window.open('UpdateContact.aspx?account_id=" + param.general_update.id + "&updateLocationContact=" + updateLocationContact + "&updateFaxPhoneContact=" + updateFaxPhoneContact+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd + "','left= 200, top = 200, width = 960, height = 750', false);</script>");  //  
+                    //Response.Redirect("UpdateContact.aspx?account_id=" + param.general_update.id + "&updateLocationContact=" + updateLocationContact + "&updateFaxPhoneContact=" + updateFaxPhoneContact);
                 }
 
             }
