@@ -164,6 +164,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\export.png" />
+    <Content Include="Images\print.png" />
     <Content Include="QuoteTemplate\QuoteTemplateAppendixEdit.aspx" />
     <Content Include="QuoteTemplate\QuoteTemplatePropertiesEdit.aspx" />
     <Content Include="Images\classfication.png" />

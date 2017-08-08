@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <style>
         #addressManage th{
             text-align:center;
@@ -21,13 +21,13 @@
         <div class="header">修改客户</div>
         <div class="header-title">
             <ul>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <asp:Button ID="save_close" runat="server" Text="保存并关闭" OnClick="save_close_Click" BorderStyle="None" />
                 </li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -64px 0;" class="icon-1"></i>
                     <asp:Button ID="delete" runat="server" Text="删除" OnClick="delete_Click" BorderStyle="None" />
                 </li>
-                <li id="close"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                <li id="close"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <%--<asp:Button ID="close" runat="server" Text="关闭" />--%>
                     关闭
                 </li>

@@ -40,7 +40,7 @@
         <button class="Search" id="SearchBtn">搜索</button>
 		<p class="informationTitle"> <i id="Icon"></i>搜索</p>
 		<div class="content clear">
-			<table border="none" cellspacing="" cellpadding="" style="width: 400px;">
+			<table border="none" cellspacing="" cellpadding="" style="width: 395px;">
             <% for (int i = 0; i < condition.Count; i += 3) {%> 
 				<tr>
 					<td>
@@ -89,7 +89,7 @@
 				</tr>
             <% } %>
 			</table>
-            <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
+            <table border="none" cellspacing="" cellpadding="" style="width:395px;">
             <% for (int i = 1; i < condition.Count; i += 3) {%> 
 				<tr>
 					<td>
@@ -143,7 +143,7 @@
 				</tr>
             <% } %>
 			</table>
-            <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
+            <table border="none" cellspacing="" cellpadding="" style="width: 395px;">
             <% for (int i = 2; i < condition.Count; i += 3) {%> 
 				<tr>
 					<td>
@@ -199,7 +199,7 @@
         $("#Icon").on("click", function () {
             $(this).find(".content").toggle();
             var color = colors[index++];
-            $(".informationTitle").css("background", color);
+            $(".informationTitle").parent().css("background", color);
             if (index == colors.length) {
                 index = 0;
             }

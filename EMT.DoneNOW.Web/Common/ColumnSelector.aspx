@@ -6,8 +6,8 @@
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="../Content/base.css"/>
-    <link rel="stylesheet" type="text/css" href="../Content/multipleList.css"/>
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../Content/multipleList.css"/>
     <link rel="stylesheet" type="text/css" href="../Content/style.css"/>
     <title></title>
 </head>
@@ -46,6 +46,8 @@
 		        </select>
 		    </div>
 		    <div class="col-sm-1">
+		        <button type="button"  class="btn btn-block" style="background: #fff;" disabled="disabled"><i class="glyphicon"></i></button>
+		        <button type="button"  class="btn btn-block" style="background: #fff;" disabled="disabled"><i class="glyphicon"></i></button>
 		        <button type="button" id="multiselect_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
 		        <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
 		        <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
@@ -62,8 +64,10 @@
 		    </div>
 		    <div class="col-xs-1">
 		        <button type="button"  class="btn btn-block" style="background: #fff;" disabled="disabled"><i class="glyphicon"></i></button>
-		            <button type="button" id="multiselect_move_up" class="btn btn-block"><i class="glyphicon glyphicon-arrow-up"></i></button>
-		            <button type="button" id="multiselect_move_down" class="btn btn-block col-sm-6"><i class="glyphicon glyphicon-arrow-down"></i></button>
+		        <button type="button"  class="btn btn-block" style="background: #fff;" disabled="disabled"><i class="glyphicon"></i></button>
+		        <button type="button"  class="btn btn-block" style="background: #fff;" disabled="disabled"><i class="glyphicon"></i></button>
+		        <button type="button" id="multiselect_move_up" class="btn btn-block"><i class="glyphicon glyphicon-arrow-up"></i></button>
+		        <button type="button" id="multiselect_move_down" class="btn btn-block col-sm-6"><i class="glyphicon glyphicon-arrow-down"></i></button>
 		        <button type="button"  class="btn btn-block" style="background: #fff;" disabled="disabled"><i class="glyphicon"></i></button>
 		    </div>
 		</div>

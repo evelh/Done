@@ -87,9 +87,9 @@
                         <%--<li>Reset quick books company mapping</li>--%>
                     </ul>
                 </li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" ></i>
                     <asp:Button ID="Report" runat="server" Text="客户报告" BorderStyle="None" /></li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" ></i>
                     <asp:Button ID="LiveLink" runat="server" Text="友情链接" BorderStyle="None" /></li>
             </ul>
         </div>
