@@ -103,8 +103,8 @@
                                     order = strs[1].ToLower();
                                 }
                                 %>
-                        <th title="点击按此列排序" width="<%=para.length*10 %>px" <%if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.PIC) { %>style="background:url(../Images/classfication.png) no-repeat center;"<%} %> onclick="ChangeOrder('<%=para.name %>')">
-                            <%=para.type==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.PIC?"": para.name %>
+                        <th title="点击按此列排序" width="<%=para.length*16 %>px" onclick="ChangeOrder('<%=para.name %>')">
+                            <%=para.name %>
                             <%if (orderby!=null && para.name.Equals(orderby))
                                 { %><img src="../Images/sort-<%=order %>.png" /> 
                             <%} %></th>

@@ -328,17 +328,18 @@ namespace EMT.DoneNOW.BLL
                     || param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DATETIME
                     || param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.NUMBER)      // 数值和日期类型
                 {
+                    queryPara.Append('"').Append(param.col_name).Append("\":");
                     if (p.value != null)
                     {
-                        queryPara.Append('"').Append(param.col_name).Append(">=").Append(p.value);
+                        queryPara.Append('"').Append(param.col_name).Append(" >= '").Append(p.value).Append("'");
                         if (p.value2 != null)
-                            queryPara.Append(" and ").Append(param.col_name).Append("<=").Append(p.value2).Append('"');
+                            queryPara.Append(" and ").Append(param.col_name).Append(" <= '").Append(p.value2).Append("'\"");
                         else
                             queryPara.Append('"');
                     }
                     else
                     {
-                        queryPara.Append('"').Append(param.col_name).Append("<=").Append(p.value2).Append('"');
+                        queryPara.Append('"').Append(param.col_name).Append(" <= '").Append(p.value2).Append("'\"");
                     }
                 }
                 else
