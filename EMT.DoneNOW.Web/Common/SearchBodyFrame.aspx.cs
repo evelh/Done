@@ -21,6 +21,7 @@ namespace EMT.DoneNOW.Web
         protected List<QueryResultParaDto> resultPara = null;   // 查询结果列信息
         protected List<PageContextMenuDto> contextMenu = null;  // 右键菜单信息
         protected List<DictionaryEntryDto> queryParaValue = new List<DictionaryEntryDto>();  // 查询条件和条件值
+        private long objId = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!int.TryParse(Request.QueryString["cat"], out catId))
@@ -29,12 +30,33 @@ namespace EMT.DoneNOW.Web
                 queryTypeId = 0;
             if (!long.TryParse(Request.QueryString["group"], out paraGroupId))
                 paraGroupId = 0;
-            if (catId == 0 || queryTypeId == 0 || paraGroupId == 0)
+            if (catId == 0 || queryTypeId == 0)
             {
                 Response.Close();
                 return;
             }
-            
+
+            // 一个query_type下只有一个group时可以不传参gruop_id
+            if (paraGroupId == 0)
+            {
+                var groups = bll.GetQueryGroup(catId);
+                foreach (var g in groups)
+                {
+                    if (g.query_type_id == queryTypeId)
+                    {
+                        if (paraGroupId != 0)   // 一个query_type下有多个group，不能判断使用哪个
+                        {
+                            Response.Close();
+                            return;
+                        }
+                        paraGroupId = g.id;
+                    }
+                }
+            }
+
+            if (!long.TryParse(Request.QueryString["id"], out objId))
+                objId = 0;
+
             InitData();
             GetMenus();
             string flag = Request.QueryString["show"];
@@ -53,9 +75,12 @@ namespace EMT.DoneNOW.Web
                     addBtn = "新增客户";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTACT:
+                case (int)DicEnum.QUERY_CATE.CONTACT_COMPANY_VIEW:
                     addBtn = "新增联系人";
                     break;
                 case (int)DicEnum.QUERY_CATE.OPPORTUNITY:
+                case (int)DicEnum.QUERY_CATE.OPPORTUNITY_COMPANY_VIEW:
+                case (int)DicEnum.QUERY_CATE.OPPORTUNITY_CONTACT_VIEW:
                     addBtn = "新增商机";
                     break;
                 case (int)DicEnum.QUERY_CATE.QUOTE:
@@ -101,6 +126,31 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(keys["search_id"]))   // 使用缓存查询条件
             {
                 queryResult = bll.GetResult(GetLoginUserId(), keys["search_id"], page, order);
+                return;
+            }
+
+            if (objId != 0)    // 查询条件只有实体id，可以默认带入id查找
+            {
+                var cdts = bll.GetConditionPara(GetLoginUserId(), paraGroupId);
+                if (cdts.Count == 1)
+                {
+                    QueryParaDto queryPara = new QueryParaDto();
+
+                    queryPara.query_params = new List<Para>();
+                    Para pa = new Para();
+                    pa.id = cdts[0].id;
+                    pa.value = objId.ToString();
+                    queryPara.query_params.Add(pa);
+
+                    queryPara.query_type_id = queryTypeId;
+                    queryPara.para_group_id = paraGroupId;
+                    queryPara.page = page;
+                    queryPara.order_by = order;
+                    queryPara.page_size = pageSize;
+
+                    queryResult = bll.GetResult(GetLoginUserId(), queryPara);
+                    return;
+                }
             }
 
             if (queryResult == null)  // 不使用缓存或缓存过期

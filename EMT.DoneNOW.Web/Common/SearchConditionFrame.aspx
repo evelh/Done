@@ -48,7 +48,8 @@
                             else { %>"clear"<%} %>>
 							<label><%=condition[i].description %></label>
                         <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
-                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA)
+                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA
+                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.NUMBER_EQUAL)
                             { %>
 							<input type="text" name="<%=condition[i].id %>" class="sl_cdt" />
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DROPDOWN) { %>
@@ -76,13 +77,23 @@
                             <input type="hidden" id="con<%=condition[i].id %>Hidden" name="<%=condition[i].id %>" class="sl_cdt" />
                             <span class="on" onclick="window.open('<%=condition[i].ref_url %>con<%=condition[i].id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false)"><i class="icon-dh"></i></span>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
+                            <input type="hidden" id="cmsh<%=condition[i].id %>" name="<%=condition[i].id %>" class="sl_cdt" />
                             <div class="multiplebox">
-							    <select id="cms" multiple="multiple">
+							    <select id="cms<%=condition[i].id %>" multiple="multiple">
                                     <%foreach (var v in condition[i].values) { %>
                                     <option value="<%=v.val %>"><%=v.show %></option>
                                     <%} %>
 				                </select>
                             </div>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#cms<%=condition[i].id %>').change(function () {
+                                        $('#cmsh<%=condition[i].id %>').val($(this).val());
+                                    }).multipleSelect({
+                                        width: '100%'
+                                    });
+                                });
+                            </script>
                         <%}%>
 						</div>
 					</td>
@@ -93,10 +104,12 @@
             <% for (int i = 1; i < condition.Count; i += 3) {%> 
 				<tr>
 					<td>
-                        <div class="clear">
+						<div class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>"clear input-dh"<%}
+                            else { %>"clear"<%} %>>
 							<label><%=condition[i].description %></label>
                         <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
-                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA)
+                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA
+                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.NUMBER_EQUAL)
                             { %>
 							<input type="text" name="<%=condition[i].id %>" class="sl_cdt" />
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DROPDOWN) { %>
@@ -119,6 +132,10 @@
 								<span>-</span>
 								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
 							</div>
+                        <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>
+                            <input type="text" id="con<%=condition[i].id %>" disabled="disabled" />
+                            <input type="hidden" id="con<%=condition[i].id %>Hidden" name="<%=condition[i].id %>" class="sl_cdt" />
+                            <span class="on" onclick="window.open('<%=condition[i].ref_url %>con<%=condition[i].id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false)"><i class="icon-dh"></i></span>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
                             <input type="hidden" id="cmsh<%=condition[i].id %>" name="<%=condition[i].id %>" class="sl_cdt" />
                             <div class="multiplebox">
@@ -147,10 +164,12 @@
             <% for (int i = 2; i < condition.Count; i += 3) {%> 
 				<tr>
 					<td>
-                        <div class="clear">
+						<div class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>"clear input-dh"<%}
+                            else { %>"clear"<%} %>>
 							<label><%=condition[i].description %></label>
                         <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
-                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA)
+                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA
+                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.NUMBER_EQUAL)
                             { %>
 							<input type="text" name="<%=condition[i].id %>" class="sl_cdt" />
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DROPDOWN) { %>
@@ -173,12 +192,28 @@
 								<span>-</span>
 								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
 							</div>
+                        <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>
+                            <input type="text" id="con<%=condition[i].id %>" disabled="disabled" />
+                            <input type="hidden" id="con<%=condition[i].id %>Hidden" name="<%=condition[i].id %>" class="sl_cdt" />
+                            <span class="on" onclick="window.open('<%=condition[i].ref_url %>con<%=condition[i].id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false)"><i class="icon-dh"></i></span>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
-							<select id="cms" multiple="multiple">
-                                <%foreach (var v in condition[i].values) { %>
-                                <option value="<%=v.val %>"><%=v.show %></option>
-                                <%} %>
-				            </select>
+                            <input type="hidden" id="cmsh<%=condition[i].id %>" name="<%=condition[i].id %>" class="sl_cdt" />
+                            <div class="multiplebox">
+							    <select id="cms<%=condition[i].id %>" multiple="multiple">
+                                    <%foreach (var v in condition[i].values) { %>
+                                    <option value="<%=v.val %>"><%=v.show %></option>
+                                    <%} %>
+				                </select>
+                            </div>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#cms<%=condition[i].id %>').change(function () {
+                                        $('#cmsh<%=condition[i].id %>').val($(this).val());
+                                    }).multipleSelect({
+                                        width: '100%'
+                                    });
+                                });
+                            </script>
                         <%}%>
 						</div>
 					</td>

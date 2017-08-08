@@ -324,9 +324,9 @@ namespace EMT.DoneNOW.BLL
                 var param = paraDal.FindSignleBySql<d_query_para>($"SELECT * FROM d_query_para WHERE id={p.id} AND query_type_id={para.query_type_id}");
                 if (param == null)
                     continue;
-                if (param.query_type_id == (int)DicEnum.QUERY_PARA_TYPE.DATE
-                    || param.query_type_id == (int)DicEnum.QUERY_PARA_TYPE.DATETIME
-                    || param.query_type_id == (int)DicEnum.QUERY_PARA_TYPE.NUMBER)      // 数值和日期类型
+                if (param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DATE
+                    || param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DATETIME
+                    || param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.NUMBER)      // 数值和日期类型
                 {
                     if (p.value != null)
                     {

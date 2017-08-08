@@ -14,7 +14,7 @@ namespace EMT.DoneNOW.Web
     {
         private QueryCommonBLL bll = new QueryCommonBLL();
         protected string callBackFunc;  // 回调方法
-        //protected string queryPage;     // 查询页名称
+        protected bool isMuilt = false; // 是否多选查找带回
         protected long queryTypeId;     // 查询页id
         protected long paraGroupId;     // 查询条件分组id
         protected string callBackField; // 回调字段名
@@ -25,7 +25,12 @@ namespace EMT.DoneNOW.Web
         {
             if (!string.IsNullOrEmpty(Request.QueryString["callBack"]))
                 callBackFunc = Request.QueryString["callBack"];
-            //queryPage = HttpContext.Current.Request.QueryString["type"];
+
+            // 是否多选查找带回
+            string muilt = HttpContext.Current.Request.QueryString["muilt"];
+            if (!string.IsNullOrEmpty(muilt) && muilt.Equals("1"))
+                isMuilt = true;
+
             int catId = 0;
             if (!int.TryParse(Request.QueryString["cat"], out catId))
             {

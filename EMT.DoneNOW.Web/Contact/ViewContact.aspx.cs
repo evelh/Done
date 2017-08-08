@@ -53,7 +53,7 @@ namespace EMT.DoneNOW.Web
                         viewContact_iframe.Src = "";  // 备注
                         break;
                     case "opportunity":
-                        viewContact_iframe.Src = "";  // 商机
+                        viewContact_iframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY_CONTACT_VIEW + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.OpportunityContactView + "&id=" + contact_id;  // 商机
                         break;      
                     default:
                         viewContact_iframe.Src = "";  // 默认

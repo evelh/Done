@@ -445,6 +445,10 @@
             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ADDRESS_CALLBACK %>&field=" + fld, "<%=EMT.DoneNOW.DTO.OpenWindow.ContactLocationSelect %>", 'left=200,top=200,width=600,height=800', false);
         }
         function GetCompany() {
+            if ($("#Phone").val() != "")
+                return;
+            if ($("#accCallBackHidden").val() == "")
+                return;
             requestData("Tools/CompanyAjax.ashx?act=companyPhone&account_id=" + $("#accCallBackHidden").val(), "", function (data) {
                 if ($("#Phone").val() == "")
                     $("#Phone").val(data);
