@@ -9,31 +9,29 @@ using System.Web.UI.WebControls;
 
 namespace EMT.DoneNOW.Web
 {
-    public partial class QuoteTemplateTopEdit :BasePage
+    public partial class Body_itemEdit : BasePage
     {
-        public int id; 
-        public string quote_head;
+        public int id;
+        public string body_item;
         protected void Page_Load(object sender, EventArgs e)
         {
-            id = Convert.ToInt32(Request.QueryString["id"]);
-            if (!IsPostBack) {                
-                if (Session["quote_head"] != null && !string.IsNullOrEmpty(Session["quote_head"].ToString()))
+            if (!IsPostBack)
+            {
+                if (Request.QueryString["item"] != null && !string.IsNullOrEmpty(Request.QueryString["item"].ToString()))
                 {
-                    quote_head = HttpUtility.HtmlDecode(Session["quote_head"].ToString()).Replace("\"", "'");
+                    body_item = Request.QueryString["item"].ToString();
                 }
-                else
-                {
-                   
+                else {
+                    body_item = "2222";
                 }
+               
 
                 this.AlertVariableFilter.DataTextField = "show";
                 this.AlertVariableFilter.DataValueField = "val";
-                this.AlertVariableFilter.DataSource = new QuoteTemplateBLL().GetVariableField();
+                this.AlertVariableFilter.DataSource = new QuoteTemplateBLL().GetBodyVariableField();
                 this.AlertVariableFilter.DataBind();
                 this.AlertVariableFilter.Items.Insert(0, new ListItem() { Value = "0", Text = "显示全部变量", Selected = true });
-
-
-                //
+ //
                 var list = new QuoteTemplateBLL().GetAllVariable();
                 StringBuilder sb = new StringBuilder();
                 foreach (string va in list)
@@ -42,17 +40,9 @@ namespace EMT.DoneNOW.Web
                 }
                 this.VariableList.Text = sb.ToString();
             }
-            
-            //quote_head = HttpUtility.HtmlDecode(data.quote_header_html).Replace("\"", "'");
-        }
 
-        protected void Save(object sender, EventArgs e)
-        {
-            string tt = Request.Form["data"].Trim().ToString();
-            Session["quote_head"] = tt;
-            Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
-        }
 
+        }
         protected void AlertVariableFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             StringBuilder sb = new StringBuilder();

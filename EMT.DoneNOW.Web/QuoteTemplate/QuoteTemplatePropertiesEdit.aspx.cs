@@ -19,12 +19,10 @@ namespace EMT.DoneNOW.Web
         protected sys_quote_tmpl data;
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            id = Convert.ToInt32(Request.QueryString["id"]);
+            data = qtb.GetQuoteTenplate(id);
             if (!IsPostBack)
-            {
-                id = Convert.ToInt32(Request.QueryString["id"]);
-                id = 197;
-                data = qtb.GetQuoteTenplate(id);
+            {                
                 if (data == null)
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('获取数据错误！');history.go(-1);</script>");
@@ -126,10 +124,6 @@ namespace EMT.DoneNOW.Web
                 case 584:this.Letter.Checked = true;break;
                 case 585:this.A4.Checked = true;break;
             }
-
-
-
-
             #endregion
 
         }
@@ -181,7 +175,10 @@ namespace EMT.DoneNOW.Web
             var result = qtb.update(data, GetLoginUserId());
             if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
             {
-                Response.Write("<script>alert('报价模板添加成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                Response.Write("<script>alert('报价模板属性修改成功！'); window.location.href = \"QuoteTemplateEdit.aspx?id = "+id+" & op = edit\";</script>"); 
+                //  关闭添加页面的同时，刷新父页面
+
+
             }
             else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
             {
@@ -270,6 +267,11 @@ namespace EMT.DoneNOW.Web
                 id = Convert.ToInt32(PAGE_SIZE.A4);
             }
             return id;
+        }
+
+        protected void Cancel(object sender, EventArgs e)
+        {
+            Response.Redirect("QuoteTemplateEdit.aspx?id="+id+"&op=edit");
         }
     }
 }

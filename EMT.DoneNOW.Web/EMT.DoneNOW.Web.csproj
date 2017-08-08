@@ -163,6 +163,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
     <Content Include="QuoteTemplate\QuoteTemplateAppendixEdit.aspx" />
     <Content Include="QuoteTemplate\QuoteTemplatePropertiesEdit.aspx" />
     <Content Include="Images\classfication.png" />
@@ -749,6 +750,13 @@
     </Compile>
     <Compile Include="QuoteItem\QuoteItemManage.aspx.designer.cs">
       <DependentUpon>QuoteItemManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="QuoteTemplate\Body_itemEdit.aspx.cs">
+      <DependentUpon>Body_itemEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteTemplate\Body_itemEdit.aspx.designer.cs">
+      <DependentUpon>Body_itemEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="QuoteTemplate\QuoteTemplateAdd.aspx.cs">
       <DependentUpon>QuoteTemplateAdd.aspx</DependentUpon>

@@ -10,7 +10,7 @@
 namespace EMT.DoneNOW.Web {
     
     
-    public partial class QuoteTemplateBodyEdit {
+    public partial class Body_itemEdit {
         
         /// <summary>
         /// EditQuoteTemplate 控件。
@@ -31,12 +31,39 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.Button OkButton1;
         
         /// <summary>
-        /// datalist 控件。
+        /// ScriptManager1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal datalist;
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
+        
+        /// <summary>
+        /// UpdatePanel2 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
+        
+        /// <summary>
+        /// AlertVariableFilter 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList AlertVariableFilter;
+        
+        /// <summary>
+        /// VariableList 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal VariableList;
     }
 }

@@ -66,6 +66,39 @@ namespace EMT.DoneNOW.BLL
 
         }
         #endregion
+        /// <summary>
+        /// 设置下拉框显示变量
+        /// </summary>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetVariableField() {
+            var list=_dal.GetDictionary((int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP, (int)NOTIFY_CATE.QUOTE_TEMPLATE_OTHERS);
+            return list;
+        }
+        /// <summary>
+        /// 设置body下拉框显示变量
+        /// </summary>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetBodyVariableField()
+        {
+            var list = _dal.GetDictionary((int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP, (int)NOTIFY_CATE.QUOTE_TEMPLATE_BODY);
+            return list;
+        }
+
+        /// <summary>
+        /// 获取所有可显示变量
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetAllVariable() {
+            return _dal.GetAllVariable();
+        }
+        /// <summary>
+        /// 获取对应
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetVariable(int id)
+        {
+            return _dal.GetVariable(id);
+        }
 
 
         #region 报价模板删除的逻辑处理
@@ -94,7 +127,6 @@ namespace EMT.DoneNOW.BLL
                     {
                         // 查询不到用户，用户丢失
                         return ERROR_CODE.USER_NOT_FIND;
-
                     }
                     var add_account_log = new sys_oper_log()
                     {
@@ -108,7 +140,6 @@ namespace EMT.DoneNOW.BLL
                         oper_type_id = (int)OPER_LOG_TYPE.DELETE,
                         oper_description = _dal.AddValue(sqt),
                         remark = "删除报价模板"
-
                     };          // 创建日志
                     new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
                     #endregion
@@ -150,6 +181,7 @@ namespace EMT.DoneNOW.BLL
         }
         #region 报价模板编辑的更新保存操作
         public ERROR_CODE update(sys_quote_tmpl sqt, long user_id) {
+
            if(!_dal.Update(sqt)) {
                 return ERROR_CODE.ERROR;
             }
@@ -169,7 +201,7 @@ namespace EMT.DoneNOW.BLL
                 name = "",
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                //  oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,       //数据库缺少对应，报价模板
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,       //数据库缺少对应，报价模板
                 oper_object_id = sqt.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
                 oper_description = _dal.AddValue(sqt),

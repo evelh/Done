@@ -37,11 +37,11 @@
 				</li>
 				<li class="Button ButtonIcon Edit NormalState" id="EditPropertiesButton" tabindex="0">
 					<span class="Icon EditProperties"></span>
-					<span class="Text">Edit Template Properties</span>
+					<span class="Text">修改模板属性</span>
 				</li>
 				<li class="Button ButtonIcon Appendix NormalState" id="EditAppendixButton" tabindex="0">
 					<span class="Icon EditAppendix"></span>
-					<span class="Text">Edit Appendix</span>
+					<span class="Text">编辑附录</span>
 				</li>
 				<li class="Button ButtonIcon Cancel NormalState" id="CancelButton" tabindex="0">
 					<span class="Icon CancelButton"></span>
@@ -72,7 +72,7 @@
 						</div>
 					</div>
 					<div class="ImageHotspot" style="height: 463px; top: 99px;" id="a3">
-						<div class="SimpleLabel" id="b3">报价主体</div>
+						<div class="SimpleLabel" id="b3">报价主体</div>                        
                         <asp:Literal ID="body" runat="server"></asp:Literal>
 						<div class="CompleteLabel" id="c3">
 							<div class="Information">
@@ -128,7 +128,15 @@
         })
         $("#a5").on("click", function () {
             window.location.href = "QuoteTemplateFootEdit.aspx?id=" +<%=id%>+"";
-        })
+        });
+        //编辑属性
+        $("#EditPropertiesButton").on("click", function () {
+            window.location.href = "QuoteTemplatePropertiesEdit.aspx?id=" +<%=id%>+"";
+        });
+        //修改附录
+        $("#EditAppendixButton").on("click", function () {
+            window.location.href = "QuoteTemplateAppendixEdit.aspx?id=" +<%=id%>+"";
+        }); 
     </script>
 </body>
 </html>

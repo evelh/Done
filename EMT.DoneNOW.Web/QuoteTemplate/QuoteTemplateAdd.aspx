@@ -34,9 +34,9 @@
              <div class="header">报价模板新增</div>
              <div class="header-title">
             <ul><li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
-            <asp:Button ID="Button1" runat="server" Text="新增"  BorderStyle="None" OnClick="AddQuoteTemplate" />
+            <asp:Button ID="Button1" runat="server" Text="保存"  BorderStyle="None" OnClick="AddQuoteTemplate" />
                 </li><li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
-                    <asp:Button ID="Button2" runat="server" Text="关闭" BorderStyle="None" />
+                    <asp:Button ID="close" runat="server" Text="关闭" BorderStyle="None" />
             </li></ul>
         </div>
             <div class="text">为这个报价模板配置基本设置</div>
@@ -63,7 +63,7 @@
                         <tr><td>
                             <asp:TextBox ID="Description" runat="server"  TextMode="MultiLine" CssClass="q1"></asp:TextBox><br />
                             <%-- <div class="CharacterInformation"><span class="CurrentCount">0</span>/<span class="Maximum">200</span></div>--%>
-                            <asp:CheckBox ID="Active" runat="server" text="激活" />
+                            <asp:CheckBox ID="Active" runat="server" text="激活" Checked="True" />
                             </td></tr>
                          </table>
                     </div>
@@ -134,61 +134,60 @@
 
 
 
-            <div class="information clear">
+            <div class="information clear">                
                 <p class="informationTitle"><i></i>数据税收/汇总显示格式设置格式</p>
-                 <div class="text">税收显示和总显示包含硬编码的文本。您可以自定义下面的文本,此文本将适用于每个组的总显示，总显示，总税收显示，以及期间类型的税务显示(如果显示)。</div>
-                <div>
+             <%--<span class="text">税收显示和总显示包含硬编码的文本。您可以自定义下面的文本,此文本将适用于每个组的总显示，总显示，总税收显示，以及期间类型的税务显示(如果显示)。</span>--%>
+        <div>
                     <table border="none" cellspacing="" cellpadding="" style="width: 500px;margin-left: 31px;">
                         <tr><td><div class="clear"><label>子汇总</label></div></td><td><div class="clear"><label>半年收费汇总</label></div></td></tr>
                         <tr><td><div class="clear">
-                            <asp:TextBox ID="Subtotal" runat="server">Subtotal</asp:TextBox></div></td><td><div class="clear">
-                                <asp:TextBox ID="SemiAnnualTotal" runat="server">Semi-Annual Total</asp:TextBox>
-                              <%--  <input type="text" name="SemiAnnualTotal" id="SemiAnnualTotal" value="SemiAnnualTotal" />--%>
-                                                                                                           </div></td></tr>
+                            <asp:TextBox ID="Subtotal" runat="server">子汇总</asp:TextBox></div></td><td>
+                                <div class="clear">
+                                <asp:TextBox ID="SemiAnnualTotal" runat="server">半年收费汇总</asp:TextBox>                                                                                                        </div></td></tr>
        
                        <tr><td><div class="clear"><label>汇总</label></div></td><td><div class="clear"><label>年收费子汇总</label></div></td></tr>
                         <tr><td><div class="clear">
-                            <asp:TextBox ID="Total" runat="server">Total</asp:TextBox></div></td><td><div class="clear">
-                                <asp:TextBox ID="YearlySubtotal" runat="server" >Yearly Subtotal</asp:TextBox></div></td></tr>
+                            <asp:TextBox ID="Total" runat="server">汇总</asp:TextBox></div></td><td><div class="clear">
+                                <asp:TextBox ID="YearlySubtotal" runat="server" >年收费子汇总</asp:TextBox></div></td></tr>
                         <tr><td><div class="clear"><label>税收汇总</label></div></td><td><div class="clear"><label>年收费汇总</label></div></td></tr>
                         <tr><td><div class="clear">
-                            <asp:TextBox ID="TotalTaxes" runat="server">Total Taxes</asp:TextBox></div></td><td><div class="clear">
-                                <asp:TextBox ID="YearlyTotal" runat="server">Yearly Total</asp:TextBox></div></td></tr>
+                            <asp:TextBox ID="TotalTaxes" runat="server">税收汇总</asp:TextBox></div></td><td><div class="clear">
+                                <asp:TextBox ID="YearlyTotal" runat="server">年收费汇总</asp:TextBox></div></td></tr>
                         <tr><td><div class="clear"><label>子项汇总</label></div></td><td><div class="clear"><label>配送费子汇总</label></div></td></tr>
                         <tr><td><div class="clear">
-                            <asp:TextBox ID="ItemTotal" runat="server">Item Total</asp:TextBox></div></td><td><div class="clear">
-                                <asp:TextBox ID="ShippingSubtotal" runat="server" >Shipping Subtotal</asp:TextBox></div></td></tr>
+                            <asp:TextBox ID="ItemTotal" runat="server">子项汇总</asp:TextBox></div></td><td><div class="clear">
+                                <asp:TextBox ID="ShippingSubtotal" runat="server" >配送费子汇总</asp:TextBox></div></td></tr>
                         <tr><td><div class="clear"><label>一次性收费子汇总</label></div></td><td><div class="clear"><label>配送费汇总</label></div></td></tr>
                         <tr><td><div class="clear">
-                            <asp:TextBox ID="OneTimeSubtotal" runat="server" >One-Time Subtotal</asp:TextBox></div></td><td><div class="clear">
-                                <asp:TextBox ID="ShippingTotal" runat="server">Shipping Total</asp:TextBox></div></td></tr>
+                            <asp:TextBox ID="OneTimeSubtotal" runat="server" >一次性收费子汇总</asp:TextBox></div></td><td><div class="clear">
+                                <asp:TextBox ID="ShippingTotal" runat="server">配送费汇总</asp:TextBox></div></td></tr>
                          <tr><td><div class="clear"><label>一次性收费汇总</label></div></td><td><div class="clear"><label>一次性折扣子汇总</label></div></td></tr>
                         <tr><td><div class="clear">
-                            <asp:TextBox ID="OneTimeTotal" runat="server">One-Time Total</asp:TextBox></div></td><td><div class="clear"><asp:TextBox ID="OneTimeDiscountSubtotal" runat="server" >One-Time Discount Subtotal</asp:TextBox></div></td></tr>
+                            <asp:TextBox ID="OneTimeTotal" runat="server">一次性收费汇总</asp:TextBox></div></td><td><div class="clear"><asp:TextBox ID="OneTimeDiscountSubtotal" runat="server" >一次性折扣子汇总</asp:TextBox></div></td></tr>
                         <tr><td><div class="clear"><label>月收费子汇总</label></div></td><td><div class="clear"><label>一次性折扣汇总</label></div></td></tr>
                         <tr><td><div class="clear">
-                            <asp:TextBox ID="MonthlySubtotal" runat="server" >Monthly Subtotal</asp:TextBox></div></td><td><div class="clear">
-                                <asp:TextBox ID="OneTimeDiscountTotal" runat="server">One-Time Discount Total</asp:TextBox>
+                            <asp:TextBox ID="MonthlySubtotal" runat="server" >月收费子汇总</asp:TextBox></div></td><td><div class="clear">
+                                <asp:TextBox ID="OneTimeDiscountTotal" runat="server">一次性折扣汇总</asp:TextBox>
                                 </div></td></tr>
                         <tr><td><div class="clear"><label>月收费汇总</label></div></td><td><div class="clear"><label>可选项子汇总</label></div></td></tr>
                         <tr><td><div class="clear">
-                            <asp:TextBox ID="MonthlyTotal" runat="server">Monthly Total</asp:TextBox></div></td><td><div class="clear">
-                                <asp:TextBox ID="OptionalSubtotal" runat="server" >Optional Subtotal</asp:TextBox></div></td></tr>
+                            <asp:TextBox ID="MonthlyTotal" runat="server">月收费汇总</asp:TextBox></div></td><td><div class="clear">
+                                <asp:TextBox ID="OptionalSubtotal" runat="server" >可选项子汇总</asp:TextBox></div></td></tr>
                         <tr><td><div class="clear"><label>季收费子汇总</label></div></td><td><div class="clear"><label>可选项汇总</label></div></td></tr>
                         <tr><td><div class="clear">
-                            <asp:TextBox ID="QuarterlySubtotal" runat="server" >Quarterly Subtotal</asp:TextBox></div></td><td><div class="clear">
-                                <asp:TextBox ID="OptionalTotal" runat="server">Optional Total</asp:TextBox></div></td></tr>
+                            <asp:TextBox ID="QuarterlySubtotal" runat="server" >季收费子汇总</asp:TextBox></div></td><td><div class="clear">
+                                <asp:TextBox ID="OptionalTotal" runat="server">可选项汇总</asp:TextBox></div></td></tr>
                          <tr><td><div class="clear"><label>季收费汇总</label></div></td><td><div class="clear"><label>包括可选项汇总</label></div></td></tr>
                         <tr><td><div class="clear">
-                            <asp:TextBox ID="QuarterlyTotal" runat="server">Quarterly Total</asp:TextBox></div></td><td><div class="clear">
-                                <asp:TextBox ID="IncludingOptionalQuoteItems" runat="server">Including Optional Quote Items</asp:TextBox></div></td></tr>
+                            <asp:TextBox ID="QuarterlyTotal" runat="server">季收费汇总</asp:TextBox></div></td><td><div class="clear">
+                                <asp:TextBox ID="IncludingOptionalQuoteItems" runat="server">包括可选项汇总</asp:TextBox></div></td></tr>
                          <tr><td><div class="clear"><label>半年收费子汇总</label></div></td><td></td></tr>
                         <tr><td><div class="clear">
-                            <asp:TextBox ID="SemiAnnualSubtotal" runat="server" >Semi-Annual Subtotal</asp:TextBox></div></td><td><div class="clear">
+                            <asp:TextBox ID="SemiAnnualSubtotal" runat="server" >半年收费子汇总</asp:TextBox></div></td><td><div class="clear">
                                 </div></td></tr>
                          </table>
-                    </div>
                 </div>
+
                 </div>
                  <div class="information clear">
                 <p class="informationTitle"><i></i>数据格式</p>
@@ -269,7 +268,6 @@
             window.close();
         }
     });  // 直接关闭窗口
-    
     //$("#Button1").click(function () {
     //         var Name = $("#Name").val();          //  公司名称--必填项校验
     //    if (Name == null || Name == '') {

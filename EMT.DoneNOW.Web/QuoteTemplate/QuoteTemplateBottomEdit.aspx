@@ -38,7 +38,6 @@
                 </li>
             </ul>
         </div>
-    </form>
     <div class="Section">
         <div class="Heading">报价底部</div>
         <div class="DescriptionText">这是报价底部</div>
@@ -50,6 +49,10 @@
             </div>
         </div>
     </div>
+
+
+           <asp:ScriptManager ID="ScriptManager1" runat="server">
+         </asp:ScriptManager>
     <div class="AlertBox">
         <div>
             <div class="CancelDialogButton"></div>
@@ -61,49 +64,49 @@
             <div class="VariableInsertion">
                 <div class="AlertContent">
                     <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
-                    <select name="" id="AlertVariableFilter">
-                        <option value="1">Show All Variables</option>
-                        <option value="2">Show Account Variables</option>
-                        <option value="3">Show Contact Variables</option>
-                        <option value="4">Show Opportunity Variables</option>
-                        <option value="5">Show Quote Variables</option>
-                        <option value="6">Show Miscellaneous Variables</option>
-                        <option value="7">Show Your Company Variables</option>
-                        <option value="8">Show Your Location Variables</option>
-                    </select>
-                    <select name="" multiple="multiple" id="AlertVariableList">
-                        <option value="" class="val">1</option>
-                        <option value="" class="val">2</option>
-                        <option value="" class="val">3</option>
-                        <option value="" class="val">4</option>
-                        <option value="" class="val">5</option>
-                        <option value="" class="val">6</option>
-                        <option value="" class="val">7</option>
-                        <option value="" class="val">8</option>
-                        <option value="" class="val">9</option>
-                        <option value="" class="val">10</option>
-                        <option value="" class="val">1</option>
-                        <option value="" class="val">2</option>
-                        <option value="" class="val">3</option>
-                        <option value="" class="val">4</option>
-                        <option value="" class="val">5</option>
-                        <option value="" class="val">6</option>
-                        <option value="" class="val">7</option>
-                        <option value="" class="val">8</option>
-                        <option value="" class="val">9</option>
-                        <option value="" class="val">10</option>
-                    </select>
+        <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True" ValidateRequestMode="Enabled" class="updata"  ViewStateMode="Enabled" Visible="True">
+             <ContentTemplate>
+                 <asp:DropDownList ID="AlertVariableFilter" runat="server" OnSelectedIndexChanged="AlertVariableFilter_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
+ <select name="" multiple="multiple" id="AlertVariableList">
+                 <asp:Literal ID="VariableList" runat="server"></asp:Literal> 
+                </select>
+            </ContentTemplate>
+</asp:UpdatePanel>
                 </div>
             </div>
         </div>
     </div>
-    <!--黑色幕布-->
-    <div id="BackgroundOverLay"></div>
+                     <!--黑色幕布-->
+    <div id="BackgroundOverLay"></div>     
+
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
    <%-- <script type="text/javascript" src="../RichText/js/jquery-3.2.1.min.js"></script>--%>
     <script type="text/javascript" src="../RichText/js/ueditor.config.js"></script>
     <script type="text/javascript" src="../RichText/js/ueditor.all.js"></script>
     <script>
+        $(document).ready(function () {
+            ue.setContent("<%= quote_foot%>");
+            //获取html内容  返回：<p>内容</p>
+            var html = ue.getContent();
+            //获取纯文本内容  返回：内容
+            var txt = ue.getContentTxt();
+            $(".Dialog").on("click", function () {
+                $("#BackgroundOverLay").show();
+                $(".AlertBox").show();
+            });
+            $(".CancelDialogButton").on("click", function () {
+                $("#BackgroundOverLay").hide();
+                $(".AlertBox").hide();
+            });
+        });
+
+        function dbclick(val) {
+            UE.getEditor('containerHead').focus();
+            UE.getEditor('containerHead').execCommand('inserthtml', $(val).html());
+            $("#BackgroundOverLay").hide();
+            $(".AlertBox").hide();
+        }
+       
         $("#OkButton").on("mouseover",function(){
             $("#OkButton").css("background","#fff");
         })
@@ -135,28 +138,6 @@
             elementPathEnabled : false,
             autoHeightEnabled:false  //设置滚动条
         });
-        ue.ready(function () {
-            ue.setContent("<%= quote_foot%>");
-            //获取html内容  返回：<p>内容</p>
-            var html = ue.getContent();
-            //获取纯文本内容  返回：内容
-            var txt = ue.getContentTxt();
-            $(".Dialog").on("click",function(){
-                $("#BackgroundOverLay").show();
-                $(".AlertBox").show();
-            });
-            $(".CancelDialogButton").on("click",function(){
-                $("#BackgroundOverLay").hide();
-                $(".AlertBox").hide();
-            });
-
-            $(".val").on("dblclick",function(){
-                UE.getEditor('containerHead').focus();
-                UE.getEditor('containerHead').execCommand('inserthtml',$(this).html());
-                $("#BackgroundOverLay").hide();
-                $(".AlertBox").hide();
-            })
-        });
 
 //        点击确定数据保存至后台  在展示页展示
         $("#OkButton1").on("click",function(){
@@ -175,5 +156,6 @@
             ue.setContent("<%= quote_foot%>");
               })
     </script>
+</form>
 </body>
 </html>
