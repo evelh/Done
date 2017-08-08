@@ -51,7 +51,7 @@ namespace EMT.DoneNOW.Web.Company
                                 viewCompany_iframe.Src = "";  // 备注
                                 break;
                             case "opportunity":
-                                viewCompany_iframe.Src = "../Common/SearchBodyFrame.aspx?cat="+(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY_COMPANY_VIEW +"&type="+(int)EMT.DoneNOW.DTO.QueryType.OpportunityCompanyView +"&group=18";  
+                                viewCompany_iframe.Src = "../Common/SearchBodyFrame.aspx?cat="+(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY_COMPANY_VIEW +"&type="+(int)EMT.DoneNOW.DTO.QueryType.OpportunityCompanyView +"&group=18&id="+id;  
                                 // 商机 ../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY_COMPANY_VIEW %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.OpportunityCompanyView %>&group=18
                                 break;//
                             case "contact":

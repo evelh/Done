@@ -67,7 +67,7 @@
                         <li>工单</li>
                         <li>待办</li>
                         <li>客户备注</li>
-                        <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
+                        <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
                         <li><a href="#" onclick="window.open('../Contact/AddContact.aspx?parent_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left=200,top=200,width=900,height=750', false);">联系人</a></li>
                         <li><a href="#" onclick="window.open('AddCompany.aspx?parent_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.Subsidiaries %>','left=200,top=200,width=900,height=750', false);">子客户</a></li>
                         <li>配置项</li>
@@ -83,7 +83,7 @@
                         <li><a href="#" onclick="window.open('../Opportunity/LoseOpportunity.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityLose %>','left=200,top=200,width=900,height=750', false);">丢失商机向导</a></li>
                         <li>重新分配商机所有人</li>
                         <li>注销客户向导</li>
-                        <li>Microsoft word merge wizard</li>
+                        <%--<li>Microsoft word merge wizard</li>--%>
                         <%--<li>Reset quick books company mapping</li>--%>
                     </ul>
                 </li>
@@ -131,7 +131,7 @@
                 <%} %>
                 <% if (!string.IsNullOrEmpty(location.additional_address))
                     { %>
-           <%--     <p class="clear">
+                <%--     <p class="clear">
                         <%=location.additional_address %>
                 </p>--%>
                 <%} %>
@@ -147,18 +147,18 @@
                 <%--<p>(P) <%=location.postal_code %></p>--%>
                 <p>(F) <%=account.fax %></p>
                 <p><%=account.web_site %></p>
-               <p> <a href="#" onclick="window.open('CompanySiteManage.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>','left=200,top=200,width=960,height=750', false);">站点配置</a></p>
+                <p><a href="#" onclick="window.open('CompanySiteManage.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>','left=200,top=200,width=960,height=750', false);">站点配置</a></p>
             </div>
 
             <div class="viewleftTitle1">
-               
+
 
                 <p class="clear">
                     <span class="fl">是否免税 </span>
                     <span class="fr"><%=account.is_tax_exempt == 1 ? "是" : "否" %> </span>
                 </p>
 
-       
+
 
 
                 <%if (account.tax_region_id != null)
@@ -196,7 +196,7 @@
                     <span class="fl">客户经理 </span>
                     <span class="fr"><%=sys_resource.First(_=>_.val == account.resource_id.ToString()).show %></span>
                 </p>
-                   <p class="clear">
+                <p class="clear">
                     <span class="fl">客户ID </span>
                     <span class="fr"><%=account.oid %></span>
                 </p>
@@ -207,7 +207,6 @@
                 <p class="clear">
                     <span class="fl">主要联系人 </span>
                     <span class="fr"><%=primary_contact.name %></span>
-
                 </p>
 
                 <%} %>
