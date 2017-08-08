@@ -39,7 +39,7 @@
 
         <div class="nav-title">
             <ul class="clear">
-                <li class="boders" id="">通用</li>
+                <li class="boders" id="">常规</li>
                 <li id="">信息</li>
                 <li id="">自定义信息</li>
                 <li id="">通知</li>
@@ -98,7 +98,7 @@
                             <td>
                                 <div class="clear">
                                     <label>计划开始日期</label>
-                                    <%--<input type="datetime-local" name="projected_begin_date" id="projected_begin_date" />--%>
+                                    <input type="date" name="projected_begin_date" id="projected_begin_date" value="<%=isAdd?DateTime.Now.ToString("yyyy-MM-dd"):opportunity.projected_begin_date==null?"":((DateTime)opportunity.projected_begin_date).ToString("yyyy-MM-dd") %>" />
 
                                     <%--<input type="text" class="form_datetime sl_cdt" name="projected_begin_date" id="projected_begin_date" value="<%=(!isAdd)&&(opportunity.projected_begin_date!=null)?opportunity.projected_begin_date.ToString():"" %>"/>--%>
                                 </div>
@@ -126,7 +126,10 @@
                             <td>
                                 <div class="clear">
                                     <label>项目关闭时间</label>
-                                    <input type="datetime-local" name="projected_close_date" id="projected_close_date" />
+                                    <input type="date" name="projected_close_date" id="projected_close_date" />
+                                      <div style="margin-top: -30px; display: -webkit-inline-box;">
+                                <a href="#" onclick="AddTime(0)">今天</a>|<a href="#"  onclick="AddTime(7)">7</a>|<a href="#"  onclick="AddTime(30)">30</a>|<a href="#"  onclick="AddTime(60)">60</a>
+                            </div>
                                 </div>
                             </td>
                         </tr>
@@ -724,6 +727,16 @@
         }
 
 
+        // use_quote
+        $("#use_quote").click(function () {
+            if ($(this).is(':checked')) {             
+                $(".Calculation").attr("disabled", "disabled");
+            }
+            else {
+                $(".Calculation").removeAttr("disabled");
+            }
+        })
+
     })
     function SubmitCheck() {
 
@@ -803,8 +816,23 @@
         return s;
     }
 
-    function chooseCompany() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName&callBack=GetContactList", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+   function AddTime(time) {
+        var date = new Date();
+        date.setDate(Number(date.getDate()) + Number(time));
 
+        var newDate = date.getFullYear() + '-' + returnNumber((date.getMonth() + 1)) + '-' + returnNumber(date.getDate());
+        $("#projected_close_date").val(newDate);
+        // $("#projected_close_date").datebox('setValue', newDate);       
+    }
+    function returnNumber(param) {
+        if (param < 10) {
+            return "0" + param
+        }
+        return param;
+    }
+
+    function chooseCompany()
+    {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName&callBack=GetContactList", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 </script>

@@ -24,6 +24,7 @@ namespace EMT.DoneNOW.Web
                 {
                     case "delete":
                         var opportunity_id = context.Request.QueryString["id"];
+                        DeleteOpportunity(context,long.Parse(opportunity_id));
                         break;
                     case "formTemplate":
                         var formTemp_id = context.Request.QueryString["id"];

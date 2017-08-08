@@ -111,7 +111,7 @@
                     <span><%=addressdistrict.First(_=>_.val.ToString()==location.province_id.ToString()).show  %></span>
                     <span><%=addressdistrict.First(_=>_.val.ToString()==location.city_id.ToString()).show  %></span>
                     <span><%=addressdistrict.First(_=>_.val.ToString()==location.district_id.ToString()).show  %></span>
-                    <span class="fl"><%=location.address %></span><span><%=location.additional_address %></span>
+                    <span><%=location.address %></span><span><%=location.additional_address %></span>
                 </p>
 
                 <% if (!string.IsNullOrEmpty(location.address))

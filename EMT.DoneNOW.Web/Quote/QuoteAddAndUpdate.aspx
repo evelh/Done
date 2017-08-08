@@ -634,7 +634,7 @@
         if (create_time == "") {
             alert("创建时间出错");
         }
-        var projected_close_date = $("#projected_close_date").text();
+        var projected_close_date = $("#projected_close_date").val();
         if (projected_close_date == "") {
             alert("请填写预计完成时间");
             return false;

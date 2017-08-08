@@ -32,6 +32,51 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     if (quote_item != null)
                     {
                         isAdd = false;
+                        switch (quote_item.type_id)   // todo 不同类型的报价项
+                        {
+                            case (int)QUOTE_ITEM_TYPE.WORKING_HOURS:
+                                type = "工时";
+                                break;
+                            case (int)QUOTE_ITEM_TYPE.COST:
+                                break;
+                            case (int)QUOTE_ITEM_TYPE.DEGRESSION:
+                                type = "";
+                                break;
+                            case (int)QUOTE_ITEM_TYPE.DISCOUNT:
+                                break;
+                            case (int)QUOTE_ITEM_TYPE.PRODUCT:
+                                type = "产品";
+                                break;
+                            case (int)QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES:
+                                break;
+                            default:
+                                Response.End();  // 未传类型，暂不创建
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    switch (Convert.ToInt64(type))   // todo 不同类型的报价项
+                    {
+                        case (int)QUOTE_ITEM_TYPE.WORKING_HOURS:
+                            type = "工时";
+                            break;
+                        case (int)QUOTE_ITEM_TYPE.COST:
+                            break;
+                        case (int)QUOTE_ITEM_TYPE.DEGRESSION:
+                            type = "";
+                            break;
+                        case (int)QUOTE_ITEM_TYPE.DISCOUNT:
+                            break;
+                        case (int)QUOTE_ITEM_TYPE.PRODUCT:
+                            type = "产品";
+                            break;
+                        case (int)QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES:
+                            break;
+                        default:
+                            Response.End();  // 未传类型，暂不创建
+                            break;
                     }
                 }
                 //if (string.IsNullOrEmpty(quote_id))
@@ -41,27 +86,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
 
 
                // var type_id = Convert.ToInt64(type);
-                switch (Convert.ToInt64(type))   // todo 不同类型的报价项
-                {
-                    case (int)QUOTE_ITEM_TYPE.WORKING_HOURS:
-                        type = "工时";
-                        break;
-                    case (int)QUOTE_ITEM_TYPE.COST:
-                        break;
-                    case (int)QUOTE_ITEM_TYPE.DEGRESSION:
-                        type = "";
-                        break;
-                    case (int)QUOTE_ITEM_TYPE.DISCOUNT:
-                        break;
-                    case (int)QUOTE_ITEM_TYPE.PRODUCT:
-                        type = "产品";
-                        break;
-                    case (int)QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES:
-                        break;
-                    default:
-                        Response.End();  // 未传类型，暂不创建
-                        break;
-                }
+  
 
                 #region 下拉框配置数据源
                 // 税收种类
@@ -130,6 +155,12 @@ namespace EMT.DoneNOW.Web.QuoteItem
             }
             else
             {
+                quote_item.type_id = this.quote_item.type_id;
+                quote_item.create_time = this.quote_item.create_time;
+                quote_item.create_user_id = this.quote_item.create_user_id;
+                quote_item.update_time = this.quote_item.update_time;
+                quote_item.update_user_id = this.quote_item.update_user_id;
+
                 var result = new QuoteItemBLL().Update(quote_item, GetLoginUserId());
                 switch (result)
                 {
@@ -183,6 +214,11 @@ namespace EMT.DoneNOW.Web.QuoteItem
             }
             else
             {
+                quote_item.type_id = this.quote_item.type_id;
+                quote_item.create_time = this.quote_item.create_time;
+                quote_item.create_user_id = this.quote_item.create_user_id;
+                quote_item.update_time = this.quote_item.update_time;
+                quote_item.update_user_id = this.quote_item.update_user_id;
                 var result = new QuoteItemBLL().Update(quote_item, GetLoginUserId());
                 switch (result)
                 {

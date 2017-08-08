@@ -40,7 +40,7 @@
         </div>
         <div class="header-title">
             <ul>
-                <li><a href="#" onclick="window.open('OpportunityAddAndEdit.aspx?opportunity_id=<%=opportunity.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityEdit %>','left=200,top=200,width=900,height=750', false);">修改</a>
+                <li><a href="#" onclick="window.open('OpportunityAddAndEdit.aspx?opportunity_id=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityEdit %>','left=200,top=200,width=900,height=750', false);">修改</a>
 
                 </li>
                 <li>
@@ -318,12 +318,11 @@
 
 <script>
     $(function () {
-        var targetTimes = 0;
-      
-        $("a").click(function () {
-            $(this).attr('target', '_blank' + targetTimes);
-            targetTimes = Number(targetTimes) + 1;
-        })
+        //var targetTimes = 0;  
+        //$("a").click(function () {
+        //    $(this).attr('target', '_blank' + targetTimes);
+        //    targetTimes = Number(targetTimes) + 1;
+        //})
       
         var hide = $("#isHide").val();
         if (hide == "hide") {
