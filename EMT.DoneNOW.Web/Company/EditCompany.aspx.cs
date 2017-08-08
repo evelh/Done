@@ -8,6 +8,7 @@ using EMT.DoneNOW.DTO;
 using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.BLL.CRM;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DAL;
 
 namespace EMT.DoneNOW.Web
 {
@@ -23,6 +24,8 @@ namespace EMT.DoneNOW.Web
         protected crm_account account = null;
         protected List<crm_location> location_list = null;   // 用户的所有地址
                                                              // protected crm_location defaultLocation = null;
+        protected List<crm_account> searchCompany = null;     // 查询出的所有没有父客户的客户
+        protected List<crm_account> subCompanyList = null;
         protected Dictionary<string, object> dic = null;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -42,7 +45,8 @@ namespace EMT.DoneNOW.Web
 
                 if (account != null)
                 {
-
+                    subCompanyList = new crm_account_dal().GetMyCompany(account.id);
+                    searchCompany = new crm_account_dal().GetSubCompanys();
                     #region 为下拉框获取数据源
                     dic = new CompanyBLL().GetField();
 
@@ -102,6 +106,13 @@ namespace EMT.DoneNOW.Web
                     WebSite.Text = account.web_site;
                     is_optoutSurvey.Checked = account.is_optout_survey == 1;
                     mileage.Text = account.mileage == null ? "" : account.mileage.ToString();// todo decmail? 保留两位小数点？？
+                    stock_symbol.Text = account.stock_symbol;
+                    sic_code.Text = account.sic_code;
+                    stock_market.Text = account.stock_market;
+                    weibo_url.Text = account.weibo_url;
+                    wechat_mp_service.Text = account.wechat_mp_service;
+                    wechat_mp_subscription.Text = account.wechat_mp_subscription;
+
                     CompanyType.SelectedValue = account.type_id == null ? "0" : account.type_id.ToString();
                     AccountManger.SelectedValue =  account.resource_id == null ? "0" : account.resource_id.ToString();
                     TerritoryName.SelectedValue = account.territory_id == null ? "0" : account.territory_id.ToString();
@@ -110,6 +121,7 @@ namespace EMT.DoneNOW.Web
                     Tax_Exempt.Checked = account.is_tax_exempt == 1;
                     TaxRegion.SelectedValue = account.tax_region_id == null ? "0" : account.tax_region_id.ToString();
                     classification.SelectedValue = account.classification_id == null ? "0" : account.classification_id.ToString();
+                    
                     if (Tax_Exempt.Checked)
                     {
                         TaxRegion.Enabled = true;
@@ -198,6 +210,23 @@ namespace EMT.DoneNOW.Web
                 }
                 param.general_update.udf = list;
             }
+
+            if (site_udfList != null && site_udfList.Count > 0)                      // 首先判断是否有自定义信息
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach (var udf in site_udfValueList)                            // 循环添加
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
+
+                }
+                param.site_configuration.udf = list;
+            }
+
             //try
             //{out string updateLocationContact,out string updateFaxPhoneContact
             string updateLocationContact = "";

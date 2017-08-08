@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
+    <title>地址管理</title>
     <style type="text/css">
         #Select1 {
             width: 128px;
@@ -36,7 +36,7 @@
              <div class="header">修改地址</div>
         <%} %>
           <div class="header-title">
-            <ul>
+            <ul style="list-style:none; ">
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
                     <asp:Button ID="save" runat="server" Text="保存"  BorderStyle="None" OnClick="save_Click" />
                 </li>

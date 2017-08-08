@@ -59,7 +59,7 @@ namespace EMT.DoneNOW.DAL
         /// <returns></returns>
         public List<crm_opportunity> GetHasQuoteOppo(long account_id)
         {
-            return FindListBySql<crm_opportunity>($"SELECT o.* FROM crm_opportunity o,crm_quote q  WHERE o.account_id={account_id} and o.delete_time=0 and q.delete_time = 0 and q.opportunity_id=o.id");
+            return FindListBySql<crm_opportunity>($"SELECT DISTINCT o.* FROM crm_opportunity o,crm_quote q  WHERE o.account_id={account_id} and o.delete_time=0 and q.delete_time = 0 and q.opportunity_id=o.id");
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace EMT.DoneNOW.DAL
         /// <returns></returns>
         public List<crm_opportunity> GetNoQuoteOppo(long account_id)
         {
-            return FindListBySql<crm_opportunity>($"SELECT o.* FROM crm_opportunity o,crm_quote q  WHERE o.account_id={account_id} and o.delete_time=0 and q.delete_time = 0 and q.opportunity_id<>o.id");
+            return FindListBySql<crm_opportunity>($"SELECT DISTINCT o.* FROM crm_opportunity o,crm_quote q  WHERE o.account_id={account_id} and o.delete_time=0 and q.delete_time = 0 and q.opportunity_id<>o.id");
         }
 
     }

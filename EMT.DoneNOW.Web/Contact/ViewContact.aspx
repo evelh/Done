@@ -16,7 +16,7 @@
     <form id="form1" runat="server">
         <%  
             var defaultLocation = locationBLL.GetLocationByAccountId(account.id);
-            var contactLocation = locationBLL.GetLocation((long)contact.location_id);
+
             var taxRegion = dic.FirstOrDefault(_ => _.Key == "taxRegion").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var classification = dic.FirstOrDefault(_ => _.Key == "classification").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var sys_resource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
@@ -36,10 +36,10 @@
                     <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=activity">活动</a></li>
                     <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=todo">待办</a></li>
                     <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=note">备注</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=opportunity" >商机</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=contactGroup" >联系人组</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=ticket" >工单</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=configura" >配置项</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=opportunity">商机</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=contactGroup">联系人组</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=ticket">工单</a></li>
+                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=configura">配置项</a></li>
                 </ul>
             </i>
             CONTACT-<%=contact.name %>
@@ -52,15 +52,15 @@
                     <%--  <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" />--%>
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
-                   添加
+                    添加
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
                         <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx?contact_id=<%=account.id %>&type=todo','<%=EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=900,height=750', false);">待办</a></li>
                         <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx?contact_id=<%=account.id %>&type=note','<%=EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=900,height=750', false);">客户备注</a></li>
-                        <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_contact_id=<%=contact.account_id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
+                        <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_contact_id=<%=contact.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
                     </ul>
                 </li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" ></i>友情链接</li>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>友情链接</li>
             </ul>
         </div>
 
@@ -91,16 +91,21 @@
                     <span class="fr"><%=contact.title %> </span>
                 </p>
                 <%} %>
+
+                <%if (contact.location_id != null)
+                    {
+                        var contactLocation = locationBLL.GetLocation((long)contact.location_id);%>
                 <p>
-                <span><%=country.First(_=>_.val.ToString()==contactLocation.country_id.ToString()).show  %></span>
-                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.province_id.ToString()).show  %></span>
-                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.city_id.ToString()).show  %></span>
-                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.district_id.ToString()).show  %></span>
-                     <span><%=contactLocation.address %></span><span><%=contactLocation.additional_address %></span>
+                    <span><%=country.First(_ => _.val.ToString() == contactLocation.country_id.ToString()).show  %></span>
+                    <span><%=addressdistrict.First(_ => _.val.ToString() == contactLocation.province_id.ToString()).show  %></span>
+                    <span><%=addressdistrict.First(_ => _.val.ToString() == contactLocation.city_id.ToString()).show  %></span>
+                    <span><%=addressdistrict.First(_ => _.val.ToString() == contactLocation.district_id.ToString()).show  %></span>
+
                 </p>
 
-                
-                      <% if (!string.IsNullOrEmpty(contactLocation.address))
+                <p><span><%=contactLocation.address %></span>&nbsp;<span><%=contactLocation.additional_address %></span>&nbsp;<span><%=contactLocation.address %></span></p>
+
+                <% if (!string.IsNullOrEmpty(contactLocation.address))
                     { %>
 
                 <p class="clear">
@@ -108,21 +113,13 @@
                 </p>
                 <%} %>
 
-                <% if (!string.IsNullOrEmpty(contactLocation.address))
-                    { %>
 
-<%--                <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=contactLocation.address %>" target="view_window"><%=contactLocation.address %></a></p>--%>
-                <%} %>
-                <% if (!string.IsNullOrEmpty(contactLocation.postal_code))
-                    { %>
-                <p class="clear">
-                    <span class="fl">邮编</span>
-                    <span class="fr"><%=contactLocation.address %> </span>
-                </p>
-                <%} %>
+
                 <% if (!string.IsNullOrEmpty(contactLocation.additional_address))
                     { %>
                 <p><%=contactLocation.additional_address %></p>
+                <%} %>
+
                 <%} %>
                 <% if (!string.IsNullOrEmpty(contact.phone))
                     { %>
@@ -152,14 +149,15 @@
             <div class="address ">
                 <label><%=account.name %> <%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
                 <p>
-                <span><%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %></span>
-                <span><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.province_id.ToString()).show  %></span>
-                <span><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.city_id.ToString()).show  %></span>
-                <span><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.district_id.ToString()).show  %></span>
-                  <span><%=contactLocation.address %></span><span><%=defaultLocation.additional_address %></span></p>
+                    <span><%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %></span>
+                    <span><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.province_id.ToString()).show  %></span>
+                    <span><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.city_id.ToString()).show  %></span>
+                    <span><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.district_id.ToString()).show  %></span>
+                    <span><%=defaultLocation.address %></span><span><%=defaultLocation.additional_address %></span>
+                </p>
 
 
-                      <% if (!string.IsNullOrEmpty(defaultLocation.address))
+                <% if (!string.IsNullOrEmpty(defaultLocation.address))
                     { %>
 
                 <p class="clear">
@@ -169,12 +167,12 @@
                 <% if (!string.IsNullOrEmpty(defaultLocation.address))
                     { %>
 
-<%--                <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=defaultLocation.address %>" target="view_window"><%=defaultLocation.address %></a></p>--%>
+                <%--                <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=defaultLocation.address %>" target="view_window"><%=defaultLocation.address %></a></p>--%>
                 <%} %>
 
                 <% if (!string.IsNullOrEmpty(defaultLocation.additional_address))
                     { %>
-              <%--  <p><%=defaultLocation.additional_address %></p>--%>
+                <%--  <p><%=defaultLocation.additional_address %></p>--%>
                 <%} %>
 
                 <%--<p>可以根据链接，跳转到百度或其他地图，显示该客户位置</p>--%>

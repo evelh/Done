@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Edit Company</title>
+    <title>修改客户</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
@@ -388,6 +388,14 @@
                         </div>
                     </td>
                 </tr>
+                       <tr>
+                    <td>
+                        <div class="clear">
+                            <label>股票市场<span class="red"></span></label>
+                            <asp:TextBox ID="stock_market" runat="server"></asp:TextBox>
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <div class="clear">
@@ -510,8 +518,53 @@
 
 
         <div class="content clear" style="display: none;">
-            <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
-            </table>
+               <%-- <div class="rowtitle" style="width: 800px; margin-left: 20px;">
+                <div class="col-xs-5" style="padding-left: 30px;">现有客户</div>
+                <div class="col-xs-1"></div>
+                <div class="col-xs-5" style="padding-left: 30px;">已选客户</div>
+                <div class="col-xs-1"></div>
+            </div>
+            <div class="row" style="width: 800px; margin-left: 20px;">
+                <div class="col-sm-5">
+                    <select name="from[]" id="multiselect" class="form-control" size="8" multiple="multiple" style="height: 300px;">
+                        <%if (searchCompany != null && searchCompany.Count > 0)
+                            {
+                                foreach (var search_account in searchCompany)
+                                {%>
+                        <option value="<%=search_account.id %>"><%=search_account.name %></option>
+
+                        <%}
+                            } %>
+                    </select>
+                </div>
+                <div class="col-sm-1">
+                    <button type="button" id="multiselect_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+                    <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+                    <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                    <button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+                </div>
+                <div class="col-sm-5">
+                    <select name="to[]" id="multiselect_to" class="form-control" size="8" multiple="multiple" style="height: 300px;">
+                            <%if (subCompanyList != null && subCompanyList.Count > 0)
+                            {
+                                foreach (var subCompany in subCompanyList)
+                                {%>
+                        <option value="<%=subCompany.id %>"><%=subCompany.name %></option>
+
+                        <%}
+                            } %>
+
+                    </select>
+                    <input type="hidden" name="subCompanyIds" id="subCompanyIds" />
+                </div>
+                <div class="col-xs-1">
+                    <button type="button" class="btn btn-block" style="background: #fff;" disabled="disabled"><i class="glyphicon"></i></button>
+                    <button type="button" id="multiselect_move_up" class="btn btn-block"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                    <button type="button" id="multiselect_move_down" class="btn btn-block col-sm-6"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                    <button type="button" class="btn btn-block" style="background: #fff;" disabled="disabled"><i class="glyphicon"></i></button>
+                </div>
+            </div>--%>
+
 
         </div>
         <% //子公司 预留  %>
@@ -820,6 +873,19 @@
 
             })
         });
+
+        $(".btn-block").click(function () {
+
+            var ids = "";
+            $("#multiselect_to").each(function () {
+                var id = $(this).val();
+                ids += id + ",";
+            })
+            if (ids != "") {
+                ids = ids.substring(0, ids.length);
+                $("#subCompanyIds").val(ids);
+            }
+        })
     })
     function deleteLocation(location_id) {
         if (confirm("确认删除地址吗？")) {
@@ -856,6 +922,12 @@
     }
 
     function chooseCompany() {
+        var subIds = $("#multiselect_to").html();
+        if (subIds != "") {
+            alert("已选择子客户");
+            return false;
+        }
+
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
         //window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
         //这些要写在一行

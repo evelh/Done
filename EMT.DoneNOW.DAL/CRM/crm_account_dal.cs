@@ -162,5 +162,22 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql($"select * from crm_account where id in ({ids}) and delete_time = 0  ");
         }
+        /// <summary>
+        /// 获取没有父客户的客户
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public List<crm_account> GetSubCompanys(long id=0)
+        {
+            if(id==0)
+                return FindListBySql($"SELECT * from crm_account where id not in(SELECT a.id from crm_account a ,crm_account a2 where a.id = a2.parent_id) and id not in (SELECT id from crm_account where parent_id is not null) and delete_time=0");
+            else
+                return FindListBySql($"SELECT * from crm_account where id not in(SELECT a.id from crm_account a ,crm_account a2 where a.id = a2.parent_id) and id not in (SELECT id from crm_account where parent_id is not null) and delete_time=0 and id <> {id}");
+        }
+
+        public List<crm_account> GetMyCompany(long id)
+        {
+            return FindListBySql($"select * from crm_account where parent_id={id} and delete_time = 0 ");
+        }
     }
 }

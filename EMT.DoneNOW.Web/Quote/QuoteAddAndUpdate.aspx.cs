@@ -61,6 +61,12 @@ namespace EMT.DoneNOW.Web.Quote
                     {
                         isAdd = false;
                     }
+                    else
+                    {
+                        var opportunity_id = Request.QueryString["opportunity_id"];
+                        opportunity = new crm_opportunity_dal().GetOpportunityById(long.Parse(opportunity_id));
+                        account = new CompanyBLL().GetCompany(opportunity.account_id);
+                    }
                 }
 
                 if (!isAdd)
@@ -68,10 +74,6 @@ namespace EMT.DoneNOW.Web.Quote
                     account = new CompanyBLL().GetCompany(quote.account_id);
                     if (account != null)
                     {
-                        //if (account.tax_region_id != null)
-                        //{
-                        //    tax_region_id.SelectedValue = account.tax_region_id.ToString();
-                        //}
                         tax_region_id.SelectedValue = account.tax_region_id!=null?account.tax_region_id.ToString():"0";
                         payment_term_id.SelectedValue = quote.payment_term_id!=null? quote.payment_term_id.ToString():"0";
                         payment_type_id.SelectedValue = quote.payment_type_id != null ? quote.payment_type_id.ToString() : "0"; //shipping_type_id

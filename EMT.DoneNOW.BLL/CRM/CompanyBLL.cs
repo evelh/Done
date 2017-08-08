@@ -167,6 +167,16 @@ namespace EMT.DoneNOW.BLL
 
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
+
+
+            //if (!string.IsNullOrEmpty(param.general.subCompanyIds) && string.IsNullOrEmpty(param.general.parent_company_name))
+            //{  // 循环添加子客户
+            //    var ids = param.general.subCompanyIds.Split(',');
+            //    foreach (var subId in ids)
+            //    {
+            //        SetParentCompany(_account.id,long.Parse(subId),user.id);
+            //    }
+            //}
             #endregion
 
 
@@ -1392,6 +1402,39 @@ namespace EMT.DoneNOW.BLL
         public crm_account AccountSummary(long account_id)
         {
             return _dal.FindById(account_id);
+        }
+
+        /// <summary>
+        /// 为客户设置父客户
+        /// </summary>
+        /// <param name="account_id"></param>
+        /// <param name="subCompanyId"></param>
+        public void SetParentCompany(long account_id, long subCompanyId,long user_id)
+        {
+            //UserInfoBLL.GetUserInfo(user_id)
+            var subCompany = GetCompany(subCompanyId);
+            if (subCompany != null)
+            {
+                var old_sub_value = GetCompany(subCompanyId);
+                var user = UserInfoBLL.GetUserInfo(user_id);
+                subCompany.parent_id = account_id;
+                subCompany.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                subCompany.update_user_id = user_id;
+                _dal.Update(subCompany);
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                    oper_object_id = subCompany.id,
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_description = _dal.CompareValue(old_sub_value, subCompany),
+                    remark = "为当前客户添加父客户",
+                });
+            }
         }
 
 
