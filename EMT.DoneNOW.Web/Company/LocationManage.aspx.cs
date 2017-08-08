@@ -30,6 +30,8 @@ namespace EMT.DoneNOW.Web.Company
                     district_idInit.Value = location.district_id.ToString();
                     address.Text = location.address;
                     additional_address.Text = location.additional_address;
+                    postal_code.Text = location.postal_code;
+                    location_label.Text = location.location_label;
 
                 }
             }

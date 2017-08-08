@@ -122,7 +122,7 @@
 						<div class="clear input-dh">
 							<label>地址</label>
 							<input type="text" disabled="disabled" id="locCallBack" name="location" <%if (dto.location != null) { %> value="<%=dto.location.address %>" <%} %> />
-                            <input type="hidden" name="location_id" id="locCallBackHidden" <%if (dto.location != null) { %> value="<%=dto.location.id %>" <%} %> />
+                            <input type="hidden" name="location_id" id="locCallBackHidden" <%if (dto.location != null && dto.location.id != 0) { %> value="<%=dto.location.id %>" <%} %> />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('locCallBack')"></i></span>
 						</div>
 					</td>
@@ -133,7 +133,7 @@
 						<div class="clear input-dh">
 							<label>备用地址</label>
 							<input type="text" disabled="disabled" id="loc1CallBack" name="location2" <%if (dto.location2 != null) { %> value="<%=dto.location2.address %>" <%} %> />
-                            <input type="hidden" name="location_id2" id="loc1CallBackHidden" <%if (dto.location2 != null) { %> value="<%=dto.location2.id %>" <%} %> />
+                            <input type="hidden" name="location_id2" id="loc1CallBackHidden" <%if (dto.location2 != null && dto.location2.id != 0) { %> value="<%=dto.location2.id %>" <%} %> />
                             <span class="on"><i class="icon-dh" onclick="OpenWindowLocation('loc1CallBack')"></i></span>
 						</div>
 					</td>
@@ -442,7 +442,7 @@
             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=accCallBack&callBack=GetCompany", "<%=EMT.DoneNOW.DTO.OpenWindow.ContactLocationSelect %>", 'left=200,top=200,width=600,height=800', false);
         }
         function OpenWindowLocation(fld) {
-            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=" + fld, "<%=EMT.DoneNOW.DTO.OpenWindow.ContactLocationSelect %>", 'left=200,top=200,width=600,height=800', false);
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ADDRESS_CALLBACK %>&field=" + fld, "<%=EMT.DoneNOW.DTO.OpenWindow.ContactLocationSelect %>", 'left=200,top=200,width=600,height=800', false);
         }
         function GetCompany() {
             requestData("Tools/CompanyAjax.ashx?act=companyPhone&account_id=" + $("#accCallBackHidden").val(), "", function (data) {

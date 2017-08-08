@@ -223,6 +223,9 @@
         function View(id) {
             OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + id);
         }
+        function ViewCompany() {
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
+        }
         function DeleteOpp() {
             $.ajax({
                 type: "GET",
@@ -242,10 +245,10 @@
             OpenWindow("../Quote/QuoteAddAndUpdate.aspx?id=" + entityid);
         }
         function ViewOpp() {
-            //OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid);
+            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid);
         }
         function ViewCompany(id) {
-            //OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + id);
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
         }
         //function DeleteOpp() {
         //    $.ajax({
@@ -258,6 +261,12 @@
         //}
         function Add() {
             OpenWindow("../Quote/QuoteAddAndUpdate.aspx");
+        }
+        <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.QuoteTemplate) {
+            %>
+        function Add() {
+            OpenWindow("../QuoteTemplate/QuoteTemplateAdd.aspx");
         }
         <%
         }%>

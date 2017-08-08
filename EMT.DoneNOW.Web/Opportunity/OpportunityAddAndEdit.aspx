@@ -45,7 +45,8 @@
                 <li id="">通知</li>
                 <li style="float: right;">
                     <div style="float: right;">
-                        <asp:DropDownList ID="formTemplate" runat="server"></asp:DropDownList></div>
+                        <asp:DropDownList ID="formTemplate" runat="server"></asp:DropDownList>
+                    </div>
                 </li>
             </ul>
 
@@ -77,12 +78,19 @@
                                     <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                     <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=company.id %>" />
                                     <%}
-                                        else
-                                        { %>
+                                    else if (isAdd&&account!=null)
+                                    { %>
                                     <label>客户名称</label>
-                                    <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd?"":conpamyBll.GetCompany(opportunity.account_id).name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                    <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=account.name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
                                     <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
-                                    <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":opportunity.account_id.ToString() %>" />
+                                    <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=account.id %>" />
+                                    <%}
+                                    else
+                                    { %>
+                                        <label>客户名称</label>
+                                    <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd ? "" : conpamyBll.GetCompany(opportunity.account_id).name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                    <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd ? "" : opportunity.account_id.ToString() %>" />
                                     <%} %>
                                 </div>
                             </td>
@@ -278,7 +286,7 @@
                             <td>
                                 <div class="clear">
                                     <label>计算总额</label>
-                                    <input type="text" name="CalculationMonths" id="number_months" value="<%=(!isAdd)&&(opportunity.number_months!=null)?opportunity.number_months:10 %>" /><span>月</span>
+                                    <input type="text" class="Calculation" name="CalculationMonths" id="number_months" value="<%=(!isAdd)&&(opportunity.number_months!=null)?opportunity.number_months:10 %>" /><span>月</span>
                                 </div>
                             </td>
                         </tr>
@@ -339,40 +347,40 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                      <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext1").show %><span class="red">*</span></label>
-                                           <input type="text" name="ext1" id="ext1" value="<%=(!isAdd)&&opportunity.ext1!=null?opportunity.ext1.ToString():"" %>" />
+                                    <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext1").show %></label>
+                                    <input type="text" name="ext1" id="ext1" value="<%=(!isAdd)&&opportunity.ext1!=null?opportunity.ext1.ToString():"" %>" />
                                 </div>
                             </td>
                         </tr>
-                            <tr>
+                        <tr>
                             <td>
                                 <div class="clear">
-                                      <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext2").show %><span class="red">*</span></label>
-                                           <input type="text" name="ext2" id="ext2" value="<%=(!isAdd)&&opportunity.ext2!=null?opportunity.ext2.ToString():"" %>" />
+                                    <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext2").show %></label>
+                                    <input type="text" name="ext2" id="ext2" value="<%=(!isAdd)&&opportunity.ext2!=null?opportunity.ext2.ToString():"" %>" />
                                 </div>
                             </td>
                         </tr>
-                            <tr>
+                        <tr>
                             <td>
                                 <div class="clear">
-                                      <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext3").show %><span class="red">*</span></label>
-                                           <input type="text" name="ext3" id="ext3ext3" value="<%=(!isAdd)&&opportunity.ext3!=null?opportunity.ext3.ToString():"" %>" />
+                                    <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext3").show %></label>
+                                    <input type="text" name="ext3" id="ext3ext3" value="<%=(!isAdd)&&opportunity.ext3!=null?opportunity.ext3.ToString():"" %>" />
                                 </div>
                             </td>
                         </tr>
-                            <tr>
+                        <tr>
                             <td>
                                 <div class="clear">
-                                      <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext4").show %><span class="red">*</span></label>
-                                           <input type="text" name="ext4" id="ext4" value="<%=(!isAdd)&&opportunity.ext4!=null?opportunity.ext4.ToString():"" %>" />
+                                    <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext4").show %></label>
+                                    <input type="text" name="ext4" id="ext4" value="<%=(!isAdd)&&opportunity.ext4!=null?opportunity.ext4.ToString():"" %>" />
                                 </div>
                             </td>
                         </tr>
-                            <tr>
+                        <tr>
                             <td>
                                 <div class="clear">
-                                      <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext5").show %><span class="red">*</span></label>
-                                           <input type="text" name="ext5" id="ext5ext5" value="<%=(!isAdd)&&opportunity.ext5!=null?opportunity.ext5.ToString():"" %>" />
+                                    <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext5").show %></label>
+                                    <input type="text" name="ext5" id="ext5ext5" value="<%=(!isAdd)&&opportunity.ext5!=null?opportunity.ext5.ToString():"" %>" />
                                 </div>
                             </td>
                         </tr>
@@ -591,6 +599,7 @@
                 }
             });
         };
+
         $("#save").click(function () {
             if (!SubmitCheck()) {
                 return false;
@@ -625,7 +634,7 @@
         })
 
         Calculation_Gross_Profit();
-
+        GetContactList();
         function Calculation_Gross_Profit()   // 计算毛利和毛利率,年收益和年成本
         {
             var CalculationMonths = $("#number_months").val();
@@ -756,7 +765,6 @@
         return true;
     }
     function GetContactList() {
-
         var account_id = $("#ParentComoanyNameHidden").val();
         if (account_id != "") {
             $("#contact_id").removeAttr("disabled");
@@ -768,14 +776,10 @@
                 url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
-
                     if (data != "") {
                         $("#contact_id").html(data);
                     }
-
                 },
-
-
             });
         }
     }
@@ -800,8 +804,7 @@
     }
 
     function chooseCompany() {
-        window.open("../Common/SelectCallBack.aspx?type=查找客户&field=ParentComoanyName&callBack=GetContactList", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
-        //window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
-        //这些要写在一行
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName&callBack=GetContactList", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+
     }
 </script>

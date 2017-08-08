@@ -346,6 +346,11 @@ namespace EMT.DoneNOW.DTO
             QUOTE = 866,            // 报价
             ROLL_CALLBACK = 867,    // 角色查找带回
             QUOTE_TEMPLATE = 868,   // 报价模板
+            ADDRESS_CALLBACK = 869, // 地址查找带回
+            OPPORTUNITY_COMPANY_VIEW = 870,     // 客户管理-详情-商机查询
+            CONTACT_COMPANY_VIEW = 871,         // 客户管理-详情-联系人查询
+            SUBCOMPANY_COMPANY_VIEW = 872,      // 客户管理-详情-子客户查询
+            OPPORTUNITY_CONTACT_VIEW = 873,     // 联系人管理-详情-商机查询
         }
 
         /// <summary>
@@ -446,6 +451,11 @@ namespace EMT.DoneNOW.DTO
         Quote = 8,                  // 报价管理-报价查询
         CallBackRoll = 9,           // 角色查找带回
         QuoteTemplate = 10,         // 报价模板管理-查询
+        AddressCallBack = 11,      // 地址查找带回
+        OpportunityCompanyView = 12,       // 客户管理-详情-商机查询
+        ContactCompanyView = 13,           // 客户管理-详情-联系人查询
+        SubcompanyCompanyView = 14,        // 客户管理-详情-子客户查询
+        OpportunityContactView = 15,       // 联系人管理-详情-商机查询
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -458,7 +468,9 @@ namespace EMT.DoneNOW.DTO
         CompanyNameSmilar=104,                    // 名称相似
         CompanySelect=105,                        // 查找带回客户
         Subsidiaries=106,                         // 添加子客户
-
+        CompanyView = 107,
+        ParentCompanyView = 108, 
+        CompanySiteConfiguration=109,             // 客户站点页面
 
         ContactAdd =111,                          //
         ContactEdit=112,                          //

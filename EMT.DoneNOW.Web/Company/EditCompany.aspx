@@ -66,13 +66,15 @@
                     <td>
                         <div class="clear">
                             <label>是否激活<span class="red">*</span></label>
+                        
+
                             <% if (account.is_active == 1)
                                 { %>
-                               <input  type="checkbox" name="is_default" data-val="1" value="1" checked="checked"/>
+                               <input  type="checkbox" name="is_active" data-val="1" value="1" checked="checked"/>
                             <%}
                             else
                             { %>
-                               <input  type="checkbox" name="is_default" data-val="1" value="1"/>
+                               <input  type="checkbox" name="is_active" data-val="1" value="1"/>
                             <%} %>
                             <%--<asp:CheckBox ID="isactive" runat="server" />--%>
                         </div>
@@ -851,6 +853,12 @@
             })
         }
 
+    }
+
+    function chooseCompany() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+        //window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
+        //这些要写在一行
     }
 
 </script>

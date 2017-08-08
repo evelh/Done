@@ -129,6 +129,7 @@
     <Content Include="Common\ColumnSelector.aspx" />
     <Content Include="Activity\AddActivity.aspx" />
     <Content Include="Company\CompanyNameSimilar.aspx" />
+    <Content Include="Company\CompanySiteManage.aspx" />
     <Content Include="Company\UpdateContact.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
@@ -587,6 +588,13 @@
     </Compile>
     <Compile Include="Company\CompanyNameSimilar.aspx.designer.cs">
       <DependentUpon>CompanyNameSimilar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Company\CompanySiteManage.aspx.cs">
+      <DependentUpon>CompanySiteManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\CompanySiteManage.aspx.designer.cs">
+      <DependentUpon>CompanySiteManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Company\UpdateContact.aspx.cs">
       <DependentUpon>UpdateContact.aspx</DependentUpon>

@@ -33,7 +33,7 @@
                     <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=note" target="view_window">备注</a></li>
                     <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=ticket" target="view_window">工单</a></li>
                     <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=att" target="view_window">附件</a></li>
-                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=baojia" target="view_window">报价项</a></li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem" target="view_window">报价项</a></li>
                 </ul>
             </i>
             COMPANY

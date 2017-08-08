@@ -49,9 +49,12 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     case (int)QUOTE_ITEM_TYPE.COST:
                         break;
                     case (int)QUOTE_ITEM_TYPE.DEGRESSION:
-                        type = "产品";
+                        type = "";
                         break;
                     case (int)QUOTE_ITEM_TYPE.DISCOUNT:
+                        break;
+                    case (int)QUOTE_ITEM_TYPE.PRODUCT:
+                        type = "产品";
                         break;
                     case (int)QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES:
                         break;

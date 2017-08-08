@@ -39,7 +39,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32? classification_id { get; set; }
         [DataMember]
-        public Int64 resource_id { get; set; }
+        public Int64? resource_id { get; set; }
         [DataMember]
         public Int32? territory_id { get; set; }
         [DataMember]
@@ -55,7 +55,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte is_active { get; set; }
         [DataMember]
-        public SByte? is_optout_survey { get; set; }
+        public SByte is_optout_survey { get; set; }
         [DataMember]
         public Decimal? mileage { get; set; }
         [DataMember]
@@ -108,6 +108,9 @@ namespace EMT.DoneNOW.Core
         public String alternate_phone2_basic { get; set; }
         [DataMember]
         public Decimal? curr_block_balance { get; set; }
+        [DataMember]
+        public Int32? company_number { get; set; }
+
 
 
     }
