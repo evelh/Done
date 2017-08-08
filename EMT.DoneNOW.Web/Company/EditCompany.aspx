@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <style>
         #addressManage th{
             text-align:center;
@@ -21,13 +21,13 @@
         <div class="header">修改客户</div>
         <div class="header-title">
             <ul>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <asp:Button ID="save_close" runat="server" Text="保存并关闭" OnClick="save_close_Click" BorderStyle="None" />
                 </li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -64px 0;" class="icon-1"></i>
                     <asp:Button ID="delete" runat="server" Text="删除" OnClick="delete_Click" BorderStyle="None" />
                 </li>
-                <li id="close"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                <li id="close"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <%--<asp:Button ID="close" runat="server" Text="关闭" />--%>
                     关闭
                 </li>
@@ -66,13 +66,15 @@
                     <td>
                         <div class="clear">
                             <label>是否激活<span class="red">*</span></label>
+                        
+
                             <% if (account.is_active == 1)
                                 { %>
-                               <input  type="checkbox" name="is_default" data-val="1" value="1" checked="checked"/>
+                               <input  type="checkbox" name="is_active" data-val="1" value="1" checked="checked"/>
                             <%}
                             else
                             { %>
-                               <input  type="checkbox" name="is_default" data-val="1" value="1"/>
+                               <input  type="checkbox" name="is_active" data-val="1" value="1"/>
                             <%} %>
                             <%--<asp:CheckBox ID="isactive" runat="server" />--%>
                         </div>
@@ -851,6 +853,12 @@
             })
         }
 
+    }
+
+    function chooseCompany() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+        //window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
+        //这些要写在一行
     }
 
 </script>

@@ -81,8 +81,9 @@ namespace EMT.DoneNOW.BLL.CRM
         /// 新增商机
         /// </summary>
         /// <returns></returns>
-        public ERROR_CODE Insert(OpportunityAddOrUpdateDto param, long user_id)
+        public ERROR_CODE Insert(OpportunityAddOrUpdateDto param, long user_id,out string id)
         {
+            id = "";
             if (string.IsNullOrEmpty(param.general.name))                     // string必填项校验   || string.IsNullOrEmpty(param.notify.subject)
                 return ERROR_CODE.PARAMS_ERROR;             // 返回参数丢失
             if (param.general.account_id == 0 || param.general.resource_id == 0 || param.general.stage_id == 0 || param.general.status_id == 0 )  // int 必填项校验
@@ -101,7 +102,7 @@ namespace EMT.DoneNOW.BLL.CRM
             param.general.stage_id = param.general.stage_id == 0 ? null : param.general.stage_id;
             param.general.status_id = param.general.status_id == 0 ? null : param.general.status_id;
             param.general.interest_degree_id = param.general.interest_degree_id == 0 ? null : param.general.interest_degree_id;
-
+            param.general.contact_id = param.general.contact_id == 0 ? null : param.general.contact_id;
             param.general.id = _dal.GetNextIdCom();
             param.general.create_user_id = user.id;
             param.general.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -119,7 +120,7 @@ namespace EMT.DoneNOW.BLL.CRM
             }
 
             _dal.Insert(param.general);
-
+            id = param.general.id.ToString();
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
                 user_cate = "用户",
@@ -207,8 +208,8 @@ namespace EMT.DoneNOW.BLL.CRM
 
             #region 4.保存商机自定义信息
 
-            //var opportunity_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);        
-            //new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, user.id, param.general.id, opportunity_udfList, param.udf, OPER_LOG_OBJ_CATE.OPPORTUNITY); // 里面有记录日志的方法
+            var opportunity_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
+            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, user.id, param.general.id, opportunity_udfList, param.udf, OPER_LOG_OBJ_CATE.OPPORTUNITY); // 里面有记录日志的方法
 
 
             #endregion
@@ -252,6 +253,14 @@ namespace EMT.DoneNOW.BLL.CRM
                 return ERROR_CODE.USER_NOT_FIND;           // 查询不到用户，用户丢失
 
             var old_opportunity = _dal.GetOpportunityById(param.general.id);
+
+            param.general.oid = old_opportunity.oid;
+            param.general.competitor_id = param.general.competitor_id == 0 ? null : param.general.competitor_id;
+            param.general.source_id = param.general.source_id == 0 ? null : param.general.source_id;
+            param.general.stage_id = param.general.stage_id == 0 ? null : param.general.stage_id;
+            param.general.status_id = param.general.status_id == 0 ? null : param.general.status_id;
+            param.general.interest_degree_id = param.general.interest_degree_id == 0 ? null : param.general.interest_degree_id;
+            param.general.contact_id = param.general.contact_id == 0 ? null : param.general.contact_id;
             if (param.general.win_reason_type_id == 0)
             {
                 param.general.win_reason_type_id = null;

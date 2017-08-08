@@ -66,6 +66,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     id = _dal.GetNextIdCom(),
                     name = quote.name,
+                    account_id = quote.account_id,
                     resource_id = user_id,
                     stage_id = (int)OPPORTUNITY_STAGE.NEW_CLUE,  // todo 取到商机阶段中的最小值
                     status_id = (int)OPPORTUNITY_STATUS.ACTIVE,

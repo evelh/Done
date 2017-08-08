@@ -615,7 +615,7 @@
 
 
     function chooseCompany() {
-        window.open("../Common/SelectCallBack.aspx?type=查找客户&field=ParentComoanyName&callBack=GetDataBySelectCompany", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName&callBack=GetDataBySelectCompany", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
     function SubmitCheck() {
@@ -634,7 +634,7 @@
         if (create_time == "") {
             alert("创建时间出错");
         }
-        var projected_close_date = $("#projected_close_date").text();
+        var projected_close_date = $("#projected_close_date").val();
         if (projected_close_date == "") {
             alert("请填写预计完成时间");
             return false;

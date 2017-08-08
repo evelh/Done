@@ -70,7 +70,7 @@
                 <tr>
                     <td>省份</td>
                     <td>
-                        <input id="province_idInit" value='5' type="hidden" runat="server" />
+                        <input id="province_idInit" value='' type="hidden" runat="server" />
                         <select id="province_id" name="province_id">
                         </select>
                     </td>
@@ -107,8 +107,14 @@
                         <asp:TextBox ID="additional_address" runat="server"></asp:TextBox></td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td>邮编</td>
+                    <td>
+                        <asp:TextBox ID="postal_code" runat="server"></asp:TextBox></td>
+                </tr>
+                    <tr>
+                    <td>标签</td>
+                    <td>
+                        <asp:TextBox ID="location_label" runat="server"></asp:TextBox></td>
                 </tr>
             </table>
 

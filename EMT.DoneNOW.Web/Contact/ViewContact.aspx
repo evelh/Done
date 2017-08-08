@@ -95,12 +95,23 @@
                 <span><%=country.First(_=>_.val.ToString()==contactLocation.country_id.ToString()).show  %></span>
                 <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.province_id.ToString()).show  %></span>
                 <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.city_id.ToString()).show  %></span>
-                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.district_id.ToString()).show  %></span></p>
+                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.district_id.ToString()).show  %></span>
+                     <span><%=contactLocation.address %></span><span><%=contactLocation.additional_address %></span>
+                </p>
+
+                
+                      <% if (!string.IsNullOrEmpty(contactLocation.address))
+                    { %>
+
+                <p class="clear">
+                    <span class="fl"><a href="#" onclick="window.open('http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=contactLocation.address %>','map','left=200,top=200,width=960,height=750', false);">地图</a></span>
+                </p>
+                <%} %>
 
                 <% if (!string.IsNullOrEmpty(contactLocation.address))
                     { %>
 
-                <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=contactLocation.address %>" target="view_window"><%=contactLocation.address %></a></p>
+<%--                <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=contactLocation.address %>" target="view_window"><%=contactLocation.address %></a></p>--%>
                 <%} %>
                 <% if (!string.IsNullOrEmpty(contactLocation.postal_code))
                     { %>
@@ -141,20 +152,29 @@
             <div class="address ">
                 <label><%=account.name %> <%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
                 <p>
-                <span><%=country.First(_=>_.val.ToString()==contactLocation.country_id.ToString()).show  %></span>
-                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.province_id.ToString()).show  %></span>
-                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.city_id.ToString()).show  %></span>
-                <span><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.district_id.ToString()).show  %></span></p>
+                <span><%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %></span>
+                <span><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.province_id.ToString()).show  %></span>
+                <span><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.city_id.ToString()).show  %></span>
+                <span><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.district_id.ToString()).show  %></span>
+                  <span><%=contactLocation.address %></span><span><%=defaultLocation.additional_address %></span></p>
 
+
+                      <% if (!string.IsNullOrEmpty(defaultLocation.address))
+                    { %>
+
+                <p class="clear">
+                    <span class="fl"><a href="#" onclick="window.open('http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=defaultLocation.address %>','map','left=200,top=200,width=960,height=750', false);">地图</a></span>
+                </p>
+                <%} %>
                 <% if (!string.IsNullOrEmpty(defaultLocation.address))
                     { %>
 
-                <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=defaultLocation.address %>" target="view_window"><%=defaultLocation.address %></a></p>
+<%--                <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=defaultLocation.address %>" target="view_window"><%=defaultLocation.address %></a></p>--%>
                 <%} %>
 
                 <% if (!string.IsNullOrEmpty(defaultLocation.additional_address))
                     { %>
-                <p><%=defaultLocation.additional_address %></p>
+              <%--  <p><%=defaultLocation.additional_address %></p>--%>
                 <%} %>
 
                 <%--<p>可以根据链接，跳转到百度或其他地图，显示该客户位置</p>--%>

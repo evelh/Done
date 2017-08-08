@@ -45,9 +45,9 @@
         <div class="contenttitle clear">
 			<ul class="clear fl">
 				<li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
-				<li><i style="background-image: url(../Images/new.png);"></i></li>
+				<li><i style="background-image: url(../Images/print.png);"></i></li>
 				<li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
-				<li><i style="background-image: url(../Images/new.png);"></i></li>
+				<li><i style="background-image: url(../Images/export.png);"></i></li>
 			</ul>
             <%if (queryResult != null && queryResult.count>0)
                 { %>
@@ -78,7 +78,7 @@
                                  else
                                  { %><a href="#" onclick="ChangePageSize(100)">100</a><%} %></span>
 				<i onclick="ChangePage(1)"><<</i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page-1 %>)"><</i>
-				<input type="text" style="width:30px;" value="<%=queryResult.page %>" />
+				<input type="text" style="width:30px;text-align:center;" value="<%=queryResult.page %>" />
                 <span>&nbsp;/&nbsp;<%=queryResult.page_count %></span>
 				<i onclick="ChangePage(<%=queryResult.page+1 %>)">></i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page_count %>)">>></i>
 			</div>
@@ -223,6 +223,9 @@
         function View(id) {
             OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + id);
         }
+        function ViewCompany() {
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
+        }
         function DeleteOpp() {
             $.ajax({
                 type: "GET",
@@ -242,10 +245,10 @@
             OpenWindow("../Quote/QuoteAddAndUpdate.aspx?id=" + entityid);
         }
         function ViewOpp() {
-            //OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid);
+            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid);
         }
         function ViewCompany(id) {
-            //OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + id);
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
         }
         //function DeleteOpp() {
         //    $.ajax({
@@ -258,6 +261,12 @@
         //}
         function Add() {
             OpenWindow("../Quote/QuoteAddAndUpdate.aspx");
+        }
+        <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.QuoteTemplate) {
+            %>
+        function Add() {
+            OpenWindow("../QuoteTemplate/QuoteTemplateAdd.aspx");
         }
         <%
         }%>

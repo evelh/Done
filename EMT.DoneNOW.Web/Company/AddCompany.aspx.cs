@@ -166,8 +166,8 @@ namespace EMT.DoneNOW.Web
                 }
                 param.site.udf = list;
             }
-
-            var result = new CompanyBLL().Insert(param, GetLoginUserId());
+            var id = "";
+            var result = new CompanyBLL().Insert(param, GetLoginUserId(),out id);
 
 
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
@@ -255,8 +255,8 @@ namespace EMT.DoneNOW.Web
                 }
                 param.site.udf = list;
             }
-
-            var result = new CompanyBLL().Insert(param, GetLoginUserId());
+            var id = "";
+            var result = new CompanyBLL().Insert(param, GetLoginUserId(),out id);
             Response.Write("<script>document.getElementById(\"isCheckCompanyName\").value = 'yes';</script>");
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
@@ -342,8 +342,8 @@ namespace EMT.DoneNOW.Web
                 }
                 param.site.udf = list;
             }
-
-            var result = new CompanyBLL().Insert(param, GetLoginUserId());
+            var id = "";
+            var result = new CompanyBLL().Insert(param, GetLoginUserId(),out id);
             // Response.Write("<script>document.getElementById(\"isCheckCompanyName\").value = 'yes';</script>");
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
@@ -362,9 +362,14 @@ namespace EMT.DoneNOW.Web
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('电话名称重复');</script>");
             }
-            else if (result == ERROR_CODE.SUCCESS)                    // 
-                Response.Write("<script>alert('添加客户成功！');</script>");  //  
-            Response.Redirect("../Opportunity/OpportunityAddAndEdit.aspx"); // 跳转到新建商机
+            else if (result == ERROR_CODE.SUCCESS)
+            {
+                Response.Write("<script>alert('添加客户成功！');window.close();window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id="+id+"','"+ (int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd +"','left= 200, top = 200, width = 960, height = 750', false);</script>");  //  
+                //Response.Redirect("../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id="+id); // 跳转到新建商机
+
+                //window.open('EditCompany.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyEdit %>','left= 200, top = 200, width = 960, height = 750', false);
+            }
+
 
         }
     }

@@ -51,13 +51,13 @@ namespace EMT.DoneNOW.BLL
             return _dal.FindSignleBySql<crm_account>(sql);
         }
         /// <summary>
-        /// 根据商机ID 或者客户ID去获取客户信息
+        /// 根据与客户相关联的各种类型的ID 或者客户ID去获取客户信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public crm_account GetCompanyByOpportunityOrId(long id)
+        public crm_account GetCompanyByOtherId(long id)
         {
-            return _dal.FindSignleBySql<crm_account>($"SELECT a.* FROM crm_account a LEFT JOIN crm_opportunity o on a.id = o.account_id where(a.id = {id} AND a.delete_time = 0) or(o.account_id = {id} and o.delete_time = 0)");
+            return _dal.FindSignleBySql<crm_account>($"SELECT a.* FROM crm_account a LEFT JOIN crm_opportunity o on a.id = o.account_id LEFT JOIN crm_quote q on a.id=q.account_id where(a.id = {id} AND a.delete_time = 0) or(o.id = {id} and o.delete_time = 0) or (q.id = {id} and q.delete_time = 0)");
         }
 
 
@@ -84,8 +84,9 @@ namespace EMT.DoneNOW.BLL
         /// 新增客户
         /// </summary>
         /// <returns></returns>
-        public ERROR_CODE Insert(CompanyAddDto param, long user_id)
+        public ERROR_CODE Insert(CompanyAddDto param, long user_id,out string id)
         {
+            id = "";
             if (string.IsNullOrEmpty(param.general.company_name) || string.IsNullOrEmpty(param.general.phone) || string.IsNullOrEmpty(param.location.address))                     // string必填项校验
                 return ERROR_CODE.PARAMS_ERROR;             // 返回参数丢失
             if (param.location.country_id == 0 || param.location.province_id == 0 || param.location.city_id == 0)
@@ -125,7 +126,7 @@ namespace EMT.DoneNOW.BLL
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 no = param.general.company_number,
                // parent_id = param.general.parent_company_name,
-                territory_id = param.general.territory_name,
+                territory_id = param.general.territory_name==0?null: param.general.territory_name,
                 market_segment_id = param.general.market_segment == 0 ? null : param.general.market_segment,
                 competitor_id = param.general.competitor == 0 ? null : param.general.competitor,
                 name = param.general.company_name.Trim(),
@@ -142,7 +143,7 @@ namespace EMT.DoneNOW.BLL
                 classification_id = param.general.classification == 0 ? null : param.general.classification,
                 tax_region_id = param.general.tax_region == 0 ? null : param.general.tax_region,
                 tax_identification = param.general.tax_id,
-                resource_id = param.general.account_manage == null ? 1 : (long)param.general.account_manage,
+                resource_id = param.general.account_manage == 0 ? null : param.general.account_manage,
             };  //  创建客户实体类
 
             if (!string.IsNullOrEmpty(param.general.parent_company_name))
@@ -150,7 +151,7 @@ namespace EMT.DoneNOW.BLL
                 _account.parent_id = Convert.ToInt64(param.general.parent_company_name);
             }
             _dal.Insert(_account);                         // 将客户实体插入到表中
-
+            id = _account.id.ToString();
             var add_account_log = new sys_oper_log()
             {
                 user_cate = "用户",
@@ -220,6 +221,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     id = _dal.GetNextIdCom(),
                     account_id = _account.id,
+                    is_active=1,
                     is_primary_contact = 1,   // 主联系人 0不是 1是
                     create_user_id = user.id,
                     update_user_id = user.id,
@@ -236,6 +238,7 @@ namespace EMT.DoneNOW.BLL
                     name = param.contact.first_name + param.contact.last_name,
                     email = param.contact.email,
                     location_id = _location.id,
+                    phone = _account.phone,
                 };
 
 
@@ -270,7 +273,7 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
             #region 3.保存客户扩展信息
-            //new UserDefinedFieldsBLL().SaveUdfValue();
+          //  new UserDefinedFieldsBLL().SaveUdfValue();
             var udf_account_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);  // 获取到所有关于客户的自定义字段
             var udf_general_list = param.general.udf;
             new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.COMPANY, user.id, _account.id, udf_account_list, udf_general_list, OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION); // 保存自定义字段，保存成功，插入日志
@@ -293,14 +296,14 @@ namespace EMT.DoneNOW.BLL
             //}
             #endregion
 
-            #region 4.保存联系人扩展信息
-            if (!string.IsNullOrEmpty(param.contact.first_name))  // 判断
-            {
-                var udf_contact_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT); // 联系人的自定义字段
-                var udf_con_list = param.contact.udf;     // 传过来的联系人的自定义参数
-                new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTACT, user.id, _contact.id, udf_contact_list, udf_con_list, OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION);
+            #region 4.保存联系人扩展信息  
+            //if (!string.IsNullOrEmpty(param.contact.first_name))  // 判断
+            //{
+            //    //var udf_contact_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT); // 联系人的自定义字段
+            //    //var udf_con_list = param.contact.udf;     // 传过来的联系人的自定义参数
+            //    //new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTACT, user.id, _contact.id, udf_contact_list, udf_con_list, OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION);
 
-            }
+            //}
             #endregion
 
             #region 5.保存客户站点的扩展信息
@@ -644,7 +647,7 @@ namespace EMT.DoneNOW.BLL
             };
             if (!string.IsNullOrEmpty(param.general_update.parent_company_name))
             {
-                new_company_value.parent_id = Convert.ToInt64(new_company_value);
+                new_company_value.parent_id = Convert.ToInt64(param.general_update.parent_company_name);
             }
 
             if (!string.IsNullOrEmpty(param.additional_info.asset_value))
@@ -902,6 +905,7 @@ namespace EMT.DoneNOW.BLL
             crm_location new_location = new crm_location()
             {
                 id = old_location.id,
+                oid = old_location.oid,
                 account_id = old_location.account_id,
                 address = param.general_update.address,
                 city_id = param.general_update.city_id,

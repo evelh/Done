@@ -18,6 +18,9 @@ namespace EMT.DoneNOW.Web.QuoteItem
         protected List<crm_quote_item> quoteItemList = null;    // 获取该报价下的所有报价项
         protected List<crm_quote> quoteList = null;             // 获取该商机下的所有报价
         protected string groupBy = "no";
+        protected List<crm_quote_item> distributionList = null;    // 配送  配置项
+        protected List<crm_quote_item> oneTimeList = null;         // 一次性配置项
+        protected List<crm_quote_item> optionalItemList = null;    // 可选  配置项
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -39,17 +42,23 @@ namespace EMT.DoneNOW.Web.QuoteItem
 
                     if(quoteItemList!=null&& quoteItemList.Count > 0)
                     {
-                       // object list = new object();
+                        optionalItemList = quoteItemList.Where(_ => _.optional == 1).ToList();   // 获取到可选的报价项
+                        oneTimeList = quoteItemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
+                        distributionList = quoteItemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();   // 配送类型的报价项
+
+                         // 配送，一次性，可选的配置项独立显示，所以在这里分离出来，传到前台后单独处理
+                         //  获取到筛选后报价项列表方便分组管理
+                        var screenList= quoteItemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.period_type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional != 1).ToList();
                         groupBy = Request.QueryString["group_by"];
                         switch (groupBy)
                         {
                             case "cycle":
                                 // 按照周期分组
-                                groupList = quoteItemList.GroupBy(_ => _.period_type_id).ToDictionary(_=>(object)_.Key, _=>_.ToList());    // as Dictionary<long?, 
+                                groupList = screenList.GroupBy(_ => _.period_type_id).ToDictionary(_=>(object)_.Key, _=>_.ToList());    // as Dictionary<long?, 
                                
                                 break;
                             case "product":
-                                groupList = quoteItemList.GroupBy(_ => _.object_id==null?"": _.object_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
+                                groupList = screenList.GroupBy(_ => _.object_id==null?"": _.object_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
                                 break;
                             default:
                                 groupBy = "no";
