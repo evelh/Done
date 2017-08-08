@@ -43,11 +43,11 @@
                         <td>
                             <div class="clear">
                                 <label>客户名称<span class="red">*</span></label>
-                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd?"":companyBLL.GetCompany(quote.account_id).name %>" />
+                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd?((isAdd&&account!=null)?account.name:""):companyBLL.GetCompany(quote.account_id).name %>" />
                                 <i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
                                 <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <%--<input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":quote.account_id.ToString() %>" />--%>
-                                <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="157" />
+                                <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd&&account!=null?account.id.ToString():(!isAdd&&account!=null)?account.id.ToString():"" %>" />
 
                             </div>
                         </td>
@@ -58,7 +58,7 @@
                             <div class="clear">
                                 <label>商机名称</label>
                                 <select name="opportunity_id" id="opportunity_id">
-                                </select><input type="hidden" name="opportunity_idHidden" id="opportunity_idHidden" value=""/>
+                                </select><input type="hidden" name="opportunity_idHidden" id="opportunity_idHidden" value="<%=(isAdd&&opportunity!=null)?opportunity.id.ToString():(!isAdd?quote.opportunity_id.ToString():"") %>"/>
                             </div>
                         </td>
                         <td></td>
@@ -463,6 +463,7 @@
         GetDataBySelectCompany();  // 用于修改的时候赋值
 
         $("#opportunity_id").change(function () {
+            debugger;
             var opportunity_id = $("#opportunity_id").val();
             if (opportunity_id != 0 && opportunity_id != null && opportunity_id != undefined)
             {
@@ -473,6 +474,7 @@
                     // data: { CompanyName: companyName },
                     success: function (data) {
                         if (data != "") {
+                            //alert(data);
                             $("#projected_close_date").html(data);
                         }
                     },

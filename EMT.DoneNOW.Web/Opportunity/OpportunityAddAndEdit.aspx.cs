@@ -294,8 +294,9 @@ namespace EMT.DoneNOW.Web.Opportunity
                 }
                 else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
-                    Response.Write("<script>alert('添加商机成功！');</script>");  //  
-                    Response.Redirect("../Quote/QuoteAddAndUpdate?opportunity_id="+id);
+                    Response.Write("<script>alert('添加商机成功！');window.close();window.open('../Quote/QuoteAddAndUpdate?opportunity_id="+id+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                    //Response.Write("<script>alert('添加商机成功！');</script>");  //  
+                    //Response.Redirect("../Quote/QuoteAddAndUpdate?opportunity_id="+id);
                 }
             }
             else

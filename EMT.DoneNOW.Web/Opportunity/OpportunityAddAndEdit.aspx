@@ -74,22 +74,22 @@
                                             var company = conpamyBll.GetCompany(contact.account_id);
                                     %>
                                     <label>客户名称</label>
-                                    <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=company.name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                    <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=company.name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left= 200, top = 200, width = 900, height = 750', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                     <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=company.id %>" />
                                     <%}
                                     else if (isAdd&&account!=null)
                                     { %>
                                     <label>客户名称</label>
                                     <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=account.name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left= 200, top = 200, width = 900, height = 750', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                     <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=account.id %>" />
                                     <%}
                                     else
                                     { %>
                                         <label>客户名称</label>
                                     <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd ? "" : conpamyBll.GetCompany(opportunity.account_id).name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left= 200, top = 200, width = 900, height = 750', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                     <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd ? "" : opportunity.account_id.ToString() %>" />
                                     <%} %>
                                 </div>
@@ -119,14 +119,14 @@
                                     <select name="contact_id" id="contact_id">
                                     </select>
                                     <%} %>
-
-                                    <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                    <input type="hidden" id="contactHideID" value="<%=isAdd&&contact!=null?contact.id.ToString():"" %>"/>
+                                    <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left= 200, top = 200, width = 900, height = 750', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 </div>
                             </td>
                             <td>
                                 <div class="clear">
                                     <label>项目关闭时间</label>
-                                    <input type="date" name="projected_close_date" id="projected_close_date" />
+                                    <input type="date" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd&&opportunity.projected_close_date!=null?((DateTime)opportunity.projected_close_date).ToString("yyyy-MM-dd"):"") %>" />
                                       <div style="margin-top: -30px; display: -webkit-inline-box;">
                                 <a href="#" onclick="AddTime(0)">今天</a>|<a href="#"  onclick="AddTime(7)">7</a>|<a href="#"  onclick="AddTime(30)">30</a>|<a href="#"  onclick="AddTime(60)">60</a>
                             </div>
@@ -323,7 +323,7 @@
             <div class="information clear">
                 <p class="informationTitle"><i></i>周期收益</p>
                 <div class="clear">
-                    <input type="checkbox" name="" id="opportunity" />
+                    <input type="checkbox" name="" id="opportunityRange" />
                     <label>商机收入周期范围</label>
                     <input type="text" name="spread_value" id="spread_value" value="<%=(!isAdd)&&(opportunity.spread_value!=null)?opportunity.spread_value.ToString():"" %>" />
                     <asp:DropDownList ID="spread_unit" runat="server">
@@ -610,6 +610,28 @@
             return true;
         });
 
+        $("#save_close").click(function () {
+            if (!SubmitCheck()) {
+                return false;
+            }
+            return true;
+        });
+
+        $("#save_newAdd").click(function () {
+            if (!SubmitCheck()) {
+                return false;
+            }
+            return true;
+        });
+        $("#save_create_note").click(function () {
+            if (!SubmitCheck()) {
+                return false;
+            }
+            return true;
+        });
+
+
+
         $("#formTemplate").change(function () {
             var formTemplate_id = $("#formTemplate").val();
             if (formTemplate_id != 0)       // 
@@ -638,6 +660,10 @@
 
         Calculation_Gross_Profit();
         GetContactList();
+        var contactHideID = $("#contactHideID").val();
+        if (contactHideID != "") {
+            $("#contact_id").val(contactHideID);
+        }
         function Calculation_Gross_Profit()   // 计算毛利和毛利率,年收益和年成本
         {
             var CalculationMonths = $("#number_months").val();
@@ -726,6 +752,7 @@
             }
         }
 
+ 
 
         // use_quote
         $("#use_quote").click(function () {
@@ -736,7 +763,19 @@
                 $(".Calculation").removeAttr("disabled");
             }
         })
-
+        $("#spread_value").attr("disabled", "disabled");
+        $("#spread_unit").attr("disabled", "disabled");
+        $("#opportunityRange").click(function () {
+            if ($(this).is(':checked')) {
+                $("#spread_value").removeAttr("disabled");
+                $("#spread_unit").removeAttr("disabled");
+            }
+            else {
+                $("#spread_value").attr("disabled", "disabled");
+                $("#spread_unit").attr("disabled", "disabled");
+            }
+        })
+                    
     })
     function SubmitCheck() {
 
@@ -791,10 +830,12 @@
                 success: function (data) {
                     if (data != "") {
                         $("#contact_id").html(data);
+                       
                     }
                 },
             });
         }
+     
     }
 
     // 强制保留两位小数

@@ -38,6 +38,7 @@ namespace EMT.DoneNOW.DTO
             public string web_site;            // 官网
             public string company_number;        // 客户编号
 
+            public string subCompanyIds;            // 用户添加的子客户id，与父客户对立
             public List<UserDefinedFieldValue> udf;//  客户自定义字段
 
         }

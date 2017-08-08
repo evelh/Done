@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DAL;
 
 namespace EMT.DoneNOW.Web
 {
@@ -16,6 +17,9 @@ namespace EMT.DoneNOW.Web
         protected List<UserDefinedFieldDto> contact_udfList = null;      // 联系人自定义
         protected List<UserDefinedFieldDto> site_udfList = null; // 站点自定义
         protected crm_account parent_account = null;
+
+        protected List<crm_account> searchCompany = null;     // 查询出的所有没有父客户的客户
+ 
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -93,6 +97,10 @@ namespace EMT.DoneNOW.Web
                 if (!string.IsNullOrEmpty(parent_id))
                 {
                     parent_account = new CompanyBLL().GetCompany(Convert.ToInt64(parent_id));
+                }
+                else
+                {
+                    searchCompany = new crm_account_dal().GetSubCompanys();
                 }
             }
             catch (Exception)

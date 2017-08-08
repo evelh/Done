@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
-    <title></title>
+    <title>客户名称相似</title>
 </head>
 <body>
     <form id="form1" runat="server">
