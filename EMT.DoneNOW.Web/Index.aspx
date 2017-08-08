@@ -22,12 +22,6 @@
                             <dd><a href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE %>" target="PageFrame">报价管理</a></dd>
                             <dd><a href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE_TEMPLATE %>" target="PageFrame">报价模板管理</a></dd>
 						</dl>
-						<dl>
-							<dt>服务台</dt>
-						</dl>
-						<dl>
-							<dt>服务台</dt>
-						</dl>
 					</div>
 				</dd>
 				<dd class="ml">目&nbsp;&nbsp;录</dd>

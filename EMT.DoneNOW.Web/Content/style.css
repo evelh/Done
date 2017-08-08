@@ -12,20 +12,21 @@ ul,ul li{margin: 0;padding: 0;}
 .content th {font-weight: normal;background: none;height: auto;} 
 .content tr {} 
 .boders{border: 1px solid #000000;border-bottom: 1px solid #FFFFFF !important;}    
-.header-title{width: 100%;margin:10px;width: auto;height: 26px;}
-.header-title ul li{position: relative; padding: 0 10px;float: left;margin-right: 10px;border: 1px solid #CCCCCC;background: #dddddd;cursor:pointer;}
+.header-title{width: 100%;margin:10px;width: auto;height: 30px;}
+.header-title ul li{position: relative;height:30px;line-height:30px; padding: 0 10px;float: left;margin-right: 10px;border: 1px solid #CCCCCC;cursor:pointer;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);}
+.header-title ul li input{height:28px;line-height:28px;}
 .header-title ul li:hover ul{display: block;}
-.header-title ul li .icon-1{width: 16px;height:16px;display: block;float: left;margin-top: 3px;margin-right: 5px;}
-.header-title ul li .icon-2{width: 10px;height:10px;display: block;float: right;margin-top: 5px;margin-left:10px;}
-.header-title ul li ul{display: none; position:absolute; left: 0;top: 22px;border: 1px solid #CCCCCC;background: #F5F5F5;width:260px;padding: 15px 10px;z-index: 99;}
+.header-title ul li .icon-1{width: 16px;height:16px;display: block;float: left;margin-top: 7px;margin-right: 5px;}
+.header-title ul li .icon-2{width: 10px;height:10px;display: block;float: right;margin-top:8px;margin-left:10px;}
+.header-title ul li ul{display: none; position:absolute; left: -1px;top: 28px;border: 1px solid #CCCCCC;background: #F5F5F5;width:160px;padding: 10px 0;z-index: 99;}
 .header-title ul li ul li{float: none;border: none;background: #F5F5F5;height:28px;line-height:28px;}
-.header-title ul li input{outline:none; border: none;}
+.header-title ul li input{outline:none; border: none;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);}
 .header-title ul li ul li:hover{background: #E5E5E5;}
 
 .nav-title{}
-.nav-title ul{border-bottom: 1px solid #000000;padding:10px 0 0 10px;}
-.nav-title ul li{background: #e5e5e5;float: left;margin-right: 10px;padding: 5px 10px;margin-bottom: -1px;cursor: pointer;}
-.content{padding-top: 15px;width: 1200px;}
+.nav-title ul{border-bottom: 1px solid #ccc;padding:10px 0 0 10px;}
+.nav-title ul li{background: linear-gradient(to bottom,#d7d7d7 0,#f1f1f1 100%);float: left;margin-right: 10px;padding: 5px 10px;margin-bottom: -1px;cursor: pointer;}
+.content{padding: 15px 0;width: 1190px;}
 .content th h1{color: #4F4F4F;font-size: 12px;height: 14px;text-align: left;width:45%;text-align: right;} 
 .content th p{color: red;font-size: 12px;height: 14px;text-align: left;width:45%;text-align: right;} 
 .content td h1{color: #4F4F4F;font-size: 12px;height: 14px;text-align: left;width:45%;text-align: right;} 
@@ -36,20 +37,20 @@ position: relative;
 float: left;overflow: hidden;}
 .content label .red{color: red ;  vertical-align: super; right: -10px;top: 0;} /*position: absolute;*/
 .content label .num{color: #666666;font-size: 12px;  vertical-align: super; }
-.content input{float: left;width:180px;margin-left:15px;height:28px;}
+.content input{float: left;width:180px;margin-left:15px;height:30px;line-height:30px;}
 .content textarea{float: left;width:180px;margin-left:15px;resize:none;height: 100px;}
-.content select{float: left;width:180px;height:28px;line-height: 28px;margin-left:15px;}
-.content .selectTwo{float: left;width:50%;height:28px;line-height: 28px;margin-left:15px;}
-.content .selectTwo select{float: left;width:82px;height:28px;line-height: 28px;margin: 0;}
+.content select{float: left;width:180px;height:30px;line-height: 30px;margin-left:15px;}
+.content .selectTwo{float: left;width:50%;height:30px;line-height:30px;margin-left:15px;}
+.content .selectTwo select{float: left;width:82px;height:30px;line-height: 30px;margin: 0;}
 .content .selectTwo span{float: left;margin: 0 5px;}
-.content .inputTwo{float: left;width:195px;height:28px;line-height: 28px;margin-left:15px;}
+.content .inputTwo{float: left;width:195px;height:30px;line-height:30px;margin-left:15px;}
 .content .inputTwo input{float: left;width:82px;margin: 0;}
 .content .inputTwo span{float: left;margin: 0 5px;}
 .content input[type=checkbox]{width:auto;height:auto;margin-top:10px;margin-left:15px;}
 .text {line-height: 30px;padding: 0 20px;text-align: left;color: #666;margin-left:10px;}
 .content .savetable input[type=checkbox]{width:auto;height:auto;margin-top:0px;float: none;margin-left: auto;}
 .savecontent table,.savecontent td,.savecontent th{ border:1px solid #98b4ca;}
-.savecontent th{height: 28px;line-height: 28px;}
+.savecontent th{height: 30px;line-height: 30px;}
 .savecontent table th:first-child,.savecontent table td:first-child{width:30px ;}
 .savecontent input[type=checkbox]{margin-left: 30%;}
 .warn{background:#FFFFCC url(../Images/alert.png) no-repeat left center;}
@@ -62,7 +63,7 @@ float: left;overflow: hidden;}
 .header i{width: 40px;height: 30px;display: block;background:#F5F5F5 url(../Images/ico_page_menu.png) no-repeat center;float: left;
 margin-top: 5px;margin-right:10px;cursor: pointer;}
 .header i:hover ul{display: block;}
-.header i ul{min-width:260px;padding: 15px 10px;background: #F5F5F5;margin-top: 30px;position: relative;display: none;z-index: 99;}
+.header i ul{min-width:160px;padding: 15px 10px;background: #F5F5F5;margin-top: 30px;position: relative;display: none;z-index: 99;}
 .header i ul li{color: #333;font-size: 12px;padding: 0 5px;height:28px;line-height:28px;}
 .header i ul li:hover{background: #E5E5E5;padding: 0 5px;}
 .savecontent{width: 1220px;}

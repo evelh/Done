@@ -6,12 +6,12 @@
 .index-titleLeft dd{height: 69px;border-top:1px solid #546675;line-height:98px ;text-align: center;color: #daf1f9;
 background-repeat:no-repeat ;background-position:center 15px; }
 .index-titleLeft dd:hover{background-color:#34485c;position: relative;}
-.index-titleLeft dd div{right:-290px;top:0;position: absolute;padding: 30px;box-shadow: 0px 1px 15px 0px #4c4c4c;display: none;background: #FFFFFF;}
+.index-titleLeft dd div{left:150px;top:0;position: absolute;box-shadow: 0px 1px 15px 0px #4c4c4c;display: none;background: #FFFFFF;}
 .index-titleLeft dd:hover div{display: block;}
-.index-titleLeft dd div dl{border-right: 1px solid #a1a9b1 ;padding: 0 18px;float: left;border-bottom: none;}
+.index-titleLeft dd div dl{padding:10px 0;border-bottom: none;width:150px;}
 .index-titleLeft dd div dl:last-child{border: none;}
-.index-titleLeft dd div dl dt{height: 30px;line-height: 30px;color: #13273b;font-size: 14px;background: none;}
-.index-titleLeft dd div dl dd{height: 25px;line-height: 25px;color: #13273b;font-size: 12px;border: none;}
+.index-titleLeft dd div dl dt{height: 30px;line-height: 30px;color: #346a95;font-size: 16px;background: none;font-weight:bolder;}
+.index-titleLeft dd div dl dd{height: 25px;line-height: 25px;color: #151515;font-size: 12px;border: none;}
 .index-titleLeft dd div dl dd:hover{background-color:#CCCCCC;}
 .index-titleLeft dd div dl dd a{height: 25px;line-height: 25px;color: #13273b;font-size: 12px;border: none;display: block;}
 
@@ -19,10 +19,10 @@ background-repeat:no-repeat ;background-position:center 15px; }
 .titleTop-up{border-bottom: 1px solid #89939d;margin-left: 207px;min-width: 1004px;}
 .titleTop-up li{cursor: pointer;}
 .titleTop-up .up-left li{width: 50px;height: 49px;float: left;background:url(../Images/icon.png) no-repeat ;}
-.titleTop-up .up-left li input{margin: 15px 0 0 15px;width: 151px;height: 20px;padding-left: 10px;float: left;border: 1px solid #aab1b8;outline: none;
+.titleTop-up .up-left li input{margin: 15px 0 0 15px;width: 151px;height: 22px;padding-left: 10px;float: left;border: 1px solid #aab1b8;outline: none;
 border-right:none ;border-radius:0px ;}
-.titleTop-up .up-left li button{width: 26px;height:22px;float: left;margin-top: 15px;border: 1px solid #aab1b8;border-left: none;
-background:url(../Images/icon.png) no-repeat -309px -30px  ;outline: none;cursor: pointer;}
+.titleTop-up .up-left li button{width: 26px;height:24px;float: left;margin-top: 15px;border: 1px solid #aab1b8;border-left: none;
+background:url(../Images/icon.png) no-repeat -309px -29px  ;outline: none;cursor: pointer;}
 .titleTop-up .up-left li span{width:1px;height: 11px;float: right;display: block;margin: 20px auto 0;background: #13273b;}
 .titleTop-up .up-left li:nth-child(1){background-position:-11px -16px ;}
 .titleTop-up .up-left li:nth-child(2){background-position:-58px -16px ;}
@@ -77,10 +77,10 @@ background:url(../Images/icon.png) no-repeat -309px -30px  ;outline: none;cursor
 .hide{display: none;}
 .ba{background: #F3F3F3 !important;}
 .jia{background: url(../Images/jia.png) no-repeat center !important;}
-.information{background: #fff;border: 1px solid #E5E5E5;padding: 10px 0;min-width: 1200px;position: relative;}
+.information{background: #fff;border: 1px solid #d3d3d3;min-width: 1190px;position: relative;margin:5px;padding:5px 0;}
 .informationTitle{padding-left: 10px;height: 30px;line-height: 30px;margin: 0;}
 .informationTitle i{width: 15px; height:30px;display: block; background: url(../Images/jian.png) no-repeat  center;float: left;margin-right: 10px;cursor: pointer;}
-.information .Search{position: absolute;right:5px;top: 5px;}
+.information .Search{position: absolute;right:5px;top: 7px;}
 
 .input-dh{position: relative;}
 .input-dh .on{position: absolute;right: 10px; top: 5px;}
@@ -88,7 +88,7 @@ background:url(../Images/icon.png) no-repeat -309px -30px  ;outline: none;cursor
 cursor: pointer;background-repeat:no-repeat ;display: block;}
 .add-on{position: relative;}
 
-.contenttitle ul{margin: 15px 0 ;}
+.contenttitle ul{margin: 10px ;}
 .contenttitle li{cursor: pointer; float:left;height: 26px;line-height: 26px;border: 1px solid #bcbcbc;margin-right: 10px; background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);}
 .contenttitle li span{margin-right: 10px;}
 .contenttitle li i{float:left;width: 26px;height:26px;background-repeat:no-repeat;background-position:center; display: block;}

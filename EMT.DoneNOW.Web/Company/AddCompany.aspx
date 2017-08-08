@@ -22,14 +22,14 @@
         <div class="header">添加客户</div>
         <div class="header-title">
             <ul>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <asp:Button ID="save_close" runat="server" Text="保存并关闭" OnClick="save_Click" BorderStyle="None" />
                 </li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
                     <asp:Button ID="save_newAdd" runat="server" Text="保存并新建" OnClick="save_newAdd_Click" BorderStyle="None" /></li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
                     <asp:Button ID="save_create_opportunity" runat="server" Text="保存并创建商机" OnClick="save_create_opportunity_Click" BorderStyle="None" /></li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <asp:Button ID="close" runat="server" Text="关闭" BorderStyle="None" /></li>
             </ul>
         </div>
@@ -596,7 +596,7 @@
                             {
                                 if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
                                 {%>
-                    <li>
+                    <li class="clear">
                         <label><%=udf.name %></label>
                         <input type="text" name="<%=udf.id %>" class="sl_cdt" />
 
@@ -604,21 +604,21 @@
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
                         {%>
-                    <li>
+                    <li class="clear">
                         <label><%=udf.name %></label>
                         <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
 
                     </li>
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
-                        {%><li>
+                        {%><li class="clear">
                             <label><%=udf.name %></label>
                             <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
                         </li>
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
                         {%>
-                    <li>
+                    <li class="clear">
                         <label><%=udf.name %></label>
 
                         <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
