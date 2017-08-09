@@ -52,6 +52,7 @@
     <Compile Include="ContactConditionDto.cs" />
     <Compile Include="DictionaryEntryDto.cs" />
     <Compile Include="Enumeration.cs" />
+    <Compile Include="EnumSysSetting.cs" />
     <Compile Include="FormTmplOpportunityDto.cs" />
     <Compile Include="OpportunityAddOrUpdateDto.cs" />
     <Compile Include="OpportunityConditionDto.cs" />

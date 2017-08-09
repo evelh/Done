@@ -61,13 +61,19 @@ namespace EMT.DoneNOW.Web.Quote
                     {
                         isAdd = false;
                     }
-                    else
+                  
+                }
+                else
+                {
+                    var opportunity_id = Request.QueryString["quote_opportunity_id"];
+                    if (!string.IsNullOrEmpty(opportunity_id))
                     {
-                        var opportunity_id = Request.QueryString["opportunity_id"];
                         opportunity = new crm_opportunity_dal().GetOpportunityById(long.Parse(opportunity_id));
                         account = new CompanyBLL().GetCompany(opportunity.account_id);
                     }
+    
                 }
+       
 
                 if (!isAdd)
                 {

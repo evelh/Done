@@ -326,8 +326,20 @@ namespace EMT.DoneNOW.BLL
                     continue;
                 if (param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DATE
                     || param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DATETIME
-                    || param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.NUMBER)      // 数值和日期类型
+                    || param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.NUMBER
+                    || param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.TIMESPAN)      // 数值和日期类型
                 {
+                    if (param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.TIMESPAN)
+                    {
+                        DateTime t1 = DateTime.MinValue, t2 = DateTime.MinValue;
+                        if ((p.value != null && !DateTime.TryParse(p.value, out t1))
+                            || (p.value2 != null && !DateTime.TryParse(p.value2, out t2)))
+                            continue;
+                        if (p.value != null)
+                            p.value = Tools.Date.DateHelper.ToUniversalTimeStamp(t1).ToString();
+                        if (p.value2 != null)
+                            p.value2 = Tools.Date.DateHelper.ToUniversalTimeStamp(t2).ToString();
+                    }
                     queryPara.Append('"').Append(param.col_name).Append("\":");
                     if (p.value != null)
                     {

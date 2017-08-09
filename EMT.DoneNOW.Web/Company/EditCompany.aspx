@@ -10,9 +10,12 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+        <link href="../Content/index.css" rel="stylesheet" />
+    <link href="../Content/style.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../Content/multipleList.css" />
     <style>
-        #addressManage th{
-            text-align:center;
+        #addressManage th {
+            text-align: center;
         }
     </style>
 </head>
@@ -66,15 +69,15 @@
                     <td>
                         <div class="clear">
                             <label>是否激活<span class="red">*</span></label>
-                        
+
 
                             <% if (account.is_active == 1)
                                 { %>
-                               <input  type="checkbox" name="is_active" data-val="1" value="1" checked="checked"/>
+                            <input type="checkbox" name="is_active" data-val="1" value="1" checked="checked" />
                             <%}
-                            else
-                            { %>
-                               <input  type="checkbox" name="is_active" data-val="1" value="1"/>
+                                else
+                                { %>
+                            <input type="checkbox" name="is_active" data-val="1" value="1" />
                             <%} %>
                             <%--<asp:CheckBox ID="isactive" runat="server" />--%>
                         </div>
@@ -323,7 +326,7 @@
         </div>
         <%--// location_list--%>
         <div class="content clear" style="display: none;">
-            <a href="#" style="margin-left:10px;" onclick="window.open('LocationManage.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.LocationAdd %>','left=200,top=200,width=900,height=750', false);">新增地址</a>
+            <a href="#" style="margin-left: 10px;" onclick="window.open('LocationManage.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.LocationAdd %>','left=200,top=200,width=900,height=750', false);">新增地址</a>
             <table style="text-align: center;" class="table table-hover" id="addressManage">
                 <tr style="text-align: center;">
                     <th>地址类型</th>
@@ -388,7 +391,7 @@
                         </div>
                     </td>
                 </tr>
-                       <tr>
+                <tr>
                     <td>
                         <div class="clear">
                             <label>股票市场<span class="red"></span></label>
@@ -518,54 +521,31 @@
 
 
         <div class="content clear" style="display: none;">
-               <%-- <div class="rowtitle" style="width: 800px; margin-left: 20px;">
-                <div class="col-xs-5" style="padding-left: 30px;">现有客户</div>
-                <div class="col-xs-1"></div>
-                <div class="col-xs-5" style="padding-left: 30px;">已选客户</div>
-                <div class="col-xs-1"></div>
+            <%if (account.parent_id == null)
+                { %>
+            <p>子客户列表</p>
+            <span class="on"><i class="icon-dh" onclick="OpenSubCompany()"></i></span>
+          
+            <div class="Selected fl">
+                <select id="" multiple="" class="dblselect" style="height: 300px;">
+                    <%var subIds = "";
+                        if (subCompanyList != null && subCompanyList.Count > 0)
+                        {
+                            foreach (var subCompany in subCompanyList)
+                            {
+                                subIds += subCompany.id.ToString() + ",";
+                                %>
+                    <option value="<%=subCompany.id %>" ondblclick="Adddbclick(this);"><%=subCompany.name %></option>
+                    <%}
+                            subIds = subIds == "" ? "" : subIds.Substring(0,subIds.Length-1);
+                        }%>
+                </select>
             </div>
-            <div class="row" style="width: 800px; margin-left: 20px;">
-                <div class="col-sm-5">
-                    <select name="from[]" id="multiselect" class="form-control" size="8" multiple="multiple" style="height: 300px;">
-                        <%if (searchCompany != null && searchCompany.Count > 0)
-                            {
-                                foreach (var search_account in searchCompany)
-                                {%>
-                        <option value="<%=search_account.id %>"><%=search_account.name %></option>
-
-                        <%}
-                            } %>
-                    </select>
-                </div>
-                <div class="col-sm-1">
-                    <button type="button" id="multiselect_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
-                    <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
-                    <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
-                    <button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
-                </div>
-                <div class="col-sm-5">
-                    <select name="to[]" id="multiselect_to" class="form-control" size="8" multiple="multiple" style="height: 300px;">
-                            <%if (subCompanyList != null && subCompanyList.Count > 0)
-                            {
-                                foreach (var subCompany in subCompanyList)
-                                {%>
-                        <option value="<%=subCompany.id %>"><%=subCompany.name %></option>
-
-                        <%}
-                            } %>
-
-                    </select>
-                    <input type="hidden" name="subCompanyIds" id="subCompanyIds" />
-                </div>
-                <div class="col-xs-1">
-                    <button type="button" class="btn btn-block" style="background: #fff;" disabled="disabled"><i class="glyphicon"></i></button>
-                    <button type="button" id="multiselect_move_up" class="btn btn-block"><i class="glyphicon glyphicon-arrow-up"></i></button>
-                    <button type="button" id="multiselect_move_down" class="btn btn-block col-sm-6"><i class="glyphicon glyphicon-arrow-down"></i></button>
-                    <button type="button" class="btn btn-block" style="background: #fff;" disabled="disabled"><i class="glyphicon"></i></button>
-                </div>
-            </div>--%>
-
-
+      <%--        <input type="hidden" id="OldSubCompany" />
+            <input type="hidden" id="OldSubCompanyHidden" name="subCompanyIds" value="<%=subIds %>" />--%>
+                 <input type="hidden" id="SubCompany" />
+            <input type="hidden" id="SubCompanyHidden" name="subCompanyIds" value="<%=subIds %>" />
+            <%} %>
         </div>
         <% //子公司 预留  %>
 
@@ -922,15 +902,75 @@
     }
 
     function chooseCompany() {
-        var subIds = $("#multiselect_to").html();
+        var subIds = $("#SubCompanyHidden").val();
         if (subIds != "") {
             alert("已选择子客户");
-            return false;
+            return;
         }
 
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
         //window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
         //这些要写在一行
+    }
+
+    function OpenSubCompany() {
+        if ($("#ParentComoanyNameHidden").val() != "") {
+            alert("已添加父客户，不能添加子客户！");
+            return;
+        }
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUB_COMPANY_CALLBACK %>&field=SubCompany&muilt=1&callBack=ChooseSubCompany", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+
+    function ChooseSubCompany() {
+        if ($("#SubCompanyHidden").val() != "") {
+            //var oldIds = $("#OldSubCompanyHidden").val();
+            //if (oldIds != "") {
+            //    //oldIds = "," + oldIds;
+            //    $("#SubCompanyHidden").val($("#SubCompanyHidden").val() + "," + oldIds);
+            //}
+            requestData("../Tools/CompanyAjax.ashx?act=names&ids=" + $("#SubCompanyHidden").val() , null, function (data) {
+                debugger;
+                $(".dblselect").empty();
+                for (i = 0; i < data.length; i++) {
+                    var option = $("<option>").val(data[i].val).text(data[i].show);
+                    $(".dblselect").append(option);
+                }
+                $(".dblselect option").dblclick(function () {
+                    Adddbclick(this);
+                });
+            })
+        }
+
+    }
+
+    function Adddbclick(val) {
+        debugger;
+        var delval = $(val).val();
+        if ($("#SubCompanyHidden").val() == delval) {
+            $("#SubCompany").val("");
+            $("#SubCompanyHidden").val("");
+            $(".dblselect").empty();
+        } else {
+            requestData("../Tools/CompanyAjax.ashx?act=names&ids=" + $("#SubCompanyHidden").val(), null, function (data) {
+                debugger;
+                var ids = "";
+                $(".dblselect").empty();
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].val == delval)
+                        continue;
+                    var option = $("<option>").val(data[i].val).text(data[i].show);
+                    $(".dblselect").append(option);
+                    ids += data[i].val + ",";
+                }
+                $(".dblselect option").dblclick(function () {
+                    Adddbclick(this);
+                });
+                if (ids != "") {
+                    ids = ids.substr(0, ids.length - 1);
+                }
+                $("#SubCompanyHidden").val(ids);
+            })
+        }
     }
 
 </script>

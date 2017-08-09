@@ -169,6 +169,13 @@
     <Content Include="Images\down.png" />
     <Content Include="Images\refresh.png" />
     <Content Include="Images\view.png" />
+    <Content Include="Images\Classification\blockhour.png" />
+    <Content Include="Images\Classification\canceled.png" />
+    <Content Include="Images\Classification\delinquent.png" />
+    <Content Include="Images\Classification\jeopardyaccount.png" />
+    <Content Include="Images\Classification\residential.png" />
+    <Content Include="Images\Classification\target.png" />
+    <Content Include="Images\Classification\tm.png" />
     <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
     <Content Include="Images\export.png" />
     <Content Include="Images\print.png" />
