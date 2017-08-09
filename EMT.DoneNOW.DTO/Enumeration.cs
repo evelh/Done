@@ -424,6 +424,7 @@ namespace EMT.DoneNOW.DTO
             CALLBACK = 812,         // 查找带回
             MUILT_CALLBACK = 814,   // 多选查找带回
             NUMBER_EQUAL = 816,     // 数值(做等于判断)
+            TIMESPAN = 817,         // 日期-时间戳
         }
     }
 

@@ -66,7 +66,8 @@
 								<input type="text" name="<%=condition[i].id %>_h" class="sl_cdt" />
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATE
-                                || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME) { %>
+                                || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME
+                                || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.TIMESPAN) { %>
                             <div class="inputTwo">
 								<input type="text" name="<%=condition[i].id %>_l" class="form_datetime sl_cdt" />
 								<span>-</span>
@@ -126,7 +127,8 @@
 								<input type="text" name="<%=condition[i].id %>_h" class="sl_cdt" />
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATE
-                                || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME) { %>
+                                || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME
+                                || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.TIMESPAN) { %>
                             <div class="inputTwo">
 								<input type="text" name="<%=condition[i].id %>_l" class="form_datetime sl_cdt" />
 								<span>-</span>
@@ -186,7 +188,8 @@
 								<input type="text" name="<%=condition[i].id %>_h" class="sl_cdt" />
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATE
-                                || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME) { %>
+                                || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME
+                                || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.TIMESPAN) { %>
                             <div class="inputTwo">
 								<input type="text" name="<%=condition[i].id %>_l" class="form_datetime sl_cdt" />
 								<span>-</span>

@@ -163,7 +163,8 @@ namespace EMT.DoneNOW.Web
                     Para pa = new Para();
                     if (p.data_type == (int)DicEnum.QUERY_PARA_TYPE.NUMBER
                         || p.data_type == (int)DicEnum.QUERY_PARA_TYPE.DATE
-                        || p.data_type == (int)DicEnum.QUERY_PARA_TYPE.DATETIME)    // 数值和日期类型是范围值
+                        || p.data_type == (int)DicEnum.QUERY_PARA_TYPE.DATETIME
+                        || p.data_type == (int)DicEnum.QUERY_PARA_TYPE.TIMESPAN)    // 数值和日期类型是范围值
                     {
                         string ql = keys[p.id.ToString() + "_l"];
                         string qh = keys[p.id.ToString() + "_h"];
