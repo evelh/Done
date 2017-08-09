@@ -52,6 +52,10 @@ namespace EMT.DoneNOW.Web
                     var location_account_id = context.Request.QueryString["account_id"];
                     GetCompanyDefaultLocation(context, location_account_id);
                     break;
+                case "names":
+                    var ids = context.Request.QueryString["ids"];
+                    GetCompanyNamesByIds(context, ids);
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     return;
@@ -192,6 +196,16 @@ namespace EMT.DoneNOW.Web
             }
         }
 
+        /// <summary>
+        /// 根据客户id返回客户名称列表
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="ids"></param>
+        private void GetCompanyNamesByIds(HttpContext context, string ids)
+        {
+            var names = new CompanyBLL().GetCompanyNames(ids);
+            context.Response.Write(new Tools.Serialize().SerializeJson(names));
+        }
 
         public bool IsReusable
         {

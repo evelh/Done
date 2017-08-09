@@ -174,7 +174,7 @@ namespace EMT.DoneNOW.BLL
             //    var ids = param.general.subCompanyIds.Split(',');
             //    foreach (var subId in ids)
             //    {
-            //        SetParentCompany(_account.id,long.Parse(subId),user.id);
+            //        SetParentCompany(_account.id, long.Parse(subId), user.id);
             //    }
             //}
             #endregion
@@ -501,53 +501,7 @@ namespace EMT.DoneNOW.BLL
             }
             #endregion
 
-
-
-
-            // crm_account account = param.SelectToken("account").ToObject<crm_account>();
-            //if (_dal.ExistAccountName(account.account_name))
-            //    return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;
-
-            //crm_contact contact = param.SelectToken("contact").ToObject<crm_contact>();
-            //crm_account_note note = param.SelectToken("note").ToObject<crm_account_note>();
-            //crm_account_todo todo = param.SelectToken("todo").ToObject<crm_account_todo>();
-
-            //account.id = _dal.GetNextIdCom();
-            //account.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            //account.create_user_id = CachedInfoBLL.GetUserInfo(token).id;
-            //account.update_time = account.create_time;
-            //account.update_user_id = account.update_user_id;
-            //_dal.Insert(account);
-
-            //if (contact != null)    // 增加联系人
-            //{
-            //    contact.account_id = account.id;
-            //    contact.id = _dal.GetNextIdCom();
-            //    contact.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            //    contact.create_user_id = account.create_user_id;
-            //    contact.update_time = contact.create_time;
-            //    contact.update_user_id = contact.create_user_id;
-            //    // TODO: 主联系人设置
-            //    new crm_contact_dal().Insert(contact);  // TODO:
-            //}
-            //// TODO: 客户和联系人自定义字段
-
-            //// TODO: 日志
-            //if (_dal.FindById(account.id) != null)
-            //{
-            //    if (note != null)
-            //    {
-            //        note.account_id = account.id;
-            //        new crm_account_note_dal().Insert(note);    // TODO:
-            //    }
-            //    if (todo != null)
-            //    {
-            //        todo.account_id = account.id;
-            //        new crm_account_todo_dal().Insert(todo);    // TODO:
-            //    }
-            //    return ERROR_CODE.SUCCESS;
-            //}
-            //else
+            
             return ERROR_CODE.SUCCESS;
         }
         
@@ -1437,6 +1391,23 @@ namespace EMT.DoneNOW.BLL
             }
         }
 
+        /// <summary>
+        /// 根据客户id列表获取客户名称列表
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetCompanyNames(string ids)
+        {
+            string sql = "SELECT id,name FROM crm_account WHERE id IN (" + ids + ")";
+            var list = _dal.FindListBySql(sql);
+            List<DictionaryEntryDto> result = new List<DictionaryEntryDto>();
+            foreach(var c in list)
+            {
+                result.Add(new DictionaryEntryDto(c.id.ToString(), c.name));
+            }
+
+            return result;
+        }
 
     }
 }
