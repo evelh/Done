@@ -351,6 +351,7 @@ namespace EMT.DoneNOW.DTO
             CONTACT_COMPANY_VIEW = 871,         // 客户管理-详情-联系人查询
             SUBCOMPANY_COMPANY_VIEW = 872,      // 客户管理-详情-子客户查询
             OPPORTUNITY_CONTACT_VIEW = 873,     // 联系人管理-详情-商机查询
+            SUB_COMPANY_CALLBACK = 877,         // 独立客户查找带回（没有父客户和子客户）
         }
 
         /// <summary>
