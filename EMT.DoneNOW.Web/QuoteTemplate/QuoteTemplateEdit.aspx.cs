@@ -35,7 +35,7 @@ namespace EMT.DoneNOW.Web
                     }
                 }                           
                     //填充数据
-                    var data = qtb.GetQuoteTenplate(id);
+                    var data = qtb.GetQuoteTemplate(id);
                     if (data == null)
                     {
                         ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('获取数据错误！');history.go(-1);</script>");
@@ -66,7 +66,7 @@ namespace EMT.DoneNOW.Web
                         Session["quote_head"] = this.top.Text = "";
                     }
                     else {
-                        Session["quote_head"] = this.top.Text = HttpUtility.HtmlDecode(data.quote_header_html);
+                        Session["quote_head"] = this.top.Text = HttpUtility.HtmlDecode(data.quote_header_html).Replace("\"", "'");
                     }
                     
                 }
@@ -222,7 +222,7 @@ namespace EMT.DoneNOW.Web
 
         private void save() {
             QuoteTemplateBLL qtbll = new QuoteTemplateBLL();
-            var sqt = qtbll.GetQuoteTenplate(id);
+            var sqt = qtbll.GetQuoteTemplate(id);
             if (sqt == null)
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('获取数据错误！');history.go(-1);</script>");

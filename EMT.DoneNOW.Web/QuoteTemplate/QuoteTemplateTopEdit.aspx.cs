@@ -48,7 +48,7 @@ namespace EMT.DoneNOW.Web
 
         protected void Save(object sender, EventArgs e)
         {
-            string tt = Request.Form["data"].Trim().ToString();
+            string tt = Request.Form["data"].Trim().ToString().Replace("\"","'");
             Session["quote_head"] = tt;
             Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
         }

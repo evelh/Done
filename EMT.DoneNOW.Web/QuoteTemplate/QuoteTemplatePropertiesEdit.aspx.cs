@@ -17,10 +17,12 @@ namespace EMT.DoneNOW.Web
         public int id;
         protected QuoteTemplateBLL qtb = new QuoteTemplateBLL();
         protected sys_quote_tmpl data;
+        public int k = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
-            data = qtb.GetQuoteTenplate(id);
+            id = 197;
+            data = qtb.GetQuoteTemplate(id);
             if (!IsPostBack)
             {                
                 if (data == null)
@@ -78,6 +80,7 @@ namespace EMT.DoneNOW.Web
             if (data.show_each_tax_in_tax_period==1)
             {
                 this.show_each_tax_in_tax_period.Checked = true;
+                k = 1;
             }
             if (data.show_tax_cate==1)
             {

@@ -237,31 +237,10 @@
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-    $(document).ready(function () {        
-        $("#OneTimeSubtotal").attr("readonly", true);
-        $("#MonthlySubtotal").attr("readonly", true);
-        $("#QuarterlySubtotal").attr("readonly", true);
-        $("#SemiAnnualSubtotal").attr("readonly", true);
-        $("#YearlySubtotal").attr("readonly", true);
-        $("#OneTimeDiscountSubtotal").attr("readonly", true);
-        $("#OptionalSubtotal").attr("readonly", true);
-        $("#ShippingSubtotal").attr("readonly", true);
-        InitArea();
-    });
-    var bol = true;
-    $("#show_each_tax_in_tax_period").click(function () {
-        if (bol) {
-            $("#OneTimeSubtotal").removeAttr("readonly");
-            $("#MonthlySubtotal").removeAttr("readonly");
-            $("#QuarterlySubtotal").removeAttr("readonly");
-            $("#SemiAnnualSubtotal").removeAttr("readonly");
-            $("#YearlySubtotal").removeAttr("readonly");
-            $("#OneTimeDiscountSubtotal").removeAttr("readonly");
-            $("#OptionalSubtotal").removeAttr("readonly");
-            $("#ShippingSubtotal").removeAttr("readonly");
-            
-        } else
-        {
+   var k0 =<%=k%>;
+    $(document).ready(function () { 
+       
+        if (k0==0) {
             $("#OneTimeSubtotal").attr("readonly", true);
             $("#MonthlySubtotal").attr("readonly", true);
             $("#QuarterlySubtotal").attr("readonly", true);
@@ -269,10 +248,40 @@
             $("#YearlySubtotal").attr("readonly", true);
             $("#OneTimeDiscountSubtotal").attr("readonly", true);
             $("#OptionalSubtotal").attr("readonly", true);
-            $("#ShippingSubtotal").attr("readonly", true);           
-
+            $("#ShippingSubtotal").attr("readonly", true);
+            k0 = 1;
+            //alert(k0);
+            return k0;
         }
-        bol = !bol;
+        InitArea();
+    });
+    //alert(k0);
+    $("#show_each_tax_in_tax_period").click(function () {
+        console.log(k0);
+        if (k0 == 1) {
+            $("#OneTimeSubtotal").attr("readonly", true);
+            $("#MonthlySubtotal").attr("readonly", true);
+            $("#QuarterlySubtotal").attr("readonly", true);
+            $("#SemiAnnualSubtotal").attr("readonly", true);
+            $("#YearlySubtotal").attr("readonly", true);
+            $("#OneTimeDiscountSubtotal").attr("readonly", true);
+            $("#OptionalSubtotal").attr("readonly", true);
+            $("#ShippingSubtotal").attr("readonly", true);            
+            k0 = 0;
+            return k0;
+        }else{       
+            //alert("ok");
+            $("#OneTimeSubtotal").removeAttr("readonly");
+            $("#MonthlySubtotal").removeAttr("readonly");
+            $("#QuarterlySubtotal").removeAttr("readonly");
+            $("#SemiAnnualSubtotal").removeAttr("readonly");
+            $("#YearlySubtotal").removeAttr("readonly");
+            $("#OneTimeDiscountSubtotal").removeAttr("readonly");
+            $("#OptionalSubtotal").removeAttr("readonly");
+            $("#ShippingSubtotal").removeAttr("readonly");      
+            k0 = 1;
+            return k0;
+        }
     });
 </script>
 </html>

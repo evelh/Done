@@ -1,0 +1,283 @@
+body{
+    overflow: hidden;
+}
+/*顶部内容和帮助*/
+.TitleBar{
+    color: #fff;
+    background-color: #346a95;
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.TitleBar>.Title{
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 95%;
+}
+.help{
+    background-image: url(../Images/help.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 16px;
+    border-radius: 50%;
+}
+/*中间form表单*/
+.ButtonContainer{
+    padding: 0 10px 10px 10px;
+    width: auto;
+    height: 26px;
+}
+.ButtonContainer ul li .Button{
+    margin-right: 5px;
+    vertical-align: top;
+}
+li.Button{
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+    border: 1px solid #d7d7d7;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: #4f4f4f;
+    cursor: pointer;
+    height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-decoration: none;
+    vertical-align: top;
+}
+.Button>.Icon{
+    display: inline-block;
+    flex: 0 0 auto;
+    height: 16px;
+    margin: 0 3px;
+    width: 16px;
+}
+.Save{
+    background-image: url("../Images/save.png");
+}
+.Print{
+    background-image: url("../Images/print.png");
+}
+.ViewPdf{
+    background-image: url("../Images/view.png");
+}
+.Refresh{
+    background-image: url("../Images/refresh.png");
+}
+.CancelButton{
+    background-image: url("../Images/cancel.png");
+}
+.Right{
+    background-image: url("../Images/down.png");
+}
+.Button>.Text{
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.DropDownButton{
+    left: 341px;
+    top: 71px;
+    background-color: #fff;
+    border: 1px solid #d7d7d7;
+    box-shadow: rgba(0,0,0,0.24) 2px 2px 3px 0;
+    display: none;
+    font-size: 12px;
+    position: fixed;
+    z-index: 10;
+}
+.Group{
+    padding: 0 10px 10px 10px;
+    min-width: 150px;
+    max-width: 300px;
+}
+.Button1{
+    border: none;
+    display: flex;
+    margin: 0 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 3px 0;
+}
+.Button1>.Text{
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: normal;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/*内容部分*/
+.ScrollingContainer{
+    top: 82px;
+    bottom: 0;
+    left: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: absolute;
+    right: 0;
+    padding: 0 10px 0 10px;
+}
+.CustomHtmlPrintContainer{
+    width: 783px;
+}
+select{
+    color: #333;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    border: 1px solid #d7d7d7;
+    font-size: 12px;
+    resize: vertical;
+}
+select option {
+    line-height: 16px;
+}
+table {
+    font-size: 11px;
+    border-collapse: collapse;
+    width:100%;
+}
+table td div {
+    margin: 0;
+    padding: 0;
+}
+.PreviewQuote_QuoteContentTableClass{
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.twoColumns{
+    border:0;
+}
+table.twoColumns tbody tr td {
+    width: 50%;
+}
+table.twoColumns tbody tr td:nth-child(2) {
+    text-align: right;
+}
+.firstHeading {
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: x-large;
+}
+.secondHeading {
+    font-weight: bold;
+}
+table td.paddingLeft {
+    padding-left: 10px;
+    padding-top: 10px;
+    vertical-align: top;
+}
+.ReadOnlyGrid_Container{
+    line-height: 100%;
+    width: 100%;
+    padding-top: 12px;
+    background: #fff;
+    font-family: Tahoma,ArialAT,Arial,Verdana;
+}
+.ReadOnlyGrid_Table {
+    border-bottom: 1px solid #b7b7b7;
+    border-spacing: 0;
+}
+.ReadOnlyGrid_TableHeader{
+    height: 25px;
+    background-color: #eaeaea;
+    border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    color: #64727a;
+    padding: 0 5px 0 5px;
+}
+.ReadOnlyGrid_TableRow td, .ReadOnlyGrid_TableRowWithBorders td {
+    font-weight: normal;
+    padding: 3px 5px 3px 5px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: top;
+    color: #333;
+    page-break-inside: avoid;
+}
+.ReadOnlyGrid_TableRowGroup td {
+    border-bottom: 1px solid #f0f0f0;
+    padding-right: 5px;
+}
+.ReadOnlyGrid_TableRowGroup td, .ReadOnlyGrid_TableRowGroup td span {
+    vertical-align: top;
+    color: #333;
+    page-break-inside: avoid;
+    font-weight: bold !important;
+}
+.noBorderLine, .noBorderLine tr, .noBorderLine td {
+    border-spacing: 0;
+    border-width: 0 !important;
+    text-align: right;
+    padding-right: 0;
+    padding-left: 5px;
+}
+.noBorderLine .SumValueCellWidth {
+    width: 98px;
+    height: 11px;
+}
+.alignRight {
+    text-align: right;
+}
+div .Foot_Table {
+    text-align: center;
+    font-size: 11px;
+    border: 1px solid #b7b7b7;
+    width: 95%;
+    margin: 10px 0 10px 17px;
+}
+/*加载*/
+#BackgroundOverLay{
+    width:100%;
+    height:100%;
+    background: black;
+    opacity: 0.6;
+    z-index: 25;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+#LoadingIndicator {
+    width: 100px;
+    height:100px;
+    background-image: url(../Images/Loading.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    z-index: 30;
+    margin:auto;
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    display: none;
+}

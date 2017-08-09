@@ -134,6 +134,7 @@
             var txt = ue.getContentTxt();
             console.log(txt);
         })
+
 //        点击取消直接返回
         $("#CancelButton").on("click",function(){
             window.location.href = "QuoteTemplateEdit.aspx?id=" +<%=id%>+"&op=edit";

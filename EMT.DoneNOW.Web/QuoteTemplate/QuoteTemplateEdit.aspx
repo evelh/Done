@@ -53,47 +53,50 @@
 		<div class="ScrollingContainer">
 			<div class="ImageHotspotContainer">
 				<div class="Image">
-					<div class="ImageHotspot" style="height: 41px; top: 35px;" id="a1">
-						<div class="SimpleLabel" id="b1">页眉</div>
+					<div class="ImageHotspot" style="height: 60px; top: 0px;" id="a1">
+						<div class="SimpleLabel" id="b1">报价页眉</div>
 						<asp:Literal ID="head" runat="server"></asp:Literal>
 						<div class="CompleteLabel" id="c1">
 							<div class="Compact Information">
+                                <div class="Title1">报价页眉</div>
 								<div class="IntendedAction">编辑</div>
 							</div>
 						</div>
 					</div>
-					<div class="ImageHotspot" style="height: 22px; top: 77px;" id="a2">
+					<div class="ImageHotspot" style="height: 400px; top: 60px;" id="a2">
 						<div class="SimpleLabel Small" id="b2">报价头部</div>
                         <asp:Literal ID="top" runat="server"></asp:Literal>
+
 						<div class="CompleteLabel" id="c2">
 							<div class="Compact Information">
+                                <div class="Title1">报价头部</div>
 								<div class="IntendedAction">编辑</div>
 							</div>
 						</div>
 					</div>
-					<div class="ImageHotspot" style="height: 463px; top: 99px;" id="a3">
+					<div class="ImageHotspot" style="height: 470px;top:460px;" id="a3">
 						<div class="SimpleLabel" id="b3">报价主体</div>                        
                         <asp:Literal ID="body" runat="server"></asp:Literal>
 						<div class="CompleteLabel" id="c3">
 							<div class="Information">
 								<div class="Title1">报价主体</div>
-								<div class="Description">Customize the content of the main quote item area. This may span multiple pages depending on number of items in the quote.</div>
+								<div class="Description"></div>
 								<div class="IntendedAction">编辑</div>
 							</div>
 						</div>
 					</div>
-					<div class="ImageHotspot" style="height: 426px; top: 562px;" id="a4">
+					<div class="ImageHotspot" style="height: 400px;top:930px" id="a4">
 						<div class="SimpleLabel" id="b4">报价底部</div>
                         <asp:Literal ID="bottom" runat="server"></asp:Literal>
 						<div class="CompleteLabel" id="c4">
 							<div class="Compact Information">
 								<div class="Title1">报价底部</div>
-								<div class="Description">Displays once at the bottom of the last page.</div>
+								<div class="Description"></div>
 								<div class="IntendedAction">编辑</div>
 							</div>
 						</div>
 					</div>
-					<div class="ImageHotspot" style="height: 66px; top: 989px;" id="a5">
+					<div class="ImageHotspot" style="height: 60px;top:1331px" id="a5">
 						<div class="SimpleLabel" id="b5">页脚</div>
                         <asp:Literal ID="foot" runat="server"></asp:Literal>
 						<div class="CompleteLabel" id="c5">
