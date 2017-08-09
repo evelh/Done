@@ -167,27 +167,73 @@
             color: #333;
             margin: 0;
         }
-        blockquote,body,button,dd,dl,dt,fieldset,form,h1,h2,h3,h4,h5,h6,hr,input,legend,li,ol,p,pre,td,textarea,th,ul {padding:0;
+
+        blockquote, body, button, dd, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, hr, input, legend, li, ol, p, pre, td, textarea, th, ul {
+            padding: 0;
             margin-left: 0;
             margin-right: 0;
             margin-top: 0;
-        }  
-body,button,input,select,textarea { font:12px/1.5 tahoma,arial,'Hiragansino S GB',\5b8b\4f53,sans-serif}  
-h1,h2,h3,h4,h5,h6 {font-size:100%}  
-address,cite,dfn,em,var {font-style:normal}  
-code,kbd,pre,samp {font-family:courier new,courier,monospace}  
-small {font-size:12px}  
-ol,ul {list-style:none}  
-a {text-decoration:none}  
-a:hover {text-decoration:underline}  
-sup {vertical-align:text-top}  
-sub {vertical-align:text-bottom}  
-legend {color:#000}  
-fieldset,img {border:0}  
-button,input,select,textarea {font-size:100%}  
-table {border-collapse:collapse;border-spacing:0}
+        }
+
+        body, button, input, select, textarea {
+            font: 12px/1.5 tahoma,arial,'Hiragansino S GB',\5b8b\4f53,sans-serif
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-size: 100%
+        }
+
+        address, cite, dfn, em, var {
+            font-style: normal
+        }
+
+        code, kbd, pre, samp {
+            font-family: courier new,courier,monospace
+        }
+
+        small {
+            font-size: 12px
+        }
+
+        ol, ul {
+            list-style: none
+        }
+
+        a {
+            text-decoration: none
+        }
+
+            a:hover {
+                text-decoration: underline
+            }
+
+        sup {
+            vertical-align: text-top
+        }
+
+        sub {
+            vertical-align: text-bottom
+        }
+
+        legend {
+            color: #000
+        }
+
+        fieldset, img {
+            border: 0
+        }
+
+        button, input, select, textarea {
+            font-size: 100%
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0
+        }
+
         select {
-            width:150px;
+            width: 150px;
         }
     </style>
 </head>
@@ -222,7 +268,7 @@ table {border-collapse:collapse;border-spacing:0}
                                             <span id="errorSmall">*</span>
                                                 <div>
                                                     <input type="text" name="name" id="name" value="<%=isAdd?"":quote_item.name %>" />
-                                                   <i onclick="chooseRole()" style="width: 20px;height:20px; margin-left: 10px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                 </div>
                                             </td>
                                         </tr>
@@ -248,7 +294,7 @@ table {border-collapse:collapse;border-spacing:0}
                                                 <span class="CheckBoxLabels">项目提案工时</span>
                                                 <div>
                                                     <input type="text" name="project_id" id="project_id" />
-                                                    <i onclick="" style="width: 20px;height:20px;  margin-left: 10px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i onclick="" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                 </div>
                                             </td>
                                         </tr>
@@ -287,7 +333,7 @@ table {border-collapse:collapse;border-spacing:0}
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="FieldLabels" style="padding-top: 6px;">Unit Cost</td>
+                                                                <td class="FieldLabels" style="padding-top: 6px;">单元成本</td>
                                                                 <td class="FieldLabels">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
                                                                         <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="unit_cost" id="unit_cost" value="<%=(!isAdd)&&(quote_item.unit_cost!=null)?quote_item.unit_cost.ToString():"" %>" />
@@ -389,6 +435,17 @@ table {border-collapse:collapse;border-spacing:0}
         $(".Calculation").blur(function () {
             Markup();
         })
+
+        $("#save_close").click(function () {
+            if (!SubmitCheck) {
+                return false;
+            }
+        })
+        $("#save_new").click(function () {
+            if (!SubmitCheck) {
+                return false;
+            }
+        })
     })
 
     // 计算页面上的利，总价等
@@ -446,6 +503,36 @@ table {border-collapse:collapse;border-spacing:0}
 
     }
 
+    function SubmitCheck() {
+        var name = $("#name").val();
+        if (name == "") {
+            alert("请填写名称");
+            return false;
+        }
+
+        var unit_price = $("#unit_price").val();
+        if (unit_price == "") {
+            alert("请填写单价");
+            return false;
+        }
+        var unit_cost = $("#unit_cost").val();
+        if (unit_cost == "") {
+            alert("请填写单元成本");
+            return false;
+        }
+        var quantity = $("#quantity").val();
+        if (quantity == "") {
+            alert("请填写数量");
+            return false;
+        }
+        var unit_discount = $("#unit_discount").val();
+        if (unit_discount == "") {
+            alert("请填写单元折扣");
+            return false;
+        }
+
+        return true;
+    }
 
     function chooseRole() {
         window.open("../Common/SelectCallBack.aspx?cat=<%=EMT.DoneNOW.DTO.OpenWindow.RoleSelect %>&field=name", 'new', 'left=200,top=200,width=600,height=800', false);

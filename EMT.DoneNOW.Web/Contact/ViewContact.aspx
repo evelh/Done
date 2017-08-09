@@ -42,7 +42,7 @@
                     <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=configura">配置项</a></li>
                 </ul>
             </i>
-            CONTACT-<%=contact.name %>
+            联系人-<%=contact.name %>
         </div>
 
         <div class="header-title">

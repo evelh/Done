@@ -54,6 +54,7 @@ namespace EMT.DoneNOW.DTO
 
             // 4.父客户
             public string parent_company_name;    // 父客户名称
+            public string SubCompanyHidden;       // 子客户的值
 
             public List<UserDefinedFieldValue> udf; // 客户自定义字段
         }

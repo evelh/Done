@@ -42,13 +42,23 @@
                     <tr>
                         <td>
                             <div class="clear">
-                                <label>客户名称<span class="red">*</span></label>
-                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd?((isAdd&&account!=null)?account.name:""):companyBLL.GetCompany(quote.account_id).name %>" />
+                                <label>客户<span class="red">*</span></label>
+                                <%if (isAdd)
+                                    { %>
+                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd ? ((isAdd && account != null) ? account.name : "") : companyBLL.GetCompany(quote.account_id).name %>" />
                                 <i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <%--<input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":quote.account_id.ToString() %>" />--%>
-                                <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd&&account!=null?account.id.ToString():(!isAdd&&account!=null)?account.id.ToString():"" %>" />
-
+                                <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd && account != null ? account.id.ToString() : (!isAdd && account != null) ? account.id.ToString() : "" %>" />
+                                <%}
+                                    else
+                                    { %>
+                                <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=companyBLL.GetCompany(quote.account_id).name %>" disabled="disabled" />
+                                <i style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <%--<input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":quote.account_id.ToString() %>" />--%>
+                                <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=quote.account_id %>" />
+                                <%} %>
                             </div>
                         </td>
                         <td></td>
@@ -57,8 +67,18 @@
                         <td>
                             <div class="clear">
                                 <label>商机名称</label>
+                                <%if (isAdd)
+                                    { %>
                                 <select name="opportunity_id" id="opportunity_id">
-                                </select><input type="hidden" name="opportunity_idHidden" id="opportunity_idHidden" value="<%=(isAdd&&opportunity!=null)?opportunity.id.ToString():(!isAdd?quote.opportunity_id.ToString():"") %>"/>
+                                </select><input type="hidden" name="opportunity_idHidden" id="opportunity_idHidden" value="<%=(isAdd && opportunity != null) ? opportunity.id.ToString() : (!isAdd ? quote.opportunity_id.ToString() : "") %>" />
+                                 <i onclick="javascript:window.open('../Opportunity/OpportunityAddAndEdit.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <%}
+                                    else
+                                    { %>
+                                <select name="opportunity_id" id="opportunity_id" disabled="disabled">
+                                </select><input type="hidden" name="opportunity_idHidden" id="opportunity_idHidden" value="<%= quote.opportunity_id %>" />
+                                     <i onclick="javascript:window.open('../Opportunity/OpportunityAddAndEdit.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <%} %>
                             </div>
                         </td>
                         <td></td>
@@ -90,7 +110,7 @@
                         <td>
                             <div class="clear">
                                 <label>报价ID</label>
-                                <span><%=quote.oid %></span>
+                                <span name="oid"><%=quote.oid %></span>
                             </div>
                         </td>
                     </tr>
@@ -98,7 +118,7 @@
                     <tr>
                         <td>
                             <div class="clear">
-                                <label>创建时间<span class="red">*</span></label>
+                                <label>创建日期<span class="red">*</span></label>
                                 <span id="create_time" name="create_time"><%=DateTime.Now.ToString("dd/MM/yyyy") %></span>
                             </div>
                         </td>
@@ -107,27 +127,27 @@
                     <tr>
                         <td>
                             <div class="clear">
-                                <label>报价生效时间</label>
-                                <input type="date" name="effective_date" id="effective_date" value="<%=(!isAdd)&&(quote.effective_date!=null)?quote.effective_date.ToString("dd/MM/yyyy"):"" %>" />
+                                <label>有效日期</label>
+                                <input type="date" name="effective_date" id="effective_date" value="<%=(!isAdd)&&(quote.effective_date!=null)?quote.effective_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <div class="clear">
-                                <label>报价失效时间</label>
-                                <input type="date" name="expiration_date" id="expiration_date" value="<%=(!isAdd)&&(quote.expiration_date!=null)?quote.expiration_date.ToString("dd/MM/yyyy"):"" %>" />
+                                <label>过期日期</label>
+                                <input type="date" name="expiration_date" id="expiration_date" value="<%=(!isAdd)&&(quote.expiration_date!=null)?quote.expiration_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <div class="clear">
-                                <label>预计完成时间<span class="red">*</span></label>
+                                <label>预计完成日期<span class="red">*</span></label>
                                 <input type="date" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd)&&(quote.projected_close_date!=null)?quote.projected_close_date.ToString("dd/MM/yyyy"):"" %>" />
                             </div>
                             <div style="margin-top: -30px; display: -webkit-box;">
-                                <a href="#" onclick="AddTime(0)">今天</a>|<a href="#"  onclick="AddTime(7)">7</a>|<a href="#"  onclick="AddTime(30)">30</a>|<a href="#"  onclick="AddTime(60)">60</a>
+                                <a onclick="AddTime(0)">今天</a>|<a onclick="AddTime(7)">7</a>|<a onclick="AddTime(30)">30</a>|<a onclick="AddTime(60)">60</a>
                             </div>
                         </td>
                     </tr>
@@ -135,7 +155,14 @@
                         <td>
                             <div class="clear">
                                 <label>成交概率</label>
-                                <span name="probability" id="probability"></span>
+                                <%if (isAdd)
+                                    { %>
+                                <input type="text" name="probability" id="probability" />
+                                <%}
+                                else
+                                { %>
+                                 <input type="text" name="probability" id="probability" value="<%=opportunity.probability %>" disabled="disabled" />
+                                <%} %>
                             </div>
                         </td>
                     </tr>
@@ -145,6 +172,7 @@
                                 <label>联系人<span class="red">*</span></label>
                                 <select name="contact_id" id="contact_id">
                                 </select>
+                                <input type="hidden" name="contact_idHidden" id="contact_idHidden" value="<%=(!isAdd&&quote.contact_id!=null)?quote.contact_id.ToString():"" %>"/>
                                 <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                             </div>
                         </td>
@@ -155,7 +183,7 @@
                                 <label>项目提案名称</label>
                                 <select name="project_id" id="project_id">
                                 </select>
-                                   <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                             </div>
                         </td>
                     </tr>
@@ -172,7 +200,7 @@
                         <td>
                             <div class="clear">
                                 <label>激活的电子报价单</label>
-                                <input type="checkbox" name="is_active" id="is_active"  data-val="1" value="1" checked="<%=(!isAdd)&&(quote.is_active==1)?"checked":"" %>" />
+                                <input type="checkbox" name="is_active" id="is_active" data-val="1" value="1" checked="<%=(!isAdd)&&(quote.is_active==1)?"checked":"" %>" />
                             </div>
                         </td>
                     </tr>
@@ -189,8 +217,8 @@
                     <tr>
                         <td>
                             <div class="clear" style="text-align: left;">
-                                <label>  </label>
-                                <span style="margin-left:10px;">税的显示方式在<a href="#">报价模板</a>中设置</span>
+                                <label></label>
+                                <span style="margin-left: 10px;">税的显示方式在<a href="#">报价模板</a>中设置</span>
                             </div>
                         </td>
                     </tr>
@@ -206,7 +234,7 @@
                     <tr>
                         <td colspan="2">
                             <div class="clear">
-                                <label>备注</label>
+                                <label>报价注释</label>
                                 <textarea style="width: 72%;" name="quote_comment" id="quote_comment">
                                         <%=(!isAdd)&&(!string.IsNullOrEmpty(quote.quote_comment))?quote.quote_comment:"" %>
                                     </textarea>
@@ -225,7 +253,7 @@
                         <td>
                             <div class="clear">
                                 <label>付款期限</label><asp:DropDownList ID="payment_term_id" runat="server"></asp:DropDownList>
-                             <%--   <select name="payment_term_id" id="payment_term_id">
+                                <%--   <select name="payment_term_id" id="payment_term_id">
                                 </select>--%>
                             </div>
                         </td>
@@ -234,7 +262,7 @@
                         <td>
                             <div class="clear">
                                 <label>付款类型</label><asp:DropDownList ID="payment_type_id" runat="server"></asp:DropDownList>
-                            <%--    <select name="payment_type_id" id="payment_type_id">
+                                <%--    <select name="payment_type_id" id="payment_type_id">
                                 </select>--%>
                             </div>
                         </td>
@@ -251,7 +279,7 @@
                         <td>
                             <div class="clear">
                                 <label>配送类型</label><asp:DropDownList ID="shipping_type_id" runat="server"></asp:DropDownList>
-                            <%--    <select name="shipping_type_id" id="shipping_type_id">
+                                <%--    <select name="shipping_type_id" id="shipping_type_id">
                                 </select>--%>
                             </div>
                         </td>
@@ -264,14 +292,14 @@
                     <table>
                         <tr>
                             <td>销售地址
-                                <input type="hidden" name="locationID" id="locationID" value=""/>
+                                <input type="hidden" name="sold_to_location_id" id="locationID" value="" />
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <div class="clear">
                                     <label>省份</label>
-                                     <input id="province_idInit" value='5' type="hidden" runat="server" />
+                                    <input id="province_idInit" value='' type="hidden" runat="server" />
                                     <select name="province_id" id="province_id">
                                     </select>
                                 </div>
@@ -323,18 +351,19 @@
                         </tr>
                     </table>
                 </div>
-                <div style="float: left; width: 30%;text-align:left; ">
+                <div style="float: left; width: 30%; text-align: left;">
                     <table>
                         <tr>
                             <td>账单地址  
                                 <input type="checkbox" name="BillLocation" id="BillLocation" />
+                                   <input type="hidden" name="bill_to_location_id" id="bill_to_location_id" value="" />
                                 和销售地址相同</td>
                         </tr>
                         <tr>
                             <td>
                                 <div class="clear">
                                     <label>省份</label>
-                                    <select name="province_id" id="bill_province_id">
+                                    <select name="province_id" id="bill_province_id" class="billLoca">
                                     </select>
                                 </div>
                             </td>
@@ -343,7 +372,7 @@
                             <td>
                                 <div class="clear">
                                     <label>城市</label>
-                                    <select name="city_id" id="bill_city_id">
+                                    <select name="city_id" id="bill_city_id"  class="billLoca">
                                     </select>
                                 </div>
                             </td>
@@ -352,7 +381,7 @@
                             <td>
                                 <div class="clear">
                                     <label>区县</label>
-                                    <select name="district_id" id="bill_district_id">
+                                    <select name="district_id" id="bill_district_id"  class="billLoca">
                                     </select>
                                 </div>
                             </td>
@@ -361,7 +390,7 @@
                             <td>
                                 <div class="clear">
                                     <label>地址</label>
-                                    <input type="text" name="address" id="bill_address" />
+                                    <input type="text" name="address" id="bill_address"  class="billLoca" />
                                 </div>
                             </td>
                         </tr>
@@ -369,7 +398,7 @@
                             <td>
                                 <div class="clear">
                                     <label>补充地址</label>
-                                    <input type="text" name="address2" id="bill_address2" />
+                                    <input type="text" name="address2" id="bill_address2"  class="billLoca" />
                                 </div>
                             </td>
                         </tr>
@@ -377,7 +406,7 @@
                             <td>
                                 <div class="clear">
                                     <label>邮编</label>
-                                    <input type="text" name="postcode" id="bill_postcode" />
+                                    <input type="text" name="postcode" id="bill_postcode"  class="billLoca" />
                                 </div>
                             </td>
                         </tr>
@@ -387,14 +416,15 @@
                     <table>
                         <tr>
                             <td>配送地址  
-                                <input type="checkbox" name="ShipLocation" />
+                                <input type="checkbox" name="ShipLocation" id="ShipLocation" />
+                                 <input type="hidden" name="ship_to_location_id" id="ship_to_location_id" value="" />
                                 和销售地址相同</td>
                         </tr>
                         <tr>
                             <td>
                                 <div class="clear">
                                     <label>省份</label>
-                                    <select name="province_id" id="ship_province_id">
+                                    <select name="province_id" id="ship_province_id" class="shipLoca">
                                     </select>
                                 </div>
                             </td>
@@ -403,7 +433,7 @@
                             <td>
                                 <div class="clear">
                                     <label>城市</label>
-                                    <select name="city_id" id="ship_city_id">
+                                    <select name="city_id" id="ship_city_id"  class="shipLoca">
                                     </select>
                                 </div>
                             </td>
@@ -412,7 +442,7 @@
                             <td>
                                 <div class="clear">
                                     <label>区县</label>
-                                    <select name="district_id" id="ship_district_id">
+                                    <select name="district_id" id="ship_district_id"  class="shipLoca">
                                     </select>
                                 </div>
                             </td>
@@ -421,7 +451,7 @@
                             <td>
                                 <div class="clear">
                                     <label>地址</label>
-                                    <input type="text" name="address" id="ship_address" />
+                                    <input type="text" name="address" id="ship_address"  class="shipLoca" />
                                 </div>
                             </td>
                         </tr>
@@ -429,7 +459,7 @@
                             <td>
                                 <div class="clear">
                                     <label>补充地址</label>
-                                    <input type="text" name="address2" id="ship_address2" />
+                                    <input type="text" name="address2" id="ship_address2"   class="shipLoca"/>
                                 </div>
                             </td>
                         </tr>
@@ -437,7 +467,7 @@
                             <td>
                                 <div class="clear">
                                     <label>邮编</label>
-                                    <input type="text" name="postcode" id="ship_postcode" />
+                                    <input type="text" name="postcode" id="ship_postcode"  class="shipLoca" />
                                 </div>
                             </td>
                         </tr>
@@ -461,12 +491,23 @@
     $(function () {
         InitArea();  // 地址下拉框
         GetDataBySelectCompany();  // 用于修改的时候赋值
+        debugger;
+        var opportunity_idHidden = $("#opportunity_idHidden").val();
+        if (opportunity_idHidden != "") {
+
+            $("#opportunity_id").val(opportunity_idHidden);
+        }
+
+        var contact_idHidden = $("#contact_idHidden").val();
+        if (contact_idHidden != "") {
+            $("#contact_id").val(contact_idHidden);
+        }
+
 
         $("#opportunity_id").change(function () {
             debugger;
             var opportunity_id = $("#opportunity_id").val();
-            if (opportunity_id != 0 && opportunity_id != null && opportunity_id != undefined)
-            {
+            if (opportunity_id != 0 && opportunity_id != null && opportunity_id != undefined) {
                 $.ajax({
                     type: "GET",
                     //async: false,
@@ -474,8 +515,11 @@
                     // data: { CompanyName: companyName },
                     success: function (data) {
                         if (data != "") {
-                            //alert(data);
-                            $("#projected_close_date").html(data);
+                            var date = new Date(data);
+                            // date.setTime(data);
+                            var newDate = date.getFullYear() + '-' + returnNumber((date.getMonth() + 1)) + '-' + returnNumber(date.getDate());
+
+                            $("#projected_close_date").val(newDate);
                         }
                     },
                 });  // 根据商机的预计完成时间为预计完成时间赋值
@@ -485,7 +529,7 @@
 
         $("#save_close").click(function () {
             if (!SubmitCheck()) {
-              //  return false;
+                return false;
             }
             return true;
         })
@@ -499,24 +543,51 @@
 
         $("#BillLocation").click(function () {
             if ($(this).is(":checked")) {
-
-                // todo 
+                $("#bill_to_location_id").val($("#sold_to_location_id").val());
+                $("#bill_province_id").html($("#province_id").html());
                 $("#bill_province_id").val($("#province_id").val());
+                 $("#bill_city_id").html($("#city_id").html());
                 $("#bill_city_id").val($("#city_id").val());
+                  $("#bill_district_id").html($("#district_id").html());
                 $("#bill_district_id").val($("#district_id").val());
                 $("#bill_address").val($("#address").val());
                 $("#bill_address2").val($("#address2").val());
                 $("#bill_postcode").val($("#postcode").val());
+                $(".billLoca").attr("disabled","disabled")
+            }
+            else {
+                  $("#bill_to_location_id").val("");
+                 $(".billLoca").removeAttr("disabled")
+            }
+        });
+
+         $("#ShipLocation").click(function () {
+            if ($(this).is(":checked")) {
+                $("#ship_to_location_id").val($("#sold_to_location_id").val());
+                $("#ship_province_id").html($("#province_id").html());
+                $("#ship_province_id").val($("#province_id").val());
+                $("#ship_city_id").html($("#city_id").html());
+                $("#ship_city_id").val($("#city_id").val());
+                $("#ship_district_id").html($("#district_id").html());
+                $("#ship_district_id").val($("#district_id").val());
+                $("#ship_address").val($("#address").val());
+                $("#ship_address2").val($("#address2").val());
+                $("#ship_postcode").val($("#postcode").val());
+                $(".shipLoca").attr("disabled","disabled")
+            }
+            else {
+                $("#ship_to_location_id").val("");
+                 $(".shipLoca").removeAttr("disabled")
             }
         })
- 
+
     })
 
     // 根据查找带回的客户，为页面上的基本信息赋值
     function GetDataBySelectCompany() {
 
         var account_id = $("#ParentComoanyNameHidden").val();
-        if (account_id != "") {                                                 
+        if (account_id != "") {
             // 为商机下拉框赋值                  ✔                               待测试
             // 为联系人下拉框赋值                 ✔                              待测试
             // 根据客户ID 获取到客户信息，为税区赋值  ✔                            待测试
@@ -528,7 +599,7 @@
             $.ajax({
                 type: "GET",
                 async: false,
-                url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
+                url: "../Tools/CompanyAjax.ashx?act=contact&userParentContact=true&account_id=" + account_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
                     if (data != "") {
@@ -538,6 +609,7 @@
             });
 
             $("#opportunity_id").html("");
+            // $("#opportunity_idHidden").val("");
             $.ajax({
                 type: "GET",
                 async: false,
@@ -549,7 +621,7 @@
                     }
                 },
             });
-            
+
 
             // 根据客户选择税区
             $.ajax({
@@ -561,7 +633,7 @@
                     if (data != "") {
                         $("#tax_region_id").val(data);
                     }
-                    
+
                 },
             });
 
@@ -574,8 +646,8 @@
                 url: "../Tools/CompanyAjax.ashx?act=Location&account_id=" + account_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
-                   
-                    
+
+
                     if (data != "") {
 
                         $("#province_id").val(data.province_id);
@@ -584,7 +656,7 @@
 
                         $("#city_idInit").val(data.city_id);
                         $("#city_id").val(data.city_id);
-                    
+
                         $("#locationID").val(data.id);
 
                         $("#district_idInit").val(data.district_id);
@@ -599,14 +671,13 @@
         }
     }
 
-    function AddTime(time)
-    {
+    function AddTime(time) {
         var date = new Date();
-        date.setDate( Number(date.getDate())+ Number(time));
+        date.setDate(Number(date.getDate()) + Number(time));
 
         var newDate = date.getFullYear() + '-' + returnNumber((date.getMonth() + 1)) + '-' + returnNumber(date.getDate());
         $("#projected_close_date").val(newDate);
-       // $("#projected_close_date").datebox('setValue', newDate);       
+        // $("#projected_close_date").datebox('setValue', newDate);       
     }
     function returnNumber(param) {
         if (param < 10) {
@@ -637,14 +708,15 @@
             alert("创建时间出错");
         }
         var projected_close_date = $("#projected_close_date").val();
+        debugger;
         if (projected_close_date == "") {
             alert("请填写预计完成时间");
             return false;
         }
         // 如果选择商机的话，默认为商机联系人
         var contact_id = $("#contact_id").val();
-        var opportunity_id = $("#opportunity_idHidden").val();
-        if (opportunity_idHidden == "" && contact_id == "") {
+       // var opportunity_id = $("#opportunity_id").val();
+        if (contact_id == "") {
             alert("请选择联系人");
             return false;
         }

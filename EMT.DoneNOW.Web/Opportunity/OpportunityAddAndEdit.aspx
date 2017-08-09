@@ -660,9 +660,11 @@
 
         Calculation_Gross_Profit();
         GetContactList();
+        debugger;
         var contactHideID = $("#contactHideID").val();
         if (contactHideID != "") {
             $("#contact_id").val(contactHideID);
+            $("#contact_id").attr("disabled","disabled")
         }
         function Calculation_Gross_Profit()   // 计算毛利和毛利率,年收益和年成本
         {
@@ -822,6 +824,7 @@
             $("#contact_id").removeAttr("disabled");
 
             $("#contact_id").html("");
+            //$("#contactHideID").val("");
             $.ajax({
                 type: "GET",
                 async: false,
