@@ -169,14 +169,14 @@ namespace EMT.DoneNOW.BLL
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
 
 
-            //if (!string.IsNullOrEmpty(param.general.subCompanyIds) && string.IsNullOrEmpty(param.general.parent_company_name))
-            //{  // 循环添加子客户
-            //    var ids = param.general.subCompanyIds.Split(',');
-            //    foreach (var subId in ids)
-            //    {
-            //        SetParentCompany(_account.id, long.Parse(subId), user.id);
-            //    }
-            //}
+            if (!string.IsNullOrEmpty(param.general.subCompanyIds) && string.IsNullOrEmpty(param.general.parent_company_name))
+            {  // 循环添加子客户
+                var ids = param.general.subCompanyIds.Split(',');
+                foreach (var subId in ids)
+                {
+                    SetParentCompany(_account.id, long.Parse(subId), user.id);
+                }
+            }
             #endregion
 
 

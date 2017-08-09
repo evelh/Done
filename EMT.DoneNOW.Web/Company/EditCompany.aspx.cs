@@ -24,7 +24,7 @@ namespace EMT.DoneNOW.Web
         protected crm_account account = null;
         protected List<crm_location> location_list = null;   // 用户的所有地址
                                                              // protected crm_location defaultLocation = null;
-        protected List<crm_account> searchCompany = null;     // 查询出的所有没有父客户的客户
+        //protected List<crm_account> searchCompany = null;     // 查询出的所有没有父客户的客户
         protected List<crm_account> subCompanyList = null;
         protected Dictionary<string, object> dic = null;
         protected void Page_Load(object sender, EventArgs e)
@@ -46,7 +46,7 @@ namespace EMT.DoneNOW.Web
                 if (account != null)
                 {
                     subCompanyList = new crm_account_dal().GetMyCompany(account.id);
-                    searchCompany = new crm_account_dal().GetSubCompanys();
+                    //searchCompany = new crm_account_dal().GetSubCompanys();
                     #region 为下拉框获取数据源
                     dic = new CompanyBLL().GetField();
 

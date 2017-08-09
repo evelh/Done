@@ -160,56 +160,58 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.USER_NOT_FIND;
             var old_quote = _dal.GetQuote(quote.id);
 
-            if (quote.opportunity_id == 0)  // 代表用户未选择商机，此时自动创建商机
-            {
-                var opportunity = new crm_opportunity()
-                {
-                    id = _dal.GetNextIdCom(),
-                    name = quote.name,
-                    resource_id = user_id,
-                    stage_id = (int)OPPORTUNITY_STAGE.NEW_CLUE,  // todo 取到商机阶段中的最小值
-                    status_id = (int)OPPORTUNITY_STATUS.ACTIVE,
-                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    projected_close_date = quote.projected_close_date,
-                    use_quote = 1,
-                    one_time_cost = 0,
-                    one_time_revenue = 0,
-                    monthly_cost = 0,
-                    monthly_revenue = 0,
-                    quarterly_cost = 0,
-                    quarterly_revenue = 0,
-                    semi_annual_cost = 0,
-                    semi_annual_revenue = 0,
-                    yearly_cost = 0,
-                    yearly_revenue = 0,
-                    ext1 = 0,
-                    ext2 = 0,
-                    ext3 = 0,
-                    ext4 = 0,
-                    ext5 = 0,
-                    // create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    create_user_id = user_id,
-                    update_user_id = user_id,
+            //if (quote.opportunity_id == 0)  // 代表用户未选择商机，此时自动创建商机
+            //{
+            //    var opportunity = new crm_opportunity()
+            //    {
+            //        id = _dal.GetNextIdCom(),
+            //        name = quote.name,
+            //        resource_id = user_id,
+            //        stage_id = (int)OPPORTUNITY_STAGE.NEW_CLUE,  // todo 取到商机阶段中的最小值
+            //        status_id = (int)OPPORTUNITY_STATUS.ACTIVE,
+            //        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //        projected_close_date = quote.projected_close_date,
+            //        use_quote = 1,
+            //        one_time_cost = 0,
+            //        one_time_revenue = 0,
+            //        monthly_cost = 0,
+            //        monthly_revenue = 0,
+            //        quarterly_cost = 0,
+            //        quarterly_revenue = 0,
+            //        semi_annual_cost = 0,
+            //        semi_annual_revenue = 0,
+            //        yearly_cost = 0,
+            //        yearly_revenue = 0,
+            //        ext1 = 0,
+            //        ext2 = 0,
+            //        ext3 = 0,
+            //        ext4 = 0,
+            //        ext5 = 0,
+            //        // create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //        create_user_id = user_id,
+            //        update_user_id = user_id,
 
-                };
-                new crm_opportunity_dal().Insert(opportunity);
-                new sys_oper_log_dal().Insert(new sys_oper_log()
-                {
-                    user_cate = "用户",
-                    user_id = (int)user.id,
-                    name = user.name,
-                    phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.OPPORTUNITY,
-                    oper_object_id = opportunity.id,// 操作对象id
-                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                    oper_description = _dal.AddValue(opportunity),
-                    remark = "保存商机信息"
-                });
-                quote.opportunity_id = opportunity.id;
-            }
-
+            //    };
+            //    new crm_opportunity_dal().Insert(opportunity);
+            //    new sys_oper_log_dal().Insert(new sys_oper_log()
+            //    {
+            //        user_cate = "用户",
+            //        user_id = (int)user.id,
+            //        name = user.name,
+            //        phone = user.mobile == null ? "" : user.mobile,
+            //        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.OPPORTUNITY,
+            //        oper_object_id = opportunity.id,// 操作对象id
+            //        oper_type_id = (int)OPER_LOG_TYPE.ADD,
+            //        oper_description = _dal.AddValue(opportunity),
+            //        remark = "保存商机信息"
+            //    });
+            //    quote.opportunity_id = opportunity.id;
+            //}
+            quote.account_id = old_quote.account_id;
+            quote.oid = old_quote.oid;
+            quote.opportunity_id = old_quote.opportunity_id;
             quote.payment_term_id = quote.payment_term_id == 0 ? null : quote.payment_term_id;
             quote.payment_type_id = quote.payment_type_id == 0 ? null : quote.payment_type_id;
             quote.shipping_type_id = quote.shipping_type_id == 0 ? null : quote.shipping_type_id;

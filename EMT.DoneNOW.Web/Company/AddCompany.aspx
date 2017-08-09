@@ -593,7 +593,7 @@
                 <input type="hidden" id="SubCompany" />
                 <input type="hidden" id="SubCompanyHidden" name="subCompanyIds" />
 			    <div class="Selected fl">
-				    <select id="" multiple="" class="dblselect"></select>
+				    <select id="" multiple="" class="dblselect" style="height:300px;"></select>
 			    </div>
 		    </div>
 
@@ -664,6 +664,33 @@
 </html>
 <script type="text/javascript">
     $(function () {
+
+        $(".dblselect option").dblclick(function () {
+            debugger;
+            var delval = $(this).val();
+            if ($("#SubCompanyHidden").val() == delval) {
+                $("#SubCompany").val("");
+                $("#SubCompanyHidden").val("");
+                $(this).remove();
+            } else {
+                requestData("../Tools/CompanyAjax.ashx?act=names&ids=" + $("#SubCompanyHidden").val(), null, function (data) {
+                    var ids = "";
+                    $(".dblselect").empty();
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].val == delval)
+                            continue;
+                        var option = $("<option>").val(data[i].val).text(data[i].show);
+                        $(".dblselect").append(option);
+                        ids += data[i].val + ",";
+                    }
+                    if (ids != "") {
+                        ids = ids.substr(0, ids.length - 1);
+                    }
+                    $("#SubCompanyHidden").val(ids);
+                })
+            }
+
+        });
 
 
         $("#TaxExempt").click(function () {
@@ -856,11 +883,20 @@
 
             })
         });
+
+
+
+    
     })
 
 
 
     function chooseCompany() {
+        var subCompany = $("#SubCompanyHidden").val();
+        if (subCompany != "") {
+            alert("已经添加子客户，不能添加父客户");
+            return;
+        }
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
         //window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
         //这些要写在一行
@@ -875,39 +911,53 @@
         }
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUB_COMPANY_CALLBACK %>&field=SubCompany&muilt=1&callBack=ChooseSubCompany", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
     }
+     // ondblclick
+   
     function ChooseSubCompany() {
         if ($("#SubCompanyHidden").val() != "") {
-            var subid = $("#SubCompanyHidden").val().split(",");
-            var subname = $("#SubCompany").val().split(",");
-            $(".dblselect").empty();
-            for (var i = 0; i < subid.length; i++) {
-                var content = '<' + 'option' + ' value' + '=' + '"' + subid[i] + '"' + '>' + subname[i] + '</' + 'option' + '>';
-                $(".dblselect").append(content);
-            }
-            $(".dblselect option").dblclick(function () {
-                var delval = $(this).val();
-                if ($("#SubCompanyHidden").val() == delval) {
-                    $("#SubCompany").val("");
-                    $("#SubCompanyHidden").val("");
-                    $(this).remove();
-                } else {
-                    requestData("../Tools/CompanyAjax.ashx?act=names&ids=" + $("#SubCompanyHidden").val(), null, function (data) {
-                        var ids = "";
-                        $(".dblselect").empty();
-                        for (i = 0; i < data.length; i++) {
-                            if (data[i].val == delval)
-                                continue;
-                            var option = $("<option>").val(data[i].val).text(data[i].show);
-                            $(".dblselect").append(option);
-                            ids += data[i].val + ",";
-                        }
-                        if (ids != "") {
-                            ids = ids.substr(0, ids.length - 1);
-                        }
-                        $("#SubCompanyHidden").val(ids);
-                    })
+   
+            requestData("../Tools/CompanyAjax.ashx?act=names&ids=" + $("#SubCompanyHidden").val(), null, function (data) {
+                debugger;
+                $(".dblselect").empty();
+                for (i = 0; i < data.length; i++) {
+                    var option = $("<option>").val(data[i].val).text(data[i].show);
+                    $(".dblselect").append(option);
                 }
-            });
+                $(".dblselect option").dblclick(function () {
+                    Adddbclick(this);
+                });
+            })
+        }
+
+    }
+
+    function Adddbclick(val) {
+        debugger;
+        var delval = $(val).val();
+        if ($("#SubCompanyHidden").val() == delval) {
+            $("#SubCompany").val("");
+            $("#SubCompanyHidden").val("");
+            $(".dblselect").empty();
+        } else {
+            requestData("../Tools/CompanyAjax.ashx?act=names&ids=" + $("#SubCompanyHidden").val(), null, function (data) {
+                debugger;
+                var ids = "";
+                $(".dblselect").empty();
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].val == delval)
+                        continue;
+                    var option = $("<option>").val(data[i].val).text(data[i].show);
+                    $(".dblselect").append(option);
+                    ids += data[i].val + ",";
+                }
+                $(".dblselect option").dblclick(function () {
+                    Adddbclick(this);
+                });
+                if (ids != "") {
+                    ids = ids.substr(0, ids.length - 1);
+                }
+                $("#SubCompanyHidden").val(ids);
+            })
         }
     }
 </script>
