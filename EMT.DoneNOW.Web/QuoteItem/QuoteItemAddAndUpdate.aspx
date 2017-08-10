@@ -402,7 +402,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="FieldLabels" style="padding-top: 6px">
-                                                                    <asp:CheckBox ID="optional" runat="server" />可选的
+                                                                    <asp:CheckBox ID="_optional" runat="server" />可选的
                                                                 <%--    <%if (!isAdd && quote_item.optional == 1)
                                                                         { %>
                                                                     <input type="checkbox" name="optional" data-val="1" value="1" checked="checked"/>可选的
@@ -443,7 +443,7 @@
         $(".Calculation").blur(function () {
             Markup();
             var value = $(this).val();
-            if (!isNaN(value)) {
+            if (!isNaN(value) && value!="") {
                 $(this).val(toDecimal2(value));
             } else {
                 $(this).val("");
@@ -452,14 +452,16 @@
         })
 
         $("#save_close").click(function () {
-            if (!SubmitCheck) {
+            if (!SubmitCheck()) {
                 return false;
             }
+            return true;
         })
         $("#save_new").click(function () {
-            if (!SubmitCheck) {
+            if (!SubmitCheck()) {
                 return false;
             }
+            return true;
         })
     })
 
@@ -474,8 +476,11 @@
         if (unit_price != "" && unit_cost != "") {
             if ((!isNaN(unit_price)) && (!isNaN(unit_cost))) // 两个都是数字开始执行
             {
-                var Markup = Math.round((Number(unit_price) - Number(unit_cost)) / Number(unit_cost) * 10000) / 100.00;  //gross_profit_margin
-                $("#gross_profit_margin").val(Markup);
+                if (unit_cost != 0) {
+                    var Markup = Math.round((Number(unit_price) - Number(unit_cost)) / Number(unit_cost) * 10000) / 100.00;  //gross_profit_margin
+                    $("#gross_profit_margin").val(Markup);
+                }
+            
             }
         }
 
@@ -509,8 +514,11 @@
         if (unit_discount != "" && unit_price != "") {
             if ((!isNaN(unit_discount)) && (!isNaN(unit_price))) // 都是数字开始执行
             {
-                var Discount = Math.round(Number(unit_discount) / Number(unit_price) * 10000) / 100.00;
-                $("#Discount").val(Discount);
+                if (unit_price != 0) {
+                    var Discount = Math.round(Number(unit_discount) / Number(unit_price) * 10000) / 100.00;
+                    $("#Discount").val(Discount);
+                }
+               
             }
         }
 

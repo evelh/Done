@@ -32,7 +32,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     if (quote_item != null)
                     {
                         isAdd = false;
-                        optional.Checked = quote_item.optional == 1;
+                        _optional.Checked = quote_item.optional == 1;
                         switch (quote_item.type_id)   // todo 不同类型的报价项
                         {
                             case (int)QUOTE_ITEM_TYPE.WORKING_HOURS:
@@ -133,7 +133,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
         protected void save_close_Click(object sender, EventArgs e)
         {
             var quote_item = AssembleModel<crm_quote_item>();
-            quote_item.optional = Convert.ToUInt64(optional.Checked ? 1 : 0);
+            quote_item.optional = Convert.ToUInt64(_optional.Checked ? 1 : 0);
             if (isAdd)
             {
                 var result = new QuoteItemBLL().Insert(quote_item,GetLoginUserId());
@@ -190,7 +190,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
         protected void save_new_Click(object sender, EventArgs e)
         {
             var quote_item = AssembleModel<crm_quote_item>();
-            quote_item.optional = Convert.ToUInt64(optional.Checked ? 1 : 0);
+            quote_item.optional = Convert.ToUInt64(_optional.Checked ? 1 : 0);
             if (isAdd)
             {
                 var result = new QuoteItemBLL().Insert(quote_item, GetLoginUserId());

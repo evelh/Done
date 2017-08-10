@@ -52,9 +52,9 @@
         <div>
             分组方式:
             <select name="groupBy" id="groupBy">
-                <option value="no"><a href="QuoteItemManage?quote_id=<%=quote %>&group_by=no">不分组</a></option>
-                <option value="cycle"><a href="QuoteItemManage?quote_id=<%=quote %>&group_by=cycle">周期</a></option>
-                <option value="product"><a href="QuoteItemManage?quote_id=<%=quote %>&group_by=product">产品</a></option>
+                <option value="no">不分组</option>
+                <option value="cycle">周期</option>
+                <option value="product">产品</option>
             </select>
 
         </div>
@@ -726,7 +726,14 @@
         $("#groupBy").val('<%=groupBy %>');
         $("#groupBy").change(function () {
             var groupType = $(this).val();
-            location.href = "QuoteItemManage?quote_id=<%=quote.id %>&group_by=" + groupType;
+            var quote_id = $("#quoteDropList").val();
+            location.href = "QuoteItemManage?quote_id=" + quote_id + "&group_by=" + groupType;
+        })
+
+        $("#quoteDropList").change(function () {
+            var groupType = $("#groupBy").val();
+            var quote_id = $(this).val();
+            location.href = "QuoteItemManage?quote_id=" + quote_id + "&group_by=" + groupType;
         })
 
     })

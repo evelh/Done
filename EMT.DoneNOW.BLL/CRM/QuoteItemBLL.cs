@@ -36,11 +36,11 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Insert(crm_quote_item quote_item, long user_id)
         {
-            if (quote_item.unit_price == 0 || quote_item.unit_cost == 0 || quote_item.quantity == null || quote_item.quantity == 0 || quote_item.unit_discount == null || quote_item.unit_discount == 0)
+            if (quote_item.unit_price == null || quote_item.unit_cost == null || quote_item.quantity == null || quote_item.unit_discount == null )
             {
                 return ERROR_CODE.PARAMS_ERROR;
             }
-            if (string.IsNullOrEmpty(quote_item.name))
+             if (string.IsNullOrEmpty(quote_item.name))
             {
                 return ERROR_CODE.PARAMS_ERROR;
             }
@@ -78,7 +78,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Update(crm_quote_item quote_item, long user_id)
         {
-            if (quote_item.unit_price == 0 || quote_item.unit_cost == 0 || quote_item.quantity == null || quote_item.quantity == 0 || quote_item.unit_discount == null || quote_item.unit_discount == 0)
+            if (quote_item.unit_price == null || quote_item.unit_cost == null || quote_item.quantity == null || quote_item.unit_discount == null )
             {
                 return ERROR_CODE.PARAMS_ERROR;
             }
