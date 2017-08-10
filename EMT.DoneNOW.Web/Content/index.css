@@ -77,7 +77,7 @@ background:url(../Images/icon.png) no-repeat -309px -29px  ;outline: none;cursor
 .hide{display: none;}
 .ba{background: #F3F3F3 !important;}
 .jia{background: url(../Images/jia.png) no-repeat center !important;}
-.information{background: #fff;border: 1px solid #d3d3d3;min-width: 1190px;position: relative;margin:5px;padding:5px 0;}
+.information{background: #fff;border: 1px solid #d3d3d3;position: relative;margin:5px;padding:5px 0;}
 .informationTitle{padding-left: 10px;height: 30px;line-height: 30px;margin: 0;}
 .informationTitle i{width: 15px; height:30px;display: block; background: url(../Images/jian.png) no-repeat  center;float: left;margin-right: 10px;cursor: pointer;}
 .information .Search{position: absolute;right:5px;top: 7px;}
