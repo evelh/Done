@@ -92,6 +92,7 @@ namespace EMT.DoneNOW.BLL
             var old_quote_item = _dal.GetQuoteItem(quote_item.id);
             quote_item.update_user_id = user_id;
             quote_item.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            quote_item.tax_cate_id = quote_item.tax_cate_id == 0 ? null : quote_item.tax_cate_id;
             _dal.Update(quote_item);
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
@@ -139,6 +140,7 @@ namespace EMT.DoneNOW.BLL
                         oper_description = _dal.AddValue(quote_item),
                         remark = "删除报价项"
                     });
+                    return true;
                 }
             }
 

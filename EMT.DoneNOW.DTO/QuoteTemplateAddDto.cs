@@ -136,7 +136,7 @@ namespace EMT.DoneNOW.DTO
             /// <summary>
             /// 表格格式设置 支持收缩，默认展开，
             /// </summary>
-            public GRID_OPTIONSITEM GRID_OPTIONS { get; set; }
+            public List<GRID_OPTIONSITEM> GRID_OPTIONS { get; set; }
             /// <summary>
             /// 报价项字段设置 支持收缩，默认展开，可以定义不同类型的报价项（名称）字段显示内容
             /// </summary>
@@ -144,8 +144,11 @@ namespace EMT.DoneNOW.DTO
             /// <summary>
             /// 分组名称设置 支持收缩，默认展开
             /// </summary>
-            public GROUPING_HEADER_TEXTITEM GROUPING_HEADER_TEXT { get; set; }
+            public List<GROUPING_HEADER_TEXTITEM> GROUPING_HEADER_TEXT { get; set; }
         }
-
+        public class AlertVariableList {
+            public string value { get; set; }
+            public string name { get; set; }
+        }
     }
 }

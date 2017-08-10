@@ -51,14 +51,14 @@ namespace EMT.DoneNOW.Web.Company
                                 viewCompany_iframe.Src = "";  // 备注
                                 break;
                             case "opportunity":
-                                viewCompany_iframe.Src = "../Common/SearchBodyFrame.aspx?cat="+(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY_COMPANY_VIEW +"&type="+(int)EMT.DoneNOW.DTO.QueryType.OpportunityCompanyView +"&group=18&id="+id;  
+                                viewCompany_iframe.Src = "../Common/SearchBodyFrame.aspx?cat="+(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY_COMPANY_VIEW +"&type="+(int)EMT.DoneNOW.DTO.QueryType.OpportunityCompanyView +"&id="+id;  
                                 // 商机 ../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY_COMPANY_VIEW %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.OpportunityCompanyView %>&group=18
                                 break;//
                             case "contact":
-                                viewCompany_iframe.Src = "";  // 联系人
+                                viewCompany_iframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_COMPANY_VIEW + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.ContactCompanyView + "&id=" + id;  // 联系人
                                 break;//
                             case "Subsidiaries":
-                                viewCompany_iframe.Src = "";  // 子公司
+                                viewCompany_iframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUBCOMPANY_COMPANY_VIEW + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.SubcompanyCompanyView + "&id=" + id;  // 子公司
                                 break;//Subsidiaries
                             default:
                                 viewCompany_iframe.Src = "";  // 默认

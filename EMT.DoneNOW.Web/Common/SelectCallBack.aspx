@@ -16,10 +16,30 @@
         <div class="header">
 			查找
 		</div>
-		<div class="findinput clear">
-			<input type="text" name="" id="" value="" />
-			<a href="javaScript:" class="search"></a>
+        <%if (isMuilt) { %>
+        <div class="header-title">
+			<ul>
+				<li onclick="SaveSelect(0);"><i style="background: url(../Images/save.png)" class="icon-1"></i>保存</li>
+				<li onclick="ClearSelect();"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -304px -16px;" class="icon-1"></i>清除选择</li>
+			</ul>
 		</div>
+		<div class="searchSelected clear">
+			<p>选中的内容</p>
+			<div class="Selected fl">
+				<select  name="" multiple="" class="dblselect"></select>
+			</div>
+			<div class="findinput clear fr" style="margin: 0;">
+				<input type="text" name="" id="" value="" style="height: 28px;line-height: 28px;"/>
+				<a href="javaScript:" class="search" style="height: 28px;"></a>
+			</div>
+		</div>
+        <%} else { %>
+        <div class="header-title">
+			<ul>
+				<li onclick="ClearSelect();"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -304px -16px;" class="icon-1"></i>清除选择</li>
+			</ul>
+		</div>
+        <%}%>
         <div id="search_list">
             <input type="hidden" name="page_num" <%if (queryResult != null) {%>value="<%=queryResult.page %>"<%} %> />
             <input type="hidden" id="search_id" name="search_id" <%if (queryResult != null) {%>value="<%=queryResult.query_id %>"<%} %> />
@@ -49,7 +69,7 @@
                                     order = strs[1].ToLower();
                                 }
                                 %>
-                        <th title="点击按此列排序" style="width:<%=para.length %>px;" onclick="ChangeOrder('<%=para.name %>')">
+                        <th title="点击按此列排序" style="width:<%=para.length %>px;">
                             <%=para.name %>
                             <%if (orderby!=null && para.name.Equals(orderby))
                                 { %><img src="../Images/sort-<%=order %>.png" /> 
@@ -104,6 +124,22 @@
         var entityid;
         var entityname;
         function GetBack() {
+            <%if (isMuilt) { %>
+            var isexist = false;
+            $(".dblselect option").each(function () {
+                var val = $(this).val();
+                if (val == entityid)
+                    isexist = true;
+            });
+            if (isexist)
+                return;
+
+            var content = '<' + 'option' + ' value' + '=' + '"' + entityid + '"' + '>' + entityname + '</' + 'option' + '>';
+            $(".dblselect").append(content);
+            $(".dblselect option").dblclick(function () {
+                $(this).remove();
+            });
+            <%} else { %>
             window.opener.document.getElementById("<%=callBackField %>").value = entityname;
             window.opener.document.getElementById("<%=callBackField %>Hidden").value = entityid;
             <%if (!string.IsNullOrEmpty(callBackFunc)){ %>
@@ -112,6 +148,16 @@
             }  
             <%}%>
             window.close();
+            <%} %>
+        }
+        function ClearSelect() {
+            <%if (isMuilt) { %>
+            SaveSelect(1);
+            <%} else { %>
+            entityid = "";
+            entityname = "";
+            GetBack();
+            <%} %>
         }
         Times = 0;
         $(".dn_cbd").bind("contextmenu", function (event) {
@@ -148,19 +194,34 @@
             GetBack();
         });
 
-        function ChangeOrder(para) {
-            var order = $("#order").val();
-            var orderStr = order.split(" ");
-            if (para == orderStr[0]) {
-                if (orderStr[1] == "asc")
-                    $("#order").val(para + " desc");
-                else
-                    $("#order").val(para + " asc");
-            } else {
-                $("#order").val(para + " asc");
+        <%if (isMuilt) { %>
+        $(".dblselect option").dblclick(function () {
+            $(this).remove();
+        });
+        
+        function SaveSelect(clr) {
+            entityid = "";
+            entityname = "";
+            if (clr != 1) {
+                $(".dblselect option").each(function () {
+                    entityname += $(this).text() + ",";
+                    entityid += $(this).val() + ",";
+                });
             }
-            $("#form1").submit();
+            if (entityid != "") {
+                entityid = entityid.substr(0, entityid.length - 1);
+                entityname = entityname.substr(0, entityname.length - 1);
+            }
+            window.opener.document.getElementById("<%=callBackField %>").value = entityname;
+            window.opener.document.getElementById("<%=callBackField %>Hidden").value = entityid;
+            <%if (!string.IsNullOrEmpty(callBackFunc)){ %>
+            if (typeof (window.opener.<%=callBackFunc %>) != "undefined") {
+                window.opener.<%=callBackFunc %>();
+            }
+            <%}%>
+            window.close();
         }
+        <%} %>
     </script>
 </body>
 </html>

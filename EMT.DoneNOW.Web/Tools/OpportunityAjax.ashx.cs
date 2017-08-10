@@ -24,6 +24,7 @@ namespace EMT.DoneNOW.Web
                 {
                     case "delete":
                         var opportunity_id = context.Request.QueryString["id"];
+                        DeleteOpportunity(context,long.Parse(opportunity_id));
                         break;
                     case "formTemplate":
                         var formTemp_id = context.Request.QueryString["id"];
@@ -94,10 +95,11 @@ namespace EMT.DoneNOW.Web
 
         private void GetOpportunityProperty(HttpContext context, string opportunity_id, string propertyName)
         {
-            var opportunity = new OpportunityBLL().GetOpportunity(long.Parse(opportunity_id));
+            var opportunity = new DAL.crm_opportunity_dal().GetOpportunityById(long.Parse(opportunity_id));
             if (opportunity != null)
             {
-                context.Response.Write(DAL.BaseDAL<crm_opportunity>.GetObjectPropertyValue(opportunity, propertyName));
+                var value = DAL.BaseDAL<crm_opportunity>.GetObjectPropertyValue(opportunity, propertyName);
+                context.Response.Write(value);
             }
         }
         public bool IsReusable

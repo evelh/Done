@@ -66,6 +66,39 @@ namespace EMT.DoneNOW.BLL
 
         }
         #endregion
+        /// <summary>
+        /// 设置下拉框显示变量
+        /// </summary>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetVariableField() {
+            var list=_dal.GetDictionary((int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP, (int)NOTIFY_CATE.QUOTE_TEMPLATE_OTHERS);
+            return list;
+        }
+        /// <summary>
+        /// 设置body下拉框显示变量
+        /// </summary>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetBodyVariableField()
+        {
+            var list = _dal.GetDictionary((int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP, (int)NOTIFY_CATE.QUOTE_TEMPLATE_BODY);
+            return list;
+        }
+
+        /// <summary>
+        /// 获取所有可显示变量
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetAllVariable() {
+            return _dal.GetAllVariable();
+        }
+        /// <summary>
+        /// 获取对应
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetVariable(int id)
+        {
+            return _dal.GetVariable(id);
+        }
 
 
         #region 报价模板删除的逻辑处理
@@ -75,7 +108,7 @@ namespace EMT.DoneNOW.BLL
         /// 报价模板
         public ERROR_CODE quote_template_delete(long user_id,long id)
         {
-            sys_quote_tmpl sqt = GetQuoteTenplate(id);
+            sys_quote_tmpl sqt = GetQuoteTemplate(id);
             if(sqt!=null) {
                 if (sqt.is_system == 1 || sqt.is_custom == 1 || sqt.is_default == 1)
                 {
@@ -94,7 +127,6 @@ namespace EMT.DoneNOW.BLL
                     {
                         // 查询不到用户，用户丢失
                         return ERROR_CODE.USER_NOT_FIND;
-
                     }
                     var add_account_log = new sys_oper_log()
                     {
@@ -108,7 +140,6 @@ namespace EMT.DoneNOW.BLL
                         oper_type_id = (int)OPER_LOG_TYPE.DELETE,
                         oper_description = _dal.AddValue(sqt),
                         remark = "删除报价模板"
-
                     };          // 创建日志
                     new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
                     #endregion
@@ -126,7 +157,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public sys_quote_tmpl GetQuoteTenplate(long id)
+        public sys_quote_tmpl GetQuoteTemplate(long id)
         {
             string sql = $"select * from sys_quote_tmpl where id = {id} and delete_time = 0 ";
             return _dal.FindSignleBySql<sys_quote_tmpl>(sql);
@@ -150,6 +181,7 @@ namespace EMT.DoneNOW.BLL
         }
         #region 报价模板编辑的更新保存操作
         public ERROR_CODE update(sys_quote_tmpl sqt, long user_id) {
+
            if(!_dal.Update(sqt)) {
                 return ERROR_CODE.ERROR;
             }
@@ -169,7 +201,7 @@ namespace EMT.DoneNOW.BLL
                 name = "",
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                //  oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,       //数据库缺少对应，报价模板
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,       //数据库缺少对应，报价模板
                 oper_object_id = sqt.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
                 oper_description = _dal.AddValue(sqt),
@@ -182,9 +214,14 @@ namespace EMT.DoneNOW.BLL
 
         }
         #endregion
-
+        public List<sys_quote_tmpl> GetAllTemplate()
+        {
+           // var list = _dal.FindListBySql("select id,name from sys_quote_tmpl");
+            var list = _dal.FindAll().ToList<sys_quote_tmpl>();
+            return list;
+        }
         #region 复制一个报价模板
-        
+
         #endregion
     }
 }

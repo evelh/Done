@@ -324,21 +324,34 @@ namespace EMT.DoneNOW.BLL
                 var param = paraDal.FindSignleBySql<d_query_para>($"SELECT * FROM d_query_para WHERE id={p.id} AND query_type_id={para.query_type_id}");
                 if (param == null)
                     continue;
-                if (param.query_type_id == (int)DicEnum.QUERY_PARA_TYPE.DATE
-                    || param.query_type_id == (int)DicEnum.QUERY_PARA_TYPE.DATETIME
-                    || param.query_type_id == (int)DicEnum.QUERY_PARA_TYPE.NUMBER)      // 数值和日期类型
+                if (param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DATE
+                    || param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DATETIME
+                    || param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.NUMBER
+                    || param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.TIMESPAN)      // 数值和日期类型
                 {
+                    if (param.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.TIMESPAN)
+                    {
+                        DateTime t1 = DateTime.MinValue, t2 = DateTime.MinValue;
+                        if ((p.value != null && !DateTime.TryParse(p.value, out t1))
+                            || (p.value2 != null && !DateTime.TryParse(p.value2, out t2)))
+                            continue;
+                        if (p.value != null)
+                            p.value = Tools.Date.DateHelper.ToUniversalTimeStamp(t1).ToString();
+                        if (p.value2 != null)
+                            p.value2 = Tools.Date.DateHelper.ToUniversalTimeStamp(t2).ToString();
+                    }
+                    queryPara.Append('"').Append(param.col_name).Append("\":");
                     if (p.value != null)
                     {
-                        queryPara.Append('"').Append(param.col_name).Append(">=").Append(p.value);
+                        queryPara.Append('"').Append(param.col_name).Append(" >= '").Append(p.value).Append("'");
                         if (p.value2 != null)
-                            queryPara.Append(" and ").Append(param.col_name).Append("<=").Append(p.value2).Append('"');
+                            queryPara.Append(" and ").Append(param.col_name).Append(" <= '").Append(p.value2).Append("'\"");
                         else
                             queryPara.Append('"');
                     }
                     else
                     {
-                        queryPara.Append('"').Append(param.col_name).Append("<=").Append(p.value2).Append('"');
+                        queryPara.Append('"').Append(param.col_name).Append(" <= '").Append(p.value2).Append("'\"");
                     }
                 }
                 else

@@ -111,9 +111,11 @@
                     <span><%=addressdistrict.First(_=>_.val.ToString()==location.province_id.ToString()).show  %></span>
                     <span><%=addressdistrict.First(_=>_.val.ToString()==location.city_id.ToString()).show  %></span>
                     <span><%=addressdistrict.First(_=>_.val.ToString()==location.district_id.ToString()).show  %></span>
-                    <span class="fl"><%=location.address %></span><span><%=location.additional_address %></span>
+                    
                 </p>
-
+                    <p>
+                     <span><%=location.address %></span>&nbsp;<span><%=location.additional_address %></span>&nbsp;<span><%=location.postal_code %> </span>
+                </p>
                 <% if (!string.IsNullOrEmpty(location.address))
                     { %>
 
@@ -122,19 +124,10 @@
                 </p>
                 <%} %>
 
-                <% if (!string.IsNullOrEmpty(location.postal_code))
-                    { %>
-                <p>
-                    <%--<span>邮编</span>--%>
-                    <span><%=location.postal_code %> </span>
-                </p>
-                <%} %>
-                <% if (!string.IsNullOrEmpty(location.additional_address))
-                    { %>
-                <%--     <p class="clear">
-                        <%=location.additional_address %>
-                </p>--%>
-                <%} %>
+             
+            
+               
+       
 
                 <%--<p>可以根据链接，跳转到百度或其他地图，显示该客户位置</p>--%>
 

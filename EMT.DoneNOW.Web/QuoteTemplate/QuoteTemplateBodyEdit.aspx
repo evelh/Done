@@ -87,20 +87,20 @@
                                                     <div class="Decoration Icon DragHandle next">
                                                          <img src="../RichText/img/next.png" alt="">
                                                     </div>
-                                                    <div class="Sort">1</div>
+                                                    <div class="Sort Order">1</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1">Item#</td>
-                                            <td class="Text E XL U2">可修改的内容1
-                                               <input id="data" type="hidden" name="data" value=""/>
+                                            <td class="Text E U1 Column_Content">Item#</td>
+                                            <td class="Text E XL U2 Column_label">可修改的内容1</td>
+                                              
 
 
                                                <%-- <asp:Label ID="Label1" runat="server" class="Text E XL U2" Text="可修改的内容1"></asp:Label>--%>
                                                <%-- <label class="Text E XL U2" name="1">可修改的内容1</label>--%>
 
-                                            </td>
-                                            <td class="Boolean E">
-                                                <div class="Decoration Icon CheckMark CM"></div>
+                                           
+                                            <td class="Boolean E Display">
+                                                <div class="Decoration Icon CheckMark"></div>
                                             </td>
                                         </tr>
                                         <tr class="D">
@@ -112,13 +112,13 @@
                                                     <div class="Decoration Icon DragHandle next">
                                                          <img src="../RichText/img/next.png" alt="">
                                                     </div>
-                                                    <div class="Sort">2</div>
+                                                    <div class="Sort Order">2</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1">Quantity</td>
-                                            <td class="Text E XL U2">可修改的内容2</td>
-                                            <td class="Boolean E">
-                                                <div class="Decoration Icon CheckMark CM"></div>
+                                            <td class="Text E U1 Column_Content">Quantity</td>
+                                            <td class="Text E XL U2 Column_label">可修改的内容2</td>
+                                            <td class="Boolean E Display">
+                                                <div class="Decoration Icon CheckMark"></div>
                                             </td>
                                         </tr>
                                         <tr class="D">
@@ -130,13 +130,13 @@
                                                     <div class="Decoration Icon DragHandle next">
                                                       <img  src="../RichText/img/next.png" alt="">
                                                     </div>
-                                                    <div class="Sort">3</div>
+                                                    <div class="Sort Order">3</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1">Item</td>
-                                            <td class="Text E XL U2">可修改的内容3</td>
-                                            <td class="Boolean E">
-                                                <div class="Decoration Icon CheckMark CM"></div>
+                                            <td class="Text E U1 Column_Content">Item</td>
+                                            <td class="Text E XL U2 Column_label">可修改的内容3</td>
+                                            <td class="Boolean E Display">
+                                                <div class="Decoration Icon CheckMark"></div>
                                             </td>
                                         </tr>
                                         <tr class="D">
@@ -148,13 +148,13 @@
                                                     <div class="Decoration Icon DragHandle next">
                                                       <img  src="../RichText/img/next.png" alt="">
                                                     </div>
-                                                    <div class="Sort">4</div>
+                                                    <div class="Sort Order">4</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1">Unit Price</td>
-                                            <td class="Text E XL U2">可修改的内容4</td>
-                                            <td class="Boolean E">
-                                                <div class="Decoration Icon CheckMark CM"></div>
+                                            <td class="Text E U1 Column_Content">Unit Price</td>
+                                            <td class="Text E XL U2 Column_label">可修改的内容4</td>
+                                            <td class="Boolean E Display">
+                                                <div class="Decoration Icon CheckMark"></div>
                                             </td>
                                         </tr>
                                         <tr class="D">
@@ -166,13 +166,13 @@
                                                     <div class="Decoration Icon DragHandle next">
                                                       <img  src="../RichText/img/next.png" alt="">
                                                     </div>
-                                                    <div class="Sort">5</div>
+                                                    <div class="Sort Order">5</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1">Unit Discount</td>
-                                            <td class="Text E XL U2">可修改的内容5</td>
-                                            <td class="Boolean E">
-                                                <div class="Decoration Icon CheckMark CM"></div>
+                                            <td class="Text E U1 Column_Content">Unit Discount</td>
+                                            <td class="Text E XL U2 Column_label">可修改的内容5</td>
+                                            <td class="Boolean E Display">
+                                                <div class="Decoration Icon CheckMark"></div>
                                             </td>
                                         </tr>
                                         <tr class="D">
@@ -184,13 +184,13 @@
                                                     <div class="Decoration Icon DragHandle next">
                                                       <img  src="../RichText/img/next.png" alt="">
                                                     </div>
-                                                    <div class="Sort">6</div>
+                                                    <div class="Sort Order">6</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1">Adjusted Unit Price</td>
-                                            <td class="Text E XL U2">可修改的内容6</td>
-                                            <td class="Boolean E">
-                                                <div class="Decoration Icon CheckMark CM"></div>
+                                            <td class="Text E U1 Column_Content">Adjusted Unit Price</td>
+                                            <td class="Text E XL U2 Column_label">可修改的内容6</td>
+                                            <td class="Boolean E Display">
+                                                <div class="Decoration Icon CheckMark"></div>
                                             </td>
                                         </tr>
                                         <tr class="D">
@@ -202,13 +202,13 @@
                                                     <div class="Decoration Icon DragHandle next">
                                                       <img  src="../RichText/img/next.png" alt="">
                                                     </div>
-                                                    <div class="Sort">7</div>
+                                                    <div class="Sort Order">7</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1">Extended Price</td>
-                                            <td class="Text E XL U2">可修改的内容7</td>
-                                            <td class="Boolean E">
-                                                <div class="Decoration Icon CheckMark CM"></div>
+                                            <td class="Text E U1 Column_Content">Extended Price</td>
+                                            <td class="Text E XL U2 Column_label">可修改的内容7</td>
+                                            <td class="Boolean E Display">
+                                                <div class="Decoration Icon CheckMark"></div>
                                             </td>
                                         </tr>
                                         <tr class="D">
@@ -220,12 +220,12 @@
                                                     <div class="Decoration Icon DragHandle next">
                                                       <img  src="../RichText/img/next.png" alt="">
                                                     </div>
-                                                    <div class="Sort">8</div>
+                                                    <div class="Sort Order">8</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1">Discount %</td>
-                                            <td class="Text E XL U2">可修改的内容8</td>
-                                            <td class="Boolean E">
+                                            <td class="Text E U1 Column_Content">Discount %</td>
+                                            <td class="Text E XL U2 Column_label">可修改的内容8</td>
+                                            <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
                                             </td>
                                         </tr>
@@ -331,9 +331,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1">Labour</td>
-                                        <td class="FormatPreservation U2">[Quote Item: Name]1
-[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">Labour</td>
+                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]1<br/>[Quote Item: Item Description]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -341,9 +340,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1">Product</td>
-                                        <td class="FormatPreservation U2">[Quote Item: Name]2
-[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">Product</td>
+                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]2<br/>[Quote Item: Item Description]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -351,9 +349,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1">Service or Bundle</td>
-                                        <td class="FormatPreservation U2">[Quote Item: Name]3
-[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">Service or Bundle</td>
+                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]3<br/>[Quote Item: Item Description]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -361,9 +358,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1">Charge</td>
-                                        <td class="FormatPreservation U2">[Quote Item: Name]4
-[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">Charge</td>
+                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]4<br/>[Quote Item: Item Description]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -371,9 +367,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1">Expense</td>
-                                        <td class="FormatPreservation U2">[Quote Item: Name]5
-[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">Expense</td>
+                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]5<br/>[Quote Item: Item Description]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -381,9 +376,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1">One-Time Discount</td>
-                                        <td class="FormatPreservation U2">[Quote Item: Name]6
-[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">One-Time Discount</td>
+                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]6<br/>[Quote Item: Item Description]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -391,9 +385,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1">Shipping</td>
-                                        <td class="FormatPreservation U2">[Quote Item: Name]7
-[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">Shipping</td>
+                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]7<br/>[Quote Item: Item Description]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -401,9 +394,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1">Contract Setup Fee</td>
-                                        <td class="FormatPreservation U2">[Quote Item: Name]8
-[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">Contract Setup Fee</td>
+                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]8<br/>[Quote Item: Item Description]</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -431,7 +423,7 @@
                             </div>
                             <div class="Normal Editor TextBox">
                                 <div class="InputField">
-                                    <input type="text" value="11111">
+                                    <input type="text" value="一次性收费" id="One_Time_items">
                                 </div>
                             </div>
                             <div class="EditorLabelContainer">
@@ -441,7 +433,7 @@
                             </div>
                             <div class="Normal Editor TextBox">
                                 <div class="InputField">
-                                    <input type="text" value="2222">
+                                    <input type="text" value="月收费" id="Monthly_items">
                                 </div>
                             </div>
                             <div class="EditorLabelContainer">
@@ -451,7 +443,7 @@
                             </div>
                             <div class="Normal Editor TextBox">
                                 <div class="InputField">
-                                    <input type="text" value="333">
+                                    <input type="text" value="季收费" id="Quarterly_items">
                                 </div>
                             </div>
                             <div class="EditorLabelContainer">
@@ -461,7 +453,7 @@
                             </div>
                             <div class="Normal Editor TextBox">
                                 <div class="InputField">
-                                    <input type="text" value="444">
+                                    <input type="text" value="半年收费" id="Semi_Annual_items">
                                 </div>
                             </div>
                             <div class="EditorLabelContainer">
@@ -471,7 +463,7 @@
                             </div>
                             <div class="Normal Editor TextBox">
                                 <div class="InputField">
-                                    <input type="text" value="555">
+                                    <input type="text" value="年收费" id="Yearly_items">
                                 </div>
                             </div>
                         </div>
@@ -483,7 +475,7 @@
                             </div>
                             <div class="Normal Editor TextBox">
                                 <div class="InputField">
-                                    <input type="text" value="11111">
+                                    <input type="text" value="配送费" id="Shipping_items">
                                 </div>
                             </div>
                             <div class="EditorLabelContainer">
@@ -493,7 +485,7 @@
                             </div>
                             <div class="Normal Editor TextBox">
                                 <div class="InputField">
-                                    <input type="text" value="2222">
+                                    <input type="text" value="一次性折扣" id="One_Time_Discount_items">
                                 </div>
                             </div>
                             <div class="EditorLabelContainer">
@@ -503,7 +495,7 @@
                             </div>
                             <div class="Normal Editor TextBox">
                                 <div class="InputField">
-                                    <input type="text" value="333">
+                                    <input type="text" value="可选项" id="Optional_items">
                                 </div>
                             </div>
                             <div class="EditorLabelContainer">
@@ -513,7 +505,7 @@
                             </div>
                             <div class="Normal Editor TextBox">
                                 <div class="InputField">
-                                    <input type="text" value="444">
+                                    <input type="text" value="无分类" id="No_category">
                                 </div>
                             </div>
                         </div>
@@ -521,29 +513,116 @@
                 </div>
             </div>
         </div>
-    </form>
-
-
-
+        
+         <input id="data" type="hidden" name="data" value=""/>       
    <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="../RichText/js/ueditor.config.js"></script>
     <script type="text/javascript" src="../RichText/js/ueditor.all.js"></script>
     <script type="text/javascript" src="../RichText/js/QuoteBody.js"></script>
-    <script>
-    $("#OkButton1").on("click",function(){
-           
-         //如何获取修改后的值，传入后台
-        var qq = $(".U2").eq(0).html();
-        console.log(qq);
-        $("#data").val(qq);
+          <asp:Literal ID="datalist" runat="server"></asp:Literal >
+    <script type="text/javascript">
+        $("#OkButton1").on("click", function () {
+            //json格式
+            var data = [];
+
+            //表格显示字段设置
+            data.push("{\"GRID_COLUMN\":[");
+            for (i = 0; i < 8; i++) {
+                var Order = $(".Order").eq(i).text();//显示顺序，从左到右
+                var Column_Content = $(".Column_Content").eq(i).text();//字段内容
+                var Column_label = $(".Column_label").eq(i).html();//显示名称            
+            //此处存在问题
+                var Display;
+                if ($(".Display").eq(i).children().hasClass("CM"))
+                {
+                    Display = "yes";
+                }
+                if (!($(".Display").eq(i).children().hasClass("CM")))
+                {
+                    Display = "no";
+                  
+                }
+                var GRID_COLUMNITEM = { "Order": Order, "Column_Content": Column_Content, "Column_label": Column_label, "Display": Display };
+                var jsonArrayFinal = JSON.stringify(GRID_COLUMNITEM);
+            data.push(jsonArrayFinal);
+            console.log(jsonArrayFinal);
+            }
+            data.push("],\"GRID_OPTIONS\":[");
+            //表格格式设置
+            //显示表头
+            if ($("#ShowGridHeader").attr("checked")) {
+                var Show_grid_header = "yes";
+            } else {
+                var Show_grid_header = "no";
+            }
+            //显示表格的竖线
+            if ($("#ShowVerticalGridlines").attr("checked")) {
+                var Show_vertical_lines = "yes";
+            }
+            else {
+                var Show_vertical_lines = "no";
+            }
+            if ($("#DisplayQuoteCommentInBody").attr("checked")) {
+                var Show_QuoteComment = "yes";
+            } else {
+                var Show_QuoteComment = "no";
+            }
+            var GRID_OPTIONSITEM = { "Show_grid_header": Show_grid_header, "Show_vertical_lines": Show_vertical_lines, "Show_QuoteComment": Show_QuoteComment };
+
+            var jsonArrayFinal = JSON.stringify(GRID_OPTIONSITEM);
+            data.push(jsonArrayFinal);
+
+            data.push("],\"CUSTOMIZE_THE_ITEM_COLUMN\":[");
+
+            ////报价项字段设置
+            for (i = 0; i < 8; i++) {
+                var Type_of_Quote_Item = $(".Type_of_Quote_Item").eq(i).text();
+                var Display_Format = $(".Display_Format").eq(i).text();
+                var CUSTOMIZE_THE_ITEM_COLUMNITEM = {"Type_of_Quote_Item": Type_of_Quote_Item, "Display_Format": Display_Format };
+                var jsonArrayFinal = JSON.stringify(CUSTOMIZE_THE_ITEM_COLUMNITEM);
+                data.push(jsonArrayFinal);
+                console.log(jsonArrayFinal);
+            }
+
+            //分组名称设置
+            data.push("],\"GROUPING_HEADER_TEXT\":[");
+
+            var One_Time_items = $("#One_Time_items").val();
+            var Monthly_items = $("#Monthly_items").val();
+            var Quarterly_items = $("#Quarterly_items").val();
+            var Semi_Annual_items = $("#Semi_Annual_items").val();
+            var Yearly_items = $("#Yearly_items").val();
+            var Shipping_items = $("#Shipping_items").val();
+            var One_Time_Discount_items = $("#One_Time_Discount_items").val();
+            var Optional_items = $("#Optional_items").val();
+            var No_category = $("#No_category").val();
+        var GROUPING_HEADER_TEXTITEM = { "One_Time_items": One_Time_items, "Monthly_items": Monthly_items, "Quarterly_items": Quarterly_items, "Semi_Annual_items": Semi_Annual_items, "Yearly_items": Yearly_items, "Shipping_items": Shipping_items, "One_Time_Discount_items": One_Time_Discount_items, "Optional_items": Optional_items, "No_category": No_category};
+        var jsonArrayFinal = JSON.stringify(GROUPING_HEADER_TEXTITEM);
+        data.push(jsonArrayFinal);
+
+        data.push("]}");
+
+            $("#data").val(data);
 
         });
-        $("#OkButton").on("mouseover",function(){
+ $("#OkButton").on("mouseover",function(){
             $("#OkButton").css("background","#fff");
         });
         $("#OkButton").on("mouseout",function(){
             $("#OkButton").css("background","#f0f0f0");
         });
+$(".Edit").on("click", function () {
+          //  var i = $(this).index();
+            var a = $('.Edit').index(this);
+            var item = $(".Display_Format").eq(a).text();
+           var returnValue = window.showModalDialog('Body_itemEdit.aspx?item='+item, window, 'dialogWidth=800px;dialogHeight=600px;status=no');
+
+            if (returnValue !== "" && returnValue !== undefined) {
+                //处理子窗口的返回值
+                $(".Display_Format").eq(a).html(returnValue);
+            }
+        });
     </script>
+</form>
 </body>
 </html>

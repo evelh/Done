@@ -44,10 +44,12 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     {
                         optionalItemList = quoteItemList.Where(_ => _.optional == 1).ToList();   // 获取到可选的报价项
                         oneTimeList = quoteItemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
+                        // &&optionalItemList.Any(op=>op.id!=_.id)&&oneTimeList.Any(one=>one.id!=_.id)  满足多个报价项过滤条件的，选择其中的一个
                         distributionList = quoteItemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();   // 配送类型的报价项
 
                          // 配送，一次性，可选的配置项独立显示，所以在这里分离出来，传到前台后单独处理
-                         //  获取到筛选后报价项列表方便分组管理
+
+                         //  获取到筛选后报价项列表方便分组管理  筛选后的列表不包括可选，一次性和配送
                         var screenList= quoteItemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.period_type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional != 1).ToList();
                         groupBy = Request.QueryString["group_by"];
                         switch (groupBy)

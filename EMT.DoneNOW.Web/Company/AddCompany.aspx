@@ -12,8 +12,8 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link href="../Content/index.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../Content/multipleList.css" />
     <style>
-
     </style>
 </head>
 <body runat="server">
@@ -42,7 +42,7 @@
             </ul>
         </div>
 
-        <div class="content clear" >
+        <div class="content clear">
             <div class="information clear">
                 <p class="informationTitle"><i></i>基本信息</p>
                 <div>
@@ -294,28 +294,31 @@
                                     <asp:DropDownList ID="market_segment" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
-                            <%if (parent_account != null) { %>
-                                    <tr>
-                                <td>
-                                    <div class="clear">
-                                        <label>父客户名称</label>
-                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 20px;height:20px; float: left; margin-left: -1px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                        <input type="hidden" id="ParentComoanyNameHidden" name="parent_company_name" value="<%=parent_account.id %>" />
-                                    </div>
-                                </td>
-                            </tr>
-                            <%}else{ %>
-                             <tr>
-                                <td>
-                                    <div class="clear">
-                                        <label>父客户名称</label>
-                                        <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 20px;height:20px; float: left; margin-left: 10px;margin-top:5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                        <input type="hidden" id="ParentComoanyNameHidden" name="parent_company_name" value="" />
-                                    </div>
-                                </td>
-                            </tr>
-                            <%} %>
-                    
+                            <%if (parent_account != null)
+                                { %>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>父客户名称</label>
+                                    <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=parent_account.name %>" /><i onclick="chooseCompany();" style="width: 20px; height: 20px; float: left; margin-left: -1px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                    <input type="hidden" id="ParentComoanyNameHidden" name="parent_company_name" value="<%=parent_account.id %>" />
+                                </div>
+                            </td>
+                        </tr>
+                        <%}
+                            else
+                            { %>
+                        <tr>
+                            <td>
+                                <div class="clear">
+                                    <label>父客户名称</label>
+                                    <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="" /><i onclick="chooseCompany();" style="width: 20px; height: 20px; float: left; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                                    <input type="hidden" id="ParentComoanyNameHidden" name="parent_company_name" value="" />
+                                </div>
+                            </td>
+                        </tr>
+                        <%} %>
+
                         <tr>
                             <td>
                                 <div class="clear">
@@ -399,7 +402,7 @@
                 <div>
                     <div>
 
-                             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                        <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
                             <% if (contact_udfList != null && contact_udfList.Count > 0)
                                 {
@@ -452,7 +455,7 @@
                                     }
                                 } %>
                         </table>
-                 
+
 
                     </div>
                 </div>
@@ -583,10 +586,19 @@
 
         </div>
 
-        <div class="content clear" style="display:none;" >
+        <div class="content clear" style="display: none;">
+
+            <div class="searchSelected clear">
+			    <p>子客户列表</p><span class="on"><i class="icon-dh" onclick="OpenSubCompany()"></i></span>
+                <input type="hidden" id="SubCompany" />
+                <input type="hidden" id="SubCompanyHidden" name="subCompanyIds" />
+			    <div class="Selected fl">
+				    <select id="" multiple="" class="dblselect" style="height:300px;"></select>
+			    </div>
+		    </div>
 
         </div>
-        <div class="content clear" style="display:none;" >
+        <div class="content clear" style="display: none;">
 
             <div class="left fl">
                 <ul>
@@ -643,6 +655,7 @@
 <script src="../Scripts/index.js"></script>
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
+<script src="../Scripts/multiselect.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         InitArea();
@@ -651,8 +664,37 @@
 </html>
 <script type="text/javascript">
     $(function () {
+
+        $(".dblselect option").dblclick(function () {
+            debugger;
+            var delval = $(this).val();
+            if ($("#SubCompanyHidden").val() == delval) {
+                $("#SubCompany").val("");
+                $("#SubCompanyHidden").val("");
+                $(this).remove();
+            } else {
+                requestData("../Tools/CompanyAjax.ashx?act=names&ids=" + $("#SubCompanyHidden").val(), null, function (data) {
+                    var ids = "";
+                    $(".dblselect").empty();
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].val == delval)
+                            continue;
+                        var option = $("<option>").val(data[i].val).text(data[i].show);
+                        $(".dblselect").append(option);
+                        ids += data[i].val + ",";
+                    }
+                    if (ids != "") {
+                        ids = ids.substr(0, ids.length - 1);
+                    }
+                    $("#SubCompanyHidden").val(ids);
+                })
+            }
+
+        });
+
+
         $("#TaxExempt").click(function () {
-       
+
             if ($('#TaxExempt').is(':checked')) {
                 // 禁用
                 $("#tax_region").attr("disabled", "disabled");
@@ -707,7 +749,7 @@
             if (firstName.length > 1 && lastName == "") {
                 var subName = firstName.substring(1, firstName.length)
                 $("#last_name").val(subName);
-                $(this).val(firstName.substring(0,1));
+                $(this).val(firstName.substring(0, 1));
             }
         });
 
@@ -764,7 +806,22 @@
                 }
             }
 
-         
+            var parentId = $("#ParentComoanyNameHidden").val();
+            if (parentId == "" || parentId == undefined) {
+                var ids = "";
+                $("#multiselect_to").each(function () {
+                    var id = $(this).val();
+                    ids += id + ",";
+                })
+                if (ids != "") {
+                    ids = ids.substring(0, ids.length);
+                    $("#subCompanyIds").val(ids);
+                }
+            }
+
+
+
+
             if ($("#isCheckCompanyName").val() == "yes") {
                 var isPass = "pass";
                 $.ajax({
@@ -774,27 +831,33 @@
                     // data: { CompanyName: companyName },
                     success: function (data) {
                         //alert(data);
-                 
+
                         if (data == "repeat") {
                             alert('客户名称重复');
                             isPass = "noPass";
                         }
                         else if (data != "") {
                             isPass = "noPass";
-                            window.open("CompanyNameSimilar.aspx?ids=" + data + "&reason=name", "<%=EMT.DoneNOW.DTO.OpenWindow.CompanyNameSmilar %>", "height=600,width=800", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no"); 
-                        }  //
-                    },
-                    error: function (XMLHttpRequest) {
-                    },
-                    
-                });
-     
-                if (isPass == "noPass") {
-                    return false;
-                }    
+                            window.open("CompanyNameSimilar.aspx?ids=" + data + "&reason=name", "<%=EMT.DoneNOW.DTO.OpenWindow.CompanyNameSmilar %>", "height=600,width=800", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
+                }  //
+            },
+            error: function (XMLHttpRequest) {
+            },
+
+        });
+
+        if (isPass == "noPass") {
+            return false;
+        }
             }
             return true;
         }
+
+        jQuery(document).ready(function ($) {
+            $('#multiselect').multiselect({
+                sort: false
+            });
+        });
 
         var conteneClickTimes = 0;       // 定义tab页跳转点击次数，免得一直提醒
         $.each($(".nav-title li"), function (i) {
@@ -811,24 +874,91 @@
                             return false;
                         }
                     }
-                  
+
                 }
-              
+
                 $(this).addClass("boders").siblings("li").removeClass("boders");
                 $(".content").eq(i).show().siblings(".content").hide();
-             
+
 
             })
         });
-    })
+
+
 
     
+    })
+
+
 
     function chooseCompany() {
+        var subCompany = $("#SubCompanyHidden").val();
+        if (subCompany != "") {
+            alert("已经添加子客户，不能添加父客户");
+            return;
+        }
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
         //window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
         //这些要写在一行
     }
 
+</script>
+<script type="text/javascript">
+    function OpenSubCompany() {
+        if ($("#ParentComoanyNameHidden").val() != "") {
+            alert("已添加父客户，不能添加子客户！");
+            return;
+        }
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUB_COMPANY_CALLBACK %>&field=SubCompany&muilt=1&callBack=ChooseSubCompany", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+     // ondblclick
+   
+    function ChooseSubCompany() {
+        if ($("#SubCompanyHidden").val() != "") {
+   
+            requestData("../Tools/CompanyAjax.ashx?act=names&ids=" + $("#SubCompanyHidden").val(), null, function (data) {
+                debugger;
+                $(".dblselect").empty();
+                for (i = 0; i < data.length; i++) {
+                    var option = $("<option>").val(data[i].val).text(data[i].show);
+                    $(".dblselect").append(option);
+                }
+                $(".dblselect option").dblclick(function () {
+                    Adddbclick(this);
+                });
+            })
+        }
+
+    }
+
+    function Adddbclick(val) {
+        debugger;
+        var delval = $(val).val();
+        if ($("#SubCompanyHidden").val() == delval) {
+            $("#SubCompany").val("");
+            $("#SubCompanyHidden").val("");
+            $(".dblselect").empty();
+        } else {
+            requestData("../Tools/CompanyAjax.ashx?act=names&ids=" + $("#SubCompanyHidden").val(), null, function (data) {
+                debugger;
+                var ids = "";
+                $(".dblselect").empty();
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].val == delval)
+                        continue;
+                    var option = $("<option>").val(data[i].val).text(data[i].show);
+                    $(".dblselect").append(option);
+                    ids += data[i].val + ",";
+                }
+                $(".dblselect option").dblclick(function () {
+                    Adddbclick(this);
+                });
+                if (ids != "") {
+                    ids = ids.substr(0, ids.length - 1);
+                }
+                $("#SubCompanyHidden").val(ids);
+            })
+        }
+    }
 </script>
 

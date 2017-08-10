@@ -196,7 +196,8 @@ namespace EMT.DoneNOW.Web.Opportunity
                 }
                 else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
-                    Response.Write("<script>alert('添加商机成功！');window.location.href=window.location.href;</script>");  //  
+                    // Response.Write("<script>alert('添加商机成功！');window.location.href=window.location.href;</script>");  //
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加商机成功！'); </script>");
                 }
             }
             else
@@ -293,8 +294,9 @@ namespace EMT.DoneNOW.Web.Opportunity
                 }
                 else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
-                    Response.Write("<script>alert('添加商机成功！');</script>");  //  
-                    Response.Redirect("../Quote/QuoteAddAndUpdate?opportunity_id="+id);
+                    Response.Write("<script>alert('添加商机成功！');window.close();window.open('../Quote/QuoteAddAndUpdate?quote_opportunity_id=" + id+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                    //Response.Write("<script>alert('添加商机成功！');</script>");  //  
+                    //Response.Redirect("../Quote/QuoteAddAndUpdate?opportunity_id="+id);
                 }
             }
             else
@@ -313,7 +315,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改商机成功！');</script>");
-                    Response.Redirect("../Quote/QuoteAddAndUpdate?opportunity_id="+opportunity.id);
+                    Response.Redirect("../Quote/QuoteAddAndUpdate?quote_opportunity_id=" + opportunity.id);
                 }
             }
         }

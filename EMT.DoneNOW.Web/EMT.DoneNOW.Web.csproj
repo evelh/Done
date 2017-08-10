@@ -150,6 +150,8 @@
     <Content Include="Content\multiple-select.css" />
     <Content Include="Content\multipleList.css" />
     <Content Include="Content\NewContact.css" />
+    <Content Include="Content\Quote.css" />
+    <Content Include="Content\reset.css" />
     <Content Include="Content\searchList.css" />
     <Content Include="Content\style.css" />
     <Content Include="Default.aspx" />
@@ -165,6 +167,17 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="error.html" />
+    <Content Include="Images\down.png" />
+    <Content Include="Images\refresh.png" />
+    <Content Include="Images\view.png" />
+    <Content Include="Images\Classification\blockhour.png" />
+    <Content Include="Images\Classification\canceled.png" />
+    <Content Include="Images\Classification\delinquent.png" />
+    <Content Include="Images\Classification\jeopardyaccount.png" />
+    <Content Include="Images\Classification\residential.png" />
+    <Content Include="Images\Classification\target.png" />
+    <Content Include="Images\Classification\tm.png" />
+    <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
     <Content Include="Images\export.png" />
     <Content Include="Images\print.png" />
     <Content Include="QuoteTemplate\QuoteTemplateAppendixEdit.aspx" />
@@ -172,6 +185,7 @@
     <Content Include="Images\classfication.png" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\test.aspx" />
+    <Content Include="Quote\QuoteView.aspx" />
     <Content Include="RichText\css\FootEdit.css" />
     <Content Include="RichText\css\HeadEdit.css" />
     <Content Include="RichText\css\QuoteBody.css" />
@@ -761,6 +775,13 @@
     <Compile Include="QuoteItem\QuoteItemManage.aspx.designer.cs">
       <DependentUpon>QuoteItemManage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="QuoteTemplate\Body_itemEdit.aspx.cs">
+      <DependentUpon>Body_itemEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteTemplate\Body_itemEdit.aspx.designer.cs">
+      <DependentUpon>Body_itemEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="QuoteTemplate\QuoteTemplateAdd.aspx.cs">
       <DependentUpon>QuoteTemplateAdd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -844,6 +865,13 @@
     </Compile>
     <Compile Include="Quote\QuoteAddAndUpdate.aspx.designer.cs">
       <DependentUpon>QuoteAddAndUpdate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Quote\QuoteView.aspx.cs">
+      <DependentUpon>QuoteView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Quote\QuoteView.aspx.designer.cs">
+      <DependentUpon>QuoteView.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

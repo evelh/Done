@@ -126,96 +126,7 @@ $(".E").on("click",function(){
     })
 })
 
-//点击第三块
-$(".Edit").on("click",function(){
-    var $_this=$(this);
-    loading();
-    var innerContent = $(this).parent().next().next().html();
-    var mask = $('<div id="BackgroundOverLay">'+'</div>');
-    var AddText = $('<div class="addText">'+
-                        '<div>'+
-                            '<div class="CancelDialogButton"></div>'+
-                            '<div class="TitleBar">'+
-                                '<div class="Title">'+
-                                '<span class="text1">编辑项目列：服务或捆绑</span>'+
-                                '<span class="text2"></span>'+
-                                '</div>'+
-                            '</div>'+
-                            '<form action="" method="post" >'+
-                                '<div class="ButtonContainer">'+
-                                    '<ul>'+
-                                        '<li class="Button addButtonIcon Okey NormalState" id="addOkButton" tabindex="0">'+
-                                            '<span class="Icon Ok"></span>'+
-                                            '<span class="Text">确认</span>'+
-                                        '</li>'+
-                                        '<li class="Button addButtonIcon Cancel NormalState" id="ResetButton" tabindex="0">'+
-                                            '<span class="Icon Reset"></span>'+
-                                            '<span class="Text">恢复默认</span>'+
-                                        '</li>'+
-                                    '</ul>'+
-                                '</div>'+
-                            '</form>'+
-                            '<div class="ScrollingContainer">'+
-                                '<div class="Heading">头部</div>'+
-                                '<div class="addDescriptionText">这是头部</div>'+
-                                '<div class="addContent">'+
-                                    '<script id="containerHead" name="content" type="text/plain"></script>'+
-                                    '<div class="Dialog">'+
-                                         '<img src="img/Dialog.png">'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>'+
-                            '<div class="AlertBox">'+
-                            '<div>'+
-                            '<div class="CancelDialogButton1"></div>'+
-                            '<div class="AlertTitleBar">'+
-                            '<div class="AlertTitle">'+
-                            '<span>变量</span>'+
-                            '</div>'+
-                            '</div>'+
-                            '<div class="VariableInsertion">'+
-                            '<div class="AlertContent">'+
-                            '<div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>'+
-                        '<select name="" id="AlertVariableFilter">'+
-                            '<option value="1">Show All Variables</option>'+
-                        '<option value="2">Show Account Variables</option>'+
-                        '<option value="3">Show Contact Variables</option>'+
-                        '<option value="4">Show Opportunity Variables</option>'+
-                        '<option value="5">Show Quote Variables</option>'+
-                        '<option value="6">Show Miscellaneous Variables</option>'+
-                        '<option value="7">Show Your Company Variables</option>'+
-                        '<option value="8">Show Your Location Variables</option>'+
-                        '</select>'+
-                        '<select name="" multiple="multiple" id="AlertVariableList">'+
-                            '<option value="" class="val">1</option>'+
-                            '<option value="" class="val">2</option>'+
-                            '<option value="" class="val">3</option>'+
-                            '<option value="" class="val">4</option>'+
-                            '<option value="" class="val">5</option>'+
-                            '<option value="" class="val">6</option>'+
-                            '<option value="" class="val">7</option>'+
-                            '<option value="" class="val">8</option>'+
-                            '<option value="" class="val">9</option>'+
-                            '<option value="" class="val">10</option>'+
-                            '<option value="" class="val">1</option>'+
-                            '<option value="" class="val">2</option>'+
-                            '<option value="" class="val">3</option>'+
-                            '<option value="" class="val">4</option>'+
-                            '<option value="" class="val">5</option>'+
-                            '<option value="" class="val">6</option>'+
-                            '<option value="" class="val">7</option>'+
-                            '<option value="" class="val">8</option>'+
-                            '<option value="" class="val">9</option>'+
-                            '<option value="" class="val">10</option>'+
-                            '</select>'+
-                            '</div>'+
-                            '</div>'+
-                            '</div>'+
-                            '</div>'+
-                            '<div id="BackgroundOverLay1"></div>'+
-                        '</div>'+
-                    '</div>');
-    $('body').prepend(AddText).prepend(mask);
+
     //富文本编辑器
     UE.delEditor('containerHead');
     var ue = UE.getEditor('containerHead',{
@@ -278,7 +189,7 @@ $(".Edit").on("click",function(){
     $("#ResetButton").on("mouseout",function(){
         $("#ResetButton").css("background","#f0f0f0");
     });
-});
+
 
 
 

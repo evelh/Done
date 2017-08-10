@@ -351,6 +351,7 @@ namespace EMT.DoneNOW.DTO
             CONTACT_COMPANY_VIEW = 871,         // 客户管理-详情-联系人查询
             SUBCOMPANY_COMPANY_VIEW = 872,      // 客户管理-详情-子客户查询
             OPPORTUNITY_CONTACT_VIEW = 873,     // 联系人管理-详情-商机查询
+            SUB_COMPANY_CALLBACK = 877,         // 独立客户查找带回（没有父客户和子客户）
         }
 
         /// <summary>
@@ -414,13 +415,16 @@ namespace EMT.DoneNOW.DTO
         public enum QUERY_PARA_TYPE
         {
             SINGLE_LINE = 805,      // 单行文本
-            NUMBER = 806,           // 数值
+            NUMBER = 806,           // 数值(做范围判断)
             DATE = 807,             // 日期
             DATETIME = 808,         // 日期时间
             DROPDOWN = 809,         // 下拉选择框
             MULTI_DROPDOWN = 810,   // 多选下拉框
             AREA = 811,             // 行政区
             CALLBACK = 812,         // 查找带回
+            MUILT_CALLBACK = 814,   // 多选查找带回
+            NUMBER_EQUAL = 816,     // 数值(做等于判断)
+            TIMESPAN = 817,         // 日期-时间戳
         }
     }
 
@@ -446,7 +450,7 @@ namespace EMT.DoneNOW.DTO
         CompanyConfiguration = 3,   // 客户管理-配置项查询
         Company = 4,                // 客户管理-客户查询
         Contact = 5,                // 联系人管理-联系人查询
-        CallBackCompany = 6,        // 查找带回客户
+        CompanyCallBack = 6,        // 查找带回客户
         Opportunity = 7,            // 商机管理-商机查询
         Quote = 8,                  // 报价管理-报价查询
         CallBackRoll = 9,           // 角色查找带回

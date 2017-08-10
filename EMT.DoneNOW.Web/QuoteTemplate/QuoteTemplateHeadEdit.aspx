@@ -37,7 +37,6 @@
                 </li>
             </ul>
         </div>
-    </form>
     <div class="Section">
         <div class="Heading">头部</div>
         <div class="DescriptionText">这是头部</div>
@@ -59,47 +58,28 @@
             <div class="VariableInsertion">
                 <div class="AlertContent">
                     <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
-                    <select name="" id="AlertVariableFilter">
-                        <option value="1">Show All Variables</option>
-                        <option value="2">Show Account Variables</option>
-                        <option value="3">Show Contact Variables</option>
-                        <option value="4">Show Opportunity Variables</option>
-                        <option value="5">Show Quote Variables</option>
-                        <option value="6">Show Miscellaneous Variables</option>
-                        <option value="7">Show Your Company Variables</option>
-                        <option value="8">Show Your Location Variables</option>
+
+                   <%-- 这里是弹窗选择项--%>
+
+                     <asp:ScriptManager ID="ScriptManager1" runat="server">
+         </asp:ScriptManager>
+         <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">
+             <ContentTemplate>
+              <asp:DropDownList ID="AlertVariableFilter" runat="server" OnSelectedIndexChanged="AlertVariableFilter_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>              
+                 <select name="" multiple="multiple" id="AlertVariableList">
+                         <asp:Literal ID="VariableList" runat="server"></asp:Literal>
                     </select>
-                    <select name="" multiple="multiple" id="AlertVariableList">
-                        <option value="" class="val">1</option>
-                        <option value="" class="val">2</option>
-                        <option value="" class="val">3</option>
-                        <option value="" class="val">4</option>
-                        <option value="" class="val">5</option>
-                        <option value="" class="val">6</option>
-                        <option value="" class="val">7</option>
-                        <option value="" class="val">8</option>
-                        <option value="" class="val">9</option>
-                        <option value="" class="val">10</option>
-                        <option value="" class="val">1</option>
-                        <option value="" class="val">2</option>
-                        <option value="" class="val">3</option>
-                        <option value="" class="val">4</option>
-                        <option value="" class="val">5</option>
-                        <option value="" class="val">6</option>
-                        <option value="" class="val">7</option>
-                        <option value="" class="val">8</option>
-                        <option value="" class="val">9</option>
-                        <option value="" class="val">10</option>
-                    </select>
+             </ContentTemplate>
+         </asp:UpdatePanel>   
+                    
+
                 </div>
             </div>
         </div>
     </div>
     <!--黑色幕布-->
     <div id="BackgroundOverLay"></div>
-
-
-
+</form>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <%-- <script type="text/javascript" src="../RichText/js/jquery-3.2.1.min.js"></script>--%>
     <script type="text/javascript" src="../RichText/js/ueditor.config.js"></script>
@@ -117,7 +97,6 @@
         $("#CancelButton").on("mouseout", function () {
             $("#CancelButton").css("background", "#f0f0f0");
         })
-
         //        富文本编辑器
         var ue = UE.getEditor('containerHead', {
             toolbars: [
@@ -143,16 +122,17 @@
                 $("#BackgroundOverLay").hide();
                 $(".AlertBox").hide();
             });
-
-            $(".val").on("dblclick", function () {
-                UE.getEditor('containerHead').focus();
-                UE.getEditor('containerHead').execCommand('inserthtml', $(this).html());
-                $("#BackgroundOverLay").hide();
-                $(".AlertBox").hide();
-            })
         });
 
-        //        点击确定数据保存至后台  在展示页展示
+        function dbclick(val) {
+            UE.getEditor('containerHead').focus();
+            UE.getEditor('containerHead').execCommand('inserthtml', $(val).html());
+            $("#BackgroundOverLay").hide();
+            $(".AlertBox").hide();
+        }
+
+
+        //  点击确定数据保存至后台  在展示页展示
         $("#OkButton1").on("click", function () {
             var html = ue.getContent();
             console.log(html);
@@ -160,7 +140,7 @@
             var txt = ue.getContentTxt();
             console.log(txt);
         });
-        //        点击取消直接返回
+        //点击取消直接返回
         $("#CancelButton").on("click", function () {
             window.location.href = "QuoteTemplateEdit.aspx?id="+<%=id%>+"&op=edit";
         });

@@ -88,7 +88,7 @@
                     <% foreach (var quoteItem in item.Value as List<EMT.DoneNOW.Core.crm_quote_item>)
                         {
                     %>
-                    <tr>
+                    <tr data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
                             <td><% var type = "";
@@ -147,7 +147,7 @@
                     </tr>
                     <% foreach (var quoteItem in distributionList)
                         {%>
-                    <tr>
+                    <tr data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
                               <td><% var type = "";
@@ -205,7 +205,7 @@
                     </tr>
                     <%foreach (var quoteItem in oneTimeList)
                         {%>
-                    <tr>
+                    <tr  data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
                            <td><% var type = "";
@@ -263,7 +263,7 @@
                     <%  
                         foreach (var quoteItem in optionalItemList)
                         {%>
-                    <tr>
+                    <tr data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
                                <td><% var type = "";
@@ -329,7 +329,7 @@
                                 var generalList = quoteItemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.period_type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional != 1).ToList();
                                 foreach (var quoteItem in generalList)
                                 {%>
-                    <tr>
+                    <tr data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
                         <td><% var type = "";
@@ -376,7 +376,7 @@
                         <td colspan="9"></td>
                         <td><b>汇总：</b></td>
                         <td><%=generalList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
-                        <td><%=((decimal)((generalList.Sum(_=>_.unit_price!=null?_.unit_price:0)-generalList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))/generalList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))).ToString("#0.00")+"%" %></td>
+                        <td><%=((decimal)((generalList.Sum(_=>_.unit_price!=null?_.unit_price:0)-generalList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))/(generalList.Sum(_=>_.unit_cost!=null?_.unit_cost:0)==0?1:generalList.Sum(_=>_.unit_cost!=null?_.unit_cost:0)))).ToString("#0.00")+"%" %></td>
                         <td><%=generalList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0 ) %></td>
                     </tr>
                     <% 
@@ -388,7 +388,7 @@
                     </tr>
                     <% foreach (var quoteItem in distributionList)
                         {%>
-                    <tr>
+                    <tr  data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
                               <td><% var type = "";
@@ -448,7 +448,7 @@
                     </tr>
                     <%foreach (var quoteItem in oneTimeList)
                         {%>
-                    <tr>
+                    <tr  data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
                            <td><% var type = "";
@@ -508,7 +508,7 @@
                     <%  
                         foreach (var quoteItem in optionalItemList)
                         {%>
-                    <tr>
+                    <tr data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
                                <td><% var type = "";
@@ -572,6 +572,12 @@
             </table>
         </div>
     </form>
+        <div id="menu">
+		<ul style="width:220px;">       
+            <li onclick="EditQuoteItem()"><i class="menu-i1"></i>修改报价项</li>
+            <li onclick="DeleteQuoteItem()"><i class="menu-i1"></i>删除报价项</li>
+		</ul>
+	</div>
 </body>
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
@@ -579,6 +585,7 @@
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/NewContact.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
+<script src="../Scripts/Common/SearchBody.js"></script>
 <script>
     //groupBy
 
@@ -590,4 +597,19 @@
         })
 
     })
+    function EditQuoteItem() {
+       
+        window.open("QuoteItemAddAndUpdate?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteEdit %>', 'left=200,top=200,width=900,height=750', false);
+    }
+    function DeleteQuoteItem() {
+        $.ajax({
+            type: "GET",
+            url: "../Tools/QuoteAjax.ashx?act=deleteQuoteItem&id=" + entityid,
+            success: function (data) {
+                alert(data);
+                history.go(0);
+            }
+
+        })
+    }
 </script>

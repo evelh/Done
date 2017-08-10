@@ -36,23 +36,26 @@
                     <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem" target="view_window">报价项</a></li>
                 </ul>
             </i>
-            COMPANY
+            查看商机
         </div>
         <div class="header-title">
             <ul>
-                <li><a href="#" onclick="window.open('OpportunityAddAndEdit.aspx?opportunity_id=<%=opportunity.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityEdit %>','left=200,top=200,width=900,height=750', false);">修改</a>
+                <li><a href="#" onclick="window.open('OpportunityAddAndEdit.aspx?opportunity_id=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityEdit %>','left=200,top=200,width=900,height=750', false);">修改</a>
 
                 </li>
                 <li>
                     <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
-                    New
+                    添加
 					<i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
                         <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=900,height=750', false);">待办</a></li>
                         <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=900,height=750', false);">备注</a></li>
                         <li>工单</li>
                         <li>附件</li>
-                        <li>报价</li>
+                        <%if (quoteList == null || quoteList.Count == 0)
+                            { %>
+                        <li><a href="#" onclick="window.open('../Quote/QuoteAddAndUpdate?quote_opportunity_id=<%=opportunity.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>','left=200,top=200,width=900,height=750', false);">报价</a></li>
+                        <%} %>
                         <%-- todo 如果商机已经有报价，则不显示--%>
                     </ul>
                 </li>
@@ -181,7 +184,6 @@
 
                 <%if (contact != null)
                     {
-                        var contactLocation = locationBLL.GetLocation((long)contact.location_id);
                 %>
 
                 <div class="contact address opportunityaddress viewleftTitle1">
@@ -196,11 +198,15 @@
                         <span class="fl">头衔</span>
                         <span class="fr"><%=contact.title %> </span>
                     </p>
-                    <%} %>
-                    <p><%=country.First(_=>_.val.ToString()==contactLocation.country_id.ToString()).show  %></p>
-                    <p><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.province_id.ToString()).show  %></p>
-                    <p><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.city_id.ToString()).show  %></p>
-                    <p><%=addressdistrict.First(_=>_.val.ToString()==contactLocation.district_id.ToString()).show  %></p>
+                    <%}
+                        if (contact.location_id != null)
+                        {
+                            var contactLocation = locationBLL.GetLocation((long)contact.location_id);
+                    %>
+                    <p><%=country.First(_ => _.val.ToString() == contactLocation.country_id.ToString()).show  %></p>
+                    <p><%=addressdistrict.First(_ => _.val.ToString() == contactLocation.province_id.ToString()).show  %></p>
+                    <p><%=addressdistrict.First(_ => _.val.ToString() == contactLocation.city_id.ToString()).show  %></p>
+                    <p><%=addressdistrict.First(_ => _.val.ToString() == contactLocation.district_id.ToString()).show  %></p>
 
                     <% if (!string.IsNullOrEmpty(contactLocation.address))
                         { %>
@@ -217,7 +223,8 @@
                     <% if (!string.IsNullOrEmpty(contactLocation.additional_address))
                         { %>
                     <p><%=contactLocation.additional_address %></p>
-                    <%} %>
+                    <%}
+                    }%>
                     <% if (!string.IsNullOrEmpty(contact.phone))
                         { %>
                     <p class="clear">
@@ -318,13 +325,12 @@
 
 <script>
     $(function () {
-        var targetTimes = 0;
-      
-        $("a").click(function () {
-            $(this).attr('target', '_blank' + targetTimes);
-            targetTimes = Number(targetTimes) + 1;
-        })
-      
+        //var targetTimes = 0;  
+        //$("a").click(function () {
+        //    $(this).attr('target', '_blank' + targetTimes);
+        //    targetTimes = Number(targetTimes) + 1;
+        //})
+
         var hide = $("#isHide").val();
         if (hide == "hide") {
             $("#showGeneralInformation").hide();

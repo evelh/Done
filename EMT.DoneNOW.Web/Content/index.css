@@ -84,10 +84,8 @@ background:url(../Images/icon.png) no-repeat -309px -29px  ;outline: none;cursor
 
 .input-dh{position: relative;}
 .input-dh .on{position: absolute;right: 10px; top: 5px;}
-.icon-dh {background-image:url(../Images/data-selector.png);background-position:0 0 ;width: 16px;height: 20px;
-cursor: pointer;background-repeat:no-repeat ;display: block;}
+.icon-dh {background-image: url(../Images/data-selector.png) !important;background-position: 0 0 !important; width: 16px !important; height: 20px !important; cursor: pointer !important;background-repeat: no-repeat; display: block;}
 .add-on{position: relative;}
-
 .contenttitle ul{margin: 10px ;}
 .contenttitle li{cursor: pointer; float:left;height: 26px;line-height: 26px;border: 1px solid #bcbcbc;margin-right: 10px; background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);}
 .contenttitle li span{margin-right: 10px;}

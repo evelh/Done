@@ -18,6 +18,7 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {           
             if (!IsPostBack) {
+
                 Bind(); 
             }         
         }
@@ -70,27 +71,33 @@ namespace EMT.DoneNOW.Web
             sqt.currency_positive_format_id = Convert.ToInt32(this.CurrencyPositivePattern.SelectedValue.Trim().ToString());
             sqt.number_display_format_id = Convert.ToInt32(this.NumberFormat.SelectedValue.Trim().ToString());
             sqt.date_display_format_id = Convert.ToInt32(this.DateFormat.SelectedValue.Trim().ToString());            
-            sqt.show_each_tax_in_tax_group = 1;
-            sqt.show_tax_cate_superscript = 1;
-            sqt.show_tax_cate = 1;
-            sqt.show_each_tax_in_tax_period = 0;
             if (this.show_each_tax_in_tax_group.Checked)
             {
                 sqt.show_each_tax_in_tax_group = 1;
             }
             else {
-
+                sqt.show_each_tax_in_tax_group = 0;
             }
             if (this.show_each_tax_in_tax_period.Checked)
             {
                 sqt.show_each_tax_in_tax_period = 1;
             }
-            if (this.show_tax_cate.Checked) {
+            else {
+                sqt.show_each_tax_in_tax_period = 0;
+            }
+            if (this.show_tax_cate.Checked)
+            {
                 sqt.show_tax_cate = 1;
+            }
+            else {
+                sqt.show_tax_cate = 0;
             }
             if (this.show_tax_cate_superscript.Checked)
             {
                 sqt.show_tax_cate_superscript = 1;
+            }
+            else {
+                sqt.show_tax_cate_superscript = 0;
             }
 
             sqt.tax_total_disp=tax_total_disp();

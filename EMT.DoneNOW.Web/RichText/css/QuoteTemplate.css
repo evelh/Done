@@ -113,7 +113,7 @@ li.Button{
 }
 .ImageHotspotContainer {
     display: block;
-    height: 1086px;
+    height: 1422px;
     width: 818px;
     position: relative;
     border: 1px solid #ccc;
@@ -123,7 +123,6 @@ li.Button{
     margin: 30px 0;
     height: 1056px;
     width: 816px;
-    background-image: url(../img/details.png);
 }
 .ImageHotspotContainer .Image .ImageHotspot {
     border-top: 2px dashed rgba(0,0,0,0.2);

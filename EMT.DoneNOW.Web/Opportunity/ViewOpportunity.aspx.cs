@@ -21,6 +21,7 @@ namespace EMT.DoneNOW.Web.Opportunity
         protected crm_contact contact = null;
         protected LocationBLL locationBLL = new LocationBLL();
         protected CompanyBLL companyBll = new CompanyBLL();
+        protected List<crm_quote> quoteList = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -33,6 +34,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 if (opportunity != null)
                 {
                     dic = new OpportunityBLL().GetField();
+                    quoteList = new crm_quote_dal().GetQuoteByOpportunityId(opportunity.id);
                     account = new CompanyBLL().GetCompany(opportunity.account_id);
                     if (opportunity.contact_id != null)
                     {

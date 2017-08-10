@@ -38,7 +38,6 @@
                 </li>
             </ul>
         </div>
-    </form>
     <div class="Section">
         <div class="Heading">报价顶部</div>
         <div class="DescriptionText">这是报价顶部</div>
@@ -59,46 +58,31 @@
             </div>
             <div class="VariableInsertion">
                 <div class="AlertContent">
+
+
                     <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
-                    <select name="" id="AlertVariableFilter">
-                        <option value="1">Show All Variables</option>
-                        <option value="2">Show Account Variables</option>
-                        <option value="3">Show Contact Variables</option>
-                        <option value="4">Show Opportunity Variables</option>
-                        <option value="5">Show Quote Variables</option>
-                        <option value="6">Show Miscellaneous Variables</option>
-                        <option value="7">Show Your Company Variables</option>
-                        <option value="8">Show Your Location Variables</option>
+
+                     <asp:ScriptManager ID="ScriptManager1" runat="server">
+         </asp:ScriptManager>
+         <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">
+             <ContentTemplate>
+              <asp:DropDownList ID="AlertVariableFilter" runat="server" OnSelectedIndexChanged="AlertVariableFilter_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>              
+                 <select name="" multiple="multiple" id="AlertVariableList">
+                         <asp:Literal ID="VariableList" runat="server"></asp:Literal>
                     </select>
-                    <select name="" multiple="multiple" id="AlertVariableList">
-                        <option value="" class="val">1</option>
-                        <option value="" class="val">2</option>
-                        <option value="" class="val">3</option>
-                        <option value="" class="val">4</option>
-                        <option value="" class="val">5</option>
-                        <option value="" class="val">6</option>
-                        <option value="" class="val">7</option>
-                        <option value="" class="val">8</option>
-                        <option value="" class="val">9</option>
-                        <option value="" class="val">10</option>
-                        <option value="" class="val">1</option>
-                        <option value="" class="val">2</option>
-                        <option value="" class="val">3</option>
-                        <option value="" class="val">4</option>
-                        <option value="" class="val">5</option>
-                        <option value="" class="val">6</option>
-                        <option value="" class="val">7</option>
-                        <option value="" class="val">8</option>
-                        <option value="" class="val">9</option>
-                        <option value="" class="val">10</option>
-                    </select>
+             </ContentTemplate>
+         </asp:UpdatePanel>
+
+
+
+
                 </div>
             </div>
         </div>
     </div>
     <!--黑色幕布-->
     <div id="BackgroundOverLay"></div>
-
+            </form>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <%-- <script type="text/javascript" src="../RichText/js/jquery-3.2.1.min.js"></script>--%>
     <script type="text/javascript" src="../RichText/js/ueditor.config.js"></script>
@@ -148,14 +132,15 @@
                 $("#BackgroundOverLay").hide();
                 $(".AlertBox").hide();
             });
-
-            $(".val").on("dblclick",function(){
-                UE.getEditor('containerHead').focus();
-                UE.getEditor('containerHead').execCommand('inserthtml',$(this).html());
-                $("#BackgroundOverLay").hide();
-                $(".AlertBox").hide();
-            })
         });
+        function dbclick(val) {
+            UE.getEditor('containerHead').focus();
+            UE.getEditor('containerHead').execCommand('inserthtml', $(val).html());
+            $("#BackgroundOverLay").hide();
+            $(".AlertBox").hide();
+        }
+
+
         //        点击确定数据保存至后台  在展示页展示
         $("#OkButton1").on("click", function () {
             var html = ue.getContent();
@@ -170,7 +155,7 @@
         })
         //情空内容
         $("#ResetButton").on("click",function(){
-            ue.setContent("<%= quote_head%>");
+            ue.setContent("<p style='text-align: right;'><strong>报价</strong></p><p style='text-align: right;'><strong>报价编号：[报价：报价编号]</strong></p><p style='text-align: right;'><strong><br/></strong></p><p style='text-align: right;'>付款条件：[报价：付款条件]</p><p style='text-align: right;'>到期日期：[报价：到期日期]</p><p style='text-align: right;'><strong><br/></strong></p><p style='text-align: left;'>[<span style='font-family: Simsun; font-size: 12px;'>Miscellaneous</span>:报价LOGO]<br/></p><p>Quote Prepared For &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;Quote Prepared For</p><p>[联系：姓名] &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<strong style='font-family: Simsun; font-size: 12px; white-space: normal;'>[Opportunity: Owner]</strong></p><p>[账户：姓名] &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<strong style='font-family: Simsun; font-size: 12px; white-space: normal;'>[Your Company: Name]</strong></p><p>[联系：地址] &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<span style='font-family: Simsun; font-size: 12px;'>[Opportunity: Owner Address]</span></p><p>手机：[联系：手机号] &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<span style='font-family: Simsun; font-size: 12px;'>Phone:[Opportunity: Owner Office Phone]</span></p><p>[联系：电子邮箱] &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<span style='font-family: Simsun; font-size: 12px;'>Fax:[Your Company: Fax]&nbsp;</span></p><p><span style='font-family: Simsun; font-size: 12px;'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href='mailto:[Opportunity: Owner Email Address]' style='font-family: Simsun; font-size: 12px; white-space: normal;'>[Opportunity: Owner Email Address]</a></span></p><p><br/></p>");
         })
     </script>
 </body>
