@@ -167,6 +167,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="error.html" />
     <Content Include="Images\down.png" />
     <Content Include="Images\refresh.png" />
     <Content Include="Images\view.png" />
