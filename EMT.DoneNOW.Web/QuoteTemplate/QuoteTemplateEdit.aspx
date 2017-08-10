@@ -7,6 +7,8 @@
 	<title>报价模板</title>
 	<link rel="stylesheet" href="../RichText/css/reset.css">
 	<link rel="stylesheet" href="../RichText/css/QuoteTemplate.css">
+       <link href="../Content/Quote.css" rel="stylesheet" />
+    <link href="../Content/reset.css" rel="stylesheet" />
 </head>
 <body>
 	<!--顶部  内容和帮助-->
@@ -58,7 +60,7 @@
 						<asp:Literal ID="head" runat="server"></asp:Literal>
 						<div class="CompleteLabel" id="c1">
 							<div class="Compact Information">
-                                <div class="Title1">报价页眉</div>
+                                <%--<div class="Title1">报价页眉</div>--%>
 								<div class="IntendedAction">编辑</div>
 							</div>
 						</div>

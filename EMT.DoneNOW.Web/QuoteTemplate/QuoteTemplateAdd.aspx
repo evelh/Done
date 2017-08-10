@@ -143,8 +143,7 @@
                         <tr><td><div class="clear">
                             <asp:TextBox ID="Subtotal" runat="server">子汇总</asp:TextBox></div></td><td>
                                 <div class="clear">
-                                <asp:TextBox ID="SemiAnnualTotal" runat="server">半年收费汇总</asp:TextBox>                                                                                                        </div></td></tr>
-       
+                                <asp:TextBox ID="SemiAnnualTotal" runat="server">半年收费汇总</asp:TextBox>                                                                                                        </div></td></tr>       
                        <tr><td><div class="clear"><label>汇总</label></div></td><td><div class="clear"><label>年收费子汇总</label></div></td></tr>
                         <tr><td><div class="clear">
                             <asp:TextBox ID="Total" runat="server">汇总</asp:TextBox></div></td><td><div class="clear">
@@ -268,13 +267,119 @@
             window.close();
         }
     });  // 直接关闭窗口
-    //$("#Button1").click(function () {
-    //         var Name = $("#Name").val();          //  公司名称--必填项校验
-    //    if (Name == null || Name == '') {
-    //        alert("请输入报价模板名称");
-    //        return false;
-    //         }
-    //});
+    //必填项校验
+    $("#Button1").click(function () {
+        var name = $("#Name").val();
+        if (name == null || name == '') {
+            alert("请输入报价模板名称");
+            return false;
+        }
+        var st = $("#Subtotal").val();
+        if (st == null || st == '') {
+            alert("请输入子汇总");
+            return false;
+        }
+        var t = $("#Total").val();
+        if (t == null || t == '') {
+            alert("请输入汇总");
+            return false;
+        }
+        var yst = $("#YearlySubtotal").val();
+        if (yst == null || yst == '') {
+            alert("请输入年收费子汇总");
+            return false;
+        }
+        var sat = $("#SemiAnnualTotal").val();
+        if (sat == null || sat == '') {
+            alert("请输入半年收费汇总");
+            return false;
+        }
+        var sast = $("#SemiAnnualSubtotal").val();
+        if (sast == null || sast == '') {
+            alert("请输入半年收费子汇总");
+            return false;
+        }
+        var yt = $("#YearlyTotal").val();
+        if (yt == null || yt == '') {
+            alert("请输入年收费汇总");
+            return false;
+        }
+        var tt = $("#TotalTaxes").val();
+        if (tt == null || tt == '') {
+            alert("请输入税收汇总");
+            return false;
+        }
+        var it = $("#ItemTotal").val();
+        if (it == null || it == '') {
+            alert("请输入子项汇总");
+            return false;
+        }
+        var sst = $("#ShippingSubtotal").val();
+        if (sst == null || sst == '') {
+            alert("请输入配送子汇总");
+            return false;
+        }
+        var st1 = $("#ShippingTotal").val();
+        if (st1 == null || st1 == '') {
+            alert("请输入配送汇总");
+            return false;
+        }
+        var ott = $("#OneTimeTotal").val();
+        if (ott == null || ott == '') {
+            alert("请输入一次性收费汇总");
+            return false;
+        }
+        var otst = $("#OneTimeSubtotal").val();
+        if (otst == null || otst == '') {
+            alert("请输入一次性收费子汇总汇总");
+            return false;
+        }
+        var mst = $("#MonthlySubtotal").val();
+        if (mst == null || mst == '') {
+            alert("请输入月收费子汇总");
+            return false;
+        }
+        var mt = $("#MonthlyTotal").val();
+        if (mt == null || mt == '') {
+            alert("请输入月收费汇总");
+            return false;
+        }
+        var qst = $("#QuarterlySubtotal").val();
+        if (qst == null || qst == '') {
+            alert("请输入季收费子汇总");
+            return false;
+        }
+        var qt = $("#QuarterlyTotal").val();
+        if (qt == null || qt == '') {
+            alert("请输入季收费汇总");
+            return false;
+        }
+        var otdst = $("#OneTimeDiscountSubtotal").val();
+        if (otdst == null || otdst == '') {
+            alert("请输入一次性折扣子汇总");
+            return false;
+        }
+        var otdt = $("#OneTimeDiscountTotal").val();
+        if (otdt == null || otdt == '') {
+            alert("请输入一次性折扣汇总");
+            return false;
+        }
+        var ost = $("#OptionalSubtotal").val();
+        if (ost == null || ost == '') {
+            alert("请输入可选项子汇总");
+            return false;
+        }
+        var ot = $("#OptionalTotal").val();
+        if (ot == null || ot == '') {
+            alert("请输入可选项汇总");
+            return false;
+        }
+        var ioqt = $("#IncludingOptionalQuoteItems").val();
+        if (ioqt == null || ioqt == '') {
+            alert("请输入包括可选项汇总");
+            return false;
+        }
+    });
     var bol = true;
     $("#show_each_tax_in_tax_period").click(function () {
         if (bol) {

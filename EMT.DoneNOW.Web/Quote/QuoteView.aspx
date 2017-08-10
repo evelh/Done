@@ -17,8 +17,6 @@
         </div>
     </div>
     <form id="form1" runat="server">
-        <div>
-        </div>
          <div class="ButtonContainer">
             <ul>
                 <li class="Button" id="SaveButton" tabindex="0">
@@ -62,15 +60,20 @@
     <div class="ScrollingContainer">
         <div class="CustomHtmlPrintContainer">
             <div class="PreviewQuote_QuoteTemplateDropdown">
-                <asp:DropDownList ID="quoteTemplateDropDownList" runat="server" OnSelectedIndexChanged="quoteTemplateDropDownList_SelectedIndexChanged"></asp:DropDownList>
-            </div>
+                <asp:ScriptManager ID="ScriptManager1" runat="server">
+         </asp:ScriptManager>
+         <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">
+             <ContentTemplate>
+                <asp:DropDownList ID="quoteTemplateDropDownList" runat="server" OnSelectedIndexChanged="quoteTemplateDropDownList_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
             <div id="quoteTemplateDiv">
                 <asp:Literal ID="table" runat="server"></asp:Literal>
                <%-- 此处写表格显示数据--%>
             </div>
+                   </ContentTemplate>
+         </asp:UpdatePanel>  
         </div>
     </div>
-
+</div>
     </form>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script type="text/javascript">
