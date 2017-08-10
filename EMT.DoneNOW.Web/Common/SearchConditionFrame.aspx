@@ -231,16 +231,29 @@
 	<script src="../Scripts/index.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/multiple-select.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchFrame.js" type="text/javascript" charset="utf-8"></script>
-    <script>
-        var colors = ["#efefef", "white"];
+    <script type="text/javascript">
         var index = 0;
         $("#Icon").on("click", function () {
-            $(this).find(".content").toggle();
-            var color = colors[index++];
-            $(".informationTitle").parent().css("background", color);
-            if (index == colors.length) {
+            index++;
+            if (index == 2) {
+                window.parent.document.getElementById("SearchFrameSet").rows = "350,*";
+                $(".informationTitle").parent().css("background", "white");
+                $(".information").children(".content").removeClass("hide");
+                $("#Icon").removeClass("jia");
                 index = 0;
+            } else {
+                $(".information").children(".content").addClass("hide");
+                $("#Icon").addClass("jia");
+                window.parent.document.getElementById("SearchFrameSet").rows = "92,*";
+                $(".informationTitle").parent().css("background", "#efefef");
+                index = 1;
             }
+        })
+        $(".header i").on("mouseover",function () {
+            window.parent.document.getElementById("SearchFrameSet").rows = "350,*";
+            $("#Icon").removeClass("jia");
+            $(".informationTitle").parent().css("background", "white");
+            $(".information").children(".content").removeClass("hide");
         })
     </script>
 </body>

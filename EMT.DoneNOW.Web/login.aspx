@@ -68,7 +68,11 @@
 </footer>
 </body>
 
+<script src="Scripts/common.js"></script>
 <script type="text/javascript">
-    document.getElementsByClassName("layout-content")[0].style.minHeight=document.body.clientHeight-200+'px';
+    document.getElementsByClassName("layout-content")[0].style.minHeight = document.body.clientHeight - 200 + 'px';
+    window.onload = function () {
+        myBrowser();
+    }
 </script>
 </html>

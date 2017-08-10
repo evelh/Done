@@ -8,6 +8,13 @@
 		<link rel="stylesheet" type="text/css" href="Content/base.css"/>
 		<link rel="stylesheet" type="text/css" href="Content/index.css"/>
 	</head>
+<style>
+    @media screen and (max-width: 1430px){
+       .cont{
+           width:1200px;
+       }
+	}
+</style>
 	<body>
 		<div class="index-titleLeft">
 			<dl>
@@ -93,9 +100,17 @@
 			</div>
 		</div>
 		<div class="cont" style="height:100%;">
-            <iframe id="PageFrame" name="PageFrame" style="width:100%;height:1200px;" src="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>"></iframe>
+            <iframe id="PageFrame" name="PageFrame" style="width:100%;" src="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>"></iframe>
 		</div>
 	</body>
 	<script src="Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="Scripts/index.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        $(window).resize(function (){
+        var Height = $(document).height()-142+"px";
+        $("#PageFrame").css("height", Height);
+        })
+        var Height = $(document).height()-142 + "px";
+        $("#PageFrame").css("height", Height);
+    </script>
 </html>

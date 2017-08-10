@@ -12,8 +12,9 @@
         height:100%;
     }
 </style>
+
     <%if (conditionHeight > 0) { %>
-<frameset id="SearchFrameSet" name="SearchFrameSet" rows="420,*" cols="100%" framespacing="0" border="0">
+<frameset id="SearchFrameSet" name="SearchFrameSet" rows="350,*" cols="100%" framespacing="0" border="0">
     <frame src="SearchConditionFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>" id="SearchCondition"></frame>
     <frame src="SearchBodyFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>&show=1" id="SearchBody"></frame>
 </frameset>
