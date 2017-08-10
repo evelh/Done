@@ -32,8 +32,10 @@ $(".informationTitle i").click(function(){
 	//$(".information").toggleClass("ba");
     $(this).toggleClass("jia");
     $(this).parent().next("div").toggleClass("hide");
-	//$(".information").children("div").toggleClass("hide");
+    $("#SearchFrameSet").remove();
+    
 })
+
 
 var  informationWidth=$(".information").width();
 var leftLenght=$(".information ").children(".left").length;
