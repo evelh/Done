@@ -32,6 +32,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     if (quote_item != null)
                     {
                         isAdd = false;
+                        optional.Checked = quote_item.optional == 1;
                         switch (quote_item.type_id)   // todo 不同类型的报价项
                         {
                             case (int)QUOTE_ITEM_TYPE.WORKING_HOURS:
@@ -102,6 +103,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 period_type_id.DataBind();
                 // period_type_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 period_type_id.SelectedValue = ((int)QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToString();
+                period_type_id.Enabled = true;
                 #endregion
 
 
@@ -131,14 +133,14 @@ namespace EMT.DoneNOW.Web.QuoteItem
         protected void save_close_Click(object sender, EventArgs e)
         {
             var quote_item = AssembleModel<crm_quote_item>();
-
+            quote_item.optional = Convert.ToUInt64(optional.Checked ? 1 : 0);
             if (isAdd)
             {
                 var result = new QuoteItemBLL().Insert(quote_item,GetLoginUserId());
                 switch (result)
                 {
                     case DTO.ERROR_CODE.SUCCESS:
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价项成功');window.close();</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价项成功');window.close();self.opener.location.reload();</script>");
                         break;
                     case DTO.ERROR_CODE.ERROR:
                         break;
@@ -165,7 +167,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 switch (result)
                 {
                     case DTO.ERROR_CODE.SUCCESS:
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改报价项成功');window.close();</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改报价项成功');window.close();self.opener.location.reload();</script>");
                         break;
                     case DTO.ERROR_CODE.ERROR:
                         break;
@@ -188,7 +190,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
         protected void save_new_Click(object sender, EventArgs e)
         {
             var quote_item = AssembleModel<crm_quote_item>();
-
+            quote_item.optional = Convert.ToUInt64(optional.Checked ? 1 : 0);
             if (isAdd)
             {
                 var result = new QuoteItemBLL().Insert(quote_item, GetLoginUserId());

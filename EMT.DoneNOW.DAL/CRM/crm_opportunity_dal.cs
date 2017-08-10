@@ -72,6 +72,12 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql<crm_opportunity>($"select DISTINCT o.* FROM crm_opportunity o, crm_quote q where o.delete_time=0 and q.delete_time = 0 and o.account_id={account_id} and o.id not in (select DISTINCT o.id FROM crm_opportunity o inner JOIN crm_quote q on q.opportunity_id = o.id where o.delete_time = 0 and q.delete_time = 0 and o.account_id = {account_id}); ");
         }
 
+        public crm_opportunity GetOpportunityByOtherId(long id)
+        {
+            return FindSignleBySql<crm_opportunity>($"SELECT o.* FROM crm_opportunity o LEFT JOIN crm_quote q on o.id = q.opportunity_id where(o.id = {id} AND o.delete_time = 0) or(q.id = {id} and q.delete_time = 0) ");
+        }
+
+
     }
 
 }

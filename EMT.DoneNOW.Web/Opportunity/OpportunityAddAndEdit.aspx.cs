@@ -198,6 +198,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 {
                     // Response.Write("<script>alert('添加商机成功！');window.location.href=window.location.href;</script>");  //
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加商机成功！'); </script>");
+                    Response.Redirect("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + id);
                 }
             }
             else
@@ -216,6 +217,8 @@ namespace EMT.DoneNOW.Web.Opportunity
                 else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改商机成功！');</script>");
+                    Response.Redirect("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + opportunity.id);
+
                     //Response.Write("<script>alert('修改商机成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
                 }
             }

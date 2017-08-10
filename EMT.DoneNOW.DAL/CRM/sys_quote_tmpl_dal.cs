@@ -104,6 +104,18 @@ namespace EMT.DoneNOW.DAL
             return list;
         }
 
+        public List<sys_quote_tmpl> GetQuoteTemp(string where = "")
+        {
+            if (where == "")
+            {
+                return FindListBySql("select * from sys_quote_tmpl where delete_time=0 ");
+            }
+            else
+            {
+                return FindListBySql("select * from sys_quote_tmpl where delete_time=0 "+where);
+            }
+        }
+
     }
 
 }

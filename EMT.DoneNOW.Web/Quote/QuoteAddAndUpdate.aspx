@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
+    <%--<link href="../Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />--%>
     <link href="../Content/index.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
 </head>
@@ -31,7 +32,7 @@
         </div>--%>
         <div class="nav-title">
             <ul class="clear">
-                <li class="boders" id="">基本信息</li>
+                <li class="boders" id="">常规信息</li>
                 <li id="">销售订单</li>
                 <li id="">通知</li>
             </ul>
@@ -128,15 +129,17 @@
                         <td>
                             <div class="clear">
                                 <label>有效日期</label>
-                                <input type="date" name="effective_date" id="effective_date" value="<%=(!isAdd)&&(quote.effective_date!=null)?quote.effective_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
+                                <input type="text" class="form_datetime sl_cdt" name="effective_date" id="effective_date" value="<%=(!isAdd)&&(quote.effective_date!=null)?quote.effective_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <div class="clear">
+
+                                <%--<input type="text" name="test" id="test" class="form_datetime sl_cdt"/>--%>
                                 <label>过期日期</label>
-                                <input type="date" name="expiration_date" id="expiration_date" value="<%=(!isAdd)&&(quote.expiration_date!=null)?quote.expiration_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
+                                <input type="text" class="form_datetime sl_cdt" name="expiration_date" id="expiration_date" value="<%=(!isAdd)&&(quote.expiration_date!=null)?quote.expiration_date.ToString("yyyy-MM-dd"):DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd") %>" />
                             </div>
                         </td>
                     </tr>
@@ -144,7 +147,7 @@
                         <td>
                             <div class="clear">
                                 <label>预计完成日期<span class="red">*</span></label>
-                                <input type="date" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd)&&(quote.projected_close_date!=null)?quote.projected_close_date.ToString("dd/MM/yyyy"):"" %>" />
+                                <input type="text" class="form_datetime sl_cdt" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd)&&(quote.projected_close_date!=null)?quote.projected_close_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
                             </div>
                             <div style="margin-top: -30px; display: -webkit-box;">
                                 <a onclick="AddTime(0)">今天</a>|<a onclick="AddTime(7)">7</a>|<a onclick="AddTime(30)">30</a>|<a onclick="AddTime(60)">60</a>
@@ -157,11 +160,11 @@
                                 <label>成交概率</label>
                                 <%if (isAdd)
                                     { %>
-                                <input type="text" name="probability" id="probability" />
+                                <input type="text" name="probability" id="probability" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                 <%}
                                 else
                                 { %>
-                                 <input type="text" name="probability" id="probability" value="<%=opportunity.probability %>" disabled="disabled" />
+                                 <input type="text" name="probability" id="probability" value="<%=opportunity.probability %>" disabled="disabled" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                 <%} %>
                             </div>
                         </td>
@@ -207,9 +210,8 @@
                     <tr>
                         <td>
                             <div class="clear">
-                                <label>报价模板</label>
-                                <select name="quote_tmpl_id" id="quote_tmpl_id">
-                                </select>
+                                <label>报价模板</label><asp:DropDownList ID="quote_tmpl_id" runat="server"></asp:DropDownList>
+                              
                             </div>
                         </td>
                     </tr>
@@ -486,7 +488,18 @@
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
 <script src="../Scripts/NewContact.js"></script>
+
+	<script src="../Scripts/bootstrap-datetimepicker.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../Scripts/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
 <script>
+    $(".form_datetime").datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
 
     $(function () {
         InitArea();  // 地址下拉框
@@ -653,7 +666,7 @@
                         $("#province_id").val(data.province_id);
                         $("#province_idInit").val(data.province_id);
                         debugger;
-
+                        InitArea();
                         $("#city_idInit").val(data.city_id);
                         $("#city_id").val(data.city_id);
 
@@ -692,6 +705,10 @@
     }
 
     function SubmitCheck() {
+
+       
+
+
         var ParentComoanyName = $("#ParentComoanyNameHidden").val();
         if (ParentComoanyName == "") {
             alert("请通过查找功能查找客户");
@@ -708,7 +725,7 @@
             alert("创建时间出错");
         }
         var projected_close_date = $("#projected_close_date").val();
-        debugger;
+        //debugger;
         if (projected_close_date == "") {
             alert("请填写预计完成时间");
             return false;
@@ -716,10 +733,37 @@
         // 如果选择商机的话，默认为商机联系人
         var contact_id = $("#contact_id").val();
        // var opportunity_id = $("#opportunity_id").val();
-        if (contact_id == "") {
+        if (contact_id == "" || contact_id ==0) {
             alert("请选择联系人");
             return false;
         }
+
+        debugger;
+        var effective_date = $("#effective_date").val();
+        var expiration_date = $("#expiration_date").val();
+        //alert(check(effective_date));
+        //alert(check(expiration_date));
+        if (!check(effective_date)) {
+            alert("有效日期填写有误");
+            return false;
+        }
+        if (!check(expiration_date)) {
+            alert("过期日期填写有误");
+            return false;
+        }
+        var projected_close_date = $("#projected_close_date").val();
+        if (!check(effective_date)) {
+            alert("预计完成日期有误");
+            return false;
+        }
+
+
+
+
         return true;
+    }
+
+    function check(date) {
+        return (new Date(date).getDate() == date.substring(date.length - 2));
     }
 </script>
