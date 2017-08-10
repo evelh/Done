@@ -161,6 +161,7 @@
         <%} %>
     
     <div id="menu">
+        <%if (contextMenu.Count > 0) { %>
 		<ul style="width:220px;">
             <%foreach (var menu in contextMenu) { %>
             <li onclick="<%=menu.click_function %>"><i class="menu-i1"></i><%=menu.text %>
@@ -175,6 +176,7 @@
             </li>
             <%} %>
 		</ul>
+        <%} %>
 	</div>
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
