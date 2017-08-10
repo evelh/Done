@@ -269,6 +269,7 @@
                                                 <div>
                                                     <input type="text" name="name" id="name" value="<%=isAdd?"":quote_item.name %>" />
                                                     <i onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <input type="hidden" id="nameHidden"/>
                                                 </div>
                                             </td>
                                         </tr>
@@ -558,7 +559,7 @@
     }
 
     function chooseRole() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=EMT.DoneNOW.DTO.OpenWindow.RoleSelect %>&field=name", 'new', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ROLL_CALLBACK %>&field=name", '<%=EMT.DoneNOW.DTO.OpenWindow.RoleSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function toDecimal2(x) {
         var f = parseFloat(x);
