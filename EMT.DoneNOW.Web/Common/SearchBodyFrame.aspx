@@ -14,7 +14,7 @@
 </head>
 <style>
     .searchcontent{
-  OVERFLOW:   scroll;   width:   1800px;   height:   100%;
+  OVERFLOW:   scroll;   width:   100%;   height:   100%;min-width:2200px;
     }
     .searchcontent table th {
     background-color: #cbd9e4;
@@ -24,6 +24,8 @@
     line-height: 28px;
     text-align:center;
 }
+    
+  
 </style>
 <body>
     <form id="form1">
@@ -42,7 +44,12 @@
                 <%} %>
             </div>
         </div>
-        <div class="contenttitle clear">
+        <div class="contentboby">
+            <div class="contenttitle clear" style="    position: fixed; border-bottom:1px solid #e8e8fa;
+    left:0;
+    top: 0;
+    background: #fff;
+    width: 100%;">
 			<ul class="clear fl">
 				<li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
 				<li><i style="background-image: url(../Images/print.png);"></i></li>
@@ -84,9 +91,12 @@
 			</div>
             <%} %>
 		</div>
+        </div>        
+        </form>
         <%if (queryResult != null) { %>
-			<div class="searchcontent" id="searchcontent">
-				<table border="" cellspacing="0" cellpadding="0" width="100%;">
+
+			<div class="searchcontent" id="searchcontent" style="overflow:hidden;margin-top: 56px;">
+				<table border="" cellspacing="0" cellpadding="0"  style="overflow:scroll;width:100%;height:100%;">
 					<tr>
                         <%foreach(var para in resultPara)
                             {
@@ -149,7 +159,7 @@
 				</table>
 			</div>
         <%} %>
-    </form>
+    
     <div id="menu">
 		<ul style="width:220px;">
             <%foreach (var menu in contextMenu) { %>

@@ -51,7 +51,7 @@
         </div>
         <div class="content clear " style="padding: 10px;">
         <%if (queryResult != null) { %>
-			<div class="searchcontent" id="searchcontent">
+			<div class="searchcontent" id="searchcontent" style="min-width:580px;width:580px;">
 				<table border="" cellspacing="" cellpadding="">
 					<tr>
                         <%foreach(var para in resultPara)
