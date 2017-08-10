@@ -39,7 +39,7 @@ namespace EMT.DoneNOW.Web
                 StringBuilder sb = new StringBuilder();
                 foreach (string va in list)
                 {
-                    sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va + "</option>");
+                    sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va.Replace("'", "") + "</option>");
                 }
                 this.VariableList.Text = sb.ToString();
             }
@@ -63,7 +63,7 @@ namespace EMT.DoneNOW.Web
                 var list = new QuoteTemplateBLL().GetAllVariable();
                 foreach (string va in list)
                 {
-                    sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va + "</option>");
+                    sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va.Replace("'", "") + "</option>");
                 }
                 this.VariableList.Text = sb.ToString();
             }
@@ -74,7 +74,7 @@ namespace EMT.DoneNOW.Web
                 var list = new QuoteTemplateBLL().GetVariable(id);
                 foreach (string va in list)
                 {
-                    sb.Append("<option class='val' ondblclick='dbclick(this);' >" + va + "</option>");
+                    sb.Append("<option class='val' ondblclick='dbclick(this);' >" + va.Replace("'", "") + "</option>");
                 }
                 this.VariableList.Text = sb.ToString();
             }

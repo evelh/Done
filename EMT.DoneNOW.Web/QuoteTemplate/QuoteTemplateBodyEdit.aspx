@@ -596,6 +596,43 @@
             var One_Time_Discount_items = $("#One_Time_Discount_items").val();
             var Optional_items = $("#Optional_items").val();
             var No_category = $("#No_category").val();
+            if (One_Time_items == null || One_Time_items == '') {
+                alert("请输入一次性收费");
+                return false;
+            }
+            if (Monthly_items == null || Monthly_items == '') {
+                alert("请输入月收费");
+                return false;
+            }
+            if (Quarterly_items == null || Quarterly_items == '') {
+                alert("请输入季收费");
+                return false;
+            }
+            if (Semi_Annual_items == null || Semi_Annual_items == '') {
+                alert("请输入半年收费");
+                return false;
+            }
+            if (Yearly_items == null || Yearly_items == '') {
+                alert("请输入年收费");
+                return false;
+            }
+            if (Shipping_items == null || Shipping_items == '') {
+                alert("请输入配送收费");
+                return false;
+
+            }
+            if (One_Time_Discount_items == null || One_Time_Discount_items == '') {
+                alert("请输入一次性折扣收费");
+                return false;
+            }
+            if (Optional_items == null || Optional_items == '') {
+                alert("请输入“可选项”");
+                return false;
+            }
+            if (No_category == null || No_category == '') {
+                alert("请输入“无分类”");
+                return false;
+            }
         var GROUPING_HEADER_TEXTITEM = { "One_Time_items": One_Time_items, "Monthly_items": Monthly_items, "Quarterly_items": Quarterly_items, "Semi_Annual_items": Semi_Annual_items, "Yearly_items": Yearly_items, "Shipping_items": Shipping_items, "One_Time_Discount_items": One_Time_Discount_items, "Optional_items": Optional_items, "No_category": No_category};
         var jsonArrayFinal = JSON.stringify(GROUPING_HEADER_TEXTITEM);
         data.push(jsonArrayFinal);
