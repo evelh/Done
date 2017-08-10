@@ -34,6 +34,7 @@ namespace EMT.DoneNOW.BLL
             dic.Add("addressdistrict", new d_district_dal().GetDictionary());                       // 地址表（省市县区）
 
             dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));              // 税区
+            dic.Add("quote_tmpl", new sys_quote_tmpl_dal().GetQuoteTemp());
 
 
 
@@ -88,6 +89,7 @@ namespace EMT.DoneNOW.BLL
                     ext3 = 0,
                     ext4 = 0,
                     ext5 = 0,
+                    spread_value = 0,
                     // create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     create_user_id = user_id,
@@ -123,6 +125,7 @@ namespace EMT.DoneNOW.BLL
             quote.payment_type_id = quote.payment_type_id == 0 ? null : quote.payment_type_id;
             quote.shipping_type_id = quote.shipping_type_id == 0 ? null : quote.shipping_type_id;
             quote.tax_region_id = quote.tax_region_id == 0 ? null : quote.tax_region_id;
+            quote.quote_tmpl_id = quote.quote_tmpl_id == 0 ? null : quote.quote_tmpl_id;
             _dal.Insert(quote);
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
@@ -216,6 +219,7 @@ namespace EMT.DoneNOW.BLL
             quote.payment_type_id = quote.payment_type_id == 0 ? null : quote.payment_type_id;
             quote.shipping_type_id = quote.shipping_type_id == 0 ? null : quote.shipping_type_id;
             quote.tax_region_id = quote.tax_region_id == 0 ? null : quote.tax_region_id;
+            quote.quote_tmpl_id = old_quote.quote_tmpl_id;
             quote.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             quote.update_user_id = user_id;
             _dal.Update(quote);
