@@ -39,7 +39,7 @@
                         <li><a href="#">新建定期服务合同</a></li>
                         <li><a href="#" onclick="window.open('../Opportunity/ViewOpportunity?id=<%=quote.opportunity_id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityView %>','left=200,top=200,width=960,height=750', false);">查看商机</a></li>
                         <li><a href="#">关闭报价</a></li>
-                        <li><a href="#">丢失报价</a></li>
+                        <li><a href="#" onclick="window.open('../Quote/QuoteLost?id=<%=quote.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityLose %>','left=200,top=200,width=960,height=750', false);">丢失报价</a></li>
                     </ul>
                 </li>
                 <li><a href="#" onclick="window.open('../Quote/QuoteAddAndUpdate.aspx?id=<%=quote.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteEdit %>','left=200,top=200,width=960,height=750', false);">编辑报价单</a></li>

@@ -300,6 +300,93 @@ namespace EMT.DoneNOW.BLL
         {
             return _dal.FindSignleBySql<crm_quote>($"select * from crm_quote WHERE id = {id} and delete_time = 0 ");
         }
+
+        /// <summary>
+        /// 丢失报价
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="quoteId"></param>
+        /// <param name="reasonType">丢失原因类型</param>
+        /// <param name="reasonDetail">丢失原因详情</param>
+        /// <returns></returns>
+        public string LossQuote(long userId, long quoteId, int reasonType, string reasonDetail)
+        {
+            DicEnum.SYS_CLOSE_OPPORTUNITY needReasonType;
+            var type = new SysSettingBLL().GetValueById(SysSettingEnum.CRM_OPPORTUNITY_LOSS_REASON);
+            int value = 0;
+            if (!int.TryParse(type, out value))
+                needReasonType = DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_NONE;
+            else
+                needReasonType = (DicEnum.SYS_CLOSE_OPPORTUNITY)value;
+
+            // 更新商机状态为丢失
+            var opporDal = new crm_opportunity_dal();
+            var quote = _dal.FindById(quoteId);
+            var oppor = opporDal.FindById(quote.opportunity_id);
+            var oldOppor = opporDal.FindById(quote.opportunity_id);
+            oppor.status_id = (int)DicEnum.OPPORTUNITY_STATUS.LOST;
+            oppor.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            oppor.update_user_id = userId;
+            if (needReasonType == SYS_CLOSE_OPPORTUNITY.NEED_TYPE_DETAIL)
+                oppor.loss_reason = reasonDetail;
+            if (needReasonType != SYS_CLOSE_OPPORTUNITY.NEED_NONE)
+                oppor.loss_reason_type_id = reasonType;
+            opporDal.Update(oppor);
+
+            // 保存操作商机日志
+            var user = UserInfoBLL.GetUserInfo(userId);
+            new sys_oper_log_dal().Insert(new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = userId,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.OPPORTUNITY,
+                oper_object_id = oppor.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = opporDal.CompareValue(oldOppor, oppor),
+                remark = "修改商机信息"
+            });
+
+            // 新增通知信息
+            var notify_email_dal = new com_notify_email_dal();
+            var notify_email = new com_notify_email()
+            {
+                id = notify_email_dal.GetNextIdCom(),
+                cate_id = (int)NOTIFY_CATE.CRM,
+                event_id = 1,             // TODO:
+                to_email = "",                  // TODO:  
+                notify_tmpl_id = 1,    // TODO:
+                from_email = user.email,   // todo
+                from_email_name = user.name,  // todo 
+                subject = "",       // TODO:
+                body_text = "",    // TODO:
+                is_html_format = 0,                                // 内容是否是html格式，0纯文本 1html
+                create_user_id = user.id,
+                update_user_id = user.id,
+                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+
+            };
+            notify_email_dal.Insert(notify_email);
+            new sys_oper_log_dal().Insert(new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = user.id,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.OPPORTUNITY,
+                oper_object_id = notify_email.id,
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = notify_email_dal.AddValue(notify_email),
+                remark = "新增通知",
+            });  // 插入日志
+
+            return "";
+		}
+
         public DataTable GetVar(int id)
         {
             string sql=@"select  (select name from crm_account where id=c.account_Id) as '[Contact: Company]', (case when is_active=1 then '已激活' else '未激活'end ) as '[联系人：激活的]', NULL as '[联系人：外部编号]', c.title as '[联系人：称呼]', c.first_name as '[联系人：名]', c.last_name as '[联系人：姓]', (select name from d_general where id=c.suffix_id) as '[联系人：后缀]', null as '[联系人：中间名]', c.name as '[联系人：姓名]', c.name as '[联系人：姓名（链接）]', c.name as '[联系人：链接]', c.ID as '[Contact: ID]', null as '[联系人：头衔]', l.address as '[联系人：地址]', l.additional_address as '[联系人：补充地址]', (select name from d_district where id=l.city_id) as '[联系人：城市]', (select name from d_district where id=l.province_id) as '[联系人：省]', l.postal_code as '[Contact: Post Code]', (select name from d_country where id=l.country_id) as '[联系人：国家]', c.email as '[联系人：邮件地址]', c.phone as '[联系人：电话]', null as '[联系人：电话分机]', c.alternate_phone as '[联系人：备用电话]', c.mobile_phone as '[联系人：移动电话]', c.fax as '[联系人：传真]', null as '[联系人：Client Access Portal用户姓名]', c.email2 as '[Contact: Alternate Email1]', null as '[Contact: Customer Contact]', null as '[Contact: Address]' from crm_contact c LEFT JOIN crm_location l on c.location_id = l.id where 1 = 1    and c.id in("+id+") and 1 = 1  order by  c.name";

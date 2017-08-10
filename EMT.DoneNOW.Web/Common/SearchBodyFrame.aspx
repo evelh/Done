@@ -161,6 +161,7 @@
         <%} %>
     
     <div id="menu">
+        <%if (contextMenu.Count > 0) { %>
 		<ul style="width:220px;">
             <%foreach (var menu in contextMenu) { %>
             <li onclick="<%=menu.click_function %>"><i class="menu-i1"></i><%=menu.text %>
@@ -175,6 +176,7 @@
             </li>
             <%} %>
 		</ul>
+        <%} %>
 	</div>
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
@@ -236,6 +238,9 @@
         function ViewCompany() {
             OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
         }
+        function AddQuote() {
+            OpenWindow("../Quote/QuoteAddAndUpdate.aspx");
+        }
         function DeleteOpp() {
             $.ajax({
                 type: "GET",
@@ -260,15 +265,21 @@
         function ViewCompany(id) {
             OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
         }
-        //function DeleteOpp() {
-        //    $.ajax({
-        //        type: "GET",
-        //        url: "../Tools/OpportunityAjax.ashx?act=delete&id=" + entityid,
-        //        success: function (data) {
-        //            alert(data);
-        //        }
-        //    })
-        //}
+        function LossQuote() {
+            OpenWindow("../Quote/QuoteLost.aspx?id=" + entityid);
+        }
+        function QuoteManage() {
+            OpenWindow("../QuoteItem/QuoteItemManage.aspx?quote_id=" + entityid);
+        }
+        function DeleteQuote() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteAjax.ashx?act=delete&id=" + entityid,
+                success: function (data) {
+                    alert(data);
+                }
+            })
+        }
         function Add() {
             OpenWindow("../Quote/QuoteAddAndUpdate.aspx");
         }
@@ -278,10 +289,13 @@
         function Add() {
             OpenWindow("../QuoteTemplate/QuoteTemplateAdd.aspx");
         }
+        function Edit() {
+            OpenWindow("../QuoteTemplate/QuoteTemplateEdit.aspx?id=" + entityid);
+        }
         <%
         }%>
         function openopenopen() {
-            alert("暂未实现");
+            //alert("暂未实现");
         }
     </script>
 </body>

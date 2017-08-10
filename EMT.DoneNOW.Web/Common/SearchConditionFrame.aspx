@@ -73,7 +73,8 @@
 								<span>-</span>
 								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
 							</div>
-                        <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>
+                        <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK
+                                || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MUILT_CALLBACK) { %>
                             <input type="text" id="con<%=condition[i].id %>" disabled="disabled" />
                             <input type="hidden" id="con<%=condition[i].id %>Hidden" name="<%=condition[i].id %>" class="sl_cdt" />
                             <span class="on" onclick="window.open('<%=condition[i].ref_url %>con<%=condition[i].id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false)"><i class="icon-dh"></i></span>
@@ -134,7 +135,8 @@
 								<span>-</span>
 								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
 							</div>
-                        <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>
+                        <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK
+                                || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MUILT_CALLBACK) { %>
                             <input type="text" id="con<%=condition[i].id %>" disabled="disabled" />
                             <input type="hidden" id="con<%=condition[i].id %>Hidden" name="<%=condition[i].id %>" class="sl_cdt" />
                             <span class="on" onclick="window.open('<%=condition[i].ref_url %>con<%=condition[i].id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false)"><i class="icon-dh"></i></span>
@@ -195,7 +197,8 @@
 								<span>-</span>
 								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
 							</div>
-                        <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>
+                        <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK
+                                || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MUILT_CALLBACK) { %>
                             <input type="text" id="con<%=condition[i].id %>" disabled="disabled" />
                             <input type="hidden" id="con<%=condition[i].id %>Hidden" name="<%=condition[i].id %>" class="sl_cdt" />
                             <span class="on" onclick="window.open('<%=condition[i].ref_url %>con<%=condition[i].id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false)"><i class="icon-dh"></i></span>

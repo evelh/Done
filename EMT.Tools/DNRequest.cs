@@ -382,6 +382,27 @@ namespace EMT.Tools
         }
 
         /// <summary>
+        /// 获得指定Url参数的int类型值
+        /// </summary>
+        /// <param name="strName">Url参数</param>
+        /// <returns>Url参数的int类型值</returns>
+        public static long GetQueryLong(string strName)
+        {
+            return Common.StrToLong(HttpContext.Current.Request.QueryString[strName], 0);
+        }
+
+        /// <summary>
+        /// 获得指定Url参数的int类型值
+        /// </summary>
+        /// <param name="strName">Url参数</param>
+        /// <param name="defValue">缺省值</param>
+        /// <returns>Url参数的int类型值</returns>
+        public static long GetQueryLong(string strName, int defValue)
+        {
+            return Common.StrToLong(HttpContext.Current.Request.QueryString[strName], defValue);
+        }
+
+        /// <summary>
         /// 获得指定表单参数的int类型值
         /// </summary>
         /// <param name="strName">表单参数</param>
