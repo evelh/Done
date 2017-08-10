@@ -69,7 +69,7 @@
                                     order = strs[1].ToLower();
                                 }
                                 %>
-                        <th title="点击按此列排序" style="width:<%=para.length %>px;">
+                        <th title="点击按此列排序" style="width:<%=para.length*16 %>px;">
                             <%=para.name %>
                             <%if (orderby!=null && para.name.Equals(orderby))
                                 { %><img src="../Images/sort-<%=order %>.png" /> 
@@ -101,8 +101,15 @@
                                         || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
                                         || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
                                         continue;
+                                    string tooltip = null;
+                                    if (resultPara.Exists(_ => _.name.Equals(para.name + "tooltip")))
+                                        tooltip = para.name + "tooltip";
                                     %>
+						    <%if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.PIC) { %>
+                            <td <%if (tooltip != null) { %>title="<%=rslt[tooltip] %>"<%} %> style="background:url(..<%=rslt[para.name] %>) no-repeat center;"></td>
+                            <%} else { %>
 						    <td><%=rslt[para.name] %></td>
+                            <%} %>
                             <%} // foreach
                                 %>
 					    </tr>
