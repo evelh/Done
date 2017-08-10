@@ -52,8 +52,14 @@ namespace EMT.DoneNOW.Web.Quote
                 shipping_type_id.DataSource = dic.FirstOrDefault(_ => _.Key == "payment_ship_type").Value;
                 shipping_type_id.DataBind();
                 shipping_type_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+                quote_tmpl_id.DataValueField = "id";
+                quote_tmpl_id.DataTextField = "name";
+                quote_tmpl_id.DataSource = dic.FirstOrDefault(_ => _.Key == "quote_tmpl").Value;
+                quote_tmpl_id.DataBind();
+                quote_tmpl_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 #endregion
-              
+
                 if (!string.IsNullOrEmpty(id))
                 {
                     quote = new crm_quote_dal().GetQuote(Convert.ToInt64(id));
@@ -84,6 +90,7 @@ namespace EMT.DoneNOW.Web.Quote
                         payment_term_id.SelectedValue = quote.payment_term_id!=null? quote.payment_term_id.ToString():"0";
                         payment_type_id.SelectedValue = quote.payment_type_id != null ? quote.payment_type_id.ToString() : "0"; //shipping_type_id
                         shipping_type_id.SelectedValue = quote.shipping_type_id != null ? quote.shipping_type_id.ToString() : "0";
+                        quote_tmpl_id.SelectedValue = quote.quote_tmpl_id != null ? quote.quote_tmpl_id.ToString() : "0";
                     }
                 }
             }

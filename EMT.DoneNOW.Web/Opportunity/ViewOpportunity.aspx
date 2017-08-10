@@ -28,12 +28,12 @@
         <div class="header">
             <i>
                 <ul>
-                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=activity" target="view_window">活动</a></li>
-                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=todo" target="view_window">待办</a></li>
-                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=note" target="view_window">备注</a></li>
-                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=ticket" target="view_window">工单</a></li>
-                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=att" target="view_window">附件</a></li>
-                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem" target="view_window">报价项</a></li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=activity" >活动</a></li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=todo" >待办</a></li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=note" >备注</a></li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=ticket" >工单</a></li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=att" >附件</a></li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem">报价项</a></li>
                 </ul>
             </i>
             查看商机
@@ -106,7 +106,7 @@
                     </h3>
                 </div>
                 <div class="address opportunityaddress viewleftTitle1">
-                    <p class="switch pr"><i class="switchicon switchicon1"></i>商机 </p>
+                    <p class="switch pr"><i class="switchicon switchicon1"></i>商机-<%=opportunity.name %>(ID:<%=opportunity.oid %>)-<%=account.name %> </p>
                     <p class="clear">
                         <span class="fl">商机ID</span><span class="fr"><%=opportunity.oid %><br />
                         </span>
@@ -114,11 +114,11 @@
                     <%if (1 == 2)  // 判断报价是否存在
                         {
                     %>
-                    <p class="clear"><span class="fl">报价</span><span class="fr">现在还没有报价--todo </span></p>
+                    <%--<p class="clear"><span class="fl">报价</span><span class="fr">现在还没有报价--todo </span></p>--%>
                     <%}
                         else
                         { %>
-                    <p><a href="#">这里是新增报价的链接</a></p>
+                    <%--<p><a href="#">这里是新增报价的链接</a></p>--%>
                     <%} %>
 
                     <%  if (1 == 2)    // 没有报价不显示 	有报价，无项目提案，显示“编辑报价，关联项目”，链接到主报价编辑界面，有项目提案，显示主报价的项目提案。项目提案名称  链接到项目
@@ -151,14 +151,27 @@
                     <p class="switch pr">
                         <i class="switchicon switchicon1"></i>客户
                         <img src="../Images/at16.png" />
+                      
                     </p>
-                    <label><span><%=account.name %></span> <span>类别图标</span> <span>自助服务台图标</span></label>
-                    <p><%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %></p>
-                    <p><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.province_id.ToString()).show  %></p>
-                    <p><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.city_id.ToString()).show  %></p>
-                    <p><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.district_id.ToString()).show  %></p>
+                      <p><%=account.name %> (<%=account.oid %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%--<span>类别图标</span> <span>自助服务台图标</span>--%></p>
+                    <p><%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %>
+                   <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.province_id.ToString()).show  %>
+                  <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.city_id.ToString()).show  %>
+                    <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.district_id.ToString()).show  %></p>
 
-                    <% if (!string.IsNullOrEmpty(defaultLocation.address))
+                           
+                    <p style="display:none;"> 
+                     <span><%=defaultLocation.address %></span>&nbsp;<span><%=defaultLocation.additional_address %></span>&nbsp;<span><%=defaultLocation.postal_code %> </span>
+                    </p>
+                <% if (!string.IsNullOrEmpty(defaultLocation.address))
+                    { %>
+
+                <p class="clear">
+                    <span class="fl"><a href="#" onclick="window.open('http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=defaultLocation.address %>','map','left=200,top=200,width=960,height=750', false);">地图</a></span>
+                </p>
+                <%} %>
+
+                   <%-- <% if (!string.IsNullOrEmpty(defaultLocation.address))
                         { %>
 
                     <p><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D<%=defaultLocation.address %>" target="view_window"><%=defaultLocation.address %></a></p>
@@ -167,13 +180,13 @@
                     <% if (!string.IsNullOrEmpty(defaultLocation.additional_address))
                         { %>
                     <p><%=defaultLocation.additional_address %></p>
-                    <%} %>
+                    <%} %>--%>
 
                     <%--<p>可以根据链接，跳转到百度或其他地图，显示该客户位置</p>--%>
 
                     <% if (account.parent_id != null)
                         { %>
-                    <p><a href="ViewCompany.aspx?id=<%=account.parent_id %>"><%=companyBll.GetCompany((long)account.parent_id).name %> </a></p>
+                    <%--<p><a href="ViewCompany.aspx?id=<%=account.parent_id %>"><%=companyBll.GetCompany((long)account.parent_id).name %> </a></p>--%>
                     <%} %>
 
                     <p><%=account.phone %></p>
@@ -190,6 +203,7 @@
                     <p class="switch pr">
                         <i class="switchicon switchicon1"></i>联系人
                         <img src="../Images/at16.png" />
+                          <label><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %>|<%=contact.title %>-<%=account.name %></label>
                     </p>
                     <label><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %></label>
                     <%if (!string.IsNullOrEmpty(contact.title))

@@ -103,9 +103,9 @@
             <input type="hidden" id="isHide" runat="server" value="hide" />
             <input type="hidden" id="activitytype" runat="server" value="" />
             <%-- 客户的基本信息 --%>
-            <h1><span id="acType">活动</span>-<%=account.name %></h1>
+            <h1><span id="acType">活动</span>客户-<%=account.name %></h1>
             <div class="address">
-                <label><%=account.name %> <%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
+                <label><%=account.name %> (<%=account.oid %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%=account.type_id==null?"":company_type.FirstOrDefault(_=>_.val==account.type_id.ToString()).show %><%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
                 <p>
                     <span><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></span>
                     <span><%=addressdistrict.First(_=>_.val.ToString()==location.province_id.ToString()).show  %></span>
@@ -184,11 +184,13 @@
 
                 <%} %>
 
-
+                <%if (account.resource_id != null)
+                        { %>
                 <p class="clear">
                     <span class="fl">客户经理 </span>
-                    <span class="fr"><%=sys_resource.First(_=>_.val == account.resource_id.ToString()).show %></span>
+                    <span class="fr"><%=sys_resource.First(_ => _.val == account.resource_id.ToString()).show %></span>
                 </p>
+                <%} %>
                 <p class="clear">
                     <span class="fl">客户ID </span>
                     <span class="fr"><%=account.oid %></span>
@@ -306,9 +308,9 @@
             </div>
         </div>
 
-        <div id="ShowCompany_Right" class="activityTitleright f1" style="float: left; margin-left: 35px;">
+        <div id="ShowCompany_Right" class="activityTitleright f1" style="float: left;width:750px;min-width:750px;height:500px;">
 
-            <iframe runat="server" id="viewCompany_iframe" width="800" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+            <iframe runat="server" id="viewCompany_iframe" width="800" height="500" frameborder="0" marginheight="0" marginwidth="0" style="overflow:scroll;"></iframe>
 
         </div>
 

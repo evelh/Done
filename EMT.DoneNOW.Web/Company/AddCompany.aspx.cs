@@ -85,11 +85,11 @@ namespace EMT.DoneNOW.Web
             note_action_type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
 
             // todo_action_type
-            todo_action_type.DataTextField = "show";
-            todo_action_type.DataValueField = "val";
-            todo_action_type.DataSource = dic.FirstOrDefault(_ => _.Key == "action_type").Value;
-            todo_action_type.DataBind();
-            todo_action_type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            //todo_action_type.DataTextField = "show";
+            //todo_action_type.DataValueField = "val";
+            //todo_action_type.DataSource = dic.FirstOrDefault(_ => _.Key == "action_type").Value;
+            //todo_action_type.DataBind();
+            //todo_action_type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             #endregion
             try
             {
@@ -287,7 +287,6 @@ namespace EMT.DoneNOW.Web
             {
                 Response.Write("<script>alert('添加客户成功！');</script>");
                 Response.Redirect("AddCompany.aspx");
-
             }
         }
         /// <summary>

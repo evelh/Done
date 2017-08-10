@@ -36,7 +36,7 @@
         <div class="text">若要添加此帐户的第一个联系人，请提供名称和姓氏。如果此时您不希望添加新联系人，则可以将这些字段留空。所有标有“1”的字段只适用于联系人。</div>
         <div class="nav-title">
             <ul class="clear">
-                <li class="boders" id="general">通用</li>
+                <li class="boders" id="general">常规</li>
                 <li id="Subsidiaries">子客户</li>
                 <li id="accountUDF">站点信息</li>
             </ul>
@@ -44,7 +44,7 @@
 
         <div class="content clear">
             <div class="information clear">
-                <p class="informationTitle"><i></i>基本信息</p>
+                <p class="informationTitle"><i></i>常规信息</p>
                 <div>
                     <table border="none" cellspacing="" cellpadding="" style="width: 500px; margin-left: 40px;">
                         <%--  <tr>
@@ -74,7 +74,7 @@
                             <td>
                                 <div class="clear">
                                     <label>电话<span class=" red">*</span></label>
-                                    <input type="text" name="phone" id="Phone" value="" />
+                                    <input type="text" name="phone" id="Phone" value=""  />
                                 </div>
                             </td>
                         </tr>
@@ -267,7 +267,7 @@
                             <td>
                                 <div class="clear">
                                     <label>移动电话<span class="num">1</span></label>
-                                    <input type="text" name="mobile_phone" id="MobilePhone" value="" />
+                                    <input type="text" name="mobile_phone" id="MobilePhone" value="" maxlength="11" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
                                 </div>
                             </td>
                         </tr>
@@ -323,7 +323,7 @@
                             <td>
                                 <div class="clear">
                                     <label>客户编号</label>
-                                    <input type="text" name="company_number" id="CompanyNumber" value="" />
+                                    <input type="text" name="company_number" id="CompanyNumber" value="" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
 
                                 </div>
                             </td>
@@ -486,7 +486,7 @@
                             <td>
                                 <div class="clear">
                                     <label>开始时间</label>
-                                    <input type="datetime-local" name="note_start_time" id="note_start_time" value="" />
+                                    <input type="text" class="form_datetime sl_cdt"  name="note_start_time" id="note_start_time" value="" />
                                 </div>
                             </td>
                         </tr>
@@ -494,7 +494,7 @@
                             <td>
                                 <div class="clear">
                                     <label>结束时间</label>
-                                    <input type="datetime-local" name="note_end_time" id="note_end_time" value="" />
+                                    <input type="text" class="form_datetime sl_cdt"  name="note_end_time" id="note_end_time" value="" />
                                 </div>
                             </td>
                             <td></td>
@@ -515,7 +515,7 @@
 
             </div>
 
-            <div class="information clear">
+  <%--          <div class="information clear">
                 <p class="informationTitle"><i></i>待办</p>
                 <div>
                     <div style="clear: both; margin-top: 20px;">
@@ -582,20 +582,21 @@
                     </div>
                 </div>
 
-            </div>
+            </div>--%>
 
         </div>
 
         <div class="content clear" style="display: none;">
 
             <div class="searchSelected clear">
-			    <p>子客户列表</p><span class="on"><i class="icon-dh" onclick="OpenSubCompany()"></i></span>
+                <p>子客户列表</p>
+                <span class="on"><i class="icon-dh" onclick="OpenSubCompany()"></i></span>
                 <input type="hidden" id="SubCompany" />
                 <input type="hidden" id="SubCompanyHidden" name="subCompanyIds" />
-			    <div class="Selected fl">
-				    <select id="" multiple="" class="dblselect" style="height:300px;"></select>
-			    </div>
-		    </div>
+                <div class="Selected fl">
+                    <select id="" multiple="" class="dblselect" style="height: 300px;"></select>
+                </div>
+            </div>
 
         </div>
         <div class="content clear" style="display: none;">
@@ -655,7 +656,10 @@
 <script src="../Scripts/index.js"></script>
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
-<script src="../Scripts/multiselect.min.js" type="text/javascript" charset="utf-8"></script>
+<%--<script src="../Scripts/multiselect.min.js" type="text/javascript" charset="utf-8"></script>--%>
+    
+	<script src="../Scripts/bootstrap-datetimepicker.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../Scripts/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         InitArea();
@@ -663,6 +667,14 @@
 </script>
 </html>
 <script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
     $(function () {
 
         $(".dblselect option").dblclick(function () {
@@ -818,6 +830,20 @@
                     $("#subCompanyIds").val(ids);
                 }
             }
+            var note_start_time = $("#note_start_time").val();
+            if (note_start_time != "") {
+                if (!check(note_start_time)) {
+                    alert("请填写正确的备注开始时间");
+                    return false;
+                }
+            }
+            var note_end_time = $("#note_end_time").val();
+            if (note_end_time != "") {
+                if (!check(note_end_time)) {
+                    alert("请填写正确的备注结束时间");
+                    return false;
+                }
+            }
 
 
 
@@ -839,16 +865,16 @@
                         else if (data != "") {
                             isPass = "noPass";
                             window.open("CompanyNameSimilar.aspx?ids=" + data + "&reason=name", "<%=EMT.DoneNOW.DTO.OpenWindow.CompanyNameSmilar %>", "height=600,width=800", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
-                }  //
-            },
-            error: function (XMLHttpRequest) {
-            },
+                        }  //
+                    },
+                    error: function (XMLHttpRequest) {
+                    },
 
-        });
+                });
 
-        if (isPass == "noPass") {
-            return false;
-        }
+                if (isPass == "noPass") {
+                    return false;
+                }
             }
             return true;
         }
@@ -862,6 +888,12 @@
         var conteneClickTimes = 0;       // 定义tab页跳转点击次数，免得一直提醒
         $.each($(".nav-title li"), function (i) {
             $(this).click(function () {
+                if ($(this).attr("id") != "general") {
+                    if (!submitcheck()) {
+                        return false;
+                    }
+                }
+           
                 var firstName = $("#first_name").val();
                 if ($(this).attr("id") != "general" && conteneClickTimes == 0) {
                     if (firstName == "") {
@@ -879,14 +911,12 @@
 
                 $(this).addClass("boders").siblings("li").removeClass("boders");
                 $(".content").eq(i).show().siblings(".content").hide();
-
-
             })
         });
 
 
 
-    
+
     })
 
 
@@ -911,11 +941,11 @@
         }
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUB_COMPANY_CALLBACK %>&field=SubCompany&muilt=1&callBack=ChooseSubCompany", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
     }
-     // ondblclick
-   
+    // ondblclick
+
     function ChooseSubCompany() {
         if ($("#SubCompanyHidden").val() != "") {
-   
+
             requestData("../Tools/CompanyAjax.ashx?act=names&ids=" + $("#SubCompanyHidden").val(), null, function (data) {
                 debugger;
                 $(".dblselect").empty();

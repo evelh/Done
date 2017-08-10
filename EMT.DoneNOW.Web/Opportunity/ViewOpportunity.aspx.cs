@@ -28,7 +28,7 @@ namespace EMT.DoneNOW.Web.Opportunity
             {
                 var id = Request.QueryString["id"];
 
-                opportunity = new crm_opportunity_dal().GetOpportunityById(Convert.ToInt64(id));
+                opportunity = new crm_opportunity_dal().GetOpportunityByOtherId(Convert.ToInt64(id));
                 type = Request.QueryString["type"];
              
                 if (opportunity != null)
@@ -65,6 +65,10 @@ namespace EMT.DoneNOW.Web.Opportunity
                     {
                         isHide.Value = "show";
                     }
+                }
+                else
+                {
+                    Response.End();
                 }
             }
             catch (Exception)

@@ -21,6 +21,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
         protected List<crm_quote_item> distributionList = null;    // 配送  配置项
         protected List<crm_quote_item> oneTimeList = null;         // 一次性配置项
         protected List<crm_quote_item> optionalItemList = null;    // 可选  配置项
+        protected List<crm_quote_item> discountQIList = null;      // 计算出来的折扣数
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -33,40 +34,48 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     quoteList = new crm_quote_dal().GetQuoteByWhere($" and opportunity_id = {quote.opportunity_id} ");
 
 
-                    // 为报价下拉框赋值
+                    #region // 为报价下拉框赋值
                     quoteDropList.DataValueField = "id";
                     quoteDropList.DataTextField = "name";
                     quoteDropList.DataSource = quoteList;
                     quoteDropList.DataBind();
                     quoteDropList.SelectedValue = quote.id.ToString();
-
-                    if(quoteItemList!=null&& quoteItemList.Count > 0)
+                    #endregion
+                    if (quoteItemList != null && quoteItemList.Count > 0)
                     {
-                        optionalItemList = quoteItemList.Where(_ => _.optional == 1).ToList();   // 获取到可选的报价项
+                        // 用户需要添加折扣类型的报价项，然后可以针对付费周期类型为一次性的报价项进行折扣
+                        // 折扣只针对一次性周期的报价项折扣
                         oneTimeList = quoteItemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
+
+                        discountQIList = quoteItemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT).ToList();
+
+                        //  获取到可选的报价项，
+                        optionalItemList = quoteItemList.Where(_ => _.optional == 1).ToList();   // 获取到可选的报价项
+                                                                                                 //  获取到一次性报价项
+                        
                         // &&optionalItemList.Any(op=>op.id!=_.id)&&oneTimeList.Any(one=>one.id!=_.id)  满足多个报价项过滤条件的，选择其中的一个
                         distributionList = quoteItemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();   // 配送类型的报价项
 
-                         // 配送，一次性，可选的配置项独立显示，所以在这里分离出来，传到前台后单独处理
+                        // 配送，一次性，可选的配置项独立显示，所以在这里分离出来，传到前台后单独处理
 
-                         //  获取到筛选后报价项列表方便分组管理  筛选后的列表不包括可选，一次性和配送
-                        var screenList= quoteItemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.period_type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional != 1).ToList();
+                        //  获取到筛选后报价项列表方便分组管理  筛选后的列表不包括可选，一次性的折扣和配送
+                        var screenList = quoteItemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional != 1&&_.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT).ToList();
                         groupBy = Request.QueryString["group_by"];
                         switch (groupBy)
                         {
                             case "cycle":
                                 // 按照周期分组
-                                groupList = screenList.GroupBy(_ => _.period_type_id).ToDictionary(_=>(object)_.Key, _=>_.ToList());    // as Dictionary<long?, 
-                               
+                                groupList = screenList.GroupBy(_ => _.period_type_id == null ? "" : _.period_type_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());    // as Dictionary<long?, 
+
                                 break;
                             case "product":
-                                groupList = screenList.GroupBy(_ => _.object_id==null?"": _.object_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
+                                groupList = screenList.GroupBy(_ => _.object_id == null ? "" : _.object_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
                                 break;
                             default:
                                 groupBy = "no";
                                 break;
                         }
-                       // ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script> $(\"#groupBy\").val('"+groupBy+"')</script>"); 
+                        // ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script> $(\"#groupBy\").val('"+groupBy+"')</script>"); 
                     }
 
                 }

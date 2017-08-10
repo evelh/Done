@@ -41,7 +41,7 @@
 
         <div class="nav-title">
             <ul class="clear">
-                <li class="boders" id="general">通用</li>
+                <li class="boders" id="general">常规</li>
                 <li id="Location">地址信息</li>
                 <li id="Additional">附加信息</li>
                 <li id="UserDefined">用户自定义</li>
@@ -87,7 +87,7 @@
                     <td>
                         <div class="clear">
                             <label>客户编号</label>
-                            <asp:TextBox ID="CompanyNumber" runat="server"></asp:TextBox>
+                            <asp:TextBox ID="CompanyNumber" runat="server" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" ></asp:TextBox>
                         </div>
                     </td>
                 </tr>
@@ -222,7 +222,7 @@
                     <td>
                         <div class="clear">
                             <label>全程距离</label>
-                            <asp:TextBox ID="mileage" runat="server"></asp:TextBox>
+                            <asp:TextBox ID="mileage" runat="server" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></asp:TextBox>
                         </div>
                     </td>
                 </tr>
@@ -411,7 +411,7 @@
                     <td>
                         <div class="clear">
                             <label>客户资产价值<span class="red"></span></label>
-                            <asp:TextBox ID="asset_value" runat="server"></asp:TextBox>
+                            <asp:TextBox ID="asset_value" runat="server" CssClass="Number"  onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></asp:TextBox>
                         </div>
                     </td>
                 </tr>
@@ -541,10 +541,10 @@
                         }%>
                 </select>
             </div>
-      <%--        <input type="hidden" id="OldSubCompany" />
-            <input type="hidden" id="OldSubCompanyHidden" name="subCompanyIds" value="<%=subIds %>" />--%>
+           <input type="hidden" id="OldSubCompany" />
+            <input type="hidden" id="OldSubCompanyHidden" name="subCompanyIds" value="<%=subIds %>" />
                  <input type="hidden" id="SubCompany" />
-            <input type="hidden" id="SubCompanyHidden" name="subCompanyIds" value="<%=subIds %>" />
+            <input type="hidden" id="SubCompanyHidden" name="SubCompanyHidden" value="<%=subIds %>" />
             <%} %>
         </div>
         <% //子公司 预留  %>
@@ -923,11 +923,11 @@
 
     function ChooseSubCompany() {
         if ($("#SubCompanyHidden").val() != "") {
-            //var oldIds = $("#OldSubCompanyHidden").val();
-            //if (oldIds != "") {
-            //    //oldIds = "," + oldIds;
-            //    $("#SubCompanyHidden").val($("#SubCompanyHidden").val() + "," + oldIds);
-            //}
+            var oldIds = $("#OldSubCompanyHidden").val();
+            if (oldIds != "") {
+                //oldIds = "," + oldIds;
+                $("#SubCompanyHidden").val($("#SubCompanyHidden").val() + "," + oldIds);
+            }
             requestData("../Tools/CompanyAjax.ashx?act=names&ids=" + $("#SubCompanyHidden").val() , null, function (data) {
                 debugger;
                 $(".dblselect").empty();

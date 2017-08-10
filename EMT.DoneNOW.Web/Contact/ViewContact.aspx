@@ -83,14 +83,14 @@
                 } %>
 
             <div class="contact address">
-                <label><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %></label>
-                <%if (!string.IsNullOrEmpty(contact.title))
+                <label><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %>|<%=contact.title %>-<%=account.name %></label>
+            <%--    <%if (!string.IsNullOrEmpty(contact.title))
                     { %>
                 <p class="clear">
                     <span class="fl">头衔</span>
                     <span class="fr"><%=contact.title %> </span>
                 </p>
-                <%} %>
+                <%} %>--%>
 
                 <%if (contact.location_id != null)
                     {
@@ -147,7 +147,8 @@
 
 
             <div class="address ">
-                <label><%=account.name %> <%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
+                 <label><%=account.name %> (<%=account.oid %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%=account.type_id==null?"":company_type.FirstOrDefault(_=>_.val==account.type_id.ToString()).show %><%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
+         
                 <p>
                     <span><%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %></span>
                     <span><%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.province_id.ToString()).show  %></span>

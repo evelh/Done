@@ -40,7 +40,7 @@
                     </li>
                     <li>
                         <div class="account-wrap opts clear">
-                            <p runat="server" ID="msgtip" visible="false"></p>
+                            <p runat="server" ID="msgtip" visible="false" style="color:red;"></p>
                             <a href="javaScript:" class="forgetBtns" style="display:none">忘记密码</a>
                         </div>
                     </li>

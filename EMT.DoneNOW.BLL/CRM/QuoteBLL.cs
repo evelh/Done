@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
 using System.Text.RegularExpressions;
 using EMT.DoneNOW.BLL.CRM;
+using System.Data;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -34,6 +35,7 @@ namespace EMT.DoneNOW.BLL
             dic.Add("addressdistrict", new d_district_dal().GetDictionary());                       // 地址表（省市县区）
 
             dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));              // 税区
+            dic.Add("quote_tmpl", new sys_quote_tmpl_dal().GetQuoteTemp());
 
 
 
@@ -88,6 +90,7 @@ namespace EMT.DoneNOW.BLL
                     ext3 = 0,
                     ext4 = 0,
                     ext5 = 0,
+                    spread_value = 0,
                     // create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     create_user_id = user_id,
@@ -123,6 +126,7 @@ namespace EMT.DoneNOW.BLL
             quote.payment_type_id = quote.payment_type_id == 0 ? null : quote.payment_type_id;
             quote.shipping_type_id = quote.shipping_type_id == 0 ? null : quote.shipping_type_id;
             quote.tax_region_id = quote.tax_region_id == 0 ? null : quote.tax_region_id;
+            quote.quote_tmpl_id = quote.quote_tmpl_id == 0 ? null : quote.quote_tmpl_id;
             _dal.Insert(quote);
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
@@ -216,6 +220,7 @@ namespace EMT.DoneNOW.BLL
             quote.payment_type_id = quote.payment_type_id == 0 ? null : quote.payment_type_id;
             quote.shipping_type_id = quote.shipping_type_id == 0 ? null : quote.shipping_type_id;
             quote.tax_region_id = quote.tax_region_id == 0 ? null : quote.tax_region_id;
+            quote.quote_tmpl_id = old_quote.quote_tmpl_id;
             quote.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             quote.update_user_id = user_id;
             _dal.Update(quote);
@@ -380,6 +385,13 @@ namespace EMT.DoneNOW.BLL
             });  // 插入日志
 
             return "";
+		}
+
+        public DataTable GetVar(int id)
+        {
+            string sql=@"select  (select name from crm_account where id=c.account_Id) as '[Contact: Company]', (case when is_active=1 then '已激活' else '未激活'end ) as '[联系人：激活的]', NULL as '[联系人：外部编号]', c.title as '[联系人：称呼]', c.first_name as '[联系人：名]', c.last_name as '[联系人：姓]', (select name from d_general where id=c.suffix_id) as '[联系人：后缀]', null as '[联系人：中间名]', c.name as '[联系人：姓名]', c.name as '[联系人：姓名（链接）]', c.name as '[联系人：链接]', c.ID as '[Contact: ID]', null as '[联系人：头衔]', l.address as '[联系人：地址]', l.additional_address as '[联系人：补充地址]', (select name from d_district where id=l.city_id) as '[联系人：城市]', (select name from d_district where id=l.province_id) as '[联系人：省]', l.postal_code as '[Contact: Post Code]', (select name from d_country where id=l.country_id) as '[联系人：国家]', c.email as '[联系人：邮件地址]', c.phone as '[联系人：电话]', null as '[联系人：电话分机]', c.alternate_phone as '[联系人：备用电话]', c.mobile_phone as '[联系人：移动电话]', c.fax as '[联系人：传真]', null as '[联系人：Client Access Portal用户姓名]', c.email2 as '[Contact: Alternate Email1]', null as '[Contact: Customer Contact]', null as '[Contact: Address]' from crm_contact c LEFT JOIN crm_location l on c.location_id = l.id where 1 = 1    and c.id in("+id+") and 1 = 1  order by  c.name";
+            var list = _dal.ExecuteDataTable(sql);
+            return list;
         }
     }
 }

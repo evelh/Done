@@ -83,7 +83,20 @@
                             foreach (var item in groupList)
                             {%>
                     <tr>
-                        <td><%=item.Key.ToString()==""?"其他":item.Key %></td>
+
+                        <% var groupName = "";
+                            switch (groupBy)
+                            {
+                                case "cycle":
+                                    var cycleFiled =   new EMT.DoneNOW.DAL.d_general_dal().GetDictionary(new EMT.DoneNOW.DAL.d_general_table_dal().GetById((int)EMT.DoneNOW.DTO.GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE));
+                                    groupName = cycleFiled.First(_ => _.val.ToString() == item.Key.ToString()) != null ? cycleFiled.First(_ => _.val.ToString() == item.Key.ToString()).show : "无分类";
+                                    break;
+                                case "product":
+                                    break;
+                                default:
+                                    break;
+                            } %>
+                        <td><%=groupName %></td>
                     </tr>
                     <% foreach (var quoteItem in item.Value as List<EMT.DoneNOW.Core.crm_quote_item>)
                         {
@@ -91,7 +104,7 @@
                     <tr data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
-                            <td><% var type = "";
+                        <td><% var type = "";
                                 switch (quoteItem.type_id)
                                 {
                                     case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.WORKING_HOURS:
@@ -134,13 +147,13 @@
                         <td colspan="9"></td>
                         <td><b>汇总：</b></td>
                         <td><%=item.Value.ToList().Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
-                        <td><%=  ((decimal)((item.Value.Sum(_=>_.unit_price!=null?_.unit_price:0)-item.Value.Sum(_=>_.unit_cost!=null?_.unit_cost:0))/item.Value.Sum(_=>_.unit_cost!=null?_.unit_cost:0))).ToString("#0.00")+"%" %></td>
+                        <td><%=  ((decimal)((item.Value.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-item.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))/(item.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)==0?1:item.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)))).ToString("#0.00")+"%" %></td>
 
                         <td><%=item.Value.ToList().Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0 ) %></td>
                     </tr>
                     <%      
                         }%>
-                                               <% if (distributionList != null && distributionList.Count > 0)
+                    <% if (distributionList != null && distributionList.Count > 0)
                         {%>
                     <tr>
                         <td>配送类型的报价项</td>
@@ -150,7 +163,7 @@
                     <tr data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
-                              <td><% var type = "";
+                        <td><% var type = "";
                                 switch (quoteItem.type_id)
                                 {
                                     case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.WORKING_HOURS:
@@ -194,21 +207,21 @@
                         <td colspan="9"></td>
                         <td><b>汇总：</b></td>
                         <td><%=distributionList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
-                        <td><%=((decimal)((distributionList.Sum(_=>_.unit_price!=null?_.unit_price:0)-distributionList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))/distributionList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))).ToString("#0.00")+"%" %></td>
+                        <td><%=((decimal)((distributionList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-distributionList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))/distributionList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
                         <td><%=distributionList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0 ) %></td>
                     </tr>
                     <%   }
-                        if (oneTimeList != null && oneTimeList.Count > 0)
+                        if (discountQIList != null && discountQIList.Count > 0)
                         {%>
                     <tr>
-                        <td>一次性的报价项</td>
+                        <td>一次性折扣</td>
                     </tr>
-                    <%foreach (var quoteItem in oneTimeList)
+                    <%foreach (var quoteItem in discountQIList.Where(_ => _.discount_percent == null).ToList())
                         {%>
-                    <tr  data-val="<%=quoteItem.id %>" class="dn_tr">
+                    <tr data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
-                           <td><% var type = "";
+                        <td><% var type = "";
                                 switch (quoteItem.type_id)
                                 {
                                     case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.WORKING_HOURS:
@@ -234,28 +247,88 @@
                                 } %>
                             <%=type %>
                         </td>
-                        <td>出厂序号待确定--todo</td>
-                        <td><%=quoteItem.quantity %></td>
+                        <td></td>
+                        <td></td>
                         <td><%=quoteItem.unit_price %></td>
-                        <%--decimal.Round(decimal.Parse("0.3333333"),2)   Math.Round(Convert.ToDouble((quoteItem.unit_discount/quoteItem.unit_price,2,MidpointRounding.AwayFromZero)))  --%>
-                        <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse((quoteItem.unit_discount/quoteItem.unit_price).ToString()),2)).ToString()+"%":"" %></td>
+
+                        <td><%=quoteItem.discount_percent %></td>
                         <td><%=quoteItem.unit_discount %></td>
-                        <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(quoteItem.unit_price-quoteItem.unit_discount).ToString():"" %></td>
-                        <td><%=quoteItem.unit_cost %></td>
-                        <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?((quoteItem.unit_price-quoteItem.unit_discount-quoteItem.unit_cost)*quoteItem.quantity).ToString():"" %></td>
-                        <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_cost)/quoteItem.unit_cost).ToString()),2).ToString())+"%":"" %></td>
-                        <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?((quoteItem.unit_price-quoteItem.unit_discount)*quoteItem.quantity).ToString():"" %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=(quoteItem.unit_discount!=null&&quoteItem.quantity!=null)?(quoteItem.unit_discount*quoteItem.quantity).ToString():"" %></td>
                     </tr>
 
                     <%}%>
+                    <%foreach (var quoteItem in discountQIList.Where(_ => _.discount_percent != null).ToList())
+                        {%>
+                    <tr data-val="<%=quoteItem.id %>" class="dn_tr">
+                        <td><%=quoteItem.oid %></td>
+                        <td><%=quoteItem.name %></td>
+                        <td><% var type = "";
+                                switch (quoteItem.type_id)
+                                {
+                                    case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.WORKING_HOURS:
+                                        type = "工时";
+                                        break;
+                                    case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.COST:
+                                        type = "费用";
+                                        break;
+                                    case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DEGRESSION:
+                                        type = "成本";
+                                        break;
+                                    case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT:
+                                        type = "折扣";
+                                        break;
+                                    case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT:
+                                        type = "产品";
+                                        break;
+                                    case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES:
+                                        type = "配送费用";
+                                        break;
+                                    default:
+                                        break;
+                                } %>
+                            <%=type %>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                        <td><%=quoteItem.discount_percent %></td>
+                        <td><%=quoteItem.unit_discount %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <%if (oneTimeList != null && oneTimeList.Count > 0)
+                            { %>
+                        <td><%=oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)*quoteItem.discount_percent/100 %></td>
+                        <%}
+                            else
+                            { %>
+                        <%} %>
+                    </tr>
+
+                    <%}%>
+
                     <tr>
                         <td colspan="9"></td>
                         <td><b>汇总：</b></td>
-                        <td><%=oneTimeList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
-                        <td><%=((decimal)((oneTimeList.Sum(_=>_.unit_price!=null?_.unit_price:0)-oneTimeList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))/oneTimeList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))).ToString("#0.00")+"%" %></td>
-                        <td><%=oneTimeList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0 ) %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=discountQIList.Where(_=>_.discount_percent!=null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)+(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent/100):0) %></td>
                     </tr>
-                    <%}  if (optionalItemList != null && optionalItemList.Count > 0)
+                    <%}%>
+                                 <tr>
+                        <td colspan="9"></td>
+                        <td><b>除去可选的汇总：</b></td>
+                        <td><%=quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
+                        <td><%=((decimal)((quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))/quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
+                        <td><%=quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent!=null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent/100):0) %></td>
+                    </tr>
+                       <% if (optionalItemList != null && optionalItemList.Count > 0)
                         { %>
                     <tr>
                         <td>可选的报价项</td>
@@ -266,7 +339,7 @@
                     <tr data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
-                               <td><% var type = "";
+                        <td><% var type = "";
                                 switch (quoteItem.type_id)
                                 {
                                     case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.WORKING_HOURS:
@@ -309,24 +382,24 @@
                         <td colspan="9"></td>
                         <td><b>汇总：</b></td>
                         <td><%=optionalItemList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
-                        <td><%=((decimal)((optionalItemList.Sum(_=>_.unit_price!=null?_.unit_price:0)-optionalItemList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))/optionalItemList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))).ToString("#0.00")+"%" %></td>
+                        <td><%=((decimal)((optionalItemList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-optionalItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))/optionalItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
                         <td><%=optionalItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0 ) %></td>
                     </tr>
                     <%  }%>
 
-                          <tr>
+                                <tr>
                         <td colspan="9"></td>
                         <td><b>全部汇总：</b></td>
                         <td><%=quoteItemList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
-                        <td><%=((decimal)((quoteItemList.Sum(_=>_.unit_price!=null?_.unit_price:0)-quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))/quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))).ToString("#0.00")+"%" %></td>
-                        <td><%=quoteItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0 ) %></td>
+                        <td><%=((decimal)((quoteItemList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))/quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
+                        <td><%=quoteItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent!=null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent/100):0) %></td>
                     </tr>
                     <%     }
                         else
                         {
                             if (quoteItemList != null && quoteItemList.Count > 0)
                             {
-                                var generalList = quoteItemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.period_type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional != 1).ToList();
+                                var generalList = quoteItemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.optional != 1).ToList();
                                 foreach (var quoteItem in generalList)
                                 {%>
                     <tr data-val="<%=quoteItem.id %>" class="dn_tr">
@@ -376,11 +449,11 @@
                         <td colspan="9"></td>
                         <td><b>汇总：</b></td>
                         <td><%=generalList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
-                        <td><%=((decimal)((generalList.Sum(_=>_.unit_price!=null?_.unit_price:0)-generalList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))/(generalList.Sum(_=>_.unit_cost!=null?_.unit_cost:0)==0?1:generalList.Sum(_=>_.unit_cost!=null?_.unit_cost:0)))).ToString("#0.00")+"%" %></td>
+                        <td><%=((decimal)((generalList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-generalList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))/(generalList.Sum(_=>_.unit_cost!=null?_.unit_cost:0)==0?1:generalList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)))).ToString("#0.00")+"%" %></td>
                         <td><%=generalList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0 ) %></td>
                     </tr>
                     <% 
-                       // var distributionList = quoteItemList.Where(_ => _.type_id == (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();   // 配送类型的报价项
+                        // var distributionList = quoteItemList.Where(_ => _.type_id == (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();   // 配送类型的报价项
                         if (distributionList != null && distributionList.Count > 0)
                         {%>
                     <tr>
@@ -388,10 +461,10 @@
                     </tr>
                     <% foreach (var quoteItem in distributionList)
                         {%>
-                    <tr  data-val="<%=quoteItem.id %>" class="dn_tr">
+                    <tr data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
-                              <td><% var type = "";
+                        <td><% var type = "";
                                 switch (quoteItem.type_id)
                                 {
                                     case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.WORKING_HOURS:
@@ -435,23 +508,23 @@
                         <td colspan="9"></td>
                         <td><b>汇总：</b></td>
                         <td><%=distributionList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
-                        <td><%=((decimal)((distributionList.Sum(_=>_.unit_price!=null?_.unit_price:0)-distributionList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))/distributionList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))).ToString("#0.00")+"%" %></td>
+                        <td><%=((decimal)((distributionList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-distributionList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))/distributionList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
                         <td><%=distributionList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0 ) %></td>
                     </tr>
                     <%   }
 
                         // var oneTimeList = quoteItemList.Where(_ => _.period_type_id == (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
-                        if (oneTimeList != null && oneTimeList.Count > 0)
+                        if (discountQIList != null && discountQIList.Count > 0)
                         {%>
                     <tr>
-                        <td>一次性的报价项</td>
+                        <td>一次性折扣</td>
                     </tr>
-                    <%foreach (var quoteItem in oneTimeList)
+                    <%foreach (var quoteItem in discountQIList.Where(_ => _.discount_percent == null).ToList())
                         {%>
-                    <tr  data-val="<%=quoteItem.id %>" class="dn_tr">
+                    <tr data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
-                           <td><% var type = "";
+                        <td><% var type = "";
                                 switch (quoteItem.type_id)
                                 {
                                     case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.WORKING_HOURS:
@@ -477,29 +550,89 @@
                                 } %>
                             <%=type %>
                         </td>
-                        <td>出厂序号待确定--todo</td>
-                        <td><%=quoteItem.quantity %></td>
+                        <td></td>
+                        <td></td>
                         <td><%=quoteItem.unit_price %></td>
-                        <%--decimal.Round(decimal.Parse("0.3333333"),2)   Math.Round(Convert.ToDouble((quoteItem.unit_discount/quoteItem.unit_price,2,MidpointRounding.AwayFromZero)))  --%>
-                        <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse((quoteItem.unit_discount/quoteItem.unit_price).ToString()),2)).ToString()+"%":"" %></td>
+
+                        <td><%=quoteItem.discount_percent %></td>
                         <td><%=quoteItem.unit_discount %></td>
-                        <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(quoteItem.unit_price-quoteItem.unit_discount).ToString():"" %></td>
-                        <td><%=quoteItem.unit_cost %></td>
-                        <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?((quoteItem.unit_price-quoteItem.unit_discount-quoteItem.unit_cost)*quoteItem.quantity).ToString():"" %></td>
-                        <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_cost)/quoteItem.unit_cost).ToString()),2).ToString())+"%":"" %></td>
-                        <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?((quoteItem.unit_price-quoteItem.unit_discount)*quoteItem.quantity).ToString():"" %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=(quoteItem.unit_discount!=null&&quoteItem.quantity!=null)?(quoteItem.unit_discount*quoteItem.quantity).ToString():"" %></td>
+                    </tr>
+
+                    <%}%>
+                    <%foreach (var quoteItem in discountQIList.Where(_ => _.discount_percent != null).ToList())
+                        {%>
+                    <tr data-val="<%=quoteItem.id %>" class="dn_tr">
+                        <td><%=quoteItem.oid %></td>
+                        <td><%=quoteItem.name %></td>
+                        <td><% var type = "";
+                                switch (quoteItem.type_id)
+                                {
+                                    case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.WORKING_HOURS:
+                                        type = "工时";
+                                        break;
+                                    case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.COST:
+                                        type = "费用";
+                                        break;
+                                    case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DEGRESSION:
+                                        type = "成本";
+                                        break;
+                                    case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT:
+                                        type = "折扣";
+                                        break;
+                                    case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT:
+                                        type = "产品";
+                                        break;
+                                    case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES:
+                                        type = "配送费用";
+                                        break;
+                                    default:
+                                        break;
+                                } %>
+                            <%=type %>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                        <td><%=quoteItem.discount_percent %></td>
+                        <td><%=quoteItem.unit_discount %></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <%if (oneTimeList != null && oneTimeList.Count > 0)
+                            { %>
+                        <td><%=oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)*quoteItem.discount_percent/100 %></td>
+                        <%}
+                            else
+                            { %>
+                        <%} %>
                     </tr>
 
                     <%}%>
                     <tr>
                         <td colspan="9"></td>
                         <td><b>汇总：</b></td>
-                        <td><%=oneTimeList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
-                        <td><%=((decimal)((oneTimeList.Sum(_=>_.unit_price!=null?_.unit_price:0)-oneTimeList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))/oneTimeList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))).ToString("#0.00")+"%" %></td>
-                        <td><%=oneTimeList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0 ) %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=discountQIList.Where(_=>_.discount_percent!=null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)+(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent/100):0) %></td>
                     </tr>
-                    <%}
-                        // var optionalItemList = quoteItemList.Where(_ => _.optional == 1).ToList();   // 获取到可选的报价项
+                    <%}%>
+
+                    <tr>
+                        <td colspan="9"></td>
+                        <td><b>除去可选的汇总：</b></td>
+                        <td><%=quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
+                        <td><%=((decimal)((quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))/quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
+                        <td><%=quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent!=null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent/100):0) %></td>
+                    </tr>
+
+                    <%// var optionalItemList = quoteItemList.Where(_ => _.optional == 1).ToList();   // 获取到可选的报价项
                         if (optionalItemList != null && optionalItemList.Count > 0)
                         { %>
                     <tr>
@@ -511,7 +644,7 @@
                     <tr data-val="<%=quoteItem.id %>" class="dn_tr">
                         <td><%=quoteItem.oid %></td>
                         <td><%=quoteItem.name %></td>
-                               <td><% var type = "";
+                        <td><% var type = "";
                                 switch (quoteItem.type_id)
                                 {
                                     case (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.WORKING_HOURS:
@@ -554,7 +687,7 @@
                         <td colspan="9"></td>
                         <td><b>汇总：</b></td>
                         <td><%=optionalItemList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
-                        <td><%=((decimal)((optionalItemList.Sum(_=>_.unit_price!=null?_.unit_price:0)-optionalItemList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))/optionalItemList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))).ToString("#0.00")+"%" %></td>
+                        <td><%=((decimal)((optionalItemList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-optionalItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))/optionalItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
                         <td><%=optionalItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0 ) %></td>
                     </tr>
                     <%  }%>
@@ -562,8 +695,8 @@
                         <td colspan="9"></td>
                         <td><b>全部汇总：</b></td>
                         <td><%=quoteItemList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0 ) %></td>
-                        <td><%=((decimal)((quoteItemList.Sum(_=>_.unit_price!=null?_.unit_price:0)-quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))/quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost:0))).ToString("#0.00")+"%" %></td>
-                        <td><%=quoteItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0 ) %></td>
+                        <td><%=((decimal)((quoteItemList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))/quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
+                        <td><%=quoteItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent!=null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent/100):0) %></td>
                     </tr>
                     <% 
                             }
@@ -572,12 +705,12 @@
             </table>
         </div>
     </form>
-        <div id="menu">
-		<ul style="width:220px;">       
+    <div id="menu">
+        <ul style="width: 220px;">
             <li onclick="EditQuoteItem()"><i class="menu-i1"></i>修改报价项</li>
             <li onclick="DeleteQuoteItem()"><i class="menu-i1"></i>删除报价项</li>
-		</ul>
-	</div>
+        </ul>
+    </div>
 </body>
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
@@ -598,7 +731,7 @@
 
     })
     function EditQuoteItem() {
-       
+
         window.open("QuoteItemAddAndUpdate?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteEdit %>', 'left=200,top=200,width=900,height=750', false);
     }
     function DeleteQuoteItem() {

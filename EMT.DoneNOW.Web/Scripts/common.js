@@ -74,6 +74,28 @@ function chooseCompany() {
     //window.open(url, "newwindow", "height=200,width=400", "toolbar =no", "menubar=no", "scrollbars=no", "resizable=no", "location=no", "status=no");
     //这些要写在一行
 }
+// 检查日期是否正确。正确返回true
+function check(date) {
+    return (new Date(date).getDate() == date.substring(date.length - 2));
+}
+// 保留两位小数
+function toDecimal2(x) {
+    var f = parseFloat(x);
+    if (isNaN(f)) {
+        return false;
+    }
+    var f = Math.round(x * 100) / 100;
+    var s = f.toString();
+    var rs = s.indexOf('.');
+    if (rs < 0) {
+        rs = s.length;
+        s += '.';
+    }
+    while (s.length <= rs + 2) {
+        s += '0';
+    }
+    return s;
+}
 
 //检测用户浏览器    不符合浏览器则跳转错误页面
 function myBrowser() {
