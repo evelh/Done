@@ -1289,7 +1289,7 @@ namespace EMT.DoneNOW.BLL
             var notify_email_dal = new com_notify_email_dal();
             var notify_email = new com_notify_email()
             {
-                id = 1,
+                id = notify_email_dal.GetNextIdCom(),
                 cate_id = (int)NOTIFY_CATE.CRM,
                 event_id = 1,             // todo
                 to_email = param.notice.contacts,                  // 接受人地址？？联系人地址   

@@ -82,10 +82,13 @@ namespace EMT.DoneNOW.Web
             else if (result == ERROR_CODE.ERROR)               // 联系人已存在
             {
                 Response.Write("<script>alert('联系人已存在！');</script>");
-            }           
+            }
             else if (result == ERROR_CODE.SUCCESS)                    // 插入联系人成功，刷新前一个页面
             {
-                Response.Write("<script>alert('添加联系人成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                if (dto.contact.id > 0)
+                    Response.Write("<script>alert('修改联系人成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                else
+                    Response.Write("<script>alert('添加联系人成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
             }
         }
 

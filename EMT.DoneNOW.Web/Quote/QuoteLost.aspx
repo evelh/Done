@@ -16,15 +16,20 @@
         </div>
     </div>
     <div class="Instructions">
-        <div class="InstructionItem">这个报价的条件将被设置为“丢失”。</div>
-        <div class="InstructionItem">请为这个报价的机会选择一个损失原因。</div>
-        <div class="InstructionItem">请为这个报价的机会输入一个损失原因细节。</div>
+        <div class="InstructionItem">报价对应的商机将会设置为“丢失”状态。</div>
+        <%if (needReasonType != EMT.DoneNOW.DTO.DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_NONE) { %>
+        <div class="InstructionItem">请选择商机丢失原因。</div>
+        <%} %>
+        <%if (needReasonType == EMT.DoneNOW.DTO.DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_TYPE_DETAIL) { %>
+        <div class="InstructionItem">请输入商机丢失原因详情。</div>
+        <%} %>
     </div>
-    <form action="post">
+    <form id="form1" runat="server">
         <div class="ScrollingContainer">
             <div class="Medium">
                 <div class="Content">
                     <div class="Normal">
+                        <%if (needReasonType != EMT.DoneNOW.DTO.DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_NONE) { %>
                         <div class="EditorLabelContainer Editor">
                             <div class="Label">
                                 <label>丢失原因</label>
@@ -33,17 +38,12 @@
                         </div>
                         <div class="Normal Editor SingleSelect">
                             <div class="InputField">
-                                <select name="LossReasonList" id="LossReasonList">
-                                    <option></option>
-                                    <option value="1" title="Need">Need</option>
-                                    <option value="2" title="Timing">Timing</option>
-                                    <option value="3" title="Price" selected="selected">Price</option>
-                                    <option value="4" title="Competition">Competition</option>
-                                    <option value="5" title="Feature">Feature</option>
-                                    <option value="6" title="Poor qualification">Poor qualification</option>
-                                </select>
+                                <asp:DropDownList ID="LossReasonList" runat="server">
+                                </asp:DropDownList>
                             </div>
                         </div>
+                        <%} %>
+                        <%if (needReasonType == EMT.DoneNOW.DTO.DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_TYPE_DETAIL) { %>
                         <div class="EditorLabelContainer Editor">
                             <div class="Label">
                                 <label>丢失原因详情</label>
@@ -52,13 +52,17 @@
                         </div>
                         <div class="Normal Editor TextArea">
                             <div class="InputField">
-                                <textarea class="area" name="LossReasonDetail" id="LossReasonDetail"></textarea>
+                                <textarea class="area" name="LossReasonDetail" id="LossReasonDetail"><%=lossReason %></textarea>
                             </div>
                         </div>
+                        <%} %>
                     </div>
                 </div>
             </div>
         </div>
+        <p>
+            <asp:Button ID="Finish" runat="server" Text="完成" OnClick="Finish_Click" />
+        </p>
     </form>
 </body>
 </html>

@@ -226,6 +226,9 @@
         function ViewCompany() {
             OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
         }
+        function AddQuote() {
+            OpenWindow("../Quote/QuoteAddAndUpdate.aspx");
+        }
         function DeleteOpp() {
             $.ajax({
                 type: "GET",
@@ -250,15 +253,21 @@
         function ViewCompany(id) {
             OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
         }
-        //function DeleteOpp() {
-        //    $.ajax({
-        //        type: "GET",
-        //        url: "../Tools/OpportunityAjax.ashx?act=delete&id=" + entityid,
-        //        success: function (data) {
-        //            alert(data);
-        //        }
-        //    })
-        //}
+        function LossQuote() {
+            OpenWindow("../Quote/QuoteLost.aspx?id=" + entityid);
+        }
+        function QuoteManage() {
+            OpenWindow("../QuoteItem/QuoteItemManage.aspx?quote_id=" + entityid);
+        }
+        function DeleteQuote() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteAjax.ashx?act=delete&id=" + entityid,
+                success: function (data) {
+                    alert(data);
+                }
+            })
+        }
         function Add() {
             OpenWindow("../Quote/QuoteAddAndUpdate.aspx");
         }
@@ -268,10 +277,13 @@
         function Add() {
             OpenWindow("../QuoteTemplate/QuoteTemplateAdd.aspx");
         }
+        function Edit() {
+            OpenWindow("../QuoteTemplate/QuoteTemplateEdit.aspx?id=" + entityid);
+        }
         <%
         }%>
         function openopenopen() {
-            alert("暂未实现");
+            //alert("暂未实现");
         }
     </script>
 </body>
