@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DAL;
+using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -13,6 +14,17 @@ namespace EMT.DoneNOW.BLL
     /// </summary>
     public class GeneralBLL
     {
+        /// <summary>
+        /// 根据tableId获取字典值列表
+        /// </summary>
+        /// <param name="tableId"></param>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetDicValues(GeneralTableEnum tableId)
+        {
+            var table = new d_general_table_dal().GetById((int)tableId);
+            return new d_general_dal().GetDictionary(table);
+        }
+
         /// <summary>
         /// 根据字典项的table name和字典项name获取字典项id
         /// </summary>

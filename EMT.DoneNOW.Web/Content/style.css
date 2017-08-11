@@ -112,10 +112,21 @@ margin-top: 5px;margin-right:10px;cursor: pointer;}
 .searchcontent::-webkit-scrollbar{width:0px;opacity:0; -webkit-overflow-scrolling: touch;}
 .searchcontent table{border:1px solid #98b4ca;}
 .searchcontent table tr{text-align: center;}
-.searchcontent table th{ background-color: #cbd9e4;border-color: #98b4ca;color: #64727a;height: 28px;line-height: 28px;}
-.searchcontent table td {padding: 4px 4px 4px 4px;vertical-align: top;word-wrap: break-word;font-size: 12px;color: #333;height: 28px;line-height: 28px;cursor: pointer;}
-.searchcontent table tr {border: 1px solid #98b4ca;}
-.searchcontent table td,.searchcontent table th {border: 1px solid #98b4ca;}
+.searchcontent table th{ background-color: #cbd9e4;border-color: #98b4ca;color: #64727a;height: 28px;}
+.searchcontent table td {padding: 4px 4px 4px 4px;vertical-align: top;word-wrap: break-word;font-size: 12px;color: #333;height: 28px;cursor: pointer;}
+    .searchcontent table tr {
+        border-left: 1px solid #f9f9ee;
+        border-right: 1px solid #f9f9ee;
+        border-top: 1px solid #e8e8fa;
+        border-bottom: 1px solid #e8e8fa;
+    }
+    .searchcontent table td, .searchcontent table th {
+        border-left: 1px solid #f9f9ee;
+        border-right: 1px solid #f9f9ee;
+        border-top: 1px solid #e8e8fa;
+        border-bottom: 1px solid #e8e8fa;
+    }
+     .searchcontent table td, .searchcontent table th, .searchcontent table tr:first-child{border-left:transparent}
 .searchcontent table tr:hover {background: #e0e3e4;}
 .searchcontent table .firstwidth{width:30px ;}
 

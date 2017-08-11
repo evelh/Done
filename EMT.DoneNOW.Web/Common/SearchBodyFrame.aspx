@@ -14,7 +14,7 @@
 </head>
 <style>
     .searchcontent{
-  OVERFLOW:   scroll;   width:   1800px;   height:   100%;
+  OVERFLOW:   scroll;   width:   100%;   height:   100%;min-width:2200px;
     }
     .searchcontent table th {
     background-color: #cbd9e4;
@@ -24,6 +24,8 @@
     line-height: 28px;
     text-align:center;
 }
+    
+  
 </style>
 <body>
     <form id="form1">
@@ -42,7 +44,12 @@
                 <%} %>
             </div>
         </div>
-        <div class="contenttitle clear">
+        <div class="contentboby">
+            <div class="contenttitle clear" style="    position: fixed; border-bottom:1px solid #e8e8fa;
+    left:0;
+    top: 0;
+    background: #fff;
+    width: 100%;">
 			<ul class="clear fl">
 				<li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
 				<li><i style="background-image: url(../Images/print.png);"></i></li>
@@ -84,9 +91,12 @@
 			</div>
             <%} %>
 		</div>
+        </div>        
+        </form>
         <%if (queryResult != null) { %>
-			<div class="searchcontent" id="searchcontent">
-				<table border="" cellspacing="0" cellpadding="0" width="100%;">
+
+			<div class="searchcontent" id="searchcontent" style="overflow:hidden;margin-top: 56px;">
+				<table border="" cellspacing="0" cellpadding="0"  style="overflow:scroll;width:100%;height:100%;">
 					<tr>
                         <%foreach(var para in resultPara)
                             {
@@ -149,8 +159,9 @@
 				</table>
 			</div>
         <%} %>
-    </form>
+    
     <div id="menu">
+        <%if (contextMenu.Count > 0) { %>
 		<ul style="width:220px;">
             <%foreach (var menu in contextMenu) { %>
             <li onclick="<%=menu.click_function %>"><i class="menu-i1"></i><%=menu.text %>
@@ -165,6 +176,7 @@
             </li>
             <%} %>
 		</ul>
+        <%} %>
 	</div>
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
@@ -226,6 +238,9 @@
         function ViewCompany() {
             OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
         }
+        function AddQuote() {
+            OpenWindow("../Quote/QuoteAddAndUpdate.aspx");
+        }
         function DeleteOpp() {
             $.ajax({
                 type: "GET",
@@ -250,15 +265,21 @@
         function ViewCompany(id) {
             OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
         }
-        //function DeleteOpp() {
-        //    $.ajax({
-        //        type: "GET",
-        //        url: "../Tools/OpportunityAjax.ashx?act=delete&id=" + entityid,
-        //        success: function (data) {
-        //            alert(data);
-        //        }
-        //    })
-        //}
+        function LossQuote() {
+            OpenWindow("../Quote/QuoteLost.aspx?id=" + entityid);
+        }
+        function QuoteManage() {
+            OpenWindow("../QuoteItem/QuoteItemManage.aspx?quote_id=" + entityid);
+        }
+        function DeleteQuote() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteAjax.ashx?act=delete&id=" + entityid,
+                success: function (data) {
+                    alert(data);
+                }
+            })
+        }
         function Add() {
             OpenWindow("../Quote/QuoteAddAndUpdate.aspx");
         }
@@ -268,10 +289,13 @@
         function Add() {
             OpenWindow("../QuoteTemplate/QuoteTemplateAdd.aspx");
         }
+        function Edit() {
+            OpenWindow("../QuoteTemplate/QuoteTemplateEdit.aspx?id=" + entityid);
+        }
         <%
         }%>
         function openopenopen() {
-            alert("暂未实现");
+            //alert("暂未实现");
         }
     </script>
 </body>

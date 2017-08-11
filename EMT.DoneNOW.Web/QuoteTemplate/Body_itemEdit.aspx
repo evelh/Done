@@ -26,14 +26,14 @@
                 <li class="Button ButtonIcon Okey NormalState" id="OkButton" tabindex="0">
                     <span class="Icon Ok"></span>
                    <%-- <span class="Text">确认</span>--%>
-                    <asp:Button ID="OkButton1" runat="server" Text="确认" cssclass="Text" BorderStyle="None" />
+                    <asp:Button ID="OkButton1" runat="server" Text="确认" cssclass="Text" BorderStyle="None" OnClick="OkButton_Click1" />
                     <input id="data" type="hidden" name="data" value=""/>
                   <%--  <asp:TextBox ID="data" runat="server" Visible="False" Text="123"></asp:TextBox>--%>
                 </li>
                 <li class="Button ButtonIcon Cancel NormalState" id="CancelButton" tabindex="0">
                     <span class="Icon Cancel"></span>
-                  <%--  <asp:Button ID="cancel" runat="server" Text="取消" cssclass="Text" BorderStyle="None" OnClick="Cancel"/>--%>
-                    <span class="Text">取消</span>
+                    <asp:Button ID="cancel" runat="server" Text="取消" cssclass="Text" BorderStyle="None" OnClick="Cancel"/>
+                   <%-- <span class="Text">取消</span>--%>
                 </li>
             </ul>
         </div>
@@ -137,16 +137,15 @@
             var html = ue.getContent();
             console.log(html);
             window.returnValue = html;
-
             window.close();
             $("#data").val($('<div/>').text(html).html());
             var txt = ue.getContentTxt();
             console.log(txt);
         });
         //点击取消直接返回
-        $("#CancelButton").on("click", function () {
+       <%-- $("#CancelButton").on("click", function () {
             window.location.href = "QuoteTemplateBodyEdit.aspx?id=" +<%=id%>+"&op=edit";
-        });
+        });--%>
 
     </script>
 </body>

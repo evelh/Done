@@ -147,6 +147,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\index.css" />
     <Content Include="Content\login.css" />
+    <Content Include="Content\LostQuote.css" />
     <Content Include="Content\multiple-select.css" />
     <Content Include="Content\multipleList.css" />
     <Content Include="Content\NewContact.css" />
@@ -185,6 +186,7 @@
     <Content Include="Images\classfication.png" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\test.aspx" />
+    <Content Include="Quote\QuoteLost.aspx" />
     <Content Include="Quote\QuoteView.aspx" />
     <Content Include="RichText\css\FootEdit.css" />
     <Content Include="RichText\css\HeadEdit.css" />
@@ -865,6 +867,13 @@
     </Compile>
     <Compile Include="Quote\QuoteAddAndUpdate.aspx.designer.cs">
       <DependentUpon>QuoteAddAndUpdate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Quote\QuoteLost.aspx.cs">
+      <DependentUpon>QuoteLost.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Quote\QuoteLost.aspx.designer.cs">
+      <DependentUpon>QuoteLost.aspx</DependentUpon>
     </Compile>
     <Compile Include="Quote\QuoteView.aspx.cs">
       <DependentUpon>QuoteView.aspx</DependentUpon>

@@ -196,6 +196,24 @@ namespace EMT.Tools
         }
 
         /// <summary>
+        /// 将字符串转换为Int64类型
+        /// </summary>
+        /// <param name="expression">要转换的字符串</param>
+        /// <param name="defValue">缺省值</param>
+        /// <returns>转换后的int类型结果</returns>
+        public static long StrToLong(string expression, long defValue)
+        {
+            if (string.IsNullOrEmpty(expression) || !Regex.IsMatch(expression.Trim(), @"^([-]|[0-9])[0-9]*(\.\w*)?$"))
+                return defValue;
+
+            long rv;
+            if (Int64.TryParse(expression, out rv))
+                return rv;
+
+            return Convert.ToInt64(StrToFloat(expression, defValue));
+        }
+
+        /// <summary>
         /// Object型转换为decimal型
         /// </summary>
         /// <param name="strValue">要转换的字符串</param>

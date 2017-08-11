@@ -47,7 +47,9 @@ namespace EMT.DoneNOW.Web
         {
             string tt = Request.Form["data"].Trim().ToString();
             Session["page_appendix"] = tt;
+            Session["cancel"] = 1;
             Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
+
         }
 
         protected void AlertVariableFilter_SelectedIndexChanged(object sender, EventArgs e)
@@ -74,6 +76,12 @@ namespace EMT.DoneNOW.Web
                 }
                 this.VariableList.Text = sb.ToString();
             }
+        }
+
+        protected void Cancel(object sender, EventArgs e)
+        {
+            Session["cancel"] = 1;
+            Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
         }
     }
 }

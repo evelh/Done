@@ -220,7 +220,7 @@ namespace EMT.DoneNOW.Web
                     dics = new CompanyBLL().GetField();
                     contextMenu.Add(new PageContextMenuDto { text = "修改客户", click_function = "EditCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "新增记录", click_function = "Add()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "openopenopen()\" \" style='color:grey;'" });
 
                     PageContextMenuDto classcate = new PageContextMenuDto { text = "设置类别", click_function = "" };
                     // 设置公司类别子菜单
@@ -230,57 +230,57 @@ namespace EMT.DoneNOW.Web
                         List<PageContextMenuDto> classsub = new List<PageContextMenuDto>();
                         foreach(var c in classification)
                         {
-                            classsub.Add(new PageContextMenuDto { text = c.show, click_function = $"openopenopen({c.val})" });
+                            classsub.Add(new PageContextMenuDto { text = c.show, click_function = $"openopenopen({c.val})\" \" style='color:grey;'" });
                         }
                         classcate.submenu = classsub;
                     }
                     contextMenu.Add(classcate);
 
-                    contextMenu.Add(new PageContextMenuDto { text = "关闭商机向导", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "丢失商机向导", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "重新指定客户经理向导", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "注销客户向导", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "关闭商机向导", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "丢失商机向导", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "重新指定客户经理向导", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "注销客户向导", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除客户", click_function = "DeleteCompany()" });
                     break;
                 case (long)QueryType.Contact:
                     contextMenu.Add(new PageContextMenuDto { text = "修改联系人", click_function = "EditContact()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看联系人", click_function = "ViewContact()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除联系人", click_function = "DeleteContact()" });
                     break;
                 case (long)QueryType.Opportunity:
                     contextMenu.Add(new PageContextMenuDto { text = "修改商机", click_function = "EditOpp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看商机", click_function = "ViewOpp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "新增报价", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "修改报价", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "关闭商机", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "丢失商机", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "重新指定商机负责人", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增报价", click_function = "AddQuote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "修改报价", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "关闭商机", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "丢失商机", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "重新指定商机负责人", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除商机", click_function = "DeleteOpp()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
                     break;
                 case (long)QueryType.Quote:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑报价", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "报价参数设定", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "报价项管理", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "报价参数设定", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "报价项管理", click_function = "QuoteManage()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看商机", click_function = "ViewOpp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看报价", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "复制报价", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "关闭报价", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "丢失报价", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除报价", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看报价", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制报价", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "关闭报价", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "丢失报价", click_function = "LossQuote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除报价", click_function = "DeleteQuote()" });
                     break;
                 case (long)QueryType.QuoteTemplate:
-                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "设为默认", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "未激活", click_function = "openopenopen()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设为默认", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "未激活", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
                     break;
                 default:
                     break;

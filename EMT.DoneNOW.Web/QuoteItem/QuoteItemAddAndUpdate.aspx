@@ -269,6 +269,7 @@
                                                 <div>
                                                     <input type="text" name="name" id="name" value="<%=isAdd?"":quote_item.name %>" />
                                                     <i onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <input type="hidden" id="nameHidden"/>
                                                 </div>
                                             </td>
                                         </tr>
@@ -320,7 +321,7 @@
                                                                 <td class="FieldLabels" style="padding-top: 6px;">单价</td>
                                                                 <td class="FieldLabels">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
-                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="unit_price" id="unit_price" value="<%=(!isAdd)&&(quote_item.unit_price!=null)?quote_item.unit_price.ToString():"" %>" />
+                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="unit_price" id="unit_price" value="<%=(!isAdd)&&(quote_item.unit_price!=null)?quote_item.unit_price.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -336,7 +337,7 @@
                                                                 <td class="FieldLabels" style="padding-top: 6px;">单元成本</td>
                                                                 <td class="FieldLabels">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
-                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="unit_cost" id="unit_cost" value="<%=(!isAdd)&&(quote_item.unit_cost!=null)?quote_item.unit_cost.ToString():"" %>" />
+                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="unit_cost" id="unit_cost" value="<%=(!isAdd)&&(quote_item.unit_cost!=null)?quote_item.unit_cost.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -344,7 +345,7 @@
                                                                 <td class="FieldLabels" style="padding-top: 6px;">数量</td>
                                                                 <td class="FieldLabels">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
-                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="quantity" id="quantity" value="<%=(!isAdd)&&(quote_item.quantity!=null)?quote_item.quantity.ToString():isAdd?"1":"" %>" />
+                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="quantity" id="quantity" value="<%=(!isAdd)&&(quote_item.quantity!=null)?quote_item.quantity.ToString():isAdd?"1":"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -376,7 +377,7 @@
                                                                 </td>
                                                                 <td class="FieldLabels" align="right">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
-                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="unit_discount" id="unit_discount" value="<%=(!isAdd)&&(quote_item.unit_discount!=null)?quote_item.unit_discount.ToString():"" %>" />
+                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="unit_discount" id="unit_discount" value="<%=(!isAdd)&&(quote_item.unit_discount!=null)?quote_item.unit_discount.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -402,7 +403,15 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="FieldLabels" style="padding-top: 6px">
-                                                                    <input type="checkbox" name="optional" id="optional" data-val="1" value="1" />可选的
+                                                                    <asp:CheckBox ID="_optional" runat="server" />可选的
+                                                                <%--    <%if (!isAdd && quote_item.optional == 1)
+                                                                        { %>
+                                                                    <input type="checkbox" name="optional" data-val="1" value="1" checked="checked"/>可选的
+                                                                    <%}
+                                                                    else
+                                                                    { %>
+                                                                    <input type="checkbox" name="optional" data-val="1" value="1" />可选的
+                                                                    <%} %>--%>
                                                                 </td>
                                                                 <td align="right">&nbsp;</td>
                                                             </tr>
@@ -434,17 +443,26 @@
 
         $(".Calculation").blur(function () {
             Markup();
+            var value = $(this).val();
+            if (!isNaN(value) && value!="") {
+                $(this).val(toDecimal2(value));
+            } else {
+                $(this).val("");
+            }
+            
         })
 
         $("#save_close").click(function () {
-            if (!SubmitCheck) {
+            if (!SubmitCheck()) {
                 return false;
             }
+            return true;
         })
         $("#save_new").click(function () {
-            if (!SubmitCheck) {
+            if (!SubmitCheck()) {
                 return false;
             }
+            return true;
         })
     })
 
@@ -459,8 +477,11 @@
         if (unit_price != "" && unit_cost != "") {
             if ((!isNaN(unit_price)) && (!isNaN(unit_cost))) // 两个都是数字开始执行
             {
-                var Markup = Math.round((Number(unit_price) - Number(unit_cost)) / Number(unit_price) * 10000) / 100.00;  //gross_profit_margin
-                $("#gross_profit_margin").val(Markup);
+                if (unit_cost != 0) {
+                    var Markup = Math.round((Number(unit_price) - Number(unit_cost)) / Number(unit_cost) * 10000) / 100.00;  //gross_profit_margin
+                    $("#gross_profit_margin").val(Markup);
+                }
+            
             }
         }
 
@@ -494,8 +515,11 @@
         if (unit_discount != "" && unit_price != "") {
             if ((!isNaN(unit_discount)) && (!isNaN(unit_price))) // 都是数字开始执行
             {
-                var Discount = Math.round(Number(unit_discount) / Number(unit_price) * 10000) / 100.00;
-                $("#Discount").val(Discount);
+                if (unit_price != 0) {
+                    var Discount = Math.round(Number(unit_discount) / Number(unit_price) * 10000) / 100.00;
+                    $("#Discount").val(Discount);
+                }
+               
             }
         }
 
@@ -535,7 +559,24 @@
     }
 
     function chooseRole() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=EMT.DoneNOW.DTO.OpenWindow.RoleSelect %>&field=name", 'new', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ROLL_CALLBACK %>&field=name", '<%=EMT.DoneNOW.DTO.OpenWindow.RoleSelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    function toDecimal2(x) {
+        var f = parseFloat(x);
+        if (isNaN(f)) {
+            return false;
+        }
+        var f = Math.round(x * 100) / 100;
+        var s = f.toString();
+        var rs = s.indexOf('.');
+        if (rs < 0) {
+            rs = s.length;
+            s += '.';
+        }
+        while (s.length <= rs + 2) {
+            s += '0';
+        }
+        return s;
     }
 
 

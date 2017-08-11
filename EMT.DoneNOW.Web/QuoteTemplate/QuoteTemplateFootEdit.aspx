@@ -30,7 +30,8 @@
                 </li>
                 <li class="Button ButtonIcon Cancel NormalState" id="CancelButton" tabindex="0">
                     <span class="Icon Cancel"></span>
-                    <span class="Text">取消</span>
+                    <asp:Button ID="Button1" runat="server" Text="取消" OnClick="Button1_Click" class="Text"/>
+                    <%--<span class="Text">取消</span>--%>
                 </li>
             </ul>
         </div>
@@ -136,9 +137,9 @@
         })
 
 //        点击取消直接返回
-        $("#CancelButton").on("click",function(){
+<%--        $("#CancelButton").on("click",function(){
             window.location.href = "QuoteTemplateEdit.aspx?id=" +<%=id%>+"&op=edit";
-        })
+        })--%>
 
     </script>
 </body>

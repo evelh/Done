@@ -35,6 +35,7 @@ namespace EMT.DoneNOW.BLL
             dic.Add("addressdistrict", new d_district_dal().GetDictionary());                       // 地址表（省市县区）
 
             dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));              // 税区
+            dic.Add("quote_tmpl", new sys_quote_tmpl_dal().GetQuoteTemp());
 
 
 
@@ -89,6 +90,7 @@ namespace EMT.DoneNOW.BLL
                     ext3 = 0,
                     ext4 = 0,
                     ext5 = 0,
+                    spread_value = 0,
                     // create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     create_user_id = user_id,
@@ -124,6 +126,7 @@ namespace EMT.DoneNOW.BLL
             quote.payment_type_id = quote.payment_type_id == 0 ? null : quote.payment_type_id;
             quote.shipping_type_id = quote.shipping_type_id == 0 ? null : quote.shipping_type_id;
             quote.tax_region_id = quote.tax_region_id == 0 ? null : quote.tax_region_id;
+            quote.quote_tmpl_id = quote.quote_tmpl_id == 0 ? null : quote.quote_tmpl_id;
             _dal.Insert(quote);
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
@@ -217,6 +220,7 @@ namespace EMT.DoneNOW.BLL
             quote.payment_type_id = quote.payment_type_id == 0 ? null : quote.payment_type_id;
             quote.shipping_type_id = quote.shipping_type_id == 0 ? null : quote.shipping_type_id;
             quote.tax_region_id = quote.tax_region_id == 0 ? null : quote.tax_region_id;
+            quote.quote_tmpl_id = old_quote.quote_tmpl_id;
             quote.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             quote.update_user_id = user_id;
             _dal.Update(quote);
@@ -296,12 +300,93 @@ namespace EMT.DoneNOW.BLL
         {
             return _dal.FindSignleBySql<crm_quote>($"select * from crm_quote WHERE id = {id} and delete_time = 0 ");
         }
+
         /// <summary>
-        /// 
+        /// 丢失报价
         /// </summary>
-        /// <param name="cid"></param>
-        /// <param name="aid"></param>
+        /// <param name="userId"></param>
+        /// <param name="quoteId"></param>
+        /// <param name="reasonType">丢失原因类型</param>
+        /// <param name="reasonDetail">丢失原因详情</param>
         /// <returns></returns>
+        public string LossQuote(long userId, long quoteId, int reasonType, string reasonDetail)
+        {
+            DicEnum.SYS_CLOSE_OPPORTUNITY needReasonType;
+            var type = new SysSettingBLL().GetValueById(SysSettingEnum.CRM_OPPORTUNITY_LOSS_REASON);
+            int value = 0;
+            if (!int.TryParse(type, out value))
+                needReasonType = DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_NONE;
+            else
+                needReasonType = (DicEnum.SYS_CLOSE_OPPORTUNITY)value;
+
+            // 更新商机状态为丢失
+            var opporDal = new crm_opportunity_dal();
+            var quote = _dal.FindById(quoteId);
+            var oppor = opporDal.FindById(quote.opportunity_id);
+            var oldOppor = opporDal.FindById(quote.opportunity_id);
+            oppor.status_id = (int)DicEnum.OPPORTUNITY_STATUS.LOST;
+            oppor.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            oppor.update_user_id = userId;
+            if (needReasonType == SYS_CLOSE_OPPORTUNITY.NEED_TYPE_DETAIL)
+                oppor.loss_reason = reasonDetail;
+            if (needReasonType != SYS_CLOSE_OPPORTUNITY.NEED_NONE)
+                oppor.loss_reason_type_id = reasonType;
+            opporDal.Update(oppor);
+
+            // 保存操作商机日志
+            var user = UserInfoBLL.GetUserInfo(userId);
+            new sys_oper_log_dal().Insert(new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = userId,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.OPPORTUNITY,
+                oper_object_id = oppor.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = opporDal.CompareValue(oldOppor, oppor),
+                remark = "修改商机信息"
+            });
+
+            // 新增通知信息
+            var notify_email_dal = new com_notify_email_dal();
+            var notify_email = new com_notify_email()
+            {
+                id = notify_email_dal.GetNextIdCom(),
+                cate_id = (int)NOTIFY_CATE.CRM,
+                event_id = 1,             // TODO:
+                to_email = "",                  // TODO:  
+                notify_tmpl_id = 1,    // TODO:
+                from_email = user.email,   // todo
+                from_email_name = user.name,  // todo 
+                subject = "",       // TODO:
+                body_text = "",    // TODO:
+                is_html_format = 0,                                // 内容是否是html格式，0纯文本 1html
+                create_user_id = user.id,
+                update_user_id = user.id,
+                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+
+            };
+            notify_email_dal.Insert(notify_email);
+            new sys_oper_log_dal().Insert(new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = user.id,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.OPPORTUNITY,
+                oper_object_id = notify_email.id,
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = notify_email_dal.AddValue(notify_email),
+                remark = "新增通知",
+            });  // 插入日志
+
+            return "";
+		}
+
         public DataTable GetVar(int cid,int aid)
         {
             StringBuilder sql = new StringBuilder();

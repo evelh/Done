@@ -426,6 +426,16 @@ namespace EMT.DoneNOW.DTO
             NUMBER_EQUAL = 816,     // 数值(做等于判断)
             TIMESPAN = 817,         // 日期-时间戳
         }
+
+        /// <summary>
+        /// 系统管理：系统配置：关闭/丢失商机必填项-81
+        /// </summary>
+        public enum SYS_CLOSE_OPPORTUNITY
+        {
+            NEED_TYPE = 1017,           // 需要原因类型
+            NEED_TYPE_DETAIL = 1018,    // 需要原因类型和详情
+            NEED_NONE = 1019,           // 不需要
+        }
     }
 
     public enum ActionEnum

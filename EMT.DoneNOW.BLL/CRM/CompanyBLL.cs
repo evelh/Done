@@ -241,7 +241,7 @@ namespace EMT.DoneNOW.BLL
                     alternate_phone = _account.alternate_phone1,
                     alternate_phone2 = _account.alternate_phone2,
                     mobile_phone = param.contact.mobile_phone,
-                    suffix_id = param.contact.sufix,
+                    suffix_id = param.contact.sufix==0?null: param.contact.sufix,
                     title = param.contact.title,
                     first_name = param.contact.first_name,
                     last_name = param.contact.last_name == null ? "" : param.contact.last_name,
@@ -1289,7 +1289,7 @@ namespace EMT.DoneNOW.BLL
             var notify_email_dal = new com_notify_email_dal();
             var notify_email = new com_notify_email()
             {
-                id = 1,
+                id = notify_email_dal.GetNextIdCom(),
                 cate_id = (int)NOTIFY_CATE.CRM,
                 event_id = 1,             // todo
                 to_email = param.notice.contacts,                  // 接受人地址？？联系人地址   

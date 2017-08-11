@@ -20,163 +20,183 @@ namespace EMT.DoneNOW.Web
         //public bool copy = false;
         protected void Page_Load(object sender, EventArgs e)
         {
-           // Session.Timeout = 30;设置该页面的session过期时间
+            
+            // Session.Timeout = 30;设置该页面的session过期时间
             id = Convert.ToInt32(Request.QueryString["id"]);
             if (!IsPostBack)
-            {               
+            {
+                if(Session["cancel"]!=null&&(int)Session["cancel"]==0)
+                {
+                    Cancel1();
+                }
+                Session["cancel"] = 0;
                 QuoteTemplateBLL qtb = new QuoteTemplateBLL();
                 if (Request.QueryString["op"] == null||string.IsNullOrEmpty(Request.QueryString["op"].ToString()))
                 {                    
                     if (qtb.is_quote(id) == DTO.ERROR_CODE.ERROR)//判断报价模板是否被引用
                     {
-                        Response.Write("<script>if(window.confirm('模板被报价引用，如果修改会影响到这些报价。你如果你不想影响这些报价，可以复制一个新的模板，然后对新模板进行修改。是否继续？?')){}else{history.go(-1);}</script>");
+                        Response.Write("<script>if(confirm('模板被报价引用，如果修改会影响到这些报价。你如果你不想影响这些报价，可以复制一个新的模板，然后对新模板进行修改。是否继续?')==true){}else{window.close();}</script>");
                         //复制一个报价模板
-                        Session["copy"] ="copy";
+                        Session["copy"] ="（副本）";
                     }
                 }                           
                     //填充数据
                 var data = qtb.GetQuoteTemplate(id);
-                    if (data == null)
-                    {
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('获取数据错误！');history.go(-1);</script>");
-                    }
-                //页眉
-                if (Session["page_head"] != null&&!string.IsNullOrEmpty(Session["page_head"].ToString()))
+                if (data == null)
                 {
-                    this.head.Text = HttpUtility.HtmlDecode(Session["page_head"].ToString()).Replace("\"", "'");
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('获取数据错误！');history.go(-1);</script>");
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(data.page_header_html))
+                    //页眉
+                    if (Session["page_head"] != null && !string.IsNullOrEmpty(Session["page_head"].ToString()))
                     {
-                        Session["page_head"] = this.head.Text = " ";
-                    }
-                    else {
-                        Session["page_head"] = this.head.Text = HttpUtility.HtmlDecode(data.page_header_html).Replace("\"", "'");
-                    }                                  
-                }
-                //头部
-                if (Session["quote_head"] != null )
-                {
-                    this.top.Text = HttpUtility.HtmlDecode(Session["quote_head"].ToString()).Replace("\"", "'");
-                }
-
-                else {
-                    if (string.IsNullOrEmpty(data.quote_header_html))
-                    {
-                        Session["quote_head"] = this.top.Text = " ";
-                    }
-                    else {
-                        Session["quote_head"] = this.top.Text = HttpUtility.HtmlDecode(data.quote_header_html).Replace("\"", "'");
-                    }
-                    
-                }
-                //正文body
-
-                //正在进行中
-                string body_json="";
-                if (Session["quote_body"] == null)
-                {
-
-                    if (string.IsNullOrEmpty(data.body_html))
-                    {
-                        Session["quote_body"] = " ";
-                        //填充默认
-                        StringBuilder sb = new StringBuilder();
-                        sb.Append("<table class='ReadOnlyGrid_Table'>");
-                        sb.Append("<th>");
-                        sb.Append("<td class='ReadOnlyGrid_TableHeader' style='text-align: Left;' width='40px;'>Item#</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Quantity</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Left;'>Item</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Unit Price</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Unit Discount</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Adjusted Unit Price</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Extended Price</td>");
-                        sb.Append("</th>");
-                        for (int i = 0; i < 8; i++) {
-                            sb.Append("<tr><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Number]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Quantity]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Name]<br/>[Quote Item:Item Description]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Unit Price]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Unit Discount]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Adjusted Unit Price]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Extended Price]</td></tr>");
-                        }
-                        this.body.Text =sb.ToString();
-                        sb.Clear();
+                        this.head.Text = HttpUtility.HtmlDecode(Session["page_head"].ToString()).Replace("\"", "'");
                     }
                     else
                     {
-                        Session["quote_body"] = HttpUtility.HtmlDecode(data.body_html).Replace("\"", "'");
-                        body_json = Session["quote_body"].ToString();
-                    }
-                }
-                else {
-                    body_json=Session["quote_body"].ToString();                
-                }
-
-                if (!string.IsNullOrEmpty(body_json)) {
-                    var quote_body = new EMT.Tools.Serialize().DeserializeJson<QuoteTemplateAddDto.BODY>(body_json.Replace("'", "\""));//正文主体
-                    int i = 0;//统计显示的列数
-                    StringBuilder table = new StringBuilder();
-                    table.Append("<table class='ReadOnlyGrid_Table'>");
-                    table.Append("<tr>");
-                    foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-                    {
-                        if (coulmn.Display == "yes")
+                        if (string.IsNullOrEmpty(data.page_header_html))
                         {
-                            table.Append("<td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>" + coulmn.Column_label + "</td>");
-                            i++;
+                            Session["page_head"] = this.head.Text = " ";
+                        }
+                        else
+                        {
+                            Session["page_head"] = this.head.Text = HttpUtility.HtmlDecode(data.page_header_html).Replace("\"", "'");
                         }
                     }
-                    table.Append("</tr>");
-                    for (int j = 0; j < 8; j++)
+                    //头部
+                    if (Session["quote_head"] != null)
                     {
+                        this.top.Text = HttpUtility.HtmlDecode(Session["quote_head"].ToString()).Replace("\"", "'");
+                    }
+
+                    else
+                    {
+                        if (string.IsNullOrEmpty(data.quote_header_html))
+                        {
+                            Session["quote_head"] = this.top.Text = " ";
+                        }
+                        else
+                        {
+                            Session["quote_head"] = this.top.Text = HttpUtility.HtmlDecode(data.quote_header_html).Replace("\"", "'");
+                        }
+
+                    }
+                    //正文body
+
+                    //正在进行中
+                    string body_json = string.Empty;
+                    if (Session["quote_body"] == null)
+                    {
+
+                        if (string.IsNullOrEmpty(data.body_html))
+                        {
+                            //Session["quote_body"] = ";
+                            //填充默认
+                            StringBuilder sb = new StringBuilder();
+                            sb.Append("<table class='ReadOnlyGrid_Table'>");
+                            sb.Append("<tr>");
+                            sb.Append("<td class='ReadOnlyGrid_TableHeader' style='text-align: Left;' width='40px;'>Item#</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Quantity</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Left;'>Item</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Unit Price</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Unit Discount</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Adjusted Unit Price</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Extended Price</td>");
+                            sb.Append("</tr>");
+                            for (int i = 0; i < 8; i++)
+                            {
+                                sb.Append("<tr><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Number]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Quantity]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Name]<br/>[Quote Item:Item Description]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Unit Price]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Unit Discount]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Adjusted Unit Price]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Extended Price]</td></tr>");
+                            }
+                            this.body.Text = sb.ToString();
+                            sb.Clear();
+                        }
+                        else
+                        {
+                            Session["quote_body"] = HttpUtility.HtmlDecode(data.body_html).Replace("\"", "'");
+                            body_json = Session["quote_body"].ToString();
+                        }
+                    }
+                    else
+                    {
+                        body_json = Session["quote_body"].ToString();
+                    }
+
+                    if (!string.IsNullOrEmpty(body_json))
+                    {
+                        var quote_body = new EMT.Tools.Serialize().DeserializeJson<QuoteTemplateAddDto.BODY>(body_json.Replace("'", "\""));//正文主体
+                        int i = 0;//统计显示的列数
+                        StringBuilder table = new StringBuilder();
+                        table.Append("<table class='ReadOnlyGrid_Table'>");
                         table.Append("<tr>");
                         foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
                         {
-                            if (coulmn.Display == "yes"&& coulmn.Column_Content != "Item")
-                            { table.Append("<td style='text - align: Left; '>" + coulmn.Column_Content + "</td>"); }
-                            if (coulmn.Display == "yes"&&coulmn.Column_Content == "Item") {
-                                table.Append("<td style='text - align: Left; '>" + quote_body.CUSTOMIZE_THE_ITEM_COLUMN[j].Display_Format + "</td>");
+                            if (coulmn.Display == "yes")
+                            {
+                                table.Append("<td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>" + coulmn.Column_label + "</td>");
+                                i++;
                             }
                         }
                         table.Append("</tr>");
-                        //table.Append("<tr><td style='text - align: Left; '>[Quote Item:Number]</td><td  style='text - align: Left; '>[Quote Item:Quantity]</td><td  style='text - align: Left; '>[Quote Item:Name]<br/>[Quote Item:Item Description]</td><td  style='text - align: Left; '>[Quote Item:Unit Price]</td><td  style='text - align: Left; '>[Quote Item:Unit Discount]</td><td  style='text - align: Left; '>[Quote Item:Adjusted Unit Price]</td><td  style='text - align: Left; '>[Quote Item:Extended Price]</td><td  style='text - align: Left; '>[Quote Item:Discount %]</td></tr>");
+                        for (int j = 0; j < 8; j++)
+                        {
+                            table.Append("<tr>");
+                            foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+                            {
+                                if (coulmn.Display == "yes" && coulmn.Column_Content != "Item")
+                                { table.Append("<td style='text - align: Left; '>" + coulmn.Column_Content + "</td>"); }
+                                if (coulmn.Display == "yes" && coulmn.Column_Content == "Item")
+                                {
+                                    table.Append("<td style='text - align: Left; '>" + quote_body.CUSTOMIZE_THE_ITEM_COLUMN[j].Display_Format + "</td>");
+                                }
+                            }
+                            table.Append("</tr>");
+                            //table.Append("<tr><td style='text - align: Left; '>[Quote Item:Number]</td><td  style='text - align: Left; '>[Quote Item:Quantity]</td><td  style='text - align: Left; '>[Quote Item:Name]<br/>[Quote Item:Item Description]</td><td  style='text - align: Left; '>[Quote Item:Unit Price]</td><td  style='text - align: Left; '>[Quote Item:Unit Discount]</td><td  style='text - align: Left; '>[Quote Item:Adjusted Unit Price]</td><td  style='text - align: Left; '>[Quote Item:Extended Price]</td><td  style='text - align: Left; '>[Quote Item:Discount %]</td></tr>");
+                        }
+                        table.Append("</table>");
+                        this.body.Text = table.ToString();
+                        table.Clear();
                     }
-                    table.Append("</table>");
-                    this.body.Text = table.ToString();
-                    table.Clear();
-                }        
-                //底部
-                if (Session["quote_foot"] != null )
-                {
-                    this.bottom.Text = HttpUtility.HtmlDecode(Session["quote_foot"].ToString()).Replace("\"", "'");
-                   
-                }
-                else {
-                    if (string.IsNullOrEmpty(data.quote_footer_html))
+                    //底部
+                    if (Session["quote_foot"] != null)
                     {
-                        Session["quote_foot"] = this.bottom.Text = " ";
-                    }
-                    else {
-                        Session["quote_foot"] = this.bottom.Text = HttpUtility.HtmlDecode(data.quote_footer_html).Replace("\"", "'");
-                    }                  
+                        this.bottom.Text = HttpUtility.HtmlDecode(Session["quote_foot"].ToString()).Replace("\"", "'");
 
-                }
-                //页脚
-                if (Session["page_foot"] != null )
-                {
-                    this.foot.Text = HttpUtility.HtmlDecode(Session["page_foot"].ToString()).Replace("\"", "'");
-                }
-                else {
-                    if (string.IsNullOrEmpty(data.page_footer_html))
-                    {
-                        Session["page_foot"] = this.foot.Text = " ";
-                    }
-                    else {
-                        Session["page_foot"] = this.foot.Text = HttpUtility.HtmlDecode(data.page_footer_html).Replace("\"", "'");
-                    }
-                }
-
-
-                if (Session["page_appendix"] == null ||string.IsNullOrEmpty(Session["page_appendix"].ToString()))
-                {
-                    if (string.IsNullOrEmpty(data.quote_footer_notes))
-                    {
-                        Session["page_appendix"] =" ";
                     }
                     else
                     {
-                        Session["page_appendix"] = HttpUtility.HtmlDecode(data.quote_footer_notes).Replace("\"", "'");
+                        if (string.IsNullOrEmpty(data.quote_footer_html))
+                        {
+                            Session["quote_foot"] = this.bottom.Text = " ";
+                        }
+                        else
+                        {
+                            Session["quote_foot"] = this.bottom.Text = HttpUtility.HtmlDecode(data.quote_footer_html).Replace("\"", "'");
+                        }
+
+                    }
+                    //页脚
+                    if (Session["page_foot"] != null)
+                    {
+                        this.foot.Text = HttpUtility.HtmlDecode(Session["page_foot"].ToString()).Replace("\"", "'");
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(data.page_footer_html))
+                        {
+                            Session["page_foot"] = this.foot.Text = " ";
+                        }
+                        else
+                        {
+                            Session["page_foot"] = this.foot.Text = HttpUtility.HtmlDecode(data.page_footer_html).Replace("\"", "'");
+                        }
+                    }
+
+
+                    if (Session["page_appendix"] == null || string.IsNullOrEmpty(Session["page_appendix"].ToString()))
+                    {
+                        if (string.IsNullOrEmpty(data.quote_footer_notes))
+                        {
+                            Session["page_appendix"] = " ";
+                        }
+                        else
+                        {
+                            Session["page_appendix"] = HttpUtility.HtmlDecode(data.quote_footer_notes).Replace("\"", "'");
+                        }
                     }
                 }
             }         
@@ -215,8 +235,7 @@ namespace EMT.DoneNOW.Web
             {
                 Session.Remove("page_appendix");
             }
-
-           
+            Session["cancel"] = 1;
             //Response.Redirect("");//返回报价模板管理界面
             Response.Write("<script>window.close();self.opener.location.reload();</script>");
 
@@ -228,6 +247,12 @@ namespace EMT.DoneNOW.Web
         /// <param name="e"></param>
         protected void Cancel_Click(object sender, EventArgs e)
         {
+            Session["cancel"] = 1;
+            Cancel1();
+            Response.Write("<script>window.close();self.opener.location.reload();</script>");
+            //Response.Redirect("");//返回报价模板管理界面
+        }
+        private void Cancel1() {
             if (Session["page_head"] != null)
             {
                 Session.Remove("page_head");
@@ -252,8 +277,6 @@ namespace EMT.DoneNOW.Web
             {
                 Session.Remove("page_appendix");
             }
-            Response.Write("<script>window.close();self.opener.location.reload();</script>");
-            //Response.Redirect("");//返回报价模板管理界面
         }
         /// <summary>
         /// 取消
@@ -305,9 +328,11 @@ namespace EMT.DoneNOW.Web
 
             if (Session["copy"] != null)
             {
+                string name = Session["copy"].ToString();
                 Session.Remove("copy");
                 //保存副本
                 //sqt.id = (int)(_dal.GetNextIdCom());
+                sqt.name = sqt.name + name + Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 var result = qtbll.Add(sqt, GetLoginUserId(), out id);
                 if (result == ERROR_CODE.SUCCESS)                    // 
                 {
@@ -334,7 +359,6 @@ namespace EMT.DoneNOW.Web
                     Response.Redirect("Login.aspx");
                 }
             }
-
 
             //写一个窗口关闭事件
 
