@@ -241,7 +241,7 @@ namespace EMT.DoneNOW.BLL
                     alternate_phone = _account.alternate_phone1,
                     alternate_phone2 = _account.alternate_phone2,
                     mobile_phone = param.contact.mobile_phone,
-                    suffix_id = param.contact.sufix,
+                    suffix_id = param.contact.sufix==0?null: param.contact.sufix,
                     title = param.contact.title,
                     first_name = param.contact.first_name,
                     last_name = param.contact.last_name == null ? "" : param.contact.last_name,
