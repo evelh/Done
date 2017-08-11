@@ -30,7 +30,7 @@
                 </li>
                 <li class="Button ButtonIcon Cancel NormalState" id="CancelButton" tabindex="0">
                     <span class="Icon Cancel"></span>
-                    <asp:Button ID="Button1" runat="server" Text="取消" OnClick="Button1_Click" class="Text"/>
+                    <asp:Button ID="cancel" runat="server" Text="取消" cssclass="Text" BorderStyle="None" OnClick="Button1_Click"/>   
                     <%--<span class="Text">取消</span>--%>
                 </li>
             </ul>

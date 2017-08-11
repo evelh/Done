@@ -84,7 +84,7 @@ namespace EMT.DoneNOW.Web
         protected void CancelButton1_Click(object sender, EventArgs e)
         {
             Session["cancel"] = 1;
-            Response.Write("<script>window.location.href = \"QuoteTemplateEdit.aspx ? id = "+id+"\";</script>");
+            Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
         }
     }
 }

@@ -100,6 +100,9 @@ namespace EMT.DoneNOW.Web
                         html.Clear();
                     }
                 }
+                else {
+                    this.datalist.Text = "<script> $(document).ready(function () {$(\".Display\").children().addClass(\"CM\");});</script>";
+                }
             }
         }
         protected void Save(object sender, EventArgs e)

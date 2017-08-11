@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.Web
             id = Convert.ToInt32(Request.QueryString["id"]);
             if (!IsPostBack)
             {
-                if(Session["cancel"]!=null&&(int)Session["cancel"]==0)
+                if(Session["cancel"]!=null&&(int)Session["cancel"]!=1)
                 {
                     Cancel1();
                 }
@@ -86,9 +86,8 @@ namespace EMT.DoneNOW.Web
 
                     //正在进行中
                     string body_json = string.Empty;
-                    if (Session["quote_body"] == null)
+                    if (Session["quote_body"] == null|| string.IsNullOrEmpty(Session["quote_body"].ToString()))
                     {
-
                         if (string.IsNullOrEmpty(data.body_html))
                         {
                             //Session["quote_body"] = ";
@@ -100,7 +99,7 @@ namespace EMT.DoneNOW.Web
                             sb.Append("</tr>");
                             for (int i = 0; i < 8; i++)
                             {
-                                sb.Append("<tr><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Number]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Quantity]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Name]<br/>[Quote Item:Item Description]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Unit Price]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Unit Discount]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Adjusted Unit Price]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Extended Price]</td></tr>");
+                                sb.Append("<tr><td style='text - align: Left; '>[Quote Item:Number]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Quantity]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Name]<br/>[Quote Item:Item Description]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Unit Price]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Unit Discount]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Adjusted Unit Price]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Extended Price]</td></tr>");
                             }
                             this.body.Text = sb.ToString();
                             sb.Clear();
