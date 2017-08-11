@@ -172,7 +172,7 @@ namespace EMT.DoneNOW.Web
             foreach (Match m in reg.Matches(st))
             {
                 string t=m.Groups[0].ToString();//[客户：名称]
-                var Vartable = qd.GetVar((int)qddata.contact_id);//此处需要填id
+                var Vartable = qd.GetVar((int)qddata.contact_id,(int)qddata.account_id);//此处需要填id
                 //此处需要编写替换逻辑//d_query_result表的col_comment[客户：名称]
                 //st.Replace(m.Groups[0].ToString());
                 

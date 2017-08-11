@@ -124,23 +124,18 @@ namespace EMT.DoneNOW.Web
                         foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
                         {
                             if (coulmn.Display == "yes"&& coulmn.Column_Content != "Item")
-                            { table.Append("<td style='text - align: Left; '>[Quote " + coulmn.Column_Content + ":Number]</td>"); }
+                            { table.Append("<td style='text - align: Left; '>" + coulmn.Column_Content + "</td>"); }
                             if (coulmn.Display == "yes"&&coulmn.Column_Content == "Item") {
-                                table.Append("<td style='text - align: Left; '>[Quote " + quote_body.CUSTOMIZE_THE_ITEM_COLUMN[j].Display_Format + ":Number]</td>");
+                                table.Append("<td style='text - align: Left; '>" + quote_body.CUSTOMIZE_THE_ITEM_COLUMN[j].Display_Format + "</td>");
                             }
                         }
-
                         table.Append("</tr>");
-
-
                         //table.Append("<tr><td style='text - align: Left; '>[Quote Item:Number]</td><td  style='text - align: Left; '>[Quote Item:Quantity]</td><td  style='text - align: Left; '>[Quote Item:Name]<br/>[Quote Item:Item Description]</td><td  style='text - align: Left; '>[Quote Item:Unit Price]</td><td  style='text - align: Left; '>[Quote Item:Unit Discount]</td><td  style='text - align: Left; '>[Quote Item:Adjusted Unit Price]</td><td  style='text - align: Left; '>[Quote Item:Extended Price]</td><td  style='text - align: Left; '>[Quote Item:Discount %]</td></tr>");
                     }
                     table.Append("</table>");
                     this.body.Text = table.ToString();
                     table.Clear();
-                }              
-
-
+                }        
                 //底部
                 if (Session["quote_foot"] != null )
                 {
