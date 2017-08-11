@@ -147,10 +147,13 @@
                         <td>
                             <div class="clear">
                                 <label>预计完成日期<span class="red">*</span></label>
-                                <input type="text" class="form_datetime sl_cdt" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd)&&(quote.projected_close_date!=null)?quote.projected_close_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
+                                <input type="text" class="form_datetime sl_cdt" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd)&&(quote.projected_close_date!=null)?quote.projected_close_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" <%if (!isAdd)
+                                    { %> disabled="disabled"<%} %> />
                             </div>
                             <div style="margin-top: -30px; display: -webkit-box;">
-                                <a onclick="AddTime(0)">今天</a>|<a onclick="AddTime(7)">7</a>|<a onclick="AddTime(30)">30</a>|<a onclick="AddTime(60)">60</a>
+                                <%if (isAdd)
+                                    { %>
+                                <a onclick="AddTime(0)">今天</a>|<a onclick="AddTime(7)">7</a>|<a onclick="AddTime(30)">30</a>|<a onclick="AddTime(60)">60</a><%} %>
                             </div>
                         </td>
                     </tr>
@@ -365,7 +368,7 @@
                             <td>
                                 <div class="clear">
                                     <label>省份</label>
-                                    <select name="province_id" id="bill_province_id" class="billLoca">
+                                    <select name="bill_province_id" id="bill_province_id" class="billLoca">
                                     </select>
                                 </div>
                             </td>
@@ -374,7 +377,7 @@
                             <td>
                                 <div class="clear">
                                     <label>城市</label>
-                                    <select name="city_id" id="bill_city_id"  class="billLoca">
+                                    <select name="bill_city_id" id="bill_city_id"  class="billLoca">
                                     </select>
                                 </div>
                             </td>
@@ -383,7 +386,7 @@
                             <td>
                                 <div class="clear">
                                     <label>区县</label>
-                                    <select name="district_id" id="bill_district_id"  class="billLoca">
+                                    <select name="bill_district_id" id="bill_district_id"  class="billLoca">
                                     </select>
                                 </div>
                             </td>
@@ -392,7 +395,7 @@
                             <td>
                                 <div class="clear">
                                     <label>地址</label>
-                                    <input type="text" name="address" id="bill_address"  class="billLoca" />
+                                    <input type="text" name="bill_address" id="bill_address"  class="billLoca" />
                                 </div>
                             </td>
                         </tr>
@@ -400,7 +403,7 @@
                             <td>
                                 <div class="clear">
                                     <label>补充地址</label>
-                                    <input type="text" name="address2" id="bill_address2"  class="billLoca" />
+                                    <input type="text" name="bill_address2" id="bill_address2"  class="billLoca" />
                                 </div>
                             </td>
                         </tr>
@@ -408,7 +411,7 @@
                             <td>
                                 <div class="clear">
                                     <label>邮编</label>
-                                    <input type="text" name="postcode" id="bill_postcode"  class="billLoca" />
+                                    <input type="text" name="bill_postcode" id="bill_postcode"  class="billLoca" />
                                 </div>
                             </td>
                         </tr>
@@ -426,7 +429,7 @@
                             <td>
                                 <div class="clear">
                                     <label>省份</label>
-                                    <select name="province_id" id="ship_province_id" class="shipLoca">
+                                    <select name="ship_province_id" id="ship_province_id" class="shipLoca">
                                     </select>
                                 </div>
                             </td>
@@ -435,7 +438,7 @@
                             <td>
                                 <div class="clear">
                                     <label>城市</label>
-                                    <select name="city_id" id="ship_city_id"  class="shipLoca">
+                                    <select name="ship_city_id" id="ship_city_id"  class="shipLoca">
                                     </select>
                                 </div>
                             </td>
@@ -444,7 +447,7 @@
                             <td>
                                 <div class="clear">
                                     <label>区县</label>
-                                    <select name="district_id" id="ship_district_id"  class="shipLoca">
+                                    <select name="ship_district_id" id="ship_district_id"  class="shipLoca">
                                     </select>
                                 </div>
                             </td>
@@ -453,7 +456,7 @@
                             <td>
                                 <div class="clear">
                                     <label>地址</label>
-                                    <input type="text" name="address" id="ship_address"  class="shipLoca" />
+                                    <input type="text" name="ship_address" id="ship_address"  class="shipLoca" />
                                 </div>
                             </td>
                         </tr>
@@ -461,7 +464,7 @@
                             <td>
                                 <div class="clear">
                                     <label>补充地址</label>
-                                    <input type="text" name="address2" id="ship_address2"   class="shipLoca"/>
+                                    <input type="text" name="ship_address2" id="ship_address2"   class="shipLoca"/>
                                 </div>
                             </td>
                         </tr>
@@ -469,7 +472,7 @@
                             <td>
                                 <div class="clear">
                                     <label>邮编</label>
-                                    <input type="text" name="postcode" id="ship_postcode"  class="shipLoca" />
+                                    <input type="text" name="ship_postcode" id="ship_postcode"  class="shipLoca" />
                                 </div>
                             </td>
                         </tr>
@@ -521,6 +524,7 @@
             debugger;
             var opportunity_id = $("#opportunity_id").val();
             if (opportunity_id != 0 && opportunity_id != null && opportunity_id != undefined) {
+                // 根据选中的商机为预计完成时间赋值
                 $.ajax({
                     type: "GET",
                     //async: false,
@@ -535,7 +539,21 @@
                             $("#projected_close_date").val(newDate);
                         }
                     },
-                });  // 根据商机的预计完成时间为预计完成时间赋值
+                });  
+                // 根据选中的时间为联系人下拉赋值选中  // 注意 新增商机的时候联系人是可以为空
+                $.ajax({
+                    type: "GET",
+                    //async: false,
+                    url: "../Tools/OpportunityAjax.ashx?property=contact_id&act=property&id=" + opportunity_id,
+                    // data: { CompanyName: companyName },
+                    success: function (data) {
+                        if (data != "") {                           
+                            $("#contact_id").val(data);
+                        }
+                    },
+                });
+
+
             }
         })
 
@@ -554,9 +572,11 @@
             return true;
         })
 
+
+
         $("#BillLocation").click(function () {
             if ($(this).is(":checked")) {
-                $("#bill_to_location_id").val($("#sold_to_location_id").val());
+                $("#bill_to_location_id").val($("#locationID").val());
                 $("#bill_province_id").html($("#province_id").html());
                 $("#bill_province_id").val($("#province_id").val());
                  $("#bill_city_id").html($("#city_id").html());
@@ -576,7 +596,7 @@
 
          $("#ShipLocation").click(function () {
             if ($(this).is(":checked")) {
-                $("#ship_to_location_id").val($("#sold_to_location_id").val());
+                $("#ship_to_location_id").val($("#locationID").val());
                 $("#ship_province_id").html($("#province_id").html());
                 $("#ship_province_id").val($("#province_id").val());
                 $("#ship_city_id").html($("#city_id").html());
@@ -601,10 +621,10 @@
 
         var account_id = $("#ParentComoanyNameHidden").val();
         if (account_id != "") {
-            // 为商机下拉框赋值                  ✔                               待测试
-            // 为联系人下拉框赋值                 ✔                              待测试
-            // 根据客户ID 获取到客户信息，为税区赋值  ✔                            待测试
-            // 商机下拉框赋值之后，根据商机的预计完成时间为预计完成时间赋值   ✔      待测试
+            // 为商机下拉框赋值                  ✔                           
+            // 为联系人下拉框赋值                 ✔                           
+            // 根据客户ID 获取到客户信息，为税区赋值  ✔                         
+            // 商机下拉框赋值之后，根据商机的预计完成时间为预计完成时间赋值   ✔      
             // todo 客户的报价模板？？？？
             // 为销售地址信息赋值                                         ✔      待测试
             // 为项目提案赋值                       
@@ -637,6 +657,7 @@
 
 
             // 根据客户选择税区
+            $("#tax_region_id").val("0");
             $.ajax({
                 type: "GET",
                 async: false,
@@ -659,8 +680,6 @@
                 url: "../Tools/CompanyAjax.ashx?act=Location&account_id=" + account_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
-
-
                     if (data != "") {
 
                         $("#province_id").val(data.province_id);
