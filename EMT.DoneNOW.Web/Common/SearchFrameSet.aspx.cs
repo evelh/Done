@@ -49,7 +49,14 @@ namespace EMT.DoneNOW.Web
             if (condition.Count == 0)
                 conditionHeight = 0;
             else
-                conditionHeight = 440;
+            {
+                int rowCnt = condition.Count / 3;
+                if (condition.Count % 3 != 0)
+                    rowCnt++;
+                conditionHeight = 125 + rowCnt * 35;
+                if (conditionHeight > 370)
+                    conditionHeight = 370;
+            }
         }
     }
 }

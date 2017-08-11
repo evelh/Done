@@ -18,7 +18,7 @@ if(distances<=50){
 	}
 }
 */
-alert("开发中，敬请期待")
+//alert("开发中，敬请期待")
 })
 /*添加左侧列表icon*/
 $.each($('.index-titleLeft dd'),function(i){

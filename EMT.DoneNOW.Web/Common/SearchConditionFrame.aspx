@@ -236,10 +236,11 @@
     <script src="../Scripts/Common/SearchFrame.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         var index = 0;
+        var maxhgt = window.parent.document.getElementById("SearchFrameSet").rows;
         $("#Icon").on("click", function () {
             index++;
             if (index == 2) {
-                window.parent.document.getElementById("SearchFrameSet").rows = "350,*";
+                window.parent.document.getElementById("SearchFrameSet").rows = maxhgt;
                 $(".informationTitle").parent().css("background", "white");
                 $(".information").children(".content").removeClass("hide");
                 $("#Icon").removeClass("jia");
@@ -253,7 +254,7 @@
             }
         })
         $(".header i").on("mouseover",function () {
-            window.parent.document.getElementById("SearchFrameSet").rows = "350,*";
+            window.parent.document.getElementById("SearchFrameSet").rows = maxhgt;
             $("#Icon").removeClass("jia");
             $(".informationTitle").parent().css("background", "white");
             $(".information").children(".content").removeClass("hide");
