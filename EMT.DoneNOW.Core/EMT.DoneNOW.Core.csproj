@@ -70,6 +70,7 @@
     <Compile Include="Dictionary\d_query_type.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoftDeleteCore.cs" />
+    <Compile Include="SYS\sys_error_log.cs" />
     <Compile Include="SYS\sys_form_tmpl.cs" />
     <Compile Include="SYS\sys_form_tmpl_opportunity.cs" />
     <Compile Include="SYS\sys_notify_tmpl.cs" />
