@@ -42,11 +42,11 @@
                     <li>工单</li>
                     <li>项目</li>
                     <li>配置项</li>
-                    <li>financials财务</li>
+                    <li>财务</li>
                     <li>合同</li>
                     <li>发票</li>
-                    <li>Invoice发票参数设定</li>
-                    <li>Quote reference报价参数设定</li>
+                    <li>发票参数设定</li>
+                    <li>报价参数设定</li>
                     <li>附件</li>
                     <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=Subsidiaries">子客户</a></li>
                 </ul>
