@@ -55,6 +55,8 @@
     <Compile Include="CRM\crm_installed_product.cs" />
     <Compile Include="CRM\crm_location.cs" />
     <Compile Include="CRM\crm_opportunity.cs" />
+    <Compile Include="CRM\d_tax_region_cate.cs" />
+    <Compile Include="CRM\d_tax_region_cate_tax.cs" />
     <Compile Include="CRM\sys_quote_tmpl.cs" />
     <Compile Include="CRM\crm_quote.cs" />
     <Compile Include="CRM\crm_quote_item.cs" />
