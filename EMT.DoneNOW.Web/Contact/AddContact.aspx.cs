@@ -63,6 +63,8 @@ namespace EMT.DoneNOW.Web
                     allowEmail.Checked = dto.contact.allow_notify_email_task_ticket == 1 ? true : false;
                     optoutEmail.Checked = dto.contact.is_optout_contact_group_email == 1 ? true : false;
                     optoutSurvey.Checked = dto.contact.is_optout_survey == 1 ? true : false;
+                    if (!string.IsNullOrEmpty(dto.contact.avatar))
+                        avatarPath = dto.contact.avatar;
                 }
                 else
                 {
@@ -220,7 +222,7 @@ namespace EMT.DoneNOW.Web
             if (fileForm.ContentLength > (8 << 20))     // 判断文件大小不超过8M
                 return avatarPath;
 
-            string filepath = $"/Upload/{DateTime.Now.Year.ToString()}{DateTime.Now.Month.ToString()}/Images/Avatar/";
+            string filepath = $"/Upload/Images/{DateTime.Now.Year.ToString()}{DateTime.Now.Month.ToString()}/Avatar/";
             if (Directory.Exists(Server.MapPath(filepath)) == false)//如果不存在就创建file文件夹
             {
                 Directory.CreateDirectory(Server.MapPath(filepath));

@@ -14,7 +14,7 @@
 </head>
 
 <body runat="server">
-    <form id="AddCompany" name="AddCompany" runat="server">
+    <form id="AddCompany" name="AddCompany" enctype="multipart/form-data" runat="server">
         <div class="header"><%if (dto.contact.id == 0)
             { %>添加联系人<%}
                                        else
