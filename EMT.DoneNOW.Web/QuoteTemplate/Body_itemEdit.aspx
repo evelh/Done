@@ -26,7 +26,7 @@
                 <li class="Button ButtonIcon Okey NormalState" id="OkButton" tabindex="0">
                     <span class="Icon Ok"></span>
                    <%-- <span class="Text">确认</span>--%>
-                    <asp:Button ID="OkButton1" runat="server" Text="确认" cssclass="Text" BorderStyle="None" OnClick="OkButton_Click1" />
+                    <asp:Button ID="OkButton1" runat="server" Text="确认" cssclass="Text" BorderStyle="None" OnClick="OkButton_Click" />
                     <input id="data" type="hidden" name="data" value=""/>
                   <%--  <asp:TextBox ID="data" runat="server" Visible="False" Text="123"></asp:TextBox>--%>
                 </li>

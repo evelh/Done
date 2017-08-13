@@ -101,6 +101,7 @@ namespace EMT.DoneNOW.Web
                             {
                                 sb.Append("<tr><td style='text - align: Left; '>[Quote Item:Number]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Quantity]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Name]<br/>[Quote Item:Item Description]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Unit Price]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Unit Discount]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Adjusted Unit Price]</td><td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>[Quote Item:Extended Price]</td></tr>");
                             }
+                            sb.Append("</table>");
                             this.body.Text = sb.ToString();
                             sb.Clear();
                         }

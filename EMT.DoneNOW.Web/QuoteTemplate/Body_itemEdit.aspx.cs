@@ -75,12 +75,10 @@ namespace EMT.DoneNOW.Web
             //Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
         }
 
-        protected void OkButton1_Click(object sender, EventArgs e)
+
+        protected void OkButton_Click(object sender, EventArgs e)
         {
             Session["cancel"] = 1;
-           // Response.Redirect("QuoteTemplateBodyEdit.aspx?id=" + id + "&op=edit");
         }
-
-
     }
 }
