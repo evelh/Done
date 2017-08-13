@@ -21,6 +21,7 @@ namespace EMT.DoneNOW.Web
         protected List<QueryResultParaDto> resultPara = null;   // 查询结果列信息
         protected List<PageContextMenuDto> contextMenu = null;  // 右键菜单信息
         protected List<DictionaryEntryDto> queryParaValue = new List<DictionaryEntryDto>();  // 查询条件和条件值
+        protected int tableWidth = 1200;
         private long objId = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -61,7 +62,10 @@ namespace EMT.DoneNOW.Web
             GetMenus();
             string flag = Request.QueryString["show"];
             if (string.IsNullOrEmpty(flag) || !flag.Equals("1"))
+            {
                 QueryData();
+                CalcTableWidth();
+            }
         }
 
         /// <summary>
@@ -285,6 +289,27 @@ namespace EMT.DoneNOW.Web
                 default:
                     break;
             }
+        }
+
+        /// <summary>
+        /// 计算查询结果table宽度
+        /// </summary>
+        private void CalcTableWidth()
+        {
+            if (resultPara == null)
+                return;
+
+            int charCnt = 0;
+            foreach (var p in resultPara)
+            {
+                if (p.type == (int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
+                    || p.type == (int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE
+                    || p.type == (int)DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP)
+                    continue;
+
+                charCnt += p.length;
+            }
+            tableWidth = charCnt * 16;
         }
     }
 }

@@ -109,7 +109,7 @@ namespace EMT.DoneNOW.Web.Quote
         {
             var quote = new crm_quote();
             quote = AssembleModel<crm_quote>();
-
+           // quote = LocationDeal(quote);
             if (isAdd)
             {
                 var result = new QuoteBLL().Insert(quote, GetLoginUserId());
@@ -130,6 +130,8 @@ namespace EMT.DoneNOW.Web.Quote
                     default:
                         break;
                 }
+
+                
             }
             else
             {
@@ -158,7 +160,7 @@ namespace EMT.DoneNOW.Web.Quote
         {
             var quote = new crm_quote();
             quote = AssembleModel<crm_quote>();
-
+            // quote = LocationDeal(quote);
             if (isAdd)
             {
                 var result = new QuoteBLL().Insert(quote, GetLoginUserId());
@@ -202,6 +204,94 @@ namespace EMT.DoneNOW.Web.Quote
                         break;
                 }
             }
+        }
+
+        protected crm_quote LocationDeal(crm_quote quote)
+        {
+            try
+            {
+                // 账单地址和配送地址新增删除处理
+                // 首先要整理称谓地址对象  与默认地址的相同更改校验
+                // 校验地址必填信息
+                // 然后判断新增还是修改进行操作
+                var bill_id = Request.Params["bill_to_location_id"];
+                var bill_location = new crm_location()
+                {
+                    //id = long.Parse(bill_id),
+                    account_id = quote.account_id,
+                    additional_address = Request.Params["bill_address2"],
+                    address = Request.Params["bill_address"],
+                    city_id = string.IsNullOrEmpty(Request.Params["bill_city_id"]) ? 0 : int.Parse(Request.Params["bill_city_id"]),
+                    country_id = 1,
+                    district_id = string.IsNullOrEmpty(Request.Params["bill_district_id"]) ? 0 : int.Parse(Request.Params["bill_district_id"]),
+                    is_default = 0,
+                    province_id = string.IsNullOrEmpty(Request.Params["bill_province_id"]) ? 0 : int.Parse(Request.Params["bill_province_id"]),
+                    postal_code = Request.Params["bill_postcode"],
+
+                };
+                // 地址必填项未填写暂时不处理？？？
+                if (bill_location.country_id != 0 && bill_location.province_id != 0 && bill_location.city_id != 0 && bill_location.district_id != 0 && (!string.IsNullOrEmpty(bill_location.address)))
+                {
+                    if (!string.IsNullOrEmpty(bill_id))  // 用户界面上存在账单地址 此时代表和客户默认地址相同或者是在更改地址
+                    {
+                        bill_location.id = long.Parse(bill_id);
+                        new LocationBLL().Update(bill_location, GetLoginUserId());
+                    }
+                    else
+                    {
+                        bill_location.id = new crm_location_dal().GetNextIdCom();
+                        if(new LocationBLL().Insert(bill_location, GetLoginUserId()))
+                        {
+                            quote.bill_to_location_id = bill_location.id;
+                        }
+                    }
+                }
+
+
+                var ship_id = Request.Params["ship_to_location_id"];
+                var ship_location = new crm_location()
+                {
+                    //id = long.Parse(bill_id),
+                    account_id = quote.account_id,
+                    additional_address = Request.Params["ship_address2"],
+                    address = Request.Params["ship_address"],
+                    city_id = string.IsNullOrEmpty(Request.Params["ship_city_id"]) ? 0 : int.Parse(Request.Params["ship_city_id"]),
+                    country_id = 1,
+                    district_id = string.IsNullOrEmpty(Request.Params["ship_district_id"]) ? 0 : int.Parse(Request.Params["ship_district_id"]),
+                    is_default = 0,
+                    province_id = string.IsNullOrEmpty(Request.Params["ship_province_id"]) ? 0 : int.Parse(Request.Params["ship_province_id"]),
+                    postal_code = Request.Params["ship_postcode"],
+
+                };
+                // 地址必填项未填写暂时不处理？？？
+                if (ship_location.country_id != 0 && ship_location.province_id != 0 && ship_location.city_id != 0 && ship_location.district_id != 0 && (!string.IsNullOrEmpty(ship_location.address)))
+                {
+                    if (!string.IsNullOrEmpty(ship_id))  // 用户界面上存在账单地址 此时代表和客户默认地址相同或者是在更改地址
+                    {
+                        ship_location.id = long.Parse(ship_id);
+                        new LocationBLL().Update(ship_location, GetLoginUserId());
+                    }
+                    else
+                    {
+                        ship_location.id = new crm_location_dal().GetNextIdCom();
+                        if (new LocationBLL().Insert(ship_location, GetLoginUserId()))
+                        {
+                            quote.ship_to_location_id = ship_location.id;
+                        }
+                    }
+                }
+
+
+
+            }
+            catch (Exception)
+            {
+
+                
+            }
+            return quote;
+
+
         }
     }
 }

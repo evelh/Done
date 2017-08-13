@@ -95,7 +95,7 @@
         </form>
         <%if (queryResult != null) { %>
 
-			<div class="searchcontent" id="searchcontent" style="overflow:hidden;margin-top: 56px;">
+			<div class="searchcontent" id="searchcontent" style="overflow:hidden;margin-top: 56px;min-width:<%=tableWidth%>px;">
 				<table border="" cellspacing="0" cellpadding="0"  style="overflow:scroll;width:100%;height:100%;">
 					<tr>
                         <%foreach(var para in resultPara)

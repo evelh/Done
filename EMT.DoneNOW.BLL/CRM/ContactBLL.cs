@@ -148,6 +148,7 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
             #region  保存联系人信息
+            //contactAddDto.contact.suffix_id = contactAddDto.contact.suffix_id == 0 ? null : contactAddDto.contact.suffix_id;
             contactAddDto.contact.id = contactAddDto.contact.id==0? _dal.GetNextIdCom(): contactAddDto.contact.id;
             contactAddDto.contact.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             contactAddDto.contact.create_user_id = user.id;
