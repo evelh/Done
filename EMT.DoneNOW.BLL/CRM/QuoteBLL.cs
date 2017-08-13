@@ -386,7 +386,70 @@ namespace EMT.DoneNOW.BLL
 
             return "";
 		}
+        /// <summary>
+        /// 报价单绑定报价模板
+        /// </summary>
+        /// <param name="cq"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public bool UpdateQuoteTemp(crm_quote cq,long user_id) {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            cq.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            cq.update_user_id = user_id;
+            if (_dal.Update(cq))
+            { 
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user_id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE,
 
+                    oper_object_id = cq.id,// 操作对象id
+
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+
+                    oper_description = _dal.AddValue(cq),
+                    remark = "关联报价模板"
+                });
+
+            }
+            return true;
+        }
+        /// <summary>
+        /// 返回一个d_tax_region_cate对象
+        /// </summary>
+        /// <param name="aid"></param>
+        /// <param name="bid"></param>
+        /// <returns></returns>
+        public d_tax_region_cate GetTaxRegion(int aid,int bid) {
+            var data = new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>(@"select * from d_tax_region_cate  where tax_region_id="+aid+" and tax_cate_id="+bid+"");
+            return data;
+        }
+        /// <summary>
+        /// 返回d_tax_region_cate_tax的list数据集
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<d_tax_region_cate_tax> GetTaxRegiontax(int id)
+        {
+           
+            var data = new d_tax_region_cate_tax_dal().FindListBySql<d_tax_region_cate_tax>(@"select * from d_tax_region_cate  where tax_region_cate_id="+id+"");
+
+            return data;
+        }
+
+        /// <summary>
+        /// 获取税收地区名称
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetTaxName(int id) {
+            string name =new d_general_dal().FindById(id).name;
+            return name;
+        }
         public DataTable GetVar(int cid,int aid)
         {
             StringBuilder sql = new StringBuilder();

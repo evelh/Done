@@ -146,5 +146,10 @@ namespace EMT.DoneNOW.BLL
 
             return false;
         }
+        public List<crm_quote_item> GetAllQuoteItem(long id) {
+            string sql = " and quote_id="+id+" ";
+            var list = _dal.GetQuoteItems(sql);
+            return list;
+        }
     }
 }

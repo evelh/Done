@@ -21,7 +21,7 @@
             <ul>
                 <li class="Button" id="SaveButton" tabindex="0">
                     <span class="Icon Save"></span>
-                    <span class="Text">保存</span>
+                    <asp:Button ID="Save" runat="server" Text="保存" cssclass="Text" BorderStyle="None" OnClick="Save_click" />
                 </li>
                 <li class="Button" id="PrintButton" tabindex="0">
                     <span class="Icon Print"></span>
@@ -35,7 +35,7 @@
                 </li>
                 <li class="Button" id="CancelButton" tabindex="0">
                     <span class="Icon CancelButton"></span>
-                    <span class="Text">关闭</span>
+                    <asp:Button ID="Close" runat="server" Text="关闭" cssclass="Text" BorderStyle="None" OnClick="Close_click" />
                 </li>
                 <li class="Button" id="GroupButton" tabindex="0">
                     <span class="Text">发布报价</span>
