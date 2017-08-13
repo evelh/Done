@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text;
 using System.Text.RegularExpressions;
+using EMT.DoneNOW.DAL;
 
 namespace EMT.DoneNOW.Web
 {
@@ -100,9 +101,16 @@ namespace EMT.DoneNOW.Web
                 page_footer = HttpUtility.HtmlDecode(list.page_footer_html).Replace("\"", "'");//页脚
             }
 
+
+
+
             StringBuilder table = new StringBuilder();
             table.Append(page_header);
             table.Append(quote_header);
+
+
+            var tax_list = new EMT.Tools.Serialize().DeserializeJson<QuoteTemplateAddDto.Tax_Total_Disp>(list.tax_total_disp);
+
             if (!string.IsNullOrEmpty(list.body_html))
             {
                 var quote_body = new EMT.Tools.Serialize().DeserializeJson<QuoteTemplateAddDto.BODY>(list.body_html.Replace("'", "\""));//正文主体
@@ -119,70 +127,260 @@ namespace EMT.DoneNOW.Web
                 }
                 table.Append("</tr>");
 
-                
+
                 //获取报价子项 crm_quote_item
                 var cqi = new QuoteItemBLL().GetAllQuoteItem(qddata.id);
                 //判断是否有对应子项数据
                 if (cqi != null && cqi.Count > 0)
                 {
                     i = 1;
+                    double tax_item = 0;
+                    double sum_tax = 0;
+                    double total=0;
+                    double totalsum = 0;
+                    double sum_total = 0;
+                    table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].One_Time_items + "</td></tr>");
+                    //一次性收费
                     foreach (var item in cqi)
                     {
-                        table.Append("<tr>");
-                        foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+
+                        //此处添加分组判断
+                        if (item.period_type_id!=null&&(int)item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME)
+                        {                            
+                            table.Append(ReplaceQuoteItem(item, quote_body,out total,out tax_item));
+                            totalsum += total+tax_item;
+                            sum_tax += tax_item;
+                        }                      
+
+                    }
+                   
+                    sum_total += totalsum;
+                    //一次性收费汇总
+                  //  table.Append("<tr><td></td><td>"+ tax_item_list.One_Time_Subtotal+ "</td><td>"+ totalsum + "</td></tr>");
+
+                    table.Append("<tr>");
+                    foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+                    {
+                        if (coulmn.Display == "yes")
                         {
-                            //if (coulmn.Column_Content == "Item#")
-                            //{
-                            //    table.Append("<td style='text - align: Left; '>" + item.name + "</td>");
-                            //}
                             switch (coulmn.Column_Content)
                             {
-                                case "Item#": table.Append("<td style='text-align: Right;' class='bord'>" + (i++)+")</td>"); break;
-                                case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>" + item.quantity + "</td>"); break;
-                                case "Item": table.Append("<td style='text-align: Left;' class='bord'>" + item.name + "</td>"); break;
-                                case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_price + "</td>"); break;
-                                case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_discount + "</td>"); break;
-                                case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'>" + (item.unit_price-item.unit_discount)+ "</td>"); break;
-                                case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + ((item.unit_price - item.unit_discount)*item.quantity) + "</td>"); break;
+                                case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.One_Time_Subtotal + ":"+ totalsum + "</td>"); break;
                                 case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                             }
-                            if (item.tax_cate_id != null) {
-                                table.Append("<tr><td></td></tr>");
-                            }
-                        }
-                        table.Append("</tr>");
 
-                        //显示税收
-                        if (item.tax_cate_id != null && qddata.tax_region_id != null) {
-                            try
-                            {
-                                var tax = qd.GetTaxRegion(Convert.ToInt32(qddata.tax_region_id.ToString()), Convert.ToInt32(item.tax_cate_id));
-                                //获取分项税收
-                                var tax_cate = qd.GetTaxRegiontax((int)tax.id);
-                                if (tax != null && tax_cate != null)
-                                {
-                                    foreach (var cate in tax_cate) {
-                                        table.Append("<tr><td>"+cate.tax_name+"("+cate.tax_rate+")</td><td>"+(((item.unit_price - item.unit_discount) * item.quantity)* cate.tax_rate)+ "</td></tr>");
-                                    }
-                                    //获取税收地区
-                                    string name = qd.GetTaxName(tax.tax_cate_id);
-                                    table.Append("<tr><td>"+name+"("+tax.total_effective_tax_rate+ ")</td><td>"+(((item.unit_price - item.unit_discount) * item.quantity)*tax.total_effective_tax_rate)+"</td></tr>");
-                                }
-                            }
-                            catch {
-                            }
-                            //获取总项税收
-                           
-                           
                         }
                     }
-                }
-                
+                    table.Append("</tr>");
 
-                if (quote_body.GRID_OPTIONS[0].Show_vertical_lines == "yes") {
-                    Response.Write("<style>.bord{border-left: 1px solid #808080;border - right: 1px solid #808080;}</style>");
-                }
 
+
+                    totalsum = 0;
+
+                    //按月收费
+                    table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].Monthly_items + "</td></tr>");
+                    foreach (var item in cqi)
+                    {
+                        if (item.period_type_id != null && (int)item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH)
+                        {
+                            table.Append(ReplaceQuoteItem(item, quote_body, out total, out tax_item));
+                            totalsum += total + tax_item;
+                            sum_tax += tax_item;
+                        }
+                    }
+                   
+                    sum_total += totalsum;
+                    //按月收费汇总
+
+                    table.Append("<tr>");
+                    foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+                    {
+                        if (coulmn.Display == "yes")
+                        {
+                            switch (coulmn.Column_Content)
+                            {
+                                case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Monthly_Subtotal + ":" + totalsum + "</td>"); break;
+                                case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                            }
+
+                        }
+                    }
+                    table.Append("</tr>");
+                    totalsum = 0;
+
+                    //按季度收费
+                    table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].Quarterly_items + "</td></tr>");
+                    foreach (var item in cqi)
+                    {
+                        if (item.period_type_id != null && (int)item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
+                        {
+
+                            table.Append(ReplaceQuoteItem(item, quote_body, out total, out tax_item));
+                            totalsum += total + tax_item;
+                            sum_tax += tax_item;
+                        }
+                    }
+                    
+                    sum_total += totalsum;
+                    table.Append("<tr>");
+                    foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+                    {
+                        if (coulmn.Display == "yes")
+                        {
+                            switch (coulmn.Column_Content)
+                            {
+                                case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Quarterly_Subtotal+ ":" + totalsum + "</td>"); break;
+                                case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                            }
+
+                        }
+                    }
+
+                    table.Append("</tr>");
+                    totalsum = 0;
+                    //按年收费
+                    table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].Yearly_items + "</td></tr>");
+                    foreach (var item in cqi)
+                    {
+                            if (item.period_type_id != null && (int)item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR) {
+
+                            table.Append(ReplaceQuoteItem(item, quote_body, out total, out tax_item));
+                            totalsum += total + tax_item;
+                            sum_tax += tax_item;
+                        }                      
+                       
+                    }
+                   
+                    sum_total += totalsum;
+                    table.Append("<tr>");
+                    foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+                    {
+                        if (coulmn.Display == "yes")
+                        {
+                            switch (coulmn.Column_Content)
+                            {
+                                case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Yearly_Subtotal + ":" + totalsum + "</td>"); break;
+                                case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                            }
+
+                        }
+                    }
+                    table.Append("</tr>");
+                    totalsum = 0;
+
+                    //无分类
+                    table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].No_category+ "</td></tr>");
+                    foreach (var item in cqi)
+                    {
+                        if (item.period_type_id == null)
+                        {
+                            table.Append(ReplaceQuoteItem(item, quote_body, out total, out tax_item));
+                            totalsum += total+ tax_item;
+                            sum_tax += tax_item;
+                        }
+
+                    }
+                   
+                    sum_total += totalsum;
+                    table.Append("<tr>");
+                    foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+                    {
+                        if (coulmn.Display == "yes")
+                        {
+                            switch (coulmn.Column_Content)
+                            {
+                                case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Subtotal + ":" + totalsum + "</td>"); break;
+                                case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                            }
+                        }
+                    }
+
+
+                    table.Append("</tr>");
+                    totalsum = 0;
+
+
+                    
+                    //税收汇总
+                    //table.Append("<tr><td>总纳税"+sum_tax +"</td></tr>");
+                    table.Append("<tr>");
+                    foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+                    {
+                        if (coulmn.Display == "yes")
+                        {
+                            switch (coulmn.Column_Content)
+                            {
+                                case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Total_Taxes + ":" + sum_tax + "</td>"); break;
+                                case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                            }
+                        }
+                    }
+                    table.Append("</tr>");
+                    //汇总
+                    table.Append("<tr>");
+                    foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+                    {
+                        if (coulmn.Display == "yes")
+                        {
+                            switch (coulmn.Column_Content)
+                            {
+                                case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Total+ ":" + sum_total + "</td>"); break;
+                                case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                            }
+                        }
+                    }
+                    table.Append("</tr>");
+
+                  
+
+                    if (quote_body.GRID_OPTIONS[0].Show_vertical_lines == "yes")
+                    {
+                        Response.Write("<style>.bord{border-left: 1px solid #808080;border - right: 1px solid #808080;}</style>");
+                    }
+
+                }
             }
             
 
@@ -218,7 +416,7 @@ namespace EMT.DoneNOW.Web
             foreach (Match m in reg.Matches(st))
             {
                 string t = m.Groups[0].ToString();//[客户：名称]
-                var Vartable = qd.GetVar((int)qddata.contact_id, (int)qddata.account_id);//此处需要填id
+                var Vartable = qd.GetVar((int)qddata.contact_id, (int)qddata.account_id,(int)qddata.id,(int)qddata.opportunity_id);//此处需要填id
                                                                                          //此处需要编写替换逻辑//d_query_result表的col_comment[客户：名称]
                                                                                          //st.Replace(m.Groups[0].ToString());
 
@@ -254,6 +452,110 @@ namespace EMT.DoneNOW.Web
         protected void Close_click(object sender, EventArgs e)
         {
             Response.Write("<script>window.close();self.opener.location.reload();</script>");
+        }
+
+
+
+
+
+        private string ReplaceQuoteItem(crm_quote_item item, QuoteTemplateAddDto.BODY quote_body,out double total,out double tax_item) {
+            total = 0;
+            tax_item = 0;
+            StringBuilder table = new StringBuilder();
+
+            table.Append("<tr>");
+            //获取item
+            foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+            {
+                if (coulmn.Display == "yes")
+                {
+                    switch (coulmn.Column_Content)
+                    {
+                        case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                        case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>" + item.quantity + "</td>"); break;
+                        case "Item": table.Append("<td style='text-align: Left;' class='bord'>" + item.name + "</td>"); break;
+                        case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_price + "</td>"); break;
+                        case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_discount + "</td>"); break;
+                        case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'>" + (item.unit_price - item.unit_discount) + "</td>"); break;
+                        case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + ((item.unit_price - item.unit_discount) * item.quantity) + "</td>"); break;
+                        case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;                            
+                    }
+                    if(item.unit_price!=null&& item.quantity != null)
+                    {
+                        total = (double)((item.unit_price - (item.unit_discount != null ? item.unit_discount : 0)) * item.quantity);
+                    }
+
+                }
+            }
+            table.Append("</tr>");
+            //显示税收
+            if (!string.IsNullOrEmpty(item.tax_cate_id.ToString()) && !string.IsNullOrEmpty(qddata.tax_region_id.ToString()))
+            {
+                try
+                {
+                    var tax = qd.GetTaxRegion(Convert.ToInt32(qddata.tax_region_id.ToString()), Convert.ToInt32(item.tax_cate_id));
+                    //获取分项税收
+                    var tax_cate = qd.GetTaxRegiontax((int)tax.id);
+                    if (tax != null && tax_cate != null)
+                    {
+                        foreach (var cate in tax_cate)
+                        {
+                            //确定显示位置
+                            table.Append("<tr><td></td></tr>");
+                            table.Append("<tr>");
+                            foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+                            {
+                                if (coulmn.Display == "yes")
+                                {
+                                    switch (coulmn.Column_Content)
+                                    {
+                                        case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                        case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                        case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                        case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                        case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                        case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                        case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>（税）" + cate.tax_name + "(" + (double)(cate.tax_rate * 100) + "%)（金额）" + (Double)(((item.unit_price - item.unit_discount) * item.quantity) * cate.tax_rate) + "</td>"); break;
+                                        case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    }
+
+                                }
+                            }
+                            table.Append("</tr>");
+
+                            //table.Append("<tr><td>" + cate.tax_name + "(" + cate.tax_rate + ")</td><td>" + (((item.unit_price -item.unit_discount) * item.quantity) * cate.tax_rate) + "</td></tr>");
+
+
+
+                        }
+                        table.Append("<tr>");
+                        foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+                        {
+                            if (coulmn.Display == "yes" && coulmn.Column_Content == "Extended Price")
+                            {
+                                // 获取税收地区
+                                string name = qd.GetTaxName(tax.tax_region_id);
+                                table.Append("<td>" + name + "(" + (double)tax.total_effective_tax_rate * 100 + "%)（金额）" + (double)(((item.unit_price - item.unit_discount) * item.quantity) * tax.total_effective_tax_rate) + "</td>");
+                                tax_item =total* (double)tax.total_effective_tax_rate;
+
+                            }
+                            else
+                            {
+                                table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
+                            }
+                        }
+
+                        table.Append("</tr>");
+                    }
+                }
+                catch
+                {
+                    //获取总项税收
+                    Response.Write("异常");
+
+                }
+            }
+            return table.ToString();
         }
     }
 }
