@@ -145,7 +145,6 @@ namespace EMT.DoneNOW.Web
                                 }
                             }
                             table.Append("</tr>");
-                            //table.Append("<tr><td style='text - align: Left; '>[Quote Item:Number]</td><td  style='text - align: Left; '>[Quote Item:Quantity]</td><td  style='text - align: Left; '>[Quote Item:Name]<br/>[Quote Item:Item Description]</td><td  style='text - align: Left; '>[Quote Item:Unit Price]</td><td  style='text - align: Left; '>[Quote Item:Unit Discount]</td><td  style='text - align: Left; '>[Quote Item:Adjusted Unit Price]</td><td  style='text - align: Left; '>[Quote Item:Extended Price]</td><td  style='text - align: Left; '>[Quote Item:Discount %]</td></tr>");
                         }
                         table.Append("</table>");
                         this.body.Text = table.ToString();

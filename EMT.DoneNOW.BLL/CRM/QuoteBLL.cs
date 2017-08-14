@@ -473,5 +473,12 @@ namespace EMT.DoneNOW.BLL
             var list = _dal.GetQuoteItemVar(qiid);
             return list;
         }
+
+        public string GetItemTypeName(int id) {
+            return new d_general_dal().FindById(id).name;
+        }
+        public int GetTaxid(int tid) {
+            return (int)new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>($"select * from d_tax_region_cate where tax_region_id={tid}").id;
+        }
     }
 }
