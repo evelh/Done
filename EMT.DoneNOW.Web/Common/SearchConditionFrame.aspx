@@ -259,12 +259,11 @@
             $(".informationTitle").parent().css("background", "white");
             $(".information").children(".content").removeClass("hide");
         });
-       $(".form_datetime").focus(function () {
-           var maxHeight = parseInt($(this).offset().top) + parseInt($(this).height()) + parseInt($(".datetimepicker ").height())+15;
-          window.parent.document.getElementById("SearchFrameSet").style.height = maxHeight + ',*';
-       });
-       $(".form_datetime").blur(function () {
-            window.parent.document.getElementById("SearchFrameSet").rows = maxhgt;
+        $(".form_datetime").focus(function () {
+            var maxHeight = parseInt($(this).offset().top) + parseInt($(this).height()) + parseInt($(".datetimepicker").height()) + 15;
+            window.parent.document.getElementById("SearchFrameSet").rows = maxHeight + ',*';
+       }).change(function () {
+           window.parent.document.getElementById("SearchFrameSet").rows = maxhgt;
        })
        
     </script>

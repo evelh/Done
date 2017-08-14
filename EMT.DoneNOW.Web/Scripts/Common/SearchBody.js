@@ -1,6 +1,7 @@
 ﻿
 var entityid;
 var menu = document.getElementById("menu");
+var menu_i2_right = document.getElementById("menu-i2-right");
 var Times = 0;
 
 $(".dn_tr").bind("contextmenu", function (event) {
@@ -22,10 +23,33 @@ $(".dn_tr").bind("contextmenu", function (event) {
             menu.style.display = "none";
         }, 1000);
     };
-    var Top = $(document).scrollTop() + oEvent.clientY
-    var Left = $(document).scrollLeft() + oEvent.clientX
-    menu.style.top = Top + "px";
-    menu.style.left = Left + "px";
+    var Top = $(document).scrollTop() + oEvent.clientY;
+    var Left = $(document).scrollLeft() + oEvent.clientX;
+    var winWidth = window.innerWidth;
+    var winHeight = window.innerHeight;
+    var menuWidth = menu.clientWidth; 
+    var menuHeight = menu.clientHeight;
+    var rightWidth = menu_i2_right.clientWidth;
+    var rightHeight = menu_i2_right.clientHeight;
+    var clientWidth = Left + menuWidth;
+    var clientHeight = Top + menuHeight;
+    var clientWidth_2 = Left + rightWidth;
+    var clientHeight_2 = Top + rightHeight;
+    if (winWidth < clientWidth) {
+        menu.style.left = winWidth - menuWidth - 18 + "px";
+        menu_i2_right.style.left =  - menuWidth + 70+ "px";
+    } else {
+        menu.style.left = Left + "px";
+        menu_i2_right.style.left = "";
+    }
+    if (winHeight < clientHeight) {
+        menu.style.top = winHeight - menuHeight - 18 + "px";
+        menu_i2_right.style.top = winHeight - menuHeight*2 - 29 + "px";
+    } else {
+        menu.style.top = Top + "px";
+        menu_i2_right.style.top = winHeight - menuHeight*2 +46 + "px";
+    }
+    
     return false;
 });
 

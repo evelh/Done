@@ -46,7 +46,7 @@
             <div class="information clear">
                 <p class="informationTitle"><i></i>常规信息</p>
                 <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 500px; margin-left: 40px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
                         <%--  <tr>
                     <th>
                         <h1>Client Portal Status</h1>
@@ -190,7 +190,7 @@
 
                     </table>
 
-                    <table border="none" cellspacing="" cellpadding="" style="width: 500px; margin-left: 40px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
 
 
                         <tr>
@@ -339,7 +339,7 @@
                 <p class="informationTitle"><i></i>客户自定义</p>
                 <div>
                     <div>
-                        <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                        <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
 
                             <% if (company_udfList != null && company_udfList.Count > 0)
                                 {
@@ -402,7 +402,7 @@
                 <div>
                     <div>
 
-                        <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                        <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
 
                             <% if (contact_udfList != null && contact_udfList.Count > 0)
                                 {
@@ -467,7 +467,7 @@
                 <div>
 
 
-                    <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
                         <tr>
                             <th></th>
 
@@ -500,7 +500,7 @@
                             <td></td>
                         </tr>
                     </table>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
                         <tr>
                             <td>
                                 <div class="clear">
@@ -519,7 +519,7 @@
                 <p class="informationTitle"><i></i>待办</p>
                 <div>
                     <div style="clear: both; margin-top: 20px;">
-                        <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                        <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
                             <tr>
                                 <th></th>
 
@@ -568,7 +568,7 @@
 
                             </tr>
                         </table>
-                        <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+                        <table border="none" cellspacing="" cellpadding="" style="width:400px;">
                             <tr>
                                 <td>
                                     <div class="clear">
