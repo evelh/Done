@@ -50,6 +50,12 @@ namespace EMT.DoneNOW.BLL
             string sql = $"select * from crm_account where id = {id} and delete_time = 0 ";
             return _dal.FindSignleBySql<crm_account>(sql);
         }
+
+        public crm_account GetAllShowCompany(long id)
+        {
+            string sql = $"select * from crm_account where id = {id}  ";
+            return _dal.FindSignleBySql<crm_account>(sql);
+        }
         /// <summary>
         /// 根据与客户相关联的各种类型的ID 或者客户ID去获取客户信息
         /// </summary>
@@ -57,7 +63,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public crm_account GetCompanyByOtherId(long id)
         {
-            return _dal.FindSignleBySql<crm_account>($"SELECT a.* FROM crm_account a LEFT JOIN crm_opportunity o on a.id = o.account_id LEFT JOIN crm_quote q on a.id=q.account_id where(a.id = {id} AND a.delete_time = 0) or(o.id = {id} and o.delete_time = 0) or (q.id = {id} and q.delete_time = 0)");
+            return _dal.FindSignleBySql<crm_account>($"SELECT a.* FROM crm_account a LEFT JOIN crm_opportunity o on a.id = o.account_id LEFT JOIN crm_quote q on a.id=q.account_id where(a.id = {id} ) or(o.id = {id} and o.delete_time = 0) or (q.id = {id} and q.delete_time = 0)");
         }
 
 

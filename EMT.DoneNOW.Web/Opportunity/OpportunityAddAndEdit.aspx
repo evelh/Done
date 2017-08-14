@@ -289,7 +289,7 @@
                             <td>
                                 <div class="clear">
                                     <label>计算总额</label>
-                                    <input type="text" class="Calculation" name="CalculationMonths" id="number_months" value="<%=(!isAdd)&&(opportunity.number_months!=null)?opportunity.number_months:10 %>" /><span>月</span>
+                                    <input type="text" class="Calculation" name="number_months" id="number_months" value="<%=(!isAdd)&&(opportunity.number_months!=null)?opportunity.number_months:10 %>" /><span>月</span>
                                 </div>
                             </td>
                         </tr>
@@ -351,7 +351,7 @@
                             <td>
                                 <div class="clear">
                                     <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext1").show %></label>
-                                    <input type="text" class="Calculation" name="ext1" id="ext1" value="<%=(!isAdd)&&opportunity.ext1!=null?opportunity.ext1.ToString():"" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+                                    <input type="text" class="extFiled" name="ext1" id="ext1" value="<%=(!isAdd)&&opportunity.ext1!=null?opportunity.ext1.ToString():"" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
                                 </div>
                             </td>
                         </tr>
@@ -359,7 +359,7 @@
                             <td>
                                 <div class="clear">
                                     <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext2").show %></label>
-                                    <input type="text" name="ext2" class="Calculation" id="ext2" value="<%=(!isAdd)&&opportunity.ext2!=null?opportunity.ext2.ToString():"" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+                                    <input type="text" name="ext2" class="extFiled" id="ext2" value="<%=(!isAdd)&&opportunity.ext2!=null?opportunity.ext2.ToString():"" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
                                 </div>
                             </td>
                         </tr>
@@ -367,7 +367,7 @@
                             <td>
                                 <div class="clear">
                                     <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext3").show %></label>
-                                    <input type="text" name="ext3" class="Calculation" id="ext3ext3" value="<%=(!isAdd)&&opportunity.ext3!=null?opportunity.ext3.ToString():"" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+                                    <input type="text" name="ext3" class="extFiled" id="ext3ext3" value="<%=(!isAdd)&&opportunity.ext3!=null?opportunity.ext3.ToString():"" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
                                 </div>
                             </td>
                         </tr>
@@ -375,7 +375,7 @@
                             <td>
                                 <div class="clear">
                                     <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext4").show %></label>
-                                    <input type="text" name="ext4" class="Calculation" id="ext4" value="<%=(!isAdd)&&opportunity.ext4!=null?opportunity.ext4.ToString():"" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+                                    <input type="text" name="ext4" class="extFiled" id="ext4" value="<%=(!isAdd)&&opportunity.ext4!=null?opportunity.ext4.ToString():"" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
                                 </div>
                             </td>
                         </tr>
@@ -383,7 +383,7 @@
                             <td>
                                 <div class="clear">
                                     <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext5").show %></label>
-                                    <input type="text" name="ext5" class="Calculation" id="ext5ext5" value="<%=(!isAdd)&&opportunity.ext5!=null?opportunity.ext5.ToString():"" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+                                    <input type="text" name="ext5" class="extFiled" id="ext5ext5" value="<%=(!isAdd)&&opportunity.ext5!=null?opportunity.ext5.ToString():"" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
                                 </div>
                             </td>
                         </tr>
@@ -630,14 +630,13 @@
             }
             return true;
         });
+
         $("#save_create_note").click(function () {
             if (!SubmitCheck()) {
                 return false;
             }
             return true;
         });
-
-
 
         $("#formTemplate").change(function () {
             var formTemplate_id = $("#formTemplate").val();
@@ -664,16 +663,30 @@
         $(".Calculation").blur(function () {
             Calculation_Gross_Profit();
             var value = $(this).val();
-            $(this).val(toDecimal2(value));
+            if (!isNaN(value) && value != "") {
+                $(this).val(toDecimal2(value));
+            } else {
+                $(this).val("");
+            }
         })
 
+        $(".extFiled").blur(function () {
+            var value = $(this).val();
+            if (!isNaN(value) && value != "") {
+                $(this).val(toDecimal2(value));
+            } else {
+                $(this).val("");
+            }
+        })
         Calculation_Gross_Profit();
         GetContactList();
-        debugger;
+      
         var contactHideID = $("#contactHideID").val();
         if (contactHideID != "") {
             $("#contact_id").val(contactHideID);
-            $("#contact_id").attr("disabled","disabled")
+            <%if (contact != null) { %>
+           $("#contact_id").attr("disabled", "disabled")
+                <%}%>
         }
         function Calculation_Gross_Profit()   // 计算毛利和毛利率,年收益和年成本
         {
@@ -824,7 +837,7 @@
             return false;
         }
 
-        
+
 
         return true;
     }
@@ -843,12 +856,12 @@
                 success: function (data) {
                     if (data != "") {
                         $("#contact_id").html(data);
-                       
+
                     }
                 },
             });
         }
-     
+
     }
 
     // 强制保留两位小数
@@ -870,7 +883,7 @@
         return s;
     }
 
-   function AddTime(time) {
+    function AddTime(time) {
         var date = new Date();
         date.setDate(Number(date.getDate()) + Number(time));
 

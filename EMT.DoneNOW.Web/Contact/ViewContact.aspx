@@ -147,7 +147,7 @@
 
 
             <div class="address ">
-                 <label><%=account.name %> (<%=account.oid %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%=account.type_id==null?"":company_type.FirstOrDefault(_=>_.val==account.type_id.ToString()).show %><%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
+                 <label><%=account.name %> (<%="ID:"+account.oid %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%=account.type_id==null?"":company_type.FirstOrDefault(_=>_.val==account.type_id.ToString()).show %><%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
          
                 <p>
                     <span><%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %></span>

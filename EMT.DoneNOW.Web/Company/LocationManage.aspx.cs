@@ -13,11 +13,12 @@ namespace EMT.DoneNOW.Web.Company
     {
         protected string location_id = null;
         protected crm_location location = null;
+        public string account_id = "";
         protected void Page_Load(object sender, EventArgs e)
 
         {
             location_id = Request.QueryString["id"];    // 传id进来代表修改，未传代表新增
-            var account = Request.QueryString["account_id"]; 
+            account_id = Request.QueryString["account_id"]; 
             if (!string.IsNullOrEmpty(location_id))   // 修改时
             {
                 location = new LocationBLL().GetLocation(Convert.ToInt64(location_id));
@@ -50,7 +51,8 @@ namespace EMT.DoneNOW.Web.Company
             {
                 if(new LocationBLL().Insert(location, GetLoginUserId()))
                 {
-                    Response.Write("<script>alert('添加地址成功！');window.close();self.opener.location.reload();</script>");
+                    Response.Write("<script>alert('添加地址成功！');self.opener.location.reload();</script>");
+                    Response.Redirect("LocationManage?id="+location.id+"&account_id="+location.account_id);
                 }
             }
             else
