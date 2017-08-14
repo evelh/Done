@@ -44,7 +44,7 @@
         </div>
 
         <div class="content clear" style="width: 880px;">
-            <table border="none" cellspacing="" cellpadding="" style="width: 400px; margin-left: 40px;">
+            <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
                 <tr>
                     <th>
                         <h1>自助服务台状态</h1>
@@ -179,7 +179,7 @@
 
             </table>
 
-            <table border="none" cellspacing="" cellpadding="" style="width: 400px; margin-left: 40px;">
+            <table border="none" cellspacing="" cellpadding="" style="width:400px;">
                 <tr>
                     <td>
                         <img id="imgshow" src="<%=avatarPath %>" />
@@ -248,7 +248,7 @@
         </div>
 
         <div class="content clear" style="display: none">
-            <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+            <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
                 <tr>
                     <td>
                         <div class="clear">

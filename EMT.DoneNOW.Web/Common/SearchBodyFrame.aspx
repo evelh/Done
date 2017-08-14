@@ -24,8 +24,6 @@
     line-height: 28px;
     text-align:center;
 }
-    
-  
 </style>
 <body>
     <form id="form1">
@@ -167,7 +165,7 @@
             <li onclick="<%=menu.click_function %>"><i class="menu-i1"></i><%=menu.text %>
                 <%if (menu.submenu != null) { %>
                 <i class="menu-i2">>></i>
-                <ul>
+                <ul id="menu-i2-right">
                     <%foreach (var submenu in menu.submenu) { %>
                     <li onclick="<%=submenu.click_function %>"><%=submenu.text %></li>
                     <%} %>
