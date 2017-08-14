@@ -10,8 +10,16 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min2.2.2.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+     <link href="../Content/Quotebaojiaxiang.css" rel="stylesheet" />
 </head>
 <body>
+     <div class="TitleBar">
+        <div class="Title">
+            <span class="text1">报价项管理</span>
+            <a href="###" class="collection"></a>
+            <a href="###" class="help"></a>
+        </div>
+    </div>
     <form id="form1" runat="server">
         <div class="header-title">
             <ul>
@@ -49,17 +57,20 @@
                 <li style="float: right;">报价<asp:DropDownList ID="quoteDropList" runat="server"></asp:DropDownList><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0; float: right;" class="icon-1" onclick="window.open('../Quote/QuoteAddAndUpdate.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>','left=200,top=200,width=960,height=750', false);"></i></li>
             </ul>
         </div>
-        <div>
-            分组方式:
-            <select name="groupBy" id="groupBy">
-                <option value="no">不分组</option>
-                <option value="cycle">周期</option>
-                <option value="product">产品</option>
-            </select>
-
-        </div>
-        <div>
-            <table>
+        <div class="quoteItemListDiv">
+            <div class="grid">
+                <div id="quoteSettingDiv">
+                     <span class="FieldLabels">分组方式:</span>
+                    <div class="FieldSelect">
+                        <select name="groupBy" id="groupBy">
+                            <option value="no">不分组</option>
+                            <option value="cycle">周期</option>
+                            <option value="product">产品</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="quoteBody">
+                    <table class="ReadOnlyGrid_Table">
                 <thead>
                     <tr>
                         <td>序列号</td>
@@ -109,6 +120,7 @@
                                     break;
                             } %>
                         <td><%=groupName %></td>
+                        <td colspan="12"></td>
                     </tr>
                     <% foreach (var quoteItem in item.Value as List<EMT.DoneNOW.Core.crm_quote_item>)
                         {
@@ -185,6 +197,7 @@
                         {%>
                     <tr>
                         <td>配送类型的报价项</td>
+                         <td colspan="12"></td>
                     </tr>
                     <% foreach (var quoteItem in distributionList)
                         {%>
@@ -244,6 +257,7 @@
                         {%>
                     <tr>
                         <td>一次性折扣</td>
+                         <td colspan="12"></td>
                     </tr>
                     <%foreach (var quoteItem in discountQIList.Where(_ => _.discount_percent == null).ToList())
                         {%>
@@ -361,6 +375,7 @@
                         { %>
                     <tr>
                         <td>可选的报价项</td>
+                         <td colspan="12"></td>
                     </tr>
                     <%  
                         foreach (var quoteItem in optionalItemList)
@@ -489,6 +504,7 @@
                         {%>
                     <tr>
                         <td>配送类型的报价项</td>
+                         <td colspan="12"></td>
                     </tr>
                     <% foreach (var quoteItem in distributionList)
                         {%>
@@ -549,6 +565,7 @@
                         {%>
                     <tr>
                         <td>一次性折扣</td>
+                         <td colspan="12"></td>
                     </tr>
                     <%foreach (var quoteItem in discountQIList.Where(_ => _.discount_percent == null).ToList())
                         {%>
@@ -668,6 +685,7 @@
                         { %>
                     <tr>
                         <td>可选的报价项</td>
+                         <td colspan="12"></td>
                     </tr>
                     <%  
                         foreach (var quoteItem in optionalItemList)
@@ -735,6 +753,8 @@
                 </tbody>
             </table>
         </div>
+                </div>
+            </div>
     </form>
     <div id="menu">
         <ul style="width: 220px;">

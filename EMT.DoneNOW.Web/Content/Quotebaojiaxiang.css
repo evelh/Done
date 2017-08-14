@@ -1,0 +1,264 @@
+body{
+    overflow: hidden;
+}
+/*顶部内容和帮助*/
+.TitleBar{
+    color: #fff;
+    background-color: #346a95;
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.TitleBar>.Title{
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 97%;
+}
+.text2{
+    margin-left: 5px;
+}
+.collection {
+    background-image: url(../Images/collection.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 38px;
+    top: 10px;
+    width: 16px;
+}
+.help {
+    background-image: url(../Images/help.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 16px;
+    border-radius: 50%;
+}
+.ButtonBar {
+    font-size: 12px;
+    padding: 0 10px 10px 10px;
+    width: auto;
+    background-color: #FFF;
+}
+.ButtonBar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: 26px;
+    width: 100%;
+    overflow: hidden;
+}
+.ButtonBar ul li img {
+    border: 0;
+}
+.LiButton{
+    background: #d7d7d7;
+    background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #bcbcbc;
+    display: inline-block;
+    color: #4F4F4F;
+    cursor: pointer;
+    padding: 0 5px 0 3px;
+    position: relative;
+    text-decoration: none;
+    vertical-align: middle;
+    height: 24px;
+    float: left;
+    margin-right: 6px;
+}
+.ButtonImg{
+    margin: 5px 0 3px 1px;
+}
+.Text{
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 26px;
+    padding: 0 1px 0 3px;
+    color: #4F4F4F;
+    vertical-align: top;
+}
+.ButtonRightImg1{
+    margin: 0 1px 4px 2px;
+}
+.ButtonRightImg{
+    margin: 4px 1px 0 2px;
+}
+.fr{
+    float: right;
+}
+.normalImg{
+    vertical-align:middle;cursor:pointer;
+}
+.QuoteItemsContainers{
+    height:900px;
+    font-size: 12px;
+    overflow: auto;
+    background: white;
+    left: 0;
+    top: 0;
+    position: relative;
+    margin: 0;
+}
+.LoadingIndicator{
+    bottom: 0;
+    display: none;
+    left: 0;
+    overflow: hidden;
+    position: fixed;
+    right: 0;
+    top: 0;
+    background-image: url(../Images/LoadingIndicator.gif);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #1b1b1b;
+    filter: alpha(opacity=50);
+    opacity: 0.50;
+    z-index: 100;
+}
+.DropDownMenu{
+    background-color: #FFF;
+    padding: 16px;
+    border: 1px solid #BCBCBC;
+    cursor: pointer;
+    box-shadow: 1px 3px 4px rgba(0,0,0,0.33);
+    position: fixed;
+    top: 71px;
+    border-top:white;
+}
+.DropDownMenu>ul>li{
+    min-height: 24px;
+}
+#D1{
+    width:134px;
+    left: 10px;
+    display: none;
+    z-index: 40;
+}
+#D2{
+    width:214px;
+    left: 110px;
+    display: none;
+    z-index: 40;
+}
+#D3{
+    width:122px;
+    left: 246px;
+    display: none;
+    z-index: 40;
+}
+.DropDownMenuItemText {
+    padding: 3px 25px 3px 6px;
+    color: #4F4F4F;
+    font-size: 12px;
+    text-align: left;
+}
+/*主体内容*/
+.quoteItemListDiv {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.grid {
+    font-size: 12px;
+    background-color: #FFF;
+}
+#quoteSettingDiv{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.FieldLabels {
+    font-size: 12px;
+    color: #4F4F4F;
+    font-weight: bold;
+    line-height: 15px;
+}
+.FieldSelect{
+    display: inline-block;
+}
+select {
+    border: solid 1px #D7D7D7;
+    font-size: 12px;
+    color: #333;
+    margin: 0;
+    height: 24px;
+    padding: 0;
+}
+option {
+    font-weight: normal;
+    display: block;
+    white-space: pre;
+    min-height: 1.2em;
+    padding: 0px 2px 1px;
+}
+.grid table {
+    border-collapse: collapse;
+    width: 100%;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #98b4ca;
+}
+.grid thead {
+    background-color: #cbd9e4;
+}
+.grid thead tr td {
+    background-color: #cbd9e4;
+    border-color: #98b4ca;
+    color: #64727a;
+}
+.grid thead td {
+    border-width: 1px;
+    border-style: solid;
+    font-size: 13px;
+    font-weight: bold;
+    height: 19px;
+    padding: 4px 4px 4px 4px;
+    word-wrap: break-word;
+    vertical-align: top;
+    text-align:center;
+}
+.grid tbody tr td:first-child, .grid tfoot tr td:first-child {
+    border-left-color: #98b4ca;
+}
+.grid tbody tr td:last-child, .grid tfoot tr td:last-child {
+    border-right-color: #98b4ca;
+}
+.grid tbody td {
+    border-width: 1px;
+    border-style: solid;
+    border-left-color: #F8F8F8;
+    border-right-color: #F8F8F8;
+    border-top-color: #e8e8e8;
+    border-bottom-width: 0;
+    padding: 4px 4px 4px 4px;
+    vertical-align: top;
+    word-wrap: break-word;
+    font-size: 12px;
+    color: #333;
+}
+.prev,.next,.edit {
+    cursor: pointer;
+    margin: 3px 5px 0 5px;
+}
+#errorSmall {
+    color: #e51937;
+    margin-left: 3px;
+    text-align: right;
+    font-size: 12px;
+}
+
