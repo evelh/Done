@@ -70,6 +70,7 @@
     <Compile Include="Dictionary\d_query_result.cs" />
     <Compile Include="Dictionary\d_query_sql.cs" />
     <Compile Include="Dictionary\d_query_type.cs" />
+    <Compile Include="IVT\ivt_product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoftDeleteCore.cs" />
     <Compile Include="SYS\sys_error_log.cs" />

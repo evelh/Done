@@ -240,7 +240,7 @@
                     <tr>
                         <td colspan="2">
                             <div class="clear">
-                                <input type="datetime-local" />
+                                
                                 <label>报价注释</label>
                                 <textarea style="width: 72%;" name="quote_comment" id="quote_comment">
                                         <%=(!isAdd)&&(!string.IsNullOrEmpty(quote.quote_comment))?quote.quote_comment:"" %>
@@ -534,14 +534,15 @@
     $(function () {
         var s1 = ["province_id", "city_id", "district_id"];
         var s2 = ["ship_province_id", "ship_city_id", "ship_district_id"];
-        var s3 = ["bill_province_id", "bill_city_id", "bill_district_id"];
+       var s3 = ["bill_province_id", "bill_city_id", "bill_district_id"];
         InitArea(s1);  // 地址下拉框
         InitArea(s2);  // 地址下拉框
-        change(0, s2);
-        change(1, s2);
+       
+        //change(0, s2);
+        //change(1, s2);
         InitArea(s3);  // 地址下拉框
-        change(0, s3);
-        change(1, s3);
+        //change(0, s3);
+        //change(1, s3);
         GetDataBySelectCompany();  // 用于修改的时候赋值
         
         var opportunity_idHidden = $("#opportunity_idHidden").val();
@@ -787,7 +788,7 @@
             alert("创建时间出错");
         }
         var projected_close_date = $("#projected_close_date").val();
-        //debugger;
+      
         if (projected_close_date == "") {
             alert("请填写预计完成时间");
             return false;
@@ -800,7 +801,7 @@
             return false;
         }
 
-        debugger;
+      
         var effective_date = $("#effective_date").val();
         var expiration_date = $("#expiration_date").val();
         //alert(check(effective_date));
@@ -832,8 +833,8 @@
     //var s = ["province_id", "city_id", "district_id"];//三个select的id
 
     function change(index, s) {
-       
- 
+
+        
         var sel = $("#" + s[index]).val();
  
         var url = "Tools/AddressAjax.ashx?act=district&pid=" + sel;
@@ -857,7 +858,7 @@
                 //$("body").append(loadDialog);
             },
             success: function (data) {
-            
+                
                 if (data.code !== 0) {
                     show_alert(data.msg);
                 } else {
@@ -870,7 +871,7 @@
                         $("#" + s[index + 1]).val(initVal);
                         $("#" + s[index + 1] + "Init").val(0);
                         if (index < 1)
-                            change(1);
+                            change(1,s);
                     }
                 }
             },
@@ -882,22 +883,7 @@
         });
 
 
-        //requestData(url, "", function (data) {
-        //    if (data.code !== 0) {
-        //        show_alert(data.msg);
-        //    } else {
-        //        for (i = 0; i < data.data.length; i++) {
-        //            var option = $("<option>").val(data.data[i].val).text(data.data[i].show);
-        //            $("#" + s[index + 1]).append(option);
-        //        }
-        //        if (initVal != undefined && initVal != 0) {
-        //            $("#" + s[index + 1]).val(initVal);
-        //            $("#" + s[index + 1] + "Init").val(0);
-        //            if (index < 1)
-        //                change(1);
-        //        }
-        //    }
-        //})
+
     }
 
     function InitArea(s) {
@@ -911,23 +897,60 @@
         $("#" + s[0]).append($("<option>").val("").text("请选择"));
         $("#" + s[1]).append($("<option>").val("").text("请选择"));
         $("#" + s[2]).append($("<option>").val("").text("请选择"));
-        requestData("Tools/AddressAjax.ashx?act=district", "", function (data) {
-            if (data.code !== 0) {
-                show_alert(data.msg);
-            } else {
-                for (i = 0; i < data.data.length; i++) {
-                    var option = $("<option>").val(data.data[i].val).text(data.data[i].show);
-                    $("#" + s[0]).append(option);
-                }
 
-                var initVal = $("#" + s[0] + "Init") ? $("#" + s[0] + "Init").val() : 0;
-                if (initVal != undefined && initVal != 0) {
-                    $("#" + s[0]).val(initVal);
-                    $("#" + s[0] + "Init").val(0);
-                    change(0, ['"' + s[0] + '", "'+s[1]+'", "'+s[2]+'"']);
+
+
+        $.ajax({
+            type: "POST",
+            url: "../Tools/AddressAjax.ashx?act=district",
+            //data: data,
+            dataType: "JSON",
+            timeout: 20000,
+            async: false,
+            beforeSend: function () {
+                //$("body").append(loadDialog);
+            },
+            success: function (data) {
+                if (data.code !== 0) {
+                    show_alert(data.msg);
+                } else {
+                    for (i = 0; i < data.data.length; i++) {
+                        var option = $("<option>").val(data.data[i].val).text(data.data[i].show);
+                        $("#" + s[0]).append(option);
+                    }
+
+                    var initVal = $("#" + s[0] + "Init") ? $("#" + s[0] + "Init").val() : 0;
+                    if (initVal != undefined && initVal != 0) {
+                        $("#" + s[0]).val(initVal);
+                        $("#" + s[0] + "Init").val(0);
+                       
+                        change(0, s);
+                    }
                 }
+            },
+            error: function (XMLHttpRequest) {
+                //$("#LoadingDialog").remove();
+                //console.log(XMLHttpRequest);
+                alert('请检查网络');
             }
-        }, false)
+        });
+        //requestData("Tools/AddressAjax.ashx?act=district", "", function (data) {
+        //    if (data.code !== 0) {
+        //        show_alert(data.msg);
+        //    } else {
+        //        for (i = 0; i < data.data.length; i++) {
+        //            var option = $("<option>").val(data.data[i].val).text(data.data[i].show);
+        //            $("#" + s[0]).append(option);
+        //        }
+
+        //        var initVal = $("#" + s[0] + "Init") ? $("#" + s[0] + "Init").val() : 0;
+        //        if (initVal != undefined && initVal != 0) {
+        //            $("#" + s[0]).val(initVal);
+        //            $("#" + s[0] + "Init").val(0);
+        //            change(0, s);
+        //        }
+        //    }
+        //}, false)
 
     }
 

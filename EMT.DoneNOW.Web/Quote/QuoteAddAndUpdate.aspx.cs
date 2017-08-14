@@ -66,8 +66,7 @@ namespace EMT.DoneNOW.Web.Quote
                     if (quote != null)
                     {
                         isAdd = false;
-                        BillLocation.Checked = quote.bill_to_location_id == quote.sold_to_location_id;
-                        ShipLocation.Checked = quote.ship_to_location_id == quote.ship_to_location_id;
+
                     }
 
                 }
@@ -81,20 +80,25 @@ namespace EMT.DoneNOW.Web.Quote
                     }
 
                 }
-
-
-                if (!isAdd)
+                if (!IsPostBack)
                 {
-                    account = new CompanyBLL().GetCompany(quote.account_id);
-                    if (account != null)
+                    if (!isAdd)
                     {
-                        tax_region_id.SelectedValue = account.tax_region_id != null ? account.tax_region_id.ToString() : "0";
-                        payment_term_id.SelectedValue = quote.payment_term_id != null ? quote.payment_term_id.ToString() : "0";
-                        payment_type_id.SelectedValue = quote.payment_type_id != null ? quote.payment_type_id.ToString() : "0"; //shipping_type_id
-                        shipping_type_id.SelectedValue = quote.shipping_type_id != null ? quote.shipping_type_id.ToString() : "0";
-                        quote_tmpl_id.SelectedValue = quote.quote_tmpl_id != null ? quote.quote_tmpl_id.ToString() : "0";
+                        account = new CompanyBLL().GetCompany(quote.account_id);
+                        if (account != null)
+                        {
+                            tax_region_id.SelectedValue = account.tax_region_id != null ? account.tax_region_id.ToString() : "0";
+                            payment_term_id.SelectedValue = quote.payment_term_id != null ? quote.payment_term_id.ToString() : "0";
+                            payment_type_id.SelectedValue = quote.payment_type_id != null ? quote.payment_type_id.ToString() : "0"; //shipping_type_id
+                            shipping_type_id.SelectedValue = quote.shipping_type_id != null ? quote.shipping_type_id.ToString() : "0";
+                            quote_tmpl_id.SelectedValue = quote.quote_tmpl_id != null ? quote.quote_tmpl_id.ToString() : "0";
+                            BillLocation.Checked = quote.bill_to_location_id == quote.sold_to_location_id;
+                            ShipLocation.Checked = quote.ship_to_location_id == quote.sold_to_location_id;
+                        }
                     }
                 }
+
+       
             }
             catch (Exception)
             {
@@ -113,6 +117,7 @@ namespace EMT.DoneNOW.Web.Quote
             var quote = new crm_quote();
             quote = AssembleModel<crm_quote>();
             quote = LocationDeal(quote);
+            var bill = BillLocation.Checked;
             if (isAdd)
             {
                 var result = new QuoteBLL().Insert(quote, GetLoginUserId());
@@ -343,7 +348,7 @@ namespace EMT.DoneNOW.Web.Quote
                                     ship_location.id = new crm_location_dal().GetNextIdCom();
                                     if (new LocationBLL().Insert(ship_location, GetLoginUserId()))
                                     {
-                                        quote.bill_to_location_id = ship_location.id;
+                                        quote.ship_to_location_id = ship_location.id;
                                     }
                                 }
                             }
