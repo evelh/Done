@@ -42,11 +42,11 @@
                     <li>工单</li>
                     <li>项目</li>
                     <li>配置项</li>
-                    <li>financials财务</li>
+                    <li>财务</li>
                     <li>合同</li>
                     <li>发票</li>
-                    <li>Invoice发票参数设定</li>
-                    <li>Quote reference报价参数设定</li>
+                    <li>发票参数设定</li>
+                    <li>报价参数设定</li>
                     <li>附件</li>
                     <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=Subsidiaries">子客户</a></li>
                 </ul>
@@ -68,7 +68,7 @@
                         <li>待办</li>
                         <li>客户备注</li>
                         <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
-                        <li><a href="#" onclick="window.open('../Contact/AddContact.aspx?parent_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left=200,top=200,width=900,height=750', false);">联系人</a></li>
+                        <li><a href="#" onclick="window.open('../Contact/AddContact.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left=200,top=200,width=900,height=750', false);">联系人</a></li>
                         <li><a href="#" onclick="window.open('AddCompany.aspx?parent_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.Subsidiaries %>','left=200,top=200,width=900,height=750', false);">子客户</a></li>
                         <li>配置项</li>
                         <li>附件</li>

@@ -90,6 +90,7 @@ namespace EMT.DoneNOW.BLL
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
             var old_quote_item = _dal.GetQuoteItem(quote_item.id);
+            quote_item.oid = old_quote_item.oid;
             quote_item.update_user_id = user_id;
             quote_item.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             quote_item.tax_cate_id = quote_item.tax_cate_id == 0 ? null : quote_item.tax_cate_id;
@@ -145,6 +146,11 @@ namespace EMT.DoneNOW.BLL
             }
 
             return false;
+        }
+        public List<crm_quote_item> GetAllQuoteItem(long id) {
+            string sql = " and quote_id="+id+" ";
+            var list = _dal.GetQuoteItems(sql);
+            return list;
         }
     }
 }

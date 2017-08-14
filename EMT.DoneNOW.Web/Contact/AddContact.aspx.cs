@@ -20,10 +20,25 @@ namespace EMT.DoneNOW.Web
         protected ContactAddAndUpdateDto dto = new ContactAddAndUpdateDto();
         protected long id = 0;
         protected string avatarPath = "../Images/pop.jpg";
+        protected crm_account account = null;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             bool is_edit = long.TryParse(Request.QueryString["id"], out id);
+            try
+            {
+                var account_id = Request.QueryString["account_id"];
+                if (!string.IsNullOrEmpty(account_id))
+                {
+                    account = new CompanyBLL().GetCompany(long.Parse(account_id));
+                }
+            }
+            catch (Exception)
+            {
+
+                Response.End();
+            }
+       
             if (IsPostBack)
             {
                 SaveFormData();
@@ -48,6 +63,8 @@ namespace EMT.DoneNOW.Web
                     allowEmail.Checked = dto.contact.allow_notify_email_task_ticket == 1 ? true : false;
                     optoutEmail.Checked = dto.contact.is_optout_contact_group_email == 1 ? true : false;
                     optoutSurvey.Checked = dto.contact.is_optout_survey == 1 ? true : false;
+                    if (!string.IsNullOrEmpty(dto.contact.avatar))
+                        avatarPath = dto.contact.avatar;
                 }
                 else
                 {
@@ -115,7 +132,17 @@ namespace EMT.DoneNOW.Web
             }
             else if (result == ERROR_CODE.SUCCESS)                    // 插入联系人成功，刷新前一个页面
             {
-                Response.Write("<script>alert('添加客户成功！');history.go(0);</script>");  //  关闭添加页面的同时，刷新父页面
+                if (dto.contact.id > 0)
+                {
+                    Response.Write("<script>alert('修改客户成功！');</script>");
+                    Response.Redirect("AddContact.aspx");
+                }
+                else
+                {
+                    Response.Write("<script>alert('添加客户成功！');</script>");  //  关闭添加页面的同时，刷新父页面
+                    Response.Redirect("AddContact.aspx");
+                }
+                    
             }
         }
 
@@ -195,7 +222,7 @@ namespace EMT.DoneNOW.Web
             if (fileForm.ContentLength > (8 << 20))     // 判断文件大小不超过8M
                 return avatarPath;
 
-            string filepath = $"/Upload/{DateTime.Now.Year.ToString()}{DateTime.Now.Month.ToString()}/Images/Avatar/";
+            string filepath = $"/Upload/Images/{DateTime.Now.Year.ToString()}{DateTime.Now.Month.ToString()}/Avatar/";
             if (Directory.Exists(Server.MapPath(filepath)) == false)//如果不存在就创建file文件夹
             {
                 Directory.CreateDirectory(Server.MapPath(filepath));

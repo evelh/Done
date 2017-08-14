@@ -51,6 +51,7 @@ namespace EMT.DoneNOW.Web
         {
             string tt = Request.Form["data"].Trim().ToString().Replace("\"", "'");
             Session["quote_foot"] = tt;
+            Session["cancel"] = 1;
             Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
         }
 
@@ -78,6 +79,12 @@ namespace EMT.DoneNOW.Web
                 }
                 this.VariableList.Text = sb.ToString();
             }
+        }
+
+        protected void CancelButton1_Click(object sender, EventArgs e)
+        {
+            Session["cancel"] = 1;
+            Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
         }
     }
 }

@@ -45,16 +45,16 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     {
                         // 用户需要添加折扣类型的报价项，然后可以针对付费周期类型为一次性的报价项进行折扣
                         // 折扣只针对一次性周期的报价项折扣
-                        oneTimeList = quoteItemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
+                        oneTimeList = quoteItemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME&&_.optional==0).ToList();
 
-                        discountQIList = quoteItemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT).ToList();
+                        discountQIList = quoteItemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT&&_.optional==0).ToList();
 
                         //  获取到可选的报价项，
                         optionalItemList = quoteItemList.Where(_ => _.optional == 1).ToList();   // 获取到可选的报价项
                                                                                                  //  获取到一次性报价项
                         
                         // &&optionalItemList.Any(op=>op.id!=_.id)&&oneTimeList.Any(one=>one.id!=_.id)  满足多个报价项过滤条件的，选择其中的一个
-                        distributionList = quoteItemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();   // 配送类型的报价项
+                        distributionList = quoteItemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES&&_.optional==0).ToList();   // 配送类型的报价项
 
                         // 配送，一次性，可选的配置项独立显示，所以在这里分离出来，传到前台后单独处理
 

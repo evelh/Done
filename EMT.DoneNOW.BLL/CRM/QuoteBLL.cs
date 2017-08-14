@@ -386,11 +386,91 @@ namespace EMT.DoneNOW.BLL
 
             return "";
 		}
+        /// <summary>
+        /// 报价单绑定报价模板
+        /// </summary>
+        /// <param name="cq"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public bool UpdateQuoteTemp(crm_quote cq,long user_id) {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            cq.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            cq.update_user_id = user_id;
+            if (_dal.Update(cq))
+            { 
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user_id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE,
 
-        public DataTable GetVar(int id)
+                    oper_object_id = cq.id,// 操作对象id
+
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+
+                    oper_description = _dal.AddValue(cq),
+                    remark = "关联报价模板"
+                });
+
+            }
+            return true;
+        }
+        /// <summary>
+        /// 返回一个d_tax_region_cate对象
+        /// </summary>
+        /// <param name="aid"></param>
+        /// <param name="bid"></param>
+        /// <returns></returns>
+        public d_tax_region_cate GetTaxRegion(int aid,int bid) {
+            var data = new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>(@"select * from d_tax_region_cate  where tax_region_id="+aid+" and tax_cate_id="+bid+"");
+            return data;
+        }
+        /// <summary>
+        /// 返回d_tax_region_cate_tax的list数据集
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<d_tax_region_cate_tax> GetTaxRegiontax(int id)
         {
-            string sql=@"select  (select name from crm_account where id=c.account_Id) as '[Contact: Company]', (case when is_active=1 then '已激活' else '未激活'end ) as '[联系人：激活的]', NULL as '[联系人：外部编号]', c.title as '[联系人：称呼]', c.first_name as '[联系人：名]', c.last_name as '[联系人：姓]', (select name from d_general where id=c.suffix_id) as '[联系人：后缀]', null as '[联系人：中间名]', c.name as '[联系人：姓名]', c.name as '[联系人：姓名（链接）]', c.name as '[联系人：链接]', c.ID as '[Contact: ID]', null as '[联系人：头衔]', l.address as '[联系人：地址]', l.additional_address as '[联系人：补充地址]', (select name from d_district where id=l.city_id) as '[联系人：城市]', (select name from d_district where id=l.province_id) as '[联系人：省]', l.postal_code as '[Contact: Post Code]', (select name from d_country where id=l.country_id) as '[联系人：国家]', c.email as '[联系人：邮件地址]', c.phone as '[联系人：电话]', null as '[联系人：电话分机]', c.alternate_phone as '[联系人：备用电话]', c.mobile_phone as '[联系人：移动电话]', c.fax as '[联系人：传真]', null as '[联系人：Client Access Portal用户姓名]', c.email2 as '[Contact: Alternate Email1]', null as '[Contact: Customer Contact]', null as '[Contact: Address]' from crm_contact c LEFT JOIN crm_location l on c.location_id = l.id where 1 = 1    and c.id in("+id+") and 1 = 1  order by  c.name";
-            var list = _dal.ExecuteDataTable(sql);
+           
+            var data = new d_tax_region_cate_tax_dal().FindListBySql<d_tax_region_cate_tax>(@"select * from d_tax_region_cate_tax  where tax_region_cate_id="+id+"");
+
+            return data;
+        }
+
+        /// <summary>
+        /// 获取税收地区名称
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetTaxName(int id) {
+            string name =new d_general_dal().FindById(id).name;
+            return name;
+        }
+        /// <summary>
+        /// 获取替换报价模板内的变量
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <param name="aid"></param>
+        /// <param name="qid"></param>
+        /// <param name="oid"></param>
+        /// <returns></returns>
+        public DataTable GetVar(int cid, int aid, int qid,int oid)
+        {
+            var list = _dal.GetVar(cid,aid,qid,oid);
+            return list;
+        }
+        /// <summary>
+        /// 获取替换报价子项的数据
+        /// </summary>
+        /// <param name="qiid"></param>
+        /// <returns></returns>
+        public DataTable GetQuoteItemVar(int qiid)
+        {
+            var list = _dal.GetQuoteItemVar(qiid);
             return list;
         }
     }

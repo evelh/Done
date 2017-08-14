@@ -21,7 +21,6 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
-            id = 197;
             data = qtb.GetQuoteTemplate(id);
             if (!IsPostBack)
             {                
@@ -178,15 +177,17 @@ namespace EMT.DoneNOW.Web
             var result = qtb.update(data, GetLoginUserId());
             if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
             {
-                Response.Write("<script>alert('报价模板属性修改成功！'); window.location.href = \"QuoteTemplateEdit.aspx?id = "+id+" & op = edit\";</script>"); 
+                //Response.Write("<script>alert('报价模板属性修改成功'); window.location.href = 'QuoteTemplateEdit.aspx?id ="+id+"&op= edit';</script>"); 
                 //  关闭添加页面的同时，刷新父页面
-
-
+                Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
             }
             else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
             {
                 Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                 Response.Redirect("Login.aspx");
+            }
+            else {
+                Response.Write("<script>alert('报价模板属性修改成功');</script>");
             }
 
         }

@@ -23,8 +23,7 @@ namespace EMT.DoneNOW.Web
                 }
                 else {
                     body_item = "2222";
-                }
-               
+                }             
 
                 this.AlertVariableFilter.DataTextField = "show";
                 this.AlertVariableFilter.DataValueField = "val";
@@ -67,6 +66,19 @@ namespace EMT.DoneNOW.Web
                 }
                 this.VariableList.Text = sb.ToString();
             }
+        }
+
+        protected void Cancel(object sender, EventArgs e)
+        {
+            Session["cancel"] = 1;
+            Response.Write("<script>window.close();</script>");
+            //Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
+        }
+
+
+        protected void OkButton_Click(object sender, EventArgs e)
+        {
+            Session["cancel"] = 1;
         }
     }
 }

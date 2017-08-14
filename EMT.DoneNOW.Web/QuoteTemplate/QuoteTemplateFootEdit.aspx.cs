@@ -49,6 +49,7 @@ namespace EMT.DoneNOW.Web
         {
             string tt = Request.Form["data"].Trim().ToString();
             Session["page_foot"] = tt;
+            Session["cancel"] = 1;
             Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
             // ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('"+tt+"！');history.go(-1);</script>");
         }
@@ -77,6 +78,12 @@ namespace EMT.DoneNOW.Web
                 }
                 this.VariableList.Text = sb.ToString();
             }
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            Session["cancel"] = 1;
+            Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
         }
     }
 }

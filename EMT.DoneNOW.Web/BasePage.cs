@@ -16,13 +16,29 @@ namespace EMT.DoneNOW.Web
         }
 
         private void BasePage_Load(object sender, EventArgs e)
-         {
+        {
             // 判断用户是否登录
             if (!IsUserLogin())
             {
                 Response.Write("<script>parent.location.href='/login.aspx'</script>");
                 Response.End();
             }
+        }
+
+        /// <summary>
+        /// 页面异常捕获记录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Page_Error(object sender, EventArgs e)
+        {
+            Exception currentError = Server.GetLastError();
+
+            new EMT.DoneNOW.BLL.ErrorLogBLL().AddLog(GetLoginUserId(), Request.Url.ToString(), currentError.Message, currentError.StackTrace);
+
+            string errorMsg = "抱歉，系统发生错误！<br />";
+            Response.Write(errorMsg);
+            Server.ClearError();//清除异常(否则将引发全局的Application_Error事件)
         }
 
         public bool IsUserLogin()

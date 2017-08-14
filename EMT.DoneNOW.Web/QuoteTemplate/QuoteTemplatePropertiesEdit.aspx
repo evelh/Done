@@ -31,7 +31,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
-             <div class="header">报价模板新增</div>
+             <div class="header">报价模板属性修改</div>
              <div class="header-title">
             <ul><li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
             <asp:Button ID="Button1" runat="server" Text="修改"  BorderStyle="None" OnClick="UPdateQuoteTemplate" />

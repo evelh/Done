@@ -521,8 +521,7 @@
 
 
         <div class="content clear" style="display: none;">
-            <%if (account.parent_id == null)
-                { %>
+       
             <p>子客户列表</p>
             <span class="on"><i class="icon-dh" onclick="OpenSubCompany()"></i></span>
           
@@ -545,7 +544,7 @@
             <input type="hidden" id="OldSubCompanyHidden" name="subCompanyIds" value="<%=subIds %>" />
                  <input type="hidden" id="SubCompany" />
             <input type="hidden" id="SubCompanyHidden" name="SubCompanyHidden" value="<%=subIds %>" />
-            <%} %>
+         
         </div>
         <% //子公司 预留  %>
 

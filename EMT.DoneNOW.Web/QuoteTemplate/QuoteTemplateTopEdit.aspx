@@ -30,7 +30,7 @@
                 </li>
                 <li class="Button ButtonIcon Cancel NormalState" id="CancelButton" tabindex="0">
                     <span class="Icon Cancel"></span>
-                    <span class="Text">取消</span>
+                     <asp:Button ID="cancel" runat="server" Text="取消" cssclass="Text" BorderStyle="None" OnClick="Button1_Click"/>
                 </li>
                 <li class="Button ButtonIcon Reset NormalState" id="ResetButton" tabindex="0">
                     <span class="Icon Reset"></span>
@@ -150,9 +150,9 @@
             console.log(txt);
         });
         //        点击取消直接返回
-        $("#CancelButton").on("click",function(){
+<%--        $("#CancelButton").on("click",function(){
             window.location.href="QuoteTemplateEdit.aspx?id="+<%=id%>+"";
-        })
+        })--%>
         //情空内容
         $("#ResetButton").on("click",function(){
             ue.setContent("<p style='text-align: right;'>报价</p><p style='text-align: right;'>报价编号: [报价：报价编号]</p><p style='text-align: right;'>付款期限:&nbsp;[报价：付款期限]</p><p style='text-align: right;'>截止日期: [报价：过期日期]</p><p>[Miscellaneous: 报价 Logo]</p><p><br/></p><p><br/></p><p><br/></p><p><br/></p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</p><p>[联系人：姓名]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>[Opportunity: Owner]</strong></p><p>[Account: Name] &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>[Your Company: Name]</strong></p><p>[联系人：地址]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[Opportunity: Owner Address] &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Phone:[联系人：移动电话]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Phone:[联系人：备用电话]</p><p>[联系人：邮件地址]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[联系人：传真]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href='mailto:[Opportunity:%20Owner%20Email%20Address]'>[Opportunity: Owner Email Address]</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</p><p><br/></p>");
