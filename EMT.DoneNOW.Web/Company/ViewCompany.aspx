@@ -310,7 +310,7 @@
 
         <div id="ShowCompany_Right" class="activityTitleright f1" style="float: left;width:750px;min-width:750px;height:500px;">
 
-            <iframe runat="server" id="viewCompany_iframe" width="800" height="500" frameborder="0" marginheight="0" marginwidth="0" style="overflow:scroll;"></iframe>
+            <iframe runat="server" id="viewCompany_iframe" width="860" height="500" frameborder="0" marginheight="0" marginwidth="0" style="overflow:scroll;"></iframe>
 
         </div>
 

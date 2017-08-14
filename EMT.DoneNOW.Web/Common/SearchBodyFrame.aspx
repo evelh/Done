@@ -24,8 +24,6 @@
     line-height: 28px;
     text-align:center;
 }
-    
-  
 </style>
 <body>
     <form id="form1">
@@ -67,21 +65,21 @@
                                  if (indexTo > queryResult.count)
                                      indexTo = queryResult.count;
                     %>
-				<span>第<%=indexFrom %>-<%=indexTo %>&nbsp;总数&nbsp;<%=queryResult.count %></span>
-				<span><%if (queryResult.page_size == 20)
+				<span>第<%=indexFrom %>-<%=indexTo %>&nbsp;&nbsp;总数&nbsp;<%=queryResult.count %></span>
+				<span>每页<%if (queryResult.page_size == 20)
                                  {
-                      %>20<%}
+                      %>&nbsp;20&nbsp;<%}
                                  else
                                  {
                       %><a href="#" onclick="ChangePageSize(20)">20</a><%}
                       %>|<%if (queryResult.page_size == 50)
                                  {
-                      %>50<%}
+                      %>&nbsp;50&nbsp;<%}
                                  else
                                  {
                       %><a href="#" onclick="ChangePageSize(50)">50</a><%}
                       %>|<%if (queryResult.page_size == 100)
-                                 { %>100<%}
+                                 { %>&nbsp;100&nbsp;<%}
                                  else
                                  { %><a href="#" onclick="ChangePageSize(100)">100</a><%} %></span>
 				<i onclick="ChangePage(1)"><<</i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page-1 %>)"><</i>
@@ -167,7 +165,7 @@
             <li onclick="<%=menu.click_function %>"><i class="menu-i1"></i><%=menu.text %>
                 <%if (menu.submenu != null) { %>
                 <i class="menu-i2">>></i>
-                <ul>
+                <ul id="menu-i2-right">
                     <%foreach (var submenu in menu.submenu) { %>
                     <li onclick="<%=submenu.click_function %>"><%=submenu.text %></li>
                     <%} %>

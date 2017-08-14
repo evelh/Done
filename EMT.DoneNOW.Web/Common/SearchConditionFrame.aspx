@@ -131,9 +131,9 @@
                                 || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME
                                 || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.TIMESPAN) { %>
                             <div class="inputTwo">
-								<input type="text" name="<%=condition[i].id %>_l" class="form_datetime sl_cdt" />
+								<input type="text" name="<%=condition[i].id %>_l" class="form_datetime sl_cdt"/>
 								<span>-</span>
-								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
+								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt"/>
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK
                                 || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MUILT_CALLBACK) { %>
@@ -253,12 +253,19 @@
                 index = 1;
             }
         })
-        $(".header i").on("mouseover",function () {
+        $(".header i").on("mouseover", function () {
             window.parent.document.getElementById("SearchFrameSet").rows = maxhgt;
             $("#Icon").removeClass("jia");
             $(".informationTitle").parent().css("background", "white");
             $(".information").children(".content").removeClass("hide");
-        })
+        });
+        $(".form_datetime").focus(function () {
+            var maxHeight = parseInt($(this).offset().top) + parseInt($(this).height()) + parseInt($(".datetimepicker").height()) + 15;
+            window.parent.document.getElementById("SearchFrameSet").rows = maxHeight + ',*';
+       }).change(function () {
+           window.parent.document.getElementById("SearchFrameSet").rows = maxhgt;
+       })
+       
     </script>
 </body>
 </html>

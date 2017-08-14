@@ -137,7 +137,7 @@
         }
 
         #errorSmall {
-            font-size: 12px;
+            font-size: 12px; 
             color: #E51937;
             margin-left: 3px;
             text-align: center;
@@ -267,7 +267,7 @@
                                             <td class="FieldLabels">报价项名称
                                             <span id="errorSmall">*</span>
                                                 <div>
-                                                    <input type="text" name="name" id="name" value="<%=isAdd?"":quote_item.name %>" />
+                                                    <input type="text" name="name" id="name" value="<%=isAdd?"":quote_item.name %>" style="width: 17em;"/>
                                                     <i onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                     <input type="hidden" id="nameHidden"/>
                                                 </div>
@@ -276,7 +276,7 @@
                                         <tr>
                                             <td class="FieldLabels">报价项描述
                                             <div>
-                                                <textarea name="description" id="description">
+                                                <textarea name="description" id="description" style="width: 17em;" rows="5">
                                                         <%=(!isAdd)&&(!string.IsNullOrEmpty(quote_item.description))?quote_item.description:"" %>
                         </textarea>
                                             </div>
@@ -285,7 +285,7 @@
                                         <tr valign="middle">
                                             <td class="FieldLabels">期间类型
                                             <div>
-                                                <asp:DropDownList ID="period_type_id" runat="server"></asp:DropDownList>
+                                                <asp:DropDownList ID="period_type_id" runat="server" style="width: 17em;"></asp:DropDownList>
                                             </div>
                                             </td>
                                         </tr>
@@ -294,7 +294,7 @@
                                                 <input type="checkbox" name="ByProject" />
                                                 <span class="CheckBoxLabels">项目提案工时</span>
                                                 <div>
-                                                    <input type="text" name="project_id" id="project_id" />
+                                                    <input type="text" name="project_id" id="project_id" style="width: 17em;" />
                                                     <i onclick="" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                 </div>
                                             </td>
@@ -302,7 +302,7 @@
                                         <tr>
                                             <td class="FieldLabels">税收种类
                                             <div>
-                                                <asp:DropDownList ID="tax_cate_id" runat="server"></asp:DropDownList>
+                                                <asp:DropDownList ID="tax_cate_id" runat="server" style="width: 17em;"></asp:DropDownList>
                                             </div>
                                             </td>
                                         </tr>
@@ -373,7 +373,7 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td class="FieldLabels" width="45%" style="padding-top: 6px;">
-                                                                    <input type="radio" id="DiscountR1" checked="checked" />单元折扣 
+                                                                    <input type="radio" name="00" id="DiscountR1" checked="checked" />单元折扣 
                                                                 </td>
                                                                 <td class="FieldLabels" align="right">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
@@ -383,7 +383,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="FieldLabels" width="45%" style="padding-top: 6px;">
-                                                                    <input type="radio" id="DiscountR3" />折扣数 
+                                                                    <input type="radio" name="00" id="DiscountR3" />折扣数 
                                                                 </td>
                                                                 <td class="FieldLabels" align="right">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
@@ -393,12 +393,12 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="FieldLabels" width="45%" style="padding-top: 6px;">
-                                                                    <input type="radio" id="DiscountR2">折扣率
+                                                                    <input type="radio" name="00" id="DiscountR2">折扣率
                                                                 </td>
                                                                 <td class="FieldLabels" align="right">
                                                                     <div style="margin: 0; padding: 0; padding-bottom: 21px;">
                                                                         <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="Discount" id="Discount" disabled="disabled" />&nbsp;%
-                                                                    </div>
+                                                                    </div> 
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -437,6 +437,22 @@
 <script src="../Scripts/NewContact.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
 <script>
+    $("#DiscountR2").on("click", function () {
+        $("#Discount").attr("disabled", false);
+        $("#unit_discount").attr("disabled", true);
+        $("#Line_Discount").attr("disabled", true);
+    });
+    $("#DiscountR1").on("click", function () {
+        $("#unit_discount").attr("disabled", false);
+        $("#Discount").attr("disabled", true);
+        $("#Line_Discount").attr("disabled", true);
+    });
+    $("#DiscountR3").on("click", function () {
+        $("#Line_Discount").attr("disabled", false);
+        $("#unit_discount").attr("disabled", true);
+        $("#Discount").attr("disabled", true);
+    });
+
     $(function () {
 
         Markup();

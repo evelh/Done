@@ -56,12 +56,12 @@
             <div class="information clear">
                 <p class="informationTitle"><i></i>常规信息</p>
                 <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 900px; margin-left: 40px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width:871px;">
                         <tr>
-                            <td colspan="2">
+                            <td>
                                 <div class="clear">
                                     <label>商机名称<span class="red">*</span></label>
-                                    <input type="text" style="width: 72%;" name="name" id="name" value="<%=isAdd?"":opportunity.name %>" />
+                                    <input type="text" name="name" id="name" value="<%=isAdd?"":opportunity.name %>" />
                                 </div>
                             </td>
                         </tr>
@@ -205,7 +205,7 @@
             <div class="information clear">
                 <p class="informationTitle"><i></i>商机值</p>
                 <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 900px; margin-left: 40px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width:828px;">
                         <tr>
                             <td>
                                 <div class="clear">
@@ -289,7 +289,7 @@
                             <td>
                                 <div class="clear">
                                     <label>计算总额</label>
-                                    <input type="text" class="Calculation" name="CalculationMonths" id="number_months" value="<%=(!isAdd)&&(opportunity.number_months!=null)?opportunity.number_months:10 %>" /><span>月</span>
+                                    <input type="text" class="Calculation" name="CalculationMonths" id="number_months" value="<%=(!isAdd)&&(opportunity.number_months!=null)?opportunity.number_months:10 %>" /><span style="line-height:30px;margin-left:-15px;">月</span>
                                 </div>
                             </td>
                         </tr>
@@ -324,9 +324,9 @@
                 <p class="informationTitle"><i></i>周期收益</p>
                 <div class="clear">
                     <input type="checkbox" name="" id="opportunityRange" />
-                    <label>商机收入周期范围</label>
+                    <label style="width:141px;">商机收入周期范围</label>
                     <input type="text" name="spread_value" id="spread_value" value="<%=(!isAdd)&&(opportunity.spread_value!=null)?opportunity.spread_value.ToString():"" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
-                    <asp:DropDownList ID="spread_unit" runat="server">
+                    <asp:DropDownList ID="spread_unit" runat="server" style="margin-left:3px;">
                         <asp:ListItem Value="Days">日</asp:ListItem>
                         <asp:ListItem Value="Months">月</asp:ListItem>
                         <asp:ListItem Value="Years">年</asp:ListItem>
@@ -346,7 +346,7 @@
                     {
                 %>
                 <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 600px; margin-left: 40px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width:815px;">
                         <tr>
                             <td>
                                 <div class="clear">
@@ -453,7 +453,7 @@
         <div class="content clear" style="display: none;">
 
             <div>
-                <table border="none" cellspacing="" cellpadding="" style="width: 400px; margin-left: 40px;">
+                <table border="none" cellspacing="" cellpadding="" style="width:815px;">
 
                     <% if (opportunity_udfList != null && opportunity_udfList.Count > 0)
                         {
