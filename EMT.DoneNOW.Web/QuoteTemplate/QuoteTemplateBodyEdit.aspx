@@ -550,19 +550,19 @@
             data.push("],\"GRID_OPTIONS\":[");
             //表格格式设置
             //显示表头
-            if ($("#ShowGridHeader").attr("checked")) {
+            if ($("#ShowGridHeader").is(':checked')) {
                 var Show_grid_header = "yes";
             } else {
                 var Show_grid_header = "no";
             }
             //显示表格的竖线
-            if ($("#ShowVerticalGridlines").attr("checked")) {
+            if ($("#ShowVerticalGridlines").is(':checked')) {
                 var Show_vertical_lines = "yes";
             }
             else {
                 var Show_vertical_lines = "no";
             }
-            if ($("#DisplayQuoteCommentInBody").attr("checked")) {
+            if ($("#DisplayQuoteCommentInBody").is(':checked')) {
                 var Show_QuoteComment = "yes";
             } else {
                 var Show_QuoteComment = "no";

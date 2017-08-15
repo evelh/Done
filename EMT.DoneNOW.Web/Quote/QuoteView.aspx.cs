@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.Web
         {
             //从URL地址获取报价id
             id = Convert.ToInt32(Request.QueryString["id"]);
-            //id = 294;//测试使用数据
+           // id = 294;//测试使用数据
             //获取所有的报价模板
             datalist = new QuoteTemplateBLL().GetAllTemplate();
             //获取该报价信息
@@ -123,7 +123,11 @@ namespace EMT.DoneNOW.Web
                 {
                     if (coulmn.Display == "yes")
                     {
-                        table.Append("<td class='ReadOnlyGrid_TableHeader' style='text-align: Left; '>" + coulmn.Column_label + "</td>");
+                        table.Append("<td class='ReadOnlyGrid_TableHeader' style='text-align: Right; '>" + coulmn.Column_label + "</td>");
+                        if (coulmn.Column_Content == "总价")
+                        {
+                            table.Append("<td class='ReadOnlyGrid_TableHeader' style='text-align: Left; '></td>");
+                        }
                         i++;
                     }
                 }
@@ -173,8 +177,11 @@ namespace EMT.DoneNOW.Web
                     Dictionary<int, double> tax_dic1 = new Dictionary<int, double>();
                     Dictionary<int, double> tax_dic = new Dictionary<int, double>();
                     if (group.Contains((int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME))
-                    {
-                        table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].One_Time_items + "</td></tr>");
+                    {//判断是否显示表头
+                       // if (quote_body.GRID_OPTIONS[0].Show_grid_header == "yes") {
+                            table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].One_Time_items + "</td></tr>");
+                       // }
+                        
                         //一次性收费
                         foreach (var item in cqi)
                         {
@@ -205,7 +212,7 @@ namespace EMT.DoneNOW.Web
                         if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
                         {
                             // 获取税收地区                                        
-                            table.Append("<td><strong>" + tax_list.One_Time_Subtotal + ":" + totalsum + "</strong></td>");
+                            table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.One_Time_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'>" + totalsum + "</td>");
                         }
                         else
                         {
@@ -240,7 +247,7 @@ namespace EMT.DoneNOW.Web
                                 case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Total_Taxes + ":" + sumsum + "</strong></td>"); break;
+                                case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes+ "</strong></td><td style='text-align: Right;'class='bord'><strong>" + sumsum +"</strong></td>"); break;
                                 case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                             }
                         }
@@ -260,17 +267,16 @@ namespace EMT.DoneNOW.Web
                                 case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.One_Time_Total+ ":" + totalsum + "</strong></td>"); break;
+                                case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.One_Time_Total+ "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
                                 case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                             }
 
                         }
                     }
-                    table.Append("</tr>");
+                    table.Append("</tr>");                 
 
 
 
-                    //一次性收费汇总
 
                     totalsum = 0;
 
@@ -320,7 +326,7 @@ namespace EMT.DoneNOW.Web
                             if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
                             {
                                 // 获取税收地区                                        
-                                table.Append("<td><strong>" + tax_list.Monthly_Subtotal + ":" + totalsum + "</strong></td>");
+                                table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Monthly_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
                             }
                             else
                             {
@@ -355,7 +361,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Total_Taxes + ":" + sumsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
@@ -375,7 +381,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Monthly_Total + ":" + totalsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Monthly_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>:" + totalsum + "</strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
 
@@ -431,7 +437,7 @@ namespace EMT.DoneNOW.Web
                             if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
                             {
                                 // 获取税收地区                                        
-                                table.Append("<td><strong>" + tax_list.Quarterly_Subtotal + ":" + totalsum + "</strong></td>");
+                                table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Quarterly_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
                             }
                             else
                             {
@@ -465,7 +471,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Total_Taxes + ":" + sumsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
@@ -485,7 +491,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Quarterly_Total + ":" + totalsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Quarterly_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
 
@@ -542,7 +548,7 @@ namespace EMT.DoneNOW.Web
                             if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
                             {
                                 // 获取税收地区                                        
-                                table.Append("<td><strong>" + tax_list.Yearly_Subtotal + ":" + totalsum + "</strong></td>");
+                                table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Yearly_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
                             }
                             else
                             {
@@ -576,7 +582,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Total_Taxes + ":" + sumsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
@@ -595,7 +601,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Yearly_Total + ":" + totalsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Yearly_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
 
@@ -650,7 +656,7 @@ namespace EMT.DoneNOW.Web
                             if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
                         {
                             // 获取税收地区                                        
-                            table.Append("<td><strong>" + tax_list.Subtotal + ":" + totalsum + "</strong></td>");
+                            table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
                         }
                        
                         else
@@ -686,7 +692,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Total_Taxes + ":" + sumsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
@@ -705,7 +711,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Total + ":" + totalsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
@@ -762,7 +768,7 @@ namespace EMT.DoneNOW.Web
                             if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
                             {
                                 // 获取税收地区                                        
-                                table.Append("<td><strong>" + tax_list.Shipping_Subtotal + ":" + totalsum + "</strong></td>");
+                                table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Shipping_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
                             }
                             else
                             {
@@ -796,7 +802,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Total_Taxes + ":" + sumsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
@@ -816,7 +822,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Shipping_Total + ":" + totalsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Shipping_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
@@ -858,7 +864,7 @@ namespace EMT.DoneNOW.Web
                             if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
                             {
                                 // 获取税收地区                                        
-                                table.Append("<td>" + tax_list.One_Time_Discount_Subtotal + ":" + totalsum + "</td>");
+                                table.Append("<td style='text-align: Right;' class='bord'><font color=\"red\">" + tax_list.One_Time_Discount_Subtotal + "</font></td><td style='text-align: Right;' class='bord'><font color=\"red\">" + totalsum + "</font></td>");
                             }
                             else
                             {
@@ -882,7 +888,7 @@ namespace EMT.DoneNOW.Web
                                     double v = tax_dic1[tax_item.Key] - sum;
                                     tax_dic.Add(tax_item.Key, v);
                                 }
-                                table.Append(ShowTax(tax_item.Key, ref sum));
+                                table.Append(Discount_ShowTax(tax_item.Key, ref sum));
                                 sumsum += sum;
                             }
                             //ShowTax();
@@ -902,7 +908,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Total_Taxes + ":" + sumsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong><font color=\"red\">" + tax_list.Total_Taxes + "</font></strong></td><td style='text-align: Right;' class='bord'><strong><font color=\"red\">" + sumsum + "</font></strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
@@ -922,7 +928,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.One_Time_Discount_Total + ":" + totalsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong><font color=\"red\">" + tax_list.One_Time_Discount_Total + "</font></strong></td><td style='text-align: Right;' class='bord'><strong><font color=\"red\">" + totalsum + "</font></strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
@@ -975,7 +981,7 @@ namespace EMT.DoneNOW.Web
                             if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
                             {
                                 // 获取税收地区                                        
-                                table.Append("<td><strong>" + tax_list.Optional_Subtotal + ":" + totalsum + "</strong></td>");
+                                table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Optional_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
                             }
                             else
                             {
@@ -1009,7 +1015,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Total_Taxes + ":" + sumsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
@@ -1028,7 +1034,7 @@ namespace EMT.DoneNOW.Web
                                     case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                     case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Optional_Total + ":" + totalsum + "</strong></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Optional_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
                                     case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
@@ -1043,24 +1049,15 @@ namespace EMT.DoneNOW.Web
                     //税收汇总
                     sumsum = 0;
                     sum = 0;
+
+
+
                     if (tax_dic.Count > 0)
                     {
-                        foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-                        {
-                            if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
-                            {
-                                // 获取税收地区                                        
-                                table.Append("<td>显示分类税收：</td>");
-                            }
-                            else
-                            {
-                                table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
-                            }
-                        }
                         foreach (var tax_item in tax_dic)
                         {
                             sum = tax_item.Value;
-                            table.Append(ShowTax(tax_item.Key, ref sum));
+                            sum=TaxSum(tax_item.Key,sum);
                             sumsum += sum;
                         }
                         //ShowTax();
@@ -1080,8 +1077,8 @@ namespace EMT.DoneNOW.Web
                                 case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                case "折后价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td>"); break;
-                                case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
+                                case "折后价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
                                 case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                             }
                         }
@@ -1100,8 +1097,8 @@ namespace EMT.DoneNOW.Web
                                 case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                case "折后价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + tax_list.Including_Optional_Quote_Items+ ":</strong></td>"); break;
-                                case "总价": table.Append("<td style='text-align: Left;' class='bord'><strong>" + sum_total + "</strong></td>"); break;
+                                case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Including_Optional_Quote_Items + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sum_total + "</strong></td>"); break;
                                 case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                             }
                         }
@@ -1252,7 +1249,7 @@ namespace EMT.DoneNOW.Web
                         case "单价": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_price + "</td>"); break;
                         case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_discount + "</td>"); break;
                         case "折后价": table.Append("<td style='text-align: Left;' class='bord'>" + (item.unit_price - item.unit_discount) + "</td>"); break;
-                        case "总价": table.Append("<td style='text-align: Left;' class='bord'>" + total + "</td>"); break;
+                        case "总价": table.Append("<td style='text-align: Right;' class='bord'>" + total + "</td><td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
                         case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round((decimal)item.discount_percent * 100, 2) + "%</td>"); break;
                     }
 
@@ -1315,12 +1312,17 @@ namespace EMT.DoneNOW.Web
                         case "单价": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_price + "</td>"); break;
                         case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_discount + "</td>"); break;
                         case "折后价": table.Append("<td style='text-align: Left;' class='bord'>" + (item.unit_price - item.unit_discount) + "</td>"); break;
-                        case "总价": table.Append("<td style='text-align: Left;' class='bord'>" + onetime * (double)decimal.Round((decimal)item.discount_percent, 2) + "</td>"); break;
+                        case "总价": table.Append("<td style='text-align: Right;' class='bord'>" + onetime * (double)decimal.Round((decimal)item.discount_percent, 2) + "</td><td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
                         case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round((decimal)item.discount_percent * 100, 2) + "%</td>"); break;
                     }
                 }
             }
             table.Append("</tr>");
+            //显示备注
+            if (quote_body.GRID_OPTIONS[0].Show_QuoteComment == "yes")
+            {
+                table.Append("<tr><td style='text-align: Left;' class='bord'>" + qddata.quote_comment + "</td></tr>");
+            }
             total = onetime * (double)decimal.Round((decimal)item.discount_percent, 4);
             return table.ToString();
         }
@@ -1340,7 +1342,7 @@ namespace EMT.DoneNOW.Web
                 {
                     // 获取税收地区                                       
 
-                    table.Append("<td><strong>" + tax_type +":"+ decimal.Round(tax.total_effective_tax_rate* (decimal)sum, 4)+ "</strong></td>");
+                    table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_type + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + decimal.Round(tax.total_effective_tax_rate* (decimal)sum, 4)+ "</strong></td>");
                 }
                 else
                 {
@@ -1348,25 +1350,7 @@ namespace EMT.DoneNOW.Web
                 }
             }
             table.Append("</tr>");
-
-            //table.Append("<tr>");
-            //foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-            //{
-            //    if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
-            //    {
-            //        // 获取税收地区                                        
-
-            //        table.Append("<td>" + name + "(税率" + decimal.Round(ttttt * 100, 4) + "%)" + decimal.Round(ttttt * (decimal)sum, 4) + "</td>");
-            //        // tax_item = (double)decimal.Round(ttttt * (decimal)onetiemtax, 2);
-            //    }
-            //    else
-            //    {
-            //        table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
-            //    }
-            //}
-            //table.Append("</tr>");        
-            // var tax_cate = qd.GetTaxRegiontax(qd.GetTaxid((int)qddata.tax_region_id));
-            
+           
             foreach (var ttt in tax_cate)
             {
                 table.Append("<tr>");
@@ -1376,7 +1360,7 @@ namespace EMT.DoneNOW.Web
                     {
                         // 获取税收地区                                       
 
-                        table.Append("<td>" + ttt.tax_name + " (税率" + decimal.Round(ttt.tax_rate * 100, 4) + "%)" + decimal.Round(ttt.tax_rate * (decimal)sum, 4) + "</td>");
+                        table.Append("<td style='text-align: Right;' class='bord'>" + ttt.tax_name + " (税率" + decimal.Round(ttt.tax_rate * 100, 4) + "%)</td><td style='text-align: Right;' class='bord'>" + decimal.Round(ttt.tax_rate * (decimal)sum, 4) + "</td>");
                     }
                     else
                     {
@@ -1389,6 +1373,62 @@ namespace EMT.DoneNOW.Web
             }
             sum = (double)decimal.Round(ttttt * (decimal)sum, 4);
             return table.ToString();
+        }
+        private string Discount_ShowTax(int t, ref double sum)
+        {
+
+            StringBuilder table = new StringBuilder();
+            decimal ttttt = 0;
+            string name = qd.GetTaxName((int)qddata.tax_region_id);   //获取地区收税的数据 
+            string tax_type = qd.GetTaxName(t);
+            var tax = qd.GetTaxRegion(Convert.ToInt32(qddata.tax_region_id.ToString()), Convert.ToInt32(t));
+            var tax_cate = qd.GetTaxRegiontax((int)tax.id);
+            table.Append("<tr>");
+            foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+            {
+                if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
+                {
+                    // 获取税收地区                                       
+
+                    table.Append("<td style='text-align: Right;' class='bord'><strong><font color=\"red\">" + tax_type + "</font></strong></td><td style='text-align: Right;' class='bord'><strong><font color=\"red\">" + decimal.Round(tax.total_effective_tax_rate * (decimal)sum, 4) + "</font></strong></td>");
+                }
+                else
+                {
+                    table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
+                }
+            }
+            table.Append("</tr>");
+
+            foreach (var ttt in tax_cate)
+            {
+                table.Append("<tr>");
+                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+                {
+                    if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
+                    {
+                        // 获取税收地区                                       
+
+                        table.Append("<td style='text-align: Right;' class='bord'><font color=\"red\">" + ttt.tax_name + " (税率" + decimal.Round(ttt.tax_rate * 100, 4) + "%</font></td><td style='text-align: Right;' class='bord'><font color=\"red\">" + decimal.Round(ttt.tax_rate * (decimal)sum, 4) + "</font></td>");
+                    }
+                    else
+                    {
+                        table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
+                    }
+                }
+                ttttt += ttt.tax_rate;
+                table.Append("</tr>");
+
+            }
+            sum = (double)decimal.Round(ttttt * (decimal)sum, 4);
+            return table.ToString();
+        }
+
+
+        private double TaxSum(int t,double sum)
+        {
+            var tax = qd.GetTaxRegion(Convert.ToInt32(qddata.tax_region_id.ToString()), Convert.ToInt32(t));
+            sum = (Double)decimal.Round(tax.total_effective_tax_rate * (decimal)sum, 4);      
+            return sum;
         }
     }
 }

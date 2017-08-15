@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="../RichText/css/QuoteTemplate.css">
        <link href="../Content/Quote.css" rel="stylesheet" />
     <link href="../Content/reset.css" rel="stylesheet" />
+    <style>.bord{border-bottom: 1px solid #eaeaea;border-top: 1px solid #eaeaea;}</style>
 </head>
 <body>
 	<!--顶部  内容和帮助-->

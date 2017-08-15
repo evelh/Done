@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.Web
         {
             //从URL地址获取报价id
             id = Convert.ToInt32(Request.QueryString["id"]);
-            id = 294;//测试数据
+            //id = 294;//测试数据
             //获取所有的报价模板            
             qddata = qd.GetQuote(id);
             if (!IsPostBack)

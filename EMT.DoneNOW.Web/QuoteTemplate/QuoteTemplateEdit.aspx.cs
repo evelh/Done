@@ -23,6 +23,7 @@ namespace EMT.DoneNOW.Web
             
             // Session.Timeout = 30;设置该页面的session过期时间
             id = Convert.ToInt32(Request.QueryString["id"]);
+            //id = 396;
             if (!IsPostBack)
             {
                 if(Session["cancel"]!=null&&(int)Session["cancel"]!=1)
@@ -138,10 +139,14 @@ namespace EMT.DoneNOW.Web
                             foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
                             {
                                 if (coulmn.Display == "yes" && coulmn.Column_Content != "报价项名称")
-                                { table.Append("<td style='text-align: Left; '>" + coulmn.Column_Content + "</td>"); }
+                                { table.Append("<td style='text-align: Left;' class='bord'>" + coulmn.Column_Content + "</td>"); }
                                 if (coulmn.Display == "yes" && coulmn.Column_Content == "报价项名称")
                                 {
-                                    table.Append("<td style='text-align: Left; '>" + quote_body.CUSTOMIZE_THE_ITEM_COLUMN[j].Display_Format + "</td>");
+                                    table.Append("<td style='text-align: Left;'class='bord'>" + quote_body.CUSTOMIZE_THE_ITEM_COLUMN[j].Display_Format + "</td>");
+                                }
+                                if (quote_body.GRID_OPTIONS[0].Show_vertical_lines == "yes")
+                                {
+                                    Response.Write("<style>.bord{border-left: 1px solid  #eaeaea;border-right: 1px solid #eaeaea;}</style>");
                                 }
                             }
                             table.Append("</tr>");

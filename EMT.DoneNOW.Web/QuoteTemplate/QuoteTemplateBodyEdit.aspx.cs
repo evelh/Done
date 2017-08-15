@@ -18,6 +18,7 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
+            //id = 396;
             if (!IsPostBack)
             {
 
@@ -49,31 +50,19 @@ namespace EMT.DoneNOW.Web
                         }
                         foreach (var OPTIONS in quote_body.GRID_OPTIONS)
                         {
-                            if (OPTIONS.Show_grid_header == "yes")
-                            {
-                                html.Append("$(\"#ShowGridHeader\").attr(\"checked\");");
-                            }
-                            else
+                            if (OPTIONS.Show_grid_header != "yes")
                             {
                                 html.Append("$(\"#ShowGridHeader\").removeAttr(\"checked\");");
-                            }
-                            if (OPTIONS.Show_QuoteComment == "yes")
-                            {
-                                html.Append("$(\"#DisplayQuoteCommentInBody\").attr(\"checked\");");
-                            }
-                            else
+                            }                            
+                            if (OPTIONS.Show_QuoteComment != "yes")
                             {
                                 html.Append("$(\"#DisplayQuoteCommentInBody\").removeAttr(\"checked\");");
                             }
-
+                            //html.Append("$(\"#ShowVerticalGridlines\").attr(\"checked\",'true');");
                             if (OPTIONS.Show_vertical_lines == "yes")
                             {
-                                html.Append("$(\"#ShowVerticalGridlines\").attr(\"checked\");");
-                            }
-                            else
-                            {
-                                html.Append("$(\"#ShowVerticalGridlines\").removeAttr(\"checked\");");
-                            }
+                                html.Append("$(\"#ShowVerticalGridlines\").attr(\"checked\",'true');");
+                            }                          
 
                         }
                         i = 0;
