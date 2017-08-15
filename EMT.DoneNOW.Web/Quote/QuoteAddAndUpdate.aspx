@@ -48,7 +48,7 @@
                                     { %>
                                 <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd ? ((isAdd && account != null) ? account.name : "") : companyBLL.GetCompany(quote.account_id).name %>" />
                                 <i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 25px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <%--<input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":quote.account_id.ToString() %>" />--%>
                                 <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd && account != null ? account.id.ToString() : (!isAdd && account != null) ? account.id.ToString() : "" %>" />
                                 <%}
@@ -989,12 +989,36 @@
        
         var account_id = $("#ParentComoanyNameHidden").val();
         if (account_id != "") {
-            window.open('../Opportunity/OpportunityAddAndEdit?callBackFiled=opportunity_id&oppo_account_id=' + account_id, '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>', 'left=200,top=200,width=600,height=800', false);
+            window.open('../Opportunity/OpportunityAddAndEdit?callBackFiled=NameOppo&oppo_account_id=' + account_id, '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>', 'left=200,top=200,width=900,height=800', false);
         }
         else {
             alert("请先选择客户");
         }
         
+    }
+    function NameOppo(name, id)
+    {
+        //var values = document.getElementById("opportunity_id");
+        //var thisOption = new Option(name, id);
+        //values.add(thisOption);
+        var account_id = $("#ParentComoanyNameHidden").val();
+        if (account_id != "") {
+            $("#opportunity_id").html("");
+            // $("#opportunity_idHidden").val("");
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/CompanyAjax.ashx?act=opportunity&account_id=" + account_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#opportunity_id").html(data);
+                    }
+                },
+            });
+            $("#opportunity_id").val(id);
+        }
+       
     }
   
 

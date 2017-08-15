@@ -98,10 +98,6 @@
 
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
                     <td>地址</td>
                     <td>
                         <asp:TextBox ID="address" runat="server"></asp:TextBox></td>

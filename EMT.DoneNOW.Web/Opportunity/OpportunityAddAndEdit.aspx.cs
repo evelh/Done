@@ -202,10 +202,11 @@ namespace EMT.DoneNOW.Web.Opportunity
                   
                     if (!string.IsNullOrEmpty(callBackFiled))
                     {
-                        Response.Write("<script>var values=window.opener.document.getElementById(\""+ callBackFiled + "\"); values.options.add(new Option(\"" + param.general.name + "\",\"" + id + "\"));</script>");
-                        // values.options[values.options.length - 1].selected = 'selected';
+                      
+                        Response.Write("<script>debugger;window.opener."+callBackFiled+"('"+param.general.name+"','"+id+"');</script>");
+                      
                     }
-                    Response.Redirect("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + id);
+                     Response.Redirect("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + id);
 
                 }
             }
@@ -256,6 +257,12 @@ namespace EMT.DoneNOW.Web.Opportunity
                 }
                 else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
+                    if (!string.IsNullOrEmpty(callBackFiled))
+                    {
+
+                        Response.Write("<script>debugger;window.opener." + callBackFiled + "('" + param.general.name + "','" + id + "');</script>");
+
+                    }
                     Response.Write("<script>alert('添加商机成功！');window.close();</script>");  //  
                 }
             }
@@ -305,6 +312,12 @@ namespace EMT.DoneNOW.Web.Opportunity
                 }
                 else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
+                    if (!string.IsNullOrEmpty(callBackFiled))
+                    {
+
+                        Response.Write("<script>debugger;window.opener." + callBackFiled + "('" + param.general.name + "','" + id + "');</script>");
+
+                    }
                     Response.Write("<script>alert('添加商机成功！');window.close();window.open('../Quote/QuoteAddAndUpdate?quote_opportunity_id=" + id+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
                     //Response.Write("<script>alert('添加商机成功！');</script>");  //  
                     //Response.Redirect("../Quote/QuoteAddAndUpdate?opportunity_id="+id);
@@ -337,7 +350,54 @@ namespace EMT.DoneNOW.Web.Opportunity
         /// <param name="e"></param>
         protected void save_create_note_Click(object sender, EventArgs e)
         {
+            var param = GetParam();
 
+            if (isAdd)
+            {
+                var id = "";
+                var result = new OpportunityBLL().Insert(param, GetLoginUserId(), out id);   // 根据参数插入商机
+                if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写'); </script>");
+                    //Response.Write("<script>alert('必填参数丢失，请重新填写'); </script>");
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("Login.aspx");
+                }
+                else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+                {
+                    if (!string.IsNullOrEmpty(callBackFiled))
+                    {
+
+                        Response.Write("<script>debugger;window.opener." + callBackFiled + "('" + param.general.name + "','" + id + "');</script>");
+
+                    }
+                    Response.Write("<script>alert('添加商机成功！');</script>");  //  
+                    Response.Redirect("../Activity/AddActivity.aspx");
+                }
+            }
+            else
+            {
+                param.general.id = opportunity.id;
+                var result = new OpportunityBLL().Update(param, GetLoginUserId());
+                if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写'); </script>");
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("Login.aspx");
+                }
+                else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改商机成功！');</script>");
+                    Response.Redirect("../Activity/AddActivity.aspx");
+                    //Response.Write("<script>alert('修改商机成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
+                }
+            }
         }
 
         /// <summary>

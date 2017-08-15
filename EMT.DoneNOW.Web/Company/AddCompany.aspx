@@ -676,7 +676,7 @@
         todayBtn: true//显示今日按钮
     });
     $(function () {
-
+        $("input[type=text]").attr("autocomplete", "off");
         $(".dblselect option").dblclick(function () {
             debugger;
             var delval = $(this).val();

@@ -151,7 +151,7 @@
                     <td>
                         <div class="clear">
                             <label>
-                                地址
+                                地址<span class="red">*</span>
                             </label>
                             <asp:TextBox ID="address" runat="server"></asp:TextBox>
                         </div>
@@ -244,7 +244,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>公司类型</label>
+                            <label>公司类型<span class="red">*</span></label>
                             <asp:DropDownList ID="CompanyType" runat="server"></asp:DropDownList>
                         </div>
                     </td>
@@ -262,7 +262,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>客户经理</label>
+                            <label>客户经理<span class="red">*</span></label>
                             <asp:DropDownList ID="AccountManger" runat="server"></asp:DropDownList>
                         </div>
                     </td>
