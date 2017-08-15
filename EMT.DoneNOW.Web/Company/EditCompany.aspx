@@ -17,6 +17,21 @@
         #addressManage th {
             text-align: center;
         }
+       .grid{margin:0 5px 0 5px;}
+       .grid tr th{background-color:#cbd9e4;}
+        .grid tbody td, .grid tr th{
+            border-width: 1px;
+            border-style: solid;
+            border-left-color: #F8F8F8;
+            border-right-color: #F8F8F8;
+            border-top-color: #e8e8e8;
+            border-bottom-color: #e8e8e8;
+            padding: 4px 4px 4px 4px;
+            vertical-align: top;
+            word-wrap: break-word;
+            font-size: 12px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -325,9 +340,9 @@
 
         </div>
         <%--// location_list--%>
-        <div class="content clear" style="display: none;">
+        <div class="content clear" style="display: none;margin-right:10px;">
             <a href="#" style="margin-left: 10px;" onclick="window.open('LocationManage.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.LocationAdd %>','left=200,top=200,width=900,height=750', false);">新增地址</a>
-            <table style="text-align: center;" class="table table-hover" id="addressManage">
+            <table style="text-align: center;" class="table table-hover grid" id="addressManage">
                 <tr style="text-align: center;">
                     <th>地址类型</th>
                     <th>国家</th>
@@ -623,31 +638,31 @@
 
 
         <div class="content clear" style="display: none;">
-            <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
+            <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 25px;">
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>客户信息提示<span class="red"></span></label>
-                            <asp:TextBox ID="Company_Detail_Alert" runat="server" Rows="5" Width="100%" Height="25%" TextMode="MultiLine" Wrap="true"
-                                Style="overflow-y: visible"></asp:TextBox>
+                            <label style="width:670px;text-align:center;">客户信息提示<span class="red"></span></label>
+                            <asp:TextBox ID="Company_Detail_Alert" runat="server" Rows="5" Width="670" Height="25%" TextMode="MultiLine" Wrap="true"
+                                Style="overflow-y: visible;margin-left:0;"></asp:TextBox>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>新建工单提示<span class="red"></span></label>
-                            <asp:TextBox ID="New_Ticket_Alert" runat="server" Rows="5" Width="100%" Height="25%" TextMode="MultiLine" Wrap="true"
-                                Style="overflow-y: visible"></asp:TextBox>
+                            <label style="width:670px;text-align:center;">新建工单提示<span class="red"></span></label>
+                            <asp:TextBox ID="New_Ticket_Alert" runat="server" Rows="5" Width="670" Height="25%" TextMode="MultiLine" Wrap="true"
+                                Style="overflow-y: visible;margin-left:0;"></asp:TextBox>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>工单信息提示<span class="red"></span></label>
-                            <asp:TextBox ID="Ticket_Detail_Alert" runat="server" Rows="5" Width="100%" Height="25%" TextMode="MultiLine" Wrap="true"
-                                Style="overflow-y: visible"></asp:TextBox>
+                            <label style="width:670px;text-align:center;">工单信息提示<span class="red"></span></label>
+                            <asp:TextBox ID="Ticket_Detail_Alert" runat="server" Rows="5" Width="670" Height="25%" TextMode="MultiLine" Wrap="true"
+                                Style="overflow-y: visible;margin-left:0;"></asp:TextBox>
 
                         </div>
                     </td>

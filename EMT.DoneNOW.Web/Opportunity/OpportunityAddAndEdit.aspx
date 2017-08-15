@@ -16,7 +16,7 @@
     <%--<link rel="stylesheet" type="text/css" href="../Content/multiple-select.css"/>--%>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" style="min-width:880px;">
 
         <div class="header"><%=isAdd?"添加商机":"修改商机" %></div>
 
