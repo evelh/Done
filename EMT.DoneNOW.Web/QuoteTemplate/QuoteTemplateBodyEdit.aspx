@@ -90,8 +90,8 @@
                                                     <div class="Sort Order">1</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Item#</td>
-                                            <td class="Text E XL U2 Column_label">可修改的内容1</td>
+                                            <td class="Text E U1 Column_Content">序列号</td>
+                                            <td class="Text E XL U2 Column_label">序列号</td>
                                               
 
 
@@ -115,8 +115,8 @@
                                                     <div class="Sort Order">2</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Quantity</td>
-                                            <td class="Text E XL U2 Column_label">可修改的内容2</td>
+                                            <td class="Text E U1 Column_Content">数量</td>
+                                            <td class="Text E XL U2 Column_label">数量</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
                                             </td>
@@ -133,8 +133,8 @@
                                                     <div class="Sort Order">3</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Item</td>
-                                            <td class="Text E XL U2 Column_label">可修改的内容3</td>
+                                            <td class="Text E U1 Column_Content">报价项名称</td>
+                                            <td class="Text E XL U2 Column_label">报价项名称</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
                                             </td>
@@ -151,8 +151,8 @@
                                                     <div class="Sort Order">4</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Unit Price</td>
-                                            <td class="Text E XL U2 Column_label">可修改的内容4</td>
+                                            <td class="Text E U1 Column_Content">单价</td>
+                                            <td class="Text E XL U2 Column_label">单价</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
                                             </td>
@@ -169,8 +169,8 @@
                                                     <div class="Sort Order">5</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Unit Discount</td>
-                                            <td class="Text E XL U2 Column_label">可修改的内容5</td>
+                                            <td class="Text E U1 Column_Content">单元折扣</td>
+                                            <td class="Text E XL U2 Column_label">单元折扣</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
                                             </td>
@@ -187,8 +187,8 @@
                                                     <div class="Sort Order">6</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Adjusted Unit Price</td>
-                                            <td class="Text E XL U2 Column_label">可修改的内容6</td>
+                                            <td class="Text E U1 Column_Content">折后价</td>
+                                            <td class="Text E XL U2 Column_label">折后价</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
                                             </td>
@@ -205,8 +205,8 @@
                                                     <div class="Sort Order">7</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Extended Price</td>
-                                            <td class="Text E XL U2 Column_label">可修改的内容7</td>
+                                            <td class="Text E U1 Column_Content">总价</td>
+                                            <td class="Text E XL U2 Column_label">总价</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
                                             </td>
@@ -223,8 +223,8 @@
                                                     <div class="Sort Order">8</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Discount %</td>
-                                            <td class="Text E XL U2 Column_label">可修改的内容8</td>
+                                            <td class="Text E U1 Column_Content">折扣率</td>
+                                            <td class="Text E XL U2 Column_label">折扣率</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
                                             </td>
@@ -331,8 +331,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">Labour</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]1<br/>[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">产品</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -340,8 +340,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">Product</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]2<br/>[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">成本</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -349,8 +349,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">Service or Bundle</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]3<br/>[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">工时</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -358,8 +358,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">Charge</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]4<br/>[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">费用</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -367,8 +367,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">Expense</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]5<br/>[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">配送费用</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -376,8 +376,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">One-Time Discount</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]6<br/>[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">折扣</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -385,8 +385,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">Shipping</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]7<br/>[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">服务包</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -394,8 +394,8 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">Contract Setup Fee</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]8<br/>[Quote Item: Item Description]</td>
+                                        <td class="Text U1 Type_of_Quote_Item">初始费用</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -105,7 +105,7 @@
             <%-- 客户的基本信息 --%>
             <h1><span id="acType">活动</span>客户-<%=account.name %></h1>
             <div class="address">
-                <label><%=account.name %> (<%=account.oid %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%=account.type_id==null?"":company_type.FirstOrDefault(_=>_.val==account.type_id.ToString()).show %><%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
+                <label><%=account.name %>(<%="ID:"+account.oid.ToString() %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%=account.type_id==null?"":company_type.FirstOrDefault(_=>_.val==account.type_id.ToString()).show %><%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
                 <p>
                     <span><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></span>
                     <span><%=addressdistrict.First(_=>_.val.ToString()==location.province_id.ToString()).show  %></span>
@@ -133,7 +133,7 @@
 
                 <% if (account.parent_id != null)
                     { %>
-                <p class="clear"><a href="#" onclick="window.open('ViewCompany.aspx?id=<%=account.parent_id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ParentCompanyView %>','left=200,top=200,width=960,height=750', false);"><%=companyBll.GetCompany((long)account.parent_id).name %> </a></p>
+                <p class="clear"><a href="#" onclick="window.open('ViewCompany.aspx?id=<%=account.parent_id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ParentCompanyView %>','left=200,top=200,width=960,height=750', false);"><%=companyBll.GetAllShowCompany((long)account.parent_id).name %> </a></p>
                 <%} %>
 
                 <p><%=account.phone %></p>

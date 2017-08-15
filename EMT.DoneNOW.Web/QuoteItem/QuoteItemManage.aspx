@@ -13,13 +13,18 @@
      <link href="../Content/Quotebaojiaxiang.css" rel="stylesheet" />
 </head>
 <body>
+     <%if (string.IsNullOrEmpty(isShow))
+             { %>
      <div class="TitleBar">
+        
         <div class="Title">
             <span class="text1">报价项管理</span>
             <a href="###" class="collection"></a>
             <a href="###" class="help"></a>
         </div>
+        
     </div>
+     <%} %>
     <form id="form1" runat="server">
         <div class="header-title">
             <ul>
@@ -54,7 +59,7 @@
                 <li><a href="#">预览电子报价单</a></li>
                 <li><a href="#">打印</a></li>
 
-                <li style="float: right;">报价<asp:DropDownList ID="quoteDropList" runat="server"></asp:DropDownList><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0; float: right;" class="icon-1" onclick="window.open('../Quote/QuoteAddAndUpdate.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>','left=200,top=200,width=960,height=750', false);"></i></li>
+                <li style="float: right;">报价<asp:DropDownList ID="quoteDropList" runat="server"></asp:DropDownList><i style="background: url(../Images/ButtonBarIcons.png) no-repeat 0px -63px; float: right;" class="icon-1" onclick="SetPrimaryQuote()" ></i><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0; float: right;" class="icon-1" onclick="window.open('../Quote/QuoteAddAndUpdate.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>','left=200,top=200,width=960,height=750', false);"></i></li>
             </ul>
         </div>
         <div class="quoteItemListDiv">
@@ -179,7 +184,7 @@
                         }%>
                     <tr>
                           <td colspan="9"></td>
-                        <td><b>----汇总：</b> <span></span>
+                        <td><b>分组汇总：</b> <span></span>
                             <span></span>
                         </td>
                         <td><%=(decimal.Round(decimal.Parse(groupList.Values.Sum(value=>value.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0)).ToString()),2).ToString()) %>
@@ -802,5 +807,22 @@
             }
 
         })
+    }
+
+    // 设置当前报价为主报价
+    function SetPrimaryQuote() {
+
+        var selectQuoteId = $("#quoteDropList").val();
+        if (selectQuoteId != "") {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteAjax.ashx?act=setPrimaryQuote&id=" + selectQuoteId,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+
+            })
+        }
     }
 </script>

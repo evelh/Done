@@ -29,6 +29,10 @@ namespace EMT.DoneNOW.Web
                         var quoteItemId = context.Request.QueryString["id"];
                         DeleteQuoteItem(context,long.Parse(quoteItemId));
                         break;
+                    case "setPrimaryQuote":
+                        var primary_quote_id = context.Request.QueryString["id"];
+                        SetPrimaryQuote(context,long.Parse(primary_quote_id));
+                        break;
                     default:
                         break;
                 }
@@ -78,6 +82,28 @@ namespace EMT.DoneNOW.Web
                     context.Response.Write("删除报价项失败！");
                 }
             }
+        }
+
+        /// <summary>
+        /// 设置成为主报价
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="quote_id"></param>
+        public void SetPrimaryQuote(HttpContext context, long quote_id)
+        {
+            var user = context.Session["dn_session_user_info"] as sys_user;
+            if (user != null)
+            {
+                if(new QuoteBLL().SetPrimaryQuote(user.id,quote_id))
+                {
+                    context.Response.Write("设置主报价成功！");
+                }
+                else
+                {
+                    context.Response.Write("设置主报价失败！");
+                }
+            }
+
         }
 
 

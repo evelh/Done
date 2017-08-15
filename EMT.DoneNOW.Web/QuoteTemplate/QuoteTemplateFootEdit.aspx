@@ -36,8 +36,8 @@
             </ul>
         </div>
     <div class="Section">
-        <div class="Heading">底部</div>
-        <div class="DescriptionText">这是底部</div>
+        <div class="Heading">页脚</div>
+        <div class="DescriptionText">这是页脚</div>
         <div class="Content">
             <script id="containerHead" name="content" type="text/plain"></script>
             <div class="Dialog">

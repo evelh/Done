@@ -39,8 +39,8 @@
             </ul>
         </div>
     <div class="Section">
-        <div class="Heading">报价顶部</div>
-        <div class="DescriptionText">这是报价顶部</div>
+        <div class="Heading">报价头部</div>
+        <div class="DescriptionText">这是报价头部</div>
         <div class="Content">
             <script id="containerHead" name="content" type="text/plain"></script>
             <div class="Dialog">

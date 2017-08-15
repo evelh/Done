@@ -37,8 +37,8 @@
             </ul>
         </div>
     <div class="Section">
-        <div class="Heading">头部</div>
-        <div class="DescriptionText">这是头部</div>
+        <div class="Heading">页眉</div>
+        <div class="DescriptionText">这是页眉</div>
         <div class="Content">
             <script id="containerHead" name="content" type="text/plain"></script>
             <div class="Dialog">

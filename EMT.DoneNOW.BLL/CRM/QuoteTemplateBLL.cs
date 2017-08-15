@@ -223,5 +223,14 @@ namespace EMT.DoneNOW.BLL
         #region 复制一个报价模板
 
         #endregion
+        public sys_quote_tmpl GetSingelTemplate(int id) {
+            var syt = _dal.FindSignleBySql<sys_quote_tmpl>($"select * from sys_quote_tmpl where id={id}");
+            return syt;
+        }
+        public sys_quote_tmpl GetSingelTemplate()
+        {
+            var syt = _dal.FindSignleBySql<sys_quote_tmpl>($"select * from sys_quote_tmpl where ");
+            return syt;
+        }
     }
 }

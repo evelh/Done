@@ -12,6 +12,7 @@
     <link href="../Content/index.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
     <style>
+       
         body {
             overflow: hidden;
         }
@@ -345,7 +346,7 @@
                                                                 <td class="FieldLabels" style="padding-top: 6px;">数量</td>
                                                                 <td class="FieldLabels">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
-                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="quantity" id="quantity" value="<%=(!isAdd)&&(quote_item.quantity!=null)?quote_item.quantity.ToString():isAdd?"1":"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="quantity" id="quantity" value="<%=(!isAdd)&&(quote_item.quantity!=null)?quote_item.quantity.ToString():isAdd?"1.00":"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -383,11 +384,11 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="FieldLabels" width="45%" style="padding-top: 6px;">
-                                                                    <input type="radio" name="00" id="DiscountR3" />折扣数 
+                                                                    <input type="radio" name="00" id="DiscountR3"  />折扣数 
                                                                 </td>
                                                                 <td class="FieldLabels" align="right">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
-                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="Line_Discount" id="Line_Discount" disabled="disabled" />
+                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="Line_Discount" id="Line_Discount" disabled="disabled" class="Calculation" />
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -397,7 +398,7 @@
                                                                 </td>
                                                                 <td class="FieldLabels" align="right">
                                                                     <div style="margin: 0; padding: 0; padding-bottom: 21px;">
-                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="Discount" id="Discount" disabled="disabled" />&nbsp;%
+                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="Discount" id="Discount" disabled="disabled" class="Calculation" maxlength="5" />&nbsp;%
                                                                     </div> 
                                                                 </td>
                                                             </tr>
@@ -437,6 +438,9 @@
 <script src="../Scripts/NewContact.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
 <script>
+
+   
+
     $("#DiscountR2").on("click", function () {
         $("#Discount").attr("disabled", false);
         $("#unit_discount").attr("disabled", true);
@@ -452,6 +456,35 @@
         $("#unit_discount").attr("disabled", true);
         $("#Discount").attr("disabled", true);
     });
+
+    $("#Line_Discount").blur(function () {
+        debugger;
+        var line_discount = $("#Line_Discount").val(); // 折扣数        -- 单元折扣*数量
+        var unit_discount = $("#unit_discount").val(); // 单元折扣
+        var Discount = $("#Discount").val();           // 折扣率
+        var quantity = $("#quantity").val();     //  数量
+        var unit_price = $("#unit_price").val(); //  单价
+        if (quantity != "" && (!isNaN(quantity)) && line_discount != "" && (!isNaN(line_discount))) {
+            var unitDiscount =(Number(line_discount)) / Number(quantity);
+            $("#unit_discount").val(toDecimal2(unitDiscount));   // 点击折扣数之后给单元折扣赋值
+        }
+        Markup();
+    })
+
+    $("#Discount").blur(function () {
+        debugger;
+        var line_discount = $("#Line_Discount").val(); // 折扣数        -- 单元折扣*数量
+        var unit_discount = $("#unit_discount").val(); // 单元折扣
+        var Discount = $("#Discount").val();           // 折扣率
+        var quantity = $("#quantity").val();     //  数量
+        var unit_price = $("#unit_price").val(); //  单价
+        if (unit_price != "" && (!isNaN(unit_price)) && Discount != "" && (!isNaN(Discount))) {
+            var unitDiscount = (Number(Discount) * Number(unit_price)) / 100 ;
+            $("#unit_discount").val(toDecimal2(unitDiscount));   
+        }
+        Markup();
+    })
+ 
 
     $(function () {
 
@@ -486,7 +519,7 @@
     function Markup() {
         var unit_price = $("#unit_price").val();    // 单价
         var unit_cost = $("#unit_cost").val();      // 单元成本
-        var quantity = $("#quantity").val();       // 数量
+        var quantity = $("#quantity").val();        // 数量
         var unit_discount = $("#unit_discount").val();  // 单元折扣
 
         // 计算毛利率
@@ -495,7 +528,7 @@
             {
                 if (unit_cost != 0) {
                     var Markup = Math.round((Number(unit_price) - Number(unit_cost)) / Number(unit_cost) * 10000) / 100.00;  //gross_profit_margin
-                    $("#gross_profit_margin").val(Markup);
+                    $("#gross_profit_margin").val(toDecimal2(Markup));
                 }
             
             }
@@ -506,7 +539,7 @@
             if ((!isNaN(unit_price)) && (!isNaN(unit_discount)) && (!isNaN(quantity))) // 都是数字开始执行
             {
                 var total_price = (Number(unit_price) - Number(unit_discount)) * quantity;
-                $("#TotalPrice").val(total_price);
+                $("#TotalPrice").val(toDecimal2(total_price));
             }
         }
 
@@ -515,7 +548,7 @@
             if ((!isNaN(unit_price)) && (!isNaN(unit_discount)) && (!isNaN(quantity)) && (!isNaN(unit_cost))) // 都是数字开始执行
             {
                 var Gross_Profit = (Number(unit_price) - Number(unit_discount) - Number(unit_cost)) * quantity;
-                $("#Gross_Profit").val(Gross_Profit);
+                $("#Gross_Profit").val(toDecimal2(Gross_Profit));
             }
         }
 
@@ -524,7 +557,7 @@
             if ((!isNaN(unit_discount)) && (!isNaN(quantity))) // 都是数字开始执行
             {
                 var Line_Discount = Number(unit_discount) * quantity;
-                $("#Line_Discount").val(Line_Discount);
+                $("#Line_Discount").val(toDecimal2(Line_Discount));
             }
         }
         // 计算折扣率  Discount
@@ -533,7 +566,7 @@
             {
                 if (unit_price != 0) {
                     var Discount = Math.round(Number(unit_discount) / Number(unit_price) * 10000) / 100.00;
-                    $("#Discount").val(Discount);
+                    $("#Discount").val(toDecimal2(Discount));
                 }
                
             }
