@@ -22,7 +22,7 @@ namespace EMT.DoneNOW.Web
         protected List<PageContextMenuDto> contextMenu = null;  // 右键菜单信息
         protected List<DictionaryEntryDto> queryParaValue = new List<DictionaryEntryDto>();  // 查询条件和条件值
         protected int tableWidth = 1200;
-        private long objId = 0;
+        protected long objId = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!int.TryParse(Request.QueryString["cat"], out catId))

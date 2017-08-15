@@ -35,6 +35,7 @@
             <input type="hidden" id="cat" name="cat" value="<%=catId %>" />
             <input type="hidden" id="type" name="type" value="<%=queryTypeId %>" />
             <input type="hidden" id="group" name="group" value="<%=paraGroupId %>" />
+            <input type="hidden" name="id" value="<%=objId %>" />
             <div id="conditions">
                 <%foreach (var para in queryParaValue)
                     { %>
@@ -182,31 +183,31 @@
         <% if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Company)
         { %>
         function EditCompany() {
-            OpenWindow("../Company/EditCompany.aspx?id=" + entityid);
+            OpenWindow("../Company/EditCompany.aspx?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.CompanyEdit %>');
         }
         function ViewCompany() {
-            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.CompanyView %>');
         }
         function Add() {
-            OpenWindow("../Company/AddCompany.aspx");
+            OpenWindow("../Company/AddCompany.aspx", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>');
         }
         function DeleteCompany() {
-            OpenWindow("../Company/DeleteCompany.aspx?id=" + entityid);
+            OpenWindow("../Company/DeleteCompany.aspx?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.CompanyDelete %>');
         }
         function View(id) {
-            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + id);
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + id, '<%=EMT.DoneNOW.DTO.OpenWindow.CompanyView %>');
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contact) {
             %>
         function EditContact() {
-            OpenWindow("../Contact/AddContact.aspx?id=" + entityid);
+            OpenWindow("../Contact/AddContact.aspx?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.ContactEdit %>');
         }
         function ViewContact() {
-            OpenWindow("../Contact/ViewContact.aspx?type=todo&id=" + entityid);
+            OpenWindow("../Contact/ViewContact.aspx?type=todo&id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.ContactView %>');
         }
         function View(id) {
-            OpenWindow("../Contact/ViewContact.aspx?type=todo&id=" + id);
+            OpenWindow("../Contact/ViewContact.aspx?type=todo&id=" + id, '<%=EMT.DoneNOW.DTO.OpenWindow.ContactView %>');
         }
         function DeleteContact() {
             $.ajax({
@@ -219,25 +220,25 @@
             })
         }
         function Add() {
-            OpenWindow("../Contact/AddContact.aspx");
+            OpenWindow("../Contact/AddContact.aspx", '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>');
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Opportunity) {
             %>
         function EditOpp() {
-            OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + entityid);
+            OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityEdit %>');
         }
         function ViewOpp() {
-            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid);
+            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityView %>');
         }
         function View(id) {
-            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + id);
+            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + id, '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityView %>');
         }
         function ViewCompany() {
-            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.CompanyView %>');
         }
         function AddQuote() {
-            OpenWindow("../Quote/QuoteAddAndUpdate.aspx");
+            OpenWindow("../Quote/QuoteAddAndUpdate.aspx", '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>');
         }
         function DeleteOpp() {
             $.ajax({
@@ -249,25 +250,25 @@
             })
         }
         function Add() {
-            OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx");
+            OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx", '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>');
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Quote) {
             %>
         function Edit() {
-            OpenWindow("../Quote/QuoteAddAndUpdate.aspx?id=" + entityid);
+            OpenWindow("../Quote/QuoteAddAndUpdate.aspx?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteEdit %>');
         }
         function ViewOpp() {
-            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid);
+            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityView %>');
         }
         function ViewCompany(id) {
-            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid);
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.CompanyView %>');
         }
         function LossQuote() {
-            OpenWindow("../Quote/QuoteLost.aspx?id=" + entityid);
+            OpenWindow("../Quote/QuoteLost.aspx?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteLost %>');
         }
         function QuoteManage() {
-            OpenWindow("../QuoteItem/QuoteItemManage.aspx?quote_id=" + entityid);
+            OpenWindow("../QuoteItem/QuoteItemManage.aspx?quote_id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteItemManage %>');
         }
         function DeleteQuote() {
             $.ajax({
@@ -278,17 +279,20 @@
                 }
             })
         }
+        function View(id) {
+            OpenWindow("../QuoteItem/QuoteItemManage.aspx?quote_id=" + id, '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteItemManage %>');
+        }
         function Add() {
-            OpenWindow("../Quote/QuoteAddAndUpdate.aspx");
+            OpenWindow("../Quote/QuoteAddAndUpdate.aspx", '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>');
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.QuoteTemplate) {
             %>
         function Add() {
-            OpenWindow("../QuoteTemplate/QuoteTemplateAdd.aspx");
+            OpenWindow("../QuoteTemplate/QuoteTemplateAdd.aspx", '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteTemplateAdd %>');
         }
         function Edit() {
-            OpenWindow("../QuoteTemplate/QuoteTemplateEdit.aspx?id=" + entityid);
+            OpenWindow("../QuoteTemplate/QuoteTemplateEdit.aspx?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteTemplateEdit %>');
         }
         <%
         }%>

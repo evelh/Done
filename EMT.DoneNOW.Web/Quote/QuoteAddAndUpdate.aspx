@@ -14,7 +14,7 @@
     <link href="../Content/style.css" rel="stylesheet" />
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" style="min-width:500px;">
         <div class="header"><%=isAdd?"添加报价":"修改报价" %></div>
         <div class="header-title">
             <ul>
@@ -39,7 +39,7 @@
         </div>
         <div class="content clear">
             <div>
-                <table border="none" cellspacing="" cellpadding="" style="width: 900px; margin-left: 40px;">
+                <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
                     <tr>
                         <td>
                             <div class="clear">
@@ -97,7 +97,7 @@
                         <td colspan="2">
                             <div class="clear">
                                 <label>报价描述</label>
-                                <textarea style="width: 72%;" name="description" id="description">
+                                <textarea style="width: 180px;" name="description" id="description">
                                         <%=(!isAdd)&&(!string.IsNullOrEmpty(quote.description))?quote.description:"" %>
                                     </textarea>
 
@@ -120,7 +120,7 @@
                         <td>
                             <div class="clear">
                                 <label>创建日期<span class="red">*</span></label>
-                                <span id="create_time" name="create_time"><%=DateTime.Now.ToString("dd/MM/yyyy") %></span>
+                                <span id="create_time" name="create_time" style="line-height: 35px;margin-left: -128px;"><%=DateTime.Now.ToString("dd/MM/yyyy") %></span>
                             </div>
                         </td>
 
@@ -151,7 +151,7 @@
                                     { %>
                                     disabled="disabled" <%} %> />
                             </div>
-                            <div style="margin-top: -30px; display: -webkit-box;">
+                            <div style="margin-top: -29px; position:absolute;left:368px;">
                                 <%if (isAdd)
                                     { %>
                                 <a onclick="AddTime(0)">今天</a>|<a onclick="AddTime(7)">7</a>|<a onclick="AddTime(30)">30</a>|<a onclick="AddTime(60)">60</a><%} %>
@@ -238,13 +238,13 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td>
                             <div class="clear">
                                 
                                 <label>报价注释</label>
-                                <textarea style="width: 72%;" name="quote_comment" id="quote_comment">
+                                <textarea style="width:180px;" name="quote_comment" id="quote_comment">
                                         <%=(!isAdd)&&(!string.IsNullOrEmpty(quote.quote_comment))?quote.quote_comment:"" %>
-                                    </textarea>
+                                </textarea>
                             </div>
                         </td>
 
@@ -253,9 +253,9 @@
 
             </div>
         </div>
-        <div class="content clear" style="display: none;">
+        <div class="content clear" style="display: none;min-width:1110px;">
             <div style="border: thin;">
-                <table border="none" cellspacing="" cellpadding="" style="width: 900px; margin-left: 40px;">
+                <table border="none" cellspacing="" cellpadding="" style="width: 100%;">
                     <tr>
                         <td>
                             <div class="clear">
@@ -295,7 +295,7 @@
             </div>
 
             <div>
-                <div style="float: left; width: 30%;">
+                <div style="float: left; width: 33%;">
                     <table>
                         <%
 
@@ -317,8 +317,11 @@
 
                         %>
                         <tr>
-                            <td>销售地址
-                                <input type="hidden" name="sold_to_location_id" id="locationID" value="" />
+                            <td>
+                                <div class="clear" style="margin-left:123px;">
+                                    <input type="hidden" name="sold_to_location_id" id="locationID" value="" />
+                                    <label style="font-weight:normal;">销售地址</label>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -377,13 +380,16 @@
                         </tr>
                     </table>
                 </div>
-                <div style="float: left; width: 30%; text-align: left;">
+                <div style="float: left; width: 33%;">
                     <table>
                         <tr>
-                            <td>账单地址  
-                                <input type="checkbox" name="BillLocation" id="BillLocation"  runat="server"/>
-                                <input type="hidden" name="bill_to_location_id" id="bill_to_location_id" value="<%=bill_to_location==null?"":bill_to_location.id.ToString() %>" />
-                                和销售地址相同</td>
+                            <td style="text-align:left;">
+                                <div class="clear" style="margin-left:140px;">
+                                    <input type="checkbox" name="BillLocation" id="BillLocation"  runat="server"/> 
+                                    <label style="font-weight:normal;">账单地址和销售地址相同</label>
+                                    <input type="hidden" name="bill_to_location_id" id="bill_to_location_id" value="<%=bill_to_location==null?"":bill_to_location.id.ToString() %>" />
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td>
@@ -441,13 +447,16 @@
                         </tr>
                     </table>
                 </div>
-                <div style="float: left; width: 30%;">
+                <div style="float: left; width: 33%;">
                     <table>
                         <tr>
-                            <td>配送地址  
-                                <input type="checkbox" name="ShipLocation" id="ShipLocation" runat="server" />
-                                <input type="hidden" name="ship_to_location_id" id="ship_to_location_id" value="<%=ship_to_location==null?"":ship_to_location.id.ToString() %>" />
-                                和销售地址相同</td>
+                            <td style="text-align:left;">  
+                                <div class="clear" style="margin-left:140px;">
+                                    <input type="checkbox" name="ShipLocation" id="ShipLocation" runat="server"/>
+                                    <label style="font-weight:normal;">配送地址和销售地址相同</label>
+                                    <input type="hidden" name="ship_to_location_id" id="ship_to_location_id" value="<%=ship_to_location==null?"":ship_to_location.id.ToString() %>" />
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td>
