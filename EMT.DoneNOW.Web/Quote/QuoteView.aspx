@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../Content/Quote.css" rel="stylesheet" />
     <link href="../Content/reset.css" rel="stylesheet" />
+    <style>.bord{border-bottom: 1px solid #eaeaea;border-top: 1px solid #eaeaea;}</style>
     <title>查看报价单</title>
 </head>
 <body>
