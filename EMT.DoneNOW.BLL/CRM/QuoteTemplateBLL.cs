@@ -229,7 +229,7 @@ namespace EMT.DoneNOW.BLL
         }
         public sys_quote_tmpl GetSingelTemplate()
         {
-            var syt = _dal.FindSignleBySql<sys_quote_tmpl>($"select * from sys_quote_tmpl where ");
+            var syt = _dal.FindSignleBySql<sys_quote_tmpl>($"select * from sys_quote_tmpl where is_default=1");
             return syt;
         }
     }
