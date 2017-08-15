@@ -202,7 +202,8 @@ namespace EMT.DoneNOW.Web.Opportunity
                   
                     if (!string.IsNullOrEmpty(callBackFiled))
                     {
-                        Response.Write("<script> var value=window.opener.document.getElementById("+ callBackFiled + ");alert('1');value.options.add(new Option("+param.general.name+","+id+"));</script>");
+                        Response.Write("<script>var values=window.opener.document.getElementById(\""+ callBackFiled + "\"); values.options.add(new Option(\"" + param.general.name + "\",\"" + id + "\"));</script>");
+                        // values.options[values.options.length - 1].selected = 'selected';
                     }
                     Response.Redirect("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + id);
 

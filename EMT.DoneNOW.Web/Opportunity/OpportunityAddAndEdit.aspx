@@ -289,7 +289,7 @@
                             <td>
                                 <div class="clear">
                                     <label>计算总额</label>
-                                    <input type="text" class="Calculation" name="number_months" id="number_months" value="<%=(!isAdd)&&(opportunity.number_months!=null)?opportunity.number_months:10 %>" /><span style="line-height:30px;margin-left:-15px;">月</span>
+                                    <input type="text" class="Calculation" name="number_months" id="number_months" value="<%=(!isAdd)&&(opportunity.number_months!=null)?opportunity.number_months:10 %>"  onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" /><span style="line-height:30px;margin-left:-15px;">月</span>
 
                                 </div>
                             </td>

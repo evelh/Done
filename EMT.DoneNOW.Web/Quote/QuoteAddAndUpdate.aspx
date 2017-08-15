@@ -72,13 +72,13 @@
                                     { %>
                                 <select name="opportunity_id" id="opportunity_id">
                                 </select><input type="hidden" name="opportunity_idHidden" id="opportunity_idHidden" value="<%=(isAdd && opportunity != null) ? opportunity.id.ToString() : (!isAdd ? quote.opportunity_id.ToString() : "") %>" />
-                                <i onclick="javascript:window.open('../Opportunity/OpportunityAddAndEdit.aspx?callBackFiled=opportunity_id','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="AddOppo()",'<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <%}
                                     else
                                     { %>
                                 <select name="opportunity_id" id="opportunity_id" disabled="disabled">
                                 </select><input type="hidden" name="opportunity_idHidden" id="opportunity_idHidden" value="<%= quote.opportunity_id %>" />
-                                <i onclick="javascript:window.open('../Opportunity/OpportunityAddAndEdit.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="AddOppo()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <%} %>
                             </div>
                         </td>
@@ -532,6 +532,28 @@
     });
 
     $(function () {
+
+
+        var values = document.getElementById("opportunity_id");
+        values.append("<option value='3'>test03</option>");
+        var thisOption = new Option("tset", "1");
+        var secOption = new Option("test02", "2");
+        thisOption.selected = true;
+        secOption.selected = false;
+        values.add(thisOption);
+        values.add(secOption);
+        values.value = 1;
+        var objOption = document.createElement("OPTION");
+        objOption.value = '6';
+        objOption.text = 'content';
+        values.add(objOption);
+        //alert(slt.options.length);
+        values.options[values.options.length - 1].selected = 'selected';
+      
+
+
+
+
         var s1 = ["province_id", "city_id", "district_id"];
         var s2 = ["ship_province_id", "ship_city_id", "ship_district_id"];
        var s3 = ["bill_province_id", "bill_city_id", "bill_district_id"];
@@ -954,6 +976,17 @@
 
     }
 
-
+    function AddOppo() {
+       
+        var account_id = $("#ParentComoanyNameHidden").val();
+        if (account_id != "") {
+            window.open('../Opportunity/OpportunityAddAndEdit?callBackFiled=opportunity_id&oppo_account_id=' + account_id, '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>', 'left=200,top=200,width=600,height=800', false);
+        }
+        else {
+            alert("请先选择客户");
+        }
+        
+    }
+  
 
 </script>
