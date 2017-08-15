@@ -25,13 +25,14 @@ namespace EMT.DoneNOW.Web.Opportunity
         protected CompanyBLL conpamyBll = new CompanyBLL();
         protected crm_account account = null;
         protected crm_contact contact = null;
+        protected string callBackFiled = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-               
-              
-                var opportunity_id = Request.QueryString["opportunity_id"];
+                callBackFiled = Request.QueryString["callBackFiled"];
+
+                 var opportunity_id = Request.QueryString["opportunity_id"];
                 opportunity = new crm_opportunity_dal().GetOpportunityById(Convert.ToInt64(opportunity_id));
                 dic = new OpportunityBLL().GetField();
 
@@ -198,7 +199,13 @@ namespace EMT.DoneNOW.Web.Opportunity
                 {
                     // Response.Write("<script>alert('添加商机成功！');window.location.href=window.location.href;</script>");  //
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加商机成功！'); </script>");
+                  
+                    if (!string.IsNullOrEmpty(callBackFiled))
+                    {
+                        Response.Write("<script> var value=window.opener.document.getElementById("+ callBackFiled + ");alert('1');value.options.add(new Option("+param.general.name+","+id+"));</script>");
+                    }
                     Response.Redirect("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + id);
+
                 }
             }
             else

@@ -120,7 +120,7 @@
                                     </select>
                                     <%} %>
                                     <input type="hidden" id="contactHideID" value="<%=isAdd&&contact!=null?contact.id.ToString():(!isAdd&&opportunity.contact_id!=null?opportunity.contact_id.ToString():"") %>"/>
-                                    <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left= 200, top = 200, width = 900, height = 750', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                    <i onclick="AddContact()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 </div>
                             </td>
                             <td>
@@ -902,5 +902,15 @@
     function chooseCompany()
     {
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName&callBack=GetContactList", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+
+    function AddContact() {
+        var account_id = $("#ParentComoanyNameHidden").val();
+        if (account_id != "") {
+            window.open('../Contact/AddContact.aspx?account_id=' + account_id, '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', 'left= 200, top = 200, width = 900, height = 750', false);
+        } else {
+            return false;
+        }
+        
     }
 </script>

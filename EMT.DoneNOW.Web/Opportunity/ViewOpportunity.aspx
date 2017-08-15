@@ -203,9 +203,10 @@
                     <p class="switch pr">
                         <i class="switchicon switchicon1"></i>联系人
                         <img src="../Images/at16.png" />
-                          <label><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %>|<%=contact.title %>-<%=account.name %></label>
+                          
                     </p>
-                    <label><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %></label>
+                    <p><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %>|<%=contact.title %>-<%=account.name %></p>
+                   <%-- <label><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %></label>--%>
                     <%if (!string.IsNullOrEmpty(contact.title))
                         { %>
                     <p class="clear">
@@ -229,7 +230,7 @@
                     <%} %>
                     <% if (!string.IsNullOrEmpty(contactLocation.postal_code))
                         { %>
-                    <p class="clear">
+                    <p >
                         <span class="fl">邮编</span>
                         <span class="fr"><%=contactLocation.address %> </span>
                     </p>

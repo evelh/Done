@@ -72,7 +72,7 @@
                                     { %>
                                 <select name="opportunity_id" id="opportunity_id">
                                 </select><input type="hidden" name="opportunity_idHidden" id="opportunity_idHidden" value="<%=(isAdd && opportunity != null) ? opportunity.id.ToString() : (!isAdd ? quote.opportunity_id.ToString() : "") %>" />
-                                <i onclick="javascript:window.open('../Opportunity/OpportunityAddAndEdit.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="javascript:window.open('../Opportunity/OpportunityAddAndEdit.aspx?callBackFiled=opportunity_id','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <%}
                                     else
                                     { %>

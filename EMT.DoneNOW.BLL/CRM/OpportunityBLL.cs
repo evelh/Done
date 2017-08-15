@@ -166,7 +166,7 @@ namespace EMT.DoneNOW.BLL.CRM
             #region 3.保存活动
 
             decimal total = 0;
-            total += (decimal)param.general.one_time_revenue;
+            total += (decimal)(param.general.one_time_revenue == null ? 0 : param.general.one_time_revenue);
             total += (decimal)((param.general.monthly_revenue==null?0: param.general.monthly_revenue) * param.general.number_months);
             total += (decimal)((param.general.quarterly_revenue == null ? 0 : param.general.monthly_revenue) * param.general.number_months);
             total += (decimal)((param.general.semi_annual_revenue == null ? 0 : param.general.monthly_revenue) * param.general.number_months);
