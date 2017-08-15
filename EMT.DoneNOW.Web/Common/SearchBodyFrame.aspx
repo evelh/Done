@@ -285,6 +285,9 @@
         function Add() {
             OpenWindow("../Quote/QuoteAddAndUpdate.aspx", '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>');
         }
+        function ViewQuote() {
+            OpenWindow("../Quote/QuoteView.aspx?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteView %>');
+        }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.QuoteTemplate) {
             %>

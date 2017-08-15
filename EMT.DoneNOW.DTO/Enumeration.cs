@@ -499,6 +499,7 @@ namespace EMT.DoneNOW.DTO
         QuoteAdd = 131,                             // 报价新增
         QuoteEdit = 132,                            // 报价修改
         QuoteLost = 133,                            // 丢失报价
+        QuoteView = 134,                            // 电子报价单预览
 
         LocationAdd = 141,                         // 地址新增
         LoactionEdit = 142,                        // 地址修改

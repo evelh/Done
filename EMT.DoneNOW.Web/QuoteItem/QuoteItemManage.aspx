@@ -56,7 +56,7 @@
                     </ul>
                 </li>
                 <li><a href="#" onclick="window.open('../Quote/QuoteAddAndUpdate.aspx?id=<%=quote.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteEdit %>','left=200,top=200,width=960,height=750', false);">编辑报价单</a></li>
-                <li><a href="#">预览电子报价单</a></li>
+                <li><a href="#" onclick="window.open('../Quote/QuoteView.aspx?id=<%=quote.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteView %>','left=200,top=200,width=960,height=750', false);">预览电子报价单</a></li>
                 <li><a href="#">打印</a></li>
 
                 <li style="float: right;">报价<asp:DropDownList ID="quoteDropList" runat="server"></asp:DropDownList><i style="background: url(../Images/ButtonBarIcons.png) no-repeat 0px -63px; float: right;" class="icon-1" onclick="SetPrimaryQuote()" ></i><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0; float: right;" class="icon-1" onclick="window.open('../Quote/QuoteAddAndUpdate.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>','left=200,top=200,width=960,height=750', false);"></i></li>
