@@ -113,7 +113,14 @@ namespace EMT.DoneNOW.BLL
                 });
                 quote.opportunity_id = opportunity.id;
             }
+            quote.is_primary_quote = 1;
             #endregion
+            // 验证该商机下是否有报价，如果是第一个添加的报价，则设置成为主报价
+            var quoteList = new crm_quote_dal().GetQuoteByWhere($" and opportunity_id = {quote.opportunity_id} ");
+            if (quoteList != null && quoteList.Count > 0)
+            {
+                quote.is_primary_quote = null;
+            }
 
 
             #region 1.保存报价
@@ -386,6 +393,62 @@ namespace EMT.DoneNOW.BLL
 
             return "";
 		}
+
+        public bool SetPrimaryQuote(long user_id,long quote_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            var quote = new crm_quote_dal().GetQuote(quote_id);
+            if (quote != null)
+            {
+                var quoteList = new crm_quote_dal().GetQuoteByWhere($" and opportunity_id = {quote.opportunity_id} ");
+                var primaryQuote = quoteList.FirstOrDefault(_ => _.is_primary_quote == 1);
+                if (primaryQuote!=null&&quote.id != primaryQuote.id)
+                {
+                    primaryQuote.is_primary_quote = null;
+                    primaryQuote.update_user_id = user.id;
+                    primaryQuote.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+
+                    var oldPrimaryQuote = new QuoteBLL().GetQuote(primaryQuote.id);
+
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = (int)user.id,
+                        name = user.name,
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE,
+                        oper_object_id = primaryQuote.id,// 操作对象id
+                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                        oper_description = _dal.CompareValue(oldPrimaryQuote, primaryQuote),
+                        remark = "更改主报价为报价"
+                    });
+                    new crm_quote_dal().Update(primaryQuote);
+
+                    quote.is_primary_quote = 1;
+                    quote.update_user_id = user.id;
+                    quote.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = (int)user.id,
+                        name = user.name,
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE,
+                        oper_object_id = quote.id,// 操作对象id
+                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                        oper_description = _dal.CompareValue(new crm_quote_dal().GetQuote(quote_id), quote),
+                        remark = "更改报价为主报价"
+                    });
+                    new crm_quote_dal().Update(quote);                   
+                }
+                return true;
+            }
+            return false;
+        }
+
+
         /// <summary>
         /// 报价单绑定报价模板
         /// </summary>

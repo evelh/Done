@@ -48,13 +48,16 @@ namespace EMT.DoneNOW.Web.Opportunity
                     {
 
                         case "todo":
-                            viewOpportunity_iframe.Src = "";  // 待办
+                            viewOpportunity_iframe.Src = "";                              // 待办
+                            break;                                                        
+                        case "note":                                                      
+                            viewOpportunity_iframe.Src = "";                              // 备注
+                            break;                                                        
+                        case "activity":                                                  
+                            viewOpportunity_iframe.Src = "";                              // 活动
                             break;
-                        case "note":
-                            viewOpportunity_iframe.Src = "";  // 备注
-                            break;
-                        case "activity":
-                            viewOpportunity_iframe.Src = "";  // 活动
+                        case "quoteItem":
+                            viewOpportunity_iframe.Src = "../QuoteItem/QuoteItemManage?isShow=show&opportunity_id="+opportunity.id;  // 报价项
                             break;
                         default:
                             viewOpportunity_iframe.Src = "";  // 默认

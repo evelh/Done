@@ -164,6 +164,15 @@ namespace EMT.DoneNOW.BLL.CRM
             #endregion
 
             #region 3.保存活动
+
+            decimal total = 0;
+            total += (decimal)param.general.one_time_revenue;
+            total += (decimal)((param.general.monthly_revenue==null?0: param.general.monthly_revenue) * param.general.number_months);
+            total += (decimal)((param.general.quarterly_revenue == null ? 0 : param.general.monthly_revenue) * param.general.number_months);
+            total += (decimal)((param.general.semi_annual_revenue == null ? 0 : param.general.monthly_revenue) * param.general.number_months);
+            total += (decimal)((param.general.yearly_revenue == null ? 0 : param.general.monthly_revenue) * param.general.number_months);
+           
+
             com_activity activity = new com_activity()
             {
                 id = _dal.GetNextIdCom(),
@@ -180,7 +189,7 @@ namespace EMT.DoneNOW.BLL.CRM
                 ticket_id = null,
                 start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),  // todo 从页面获取时间，去页面时间的12：00：00
                 end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),
-                description = "",     // todo 内容描述拼接
+                description = $"新商机：{param.general.name},全部收益：{total}，成交概率{param.general.probability}，阶段{new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STAGE)).FirstOrDefault(_=>_.val==param.general.stage_id.ToString()).show}，预计完成时间:{param.general.projected_close_date}，商机负责人{new sys_resource_dal().GetDictionary().FirstOrDefault(_=>_.val== param.general.resource_id.ToString()).show}，状态{new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STATUS)).FirstOrDefault(_=>_.val== param.general.status_id.ToString()).show}",     // todo 内容描述拼接
                 create_user_id = user.id,
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 update_user_id = user.id,

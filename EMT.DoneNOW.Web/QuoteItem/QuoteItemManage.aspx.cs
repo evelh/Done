@@ -22,17 +22,49 @@ namespace EMT.DoneNOW.Web.QuoteItem
         protected List<crm_quote_item> oneTimeList = null;         // 一次性配置项
         protected List<crm_quote_item> optionalItemList = null;    // 可选  配置项
         protected List<crm_quote_item> discountQIList = null;      // 计算出来的折扣数
+
+        public string isShow = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                isShow = Request.QueryString["isShow"];
                 var quote_id = Request.QueryString["quote_id"];
-                quote = new QuoteBLL().GetQuote(Convert.ToInt64(quote_id));
+                if (!string.IsNullOrEmpty(quote_id))
+                {
+                    quote = new QuoteBLL().GetQuote(Convert.ToInt64(quote_id));
+                }
+                var opportunity_id = Request.QueryString["opportunity_id"];  // 这里是通过商机查看报价项的情况
+                if (!string.IsNullOrEmpty(opportunity_id))
+                {
+                    var oppoQuoteList = new crm_quote_dal().GetQuoteByWhere($" and opportunity_id = {opportunity_id} ");
+                    
+                    if (oppoQuoteList != null && oppoQuoteList.Count > 0)
+                    {
+                        quote = oppoQuoteList.FirstOrDefault(_ => _.is_primary_quote == 1);  // 如果该商机下有报价则一定会有主报价
+                    }
+                }
+
                 if (quote != null)
                 {
                     quoteItemList = new crm_quote_item_dal().GetQuoteItems($" and quote_id={quote.id} ");
                     quoteList = new crm_quote_dal().GetQuoteByWhere($" and opportunity_id = {quote.opportunity_id} ");
+                    var primaryQuote = quoteList.FirstOrDefault(_ => _.is_primary_quote == 1);
+                    if (primaryQuote != null)
+                    {
+                        var thisQuoteItemList = new crm_quote_item_dal().GetQuoteItems($" and quote_id={primaryQuote.id} ");
 
+
+                        var  thisDiscountQIList = thisQuoteItemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.optional == 0).ToList();
+                        var thisOneTimeQTList = thisQuoteItemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional == 0).ToList();
+                        var thisOptionalItemList = thisQuoteItemList.Where(_ => _.optional == 1).ToList();
+
+                        var totalPrice = ((decimal)((thisQuoteItemList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0) - thisDiscountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_ => (_.unit_discount != null && _.quantity != null) ? _.unit_discount * _.quantity : 0) - (thisOneTimeQTList != null && thisOneTimeQTList.Count > 0 ? thisDiscountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_ => thisOneTimeQTList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0) * _.discount_percent) : 0)))).ToString("#0.00");
+                        quoteList.Remove(primaryQuote);
+                        primaryQuote.name = "PRIMARY:"+ primaryQuote.name+"("+totalPrice+")";
+                        quoteList.Add(primaryQuote);
+                    }
+                   
 
                     #region // 为报价下拉框赋值
                     quoteDropList.DataValueField = "id";

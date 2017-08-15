@@ -153,7 +153,7 @@
                         <img src="../Images/at16.png" />
                       
                     </p>
-                      <p><%=account.name %> (<%=account.oid %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%--<span>类别图标</span> <span>自助服务台图标</span>--%></p>
+                      <p><%=account.name %> (<%="ID:"+account.oid %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%--<span>类别图标</span> <span>自助服务台图标</span>--%></p>
                     <p><%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %>
                    <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.province_id.ToString()).show  %>
                   <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.city_id.ToString()).show  %>
@@ -327,8 +327,8 @@
                 </div>
             </div>
 
-            <div id="ShowOpportunity_Right" style="float: left; margin-left: 35px;" class="activityTitleright f1">
-                <iframe runat="server" id="viewOpportunity_iframe" width="800" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+            <div id="ShowOpportunity_Right" style="float: left; margin-left: 35px;width:100%" class="activityTitleright f1">
+                <iframe runat="server" id="viewOpportunity_iframe" width="100%;" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
             </div>
         </div>
     </form>
@@ -349,18 +349,19 @@
         if (hide == "hide") {
             $("#showGeneralInformation").hide();
         }
-        $("#viewContact_iframe").attr("onLoad", iFrameHeight);
+        $("#viewOpportunity_iframe").attr("onLoad", iFrameHeight);
 
 
     })
 
     // 这个方法可以使iframe适应源页面的大小
     function iFrameHeight() {
-        var ifm = document.getElementById("viewContact_iframe");
-        var subWeb = document.frames ? document.frames["viewContact_iframe"].document : ifm.contentDocument;
+        //alert(1);
+        var ifm = document.getElementById("viewOpportunity_iframe");
+        var subWeb = document.frames ? document.frames["viewOpportunity_iframe"].document : ifm.contentDocument;
         if (ifm != null && subWeb != null) {
             ifm.height = subWeb.body.scrollHeight;
-            ifm.width = subWeb.body.scrollWidth;
+          ifm.width = subWeb.body.scrollWidth;
         }
     }
 </script>

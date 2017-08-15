@@ -45,6 +45,11 @@
             </ul>
         </div>
         <div>
+            <%if (location != null)
+                { %>
+            <input type="hidden" name="id" id="id" value="<%=location.id %>"/>
+            <%} %>
+            <input type="hidden" name="account_id" id="account_id" value="<%=account_id %>"/>
             <table class="table table-bordered table-hover" style="width:40%;">
                 <tr>
                     <td>
