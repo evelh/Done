@@ -127,7 +127,7 @@ namespace EMT.DoneNOW.Web
                         {
                             if (coulmn.Display == "yes")
                             {
-                                table.Append("<td class='ReadOnlyGrid_TableHeader' style='text - align: Left; '>" + coulmn.Column_label + "</td>");
+                                table.Append("<td class='ReadOnlyGrid_TableHeader' style='text-align: Left; '>" + coulmn.Column_label + "</td>");
                                 i++;
                             }
                         }
@@ -138,10 +138,10 @@ namespace EMT.DoneNOW.Web
                             foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
                             {
                                 if (coulmn.Display == "yes" && coulmn.Column_Content != "报价项名称")
-                                { table.Append("<td style='text - align: Left; '>" + coulmn.Column_Content + "</td>"); }
+                                { table.Append("<td style='text-align: Left; '>" + coulmn.Column_Content + "</td>"); }
                                 if (coulmn.Display == "yes" && coulmn.Column_Content == "报价项名称")
                                 {
-                                    table.Append("<td style='text - align: Left; '>" + quote_body.CUSTOMIZE_THE_ITEM_COLUMN[j].Display_Format + "</td>");
+                                    table.Append("<td style='text-align: Left; '>" + quote_body.CUSTOMIZE_THE_ITEM_COLUMN[j].Display_Format + "</td>");
                                 }
                             }
                             table.Append("</tr>");
