@@ -74,7 +74,7 @@
                     <td>
                         <div class="clear">
                             <label>客户名称<span class="red">*</span></label>
-
+                            <input type="hidden" name="id" id="id" value="<%=account.id %>"/>
                             <asp:TextBox ID="company_name" runat="server"></asp:TextBox>
                         </div>
                     </td>
