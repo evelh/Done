@@ -332,7 +332,7 @@
                                             </div>
                                         </td>
                                         <td class="Text U1 Type_of_Quote_Item">产品</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]1<br/>[Quote Item: Item Description]</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -341,7 +341,7 @@
                                             </div>
                                         </td>
                                         <td class="Text U1 Type_of_Quote_Item">成本</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]2<br/>[Quote Item: Item Description]</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -350,7 +350,7 @@
                                             </div>
                                         </td>
                                         <td class="Text U1 Type_of_Quote_Item">工时</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]3<br/>[Quote Item: Item Description]</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -359,7 +359,7 @@
                                             </div>
                                         </td>
                                         <td class="Text U1 Type_of_Quote_Item">费用</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]4<br/>[Quote Item: Item Description]</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -368,7 +368,7 @@
                                             </div>
                                         </td>
                                         <td class="Text U1 Type_of_Quote_Item">配送费用</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]5<br/>[Quote Item: Item Description]</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -377,7 +377,7 @@
                                             </div>
                                         </td>
                                         <td class="Text U1 Type_of_Quote_Item">折扣</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]6<br/>[Quote Item: Item Description]</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -386,7 +386,7 @@
                                             </div>
                                         </td>
                                         <td class="Text U1 Type_of_Quote_Item">服务包</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]7<br/>[Quote Item: Item Description]</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
                                         <td class="Command U0" style="width:18px;">
@@ -395,7 +395,7 @@
                                             </div>
                                         </td>
                                         <td class="Text U1 Type_of_Quote_Item">初始费用</td>
-                                        <td class="FormatPreservation U2 Display_Format">[Quote Item: Name]8<br/>[Quote Item: Item Description]</td>
+                                        <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                 </tbody>
                             </table>

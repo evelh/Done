@@ -23,7 +23,6 @@ namespace EMT.DoneNOW.Web
             
             // Session.Timeout = 30;设置该页面的session过期时间
             id = Convert.ToInt32(Request.QueryString["id"]);
-            id = 197;
             if (!IsPostBack)
             {
                 if(Session["cancel"]!=null&&(int)Session["cancel"]!=1)
