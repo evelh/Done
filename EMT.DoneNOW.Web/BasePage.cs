@@ -78,7 +78,7 @@ namespace EMT.DoneNOW.Web
         /// <returns></returns>
         protected T AssembleModel<T>()
         {
-            System.Collections.Specialized.NameValueCollection valueCollection = HttpContext.Current.Request.Params;    // 请求上下文提交的参数
+            System.Collections.Specialized.NameValueCollection valueCollection = HttpContext.Current.Request.Form;    // 请求上下文提交的参数
             PropertyInfo[] propertyInfoList = GetPropertyInfoArray(typeof(T));
             if (propertyInfoList == null)
                 return default(T);
