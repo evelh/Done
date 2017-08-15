@@ -14,7 +14,7 @@
     <link href="../Content/style.css" rel="stylesheet" />
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" style="min-width:500px;">
         <div class="header"><%=isAdd?"添加报价":"修改报价" %></div>
         <div class="header-title">
             <ul>

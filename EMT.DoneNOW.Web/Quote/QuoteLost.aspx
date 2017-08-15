@@ -9,6 +9,19 @@
     <link rel="stylesheet" href="../Content/reset.css"/>
     <link rel="stylesheet" href="../Content/LostQuote.css"/>
 </head>
+<style>
+    #Finish{
+        width:54px;
+        height:32px;
+        position:absolute;
+        bottom:20px;
+        right:20px;
+    }
+    .q1{
+        margin-left:28px;
+        font-size:14px;
+    }
+</style>
 <body>
     <div class="TitleBar">
         <div class="Title">
@@ -16,16 +29,16 @@
         </div>
     </div>
     <div class="Instructions">
-        <div class="InstructionItem">报价对应的商机将会设置为“丢失”状态。</div>
+        <div class="InstructionItem q1">报价对应的商机将会设置为“丢失”状态。</div>
         <%if (needReasonType != EMT.DoneNOW.DTO.DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_NONE) { %>
-        <div class="InstructionItem">请选择商机丢失原因。</div>
+        <div class="InstructionItem q1">请选择商机丢失原因。</div>
         <%} %>
         <%if (needReasonType == EMT.DoneNOW.DTO.DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_TYPE_DETAIL) { %>
-        <div class="InstructionItem">请输入商机丢失原因详情。</div>
+        <div class="InstructionItem q1">请输入商机丢失原因详情。</div>
         <%} %>
     </div>
     <form id="form1" runat="server">
-        <div class="ScrollingContainer">
+        <div class="ScrollingContainer" style="top:126px;">
             <div class="Medium">
                 <div class="Content">
                     <div class="Normal">
@@ -60,9 +73,9 @@
                 </div>
             </div>
         </div>
-        <p>
+     
             <asp:Button ID="Finish" runat="server" Text="完成" OnClick="Finish_Click" />
-        </p>
+     
     </form>
 </body>
 </html>
