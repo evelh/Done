@@ -29,25 +29,25 @@ $(".dn_tr").bind("contextmenu", function (event) {
     var winHeight = window.innerHeight;
     var menuWidth = menu.clientWidth; 
     var menuHeight = menu.clientHeight;
-    var rightWidth = menu_i2_right.clientWidth;
-    var rightHeight = menu_i2_right.clientHeight;
+    //var rightWidth = menu_i2_right.clientWidth;
+    //var rightHeight = menu_i2_right.clientHeight;
     var clientWidth = Left + menuWidth;
     var clientHeight = Top + menuHeight;
-    var clientWidth_2 = Left + rightWidth;
-    var clientHeight_2 = Top + rightHeight;
+    //var clientWidth_2 = Left + rightWidth;
+    //var clientHeight_2 = Top + rightHeight;
     if (winWidth < clientWidth) {
         menu.style.left = winWidth - menuWidth - 18 + "px";
-        menu_i2_right.style.left =  - menuWidth + 70+ "px";
+       // menu_i2_right.style.left =  - menuWidth + 70+ "px";
     } else {
         menu.style.left = Left + "px";
-        menu_i2_right.style.left = "";
+        //menu_i2_right.style.left = "";
     }
     if (winHeight < clientHeight) {
         menu.style.top = winHeight - menuHeight - 18 + "px";
-        menu_i2_right.style.top = winHeight - menuHeight*2 - 29 + "px";
+       // menu_i2_right.style.top = winHeight - menuHeight*2 - 29 + "px";
     } else {
         menu.style.top = Top + "px";
-        menu_i2_right.style.top = winHeight - menuHeight*2 +46 + "px";
+       // menu_i2_right.style.top = winHeight - menuHeight*2 +46 + "px";
     }
     
     return false;
@@ -58,7 +58,7 @@ document.onclick = function () {
 }
 
 function OpenWindow(winname) {
-    window.open(winname, 'new', 'left=200,top=200,width=900,height=750', false);
+    window.open(winname, 'new', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
     //window.open(winname, "_blank", "toolbar=yes, location=yes,directories=no,status=no, menubar=yes, scrollbars=yes,resizable=no, copyhistory=yes, width=600, height=600,top=150,left=300")
 }
 

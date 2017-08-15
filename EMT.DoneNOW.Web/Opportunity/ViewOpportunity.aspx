@@ -28,11 +28,11 @@
         <div class="header">
             <i>
                 <ul>
-                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=activity" >活动</a></li>
-                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=todo" >待办</a></li>
+                    <li class="alt"><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=activity" style="color:grey;">活动</a></li>
+                    <li class="alt"><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=todo"  style="color:grey;">待办</a></li>
                     <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=note" >备注</a></li>
-                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=ticket" >工单</a></li>
-                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=att" >附件</a></li>
+                    <li class="alt"><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=ticket" style="color:grey;">工单</a></li>
+                    <li class="alt"><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=att" style="color:grey;">附件</a></li>
                     <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem">报价项</a></li>
                 </ul>
             </i>
@@ -363,4 +363,8 @@
             ifm.width = subWeb.body.scrollWidth;
         }
     }
+
+    $(".alt").on("click", function () {
+         alert("暂未实现");
+    })
 </script>
