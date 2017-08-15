@@ -189,14 +189,14 @@ namespace EMT.DoneNOW.Web
                             {
                                 switch (coulmn.Column_Content)
                                 {
-                                    case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.One_Time_Subtotal + ":" + totalsum + "</td>"); break;
-                                    case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.One_Time_Subtotal + ":" + totalsum + "</td>"); break;
+                                    case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
 
                             }
@@ -232,14 +232,14 @@ namespace EMT.DoneNOW.Web
                             {
                                 switch (coulmn.Column_Content)
                                 {
-                                    case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Monthly_Subtotal + ":" + totalsum + "</td>"); break;
-                                    case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Monthly_Subtotal + ":" + totalsum + "</td>"); break;
+                                    case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
 
                             }
@@ -271,14 +271,14 @@ namespace EMT.DoneNOW.Web
                             {
                                 switch (coulmn.Column_Content)
                                 {
-                                    case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Quarterly_Subtotal + ":" + totalsum + "</td>"); break;
-                                    case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Quarterly_Subtotal+ ":" + totalsum + "</td>"); break;
+                                    case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
 
                             }
@@ -314,14 +314,14 @@ namespace EMT.DoneNOW.Web
                             {
                                 switch (coulmn.Column_Content)
                                 {
-                                    case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Yearly_Subtotal + ":" + totalsum + "</td>"); break;
-                                    case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Yearly_Subtotal + ":" + totalsum + "</td>"); break;
+                                    case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
 
                             }
@@ -352,14 +352,14 @@ namespace EMT.DoneNOW.Web
                             {
                                 switch (coulmn.Column_Content)
                                 {
-                                    case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Subtotal + ":" + totalsum + "</td>"); break;
-                                    case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Subtotal+ ":" + totalsum + "</td>"); break;
+                                    case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
                         }
@@ -389,18 +389,19 @@ namespace EMT.DoneNOW.Web
                             {
                                 switch (coulmn.Column_Content)
                                 {
-                                    case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Shipping_Subtotal+ ":" + totalsum + "</td>"); break;
-                                    case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Shipping_Subtotal + ":" + totalsum + "</td>"); break;
+                                    case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
                         }
-                        table.Append("</tr>");
+                        
+                       table.Append("</tr>");
                     }
                     totalsum = 0;
                     double discount_percent = 0;
@@ -431,18 +432,19 @@ namespace EMT.DoneNOW.Web
                             {
                                 switch (coulmn.Column_Content)
                                 {
-                                    case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.One_Time_Discount_Subtotal+ ":" + totalsum + "</td>"); break;
-                                    case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'>" +tax_list.One_Time_Discount_Subtotal + ":" + totalsum + "</td>"); break;
+                                    case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
                         }
-                        table.Append("</tr>");
+                       
+                      table.Append("</tr>");
                     }
                     totalsum = 0;
                     //可选项
@@ -466,14 +468,14 @@ namespace EMT.DoneNOW.Web
                             {
                                 switch (coulmn.Column_Content)
                                 {
-                                    case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                    case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                    case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Optional_Subtotal + ":" + totalsum + "</td>"); break;
-                                    case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                    case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                    case "总价": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Optional_Subtotal + ":" + totalsum + "</td>"); break;
+                                    case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                                 }
                             }
                         }
@@ -492,14 +494,14 @@ namespace EMT.DoneNOW.Web
                         {
                             switch (coulmn.Column_Content)
                             {
-                                case "Item#": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                case "Item": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                                case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-                                case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Total+ ":" + sum_total + "</td>"); break;
-                                case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                                case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
+                                case "总价": table.Append("<td style='text-align: Left;' class='bord'>" + tax_list.Total+ ":" + sum_total + "</td>"); break;
+                                case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
                             }
                         }
                     }
@@ -623,14 +625,14 @@ namespace EMT.DoneNOW.Web
                 {
                     switch (coulmn.Column_Content)
                     {
-                        case "Item#": table.Append("<td style='text-align: Right;' class='bord'>"+(order++)+")</td>"); break;
-                        case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round((decimal)item.quantity,2) + "</td>"); break;
-                        case "Item": table.Append("<td style='text-align: Left;' class='bord'>" + item.name + "</td>"); break;
-                        case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_price + "</td>"); break;
-                        case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_discount + "</td>"); break;
-                        case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'>" + (item.unit_price - item.unit_discount) + "</td>"); break;
-                        case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + total+ "</td>"); break;
-                        case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>"+ decimal.Round((decimal)item.discount_percent*100,2)+"%</td>"); break;                            
+                        case "序列号": table.Append("<td style='text-align: Right;' class='bord'>"+(order++)+")</td>"); break;
+                        case "数量": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round((decimal)item.quantity,2) + "</td>"); break;
+                        case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>" + item.name + "</td>"); break;
+                        case "单价": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_price + "</td>"); break;
+                        case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_discount + "</td>"); break;
+                        case "折后价": table.Append("<td style='text-align: Left;' class='bord'>" + (item.unit_price - item.unit_discount) + "</td>"); break;
+                        case "总价": table.Append("<td style='text-align: Left;' class='bord'>" + total+ "</td>"); break;
+                        case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>"+ decimal.Round((decimal)item.discount_percent*100,2)+"%</td>"); break;                            
                     }
 
                 }
@@ -686,14 +688,14 @@ namespace EMT.DoneNOW.Web
                 {
                     switch (coulmn.Column_Content)
                     {
-                        case "Item#": table.Append("<td style='text-align: Right;' class='bord'>" + (order++) + ")</td>"); break;
-                        case "Quantity": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round((decimal)item.quantity,2) + "</td>"); break;
-                        case "Item": table.Append("<td style='text-align: Left;' class='bord'>" + item.name + "</td>"); break;
-                        case "Unit Price": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_price + "</td>"); break;
-                        case "Unit Discount": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_discount + "</td>"); break;
-                        case "Adjusted Unit Price": table.Append("<td style='text-align: Left;' class='bord'>" + (item.unit_price - item.unit_discount) + "</td>"); break;
-                        case "Extended Price": table.Append("<td style='text-align: Left;' class='bord'>" + onetime * (double)decimal.Round((decimal)item.discount_percent, 2) + "</td>"); break;
-                        case "Discount %": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round((decimal)item.discount_percent * 100, 2) + "%</td>"); break;
+                        case "序列号": table.Append("<td style='text-align: Right;' class='bord'>" + (order++) + ")</td>"); break;
+                        case "数量": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round((decimal)item.quantity,2) + "</td>"); break;
+                        case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>" + item.name + "</td>"); break;
+                        case "单价": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_price + "</td>"); break;
+                        case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_discount + "</td>"); break;
+                        case "折后价": table.Append("<td style='text-align: Left;' class='bord'>" + (item.unit_price - item.unit_discount) + "</td>"); break;
+                        case "总价": table.Append("<td style='text-align: Left;' class='bord'>" + onetime * (double)decimal.Round((decimal)item.discount_percent, 2) + "</td>"); break;
+                        case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round((decimal)item.discount_percent * 100, 2) + "%</td>"); break;
                     }
                 }
             }

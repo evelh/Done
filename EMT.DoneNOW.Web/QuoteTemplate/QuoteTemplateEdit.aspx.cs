@@ -23,6 +23,7 @@ namespace EMT.DoneNOW.Web
             
             // Session.Timeout = 30;设置该页面的session过期时间
             id = Convert.ToInt32(Request.QueryString["id"]);
+            id = 197;
             if (!IsPostBack)
             {
                 if(Session["cancel"]!=null&&(int)Session["cancel"]!=1)
@@ -95,7 +96,7 @@ namespace EMT.DoneNOW.Web
                             StringBuilder sb = new StringBuilder();
                             sb.Append("<table class='ReadOnlyGrid_Table'>");
                             sb.Append("<tr>");
-                            sb.Append("<td class='ReadOnlyGrid_TableHeader' style='text-align: Left;' width='40px;'>Item#</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Quantity</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Left;'>Item</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Unit Price</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Unit Discount</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Adjusted Unit Price</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>Extended Price</td>");
+                            sb.Append("<td class='ReadOnlyGrid_TableHeader' style='text-align: Left;' width='40px;'>序列号</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>数量</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Left;'>报价项名称</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>单价</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>单元折扣t</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>折后价</td><td class='ReadOnlyGrid_TableHeader' style='text-align: Right;'>总价</td>");
                             sb.Append("</tr>");
                             for (int i = 0; i < 8; i++)
                             {
@@ -137,9 +138,9 @@ namespace EMT.DoneNOW.Web
                             table.Append("<tr>");
                             foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
                             {
-                                if (coulmn.Display == "yes" && coulmn.Column_Content != "Item")
+                                if (coulmn.Display == "yes" && coulmn.Column_Content != "报价项名称")
                                 { table.Append("<td style='text - align: Left; '>" + coulmn.Column_Content + "</td>"); }
-                                if (coulmn.Display == "yes" && coulmn.Column_Content == "Item")
+                                if (coulmn.Display == "yes" && coulmn.Column_Content == "报价项名称")
                                 {
                                     table.Append("<td style='text - align: Left; '>" + quote_body.CUSTOMIZE_THE_ITEM_COLUMN[j].Display_Format + "</td>");
                                 }

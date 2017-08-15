@@ -90,7 +90,7 @@
                                                     <div class="Sort Order">1</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Item#</td>
+                                            <td class="Text E U1 Column_Content">序列号</td>
                                             <td class="Text E XL U2 Column_label">序列号</td>
                                               
 
@@ -115,7 +115,7 @@
                                                     <div class="Sort Order">2</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Quantity</td>
+                                            <td class="Text E U1 Column_Content">数量</td>
                                             <td class="Text E XL U2 Column_label">数量</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
@@ -133,7 +133,7 @@
                                                     <div class="Sort Order">3</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Item</td>
+                                            <td class="Text E U1 Column_Content">报价项名称</td>
                                             <td class="Text E XL U2 Column_label">报价项名称</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
@@ -151,7 +151,7 @@
                                                     <div class="Sort Order">4</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Unit Price</td>
+                                            <td class="Text E U1 Column_Content">单价</td>
                                             <td class="Text E XL U2 Column_label">单价</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
@@ -169,7 +169,7 @@
                                                     <div class="Sort Order">5</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Unit Discount</td>
+                                            <td class="Text E U1 Column_Content">单元折扣</td>
                                             <td class="Text E XL U2 Column_label">单元折扣</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
@@ -187,7 +187,7 @@
                                                     <div class="Sort Order">6</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Adjusted Unit Price</td>
+                                            <td class="Text E U1 Column_Content">折后价</td>
                                             <td class="Text E XL U2 Column_label">折后价</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
@@ -205,7 +205,7 @@
                                                     <div class="Sort Order">7</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Extended Price</td>
+                                            <td class="Text E U1 Column_Content">总价</td>
                                             <td class="Text E XL U2 Column_label">总价</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>
@@ -223,7 +223,7 @@
                                                     <div class="Sort Order">8</div>
                                                 </div>
                                             </td>
-                                            <td class="Text E U1 Column_Content">Discount %</td>
+                                            <td class="Text E U1 Column_Content">折扣率</td>
                                             <td class="Text E XL U2 Column_label">折扣率</td>
                                             <td class="Boolean E Display">
                                                 <div class="Decoration Icon CheckMark"></div>

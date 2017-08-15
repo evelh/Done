@@ -87,7 +87,7 @@ namespace EMT.DoneNOW.Web
             }
             if (data.show_tax_cate_superscript==1)
             {
-                this.show_tax_cate.Checked = true;
+                this.show_tax_cate_superscript.Checked = true;
             }
 
 
