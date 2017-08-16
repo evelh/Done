@@ -248,6 +248,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除客户", click_function = "DeleteCompany()" });
                     break;
                 case (long)QueryType.Contact:
+                case (long)QueryType.ContactCompanyView:
                     contextMenu.Add(new PageContextMenuDto { text = "修改联系人", click_function = "EditContact()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看联系人", click_function = "ViewContact()" });
                     contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "openopenopen()\" \" style='color:grey;'" });
@@ -255,6 +256,8 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除联系人", click_function = "DeleteContact()" });
                     break;
                 case (long)QueryType.Opportunity:
+                case (long)QueryType.OpportunityCompanyView:
+                case (long)QueryType.OpportunityContactView:
                     contextMenu.Add(new PageContextMenuDto { text = "修改商机", click_function = "EditOpp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看商机", click_function = "ViewOpp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
