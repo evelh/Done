@@ -23,6 +23,7 @@ namespace EMT.DoneNOW.BLL
             dic.Add("quote_item_period_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE)));        // 
             dic.Add("quote_item_tax_cate", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.QUOTE_ITEM_TAX_CATE)));        // 
             dic.Add("quote_item_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.QUOTE_ITEM_TYPE)));        // 
+            dic.Add("quote_group_by", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.QUOTE_GROUP_BY)));
 
 
             return dic;
@@ -152,5 +153,7 @@ namespace EMT.DoneNOW.BLL
             var list = _dal.GetQuoteItems(sql);
             return list;
         }
+
+
     }
 }

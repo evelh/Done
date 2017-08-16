@@ -136,6 +136,8 @@ namespace EMT.DoneNOW.Web.QuoteItem
             quote_item.optional = Convert.ToUInt64(_optional.Checked ? 1 : 0);
             if (isAdd)
             {
+                quote_item.type_id = int.Parse(Request.QueryString["type_id"]);
+                quote_item.quote_id = int.Parse(Request.QueryString["quote_id"]);
                 var result = new QuoteItemBLL().Insert(quote_item,GetLoginUserId());
                 switch (result)
                 {
@@ -162,7 +164,8 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 quote_item.create_user_id = this.quote_item.create_user_id;
                 quote_item.update_time = this.quote_item.update_time;
                 quote_item.update_user_id = this.quote_item.update_user_id;
-
+                quote_item.id = this.quote_item.id;
+                quote_item.quote_id = this.quote_item.quote_id;
                 var result = new QuoteItemBLL().Update(quote_item, GetLoginUserId());
                 switch (result)
                 {
@@ -193,6 +196,8 @@ namespace EMT.DoneNOW.Web.QuoteItem
             quote_item.optional = Convert.ToUInt64(_optional.Checked ? 1 : 0);
             if (isAdd)
             {
+                quote_item.type_id = int.Parse(Request.QueryString["type_id"]);
+                quote_item.quote_id = int.Parse(Request.QueryString["quote_id"]);
                 var result = new QuoteItemBLL().Insert(quote_item, GetLoginUserId());
                 switch (result)
                 {
@@ -221,6 +226,8 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 quote_item.create_user_id = this.quote_item.create_user_id;
                 quote_item.update_time = this.quote_item.update_time;
                 quote_item.update_user_id = this.quote_item.update_user_id;
+                quote_item.id = this.quote_item.id;
+                quote_item.quote_id = this.quote_item.quote_id;
                 var result = new QuoteItemBLL().Update(quote_item, GetLoginUserId());
                 switch (result)
                 {
