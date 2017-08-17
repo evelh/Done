@@ -54,6 +54,8 @@ namespace EMT.DoneNOW.Web
                 if (condition.Count % 3 != 0)
                     rowCnt++;
                 conditionHeight = 125 + rowCnt * 35;
+                if (conditionHeight < 206)
+                    conditionHeight = 206;
                 if (conditionHeight > 370)
                     conditionHeight = 370;
             }

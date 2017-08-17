@@ -41,7 +41,11 @@ namespace EMT.DoneNOW.DTO
         QUOTE_ITEM_PERIOD_TYPE=43,               // 报价项：付费周期类型
         QUOTE_ITEM_TAX_CATE=44,                  // 报价项：税收种类
         NAME_SUFFIX = 48,
-        QUOTE_GROUP_BY=110,                      // 报价分组条件
+        SEX=49,
+        EMAILTYPE = 50,
+        OUTSOURCE_SECURITY=51,                  //外包权限
+        LICENSE_TYPE=109,                            //安全等级：授权类型
+        QUOTE_GROUP_BY =110,                      // 报价分组条件
     }
 
     /// <summary>

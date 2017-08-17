@@ -8,7 +8,6 @@
     <title>报价项管理</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min2.2.2.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <link href="../Content/Quotebaojiaxiang.css" rel="stylesheet" />
     <style> 
@@ -106,7 +105,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <%
+                           <%
                                 var type = dic.First(_ => _.Key == "quote_item_type").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>; // 报价项分类
                                 var quote_item_tax_cate_name = dic.First(_ => _.Key == "quote_item_tax_cate").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>; // 报价项相关税
 

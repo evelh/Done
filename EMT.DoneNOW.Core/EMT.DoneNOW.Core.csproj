@@ -42,7 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AUTH\sys_limit.cs" />
     <Compile Include="AUTH\sys_login_log.cs" />
+    <Compile Include="AUTH\sys_module.cs" />
+    <Compile Include="AUTH\sys_module_limit.cs" />
+    <Compile Include="AUTH\sys_security_level.cs" />
+    <Compile Include="AUTH\sys_security_level_limit.cs" />
+    <Compile Include="AUTH\sys_security_level_module.cs" />
     <Compile Include="AUTH\sys_token.cs" />
     <Compile Include="AUTH\sys_user.cs" />
     <Compile Include="COM\com_activity.cs" />
@@ -55,9 +61,9 @@
     <Compile Include="CRM\crm_installed_product.cs" />
     <Compile Include="CRM\crm_location.cs" />
     <Compile Include="CRM\crm_opportunity.cs" />
-    <Compile Include="CRM\d_tax_region_cate.cs" />
-    <Compile Include="CRM\d_tax_region_cate_tax.cs" />
-    <Compile Include="CRM\sys_quote_tmpl.cs" />
+    <Compile Include="Dictionary\d_tax_region_cate.cs" />
+    <Compile Include="Dictionary\d_tax_region_cate_tax.cs" />
+    <Compile Include="SYS\sys_quote_tmpl.cs" />
     <Compile Include="CRM\crm_quote.cs" />
     <Compile Include="CRM\crm_quote_item.cs" />
     <Compile Include="Dictionary\d_account_classification.cs" />

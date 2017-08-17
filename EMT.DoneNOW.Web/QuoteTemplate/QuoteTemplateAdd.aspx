@@ -8,7 +8,6 @@
     <title>报价模板新增</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link href="../Content/index.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
     <style type="text/css">
@@ -119,12 +118,12 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <asp:CheckBox ID="show_tax_cate_superscript" runat="server" text="根据税种显示,通常适用于每一时期的税额显示"/>
+                                    <asp:CheckBox ID="show_each_tax_in_tax_group" runat="server" text="根据税种显示,通常适用于每一时期的税额显示"/>
                                 </div>
                             </td>
                         </tr>
                         <tr><td><div class="clear">
-                            <asp:CheckBox ID="show_each_tax_in_tax_group" runat="server" text="显示每个报价的订阅的关联税种"/>
+                            <asp:CheckBox ID="show_tax_cate_superscript" runat="server" text="显示每个报价的订阅的关联税种"/>
 
                                 </div>
                             </td></tr>
