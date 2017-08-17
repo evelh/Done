@@ -42,7 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AUTH\sys_limit.cs" />
     <Compile Include="AUTH\sys_login_log.cs" />
+    <Compile Include="AUTH\sys_module.cs" />
+    <Compile Include="AUTH\sys_module_limit.cs" />
+    <Compile Include="AUTH\sys_security_level.cs" />
+    <Compile Include="AUTH\sys_security_level_limit.cs" />
+    <Compile Include="AUTH\sys_security_level_module.cs" />
     <Compile Include="AUTH\sys_token.cs" />
     <Compile Include="AUTH\sys_user.cs" />
     <Compile Include="COM\com_activity.cs" />
