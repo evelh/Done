@@ -8,7 +8,6 @@
     <title>报价模板新增</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link href="../Content/index.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
     <style type="text/css">

@@ -8,7 +8,6 @@
     <title>查看客户</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
 </head>
 <body>

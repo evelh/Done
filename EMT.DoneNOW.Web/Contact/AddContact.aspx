@@ -8,7 +8,6 @@
     <title>New Contact</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/index.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
 </head>
@@ -305,14 +304,14 @@
                             else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
                             {%><li>
                                 <label><%=udf.name %></label>
-                                <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
+                                <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" />
                             </li>
                         <%}
                             else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
                             {%>
                         <li>
                             <label><%=udf.name %></label>
-                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
                         </li>
                         <%}
                             else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
@@ -348,6 +347,7 @@
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/NewContact.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/common.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
 
         $(".Jump").click(function () {

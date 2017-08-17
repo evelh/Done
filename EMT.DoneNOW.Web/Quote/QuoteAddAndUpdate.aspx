@@ -8,13 +8,11 @@
     <title><%=isAdd?"新增报价":"修改报价" %></title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
-    <%--<link href="../Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />--%>
     <link href="../Content/index.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
 </head>
 <body>
-    <form id="form1" runat="server" style="min-width:500px;">
+    <form id="form1" runat="server" style="min-width:500px;width:100%;">
         <div class="header"><%=isAdd?"添加报价":"修改报价" %></div>
         <div class="header-title">
             <ul>
@@ -42,13 +40,13 @@
                 <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
                     <tr>
                         <td>
-                            <div class="clear">
+                            <div class="clear" style="width:410px;">
                                 <label>客户<span class="red">*</span></label>
                                 <%if (isAdd)
                                     { %>
                                 <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd ? ((isAdd && account != null) ? account.name : "") : companyBLL.GetCompany(quote.account_id).name %>" />
                                 <i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 25px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <%--<input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":quote.account_id.ToString() %>" />--%>
                                 <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd && account != null ? account.id.ToString() : (!isAdd && account != null) ? account.id.ToString() : "" %>" />
                                 <%}
@@ -120,7 +118,7 @@
                         <td>
                             <div class="clear">
                                 <label>创建日期<span class="red">*</span></label>
-                                <span id="create_time" name="create_time" style="line-height: 35px;margin-left: -128px;"><%=DateTime.Now.ToString("dd/MM/yyyy") %></span>
+                                <span id="create_time" name="create_time" style="line-height: 35px;margin-left: -138px;"><%=DateTime.Now.ToString("dd/MM/yyyy") %></span>
                             </div>
                         </td>
 
@@ -129,17 +127,15 @@
                         <td>
                             <div class="clear">
                                 <label>有效日期</label>
-                                <input type="text" class="form_datetime sl_cdt" name="effective_date" id="effective_date" value="<%=(!isAdd)&&(quote.effective_date!=null)?quote.effective_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
+                                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="effective_date" id="effective_date" value="<%=(!isAdd)&&(quote.effective_date!=null)?quote.effective_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <div class="clear">
-
-                                <%--<input type="text" name="test" id="test" class="form_datetime sl_cdt"/>--%>
                                 <label>过期日期</label>
-                                <input type="text" class="form_datetime sl_cdt" name="expiration_date" id="expiration_date" value="<%=(!isAdd)&&(quote.expiration_date!=null)?quote.expiration_date.ToString("yyyy-MM-dd"):DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd") %>" />
+                                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="expiration_date" id="expiration_date" value="<%=(!isAdd)&&(quote.expiration_date!=null)?quote.expiration_date.ToString("yyyy-MM-dd"):DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd") %>" />
                             </div>
                         </td>
                     </tr>
@@ -147,7 +143,7 @@
                         <td>
                             <div class="clear">
                                 <label>预计完成日期<span class="red">*</span></label>
-                                <input type="text" class="form_datetime sl_cdt" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd)&&(quote.projected_close_date!=null)?quote.projected_close_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" <%if (!isAdd)
+                                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd)&&(quote.projected_close_date!=null)?quote.projected_close_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" <%if (!isAdd)
                                     { %>
                                     disabled="disabled" <%} %> />
                             </div>
@@ -527,19 +523,8 @@
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
 <script src="../Scripts/NewContact.js"></script>
-
-<script src="../Scripts/bootstrap-datetimepicker.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="../Scripts/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 <script>
-    $(".form_datetime").datetimepicker({
-        language: 'zh-CN',//显示中文
-        format: 'yyyy-mm-dd',//显示格式
-        minView: "month",//设置只显示到月份
-        initialDate: new Date(),//初始化当前日期
-        autoclose: true,//选中自动关闭
-        todayBtn: true//显示今日按钮
-    });
-
     $(function () {
 
 
