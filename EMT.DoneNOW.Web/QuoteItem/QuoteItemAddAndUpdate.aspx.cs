@@ -24,7 +24,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 type = Request.QueryString["type_id"];             // 报价项类型
                 var quote_id = Request.QueryString["quote_id"];    // 报价ID 需要根据报价ID 添加报价项
                 var quote_item_id = Request.QueryString["id"];
-
+                thisQuoteId.Value = quote_id;
                 dic = new QuoteItemBLL().GetField();
                 if (!string.IsNullOrEmpty(quote_item_id))
                 {
@@ -32,23 +32,34 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     if (quote_item != null)
                     {
                         isAdd = false;
-                        _optional.Checked = quote_item.optional == 1;
+                        if (!IsPostBack)
+                        {
+                            _optional.Checked = quote_item.optional == 1;
+                        }
+                        ItemTypeId.Value = quote_item.type_id.ToString();
+                       
                         switch (quote_item.type_id)   // todo 不同类型的报价项
                         {
                             case (int)QUOTE_ITEM_TYPE.WORKING_HOURS:
                                 type = "工时";
                                 break;
                             case (int)QUOTE_ITEM_TYPE.COST:
+                                type = "费用";
                                 break;
                             case (int)QUOTE_ITEM_TYPE.DEGRESSION:
-                                type = "";
+                                type = "成本";
                                 break;
                             case (int)QUOTE_ITEM_TYPE.DISCOUNT:
+                                type = "折扣";
                                 break;
                             case (int)QUOTE_ITEM_TYPE.PRODUCT:
                                 type = "产品";
                                 break;
                             case (int)QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES:
+                                type = "配送费用";
+                                break;
+                            case (int)QUOTE_ITEM_TYPE.SERVICE:
+                                type = "服务";
                                 break;
                             default:
                                 Response.End();  // 未传类型，暂不创建
@@ -58,22 +69,29 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 }
                 else
                 {
+                    ItemTypeId.Value = type;
                     switch (Convert.ToInt64(type))   // todo 不同类型的报价项
                     {
                         case (int)QUOTE_ITEM_TYPE.WORKING_HOURS:
                             type = "工时";
                             break;
                         case (int)QUOTE_ITEM_TYPE.COST:
+                            type = "费用";
                             break;
                         case (int)QUOTE_ITEM_TYPE.DEGRESSION:
-                            type = "";
+                            type = "成本";
                             break;
                         case (int)QUOTE_ITEM_TYPE.DISCOUNT:
+                            type = "折扣";
                             break;
                         case (int)QUOTE_ITEM_TYPE.PRODUCT:
                             type = "产品";
                             break;
                         case (int)QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES:
+                            type = "配送费用";
+                            break;
+                        case (int)QUOTE_ITEM_TYPE.SERVICE:
+                            type = "服务";
                             break;
                         default:
                             Response.End();  // 未传类型，暂不创建

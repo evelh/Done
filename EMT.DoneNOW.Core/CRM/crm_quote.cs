@@ -61,7 +61,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? ship_to_location_id { get; set; }
         [DataMember]
-        public Int64? group_by_id { get; set; }
+        public Int32? group_by_id { get; set; }
         [DataMember]
         public SByte? is_primary_quote { get; set; }
         [DataMember]

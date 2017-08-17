@@ -22,6 +22,15 @@ namespace EMT.DoneNOW.Web.QuoteItem {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// ItemTypeId 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden ItemTypeId;
+        
+        /// <summary>
         /// save_close 控件。
         /// </summary>
         /// <remarks>
@@ -38,6 +47,15 @@ namespace EMT.DoneNOW.Web.QuoteItem {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button save_new;
+        
+        /// <summary>
+        /// thisQuoteId 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden thisQuoteId;
         
         /// <summary>
         /// period_type_id 控件。

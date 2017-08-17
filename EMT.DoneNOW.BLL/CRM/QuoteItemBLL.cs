@@ -37,14 +37,29 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Insert(crm_quote_item quote_item, long user_id)
         {
-            if (quote_item.unit_price == null || quote_item.unit_cost == null || quote_item.quantity == null || quote_item.unit_discount == null )
+            if (quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT)
             {
-                return ERROR_CODE.PARAMS_ERROR;
+                if (quote_item.unit_price == null || quote_item.unit_cost == null || quote_item.quantity == null || quote_item.unit_discount == null)
+                {
+                    return ERROR_CODE.PARAMS_ERROR;
+                }
+                if (string.IsNullOrEmpty(quote_item.name))
+                {
+                    return ERROR_CODE.PARAMS_ERROR;
+                }
             }
-             if (string.IsNullOrEmpty(quote_item.name))
+            else
             {
-                return ERROR_CODE.PARAMS_ERROR;
+                if (string.IsNullOrEmpty(quote_item.name))
+                {
+                    return ERROR_CODE.PARAMS_ERROR;
+                }
+                if(quote_item.discount_percent==null&& quote_item.unit_discount == null)
+                {
+                    return ERROR_CODE.PARAMS_ERROR;
+                }
             }
+            
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
@@ -79,13 +94,27 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Update(crm_quote_item quote_item, long user_id)
         {
-            if (quote_item.unit_price == null || quote_item.unit_cost == null || quote_item.quantity == null || quote_item.unit_discount == null )
+            if (quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT)
             {
-                return ERROR_CODE.PARAMS_ERROR;
+                if (quote_item.unit_price == null || quote_item.unit_cost == null || quote_item.quantity == null || quote_item.unit_discount == null)
+                {
+                    return ERROR_CODE.PARAMS_ERROR;
+                }
+                if (string.IsNullOrEmpty(quote_item.name))
+                {
+                    return ERROR_CODE.PARAMS_ERROR;
+                }
             }
-            if (string.IsNullOrEmpty(quote_item.name))
+            else
             {
-                return ERROR_CODE.PARAMS_ERROR;
+                if (string.IsNullOrEmpty(quote_item.name))
+                {
+                    return ERROR_CODE.PARAMS_ERROR;
+                }
+                if (quote_item.discount_percent == null && quote_item.unit_discount == null)
+                {
+                    return ERROR_CODE.PARAMS_ERROR;
+                }
             }
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)

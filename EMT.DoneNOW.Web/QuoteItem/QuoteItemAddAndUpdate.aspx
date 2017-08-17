@@ -241,7 +241,8 @@
 <body>
     <form id="form1" runat="server">
         <div class="header"><%=isAdd?"添加报价项":"修改报价项" %>-<%=type %></div>
-
+        <input type="hidden" id="ItemTypeId" value="" runat="server"/>
+        <input type="hidden" name="object_id" id="object_id"/>
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
@@ -258,18 +259,29 @@
 
         <div class="NewContain">
             <div class="DivSection">
+                <input type="hidden" name="thisQuoteId" id="thisQuoteId" value="" runat="server"/>
                 <table width="100%" border="0" callpadding="2" callspacing="0">
                     <tbody>
                         <tr>
                             <td class="NewLeft">
                                 <table width="100%" border="0" callpadding="3" callspacing="0">
                                     <tbody>
+                                        <tr class="serviceTr" style="display:none;">
+                                            <td><input type="radio" name="11" id="" checked="checked" />服务/服务集</td>
+                                           
+                                        </tr>
+                                        <tr class="serviceTr" style="display:none;">
+                                             <td><input type="radio" name="11" id="" checked="checked" />合同初始费用</td>
+                                        </t>
                                         <tr>
                                             <td class="FieldLabels">报价项名称
                                             <span id="errorSmall">*</span>
                                                 <div>
                                                     <input type="text" name="name" id="name" value="<%=isAdd?"":quote_item.name %>" style="width: 17em;"/>
-                                                    <i onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackChooseRole" onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackManyRole" onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="AddRole" onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackChooseProduct" onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                     <input type="hidden" id="nameHidden"/>
                                                 </div>
                                             </td>
@@ -283,16 +295,16 @@
                                             </div>
                                             </td>
                                         </tr>
-                                        <tr valign="middle">
+                                        <tr valign="middle" id="periodTypeTr">
                                             <td class="FieldLabels">期间类型
                                             <div>
                                                 <asp:DropDownList ID="period_type_id" runat="server" style="width: 17em;"></asp:DropDownList>
                                             </div>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr id="ByProjectTr" style="display:none;">
                                             <td class="FieldLabels">
-                                                <input type="checkbox" name="ByProject" />
+                                                <input type="checkbox" name="ByProject" id="ByProject" />
                                                 <span class="CheckBoxLabels">项目提案工时</span>
                                                 <div>
                                                     <input type="text" name="project_id" id="project_id" style="width: 17em;" />
@@ -300,7 +312,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr id="taxCateTr">
                                             <td class="FieldLabels">税收种类
                                             <div>
                                                 <asp:DropDownList ID="tax_cate_id" runat="server" style="width: 17em;"></asp:DropDownList>
@@ -318,7 +330,7 @@
                                                 <td class="FieldLabels">
                                                     <table width="100%" border="0" callpadding="2" callspacing="0">
                                                         <tbody>
-                                                            <tr>
+                                                            <tr id="unitPriceTr">
                                                                 <td class="FieldLabels" style="padding-top: 6px;">单价</td>
                                                                 <td class="FieldLabels">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
@@ -326,7 +338,7 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr id="gross_profit_marginTR">
                                                                 <td class="FieldLabels" style="padding-top: 6px;">毛利率</td>
                                                                 <td class="FieldLabels">
                                                                     <div>
@@ -334,7 +346,7 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr id="unitCostTR">
                                                                 <td class="FieldLabels" style="padding-top: 6px;">单元成本</td>
                                                                 <td class="FieldLabels">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
@@ -342,7 +354,7 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr id="quantityTR">
                                                                 <td class="FieldLabels" style="padding-top: 6px;">数量</td>
                                                                 <td class="FieldLabels">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
@@ -350,7 +362,7 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr id="TotalPriceTR">
                                                                 <td class="FieldLabels" style="padding-top: 6px;">总价</td>
                                                                 <td class="FieldLabels">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
@@ -358,11 +370,19 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr id="Gross_Profit_TR">
                                                                 <td class="FieldLabels" style="padding-top: 6px;">毛利润</td>
                                                                 <td class="FieldLabels">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
                                                                         <input type="text" value="0.00" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="Gross_Profit" id="Gross_Profit" disabled="disabled" />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="MSRP_tr" style="display:none;">
+                                                                  <td class="FieldLabels" style="padding-top: 6px;">厂商建议零售价</td>
+                                                                <td class="FieldLabels">
+                                                                    <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
+                                                                        <input type="text" value="0.00" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="MSRP" id="MSRP" disabled="disabled" />
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -382,7 +402,7 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr id="LineDiscountTR">
                                                                 <td class="FieldLabels" width="45%" style="padding-top: 6px;">
                                                                     <input type="radio" name="00" id="DiscountR3"  />折扣数 
                                                                 </td>
@@ -402,7 +422,7 @@
                                                                     </div> 
                                                                 </td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr id="OptionTR">
                                                                 <td class="FieldLabels" style="padding-top: 6px">
                                                                     <asp:CheckBox ID="_optional" runat="server" />可选的
                                                                 <%--    <%if (!isAdd && quote_item.optional == 1)
@@ -416,12 +436,39 @@
                                                                 </td>
                                                                 <td align="right">&nbsp;</td>
                                                             </tr>
+                                                            <tr style="display:none;" id="productShow">
+                                                                <td>
+                                                                    <div>平均值<span id="avgCost"></span>|最高值<span id="highCost"></span></div>
+                                                                </td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div style="display:none;" id="productListTable">
+                                        <table>
+                                            <tr>
+                                                <th>库存位置</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>保留/挑选</th>
+                                                <th></th>
+                                                <th>可用</th>
+                                                <th></th>
+                                            </tr>
+                                            <tr>
+                                                <td><span id="Inventory_Location"></span></td>
+                                                <td><span id="On_Hand"></span></td>
+                                                <td><span id="On_Order"></span></td>
+                                                <td><span id="Back_Order"></span></td>
+                                                <td><span id="Reserved_Picked"></span></td>
+                                                <td><span id="Available"></span></td>
+                                                <td><input type="text" id="Reserved" value="0"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -484,7 +531,24 @@
         }
         Markup();
     })
- 
+
+    $("#ByProject").click(function () {
+       $("#unit_price").val(0);    // 单价
+       $("#unit_cost").val(0);      // 单元成本
+       $("#quantity").val(1);        // 数量
+       Markup();
+       if ($(this).is(':checked')) {
+           
+           $('#callBackChooseRole').removeAttr('onclick');//去掉标签中的onclick事件 
+       }
+       else {
+           $("#callBackChooseRole").attr("onclick", "chooseRole()");
+       }
+       
+    })
+    $("#Reserved").blur(function () {
+        var quanity = $("#quantity").val();
+    })
 
     $(function () {
 
@@ -493,28 +557,111 @@
         $(".Calculation").blur(function () {
             Markup();
             var value = $(this).val();
-            if (!isNaN(value) && value!="") {
+            if (!isNaN(value) && value != "") {
                 $(this).val(toDecimal2(value));
             } else {
                 $(this).val("");
             }
-            
-        })
+
+        });
 
         $("#save_close").click(function () {
-            if (!SubmitCheck()) {
-                return false;
+            var typeValue = $("#ItemTypeId").val();
+            if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT %>){
+                if (!SubmitDiscountCheck())
+                {
+                    return false;
+                }
+                return true;
             }
-            return true;
-        })
+            else {
+                if (!SubmitCheck())
+                {
+                    return false;
+                }// SubmitDiscountCheck
+                return true;
+            }
+            
+        });
         $("#save_new").click(function () {
-            if (!SubmitCheck()) {
-                return false;
+            var typeValue = $("#ItemTypeId").val();
+            if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT %>){
+                if (!SubmitDiscountCheck()) {
+                    return false;
+                }
+                return true;
             }
-            return true;
-        })
-    })
+            else {
+                if (!SubmitCheck()) {
+                    return false;
+                }// SubmitDiscountCheck
+                return true;
+            }
+        });
 
+        var typeValue = $("#ItemTypeId").val();
+        if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.WORKING_HOURS %>) // 工时的处理
+        {
+            $("#period_type_id").attr("disabled", "disabled");
+            $("#ByProjectTr").css("display","");
+           
+        }
+        else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT %>) // 产品的处理
+        {
+            $("#productShow").css("display", "");
+            $("#callBackChooseProduct").css("display", "");
+            $("#MSRP_tr").css("display", "");
+            $("#callBackManyRole").css("display", "");
+            $("#AddRole").css("display", "");
+            $("#callBackChooseRole").css("display", "none");
+        }
+        else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.SERVICE %>)  // 服务
+        {
+            $("#name").attr("disabled", "disabled");
+            $(".serviceTr").css("display", "");
+        }
+        else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DEGRESSION %>) // 成本
+        {
+            $("#period_type_id").attr("disabled", "disabled");
+        }
+        else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.COST %>)  // 费用
+        {
+            $("#period_type_id").attr("disabled", "disabled");
+        }
+        else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT %>) // 折扣
+        {
+            $("#periodTypeTr").css("display", "none");
+            $("#taxCateTr").css("display", "none");
+            $("#unitPriceTr").css("display", "none"); //gross_profit_marginTR
+            $("#gross_profit_marginTR").css("display", "none");
+            $("#unitCostTR").css("display", "none");
+            $("#quantityTR").css("display", "none");
+            $("#TotalPriceTR").css("display", "none");
+            $("#Gross_Profit_TR").css("display", "none");
+            $("#LineDiscountTR").css("display", "none");
+            $("#OptionTR").css("display", "none");
+            $("#Discount").blur(function () {
+                var discount = $(this).val();
+                if (discount != "" && (!isNaN(discount))) {
+                    $("#unit_discount").val("");
+                }
+            })
+            $("#unit_discount").blur(function () {
+                var unit_discount = $(this).val();
+                if (unit_discount != "" && (!isNaN(unit_discount))) {
+                    $("#Discount").val("");
+                }
+            })
+        }
+        else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES %>)  // 配送
+        {
+            $("#taxCateTr").css("display", "none");
+        }
+
+        
+
+    })
+    
     // 计算页面上的利，总价等
     function Markup() {
         var unit_price = $("#unit_price").val();    // 单价
@@ -529,8 +676,7 @@
                 if (unit_cost != 0) {
                     var Markup = Math.round((Number(unit_price) - Number(unit_cost)) / Number(unit_cost) * 10000) / 100.00;  //gross_profit_margin
                     $("#gross_profit_margin").val(toDecimal2(Markup));
-                }
-            
+                }            
             }
         }
 
@@ -576,6 +722,7 @@
 
     }
 
+    // 工时报价项提交校验
     function SubmitCheck() {
         var name = $("#name").val();
         if (name == "") {
@@ -604,12 +751,72 @@
             return false;
         }
 
+        var typeValue = $("#ItemTypeId").val();
+        if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT %>)
+        {
+            var Reserved = $("#Reserved").val();
+            if (Reserved != "" && (!isNaN(quantity)) && (!isNaN(quantity))) {
+                if (Number(quantity) > Number(Reserved)) {
+                    alert("数量要大于保留");
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 
-    function chooseRole() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ROLL_CALLBACK %>&field=name", '<%=EMT.DoneNOW.DTO.OpenWindow.RoleSelect %>', 'left=200,top=200,width=600,height=800', false);
+
+ 
+     // 折扣报价项提交校验
+    function SubmitDiscountCheck() {
+        var name = $("#name").val();
+        if (name == "") {
+            alert("请填写名称");
+            return false;
+        }
+
+        var unit_discount = $("#unit_discount").val();
+        var Discount = $("#Discount").val();
+        if (unit_discount == "" && Discount == "") {
+            alert("单元折扣与折扣请选择其中一个进行填写");
+            return false;
+        }
+        if (unit_discount != "" && Discount != "") {
+            alert("请勿选择多项");
+            return false;
+        }
+        return true;
     }
+ 
+
+
+
+    function chooseRole() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ROLL_CALLBACK %>&field=name&callBack=GetDataByRole", '<%=EMT.DoneNOW.DTO.OpenWindow.RoleSelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    function GetDataByRole() {
+        var role_id = $("#nameHidden").val();
+        if (role_id != "") {
+            
+            $.ajax({
+                type: "GET",
+                async: false,
+                dataType: "json", 
+                url: "../Tools/RoleAjax.ashx?act=role&role_id=" + role_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#name").val(data.name);
+                        $("#description").text(data.description);
+                        $("#unit_price").val(data.hourly_factor);
+                        Markup();
+                    }
+                },
+            });
+        }
+    }
+
     function toDecimal2(x) {
         var f = parseFloat(x);
         if (isNaN(f)) {
@@ -628,6 +835,54 @@
         return s;
     }
 
+    function chooseProduct() {
+
+    }
+    function GetDaraByProduct() {
+        var product_id = $("#nameHidden").val();
+        if (product_id != "") {
+            $("object_id").val(product_id);
+            $.ajax({
+                type: "GET",
+                async: false,
+                dataType: "json",
+                url: "../Tools/ProductAjax.ashx?act=product&product_id=" + product_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#name").val(data.name);
+                        $("#description").text(data.description);
+                        $("#unit_price").val(data.unit_price); //unit_cost
+                        $("#unit_cost").val(data.unit_cost);
+                        $("#MSRP").val(data.msrp);
+                        Markup();
+                    }
+                },
+            });
+        }
+    }
+
+    // 多选查找带回产品的时候--直接循环添加多个报价项
+    function AddManyQuoteItem() {
+        var productIds = $("#nameHidden").val();
+        var quote_id = $("#thisQuoteId").val();
+        if (productIds != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                dataType: "json",
+                url: "../Tools/ProductAjax.ashx?act=AddQuoteItems&ids=" + productIds + "&quote_id=" + quote_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+
+                    }
+                },
+            });
+            
+            window.close();
+        }
+    }
 
 
 </script>

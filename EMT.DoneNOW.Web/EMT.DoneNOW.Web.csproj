@@ -915,8 +915,14 @@
     <Compile Include="Tools\OpportunityAjax.ashx.cs">
       <DependentUpon>OpportunityAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ProductAjax.ashx.cs">
+      <DependentUpon>ProductAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\QuoteAjax.ashx.cs">
       <DependentUpon>QuoteAjax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\RoleAjax.ashx.cs">
+      <DependentUpon>RoleAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
@@ -938,6 +944,8 @@
     <Content Include="Tools\ContactAjax.ashx" />
     <Content Include="Tools\OpportunityAjax.ashx" />
     <Content Include="Tools\QuoteAjax.ashx" />
+    <Content Include="Tools\RoleAjax.ashx" />
+    <Content Include="Tools\ProductAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
