@@ -106,7 +106,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <%
+                           <%
                                 var type = dic.First(_ => _.Key == "quote_item_type").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>; // 报价项分类
                                 var quote_item_tax_cate_name = dic.First(_ => _.Key == "quote_item_tax_cate").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>; // 报价项相关税
 
