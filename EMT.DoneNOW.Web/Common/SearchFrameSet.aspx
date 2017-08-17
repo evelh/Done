@@ -11,6 +11,9 @@
     #SearchFrameSet{
         height:100%;
     }
+    #SearchCondition{
+        border-bottom: 1px solid #d3d3d3;
+    }
 </style>
 
     <%if (conditionHeight > 0) { %>

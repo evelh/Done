@@ -8,7 +8,6 @@
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/index.css" />
 	<link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css"/>
     <link rel="stylesheet" type="text/css" href="../Content/multiple-select.css"/>
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
@@ -36,7 +35,7 @@
 		</i>
 		<%=currentQuery.page_name %>
 	</div>
-    <div class="information clear">
+    <div class="information clear" style="border:none;">
         <button class="Search" id="SearchBtn">搜索</button>
 		<p class="informationTitle"> <i id="Icon"></i>搜索</p>
 		<div class="content clear">
@@ -69,9 +68,9 @@
                                 || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME
                                 || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.TIMESPAN) { %>
                             <div class="inputTwo">
-								<input type="text" name="<%=condition[i].id %>_l" class="form_datetime sl_cdt" />
+								<input type="text" name="<%=condition[i].id %>_l" class="sl_cdt" onclick="WdatePicker()"/>
 								<span>-</span>
-								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
+								<input type="text" name="<%=condition[i].id %>_h" class="sl_cdt" onclick="WdatePicker()"/>
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK
                                 || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MUILT_CALLBACK) { %>
@@ -131,9 +130,9 @@
                                 || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME
                                 || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.TIMESPAN) { %>
                             <div class="inputTwo">
-								<input type="text" name="<%=condition[i].id %>_l" class="form_datetime sl_cdt"/>
+								<input type="text" name="<%=condition[i].id %>_l" class="sl_cdt" onclick="WdatePicker()"/>
 								<span>-</span>
-								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt"/>
+								<input type="text" name="<%=condition[i].id %>_h" class="sl_cdt" onclick="WdatePicker()"/>
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK
                                 || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MUILT_CALLBACK) { %>
@@ -193,9 +192,9 @@
                                 || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME
                                 || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.TIMESPAN) { %>
                             <div class="inputTwo">
-								<input type="text" name="<%=condition[i].id %>_l" class="form_datetime sl_cdt" />
+								<input type="text" name="<%=condition[i].id %>_l" class="sl_cdt" onclick="WdatePicker()"/>
 								<span>-</span>
-								<input type="text" name="<%=condition[i].id %>_h" class="form_datetime sl_cdt" />
+								<input type="text" name="<%=condition[i].id %>_h" class="sl_cdt" onclick="WdatePicker()"/>
 							</div>
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK
                                 || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MUILT_CALLBACK) { %>
@@ -229,11 +228,10 @@
 		</div>
 	</div>
     <script src="../Scripts/jquery-3.1.0.min.js"  type="text/javascript" charset="utf-8"></script>
-	<script src="../Scripts/bootstrap-datetimepicker.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../Scripts/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../Scripts/index.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/multiple-select.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchFrame.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
         var index = 0;
         var maxhgt = window.parent.document.getElementById("SearchFrameSet").rows;
@@ -259,12 +257,6 @@
             $(".informationTitle").parent().css("background", "white");
             $(".information").children(".content").removeClass("hide");
         });
-        $(".form_datetime").focus(function () {
-            var maxHeight = parseInt($(this).offset().top) + parseInt($(this).height()) + parseInt($(".datetimepicker").height()) + 15;
-            window.parent.document.getElementById("SearchFrameSet").rows = maxHeight + ',*';
-       }).change(function () {
-           window.parent.document.getElementById("SearchFrameSet").rows = maxhgt;
-       })
        
     </script>
 </body>

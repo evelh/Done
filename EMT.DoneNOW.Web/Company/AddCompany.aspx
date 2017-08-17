@@ -9,7 +9,6 @@
     <title>添加客户</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link href="../Content/index.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="../Content/multipleList.css" />
@@ -369,9 +368,7 @@
                                 {%><tr>
                                     <td>
                                         <label><%=udf.name %></label>
-
-                                        <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
-
+                                        <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" />
                                     </td>
                                 </tr>
                             <%}
@@ -380,8 +377,7 @@
                             <tr>
                                 <td>
                                     <label><%=udf.name %></label>
-
-                                    <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
                                 </td>
                             </tr>
                             <%}
@@ -432,9 +428,7 @@
                                 {%><tr>
                                     <td>
                                         <label><%=udf.name %></label>
-
-                                        <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
-
+                                        <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" />
                                     </td>
                                 </tr>
                             <%}
@@ -443,8 +437,7 @@
                             <tr>
                                 <td>
                                     <label><%=udf.name %></label>
-
-                                    <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
                                 </td>
                             </tr>
                             <%}
@@ -486,7 +479,7 @@
                             <td>
                                 <div class="clear">
                                     <label>开始时间</label>
-                                    <input type="text" class="form_datetime sl_cdt"  name="note_start_time" id="note_start_time" value="" />
+                                    <input onclick="WdatePicker()" type="text" class="sl_cdt"  name="note_start_time" id="note_start_time" value="" />
                                 </div>
                             </td>
                         </tr>
@@ -494,7 +487,7 @@
                             <td>
                                 <div class="clear">
                                     <label>结束时间</label>
-                                    <input type="text" class="form_datetime sl_cdt"  name="note_end_time" id="note_end_time" value="" />
+                                    <input onclick="WdatePicker()" type="text" class="sl_cdt"  name="note_end_time" id="note_end_time" value="" />
                                 </div>
                             </td>
                             <td></td>
@@ -626,7 +619,7 @@
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
                         {%><li class="clear">
                             <label><%=udf.name %></label>
-                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" />
+                            <input type="text" name="<%=udf.id %>" class="sl_cdt" onclick="WdatePicker()"/>
                         </li>
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
@@ -634,7 +627,7 @@
                     <li class="clear">
                         <label><%=udf.name %></label>
 
-                        <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                        <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
                     </li>
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
@@ -656,10 +649,8 @@
 <script src="../Scripts/index.js"></script>
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
-<%--<script src="../Scripts/multiselect.min.js" type="text/javascript" charset="utf-8"></script>--%>
-    
-	<script src="../Scripts/bootstrap-datetimepicker.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../Scripts/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
+<%--<script src="../Scripts/multiselect.min.js" type="text/javascript" charset="utf-8"></script>--%>\
+     <script type="text/javascript" charset="utf-8" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         InitArea();
@@ -667,14 +658,6 @@
 </script>
 </html>
 <script type="text/javascript">
-    $(".form_datetime").datetimepicker({
-        language: 'zh-CN',//显示中文
-        format: 'yyyy-mm-dd hh:ii',//显示格式
-        minView: "hour",//设置只显示到月份
-        initialDate: new Date(),//初始化当前日期
-        autoclose: true,//选中自动关闭
-        todayBtn: true//显示今日按钮
-    });
     $(function () {
         $("input[type=text]").attr("autocomplete", "off");
         $(".dblselect option").dblclick(function () {

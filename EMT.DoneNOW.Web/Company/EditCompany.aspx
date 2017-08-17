@@ -8,7 +8,6 @@
     <title>修改客户</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
         <link href="../Content/index.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
@@ -504,8 +503,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-
-                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
 
                         </div>
                     </td>
@@ -517,8 +515,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-
-                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
+                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
                         </div>
                     </td>
                 </tr>
@@ -580,7 +577,6 @@
                         <div class="clear">
                             <label><%=udf.name %></label>
                             <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
-
                         </div>
                     </td>
                 </tr>
@@ -591,10 +587,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-                            <textarea id="<%=udf.id %>" rows="2" cols="20">
-                                <%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>
-
-                            </textarea>
+                            <textarea id="<%=udf.id %>" rows="2" cols="20"><%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %></textarea>
 
                         </div>
                     </td>
@@ -606,9 +599,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-
-                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
-
+                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
                         </div>
                     </td>
                 </tr>
@@ -619,8 +610,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-
-                            <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
+                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
                         </div>
                     </td>
                 </tr>
@@ -682,6 +672,7 @@
 <script src="../Scripts/index.js"></script>
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         InitArea();

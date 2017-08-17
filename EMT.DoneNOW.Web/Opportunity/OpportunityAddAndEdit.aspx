@@ -10,7 +10,6 @@
     <title><%=isAdd?"新增商机":"修改商机" %></title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap-datetimepicker.min.css" />
     <link href="../Content/index.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
     <%--<link rel="stylesheet" type="text/css" href="../Content/multiple-select.css"/>--%>
@@ -98,9 +97,7 @@
                             <td>
                                 <div class="clear">
                                     <label>创建日期<span class="red">*</span></label>
-                                    <input type="text"  class="form_datetime sl_cdt" name="projected_begin_date" id="projected_begin_date" value="<%=isAdd?DateTime.Now.ToString("yyyy-MM-dd"):opportunity.projected_begin_date==null?DateTime.Now.ToString("yyyy-MM-dd"):((DateTime)opportunity.projected_begin_date).ToString("yyyy-MM-dd") %>" />
-
-                                    <%--<input type="text" class="form_datetime sl_cdt" name="projected_begin_date" id="projected_begin_date" value="<%=(!isAdd)&&(opportunity.projected_begin_date!=null)?opportunity.projected_begin_date.ToString():"" %>"/>--%>
+                                    <input onclick="WdatePicker()" type="text"  class="sl_cdt" name="projected_begin_date" id="projected_begin_date" value="<%=isAdd?DateTime.Now.ToString("yyyy-MM-dd"):opportunity.projected_begin_date==null?DateTime.Now.ToString("yyyy-MM-dd"):((DateTime)opportunity.projected_begin_date).ToString("yyyy-MM-dd") %>" />
                                 </div>
                             </td>
                         </tr>
@@ -126,8 +123,8 @@
                             <td>
                                 <div class="clear">
                                     <label>计划关闭时间<span class="red">*</span></label>
-                                    <input type="text"  class="form_datetime sl_cdt" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd&&opportunity.projected_close_date!=null?((DateTime)opportunity.projected_close_date).ToString("yyyy-MM-dd"):"") %>" />
-                                      <div style="margin-top: -30px; display: -webkit-inline-box;">
+                                    <input onclick="WdatePicker()" type="text"  class="sl_cdt" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd&&opportunity.projected_close_date!=null?((DateTime)opportunity.projected_close_date).ToString("yyyy-MM-dd"):"") %>" />
+                                      <div style=" display: -webkit-inline-box;">
                                 <a  onclick="AddTime(0)">今天</a>|<a   onclick="AddTime(7)">7</a>|<a  onclick="AddTime(30)">30</a>|<a   onclick="AddTime(60)">60</a>
                             </div>
                                 </div>
@@ -399,36 +396,28 @@
         <div class="content clear" style="display: none;">
             <div class="clear">
                 <label>承诺履行时间</label>
-                <input type="text" class="form_datetime sl_cdt" name="start_date" id="start_date" value="<%=(!isAdd)&&opportunity.start_date!=null?((DateTime)opportunity.start_date).ToString("dd/MM/yyyy"):"" %>" />
+                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="start_date" id="start_date" value="<%=(!isAdd)&&opportunity.start_date!=null?((DateTime)opportunity.start_date).ToString("dd/MM/yyyy"):"" %>" />
             </div>
             <div class="clear">
                 <label>承诺完成时间</label>
-                <input type="text" class="form_datetime sl_cdt" name="end_date" id="end_date" value="<%=(!isAdd)&&opportunity.end_date!=null?((DateTime)opportunity.end_date).ToString("dd/MM/yyyy"):"" %>" />
+                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="end_date" id="end_date" value="<%=(!isAdd)&&opportunity.end_date!=null?((DateTime)opportunity.end_date).ToString("dd/MM/yyyy"):"" %>" />
 
-            </div>
+            </div>0 
             <div class="clear">
                 <label>市场情况</label>
-                <textarea name="market" id="market" cols="20" rows="2">
-                      <%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.market))?opportunity.market:"" %>
-                  </textarea>
+                <textarea name="market" id="market" cols="20" rows="2"><%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.market))?opportunity.market:"" %></textarea>
             </div>
             <div class="clear">
                 <label>当前困难</label>
-                <textarea name="barriers" id="barriers" cols="20" rows="2">
-                      <%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.barriers))?opportunity.barriers:"" %>
-                  </textarea>
+                <textarea name="barriers" id="barriers" cols="20" rows="2"><%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.barriers))?opportunity.barriers:"" %></textarea>
             </div>
             <div class="clear">
                 <label>所需帮助</label>
-                <textarea name="help_needed" id="help_needed" cols="20" rows="2">
-                      <%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.help_needed))?opportunity.help_needed:"" %>
-                  </textarea>
+                <textarea name="help_needed" id="help_needed" cols="20" rows="2"><%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.help_needed))?opportunity.help_needed:"" %></textarea>
             </div>
             <div class="clear">
                 <label>后续跟进</label>
-                <textarea name="next_step" id="next_step" cols="20" rows="2">
-                      <%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.next_step))?opportunity.next_step:"" %>
-                  </textarea>
+                <textarea name="next_step" id="next_step" cols="20" rows="2"><%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.next_step))?opportunity.next_step:"" %></textarea>
             </div>
             <div class="clear">
                 <label>赢单原因</label>
@@ -436,9 +425,7 @@
             </div>
             <div class="clear">
                 <label>赢单原因描述</label>
-                <textarea name="win_reason" id="win_reason" cols="20" rows="2">
-                      <%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.win_reason))?opportunity.win_reason:"" %>
-                  </textarea>
+                <textarea name="win_reason" id="win_reason" cols="20" rows="2"><%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.win_reason))?opportunity.win_reason:"" %></textarea>
             </div>
             <div class="clear">
                 <label>丢单原因</label>
@@ -446,9 +433,7 @@
             </div>
             <div class="clear">
                 <label>丢单原因描述</label>
-                <textarea name="loss_reason" id="loss_reason" cols="20" rows="2">
-                      <%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.loss_reason))?opportunity.loss_reason:"" %>
-                  </textarea>
+                <textarea name="loss_reason" id="loss_reason" cols="20" rows="2"><%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.loss_reason))?opportunity.loss_reason:"" %></textarea>
             </div>
         </div>
         <div class="content clear" style="display: none;">
@@ -493,7 +478,7 @@
                                 <div class="clear">
                                     <label><%=udf.name %></label>
 
-                                    <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" value="<%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value.ToString():"" %>" />
+                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value.ToString():"" %>" />
                                 </div>
 
                             </td>
@@ -505,8 +490,7 @@
                         <td>
                             <div class="clear">
                                 <label><%=udf.name %></label>
-
-                                <input type="text" name="<%=udf.id %>" class="form_datetime sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
+                                <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
                             </div>
                         </td>
                     </tr>
@@ -561,18 +545,10 @@
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/NewContact.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
-<script src="../Scripts/bootstrap-datetimepicker.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="../Scripts/bootstrap-datetimepicker.zh-CN.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 
 <script>
-    $(".form_datetime").datetimepicker({
-        language: 'zh-CN',//显示中文
-        format: 'yyyy-mm-dd',//显示格式
-        minView: "month",//设置只显示到月份
-        initialDate: new Date(),//初始化当前日期
-        autoclose: true,//选中自动关闭
-        todayBtn: true//显示今日按钮
-    });
+    
     $(function () {
         $.fn.populateForm = function (data) {
             return this.each(function () {
