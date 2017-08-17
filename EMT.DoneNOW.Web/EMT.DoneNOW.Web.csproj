@@ -157,6 +157,7 @@
     <Content Include="Content\reset.css" />
     <Content Include="Content\searchList.css" />
     <Content Include="Content\style.css" />
+    <Content Include="Content\sysset_user.css" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
     <Content Include="Contact\DeleteContact.aspx" />
@@ -170,6 +171,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="error.html" />
+    <Content Include="Images\add.png" />
+    <Content Include="Images\Avatar\default.jpg" />
     <Content Include="Images\collection.png" />
     <Content Include="Images\down.png" />
     <Content Include="Images\help.png" />
@@ -188,10 +191,10 @@
     <Content Include="QuoteTemplate\QuoteTemplateAppendixEdit.aspx" />
     <Content Include="QuoteTemplate\QuoteTemplatePropertiesEdit.aspx" />
     <Content Include="Images\classfication.png" />
-    <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="Quote\QuoteLost.aspx" />
     <Content Include="Quote\QuotePreview.aspx" />
     <Content Include="Quote\QuoteView.aspx" />
+    <Content Include="Quote\test.aspx" />
     <Content Include="RichText\css\FootEdit.css" />
     <Content Include="RichText\css\HeadEdit.css" />
     <Content Include="RichText\css\QuoteBody.css" />
@@ -558,6 +561,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Common\SearchBody.js" />
+    <Content Include="Scripts\sysset_users.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />
@@ -583,6 +587,7 @@
     <Content Include="Common\SearchBodyFrame.aspx" />
     <Content Include="Common\SelectCallBack.aspx" />
     <Content Include="Site.Master" />
+    <Content Include="SysSetting\SysManage.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -774,13 +779,6 @@
     <Compile Include="Common\SelectCallBack.aspx.designer.cs">
       <DependentUpon>SelectCallBack.aspx</DependentUpon>
     </Compile>
-    <Compile Include="QuoteItem\QuoteItemManage.aspx.cs">
-      <DependentUpon>QuoteItemManage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="QuoteItem\QuoteItemManage.aspx.designer.cs">
-      <DependentUpon>QuoteItemManage.aspx</DependentUpon>
-    </Compile>
     <Compile Include="QuoteTemplate\Body_itemEdit.aspx.cs">
       <DependentUpon>Body_itemEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -886,6 +884,13 @@
     <Compile Include="Quote\QuoteView.aspx.designer.cs">
       <DependentUpon>QuoteView.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Quote\test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Quote\test.aspx.designer.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -899,6 +904,13 @@
     </Compile>
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysManage.aspx.cs">
+      <DependentUpon>SysManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysManage.aspx.designer.cs">
+      <DependentUpon>SysManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Test.ashx.cs">
       <DependentUpon>Test.ashx</DependentUpon>

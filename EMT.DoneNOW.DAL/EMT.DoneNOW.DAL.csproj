@@ -69,9 +69,9 @@
     <Compile Include="CRM\crm_installed_product_dal.cs" />
     <Compile Include="CRM\crm_location_dal.cs" />
     <Compile Include="CRM\crm_opportunity_dal.cs" />
-    <Compile Include="CRM\d_tax_region_cate_dal.cs" />
-    <Compile Include="CRM\d_tax_region_cate_tax_dal.cs" />
-    <Compile Include="CRM\sys_quote_tmpl_dal.cs" />
+    <Compile Include="Dictionary\d_tax_region_cate_dal.cs" />
+    <Compile Include="Dictionary\d_tax_region_cate_tax_dal.cs" />
+    <Compile Include="SYS\sys_quote_tmpl_dal.cs" />
     <Compile Include="CRM\crm_quote_dal.cs" />
     <Compile Include="CRM\crm_quote_item_dal.cs" />
     <Compile Include="DapperHelper.cs" />

@@ -119,12 +119,12 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <asp:CheckBox ID="show_tax_cate_superscript" runat="server" text="根据税种显示,通常适用于每一时期的税额显示"/>
+                                    <asp:CheckBox ID="show_each_tax_in_tax_group" runat="server" text="根据税种显示,通常适用于每一时期的税额显示"/>
                                 </div>
                             </td>
                         </tr>
                         <tr><td><div class="clear">
-                            <asp:CheckBox ID="show_each_tax_in_tax_group" runat="server" text="显示每个报价的订阅的关联税种"/>
+                            <asp:CheckBox ID="show_tax_cate_superscript" runat="server" text="显示每个报价的订阅的关联税种"/>
 
                                 </div>
                             </td></tr>

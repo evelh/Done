@@ -1,0 +1,236 @@
+body{
+    overflow: hidden;
+}
+/*顶部内容和帮助*/
+.TitleBar{
+    color: #fff;
+    background-color: #346a95;
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.TitleBar>.Title{
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 97%;
+}
+.text2{
+    margin-left: 5px;
+}
+.help{
+    background-image: url(../img/help.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 16px;
+    border-radius: 50%;
+}
+/*按钮*/
+.ButtonBar {
+    font-size: 12px;
+    padding: 0 10px 10px 10px;
+    width: auto;
+    background-color: #FFF;
+}
+.ButtonBar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: 26px;
+    width: 100%;
+    overflow: hidden;
+}
+.LiButton{
+    float: left;
+    background: #d7d7d7;
+    background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #bcbcbc;
+    display: inline-block;
+    color: #4F4F4F;
+    cursor: pointer;
+    padding: 0 5px 0 3px;
+    position: relative;
+    text-decoration: none;
+    vertical-align: middle;
+    height: 24px;
+    margin-right: 5px;
+}
+.ButtonImg{
+    margin: 4px 3px 0 3px;
+}
+.Text{
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 22px;
+    padding: 0 3px 0 3px;
+    color: #4F4F4F;
+    vertical-align: top;
+}
+.FieldLevelInstruction{
+    margin-left: 10px;
+    font-weight: normal;
+    text-align: right;
+    width: 100%;
+    font-size: 11px;
+    color: #666;
+    line-height: 22px;
+}
+.ATTabControlHiddenTable{
+    border-bottom: 1px solid #adadad;
+    width: 100%;
+}
+.ATTabControlVisibleTable {
+    border-style: None;
+    border-collapse: collapse;
+    Z-INDEX: 100;
+    POSITION: RELATIVE;
+    margin-left: 4px;
+}
+tr.ATTabControlTabRow td {
+    padding: 0 0 0 6px;
+    vertical-align: bottom;
+}
+tr.ATTabControlTabRow td.Selected span.ATTabControlTabLabel {
+    border-bottom: 1px solid #fff!important;
+}
+tr.ATTabControlTabRow td.Selected span.ATTabControlTabLabel {
+    border-top-color: #adadad;
+    border-right-color: #adadad;
+    border-bottom: solid 1px #FFF;
+    border-left-color: #adadad;
+    background-color: #FFF;
+    color: #666;
+    padding-bottom: 1px;
+}
+tr.ATTabControlTabRow td span.ATTabControlTabLabel {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #EAEAEA;
+    border: solid 1px #DFDFDF;
+    border-bottom: solid 1px #adadad;
+    display: inline-block;
+    line-height: 23px;
+    padding: 0 10px 0 10px;
+    color: #858585;
+    font-weight: 700;
+    font-size: 12px;
+    height: 26px;
+}
+tr.ATTabControlTabRow td.Selected span.ATTabControlTabLabel {
+    background-color: #fff!important;
+}
+.DivScrollingContainer.Tab {
+    top: 120px;
+}
+.DivScrollingContainer {
+    left: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+}
+.DivSection, .DivSectionOnly {
+    border: 1px solid #d3d3d3;
+    margin: 0 10px 10px 10px;
+    padding: 12px 28px 4px 28px;
+}
+td.standard_label {
+    width: 145px;
+    text-align: left;
+}
+.lblNormalClass {
+    font-weight: bold;
+    font-size: 12px;
+    color: #4F4F4F;
+}
+
+.DivSection div, .DivSectionWithHeader .Content div {
+    padding-bottom: 17px;
+}
+.DivSectionWithHeader {
+    border: 1px solid #d3d3d3;
+    margin: 0 10px 10px 10px;
+    padding: 4px 0 4px 0;
+}
+.DivSectionWithHeader .HeaderRow {
+    position: relative;
+    padding-bottom: 3px;
+}
+.DivSectionWithHeader>.HeaderRow>span {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+}
+.DivSectionWithHeader>.HeaderRow>span {
+    padding: 2px 4px 6px 6px;
+    color: #666;
+    height: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 17px;
+    text-transform: uppercase;
+}
+
+.txtBlack8Class{
+    font-size: 12px;
+    color: #333;
+    font-weight: normal;
+}
+input[type=text], select, textarea, input[type=password] {
+    border: solid 1px #D7D7D7;
+    font-size: 12px;
+    color: #333;
+    margin: 0;
+    height:24px;
+}
+.DivSectionWithHeader .Content {
+    padding: 0 28px 4px 28px;
+}
+div[class="Content"] div[class="ButtonCollectionBase"] {
+    padding-bottom: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.btn{
+    height:26px;
+    line-height: 26px;
+    margin-top: 5px;
+    background: #d7d7d7;
+    background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #BCBCBC;
+    cursor: pointer;
+}
+.FieldLevelInstruction {
+    font-size: 11px;
+    color: #666;
+    line-height: 16px;
+    font-weight: normal;
+    margin-left: 0;
+}
+
+
+
+
+
+
+
+

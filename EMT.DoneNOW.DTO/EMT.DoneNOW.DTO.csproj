@@ -64,6 +64,8 @@
     <Compile Include="QueryResultDto.cs" />
     <Compile Include="QueryResultParaDto.cs" />
     <Compile Include="QuoteTemplateAddDto.cs" />
+    <Compile Include="QuoteViewDto.cs" />
+    <Compile Include="SysUserAddDto.cs" />
     <Compile Include="TokenDto.cs" />
     <Compile Include="UserAuthDto.cs" />
     <Compile Include="UserDefinedFieldDto.cs" />
