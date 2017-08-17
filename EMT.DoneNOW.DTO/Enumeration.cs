@@ -313,8 +313,8 @@ namespace EMT.DoneNOW.DTO
             ONE_TIME=609,    // 一次性收费
             MONTH=610,       // 按月收费
             QUARTER=611,     // 按季度收费
-            YEAR=612,        // 按年收费
-
+            YEAR=613,        // 按年收费
+            SEMI_ANNUAL=612,   //按半年收费，数据库还未添加
         }
         /// <summary>
         /// 报价项：税收种类-44
