@@ -198,7 +198,8 @@
             OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + id, '<%=EMT.DoneNOW.DTO.OpenWindow.CompanyView %>');
         }
         <%}
-        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contact) {
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contact
+            || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContactCompanyView) {
             %>
         function EditContact() {
             OpenWindow("../Contact/AddContact.aspx?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.ContactEdit %>');
@@ -219,11 +220,19 @@
 
             })
         }
+        <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contact) { %>
         function Add() {
             OpenWindow("../Contact/AddContact.aspx", '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>');
         }
+        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContactCompanyView) { %>
+        function Add() {
+            OpenWindow('../Contact/AddContact.aspx?account_id=<%=objId%>', '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>');
+        }
+        <%}%>
         <%}
-        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Opportunity) {
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Opportunity
+            || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.OpportunityCompanyView
+            || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.OpportunityContactView) {
             %>
         function EditOpp() {
             OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityEdit %>');
@@ -249,9 +258,19 @@
                 }
             })
         }
+        <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Opportunity) { %>
         function Add() {
             OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx", '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>');
         }
+        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.OpportunityCompanyView) { %>
+        function Add() {
+            OpenWindow('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id=<%=objId%>', '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>');
+        }
+        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.OpportunityContactView) { %>
+        function Add() {
+            OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx?oppo_contact_id=<%=objId%>", '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>');
+        }
+        <%}%>
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Quote) {
             %>

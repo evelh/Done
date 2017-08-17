@@ -543,5 +543,37 @@ namespace EMT.DoneNOW.BLL
         public int GetTaxid(int tid) {
             return (int)new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>($"select * from d_tax_region_cate where tax_region_id={tid}").id;
         }
+        /// <summary>
+        /// 更改报价的排序方式
+        /// </summary>
+        /// <param name="quote_id"></param>
+        /// <param name="group_id"></param>
+        /// <param name="user_id"></param>
+        public void UpdateGroup(long quote_id, int group_id,long user_id)
+        {
+            var quote = _dal.GetQuote(quote_id);
+            if (quote.group_by_id!=group_id) // 未改变分组不用更改
+            {
+                var user = UserInfoBLL.GetUserInfo(user_id);
+                quote.group_by_id = group_id;
+                quote.update_user_id = user_id;
+                quote.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user_id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE,
+                    oper_object_id = quote_id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_description = _dal.CompareValue(_dal.GetQuote(quote_id), quote),
+                    remark = "修改报价排序方式"
+                });
+                _dal.Update(quote);
+            }
+
+        }
     }
 }

@@ -40,7 +40,8 @@ namespace EMT.DoneNOW.DTO
         QUOTE_ITEM_TYPE =42,                      // 报价项：类型
         QUOTE_ITEM_PERIOD_TYPE=43,               // 报价项：付费周期类型
         QUOTE_ITEM_TAX_CATE=44,                  // 报价项：税收种类
-        NAME_SUFFIX = 48,                        
+        NAME_SUFFIX = 48,
+        QUOTE_GROUP_BY=110,                      // 报价分组条件
     }
 
     /// <summary>
@@ -313,8 +314,9 @@ namespace EMT.DoneNOW.DTO
             ONE_TIME=609,    // 一次性收费
             MONTH=610,       // 按月收费
             QUARTER=611,     // 按季度收费
-            YEAR=613,        // 按年收费
-            SEMI_ANNUAL=612,   //按半年收费，数据库还未添加
+            HALFYEAR=612,       // 半年收费
+            YEAR = 613,         // 按年收费
+
         }
         /// <summary>
         /// 报价项：税收种类-44
@@ -395,8 +397,9 @@ namespace EMT.DoneNOW.DTO
             OPPORTUNITY = 768,                          // 商机
             NOTIFY = 769,                               // 通知
             ACTIVITY = 760,                             // 活动   // todo 数据库添加
-            QUOTE = 761,                                // 报价   todo 数据库添加
-            QUOTE_ITEM=762,                             // 报价项   todo 数据库添加
+            QUOTE = 770,                                // 报价   
+            QUOTE_ITEM=771,                             // 报价项   
+            FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息
         }
 
         /// <summary>
@@ -435,6 +438,14 @@ namespace EMT.DoneNOW.DTO
             NEED_TYPE = 1017,           // 需要原因类型
             NEED_TYPE_DETAIL = 1018,    // 需要原因类型和详情
             NEED_NONE = 1019,           // 不需要
+        }
+        public enum QUOTE_GROUP_BY
+        {
+            NO = 1192,                    // 按照不分组
+            CYCLE =1193,                  // 按照周期分组
+            PRODUCT = 1194,               // 按照产品分组
+            CYCLE_PRODUCT = 1195,         // 按照周期产品分组
+            PRODUCT_CYCLE = 1196,         // 按照产品周期分组
         }
     }
 

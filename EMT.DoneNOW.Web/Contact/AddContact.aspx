@@ -357,6 +357,7 @@
         })
 
         $(function () {
+            $("input[type=text]").attr("autocomplete", "off");
             $("#save_close").click(function () {
 
                 if (!submitcheck()) {
