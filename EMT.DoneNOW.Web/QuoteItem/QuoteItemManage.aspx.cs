@@ -78,8 +78,8 @@ namespace EMT.DoneNOW.Web.QuoteItem
                if (quote != null)
                 {
                     quoteItemList = new crm_quote_item_dal().GetQuoteItems($" and quote_id={quote.id} ");
-                    quoteItemList.Sort(SortCycle);  // 自定义排序测试
-                   // quoteItemList = quoteItemList.OrderByDescending(_ => _.period_type_id = (int)QUOTE_ITEM_PERIOD_TYPE.MONTH).OrderByDescending(_ => _.period_type_id = (int)QUOTE_ITEM_PERIOD_TYPE.QUARTER).OrderByDescending(_ => _.period_type_id = (int)QUOTE_ITEM_PERIOD_TYPE.HALFYEAR).OrderByDescending(_ => _.period_type_id = (int)QUOTE_ITEM_PERIOD_TYPE.YEAR).OrderByDescending(_ => _.period_type_id = (int)QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
+                   // quoteItemList.Sort(SortCycle);  // 自定义排序测试
+                   quoteItemList = quoteItemList.OrderBy(_ => SortQuoteItem(_.period_type_id)).ToList();
                     quoteList = new crm_quote_dal().GetQuoteByWhere($" and opportunity_id = {quote.opportunity_id} ");
                     var primaryQuote = quoteList.FirstOrDefault(_ => _.is_primary_quote == 1);
                     if (primaryQuote != null)
@@ -195,6 +195,22 @@ namespace EMT.DoneNOW.Web.QuoteItem
             {
                 return (int)item.period_type_id;
             }            
+        }
+        /// <summary>
+        /// 设定下报价项的排序规则
+        /// </summary>
+        /// <param name="period_type_id"></param>
+        /// <returns></returns>
+        private int SortQuoteItem(int? period_type_id)
+        {
+            if (period_type_id == null)
+            {
+                return 10;
+            }
+            else
+            {
+                return (int)new d_general_dal().FindSignleBySql<d_general>($"select * from d_general where id = {period_type_id} ").sort_order;
+            }
         }
     }
 }
