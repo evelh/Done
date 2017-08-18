@@ -232,6 +232,15 @@ namespace EMT.DoneNOW.DTO
             OPPORTUNITY = 451,      // 商机
         }
 
+        public enum SALES_ORDER_STATUS
+        {
+            OPEN=465,                // 打开
+            IN_PROGRESS=466,         // 未实施
+            PARTIALLY_FULFILLED=467, // 部分实施
+            FULFILLED=468,           // 完成
+            CANCELED=469,            // 取消
+        }
+
         /// <summary>
         /// 用户自定义字段对象类型-32
         /// </summary>
@@ -404,6 +413,7 @@ namespace EMT.DoneNOW.DTO
             QUOTE = 770,                                // 报价   
             QUOTE_ITEM=771,                             // 报价项   
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息
+            SALE_ORDER = 760,                           // 销售订单
         }
 
         /// <summary>

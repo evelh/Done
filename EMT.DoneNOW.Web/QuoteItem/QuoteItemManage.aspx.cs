@@ -124,7 +124,20 @@ namespace EMT.DoneNOW.Web.QuoteItem
 
                         //  获取到筛选后报价项列表方便分组管理  筛选后的列表不包括可选，一次性的折扣和配送
                         var screenList = quoteItemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional != 1&&_.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT).ToList();
-                        groupByType = string.IsNullOrEmpty(Request.QueryString["group_by"])?((long)quote.group_by_id).ToString():Request.QueryString["group_by"];
+
+                        if (!string.IsNullOrEmpty(Request.QueryString["group_by"]))
+                        {
+                            groupByType = Request.QueryString["group_by"];
+                        }
+                        else
+                        {
+                            if (quote.group_by_id != null)
+                            {
+                                groupByType = ((long)quote.group_by_id).ToString();
+                            }
+                            
+                        }
+                       //  groupByType = ?((long)quote.group_by_id).ToString():Request.QueryString["group_by"];
                         if (groupByType == ((int)EMT.DoneNOW.DTO.DicEnum.QUOTE_GROUP_BY.CYCLE).ToString())   // 按周期分组
                         {
                             groupList = screenList.GroupBy(_ => _.period_type_id == null ? "" : _.period_type_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());    // as Dictionary<long?, 

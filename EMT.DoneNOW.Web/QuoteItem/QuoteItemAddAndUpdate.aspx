@@ -270,17 +270,16 @@
                                            
                                         </tr>
                                         <tr class="serviceTr" style="display:none;">
-                                             <td><input type="radio" name="11" id="" checked="checked" />合同初始费用</td>
-                                        </t>
+                                             <td><input type="radio" name="11" id="" checked="checked" />合同初始费用</td></tr>
                                         <tr>
                                             <td class="FieldLabels">报价项名称
                                             <span id="errorSmall">*</span>
                                                 <div>
                                                     <input type="text" name="name" id="name" value="<%=isAdd?"":quote_item.name %>" style="width: 17em;"/>
                                                     <i id="callBackChooseRole" onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="callBackManyRole" onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="AddRole" onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="callBackChooseProduct" onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackManyRole" onclick="" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="AddRole" onclick="" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackChooseProduct" onclick="" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                     <input type="hidden" id="nameHidden"/>
                                                 </div>
                                             </td>
@@ -417,7 +416,7 @@
                                                                 </td>
                                                                 <td class="FieldLabels" align="right">
                                                                     <div style="margin: 0; padding: 0; padding-bottom: 21px;">
-                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="Discount" id="Discount" disabled="disabled" class="Calculation" maxlength="5" />&nbsp;%
+                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="discount_percent" id="Discount" disabled="disabled" class="Calculation" maxlength="5" />&nbsp;%
                                                                     </div> 
                                                                 </td>
                                                             </tr>
@@ -464,7 +463,7 @@
                                                 <td><span id="Back_Order"></span></td>
                                                 <td><span id="Reserved_Picked"></span></td>
                                                 <td><span id="Available"></span></td>
-                                                <td><input type="text" id="Reserved" value="0"/></td>
+                                                <td><input type="text" id="Reserved" value=""/></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -755,6 +754,7 @@
         {
             var Reserved = $("#Reserved").val();
             if (Reserved != "" && (!isNaN(quantity)) && (!isNaN(quantity))) {
+                debugger;
                 if (Number(quantity) > Number(Reserved)) {
                     alert("数量要大于保留");
                     return false;
@@ -833,7 +833,7 @@
         }
         return s;
     }
-
+    // 查找带回产品
     function chooseProduct() {
 
     }
@@ -854,11 +854,71 @@
                         $("#unit_price").val(data.unit_price); //unit_cost
                         $("#unit_cost").val(data.unit_cost);
                         $("#MSRP").val(data.msrp);
+                        $("#Reserved").val(0);
                         Markup();
                     }
                 },
             });
         }
+    }
+    // 查找带回服务
+    function chooseService() {
+
+    }
+    function GetDataByService() {
+        var service_id = $("#nameHidden").val();
+        if (service_id != "") {
+
+            $.ajax({
+                type: "GET",
+                async: false,
+                dataType: "json",
+                url: "../Tools/RoleAjax.ashx?act=service&service_id=" + service_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#name").val(data.name);
+                        $("#description").text(data.description);
+                        $("#unit_price").val(data.unit_price); //unit_cost
+                        $("#unit_cost").val(data.unit_cost);
+                    }
+                },
+            });
+        }
+    }
+    // 查找带回服务集
+    function chooseServiceBundle() {
+
+    }
+    function GetDataByServiceBundle() {
+        var service_bundle_id = $("#nameHidden").val();
+        if (service_bundle_id != "") {
+
+            $.ajax({
+                type: "GET",
+                async: false,
+                dataType: "json",
+                url: "../Tools/RoleAjax.ashx?act=service_bundle&service_bundle_id=" + service_bundle_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#name").val(data.name);
+                        $("#name").attr("disabled","disabled");
+                        $("#description").text(data.description);
+                        $("#unit_price").val(data.unit_price); //unit_cost
+                        $("#unit_cost").val(data.unit_cost);
+                    }
+                },
+            });
+        }
+    }
+
+    // 查找带回计费代码
+    function chooseDegression() {
+
+    }
+    function GetDataByDegression() {
+
     }
 
     // 多选查找带回产品的时候--直接循环添加多个报价项

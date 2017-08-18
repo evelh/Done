@@ -184,6 +184,7 @@
     <Content Include="Images\Classification\residential.png" />
     <Content Include="Images\Classification\target.png" />
     <Content Include="Images\Classification\tm.png" />
+    <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
     <Content Include="Images\export.png" />
     <Content Include="Images\print.png" />
@@ -799,6 +800,13 @@
     <Compile Include="Common\SelectCallBack.aspx.designer.cs">
       <DependentUpon>SelectCallBack.aspx</DependentUpon>
     </Compile>
+    <Compile Include="QuoteItem\QuoteItemManage.aspx.cs">
+      <DependentUpon>QuoteItemManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteItem\QuoteItemManage.aspx.designer.cs">
+      <DependentUpon>QuoteItemManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="QuoteTemplate\Body_itemEdit.aspx.cs">
       <DependentUpon>Body_itemEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -956,6 +964,9 @@
     <Compile Include="Tools\RoleAjax.ashx.cs">
       <DependentUpon>RoleAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ServiceAjax.ashx.cs">
+      <DependentUpon>ServiceAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -978,6 +989,7 @@
     <Content Include="Tools\QuoteAjax.ashx" />
     <Content Include="Tools\RoleAjax.ashx" />
     <Content Include="Tools\ProductAjax.ashx" />
+    <Content Include="Tools\ServiceAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
