@@ -12,7 +12,7 @@
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" class="clear" style="min-width:600px;">
         <div class="header">
 			查找
 		</div>
@@ -23,24 +23,24 @@
 				<li onclick="ClearSelect();"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -304px -16px;" class="icon-1"></i>清除选择</li>
 			</ul>
 		</div>
-		<div class="searchSelected clear">
+		<div class="searchSelected clear fl" style="margin-left:10px;">
 			<p>选中的内容</p>
 			<div class="Selected fl">
-				<select  name="" multiple="" class="dblselect"></select>
+				<select  name="" multiple="" class="dblselect" style="width:160px;min-height:131px;"></select>
 			</div>
 		</div>
         <%} else { %>
-        <div class="header-title">
+        <div class="header-title fl">
 			<ul>
 				<li onclick="ClearSelect();"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -304px -16px;" class="icon-1"></i>清除选择</li>
 			</ul>
 		</div>
         <%}%>
-        <table border="none" cellspacing="" cellpadding="" style="width: 395px;">
+        <table border="none" cellspacing="" cellpadding="" style="width:350px;margin:15px 0 0 5px;border: none;" class="fl">
         <% for (int i = 0; i < condition.Count; i++) {%> 
 			<tr>
 				<td>
-					<div class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>"clear input-dh"<%}
+					<div style="margin:5px 0;" class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>"clear input-dh"<%}
                         else { %>"clear"<%} %>>
 						<label><%=condition[i].description %></label>
                     <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
@@ -98,7 +98,7 @@
 			</tr>
         <% } %>
 		</table>
-        <asp:Button ID="Search" runat="server" Text="搜索" OnClick="Search_Click" />
+        <asp:Button ID="Search" runat="server" Text="搜索" OnClick="Search_Click" style="margin-top: 22px;width: 56px;height: 30px;"/>
         <div id="search_list">
             <input type="hidden" id="page_num" name="page_num" <%if (queryResult != null) {%>value="<%=queryResult.page %>"<%} %> />
             <input type="hidden" id="page_size" name="page_size" <%if (queryResult != null) {%>value="<%=queryResult.page_size %>"<%} %> />
@@ -113,7 +113,7 @@
         <!-- 分页信息 -->
         <%if (queryResult != null && queryResult.count>0)
             { %>
-        <div class="page fl">
+        <div class="page clear" style="float:none;margin:108px 0 0 90px;">
             <%
                                 int indexFrom = queryResult.page_size * (queryResult.page - 1) + 1;
                                 int indexTo = queryResult.page_size * queryResult.page;
@@ -122,8 +122,8 @@
                                 if (indexTo > queryResult.count)
                                     indexTo = queryResult.count;
                 %>
-			<span>第<%=indexFrom %>-<%=indexTo %>&nbsp;&nbsp;总数&nbsp;<%=queryResult.count %></span>
-			<span>每页<%if (queryResult.page_size == 20)
+			<span class="fl">第<%=indexFrom %>-<%=indexTo %>&nbsp;&nbsp;总数&nbsp;<%=queryResult.count %></span>
+			<span class="fl">每页<%if (queryResult.page_size == 20)
                                 {
                     %>&nbsp;20&nbsp;<%}
                                 else
@@ -139,10 +139,10 @@
                                 { %>&nbsp;100&nbsp;<%}
                                 else
                                 { %><a href="#" onclick="ChangePageSize(100)">100</a><%} %></span>
-			<i onclick="ChangePage(1)"><<</i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page-1 %>)"><</i>
-			<input type="text" style="width:30px;text-align:center;" value="<%=queryResult.page %>" />
-            <span>&nbsp;/&nbsp;<%=queryResult.page_count %></span>
-			<i onclick="ChangePage(<%=queryResult.page+1 %>)">></i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page_count %>)">>></i>
+			<i class="fl" onclick="ChangePage(1)"><<</i>&nbsp;&nbsp;<i class="fl" onclick="ChangePage(<%=queryResult.page-1 %>)"><</i>
+			<input class="fl" type="text" style="width:24px;height:22px;text-align:center;" value="<%=queryResult.page %>" />
+            <span class="fl">&nbsp;/&nbsp;<%=queryResult.page_count %></span>
+			<i class="fl" onclick="ChangePage(<%=queryResult.page+1 %>)">></i>&nbsp;&nbsp;<i class="fl" onclick="ChangePage(<%=queryResult.page_count %>)">>></i>
 		</div>
         <%} %>
         <!-- 分页信息 -->

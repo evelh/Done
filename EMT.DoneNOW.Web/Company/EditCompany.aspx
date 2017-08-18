@@ -534,10 +534,11 @@
 
         <div class="content clear" style="display: none;">
        
-            <p>子客户列表</p>
-            <span class="on"><i class="icon-dh" onclick="OpenSubCompany()"></i></span>
-          
-            <div class="Selected fl">
+            <p style="padding-left:60px;overflow:hidden;">
+                <span class="fl">子客户列表</span>
+                <span class="on fl" style="margin-left:8px;"><i class="icon-dh" onclick="OpenSubCompany()"></i></span>
+            </p>
+            <div class="Selected fl" style="padding-left:45px;">
                 <select id="" multiple="" class="dblselect" style="height: 300px;">
                     <%var subIds = "";
                         if (subCompanyList != null && subCompanyList.Count > 0)

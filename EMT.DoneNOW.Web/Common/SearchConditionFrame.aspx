@@ -20,42 +20,6 @@
     #SearchCondition>html{
         height: 100%;
     }
-
-*{
-    margin:0;
-    padding: 0;
-    list-style: none;
-}
-i{
-        width: 40px;
-    height: 30px;
-    display: block;
-    background: #F5F5F5 ;
-    float: left;
-    margin-top: 5px;
-    margin-right: 10px;
-    cursor: pointer;
-}
- ul {
-    min-width: 160px;
-    margin-top: 30px;
-    position: relative;
-    display: none;
-    z-index: 99;
-    padding: 15px 10px;
-    background: rgb(245, 245, 245);
-}
-ul li {
-    color: #333;
-    font-size: 12px;
-    padding: 0 5px;
-    height: 28px;
-    line-height: 28px;
-}
-.child{
-    margin-left: 160px;
-    margin-top: -142px;
-}
 </style>
 <body>
     <div class="header">
@@ -72,7 +36,7 @@ ul li {
                 } %>
                 <li class="parent1">父客户查询</li>
             </ul>
-            <ul class="child">
+            <ul class="child" style="margin-left: 140px;margin-top: -142px;display:none;">
             <% foreach (var q in currentQuery.page_query)
                 {
                     if (q.typeId == 4 && q.groupId != 13)
@@ -318,22 +282,21 @@ ul li {
             $(".information").children(".content").removeClass("hide");
         });
 
-        $('i').on("mousemove", function () {
+        $('.header i').on("mousemove", function () {
             $('.parent').show();
         });
-        $('i').on("mouseout", function () {
+        $('.header i').on("mouseout", function () {
             $('.parent').hide();
             $('.child').hide();
         });
         $('.parent1').on("mousemove", function () {
             $('.child').show();
         });
-        setTimeout(function () {
-            $('.parent1').on("mouseout", function () {
-                $('.child').hide();
-            })
-        }, 1000);
+        $('.parent1').on("mouseout", function () {
+            $('.child').hide();
+        })
         $('.child').on("mousemove", function () {
+            $('.parent').show();
             $('.child').show();
         });
         $('.child').on("mouseout", function () {
