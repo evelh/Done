@@ -12,7 +12,7 @@
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-    <form id="form1">
+    <form id="form1" runat="server">
         <div class="header">
 			查找
 		</div>
@@ -28,10 +28,6 @@
 			<div class="Selected fl">
 				<select  name="" multiple="" class="dblselect"></select>
 			</div>
-			<div class="findinput clear fr" style="margin: 0;">
-				<input type="text" name="" id="" value="" style="height: 28px;line-height: 28px;"/>
-				<a href="javaScript:" class="search" style="height: 28px;"></a>
-			</div>
 		</div>
         <%} else { %>
         <div class="header-title">
@@ -40,8 +36,72 @@
 			</ul>
 		</div>
         <%}%>
+        <table border="none" cellspacing="" cellpadding="" style="width: 395px;">
+        <% for (int i = 0; i < condition.Count; i++) {%> 
+			<tr>
+				<td>
+					<div class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>"clear input-dh"<%}
+                        else { %>"clear"<%} %>>
+						<label><%=condition[i].description %></label>
+                    <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
+                        || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA
+                        || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.NUMBER_EQUAL)
+                        { %>
+						<input type="text" name="<%=condition[i].id %>" class="sl_cdt" />
+                    <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DROPDOWN) { %>
+                        <select name="<%=condition[i].id %>" class="sl_cdt">
+                            <option value=""></option>
+                            <%foreach (var item in condition[i].values) { %>
+							<option value="<%=item.val %>"><%=item.show %></option>
+                            <%} %>
+						</select>
+                    <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.NUMBER) { %>
+                        <div class="inputTwo">
+							<input type="text" name="<%=condition[i].id %>_l" class="sl_cdt" />
+							<span>-</span>
+							<input type="text" name="<%=condition[i].id %>_h" class="sl_cdt" />
+						</div>
+                    <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATE
+                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME
+                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.TIMESPAN) { %>
+                        <div class="inputTwo">
+							<input type="text" name="<%=condition[i].id %>_l" class="sl_cdt" onclick="WdatePicker()"/>
+							<span>-</span>
+							<input type="text" name="<%=condition[i].id %>_h" class="sl_cdt" onclick="WdatePicker()"/>
+						</div>
+                    <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK
+                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MUILT_CALLBACK) { %>
+                        <input type="text" id="con<%=condition[i].id %>" disabled="disabled" />
+                        <input type="hidden" id="con<%=condition[i].id %>Hidden" name="<%=condition[i].id %>" class="sl_cdt" />
+                        <span class="on" onclick="window.open('<%=condition[i].ref_url %>con<%=condition[i].id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false)"><i class="icon-dh"></i></span>
+                    <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
+                        <input type="hidden" id="cmsh<%=condition[i].id %>" name="<%=condition[i].id %>" class="sl_cdt" />
+                        <div class="multiplebox">
+							<select id="cms<%=condition[i].id %>" multiple="multiple">
+                                <%foreach (var v in condition[i].values) { %>
+                                <option value="<%=v.val %>"><%=v.show %></option>
+                                <%} %>
+				            </select>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#cms<%=condition[i].id %>').change(function () {
+                                    $('#cmsh<%=condition[i].id %>').val($(this).val());
+                                }).multipleSelect({
+                                    width: '100%'
+                                });
+                            });
+                        </script>
+                    <%}%>
+					</div>
+				</td>
+			</tr>
+        <% } %>
+		</table>
+        <asp:Button ID="Search" runat="server" Text="搜索" OnClick="Search_Click" />
         <div id="search_list">
-            <input type="hidden" name="page_num" <%if (queryResult != null) {%>value="<%=queryResult.page %>"<%} %> />
+            <input type="hidden" id="page_num" name="page_num" <%if (queryResult != null) {%>value="<%=queryResult.page %>"<%} %> />
+            <input type="hidden" id="page_size" name="page_size" <%if (queryResult != null) {%>value="<%=queryResult.page_size %>"<%} %> />
             <input type="hidden" id="search_id" name="search_id" <%if (queryResult != null) {%>value="<%=queryResult.query_id %>"<%} %> />
             <input type="hidden" id="order" name="order" <%if (queryResult != null) {%>value="<%=queryResult.order_by %>"<%} %> />
             <input type="hidden" id="type" name="type" value="<%=queryTypeId %>" />
@@ -49,6 +109,44 @@
             <div id="conditions">
             </div>
         </div>
+
+        <!-- 分页信息 -->
+        <%if (queryResult != null && queryResult.count>0)
+            { %>
+        <div class="page fl">
+            <%
+                                int indexFrom = queryResult.page_size * (queryResult.page - 1) + 1;
+                                int indexTo = queryResult.page_size * queryResult.page;
+                                if (indexFrom > queryResult.count)
+                                    indexFrom = queryResult.count;
+                                if (indexTo > queryResult.count)
+                                    indexTo = queryResult.count;
+                %>
+			<span>第<%=indexFrom %>-<%=indexTo %>&nbsp;&nbsp;总数&nbsp;<%=queryResult.count %></span>
+			<span>每页<%if (queryResult.page_size == 20)
+                                {
+                    %>&nbsp;20&nbsp;<%}
+                                else
+                                {
+                    %><a href="#" onclick="ChangePageSize(20)">20</a><%}
+                    %>|<%if (queryResult.page_size == 50)
+                                {
+                    %>&nbsp;50&nbsp;<%}
+                                else
+                                {
+                    %><a href="#" onclick="ChangePageSize(50)">50</a><%}
+                    %>|<%if (queryResult.page_size == 100)
+                                { %>&nbsp;100&nbsp;<%}
+                                else
+                                { %><a href="#" onclick="ChangePageSize(100)">100</a><%} %></span>
+			<i onclick="ChangePage(1)"><<</i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page-1 %>)"><</i>
+			<input type="text" style="width:30px;text-align:center;" value="<%=queryResult.page %>" />
+            <span>&nbsp;/&nbsp;<%=queryResult.page_count %></span>
+			<i onclick="ChangePage(<%=queryResult.page+1 %>)">></i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page_count %>)">>></i>
+		</div>
+        <%} %>
+        <!-- 分页信息 -->
+
         <div class="content clear " style="padding: 10px;">
         <%if (queryResult != null) { %>
 			<div class="searchcontent" id="searchcontent" style="min-width:580px;width:580px;">
@@ -229,6 +327,16 @@
             window.close();
         }
         <%} %>
+    </script>
+    <script type="text/javascript">
+        function ChangePageSize(num) {
+            $("#page_size").val(num);
+            $("#form1").submit();
+        }
+        function ChangePage(num) {
+            $("#page_num").val(num);
+            $("#form1").submit();
+        }
     </script>
 </body>
 </html>

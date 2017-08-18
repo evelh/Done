@@ -21,6 +21,7 @@ namespace EMT.DoneNOW.Web
         protected QueryResultDto queryResult = null;            // 查询结果数据
         protected List<QueryResultParaDto> resultPara = null;   // 查询结果列信息
         protected List<DictionaryEntryDto> queryParaValue = new List<DictionaryEntryDto>();  // 查询条件和条件值
+        protected List<QueryConditionParaDto> condition;    // 根据不同页面类型获取的查询条件列表
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(Request.QueryString["callBack"]))
@@ -55,6 +56,8 @@ namespace EMT.DoneNOW.Web
                 return;
             }
 
+            condition = bll.GetConditionPara(GetLoginUserId(), paraGroupId);
+
             QueryData();
         }
 
@@ -66,7 +69,7 @@ namespace EMT.DoneNOW.Web
             queryParaValue.Clear();
             resultPara = bll.GetResultParaSelect(GetLoginUserId(), paraGroupId);    // 获取查询结果列信息
             //queryResult = bll.getDataTest();return;
-            var keys = HttpContext.Current.Request.QueryString;
+            var keys = HttpContext.Current.Request;
             string order = keys["order"];   // order by 条件
             int page = string.IsNullOrEmpty(keys["page_num"]) ? 1 : int.Parse(keys["page_num"]);  // 查询页数
 
@@ -137,6 +140,11 @@ namespace EMT.DoneNOW.Web
 
                 queryResult = bll.GetResult(GetLoginUserId(), queryPara);
             }
+        }
+
+        protected void Search_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

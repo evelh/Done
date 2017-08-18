@@ -20,10 +20,69 @@
     #SearchCondition>html{
         height: 100%;
     }
+
+*{
+    margin:0;
+    padding: 0;
+    list-style: none;
+}
+i{
+        width: 40px;
+    height: 30px;
+    display: block;
+    background: #F5F5F5 ;
+    float: left;
+    margin-top: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+ ul {
+    min-width: 160px;
+    margin-top: 30px;
+    position: relative;
+    display: none;
+    z-index: 99;
+    padding: 15px 10px;
+    background: rgb(245, 245, 245);
+}
+ul li {
+    color: #333;
+    font-size: 12px;
+    padding: 0 5px;
+    height: 28px;
+    line-height: 28px;
+}
+.child{
+    margin-left: 160px;
+    margin-top: -142px;
+}
 </style>
 <body>
     <div class="header">
 		<i>
+            <%if (currentQuery.page_query.Count > 4) { %>
+            <ul class="parent">
+            <% foreach (var q in currentQuery.page_query)
+                {
+                    if (q.typeId != 4 || q.groupId == 13)
+                        continue;
+                    %>
+				<li onclick="OpenQuery(<%=catId %>,<%=q.typeId %>,<%=q.groupId %>);"><%=q.query_name %></li>
+            <%
+                } %>
+                <li class="parent1">父客户查询</li>
+            </ul>
+            <ul class="child">
+            <% foreach (var q in currentQuery.page_query)
+                {
+                    if (q.typeId == 4 && q.groupId != 13)
+                        continue;
+                    %>
+				<li onclick="OpenQuery(<%=catId %>,<%=q.typeId %>,<%=q.groupId %>);"><%=q.query_name %></li>
+            <%
+                } %>
+            </ul>
+            <%} else { %>
             <ul>
             <% foreach (var q in currentQuery.page_query)
                     {
@@ -32,6 +91,7 @@
             <%
                 } %>
 			</ul>
+            <%} %>
 		</i>
 		<%=currentQuery.page_name %>
 	</div>
@@ -257,7 +317,28 @@
             $(".informationTitle").parent().css("background", "white");
             $(".information").children(".content").removeClass("hide");
         });
-       
+
+        $('i').on("mousemove", function () {
+            $('.parent').show();
+        });
+        $('i').on("mouseout", function () {
+            $('.parent').hide();
+            $('.child').hide();
+        });
+        $('.parent1').on("mousemove", function () {
+            $('.child').show();
+        });
+        setTimeout(function () {
+            $('.parent1').on("mouseout", function () {
+                $('.child').hide();
+            })
+        }, 1000);
+        $('.child').on("mousemove", function () {
+            $('.child').show();
+        });
+        $('.child').on("mouseout", function () {
+            $('.child').hide();
+        });
     </script>
 </body>
 </html>
