@@ -367,6 +367,10 @@ namespace EMT.DoneNOW.DTO
             SUBCOMPANY_COMPANY_VIEW = 872,      // 客户管理-详情-子客户查询
             OPPORTUNITY_CONTACT_VIEW = 873,     // 联系人管理-详情-商机查询
             SUB_COMPANY_CALLBACK = 877,         // 独立客户查找带回（没有父客户和子客户）
+            PRODUCT_CALLBACK = 882,             // 产品查找带回
+            MANY_PRODUCT_CALLBACK=885,          // 产品多选查找带回
+            SERVICE_CALLBACK=883,               // 服务查找带回
+            SERVICE_BUNDLE_CALLBACK=884,        // 服务集查找带回
         }
 
         /// <summary>
@@ -540,5 +544,12 @@ namespace EMT.DoneNOW.DTO
 
         QuoteTemplateAdd = 181,                 // 报价模板新增
         QuoteTemplateEdit = 182,                // 报价模板编辑
+
+        ProductSelect = 190,                    // 产品查找带回
+        ManyProductSelect = 191,                // 多选产品查找带回
+                                                
+        ServiceSelect=200,                      // 服务的查找带回
+        ServiceBundleSelect= 201,               // 服务集的查找带回
+
     }
 }

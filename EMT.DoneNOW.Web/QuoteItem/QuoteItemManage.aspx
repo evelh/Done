@@ -1596,7 +1596,9 @@
             $(".ITG").css('display', '');
         }
         if (show_each_tax_in_tax_period == 0) {
-            $(".ITP").css('display', 'none');  // 隐藏掉这个tr
+            if ($("#groupBy").val() == <%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_GROUP_BY.CYCLE %>) {
+                $(".ITP").css('display', 'none');  // 隐藏掉这个tr
+            }   
         }
         else {
             $(".ITP").css('display', '');

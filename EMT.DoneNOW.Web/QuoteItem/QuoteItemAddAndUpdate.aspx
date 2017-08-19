@@ -276,10 +276,14 @@
                                             <span id="errorSmall">*</span>
                                                 <div>
                                                     <input type="text" name="name" id="name" value="<%=isAdd?"":quote_item.name %>" style="width: 17em;"/>
-                                                    <i id="callBackChooseRole" onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="callBackManyRole" onclick="" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="AddRole" onclick="" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="callBackChooseProduct" onclick="" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackChooseRole" onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    
+                                                    <i id="callBackChooseProduct" onclick="chooseProduct()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackManyProduct" onclick="" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -125px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="AddProduct" onclick="" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackService" onclick="chooseService()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackServiceBundle" onclick="chooseServiceBundle()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    
                                                     <input type="hidden" id="nameHidden"/>
                                                 </div>
                                             </td>
@@ -287,9 +291,7 @@
                                         <tr>
                                             <td class="FieldLabels">报价项描述
                                             <div>
-                                                <textarea name="description" id="description" style="width: 17em;" rows="5">
-                                                        <%=(!isAdd)&&(!string.IsNullOrEmpty(quote_item.description))?quote_item.description:"" %>
-                        </textarea>
+                                                <textarea name="description" id="description" style="width: 17em;" rows="5"><%=(!isAdd)&&(!string.IsNullOrEmpty(quote_item.description))?quote_item.description:"" %></textarea>
                                             </div>
                                             </td>
                                         </tr>
@@ -602,21 +604,25 @@
         {
             $("#period_type_id").attr("disabled", "disabled");
             $("#ByProjectTr").css("display","");
-           
+            $("#callBackChooseRole").css("display", "");
         }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT %>) // 产品的处理
         {
             $("#productShow").css("display", "");
-            $("#callBackChooseProduct").css("display", "");
+            $("#callBackManyProduct").css("display", "");
             $("#MSRP_tr").css("display", "");
             $("#callBackManyRole").css("display", "");
             $("#AddRole").css("display", "");
             $("#callBackChooseRole").css("display", "none");
+            $("#callBackChooseProduct").css("display", "");// callBackChooseProduct
+            $("#AddProduct").css("display", "");
         }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.SERVICE %>)  // 服务
         {
             $("#name").attr("disabled", "disabled");
             $(".serviceTr").css("display", "");
+            $("#callBackService").css("display", ""); 
+            $("#callBackServiceBundle").css("display", ""); 
         }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DEGRESSION %>) // 成本
         {
@@ -834,8 +840,8 @@
         return s;
     }
     // 查找带回产品
-    function chooseProduct() {
-
+    function chooseProduct() { //PRODUCT_CALLBACK
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=name&callBack=GetDaraByProduct", '<%=EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDaraByProduct() {
         var product_id = $("#nameHidden").val();
@@ -863,7 +869,7 @@
     }
     // 查找带回服务
     function chooseService() {
-
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALLBACK %>&field=name&callBack=GetDataByService", '<%=EMT.DoneNOW.DTO.OpenWindow.ServiceSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDataByService() {
         var service_id = $("#nameHidden").val();
@@ -888,7 +894,7 @@
     }
     // 查找带回服务集
     function chooseServiceBundle() {
-
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_BUNDLE_CALLBACK %>&field=name&callBack=GetDataByServiceBundle", '<%=EMT.DoneNOW.DTO.OpenWindow.ServiceBundleSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDataByServiceBundle() {
         var service_bundle_id = $("#nameHidden").val();
@@ -922,6 +928,10 @@
     }
 
     // 多选查找带回产品的时候--直接循环添加多个报价项
+
+    function chooseManyProduct() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MANY_PRODUCT_CALLBACK %>&field=name&callBack=GetDataByRole", '<%=EMT.DoneNOW.DTO.OpenWindow.ManyProductSelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
     function AddManyQuoteItem() {
         var productIds = $("#nameHidden").val();
         var quote_id = $("#thisQuoteId").val();

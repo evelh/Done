@@ -228,6 +228,8 @@ namespace EMT.DoneNOW.BLL
             quote.shipping_type_id = quote.shipping_type_id == 0 ? null : quote.shipping_type_id;
             quote.tax_region_id = quote.tax_region_id == 0 ? null : quote.tax_region_id;
             quote.quote_tmpl_id = old_quote.quote_tmpl_id;
+            quote.create_time = old_quote.create_time;
+            quote.create_user_id = old_quote.create_user_id;
             quote.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             quote.update_user_id = user_id;
             _dal.Update(quote);

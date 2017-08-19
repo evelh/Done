@@ -488,10 +488,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-                            <textarea id="<%=udf.id %>" rows="2" cols="20">
-                                <%=company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>
-
-                            </textarea>
+                            <textarea id="<%=udf.id %>" rows="2" cols="20"><%=company_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %></textarea>
 
                         </div>
                     </td>
