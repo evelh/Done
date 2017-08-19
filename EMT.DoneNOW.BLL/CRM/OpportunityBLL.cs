@@ -570,36 +570,34 @@ namespace EMT.DoneNOW.BLL.CRM
 
             #region 处理逻辑5. 保存销售订单
 
+            // 一个商机只会有一个销售订单
             var saleOrderDal = new crm_sales_order_dal();
-            var salesOrderList = saleOrderDal.GetSalesOrderByWhere($" and opportunity_id = {opportunityDto.opportunity.id}");
-            if (salesOrderList != null && salesOrderList.Count > 0)
+            var salesOrder = saleOrderDal.GetSingleSalesOrderByWhere($" and opportunity_id = {opportunityDto.opportunity.id}");
+            
+         
+            if (salesOrder.status_id == (int)SALES_ORDER_STATUS.IN_PROGRESS || salesOrder.status_id==(int)SALES_ORDER_STATUS.PARTIALLY_FULFILLED)
             {
-                foreach (var salesOrder in salesOrderList)
+                salesOrder.status_id = (int)SALES_ORDER_STATUS.CANCELED;
+                salesOrder.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                salesOrder.update_user_id = user.id;
+                new sys_oper_log_dal().Insert(new sys_oper_log()
                 {
-                    if (salesOrder.status_id == (int)SALES_ORDER_STATUS.IN_PROGRESS || salesOrder.status_id == (int)SALES_ORDER_STATUS.PARTIALLY_FULFILLED)
-                    {
-                        salesOrder.status_id = (int)SALES_ORDER_STATUS.CANCELED;
-                        salesOrder.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                        salesOrder.update_user_id = user.id;
-                        new sys_oper_log_dal().Insert(new sys_oper_log()
-                        {
-                            user_cate = "用户",
-                            user_id = (int)user.id,
-                            name = user.name,
-                            phone = user.mobile == null ? "" : user.mobile,
-                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SALE_ORDER,
-                            oper_object_id = salesOrder.id,// 操作对象id
-                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                            oper_description = _dal.CompareValue(saleOrderDal.GetSingleSalesOrderByWhere($" and id = {salesOrder.id}"), salesOrder),
-                            remark = "修改销售订单的状态为取消"
+                    user_cate = "用户",
+                    user_id = (int)user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SALE_ORDER,
+                    oper_object_id = salesOrder.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_description = _dal.CompareValue(saleOrderDal.GetSingleSalesOrderByWhere($" and id={salesOrder.id}"),salesOrder),
+                    remark = "丢失商机时修改销售订单的状态为取消"
 
-                        });
-                        saleOrderDal.Update(salesOrder);
-                    }
-                }
+                });
+                saleOrderDal.Update(salesOrder);
             }
-
+          
+          
             #endregion
 
             return ERROR_CODE.SUCCESS;
