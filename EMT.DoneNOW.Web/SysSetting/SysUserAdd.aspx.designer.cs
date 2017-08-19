@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web {
+namespace EMT.DoneNOW.Web.SysSetting {
     
     
-    public partial class SysManage {
+    public partial class SysUserAdd {
         
         /// <summary>
         /// form1 控件。
@@ -76,6 +76,33 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.DropDownList Prefix;
         
         /// <summary>
+        /// first_name 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox first_name;
+        
+        /// <summary>
+        /// last_name 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox last_name;
+        
+        /// <summary>
+        /// title 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox title;
+        
+        /// <summary>
         /// NameSuffix 控件。
         /// </summary>
         /// <remarks>
@@ -103,6 +130,51 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.DropDownList Position;
         
         /// <summary>
+        /// office_phone 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox office_phone;
+        
+        /// <summary>
+        /// TextBox1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        
+        /// <summary>
+        /// home_phone 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox home_phone;
+        
+        /// <summary>
+        /// mobile_phone 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox mobile_phone;
+        
+        /// <summary>
+        /// email 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox email;
+        
+        /// <summary>
         /// EmailType 控件。
         /// </summary>
         /// <remarks>
@@ -112,6 +184,15 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.DropDownList EmailType;
         
         /// <summary>
+        /// email1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox email1;
+        
+        /// <summary>
         /// EmailType1 控件。
         /// </summary>
         /// <remarks>
@@ -119,6 +200,15 @@ namespace EMT.DoneNOW.Web {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList EmailType1;
+        
+        /// <summary>
+        /// email2 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox email2;
         
         /// <summary>
         /// EmailType2 控件。
@@ -157,6 +247,15 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.DropDownList NumberFormat;
         
         /// <summary>
+        /// name 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox name;
+        
+        /// <summary>
         /// www 控件。
         /// </summary>
         /// <remarks>
@@ -166,13 +265,31 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.Label www;
         
         /// <summary>
-        /// is_active 控件。
+        /// password 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox is_active;
+        protected global::System.Web.UI.WebControls.TextBox password;
+        
+        /// <summary>
+        /// password2 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox password2;
+        
+        /// <summary>
+        /// ACTIVE 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ACTIVE;
         
         /// <summary>
         /// Security_Level 控件。
@@ -182,6 +299,42 @@ namespace EMT.DoneNOW.Web {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList Security_Level;
+        
+        /// <summary>
+        /// can_edit_skills 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox can_edit_skills;
+        
+        /// <summary>
+        /// can_manage_kb_articles 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox can_manage_kb_articles;
+        
+        /// <summary>
+        /// allow_send_bulk_email 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox allow_send_bulk_email;
+        
+        /// <summary>
+        /// is_required_to_submit_timesheets 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox is_required_to_submit_timesheets;
         
         /// <summary>
         /// Outsource_Security 控件。

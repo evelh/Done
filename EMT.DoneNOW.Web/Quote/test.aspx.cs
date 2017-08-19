@@ -24,6 +24,14 @@ namespace EMT.DoneNOW.Web
         private QuoteTemplateAddDto.BODY quote_body = new QuoteTemplateAddDto.BODY();
         private QuoteTemplateAddDto.Tax_Total_Disp ttd = new QuoteTemplateAddDto.Tax_Total_Disp();
         List<int> showstyle = new List<int>();//存储设置税收显示情况
+        private double Super_toatl = 0;
+        private double Super_tax_total = 0;
+        private double option = 0;
+        private double option_tax = 0;
+        Dictionary<int, Double> taxt_item_sum = new Dictionary<int, double>();//用于统计全部子项税收
+        List<int> sup = new List<int>();
+        Dictionary<string, string> cyc_tax = new Dictionary<string, string>();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //从URL地址获取报价id
@@ -81,6 +89,25 @@ namespace EMT.DoneNOW.Web
                 ttd = new EMT.Tools.Serialize().DeserializeJson<QuoteTemplateAddDto.Tax_Total_Disp>(list.tax_total_disp.Replace("'", "\"")); //税收汇总自定义
                 //显示表头
                 StringBuilder table = new StringBuilder();
+
+
+               
+
+
+                
+                string quote_footer = "";
+                if (!string.IsNullOrEmpty(list.quote_footer_html))
+                {
+                    quote_footer = VarSub(list.quote_footer_html);
+                    quote_footer = HttpUtility.HtmlDecode(quote_footer).Replace("\"", "'");//底部
+                }
+                string page_footer = "";
+                if (!string.IsNullOrEmpty(list.page_footer_html))
+                {
+                    page_footer = VarSub(list.page_footer_html);
+                    page_footer = HttpUtility.HtmlDecode(page_footer).Replace("\"", "'");//页脚
+                }
+
                 table.Append("<table class='ReadOnlyGrid_Table'>");
                 table.Append("<tr>");
                 foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
@@ -95,7 +122,12 @@ namespace EMT.DoneNOW.Web
                         colsum += 1;
                     }
                 }
+
                 table.Append("</tr>");
+                if (quote_body.GRID_OPTIONS[0].Show_vertical_lines == "yes")
+                {
+                    Response.Write("<style>.bord{border-left: 1px solid  #eaeaea;border-right: 1px solid #eaeaea;}</style>");
+                }
                 //设置税收显示情况
                 if (list.show_each_tax_in_tax_period == 1)//每个期间类型分开计算税额',
                 { showstyle.Add(1); }
@@ -105,47 +137,82 @@ namespace EMT.DoneNOW.Web
                 { showstyle.Add(3); }
                 if (list.show_tax_cate == 1)//显示税收种类
                 { showstyle.Add(4); }
-                table.Append(cyclegroup());
-                table.Append("</table>");
+
+
+                ///
+                string ccyy = cyclegroup();
+                string page_header = "";
+                if (!string.IsNullOrEmpty(list.page_header_html))
+                {
+
+                    page_header = VarSub(list.page_header_html);//变量替换
+
+                    page_header = HttpUtility.HtmlDecode(page_header).Replace("\"", "'");//页眉
+
+
+                }
+                string quote_header = "";
+                if (!string.IsNullOrEmpty(list.quote_header_html))
+                {
+                    quote_header = VarSubTop(list.quote_header_html);
+                    quote_header = HttpUtility.HtmlDecode(quote_header).Replace("\"", "'");//头部
+                }
+                table.Append(page_header);
+
+                //此处需要特别处理
+                table.Append(quote_header);
+                //页眉+top
+
+                //测试先屏蔽其他情况
+                if (qddata.group_by_id == (int)DicEnum.QUOTE_GROUP_BY.NO)//不分组
+                {
+                    table.Append(nogroup());
+                }
+                if (qddata.group_by_id == (int)DicEnum.QUOTE_GROUP_BY.CYCLE)//按周期分组
+                {
+                    table.Append(ccyy);
+                }
+                if (qddata.group_by_id == (int)DicEnum.QUOTE_GROUP_BY.PRODUCT)//按产品种类分组
+                {
+                    table.Append(productgroup()); 
+                }
+                if (qddata.group_by_id == (int)DicEnum.QUOTE_GROUP_BY.CYCLE_PRODUCT)//按周期+产品种类分组
+                {
+                    table.Append(cycle_productgroup());
+                }
+                if (qddata.group_by_id == (int)DicEnum.QUOTE_GROUP_BY.PRODUCT_CYCLE)//按产品种类+周期分组
+                {
+                    table.Append(product_cyclegroup()); 
+                }
+                if (string.IsNullOrEmpty(qddata.group_by_id.ToString()))
+                {
+                    nogroup();//使用不分组展示
+                }
+
+
+                table.Append(cycle_productgroup());
+                table.Append(Total());
+
+                table.Append("</table>");               
+
+                
+
+                //bottom+底部
+
+                table.Append(quote_footer);
+                table.Append(page_footer);
+
+
+
                 this.table.Text = table.ToString();
                 showstyle.Clear();
                 table.Clear();
                 //判断分组
 
 
-                //测试先屏蔽其他情况
-                //    if (qddata.group_by_id == 1192)//不分组
-                //    {
-                //        nogroup();
-                //    }
-                //    if (qddata.group_by_id == 1193)//按周期分组
-                //    {
-                //        cycle(list);
-                //    }
-                //    if (qddata.group_by_id == 1194)//按产品种类分组
-                //    {
-                //        productgroup();
-                //    }
-                //    if (qddata.group_by_id == 1195)//按周期+产品种类分组
-                //    {
-                //        cycle_productgroup();
-                //    }
-                //    if (qddata.group_by_id == 1196)//按产品种类+周期分组
-                //    {
-                //        product_cyclegroup();
-                //    }
-                //    if (string.IsNullOrEmpty(qddata.group_by_id.ToString()))
-                //    {
-                //        nogroup();//使用不分组展示
-                //    }
-                //}
-                //else { 
-
-                //    //此处先空着
+              
 
 
-
-                
             }
 
         }
@@ -162,19 +229,20 @@ namespace EMT.DoneNOW.Web
             StringBuilder nogroup = new StringBuilder();
             var cqi = new QuoteItemBLL().GetAllQuoteItem(qddata.id);
             double sumtotal = 0;//报价单所有子项汇总
-            double sumtax = 0;
             List<crm_quote_item> three = new List<crm_quote_item>();
+            List<crm_quote_item> onetime = new List<crm_quote_item>();
             int order = 1;//序列号
             double total;//总价
             foreach (var item in cqi)
             {
                 if (item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
                 {
+                    if (item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME)
+                    {
+                        onetime.Add(item);
+                    }
                     nogroup.Append(td(item, out total, ref order));
-                    sumtotal += total; 
-                    if(!string.IsNullOrEmpty(item.tax_cate_id.ToString()))
-                    //ShowTax((int)item.tax_cate_id,ref total);//计算税收
-                   sumtax += total;
+                    sumtotal += total;
                 }
 
                 else
@@ -182,11 +250,9 @@ namespace EMT.DoneNOW.Web
                     three.Add(item);
                 }
             }
-
-            nogroup.Append(Threesingle(three, out total, ref order));
-            sumtotal += total;
-            //nogroup.Append("<tr><td colspan=" + (colsum+1 - 2) + " style='text-align:Right;'>" + ttd.Total_Taxes+ "</td><td style='text-align:Right;'>" + sumtax + "</td></tr>");
-            nogroup.Append("<tr><td colspan="+(colsum+1-2)+ " style='text-align:Right;'>"+ttd.Total+"</td><td style='text-align:Right;'>" + sumtotal + "</td></tr>");
+            //汇总
+            nogroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
+            nogroup.Append(Threesingle(three, onetime, out total, ref order));
             return nogroup.ToString();
         }
         /// <summary>
@@ -200,14 +266,20 @@ namespace EMT.DoneNOW.Web
             var cqi = new QuoteItemBLL().GetAllQuoteItem(qddata.id);//获取所有子项
             //double sumtotal = 0;//报价单所有子项汇总
             List<crm_quote_item> three = new List<crm_quote_item>();
+            List<crm_quote_item> onetime = new List<crm_quote_item>();
             Dictionary<string, crm_quote_item> pro = new Dictionary<string, crm_quote_item>();
             List<string> name = new List<string>();
             int order = 1;//序列号
             double total;//总价
+            double sumtotal = 0;
             foreach (var item in cqi)
             {
                 if (item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
                 {
+                    if (item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME)
+                    {
+                        onetime.Add(item);
+                    }
                     if (!string.IsNullOrEmpty(item.object_id.ToString()))
                     {
                         var prod = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={item.object_id}");
@@ -240,8 +312,11 @@ namespace EMT.DoneNOW.Web
                         if (na == proname.Key)//输出同一产品的
                         {
                             productgroup.Append(td(proname.Value, out total, ref order));
+                            sumtotal += total;
                         }
                     }
+                    productgroup.Append("<tr><td style = 'text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total + "(" + na + ")</strong></td><td style = 'text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
+                    sumtotal = 0;
                 }
             }
             //无产品绑定的，object_id为空
@@ -255,35 +330,45 @@ namespace EMT.DoneNOW.Web
                         if (string.IsNullOrEmpty(item.object_id.ToString()))
                         {
                             productgroup.Append(td(item, out total, ref order));
+                            sumtotal += total;
                         }
                     }
                 }
+                productgroup.Append("<tr><td style = 'text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total + "(无产品)</strong></td><td style = 'text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
+                sumtotal = 0;
             }
             if (three.Count > 0)
-             productgroup.Append(Threesingle(three, out total, ref order));
+                productgroup.Append(Threesingle(three, onetime, out total, ref order));
             return productgroup.ToString();
         }
         /// <summary>
         /// 周期+产品
         /// </summary>
         /// <returns></returns>
-        private string cycle_productgroup() {// 周期产品
+        private string cycle_productgroup()
+        {// 周期产品
             int order = 1;//序列号
             double total;//总价
             List<crm_quote_item> three = new List<crm_quote_item>();
             List<crm_quote_item> groupitem = new List<crm_quote_item>();
+            List<crm_quote_item> onetime = new List<crm_quote_item>();
             StringBuilder cycle_productgroup = new StringBuilder();
             var cqi = new QuoteItemBLL().GetAllQuoteItem(qddata.id);
             // 按周期产品分组
-            foreach (var item in cqi) {
+            foreach (var item in cqi)
+            {
                 if (item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
                 {
                     groupitem.Add(item);
+                    if (item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME)
+                    {
+                        onetime.Add(item);
+                    }
                 }
                 else
                 {
                     three.Add(item);
-                }                
+                }
             }
             var doubleGroupList = groupitem.GroupBy(d => d.period_type_id == null ? "" : d.period_type_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList().GroupBy(d => d.object_id == null ? "" : d.object_id.ToString()).ToDictionary(d => (object)d.Key, d => d.ToList()));
             foreach (var item1 in doubleGroupList)
@@ -303,15 +388,30 @@ namespace EMT.DoneNOW.Web
                                 cycle_productgroup.Append(td(item3, out total, ref order));
                             }
                         }
-                        else {
+                        else
+                        {
                             cycle_productgroup.Append(group_chind_td("无产品"));
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 cycle_productgroup.Append(td(item3, out total, ref order));
                             }
 
-                        }                        
+                        }
                     }
+                    //汇总
+                    //statrt显示税收                   
+                    if (showstyle.Contains(1))//每个期间类型分开计算税额
+                    {
+                        //计算子汇总
+                        cycle_productgroup.Append(cyc_tax["onesub"]);
+                        if (showstyle.Contains(2))
+                        {
+                            cycle_productgroup.Append(cyc_tax["onetax"]);
+                        }
+                        cycle_productgroup.Append(cyc_tax["onetaxsum"]);
+                    }
+                    //stop显示税收
+                    cycle_productgroup.Append(cyc_tax["onetotal"]);
 
                 }//stop
                 //start  按月分组
@@ -339,6 +439,19 @@ namespace EMT.DoneNOW.Web
 
                         }
                     }
+                    //statrt显示税收                   
+                    if (showstyle.Contains(1))//每个期间类型分开计算税额
+                    {
+                        //计算子汇总
+                        cycle_productgroup.Append(cyc_tax["montsub"]);
+                        if (showstyle.Contains(2))
+                        {
+                            cycle_productgroup.Append(cyc_tax["monttax"]);
+                        }
+                        cycle_productgroup.Append(cyc_tax["monttaxsum"]);
+                    }
+                    //stop显示税收
+                    cycle_productgroup.Append(cyc_tax["monttotal"]);
 
                 }
                 //stop
@@ -367,6 +480,19 @@ namespace EMT.DoneNOW.Web
 
                         }
                     }
+                    //statrt显示税收                   
+                    if (showstyle.Contains(1))//每个期间类型分开计算税额
+                    {
+                        //计算子汇总
+                        cycle_productgroup.Append(cyc_tax["quarsub"]);
+                        if (showstyle.Contains(2))
+                        {
+                            cycle_productgroup.Append(cyc_tax["quartax"]);
+                        }
+                        cycle_productgroup.Append(cyc_tax["quartaxsum"]);
+                    }
+                    //stop显示税收
+                    cycle_productgroup.Append(cyc_tax["quartotal"]);
 
                 }
                 //stop
@@ -395,6 +521,19 @@ namespace EMT.DoneNOW.Web
 
                         }
                     }
+                    //statrt显示税收                   
+                    if (showstyle.Contains(1))//每个期间类型分开计算税额
+                    {
+                        //计算子汇总
+                        cycle_productgroup.Append(cyc_tax["semisub"]);
+                        if (showstyle.Contains(2))
+                        {
+                            cycle_productgroup.Append(cyc_tax["semitax"]);
+                        }
+                        cycle_productgroup.Append(cyc_tax["semitaxsum"]);
+                    }
+                    //stop显示税收
+                    cycle_productgroup.Append(cyc_tax["semitotal"]);
 
                 }
                 //stop
@@ -423,37 +562,63 @@ namespace EMT.DoneNOW.Web
 
                         }
                     }
-                }
-                    //start  无分组分组
-                    if (string.IsNullOrEmpty(item1.Key.ToString()))
+                    //statrt显示税收                   
+                    if (showstyle.Contains(1))//每个期间类型分开计算税额
                     {
-                        cycle_productgroup.Append(group_td("无分组"));
-                        foreach (var item2 in item1.Value)
+                        //计算子汇总
+                        cycle_productgroup.Append(cyc_tax["yearsub"]);
+                        if (showstyle.Contains(2))
                         {
-                            if (!string.IsNullOrEmpty(item2.Key.ToString()))
+                            cycle_productgroup.Append(cyc_tax["yeartax"]);
+                        }
+                        cycle_productgroup.Append(cyc_tax["yeartaxsum"]);
+                    }
+                    //stop显示税收
+                    cycle_productgroup.Append(cyc_tax["yeartotal"]);
+                }
+                //start  无分组分组
+                if (string.IsNullOrEmpty(item1.Key.ToString()))
+                {
+                    cycle_productgroup.Append(group_td("无分组"));
+                    foreach (var item2 in item1.Value)
+                    {
+                        if (!string.IsNullOrEmpty(item2.Key.ToString()))
+                        {
+                            var prod = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={item2.Key}");
+                            cycle_productgroup.Append(group_chind_td(prod.product_name));//产品分组
+                            foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
-                                var prod = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={item2.Key}");
-                                cycle_productgroup.Append(group_chind_td(prod.product_name));//产品分组
-                                foreach (var item3 in item2.Value as List<crm_quote_item>)
-                                {
-                                    cycle_productgroup.Append(td(item3, out total, ref order));
-                                }
+                                cycle_productgroup.Append(td(item3, out total, ref order));
                             }
-                            else
+                        }
+                        else
+                        {
+                            cycle_productgroup.Append(group_chind_td("无产品"));
+                            foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
-                                cycle_productgroup.Append(group_chind_td("无产品"));
-                                foreach (var item3 in item2.Value as List<crm_quote_item>)
-                                {
-                                    cycle_productgroup.Append(td(item3, out total, ref order));
-                                }
+                                cycle_productgroup.Append(td(item3, out total, ref order));
+                            }
 
-                            }
-                        }                   
+                        }
+                    }
                     //stop
+                    //statrt显示税收                   
+                    if (showstyle.Contains(1))//每个期间类型分开计算税额
+                    {
+                        //计算子汇总
+                        cycle_productgroup.Append(cyc_tax["nosub"]);
+                        if (showstyle.Contains(2))
+                        {
+                            cycle_productgroup.Append(cyc_tax["notax"]);
+                        }
+                        cycle_productgroup.Append(cyc_tax["notaxsum"]);
+                    }
+                    //stop显示税收
+                    cycle_productgroup.Append(cyc_tax["nototal"]);
 
                 }
             }
-            cycle_productgroup.Append(Threesingle(three, out total, ref order));
+            cycle_productgroup.Append(Threesingle(three, onetime, out total, ref order));
             return cycle_productgroup.ToString();
         }
 
@@ -461,19 +626,26 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 按产品种类+周期分组
         /// </summary>
-        private string product_cyclegroup() {
+        private string product_cyclegroup()
+        {
             int order = 1;//序列号
             double total;//总价
             List<crm_quote_item> three = new List<crm_quote_item>();
             List<crm_quote_item> groupitem = new List<crm_quote_item>();
+            List<crm_quote_item> onetime = new List<crm_quote_item>();
             StringBuilder product_cyclegroup = new StringBuilder();
             var cqi = new QuoteItemBLL().GetAllQuoteItem(qddata.id);
+            double sumtotal = 0;
             // 按周期产品分组
             foreach (var item in cqi)
             {
                 if (item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
                 {
                     groupitem.Add(item);
+                    if (item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME)
+                    {
+                        onetime.Add(item);
+                    }
                 }
                 else
                 {
@@ -502,6 +674,7 @@ namespace EMT.DoneNOW.Web
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 product_cyclegroup.Append(td(item3, out total, ref order));
+                                sumtotal += total;
                             }
                         }
                         //按月
@@ -511,6 +684,7 @@ namespace EMT.DoneNOW.Web
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 product_cyclegroup.Append(td(item3, out total, ref order));
+                                sumtotal += total;
                             }
                         }
                         //按季度
@@ -520,6 +694,7 @@ namespace EMT.DoneNOW.Web
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 product_cyclegroup.Append(td(item3, out total, ref order));
+                                sumtotal += total;
                             }
                         }
                         //按半年
@@ -529,6 +704,7 @@ namespace EMT.DoneNOW.Web
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 product_cyclegroup.Append(td(item3, out total, ref order));
+                                sumtotal += total;
                             }
                         }
                         //按半年
@@ -538,6 +714,7 @@ namespace EMT.DoneNOW.Web
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 product_cyclegroup.Append(td(item3, out total, ref order));
+                                sumtotal += total;
                             }
                         }
                         //按无分组
@@ -547,9 +724,12 @@ namespace EMT.DoneNOW.Web
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 product_cyclegroup.Append(td(item3, out total, ref order));
+                                sumtotal += total;
                             }
                         }
                     }
+                    product_cyclegroup.Append("<tr><td style = 'text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total + "(" + prod.product_name + ")</strong></td><td style = 'text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
+                    sumtotal = 0;
                 }
                 else//无产品
                 {
@@ -563,6 +743,7 @@ namespace EMT.DoneNOW.Web
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 product_cyclegroup.Append(td(item3, out total, ref order));
+                                sumtotal += total;
                             }
                         }
                         //按月
@@ -572,6 +753,7 @@ namespace EMT.DoneNOW.Web
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 product_cyclegroup.Append(td(item3, out total, ref order));
+                                sumtotal += total;
                             }
                         }
                         //按季度
@@ -581,6 +763,7 @@ namespace EMT.DoneNOW.Web
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 product_cyclegroup.Append(td(item3, out total, ref order));
+                                sumtotal += total;
                             }
                         }
                         //按半年
@@ -590,6 +773,7 @@ namespace EMT.DoneNOW.Web
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 product_cyclegroup.Append(td(item3, out total, ref order));
+                                sumtotal += total;
                             }
                         }
                         //按半年
@@ -599,6 +783,7 @@ namespace EMT.DoneNOW.Web
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 product_cyclegroup.Append(td(item3, out total, ref order));
+                                sumtotal += total;
                             }
                         }
                         //按无分组
@@ -608,28 +793,32 @@ namespace EMT.DoneNOW.Web
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 product_cyclegroup.Append(td(item3, out total, ref order));
+                                sumtotal += total;
                             }
                         }
                     }
-
+                    product_cyclegroup.Append("<tr><td style = 'text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total + "(无产品)</strong></td><td style = 'text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
+                    sumtotal = 0;
                 }
 
 
             }
-            product_cyclegroup.Append(Threesingle(three, out total, ref order));
+            product_cyclegroup.Append(Threesingle(three, onetime, out total, ref order));
             return product_cyclegroup.ToString();
 
         }
 
 
-        
 
-        private string cyclegroup() {
+
+        private string cyclegroup()
+        {
             StringBuilder cyclegroup = new StringBuilder();
             int order = 1;//序列号
             double total;//总价
             List<crm_quote_item> three = new List<crm_quote_item>();
             List<crm_quote_item> groupitem = new List<crm_quote_item>();
+            List<crm_quote_item> oneitem = new List<crm_quote_item>();
             StringBuilder product_cyclegroup = new StringBuilder();
             var cqi = new QuoteItemBLL().GetAllQuoteItem(qddata.id);
             // 按周期产品分组
@@ -638,6 +827,10 @@ namespace EMT.DoneNOW.Web
                 if (item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
                 {
                     groupitem.Add(item);
+                    if (item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME)
+                    {
+                        oneitem.Add(item);
+                    }
                 }
                 else
                 {
@@ -650,23 +843,20 @@ namespace EMT.DoneNOW.Web
                 //start一次性收费
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME)
                 {
+                    double onetotal = 0;
+                    double tax_sum = 0;
+                    StringBuilder k = new StringBuilder();
                     cyclegroup.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].One_Time_items));//周期分组
-                        foreach (var item3 in item1.Value as List<crm_quote_item>)
-                        {
-                            cyclegroup.Append(td(item3, out total, ref order));
-                        }
-
-                    
-                    if (showstyle.Contains(2)) { }
-                    //分行显示每个税收组的税额',
-                    if (showstyle.Contains(3)) { }
-                    //显示税收种类上标',
-                    if (showstyle.Contains(4)) { }
+                    foreach (var item3 in item1.Value as List<crm_quote_item>)
+                    {
+                        cyclegroup.Append(td(item3, out total, ref order));
+                        onetotal += total;
+                    }
                     //statrt显示税收
                     double sum = 0;
-                    double tax_sum = 0;
-                    var tax = item1.Value.GroupBy(d => d.tax_cate_id == null?"": d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
-                    foreach (var item_tax in tax) {
+                    var tax = item1.Value.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
+                    foreach (var item_tax in tax)
+                    {
                         if (!string.IsNullOrEmpty(item_tax.Key.ToString()))
                         {
                             sum = 0;
@@ -675,36 +865,66 @@ namespace EMT.DoneNOW.Web
                                 if (item1_tax.quantity != null && item1_tax.unit_price != null)
                                 {
 
-                                    sum += (double)((item1_tax.unit_price-item1_tax.unit_discount)*item1_tax.quantity);
+                                    sum += (double)((item1_tax.unit_price - item1_tax.unit_discount) * item1_tax.quantity);
+
                                 }
                             }
-                            string k=ShowTax(Convert.ToInt32(item_tax.Key),ref sum);//计算税收
-                            tax_sum += sum;                            
-                            if (showstyle.Contains(1))//每个期间类型分开计算税额
+                            //统计税收
+                            if (taxt_item_sum.ContainsKey(Convert.ToInt32(item_tax.Key)))
                             {
-                                if (showstyle.Contains(2)) {
-                                    cyclegroup.Append(k);
-                                }                                
+                                taxt_item_sum[Convert.ToInt32(item_tax.Key)] += sum;
                             }
+                            else
+                            {
+                                taxt_item_sum.Add(Convert.ToInt32(item_tax.Key), sum);
+                            }
+
+
+                            k.Append(ShowTax(Convert.ToInt32(item_tax.Key), ref sum));//计算税收
+                            tax_sum += sum;
+
                         }
 
                     }
+                    if (showstyle.Contains(1))//每个期间类型分开计算税额
+                    {
+                        //计算子汇总
+                        cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.One_Time_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + onetotal + "</strong></td></tr>");
+                        string k1 = "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.One_Time_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + onetotal + "</strong></td></tr>";
+                        cyc_tax.Add("onesub", k1);
+                        cyc_tax.Add("onetax", k.ToString());
+                        if (showstyle.Contains(2))
+                        {
+                            cyclegroup.Append(k.ToString());
+                        }
+                        cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (tax_sum) + "</strong></td></tr>");
+                        cyc_tax.Add("onetaxsum", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (tax_sum) + "</strong></td></tr>");
+                    }
                     //stop显示税收
-
+                    cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.One_Time_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (onetotal + tax_sum) + "</strong></td></tr>");
+                    Super_toatl += onetotal + tax_sum;
+                    Super_tax_total += tax_sum;
+                    string k2 = "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.One_Time_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (onetotal + tax_sum) + "</strong></td></tr>";
+                    cyc_tax.Add("onetotal", k2);
                 }
 
                 //stop
                 //start  按月分组
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH)
                 {
+                    double monthsum = 0;
+                    double tax_sum = 0;
+                    StringBuilder k = new StringBuilder();
                     cyclegroup.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].Monthly_items));
                     foreach (var item3 in item1.Value as List<crm_quote_item>)
                     {
                         cyclegroup.Append(td(item3, out total, ref order));
+                        monthsum += total;
                     }
+
+
                     //statrt显示税收
                     double sum = 0;
-                    double tax_sum = 0;
                     var tax = item1.Value.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
                     foreach (var item_tax in tax)
                     {
@@ -719,33 +939,60 @@ namespace EMT.DoneNOW.Web
                                     sum += (double)((item1_tax.unit_price - item1_tax.unit_discount) * item1_tax.quantity);
                                 }
                             }
-                            string k = ShowTax(Convert.ToInt32(item_tax.Key), ref sum);//计算税收
-                            tax_sum += sum;
-                            if (showstyle.Contains(1))//每个期间类型分开计算税额
+                            //统计税收
+                            if (taxt_item_sum.ContainsKey(Convert.ToInt32(item_tax.Key)))
                             {
-                                //显示子汇总
-
-                                if (showstyle.Contains(2))
-                                {
-                                    cyclegroup.Append(k);
-                                }
+                                taxt_item_sum[Convert.ToInt32(item_tax.Key)] += sum;
                             }
+                            else
+                            {
+                                taxt_item_sum.Add(Convert.ToInt32(item_tax.Key), sum);
+                            }
+
+                            k.Append(ShowTax(Convert.ToInt32(item_tax.Key), ref sum));//计算税收
+                            tax_sum += sum;
+
+                            //显示子汇总
+                            //cyclegroup.Append("");
+
                         }
                     }
+                    if (showstyle.Contains(1))//每个期间类型分开计算税额
+                    {
+                        cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Monthly_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + monthsum + "</strong></td></tr>");
+                        string k1 = "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Monthly_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + monthsum + "</strong></td></tr>";
+                        cyc_tax.Add("montsub", k1);
+                        cyc_tax.Add("monthtax", k.ToString());
+                        if (showstyle.Contains(2))
+                        {
+                            cyclegroup.Append(k.ToString());
+                        }
+                        cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (tax_sum) + "</strong></td></tr>");
+                        cyc_tax.Add("monttaxsum", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (tax_sum) + "</strong></td></tr>");
+                    }
                     //stop显示税收
+                    cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Monthly_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (monthsum + tax_sum) + "</strong></td></tr>");
+                    cyc_tax.Add("monttotal", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Monthly_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (monthsum + tax_sum) + "</strong></td></tr>");
+                    Super_toatl += monthsum + tax_sum;
+                    Super_tax_total += tax_sum;
                 }
                 //stop
                 //start  按季度分组
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
                 {
                     cyclegroup.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].Quarterly_items));
+                    double quartersum = 0;
+                    double tax_sum = 0;
+                    StringBuilder k = new StringBuilder();
                     foreach (var item3 in item1.Value as List<crm_quote_item>)
                     {
                         cyclegroup.Append(td(item3, out total, ref order));
+                        quartersum += total;
                     }
+
                     //statrt显示税收
                     double sum = 0;
-                    double tax_sum = 0;
+
                     var tax = item1.Value.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
                     foreach (var item_tax in tax)
                     {
@@ -760,33 +1007,56 @@ namespace EMT.DoneNOW.Web
                                     sum += (double)((item1_tax.unit_price - item1_tax.unit_discount) * item1_tax.quantity);
                                 }
                             }
-                            string k = ShowTax(Convert.ToInt32(item_tax.Key), ref sum);//计算税收
-                            tax_sum += sum;
-                            if (showstyle.Contains(1))//每个期间类型分开计算税额
+                            //统计税收
+                            if (taxt_item_sum.ContainsKey(Convert.ToInt32(item_tax.Key)))
                             {
-                                if (showstyle.Contains(2))
-                                {
-                                    cyclegroup.Append(k);
-                                }
+                                taxt_item_sum[Convert.ToInt32(item_tax.Key)] += sum;
                             }
+                            else
+                            {
+                                taxt_item_sum.Add(Convert.ToInt32(item_tax.Key), sum);
+                            }
+
+                            k.Append(ShowTax(Convert.ToInt32(item_tax.Key), ref sum));//计算税收
+                            tax_sum += sum;
+
                         }
 
                     }
+                    if (showstyle.Contains(1))//每个期间类型分开计算税额
+                    {
+                        cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Quarterly_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + quartersum + "</strong></td></tr>");
+                        cyc_tax.Add("quarsub", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Quarterly_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + quartersum + "</strong></td></tr>");
+                        cyc_tax.Add("quartax", k.ToString());
+                        if (showstyle.Contains(2))
+                        {
+                            cyclegroup.Append(k.ToString());
+                        }
+                        cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (tax_sum) + "</strong></td></tr>");
+                        cyc_tax.Add("quartaxsum", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (tax_sum) + "</strong></td></tr>");
+                    }
                     //stop显示税收
-
+                    cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Quarterly_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (quartersum + tax_sum) + "</strong></td></tr>");
+                    cyc_tax.Add("quartotal", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Quarterly_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (quartersum + tax_sum) + "</strong></td></tr>");
+                    Super_toatl += quartersum + tax_sum;
+                    Super_tax_total += tax_sum;
                 }
                 //stop
                 //start  按半年分组
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
                 {
+                    double halfsum = 0;
+                    double tax_sum = 0;
+                    StringBuilder k = new StringBuilder();
                     cyclegroup.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].Semi_Annual_items));
                     foreach (var item3 in item1.Value as List<crm_quote_item>)
                     {
                         cyclegroup.Append(td(item3, out total, ref order));
+                        halfsum += total;
                     }
                     //statrt显示税收
                     double sum = 0;
-                    double tax_sum = 0;
+
                     var tax = item1.Value.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
                     foreach (var item_tax in tax)
                     {
@@ -801,32 +1071,57 @@ namespace EMT.DoneNOW.Web
                                     sum += (double)((item1_tax.unit_price - item1_tax.unit_discount) * item1_tax.quantity);
                                 }
                             }
-                            string k = ShowTax(Convert.ToInt32(item_tax.Key), ref sum);//计算税收
-                            tax_sum += sum;
-                            if (showstyle.Contains(1))//每个期间类型分开计算税额
+                            //统计税收
+                            if (taxt_item_sum.ContainsKey(Convert.ToInt32(item_tax.Key)))
                             {
-                                if (showstyle.Contains(2))
-                                {
-                                    cyclegroup.Append(k);
-                                }
+                                taxt_item_sum[Convert.ToInt32(item_tax.Key)] += sum;
                             }
+                            else
+                            {
+                                taxt_item_sum.Add(Convert.ToInt32(item_tax.Key), sum);
+                            }
+
+                            k.Append(ShowTax(Convert.ToInt32(item_tax.Key), ref sum));//计算税收
+                            tax_sum += sum;
+
                         }
 
                     }
+                    if (showstyle.Contains(1))//每个期间类型分开计算税额
+                    {
+                        cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Semi_Annual_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + halfsum + "</strong></td></tr>");
+                        cyc_tax.Add("semisub", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Semi_Annual_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + halfsum + "</strong></td></tr>");
+                        cyc_tax.Add("semitax", k.ToString());
+                        if (showstyle.Contains(2))
+                        {
+                            cyclegroup.Append(k.ToString());
+                        }
+                        cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (tax_sum) + "</strong></td></tr>");
+                        cyc_tax.Add("semitaxsum", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (tax_sum) + "</strong></td></tr>");
+                    }
                     //stop显示税收
+                    cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Semi_Annual_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (halfsum + tax_sum) + "</strong></td></tr>");
+                    cyc_tax.Add("semitotal", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Semi_Annual_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (halfsum + tax_sum) + "</strong></td></tr>");
+                    Super_toatl += halfsum + tax_sum;
+                    Super_tax_total += tax_sum;
                 }
                 //stop
                 //start  按年分组
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
                 {
+                    double yearsum = 0;
+                    double tax_sum = 0;
+                    StringBuilder k = new StringBuilder();
                     cyclegroup.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].Yearly_items));
                     foreach (var item3 in item1.Value as List<crm_quote_item>)
                     {
                         cyclegroup.Append(td(item3, out total, ref order));
+                        yearsum += total;
                     }
                     //statrt显示税收
+
                     double sum = 0;
-                    double tax_sum = 0;
+
                     var tax = item1.Value.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
                     foreach (var item_tax in tax)
                     {
@@ -841,33 +1136,57 @@ namespace EMT.DoneNOW.Web
                                     sum += (double)((item1_tax.unit_price - item1_tax.unit_discount) * item1_tax.quantity);
                                 }
                             }
-                            string k = ShowTax(Convert.ToInt32(item_tax.Key), ref sum);//计算税收
-                            tax_sum += sum;
-                            if (showstyle.Contains(1))//每个期间类型分开计算税额
+                            //统计税收
+                            if (taxt_item_sum.ContainsKey(Convert.ToInt32(item_tax.Key)))
                             {
-                                if (showstyle.Contains(2))
-                                {
-                                    cyclegroup.Append(k);
-                                }
+                                taxt_item_sum[Convert.ToInt32(item_tax.Key)] += sum;
                             }
+                            else
+                            {
+                                taxt_item_sum.Add(Convert.ToInt32(item_tax.Key), sum);
+                            }
+
+                            k.Append(ShowTax(Convert.ToInt32(item_tax.Key), ref sum));//计算税收
+                            tax_sum += sum;
+
                         }
 
                     }
+                    if (showstyle.Contains(1))//每个期间类型分开计算税额
+                    {
+                        cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Yearly_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + yearsum + "</strong></td></tr>");
+                        cyc_tax.Add("yearsub", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Yearly_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + yearsum + "</strong></td></tr>");
+                        cyc_tax.Add("yeartax", k.ToString());
+                        if (showstyle.Contains(2))
+                        {
+                            cyclegroup.Append(k);
+                        }
+                        cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + tax_sum + "</strong></td></tr>");
+                        cyc_tax.Add("yeartaxsum", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + tax_sum + "</strong></td></tr>");
+
+                    }
                     //stop显示税收
-                    //
+                    cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Yearly_Total + "</strong></td><td style='text-align: Right;' class='bord'>" + (yearsum + tax_sum) + "</td></tr>");
+                    cyc_tax.Add("yeartotal", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Yearly_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (yearsum + tax_sum) + "</strong></td></tr>");
+                    Super_toatl += yearsum + tax_sum;
+                    Super_tax_total += tax_sum;
                 }
                 //stop
                 //start  无分组
                 if (string.IsNullOrEmpty(item1.Key.ToString()))
                 {
-                    cyclegroup.Append(group_td("无分组"));
+                    double nogroupp = 0;
+                    double tax_sum = 0;
+                    StringBuilder k = new StringBuilder();
+                    cyclegroup.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].No_category));
                     foreach (var item3 in item1.Value as List<crm_quote_item>)
                     {
                         cyclegroup.Append(td(item3, out total, ref order));
+                        nogroupp += total;
                     }
                     //statrt显示税收
                     double sum = 0;
-                    double tax_sum = 0;
+
                     var tax = item1.Value.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
                     foreach (var item_tax in tax)
                     {
@@ -882,23 +1201,43 @@ namespace EMT.DoneNOW.Web
                                     sum += (double)((item1_tax.unit_price - item1_tax.unit_discount) * item1_tax.quantity);
                                 }
                             }
-                            string k = ShowTax(Convert.ToInt32(item_tax.Key), ref sum);//计算税收
-                            tax_sum += sum;
-                            if (showstyle.Contains(1))//每个期间类型分开计算税额
+                            //统计税收
+                            if (taxt_item_sum.ContainsKey(Convert.ToInt32(item_tax.Key)))
                             {
-                                if (showstyle.Contains(2))
-                                {
-                                    cyclegroup.Append(k);
-                                }
+                                taxt_item_sum[Convert.ToInt32(item_tax.Key)] += sum;
                             }
+                            else
+                            {
+                                taxt_item_sum.Add(Convert.ToInt32(item_tax.Key), sum);
+                            }
+                            k.Append(ShowTax(Convert.ToInt32(item_tax.Key), ref sum));//计算税收
+                            tax_sum += sum;
+
                         }
 
                     }
+                    if (showstyle.Contains(1))//每个期间类型分开计算税额
+                    {
+                        cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + nogroupp + "</strong></td></tr>");
+                        cyc_tax.Add("nosub", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + nogroupp + "</strong></td></tr>");
+                        cyc_tax.Add("notax", k.ToString());
+                        if (showstyle.Contains(2))
+                        {
+                            cyclegroup.Append(k.ToString());
+                        }
+                        cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (tax_sum) + "</strong></td></tr>");
+                        cyc_tax.Add("notaxsum", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (tax_sum) + "</strong></td></tr>");
+                    }
                     //stop显示税收
+                    cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (nogroupp + tax_sum) + "</strong></td></tr>");
+                    cyc_tax.Add("nototal", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (nogroupp + tax_sum) + "</strong></td></tr>");
+                    Super_toatl += nogroupp + tax_sum;
+                    Super_tax_total += tax_sum;
                 }
                 //stop
+
             }
-            cyclegroup.Append(Threesingle(three, out total, ref order));
+            cyclegroup.Append(Threesingle(three, oneitem, out total, ref order));
             return cyclegroup.ToString();
         }
 
@@ -910,7 +1249,7 @@ namespace EMT.DoneNOW.Web
         private string group_td(string name)
         {
             StringBuilder group_td = new StringBuilder();
-            group_td.Append("<tr><td style='text-align: Left;' class='bord' colspan="+colsum+">" + name + "</td></tr>");
+            group_td.Append("<tr><td style='text-align: Left;' class='bord' colspan=" + colsum + ">" + name + "</td></tr>");
             return group_td.ToString();
         }
 
@@ -922,7 +1261,7 @@ namespace EMT.DoneNOW.Web
         private string group_chind_td(string name)
         {
             StringBuilder group_chind_td = new StringBuilder();
-            group_chind_td.Append("<tr><td style='text-align: Left;' class='bord' colspan=2 ></td><td style='text-align: Left;' class='bord' colspan="+(colsum-2)+" >" + name + "</td></tr>");
+            group_chind_td.Append("<tr><td style='text-align: Left;' class='bord' colspan=2 ></td><td style='text-align: Left;' class='bord' colspan=" + (colsum - 2) + " >" + name + "</td></tr>");
             return group_chind_td.ToString();
         }
         /// <summary>
@@ -978,6 +1317,19 @@ namespace EMT.DoneNOW.Web
             {
                 total = (double)((item.unit_price - (item.unit_discount != null ? item.unit_discount : 0)) * item.quantity);//计算单项报价项的金额
             }
+            if (showstyle.Contains(4))
+            {
+                if (!string.IsNullOrEmpty(item.tax_cate_id.ToString()))
+                {
+                    if (!sup.Contains((int)item.tax_cate_id))
+                    {
+                        sup.Add((int)item.tax_cate_id);
+                    }
+                    item.name = "<span style='vertical-align: super;'>" + (sup.IndexOf((int)item.tax_cate_id) + 1).ToString() + "</span>" + item.name;
+
+                }
+            }
+
             foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
             {
                 if (coulmn.Display == "yes")
@@ -998,6 +1350,80 @@ namespace EMT.DoneNOW.Web
             table.Append("</tr>");
             return table.ToString();
         }
+
+        private string disc_td(crm_quote_item item, double total, ref int order)
+        {
+            StringBuilder table = new StringBuilder();
+            table.Append("<tr>");
+            var Vartable = qd.GetQuoteItemVar((int)item.id);//此处获取准备用作替换的数据集
+            string type_name = qd.GetItemTypeName(item.type_id);//获取报价子项的类型
+            foreach (var type in quote_body.CUSTOMIZE_THE_ITEM_COLUMN)
+            {
+                if (type.Type_of_Quote_Item == type_name)//根据报价子项的类型展示相应的数据格式
+                {
+                    Regex reg = new Regex(@"\[(.+?)]");
+                    string type_format = type.Display_Format.ToString();
+                    foreach (Match m in reg.Matches(type_format))
+                    {
+                        string t = m.Groups[0].ToString();
+                        if (Vartable.Rows.Count > 0)
+                        {
+                            if (Vartable.Columns.Contains(t) && !string.IsNullOrEmpty(Vartable.Rows[0][t].ToString()))
+                            {
+                                type_format = type_format.Replace(t, Vartable.Rows[0][t].ToString());
+                            }
+                            else
+                            {
+                                type_format = type_format.Replace(m.Groups[0].ToString(), "");
+                            }
+                        }
+                        else
+                        {
+                            type_format = type_format.Replace(m.Groups[0].ToString(), "");
+                        }
+
+                    }
+                    item.name = string.Empty;
+                    item.name = type_format;
+                }
+            }
+            //item.name 是替换后的报价子项的名字和说明之类
+            if (string.IsNullOrEmpty(item.discount_percent.ToString()))
+            {
+                item.discount_percent = item.unit_discount / item.unit_price;//计算折扣比
+            }
+            if (showstyle.Contains(4))
+            {
+                if (!string.IsNullOrEmpty(item.tax_cate_id.ToString()))
+                {
+                    if (!sup.Contains((int)item.tax_cate_id))
+                    {
+                        sup.Add((int)item.tax_cate_id);
+                    }
+                    item.name = "<span style='vertical-align: super;'>" + (sup.IndexOf((int)item.tax_cate_id) + 1).ToString() + "</span>" + item.name;
+
+                }
+            }
+            foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
+            {
+                if (coulmn.Display == "yes")
+                {
+                    switch (coulmn.Column_Content)
+                    {
+                        case "序列号": table.Append("<td style='text-align: Right;' class='bord'>" + (order++) + ")</td>"); break;
+                        case "数量": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round((decimal)item.quantity, 2) + "</td>"); break;
+                        case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>" + item.name + "</td>"); break;
+                        case "单价": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_price + "</td>"); break;
+                        case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_discount + "</td>"); break;
+                        case "折后价": table.Append("<td style='text-align: Left;' class='bord'>" + (item.unit_price - item.unit_discount) + "</td>"); break;
+                        case "总价": table.Append("<td style='text-align: Right;' class='bord'><font color=\"red\">" + (total * (double)item.discount_percent) + "</font></td><td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                        case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round((decimal)item.discount_percent * 100, 2) + "%</td>"); break;
+                    }
+                }
+            }
+            table.Append("</tr>");
+            return table.ToString();
+        }
         /// <summary>
         /// 配送、一次性折扣、可选报价项三类特殊报价项总是分开独立显示
         /// </summary>
@@ -1006,60 +1432,208 @@ namespace EMT.DoneNOW.Web
         /// <param name="order"></param>
         /// <returns></returns>
         /// item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1
-        private string Threesingle(List<crm_quote_item> list, out double total, ref int order)
+        private string Threesingle(List<crm_quote_item> list, List<crm_quote_item> onetime, out double total, ref int order)
         {
             total = 0;
             StringBuilder table = new StringBuilder();
-            List<int> three = new List<int>();
+            List<crm_quote_item> itemlist1 = new List<crm_quote_item>();
+            List<crm_quote_item> itemlist2 = new List<crm_quote_item>();
+            List<crm_quote_item> itemlist3 = new List<crm_quote_item>();
             foreach (var item in list)
             {
                 if (item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.optional != 1)
                 {
-                    three.Add(1);
+                    itemlist1.Add(item);
                 }
                 if (item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)//一次性折扣
                 {
-                    three.Add(2);
+                    itemlist2.Add(item);
                 }
                 if (item.optional == 1)
                 {
-                    three.Add(3);
+                    itemlist3.Add(item);
                 }
             }
             //配送
-            if (three.Contains(1))
+            if (itemlist1.Count > 0)
             {
+                double sum = 0;
+                double tax_sum = 0;
+                double shippsum = 0;
+                StringBuilder k = new StringBuilder();
                 table.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].Shipping_items));//配送费
-                foreach (var item in list)
+                foreach (var item in itemlist1)
+                {        //显示配送子项            
+                    table.Append(td(item, out total, ref order));
+                    shippsum += total;
+                }
+                var tax = itemlist1.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());//税收种类分组
+                foreach (var tax_item in tax)
                 {
-                    if (item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.optional != 1)
+                    if (!string.IsNullOrEmpty(tax_item.Key.ToString()))
                     {
-                        table.Append(td(item, out total, ref order));
+                        foreach (var ii in tax_item.Value as List<crm_quote_item>)//税收类型分组
+                        {
+                            if (ii.quantity != null && ii.unit_price != null)
+                            {
+
+                                sum += (double)((ii.unit_price - ii.unit_discount) * ii.quantity);
+                            }
+                        }
+                        //统计税收
+                        if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
+                        {
+                            taxt_item_sum[Convert.ToInt32(tax_item.Key)] += sum;
+                        }
+                        else
+                        {
+                            taxt_item_sum.Add(Convert.ToInt32(tax_item.Key), sum);
+                        }
+
+                        k.Append(ShowTax(Convert.ToInt32(tax_item.Key), ref sum));//计算税收
+                        tax_sum += sum;
+
                     }
                 }
+                //汇总
+                if (showstyle.Contains(1))//判断是否每个期间类型分开计算税额
+                {
+                    //一配送收费汇总
+                    table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Shipping_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + shippsum + "</strong></td></tr>");
+                    if (showstyle.Contains(2))
+                    {
+                        table.Append(k.ToString());
+                    }
+                    table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + tax_sum + "</strong></td></tr>");
+                }
+                //配送收费汇总
+                table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Shipping_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (shippsum+tax_sum)+ "</strong></td></tr>");
+
+                Super_toatl += shippsum + tax_sum;
+                Super_tax_total += tax_sum;
+
             }
-            if (three.Contains(2))
+            if (itemlist2.Count > 0)
             {
+                double sum = 0;
+                double tax_sum = 0;
+                decimal discpre = 0;//一次性折扣百分比
+                double sum_onetime = 0;
+                StringBuilder k = new StringBuilder();
                 table.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].One_Time_Discount_items));//一次性折扣，对一次性收费处理
-                foreach (var item in list)
+                foreach (var one_time in onetime)
                 {
-                    //一次折扣
-                    if (item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
+                    if (one_time.quantity != null && one_time.unit_price != null)
                     {
-                        table.Append(td(item, out total, ref order));
+                        sum_onetime += (double)((one_time.unit_price - one_time.unit_discount) * one_time.quantity);//对一次性收费汇总
                     }
                 }
+                foreach (var dis in itemlist2)
+                {
+                    table.Append(disc_td(dis, sum_onetime, ref order));
+                    discpre += (decimal)dis.discount_percent;
+
+                }
+                //一次性收费单项已做
+
+                var discount = onetime.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());//税收种类分组               
+
+                foreach (var tax_item in discount)
+                {
+                    if (!string.IsNullOrEmpty(tax_item.Key.ToString()))
+                    {
+                        foreach (var ii in tax_item.Value as List<crm_quote_item>)//税收类型分组
+                        {
+                            if (ii.quantity != null && ii.unit_price != null)
+                            {
+
+                                sum += (double)((ii.unit_price - ii.unit_discount) * ii.quantity);
+                            }
+                        }
+                        sum = sum * (double)discpre;
+                        //统计税收
+                        if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
+                        {
+                            taxt_item_sum[Convert.ToInt32(tax_item.Key)] -= sum;
+                        }
+                        k.Append(ShowTax(Convert.ToInt32(tax_item.Key), ref sum));//计算税收
+                        tax_sum += sum;
+
+                    }
+                    sum = 0;
+                }
+                if (showstyle.Contains(1))//判断是否每个期间类型分开计算税额
+                {
+                    //一次性折扣收费汇总
+                    table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.One_Time_Discount_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><font color=\"red\"><strong>(" + (sum_onetime * (double)discpre) + ")</strong></font></td></tr>");
+                    if (showstyle.Contains(2))
+                    {
+                        table.Append(k.ToString());
+                    }
+                    table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><font color=\"red\"><strong>(" + tax_sum+ ")</strong></font></td></tr>");
+                }
+                //一次性折扣收费汇总
+                table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.One_Time_Discount_Total + "</strong></td><td style='text-align: Right;' class='bord'><font color=\"red\"><strong>(" + ((sum_onetime * (double)discpre) + tax_sum) + ")</strong></font></td></tr>");
+
+                Super_toatl = Super_toatl - (sum_onetime * (double)discpre) - tax_sum;
+                Super_tax_total = Super_tax_total - tax_sum;
+
             }
-            if (three.Contains(3))
+            if (itemlist3.Count > 0)
             {
+                double sum = 0;
+                double tax_sum = 0;
+                StringBuilder k = new StringBuilder();
+                double opsum = 0;
                 table.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].Optional_items));
-                foreach (var item in list)
+                foreach (var item in itemlist3)
                 {
-                    if (item.optional == 1)
+                    table.Append(td(item, out total, ref order));
+                    opsum += total;
+                }
+                var tax = itemlist3.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());//税收种类分组
+                foreach (var tax_item in tax)
+                {
+                    if (!string.IsNullOrEmpty(tax_item.Key.ToString()))
                     {
-                        table.Append(td(item, out total, ref order));
+                        foreach (var ii in tax_item.Value as List<crm_quote_item>)//税收类型分组
+                        {
+                            if (ii.quantity != null && ii.unit_price != null)
+                            {
+
+                                sum += (double)((ii.unit_price - ii.unit_discount) * ii.quantity);
+                            }
+                        }
+                        //统计税收
+                        if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
+                        {
+                            taxt_item_sum[Convert.ToInt32(tax_item.Key)] += sum;
+                        }
+                        else
+                        {
+                            taxt_item_sum.Add(Convert.ToInt32(tax_item.Key), sum);
+                        }
+                        k.Append(ShowTax(Convert.ToInt32(tax_item.Key), ref sum));//计算税收
+                        tax_sum += sum;
+                        sum = 0;
                     }
                 }
+                if (showstyle.Contains(1))//判断是否每个期间类型分开计算税额
+                {
+                    //可选项
+                    table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Optional_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + opsum + "</strong></td></tr>");
+                    if (showstyle.Contains(2))
+                    {
+                        table.Append(k.ToString());
+                    }
+                    table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + tax_sum+ "</strong></td></tr>");
+                }
+                //可选项
+                table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Optional_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (opsum+tax_sum) + "</strong></td></tr>");
+                option = opsum + tax_sum;//全局变量，可选项汇总
+                option_tax = tax_sum;//全局变量，可选项税收汇总
+                Super_toatl += opsum + tax_sum;
+                Super_tax_total += tax_sum;
             }
             return table.ToString();
         }
@@ -1073,7 +1647,21 @@ namespace EMT.DoneNOW.Web
             string tax_type = qd.GetTaxName(t);
             var tax = qd.GetTaxRegion(Convert.ToInt32(qddata.tax_region_id.ToString()), Convert.ToInt32(t));
             var tax_cate = qd.GetTaxRegiontax((int)tax.id);
-            if (showstyle.Contains(4)) {//是否显示税收种类
+            if (showstyle.Contains(4))
+            {
+                if (showstyle.Contains(3))
+                {
+                    if (!string.IsNullOrEmpty(t.ToString()))
+                    {
+                        if (!sup.Contains(t))
+                        {
+                            sup.Add(t);
+                        }
+                        tax_type = "<span style='vertical-align: super;'>" + (sup.IndexOf(t) + 1).ToString() + "</span>" + tax_type;
+
+                    }
+                }
+                //是否显示税收种类
                 table.Append("<tr>");
                 foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
                 {
@@ -1089,7 +1677,7 @@ namespace EMT.DoneNOW.Web
                     }
                 }
                 table.Append("</tr>");
-            }           
+            }
 
             foreach (var ttt in tax_cate)
             {
@@ -1115,1271 +1703,35 @@ namespace EMT.DoneNOW.Web
             return table.ToString();
         }
 
+        //总汇总
+        private string Total()
+        {
+            StringBuilder k = new StringBuilder();
+            StringBuilder total = new StringBuilder();
+            if (option > 0)//如果存在可选项，则显示包括可选项汇总
+            {
+                total.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Including_Optional_Quote_Items + "</strong></td><td></td></tr>");
+            }
+            if (showstyle.Contains(1))//判断是否每个期间类型分开计算税额
+            {
+                //可选项
+                total.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (Super_toatl - Super_tax_total) + "</strong></td></tr>");
+                if (showstyle.Contains(2))
+                {
+                    //汇总说有税收
+                    foreach (var ii in taxt_item_sum)
+                    {
+                        double sum = ii.Value;
+                        total.Append(ShowTax(Convert.ToInt32(ii.Key), ref sum));//计算税收
+                    }
+                    total.Append(k.ToString());
+                }
+            }
+            total.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'>" + Super_tax_total + "</td></tr>");
+            total.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 2) + "><strong>" + ttd.Total + "</strong></td><td style='text-align: Right;' class='bord'>" + Super_toatl + "</td></tr>");
+            return total.ToString();
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /// <summary>
-        /// 根据报价模板向页面动态切换数据显示形式
-        /// </summary>
-        /// <param name="list"></param>
-        //private void cycle(sys_quote_tmpl list)
-        //{
-        //    string page_header = "";
-        //    if (!string.IsNullOrEmpty(list.page_header_html))
-        //    {
-
-        //        page_header = VarSub(list.page_header_html);//变量替换
-
-        //        page_header = HttpUtility.HtmlDecode(page_header).Replace("\"", "'");//页眉
-
-
-        //    }
-        //    string quote_header = "";
-        //    if (!string.IsNullOrEmpty(list.quote_header_html))
-        //    {
-        //        quote_header = VarSub(list.quote_header_html);
-        //        quote_header = HttpUtility.HtmlDecode(quote_header).Replace("\"", "'");//头部
-        //    }
-        //    string quote_footer = "";
-        //    if (!string.IsNullOrEmpty(list.quote_footer_html))
-        //    {
-        //        quote_footer = VarSub(list.quote_footer_html);
-        //        quote_footer = HttpUtility.HtmlDecode(quote_footer).Replace("\"", "'");//底部
-        //    }
-        //    string page_footer = "";
-        //    if (!string.IsNullOrEmpty(list.page_footer_html))
-        //    {
-        //        page_footer = VarSub(list.page_footer_html);
-        //        page_footer = HttpUtility.HtmlDecode(page_footer).Replace("\"", "'");//页脚
-        //    }
-
-
-
-
-        //    StringBuilder table = new StringBuilder();
-        //    table.Append(page_header);
-        //    table.Append(quote_header);
-        //    var tax_list = new EMT.Tools.Serialize().DeserializeJson<QuoteTemplateAddDto.Tax_Total_Disp>(list.tax_total_disp);
-
-        //    if (!string.IsNullOrEmpty(list.body_html))
-        //    {
-        //        quote_body = new EMT.Tools.Serialize().DeserializeJson<QuoteTemplateAddDto.BODY>(list.body_html.Replace("'", "\""));//正文主体
-        //        int i = 0;//统计显示的列数
-        //        table.Append("<table class='ReadOnlyGrid_Table'>");
-        //        table.Append("<tr>");
-        //        foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //        {
-        //            if (coulmn.Display == "yes")
-        //            {
-        //                table.Append("<td class='ReadOnlyGrid_TableHeader' style='text-align: Right; '>" + coulmn.Column_label + "</td>");
-        //                if (coulmn.Column_Content == "总价")
-        //                {
-        //                    table.Append("<td class='ReadOnlyGrid_TableHeader' style='text-align: Left; '></td>");
-        //                }
-        //                i++;
-        //            }
-        //        }
-        //        table.Append("</tr>");
-
-
-        //        //获取报价子项 crm_quote_item
-        //        var cqi = new QuoteItemBLL().GetAllQuoteItem(qddata.id);
-        //        //判断是否有对应子项数据
-        //        if (cqi != null && cqi.Count > 0)
-        //        {
-        //            i = 1;
-        //            double total = 0;//单项汇总
-        //            double totalsum = 0;//分组汇总使用
-        //            double sum_total = 0;//全部汇总使用
-        //            int order = 1;//排序码
-
-        //            List<int> group = new List<int>();
-        //            foreach (var item in cqi)
-        //            {
-        //                if (item.period_type_id != null && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
-        //                {
-        //                    if (!string.IsNullOrEmpty(item.period_type_id.ToString()) && !group.Contains((int)item.period_type_id))
-        //                    {
-        //                        group.Add((int)item.period_type_id);
-        //                    }
-        //                }
-        //                if (item.period_type_id == null && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
-        //                {
-        //                    group.Add(1);
-        //                }
-        //                if (item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.optional != 1)
-        //                {
-        //                    group.Add((int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES);
-        //                }
-        //                if (item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
-        //                {
-        //                    group.Add((int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT);
-        //                }
-        //                if (item.optional == 1)
-        //                {
-        //                    group.Add(2);
-        //                }
-        //            }
-
-
-        //            Dictionary<int, double> tax_dic1 = new Dictionary<int, double>();
-        //            Dictionary<int, double> tax_dic = new Dictionary<int, double>();
-        //            if (group.Contains((int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME))
-        //            {//判断是否显示表头
-        //                if (quote_body.GRID_OPTIONS[0].Show_grid_header == "yes")
-        //                {
-        //                    table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].One_Time_items + "</td></tr>");
-        //                }
-
-        //                //一次性收费
-        //                foreach (var item in cqi)
-        //                {
-        //                    //此处添加分组判断
-        //                    if (item.period_type_id != null && (int)item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && item.optional != 1)
-        //                    {
-        //                        table.Append(ReplaceQuoteItem(item, quote_body, out total, ref order));
-        //                        totalsum += total;
-        //                        if (!string.IsNullOrEmpty(item.tax_cate_id.ToString()) && qddata.tax_region_id != null)
-        //                        {
-        //                            if (tax_dic1.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic1[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic1.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            double sum = 0;
-        //            double sumsum = 0;
-
-
-
-        //            StringBuilder table1 = new StringBuilder();
-        //            table1.Append("<tr>");
-        //            foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //            {
-        //                if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
-        //                {
-        //                    // 获取税收地区                                        
-        //                    table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.One_Time_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'>" + totalsum + "</td>");
-        //                }
-        //                else
-        //                {
-        //                    table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
-        //                }
-        //            }
-        //            table1.Append("</tr>");
-        //            if (tax_dic1.Count > 0)
-        //            {
-        //                foreach (var tax_item in tax_dic1)
-        //                {
-        //                    sum = tax_item.Value;
-        //                    table1.Append(ShowTax(tax_item.Key, ref sum));
-        //                    sumsum += sum;
-        //                }
-        //                //ShowTax();
-        //            }
-        //            double one = totalsum;
-        //            sum_total += totalsum;
-        //            //税收汇总
-        //            table1.Append("<tr>");
-        //            foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //            {
-        //                if (coulmn.Display == "yes")
-        //                {
-        //                    switch (coulmn.Column_Content)
-        //                    {
-        //                        case "序列号": table1.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "数量": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "报价项名称": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "单价": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "单元折扣": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "折后价": table1.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                        case "总价": table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;'class='bord'><strong>" + sumsum + "</strong></td>"); break;
-        //                        case "折扣率": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                    }
-        //                }
-        //            }
-        //            table1.Append("</tr>");
-        //            //显示汇总
-
-        //            if (qddata.show_each_tax_in_tax_group == 1)//判断是否单独计算每一时期的税收
-        //            {
-        //                table.Append(table1.ToString());
-        //                table1.Clear();
-        //                totalsum += sumsum;
-        //            }
-
-
-        //            table.Append("<tr>");
-        //            foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //            {
-        //                if (coulmn.Display == "yes")
-        //                {
-        //                    switch (coulmn.Column_Content)
-        //                    {
-        //                        case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                        case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.One_Time_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
-        //                        case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                    }
-
-        //                }
-        //            }
-        //            table.Append("</tr>");
-
-
-
-
-
-        //            totalsum = 0;
-        //            Dictionary<int, double> tax_dic2 = new Dictionary<int, double>();
-
-        //            //按月收费
-        //            if (group.Contains((int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH))
-        //            {
-        //                //按月收费
-        //                table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].Monthly_items + "</td></tr>");
-        //                foreach (var item in cqi)
-        //                {
-        //                    if (item.period_type_id != null && (int)item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH && item.optional != 1)
-        //                    {
-        //                        table.Append(ReplaceQuoteItem(item, quote_body, out total, ref order));
-        //                        totalsum += total;
-        //                        if (!string.IsNullOrEmpty(item.tax_cate_id.ToString()) && qddata.tax_region_id != null)
-        //                        {
-        //                            if (tax_dic2.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic2[(int)item.tax_cate_id] += total;
-
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic2.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                            if (tax_dic.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic[(int)item.tax_cate_id] += total;
-
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //                sum_total += totalsum;
-        //                //按月收费汇总
-        //                sumsum = 0;
-        //                sum = 0;
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
-        //                    {
-        //                        // 获取税收地区                                        
-        //                        table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Monthly_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
-        //                    }
-        //                    else
-        //                    {
-        //                        table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-        //                if (tax_dic2.Count > 0)
-        //                {
-
-        //                    foreach (var tax_item in tax_dic2)
-        //                    {
-        //                        sum = tax_item.Value;
-        //                        table1.Append(ShowTax(tax_item.Key, ref sum));
-        //                        sumsum += sum;
-        //                    }
-        //                    //ShowTax();
-        //                }
-        //                // 
-
-        //                //税收汇总
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table1.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table1.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
-        //                            case "折扣率": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-
-        //                if (qddata.show_each_tax_in_tax_group == 1)//判断是否单独计算每一时期的税收
-        //                {
-        //                    table.Append(table1.ToString());
-        //                    table1.Clear();
-        //                    totalsum += sumsum;
-        //                }
-
-
-        //                table.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Monthly_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>:" + totalsum + "</strong></td>"); break;
-        //                            case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-
-        //                    }
-        //                }
-        //                table.Append("</tr>");
-        //            }
-
-
-        //            totalsum = 0;
-        //            Dictionary<int, double> tax_dic3 = new Dictionary<int, double>();
-        //            //按季度收费
-        //            if (group.Contains((int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER))
-        //            {
-        //                table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].Quarterly_items + "</td></tr>");
-        //                foreach (var item in cqi)
-        //                {
-        //                    if (item.period_type_id != null && (int)item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER && item.optional != 1)
-        //                    {
-
-        //                        table.Append(ReplaceQuoteItem(item, quote_body, out total, ref order));
-        //                        totalsum += total;
-        //                        if (!string.IsNullOrEmpty(item.tax_cate_id.ToString()) && qddata.tax_region_id != null)
-        //                        {
-        //                            if (tax_dic3.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic3[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic3.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                            if (tax_dic.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                        }
-
-        //                    }
-        //                }
-
-        //                sum_total += totalsum;
-
-        //                sum = 0;
-        //                sumsum = 0;
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
-        //                    {
-        //                        // 获取税收地区                                        
-        //                        table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Quarterly_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
-        //                    }
-        //                    else
-        //                    {
-        //                        table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-        //                if (tax_dic3.Count > 0)
-        //                {
-        //                    foreach (var tax_item in tax_dic3)
-        //                    {
-        //                        sum = tax_item.Value;
-        //                        table1.Append(ShowTax(tax_item.Key, ref sum));
-        //                        sumsum += sum;
-        //                    }
-        //                    //ShowTax();
-        //                }
-        //                // totalsum += sumsum;
-
-        //                //税收汇总
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table1.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table1.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
-        //                            case "折扣率": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-
-        //                if (qddata.show_each_tax_in_tax_group == 1)//判断是否单独计算每一时期的税收
-        //                {
-        //                    table.Append(table1.ToString());
-        //                    table1.Clear();
-        //                    totalsum += sumsum;
-        //                }
-
-
-        //                table.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Quarterly_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
-        //                            case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-
-        //                    }
-        //                }
-
-        //                table.Append("</tr>");
-        //            }
-
-        //            totalsum = 0;
-
-        //            Dictionary<int, double> tax_dic8 = new Dictionary<int, double>();
-        //            if (group.Contains((int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR))//按半年收费
-        //            {
-        //                //按半年收费
-        //                table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].Yearly_items + "</td></tr>");
-        //                foreach (var item in cqi)
-        //                {
-        //                    if (item.period_type_id != null && (int)item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR && item.optional != 1)
-        //                    {
-
-        //                        table.Append(ReplaceQuoteItem(item, quote_body, out total, ref order));
-        //                        totalsum += total;
-        //                        if (!string.IsNullOrEmpty(item.tax_cate_id.ToString()) && qddata.tax_region_id != null)
-        //                        {
-        //                            if (tax_dic8.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic8[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic8.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                            if (tax_dic.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                        }
-        //                    }
-
-        //                }
-        //                sum_total += totalsum;
-        //                sumsum = 0;
-        //                sum = 0;
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
-        //                    {
-        //                        // 获取税收地区                                        
-        //                        table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Semi_Annual_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
-        //                    }
-        //                    else
-        //                    {
-        //                        table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-        //                if (tax_dic8.Count > 0)
-        //                {
-
-        //                    foreach (var tax_item in tax_dic8)
-        //                    {
-        //                        sum = tax_item.Value;
-        //                        table1.Append(ShowTax(tax_item.Key, ref sum));
-        //                        sumsum += sum;
-        //                    }
-        //                    //ShowTax();
-        //                }
-        //                //totalsum += sumsum;
-        //                //税收汇总
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table1.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table1.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
-        //                            case "折扣率": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-
-        //                if (qddata.show_each_tax_in_tax_group == 1)//判断是否单独计算每一时期的税收
-        //                {
-        //                    table.Append(table1.ToString());
-        //                    table1.Clear();
-        //                    totalsum += sumsum;
-        //                }
-
-        //                table.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Semi_Annual_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
-        //                            case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-
-        //                    }
-        //                }
-        //                table.Append("</tr>");
-
-        //            }
-
-        //            totalsum = 0;
-
-        //            Dictionary<int, double> tax_dic4 = new Dictionary<int, double>();
-        //            if (group.Contains((int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR))
-        //            {
-        //                //按年收费
-        //                table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].Yearly_items + "</td></tr>");
-        //                foreach (var item in cqi)
-        //                {
-        //                    if (item.period_type_id != null && (int)item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR && item.optional != 1)
-        //                    {
-
-        //                        table.Append(ReplaceQuoteItem(item, quote_body, out total, ref order));
-        //                        totalsum += total;
-        //                        if (!string.IsNullOrEmpty(item.tax_cate_id.ToString()) && qddata.tax_region_id != null)
-        //                        {
-        //                            if (tax_dic4.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic4[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic4.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                            if (tax_dic.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                        }
-        //                    }
-
-        //                }
-        //                sum_total += totalsum;
-        //                sumsum = 0;
-        //                sum = 0;
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
-        //                    {
-        //                        // 获取税收地区                                        
-        //                        table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Yearly_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
-        //                    }
-        //                    else
-        //                    {
-        //                        table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-        //                if (tax_dic4.Count > 0)
-        //                {
-
-        //                    foreach (var tax_item in tax_dic4)
-        //                    {
-        //                        sum = tax_item.Value;
-        //                        table1.Append(ShowTax(tax_item.Key, ref sum));
-        //                        sumsum += sum;
-        //                    }
-        //                    //ShowTax();
-        //                }
-        //                //totalsum += sumsum;
-        //                //税收汇总
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table1.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table1.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
-        //                            case "折扣率": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-
-        //                if (qddata.show_each_tax_in_tax_group == 1)//判断是否单独计算每一时期的税收
-        //                {
-        //                    table.Append(table1.ToString());
-        //                    table1.Clear();
-        //                    totalsum += sumsum;
-        //                }
-
-
-
-        //                table.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Yearly_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
-        //                            case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-
-        //                    }
-        //                }
-        //                table.Append("</tr>");
-
-        //            }
-        //            totalsum = 0;
-        //            //无分类
-
-        //            Dictionary<int, double> tax_dic5 = new Dictionary<int, double>();
-
-        //            if (group.Contains(1))
-        //            {
-        //                table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].No_category + "</td></tr>");
-        //                foreach (var item in cqi)
-        //                {
-        //                    if (item.period_type_id == null && item.optional != 1)
-        //                    {
-        //                        table.Append(ReplaceQuoteItem(item, quote_body, out total, ref order));
-        //                        totalsum += total;
-        //                        if (!string.IsNullOrEmpty(item.tax_cate_id.ToString()) && qddata.tax_region_id != null)
-        //                        {
-        //                            if (tax_dic5.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic5[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic5.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                            if (tax_dic.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                        }
-        //                    }
-
-        //                }
-        //                sum_total += totalsum;
-
-        //                sumsum = 0;
-        //                sum = 0;
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
-        //                    {
-        //                        // 获取税收地区                                        
-        //                        table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
-        //                    }
-
-        //                    else
-        //                    {
-        //                        table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-        //                if (tax_dic5.Count > 0)
-        //                {
-
-
-        //                    foreach (var tax_item in tax_dic5)
-        //                    {
-        //                        sum = tax_item.Value;
-        //                        table1.Append(ShowTax(tax_item.Key, ref sum));
-        //                        sumsum += sum;
-        //                    }
-        //                    //ShowTax();
-        //                }
-        //                //totalsum += sumsum;
-        //                //税收汇总
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table1.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table1.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
-        //                            case "折扣率": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-        //                    }
-        //                }
-        //                table.Append("</tr>");
-
-        //                if (qddata.show_each_tax_in_tax_group == 1)//判断是否单独计算每一时期的税收
-        //                {
-        //                    table.Append(table1.ToString());
-        //                    table1.Clear();
-        //                    totalsum += sumsum;
-        //                }
-
-        //                table.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
-        //                            case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-        //                    }
-        //                }
-
-
-        //                table.Append("</tr>");
-        //            }
-        //            totalsum = 0;
-
-        //            Dictionary<int, double> tax_dic6 = new Dictionary<int, double>();
-
-        //            //配送类型
-        //            if (group.Contains((int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES))
-        //            {
-        //                table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].Shipping_items + "</td></tr>");
-
-        //                foreach (var item in cqi)
-        //                {
-        //                    if (item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.optional != 1)
-        //                    {
-        //                        table.Append(ReplaceQuoteItem(item, quote_body, out total, ref order));
-        //                        totalsum += total;
-        //                        if (!string.IsNullOrEmpty(item.tax_cate_id.ToString()) && qddata.tax_region_id != null)
-        //                        {
-        //                            if (tax_dic6.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic6[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic6.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                            if (tax_dic.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                        }
-
-
-        //                    }
-
-        //                }
-        //                sum_total += totalsum;
-        //                sumsum = 0;
-        //                sum = 0;
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
-        //                    {
-        //                        // 获取税收地区                                        
-        //                        table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Shipping_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
-        //                    }
-        //                    else
-        //                    {
-        //                        table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-        //                if (tax_dic6.Count > 0)
-        //                {
-
-        //                    foreach (var tax_item in tax_dic6)
-        //                    {
-        //                        sum = tax_item.Value;
-        //                        table1.Append(ShowTax(tax_item.Key, ref sum));
-        //                        sumsum += sum;
-        //                    }
-        //                    //ShowTax();
-        //                }
-        //                // totalsum += sumsum;
-        //                //税收汇总
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table1.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table1.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
-        //                            case "折扣率": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-
-        //                if (qddata.show_each_tax_in_tax_group == 1)//判断是否单独计算每一时期的税收
-        //                {
-        //                    table.Append(table1.ToString());
-        //                    table1.Clear();
-        //                    totalsum += sumsum;
-        //                }
-
-        //                table.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Shipping_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
-        //                            case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-        //                    }
-        //                }
-
-        //                table.Append("</tr>");
-        //            }
-        //            totalsum = 0;
-        //            double discount_percent = 0;
-
-
-        //            //折扣类型
-        //            if (group.Contains((int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT))
-        //            {
-
-        //                table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].One_Time_Discount_items + "</td></tr>");
-
-        //                foreach (var item in cqi)
-        //                {
-        //                    if (item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
-        //                    {
-        //                        table.Append(ReplaceQuoteItem_Discount(item, quote_body, one, out total, ref order));
-
-        //                        totalsum = totalsum - total;
-        //                        discount_percent += (double)item.discount_percent;
-        //                    }
-
-        //                }
-
-
-        //                sum_total += totalsum;
-
-        //                //特别处理
-        //                sum = 0;
-        //                sumsum = 0;
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
-        //                    {
-        //                        // 获取税收地区                                        
-        //                        table1.Append("<td style='text-align: Right;' class='bord'><font color=\"red\">" + tax_list.One_Time_Discount_Subtotal + "</font></td><td style='text-align: Right;' class='bord'><font color=\"red\">" + totalsum + "</font></td>");
-        //                    }
-        //                    else
-        //                    {
-        //                        table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-        //                if (tax_dic1.Count > 0)
-        //                {
-
-        //                    foreach (var tax_item in tax_dic1)
-        //                    {
-        //                        sum = tax_item.Value * discount_percent;
-        //                        if (tax_dic.ContainsKey(tax_item.Key))
-        //                        {
-        //                            // tax_dic.Add(tax_item.Key, tax_dic[tax_item.Key] - sum);
-        //                            tax_dic[tax_item.Key] = tax_dic[tax_item.Key] - sum;
-        //                        }
-        //                        else
-        //                        {
-        //                            double v = tax_dic1[tax_item.Key] - sum;
-        //                            tax_dic.Add(tax_item.Key, v);
-        //                        }
-        //                        table1.Append(Discount_ShowTax(tax_item.Key, ref sum));
-        //                        sumsum += sum;
-        //                    }
-        //                    //ShowTax();
-        //                }
-        //                //totalsum = totalsum - sumsum;
-        //                //税收汇总
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table1.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table1.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table1.Append("<td style='text-align: Right;' class='bord'><strong><font color=\"red\">" + tax_list.Total_Taxes + "</font></strong></td><td style='text-align: Right;' class='bord'><strong><font color=\"red\">" + sumsum + "</font></strong></td>"); break;
-        //                            case "折扣率": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-
-        //                if (qddata.show_each_tax_in_tax_group == 1)//判断是否单独计算每一时期的税收
-        //                {
-        //                    table.Append(table1.ToString());
-        //                    table1.Clear();
-        //                    totalsum = totalsum - sumsum;
-        //                }
-
-        //                table.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong><font color=\"red\">" + tax_list.One_Time_Discount_Total + "</font></strong></td><td style='text-align: Right;' class='bord'><strong><font color=\"red\">" + totalsum + "</font></strong></td>"); break;
-        //                            case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-        //                    }
-        //                }
-
-        //                table.Append("</tr>");
-        //            }
-        //            totalsum = 0;
-
-        //            Dictionary<int, double> tax_dic7 = new Dictionary<int, double>();
-        //            //可选项
-        //            if (group.Contains(2))
-        //            {
-        //                table.Append("<tr><td>" + quote_body.GROUPING_HEADER_TEXT[0].Optional_items + "</td></tr>");
-
-        //                foreach (var item in cqi)
-        //                {
-        //                    if (item.optional == 1)
-        //                    {
-        //                        table.Append(ReplaceQuoteItem(item, quote_body, out total, ref order));
-        //                        totalsum += total;
-        //                        if (!string.IsNullOrEmpty(item.tax_cate_id.ToString()) && qddata.tax_region_id != null)
-        //                        {
-        //                            if (tax_dic7.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic7[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic7.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                            if (tax_dic.ContainsKey((int)item.tax_cate_id))
-        //                            {
-        //                                tax_dic[(int)item.tax_cate_id] += total;
-        //                            }
-        //                            else
-        //                            {
-        //                                tax_dic.Add((int)item.tax_cate_id, total);
-        //                            }
-        //                        }
-        //                    }
-
-        //                }
-        //                sum_total += totalsum;
-        //                sumsum = 0;
-        //                sum = 0;
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes" && coulmn.Column_Content == "总价")
-        //                    {
-        //                        // 获取税收地区                                        
-        //                        table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Optional_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>");
-        //                    }
-        //                    else
-        //                    {
-        //                        table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>");
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-        //                if (tax_dic7.Count > 0)
-        //                {
-
-        //                    foreach (var tax_item in tax_dic7)
-        //                    {
-        //                        sum = tax_item.Value;
-        //                        table1.Append(ShowTax(tax_item.Key, ref sum));
-        //                        sumsum += sum;
-        //                    }
-        //                    //ShowTax();
-        //                }
-        //                // totalsum += sumsum;
-        //                //税收汇总
-        //                table1.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table1.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table1.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table1.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
-        //                            case "折扣率": table1.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-        //                    }
-        //                }
-        //                table1.Append("</tr>");
-
-        //                if (qddata.show_each_tax_in_tax_group == 1)//判断是否单独计算每一时期的税收
-        //                {
-        //                    table.Append(table1.ToString());
-        //                    table1.Clear();
-        //                    totalsum += sumsum;
-        //                }
-
-        //                table.Append("<tr>");
-        //                foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //                {
-        //                    if (coulmn.Display == "yes")
-        //                    {
-        //                        switch (coulmn.Column_Content)
-        //                        {
-        //                            case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                            case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                            case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Optional_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + totalsum + "</strong></td>"); break;
-        //                            case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        }
-        //                    }
-        //                }
-        //                table.Append("</tr>");
-        //            }
-
-
-        //            totalsum = 0;
-
-
-        //            //税收汇总
-        //            sumsum = 0;
-        //            sum = 0;
-
-
-
-        //            if (tax_dic.Count > 0)
-        //            {
-        //                foreach (var tax_item in tax_dic)
-        //                {
-        //                    sum = tax_item.Value;
-        //                    sum = TaxSum(tax_item.Key, sum);
-        //                    sumsum += sum;
-        //                }
-        //                //ShowTax();
-        //            }
-        //            sum_total += sumsum;
-
-        //            //汇总
-        //            //if (qddata.show_each_tax_in_tax_group == 1)//判断是否单独计算每一时期的税收
-        //            //{
-        //            //    table.Append(table1.ToString());
-        //            //    table1.Clear();
-        //            //    totalsum += sumsum;
-        //            //}
-
-
-        //            table.Append("<tr>");
-        //            foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //            {
-        //                if (coulmn.Display == "yes")
-        //                {
-        //                    switch (coulmn.Column_Content)
-        //                    {
-        //                        case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "折后价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sumsum + "</strong></td>"); break;
-        //                        case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                    }
-        //                }
-        //            }
-        //            table.Append("</tr>");
-
-        //            table.Append("<tr>");
-        //            foreach (var coulmn in quote_body.GRID_COLUMN)//获取需要显示的列名
-        //            {
-        //                if (coulmn.Display == "yes")
-        //                {
-        //                    switch (coulmn.Column_Content)
-        //                    {
-        //                        case "序列号": table.Append("<td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "数量": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "报价项名称": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "单价": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                        case "折后价": table.Append("<td style='text-align: Left;' class='bord'></td>"); break;
-        //                        case "总价": table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_list.Including_Optional_Quote_Items + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + sum_total + "</strong></td>"); break;
-        //                        case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>&nbsp; &nbsp;</td>"); break;
-        //                    }
-        //                }
-        //            }
-        //            table.Append("</tr>");
-
-        //            if (quote_body.GRID_OPTIONS[0].Show_vertical_lines == "yes")
-        //            {
-        //                Response.Write("<style>.bord{border-left: 1px solid  #eaeaea;border-right: 1px solid #eaeaea;}</style>");
-        //            }
-        //            //else {
-        //            //    Response.Write("<style>.bord{border-bottom: 1px solid #eaeaea;border-top: 1px solid #eaeaea;}</style>");
-        //            //}
-        //            //清空字典
-        //            tax_dic.Clear(); tax_dic1.Clear(); tax_dic2.Clear(); tax_dic3.Clear(); tax_dic4.Clear(); tax_dic5.Clear(); tax_dic6.Clear(); tax_dic7.Clear();
-        //        }
-        //    }
-
-        //    table.Append("</table>");
-        //    table.Append(quote_footer);
-        //    table.Append(page_footer);
-        //    this.table.Text = table.ToString();
-        //    table.Clear();
-        //}
-        //改变报价模板显示数据
 
 
         protected void quoteTemplateDropDownList_SelectedIndexChanged(object sender, EventArgs e)
@@ -2412,15 +1764,82 @@ namespace EMT.DoneNOW.Web
                     }
                     else
                     {
-                        st = st.Replace(m.Groups[0].ToString(), "无相关数据");
+                        st = st.Replace(m.Groups[0].ToString(), "无数据");
                         //Response.Write(Vartable.Rows[0]["[联系人：外部编号]"].ToString());
                     }
                 }
                 else
                 {
-                    st = st.Replace(m.Groups[0].ToString(), "无相关数据");
+                    st = st.Replace(m.Groups[0].ToString(), "无数据");
                     //Response.Write(Vartable.Rows[0]["[联系人：外部编号]"].ToString());
                 }
+            }
+            return st;
+        }
+
+        private string VarSubTop(string st)
+        {
+            Regex reg = new Regex(@"\[(.+?)]");
+            var Vartable = qd.GetVar((int)qddata.contact_id, (int)qddata.account_id, (int)qddata.id, (int)qddata.opportunity_id);
+            foreach (Match m in reg.Matches(st))
+            {
+                string t = m.Groups[0].ToString();//[客户：名称]    
+                if (t == "[Quote: Tax]"&&st.IndexOf("[Quote: Tax Detail]")<0)
+                {
+                    StringBuilder k = new StringBuilder();
+                    if (taxt_item_sum.Count > 0)
+                    {
+                        foreach (var ii in taxt_item_sum)
+                        {
+                            var tax = qd.GetTaxRegion(Convert.ToInt32(qddata.tax_region_id.ToString()), ii.Key);
+                            k.Append(qd.GetTaxName(ii.Key) + "(" + decimal.Round(tax.total_effective_tax_rate * 100, 3) + ")</br>");
+                           
+                        }
+                        st = st.Replace(t,k.ToString());
+                    }
+                    else {
+                        st = st.Replace(t, "");
+                    }
+                        
+
+                }
+                if(t == "[Quote: Tax Detail]")
+                {
+                    StringBuilder k = new StringBuilder();
+                    if (taxt_item_sum.Count > 0)
+                    {
+                        foreach (var ii in taxt_item_sum)
+                        {
+                            double sum = ii.Value;
+                            ShowTax(Convert.ToInt32(ii.Key), ref sum);//计算税收
+                            var tax = qd.GetTaxRegion(Convert.ToInt32(qddata.tax_region_id.ToString()), ii.Key);
+                            k.Append(qd.GetTaxName(ii.Key) + "(" + decimal.Round(tax.total_effective_tax_rate * 100, 3) + ")：&nbsp; &nbsp;&nbsp; &nbsp;" + sum.ToString() + "</br>");
+                                                      
+                        }
+                        st = st.Replace(t, k.ToString()).Replace("[Quote: Tax]","");
+                    }
+                    else {
+                        st = st.Replace(t, "");
+                    }
+                   
+                }
+                if(t!= "[Quote: Tax Detail]"&&t!= "[Quote: Tax]") {
+                    if (Vartable.Rows.Count > 0)
+                    {
+                        if (Vartable.Columns.Contains(t) && !string.IsNullOrEmpty(Vartable.Rows[0][t].ToString()))
+                        {
+                            st = st.Replace(t, Vartable.Rows[0][t].ToString());
+                        }
+                        else
+                        {
+                            st = st.Replace(m.Groups[0].ToString(), "无数据");
+                        }
+                    }
+                    else
+                    {
+                        st = st.Replace(m.Groups[0].ToString(), "无数据");
+                    }
+                }               
             }
             return st;
         }
@@ -2585,7 +2004,7 @@ namespace EMT.DoneNOW.Web
             total = onetime * (double)decimal.Round((decimal)item.discount_percent, 4);
             return table.ToString();
         }
-       
+
         private string Discount_ShowTax(int t, ref double sum)
         {
 

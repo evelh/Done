@@ -144,7 +144,7 @@ namespace EMT.DoneNOW.Core
         public DateTime? password_reset_guid_expiration_time { get; set; }
         [DataMember]
         public Int32? name_salutation_id { get; set; }
-
+        public String avatar { get; set; }
 
     }
 }
