@@ -471,6 +471,59 @@ namespace EMT.DoneNOW.DTO
             ALL=970,        //全部
         }
         /// <summary>
+        /// 系统权限：limit类型-76
+        /// </summary>
+        public enum LIMIT_TYPE
+        {
+            HAVE_NONE = 960,            // 有无
+            ALL_PART_MINE_NONE = 961,   // 全部部分我的无
+            ALL_MINE_NONE = 962,        // 全部我的无
+            ALL_NONE = 963,             // 全部无
+            TASK = 964,                 // task
+            TICKET = 965,               // ticket
+            CONTACT = 966,              // contact
+            NOT_REQUIRE = 967,          // 无需权限
+        }
+
+        /// <summary>
+        /// 系统权限：limit_type_value 取值-77
+        /// </summary>
+        public enum LIMIT_TYPE_VALUE
+        {
+            // 961对应值
+            ALL961 = 970,              // 全部
+            MY_TORRITORY961 = 971,     // 我的地域
+            MINE961 = 972,             // 我的
+            NONE961 = 973,             // 无
+
+            // 962对应值
+            ALL962 = 974,              // 全部
+            MINE962 = 975,             // 我的
+
+            // 964对应值
+            MY_TASK = 976,             // 我的
+            ALL_TASK = 977,            // 全部
+
+            // 965对应值
+            ALL965 = 978,              // 全部
+            MINE_AND_COMPANY = 979,    // Mine + Companies
+            MINE965 = 980,             // 我的
+
+            // 966对应值
+            ALL966 = 981,              // 全部
+            MY_COMPANY = 982,          // 我是客户经理
+            MY_PROJECT = 983,          // 我是项目经理
+            NONE966 = 984,             // 无
+
+            // 967对应值
+            NOT_REQUIRE = 985,         // 无需权限
+
+            // 960对应值
+            HAVE = 986,                // 有
+            NO = 987,                  // 无
+        }
+
+        /// <summary>
         /// 系统管理：系统配置：关闭/丢失商机必填项-81
         /// </summary>
         public enum SYS_CLOSE_OPPORTUNITY
