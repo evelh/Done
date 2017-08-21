@@ -249,7 +249,7 @@
 
             </div>
         </div>
-        <div class="content clear" style="display: none;min-width:1110px;">
+        <div class="content clear" style="display: none;">
             <div style="border: thin;">
                 <table border="none" cellspacing="" cellpadding="" style="width: 100%;">
                     <tr>
@@ -291,8 +291,8 @@
             </div>
 
             <div>
-                <div style="float: left; width: 33%;">
-                    <table>
+                <div>
+                    <table style="margin-top:30px;">
                         <%
 
                             EMT.DoneNOW.Core.crm_location sold_to_location = null;
@@ -376,8 +376,8 @@
                         </tr>
                     </table>
                 </div>
-                <div style="float: left; width: 33%;">
-                    <table>
+                <div>
+                    <table style="margin-top:30px;">
                         <tr>
                             <td style="text-align:left;">
                                 <div class="clear" style="margin-left:140px;">
@@ -443,8 +443,8 @@
                         </tr>
                     </table>
                 </div>
-                <div style="float: left; width: 33%;">
-                    <table>
+                <div>
+                    <table style="margin-top:30px;">
                         <tr>
                             <td style="text-align:left;">  
                                 <div class="clear" style="margin-left:140px;">

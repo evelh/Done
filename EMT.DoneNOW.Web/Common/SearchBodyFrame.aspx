@@ -247,7 +247,7 @@
             OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.CompanyView %>');
         }
         function AddQuote() {
-            OpenWindow("../Quote/QuoteAddAndUpdate.aspx", '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>');
+            window.open("../Quote/QuoteAddAndUpdate.aspx",'<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>' , 'left=0,top=0,location=no,status=no,width=750,height=750', false);
         }
         function DeleteOpp() {
             $.ajax({
