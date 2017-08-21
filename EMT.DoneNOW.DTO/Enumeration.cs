@@ -44,7 +44,9 @@ namespace EMT.DoneNOW.DTO
         SEX=49,
         EMAILTYPE = 50,
         OUTSOURCE_SECURITY=51,                  //外包权限
-        LICENSE_TYPE=109,                            //安全等级：授权类型
+        LIMIT_TYPE=76,                          //系统权限：类型 取值 有无、全部部分 等
+        LIMIT_TYPE_VALUE=77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
+        LICENSE_TYPE =109,                            //安全等级：授权类型
         QUOTE_GROUP_BY =110,                      // 报价分组条件
     }
 
@@ -447,7 +449,27 @@ namespace EMT.DoneNOW.DTO
             NUMBER_EQUAL = 816,     // 数值(做等于判断)
             TIMESPAN = 817,         // 日期-时间戳
         }
-
+        /// <summary>
+        /// 系统权限：类型 取值 有无、全部部分 等  -76
+        /// </summary>
+        public enum LIMIT_TYPE
+        {
+            HAVEORNO=960,         //有无
+            ALLPARTMINENO=961,      //全部、部分、我的、无
+            ALLMINENO=962,            //全部、我的、无
+            ALLNO=963,            //全部无
+            TASK=964,             //task
+            TICKET=965,           //ticket
+            CONTACT=966,          //contact
+            NOLIMIT=967,           //无需权限
+        }
+        /// <summary>
+        /// 系统权限：类型详情 取值 有无、全部部分 等  -77
+        /// </summary>
+        public enum LIMIT_TYPE_VALUE
+        {
+            ALL=970,        //全部
+        }
         /// <summary>
         /// 系统管理：系统配置：关闭/丢失商机必填项-81
         /// </summary>
@@ -464,7 +486,8 @@ namespace EMT.DoneNOW.DTO
             PRODUCT = 1194,               // 按照产品分组
             CYCLE_PRODUCT = 1195,         // 按照周期产品分组
             PRODUCT_CYCLE = 1196,         // 按照产品周期分组
-        }
+        }    
+
     }
 
     public enum ActionEnum
