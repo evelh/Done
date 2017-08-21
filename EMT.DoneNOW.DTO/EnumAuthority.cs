@@ -9,7 +9,7 @@ namespace EMT.DoneNOW.DTO
     /// <summary>
     /// 权限点枚举
     /// </summary>
-    public enum AuthorityEnum
+    public enum AuthLimitEnum
     {
         ContractsModifyInternalCost = 1,
         ContractsModifyServiceBundle = 2,

@@ -69,6 +69,7 @@
     <Compile Include="IVT\ivt_warehouse.cs" />
     <Compile Include="IVT\ivt_warehouse_product.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email.cs" />
+    <Compile Include="SYS\sys_organization_location.cs" />
     <Compile Include="SYS\sys_quote_tmpl.cs" />
     <Compile Include="CRM\crm_quote.cs" />
     <Compile Include="CRM\crm_quote_item.cs" />

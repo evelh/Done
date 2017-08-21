@@ -606,10 +606,10 @@
                     alert("请在常规选项卡再次输入密码");
                     return false;
                 }
-                if ($("#Security_Level").val() == 0) {
-                    alert("请输入权限等级");
-                    return false;
-                }
+                //if ($("#Security_Level").val() == 0) {
+                //    alert("请输入权限等级");
+                //    return false;
+                //}
             });
             $("#password2").blur(function () {
                 var ps1 = $("#password").val();
