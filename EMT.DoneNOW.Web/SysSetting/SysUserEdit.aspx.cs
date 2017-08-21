@@ -25,6 +25,7 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
+            id = 538;
             if (!IsPostBack)
             {
                 var user = UserInfoBLL.GetUserInfo(GetLoginUserId());
@@ -36,7 +37,10 @@ namespace EMT.DoneNOW.Web
                 {//改成修改界面
                     var resourcedata = urbll.GetSysResourceSingle(id);
                     var userdata = urbll.GetSysUserSingle(id);
-                    if(!string.IsNullOrEmpty(resourcedata.date_display_format_id.ToString()))//数据库存在日期格式
+                    if(resourcedata.avatar!=null&&!string.IsNullOrEmpty(resourcedata.avatar.ToString()))
+                    avatarPath = resourcedata.avatar.ToString();
+
+                    if (!string.IsNullOrEmpty(resourcedata.date_display_format_id.ToString()))//数据库存在日期格式
                     this.DateFormat.SelectedValue = resourcedata.date_display_format_id.ToString();
                     if(!string.IsNullOrEmpty(resourcedata.number_display_format_id.ToString()))//数据库存在数值格式
                     this.NumberFormat.SelectedValue = resourcedata.number_display_format_id.ToString();
@@ -48,30 +52,31 @@ namespace EMT.DoneNOW.Web
                         this.NameSuffix.SelectedValue = resourcedata.suffix_id.ToString();
                     if (!string.IsNullOrEmpty(resourcedata.sex.ToString()))//数据库存在性别
                         this.Sex.SelectedValue = resourcedata.sex.ToString();
-                    if (!string.IsNullOrEmpty(resourcedata.location_id.ToString())) {
+                    if (resourcedata.location_id!=null&&!string.IsNullOrEmpty(resourcedata.location_id.ToString())) {//办公地址
                         this.Position.SelectedValue = resourcedata.location_id.ToString();
                     }
-                    if (!string.IsNullOrEmpty(resourcedata.office_phone.ToString()))//办公电话
+                    if (resourcedata.office_phone!=null)//办公电话
                         this.office_phone.Text = resourcedata.office_phone.ToString();
-                    if (!string.IsNullOrEmpty(resourcedata.home_phone.ToString()))//家庭电话
+                    if (resourcedata.home_phone!=null)//家庭电话
                         this.home_phone.Text = resourcedata.home_phone.ToString();
-                    if (!string.IsNullOrEmpty(resourcedata.mobile_phone.ToString()))//移动电话
+                    if (resourcedata.mobile_phone != null&&!string.IsNullOrEmpty(resourcedata.mobile_phone.ToString()))//移动电话
                         this.mobile_phone.Text = resourcedata.mobile_phone.ToString();
                     this.email.Text = resourcedata.email.ToString();//邮箱地址
                     this.EmailType.SelectedValue=resourcedata.email_type_id.ToString();//邮箱类型
-                    if (!string.IsNullOrEmpty(resourcedata.email1.ToString()))//附加邮箱
+                    if (resourcedata.email1!=null&&!string.IsNullOrEmpty(resourcedata.email1.ToString()))//附加邮箱
                         this.email1.Text = resourcedata.email1.ToString();
-                    if (!string.IsNullOrEmpty(resourcedata.email2.ToString()))
+                    if (resourcedata.email2!=null&&!string.IsNullOrEmpty(resourcedata.email2.ToString()))
                         this.email2.Text = resourcedata.email2.ToString();
-                    if (!string.IsNullOrEmpty(resourcedata.email1_type_id.ToString()))//附加邮箱类型
+                    if (resourcedata.email1_type_id!=null&&!string.IsNullOrEmpty(resourcedata.email1_type_id.ToString()))//附加邮箱类型
                         this.EmailType1.SelectedValue = resourcedata.email1_type_id.ToString();
-                    if (!string.IsNullOrEmpty(resourcedata.email2_type_id.ToString()))
+                    if (resourcedata.email2_type_id!=null&&!string.IsNullOrEmpty(resourcedata.email2_type_id.ToString()))
                         this.EmailType2.SelectedValue = resourcedata.email2_type_id.ToString();
-                    this.username.Text = userdata.name.ToString();//用户名
+                    this.name.Text = userdata.name.ToString();//用户名
                     if (resourcedata.is_active > 0)//是否激活
                         this.ACTIVE.Checked = true;
-                    if (!string.IsNullOrEmpty(resourcedata.security_level_id.ToString()))//权限级别
+                    if (resourcedata.security_level_id!=null&&!string.IsNullOrEmpty(resourcedata.security_level_id.ToString()))//权限级别
                         this.Security_Level.SelectedValue = resourcedata.security_level_id.ToString();
+
                     if (resourcedata.can_edit_skills > 0)//编辑技能
                         this.can_edit_skills.Checked = true;
                     if (resourcedata.can_manage_kb_articles > 0)//编辑或删除知识库文章
@@ -80,7 +85,7 @@ namespace EMT.DoneNOW.Web
                         this.allow_send_bulk_email.Checked = true;
                     if (resourcedata.is_required_to_submit_timesheets > 0)//不要求用户提交工时表
                         this.is_required_to_submit_timesheets.Checked = true;
-                    if (!string.IsNullOrEmpty(resourcedata.outsource_security_role_type_id.ToString()))//外部权限
+                    if (resourcedata.outsource_security_role_type_id!=null&&!string.IsNullOrEmpty(resourcedata.outsource_security_role_type_id.ToString()))//外部权限
                         this.Outsource_Security.SelectedValue = resourcedata.outsource_security_role_type_id.ToString();
                 }
             }
@@ -143,8 +148,8 @@ namespace EMT.DoneNOW.Web
             Prefix.Items.Insert(3, new ListItem() { Value = "3", Text = "Ms." });
             //主要位置  location_id
 
-            this.Position.DataTextField = "show";
-            this.Position.DataValueField = "val";
+            this.Position.DataTextField = "name";
+            this.Position.DataValueField = "id";
             this.Position.DataSource = dic.FirstOrDefault(_ => _.Key == "Position").Value;
             Position.DataBind();
             Position.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
@@ -153,8 +158,8 @@ namespace EMT.DoneNOW.Web
 
             //权限等级
             //this.Security_Level
-            this.Security_Level.DataTextField = "show";
-            this.Security_Level.DataValueField = "val";
+            this.Security_Level.DataTextField = "name";
+            this.Security_Level.DataValueField = "id";
             this.Security_Level.DataSource = dic.FirstOrDefault(_ => _.Key == "Security_Level").Value;
             Security_Level.DataBind();
             Security_Level.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
@@ -248,7 +253,7 @@ namespace EMT.DoneNOW.Web
             if (!save_oper)//save初始值false
             {
                 Save_Contact();
-                Save_deal();
+                Update_deal();
                 save_oper = true;
             }
             else
@@ -263,10 +268,10 @@ namespace EMT.DoneNOW.Web
         }
         protected void Save_copy_Click(object sender, EventArgs e)
         {
-            if (!copy_oper)//copy初始值false
+            if (!copy_oper&&!save_oper)//copy初始值false
             {
                 Save_Contact();
-                if (Save_deal())
+                if (Update_deal())
                 {
                     Response.Write("<script>alert('复制成功，请注意修改姓名，用户名，等关键信息');</script>");
                 }
@@ -423,7 +428,8 @@ namespace EMT.DoneNOW.Web
         /// <param name="e"></param>
         protected void Save_Cloes_Click(object sender, EventArgs e)
         {
-            Save_Click(sender, e);
+            Save_Contact();
+            Save_deal();
             Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
         }
     }

@@ -155,6 +155,7 @@
     <Content Include="Content\Quotebaojiaxiang.css" />
     <Content Include="Content\reset.css" />
     <Content Include="Content\searchList.css" />
+    <Content Include="Content\SysUserSecurityLevel.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
     <Content Include="Default.aspx" />
@@ -582,6 +583,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Common\SearchBody.js" />
     <Content Include="Scripts\sysset_users.js" />
+    <Content Include="Scripts\SysUserSecurityLevel.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />
@@ -609,6 +611,7 @@
     <Content Include="Site.Master" />
     <Content Include="SysSetting\SysUserAdd.aspx" />
     <Content Include="SysSetting\SysUserEdit.aspx" />
+    <Content Include="SysSetting\SysUserSecurityLevel.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -939,6 +942,13 @@
     </Compile>
     <Compile Include="SysSetting\SysUserEdit.aspx.designer.cs">
       <DependentUpon>SysUserEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysUserSecurityLevel.aspx.cs">
+      <DependentUpon>SysUserSecurityLevel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysUserSecurityLevel.aspx.designer.cs">
+      <DependentUpon>SysUserSecurityLevel.aspx</DependentUpon>
     </Compile>
     <Compile Include="Test.ashx.cs">
       <DependentUpon>Test.ashx</DependentUpon>

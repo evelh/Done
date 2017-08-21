@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static EMT.DoneNOW.DTO.DicEnum;
 
+
 namespace EMT.DoneNOW.BLL
 {
     public class UserResourceBLL
@@ -24,7 +25,15 @@ namespace EMT.DoneNOW.BLL
             dic.Add("EmailType", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.EMAILTYPE)));
             dic.Add("Sex", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.SEX)));
             dic.Add("NameSuffix", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.NAME_SUFFIX)));
-            dic.Add("Security_Level", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.LICENSE_TYPE)));
+
+            //权限
+            var Security_Level = new sys_security_level_dal().FindListBySql("select id,name from sys_security_level where delete_time=0");
+            dic.Add("Security_Level", Security_Level);
+
+            //地址
+            var Position = new sys_organization_location_dal().FindListBySql("select id,name from sys_organization_location where delete_time=0");
+            dic.Add("Position", Security_Level);
+            // Position
             dic.Add("Outsource_Security", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OUTSOURCE_SECURITY)));
             //var location=new sys_organization_location_dal()
             //Position
@@ -33,7 +42,6 @@ namespace EMT.DoneNOW.BLL
         }
         public ERROR_CODE Insert(SysUserAddDto data, long user_id,out long id) {
             id = data.sys_res.id = (int)(_dal.GetNextIdCom());
-
             if (_dal.FindSignleBySql<sys_resource>($"select * from sys_resource where `name`='{data.sys_res.name}'") != null) {
                 return ERROR_CODE.SYS_NAME_EXIST;
             }        
@@ -56,11 +64,12 @@ namespace EMT.DoneNOW.BLL
                 oper_type_id = (int)OPER_LOG_TYPE.ADD,
                 oper_description = _dal.AddValue(data.sys_res),
                 remark = "保存员工信息"
-
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
 
             data.sys_user.id = id;
+            //MD5加密
+           data.sys_user.password = new Tools.Cryptographys().MD5Encrypt(data.sys_user.password, true);
             new sys_user_dal().Insert(data.sys_user);
 
           add_account_log = new sys_oper_log()
@@ -81,12 +90,66 @@ namespace EMT.DoneNOW.BLL
 
             return ERROR_CODE.SUCCESS;
         }
+
+
+        public ERROR_CODE Update(SysUserAddDto data, long user_id,long id)
+        {
+            data.sys_res.id = id;
+            if (_dal.FindSignleBySql<sys_resource>($"select * from sys_resource where `name`='{data.sys_res.name}'") != null)
+            {
+                return ERROR_CODE.SYS_NAME_EXIST;
+            }
+            data.sys_res.create_user_id = data.sys_res.update_user_id = user_id;
+            data.sys_res.create_time = data.sys_res.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            _dal.Update(data.sys_res);
+            //操作日志新增一条日志,操作对象种类：员工
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+                return ERROR_CODE.USER_NOT_FIND;
+            var add_account_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,//员工
+                oper_object_id = data.sys_res.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(data.sys_res),
+                remark = "更新员工信息"
+
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
+
+            data.sys_user.id = id;
+            new sys_user_dal().Update(data.sys_user);
+
+            add_account_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                oper_object_id = data.sys_user.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(data.sys_user),
+                remark = "更新客户信息"
+
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_account_log);
+
+            return ERROR_CODE.SUCCESS;
+        }
+
         public sys_resource GetSysResourceSingle(long id) {
-           return  _dal.FindSignleBySql<sys_resource>($"select * from sys_quote_tmpl where id={id}");
+           return  _dal.FindSignleBySql<sys_resource>($"select * from sys_resource where id={id} and delete_time=0");
         }
         public sys_user GetSysUserSingle(long id)
         {
-            return _dal.FindSignleBySql<sys_user>($"select * from sys_quote_tmpl where id={id}");
+            return _dal.FindSignleBySql<sys_user>($"select * from sys_user where id={id}");
         }
     }
 }

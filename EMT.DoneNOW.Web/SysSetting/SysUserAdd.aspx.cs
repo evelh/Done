@@ -87,23 +87,23 @@ namespace EMT.DoneNOW.Web.SysSetting
             Prefix.Items.Insert(1, new ListItem() { Value = "1", Text = "Mr." });
             Prefix.Items.Insert(2, new ListItem() { Value = "2", Text = "Mrs." });
             Prefix.Items.Insert(3, new ListItem() { Value = "3", Text = "Ms." });
-            //主要位置  location_id
+            //主要位置  location_id   sys_organization_location
 
-            this.Position.DataTextField = "show";
-            this.Position.DataValueField = "val";
+            this.Position.DataTextField = "name";
+            this.Position.DataValueField = "id";
             this.Position.DataSource = dic.FirstOrDefault(_ => _.Key == "Position").Value;
             Position.DataBind();
             Position.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-            Position.Items.Insert(1, new ListItem() { Value = "1", Text = "总部" });
             //授权tab页
 
-            //权限等级
+            //权限等级  有争议sys_security_level
             //this.Security_Level
-            this.Security_Level.DataTextField = "show";
-            this.Security_Level.DataValueField = "val";
+            this.Security_Level.DataTextField = "name";
+            this.Security_Level.DataValueField = "id";
             this.Security_Level.DataSource = dic.FirstOrDefault(_ => _.Key == "Security_Level").Value;
             Security_Level.DataBind();
             Security_Level.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
             //外包权限
             //this.Outsource_Security
             this.Outsource_Security.DataTextField = "show";
@@ -263,7 +263,7 @@ namespace EMT.DoneNOW.Web.SysSetting
             {
                 param.sys_res.is_required_to_submit_timesheets = 1;
             }
-
+            param.sys_res.email_type_id=Convert.ToInt32(this.EmailType.SelectedValue.ToString());//保存邮件类型
             param.sys_res.date_display_format_id = Convert.ToInt32(this.DateFormat.SelectedValue);
             param.sys_res.number_display_format_id = Convert.ToInt32(this.NumberFormat.SelectedValue);
 
@@ -286,16 +286,20 @@ namespace EMT.DoneNOW.Web.SysSetting
             {
                 param.sys_res.sex = null;
             }
-
             if (Convert.ToInt32(this.EmailType1.SelectedValue) > 0)
                 param.sys_res.email1_type_id = Convert.ToInt32(this.EmailType1.SelectedValue);
             if (Convert.ToInt32(this.EmailType2.SelectedValue) > 0)
                 param.sys_res.email2_type_id = Convert.ToInt32(this.EmailType2.SelectedValue);
             if (Convert.ToInt32(this.NameSuffix.SelectedValue) > 0)
                 param.sys_res.suffix_id = Convert.ToInt32(this.NameSuffix.SelectedValue);
+            if(Convert.ToInt32(this.Security_Level.SelectedValue.ToString())>0)
+           param.sys_res.security_level_id =Convert.ToInt32(this.Security_Level.SelectedValue.ToString());//还未实现
+                if (Convert.ToInt32(this.Position.SelectedValue.ToString()) > 0)
+                param.sys_res.location_id =Convert.ToInt32(this.Position.SelectedValue.ToString());
+
+
             //新增
             param.sys_user = AssembleModel<sys_user>();
-
             param.sys_user.status_id = (int)USER_STATUS.NORMAL;
             param.sys_user.email = param.sys_res.email;
             param.sys_user.mobile_phone = param.sys_res.mobile_phone;
@@ -371,8 +375,9 @@ namespace EMT.DoneNOW.Web.SysSetting
         /// <param name="e"></param>
         protected void Save_Cloes_Click(object sender, EventArgs e)
         {
-            Save_Click(sender, e);
-            Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+            Save_Contact();
+            Save_deal();
+                Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
         }
     }
 }

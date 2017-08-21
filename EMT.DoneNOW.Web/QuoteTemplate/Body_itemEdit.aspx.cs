@@ -22,7 +22,7 @@ namespace EMT.DoneNOW.Web
                     body_item = Request.QueryString["item"].ToString();
                 }
                 else {
-                    body_item = "2222";
+                    body_item = "";
                 }             
 
                 this.AlertVariableFilter.DataTextField = "show";

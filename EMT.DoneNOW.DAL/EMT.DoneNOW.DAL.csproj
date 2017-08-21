@@ -83,6 +83,7 @@
     <Compile Include="IVT\ivt_warehouse_dal.cs" />
     <Compile Include="IVT\ivt_warehouse_product_dal.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email_dal.cs" />
+    <Compile Include="SYS\sys_organization_location_dal.cs" />
     <Compile Include="SYS\sys_quote_tmpl_dal.cs" />
     <Compile Include="CRM\crm_quote_dal.cs" />
     <Compile Include="CRM\crm_quote_item_dal.cs" />

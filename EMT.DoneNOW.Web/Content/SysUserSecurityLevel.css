@@ -1,0 +1,667 @@
+
+body{
+    overflow: hidden;
+}
+/*顶部内容和帮助*/
+.TitleBar{
+    color: #fff;
+    background-color: #346a95;
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.TitleBar>.Title{
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 97%;
+}
+.collection{
+    background-image: url(../img/collection.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 38px;
+    top: 10px;
+    width: 16px;
+}
+.text2{
+    margin-left: 5px;
+}
+.help{
+    background-image: url(../img/help.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 16px;
+    border-radius: 50%;
+}
+/*按钮部分*/
+.ButtonContainer{
+    padding: 0 10px 10px 10px;
+    width: auto;
+    height: 26px;
+}
+.ButtonContainer ul li .Button{
+    margin-right: 5px;
+    vertical-align: top;
+}
+li.Button{
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+    border: 1px solid #d7d7d7;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: #4f4f4f;
+    cursor: pointer;
+    height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-decoration: none;
+}
+.Button>.Icon{
+    display: inline-block;
+    flex: 0 0 auto;
+    height: 16px;
+    margin: 0 3px;
+    width: 16px;
+}
+.SaveAndClone{
+    background-image: url("../img/save.png");
+}
+.Save{
+    background-image: url("../img/save.png");
+}
+.ViewPdf{
+    background-image: url("../img/view.png");
+}
+.EditProperties{
+    background-image: url("../img/edit.png");
+}
+.EditAppendix{
+    background-image: url("../img/book.png");
+}
+.CancelButton{
+    background-image: url("../img/cancel.png");
+}
+.Button>.Text{
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/*主体*/
+.TabBar {
+    border-bottom: solid 1px #adadad;
+    font-size: 0;
+    margin: 0 0 10px 0;
+    padding: 0 0 0 5px;
+}
+.TabBar a.Button.SelectedState {
+    background: #fff;
+    border-color: #adadad;
+    border-bottom-color: #fff;
+}
+.TabBar a.Button {
+    background: #eaeaea;
+    border: solid 1px #dfdfdf;
+    border-bottom-color: #adadad;
+    color: #858585;
+    height: 24px;
+    padding: 0;
+    margin: 0 0 -1px 5px;
+    width:100px;
+}
+a.Button {
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+    border: 1px solid #d7d7d7;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: #4f4f4f;
+    cursor: pointer;
+    height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-decoration: none;
+}
+.TabBar a.Button span.Text {
+    padding: 0 6px 0 6px;
+    margin: 0 auto;
+}
+a.Button>.Text {
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/*主体部分*/
+.ScrollingContainer.Active {
+    left: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: absolute;
+    right: 0;
+}
+.ScrollingContainer {
+    padding: 0 10px 0 10px;
+}
+.TabContainer {
+    display: none;
+}
+.TabContainer.Active {
+    display: block;
+}
+.Section {
+    border: 1px solid #d3d3d3;
+    margin: 0 0 12px 0;
+    padding: 4px 0 4px 0;
+    width: 836px;
+}
+.Section.Collapsed {
+    background: #efefef;
+    background: -moz-linear-gradient(top,#f4f4f4 0,#efefef 100%);
+    background: -webkit-linear-gradient(top,#f4f4f4 0,#efefef 100%);
+    background: -ms-linear-gradient(top,#f4f4f4 0,#efefef 100%);
+    background: linear-gradient(to bottom,#f4f4f4 0,#efefef 100%);
+    padding: 6px 0 6px 0;
+}
+.Section>.Heading {
+    overflow: hidden;
+    padding: 2px 4px 8px 6px;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Section>.Heading>.Text {
+    color: #666;
+    height: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 17px;
+    text-transform: uppercase;
+}
+.Section>.Content {
+    padding-top: 12px;
+}
+.Section>.DescriptionText, .Section>.Content {
+    padding-left: 28px;
+    padding-right: 28px;
+}
+.Section.Collapsed>.Heading {
+    padding-bottom: 0;
+    padding-top: 0;
+}
+.Section>.Heading>.Toggle {
+    background: #d7d7d7;
+    background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #c6c6c6;
+    cursor: pointer;
+    height: 14px;
+    margin: 0 6px 0 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 14px;
+}
+.Section>.Heading>div, .Section>.Heading>span {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+}
+.Section .Column.Normal, .Section .Column.Normal>.Editor, .Section .Column.Normal>.CheckBoxGroupContainer>.Editor, .Section .Column.Normal>.RadioButtonGroupContainer>.Editor, .Section .Column.Normal>.Attachment_TypeContainer>.Editor {
+    width: 390px;
+}
+.Column, .ReplaceableColumnContainer {
+    display: inline-block;
+    vertical-align: top;
+}
+.Column.Normal>.EditorLabelContainer {
+    width: 380px;
+}
+.EditorLabelContainer {
+    display: block;
+}
+.Section .Column>.Editor, .Section .Column>.RadioButtonAssociation>.Editor, .EditorContainer>.Editor {
+    padding-bottom: 12px;
+}
+.Editor {
+    display: inline-block;
+    vertical-align: top;
+}
+.Editor.TextBox>.InputField>.Value {
+    color: #333;
+    font-size: 12px;
+}
+.Editor.TextBox input, .Editor.TextBox .Value, .Editor.DataSelector input {
+    width: 306px;
+}
+input {
+    color: #333;
+    margin: 0;
+}
+input[type="checkbox"], input[type="radio"] {
+    margin: 0;
+    display: block;
+    float: left;
+    clear: left;
+    padding: 0;
+    margin-right: 3px;
+    margin-top: 3px;
+}
+.Section .Editor.CheckBox {
+    padding-bottom: 14px;
+}
+.EditorLabelContainer>.Label {
+    color: #4f4f4f;
+    font-weight: 700;
+    height: 14px;
+    overflow: hidden;
+    padding-bottom: 1px;
+    padding-right: 5px;
+    vertical-align: bottom;
+}
+.Required {
+    color: #e51937;
+    padding-left: 2px;
+}
+.Editor.CheckBox .InputField>.EditorLabelContainer>.Label label, .Editor.RadioButton .InputField>.EditorLabelContainer>.Label label {
+    color: #333;
+    cursor: pointer;
+}
+.Editor.CheckBox>.InputField .Label, .Editor.RadioButton>.InputField .Label {
+    font-weight: normal;
+}
+
+.Section>.Heading>.Toggle>.Vertical {
+    background-color: #888;
+    height: 8px;
+    left: 6px;
+    position: absolute;
+    top: 3px;
+    width: 2px;
+}
+.Section>.Heading>.Toggle>.Horizontal {
+    background-color: #888;
+    height: 2px;
+    left: 3px;
+    position: absolute;
+    top: 6px;
+    width: 8px;
+}
+.Section.Collapsed>.DescriptionText, .Section.Collapsed>.Content {
+    display: none;
+}
+.Section>.Heading>.Right {
+    display: inline-block;
+    font-size: 12px;
+    height: 16px;
+    position: absolute;
+    right: 8px;
+}
+.Section>.Heading>.Right>.Text {
+    color: Gray;
+    font-size: 12px;
+    margin-right: 10px;
+}
+a.Button.Link {
+    background: none;
+    border: none;
+    color: #376597;
+    display: inline;
+    font-size: 12px;
+    height: auto;
+    padding: 0;
+    vertical-align: inherit;
+}
+a.Button {
+     -ms-flex-align: center;
+     align-items: center;
+     background: #f0f0f0;
+     background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+     background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+     background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+     background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+     border: 1px solid #d7d7d7;
+     display: -ms-inline-flexbox;
+     display: inline-flex;
+     color: #4f4f4f;
+     cursor: pointer;
+     height: 24px;
+     padding: 0 3px;
+     position: relative;
+     text-decoration: none;
+ }
+.EditorLabelContainer .Label > .SecondaryText  {
+    color:#666;
+    display: inline;
+    font-size: 11px;
+    font-weight: 300;
+    padding-left: 4px;
+ection>.Heading>.Right .VerticalSeparator {
+    border-right: 1px solid Gray;
+    margin: 5px 10px 0 10px;
+}
+.Section>.Heading>.Right .Separator, .Section>.Heading>.Right .VerticalSeparator {
+    display: inline-block;
+    height: 8px;
+    margin: 5px 5px 0 5px;
+    width: 0;
+}
+.Section .Column.Large, .Section .Column.Large>.Editor, .Section .Column.Large>.CheckBoxGroupContainer>.Editor, .Section .Column.Large>.RadioButtonGroupContainer>.Editor {
+    width: 780px;
+}
+.Section .Editor.CheckBox {
+     padding-bottom: 14px;
+ }
+.Section .Column.Large>.CustomLayoutContainer, .Section .Column.Large>.RefreshContainer>.CustomLayoutContainer {
+    width: 710px;
+}
+.Edit_DropdownHeader {
+    padding-bottom: 9px;
+    font-size: 12px;
+}
+.Edit_DropdownLabel {
+    padding-bottom: 2px;
+    font-weight: 700;
+    display: inline-block;
+}
+select {
+    color: #333;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+select option {
+    line-height: 16px;
+}
+.Edit_LayoutBlock {
+    font-size: 12px;
+    font-weight: normal;
+    padding-bottom: 20px;
+}
+.Edit_TableTitle {
+    display: inline-block;
+    font-size: 12px;
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+.Edit_LayoutTable {
+    border: 1px solid #DCDCDC;
+    width: 710px;
+}
+.Edit_LayoutTable>div.Edit_TableHeaderRow, .Edit_LayoutTable>div.Edit_Tablebody>div.Edit_TableBodyRow {
+    border-bottom: 1px solid #DCDCDC;
+}
+.Edit_LayoutTable>div.Edit_TableHeaderRow, .Edit_LayoutTable>div.Edit_TableBottomRow {
+    width: 710px;
+    height: 25px;
+    background-color: #ebebeb;
+}
+.Edit_TableBottomDescription {
+    color: #666;
+    padding-top: 4px;
+}
+.Edit_LayoutTable>div.Edit_TableBottomRow {
+    width: 710px;
+    height: 25px;
+    background-color: #ebebeb;
+}
+.Edit_LayoutTable>div.Edit_TableHeaderRow div.Edit_RightBorder, .Edit_LayoutTable>div.Edit_Tablebody>div.Edit_TableBodyRow div.Edit_RightBorder {
+    border-right: 1px solid #DCDCDC;
+}
+.Edit_LayoutTable>div.Edit_TableHeaderRow>div.Edit_FourCells, .Edit_LayoutTable>div.Edit_Tablebody>div.Edit_TableBodyRow>div.Edit_FourCells {
+    width: 575px;
+    display: inline-block;
+}
+.Edit_LayoutTable>div.Edit_Tablebody>div.Edit_TableBodyRow>div {
+    line-height: 27px;
+}
+.Edit_LayoutTable>div.Edit_TableHeaderRow>div, .Edit_LayoutTable>div.Edit_Tablebody>div.Edit_TableBodyRow>div {
+    padding-left: 10px;
+    padding-top: 4px;
+}
+.Edit_LayoutTable>div.Edit_Tablebody>div.Edit_TableBodyRow>div {
+    height: 31px;
+    vertical-align: top;
+}
+.Edit_LayoutTable>div.Edit_TableHeaderRow>div.Edit_OneCells, .Edit_LayoutTable>div.Edit_Tablebody>div.Edit_TableBodyRow>div.Edit_OneCells {
+    width: 109px;
+    display: inline-block;
+}
+.Edit_LayoutTable>div.Edit_Tablebody>div.Edit_TableBodyRow>div select {
+    width: 100px;
+}
+.Edit_LayoutTable>div.Edit_TableHeaderRow>div.Edit_TwoCells, .Edit_LayoutTable>div.Edit_Tablebody>div.Edit_TableBodyRow>div.Edit_TwoCells {
+    display: inline-block;
+    line-height: 1.2;
+    width: 202px;
+}
+.Edit_LayoutTable>div.Edit_TableHeaderRow>div {
+    height: 19px;
+    color: #666;
+    font-weight: bold;
+}
+.Edit_LayoutTable>div.Edit_Tablebody>div.Edit_TableBodyRow>div.Edit_ReadonlyPermission {
+    color: #999;
+    font-size: 12px;
+}
+
+
+
+
+/*第三部分*/
+.Grid {
+    border-top-color: #98b4ca;
+}
+.Grid {
+    border-top: solid 1px #d7d7d7;
+    font-size: 12px;
+}
+.Grid .HeaderContainer, body .Table .HeaderContainer {
+    background-color: #cbd9e4;
+    border-left-color: #98b4ca;
+    border-right-color: #98b4ca;
+}
+.Grid .HeaderContainer {
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    overflow: hidden;
+}
+.Grid .HeaderContainer table {
+    table-layout: fixed;
+    width: 100%;
+}
+.Grid table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+body .Grid .HeaderContainer td, body  .Grid .HeaderContainer td, body .Table .HeaderContainer td, body .Table .HeaderContainer td {
+    border-bottom-color: #98b4ca;
+    border-right-color: #98b4ca;
+    color: #64727a;
+}
+.Grid td.Context, .Grid td.Command, .Grid td.Icon {
+    padding-top: 0;
+    font-size: 0;
+}
+.Grid .HeaderContainer td {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    font-size: 12px;
+    font-weight: bold;
+    height: 15px;
+    padding: 3px 5px 3px 5px;
+    vertical-align: top;
+    word-wrap: break-word;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.Grid .Dynamic {
+    width: auto;
+}
+.Grid td.Date, .Grid td.DateTime, .Grid td.Time, .Grid td.Boolean, .Grid td.Input, .Grid td.Image {
+    text-align: center;
+}
+.Grid .HeaderContainer td.ScrollBarSpacer {
+    border-right: none;
+    padding: 0;
+}
+.Grid .HeaderContainer td>.Standard {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+.Grid .HeaderContainer td>.Standard>div {
+     display: table-cell;
+ }
+.Grid .HeaderContainer td .Heading {
+    word-wrap: break-word;
+}
+.Grid .RowContainer.Active {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+}
+.Grid .RowContainer {
+    border-left: 1px solid #d7d7d7;
+    border-right: 1px solid #d7d7d7;
+    overflow: auto;
+    overflow-y: scroll;
+}
+.Grid .RowContainer table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+.Grid .RowContainer tr:first-child td {
+    border-top: none;
+}
+.Grid .RowContainer .NoDataRow td {
+    padding: 0;
+}
+.Grid .RowContainer td {
+    border: solid 1px #e8e8e8;
+    border-left-color: #f8f8f8;
+    border-right-color: #f8f8f8;
+    padding: 4px 4px 4px 4px;
+    vertical-align: top;
+    word-wrap: break-word;
+}
+.Grid .NoDataMessage {
+    color: #e51937;
+    display: none;
+    height: 20px;
+    padding-top: 10px;
+    text-align: center;
+}
+.Grid .NoDataMessage.Active {
+    display: block;
+}
+.ContextOverlay {
+    background-color: #fff;
+    border: 1px solid #d7d7d7;
+    box-shadow: rgba(0,0,0,0.24) 2px 2px 3px 0;
+    display: none;
+    font-size: 12px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+.ContextOverlay>.Arrow.Outline {
+    border-color: #b9b9b9;
+}
+.ContextOverlay>.Arrow {
+    border: 9px solid #fff;
+    height: 0;
+    position: absolute;
+    width: 0;
+}
+.ContextOverlay .LoadingIndicator.Active {
+    display: inline-block;
+    margin: 3px;
+}
+.ContextOverlay .LoadingIndicator {
+    display: none;
+    width: 30px;
+    height: 30px;
+}
+.Grid .RowContainer .DragIndicator {
+    cursor: move;
+    display: none;
+    height: 3px;
+    left: 0;
+    position: absolute;
+    right: 0;
+}
+.Grid .RowContainer .DragIndicator .Bar {
+    background-color: #69c;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.Grid .RowContainer .DragIndicator .LeftArrow {
+    border-bottom: 9px solid transparent;
+    border-left: 9px solid #69c;
+    border-top: 9px solid transparent;
+    bottom: -7px;
+    left: 0;
+}
+.Grid .RowContainer .DragIndicator .LeftArrow, .Grid .RowContainer .DragIndicator .RightArrow {
+    height: 0;
+    position: absolute;
+    width: 0;
+}
+.Grid .RowContainer .DragStatus {
+    background-color: #fff;
+    border: 2px solid #b9b9b9;
+    box-shadow: rgba(0,0,0,0.24) 2px 2px 3px 0;
+    display: none;
+    position: fixed;
+    padding: 10px;
+}
+

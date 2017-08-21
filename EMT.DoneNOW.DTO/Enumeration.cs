@@ -450,27 +450,6 @@ namespace EMT.DoneNOW.DTO
             TIMESPAN = 817,         // 日期-时间戳
         }
         /// <summary>
-        /// 系统权限：类型 取值 有无、全部部分 等  -76
-        /// </summary>
-        public enum LIMIT_TYPE
-        {
-            HAVEORNO=960,         //有无
-            ALLPARTMINENO=961,      //全部、部分、我的、无
-            ALLMINENO=962,            //全部、我的、无
-            ALLNO=963,            //全部无
-            TASK=964,             //task
-            TICKET=965,           //ticket
-            CONTACT=966,          //contact
-            NOLIMIT=967,           //无需权限
-        }
-        /// <summary>
-        /// 系统权限：类型详情 取值 有无、全部部分 等  -77
-        /// </summary>
-        public enum LIMIT_TYPE_VALUE
-        {
-            ALL=970,        //全部
-        }
-        /// <summary>
         /// 系统权限：limit类型-76
         /// </summary>
         public enum LIMIT_TYPE
