@@ -217,11 +217,12 @@
                         {
                             var contactLocation = locationBLL.GetLocation((long)contact.location_id);
                     %>
-                    <p><%=country.First(_ => _.val.ToString() == contactLocation.country_id.ToString()).show  %></p>
-                    <p><%=addressdistrict.First(_ => _.val.ToString() == contactLocation.province_id.ToString()).show  %></p>
-                    <p><%=addressdistrict.First(_ => _.val.ToString() == contactLocation.city_id.ToString()).show  %></p>
-                    <p><%=addressdistrict.First(_ => _.val.ToString() == contactLocation.district_id.ToString()).show  %></p>
-
+                    <p>
+                    <span><%=country.First(_ => _.val.ToString() == contactLocation.country_id.ToString()).show  %></span>
+                    <span><%=addressdistrict.First(_ => _.val.ToString() == contactLocation.province_id.ToString()).show  %></span>
+                    <span><%=addressdistrict.First(_ => _.val.ToString() == contactLocation.city_id.ToString()).show  %></span>
+                    <span><%=addressdistrict.First(_ => _.val.ToString() == contactLocation.district_id.ToString()).show  %></span>
+                        </p>
                     <% if (!string.IsNullOrEmpty(contactLocation.address))
                         { %>
 

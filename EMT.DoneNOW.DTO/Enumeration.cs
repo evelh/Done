@@ -232,6 +232,15 @@ namespace EMT.DoneNOW.DTO
             OPPORTUNITY = 451,      // 商机
         }
 
+        public enum SALES_ORDER_STATUS
+        {
+            OPEN=465,                // 打开
+            IN_PROGRESS=466,         // 未实施
+            PARTIALLY_FULFILLED=467, // 部分实施
+            FULFILLED=468,           // 完成
+            CANCELED=469,            // 取消
+        }
+
         /// <summary>
         /// 用户自定义字段对象类型-32
         /// </summary>
@@ -358,6 +367,10 @@ namespace EMT.DoneNOW.DTO
             SUBCOMPANY_COMPANY_VIEW = 872,      // 客户管理-详情-子客户查询
             OPPORTUNITY_CONTACT_VIEW = 873,     // 联系人管理-详情-商机查询
             SUB_COMPANY_CALLBACK = 877,         // 独立客户查找带回（没有父客户和子客户）
+            PRODUCT_CALLBACK = 882,             // 产品查找带回
+            MANY_PRODUCT_CALLBACK=885,          // 产品多选查找带回
+            SERVICE_CALLBACK=883,               // 服务查找带回
+            SERVICE_BUNDLE_CALLBACK=884,        // 服务集查找带回
         }
 
         /// <summary>
@@ -404,6 +417,7 @@ namespace EMT.DoneNOW.DTO
             QUOTE = 770,                                // 报价   
             QUOTE_ITEM=771,                             // 报价项   
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息
+            SALE_ORDER = 760,                           // 销售订单
         }
 
         /// <summary>
@@ -432,6 +446,59 @@ namespace EMT.DoneNOW.DTO
             MUILT_CALLBACK = 814,   // 多选查找带回
             NUMBER_EQUAL = 816,     // 数值(做等于判断)
             TIMESPAN = 817,         // 日期-时间戳
+        }
+
+        /// <summary>
+        /// 系统权限：limit类型-76
+        /// </summary>
+        public enum LIMIT_TYPE
+        {
+            HAVE_NONE = 960,            // 有无
+            ALL_PART_MINE_NONE = 961,   // 全部部分我的无
+            ALL_MINE_NONE = 962,        // 全部我的无
+            ALL_NONE = 963,             // 全部无
+            TASK = 964,                 // task
+            TICKET = 965,               // ticket
+            CONTACT = 966,              // contact
+            NOT_REQUIRE = 967,          // 无需权限
+        }
+
+        /// <summary>
+        /// 系统权限：limit_type_value 取值-77
+        /// </summary>
+        public enum LIMIT_TYPE_VALUE
+        {
+            // 961对应值
+            ALL961 = 970,              // 全部
+            MY_TORRITORY961 = 971,     // 我的地域
+            MINE961 = 972,             // 我的
+            NONE961 = 973,             // 无
+
+            // 962对应值
+            ALL962 = 974,              // 全部
+            MINE962 = 975,             // 我的
+
+            // 964对应值
+            MY_TASK = 976,             // 我的
+            ALL_TASK = 977,            // 全部
+
+            // 965对应值
+            ALL965 = 978,              // 全部
+            MINE_AND_COMPANY = 979,    // Mine + Companies
+            MINE965 = 980,             // 我的
+
+            // 966对应值
+            ALL966 = 981,              // 全部
+            MY_COMPANY = 982,          // 我是客户经理
+            MY_PROJECT = 983,          // 我是项目经理
+            NONE966 = 984,             // 无
+
+            // 967对应值
+            NOT_REQUIRE = 985,         // 无需权限
+
+            // 960对应值
+            HAVE = 986,                // 有
+            NO = 987,                  // 无
         }
 
         /// <summary>
@@ -530,5 +597,12 @@ namespace EMT.DoneNOW.DTO
 
         QuoteTemplateAdd = 181,                 // 报价模板新增
         QuoteTemplateEdit = 182,                // 报价模板编辑
+
+        ProductSelect = 190,                    // 产品查找带回
+        ManyProductSelect = 191,                // 多选产品查找带回
+                                                
+        ServiceSelect=200,                      // 服务的查找带回
+        ServiceBundleSelect= 201,               // 服务集的查找带回
+
     }
 }

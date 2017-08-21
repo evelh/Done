@@ -10,9 +10,11 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min2.2.2.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <link href="../Content/Quotebaojiaxiang.css" rel="stylesheet" />
-    <style> 
-        .num{
-            color: #666666;font-size: 12px;  vertical-align: super;
+    <style>
+        .num {
+            color: #666666;
+            font-size: 12px;
+            vertical-align: super;
         }
     </style>
 </head>
@@ -68,11 +70,11 @@
         </div>
         <div class="quoteItemListDiv">
 
-            <input type="hidden" name="show_each_tax_in_tax_group" id="show_each_tax_in_tax_group" value="" runat="server"/>
-            <input type="hidden" name="show_each_tax_in_tax_period" id="show_each_tax_in_tax_period" value="" runat="server"/>
-            <input type="hidden" name="show_tax_cate" id="show_tax_cate" value="" runat="server"/>
-            <input type="hidden" name="show_tax_cate_superscript" id="show_tax_cate_superscript" value="" runat="server"/>
-            <input type="hidden" name="show_labels_when_grouped" id="show_labels_when_grouped" value="" runat="server"/>
+            <input type="hidden" name="show_each_tax_in_tax_group" id="show_each_tax_in_tax_group" value="" runat="server" />
+            <input type="hidden" name="show_each_tax_in_tax_period" id="show_each_tax_in_tax_period" value="" runat="server" />
+            <input type="hidden" name="show_tax_cate" id="show_tax_cate" value="" runat="server" />
+            <input type="hidden" name="show_tax_cate_superscript" id="show_tax_cate_superscript" value="" runat="server" />
+            <input type="hidden" name="show_labels_when_grouped" id="show_labels_when_grouped" value="" runat="server" />
             <div class="grid">
                 <div id="quoteSettingDiv">
                     <span class="FieldLabels">分组方式:</span>
@@ -105,13 +107,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                           <%
+                            <%
                                 var type = dic.First(_ => _.Key == "quote_item_type").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>; // 报价项分类
                                 var quote_item_tax_cate_name = dic.First(_ => _.Key == "quote_item_tax_cate").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>; // 报价项相关税
 
                                 // 为了给税加入上标获取到集合排序
                                 var taxAllCateList = quoteItemList.Select(_ => _.tax_cate_id).Distinct().ToList();  // 所有的税ID信息相关的集合
-                                
+
 
 
 
@@ -131,7 +133,17 @@
                                     if (groupByType == ((int)EMT.DoneNOW.DTO.DicEnum.QUOTE_GROUP_BY.CYCLE).ToString())
                                     {
                                         var cycleFiled = new EMT.DoneNOW.DAL.d_general_dal().GetDictionary(new EMT.DoneNOW.DAL.d_general_table_dal().GetById((int)EMT.DoneNOW.DTO.GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE));
-                                        groupName = cycleFiled.First(_ => _.val.ToString() == item.Key.ToString()) != null ? cycleFiled.First(_ => _.val.ToString() == item.Key.ToString()).show : "无周期";
+                                       // var tset = new EMT.DoneNOW.DTO.DictionaryEntryDto(null, "", 0);
+                                        // cycleFiled.Add(tset);
+                                          if (!string.IsNullOrEmpty(item.Key.ToString()))
+                                            {
+                                                groupName = cycleFiled.First(_ => _.val.ToString() == item.Key.ToString()).show;
+                                            }
+                                            else
+                                            {
+                                                groupName = "无周期";
+                                            }
+                                       //   groupName = cycleFiled.First(_ => (_.val == null ? "" : _.val).ToString() == item.Key.ToString()) != null ? cycleFiled.First(_ => (_.val == null ? "" : _.val).ToString() == item.Key.ToString()).show : "无周期";
                                     }
                                     else if (groupByType == ((int)EMT.DoneNOW.DTO.DicEnum.QUOTE_GROUP_BY.PRODUCT).ToString())
                                     {
@@ -195,7 +207,7 @@
                                     if (taxQI != null && taxQI.Count > 0)
                                     {
                             %>
-                            <tr  class="STC">
+                            <tr class="STC">
                                 <td colspan="12" style="text-align: right;"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice*taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
@@ -219,7 +231,7 @@
                                     }
                                 }
                             %>
-                            <tr  class="ITP">
+                            <tr class="ITP">
                                 <td colspan="12" style="text-align: right;"><%=groupName %>税汇总:</td>
                                 <td><%=(totalAllTaxPrice).ToString("#0.00") %></td>
                             </tr>
@@ -301,7 +313,7 @@
                                     {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;" ><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice*taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -321,7 +333,7 @@
                             <%}
                                 }
                             %>
-                            <tr  class="ITP">
+                            <tr class="ITP">
                                 <td colspan="12" style="text-align: right;">配送税汇总:</td>
                                 <td><%=(totalAllTaxPrice).ToString("#0.00") %></td>
                             </tr>
@@ -410,7 +422,7 @@
                                             if (list != null && list.Count > 0)
                                             {
                                                 totalAllTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0) * discount.discount_percent * _.total_effective_tax_rate); // 折扣中需要交税的项
-                                                itemTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0)* discount.discount_percent);// 折扣中需要交税的和
+                                                itemTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0) * discount.discount_percent);// 折扣中需要交税的和
                                             }
 
                                         });
@@ -432,7 +444,7 @@
                                     if (taxQI != null && taxQI.Count > 0)
                                     {      %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;" ><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(itemTaxPrice*taxcate.total_effective_tax_rate).ToString("#0.000") %></td>
                             </tr>
                             <%
@@ -457,7 +469,7 @@
                                 groupAllTaxPrcie -= totalAllTaxPrice;  // 所有报价项的税之和
                             %>
 
-                            <tr  class="ITP">
+                            <tr class="ITP">
                                 <td colspan="12" style="text-align: right;">一次性税汇总:</td>
                                 <td><%=(totalAllTaxPrice).ToString("#0.000") %></td>
                             </tr>
@@ -478,11 +490,11 @@
                                 <td><%=(decimal.Round(decimal.Parse((quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0)).ToString()),2).ToString()) %></td>
                             </tr>
                             <tr>
-                                <td colspan="12"  style="text-align:right;">税汇总</td>
+                                <td colspan="12" style="text-align: right;">税汇总</td>
                                 <td><%=groupAllTaxPrcie.ToString("#0.00") %></td>
                             </tr>
                             <tr>
-                                <td colspan="12"  style="text-align:right;">带上税的汇总</td>
+                                <td colspan="12" style="text-align: right;">带上税的汇总</td>
                                 <td><%=(decimal.Round(decimal.Parse((groupAllTaxPrcie+quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0)).ToString()),2).ToString()) %></td>
                             </tr>
                             <% if (optionalItemList != null && optionalItemList.Count > 0)
@@ -532,7 +544,7 @@
                                     {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;" ><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice*taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -552,7 +564,7 @@
                             <%}
                                 }
                             %>
-                            <tr  class="ITP">
+                            <tr class="ITP">
                                 <td colspan="12" style="text-align: right;">可选税汇总:</td>
                                 <td><%=(totalAllTaxPrice).ToString("#0.00") %></td>
                             </tr>
@@ -572,7 +584,7 @@
                                 <td><%=(decimal.Round(decimal.Parse(totalPrice.ToString()),2).ToString()) %></td>
                             </tr>
                             <%  }%>
-                      
+
                             <tr>
                                 <td colspan="9"></td>
                                 <td><b>全部汇总：</b></td>
@@ -580,13 +592,13 @@
                                 <td><%=((decimal)((quoteItemList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
                                 <td><%=decimal.Round(((decimal)(quoteItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0))),2).ToString() %></td>
                             </tr>
-                                  <tr>
+                            <tr>
                                 <td colspan="12" style="text-align: right;">税汇总</td>
                                 <td><%=groupAllTaxPrcie.ToString("#0.00") %></td>
                             </tr>
                             <tr>
-                                
-                                   <td colspan="12" style="text-align: right;">加税汇总</td>
+
+                                <td colspan="12" style="text-align: right;">加税汇总</td>
                                 <td><%=decimal.Round(((decimal)(groupAllTaxPrcie+quoteItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0))),2).ToString() %></td>
                             </tr>
                             <%     }
@@ -604,7 +616,18 @@
                                         if (groupByType == ((int)EMT.DoneNOW.DTO.DicEnum.QUOTE_GROUP_BY.CYCLE_PRODUCT).ToString())
                                         {
                                             var cycleFiled = new EMT.DoneNOW.DAL.d_general_dal().GetDictionary(new EMT.DoneNOW.DAL.d_general_table_dal().GetById((int)EMT.DoneNOW.DTO.GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE));
-                                            outGroupName = cycleFiled.First(_ => _.val.ToString() == outGroupBy.Key.ToString()) != null ? cycleFiled.First(_ => _.val.ToString() == outGroupBy.Key.ToString()).show : "无周期";
+                                            // var tset = new EMT.DoneNOW.DTO.DictionaryEntryDto(null,"",0);
+                                          //   cycleFiled.Add(tset);
+                                            // outGroupName = cycleFiled.First(_ =>  (_.val==null?"":_.val).ToString() == outGroupBy.Key.ToString()) != null ? cycleFiled.First(_ =>  (_.val==null?"":_.val).ToString() == outGroupBy.Key.ToString()).show : "无周期";
+
+                                            if (!string.IsNullOrEmpty(outGroupBy.Key.ToString()))
+                                            {
+                                                outGroupName = cycleFiled.First(_ => _.val.ToString() == outGroupBy.Key.ToString()).show;
+                                            }
+                                            else
+                                            {
+                                                outGroupName = "无周期";
+                                            }
                                         }
                                         else if (groupByType == ((int)EMT.DoneNOW.DTO.DicEnum.QUOTE_GROUP_BY.PRODUCT_CYCLE).ToString())
                                         {
@@ -649,7 +672,15 @@
                                     else if (groupByType == ((int)EMT.DoneNOW.DTO.DicEnum.QUOTE_GROUP_BY.PRODUCT_CYCLE).ToString())
                                     {
                                         var cycleFiled = new EMT.DoneNOW.DAL.d_general_dal().GetDictionary(new EMT.DoneNOW.DAL.d_general_table_dal().GetById((int)EMT.DoneNOW.DTO.GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE));
-                                        inGroupName = cycleFiled.First(_ => _.val.ToString() == inGroupBy.Key.ToString()) != null ? cycleFiled.First(_ => _.val.ToString() == inGroupBy.Key.ToString()).show : "无周期";
+                                        if (!string.IsNullOrEmpty(inGroupBy.Key.ToString()))
+                                        {
+                                            inGroupName = cycleFiled.First(_ => _.val.ToString() == inGroupBy.Key.ToString()).show;
+                                        }
+                                        else
+                                        {
+                                            inGroupName = "无周期";
+                                        }
+                                        //  inGroupName = cycleFiled.First(_ => _.val.ToString() == inGroupBy.Key.ToString()) != null ? cycleFiled.First(_ => _.val.ToString() == inGroupBy.Key.ToString()).show : "无周期";
 
                                     }
                             %>
@@ -699,7 +730,7 @@
                                     {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;" ><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice*taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -710,8 +741,8 @@
                                 if (taxCateList != null && taxCateList.Count > 0)
                                 {
                                     foreach (var tc in taxCateList)
-                                           {
-                            %> 
+                                    {
+                            %>
                             <tr class="STCS">
                                 <td colspan="12" style="text-align: right;"><%=tc.tax_name %>(税率：<%=(tc.tax_rate*100).ToString("#0.00")+"%" %>):</td>
                                 <td><%=(taxTotalPrice*tc.tax_rate).ToString("#0.00") %></td>
@@ -740,12 +771,12 @@
                                 <td><%=(decimal.Round(decimal.Parse(totalPrice.ToString()),2).ToString()) %></td>
                             </tr>
                             <%
-                                        }
                                     }
+                                }
 
 
 
-                            if (distributionList != null && distributionList.Count > 0)
+                                if (distributionList != null && distributionList.Count > 0)
                                 {%>
                             <tr>
                                 <td>配送类型的报价项</td>
@@ -773,7 +804,7 @@
 
                             <%}%>
                             <% var distotalPrice = distributionList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0); // 该项下的总价 
-                                                                                                                                                                                                         ///distributionList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)
+                                                                                                                                                                                                            ///distributionList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)
                                 decimal distotalAllTaxPrice = 0;  // 该类型下的所有税汇总
                             %>
                             <tr>
@@ -790,8 +821,8 @@
                                     if (taxQI != null && taxQI.Count > 0)
                                     {
                             %>
-                            <tr  class="STC">
-                                <td colspan="12" style="text-align: right;" ><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
+                            <tr class="STC">
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice*taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -886,7 +917,7 @@
                             <%}%>
 
                             <% var onetotalPrice = (discountQIList.Where(_ => _.discount_percent == null).ToList().Sum(_ => (_.unit_discount != null && _.quantity != null) ? _.unit_discount * _.quantity : 0) + (oneTimeList != null && oneTimeList.Count > 0 ? discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_ => oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0) * _.discount_percent * 100 / 100) : 0)); // 该项下的总价 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 // 一次性折扣税汇总，税单独计算，其余汇总不变
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // 一次性折扣税汇总，税单独计算，其余汇总不变
                                 decimal itemTaxPrice = 0;
                                 decimal onetotalAllTaxPrice = 0;  // 该类型下的所有税汇总
                                 discountQIList.ForEach(discount =>
@@ -899,7 +930,7 @@
                                             if (list != null && list.Count > 0)
                                             {
                                                 onetotalAllTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0) * discount.discount_percent * _.total_effective_tax_rate); // 折扣中需要交税的项
-                                                itemTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0)* discount.discount_percent);
+                                                itemTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0) * discount.discount_percent);
                                             }
 
                                         });
@@ -921,7 +952,7 @@
                                     if (taxQI != null && taxQI.Count > 0)
                                     {      %>
                             <tr>
-                                <td colspan="12" style="text-align: right;"  class="STC"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;" class="STC"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(itemTaxPrice*taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -966,12 +997,12 @@
                                 <td><%=((decimal)((quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
                                 <td><%=(decimal.Round(decimal.Parse((quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0)).ToString()),2).ToString()) %></td>
                             </tr>
-                                 <tr>
-                                <td colspan="12"  style="text-align:right;">税汇总</td>
+                            <tr>
+                                <td colspan="12" style="text-align: right;">税汇总</td>
                                 <td><%=groupAllTaxPrcie.ToString("#0.00") %></td>
                             </tr>
                             <tr>
-                                <td colspan="12"  style="text-align:right;">带上税的汇总</td>
+                                <td colspan="12" style="text-align: right;">带上税的汇总</td>
                                 <td><%=(decimal.Round(decimal.Parse((groupAllTaxPrcie+quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0)).ToString()),2).ToString()) %></td>
                             </tr>
                             <% if (optionalItemList != null && optionalItemList.Count > 0)
@@ -1003,7 +1034,7 @@
                             <%}%>
 
                             <% var optotalPrice = optionalItemList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0); // 该项下的总价 
-                                                                                                                                                                                                         ///distributionList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)
+                                                                                                                                                                                                           ///distributionList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)
                                 decimal optotalAllTaxPrice = 0;  // 该类型下的所有税汇总
                             %>
                             <tr>
@@ -1021,7 +1052,7 @@
                                     {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;" ><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice*taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -1072,13 +1103,13 @@
                                 <td><%=((decimal)((quoteItemList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
                                 <td><%=decimal.Round(((decimal)(quoteItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0))),2).ToString() %></td>
                             </tr>
-                                      <tr>
+                            <tr>
                                 <td colspan="12" style="text-align: right;">税汇总</td>
                                 <td><%=groupAllTaxPrcie.ToString("#0.00") %></td>
                             </tr>
                             <tr>
-                                
-                                   <td colspan="12" style="text-align: right;">加税汇总</td>
+
+                                <td colspan="12" style="text-align: right;">加税汇总</td>
                                 <td><%=decimal.Round(((decimal)(groupAllTaxPrcie+quoteItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0))),2).ToString() %></td>
                             </tr>
                             <%
@@ -1141,7 +1172,7 @@
                                     {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"  ><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice*taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -1228,7 +1259,7 @@
                                     {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"  ><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice*taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -1337,7 +1368,7 @@
                                             if (list != null && list.Count > 0)
                                             {
                                                 onetotalAllTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0) * discount.discount_percent * _.total_effective_tax_rate); // 折扣中需要交税的项
-                                                itemTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0)* discount.discount_percent);
+                                                itemTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0) * discount.discount_percent);
                                             }
 
                                         });
@@ -1359,7 +1390,7 @@
                                     if (taxQI != null && taxQI.Count > 0)
                                     {      %>
                             <tr>
-                                <td colspan="12" style="text-align: right;"  class="STC"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;" class="STC"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(itemTaxPrice*taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -1405,12 +1436,12 @@
                                 <td><%=((decimal)((quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
                                 <td><%=(decimal.Round(decimal.Parse((quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0)).ToString()),2).ToString()) %></td>
                             </tr>
-                                <tr>
-                                <td colspan="12"  style="text-align:right;">税汇总</td>
+                            <tr>
+                                <td colspan="12" style="text-align: right;">税汇总</td>
                                 <td><%=groupAllTaxPrcie.ToString("#0.00") %></td>
                             </tr>
                             <tr>
-                                <td colspan="12"  style="text-align:right;">带上税的汇总</td>
+                                <td colspan="12" style="text-align: right;">带上税的汇总</td>
                                 <td><%=(decimal.Round(decimal.Parse((groupAllTaxPrcie+quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0)).ToString()),2).ToString()) %></td>
                             </tr>
                             <%// var optionalItemList = quoteItemList.Where(_ => _.optional == 1).ToList();   // 获取到可选的报价项
@@ -1460,7 +1491,7 @@
                                     {
                             %>
                             <tr>
-                                <td colspan="12" style="text-align: right;"  class="STC"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;" class="STC"><span class="ITG num"><%=taxAllCateList.IndexOf(taxcate.tax_cate_id).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice*taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -1510,8 +1541,8 @@
                                 <td><%=groupAllTaxPrcie.ToString("#0.00") %></td>
                             </tr>
                             <tr>
-                                
-                                   <td colspan="12" style="text-align: right;">加税汇总</td>
+
+                                <td colspan="12" style="text-align: right;">加税汇总</td>
                                 <td><%=decimal.Round(((decimal)(groupAllTaxPrcie+quoteItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0))),2).ToString() %></td>
                             </tr>
                             <% 
@@ -1560,12 +1591,14 @@
         var show_tax_cate_superscript = $("#show_tax_cate_superscript").val();
         if (show_each_tax_in_tax_group == 0) {
             // $(".ITG").css('display', 'none');  // 隐藏掉这个tr
-            $(".ITG").css("display","none");
+            $(".ITG").css("display", "none");
         } else {
-            $(".ITG").css('display', ''); 
+            $(".ITG").css('display', '');
         }
         if (show_each_tax_in_tax_period == 0) {
-            $(".ITP").css('display', 'none');  // 隐藏掉这个tr
+            if ($("#groupBy").val() == <%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_GROUP_BY.CYCLE %>) {
+                $(".ITP").css('display', 'none');  // 隐藏掉这个tr
+            }   
         }
         else {
             $(".ITP").css('display', '');

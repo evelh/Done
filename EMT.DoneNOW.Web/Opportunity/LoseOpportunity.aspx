@@ -9,8 +9,17 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <asp:Button ID="finish" runat="server" Text="结束" OnClick="finish_Click" />
         <div>
+            <asp:DropDownList ID="opportunity" runat="server"></asp:DropDownList>
+            
+            <asp:DropDownList ID="stage_id" runat="server"></asp:DropDownList>
+
+            <asp:DropDownList ID="resource_id" runat="server"></asp:DropDownList>
         </div>
+        
     </form>
 </body>
 </html>
+<script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../Scripts/common.js"></script>

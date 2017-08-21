@@ -464,9 +464,7 @@
                         <td>
                             <div class="clear">
                                 <label><%=udf.name %></label>
-                                <textarea name="<%=udf.id %>" rows="2" cols="20">
-                                        <%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>
-                                    </textarea>
+                                <textarea name="<%=udf.id %>" rows="2" cols="20"><%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %></textarea>
                             </div>
 
                         </td>

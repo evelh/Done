@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SysManage.aspx.cs" Inherits="EMT.DoneNOW.Web.SysManage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SysUserAdd.aspx.cs" Inherits="EMT.DoneNOW.Web.SysSetting.SysUserAdd" %>
 
 <!DOCTYPE html>
 
@@ -10,7 +10,7 @@
     <title>系统管理</title>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" method="post" enctype="multipart/form-data">
         <div class="TitleBar">
             <div class="Title">
                 <span class="text1">系统管理</span>
@@ -24,7 +24,7 @@
                 <li class="LiButton" id="f1">
                     <img src="../Images/save.png" alt="" class="ButtonImg" />
                     <%-- <span class="Text">保存 & 克隆</span>--%>
-                    <asp:Button ID="Save_Clone" runat="server" Text="保存并克隆" BorderStyle="None" class="Text" />
+                    <asp:Button ID="Save_Clone" runat="server" Text="保存并关闭" BorderStyle="None" class="Text" OnClick="Save_Cloes_Click" />
                 </li>
                 <li class="LiButton" id="f2">
                     <img src="../Images/save.png" alt="" class="ButtonImg" />
@@ -34,12 +34,12 @@
                 <li class="LiButton" id="f3">
                     <img src="../Images/save.png" alt="" class="ButtonImg" />
                     <%--<span class="Text">保存 & 复制</span>--%>
-                    <asp:Button ID="Save_copy" runat="server" Text="保存并复制" BorderStyle="None" class="Text" />
+                    <asp:Button ID="Save_copy" runat="server" Text="保存并复制" BorderStyle="None" class="Text" OnClick="Save_copy_Click" />
                 </li>
                 <li class="LiButton" id="f4">
                     <img src="../Images/cancel.png" alt="" class="ButtonImg" />
                     <%-- <span class="Text">取消</span>--%>
-                    <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" class="Text" />
+                    <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" class="Text" OnClick="Cancel_Click" />
                 </li>
                 <span class="FieldLevelInstruction">包含所需字段<span style="color: red;">*</span>选项卡</span>
             </ul>
@@ -118,7 +118,7 @@
                                                                 <span class="lblNormalClass">姓<span style="color: red;">*</span></span>
                                                                 <div>
                                                                     <span style="display: inline-block">
-                                                                        <input class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="first_name" id="first_name" />
+                                                                        <asp:TextBox ID="first_name" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="first_name"></asp:TextBox> 
                                                                     </span>
                                                                 </div>
                                                             </td>
@@ -128,7 +128,7 @@
                                                                 <span class="lblNormalClass">名<span style="color: red;">*</span></span>
                                                                 <div>
                                                                     <span style="display: inline-block">
-                                                                        <input class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="last_name" id="last_name" />
+                                                                        <asp:TextBox ID="last_name" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="last_name" ></asp:TextBox>                                                                       
                                                                     </span>
                                                                 </div>
                                                             </td>
@@ -138,7 +138,7 @@
                                                                 <span class="lblNormalClass">标题</span>
                                                                 <div>
                                                                     <span style="display: inline-block">
-                                                                        <input class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="title" id="title" />
+                                                                        <asp:TextBox ID="title" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="title"></asp:TextBox>                                                                       
                                                                     </span>
                                                                 </div>
                                                             </td>
@@ -183,12 +183,11 @@
                                                     </tbody>
                                                 </table>
                                             </td>
-                                            <td valign="top" align="left" width="210">
-                                                <%-- <asp:ImageButton ID="avatar" runat="server" ImageUrl="~/Images/Avatar/default.jpg" Width="100px" Height="100px" OnClick="Avatar"/>--%>
+                                            <td valign="top" align="left" width="210">                                              
                                                 <img id="imgshow" src="<%=avatarPath %>" />
-                                                <a href="#" style="display: inline-block; width: 100px; height: 24px; position: relative; overflow: hidden;">点击修改头像
+                        <a href="#" style="display: inline-block; width: 100px; height: 24px; position: relative; overflow: hidden;">点击修改头像
                             <input type="file" value="浏览" id="browsefile" name="browsefile" style="position: absolute; right: 0; top: 0; opacity: 0; filter: alpha(opacity=0);" />
-                                                </a>
+                        </a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -206,7 +205,7 @@
                                                                 <span class="lblNormalClass">办公室电话</span>
                                                                 <div>
                                                                     <span style="display: inline-block">
-                                                                        <input class="txtBlack8Class" type="text" maxlength="50" style="width: 150px;" name="office_phone" id="office_phone" />
+                                                                        <asp:TextBox ID="office_phone" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 150px;" name="office_phone"></asp:TextBox>                                                                        
                                                                     </span>
                                                                 </div>
                                                             </td>
@@ -214,7 +213,7 @@
                                                                 <span class="lblNormalClass">延伸</span>
                                                                 <div>
                                                                     <span style="display: inline-block">
-                                                                        <input class="txtBlack8Class" type="text" maxlength="50" style="width: 70px;">
+                                                                        <asp:TextBox ID="TextBox1" runat="server"  class="txtBlack8Class" type="text" maxlength="50" style="width: 70px;"></asp:TextBox>                                                                        
                                                                     </span>
                                                                 </div>
                                                             </td>
@@ -224,7 +223,7 @@
                                                                 <span class="lblNormalClass">家庭电话</span>
                                                                 <div>
                                                                     <span style="display: inline-block">
-                                                                        <input class="txtBlack8Class" type="text" maxlength="50" style="width: 150px;" name="home_phone" id="home_phone" />
+                                                                        <asp:TextBox ID="home_phone" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 150px;" name="home_phone"></asp:TextBox>                                                                       
                                                                     </span>
                                                                 </div>
                                                             </td>
@@ -234,7 +233,7 @@
                                                                 <span class="lblNormalClass">手机</span>
                                                                 <div>
                                                                     <span style="display: inline-block">
-                                                                        <input class="txtBlack8Class" type="text" maxlength="50" style="width: 150px;" name="mobile_phone" />
+                                                                        <asp:TextBox ID="mobile_phone" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 150px;" name="mobile_phone"></asp:TextBox>                                                                       
                                                                     </span>
                                                                 </div>
                                                             </td>
@@ -244,7 +243,7 @@
                                                                 <span class="lblNormalClass">E-mail地址<span style="color: red;">*</span></span>
                                                                 <div>
                                                                     <span style="display: inline-block">
-                                                                        <input class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="email" id="email" />
+                                                                        <asp:TextBox ID="email" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="email" ></asp:TextBox>                                                                     
                                                                     </span>
                                                                 </div>
                                                             </td>
@@ -262,7 +261,7 @@
                                                                 <span class="lblNormalClass">E-mail地址1</span>
                                                                 <div>
                                                                     <span style="display: inline-block">
-                                                                        <input class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="email1" />
+                                                                        <asp:TextBox ID="email1" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="email1" ></asp:TextBox>                                                                        
                                                                     </span>
                                                                 </div>
                                                             </td>
@@ -280,7 +279,7 @@
                                                                 <span class="lblNormalClass">E-mail地址2</span>
                                                                 <div>
                                                                     <span style="display: inline-block">
-                                                                        <input class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="email2" />
+                                                                        <asp:TextBox ID="email2" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="email2"></asp:TextBox>                                                                     
                                                                     </span>
                                                                 </div>
                                                             </td>
@@ -366,14 +365,11 @@
                                                                     <span class="lblNormalClass">用户名<span style="color: red;">*</span></span>
                                                                     <div>
                                                                         <span>
-                                                                            <input type="text" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="Username" id="Username" /></span>
+                                                                            <asp:TextBox ID="name" runat="server" type="text" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="name" ></asp:TextBox>
+                                                                           </span>
                                                                         <span class="lblNormalClass">
                                                                             <asp:Label ID="www" runat="server" Text="@itcat.net.cn"></asp:Label></span>
-                                                                    </div>
-                                                                    <div class="ButtonCollectionBase" style="height: 27px;">
-                                                                        <span>
-                                                                            <input type="text" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="name" id="name" /></span>
-                                                                    </div>
+                                                                    </div>                                                                    
                                                                 </td>
                                                             </tr>
 
@@ -382,7 +378,7 @@
                                                                     <span class="lblNormalClass">请输入密码<span style="color: red;">*</span></span>
                                                                     <div>
                                                                         <span>
-                                                                            <input type="password" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="password" id="password" /></span>
+                                                                            <asp:TextBox ID="password" runat="server" type="password" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="password"></asp:TextBox></span>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -392,7 +388,8 @@
                                                                     <span class="lblNormalClass">请确认密码<span style="color: red;">*</span></span>
                                                                     <div>
                                                                         <span>
-                                                                            <input type="password" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="password2" id="password2" /></span>
+                                                                            <asp:TextBox ID="password2" runat="server" type="password" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="password2"></asp:TextBox>
+                                                                            </span>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -401,7 +398,7 @@
                                                                     <div>
                                                                         <span>
                                                                             <span class="txtBlack8Class" style="margin-top: 5px">
-                                                                                <asp:CheckBox ID="is_active" runat="server" disabled="disabled" Style="vertical-align: middle;" />
+                                                                                <asp:CheckBox ID="ACTIVE" runat="server" disabled="disabled" Style="vertical-align: middle;" Checked="True" />
                                                                                 <label>激活</label>
                                                                             </span>
                                                                         </span>
@@ -422,7 +419,7 @@
                                                                 <td colspan="2">
                                                                     <span>
                                                                         <span class="txtBlack8Class" style="margin-top: 5px">
-                                                                            <input type="checkbox" style="vertical-align: middle;" checked="checked" />
+                                                                            <asp:CheckBox ID="can_edit_skills" runat="server" />
                                                                             <label>允许员工编辑技能</label>
                                                                         </span>
                                                                     </span>
@@ -432,7 +429,7 @@
                                                                 <td colspan="2">
                                                                     <span>
                                                                         <span class="txtBlack8Class" style="margin-top: 5px">
-                                                                            <input type="checkbox" style="vertical-align: middle;" checked="checked" />
+                                                                            <asp:CheckBox ID="can_manage_kb_articles" runat="server" />
                                                                             <label>允许员工创建、编辑和删除知识库文章</label>
                                                                         </span>
                                                                     </span>
@@ -442,7 +439,7 @@
                                                                 <td colspan="2">
                                                                     <span>
                                                                         <span class="txtBlack8Class" style="margin-top: 5px">
-                                                                            <input type="checkbox" style="vertical-align: middle;">
+                                                                            <asp:CheckBox ID="allow_send_bulk_email" runat="server" />
                                                                             <label>允许员工群发邮件</label>
                                                                         </span>
                                                                     </span>
@@ -462,7 +459,7 @@
                                                                     <div>
                                                                         <span>
                                                                             <span class="txtBlack8Class" style="margin-top: 5px">
-                                                                                <input type="checkbox" style="vertical-align: middle;" checked="checked" />
+                                                                               <asp:CheckBox ID="is_required_to_submit_timesheets" runat="server" />
                                                                                 <label>不要求用户提交工时表</label>
                                                                             </span>
                                                                         </span>
@@ -560,10 +557,7 @@
                     return false;
                 }
             });
-            $("#Save").click(save());
-            $("Save_Clone").click(save());
-            $("Save_Copy").click(save());
-            function save() {
+            $("#Save").click(function () {
                 var firstname = $("#first_name").val();
                 var lastname = $("#last_name");
                 if (firstname == null || firstname == '') {
@@ -574,6 +568,10 @@
                     alert("请输入名后再进行保存！");
                     return false;
                 }
+                //if ($("#Position").val() == 0) {
+                //    alert("请选择主要办公地址！");
+                //    return false;
+                //}
                 var email = $("#email").val();
                 if (email == null || email == '') {
                     alert("未填写邮件地址！");
@@ -583,9 +581,36 @@
                     alert("邮箱格式不正确");
                     return false;
                 }
-                //if($("#username"))
-                
-            }
+                if ($("#EmailType").val() == 0) {
+                    alert("请选择邮件类型！");
+                    return false;
+                }
+                if ($("#DateFormat").val == 0) {
+                    alert("请选择日期类型！");
+                    return false;
+                }
+                if ($("#NumberFormat").val == 0) {
+                    alert("请选择数值类型！");
+                    return false;
+                }
+                if ($("#name").val() == null || $("#name").val() == '')
+                {
+                    alert("请在常规选项卡输入用户名");
+                    return false;
+                }
+                if ($("#password").val() == null || $("#password").val() == '') {
+                    alert("请在常规选项卡输入密码");
+                    return false;
+                }
+                if ($("#password2").val() == null || $("#password2").val() == '') {
+                    alert("请在常规选项卡再次输入密码");
+                    return false;
+                }
+                if ($("#Security_Level").val() == 0) {
+                    alert("请输入权限等级");
+                    return false;
+                }
+            });
             $("#password2").blur(function () {
                 var ps1 = $("#password").val();
                 if (ps1 == null | ps1 == '') {

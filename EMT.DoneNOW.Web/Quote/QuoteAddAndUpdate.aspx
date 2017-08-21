@@ -95,9 +95,7 @@
                         <td colspan="2">
                             <div class="clear">
                                 <label>报价描述</label>
-                                <textarea style="width: 180px;" name="description" id="description">
-                                        <%=(!isAdd)&&(!string.IsNullOrEmpty(quote.description))?quote.description:"" %>
-                                    </textarea>
+                                <textarea style="width: 180px;" name="description" id="description"><%=(!isAdd)&&(!string.IsNullOrEmpty(quote.description))?quote.description:"" %></textarea>
 
 
                             </div>
@@ -238,9 +236,7 @@
                             <div class="clear">
                                 
                                 <label>报价注释</label>
-                                <textarea style="width:180px;" name="quote_comment" id="quote_comment">
-                                        <%=(!isAdd)&&(!string.IsNullOrEmpty(quote.quote_comment))?quote.quote_comment:"" %>
-                                </textarea>
+                                <textarea style="width:180px;" name="quote_comment" id="quote_comment"><%=(!isAdd)&&(!string.IsNullOrEmpty(quote.quote_comment))?quote.quote_comment:"" %></textarea>
                             </div>
                         </td>
 

@@ -32,5 +32,9 @@ namespace EMT.DoneNOW.DTO
         CRM_ACCOUNT_NAME_EXIST = 3000,              // 客户名称已存在
         PHONE_OCCUPY,                               // 电话被占用
         MOBILE_PHONE_OCCUPY,
+
+
+
+        SYS_NAME_EXIST,                              //员工姓名已存在
     }
 }

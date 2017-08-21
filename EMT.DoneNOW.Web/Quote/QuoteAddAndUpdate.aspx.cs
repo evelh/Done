@@ -143,6 +143,11 @@ namespace EMT.DoneNOW.Web.Quote
             }
             else
             {
+                quote.id = this.quote.id;
+                quote.oid = this.quote.oid;
+                quote.projected_close_date = this.quote.projected_close_date;
+                quote.is_primary_quote = this.quote.is_primary_quote;
+                quote.group_by_id = this.quote.group_by_id;
                 var result = new QuoteBLL().Update(quote, GetLoginUserId());
                 switch (result)
                 {
@@ -194,6 +199,11 @@ namespace EMT.DoneNOW.Web.Quote
             }
             else
             {
+                quote.id = this.quote.id;
+                quote.oid = this.quote.oid;
+                quote.projected_close_date = this.quote.projected_close_date;
+                quote.is_primary_quote = this.quote.is_primary_quote;
+                quote.group_by_id = this.quote.group_by_id;
                 var result = new QuoteBLL().Update(quote, GetLoginUserId());
                 switch (result)
                 {
