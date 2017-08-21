@@ -51,6 +51,7 @@
     <Compile Include="ContactAddDto.cs" />
     <Compile Include="ContactConditionDto.cs" />
     <Compile Include="DictionaryEntryDto.cs" />
+    <Compile Include="EnumAuthority.cs" />
     <Compile Include="Enumeration.cs" />
     <Compile Include="EnumSysSetting.cs" />
     <Compile Include="FormTmplOpportunityDto.cs" />
