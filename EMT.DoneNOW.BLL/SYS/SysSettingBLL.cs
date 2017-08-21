@@ -25,5 +25,15 @@ namespace EMT.DoneNOW.BLL
         {
             return dal.FindById((long)id).setting_value;
         }
+
+        /// <summary>
+        /// 根据ID获取到系统设置
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public sys_system_setting GetSetById(SysSettingEnum id)
+        {
+            return dal.FindById((long)id);
+        }
     }
 }

@@ -380,7 +380,7 @@ namespace EMT.DoneNOW.BLL.CRM
             */
         }
 
-        // 关闭商机
+        // 关闭商机(赢得商机)
         public ERROR_CODE CloseOpportunity()
         {
 
@@ -424,43 +424,44 @@ namespace EMT.DoneNOW.BLL.CRM
 
             #region 处理逻辑2. 保存通知
 
-            var notifyTemp = new sys_notify_tmpl_email_dal().FindSignleBySql<sys_notify_tmpl_email>($"select * from sys_notify_tmpl_email where id= {opportunityDto.notifyTempId}");  // 获取到通知模板
+            //var notifyTemp = new sys_notify_tmpl_email_dal().FindSignleBySql<sys_notify_tmpl_email>($"select * from sys_notify_tmpl_email where id= {opportunityDto.notifyTempId}");  // 获取到通知模板
 
 
             // 生成通知对象
-            var notifyEmail = new com_notify_email()
-            {
-                cate_id = (int)NOTIFY_CATE.CRM,
-                event_id = (int)NOTIFY_EVENT.OPPORTUNITY_LOST,
-                id = _dal.GetNextIdCom(),
-                create_user_id = user.id,
-                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                update_user_id = user.id,
-                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                to_email = opportunityDto.notify.to_email,
-                notify_tmpl_id = opportunityDto.notifyTempId,
-                from_email = notifyTemp.from_other_email,
-                from_email_name = notifyTemp.from_other_email_name,
-                body_text = opportunityDto.notify.body_text + notifyTemp.body_text,
-                body_html = opportunityDto.notify.body_html + notifyTemp.body_html,
-                subject = opportunityDto.notify.subject,
-                is_html_format = notifyTemp.is_html_format,// 
-                                                           // 是否发送 ==--todo
-            };
-            new sys_oper_log_dal().Insert(new sys_oper_log()
-            {
-                user_cate = "用户",
-                user_id = (int)user.id,
-                name = user.name,
-                phone = user.mobile == null ? "" : user.mobile,
-                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.NOTIFY,
-                oper_object_id = notifyTemp.id,// 操作对象id
-                oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                oper_description = _dal.AddValue(notifyTemp),
-                remark = "商机丢失新增通知信息"
+            //var notifyEmail = new com_notify_email()
+            //{
+            //    cate_id = (int)NOTIFY_CATE.CRM,
+            //    event_id = (int)NOTIFY_EVENT.OPPORTUNITY_LOST,
+            //    id = _dal.GetNextIdCom(),
+            //    create_user_id = user.id,
+            //    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //    update_user_id = user.id,
+            //    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //    to_email = opportunityDto.notify.to_email,
+            //    notify_tmpl_id = opportunityDto.notifyTempId,
+            //    from_email = notifyTemp.from_other_email,
+            //    from_email_name = notifyTemp.from_other_email_name,
+            //    body_text = opportunityDto.notify.body_text + notifyTemp.body_text,
+            //    body_html = opportunityDto.notify.body_html + notifyTemp.body_html,
+            //    subject = opportunityDto.notify.subject,
+            //    is_html_format = notifyTemp.is_html_format,// 
+            //                                               // 是否发送 ==--todo
+            //};
+            //new com_notify_email_dal().Insert(notifyEmail);
+            //new sys_oper_log_dal().Insert(new sys_oper_log()
+            //{
+            //    user_cate = "用户",
+            //    user_id = (int)user.id,
+            //    name = user.name,
+            //    phone = user.mobile == null ? "" : user.mobile,
+            //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.NOTIFY,
+            //    oper_object_id = notifyTemp.id,// 操作对象id
+            //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+            //    oper_description = _dal.AddValue(notifyTemp),
+            //    remark = "商机丢失新增通知信息"
 
-            });
+            //});
 
 
             #endregion
@@ -468,14 +469,18 @@ namespace EMT.DoneNOW.BLL.CRM
             #region 处理逻辑3. 新增备注  商机丢失时，会自动生成商机丢失备注
             // 若商机关联的联系人为激活状态，则为该联系人，否则空
             long? contact_id = null;
-            var contact = new ContactBLL().GetContact((long)opportunityDto.opportunity.contact_id);
-            if (opportunityDto.opportunity.contact_id != null && (contact != null))
+            if (opportunityDto.opportunity.contact_id!=null)
             {
-                if (contact.is_active == 1)
+                var contact = new ContactBLL().GetContact((long)opportunityDto.opportunity.contact_id);
+                if (opportunityDto.opportunity.contact_id != null && (contact != null))
                 {
-                    contact_id = contact.id;
+                    if (contact.is_active == 1)
+                    {
+                        contact_id = contact.id;
+                    }
                 }
             }
+         
             // 创建丢失商机的活动对象
             com_activity loseOppoActivity = new com_activity()
             {
@@ -493,7 +498,8 @@ namespace EMT.DoneNOW.BLL.CRM
                 ticket_id = null,
                 start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),  // todo 从页面获取时间，去页面时间的12：00：00
                 end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),
-                description = $"关闭时间：{DateTime.Now.ToString("dd/MM/yyyy")} /r  通知对象:{notifyEmail.to_email} /r 主题：{notifyEmail.subject} /r 内容 ：{notifyEmail.body_text}",     // todo 内容描述拼接
+                description = "",// todo 通知暂时不做，做通知时，将内容补上
+               // description = $"关闭时间：{DateTime.Now.ToString("dd/MM/yyyy")} /r  通知对象:{notifyEmail.to_email} /r 主题：{notifyEmail.subject} /r 内容 ：{notifyEmail.body_text}",     // todo 内容描述拼接
                 status_id = (int)OPPORTUNITY_STATUS.LOST,
                 complete_description = null,
                 complete_time = null,
@@ -573,34 +579,49 @@ namespace EMT.DoneNOW.BLL.CRM
             // 一个商机只会有一个销售订单
             var saleOrderDal = new crm_sales_order_dal();
             var salesOrder = saleOrderDal.GetSingleSalesOrderByWhere($" and opportunity_id = {opportunityDto.opportunity.id}");
-            
-         
-            if (salesOrder.status_id == (int)SALES_ORDER_STATUS.IN_PROGRESS || salesOrder.status_id==(int)SALES_ORDER_STATUS.PARTIALLY_FULFILLED)
-            {
-                salesOrder.status_id = (int)SALES_ORDER_STATUS.CANCELED;
-                salesOrder.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                salesOrder.update_user_id = user.id;
-                new sys_oper_log_dal().Insert(new sys_oper_log()
-                {
-                    user_cate = "用户",
-                    user_id = (int)user.id,
-                    name = user.name,
-                    phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SALE_ORDER,
-                    oper_object_id = salesOrder.id,// 操作对象id
-                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                    oper_description = _dal.CompareValue(saleOrderDal.GetSingleSalesOrderByWhere($" and id={salesOrder.id}"),salesOrder),
-                    remark = "丢失商机时修改销售订单的状态为取消"
 
-                });
-                saleOrderDal.Update(salesOrder);
+            if (salesOrder!=null)
+            {
+                if (salesOrder.status_id == (int)SALES_ORDER_STATUS.IN_PROGRESS || salesOrder.status_id == (int)SALES_ORDER_STATUS.PARTIALLY_FULFILLED)
+                {
+                    salesOrder.status_id = (int)SALES_ORDER_STATUS.CANCELED;
+                    salesOrder.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    salesOrder.update_user_id = user.id;
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = (int)user.id,
+                        name = user.name,
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SALE_ORDER,
+                        oper_object_id = salesOrder.id,// 操作对象id
+                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                        oper_description = _dal.CompareValue(saleOrderDal.GetSingleSalesOrderByWhere($" and id={salesOrder.id}"), salesOrder),
+                        remark = "丢失商机时修改销售订单的状态为取消"
+
+                    });
+                    saleOrderDal.Update(salesOrder);
+                }
             }
+            
           
           
             #endregion
 
             return ERROR_CODE.SUCCESS;
+        }
+
+
+        public decimal ReturnOppoRebenue(crm_opportunity opportunity)
+        {
+            decimal total = 0;
+            total += (decimal)(opportunity.one_time_revenue == null ? 0 : opportunity.one_time_revenue);
+            total += (decimal)((opportunity.monthly_revenue == null ? 0 : opportunity.monthly_revenue) * opportunity.number_months);
+            total += (decimal)((opportunity.quarterly_revenue == null ? 0 : opportunity.monthly_revenue) * opportunity.number_months);
+            total += (decimal)((opportunity.semi_annual_revenue == null ? 0 : opportunity.monthly_revenue) * opportunity.number_months);
+            total += (decimal)((opportunity.yearly_revenue == null ? 0 : opportunity.monthly_revenue) * opportunity.number_months);
+            return total;
         }
     }
 }

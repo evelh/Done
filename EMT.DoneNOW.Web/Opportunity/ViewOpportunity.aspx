@@ -110,11 +110,25 @@
                         <span class="fl">商机ID</span><span class="fr"><%=opportunity.oid %><br />
                         </span>
                     </p>
-                    <%if (1 == 2)  // 判断报价是否存在
+                    <%
+                      //  var quoteList = new EMT.DoneNOW.DAL.crm_quote_dal().GetQuoteByOpportunityId(opportunity.id);
+                        %>
+                    <%if (quoteList!=null&&quoteList.Count>0)  // 判断报价是否存在
                         {
-                    %>
-                    <%--<p class="clear"><span class="fl">报价</span><span class="fr">现在还没有报价--todo </span></p>--%>
-                    <%}
+                            var primaryQuote = quoteList.FirstOrDefault(_ => _.is_primary_quote == 1);
+                            %>
+                    <p class="clear">
+                         主报价:<a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem"><%=primaryQuote.name %></a> 
+                    </p>
+                    <%
+                            foreach (var quote in quoteList.Where(_=>_.is_primary_quote!=1))
+                            {%>
+                      <p class="clear">
+                       <a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem"><%=quote.name %></a>
+                        
+                    </p>
+                            <%}
+                        }
                         else
                         { %>
                     <%--<p><a href="#">这里是新增报价的链接</a></p>--%>

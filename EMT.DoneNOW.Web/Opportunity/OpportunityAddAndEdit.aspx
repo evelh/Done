@@ -881,10 +881,13 @@
     function AddContact() {
         var account_id = $("#ParentComoanyNameHidden").val();
         if (account_id != "") {
-            window.open('../Contact/AddContact.aspx?account_id=' + account_id, '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', 'left= 200, top = 200, width = 900, height = 750', false);
+            window.open('../Contact/AddContact.aspx?callback=AddContactBack&account_id=' + account_id, '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', 'left= 200, top = 200, width = 900, height = 750', false);
         } else {
             return false;
-        }
-        
+        }    
+    }
+    function AddContactBack(id) {
+        GetContactList();
+        $("#contact_id").val(id);
     }
 </script>

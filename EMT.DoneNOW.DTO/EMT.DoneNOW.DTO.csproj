@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ApiResultDto.cs" />
     <Compile Include="CacheQuerySqlDto.cs" />
+    <Compile Include="CloseOpportunity.cs" />
     <Compile Include="CompanyAddDto.cs" />
     <Compile Include="CompanyConditionDto.cs" />
     <Compile Include="CompanyReportDto.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="QueryParaDto.cs" />
     <Compile Include="QueryResultDto.cs" />
     <Compile Include="QueryResultParaDto.cs" />
+    <Compile Include="QuoteCloseDto.cs" />
     <Compile Include="QuoteTemplateAddDto.cs" />
     <Compile Include="QuoteViewDto.cs" />
     <Compile Include="SysUserAddDto.cs" />

@@ -53,6 +53,19 @@ namespace EMT.DoneNOW.DTO
     /// </summary>
     public class DicEnum
     {
+
+        public enum ACCOUNT_TYPE
+        {
+            CUSTOMER=14,                       // 客户
+            LEADER =15,                         // 领导者
+            POTENTIAL_CUSTOMER =16,             // 潜在客户
+            TERMINATION_OF_COOPERATION =17,     // 终止合作
+            CANCELLATION_OF_CUSTOMER =18,       // 注销客户
+            MANUFACTURER =19,                   // 厂商
+            COOPERATIVE_PARTNER20,             // 合作伙伴
+
+        }
+
         /// <summary>
         /// 活动类型 - 7
         /// </summary>

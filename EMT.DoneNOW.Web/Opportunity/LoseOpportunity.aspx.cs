@@ -16,50 +16,79 @@ namespace EMT.DoneNOW.Web.Opportunity
     public partial class LoseOpportunity : BasePage
     {
         protected crm_opportunity opportunity = null;
-
+        protected crm_account account = null;
+        protected sys_system_setting lostSetting = new SysSettingBLL().GetSetById(SysSettingEnum.CRM_OPPORTUNITY_LOSS_REASON);
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                var opportunity_id = Request.QueryString["id"];
-                if (!string.IsNullOrEmpty(opportunity_id))
-                {
-                    opportunity = new crm_opportunity_dal().GetOpportunityById(long.Parse(opportunity_id));
-                    if (opportunity != null)
+               
+
+                    var opportunityId = Request.QueryString["id"];
+                    if (!string.IsNullOrEmpty(opportunityId))
                     {
-                        var dic = new OpportunityBLL().GetField();
-                        // 商机已经关闭，丢失提示信息
-                        if (opportunity.status_id == (int)OPPORTUNITY_STATUS.CLOSED)
+                        opportunity = new crm_opportunity_dal().GetOpportunityById(long.Parse(opportunityId));
+                        if (opportunity != null)
                         {
-                            Response.Write("<script>alert('商机已关闭，继续则以前创建的已确认计费项和合同不会受影响！');</script>");
-                            Response.Write("<script>if(!confirm('本操作将会改变商机状态，相关的销售订单将被取消，是否继续？')){close();window.close();}</script>");
+                            account = new crm_account_dal().FindById(opportunity.account_id);
+                            var dic = new OpportunityBLL().GetField();
+                            // 商机已经关闭，丢失提示信息
+                            if (opportunity.status_id == (int)OPPORTUNITY_STATUS.CLOSED)
+                            {
+                                Response.Write("<script>alert('商机已关闭，继续则以前创建的已确认计费项和合同不会受影响！');</script>");
+                                Response.Write("<script>if(!confirm('本操作将会改变商机状态，相关的销售订单将被取消，是否继续？')){close();window.close();}</script>");
+                            }
+
+
+
+
+                            #region 下拉框赋值
+                            stage_id.DataTextField = "show";
+                            stage_id.DataValueField = "val";
+                            stage_id.DataSource = dic.FirstOrDefault(_ => _.Key == "opportunity_stage").Value;
+                            stage_id.DataBind();
+
+
+                            resource_id.DataTextField = "show";
+                            resource_id.DataValueField = "val";
+                            resource_id.DataSource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value;
+                            resource_id.DataBind();
+
+
+                            opportunity_id.DataTextField = "name";
+                            opportunity_id.DataValueField = "id";
+                            opportunity_id.DataSource = new crm_opportunity_dal().FindOpHistoryByAccountId(opportunity.account_id);
+                            opportunity_id.DataBind();
+
+                            loss_reason_type_id.DataTextField = "show";
+                            loss_reason_type_id.DataValueField = "val";
+                            loss_reason_type_id.DataSource = dic.FirstOrDefault(_ => _.Key == "oppportunity_loss_reason_type").Value;
+                            loss_reason_type_id.DataBind();
+                            loss_reason_type_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                            // competition  competitor_id
+                            competitor_id.DataTextField = "show";
+                            competitor_id.DataValueField = "val";
+                            competitor_id.DataSource = dic.FirstOrDefault(_ => _.Key == "competition").Value;
+                            competitor_id.DataBind();
+                            competitor_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                            #endregion
+
+                            stage_id.SelectedValue = opportunity.stage_id == null ? "0" : opportunity.stage_id.ToString();
+                            resource_id.SelectedValue = opportunity.resource_id.ToString();
+                            opportunity_id.SelectedValue = opportunity.id.ToString();
+                            competitor_id.SelectedValue = opportunity.competitor_id == null ? "0" : opportunity.competitor_id.ToString();
                         }
-                
-
-
-                        #region 下拉框赋值
-                        stage_id.DataTextField = "show";
-                        stage_id.DataValueField = "val";
-                        stage_id.DataSource = dic.FirstOrDefault(_ => _.Key == "opportunity_stage").Value;
-                        stage_id.DataBind();
-                        
-
-                        resource_id.DataTextField = "show";
-                        resource_id.DataValueField = "val";
-                        resource_id.DataSource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value;
-                        resource_id.DataBind();
-                       
-                        #endregion
-
-                        stage_id.SelectedValue = opportunity.stage_id == null ? "0" : opportunity.stage_id.ToString();
-                        resource_id.SelectedValue = opportunity.resource_id.ToString();
-
+                        else
+                        {
+                            Response.End();
+                        }
                     }
                     else
                     {
                         Response.End();
                     }
-                }
+               
+              
 
             }
             catch (Exception)
@@ -69,7 +98,16 @@ namespace EMT.DoneNOW.Web.Opportunity
         }
 
         protected void finish_Click(object sender, EventArgs e)
-        {
+        {            
+            var thisOppo = AssembleModel<crm_opportunity>();
+            opportunity.stage_id = thisOppo.stage_id;
+            opportunity.resource_id = thisOppo.resource_id;
+            opportunity.primary_product_id = thisOppo.primary_product_id;
+            opportunity.competitor_id = thisOppo.competitor_id;
+            opportunity.loss_reason_type_id = thisOppo.loss_reason_type_id;
+            opportunity.loss_reason = thisOppo.loss_reason;
+            // opportunity.resource_id = thisOppo.resource_id;
+            // opportunity.resource_id = thisOppo.resource_id;
             LoseOpportunityDto dto = new LoseOpportunityDto()
             {
                 opportunity = this.opportunity,
@@ -80,7 +118,7 @@ namespace EMT.DoneNOW.Web.Opportunity
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
-
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>document.getElementsByClassName('Workspace1')[0].style.display = 'none';document.getElementsByClassName('Workspace4')[0].style.display = 'none';document.getElementsByClassName('Workspace5')[0].style.display = '';</script>");
                     break;
                 case ERROR_CODE.ERROR:
                     break;

@@ -258,7 +258,7 @@ namespace EMT.DoneNOW.BLL
         public bool DeleteQuote(long quote_id, long user_id)
         {
             // todo 报价如果关联了销售订单，则不可删除
-          
+
 
             var quote = _dal.GetQuote(quote_id);
             if (quote != null)
@@ -283,14 +283,15 @@ namespace EMT.DoneNOW.BLL
                         remark = "删除报价"
                     });
 
-                    var quoteItemList = new crm_quote_item_dal().GetQuoteItems(" and quote_id = "+quote.id);   // 删除报价的同时，删除报价下的所有报价项
-                    if(quoteItemList!=null&& quoteItemList.Count > 0)
+                    var quoteItemList = new crm_quote_item_dal().GetQuoteItems(" and quote_id = " + quote.id);   // 删除报价的同时，删除报价下的所有报价项
+                    if (quoteItemList != null && quoteItemList.Count > 0)
                     {
                         var quoteItemBLL = new QuoteItemBLL();
-                        quoteItemList.ForEach(_ => {
+                        quoteItemList.ForEach(_ =>
+                        {
                             //_.delete_user_id = user_id;
                             //_.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                            quoteItemBLL.DeleteQuoteItem(_.id,user.id);
+                            quoteItemBLL.DeleteQuoteItem(_.id, user.id);
                         });
                     }
                     return true;
@@ -355,7 +356,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_id = oppor.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
                 oper_description = opporDal.CompareValue(oldOppor, oppor),
-                remark = "修改商机信息"
+                remark = "丢失报价"
             });
 
             // 新增通知信息
@@ -394,9 +395,170 @@ namespace EMT.DoneNOW.BLL
             });  // 插入日志
 
             return "";
-		}
+        }
 
-        public bool SetPrimaryQuote(long user_id,long quote_id)
+        public ERROR_CODE CloseQuote(long user_id, QuoteCloseDto param)
+        {
+            // 此向导将会把产品、一次性折扣、配送、成本转为计费项。可选项和费用不会被转换。如果有产品，会生成销售订单。
+            // 报价中如果有服务 / 包或初始费用，将不会被转换为计费项，也不会创建定期服务合同
+            // 如果商机状态已经是“关闭”或“已实施”，将会为此商机生成重复的计费项。
+
+
+            // 报价项中如果有物料代码为空的，则需要设置。如果没有需要配置的，则此界面不显示
+
+            // 计费项将会生成，是否需要创建发票
+
+            // 打开新建的销售订单（链接）——如果创建了销售单才显示
+
+
+
+            // 关闭报价是关闭商机的另一种方式，
+
+            // -- 必填项校验-- 根据系统设置来判断 TODO
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            // 1.更新商机信息
+
+            #region 1.更新商机信息
+            // 根据系统设置来选择商机的阶段-- todo
+            param.opportunity.status_id = (int)DicEnum.OPPORTUNITY_STATUS.CLOSED;
+            var old_opportunity = new crm_opportunity_dal().GetOpportunityById(param.opportunity.id);
+            new crm_opportunity_dal().Update(param.opportunity);
+            new sys_oper_log_dal().Insert(new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = user_id,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.OPPORTUNITY,
+                oper_object_id = param.opportunity.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.CompareValue(old_opportunity, param.opportunity),
+                remark = "修改商机信息"
+            });
+
+            #endregion
+
+            // 2.更新客户信息
+            #region 2.更新客户信息
+            var account = new CompanyBLL().GetCompany(param.quote.account_id);
+            if(account.type_id != (int)DicEnum.ACCOUNT_TYPE.CUSTOMER)
+            {
+                account.type_id = (int)DicEnum.ACCOUNT_TYPE.CUSTOMER;
+                new crm_account_dal().Update(account);
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user_id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                    oper_object_id = param.quote.account_id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_description = _dal.CompareValue(new CompanyBLL().GetCompany(param.quote.account_id), account),
+                    remark = "修改客户信息"
+                });
+            }
+
+            #endregion
+
+            long? contact_id = null;
+            if (param.opportunity.contact_id != null)
+            {
+                crm_contact contact = new ContactBLL().GetContact((long)param.opportunity.contact_id);
+                if (contact.is_active == 1)
+                {
+                    contact_id = contact.id;
+                }
+            }
+
+
+
+            // 3.保存项目信息
+            #region 3.如果项目关联了项目提案，修改项目提案信息
+            // todo 与pro_project表相关联
+
+            #endregion
+
+            // 4.新增工单信息
+            #region 4.如果报价未关联项目提案，有需要转换的计费项
+            // todo 关联sdk_ticket
+
+            #endregion
+
+
+            // 5.转换为工单/项目成本
+            #region 5.转换为工单/项目成本
+            // todo 关联sdk_ticket_charge
+            // 一次性折扣根据需要拆分为两行——收税的、不收税的，分别计算折扣额。计算时仍然按照全部周期为一次性的报价项，而不是排除了服务和工时等报价项。
+            #endregion
+
+
+            // 6.新增销售订单
+            #region 6.当有产品/一次性折扣、成本、配送转为计费项时，销售订单就会自动生成。Crm_sales_order
+            #endregion
+
+            // 7.新增项目备注
+            #region 7.转为项目计费项时，会生成备注
+            #endregion
+
+            // 8.新增备注（商机关闭）
+            #region 8.商机关闭时，会自动生成备注
+
+            com_activity closeOppoActivity = new com_activity()
+            {
+                id = _dal.GetNextIdCom(),
+                cate_id = (int)ACTIVITY_CATE.NOTE,
+                action_type_id = (int)ACTIVITY_TYPE.OPPORTUNITYUPDATE,
+                parent_id = null,
+                object_id = param.opportunity.id,
+                object_type_id = (int)OBJECT_TYPE.OPPORTUNITY,
+                account_id = param.opportunity.account_id,
+                contact_id = contact_id,
+                resource_id = param.opportunity.resource_id,
+                contract_id = null,         // todo 如果转为合同成本，则为“合同”；否则为空
+                opportunity_id = param.opportunity.id,
+                ticket_id = null,
+                start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),  // todo 从页面获取时间，去页面时间的12：00：00
+                end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),
+                description = $"todo",     // todo 内容描述拼接
+                status_id = null,
+                complete_description = null,
+                complete_time = null,
+                create_user_id = user.id,
+                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                update_user_id = user.id,
+                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+
+            };
+
+            new com_activity_dal().Insert(closeOppoActivity);
+            new sys_oper_log_dal().Insert(new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACTIVITY,
+                oper_object_id = closeOppoActivity.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = _dal.AddValue(closeOppoActivity),
+                remark = "新增关闭商机的备注"
+            });
+
+            #endregion
+
+            return ERROR_CODE.SUCCESS;
+        }
+
+
+
+
+
+
+        public bool SetPrimaryQuote(long user_id, long quote_id)
         {
             var user = UserInfoBLL.GetUserInfo(user_id);
             var quote = new crm_quote_dal().GetQuote(quote_id);
@@ -404,7 +566,7 @@ namespace EMT.DoneNOW.BLL
             {
                 var quoteList = new crm_quote_dal().GetQuoteByWhere($" and opportunity_id = {quote.opportunity_id} ");
                 var primaryQuote = quoteList.FirstOrDefault(_ => _.is_primary_quote == 1);
-                if (primaryQuote!=null&&quote.id != primaryQuote.id)
+                if (primaryQuote != null && quote.id != primaryQuote.id)
                 {
                     primaryQuote.is_primary_quote = null;
                     primaryQuote.update_user_id = user.id;
@@ -443,7 +605,7 @@ namespace EMT.DoneNOW.BLL
                         oper_description = _dal.CompareValue(new crm_quote_dal().GetQuote(quote_id), quote),
                         remark = "更改报价为主报价"
                     });
-                    new crm_quote_dal().Update(quote);                   
+                    new crm_quote_dal().Update(quote);
                 }
                 return true;
             }
@@ -457,12 +619,13 @@ namespace EMT.DoneNOW.BLL
         /// <param name="cq"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public bool UpdateQuoteTemp(crm_quote cq,long user_id) {
+        public bool UpdateQuoteTemp(crm_quote cq, long user_id)
+        {
             var user = UserInfoBLL.GetUserInfo(user_id);
             cq.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             cq.update_user_id = user_id;
             if (_dal.Update(cq))
-            { 
+            {
                 new sys_oper_log_dal().Insert(new sys_oper_log()
                 {
                     user_cate = "用户",
@@ -489,8 +652,9 @@ namespace EMT.DoneNOW.BLL
         /// <param name="aid"></param>
         /// <param name="bid"></param>
         /// <returns></returns>
-        public d_tax_region_cate GetTaxRegion(int aid,int bid) {
-            var data = new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>(@"select * from d_tax_region_cate  where tax_region_id="+aid+" and tax_cate_id="+bid+"");
+        public d_tax_region_cate GetTaxRegion(int aid, int bid)
+        {
+            var data = new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>(@"select * from d_tax_region_cate  where tax_region_id=" + aid + " and tax_cate_id=" + bid + "");
             return data;
         }
         /// <summary>
@@ -500,8 +664,8 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public List<d_tax_region_cate_tax> GetTaxRegiontax(int id)
         {
-           
-            var data = new d_tax_region_cate_tax_dal().FindListBySql<d_tax_region_cate_tax>(@"select * from d_tax_region_cate_tax  where tax_region_cate_id="+id+"");
+
+            var data = new d_tax_region_cate_tax_dal().FindListBySql<d_tax_region_cate_tax>(@"select * from d_tax_region_cate_tax  where tax_region_cate_id=" + id + "");
 
             return data;
         }
@@ -511,8 +675,9 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string GetTaxName(int id) {
-            string name =new d_general_dal().FindById(id).name;
+        public string GetTaxName(int id)
+        {
+            string name = new d_general_dal().FindById(id).name;
             return name;
         }
         /// <summary>
@@ -523,9 +688,9 @@ namespace EMT.DoneNOW.BLL
         /// <param name="qid"></param>
         /// <param name="oid"></param>
         /// <returns></returns>
-        public DataTable GetVar(int cid, int aid, int qid,int oid)
+        public DataTable GetVar(int cid, int aid, int qid, int oid)
         {
-            var list = _dal.GetVar(cid,aid,qid,oid);
+            var list = _dal.GetVar(cid, aid, qid, oid);
             return list;
         }
         /// <summary>
@@ -539,10 +704,12 @@ namespace EMT.DoneNOW.BLL
             return list;
         }
 
-        public string GetItemTypeName(int id) {
+        public string GetItemTypeName(int id)
+        {
             return new d_general_dal().FindById(id).name;
         }
-        public int GetTaxid(int tid) {
+        public int GetTaxid(int tid)
+        {
             return (int)new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>($"select * from d_tax_region_cate where tax_region_id={tid}").id;
         }
         /// <summary>
@@ -551,10 +718,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="quote_id"></param>
         /// <param name="group_id"></param>
         /// <param name="user_id"></param>
-        public void UpdateGroup(long quote_id, int group_id,long user_id)
+        public void UpdateGroup(long quote_id, int group_id, long user_id)
         {
             var quote = _dal.GetQuote(quote_id);
-            if (quote.group_by_id!=group_id) // 未改变分组不用更改
+            if (quote.group_by_id != group_id) // 未改变分组不用更改
             {
                 var user = UserInfoBLL.GetUserInfo(user_id);
                 quote.group_by_id = group_id;
