@@ -5,8 +5,8 @@ bin
 obj
 _log
 *.bak
+*.user
 packages
 ModelGenerator.cs
 ModelGenerator.tt
 *.suo
-_libs/MySql.Data.dll
