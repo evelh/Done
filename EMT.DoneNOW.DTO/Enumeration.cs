@@ -430,9 +430,11 @@ namespace EMT.DoneNOW.DTO
             NOTIFY = 769,                               // 通知
             ACTIVITY = 760,                             // 活动   // todo 数据库添加
             QUOTE = 770,                                // 报价   
-            QUOTE_ITEM=771,                             // 报价项   
+            QUOTE_ITEM=771,                             // 报价项 
+            QUOTE_TEMP=772,                             //报价模板
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息
             SALE_ORDER = 760,                           // 销售订单
+            SECURITY_LEVEL=776,                             //安全等级
         }
 
         /// <summary>
@@ -491,28 +493,35 @@ namespace EMT.DoneNOW.DTO
             // 962对应值
             ALL962 = 974,              // 全部
             MINE962 = 975,             // 我的
+            NONE962 = 976,             // 无
 
+            //963对应值
+            ALL963=977,                //全部
+            NONE963=978,               //无
             // 964对应值
-            MY_TASK = 976,             // 我的
-            ALL_TASK = 977,            // 全部
+            MY_TASK = 979,             // MY_TASK
+            MY_TASKS_UNASSIGNED_DEPARTMENT_TASKS=980,//MY_TASKS_UNASSIGNED_DEPARTMENT_TASKS
+            MY_TASKS_DEPARTMENT_TASKS=981,//MY TASKS & DEPARTMENT TASKS
+            ALL_TASK = 982,            // All Tasks
+
 
             // 965对应值
-            ALL965 = 978,              // 全部
-            MINE_AND_COMPANY = 979,    // Mine + Companies
-            MINE965 = 980,             // 我的
+            ALL965 = 983,              // 全部
+            MINE_AND_COMPANY = 984,    // Mine + Companies
+            MINE965 = 985,             // 我的
 
             // 966对应值
-            ALL966 = 981,              // 全部
-            MY_COMPANY = 982,          // 我是客户经理
-            MY_PROJECT = 983,          // 我是项目经理
-            NONE966 = 984,             // 无
+            ALL966 = 986,              // 全部
+            MY_COMPANY = 987,          // 我是客户经理
+            MY_PROJECT = 988,          // 我是项目经理
+            NONE966 = 989,             // 无
 
             // 967对应值
-            NOT_REQUIRE = 985,         // 无需权限
+            NOT_REQUIRE = 1240,         // 无需权限
 
             // 960对应值
-            HAVE = 986,                // 有
-            NO = 987,                  // 无
+            HAVE = 1241,                // 有
+            NO = 1242,                  // 无
         }
 
         /// <summary>

@@ -613,6 +613,7 @@
     <Content Include="Common\SearchBodyFrame.aspx" />
     <Content Include="Common\SelectCallBack.aspx" />
     <Content Include="Site.Master" />
+    <Content Include="SysSetting\SysRolesAdd.aspx" />
     <Content Include="SysSetting\SysUserAdd.aspx" />
     <Content Include="SysSetting\SysUserEdit.aspx" />
     <Content Include="SysSetting\SysUserSecurityLevel.aspx" />
@@ -946,6 +947,13 @@
     </Compile>
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysRolesAdd.aspx.cs">
+      <DependentUpon>SysRolesAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysRolesAdd.aspx.designer.cs">
+      <DependentUpon>SysRolesAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\SysUserAdd.aspx.cs">
       <DependentUpon>SysUserAdd.aspx</DependentUpon>
