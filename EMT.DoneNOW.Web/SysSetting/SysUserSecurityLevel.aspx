@@ -28,7 +28,7 @@
                     <asp:Button ID="SaveLevel" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="SaveLevel_Click"/>
                 </li>
                 <li class="Button Cancel" id="CancelButton" tabindex="0">
-                    <asp:Button ID="Cancle" runat="server" Text="取消"  BorderStyle="None"/>
+                    <asp:Button ID="Cancle" runat="server" Text="取消"  BorderStyle="None" OnClick="Cancle_Click"/>
                 </li>
             </ul>
         </div>
@@ -1581,55 +1581,26 @@ Manage Knowledgebase > Security tab
                         </tbody>
                     </table>
                 </div>
-                <div class="RowContainer BodyContainer Active" style="top: 23px; bottom: 0;">
+                <div class="RowContainer BodyContainer Active" style="top: 23px; bottom: 0;padding: 0 10px 0 10px;">
                     <table cellpadding="0">
                         <tbody>
-                            <tr class="NoDataRow">
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                    <asp:Literal ID="table" runat="server"></asp:Literal>
                         </tbody>
                     </table>
-                    <div class="ContextOverlayContainer">
-                        <div class="ContextOverlay">
-                            <div class="Outline Arrow"></div>
-                            <div class="Arrow"></div>
-                            <div class="Active LoadingIndicator"></div>
-                            <div class="Content"></div>
-                        </div>
-                        <div class="ContextOverlay">
-                            <div class="Outline Arrow"></div>
-                            <div class="Arrow"></div>
-                            <div class="Active LoadingIndicator"></div>
-                            <div class="Content"></div>
-                        </div>
-                    </div>
-                    <div class="DragIndicator">
-                        <div class="Bar"></div>
-                        <div class="LeftArrow"></div>
-                        <div class="RightArrow"></div>
-                    </div>
-                    <div class="DragStatus"></div>
                 </div>
-                <div class="NoDataMessage Active">There are no records.</div>
             </div>
         </div>
         </div>
-
     </form>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/SysUserSecurityLevel.js"></script>
     <script type="text/javascript">
-        //$(".CONTRACTSALL").click(function () {
-
-            //$(".contractsdown").find("option[value='986']").attr("selected", "selected");
-        //});
-       // $(".CONTRACTSNO").click(function () {
-           // $(".contractsdown").find("option[value='989']").attr("selected",  "selected");
-           
-        //});
-        
+        $("#SaveLevel").click(function () {
+            if ($("#sys_security_level_name").val() == null || $("#sys_security_level_name").val() == '') {
+                alert("请填写权限名称！");
+                return false;
+            }
+        });
     </script>
 </body>
 </html>

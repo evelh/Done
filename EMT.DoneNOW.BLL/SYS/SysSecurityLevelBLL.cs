@@ -35,39 +35,83 @@ namespace EMT.DoneNOW.BLL
             dic.Add("NOT_REQUIRE", GetDownList((int)DicEnum.LIMIT_TYPE.NOT_REQUIRE));                   // 无需权限
             return dic;
         }
+        public List<sys_resource> GetResourceList(int id) {
+            return new sys_resource_dal().FindListBySql<sys_resource>($"SELECT `name`,is_active  FROM  sys_resource WHERE	security_level_id ={id} ORDER BY `name` ").ToList();
+        }
+
+
         public sys_security_level GetSecurityLevel(long id)
         {
             return new sys_security_level_dal().FindById(id);
         }
-        public ERROR_CODE Insert(sys_security_level_limit sqt, long user_id)
+        public ERROR_CODE Save(sys_security_level_limit sqt, long user_id)
         {
-            sqt.id = (int)(_dal.GetNextIdCom());
-            new sys_security_level_limit_dal().Insert(sqt);//把数据保存到数据库表
-            var user = UserInfoBLL.GetUserInfo(user_id);
-            if (user == null)
-            {   // 查询不到用户，用户丢失
-                return ERROR_CODE.USER_NOT_FIND;
-            }
-            var add_account_log = new sys_oper_log()
+            sys_security_level_limit_dal sslld = new sys_security_level_limit_dal();
+            var da=sslld.FindSignleBySql<sys_security_level_limit>($"select * from sys_security_level_limit where security_level_id={sqt.security_level_id} and limit_id={sqt.limit_id}");
+            if (da!=null)//判断是否已经保存过权限点数据
             {
-                user_cate = "用户",
-                user_id = user.id,
-                name = "",
-                phone = user.mobile == null ? "" : user.mobile,
-                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,     
-                oper_object_id = sqt.id,// 操作对象id
-                oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                oper_description = _dal.AddValue(sqt),
-                remark = "新增权限点关联模板"
+                if (sqt.limit_id != da.limit_id) {
+                    sqt.id = da.id;
+                    sslld.Update(sqt);//把数据保存到数据库表
+                    var user = UserInfoBLL.GetUserInfo(user_id);
+                    if (user == null)
+                    {   // 查询不到用户，用户丢失
+                        return ERROR_CODE.USER_NOT_FIND;
+                    }
+                    var add_account_log = new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = user.id,
+                        name = "",
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,
+                        oper_object_id = sqt.id,// 操作对象id
+                        oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                        oper_description = _dal.AddValue(sqt),
+                        remark = "新增权限点关联模板"
 
-            };          // 创建日志
-            new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
+                    };          // 创建日志
+                    new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
+                }                
+            }
+            else {
+                sqt.id = (int)(_dal.GetNextIdCom());
+                sslld.Insert(sqt);//把数据保存到数据库表
+                var user = UserInfoBLL.GetUserInfo(user_id);
+                if (user == null)
+                {   // 查询不到用户，用户丢失
+                    return ERROR_CODE.USER_NOT_FIND;
+                }
+                var add_account_log = new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user.id,
+                    name = "",
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,
+                    oper_object_id = sqt.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                    oper_description = _dal.AddValue(sqt),
+                    remark = "新增权限点关联模板"
+
+                };          // 创建日志
+                new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
+            }
+
+
+            
             return ERROR_CODE.SUCCESS;
         }
 
         public ERROR_CODE UpdateSecurityLevel(sys_security_level seclev, long user_id) {
-            new sys_security_level_dal().Update(seclev);
+            seclev.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            seclev.update_user_id = user_id;
+           bool k= new sys_security_level_dal().Update(seclev);
+            if (k == false) {
+                return ERROR_CODE.ERROR;
+            }
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
             {   // 查询不到用户，用户丢失

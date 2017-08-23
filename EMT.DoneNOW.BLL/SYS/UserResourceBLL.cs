@@ -32,7 +32,7 @@ namespace EMT.DoneNOW.BLL
 
             //地址
             var Position = new sys_organization_location_dal().FindListBySql("select id,name from sys_organization_location where delete_time=0");
-            dic.Add("Position", Security_Level);
+            dic.Add("Position", Position);
             // Position
             dic.Add("Outsource_Security", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OUTSOURCE_SECURITY)));
             //var location=new sys_organization_location_dal()
@@ -69,7 +69,7 @@ namespace EMT.DoneNOW.BLL
 
             data.sys_user.id = id;
             //MD5加密
-           data.sys_user.password = new Tools.Cryptographys().MD5Encrypt(data.sys_user.password, true);
+           data.sys_user.password = new Tools.Cryptographys().MD5Encrypt(data.sys_user.password,false);
             new sys_user_dal().Insert(data.sys_user);
 
           add_account_log = new sys_oper_log()
@@ -95,12 +95,9 @@ namespace EMT.DoneNOW.BLL
         public ERROR_CODE Update(SysUserAddDto data, long user_id,long id)
         {
             data.sys_res.id = id;
-            if (_dal.FindSignleBySql<sys_resource>($"select * from sys_resource where `name`='{data.sys_res.name}'") != null)
-            {
-                return ERROR_CODE.SYS_NAME_EXIST;
-            }
             data.sys_res.create_user_id = data.sys_res.update_user_id = user_id;
             data.sys_res.create_time = data.sys_res.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.sys_user.password = new Tools.Cryptographys().MD5Encrypt(data.sys_user.password, false);
             _dal.Update(data.sys_res);
             //操作日志新增一条日志,操作对象种类：员工
             var user = UserInfoBLL.GetUserInfo(user_id);

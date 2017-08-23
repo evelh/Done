@@ -351,6 +351,7 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum QUOTE_ITEM_TAX_CATE
         {
+            SALESTAX=598,       //消费税
             TAXABLE=599,       // 应纳税
         }
 
@@ -432,9 +433,10 @@ namespace EMT.DoneNOW.DTO
             QUOTE = 770,                                // 报价   
             QUOTE_ITEM=771,                             // 报价项 
             QUOTE_TEMP=772,                             //报价模板
-            FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息
-            SALE_ORDER = 760,                           // 销售订单
+            FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息            
             SECURITY_LEVEL=776,                             //安全等级
+            SALE_ORDER = 760,                           // 销售订单
+            ROLE=778,                                   //角色
         }
 
         /// <summary>

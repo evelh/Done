@@ -18,7 +18,6 @@ namespace EMT.DoneNOW.Web.SysSetting
         private long id = 0;
         private SysUserAddDto param = new SysUserAddDto();
         private SysUserAddDto paramcopy = new SysUserAddDto();
-        bool copy_oper = false;//1,代表保存，2代表保存并复制
         bool save_oper = false;
         // private long id
         protected void Page_Load(object sender, EventArgs e)
@@ -176,66 +175,47 @@ namespace EMT.DoneNOW.Web.SysSetting
 
         protected void Save_Click(object sender, EventArgs e)
         {
-            if (copy_oper)//copy初始值false
-            {
-                Save_Contact();
-                if (paramcopy.sys_user.name == param.sys_user.name)
-                {
-                    Response.Write("<script>alert('请修改授权页面的用户名成功！');</script>");
-                }
-                if (param.sys_user.password == param.sys_user.password)
-                {
-                    Response.Write("<script>alert('请修改授权页面的用户密码成功！');</script>");
-                }
-                Save_deal();
-                copy_oper = false;
-                save_oper = true;
-            }
-            if (!save_oper)//save初始值false
+            if (!save_oper)
             {
                 Save_Contact();
                 Save_deal();
                 save_oper = true;
             }
-            else
-            {
-                //修改更新
+            else {
                 Save_Contact();
                 Update_deal();
-                copy_oper = true;
-
             }
-            //Response.Write("<script>alert('员工添加成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+           
         }
         protected void Save_copy_Click(object sender, EventArgs e)
         {
-            if (!copy_oper)//copy初始值false
+            if (!save_oper)
             {
                 Save_Contact();
-                if (Save_deal())
-                {
-                    Response.Write("<script>alert('复制成功，请注意修改姓名，用户名，等关键信息');</script>");
-                }
-                copy_oper = true;
+                Save_deal();
+                save_oper = true;
             }
             else
             {
                 Save_Contact();
-                if (paramcopy.sys_user.name == param.sys_user.name)
-                {
-                    Response.Write("<script>alert('请修改授权页面的用户名！');</script>");
-                }
-                if (param.sys_user.password == param.sys_user.password)
-                {
-                    Response.Write("<script>alert('请修改授权页面的用户密码！');</script>");
-                }
-                if (Save_deal())
-                {
-                    Response.Write("<script>alert('复制成功，请注意修改姓名，用户名，等关键信息');</script>");
-                }
-                copy_oper = true;
+                Update_deal();
             }
-
+            Response.Redirect("SysUserEdit.aspx?id="+id+"&op=copy");
+        }
+        protected void Save_Cloes_Click(object sender, EventArgs e)
+        {
+            if (!save_oper)
+            {
+                Save_Contact();
+                Save_deal();
+                save_oper = true;
+            }
+            else
+            {
+                Save_Contact();
+                Update_deal();
+            }
+            Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
         }
         private void Save_Contact()
         {
@@ -293,11 +273,9 @@ namespace EMT.DoneNOW.Web.SysSetting
             if (Convert.ToInt32(this.NameSuffix.SelectedValue) > 0)
                 param.sys_res.suffix_id = Convert.ToInt32(this.NameSuffix.SelectedValue);
             if(Convert.ToInt32(this.Security_Level.SelectedValue.ToString())>0)
-           param.sys_res.security_level_id =Convert.ToInt32(this.Security_Level.SelectedValue.ToString());//还未实现
+           param.sys_res.security_level_id =Convert.ToInt32(this.Security_Level.SelectedValue.ToString());
                 if (Convert.ToInt32(this.Position.SelectedValue.ToString()) > 0)
                 param.sys_res.location_id =Convert.ToInt32(this.Position.SelectedValue.ToString());
-
-
             //新增
             param.sys_user = AssembleModel<sys_user>();
             param.sys_user.status_id = (int)USER_STATUS.NORMAL;
@@ -337,7 +315,7 @@ namespace EMT.DoneNOW.Web.SysSetting
         /// <returns></returns>
         private bool Update_deal()
         {
-            var result = new UserResourceBLL().Insert(param, GetLoginUserId(), out id);
+            var result = new UserResourceBLL().Update(param, GetLoginUserId(),id);
             if (result == ERROR_CODE.SYS_NAME_EXIST)
             {
                 Response.Write("<script>alert('该姓名已存在！');</script>");
@@ -365,19 +343,6 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected void Cancel_Click(object sender, EventArgs e)
         {
             Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
-        }
-
-
-        /// <summary>
-        /// 保存并关闭
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void Save_Cloes_Click(object sender, EventArgs e)
-        {
-            Save_Contact();
-            Save_deal();
-                Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
         }
     }
 }

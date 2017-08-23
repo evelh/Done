@@ -15,17 +15,18 @@ namespace EMT.DoneNOW.Web
     public partial class SysUserEdit : BasePage
     {
         protected string avatarPath = "../Images/pop.jpg";
-        private long id = 0;
+        public long id = 0;
+        public string op = string.Empty;
         private SysUserAddDto param = new SysUserAddDto();
         private SysUserAddDto paramcopy = new SysUserAddDto();
         private UserResourceBLL urbll = new UserResourceBLL();
-        bool copy_oper = false;//1,代表保存，2代表保存并复制
-        bool save_oper = false;
-        // private long id
-        protected void Page_Load(object sender, EventArgs e)
+        public bool saveop=false;//保存状态
+       protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
-            id = 538;
+            id = 840;
+            if (Request.QueryString["op"]!=null)
+            op = Request.QueryString["op"].ToString();
             if (!IsPostBack)
             {
                 var user = UserInfoBLL.GetUserInfo(GetLoginUserId());
@@ -37,7 +38,9 @@ namespace EMT.DoneNOW.Web
                 {//改成修改界面
                     var resourcedata = urbll.GetSysResourceSingle(id);
                     var userdata = urbll.GetSysUserSingle(id);
-                    if(resourcedata.avatar!=null&&!string.IsNullOrEmpty(resourcedata.avatar.ToString()))
+                    param.sys_res = resourcedata;
+                    param.sys_user = userdata;
+                    if (resourcedata.avatar!=null&&!string.IsNullOrEmpty(resourcedata.avatar.ToString()))
                     avatarPath = resourcedata.avatar.ToString();
 
                     if (!string.IsNullOrEmpty(resourcedata.date_display_format_id.ToString()))//数据库存在日期格式
@@ -76,7 +79,8 @@ namespace EMT.DoneNOW.Web
                         this.ACTIVE.Checked = true;
                     if (resourcedata.security_level_id!=null&&!string.IsNullOrEmpty(resourcedata.security_level_id.ToString()))//权限级别
                         this.Security_Level.SelectedValue = resourcedata.security_level_id.ToString();
-
+                    this.password.Text = userdata.password.ToString();
+                    this.password2.Text= userdata.password.ToString();
                     if (resourcedata.can_edit_skills > 0)//编辑技能
                         this.can_edit_skills.Checked = true;
                     if (resourcedata.can_manage_kb_articles > 0)//编辑或删除知识库文章
@@ -235,66 +239,72 @@ namespace EMT.DoneNOW.Web
 
         protected void Save_Click(object sender, EventArgs e)
         {
-            if (copy_oper)//copy初始值false
+            if (!saveop)
             {
-                Save_Contact();
-                if (paramcopy.sys_user.name == param.sys_user.name)
+                if (!string.IsNullOrEmpty(op))
                 {
-                    Response.Write("<script>alert('请修改授权页面的用户名成功！');</script>");
+                    Save_Contact();
+                    Save_deal();
                 }
-                if (param.sys_user.password == param.sys_user.password)
+                else
                 {
-                    Response.Write("<script>alert('请修改授权页面的用户密码成功！');</script>");
+                    Save_Contact();
+                    Update_deal();
                 }
-                Save_deal();
-                copy_oper = false;
-                save_oper = true;
-            }
-            if (!save_oper)//save初始值false
-            {
-                Save_Contact();
-                Update_deal();
-                save_oper = true;
+                saveop = true;
             }
             else
             {
-                //修改更新
                 Save_Contact();
                 Update_deal();
-                copy_oper = true;
+            }                
+        }
 
+        protected void Save_Cloes_Click(object sender, EventArgs e)
+        {
+            if (!saveop)
+            {
+                if (!string.IsNullOrEmpty(op))
+                {
+                    Save_Contact();
+                    Save_deal();
+                }
+                else
+                {
+                    Save_Contact();
+                    Update_deal();
+                }
+                saveop = true;
             }
-            //Response.Write("<script>alert('员工添加成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+            else
+            {
+                Save_Contact();
+                Update_deal();
+            }
+            Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
         }
         protected void Save_copy_Click(object sender, EventArgs e)
         {
-            if (!copy_oper&&!save_oper)//copy初始值false
+            if (!saveop)
             {
-                Save_Contact();
-                if (Update_deal())
+                if (!string.IsNullOrEmpty(op))
                 {
-                    Response.Write("<script>alert('复制成功，请注意修改姓名，用户名，等关键信息');</script>");
+                    Save_Contact();
+                    Save_deal();
                 }
-                copy_oper = true;
+                else
+                {
+                    Save_Contact();
+                    Update_deal();
+                }
+                saveop = true;
             }
             else
             {
                 Save_Contact();
-                if (paramcopy.sys_user.name == param.sys_user.name)
-                {
-                    Response.Write("<script>alert('请修改授权页面的用户名！');</script>");
-                }
-                if (param.sys_user.password == param.sys_user.password)
-                {
-                    Response.Write("<script>alert('请修改授权页面的用户密码！');</script>");
-                }
-                if (Save_deal())
-                {
-                    Response.Write("<script>alert('复制成功，请注意修改姓名，用户名，等关键信息');</script>");
-                }
-                copy_oper = true;
+                Update_deal();
             }
-
+            Response.Redirect("SysUserEdit.aspx?id=" + id + "&op=copy");
         }
         private void Save_Contact()
         {
@@ -330,8 +340,12 @@ namespace EMT.DoneNOW.Web
             {
                 param.sys_res.outsource_security_role_type_id = Convert.ToInt32(this.Outsource_Security.SelectedValue);
             }
-
-
+            if (Convert.ToInt32(this.Security_Level.SelectedValue.ToString()) >0) {
+                param.sys_res.security_level_id = Convert.ToInt32(this.Security_Level.SelectedValue.ToString());
+            }
+            if (Convert.ToInt32(this.Position.SelectedValue.ToString())>0) {
+                param.sys_res.location_id = Convert.ToInt32(this.Position.SelectedValue.ToString());
+            }
             if (Convert.ToInt32(this.TimeFormat.SelectedValue) > 0)
                 param.sys_res.time_display_format_id = Convert.ToInt32(this.TimeFormat.SelectedValue);
 
@@ -392,15 +406,10 @@ namespace EMT.DoneNOW.Web
         /// <returns></returns>
         private bool Update_deal()
         {
-            var result = new UserResourceBLL().Insert(param, GetLoginUserId(), out id);
-            if (result == ERROR_CODE.SYS_NAME_EXIST)
-            {
-                Response.Write("<script>alert('该姓名已存在！');</script>");
-                return false;
-            }
+            var result = new UserResourceBLL().Update(param, GetLoginUserId(),id);
             if (result == ERROR_CODE.SUCCESS)
             {
-                Response.Write("<script>alert('员工添加成功！');</script>");
+                Response.Write("<script>alert('员工修改成功！');</script>");
                 paramcopy = param;
                 return true;
             }
@@ -419,17 +428,6 @@ namespace EMT.DoneNOW.Web
         /// <param name="e"></param>
         protected void Cancel_Click(object sender, EventArgs e)
         {
-            Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
-        }
-        /// <summary>
-        /// 保存并关闭
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void Save_Cloes_Click(object sender, EventArgs e)
-        {
-            Save_Contact();
-            Save_deal();
             Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
         }
     }
