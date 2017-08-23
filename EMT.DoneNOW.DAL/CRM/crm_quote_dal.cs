@@ -75,5 +75,15 @@ left join (select cl.*,(select name from d_district where id=cl.city_id) city,(s
             var list = ExecuteDataTable(sql.ToString());
             return list;
         }
+
+        /// <summary>
+        /// 根据报价id获取商机信息
+        /// </summary>
+        /// <param name="quote_id"></param>
+        /// <returns></returns>
+        public crm_opportunity GetOppoByQuoteId(long quote_id)
+        {
+            return FindSignleBySql<crm_opportunity>($"select op.* FROM crm_quote q LEFT JOIN crm_opportunity op on op.id = q.opportunity_id where q.id={quote_id}");
+        }
     }
 }

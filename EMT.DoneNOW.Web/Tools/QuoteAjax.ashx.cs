@@ -33,6 +33,10 @@ namespace EMT.DoneNOW.Web
                         var primary_quote_id = context.Request.QueryString["id"];
                         SetPrimaryQuote(context,long.Parse(primary_quote_id));
                         break;
+                    case "isSaleOrder":
+                        var relationQuoteId = context.Request.QueryString["id"];
+                        IsRelationSaleOrder(context ,long.Parse(relationQuoteId));
+                        break;
                     default:
                         break;
                 }
@@ -106,7 +110,16 @@ namespace EMT.DoneNOW.Web
 
         }
 
-
+        /// <summary>
+        /// 是否关联销售订单
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="quote_id"></param>
+        public void IsRelationSaleOrder(HttpContext context, long quote_id)
+        {
+            var result = new QuoteBLL().CheckRelatSaleOrder(quote_id);
+            context.Response.Write(result);
+        }
         public bool IsReusable
         {
             get

@@ -58,6 +58,7 @@
     <Compile Include="Com\QueryCommonBLL.cs" />
     <Compile Include="CRM\CompanyBLL.cs" />
     <Compile Include="CRM\ContactBLL.cs" />
+    <Compile Include="CRM\InstalledProductBLL.cs" />
     <Compile Include="CRM\LocationBLL.cs" />
     <Compile Include="CRM\OpportunityBLL.cs" />
     <Compile Include="CRM\QuoteTemplateBLL.cs" />

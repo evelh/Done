@@ -43,11 +43,13 @@ namespace EMT.DoneNOW.DTO
         NAME_SUFFIX = 48,
         SEX=49,
         EMAILTYPE = 50,
-        OUTSOURCE_SECURITY=51,                  //外包权限
-        LIMIT_TYPE=76,                          //系统权限：类型 取值 有无、全部部分 等
-        LIMIT_TYPE_VALUE=77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
-        LICENSE_TYPE =109,                            //安全等级：授权类型
+        OUTSOURCE_SECURITY=51,                  // 外包权限
+        LIMIT_TYPE=76,                          // 系统权限：类型 取值 有无、全部部分 等
+        LIMIT_TYPE_VALUE=77,                    // 系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
+        INSTALLED_PRODUCT_CATE = 108,           // 配置项种类
+        LICENSE_TYPE =109,                        //安全等级：授权类型
         QUOTE_GROUP_BY =110,                      // 报价分组条件
+        
     }
 
     /// <summary>
@@ -386,6 +388,10 @@ namespace EMT.DoneNOW.DTO
             MANY_PRODUCT_CALLBACK=885,          // 产品多选查找带回
             SERVICE_CALLBACK=883,               // 服务查找带回
             SERVICE_BUNDLE_CALLBACK=884,        // 服务集查找带回
+            COST_CALLBACK = 887,                // 成本查找带回
+            CHARGE_CALLBACK = 888,              // 费用查找带回
+            SHIP_CALLBACK = 889,                // 配送费用查找带回
+
         }
 
         /// <summary>
@@ -432,7 +438,8 @@ namespace EMT.DoneNOW.DTO
             QUOTE = 770,                                // 报价   
             QUOTE_ITEM=771,                             // 报价项   
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息
-            SALE_ORDER = 760,                           // 销售订单
+            SALE_ORDER = 778,                           // 销售订单
+            CONFIGURAITEM=777,                          // 配置项
         }
 
         /// <summary>
@@ -618,6 +625,9 @@ namespace EMT.DoneNOW.DTO
                                                 
         ServiceSelect=200,                      // 服务的查找带回
         ServiceBundleSelect= 201,               // 服务集的查找带回
+
+        AddInstalledProduct = 210,              // 添加配置项
+        EditInstalledProduct = 211,             // 修改配置项
 
     }
 }

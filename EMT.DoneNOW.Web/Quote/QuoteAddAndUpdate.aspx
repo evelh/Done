@@ -174,7 +174,7 @@
                                 <select name="contact_id" id="contact_id">
                                 </select>
                                 <input type="hidden" name="contact_idHidden" id="contact_idHidden" value="<%=(!isAdd&&quote.contact_id!=null)?quote.contact_id.ToString():"" %>" />
-                                <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="AddContact()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                             </div>
                         </td>
                     </tr>
@@ -963,7 +963,6 @@
         //        }
         //    }
         //}, false)
-
     }
 
     function AddOppo() {
@@ -1001,6 +1000,33 @@
         }
        
     }
+
+    function AddContact() {
+        var account_id = $("#ParentComoanyNameHidden").val();
+        if (account_id != "") {
+            window.open('../Contact/AddContact.aspx?callback=AddContactBack&account_id=' + account_id, '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', 'left=200,top=200,width=900,height=800', false);
+        } else {
+            alert("请先选择客户");
+        }
+        
+    }
+    function AddContactBack(contact_id) {
+        var account_id = $("#ParentComoanyNameHidden").val();
+        $("#contact_id").html("");
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/CompanyAjax.ashx?act=contact&userParentContact=true&account_id=" + account_id,
+            // data: { CompanyName: companyName },
+            success: function (data) {
+                if (data != "") {
+                    $("#contact_id").html(data);
+                }
+            },
+        });
+        $("#contact_id").val(contact_id);
+    }
+ 
   
 
 </script>

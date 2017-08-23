@@ -15,7 +15,6 @@
 
         <%
             var defaultLocation = locationBLL.GetLocationByAccountId(account.id);
-
             var oppportunity_status = dic.FirstOrDefault(_ => _.Key == "oppportunity_status").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;  // 商机状态
             var opportunity_interest_degree = dic.FirstOrDefault(_ => _.Key == "opportunity_interest_degree").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;  // 商机受欢迎程度
             var opportunity_stage = dic.FirstOrDefault(_ => _.Key == "opportunity_stage").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;  // 商机阶段
@@ -31,7 +30,7 @@
                     <li class="alt"><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=todo"  style="color:grey;">待办</a></li>
                     <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=note" >备注</a></li>
                     <li class="alt"><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=ticket" style="color:grey;">工单</a></li>
-                    <li class="alt"><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=att" style="color:grey;">附件</a></li>
+                    <li class="alt"><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=att" style="color:grey;"></a>附件</li>
                     <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem">报价项</a></li>
                 </ul>
             </i>
@@ -124,8 +123,7 @@
                             foreach (var quote in quoteList.Where(_=>_.is_primary_quote!=1))
                             {%>
                       <p class="clear">
-                       <a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem"><%=quote.name %></a>
-                        
+                       <a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem"><%=quote.name %></a>                       
                     </p>
                             <%}
                         }
@@ -343,7 +341,7 @@
             </div>
 
             <div id="ShowOpportunity_Right" style="float: left; margin-left: 35px;width:100%" class="activityTitleright f1">
-                <iframe runat="server" id="viewOpportunity_iframe" width="100%;" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                <iframe runat="server" id="viewOpportunity_iframe" width="100%;" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
             </div>
         </div>
     </form>
@@ -364,7 +362,7 @@
         if (hide == "hide") {
             $("#showGeneralInformation").hide();
         }
-        $("#viewOpportunity_iframe").attr("onLoad", iFrameHeight);
+        $("#viewOpportunity_iframe").attr("onLoad", iFrameHeight());
 
 
     })
@@ -375,8 +373,8 @@
         var ifm = document.getElementById("viewOpportunity_iframe");
         var subWeb = document.frames ? document.frames["viewOpportunity_iframe"].document : ifm.contentDocument;
         if (ifm != null && subWeb != null) {
-            ifm.height = subWeb.body.scrollHeight;
-          ifm.width = subWeb.body.scrollWidth;
+            ifm.height = subWeb.body.height;
+            // ifm.width = subWeb.body.;
         }
     }
 
