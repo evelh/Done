@@ -76,15 +76,39 @@ $(".Toggle8").on("click",function(){
     index8++;
 });
 $(".Full").on("click",function(){
-    $(this).parent().parent().next().find("input[type='checkbox']").prop("checked",true);
-    $(this).parent().parent().next().find("option[value='0']").removeAttr("selected");
-    $(this).parent().parent().next().find("option[value='1']").removeAttr("selected");
-    $(this).parent().parent().next().find("option[value='1']").attr("selected", "true");
+    $(this).parent().parent().next().find("input[type='checkbox']").prop("checked", true);
+    $(this).parent().parent().next().find("option").removeAttr("selected");
+
+    $(this).parent().parent().next().find("option[value='989']").removeAttr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='973']").removeAttr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='1242']").removeAttr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='976']").removeAttr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='978']").removeAttr("selected", "selected");
+
+    $(this).parent().parent().next().find("option[value='986']").attr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='970']").attr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='1241']").attr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='974']").attr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='977']").attr("selected", "selected");
 });
 $(".Empty").on("click",function(){
     $(this).parent().parent().next().find("input[type='checkbox']").prop("checked",false);
     $(this).parent().parent().next().find("option").removeAttr("selected");
-    $(this).parent().parent().next().find("option[value='0']").attr("selected", "true");
+
+
+    $(this).parent().parent().next().find("option[value='986']").removeAttr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='970']").removeAttr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='1241']").removeAttr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='974']").removeAttr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='977']").removeAttr("selected", "selected");
+
+    $(this).parent().parent().next().find("option[value='989']").attr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='973']").attr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='1242']").attr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='976']").attr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='978']").attr("selected", "selected");
+
+
 });
 
 
