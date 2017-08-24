@@ -552,18 +552,6 @@ namespace EMT.DoneNOW.DTO
 
     }
 
-    public enum ActionEnum
-    {
-        /// <summary>
-        /// 登录
-        /// </summary>
-        Login,
-        /// <summary>
-        /// 退出
-        /// </summary>
-        Logout,
-    }
-
     /// <summary>
     /// 查询分页面
     /// </summary>
