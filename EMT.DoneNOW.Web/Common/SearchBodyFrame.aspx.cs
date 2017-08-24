@@ -94,7 +94,7 @@ namespace EMT.DoneNOW.Web
                     addBtn = "新增报价模板";
                     break;
                 default:
-                    addBtn = "新增客户";
+                    addBtn = "";
                     break;
             }
         }
