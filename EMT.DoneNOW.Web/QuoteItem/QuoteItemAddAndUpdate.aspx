@@ -283,7 +283,9 @@
                                                     <i id="AddProduct" onclick="" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                     <i id="callBackService" onclick="chooseService()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                     <i id="callBackServiceBundle" onclick="chooseServiceBundle()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    
+                                                    <i id="callbackCost" onclick="chooseDegression()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                       <i id="callBackCharge" onclick="chooseCharge()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                       <i id="callBackShip" onclick="chooseShip()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                     <input type="hidden" id="nameHidden"/>
                                                 </div>
                                             </td>
@@ -627,10 +629,12 @@
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DEGRESSION %>) // 成本
         {
             $("#period_type_id").attr("disabled", "disabled");
+            $("#callbackCost").css("display","");
         }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.COST %>)  // 费用
         {
             $("#period_type_id").attr("disabled", "disabled");
+            $("#callBackCharge").css("display", "");
         }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT %>) // 折扣
         {
@@ -660,6 +664,7 @@
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES %>)  // 配送
         {
             $("#taxCateTr").css("display", "none");
+            $("#callBackShip").css("display", "");
         }
 
         
@@ -846,7 +851,7 @@
     function GetDaraByProduct() {
         var product_id = $("#nameHidden").val();
         if (product_id != "") {
-            $("object_id").val(product_id);
+            $("#object_id").val(product_id);
             $.ajax({
                 type: "GET",
                 async: false,
@@ -879,7 +884,7 @@
                 type: "GET",
                 async: false,
                 dataType: "json",
-                url: "../Tools/RoleAjax.ashx?act=service&service_id=" + service_id,
+                url: "../Tools/ServiceAjax.ashx?act=service&service_id=" + service_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
                     if (data != "") {
@@ -904,7 +909,7 @@
                 type: "GET",
                 async: false,
                 dataType: "json",
-                url: "../Tools/RoleAjax.ashx?act=service_bundle&service_bundle_id=" + service_bundle_id,
+                url: "../Tools/ServiceAjax.ashx?act=service_bundle&service_bundle_id=" + service_bundle_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
                     if (data != "") {
@@ -921,10 +926,30 @@
 
     // 查找带回计费代码
     function chooseDegression() {
-
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COST_CALLBACK %>&field=name&callBack=GetDataByDegression", '<%=EMT.DoneNOW.DTO.OpenWindow.ServiceBundleSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDataByDegression() {
+        // - todo 根据计费填充数据
+        //var charge_id = $("#nameHidden").val();
+        //if (charge_id != "") {
 
+        //    $.ajax({
+        //        type: "GET",
+        //        async: false,
+        //        dataType: "json",
+        //        url: "../Tools/RoleAjax.ashx?act=service_bundle&service_bundle_id=" + charge_id,
+        //        // data: { CompanyName: companyName },
+        //        success: function (data) {
+        //            if (data != "") {
+        //                $("#name").val(data.name);
+        //                $("#name").attr("disabled", "disabled");
+        //                $("#description").text(data.description);
+        //                $("#unit_price").val(data.unit_price); //unit_cost
+        //                $("#unit_cost").val(data.unit_cost);
+        //            }
+        //        },
+        //    });
+        //}
     }
 
     // 多选查找带回产品的时候--直接循环添加多个报价项
@@ -953,5 +978,20 @@
         }
     }
 
+
+    function chooseCharge() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CHARGE_CALLBACK %>&field=name&callBack=GetDataByCharge", '<%=EMT.DoneNOW.DTO.OpenWindow.ManyProductSelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+
+    function GetDataByCharge() {
+        // - todo 根据费用填充数据
+    }
+
+    function chooseShip() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SHIP_CALLBACK %>&field=name&callBack=GetDataByShip", '<%=EMT.DoneNOW.DTO.OpenWindow.ManyProductSelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    function GetDataByShip() {
+        // - todo 根据配送方式填充数据
+    }
 
 </script>

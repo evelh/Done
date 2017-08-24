@@ -131,6 +131,8 @@
     <Content Include="Company\CompanyNameSimilar.aspx" />
     <Content Include="Company\CompanySiteManage.aspx" />
     <Content Include="Company\UpdateContact.aspx" />
+    <Content Include="ConfigurationItem\AddOrEditConfigItem.aspx" />
+    <Content Include="ConfigurationItem\SubscriptionAddOrEdit.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
     <Content Include="Common\SearchFrameSet.aspx" />
@@ -176,8 +178,12 @@
     <Content Include="Images\Avatar\default.jpg" />
     <Content Include="Images\check.png" />
     <Content Include="Images\collection.png" />
+    <Content Include="Images\copy.png" />
     <Content Include="Images\down.png" />
     <Content Include="Images\edit.png" />
+    <Content Include="Images\dropdown.png" />
+    <Content Include="Images\email.png" />
+    <Content Include="Images\employees.png" />
     <Content Include="Images\help.png" />
     <Content Include="Images\move-left.png" />
     <Content Include="Images\move-right.png" />
@@ -667,6 +673,20 @@
     <Compile Include="Company\UpdateContact.aspx.designer.cs">
       <DependentUpon>UpdateContact.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationItem\AddOrEditConfigItem.aspx.cs">
+      <DependentUpon>AddOrEditConfigItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\AddOrEditConfigItem.aspx.designer.cs">
+      <DependentUpon>AddOrEditConfigItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationItem\SubscriptionAddOrEdit.aspx.cs">
+      <DependentUpon>SubscriptionAddOrEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\SubscriptionAddOrEdit.aspx.designer.cs">
+      <DependentUpon>SubscriptionAddOrEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contact\AddContact.aspx.cs">
       <DependentUpon>AddContact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1032,6 +1052,9 @@
     <Compile Include="Tools\ContactAjax.ashx.cs">
       <DependentUpon>ContactAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\GeneralAjax.ashx.cs">
+      <DependentUpon>GeneralAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\OpportunityAjax.ashx.cs">
       <DependentUpon>OpportunityAjax.ashx</DependentUpon>
     </Compile>
@@ -1078,6 +1101,7 @@
     <Content Include="Tools\ServiceAjax.ashx" />
     <Content Include="Tools\QuoteTemplateAjax.ashx" />
     <Content Include="Tools\SecurityLevelAjax.ashx" />
+    <Content Include="Tools\GeneralAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

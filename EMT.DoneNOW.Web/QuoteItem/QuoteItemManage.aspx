@@ -32,6 +32,7 @@
     </div>
     <%} %>
     <form id="form1" runat="server">
+        <input type="hidden" id="isRelationSaleOrder" value="0"/>
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
@@ -39,7 +40,7 @@
                   <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
                         <li><a href="#" onclick="window.open('QuoteItemAddAndUpdate.aspx?quote_id=<%=quote.id %>&type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.WORKING_HOURS %> ','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteItemAdd %>','left=200,top=200,width=960,height=750', false);">工时</a></li>
-                        <li><a href="#" onclick="window.open('QuoteItemAddAndUpdate.aspx?quote_id=<%=quote.id %>&type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT %> ','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteItemAdd %>','left=200,top=200,width=960,height=750', false);"></a>产品</li>
+                        <li><a href="#" onclick="AddQuoteItem(<%=EMT.DoneNOW.DTO.OpenWindow.QuoteItemAdd %>)"></a>产品</li>
                         <li><a href="#" onclick="window.open('QuoteItemAddAndUpdate.aspx?quote_id=<%=quote.id %>&type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.SERVICE %> ','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteItemAdd %>','left=200,top=200,width=960,height=750', false);"></a>服务</li>
                         <li><a href="#" onclick="window.open('QuoteItemAddAndUpdate.aspx?quote_id=<%=quote.id %>&type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DEGRESSION %> ','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteItemAdd %>','left=200,top=200,width=960,height=750', false);"></a>成本</li>
 
@@ -1616,7 +1617,8 @@
             // $(".STCS").show();
         }
 
-
+        // 校验该报价的商机是否已经关联报价单，已经关联则不添加，不删除，不更改主报价
+        CheckRelationSaleOrder();
 
 
     })
@@ -1624,7 +1626,22 @@
 
         window.open("QuoteItemAddAndUpdate?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteEdit %>', 'left=200,top=200,width=900,height=750', false);
     }
+    // 
+    function AddQuoteItem(openType) {
+        var isRelation = $("#isRelationSaleOrder").val();
+        if (isRelation == 1) {
+            alert('报价已关联销售单，不允许新增报价项');
+            return false;
+        }
+        window.open('QuoteItemAddAndUpdate.aspx?quote_id=<%=quote.id %>&type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT %> ', openType, 'left=200,top=200,width=960,height=750', false);
+    }
+
     function DeleteQuoteItem() {
+        var isRelation = $("#isRelationSaleOrder").val();
+        if (isRelation == 1) {
+            alert('报价已关联销售单，不允许删除报价项');
+            return false;
+        }
         $.ajax({
             type: "GET",
             url: "../Tools/QuoteAjax.ashx?act=deleteQuoteItem&id=" + entityid,
@@ -1638,7 +1655,11 @@
 
     // 设置当前报价为主报价
     function SetPrimaryQuote() {
-
+        var isRelation = $("#isRelationSaleOrder").val();
+        if (isRelation == 1) {
+            alert('报价已关联销售单，不允许更换主报价项');
+            return false;
+        }
         var selectQuoteId = $("#quoteDropList").val();
         if (selectQuoteId != "") {
             $.ajax({
@@ -1651,5 +1672,19 @@
 
             })
         }
+    }
+
+    function CheckRelationSaleOrder() {
+        // isRelationSaleOrder
+        $.ajax({
+            type: "GET",
+            url: "../Tools/QuoteAjax.ashx?act=isSaleOrder&id=" + <%=quote.id %>,
+            success: function (data) {
+                if (data == true) {
+                    $("#isRelationSaleOrder").val("1");
+                }
+            }
+
+        })
     }
 </script>

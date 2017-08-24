@@ -57,6 +57,10 @@ namespace EMT.DoneNOW.Web
                     var ids = context.Request.QueryString["ids"];
                     GetCompanyNamesByIds(context, ids);
                     break;
+                case "vendorList":
+                    var product_id = context.Request.QueryString["product_id"];
+                    GetVendorsByProductId(context,long.Parse(product_id));
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     return;
@@ -225,6 +229,23 @@ namespace EMT.DoneNOW.Web
             var names = new CompanyBLL().GetCompanyNames(ids);
             context.Response.Write(new Tools.Serialize().SerializeJson(names));
         }
+
+
+        private void GetVendorsByProductId(HttpContext context, long product_id)
+        {
+            var vendorList = new crm_account_dal().FindListBySql<crm_account>($"SELECT * from crm_account where id in(  select vendor_id from ivt_product_vendor where  product_id = {product_id} )");
+
+            if (vendorList != null && vendorList.Count > 0)
+            {
+                StringBuilder vendors = new StringBuilder();
+                foreach (var vendor in vendorList)
+                {
+                    vendors.Append("<option value='" + vendor.id + "'>" + vendor.name + "</option>");
+                }
+                context.Response.Write(vendors);
+            }
+        }
+
 
         public bool IsReusable
         {

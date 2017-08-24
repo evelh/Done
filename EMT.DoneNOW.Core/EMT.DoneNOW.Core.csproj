@@ -62,6 +62,8 @@
     <Compile Include="CRM\crm_location.cs" />
     <Compile Include="CRM\crm_opportunity.cs" />
     <Compile Include="CRM\crm_sales_order.cs" />
+    <Compile Include="CRM\crm_subscription.cs" />
+    <Compile Include="CRM\crm_subscription_period.cs" />
     <Compile Include="Dictionary\d_tax_region_cate.cs" />
     <Compile Include="Dictionary\d_tax_region_cate_tax.cs" />
     <Compile Include="Dictionary\d_time_zone.cs" />

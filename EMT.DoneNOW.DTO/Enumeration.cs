@@ -395,6 +395,10 @@ namespace EMT.DoneNOW.DTO
             MANY_PRODUCT_CALLBACK=885,          // 产品多选查找带回
             SERVICE_CALLBACK=883,               // 服务查找带回
             SERVICE_BUNDLE_CALLBACK=884,        // 服务集查找带回
+            COST_CALLBACK = 887,                // 成本查找带回
+            CHARGE_CALLBACK = 888,              // 费用查找带回
+            SHIP_CALLBACK = 889,                // 配送费用查找带回
+
         }
 
         /// <summary>
@@ -444,7 +448,10 @@ namespace EMT.DoneNOW.DTO
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息            
             SECURITY_LEVEL=776,                             //安全等级
             SALE_ORDER = 760,                           // 销售订单
-            ROLE=778,                                   //角色
+            SALE_ORDER = 778,                           // 销售订单
+            CONFIGURAITEM=777,                          // 配置项
+            SUBSCRIPTION=778,                            // 订阅 
+
         }
 
         /// <summary>
@@ -554,18 +561,6 @@ namespace EMT.DoneNOW.DTO
 
     }
 
-    public enum ActionEnum
-    {
-        /// <summary>
-        /// 登录
-        /// </summary>
-        Login,
-        /// <summary>
-        /// 退出
-        /// </summary>
-        Logout,
-    }
-
     /// <summary>
     /// 查询分页面
     /// </summary>
@@ -637,6 +632,9 @@ namespace EMT.DoneNOW.DTO
                                                 
         ServiceSelect=200,                      // 服务的查找带回
         ServiceBundleSelect= 201,               // 服务集的查找带回
+
+        AddInstalledProduct = 210,              // 添加配置项
+        EditInstalledProduct = 211,             // 修改配置项
 
     }
 }

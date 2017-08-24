@@ -744,5 +744,12 @@ namespace EMT.DoneNOW.BLL
             }
 
         }
+
+        public bool CheckRelatSaleOrder(long quote_id)
+        {
+            var saleOrder = _dal.FindSignleBySql<crm_sales_order>($"SELECT * from crm_sales_order s where  s.opportunity_id  in (  select op.id FROM crm_quote q LEFT JOIN crm_opportunity op on op.id = q.opportunity_id where q.id={quote_id})");
+
+            return saleOrder!=null;
+        }
     }
 }
