@@ -23,12 +23,10 @@
     <div class="ButtonContainer">
         <ul>
             <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
-                <span class="Icon SaveAndClone"></span>
-                <span class="Text">保存并关闭</span>
+                <asp:Button ID="Save_Close" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="Save_Close_Click"/>
             </li>
             <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
-                <span class="Icon Cancel"></span>
-                <span class="Text">取消</span>
+                <asp:Button ID="Cancle" runat="server" Text="取消"  BorderStyle="None" OnClick="Cancle_Click"/>
             </li>
         </ul>
     </div>
@@ -44,18 +42,22 @@
             <span class="Text">工作类型</span>
         </a>
     </div>
-    <!--切换项-->
+    <!--切换项-->      
     <div class="TabContainer">
         <div class="DivSection Tab">
+            <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">
+             <ContentTemplate>
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <asp:ScriptManager ID="ScriptManager1" runat="server">
+                     </asp:ScriptManager>         
                 <tbody>
                     <tr>
                         <td align="left" width="30%">
-                            Department Name
+                            部门名称
                             <span style="color:red;">*</span>
                             <div>
                                 <span style="display: inline-block">
-                                    <input type="text" style="width:300px;" class="txtBlack8Class" value="Engineering-SH">
+                                    <asp:TextBox ID="department_name" runat="server"  style="width:300px;" class="txtBlack8Class"></asp:TextBox>
                                 </span>
                             </div>
                         </td>
@@ -66,13 +68,9 @@
                             <span style="color:red;">*</span>
                             <div>
                                 <span style="display: inline-block">
-                                   <select style="width:314px;" class="txtBlack8Class">
-                                       <option value="">0</option>
-                                       <option value="">1</option>
-                                       <option value="">2</option>
-                                   </select>
+                                    <asp:DropDownList ID="location" runat="server" AutoPostBack="True" OnSelectedIndexChanged="location_SelectedIndexChanged"></asp:DropDownList>
                                 </span>
-                                <img src="../Images/add.png" style="cursor: pointer;"/>
+                                <asp:HyperLink ID="HyperLink1" runat="server" ImageUrl="~/Images/add.png" NavigateUrl="~/Company/LocationManage.aspx">HyperLink</asp:HyperLink><%--<img src="../Images/add.png" style="cursor: pointer;"/>--%>
                             </div>
                         </td>
                     </tr>
@@ -81,7 +79,7 @@
                             Department Number
                             <div>
                                 <span style="display: inline-block">
-                                    <input type="text" style="width:300px;" class="txtBlack8Class" value="1">
+                                    <asp:TextBox ID="department_no" runat="server"></asp:TextBox>
                                 </span>
                             </div>
                         </td>
@@ -91,7 +89,7 @@
                             Department Description
                             <div>
                                 <span style="display: inline-block">
-                                    <textarea style="height: 142px; width: 300px; margin-top: 0px; margin-bottom: 0px;"></textarea>
+                                    <asp:TextBox ID="Description" runat="server" style="height: 142px; width: 300px; margin-top: 0px; margin-bottom: 0px;" TextMode="MultiLine"></asp:TextBox>
                                 </span>
                             </div>
                         </td>
@@ -107,7 +105,7 @@
                             Department Primary Location
                             <div>
                                 <span style="font-weight:normal;height:50px;">
-                                    Headquarters
+                                   <asp:Literal ID="location_name" runat="server"></asp:Literal>
                                 </span>
                             </div>
                         </td>
@@ -117,15 +115,19 @@
                             Department Time Zone
                             <div>
                                 <span style="font-weight:normal;" class="lblNormalClass">
-                                     (GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi
+                                    <asp:Literal ID="time_zone" runat="server"></asp:Literal>
                                 </span>
                             </div>
                         </td>
                     </tr>
-                </tbody>
+                </tbody>             
             </table>
+             </ContentTemplate>
+         </asp:UpdatePanel>  
         </div>
     </div>
+ 
+
     <div class="TabContainer" style="display: none;">
         <div class="ButtonCollectionBase" style="height:25px;">
             <ul>
@@ -212,6 +214,13 @@
      <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/SysSettingRoles.js"></script>
     <script type="text/javascript">
+        $("#Save_Close").click(function () {
+            var name = $("#department_name").val();
+            if (name == null || name == '') {
+                alert("请填写部门名称");
+                return false;
+            }
+        });
         $("#NewButton").on("mouseover",function(){
             $("#NewButton").css("background","#fff");
         });

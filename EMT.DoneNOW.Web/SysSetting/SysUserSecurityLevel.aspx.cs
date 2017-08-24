@@ -22,20 +22,8 @@ namespace EMT.DoneNOW.Web.SysSetting
         private sys_security_level_limit SysSecLimit = new sys_security_level_limit();
         protected void Page_Load(object sender, EventArgs e)
         {
-            id = Convert.ToInt32(Request.QueryString["id"]);//获取角色id 
-            id = 2;            
+            id = Convert.ToInt32(Request.QueryString["id"]);//获取角色id          
             if (!IsPostBack) {
-                if (id > 0)
-                {
-                    //获取角色 修改后可以更新报价模板名称
-                    var SSL = sys_security.GetSecurityLevel(id);
-                    SLName = SSL.name;
-                    this.sys_security_level_name.Text = SLName;
-                    if (SSL.is_active > 0) {
-                        this.active.Checked = true;
-                    }
-
-                }
                 bindresource();//第三个选项卡数据绑定
                 sys_limitList = sys_security.GetAll();//按照model分组
                 //给下拉框赋值
@@ -48,10 +36,48 @@ namespace EMT.DoneNOW.Web.SysSetting
                         k.DataSource = sys_security.GetDownList(drop.type_id);
                         k.DataBind();
                         k.SelectedIndex = 0;
-                    }                       
+                    }                      
                  
-                }              
+                }
+                if (id > 0)
+                {
+                    //获取角色 修改后可以更新报价模板名称
+                    var SSL = sys_security.GetSecurityLevel(id);
+                    SLName = SSL.name;
+                    this.sys_security_level_name.Text = SLName;
+                    //用户自定义可修改
+                    if (SSL.is_active > 0)
+                    {
+                        this.active.Checked = true;
+                    }
+                    var limitdata = sys_security.GetSecurity_limit((int)id);
+                    foreach (var i in limitdata)
+                    {
+                        string bindid = "id" + i.id.ToString();
+                        var k = this.FindControl(bindid) as DropDownList;
+                        var c = this.FindControl(bindid) as CheckBox;
+                        if (k != null)
+                        {
+                            k.SelectedValue = i.limit_type_value_id.ToString();
+                        }
+                        if (c != null)
+                        {
+                            if (i.limit_type_value_id == (int)LIMIT_TYPE_VALUE.HAVE)
+                            {
+                                c.Checked = true;
+                            }
+                            if (i.limit_type_value_id == (int)LIMIT_TYPE_VALUE.NO)
+                            {
+                                c.Checked = false;
+                            }
+                        }
 
+                    }
+
+                }
+                else {
+                    Response.Write("<script>alert('获取权限等级id失败！');window.close();self.opener.location.reload();</script>");
+                }
             }
         }
         private void bindresource() {
@@ -127,7 +153,6 @@ namespace EMT.DoneNOW.Web.SysSetting
                         //下拉框选项
                         if (k != null)
                         {
-
                             SysSecLimit.limit_type_value_id = Convert.ToInt32(k.SelectedValue.ToString());
                         }
                         //check选项
@@ -142,14 +167,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                                 SysSecLimit.limit_type_value_id = (int)LIMIT_TYPE_VALUE.NO;
                             }
                         }
-                        //存储
-                        //实验方法
-                       // SysSecLimit.id= (int)(_dal.GetNextIdCom());
-
-
-                        //levellist.Add(SysSecLimit);
-
-
+                        //一条一条进行存储
                         var result = sys_security.Save(SysSecLimit, GetLoginUserId());
                     }
 

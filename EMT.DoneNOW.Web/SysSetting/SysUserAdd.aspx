@@ -175,8 +175,7 @@
                                                             <td>
                                                                 <div style="padding-bottom: 0; margin-top: 5px; margin-left: 5px;">
                                                                     <!--添加主要位置-->
-                                                                    <a href="##">
-                                                                        <img src="../Images/add.png" alt="" /></a>
+                                                                        <asp:HyperLink ID="HyperLink1" runat="server" ImageUrl="~/Images/add.png" NavigateUrl="~/Company/LocationManage.aspx">HyperLink</asp:HyperLink>                                                                        
                                                                 </div>
                                                             </td>
                                                         </tr>

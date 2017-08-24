@@ -44,10 +44,11 @@ namespace EMT.DoneNOW.DTO
         SEX=49,
         EMAILTYPE = 50,
         OUTSOURCE_SECURITY=51,                  //外包权限
-        LIMIT_TYPE=76,                          //系统权限：类型 取值 有无、全部部分 等
+        DEPARTMENT_CATE=64,                     //部门：类型
+        LIMIT_TYPE =76,                         //系统权限：类型 取值 有无、全部部分 等
         LIMIT_TYPE_VALUE=77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
-        LICENSE_TYPE =109,                            //安全等级：授权类型
-        QUOTE_GROUP_BY =110,                      // 报价分组条件
+        LICENSE_TYPE =109,                      //安全等级：授权类型
+        QUOTE_GROUP_BY =110,                    // 报价分组条件
     }
 
     /// <summary>
@@ -364,7 +365,14 @@ namespace EMT.DoneNOW.DTO
             FREEZE = 617,     // 冻结
             EXPIRED = 618,    // 过期
         }
-
+        /// <summary>
+        /// 部门：类型 -64
+        /// </summary>
+        public enum DEPARTMENT_CATE
+        {
+            DEPARTMENT=723,     //部门
+            SERVICE_QUEUE=724,  //服务队列
+        }
         /// <summary>
         /// 查询页面cat_id-65
         /// </summary>

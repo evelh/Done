@@ -85,11 +85,11 @@ $(".Full").on("click",function(){
     $(this).parent().parent().next().find("option[value='976']").removeAttr("selected", "selected");
     $(this).parent().parent().next().find("option[value='978']").removeAttr("selected", "selected");
 
-    $(this).parent().parent().next().find("option[value='986']").attr("selected", "selected");
-    $(this).parent().parent().next().find("option[value='970']").attr("selected", "selected");
-    $(this).parent().parent().next().find("option[value='1241']").attr("selected", "selected");
-    $(this).parent().parent().next().find("option[value='974']").attr("selected", "selected");
-    $(this).parent().parent().next().find("option[value='977']").attr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='986']").prop("selected", "selected");
+    $(this).parent().parent().next().find("option[value='970']").prop("selected", "selected");
+    $(this).parent().parent().next().find("option[value='1241']").prop("selected", "selected");
+    $(this).parent().parent().next().find("option[value='974']").prop("selected", "selected");
+    $(this).parent().parent().next().find("option[value='977']").prop("selected", "selected");
 });
 $(".Empty").on("click",function(){
     $(this).parent().parent().next().find("input[type='checkbox']").prop("checked",false);
@@ -102,11 +102,11 @@ $(".Empty").on("click",function(){
     $(this).parent().parent().next().find("option[value='974']").removeAttr("selected", "selected");
     $(this).parent().parent().next().find("option[value='977']").removeAttr("selected", "selected");
 
-    $(this).parent().parent().next().find("option[value='989']").attr("selected", "selected");
-    $(this).parent().parent().next().find("option[value='973']").attr("selected", "selected");
-    $(this).parent().parent().next().find("option[value='1242']").attr("selected", "selected");
-    $(this).parent().parent().next().find("option[value='976']").attr("selected", "selected");
-    $(this).parent().parent().next().find("option[value='978']").attr("selected", "selected");
+    $(this).parent().parent().next().find("option[value='989']").prop("selected", "selected");
+    $(this).parent().parent().next().find("option[value='973']").prop("selected", "selected");
+    $(this).parent().parent().next().find("option[value='1242']").prop("selected", "selected");
+    $(this).parent().parent().next().find("option[value='976']").prop("selected", "selected");
+    $(this).parent().parent().next().find("option[value='978']").prop("selected", "selected");
 
 
 });

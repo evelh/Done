@@ -617,8 +617,12 @@
     <Content Include="Common\SearchBodyFrame.aspx" />
     <Content Include="Common\SelectCallBack.aspx" />
     <Content Include="Site.Master" />
+    <Content Include="SysSetting\syscopy.aspx" />
+    <Content Include="SysSetting\SysDataPermission.aspx" />
     <Content Include="SysSetting\SysDepartment.aspx" />
+    <Content Include="SysSetting\SysMarket.aspx" />
     <Content Include="SysSetting\SysRolesAdd.aspx" />
+    <Content Include="SysSetting\SysTerritory.aspx" />
     <Content Include="SysSetting\SysUserAdd.aspx" />
     <Content Include="SysSetting\SysUserEdit.aspx" />
     <Content Include="SysSetting\SysUserSecurityLevel.aspx" />
@@ -953,6 +957,20 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\syscopy.aspx.cs">
+      <DependentUpon>syscopy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\syscopy.aspx.designer.cs">
+      <DependentUpon>syscopy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysDataPermission.aspx.cs">
+      <DependentUpon>SysDataPermission.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysDataPermission.aspx.designer.cs">
+      <DependentUpon>SysDataPermission.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\SysDepartment.aspx.cs">
       <DependentUpon>SysDepartment.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -960,12 +978,26 @@
     <Compile Include="SysSetting\SysDepartment.aspx.designer.cs">
       <DependentUpon>SysDepartment.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\SysMarket.aspx.cs">
+      <DependentUpon>SysMarket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysMarket.aspx.designer.cs">
+      <DependentUpon>SysMarket.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\SysRolesAdd.aspx.cs">
       <DependentUpon>SysRolesAdd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="SysSetting\SysRolesAdd.aspx.designer.cs">
       <DependentUpon>SysRolesAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysTerritory.aspx.cs">
+      <DependentUpon>SysTerritory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysTerritory.aspx.designer.cs">
+      <DependentUpon>SysTerritory.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\SysUserAdd.aspx.cs">
       <DependentUpon>SysUserAdd.aspx</DependentUpon>
