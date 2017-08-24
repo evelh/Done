@@ -24,19 +24,19 @@ namespace EMT.DoneNOW.BLL.CRM
         public Dictionary<string, object> GetField()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
-           // dic.Add("classification", new d_account_classification_dal().GetDictionary());    // 分类类别
-           // dic.Add("country", new DistrictBLL().GetCountryList());                          // 国家表
-           // dic.Add("addressdistrict", new d_district_dal().GetDictionary());                 // 地址表（省市县区）
-           // dic.Add("sys_resource", new sys_resource_dal().GetDictionary());                  // 客户经理
-           // dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)//GeneralTableEnum.COMPETITOR)));          // 竞争对手
-           // dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)//GeneralTableEnum.MARKET_SEGMENT)));    // 行业
-           // //dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行政//区")));                // 行政区
-           // dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)//GeneralTableEnum.TERRITORY)));              // 销售区域
-           // dic.Add("company_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)//GeneralTableEnum.ACCOUNT_TYPE)));              // 客户类型
-           // dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)//GeneralTableEnum.TAX_REGION)));              // 税区
-           // dic.Add("sufix", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)//GeneralTableEnum.NAME_SUFFIX)));              // 名字后缀
+            // dic.Add("classification", new d_account_classification_dal().GetDictionary());    // 分类类别
+            // dic.Add("country", new DistrictBLL().GetCountryList());                          // 国家表
+            // dic.Add("addressdistrict", new d_district_dal().GetDictionary());                 // 地址表（省市县区）
+            // dic.Add("sys_resource", new sys_resource_dal().GetDictionary());                  // 客户经理
+            // dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)//GeneralTableEnum.COMPETITOR)));          // 竞争对手
+            // dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)//GeneralTableEnum.MARKET_SEGMENT)));    // 行业
+            // //dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行政//区")));                // 行政区
+            // dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)//GeneralTableEnum.TERRITORY)));              // 销售区域
+            // dic.Add("company_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)//GeneralTableEnum.ACCOUNT_TYPE)));              // 客户类型
+            // dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)//GeneralTableEnum.TAX_REGION)));              // 税区
+            // dic.Add("sufix", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)//GeneralTableEnum.NAME_SUFFIX)));              // 名字后缀
             dic.Add("installed_product_cate", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.INSTALLED_PRODUCT_CATE)));        // 配置项类型
-
+            dic.Add("period_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE)));
             return dic;
         }
 
@@ -60,7 +60,7 @@ namespace EMT.DoneNOW.BLL.CRM
 
             // 必填项校验
 
-          
+
             #region 1.保存配置项
             var installed_product_dal = new crm_installed_product_dal();
             crm_installed_product installed_product = new crm_installed_product()
@@ -75,7 +75,7 @@ namespace EMT.DoneNOW.BLL.CRM
                 serial_number = param.serial_number,
                 reference_number = param.reference_number,
                 reference_name = param.reference_name,
-                contract_id = param.contract_id==0?null:(long?) param.contract_id,
+                contract_id = param.contract_id == 0 ? null : (long?)param.contract_id,
                 location = param.location,
                 contact_id = param.contact_id == 0 ? null : (long?)param.contact_id,
                 vendor_id = param.vendor_id == 0 ? null : (long?)param.vendor_id,
@@ -83,7 +83,7 @@ namespace EMT.DoneNOW.BLL.CRM
                 installed_resource_id = user.id,
                 remark = param.notes,
                 // installed_contact_id = param.contact_id, // todo -- 安装人与联系人
-                
+
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 create_user_id = user.id,
@@ -203,7 +203,7 @@ namespace EMT.DoneNOW.BLL.CRM
                 setup_fee = param.terms.setup_fee,
                 peruse_cost = param.terms.peruse_cost,
                 accounting_link = param.terms.accounting_link,
-                
+
                 #region 服务等信息等待合同创建后处理，其字段从源数据获取
 
                 cost_product_id = old_installed_product.cost_product_id,
@@ -222,7 +222,7 @@ namespace EMT.DoneNOW.BLL.CRM
                 parent_id = old_installed_product.parent_id,
                 quote_item_id = old_installed_product.quote_item_id,
                 reference_name = old_installed_product.reference_name,
-                
+
                 service_bundle_id = old_installed_product.service_bundle_id,
                 service_id = old_installed_product.service_id,
                 udf_group_id = old_installed_product.udf_group_id,
@@ -243,7 +243,7 @@ namespace EMT.DoneNOW.BLL.CRM
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONFIGURAITEM,
                 oper_object_id = installed_product.id,
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = installed_product_dal.CompareValue(old_installed_product,installed_product),
+                oper_description = installed_product_dal.CompareValue(old_installed_product, installed_product),
                 remark = "修改配置项相关信息",
             });                       // 插入操作日志
 
@@ -254,6 +254,224 @@ namespace EMT.DoneNOW.BLL.CRM
             return true;
         }
 
+        /// <summary>
+        /// 新增订阅
+        /// </summary>
+        /// <param name="subscription"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE SubscriptiomInsert(crm_subscription subscription, long user_id)
+        {
+            if (string.IsNullOrEmpty(subscription.name))
+            {
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+            if (subscription.period_type_id == 0)
+            {
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+                return ERROR_CODE.USER_NOT_FIND;
+            #region 插入订阅相关信息
+            subscription.id = _dal.GetNextIdCom();
+            subscription.create_user_id = user.id;
+            subscription.update_user_id = user.id;
+            subscription.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            subscription.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+
+            new crm_subscription_dal().Insert(subscription);
+            new sys_oper_log_dal().Insert(new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = user.id,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SUBSCRIPTION,
+                oper_object_id = subscription.id,
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = _dal.AddValue(subscription),
+                remark = "新增订阅",
+            });
+            #endregion
+
+            #region 插入订阅分期信息
+            var periods = 1;   // 定义初始的期数为1 
+            var firstTime = subscription.effective_date; // 生效日期
+            var lastTime = subscription.expiration_date; // 结束日期
+            // var period_type = subscription.period_type_id;
+            var days =Math.Ceiling((lastTime - firstTime).TotalDays); // 获取到相差几天
+            var periodDays = 0;
+            switch (subscription.period_type_id)
+            {
+                case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
+                    periods = Convert.ToInt32(Math.Ceiling(days/180));
+                    periodDays = 180;
+                    break;
+                case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
+                    periods = Convert.ToInt32(Math.Ceiling(days / 30));
+                    periodDays = 30;
+                    break;
+                case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
+                    periods = Convert.ToInt32(Math.Ceiling(days / 90));
+                    periodDays = 90;
+                    break;
+                case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
+                    periods = Convert.ToInt32(Math.Ceiling(days / 365));
+                    periodDays = 365;
+                    break;
+                default:
+                    break;
+            }
+            var sub_period_dal = new crm_subscription_period_dal();
+            for (int i = 0; i < periods; i++)
+            {
+                crm_subscription_period sub_period = new crm_subscription_period() {
+                    id = sub_period_dal.GetNextIdCom(),
+                    subscription_id =subscription.id,
+                    period_date = firstTime,
+                    period_price = subscription.period_price,
+                  
+                };
+                sub_period_dal.Insert(sub_period);
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SUBSCRIPTION,
+                    oper_object_id = sub_period.id,
+                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                    oper_description = _dal.AddValue(sub_period),
+                    remark = "新增分期订阅",
+                });
+
+                firstTime = firstTime.AddDays(periodDays);
+
+            }
+
+
+
+
+            #endregion
+
+            return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 编辑订阅
+        /// </summary>
+        /// <param name="subscription"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE SubscriptiomEdit(crm_subscription subscription, long user_id)
+        {
+            if (string.IsNullOrEmpty(subscription.name))
+            {
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+            if (subscription.period_cost == null || subscription.period_type_id == 0)
+            {
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+                return ERROR_CODE.USER_NOT_FIND;
+
+            var old_subscription = new crm_subscription_dal().GetSubscription(subscription.id);
+
+            subscription.oid = old_subscription.oid;
+            subscription.create_time = old_subscription.create_time;
+            subscription.create_user_id = old_subscription.create_user_id;
+            subscription.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            subscription.update_user_id = user.id;
+
+            new crm_subscription_dal().Update(subscription);
+
+            new sys_oper_log_dal().Insert(new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = user.id,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SUBSCRIPTION,
+                oper_object_id = subscription.id,
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.CompareValue(old_subscription, subscription),
+                remark = "修改订阅相关信息",
+            });
+
+
+
+            // 修改时的订阅分期管理
+            return ERROR_CODE.SUCCESS;
+        }
+
+
+
+        /// <summary>
+        /// 激活当前的配置项
+        /// </summary>
+        /// <param name="iProduct_id"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public string ActivationInstalledProduct(long iProduct_id,long user_id)
+        {
+            var user = BLL.UserInfoBLL.GetUserInfo(user_id);
+            var dal = new crm_installed_product_dal();
+            var iProduct = dal.GetInstalledProduct(iProduct_id);
+            if (iProduct != null)
+            {
+                if (iProduct.is_active == 0)
+                {
+                    iProduct.is_active = 1;
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = user.id,
+                        name = user.name,
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONFIGURAITEM,
+                        oper_object_id = iProduct.id,
+                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                        oper_description = dal.CompareValue(new crm_installed_product_dal().GetInstalledProduct(iProduct_id), iProduct),
+                        remark = "激活配置项",
+                    });
+                    dal.Update(iProduct);
+                    return "ok";
+                }
+                else
+                {
+                    return "no";
+                }
+            }
+            return "";
+        }
+        /// <summary>
+        /// 批量激活配置项
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public bool AvtiveManyIProduct(string ids,long user_id)
+        {
+            var user = BLL.UserInfoBLL.GetUserInfo(user_id);
+            var dal = new crm_installed_product_dal();
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var idList = ids.Split(',');
+                foreach (var id in idList)
+                {
+                    ActivationInstalledProduct(long.Parse(id),user_id);
+                }
+                return true;
+            }
+            return false;
+        }
 
     }
 }

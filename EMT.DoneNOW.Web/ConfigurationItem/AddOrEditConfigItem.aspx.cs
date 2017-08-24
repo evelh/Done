@@ -75,6 +75,9 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                         {
                             contact_id.SelectedValue = iProduct.contact_id.ToString();
                         }
+                        viewSubscription_iframe.Src = "";
+                        // todo 订阅的通用查询
+                        // "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_COMPANY_VIEW + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.ContactCompanyView + "&id=" + id;
 
                     }
                 }

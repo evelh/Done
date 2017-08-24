@@ -77,6 +77,7 @@
     <Compile Include="CRM\crm_opportunity_dal.cs" />
     <Compile Include="CRM\crm_sales_order_dal.cs" />
     <Compile Include="CRM\crm_subscription_dal.cs" />
+    <Compile Include="CRM\crm_subscription_period_dal.cs" />
     <Compile Include="Dictionary\d_tax_region_cate_dal.cs" />
     <Compile Include="Dictionary\d_tax_region_cate_tax_dal.cs" />
     <Compile Include="IVT\ivt_service_bundle_dal.cs" />

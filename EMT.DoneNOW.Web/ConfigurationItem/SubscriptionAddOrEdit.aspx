@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-       <title>新建订阅</title>
+       <title> <%=isAdd?"新建订阅":"编辑订阅" %></title>
     <link href="../Content/reset.css" rel="stylesheet" />
     <style>
 body{
@@ -169,11 +169,11 @@ select {
         <ul id="btn">
             <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
                 <span class="Icon SaveAndClone"></span>
-                <span class="Text"><asp:Button ID="save_click" runat="server" Text="保存并关闭" /></span>
+                <span class="Text"><asp:Button ID="save_click" runat="server" BorderStyle="None" Text="保存并关闭" OnClick="save_click_Click" /></span>
             </li>
             <li class="Button ButtonIcon NormalState" id="SaveAndNewButton" tabindex="0">
                 <span class="Icon SaveAndNew"></span>
-                <span class="Text"><asp:Button ID="save_add" runat="server" Text="保存并新建" /></span>
+                <span class="Text"><asp:Button ID="save_add" runat="server" BorderStyle="None" Text="保存并新建" OnClick="save_add_Click" /></span>
             </li>
             <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
                 <span class="Icon Cancel"></span>
@@ -188,6 +188,7 @@ select {
                 <tbody>
                     <tr>
                         <td class="FieldLabels">
+                            <input type="hidden" name="installed_product_id" value="<%=iProduct.id %>"/>
                             名称
                             <span style="color:red;">*</span>
                             <div>
@@ -217,7 +218,7 @@ select {
                             有效日期
                             <span style="color:red;">*</span>
                             <div>
-                                <input type="text" style="width:255px" onclick="WdatePicker()" class="Wdate"  id="effective_date" name="effective_date" value="<%=isAdd?"":subscription.effective_date.ToString("yyyy-MM-dd") %>" />
+                                <input type="text" style="width:255px" onclick="WdatePicker()" class="Wdate Count"  id="effective_date" name="effective_date" value="<%=isAdd?"":subscription.effective_date.ToString("yyyy-MM-dd") %>" />
                             </div>
                         </td>
                     </tr>
@@ -226,7 +227,7 @@ select {
                             过期日期
                             <span style="color:red;">*</span>
                             <div>
-                                <input type="text" style="width:255px" onclick="WdatePicker()" class="Wdate" id="expiration_date" name="expiration_date" value="<%=isAdd?"":subscription.expiration_date.ToString("yyyy-MM-dd") %>" />
+                                <input type="text" style="width:255px" onclick="WdatePicker()" class="Wdate Count" id="expiration_date" name="expiration_date" value="<%=isAdd?"":subscription.expiration_date.ToString("yyyy-MM-dd") %>" />
                             </div>
                         </td>
                     </tr>
@@ -235,7 +236,7 @@ select {
                             周期价格
                             <span style="color:red;">*</span>
                             <div>
-                                <input type="text" style="width:255px;text-align: right;" id="period_price" name="period_price" value="<%=isAdd?"":subscription.period_price.ToString() %>" />
+                                <input class="Number" type="text" style="width:255px;text-align: right;" id="period_price" name="period_price" value="<%=isAdd?"":subscription.period_price.ToString() %>" />
                             </div>
                         </td>
                     </tr>
@@ -244,19 +245,19 @@ select {
                             总价
                             <span style="color:red;">*</span>
                             <div>
-                                <input type="text" style="width:255px;text-align: right;" id="total_price" name="total_price" value="<%=isAdd?"":subscription.total_price.ToString() %>" />
+                                <input  class="Number"  type="text" style="width:255px;text-align: right;" id="total_price" name="total_price" value="<%=isAdd?"":subscription.total_price.ToString() %>" />
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td class="FieldLabels">
                             物料成本代码
-                            <span style="color:red;">*</span>
+                            
                             <div> 
                                 <!-- todo 物料代码名称的显示-->
-                                <input type="text" style="width:255px;"  id="material_code_id" name="" value="" />
+                                <input type="text" style="width:255px;"  id="cost_code_id" name="" value="" />
                                 <img src="../Images/data-selector.png" style="vertical-align: middle;">
-                                <input type="hidden" name="material_code_id" id="material_code_idHidden" value="<%=isAdd?"":subscription.material_code_id.ToString() %>"/>
+                                <input type="hidden" name="cost_code_id" id="cost_code_idHidden" value="<%=isAdd?"":subscription.cost_code_id.ToString() %>"/>
                             </div>
                         </td>
                     </tr>
@@ -272,7 +273,7 @@ select {
                         <td class="FieldLabels">
                             周期成本
                             <div>
-                                <input type="text" style="width:255px;text-align: right;"  name="period_cost" id="period_cost" value="<%=(!isAdd)&&subscription.period_cost!=null?((decimal)subscription.period_cost).ToString("0.00"):"" %>"/>
+                                <input  class="Number"  type="text" style="width:255px;text-align: right;"  name="period_cost" id="period_cost" value="<%=(!isAdd)&&subscription.period_cost!=null?((decimal)subscription.period_cost).ToString("0.00"):"" %>"/>
                             </div>
                         </td>
                     </tr>
@@ -280,7 +281,7 @@ select {
                         <td class="FieldLabels">
                             总成本
                             <div>
-                                <input type="text" style="width:255px;text-align: right;" name="total_cost" id="total_cost" value="<%=(!isAdd)&&subscription.total_cost!=null?((decimal)subscription.total_cost).ToString("0.00"):"" %>"/>
+                                <input class="Number"  type="text" style="width:255px;text-align: right;" name="total_cost" id="total_cost" value="<%=(!isAdd)&&subscription.total_cost!=null?((decimal)subscription.total_cost).ToString("0.00"):"" %>"/>
                             </div>
                         </td>
                     </tr>
@@ -288,12 +289,13 @@ select {
                         <td class="FieldLabels">
                             状态
                             <div>
-                                <select style="width:270px">
+                                <asp:CheckBox ID="isActive" runat="server" />
+                           <%--     <select style="width:270px">
                                     <option value="">Active</option>
                                     <option value="">Monthly</option>
                                     <option value="">Monthly</option>
                                     <option value="">Monthly</option>
-                                </select>
+                                </select>--%>
                             </div>
                         </td>
                     </tr>
@@ -347,7 +349,7 @@ select {
                         <td class="FieldLabels">
                             订阅期数
                             <div>
-                                <input type="text" style="padding-left: 0px; border: 0px; font: bold; background-color:transparent; text-align:left">
+                                <input type="text" id="subscription_period" style="padding-left: 0px; border: 0px; font: bold; background-color:transparent; text-align:left">
                             </div>
                         </td>
                     </tr>
@@ -355,7 +357,7 @@ select {
                         <td class="FieldLabels">
                             首期结算日
                             <div>
-                                <input type="text" style="padding-left: 0px; border: 0px; font: bold; background-color:transparent; text-align:left">
+                                <input type="text" id="firstTime" style="padding-left: 0px; border: 0px; font: bold; background-color:transparent; text-align:left" />
                             </div>
                         </td>
                     </tr>
@@ -363,7 +365,7 @@ select {
                         <td class="FieldLabels">
                             下期结算日
                             <div>
-                                <input type="text" style="padding-left: 0px; border: 0px; font: bold; background-color:transparent; text-align:left">
+                                <input type="text" id="NextTime" style="padding-left: 0px; border: 0px; font: bold; background-color:transparent; text-align:left" />
                             </div>
                         </td>
                     </tr>
@@ -371,7 +373,7 @@ select {
                         <td class="FieldLabels">
                             最后一期结算日期
                             <div>
-                                <input type="text" style="padding-left: 0px; border: 0px; font: bold; background-color:transparent; text-align:left">
+                                <input type="text" id="LastTime" style="padding-left: 0px; border: 0px; font: bold; background-color:transparent; text-align:left"/>
                             </div>
                         </td>
                     </tr>
@@ -391,6 +393,9 @@ select {
 </body>
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../Scripts/common.js"></script>
+<script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 <script>
     $("#SaveAndCloneButton").on("mouseover", function () {
         $("#SaveAndCloneButton").css("background", "#fff");
@@ -410,4 +415,229 @@ select {
     $("#CancelButton").on("mouseout", function () {
         $("#CancelButton").css("background", "#f0f0f0");
     });
+</script>
+
+<script>
+
+    $("#save_click").click(function () {
+        if (!submitCheck()) {
+            return false;
+        }
+        return true;
+    })
+    $("#save_add").click(function () {
+        if (!submitCheck()) {
+            return false;
+        }
+        return true;
+    })
+
+
+    $(".Count").blur(function () {
+        Subscription();
+    })
+
+    $("#period_type_id").change(function () {
+        Subscription();
+    })
+
+    $(".Number").blur(function () {
+        var value = $(this).val();
+        if (!isNaN(value) && $.trim(value) != "") {
+            $(this).val(toDecimal2(value));
+        } else {
+            $(this).val("");
+        }
+
+    })
+
+    $("#period_price").blur(function () {
+        var periods = $("#subscription_period").val(); // 期数
+        if (periods == "") {
+            periods = 1;
+        }
+        var period_price = $("#period_price").val();  // 周期价格
+        var total_price = $("#total_price").val();    // 总价
+
+        if (period_price == "") {
+            $("#total_price").val("");
+        }
+        else {
+            total_price = Number(period_price) * periods;
+            $("#total_price").val(total_price);
+        }
+    })
+    $("#total_price").blur(function () {
+        var periods = $("#subscription_period").val(); // 期数
+        if (periods == "") {
+            periods = 1;
+        }
+        var period_price = $("#period_price").val();  // 周期价格
+        var total_price = $("#total_price").val();    // 总价
+
+        if (total_price == "") {
+            $("#period_price").val("");
+        }
+        else {
+            period_price = Number(total_price / periods).toFixed(2);
+            $("#period_price").val(period_price);
+        }
+    })
+    $("#period_cost").blur(function () {
+        var periods = $("#subscription_period").val(); // 期数
+        if (periods == "") {
+            periods = 1;
+        }
+        var period_cost = $("#period_cost").val();  // 周期价格
+        var total_cost = $("#total_cost").val();    // 总价
+
+        if (period_cost == "") {
+            $("#total_cost").val("");
+        }
+        else {
+            total_cost = Number(period_cost) * periods;
+            $("#total_cost").val(total_cost);
+        }
+    })
+    $("#total_cost").blur(function () {
+        var periods = $("#subscription_period").val(); // 期数
+        if (periods == "") {
+            periods = 1;
+        }
+        var period_cost = $("#period_cost").val();  // 周期价格
+        var total_cost = $("#total_cost").val();    // 总价
+
+        if (total_cost == "") {
+            $("#period_cost").val("");
+        }
+        else {
+            period_cost = Number(total_cost / periods).toFixed(2);
+            $("#period_cost").val(period_cost);
+        }
+    })
+
+
+    function submitCheck() {
+        var name = $("#name").val();
+        if (name == "") {
+            alert("请填写名称");
+            return false;
+        }
+        var period_type_id = $("#period_type_id").val();
+        if (period_type_id == 0) {
+            alert("请选择周期类型");
+            return false;
+        }
+        var effective_date = $("#effective_date").val();
+       
+        if (effective_date == "") {
+            alert("请填写有效日期");
+            return false;
+        }
+        var expiration_date = $("#expiration_date").val();
+        if (expiration_date == "") {
+            alert("请填写过期日期");
+            return false;
+        }
+        var period_price = $("#period_price").val();
+        if (period_price == "") {
+            alert("请填写周期价格");
+            return false;
+        }
+        var total_price = $("#total_price").val();
+        if (total_price == "") {
+            alert("请填写总价");
+            return false;
+        }
+
+        return true;
+    }
+    // 计算订阅期数还有
+    function Subscription()
+    {
+        var periods = 1;       // 订阅期数
+        var diffDay = 0;
+        var firstDate = $("#effective_date").val();
+        var lastDate = $("#expiration_date").val();
+        var period_type_id = $("#period_type_id").val();
+        if (firstDate != "" && lastDate != "") {
+            diffDay = DateDiff(firstDate, lastDate);
+            if (period_type_id == '<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME %>'){
+
+            }
+            else if (period_type_id =='<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH %>'){
+                periods = Math.ceil(diffDay / 30);
+            }
+            else if (period_type_id =='<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER %>'){
+                periods = Math.ceil(diffDay / 90);
+            }
+            else if (period_type_id =='<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR %>'){
+                periods = Math.ceil(diffDay / 180);
+            }
+            else if (period_type_id =='<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR %>'){
+                periods = Math.ceil(diffDay / 365);
+            }
+
+            $("#subscription_period").val(periods);
+            $("#firstTime").val(firstDate);
+            $("#NextTime").val(firstDate);
+            var date = new Date().toLocaleDateString();
+            if (firstDate < date) {
+                $("#NextTime").css("color","red");
+            }
+            else {
+                $("#NextTime").css("color", "");
+            }
+            $("#LastTime").val(lastDate);
+            PriceCount();
+        }
+    }
+    // 计算价格，总额相关
+    function PriceCount() {
+        debugger;
+        var periods = $("#subscription_period").val(); // 期数
+        if (periods == "") {
+            periods = 1;
+        }
+
+        var period_price = $("#period_price").val();  // 周期价格
+        var total_price = $("#total_price").val();    // 总价
+        var period_cost = $("#period_cost").val();    // 周期成本
+        var total_cost = $("#total_cost").val();      // 总成本
+
+      
+        if (total_price != "") {
+            period_price = Number(total_price / periods).toFixed(2);
+            $("#period_price").val(period_price);
+        }
+
+        if (total_cost != "") {
+            period_cost = Number(total_cost / periods).toFixed(2);
+            $("#period_cost").val(period_cost);
+        }
+
+    }
+
+
+
+    function DateDiff(sDate1, sDate2) {  //sDate1和sDate2是yyyy-MM-dd格式
+
+        var aDate, oDate1, oDate2, iDays;
+
+        aDate = sDate1.split("-");
+
+        oDate1 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0]);  //转换为yyyy-MM-dd格式
+
+        aDate = sDate2.split("-");
+
+        oDate2 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0]);
+
+        iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24); //把相差的毫秒数转换为天数
+
+
+
+        return iDays;  //返回相差天数
+
+    }
+
 </script>

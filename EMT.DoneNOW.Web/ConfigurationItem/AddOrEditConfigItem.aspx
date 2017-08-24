@@ -5,12 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>配置项新增</title>
+    <title>配置项<%=isAdd?"新增":"修改" %></title>
     <%--<link rel="stylesheet" type="text/css" href="../Content/base.css" />--%>
     <%--<link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />--%>
     <%--<link href="../Content/index.css" rel="stylesheet" />--%>
     <link href="../Content/style.css" rel="stylesheet" />
     <link href="../Content/reset.css" rel="stylesheet" />
+    <link href="../Content/index.css" rel="stylesheet" />
     <style>
         /*顶部内容和帮助*/
 .TitleBar{
@@ -57,6 +58,35 @@
     top: 10px;
     width: 16px;
     border-radius: 50%;
+}
+/*工具*/
+.RightClickMenu {
+    padding: 16px;
+    background-color: #FFF;
+    border: solid 1px #CCC;
+    cursor: pointer;
+    z-index: 999;
+    position: absolute;
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.33);
+}
+.RightClickMenuItem {
+    min-height: 24px;
+    min-width: 100px;
+}
+.RightClickMenuItemIcon {
+    padding: 1px 5px 1px 5px;
+    width: 16px;
+}
+.RightClickMenuItemTable tr:first-child td:last-child {
+    white-space: nowrap;
+}
+.RightClickMenuItemLiveLinks>span, .RightClickMenuItemText>span {
+    font-size: 12px;
+    font-weight: normal;
+    color: #4F4F4F;
+}
+.Tools {
+    background-image: url(../Images/dropdown.png);
 }
 /*保存按钮*/
 .ButtonContainer{
@@ -293,7 +323,7 @@ textarea {
     <form id="form1" runat="server">
       <div class="TitleBar">
         <div class="Title">
-            <span class="text1">新增配置项</span>
+            <span class="text1"><%=isAdd?"新增":"修改" %>配置项</span>
             <a href="###" class="collection"></a>
             <a href="###" class="help"></a>
         </div>
@@ -317,6 +347,15 @@ textarea {
                 <span class="Icon Cancel"></span>
                 <span class="Text" id="close">取消</span>
             </li>
+            <% if (!isAdd)
+                { %>
+             <li class="Button ButtonIcon NormalState" id="ToolsButton" tabindex="0">
+                <span class="Icon" style="width:0;margin: 0;"></span>
+                <span class="Text">工具</span>
+                <span class="Icon Tools"></span>
+            </li>
+            <%} %>
+
             <li class="Button ButtonIcon Edit NormalState" id="SiteConfiguration" tabindex="0">
                 <span class="Icon" style="width:0;margin: 0;"></span>
                 <span class="Text" onclick="window.open('../Company/CompanySiteManage.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>','left=200,top=200,width=960,height=750', false);">站点配置</span>
@@ -326,6 +365,50 @@ textarea {
                 <span class="Text">其他配置项</span>
             </li>
         </ul>
+    </div>
+         <div class="RightClickMenu" style="left: 349px;top: 71px;display: none;">
+        <div class="RightClickMenuItem">
+            <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
+                <tbody>
+                    <tr>
+                        <td class="RightClickMenuItemIcon" align="center" valign="middle">
+                            <img src="../Images/copy.png" alt="">
+                        </td>
+                        <td class="RightClickMenuItemText">
+                            <span class="lblNormalClass">复制</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="RightClickMenuItem">
+            <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
+                <tbody>
+                <tr>
+                    <td class="RightClickMenuItemIcon" align="center" valign="middle">
+                        <img src="../Images/refresh.png" alt="">
+                    </td>
+                    <td class="RightClickMenuItemText">
+                        <span class="lblNormalClass">替换</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="RightClickMenuItem">
+            <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
+                <tbody>
+                <tr>
+                    <td class="RightClickMenuItemIcon" align="center" valign="middle">
+                        <img src="../Images/employees.png" alt="">
+                    </td>
+                    <td class="RightClickMenuItemText">
+                        <span class="lblNormalClass">谁能看这个？</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
         <div class="TabBar">
             <a class="Button ButtonIcon SelectedState">
@@ -983,7 +1066,7 @@ textarea {
                             每小时成本
                             <div>
                                 <span style="display:inline-block;">
-                                    <input  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"  class="Number" type="text" name="hourly_cost" id="hourly_cost" style="width:250px;text-align:right;" value="<%=(!isAdd)&&iProduct.hourly_cost!=null?iProduct.hourly_cost.ToString():"0.00" %>">
+                                    <input  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"  class="Number" type="text" name="hourly_cost" id="hourly_cost" style="width:250px;text-align:right;" value="<%=(!isAdd)&&iProduct.hourly_cost!=null?((decimal)iProduct.hourly_cost).ToString("#0.00"):"0.00" %>">
                                 </span>
                             </div>
                         </td>
@@ -991,7 +1074,7 @@ textarea {
                             每次使用成本
                             <div>
                                 <span style="display:inline-block;">
-                                    <input  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"  class="Number"  type="text" name="peruse_cost" id="peruse_cost"  style="width:250px;text-align:right;" value="<%=(!isAdd)&&iProduct.peruse_cost!=null?iProduct.peruse_cost.ToString():"0.00" %>">
+                                    <input  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"  class="Number"  type="text" name="peruse_cost" id="peruse_cost"  style="width:250px;text-align:right;" value="<%=(!isAdd)&&iProduct.peruse_cost!=null?((decimal)iProduct.peruse_cost).ToString("#0.00"):"0.00" %>">
                                 </span>
                             </div>
                         </td>
@@ -1001,7 +1084,7 @@ textarea {
                           月度成本
                             <div>
                                 <span style="display:inline-block;">
-                                    <input  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"  class="Number"  type="text" name="monthly_cost" id="monthly_cost"  style="width:250px;text-align:right;" value="<%=(!isAdd)&&iProduct.monthly_cost!=null?iProduct.monthly_cost.ToString():"0.00" %>">
+                                    <input  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"  class="Number"  type="text" name="monthly_cost" id="monthly_cost"  style="width:250px;text-align:right;" value="<%=(!isAdd)&&iProduct.monthly_cost!=null?((decimal)iProduct.monthly_cost).ToString("#0.00"):"0.00" %>">
                                 </span>
                             </div>
                         </td>
@@ -1009,7 +1092,7 @@ textarea {
                            初始费用
                             <div>
                                 <span style="display:inline-block;">
-                                    <input  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"  class="Number"  type="text" name="setup_fee" id="setup_fee"  style="width:250px;text-align:right;" value="<%=(!isAdd)&&iProduct.setup_fee!=null?iProduct.setup_fee.ToString():"0.00" %>">
+                                    <input  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"  class="Number"  type="text" name="setup_fee" id="setup_fee"  style="width:250px;text-align:right;" value="<%=(!isAdd)&&iProduct.setup_fee!=null?((decimal)iProduct.setup_fee).ToString("#0.00"):"0.00" %>">
                                 </span>
                             </div>
                         </td>
@@ -1019,7 +1102,7 @@ textarea {
                            日成本
                             <div>
                                 <span style="display:inline-block;">
-                                    <input  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"  class="Number"  type="text" name="daily_cost" id="daily_cost"  style="width:250px;text-align:right;"  value="<%=(!isAdd)&&iProduct.daily_cost!=null?iProduct.daily_cost.ToString():"0.00" %>">
+                                    <input  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"  class="Number"  type="text" name="daily_cost" id="daily_cost"  style="width:250px;text-align:right;"  value="<%=(!isAdd)&&iProduct.daily_cost!=null?((decimal)iProduct.daily_cost).ToString("#0.00"):"0.00" %>">
                                 </span>
                             </div>
                         </td>
@@ -1036,7 +1119,15 @@ textarea {
             </table>
         </div>
     </div>
-    <div class="TabContainer" style="display: none;"></div>
+    <div class="TabContainer" style="display: none;">
+        <% if (!isAdd)
+            { %>
+        <iframe runat="server" id="viewSubscription_iframe" width="860" height="500" frameborder="0" marginheight="0" marginwidth="0" style="overflow:scroll;">
+
+        </iframe>
+        <%} %>
+
+    </div>
     <div class="TabContainer" style="display: none;"></div>
 
     </form>
@@ -1132,6 +1223,34 @@ textarea {
         $(this).parent().parent().css("background", colors[index4 % 2]);
         index4++;
     });
+    //工具
+    $("#ToolsButton").on("mouseover", function () {
+        $("#ToolsButton").css("background", "#fff");
+        $(this).css("border-bottom", "none");
+        $(".RightClickMenu").show();
+    });
+    $("#ToolsButton").on("mouseout", function () {
+        $("#ToolsButton").css("background", "#f0f0f0");
+        $(this).css("border-bottom", "1px solid #BCBCBC");
+        $(".RightClickMenu").hide();
+    });
+    $(".RightClickMenu").on("mouseover", function () {
+        $("#ToolsButton").css("background", "#fff");
+        $("#ToolsButton").css("border-bottom", "none");
+        $(this).show();
+    });
+    $(".RightClickMenu").on("mouseout", function () {
+        $("#ToolsButton").css("background", "#f0f0f0");
+        $("#ToolsButton").css("border-bottom", "1px solid #BCBCBC");
+        $(this).hide();
+    });
+    $(".RightClickMenuItem").on("mouseover", function () {
+        $(this).css("background", "#E9F0F8");
+    });
+    $(".RightClickMenuItem").on("mouseout", function () {
+        $(this).css("background", "#FFF");
+    });
+//工具结束
 </script>
 
 <script>
@@ -1143,6 +1262,7 @@ textarea {
         if (isAdd != 'True') {
             $("#EditProduct").css("display","");
         }
+        GetDaraByProduct();
     })
     // contact_id
     $("#contact_id").change(function () {
@@ -1332,6 +1452,47 @@ textarea {
                     },
                 });
             }
+
+
+            
+            // 根据查找带回的产品，获取相对应的供应商的列表，显示在下拉框中
+            $("#vendor_id").html("");
+            $.ajax({
+                type: "GET",
+                async: false,
+                // dataType: "json",
+                url: "../Tools/CompanyAjax.ashx?act=vendorList&product_id=" + product_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    debugger;
+                
+                    if (data != "") {
+                        $("#vendor_id").html(data);
+                    }
+                },
+
+            });
+
+            // 带回物料代码 --todo
+
+
+            // 带回制造商
+            $.ajax({
+                type: "GET",
+                async: false,
+              dataType: "json",
+                url: "../Tools/ProductAjax.ashx?act=GetVendorInfo&product_id=" + product_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    debugger;                  
+                    if (data != "") {
+                        var thisText = data.name+'(' + data.vendor_product_no+')';
+                        $("#manufacturer").text(thisText);
+                    }
+                },
+
+            });
+
         }
     }
 

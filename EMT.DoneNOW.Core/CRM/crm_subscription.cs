@@ -35,7 +35,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal total_price { get; set; }
         [DataMember]
-        public Int32 material_code_id { get; set; }
+        public Int64 cost_code_id { get; set; }
         [DataMember]
         public String purchase_order_number { get; set; }
         [DataMember]

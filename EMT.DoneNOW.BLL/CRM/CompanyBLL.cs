@@ -1164,7 +1164,8 @@ namespace EMT.DoneNOW.BLL
             // 客户：名称后缀
             var List = new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.NAME_SUFFIX));
             var nameList = List.Select(_ => _.show);
-            var areaList = new List<string> { "北京", "上海", "广州", "深圳", "杭州" };
+            var area = new d_district_dal().GetDictionary();
+            var areaList = area.Select(_=>_.show).ToList();
 
             foreach (var item in nameList)
             {
@@ -1300,6 +1301,8 @@ namespace EMT.DoneNOW.BLL
 
             return result;
         }
+
+
 
     }
 }

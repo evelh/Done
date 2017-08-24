@@ -442,7 +442,7 @@ namespace EMT.DoneNOW.DTO
             SALE_ORDER = 778,                           // 销售订单
             CONFIGURAITEM=777,                          // 配置项
             SECURITY_LEVEL=776,                             //安全等级
-
+            SUBSCRIPTION=778,                            // 订阅 
         }
 
         /// <summary>
