@@ -131,6 +131,8 @@
     <Content Include="Company\CompanyNameSimilar.aspx" />
     <Content Include="Company\CompanySiteManage.aspx" />
     <Content Include="Company\UpdateContact.aspx" />
+    <Content Include="ConfigurationItem\AddOrEditConfigItem.aspx" />
+    <Content Include="ConfigurationItem\SubscriptionAddOrEdit.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
     <Content Include="Common\SearchFrameSet.aspx" />
@@ -155,6 +157,8 @@
     <Content Include="Content\Quotebaojiaxiang.css" />
     <Content Include="Content\reset.css" />
     <Content Include="Content\searchList.css" />
+    <Content Include="Content\SysSettingRoles.css" />
+    <Content Include="Content\SysUserSecurityLevel.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
     <Content Include="Default.aspx" />
@@ -172,9 +176,17 @@
     <Content Include="error.html" />
     <Content Include="Images\add.png" />
     <Content Include="Images\Avatar\default.jpg" />
+    <Content Include="Images\check.png" />
     <Content Include="Images\collection.png" />
+    <Content Include="Images\copy.png" />
     <Content Include="Images\down.png" />
+    <Content Include="Images\edit.png" />
+    <Content Include="Images\dropdown.png" />
+    <Content Include="Images\email.png" />
+    <Content Include="Images\employees.png" />
     <Content Include="Images\help.png" />
+    <Content Include="Images\move-left.png" />
+    <Content Include="Images\move-right.png" />
     <Content Include="Images\refresh.png" />
     <Content Include="Images\view.png" />
     <Content Include="Images\Classification\blockhour.png" />
@@ -184,6 +196,7 @@
     <Content Include="Images\Classification\residential.png" />
     <Content Include="Images\Classification\target.png" />
     <Content Include="Images\Classification\tm.png" />
+    <Content Include="Opportunity\CloseOpportunity.aspx" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
     <Content Include="Images\export.png" />
@@ -191,6 +204,7 @@
     <Content Include="QuoteTemplate\QuoteTemplateAppendixEdit.aspx" />
     <Content Include="QuoteTemplate\QuoteTemplatePropertiesEdit.aspx" />
     <Content Include="Images\classfication.png" />
+    <Content Include="Quote\QuoteClose.aspx" />
     <Content Include="Quote\QuoteLost.aspx" />
     <Content Include="Quote\QuotePreview.aspx" />
     <Content Include="Quote\QuoteView.aspx" />
@@ -581,7 +595,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Common\SearchBody.js" />
+    <Content Include="Scripts\SysSettingRoles.js" />
     <Content Include="Scripts\sysset_users.js" />
+    <Content Include="Scripts\SysUserSecurityLevel.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />
@@ -607,8 +623,15 @@
     <Content Include="Common\SearchBodyFrame.aspx" />
     <Content Include="Common\SelectCallBack.aspx" />
     <Content Include="Site.Master" />
+    <Content Include="SysSetting\syscopy.aspx" />
+    <Content Include="SysSetting\SysDataPermission.aspx" />
+    <Content Include="SysSetting\SysDepartment.aspx" />
+    <Content Include="SysSetting\SysMarket.aspx" />
+    <Content Include="SysSetting\SysRolesAdd.aspx" />
+    <Content Include="SysSetting\SysTerritory.aspx" />
     <Content Include="SysSetting\SysUserAdd.aspx" />
     <Content Include="SysSetting\SysUserEdit.aspx" />
+    <Content Include="SysSetting\SysUserSecurityLevel.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -649,6 +672,20 @@
     </Compile>
     <Compile Include="Company\UpdateContact.aspx.designer.cs">
       <DependentUpon>UpdateContact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationItem\AddOrEditConfigItem.aspx.cs">
+      <DependentUpon>AddOrEditConfigItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\AddOrEditConfigItem.aspx.designer.cs">
+      <DependentUpon>AddOrEditConfigItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationItem\SubscriptionAddOrEdit.aspx.cs">
+      <DependentUpon>SubscriptionAddOrEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\SubscriptionAddOrEdit.aspx.designer.cs">
+      <DependentUpon>SubscriptionAddOrEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contact\AddContact.aspx.cs">
       <DependentUpon>AddContact.aspx</DependentUpon>
@@ -756,6 +793,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Opportunity\CloseOpportunity.aspx.cs">
+      <DependentUpon>CloseOpportunity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\CloseOpportunity.aspx.designer.cs">
+      <DependentUpon>CloseOpportunity.aspx</DependentUpon>
     </Compile>
     <Compile Include="Opportunity\LoseOpportunity.aspx.cs">
       <DependentUpon>LoseOpportunity.aspx</DependentUpon>
@@ -891,6 +935,13 @@
     <Compile Include="Quote\QuoteAddAndUpdate.aspx.designer.cs">
       <DependentUpon>QuoteAddAndUpdate.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Quote\QuoteClose.aspx.cs">
+      <DependentUpon>QuoteClose.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Quote\QuoteClose.aspx.designer.cs">
+      <DependentUpon>QuoteClose.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Quote\QuoteLost.aspx.cs">
       <DependentUpon>QuoteLost.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -926,6 +977,48 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\syscopy.aspx.cs">
+      <DependentUpon>syscopy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\syscopy.aspx.designer.cs">
+      <DependentUpon>syscopy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysDataPermission.aspx.cs">
+      <DependentUpon>SysDataPermission.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysDataPermission.aspx.designer.cs">
+      <DependentUpon>SysDataPermission.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysDepartment.aspx.cs">
+      <DependentUpon>SysDepartment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysDepartment.aspx.designer.cs">
+      <DependentUpon>SysDepartment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysMarket.aspx.cs">
+      <DependentUpon>SysMarket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysMarket.aspx.designer.cs">
+      <DependentUpon>SysMarket.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysRolesAdd.aspx.cs">
+      <DependentUpon>SysRolesAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysRolesAdd.aspx.designer.cs">
+      <DependentUpon>SysRolesAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysTerritory.aspx.cs">
+      <DependentUpon>SysTerritory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysTerritory.aspx.designer.cs">
+      <DependentUpon>SysTerritory.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\SysUserAdd.aspx.cs">
       <DependentUpon>SysUserAdd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -940,6 +1033,13 @@
     <Compile Include="SysSetting\SysUserEdit.aspx.designer.cs">
       <DependentUpon>SysUserEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\SysUserSecurityLevel.aspx.cs">
+      <DependentUpon>SysUserSecurityLevel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysUserSecurityLevel.aspx.designer.cs">
+      <DependentUpon>SysUserSecurityLevel.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Test.ashx.cs">
       <DependentUpon>Test.ashx</DependentUpon>
     </Compile>
@@ -952,6 +1052,9 @@
     <Compile Include="Tools\ContactAjax.ashx.cs">
       <DependentUpon>ContactAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\GeneralAjax.ashx.cs">
+      <DependentUpon>GeneralAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\OpportunityAjax.ashx.cs">
       <DependentUpon>OpportunityAjax.ashx</DependentUpon>
     </Compile>
@@ -961,8 +1064,14 @@
     <Compile Include="Tools\QuoteAjax.ashx.cs">
       <DependentUpon>QuoteAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\QuoteTemplateAjax.ashx.cs">
+      <DependentUpon>QuoteTemplateAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\RoleAjax.ashx.cs">
       <DependentUpon>RoleAjax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\SecurityLevelAjax.ashx.cs">
+      <DependentUpon>SecurityLevelAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\ServiceAjax.ashx.cs">
       <DependentUpon>ServiceAjax.ashx</DependentUpon>
@@ -990,6 +1099,9 @@
     <Content Include="Tools\RoleAjax.ashx" />
     <Content Include="Tools\ProductAjax.ashx" />
     <Content Include="Tools\ServiceAjax.ashx" />
+    <Content Include="Tools\QuoteTemplateAjax.ashx" />
+    <Content Include="Tools\SecurityLevelAjax.ashx" />
+    <Content Include="Tools\GeneralAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

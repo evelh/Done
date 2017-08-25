@@ -44,13 +44,11 @@
             </div>
         </div>
         <div class="contentboby">
-            <div class="contenttitle clear" style="    position: fixed; border-bottom:1px solid #e8e8fa;
-    left:0;
-    top: 0;
-    background: #fff;
-    width: 100%;">
+            <div class="contenttitle clear" style="position: fixed; border-bottom:1px solid #e8e8fa; left:0; top: 0; background: #fff; width: 100%;">
 			<ul class="clear fl">
+                <%if(!string.IsNullOrEmpty(addBtn)){ %>
 				<li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
+                <%} %>
 				<li><i style="background-image: url(../Images/print.png);"></i></li>
 				<li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
 				<li><i style="background-image: url(../Images/export.png);"></i></li>

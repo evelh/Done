@@ -27,7 +27,7 @@ namespace EMT.DoneNOW.BLL
                 id = user.id,
                 email = user.email,
                 mobile = user.mobile_phone,
-                name = user.mobile_phone
+                name = user.name
             };
         }
     }

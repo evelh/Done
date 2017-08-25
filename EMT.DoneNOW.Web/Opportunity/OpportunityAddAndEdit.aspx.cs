@@ -203,7 +203,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                     if (!string.IsNullOrEmpty(callBackFiled))
                     {
                       
-                        Response.Write("<script>debugger;window.opener."+callBackFiled+"('"+param.general.name+"','"+id+"');</script>");
+                        Response.Write("<script>window.opener."+callBackFiled+"('"+param.general.name+"','"+id+"');</script>");
                       
                     }
                      Response.Redirect("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + id);

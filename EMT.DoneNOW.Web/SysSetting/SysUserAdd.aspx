@@ -175,8 +175,7 @@
                                                             <td>
                                                                 <div style="padding-bottom: 0; margin-top: 5px; margin-left: 5px;">
                                                                     <!--添加主要位置-->
-                                                                    <a href="##">
-                                                                        <img src="../Images/add.png" alt="" /></a>
+                                                                        <asp:HyperLink ID="HyperLink1" runat="server" ImageUrl="~/Images/add.png" NavigateUrl="~/Company/LocationManage.aspx">HyperLink</asp:HyperLink>                                                                        
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -606,10 +605,10 @@
                     alert("请在常规选项卡再次输入密码");
                     return false;
                 }
-                if ($("#Security_Level").val() == 0) {
-                    alert("请输入权限等级");
-                    return false;
-                }
+                //if ($("#Security_Level").val() == 0) {
+                //    alert("请输入权限等级");
+                //    return false;
+                //}
             });
             $("#password2").blur(function () {
                 var ps1 = $("#password").val();

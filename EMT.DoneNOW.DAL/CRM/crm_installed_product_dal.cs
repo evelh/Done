@@ -12,10 +12,19 @@ namespace EMT.DoneNOW.DAL
         /// </summary>
         /// <param name="account_id"></param>
         /// <returns></returns>
-        public List<crm_installed_product> GetInstalledProductByAccountId(long account_id)
+        public List<crm_installed_product> GetInstalledProductByAccountId(long account_id ,string where ="") 
         {
             string sql = $"SELECT * from crm_installed_product where account_id = {account_id}";
+            if (where != "")
+            {
+                sql += where;
+            }
             return FindListBySql(sql);
+        }
+
+        public crm_installed_product GetInstalledProduct(long id)
+        {
+            return FindSignleBySql<crm_installed_product>($"select * from crm_installed_product where id = {id} and delete_time = 0");
         }
     }
 }

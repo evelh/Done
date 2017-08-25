@@ -302,7 +302,7 @@ namespace EMT.DoneNOW.BLL
                     table = "crm_account_site_ext";
                     break;
                 case DicEnum.UDF_CATE.CONFIGURATION_ITEMS:
-                    table = "crm_installed_product";
+                    table = "crm_installed_product_ext";
                     break;
                 case DicEnum.UDF_CATE.OPPORTUNITY:
                     table= "crm_opportunity_ext";

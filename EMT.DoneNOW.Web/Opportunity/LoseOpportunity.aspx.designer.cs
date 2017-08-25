@@ -22,13 +22,13 @@ namespace EMT.DoneNOW.Web.Opportunity {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// finish 控件。
+        /// opportunity_id 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button finish;
+        protected global::System.Web.UI.WebControls.DropDownList opportunity_id;
         
         /// <summary>
         /// stage_id 控件。
@@ -40,6 +40,15 @@ namespace EMT.DoneNOW.Web.Opportunity {
         protected global::System.Web.UI.WebControls.DropDownList stage_id;
         
         /// <summary>
+        /// loss_reason_type_id 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList loss_reason_type_id;
+        
+        /// <summary>
         /// resource_id 控件。
         /// </summary>
         /// <remarks>
@@ -47,5 +56,23 @@ namespace EMT.DoneNOW.Web.Opportunity {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList resource_id;
+        
+        /// <summary>
+        /// competitor_id 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList competitor_id;
+        
+        /// <summary>
+        /// finish 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button finish;
     }
 }

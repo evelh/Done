@@ -21,7 +21,7 @@ namespace EMT.DoneNOW.Web
         protected long id = 0;
         protected string avatarPath = "../Images/pop.jpg";
         protected crm_account account = null;
-
+        protected string callBackFiled = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             bool is_edit = long.TryParse(Request.QueryString["id"], out id);
@@ -32,19 +32,20 @@ namespace EMT.DoneNOW.Web
                 {
                     account = new CompanyBLL().GetCompany(long.Parse(account_id));
                 }
+                callBackFiled = Request.QueryString["callback"];
             }
             catch (Exception)
             {
 
                 Response.End();
             }
-       
+
             if (IsPostBack)
             {
                 SaveFormData();
             }
             else
-            { 
+            {
                 var dic = new ContactBLL().GetField();
                 // 称谓
                 sufix.DataTextField = "show";
@@ -103,9 +104,22 @@ namespace EMT.DoneNOW.Web
             else if (result == ERROR_CODE.SUCCESS)                    // 插入联系人成功，刷新前一个页面
             {
                 if (dto.contact.id > 0)
+                {
+
                     Response.Write("<script>alert('修改联系人成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                }
                 else
-                    Response.Write("<script>alert('添加联系人成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                {
+                    if (string.IsNullOrEmpty(callBackFiled))
+                    {
+                        Response.Write("<script>alert('添加联系人成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面  
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('添加联系人成功！');window.close();</script>");
+                    }
+                }
+
             }
         }
 
@@ -142,7 +156,7 @@ namespace EMT.DoneNOW.Web
                     Response.Write("<script>alert('添加客户成功！');</script>");  //  关闭添加页面的同时，刷新父页面
                     Response.Redirect("AddContact.aspx");
                 }
-                    
+
             }
         }
 
@@ -164,7 +178,16 @@ namespace EMT.DoneNOW.Web
         {
             SaveFormData();
             if (dto.contact.id == 0)
-                return new ContactBLL().Insert(dto, GetLoginUserId());
+            {
+                var res = new ContactBLL().Insert(dto, GetLoginUserId());
+                // 08-21 新增商机时添加联系人并返回联系人更改，若不将联系人id重置为0 会影响提示结果，暂时这样处理吧QAQ -- by  zf
+                if (!string.IsNullOrEmpty(callBackFiled))
+                {
+                    Response.Write("<script>window.opener." + callBackFiled + "('" + dto.contact.id + "');</script>");
+                }
+                dto.contact.id = 0;
+                return res;
+            }
             else
                 return new ContactBLL().Update(dto, GetLoginUserId());
         }
@@ -214,7 +237,7 @@ namespace EMT.DoneNOW.Web
                 return avatarPath;
             if (fileForm.ContentType.ToLower().IndexOf("image") != 0)   // 判断文件类型
                 return avatarPath;
-            
+
             string fileExtension = Path.GetExtension(fileForm.FileName).ToLower();    //取得文件的扩展名,并转换成小写
             if (!IsImage(fileExtension))    //验证上传文件是否图片格式
                 return avatarPath;
@@ -233,7 +256,7 @@ namespace EMT.DoneNOW.Web
 
             return virpath;
         }
-        
+
         /// <summary>
         /// 验证是否指定的图片格式
         /// </summary>
@@ -256,7 +279,7 @@ namespace EMT.DoneNOW.Web
             }
             return isimage;
         }
-        
+
         #endregion
     }
 }

@@ -13,7 +13,7 @@ namespace EMT.DoneNOW.Web
 {
     public partial class Login : System.Web.UI.Page
     {
-        private string action = ActionEnum.Login.ToString(); //操作类型
+        private string action = "Login"; //操作类型
 
         protected void Page_Init(object sernder, EventArgs e)
         {
@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             string _action = DNRequest.GetQueryString("action");
-            if (ActionEnum.Logout.ToString().Equals(_action))
+            if ("Logout".Equals(_action))
             {
                 Session["dn_session_user_info"] = null;
                 EMT.Tools.Common.WriteCookie("UserName", "DoneNOW", -14400);

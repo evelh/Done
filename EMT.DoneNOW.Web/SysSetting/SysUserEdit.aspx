@@ -165,7 +165,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="standard_label">
-                                                                <span class="lblNormalClass">主要位置<span style="color: red;">*</span></span>
+                                                                <span class="lblNormalClass">主区域<span style="color: red;">*</span></span>
                                                                 <div>
                                                                     <span style="display: inline-block">
                                                                         <asp:DropDownList ID="Position" runat="server"></asp:DropDownList>
@@ -175,8 +175,7 @@
                                                             <td>
                                                                 <div style="padding-bottom: 0; margin-top: 5px; margin-left: 5px;">
                                                                     <!--添加主要位置-->
-                                                                    <a href="##">
-                                                                        <img src="../Images/add.png" alt="" /></a>
+                                                                    <asp:HyperLink ID="HyperLink1" runat="server" ImageUrl="~/Images/add.png" NavigateUrl="~/Company/LocationManage.aspx">HyperLink</asp:HyperLink>        
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -372,10 +371,12 @@
                                                                     </div>                                                                    
                                                                 </td>
                                                             </tr>
-
-                                                            <tr>
-                                                                <td colspan="2">
-                                                                    <span class="lblNormalClass">请输入密码<span style="color: red;">*</span></span>
+                                                                   <tr class="ButtonCollectionBase btn1"><td> <span class="ButtonCollectionBase btn1" style="height:27px;">
+                                                                       <input type="button" id="btn1"  value="修改密码" />                                                        
+                                                              </span></td></tr>
+                                                            <tr class="xiugai">
+                                                                <td colspan="2" class="xiugai">
+                                                                    <span class="lblNormalClass xiugai">请输入密码<span style="color: red;">*</span></span>
                                                                     <div>
                                                                         <span>
                                                                             <asp:TextBox ID="password" runat="server" type="password" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="password"></asp:TextBox></span>
@@ -383,7 +384,7 @@
                                                                 </td>
                                                             </tr>
 
-                                                            <tr>
+                                                            <tr class="xiugai">
                                                                 <td colspan="2">
                                                                     <span class="lblNormalClass">请确认密码<span style="color: red;">*</span></span>
                                                                     <div>
@@ -393,6 +394,7 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
+
                                                             <tr>
                                                                 <td colspan="2">
                                                                     <div>
@@ -528,11 +530,22 @@
                 <div style="height: 100%; width: 100%; display: none;" class="C"></div>
                 <div style="height: 100%; width: 100%; display: none;" class="C"></div>
                 <div style="height: 100%; width: 100%; display: none;" class="C"></div>
+</div>
             </div>
-        </div>
+        
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../Scripts/sysset_users.js"></script>
         <script type="text/javascript">
+            //ButtonCollectionBase
+            $(document).ready(function () {
+                $(".xiugai").hide();
+            });
+
+            $("#btn1").click(function () {
+                $(".xiugai").show();
+                $("#btn1").hide();
+            });
+
             $("#tab1").click(function () {//点击常规
 
             });
@@ -568,7 +581,7 @@
                     alert("请输入名后再进行保存！");
                     return false;
                 }
-                //if ($("#Position").val() == 0) {
+                //if ($("#Position").val() == 0) { 数据配置不齐全，可空
                 //    alert("请选择主要办公地址！");
                 //    return false;
                 //}
@@ -606,10 +619,10 @@
                     alert("请在常规选项卡再次输入密码");
                     return false;
                 }
-                if ($("#Security_Level").val() == 0) {
-                    alert("请输入权限等级");
-                    return false;
-                }
+                //if ($("#Security_Level").val() == 0) {  数据配置不齐全可空
+                //    alert("请输入权限等级");
+                //    return false;
+                //}
             });
             $("#password2").blur(function () {
                 var ps1 = $("#password").val();

@@ -57,7 +57,18 @@ namespace EMT.DoneNOW.Web.Opportunity
                             viewOpportunity_iframe.Src = "";                              // 活动
                             break;
                         case "quoteItem":
-                            viewOpportunity_iframe.Src = "../QuoteItem/QuoteItemManage?isShow=show&opportunity_id="+opportunity.id;  // 报价项
+                            var oppoQuoteList = new crm_quote_dal().GetQuoteByWhere($" and opportunity_id = {opportunity.id} ");
+
+                            if (oppoQuoteList != null && oppoQuoteList.Count > 0)
+                            {
+                                viewOpportunity_iframe.Src = "../QuoteItem/QuoteItemManage?isShow=show&opportunity_id=" + opportunity.id;  // 报价项
+                            }
+                            else
+                            {
+                                Response.Write("<script>if(confirm('商机尚未创建报价，需要现在创建吗?')){window.open(\"../Quote/QuoteAddAndUpdate.aspx?quote_opportunity_id=" + opportunity.id +"\", '"+EMT.DoneNOW.DTO.OpenWindow.ProductSelect +"', 'left=200,top=200,width=600,height=800', false);}history.go(-1);</script>");
+                            }
+
+                           
                             break;
                         default:
                             viewOpportunity_iframe.Src = "";  // 默认

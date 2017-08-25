@@ -43,6 +43,10 @@ namespace EMT.DoneNOW.DAL
 
             return list;
         }
+        public d_general GetGeneralById(long id)
+        {
+            return FindSignleBySql<d_general>($"select * from d_general where id = {id}");
+        }
 
 
 

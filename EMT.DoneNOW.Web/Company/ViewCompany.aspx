@@ -69,7 +69,7 @@
                         <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
                         <li><a href="#" onclick="window.open('../Contact/AddContact.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left=200,top=200,width=900,height=750', false);">联系人</a></li>
                         <li><a href="#" onclick="window.open('AddCompany.aspx?parent_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.Subsidiaries %>','left=200,top=200,width=900,height=750', false);">子客户</a></li>
-                        <li>配置项</li>
+                        <li><a href="#" onclick="window.open('../ConfigurationItem/AddOrEditConfigItem.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.AddInstalledProduct %>','left=200,top=200,width=900,height=750', false);">配置项</a></li>
                         <li>附件</li>
                     </ul>
                 </li>
