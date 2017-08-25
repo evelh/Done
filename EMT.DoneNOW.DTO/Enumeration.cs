@@ -448,7 +448,7 @@ namespace EMT.DoneNOW.DTO
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息            
             SECURITY_LEVEL=776,                             //安全等级
             SALE_ORDER = 760,                           // 销售订单
-            SALE_ORDER = 778,                           // 销售订单
+            //SALE_ORDER = 778,                           // 销售订单
             CONFIGURAITEM=777,                          // 配置项
             SUBSCRIPTION=778,                            // 订阅 
 
