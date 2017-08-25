@@ -27,28 +27,29 @@ namespace EMT.DoneNOW.DTO
         OPPORTUNITY_STATUS = 17,
         FORM_TEMPLATE_RANGE_TYPE = 18,
         PROJECTED_CLOSED_DATE = 19,
-        NOTIFICATION_TEMPLATE_CATE_DATE_GROUP=23,//通知大类对应的变量分组
+        NOTIFICATION_TEMPLATE_CATE_DATE_GROUP = 23,//通知大类对应的变量分组
         FORM_TEMPLATE_TYPE = 27,
-        PAYMENT_TERM=29,                         // 报价：付款期限           
-        PAYMENT_TYPE=30,                         // 报价：付款类型
-        PAYMENT_SHIP_TYPE=31,                    // 报价：配送类型
+        PAYMENT_TERM = 29,                         // 报价：付款期限           
+        PAYMENT_TYPE = 30,                         // 报价：付款类型
+        PAYMENT_SHIP_TYPE = 31,                    // 报价：配送类型
         DATE_DISPLAY_FORMAT = 35,
         TIME_DISPLAY_FORMAT = 36,
         NUMBER_DISPLAY_FORMAT = 37,
         CURRENCY_POSITIVE_FORMAT = 38,
         CURRENCY_NEGATIVE_FORMAT = 39,
-        QUOTE_ITEM_TYPE =42,                      // 报价项：类型
-        QUOTE_ITEM_PERIOD_TYPE=43,               // 报价项：付费周期类型
-        QUOTE_ITEM_TAX_CATE=44,                  // 报价项：税收种类
+        QUOTE_ITEM_TYPE = 42,                      // 报价项：类型
+        QUOTE_ITEM_PERIOD_TYPE = 43,               // 报价项：付费周期类型
+        QUOTE_ITEM_TAX_CATE = 44,                  // 报价项：税收种类
         NAME_SUFFIX = 48,
-        SEX=49,
+        SEX = 49,
         EMAILTYPE = 50,
-        OUTSOURCE_SECURITY=51,                  //外包权限
-        DEPARTMENT_CATE=64,                     //部门：类型
-        LIMIT_TYPE =76,                         //系统权限：类型 取值 有无、全部部分 等
-        LIMIT_TYPE_VALUE=77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
-        LICENSE_TYPE =109,                      //安全等级：授权类型
-        QUOTE_GROUP_BY =110,                    // 报价分组条件
+        OUTSOURCE_SECURITY = 51,                  //外包权限
+        DEPARTMENT_CATE = 64,                     //部门：类型
+        LIMIT_TYPE = 76,                         //系统权限：类型 取值 有无、全部部分 等
+        LIMIT_TYPE_VALUE = 77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
+        INSTALLED_PRODUCT_CATE = 108,           // 配置项种类
+        LICENSE_TYPE = 109,                      //安全等级：授权类型
+        QUOTE_GROUP_BY = 110,                    // 报价分组条件
     }
 
     /// <summary>
@@ -59,12 +60,12 @@ namespace EMT.DoneNOW.DTO
 
         public enum ACCOUNT_TYPE
         {
-            CUSTOMER=14,                       // 客户
-            LEADER =15,                         // 领导者
-            POTENTIAL_CUSTOMER =16,             // 潜在客户
-            TERMINATION_OF_COOPERATION =17,     // 终止合作
-            CANCELLATION_OF_CUSTOMER =18,       // 注销客户
-            MANUFACTURER =19,                   // 厂商
+            CUSTOMER = 14,                       // 客户
+            LEADER = 15,                         // 领导者
+            POTENTIAL_CUSTOMER = 16,             // 潜在客户
+            TERMINATION_OF_COOPERATION = 17,     // 终止合作
+            CANCELLATION_OF_CUSTOMER = 18,       // 注销客户
+            MANUFACTURER = 19,                   // 厂商
             COOPERATIVE_PARTNER20,             // 合作伙伴
 
         }
@@ -150,11 +151,11 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum OPPORTUNITY_STATUS
         {
-            NOTREADYTOBUY=83,                              // 考虑中
-            ACTIVE=84,                                     // 激活
-            LOST=85,                                       // 丢失
-            CLOSED=86,                                     // 关闭
-            IMPLEMENTED=87,                                // 实施          
+            NOTREADYTOBUY = 83,                              // 考虑中
+            ACTIVE = 84,                                     // 激活
+            LOST = 85,                                       // 丢失
+            CLOSED = 86,                                     // 关闭
+            IMPLEMENTED = 87,                                // 实施          
         }
 
 
@@ -185,7 +186,7 @@ namespace EMT.DoneNOW.DTO
             TICKETS = 103,          // Taskfire工单
             OTHERS = 104,           // 杂项
             QUOTE_TEMPLATE_OTHERS = 105, //报价模板-其他
-            QUOTE_TEMPLATE_BODY =106,  //报价模板-body           
+            QUOTE_TEMPLATE_BODY = 106,  //报价模板-body           
 
 
         }
@@ -250,11 +251,11 @@ namespace EMT.DoneNOW.DTO
 
         public enum SALES_ORDER_STATUS
         {
-            OPEN=465,                // 打开
-            IN_PROGRESS=466,         // 未实施
-            PARTIALLY_FULFILLED=467, // 部分实施
-            FULFILLED=468,           // 完成
-            CANCELED=469,            // 取消
+            OPEN = 465,                // 打开
+            IN_PROGRESS = 466,         // 未实施
+            PARTIALLY_FULFILLED = 467, // 部分实施
+            FULFILLED = 468,           // 完成
+            CANCELED = 469,            // 取消
         }
 
         /// <summary>
@@ -304,7 +305,7 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum PAGE_SIZE
         {
-           LETTER = 584,         //信纸：8.5" x 11" （215.9 mm x 279.4 mm）
+            LETTER = 584,         //信纸：8.5" x 11" （215.9 mm x 279.4 mm）
             A4 = 585,            //A4：8.25" x 11.75 （210 mm x 297 mm）
         }
 
@@ -324,15 +325,15 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum QUOTE_ITEM_TYPE
         {
-            PRODUCT=600,                 // 产品
-            DEGRESSION=601,              // 成本
-            WORKING_HOURS=602,           // 工时
-            COST=603,                    // 费用
-            DISTRIBUTION_EXPENSES=604,   // 配送费用
-            DISCOUNT=605,                // 折扣   
-            SERVICE=606,                 // 服务
-            SERVICE_PACK=607,            // 服务包
-            START_COST=608,              // 初始费用
+            PRODUCT = 600,                 // 产品
+            DEGRESSION = 601,              // 成本
+            WORKING_HOURS = 602,           // 工时
+            COST = 603,                    // 费用
+            DISTRIBUTION_EXPENSES = 604,   // 配送费用
+            DISCOUNT = 605,                // 折扣   
+            SERVICE = 606,                 // 服务
+            SERVICE_PACK = 607,            // 服务包
+            START_COST = 608,              // 初始费用
 
         }
         /// <summary>
@@ -340,10 +341,10 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum QUOTE_ITEM_PERIOD_TYPE
         {
-            ONE_TIME=609,    // 一次性收费
-            MONTH=610,       // 按月收费
-            QUARTER=611,     // 按季度收费
-            HALFYEAR=612,       // 半年收费
+            ONE_TIME = 609,    // 一次性收费
+            MONTH = 610,       // 按月收费
+            QUARTER = 611,     // 按季度收费
+            HALFYEAR = 612,       // 半年收费
             YEAR = 613,         // 按年收费
 
         }
@@ -352,8 +353,8 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum QUOTE_ITEM_TAX_CATE
         {
-            SALESTAX=598,       //消费税
-            TAXABLE=599,       // 应纳税
+            SALESTAX = 598,       //消费税
+            TAXABLE = 599,       // 应纳税
         }
 
         /// <summary>
@@ -370,8 +371,8 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum DEPARTMENT_CATE
         {
-            DEPARTMENT=723,     //部门
-            SERVICE_QUEUE=724,  //服务队列
+            DEPARTMENT = 723,     //部门
+            SERVICE_QUEUE = 724,  //服务队列
         }
         /// <summary>
         /// 查询页面cat_id-65
@@ -392,9 +393,9 @@ namespace EMT.DoneNOW.DTO
             OPPORTUNITY_CONTACT_VIEW = 873,     // 联系人管理-详情-商机查询
             SUB_COMPANY_CALLBACK = 877,         // 独立客户查找带回（没有父客户和子客户）
             PRODUCT_CALLBACK = 882,             // 产品查找带回
-            MANY_PRODUCT_CALLBACK=885,          // 产品多选查找带回
-            SERVICE_CALLBACK=883,               // 服务查找带回
-            SERVICE_BUNDLE_CALLBACK=884,        // 服务集查找带回
+            MANY_PRODUCT_CALLBACK = 885,          // 产品多选查找带回
+            SERVICE_CALLBACK = 883,               // 服务查找带回
+            SERVICE_BUNDLE_CALLBACK = 884,        // 服务集查找带回
             COST_CALLBACK = 887,                // 成本查找带回
             CHARGE_CALLBACK = 888,              // 费用查找带回
             SHIP_CALLBACK = 889,                // 配送费用查找带回
@@ -443,14 +444,13 @@ namespace EMT.DoneNOW.DTO
             NOTIFY = 769,                               // 通知
             ACTIVITY = 760,                             // 活动   // todo 数据库添加
             QUOTE = 770,                                // 报价   
-            QUOTE_ITEM=771,                             // 报价项 
-            QUOTE_TEMP=772,                             //报价模板
+            QUOTE_ITEM = 771,                             // 报价项 
+            QUOTE_TEMP = 772,                             //报价模板
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息            
-            SECURITY_LEVEL=776,                             //安全等级
-            SALE_ORDER = 760,                           // 销售订单
-            //SALE_ORDER = 778,                           // 销售订单
-            CONFIGURAITEM=777,                          // 配置项
-            SUBSCRIPTION=778,                            // 订阅 
+            SECURITY_LEVEL = 776,                             //安全等级
+            CONFIGURAITEM = 777,                          // 配置项
+            SALE_ORDER = 778,                           // 销售订单
+            SUBSCRIPTION = 779,                            // 订阅
 
         }
 
@@ -513,12 +513,12 @@ namespace EMT.DoneNOW.DTO
             NONE962 = 976,             // 无
 
             //963对应值
-            ALL963=977,                //全部
-            NONE963=978,               //无
+            ALL963 = 977,                //全部
+            NONE963 = 978,               //无
             // 964对应值
             MY_TASK = 979,             // MY_TASK
-            MY_TASKS_UNASSIGNED_DEPARTMENT_TASKS=980,//MY_TASKS_UNASSIGNED_DEPARTMENT_TASKS
-            MY_TASKS_DEPARTMENT_TASKS=981,//MY TASKS & DEPARTMENT TASKS
+            MY_TASKS_UNASSIGNED_DEPARTMENT_TASKS = 980,//MY_TASKS_UNASSIGNED_DEPARTMENT_TASKS
+            MY_TASKS_DEPARTMENT_TASKS = 981,//MY TASKS & DEPARTMENT TASKS
             ALL_TASK = 982,            // All Tasks
 
 
@@ -553,11 +553,11 @@ namespace EMT.DoneNOW.DTO
         public enum QUOTE_GROUP_BY
         {
             NO = 1192,                    // 按照不分组
-            CYCLE =1193,                  // 按照周期分组
+            CYCLE = 1193,                  // 按照周期分组
             PRODUCT = 1194,               // 按照产品分组
             CYCLE_PRODUCT = 1195,         // 按照周期产品分组
             PRODUCT_CYCLE = 1196,         // 按照产品周期分组
-        }    
+        }
 
     }
 
@@ -606,7 +606,7 @@ namespace EMT.DoneNOW.DTO
         OpportunityEdit = 122,                      // 修改商机
         OpportunityLose = 123,                    // 丢失商机
         OpportunityView = 124,                    // 查看商机
-        
+
         QuoteAdd = 131,                             // 报价新增
         QuoteEdit = 132,                            // 报价修改
         QuoteLost = 133,                            // 丢失报价
@@ -629,9 +629,9 @@ namespace EMT.DoneNOW.DTO
 
         ProductSelect = 190,                    // 产品查找带回
         ManyProductSelect = 191,                // 多选产品查找带回
-                                                
-        ServiceSelect=200,                      // 服务的查找带回
-        ServiceBundleSelect= 201,               // 服务集的查找带回
+
+        ServiceSelect = 200,                      // 服务的查找带回
+        ServiceBundleSelect = 201,               // 服务集的查找带回
 
         AddInstalledProduct = 210,              // 添加配置项
         EditInstalledProduct = 211,             // 修改配置项
