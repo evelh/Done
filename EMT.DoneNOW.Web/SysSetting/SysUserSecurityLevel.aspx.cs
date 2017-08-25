@@ -62,11 +62,11 @@ namespace EMT.DoneNOW.Web.SysSetting
                         }
                         if (c != null)
                         {
-                            if (i.limit_type_value_id == (int)LIMIT_TYPE_VALUE.HAVE)
+                            if (i.limit_type_value_id == (int)LIMIT_TYPE_VALUE.HAVE960)
                             {
                                 c.Checked = true;
                             }
-                            if (i.limit_type_value_id == (int)LIMIT_TYPE_VALUE.NO)
+                            if (i.limit_type_value_id == (int)LIMIT_TYPE_VALUE.NO960)
                             {
                                 c.Checked = false;
                             }
@@ -160,11 +160,11 @@ namespace EMT.DoneNOW.Web.SysSetting
                         {
                             if (c.Checked)
                             {//选中就存986
-                                SysSecLimit.limit_type_value_id = (int)LIMIT_TYPE_VALUE.HAVE;
+                                SysSecLimit.limit_type_value_id = (int)LIMIT_TYPE_VALUE.HAVE960;
                             }
                             else
                             {//不选就存987
-                                SysSecLimit.limit_type_value_id = (int)LIMIT_TYPE_VALUE.NO;
+                                SysSecLimit.limit_type_value_id = (int)LIMIT_TYPE_VALUE.NO960;
                             }
                         }
                         //一条一条进行存储

@@ -513,32 +513,32 @@ namespace EMT.DoneNOW.DTO
             NONE962 = 976,             // 无
 
             //963对应值
-            ALL963 = 977,                //全部
-            NONE963 = 978,               //无
-            // 964对应值
-            MY_TASK = 979,             // MY_TASK
-            MY_TASKS_UNASSIGNED_DEPARTMENT_TASKS = 980,//MY_TASKS_UNASSIGNED_DEPARTMENT_TASKS
-            MY_TASKS_DEPARTMENT_TASKS = 981,//MY TASKS & DEPARTMENT TASKS
-            ALL_TASK = 982,            // All Tasks
+            ALL963 = 977,               // 全部
+            NONE963 = 978,              // 无
 
+            // 964对应值
+            MY_TASK964 = 979,           // MY_TASK
+            UNASSIGNED_TASKS964 = 980,  // MY_TASKS_UNASSIGNED_DEPARTMENT_TASKS
+            DEPARTMENT_TASKS964 = 981,  // MY TASKS & DEPARTMENT TASKS
+            ALL_TASK964 = 982,          // All Tasks
 
             // 965对应值
             ALL965 = 983,              // 全部
-            MINE_AND_COMPANY = 984,    // Mine + Companies
+            MINE_AND_COMPANY965 = 984, // Mine + Companies
             MINE965 = 985,             // 我的
 
             // 966对应值
             ALL966 = 986,              // 全部
-            MY_COMPANY = 987,          // 我是客户经理
-            MY_PROJECT = 988,          // 我是项目经理
+            MY_COMPANY966 = 987,       // 我是客户经理
+            MY_PROJECT966 = 988,       // 我是项目经理
             NONE966 = 989,             // 无
 
             // 967对应值
-            NOT_REQUIRE = 1240,         // 无需权限
+            NOT_REQUIRE967 = 1240,     // 无需权限
 
             // 960对应值
-            HAVE = 1241,                // 有
-            NO = 1242,                  // 无
+            HAVE960 = 1241,            // 有
+            NO960 = 1242,              // 无
         }
 
         /// <summary>

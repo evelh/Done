@@ -13,6 +13,179 @@ namespace EMT.DoneNOW.BLL
 {
     public class AuthBLL
     {
+
+        #region 登录
+        /// <summary>
+        /// 登录（不使用token）
+        /// </summary>
+        /// <param name="loginName"></param>
+        /// <param name="password">md5后的登录密码</param>
+        /// <param name="ip"></param>
+        /// <param name="agent"></param>
+        /// <param name="userInfo"></param>
+        /// <returns></returns>
+        public ERROR_CODE Login(string loginName, string password, string ip, string agent, out sys_user userInfo)
+        {
+            userInfo = null;
+            StringBuilder where = new StringBuilder();
+            string loginType = "";
+            // 判断登录类型是邮箱还是手机号
+            if (new RegexOp().IsEmail(loginName))
+            {
+                where.Append($" email='{loginName}' ");
+                loginType = "email";
+            }
+            else if (new RegexOp().IsMobilePhone(loginName))
+            {
+                where.Append($" mobile_phone='{loginName}' ");
+                loginType = "mobile_phone";
+            }
+            else
+            {
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+
+            List<sys_user> user = _dal.FindListBySql($"SELECT * FROM sys_user WHERE {where.ToString()}");
+            if (user.Count < 1)
+                return ERROR_CODE.USER_NOT_FIND;
+            if (!new Cryptographys().SHA1Encrypt(password).Equals(user[0].password))    // 密码错误
+            {
+                return ERROR_CODE.PASSWORD_ERROR;
+            }
+            if (user[0].status_id != (int)DicEnum.USER_STATUS.NORMAL)       // 用户状态不可用
+                return ERROR_CODE.USER_NOT_FIND;
+
+            //向sys_login_log表中插入日志
+            sys_login_log login_log = new sys_login_log
+            {
+                id = _dal.GetNextIdSys(),
+                ip = ip,
+                agent = agent,
+                login_time = DateTime.Now,
+                name = "",
+                user_id = user[0].id
+            };
+            if (loginType.Equals("email"))
+            {
+                login_log.email = loginName;
+            }
+            else if (loginType.Equals("mobile_phone"))
+            {
+                login_log.mobile_phone = loginName;
+            }
+            new sys_login_log_dal().Insert(login_log);
+
+            userInfo = user[0];
+
+            return ERROR_CODE.SUCCESS;
+        }
+        #endregion
+
+        #region 权限
+        /// <summary>
+        /// 获取指定用户指定权限点的权限值
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="levelId"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        public static DicEnum.LIMIT_TYPE_VALUE GetLimitValue(long userId, long levelId, AuthLimitEnum limit)
+        {
+            var dto = securityLevels.FirstOrDefault(l => l.id == levelId);
+
+            return dto.limit[limit];
+        }
+
+        /// <summary>
+        /// 获取用户可访问的模块列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="levelId"></param>
+        /// <returns></returns>
+        public static List<ModuleEnum> GetModuleList(long userId, long levelId)
+        {
+            var dto = securityLevels.FirstOrDefault(l => l.id == levelId);
+
+            return dto.modules;
+        }
+
+        private CheckEnum CheckAuth(long userId, long levelId, AuthLimitEnum limit, DicEnum.LIMIT_TYPE_VALUE needValue)
+        {
+            return CheckEnum.Fail;
+        }
+
+        /// <summary>
+        /// 判断用户在对应权限点是否有权限，限权限点取值类型960有无
+        /// </summary>
+        /// <param name="userId">用户id</param>
+        /// <param name="levelId">用户权限等级</param>
+        /// <param name="limit">需要验证的权限点</param>
+        /// <returns></returns>
+        public static CheckEnum CheckAuth(long userId, long levelId, AuthLimitEnum limit)
+        {
+            var dto = securityLevels.FirstOrDefault(l => l.id == levelId);
+            if (dto == null)
+                return CheckEnum.Error;
+
+            // 权限取值类型是否为960
+            if (secLevelLimits.First(l => l.id == (int)limit).type_id != (int)DicEnum.LIMIT_TYPE.HAVE_NONE)
+                return CheckEnum.Error;
+
+            if (dto.limit[limit] == DicEnum.LIMIT_TYPE_VALUE.HAVE960)
+                return CheckEnum.OK;
+
+            return CheckEnum.Fail;
+        }
+
+        /// <summary>
+        /// 加载所有可用的安全等级信息
+        /// </summary>
+        public static void InitSecurityLevels()
+        {
+            var list = dal.GetSecLevelList();
+            securityLevels = new List<SecurityLevelDto>();
+
+            foreach(var sec in list)
+            {
+                securityLevels.Add(GetSecLevelInfo(sec.id));
+            }
+
+            secLevelLimits = new sys_limit_dal().FindAll().ToList();
+        }
+
+        /// <summary>
+        /// 获取一个安全等级的信息
+        /// </summary>
+        /// <param name="secLevelId"></param>
+        /// <returns></returns>
+        public static SecurityLevelDto GetSecLevelInfo(long secLevelId)
+        {
+            var secLevel = dal.FindById(secLevelId);
+            var limits = new sys_security_level_limit_dal().GetLimitsBySecLevelId(secLevelId).ToDictionary(d => (AuthLimitEnum)d.limit_id, d => (DicEnum.LIMIT_TYPE_VALUE)d.limit_type_value_id);
+            var modules = new sys_security_level_module_dal().GetModulesBySecLevelId(secLevelId).Select(m => (ModuleEnum)m.module_id).ToList();
+
+            SecurityLevelDto dto = new SecurityLevelDto
+            {
+                id = secLevelId,
+                isSystem = secLevel.is_system,
+                name = secLevel.name,
+                description = secLevel.description,
+                limit = limits,
+                modules = modules,
+            };
+
+            return dto;
+        }
+
+        private static sys_security_level_dal dal = new sys_security_level_dal();
+
+        private static List<SecurityLevelDto> securityLevels = null;   // 所有权限等级信息
+        private static List<sys_limit> secLevelLimits = null;    // 所有权限点信息
+        #endregion
+
+
+
+        #region Token鉴权
         private readonly sys_user_dal _dal = new sys_user_dal();
         private const int expire_time_mins = 60;//60 * 8;            // token过期时间(8小时)
         private const int expire_time_mins_refresh = 60 * 16;     // refreshtoken过期时间(16小时)
@@ -152,72 +325,7 @@ namespace EMT.DoneNOW.BLL
 
             return ERROR_CODE.SUCCESS;
         }
-
-        /// <summary>
-        /// 登录（不使用token）
-        /// </summary>
-        /// <param name="loginName"></param>
-        /// <param name="password">md5后的登录密码</param>
-        /// <param name="ip"></param>
-        /// <param name="agent"></param>
-        /// <param name="userInfo"></param>
-        /// <returns></returns>
-        public ERROR_CODE Login(string loginName, string password, string ip, string agent, out sys_user userInfo)
-        {
-            userInfo = null;
-            StringBuilder where = new StringBuilder();
-            string loginType = "";
-            // 判断登录类型是邮箱还是手机号
-            if (new RegexOp().IsEmail(loginName))
-            {
-                where.Append($" email='{loginName}' ");
-                loginType = "email";
-            }
-            else if (new RegexOp().IsMobilePhone(loginName))
-            {
-                where.Append($" mobile_phone='{loginName}' ");
-                loginType = "mobile_phone";
-            }
-            else
-            {
-                return ERROR_CODE.PARAMS_ERROR;
-            }
-
-            List<sys_user> user = _dal.FindListBySql($"SELECT * FROM sys_user WHERE {where.ToString()}");
-            if (user.Count < 1)
-                return ERROR_CODE.USER_NOT_FIND;
-            if (!new Cryptographys().SHA1Encrypt(password).Equals(user[0].password))    // 密码错误
-            {
-                return ERROR_CODE.PASSWORD_ERROR;
-            }
-            if (user[0].status_id != (int)DicEnum.USER_STATUS.NORMAL)       // 用户状态不可用
-                return ERROR_CODE.USER_NOT_FIND;
-
-            //向sys_login_log表中插入日志
-            sys_login_log login_log = new sys_login_log
-            {
-                id = _dal.GetNextIdSys(),
-                ip = ip,
-                agent = agent,
-                login_time = DateTime.Now,
-                name = "",
-                user_id = user[0].id
-            };
-            if (loginType.Equals("email"))
-            {
-                login_log.email = loginName;
-            }
-            else if (loginType.Equals("mobile_phone"))
-            {
-                login_log.mobile_phone = loginName;
-            }
-            new sys_login_log_dal().Insert(login_log); 
-
-            userInfo = user[0];
-
-            return ERROR_CODE.SUCCESS;
-        }
-
+        
         /// <summary>
         /// 生成token
         /// </summary>
@@ -291,6 +399,6 @@ namespace EMT.DoneNOW.BLL
             JwtDecoder decoder = new JwtDecoder(jser, new JWT.JwtValidator(jser, new JWT.UtcDateTimeProvider()), new JwtBase64UrlEncoder());
             return decoder.DecodeToObject<TokenStructDto>(token, secretKey, true);
         }
-        
+        #endregion
     }
 }
