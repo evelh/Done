@@ -36,6 +36,7 @@
             <input type="hidden" id="type" name="type" value="<%=queryTypeId %>" />
             <input type="hidden" id="group" name="group" value="<%=paraGroupId %>" />
             <input type="hidden" name="id" value="<%=objId %>" />
+            <input type="hidden" id="isCheck" name="isCheck" value="<%=isCheck %>" />
             <div id="conditions">
                 <%foreach (var para in queryParaValue)
                     { %>
@@ -95,6 +96,11 @@
 			<div class="searchcontent" id="searchcontent" style="overflow:hidden;margin-top: 56px;min-width:<%=tableWidth%>px;">
 				<table border="" cellspacing="0" cellpadding="0"  style="overflow:scroll;width:100%;height:100%;">
 					<tr>
+                          <%if (!string.IsNullOrEmpty(isCheck))
+                        { %>
+                        <th style="width:30px;"><input id="CheckAll" type="checkbox"/></th>
+
+                    <%} %>
                         <%foreach(var para in resultPara)
                             {
                                 if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
@@ -132,7 +138,14 @@
                                 if (idPara != null)
                                     id = rslt[idPara.name].ToString();
                                 %>
+            
 					    <tr onclick="View(<%=id %>)" title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
+
+                      <%if (!string.IsNullOrEmpty(isCheck))
+                        { %>
+                        <td><input type="checkbox" class="IsChecked" value="<%=id %>"/></td>
+
+                    <%} %>
                             <%foreach (var para in resultPara) {
                                     if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
                                         || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
@@ -315,7 +328,162 @@
             OpenWindow("../QuoteTemplate/QuoteTemplateEdit.aspx?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteTemplateEdit %>');
         }
         <%
-        }%>
+        }else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.InstalledProductView) {
+            %>
+        function Edit() {
+            window.open("../ConfigurationItem/AddOrEditConfigItem.aspx?id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.EditInstalledProduct %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        // 激活单个配置项
+        function ActiveIProduct() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ProductAjax.ashx?act=ActivationIP&iProduct_id=" + entityid,
+                success: function (data) {
+                    if (data == "ok") {
+                        alert('激活成功');
+                    } else if (data == "no") {
+                        alert('该报价项已经激活');
+                    }
+                    else {
+
+                    }
+                    history.go(0);
+                }
+            })
+        }
+        // 批量激活配置项
+        function ActiveIProducts() {
+    
+            var ids = "";
+            $(".IsChecked").each(function () {
+                if ($(this).is(":checked")) {
+                    ids += $(this).val()+',';
+                }
+            })
+            if (ids != "") {
+                ids = ids.substring(0, ids.length-1);
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ProductAjax.ashx?act=ActivationIPs&iProduct_ids=" + ids,
+                    success: function (data) {
+                        if (data == "ok") {
+                            alert('批量激活成功！');
+                        }
+                        else if (data == "error") {
+                            alert("批量激活失败！");
+                        }
+                        history.go(0);
+                    }
+                })
+            }
+            
+        }
+        // 失活配置项
+        function NoActiveIProduct() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ProductAjax.ashx?act=NoActivationIP&iProduct_id=" + entityid,
+                success: function (data) {
+                    if (data == "ok") {
+                        alert('失活成功');
+                    } else if (data == "no") {
+                        alert('该报价项已经失活');
+                    }
+                    else {
+
+                    }
+                    history.go(0);
+                }
+            })
+        }
+        // 批量失活配置项
+        function NoActiveIProducts() {
+
+            var ids = "";
+            $(".IsChecked").each(function () {
+                if ($(this).is(":checked")) {
+                    ids += $(this).val() + ',';
+                }
+            })
+            if (ids != "") {
+                ids = ids.substring(0, ids.length - 1);
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ProductAjax.ashx?act=NoActivationIPs&iProduct_ids=" + ids,
+                    success: function (data) {
+                        if (data == "ok") {
+                            alert('批量失活成功！');
+                        }
+                        else if (data == "error") {
+                            alert("批量失活失败！");
+                        }
+                        history.go(0);
+                    }
+                })
+            }
+
+        }
+
+
+
+        function DeleteIProduct() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ProductAjax.ashx?act=deleteIP&iProduct_id=" + entityid,
+                success: function (data) {
+                    
+                    if (data == "True") {
+                        alert('删除成功');
+                    } else if (data == "False") {
+                        alert('删除失败');
+                    }
+                    history.go(0);
+                }
+            })
+        }
+
+        function DeleteIProducts() {
+            var ids = "";
+            $(".IsChecked").each(function () {
+                if ($(this).is(":checked")) {
+                    ids += $(this).val() + ',';
+                }
+            })
+            if (ids != "") {
+                ids = ids.substring(0, ids.length - 1);
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ProductAjax.ashx?act=deleteIPs&iProduct_ids=" + ids,
+                    success: function (data) {
+                        
+                        if (data == "True") {
+                            alert('批量删除成功');
+                        } else if (data == "False") {
+                            alert('批量删除失败');
+                        }
+                        history.go(0);
+                    }
+                })
+            }
+            
+        }
+
+        $("#CheckAll").click(function () {
+            if ($(this).is(":checked")) {
+                $(".IsChecked").attr("checked", "checked");
+                $(".IsChecked").css("checked", "checked");
+            }
+            else {
+                $(".IsChecked").removeAttr("checked");
+                $(".IsChecked").css("checked", "");
+            }
+        })
+
+        function View(jdgshdfghsdfgsl) {
+
+        }
+
+        <%}%>
         function openopenopen() {
             //alert("暂未实现");
         }

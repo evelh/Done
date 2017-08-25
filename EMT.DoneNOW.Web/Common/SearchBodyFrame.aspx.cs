@@ -23,6 +23,8 @@ namespace EMT.DoneNOW.Web
         protected List<DictionaryEntryDto> queryParaValue = new List<DictionaryEntryDto>();  // 查询条件和条件值
         protected int tableWidth = 1200;
         protected long objId = 0;
+
+        protected string isCheck = ""; //  用于控制是否显示checkBox
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!int.TryParse(Request.QueryString["cat"], out catId))
@@ -36,7 +38,7 @@ namespace EMT.DoneNOW.Web
                 Response.Close();
                 return;
             }
-
+            isCheck = Request.QueryString["isCheck"];
             // 一个query_type下只有一个group时可以不传参gruop_id
             if (paraGroupId == 0)
             {
@@ -288,6 +290,17 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "未激活", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    break;
+                case (long)QueryType.InstalledProductView:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "替换", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活当前记录", click_function = "ActiveIProduct()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活选中记录", click_function = "ActiveIProducts()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活当前记录", click_function = "NoActiveIProduct()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活选中记录", click_function = "NoActiveIProducts()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除当前配置项", click_function = "DeleteIProduct()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除选中配置项", click_function = "DeleteIProducts()" });
                     break;
                 default:
                     break;

@@ -14,6 +14,7 @@ namespace EMT.DoneNOW.Web
         protected long queryTypeId = 0;
         protected long paraGroupId = 0;
         protected int conditionHeight = 0;
+        protected string isCheck = "";  // 用于检测是否显示checkBox框
         protected void Page_Load(object sender, EventArgs e)
         {
             var bll = new BLL.QueryCommonBLL();
@@ -21,7 +22,7 @@ namespace EMT.DoneNOW.Web
             catId = DNRequest.GetQueryInt("cat", 0);
             int typeId = DNRequest.GetQueryInt("type", 0);
             int groupId = DNRequest.GetQueryInt("group", 0);
-
+            isCheck = DNRequest.GetStringValue("isCheck","");
             if (catId == 0)
             {
                 Response.Close();

@@ -399,7 +399,8 @@ namespace EMT.DoneNOW.DTO
             COST_CALLBACK = 887,                // 成本查找带回
             CHARGE_CALLBACK = 888,              // 费用查找带回
             SHIP_CALLBACK = 889,                // 配送费用查找带回
-
+            INSTALLEDPRODUCT=890,               // 配置项管理-查询
+            SUBSCRIPTION = 892,                 // 订阅管理-查询
         }
 
         /// <summary>
@@ -581,6 +582,9 @@ namespace EMT.DoneNOW.DTO
         ContactCompanyView = 13,           // 客户管理-详情-联系人查询
         SubcompanyCompanyView = 14,        // 客户管理-详情-子客户查询
         OpportunityContactView = 15,       // 联系人管理-详情-商机查询
+
+        InstalledProductView  = 32,    // 配置项管理
+        Subscription = 34,              //  订阅
     }
     /// <summary>
     /// 打开新窗口的名称
