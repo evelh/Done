@@ -18,8 +18,8 @@
 
     <%if (conditionHeight > 0) { %>
 <frameset id="SearchFrameSet" name="SearchFrameSet" rows="<%=conditionHeight %>,*" cols="100%" framespacing="0" border="0">
-    <frame src="SearchConditionFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>" id="SearchCondition"></frame>
-    <frame src="SearchBodyFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>&show=1" id="SearchBody"></frame>
+    <frame src="SearchConditionFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>&isCheck=<%=isCheck %>" id="SearchCondition"></frame>
+    <frame src="SearchBodyFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>&show=1&isCheck=<%=isCheck %>" id="SearchBody"></frame>
 </frameset>
     <%} else { %>
 <frameset id="SearchFrameSet" name="SearchFrameSet" rows="0,*" cols="100%" framespacing="0" border="0">

@@ -149,4 +149,33 @@ namespace EMT.DoneNOW.DTO
         OTHAccessExecutiveDash = 368,
         OTHAccessBillingPortal = 369,
     }
+
+    /// <summary>
+    /// 权限模块
+    /// </summary>
+    public enum ModuleEnum
+    {
+
+    }
+
+    /// <summary>
+    /// 操作类型
+    /// </summary>
+    public enum ActionEnum
+    {
+        Add,
+        Edit,
+        View,
+        Delete,
+    }
+
+    /// <summary>
+    /// 权限判断结果
+    /// </summary>
+    public enum CheckEnum
+    {
+        OK,     // 权限验证通过
+        Fail,   // 权限验证失败
+        Error,  // 错误
+    }
 }
