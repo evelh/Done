@@ -95,8 +95,8 @@ namespace EMT.DoneNOW.BLL
         public ERROR_CODE Update(SysUserAddDto data, long user_id,long id)
         {
             data.sys_res.id = id;
-            data.sys_res.create_user_id = data.sys_res.update_user_id = user_id;
-            data.sys_res.create_time = data.sys_res.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.sys_res.update_user_id = user_id;
+            data.sys_res.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.sys_user.password = new Tools.Cryptographys().MD5Encrypt(data.sys_user.password, false);
             _dal.Update(data.sys_res);
             //操作日志新增一条日志,操作对象种类：员工
@@ -146,7 +146,36 @@ namespace EMT.DoneNOW.BLL
         }
         public sys_user GetSysUserSingle(long id)
         {
-            return _dal.FindSignleBySql<sys_user>($"select * from sys_user where id={id}");
+            return _dal1.FindSignleBySql<sys_user>($"select * from sys_user where id={id}");
+        }
+        /// <summary>
+        /// 获取所有
+        /// </summary>
+        /// <returns></returns>
+        public List<sys_resource> GetAllSysResource() {
+            return _dal.FindListBySql<sys_resource>($"select * from sys_resource where delete_time=0").ToList();
+        }
+        public void UpdatePermission(sys_resource res, long user_id) {
+            res.update_user_id = user_id;
+            res.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            if (_dal.Update(res)) {
+                var add_account_log = new sys_oper_log();
+                var user = UserInfoBLL.GetUserInfo(user_id);
+                add_account_log = new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = (int)user.id,
+                    name = "",
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                    oper_object_id = res.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_description = _dal.AddValue(res),
+                    remark = "更新客户信息权限"
+                };          // 创建日志
+                new sys_oper_log_dal().Insert(add_account_log);
+            }
         }
     }
 }

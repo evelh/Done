@@ -10,13 +10,13 @@
     <title>受保护的数据的权限</title>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" method="post">
         <div>
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
             <div class="TitleBarNavigationButton">
-                <a class="buttons" href="##"><img src="img/move-left.png" alt=""></a>
+                <asp:ImageButton ID="Back" runat="server"  ImageUrl="~/Images/move-left.png" OnClick="Back_Click"/>
             </div>
             <span class="text2">受保护的数据的权限</span>
             <a href="###" class="help"></a>
@@ -26,13 +26,11 @@
     <div class="ButtonContainer">
         <ul>
             <li class="Button ButtonIcon NormalState" id="SaveButton" tabindex="0">
-                <span class="Icon SaveAndClone"></span>
-                <span class="Text">保存</span>
+                <asp:Button ID="Save" runat="server" Text="保存"  BorderStyle="None" OnClick="Save_Click"/>
             </li>
 
             <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
-                <span class="Icon Cancel"></span>
-                <span class="Text">取消</span>
+                <asp:Button ID="Cancle" runat="server" Text="取消"  BorderStyle="None" OnClick="Cancle_Click"/>
             </li>
         </ul>
     </div>
@@ -50,47 +48,78 @@
                         <td align="center">Edit Unprotected Data</td>
                         <td align="center">View Unprotected Data</td>
                     </tr>
+                    <%foreach (var i in resourcelist)
+                        {%>
                     <tr class="dataGridBody">
                         <td>
-                            <span>Administrator, Autotask</span>
+                            <span><%=i.name%></span>
                         </td>
                         <td align="center">
-                            <span><input type="checkbox" style="vertical-align:middle;"></span>
+                        <span><input type="checkbox" id="<%="edit_protected_data"+i.id %>" name="<%="edit_protected_data"+i.id %>" style="vertical-align:middle;" <%if (i.edit_protected_data == 1)
+                                  { %> checked="checked"
+                            <%} %>/></span>                                                   
                         </td>
                         <td align="center">
-                            <span><input type="checkbox" style="vertical-align:middle;"></span>
+                           <span><input type="checkbox" id="<%="view_protected_data"+i.id %>" name="<%="edit_protected_data"+i.id %>" style="vertical-align:middle;" <%if (i.view_protected_data == 1)
+                                  { %> checked="checked"
+                            <%} %>/></span>  
                         </td>
                         <td align="center">
-                            <span><input type="checkbox" style="vertical-align:middle;"></span>
+                           <span><input type="checkbox" id="<%="edit_unprotected_data"+i.id %>" name="<%="edit_protected_data"+i.id %>" style="vertical-align:middle;" <%if (i.edit_unprotected_data == 1)
+                                  { %> checked="checked"
+                            <%} %>/></span>  
                         </td>
                         <td align="center">
-                            <span><input type="checkbox" style="vertical-align:middle;"></span>
+                           <span><input type="checkbox" id="<%="view_unprotected_data"+i.id %>" name="<%="edit_protected_data"+i.id %>" style="vertical-align:middle;" <%if (i.view_unprotected_data == 1)
+                                  { %> checked="checked"
+                            <%} %>/></span>  
                         </td>
-                    </tr>
-                    <tr class="dataGridBody">
-                        <td>
-                            <span>Li, Hong</span>
-                        </td>
-                        <td align="center">
-                            <span><input type="checkbox" style="vertical-align:middle;"></span>
-                        </td>
-                        <td align="center">
-                            <span><input type="checkbox" style="vertical-align:middle;"></span>
-                        </td>
-                        <td align="center">
-                            <span><input type="checkbox" style="vertical-align:middle;"></span>
-                        </td>
-                        <td align="center">
-                            <span><input type="checkbox" style="vertical-align:middle;"></span>
-                        </td>
-                    </tr>
+                        </tr>
+                    <%} %>
                 </tbody>
             </table>
         </div>
     </div>
         </div>
+        <input id="data" type="hidden" name="data" value=""/>
     </form>
      <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/SysSettingRoles.js"></script>
+    <script>
+        $("#Save").click(function () {
+            var data = [];
+            data.push("{\"permission\":[");
+             <% foreach (var i in resourcelist) {%>
+            var id =<%=i.id%>;
+            if ($("#<%="edit_protected_data" + i.id%>").is(':checked')) {
+                var k1 = "yes";
+            }
+            else {
+                var k1 ="no";
+            }
+            if ($("#<%="view_protected_data" + i.id%>").is(':checked')) {
+                var k2 = "yes";
+            } else {
+                var k2 = "no";
+            }
+            if ($("#<%="edit_unprotected_data" + i.id%>").is(':checked')) {
+                var k3 = "yes";
+            } else {
+                var k3 = "no";
+            }
+            if ($("#<%="view_unprotected_data" + i.id%>").is(':checked')) {
+                var k4 = "yes";
+            } else {
+                var k4 = "no";
+            }
+            var ch = {"id":"id"+id,"edit_protected_data": k1,"view_protected_data": k2,"edit_unprotected_data": k3,"view_unprotected_data": k4 };
+            var jsonArrayFinal = JSON.stringify(ch);
+            data.push(jsonArrayFinal);
+            <%}%>
+            data.push("]}");
+            $("#data").val(data);
+        });
+      
+    </script>
 </body>
 </html>

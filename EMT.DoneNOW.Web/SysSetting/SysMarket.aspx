@@ -7,10 +7,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
-    <title></title>
+    <title>新增市场</title>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" method="post">
         <div>
              <!--顶部-->
     <div class="TitleBar">
@@ -22,17 +22,14 @@
     <!--按钮-->
     <div class="ButtonContainer">
         <ul id="btn">
-            <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
-                <span class="Icon SaveAndClone"></span>
-                <span class="Text">保存并关闭</span>
+           <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
+                <asp:Button ID="Save_Close" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="Save_Close_Click"/>
             </li>
             <li class="Button ButtonIcon NormalState" id="SaveAndNewButton" tabindex="0">
-                <span class="Icon SaveAndNew"></span>
-                <span class="Text">保存并新建</span>
+                <asp:Button ID="Save_New" runat="server" Text="保存并新建" BorderStyle="None" OnClick="Save_New_Click"/>
             </li>
             <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
-                <span class="Icon Cancel"></span>
-                <span class="Text">取消</span>
+                <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click"/>
             </li>
         </ul>
     </div>
@@ -44,7 +41,7 @@
                         Name
                         <span class="errorSmall">*</span>
                         <div>
-                            <input type="text" style="width:220px;">
+                            <asp:TextBox ID="Market_Name" runat="server"></asp:TextBox>
                         </div>
                     </td>
                 </tr>
@@ -52,7 +49,7 @@
                     <td width="30%" class="FieldLabels">
                         Description
                         <div>
-                            <input type="text" style="width:220px;">
+                            <asp:TextBox ID="Market_Description" runat="server"></asp:TextBox>
                         </div>
                     </td>
 
@@ -64,5 +61,21 @@
     </form>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/SysSettingRoles.js"></script>
+    <script>
+        $("#Save_Close").click(function () {
+            var t = $("#Market_Name").val();
+            if (t == null || t == '') {
+                alert("请填写市场名称");
+                return false;
+            }
+        });
+        $("#Save_New").click(function () {
+            var t = $("#Market_Name").val();
+            if (t == null || t == '') {
+                alert("请填写市场名称");
+                return false;
+            });
+    </script>
+
 </body>
 </html>

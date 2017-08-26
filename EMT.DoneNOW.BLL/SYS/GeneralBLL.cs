@@ -14,6 +14,7 @@ namespace EMT.DoneNOW.BLL
     /// </summary>
     public class GeneralBLL
     {
+        private readonly d_general_dal _dal = new d_general_dal();
         /// <summary>
         /// 根据tableId获取字典值列表
         /// </summary>
@@ -42,6 +43,14 @@ namespace EMT.DoneNOW.BLL
             if (general == null)
                 return 0;
             return general.id;
+        }
+        /// <summary>
+        /// 通过id获取一个d_general对象，并返回
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public d_general GetSingleGeneral(long id) {
+            return _dal.FindById(id);
         }
     }
 }

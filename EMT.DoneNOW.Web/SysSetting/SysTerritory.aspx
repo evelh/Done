@@ -1,5 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SysTerritory.aspx.cs" Inherits="EMT.DoneNOW.Web.SysSetting.SysTerritory" %>
-
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SysTerritory.aspx.cs" Inherits="EMT.DoneNOW.Web.SysTerritory" %>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -22,7 +21,7 @@
 </style>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" method="post">
         <div>
              <!--顶部-->
     <div class="TitleBar">
@@ -35,16 +34,13 @@
     <div class="ButtonContainer">
         <ul id="btn">
             <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
-                <span class="Icon SaveAndClone"></span>
-                <span class="Text">保存并关闭</span>
+                <asp:Button ID="Save_Close" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="Save_Close_Click"/>
             </li>
             <li class="Button ButtonIcon NormalState" id="SaveAndNewButton" tabindex="0">
-                <span class="Icon SaveAndNew"></span>
-                <span class="Text">保存并新建</span>
+                <asp:Button ID="Save_New" runat="server" Text="保存并新建" BorderStyle="None" OnClick="Save_New_Click"/>
             </li>
             <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
-                <span class="Icon Cancel"></span>
-                <span class="Text">取消</span>
+                <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click"/>
             </li>
         </ul>
     </div>
@@ -66,7 +62,7 @@
                             Name
                             <span class="errorSmall">*</span>
                             <div>
-                                <input type="text" style="width:220px;">
+                                <asp:TextBox ID="Territory_Name" runat="server"></asp:TextBox>
                             </div>
                         </td>
                     </tr>
@@ -74,12 +70,7 @@
                         <td width="30%" class="FieldLabels">
                             Region
                             <div>
-                                <select style="width:234px;">
-                                    <option value="">0</option>
-                                    <option value="">1</option>
-                                    <option value="">2</option>
-                                    <option value="">3</option>
-                                </select>
+                                <asp:DropDownList ID="Region" runat="server"></asp:DropDownList>
                             </div>
                         </td>
                     </tr>
@@ -87,7 +78,7 @@
                         <td width="30%" class="FieldLabels">
                             Description
                             <div>
-                                <input type="text" style="width:220px;">
+                                <asp:TextBox ID="Territory_Description" runat="server"></asp:TextBox>
                             </div>
                         </td>
 
@@ -96,13 +87,12 @@
             </table>
         </div>
     </div>
-    <div class="TabContainer" style="display: none;">
+    <div class="TabContainer resource" style="display: none;">
         <div class="DivSection" style="border:none;padding-left:0;">
             <div class="ButtonCollectionBase" style="height:25px;">
                 <ul>
                     <li class="Button ButtonIcon NormalState" id="NewButton1" tabindex="0">
-                        <span class="Icon New"></span>
-                        <span class="Text">新建</span>
+                        <asp:Button ID="New_Account" runat="server" Text="新增" />
                     </li>
                 </ul>
             </div>
@@ -111,30 +101,16 @@
                     <tr colspan="2">
                         <hr class="separator" style="border-left: none;">
                     </tr>
-                    <tr class="qqq">
+                    <%foreach (var i in AccountList)
+                        { %>
+                    <tr class="qqq" id="<%=i.id %>">
                         <td width="15" style="padding-left: 10px;">
-                            <img src="img/delete.png" style="cursor: pointer;">
+                            <img class="delete" src="../Images/cancel.png" style="cursor: pointer;"/>
+                            <input type="hidden" value="<%=i.id %>"/>
                         </td>
-                        <td align="left" style="padding-top: 2px;padding-left: 10px;">Administrator, Autotask</td>
+                        <td align="left" style="padding-top: 2px;padding-left: 10px;"><%=i.name %></td>
                     </tr>
-                    <tr class="qqq">
-                        <td width="15" style="padding-left: 10px;">
-                            <img src="img/delete.png" style="cursor: pointer;">
-                        </td>
-                        <td align="left" style="padding-top: 2px;padding-left: 10px;">Administrator, Autotask</td>
-                    </tr>
-                    <tr class="qqq">
-                        <td width="15" style="padding-left: 10px;">
-                            <img src="img/delete.png" style="cursor: pointer;">
-                        </td>
-                        <td align="left" style="padding-top: 2px;padding-left: 10px;">Administrator, Autotask</td>
-                    </tr>
-                    <tr class="qqq">
-                        <td width="15" style="padding-left: 10px;">
-                            <img src="img/delete.png" style="cursor: pointer;">
-                        </td>
-                        <td align="left" style="padding-top: 2px;padding-left: 10px;">Administrator, Autotask</td>
-                    </tr>
+                    <%} %>
                 </tbody>
             </table>
         </div>
@@ -143,5 +119,73 @@
     </form>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/SysSettingRoles.js"></script>
+    <script>
+
+        $(".delete").click(function () {
+            var name = $(this).parent().next().text();
+            var id = $(this).next().val();
+            var _this = $(this);
+            if (confirm('确认删除' + name+'?')) {
+                    $.ajax({
+                    type: "GET",
+                    url: "../Tools/TerritoryAjax.ashx?act=delete&aid=" +id+"&tid="+<%=id%>,
+                    success: function (data) {
+                        if (data == "yes") {
+                            _this.parent().parent().remove();
+                        } else {
+                            alert("删除失败！");
+                        }
+                    }
+                });
+            } 
+        });
+
+
+
+        $("#resource").click(function () {
+            var t = $("#Territory_Name").val();
+            var r = $("#Region").val();
+            if (t == null || t == '') {
+                alert("请填写地域名称后再跳转");
+                return false;
+            }
+            if (r == null || r <= 0) {
+                alert("请选择区域");
+                return false;
+            } 
+        });
+        $("#Save_Close").click(function () {
+            var t = $("#Territory_Name").val();
+            var r = $("#Region").val();
+            if (t == null || t == '') {
+                alert("请填写地域名称");
+                return false;
+            }
+            if (r == null || r <= 0) {
+                alert("请选择区域");
+                return false;
+            } });
+        $("#Save_New").click(function () {
+            var t = $("#Territory_Name").val();
+            var r = $("#Region").val();
+            if (t == null || t == '') {
+                alert("请填写地域名称");
+                return false;
+            }
+            if (r == null || r <= 0) {
+                alert("请选择区域");
+                return false;
+            }
+        });
+        $("#New_Account").click(function () {
+            var returnValue = window.showModalDialog('TerritortAddAccount.aspx?id=<%=id%>', window, 'dialogWidth=800px;dialogHeight=600px;status=no');
+
+            if (returnValue !== "" && returnValue !== undefined) {
+                //处理子窗口的返回值
+                alert(returnValue);
+            }
+
+        });
+    </script>
 </body>
 </html>

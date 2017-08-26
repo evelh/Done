@@ -12,7 +12,23 @@
         <div>
             <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" />
             <asp:Button ID="Button2" runat="server" Text="2222" OnClick="Button2_Click" />
+            <div>
+                <table class="kkkk"><tr><td runat="server">222</td></tr></table>
+            </div>
         </div>
     </form>
+    <script>
+
+        function Delete() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ContactAjax.ashx?act=delete&id=" + entityid,
+                success: function (data) {
+                    alert(data);
+                }
+
+            })
+        }
+    </script>
 </body>
 </html>

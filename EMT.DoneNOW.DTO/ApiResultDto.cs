@@ -38,5 +38,6 @@ namespace EMT.DoneNOW.DTO
         ACTIVATION,                                  //已经激活
         NO_ACTIVATION,                               //已经失活
         SYS_NAME_EXIST,                              //员工姓名已存在
+        EXIST,                                       //已经存在
     }
 }

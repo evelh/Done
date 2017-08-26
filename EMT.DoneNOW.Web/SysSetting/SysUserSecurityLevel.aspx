@@ -84,7 +84,8 @@
                     </div>
                     <div class="Content">
                         <div class="Large Column">
-                            <div class="StandardText">Home, CRM, Directory, Contracts, Projects, Service Desk, Timesheets, Inventory, Reports, Outsource, Community, Help</div>
+                            <div class="StandardText">
+                                <asp:Literal ID="module" runat="server"></asp:Literal></div>
                         </div>
                     </div>
                 </div>
