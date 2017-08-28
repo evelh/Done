@@ -22,7 +22,8 @@ namespace EMT.DoneNOW.Web.SysSetting
         private sys_security_level_limit SysSecLimit = new sys_security_level_limit();
         protected void Page_Load(object sender, EventArgs e)
         {
-            id = Convert.ToInt32(Request.QueryString["id"]);//获取角色id          
+            id = Convert.ToInt32(Request.QueryString["id"]);//获取角色id    
+            id = 2;
             if (!IsPostBack) {
                 bindresource();//第三个选项卡数据绑定
                 sys_limitList = sys_security.GetAll();//按照model分组
@@ -44,8 +45,21 @@ namespace EMT.DoneNOW.Web.SysSetting
                     //获取角色 修改后可以更新报价模板名称
                     var SSL = sys_security.GetSecurityLevel(id);
                     SLName = SSL.name;
+                    //系统角色不可修改
+                    if (Convert.ToInt32(SSL.is_system) > 0)
+                    {
+                        this.sys_security_level_name.ReadOnly = true;
+                    }
                     this.sys_security_level_name.Text = SLName;
-                    //用户自定义可修改
+                    //获取module
+                    var modulelist = sys_security.GetSecurity_module((int)id);
+                    if (modulelist.Count > 0) {
+                        StringBuilder ii = new StringBuilder();
+                        foreach (var i in modulelist) {
+                            ii.Append(i.name+",");
+                        }
+                        this.module.Text = ii.ToString().TrimEnd(',');
+                    }
                     if (SSL.is_active > 0)
                     {
                         this.active.Checked = true;

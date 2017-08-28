@@ -10,7 +10,7 @@
     <title>角色管理</title>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" method="post">
         <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
