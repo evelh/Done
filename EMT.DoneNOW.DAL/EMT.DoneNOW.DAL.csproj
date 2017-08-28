@@ -111,6 +111,7 @@
     <Compile Include="SYS\sys_notify_tmpl_dal.cs" />
     <Compile Include="SYS\sys_oper_log_dal.cs" />
     <Compile Include="SYS\sys_query_type_user_dal.cs" />
+    <Compile Include="SYS\sys_resource_territory_dal.cs" />
     <Compile Include="SYS\sys_role_dal.cs" />
     <Compile Include="SYS\sys_system_setting_dal.cs" />
     <Compile Include="SYS\sys_udf_field_dal.cs" />

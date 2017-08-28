@@ -14,7 +14,7 @@ namespace EMT.DoneNOW.Web
         public int id = 0;
         protected d_general d = new d_general();
         protected SysTerritoryBLL stbll = new SysTerritoryBLL();
-        public List<crm_account> AccountList = new List<crm_account>();
+        public List<sys_resource> AccountList = new List<sys_resource>();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取id
@@ -28,27 +28,30 @@ namespace EMT.DoneNOW.Web
                 this.Region.DataBind();
                 Region.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 //操作
-                if (id > 0)//修改
+                
+            }
+            if (id > 0)//修改
+            {
+                var a = new GeneralBLL().GetSingleGeneral(id);
+                if (a == null)
                 {
-                    var a= new GeneralBLL().GetSingleGeneral(id);
-                    if (a == null)
-                    {
-                        Response.Write("<script>alert('获取地域相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
-                    }
-                    else {
-                        this.Territory_Name.Text = a.name.ToString();
-                        this.Region.SelectedValue = a.parent_id.ToString();
-                        if (a.description != null && !string.IsNullOrEmpty(a.description.ToString())) {
-                            this.Territory_Description.Text = a.description.ToString();
-                        }
-                    }
-                    //获取地域所属员工
-                        AccountList= stbll.GetAccountList(id);
+                    Response.Write("<script>alert('获取地域相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
                 }
                 else
-                {//新增
-
+                {
+                    this.Territory_Name.Text = a.name.ToString();
+                    this.Region.SelectedValue = a.parent_id.ToString();
+                    if (a.remark != null && !string.IsNullOrEmpty(a.remark.ToString()))
+                    {
+                        this.Territory_Description.Text = a.remark.ToString();
+                    }
                 }
+                //获取地域所属员工
+                AccountList = stbll.GetAccountList(id);
+            }
+            else
+            {//新增
+
             }
         }
 
@@ -86,7 +89,7 @@ namespace EMT.DoneNOW.Web
             d.name = this.Territory_Name.Text.Trim().ToString();
             d.parent_id = Convert.ToInt32(this.Region.SelectedValue.ToString());
             if (!string.IsNullOrEmpty(this.Territory_Description.Text.Trim().ToString())) {
-                d.description= this.Territory_Description.Text.Trim().ToString();
+                d.remark= this.Territory_Description.Text.Trim().ToString();
             }
             var result= stbll.InsertTerritory(d, GetLoginUserId(),ref id);
             if (result == DTO.ERROR_CODE.SUCCESS) {

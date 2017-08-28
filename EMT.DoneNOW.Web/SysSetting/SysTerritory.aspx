@@ -53,7 +53,7 @@
             <span class="Text">资源</span>
         </a>
     </div>
-    <div class="TabContainer">
+    <div class="TabContainer" id="tab1">
         <div class="DivSection" style="border:none;padding-left:0;">
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tbody>
@@ -87,23 +87,23 @@
             </table>
         </div>
     </div>
-    <div class="TabContainer resource" style="display: none;">
+    <div class="TabContainer" id="tab2" style="display: none;">
         <div class="DivSection" style="border:none;padding-left:0;">
             <div class="ButtonCollectionBase" style="height:25px;">
                 <ul>
                     <li class="Button ButtonIcon NormalState" id="NewButton1" tabindex="0">
-                        <asp:Button ID="New_Account" runat="server" Text="新增" />
+                        <input type="button" id="New_Account" value="新增" />
                     </li>
                 </ul>
             </div>
             <table>
                 <tbody>
-                    <tr colspan="2">
+                    <tr colspan="2" class="ppp">
                         <hr class="separator" style="border-left: none;">
                     </tr>
                     <%foreach (var i in AccountList)
                         { %>
-                    <tr class="qqq" id="<%=i.id %>">
+                    <tr class="qqq">
                         <td width="15" style="padding-left: 10px;">
                             <img class="delete" src="../Images/cancel.png" style="cursor: pointer;"/>
                             <input type="hidden" value="<%=i.id %>"/>
@@ -112,36 +112,14 @@
                     </tr>
                     <%} %>
                 </tbody>
-            </table>
+            </table> 
         </div>
     </div>
         </div>
-    </form>
+        <input type="hidden" id="txtId" />
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/SysSettingRoles.js"></script>
     <script>
-
-        $(".delete").click(function () {
-            var name = $(this).parent().next().text();
-            var id = $(this).next().val();
-            var _this = $(this);
-            if (confirm('确认删除' + name+'?')) {
-                    $.ajax({
-                    type: "GET",
-                    url: "../Tools/TerritoryAjax.ashx?act=delete&aid=" +id+"&tid="+<%=id%>,
-                    success: function (data) {
-                        if (data == "yes") {
-                            _this.parent().parent().remove();
-                        } else {
-                            alert("删除失败！");
-                        }
-                    }
-                });
-            } 
-        });
-
-
-
         $("#resource").click(function () {
             var t = $("#Territory_Name").val();
             var r = $("#Region").val();
@@ -178,14 +156,65 @@
             }
         });
         $("#New_Account").click(function () {
-            var returnValue = window.showModalDialog('TerritortAddAccount.aspx?id=<%=id%>', window, 'dialogWidth=800px;dialogHeight=600px;status=no');
+            var open = window.open('TerritortAddAccount.aspx?id=<%=id%>', window, 'dialogWidth=800px;dialogHeight=600px;status=no');            
+        });
+        function kkk() {
+            returnValue = $("#txtId").val();
+            console.log(returnValue);
+            if (returnValue !== '' && returnValue !== undefined) {
+                result = returnValue.replace(/'/g, '"');
+                var obj = JSON.parse('[' + result + ']');
+                for (var i = 0; i < obj.length; i++) {
+                    $('.ppp').after(
+                        $('<tr class="qqq">' +
+                            '<td width="15" style="padding-left: 10px;">' +
+                            '<img class="delete1" src="../Images/cancel.png" style="cursor: pointer;"/>' +
+                            '<input type="hidden" value="' + obj[i].id + '"/>' +
+                            '</td>' +
+                            '<td align="left" style="padding-top: 2px;padding-left: 10px;">' + obj[i].name + '</td>' +
+                            '</tr>')
+                    )
+                };
+                $(".delete1").on("click", function () {
+                    var name = $(this).parent().next().text();
+                    var id = $(this).next().val();
+                    var _this = $(this);
+                    if (confirm('确认删除' + name + '?')) {
+                        $.ajax({
+                            type: "GET",
+                            url: "../Tools/TerritoryAjax.ashx?act=delete&aid=" + id + "&tid=" +<%=id%>,
+                                success: function (data) {
+                                    if (data == "yes") {
+                                        _this.parent().parent().remove();
+                                    } else {
+                                        alert("删除失败！");
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+        }
 
-            if (returnValue !== "" && returnValue !== undefined) {
-                //处理子窗口的返回值
-                alert(returnValue);
+        $(".delete").on("click", function () {
+            var name = $(this).parent().next().text();
+            var id = $(this).next().val();
+            var _this = $(this);
+            if (confirm('确认删除' + name + '?')) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/TerritoryAjax.ashx?act=delete&aid=" + id + "&tid=" +<%=id%>,
+                    success: function (data) {
+                        if (data == "yes") {
+                            _this.parent().parent().remove();
+                        } else {
+                            alert("删除失败！");
+                        }
+                    }
+                });
             }
-
         });
     </script>
+ </form>
 </body>
 </html>

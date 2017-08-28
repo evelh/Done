@@ -18,6 +18,7 @@ namespace EMT.DoneNOW.DTO
         TAX_REGION = 5,
         ACCOUNT_TYPE = 6,
         ACTION_TYPE = 7,
+        CALENDAR_DISPLAY=9,       //日历显示模式
         OPPORTUNITY_STAGE = 11,
         OPPORTUNITY_SOURCE = 12,
         OPPORTUNITY_INTEREST_DEGREE = 13,

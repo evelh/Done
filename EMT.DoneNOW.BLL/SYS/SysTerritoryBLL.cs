@@ -17,18 +17,23 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<crm_account> GetAccountList(long id) {            
-            return new crm_account_dal().FindListBySql<crm_account>($"select a.name,a.id from crm_account a,crm_account_territory b where a.id=b.account_id  and a.delete_time=0 and b.territory_id={id}").ToList();
+        public List<sys_resource> GetAccountList(long id) {            
+            return new sys_resource_dal().FindListBySql<sys_resource>($"select b.name,b.id from sys_resource_territory a,sys_resource b where a.resource_id=b.id  and a.delete_time=0  and b.delete_time=0 and a.territory_id={id}").ToList();
         }
-        public List<crm_account> GetAccount(long id)
+        public List<sys_resource> GetAccount(long id)
         {
-            return new crm_account_dal().FindListBySql<crm_account>($"select name,id from crm_account  where id not in (SELECT account_id from crm_account_territory where territory_id={id}) and delete_time=0 ").ToList();
+            return new sys_resource_dal().FindListBySql<sys_resource>($"select id,`name` from sys_resource where id not in(select resource_id from sys_resource_territory where territory_id={id} and delete_time=0 ) and delete_time=0").ToList();
         }
 
 
-        public ERROR_CODE Insert(crm_account_territory cat,long user_id) {
+        public ERROR_CODE Insert(sys_resource_territory cat,long user_id) {
             cat.id = (int)_dal.GetNextIdCom();
-            new crm_account_territory_dal().Insert(cat);
+            //不得插入重复数据
+           var kk= new sys_resource_territory_dal().FindSignleBySql<sys_resource_territory>($"select * from sys_resource_territory where territory_id={cat.territory_id} and resource_id={cat.resource_id} and delete_time=0");
+            if (kk != null) {
+                return ERROR_CODE.EXIST;
+            }
+            new sys_resource_territory_dal().Insert(cat);
             return ERROR_CODE.SUCCESS;
         }
 
@@ -82,11 +87,13 @@ namespace EMT.DoneNOW.BLL
         /// <param name="aid"></param>
         /// <param name="tid"></param>
         /// <returns></returns>
-        public bool DeleteAccount_Territory(long aid,long tid) {
-            crm_account_territory_dal cat_dal= new crm_account_territory_dal();
-           var i= cat_dal.FindSignleBySql<crm_account_territory>($"select * from crm_account_territory where account_id={aid} and territory_id={tid}");
+        public bool DeleteAccount_Territory(long aid,long tid,long user_id) {
+            sys_resource_territory_dal cat_dal= new sys_resource_territory_dal();
+           var i= cat_dal.FindSignleBySql<sys_resource_territory>($"select * from sys_resource_territory where resource_id={aid} and territory_id={tid} and delete_time=0");
             if (i != null) {
-                if (cat_dal.Delete(i)) {
+                i.delete_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                i.delete_user_id = user_id;
+                if (cat_dal.Update(i)) {
                     return true;
                 }
             }

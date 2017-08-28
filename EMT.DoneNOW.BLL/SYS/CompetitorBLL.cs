@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EMT.DoneNOW.BLL
 {
-    public class SysMarketBLL
+    public class CompetitorBLL
     {
         private readonly d_general_dal _dal = new d_general_dal();
         /// <summary>
@@ -18,19 +18,33 @@ namespace EMT.DoneNOW.BLL
         /// <param name="data"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public ERROR_CODE InsertMarket(d_general data, long user_id)
+        public ERROR_CODE InsertCompetitor(d_general data, long user_id)
         {
-            data.general_table_id = (int)GeneralTableEnum.MARKET_SEGMENT;
+            data.general_table_id = (int)GeneralTableEnum.COMPETITOR;
             data.create_time = data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.create_user_id = user_id;
 
             _dal.Insert(data);
             return ERROR_CODE.SUCCESS;
         }
-        public ERROR_CODE UpdateMarket(d_general data, long user_id)
+        public ERROR_CODE UpdateCompetitor(d_general data, long user_id)
         {
             data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.update_user_id = user_id;
+            _dal.Update(data);
+            return ERROR_CODE.SUCCESS;
+        }
+        public ERROR_CODE DeleteCompetitor(d_general data, long user_id)
+        {
+            data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.delete_user_id = user_id;
+            _dal.Update(data);
+            return ERROR_CODE.SUCCESS;
+        }
+        public ERROR_CODE InactiveCompetitor(d_general data, long user_id)
+        {
+            data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.delete_user_id = user_id;
             _dal.Update(data);
             return ERROR_CODE.SUCCESS;
         }

@@ -32,18 +32,20 @@ namespace EMT.DoneNOW.Web.SysSetting
 
         protected void Save_Click(object sender, EventArgs e)
         {
-            StringBuilder json = new StringBuilder();
-            crm_account_territory cat = new crm_account_territory();
+            StringBuilder name = new StringBuilder();
+
+            sys_resource_territory cat = new sys_resource_territory();
             foreach (ListItem item in this.AccountList.Items) {
                 if (item.Selected)
                 {
                     cat.territory_id = (int)id;
-                    cat.account_id = Convert.ToInt64(item.Value);
-                    json.Append("{aid:" + item.Value + ",text:" + item.Text +"},");
+                    cat.resource_id = Convert.ToInt64(item.Value);
+                    name.Append("{'id':'" + Convert.ToInt64(item.Value) + "','name':'" + (item.Text) + "'},");
                     STBLL.Insert(cat,GetLoginUserId());
                 }                    
             }
-            Response.Write("<script> window.returnValue="+json.ToString().TrimEnd(',')+ ";window.close();</script>");
+            string k = name.ToString().TrimEnd(',');
+            Response.Write("<script>window.opener.document.getElementById(\"txtId\").value=\"" + k + "\";window.opener.kkk();window.close();</script>");
         }
     }
 }
