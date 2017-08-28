@@ -641,5 +641,8 @@ namespace EMT.DoneNOW.DTO
         AddInstalledProduct = 210,              // 添加配置项
         EditInstalledProduct = 211,             // 修改配置项
 
+        SubscriptionEdit = 220,                // 修改订阅
+        SubscriptionAdd = 221,                 // 新增订阅
+
     }
 }

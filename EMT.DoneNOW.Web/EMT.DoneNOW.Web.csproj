@@ -1116,6 +1116,9 @@
     <Compile Include="Tools\ServiceAjax.ashx.cs">
       <DependentUpon>ServiceAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\SubscriptionAjax.ashx.cs">
+      <DependentUpon>SubscriptionAjax.ashx</DependentUpon>
+	</Compile>
     <Compile Include="Tools\TerritoryAjax.ashx.cs">
       <DependentUpon>TerritoryAjax.ashx</DependentUpon>
     </Compile>
@@ -1145,7 +1148,11 @@
     <Content Include="Tools\QuoteTemplateAjax.ashx" />
     <Content Include="Tools\SecurityLevelAjax.ashx" />
     <Content Include="Tools\GeneralAjax.ashx" />
+
+    <Content Include="Tools\SubscriptionAjax.ashx" />
+
     <Content Include="Tools\TerritoryAjax.ashx" />
+
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

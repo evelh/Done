@@ -11,17 +11,17 @@ namespace EMT.DoneNOW.DAL
         {
             if (where != "")
             {
-                return FindListBySql<crm_subscription_period>("select * from crm_subscription_period where delete_time = 0 " + where);
+                return FindListBySql<crm_subscription_period>("select * from crm_subscription_period where 1=1 " + where);
             }
-            return FindListBySql<crm_subscription_period>("select * from crm_subscription_period where delete_time = 0");
+            return FindListBySql<crm_subscription_period>("select * from crm_subscription_period where 1=1");
         }
         public crm_subscription_period GetSingleSubPeriodByWhere(string where = "")
         {
             if (where != "")
             {
-                return FindSignleBySql<crm_subscription_period>("select * from crm_subscription_period where delete_time = 0 " + where);
+                return FindSignleBySql<crm_subscription_period>("select * from crm_subscription_period where 1=1 " + where);
             }
-            return FindSignleBySql<crm_subscription_period>("select * from crm_subscription_period where delete_time = 0");
+            return FindSignleBySql<crm_subscription_period>("select * from crm_subscription_period where 1=1");
         }
     }
 }
