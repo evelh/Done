@@ -522,7 +522,7 @@ textarea {
                                                         <input type="hidden" name="installed_by" value="<%=user.id %>"/>
                                     <%}
                                     %>
-                                                        <img  onclick="location='<%=user.email %>'" src="../Images/email.png" style="cursor: pointer;" />
+                                                        <img  onclick="javascript:location='mailto:<%=user.email %>'" src="../Images/email.png" style="cursor: pointer;" />
                                                     </div>
                                                 </td>
                                                 <td class="FieldLabel" style="cursor:pointer;margin-left:2px;margin-bottom:-3px;">
