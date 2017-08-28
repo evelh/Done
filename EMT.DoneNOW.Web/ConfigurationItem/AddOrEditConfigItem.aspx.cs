@@ -28,11 +28,27 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
             try
             {
                 iProduct_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONFIGURATION_ITEMS);
-                var account_id = Request.QueryString["account_id"];
-                account = new CompanyBLL().GetCompany(long.Parse(account_id));
 
-                var contactList = new crm_contact_dal().GetContactByAccountId(long.Parse(account_id));
-                var serviceList = new ivt_service_dal().GetServiceList($" and vendor_id = {account_id}");
+
+
+                var id = Request.QueryString["id"];
+                if (!string.IsNullOrEmpty(id))
+                {
+                    iProduct = new crm_installed_product_dal().GetInstalledProduct(long.Parse(id));
+                    if (iProduct != null)
+                    {
+                        account = new CompanyBLL().GetCompany((long)iProduct.account_id);
+                    }
+                }
+                var account_id = Request.QueryString["account_id"];
+                if (!string.IsNullOrEmpty(account_id))
+                {
+                    account = new CompanyBLL().GetCompany(long.Parse(account_id));
+                }
+                
+
+                var contactList = new crm_contact_dal().GetContactByAccountId(account.id);
+                var serviceList = new ivt_service_dal().GetServiceList($" and vendor_id = {account.id}");
 
                 #region 配置下拉框数据源
                 installed_product_cate_id.DataTextField = "show";
@@ -57,33 +73,22 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
 
                 service.Enabled = false; // 所选合同如果是服务类型的，则此下拉框可选。可选内容为合同项
                 #endregion
-
-
-                var id = Request.QueryString["id"];
-                if (!string.IsNullOrEmpty(id))
+                if (iProduct != null)
                 {
-                    iProduct = new crm_installed_product_dal().GetInstalledProduct(long.Parse(id));
-                    if (iProduct != null)
+                    //account_id = iProduct.account_id.ToString();
+                    iProduct_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, iProduct.id, iProduct_udfList);
+                    isAdd = false;
+
+                    installed_product_cate_id.SelectedValue = iProduct.cate_id.ToString();
+
+                    if (iProduct.contact_id != null)
                     {
-                        //account_id = iProduct.account_id.ToString();
-                        iProduct_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, iProduct.id, iProduct_udfList);
-                        isAdd = false;
-                    
-                       installed_product_cate_id.SelectedValue = iProduct.cate_id.ToString();
-                       
-                        if (iProduct.contact_id != null)
-                        {
-                            contact_id.SelectedValue = iProduct.contact_id.ToString();
-                        }
-                        viewSubscription_iframe.Src = "";
-                        // todo 订阅的通用查询
-                        // "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_COMPANY_VIEW + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.ContactCompanyView + "&id=" + id;
-
+                        contact_id.SelectedValue = iProduct.contact_id.ToString();
                     }
+                    viewSubscription_iframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUBSCRIPTION + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.Subscription + "&id=" + iProduct.id;
+                    // todo 订阅的通用查询
+                    // "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_COMPANY_VIEW + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.ContactCompanyView + "&id=" + id;
                 }
-
-
-
                 if (!IsPostBack)
                 {
                     is_active_.Checked = true;

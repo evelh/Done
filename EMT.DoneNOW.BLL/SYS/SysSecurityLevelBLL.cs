@@ -28,6 +28,15 @@ namespace EMT.DoneNOW.BLL
             return ssl_dal.FindListBySql($"select * from sys_security_level_limit where security_level_id={id}").ToList();            
         }
         /// <summary>
+        /// 通过security_level的id获取module
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<sys_module> GetSecurity_module(int id)
+        {
+            return new sys_module_dal().FindListBySql($"select DISTINCT `name`  from sys_security_level_module a,sys_module b where security_level_id={id} and a.module_id=b.id").ToList();
+        }
+        /// <summary>
         /// 获取对应的权限类型
         /// </summary>
         /// <param name="parent_id"></param>
@@ -258,13 +267,13 @@ namespace EMT.DoneNOW.BLL
         /// <param name="id"></param>
         /// <param name="copy_id"></param>
         /// <returns></returns>
-        public bool CopySecurityLevel(long user_id,int id,out int copy_id) {
+        public bool CopySecurityLevel(long user_id, int id, out int copy_id) {
             var s1 = new sys_security_level_dal().FindById(id);
             copy_id = -1;
             if (s1 == null)
                 return false;
             sys_security_level s = new sys_security_level();
-            s.id=copy_id=(int)(_dal.GetNextIdCom());
+            s.id = copy_id = (int)(_dal.GetNextIdCom());
             s.name = "（copy of）" + s1.name;
             s.is_active = 1;
             s.is_active = 0;
@@ -272,40 +281,24 @@ namespace EMT.DoneNOW.BLL
             s.create_time = s.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             s.create_user_id = user_id;
             ss_dal.Insert(s);
-            var da = ssl_dal.FindListBySql<sys_security_level_limit>($"select * from sys_security_level_limit where security_level_id={id}").ToList();
-            if (da.Count>0) {
-                try {
-                    foreach (var i in da)
-                    {
-                        if (i.limit_id == 86)//仪表板用户不能复制
-                        {                         
-                            i.limit_type_value_id = 973;//设置为“无”
-                        }
-                        i.id = (int)(_dal.GetNextIdCom());
+            //更新复制插入语句
+            //insert into sys_security_level_limit(id,security_level_id,limit_id,limit_type_value_id)  select (select f_nextval('seq_com')),3,limit_id,limit_type_value_id from  sys_security_level_limit where security_level_id=2
 
-                        ssl_dal.Insert(i);
-                    }
-                } catch {
+            try {
+                if (ssl_dal.ExecuteSQL($"insert into sys_security_level_limit(id,security_level_id,limit_id,limit_type_value_id)  select (select f_nextval('seq_com')),{copy_id},limit_id,limit_type_value_id from  sys_security_level_limit where security_level_id={id}") != 130)
+                {
                     return false;
                 }
-                
+            } catch {
+                return false;
             }
+
             sys_security_level_module_dal ssm_dal = new sys_security_level_module_dal();
-            var module = ssm_dal.FindListBySql<sys_security_level_module>($"select * from sys_security_level_module where security_level_id={id}").ToList();
-            if (module.Count > 0)
-            {
-                try {
-                    foreach (var i in module)
-                    {
-                        i.id = (int)(_dal.GetNextIdCom());
-                        ssm_dal.Insert(i);
-                    }
-                } catch {
+            try {
+                if (ssm_dal.ExecuteSQL($"insert into `sys_security_level_module` (`id`, `security_level_id`, `module_id`, `module_limit_id`, `module_limit_value`, `module_value`) select (select f_nextval('seq_com')),{copy_id}, `module_id`, `module_limit_id`, `module_limit_value`, `module_value` from sys_security_level_module where security_level_id={id}")<=0) {
                     return false;
                 }
-                
-            }
-            else {
+            } catch {
                 return false;
             }
 

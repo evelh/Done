@@ -302,24 +302,24 @@ namespace EMT.DoneNOW.BLL.CRM
             var lastTime = subscription.expiration_date; // 结束日期
             // var period_type = subscription.period_type_id;
             var days =Math.Ceiling((lastTime - firstTime).TotalDays); // 获取到相差几天
-            var periodDays = 0;
+            var periodMonths = 0;
             switch (subscription.period_type_id)
             {
                 case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
                     periods = Convert.ToInt32(Math.Ceiling(days/180));
-                    periodDays = 180;
+                    periodMonths = 6;
                     break;
                 case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
                     periods = Convert.ToInt32(Math.Ceiling(days / 30));
-                    periodDays = 30;
+                    periodMonths = 1;
                     break;
                 case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
                     periods = Convert.ToInt32(Math.Ceiling(days / 90));
-                    periodDays = 90;
+                    periodMonths = 3;
                     break;
                 case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
                     periods = Convert.ToInt32(Math.Ceiling(days / 365));
-                    periodDays = 365;
+                    periodMonths = 12;
                     break;
                 default:
                     break;
@@ -327,6 +327,8 @@ namespace EMT.DoneNOW.BLL.CRM
             var sub_period_dal = new crm_subscription_period_dal();
             for (int i = 0; i < periods; i++)
             {
+
+                // todo 当计算到最后一个的时候，最后一个的周期价格按照百分比进行折算
                 crm_subscription_period sub_period = new crm_subscription_period() {
                     id = sub_period_dal.GetNextIdCom(),
                     subscription_id =subscription.id,
@@ -349,7 +351,7 @@ namespace EMT.DoneNOW.BLL.CRM
                     remark = "新增分期订阅",
                 });
 
-                firstTime = firstTime.AddDays(periodDays);
+                firstTime = firstTime.AddMonths(periodMonths);
 
             }
 
@@ -404,30 +406,50 @@ namespace EMT.DoneNOW.BLL.CRM
                 remark = "修改订阅相关信息",
             });
 
+            // 暂时这样处理：修改时周期类型不可更改，根据最后的时间去新增或者删除，或者更改这些分期订阅
+            // 修改时的订阅分期管理-- todo 
+            var subPeriodList = new crm_subscription_period_dal().GetSubPeriodByWhere($" and subscription_id = {subscription.id}");
+            if (subPeriodList != null && subPeriodList.Count > 0)
+            {
+                //  先写点逻辑吧QAQ
+                //  首先后获取到所有的分期订阅 -- 
+                //  已经审核过的订阅暂不处理
+                //  获取到未审核的分期订阅去删除掉
+                //  根据新的到期时间去创建新的订阅
+                //  那么问题来了，如果是最后一期订阅？？
+                
+            }
+            
+            
 
-
-            // 修改时的订阅分期管理
+            
             return ERROR_CODE.SUCCESS;
         }
 
 
 
         /// <summary>
-        /// 激活当前的配置项
+        /// 激活/失活当前的配置项
         /// </summary>
         /// <param name="iProduct_id"></param>
         /// <param name="user_id"></param>
+        /// <param name="isActive"></param>
         /// <returns></returns>
-        public string ActivationInstalledProduct(long iProduct_id,long user_id)
+        public string ActivationInstalledProduct(long iProduct_id,long user_id,bool isActive)
         {
+
+
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
             var dal = new crm_installed_product_dal();
             var iProduct = dal.GetInstalledProduct(iProduct_id);
             if (iProduct != null)
             {
-                if (iProduct.is_active == 0)
+
+                if (iProduct.is_active == (isActive?0:1))
                 {
-                    iProduct.is_active = 1;
+                    iProduct.is_active = (sbyte)(isActive ? 1 : 0);
+                    iProduct.update_user_id = user.id;
+                    iProduct.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     new sys_oper_log_dal().Insert(new sys_oper_log()
                     {
                         user_cate = "用户",
@@ -439,7 +461,7 @@ namespace EMT.DoneNOW.BLL.CRM
                         oper_object_id = iProduct.id,
                         oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
                         oper_description = dal.CompareValue(new crm_installed_product_dal().GetInstalledProduct(iProduct_id), iProduct),
-                        remark = "激活配置项",
+                        remark = (isActive?"激活":"失活")+"配置项",
                     });
                     dal.Update(iProduct);
                     return "ok";
@@ -451,13 +473,15 @@ namespace EMT.DoneNOW.BLL.CRM
             }
             return "";
         }
+
         /// <summary>
-        /// 批量激活配置项
+        /// 批量激活/失活配置项
         /// </summary>
         /// <param name="ids"></param>
         /// <param name="user_id"></param>
+        /// <param name="isActive"></param>
         /// <returns></returns>
-        public bool AvtiveManyIProduct(string ids,long user_id)
+        public bool AvtiveManyIProduct(string ids,long user_id, bool isActive)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
             var dal = new crm_installed_product_dal();
@@ -466,7 +490,63 @@ namespace EMT.DoneNOW.BLL.CRM
                 var idList = ids.Split(',');
                 foreach (var id in idList)
                 {
-                    ActivationInstalledProduct(long.Parse(id),user_id);
+                    ActivationInstalledProduct(long.Parse(id),user_id, isActive);
+                }
+                return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// 删除配置项
+        /// </summary>
+        /// <param name="iProduct_id"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public bool DeleteIProduct(long iProduct_id,long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            var IProduct = new crm_installed_product_dal().GetInstalledProduct(iProduct_id);
+            if (IProduct != null)
+            {
+                IProduct.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                IProduct.delete_user_id = user.id;
+
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONFIGURAITEM,
+                    oper_object_id = IProduct.id,
+                    oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                    oper_description = new crm_installed_product_dal().CompareValue(new crm_installed_product_dal().GetInstalledProduct(iProduct_id), IProduct),
+                    remark = "删除配置项",
+                });
+                new crm_installed_product_dal().Update(IProduct);
+
+                return true;
+            }
+
+            return false;
+        }
+        /// <summary>
+        /// 批量删除配置项
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public bool DeleteIProducts(string ids,long user_id)
+        {
+            var user = BLL.UserInfoBLL.GetUserInfo(user_id);
+            var dal = new crm_installed_product_dal();
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var idList = ids.Split(',');
+                foreach (var id in idList)
+                {
+                    DeleteIProduct(long.Parse(id), user_id);
                 }
                 return true;
             }

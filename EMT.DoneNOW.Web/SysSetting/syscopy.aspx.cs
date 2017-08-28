@@ -11,7 +11,10 @@ namespace EMT.DoneNOW.Web.SysSetting
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Button bt = new Button();
+            bt.ID = "jjj";
+            bt.Text = "hello";
+            this.form1.Controls.AddAt(1,bt);
         }
 
         protected void Button1_Click(object sender, EventArgs e)

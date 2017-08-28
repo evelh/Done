@@ -17,6 +17,8 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]
+        public Int64 oid { get; set; }
+        [DataMember]
         public String first_name { get; set; }
         [DataMember]
         public String last_name { get; set; }
@@ -105,15 +107,15 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? outlook_synchronization_date { get; set; }
         [DataMember]
-        public SByte is_livemobile_active { get; set; }
+        public SByte? is_livemobile_active { get; set; }
         [DataMember]
-        public Int32 failed_login_count { get; set; }
+        public Int32? failed_login_count { get; set; }
         [DataMember]
-        public SByte is_locked { get; set; }
+        public SByte? is_locked { get; set; }
         [DataMember]
         public Int64? first_login_time { get; set; }
         [DataMember]
-        public SByte viewed_bulk_email_video { get; set; }
+        public SByte? viewed_bulk_email_video { get; set; }
         [DataMember]
         public String authanvil_username { get; set; }
         [DataMember]
@@ -133,9 +135,9 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String sorting_full_name { get; set; }
         [DataMember]
-        public SByte is_token_authentication_required { get; set; }
+        public SByte? is_token_authentication_required { get; set; }
         [DataMember]
-        public SByte is_token_next_login_suspended { get; set; }
+        public SByte? is_token_next_login_suspended { get; set; }
         [DataMember]
         public Int64? token_suspend_until_time { get; set; }
         [DataMember]
@@ -144,7 +146,19 @@ namespace EMT.DoneNOW.Core
         public DateTime? password_reset_guid_expiration_time { get; set; }
         [DataMember]
         public Int32? name_salutation_id { get; set; }
+        [DataMember]
+        public SByte? edit_protected_data { get; set; }
+        [DataMember]
+        public SByte? view_protected_data { get; set; }
+        [DataMember]
+        public SByte? edit_unprotected_data { get; set; }
+        [DataMember]
+        public SByte? view_unprotected_data { get; set; }
+        [DataMember]
+        public Decimal? survey_rating { get; set; }
+        [DataMember]
         public String avatar { get; set; }
+
 
     }
 }

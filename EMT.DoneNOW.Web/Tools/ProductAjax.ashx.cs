@@ -7,13 +7,14 @@ using System.Web;
 using EMT.DoneNOW.BLL.IVT;
 using static EMT.DoneNOW.DTO.DicEnum;
 using EMT.DoneNOW.BLL.CRM;
+using System.Web.SessionState;
 
 namespace EMT.DoneNOW.Web
 {
     /// <summary>
     /// ProductAjax 的摘要说明
     /// </summary>
-    public class ProductAjax : IHttpHandler
+    public class ProductAjax : IHttpHandler, IRequiresSessionState
     {
 
         public void ProcessRequest(HttpContext context)
@@ -36,6 +37,27 @@ namespace EMT.DoneNOW.Web
                     break;
                 case "ActivationIP":
                     var iProduct_id = context.Request.QueryString["iProduct_id"];
+                    ActivationInstalledProduct(context,long.Parse(iProduct_id),true);
+                    break;
+                case "ActivationIPs":
+                    var iProduct_ids = context.Request.QueryString["iProduct_ids"];
+                    AvtiveManyIProduct(context,iProduct_ids,true);
+                    break;
+                case "NoActivationIP":
+                    var NoiProduct_id = context.Request.QueryString["iProduct_id"];
+                    ActivationInstalledProduct(context, long.Parse(NoiProduct_id), false);
+                    break;
+                case "NoActivationIPs":
+                    var NoiProduct_ids = context.Request.QueryString["iProduct_ids"];
+                    AvtiveManyIProduct(context, NoiProduct_ids, false);
+                    break;
+                case "deleteIP":
+                    var delete_IProductId = context.Request.QueryString["iProduct_id"];
+                    DeleteIProduct(context,long.Parse(delete_IProductId));
+                    break;
+                case "deleteIPs":
+                    var delete_IProductIds = context.Request.QueryString["iProduct_ids"];
+                    DeleteIProducts(context,delete_IProductIds);
                     break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -112,16 +134,17 @@ namespace EMT.DoneNOW.Web
             }
 
         }
+       
+        
         /// <summary>
         /// 激活当前的配置项
         /// </summary>
         /// <param name="context"></param>
         /// <param name="iProduct_id"></param>
-        public void ActivationInstalledProduct(HttpContext context, long iProduct_id)
+        public void ActivationInstalledProduct(HttpContext context, long iProduct_id,bool isActive)
         {
-
             var res = context.Session["dn_session_user_info"] as sys_user;
-            var result = new InstalledProductBLL().ActivationInstalledProduct(iProduct_id,res.id);
+            var result = new InstalledProductBLL().ActivationInstalledProduct(iProduct_id,res.id, isActive);
             context.Response.Write(result);
         }
 
@@ -130,10 +153,10 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <param name="context"></param>
         /// <param name="ids"></param>
-        public void AvtiveManyIProduct(HttpContext context, string ids)
+        public void AvtiveManyIProduct(HttpContext context, string ids, bool isActive)
         {
             var res = context.Session["dn_session_user_info"] as sys_user;
-            var result = new InstalledProductBLL().AvtiveManyIProduct(ids, res.id);
+            var result = new InstalledProductBLL().AvtiveManyIProduct(ids, res.id, isActive);
             if (result)
             {
                 context.Response.Write("ok");
@@ -142,6 +165,19 @@ namespace EMT.DoneNOW.Web
             {
                 context.Response.Write("error");
             }
+        }
+
+        public void DeleteIProduct(HttpContext context, long iProduct_id)
+        {
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            var result = new InstalledProductBLL().DeleteIProduct(iProduct_id, res.id);
+            context.Response.Write(result);
+        }
+        public void DeleteIProducts(HttpContext context, string ids)
+        {
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            var result = new InstalledProductBLL().DeleteIProducts(ids, res.id);
+            context.Response.Write(result);
         }
 
 

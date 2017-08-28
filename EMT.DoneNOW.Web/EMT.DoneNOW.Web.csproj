@@ -632,6 +632,7 @@
     <Content Include="SysSetting\SysUserAdd.aspx" />
     <Content Include="SysSetting\SysUserEdit.aspx" />
     <Content Include="SysSetting\SysUserSecurityLevel.aspx" />
+    <Content Include="SysSetting\TerritortAddAccount.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -1040,6 +1041,13 @@
     <Compile Include="SysSetting\SysUserSecurityLevel.aspx.designer.cs">
       <DependentUpon>SysUserSecurityLevel.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\TerritortAddAccount.aspx.cs">
+      <DependentUpon>TerritortAddAccount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\TerritortAddAccount.aspx.designer.cs">
+      <DependentUpon>TerritortAddAccount.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Test.ashx.cs">
       <DependentUpon>Test.ashx</DependentUpon>
     </Compile>
@@ -1076,6 +1084,9 @@
     <Compile Include="Tools\ServiceAjax.ashx.cs">
       <DependentUpon>ServiceAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\TerritoryAjax.ashx.cs">
+      <DependentUpon>TerritoryAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1102,6 +1113,7 @@
     <Content Include="Tools\QuoteTemplateAjax.ashx" />
     <Content Include="Tools\SecurityLevelAjax.ashx" />
     <Content Include="Tools\GeneralAjax.ashx" />
+    <Content Include="Tools\TerritoryAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

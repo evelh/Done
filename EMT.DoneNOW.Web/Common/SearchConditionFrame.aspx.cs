@@ -58,6 +58,12 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.QUOTE_TEMPLATE:
                     currentQuery.page_name = "报价模板查询";
                     break;
+                case (int)DicEnum.QUERY_CATE.INSTALLEDPRODUCT:
+                    currentQuery.page_name = "配置项查询";
+                    break;
+                case (int)DicEnum.QUERY_CATE.SUBSCRIPTION:
+                    currentQuery.page_name = "订阅查询";
+                    break;
                 default:
                     currentQuery.page_name = "客户查询";
                     break;
