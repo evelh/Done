@@ -29,6 +29,17 @@ namespace EMT.DoneNOW.BLL
         {
             return new sys_resource_dal().FindListBySql<sys_resource>($"select id,`name` from sys_resource where id not in(select resource_id from sys_resource_territory where territory_id={id} and delete_time=0 ) and delete_time=0").ToList();
         }
+
+        /// <summary>
+        /// 获取员工对应的地域列表
+        /// </summary>
+        /// <param name="resourceId"></param>
+        /// <returns></returns>
+        public List<sys_resource_territory> GetTerritoryByResource(long resourceId)
+        {
+            return new sys_resource_territory_dal().GetListByResourceId(resourceId);
+        }
+        
         /// <summary>
         /// 新增员工和地域之间的关联记录
         /// </summary>
