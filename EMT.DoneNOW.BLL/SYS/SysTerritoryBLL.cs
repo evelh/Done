@@ -20,12 +20,21 @@ namespace EMT.DoneNOW.BLL
         public List<sys_resource> GetAccountList(long id) {            
             return new sys_resource_dal().FindListBySql<sys_resource>($"select b.name,b.id from sys_resource_territory a,sys_resource b where a.resource_id=b.id  and a.delete_time=0  and b.delete_time=0 and a.territory_id={id}").ToList();
         }
+        /// <summary>
+        ///  根据地域的id，查找不属于该地域的员工信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public List<sys_resource> GetAccount(long id)
         {
             return new sys_resource_dal().FindListBySql<sys_resource>($"select id,`name` from sys_resource where id not in(select resource_id from sys_resource_territory where territory_id={id} and delete_time=0 ) and delete_time=0").ToList();
         }
-
-
+        /// <summary>
+        /// 新增员工和地域之间的关联记录
+        /// </summary>
+        /// <param name="cat"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
         public ERROR_CODE Insert(sys_resource_territory cat,long user_id) {
             cat.id = (int)_dal.GetNextIdCom();
             //不得插入重复数据
@@ -75,6 +84,10 @@ namespace EMT.DoneNOW.BLL
             }
             return ERROR_CODE.SUCCESS;
         }
+        /// <summary>
+        /// 获取区域
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, object> GetRegionDownList()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
@@ -82,7 +95,7 @@ namespace EMT.DoneNOW.BLL
             return dic;
         }
         /// <summary>
-        /// 删除crm_account_territory表中的客户和地域的关系
+        /// 删除sys_resource_territory中的员工和地域的关系
         /// </summary>
         /// <param name="aid"></param>
         /// <param name="tid"></param>
