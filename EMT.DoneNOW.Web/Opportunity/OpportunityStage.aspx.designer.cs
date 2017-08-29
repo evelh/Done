@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web {
+namespace EMT.DoneNOW.Web.Opportunity {
     
     
-    public partial class AccountType {
+    public partial class OpportunityStage {
         
         /// <summary>
         /// form1 控件。
@@ -49,22 +49,13 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.Button Cancel;
         
         /// <summary>
-        /// AccoountType_Name 控件。
+        /// Name 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox AccoountType_Name;
-        
-        /// <summary>
-        /// Active 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox Active;
+        protected global::System.Web.UI.WebControls.TextBox Name;
         
         /// <summary>
         /// Description 控件。
@@ -74,5 +65,32 @@ namespace EMT.DoneNOW.Web {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Description;
+        
+        /// <summary>
+        /// Won 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox Won;
+        
+        /// <summary>
+        /// Lost 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox Lost;
+        
+        /// <summary>
+        /// Sort_Order 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Sort_Order;
     }
 }

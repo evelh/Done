@@ -101,20 +101,27 @@ namespace EMT.DoneNOW.BLL
         }
         #region 设为激活报价模板的逻辑处理
 
-        public bool active_quote_template(long user_id, long id)
+        public ERROR_CODE active_quote_template(long user_id, long id)
         {
-            sys_quote_tmpl sq = new sys_quote_tmpl();
-            sq.id = (int)id;
-            sq.is_active = 1;
-            if (_dal.Update(sq) == false)
+           var temp=_dal.FindById(id);
+            if (temp == null) {
+                return ERROR_CODE.ERROR;
+            }
+            if (temp.is_active > 0) {
+                return ERROR_CODE.ACTIVATION;
+            }
+            temp.is_active = 1;
+            temp.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            temp.update_user_id = user_id;
+            if (_dal.Update(temp) == false)
             {
-                return false;
+                return ERROR_CODE.ERROR;
             }
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
             {
                 // 查询不到用户，用户丢失
-                return false;
+                return ERROR_CODE.PARAMS_ERROR;
             }
             var add_account_log = new sys_oper_log()
             {
@@ -124,33 +131,39 @@ namespace EMT.DoneNOW.BLL
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
-                oper_object_id = sq.id,// 操作对象id
+                oper_object_id = temp.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(sq),
+                oper_description = _dal.AddValue(temp),
                 remark = "修改报价模板"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
 
-            return true;
+            return ERROR_CODE.SUCCESS;
         }
         #endregion
 
-        #region 设为激活报价模板的逻辑处理
+        #region 设为失活活报价模板的逻辑处理
 
-        public bool no_active_quote_template(long user_id, long id)
+        public ERROR_CODE no_active_quote_template(long user_id, long id)
         {
-            sys_quote_tmpl sq = new sys_quote_tmpl();
-            sq.id = (int)id;
-            sq.is_active = 0;
-            if (_dal.Update(sq) == false)
-            {
-                return false;
-            }
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
             {
                 // 查询不到用户，用户丢失
-                return false;
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+            var sq = _dal.FindById(id);
+            if (sq == null) {
+                return ERROR_CODE.ERROR;
+            }
+            if (sq.is_active == 0) {
+                return ERROR_CODE.NO_ACTIVATION;
+            }
+            sq.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            sq.update_user_id = user_id;
+            if (_dal.Update(sq) == false)
+            {
+                return ERROR_CODE.ERROR;
             }
             var add_account_log = new sys_oper_log()
             {
@@ -167,28 +180,40 @@ namespace EMT.DoneNOW.BLL
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
 
-            return true;
+            return ERROR_CODE.SUCCESS;
         }
         #endregion
         #region 设为默认报价模板的逻辑处理
-        public bool default_quote_template(long user_id, long id) {
-            sys_quote_tmpl sqt = _dal.FindSignleBySql<sys_quote_tmpl>("select * from sys_quote_tmpl where is_default=1");
-            if (sqt != null) {
-                sqt.is_default = 0;
-                if (_dal.Update(sqt)==false) {
-                    return false;
-                }
-            }
-            sys_quote_tmpl sq = new sys_quote_tmpl();
-            sq.id = (int)id;sq.is_default = 1;
-            if (_dal.Update(sq)==false) {
-                return false;
-            }
+        public ERROR_CODE default_quote_template(long user_id, long id) {
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
             {
                 // 查询不到用户，用户丢失
-                return false;
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+            var sq = _dal.FindById(id);
+            if (sq == null)
+            {
+                return ERROR_CODE.ERROR;
+            }
+            if (sq.is_default == 1)
+            {
+                return ERROR_CODE.DEFAULT;
+            }
+            sys_quote_tmpl sqt = _dal.FindSignleBySql<sys_quote_tmpl>("select * from sys_quote_tmpl where is_default=1");
+            if (sqt != null) {
+                sqt.is_default = 0;
+                sqt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                sqt.update_user_id = user_id;
+                if (_dal.Update(sqt)==false) {
+                    return ERROR_CODE.ERROR;
+                }
+            }
+            sq.is_default = 1;
+            sq.update_user_id = user_id;
+            sq.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            if (_dal.Update(sq)==false) {
+                return ERROR_CODE.ERROR;
             }
             var add_account_log = new sys_oper_log()
             {
@@ -204,12 +229,12 @@ namespace EMT.DoneNOW.BLL
                 remark = "修改报价模板"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
-            return true;
+            return ERROR_CODE.SUCCESS;
         }
         #endregion
         #region 报价模板删除的逻辑处理
         /// <summary>
-        /// 报价模板的删除        /// 
+        /// 报价模板的删除  
         /// </summary>
         /// 报价模板
         public ERROR_CODE quote_template_delete(long user_id,long id)
@@ -252,9 +277,7 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.SUCCESS;
                 }
             }
-            return ERROR_CODE.ERROR;//获取数据失败，不能删除
-          
-            
+            return ERROR_CODE.ERROR;//获取数据失败，不能删除  
         }
         #endregion
         #region 返回一条记录
@@ -273,7 +296,6 @@ namespace EMT.DoneNOW.BLL
         /// 判断crm_quote表是否引用当前报价模板
         /// </summary>
         /// <returns></returns>
-
         public ERROR_CODE is_quote(int id) {
             //var crm_quote = new crm_quote();
             string sql = $"select * from crm_quote where quote_tmpl_id = {id} and delete_time = 0";
@@ -287,8 +309,9 @@ namespace EMT.DoneNOW.BLL
         }
         #region 报价模板编辑的更新保存操作
         public ERROR_CODE update(sys_quote_tmpl sqt, long user_id) {
-
-           if(!_dal.Update(sqt)) {
+            sqt.update_user_id = user_id;
+            sqt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+           if (!_dal.Update(sqt)) {
                 return ERROR_CODE.ERROR;
             }
 
@@ -326,8 +349,44 @@ namespace EMT.DoneNOW.BLL
             var list = _dal.FindAll().ToList<sys_quote_tmpl>();
             return list;
         }
-        #region 复制一个报价模板
 
+
+        #region 复制一个报价模板
+        public ERROR_CODE copy_quote_template(long user_id,ref long id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {
+                // 查询不到用户，用户丢失
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+            var sq = _dal.FindById(id);
+            if (sq == null)
+            {
+                return ERROR_CODE.ERROR;
+            }
+            sq.is_default = 0;
+            id=sq.id= (int)(_dal.GetNextIdSys());
+            sq.name = "(copy)" + sq.name;
+            sq.create_time = sq.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            sq.create_user_id =sq.update_user_id=user_id;
+            _dal.Insert(sq);
+            var add_account_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
+                oper_object_id = sq.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(sq),
+                remark = "修改报价模板"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
+            return ERROR_CODE.SUCCESS;
+        }
         #endregion
         public sys_quote_tmpl GetSingelTemplate(int id) {
             var syt = _dal.FindSignleBySql<sys_quote_tmpl>($"select * from sys_quote_tmpl where id={id}");
