@@ -10,7 +10,7 @@
 namespace EMT.DoneNOW.Web {
     
     
-    public partial class SysTerritory {
+    public partial class ActionType {
         
         /// <summary>
         /// form1 控件。
@@ -49,30 +49,30 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.Button Cancel;
         
         /// <summary>
-        /// Territory_Name 控件。
+        /// Name 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Territory_Name;
+        protected global::System.Web.UI.WebControls.TextBox Name;
         
         /// <summary>
-        /// Region 控件。
+        /// View 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Region;
+        protected global::System.Web.UI.WebControls.DropDownList View;
         
         /// <summary>
-        /// Territory_Description 控件。
+        /// Active 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Territory_Description;
+        protected global::System.Web.UI.WebControls.CheckBox Active;
     }
 }

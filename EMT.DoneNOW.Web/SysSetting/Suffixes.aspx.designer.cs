@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web.SysSetting {
+namespace EMT.DoneNOW.Web {
     
     
-    public partial class syscopy {
+    public partial class Suffixes {
         
         /// <summary>
         /// form1 控件。
@@ -22,21 +22,30 @@ namespace EMT.DoneNOW.Web.SysSetting {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// Button1 控件。
+        /// Save_Close 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.Button Save_Close;
         
         /// <summary>
-        /// Button2 控件。
+        /// Suffix_name 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button2;
+        protected global::System.Web.UI.WebControls.TextBox Suffix_name;
+        
+        /// <summary>
+        /// Active 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox Active;
     }
 }

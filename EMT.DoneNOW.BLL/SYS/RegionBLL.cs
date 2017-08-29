@@ -9,28 +9,23 @@ using System.Threading.Tasks;
 
 namespace EMT.DoneNOW.BLL
 {
-    public class SysMarketBLL
+   public class RegionBLL
     {
         private readonly d_general_dal _dal = new d_general_dal();
-        /// <summary>
-        /// 新增市场
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="user_id"></param>
-        /// <returns></returns>
-        public ERROR_CODE InsertMarket(d_general data, long user_id)
+        public ERROR_CODE InsertRegion(d_general data, long user_id)
         {
-            data.general_table_id = (int)GeneralTableEnum.MARKET_SEGMENT;
+            data.general_table_id = (int)GeneralTableEnum.REGION;
             data.create_time = data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.create_user_id = user_id;
 
             _dal.Insert(data);
             return ERROR_CODE.SUCCESS;
         }
-        public ERROR_CODE UpdateMarket(d_general data, long user_id)
+        public ERROR_CODE UpdateRegion(d_general data, long user_id)
         {
             data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            data.update_user_id = user_id;
+            data.update_user_id= user_id;
+
             _dal.Update(data);
             return ERROR_CODE.SUCCESS;
         }

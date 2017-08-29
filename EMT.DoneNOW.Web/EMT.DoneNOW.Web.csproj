@@ -623,10 +623,14 @@
     <Content Include="Common\SearchBodyFrame.aspx" />
     <Content Include="Common\SelectCallBack.aspx" />
     <Content Include="Site.Master" />
-    <Content Include="SysSetting\syscopy.aspx" />
+    <Content Include="SysSetting\AccountType.aspx" />
+    <Content Include="SysSetting\ActionType.aspx" />
+    <Content Include="SysSetting\Suffixes.aspx" />
+    <Content Include="SysSetting\SysCompetitor.aspx" />
     <Content Include="SysSetting\SysDataPermission.aspx" />
     <Content Include="SysSetting\SysDepartment.aspx" />
     <Content Include="SysSetting\SysMarket.aspx" />
+    <Content Include="SysSetting\SysRegion.aspx" />
     <Content Include="SysSetting\SysRolesAdd.aspx" />
     <Content Include="SysSetting\SysTerritory.aspx" />
     <Content Include="SysSetting\SysUserAdd.aspx" />
@@ -978,12 +982,33 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
-    <Compile Include="SysSetting\syscopy.aspx.cs">
-      <DependentUpon>syscopy.aspx</DependentUpon>
+    <Compile Include="SysSetting\AccountType.aspx.cs">
+      <DependentUpon>AccountType.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SysSetting\syscopy.aspx.designer.cs">
-      <DependentUpon>syscopy.aspx</DependentUpon>
+    <Compile Include="SysSetting\AccountType.aspx.designer.cs">
+      <DependentUpon>AccountType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\ActionType.aspx.cs">
+      <DependentUpon>ActionType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ActionType.aspx.designer.cs">
+      <DependentUpon>ActionType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\Suffixes.aspx.cs">
+      <DependentUpon>Suffixes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\Suffixes.aspx.designer.cs">
+      <DependentUpon>Suffixes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysCompetitor.aspx.cs">
+      <DependentUpon>SysCompetitor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysCompetitor.aspx.designer.cs">
+      <DependentUpon>SysCompetitor.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\SysDataPermission.aspx.cs">
       <DependentUpon>SysDataPermission.aspx</DependentUpon>
@@ -1005,6 +1030,13 @@
     </Compile>
     <Compile Include="SysSetting\SysMarket.aspx.designer.cs">
       <DependentUpon>SysMarket.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysRegion.aspx.cs">
+      <DependentUpon>SysRegion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysRegion.aspx.designer.cs">
+      <DependentUpon>SysRegion.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\SysRolesAdd.aspx.cs">
       <DependentUpon>SysRolesAdd.aspx</DependentUpon>

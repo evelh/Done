@@ -9,18 +9,12 @@ using System.Threading.Tasks;
 
 namespace EMT.DoneNOW.BLL
 {
-    public class SysMarketBLL
+    public class SuffixBLL
     {
         private readonly d_general_dal _dal = new d_general_dal();
-        /// <summary>
-        /// 新增市场
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="user_id"></param>
-        /// <returns></returns>
         public ERROR_CODE InsertMarket(d_general data, long user_id)
         {
-            data.general_table_id = (int)GeneralTableEnum.MARKET_SEGMENT;
+            data.general_table_id = (int)GeneralTableEnum.NAME_SUFFIX;
             data.create_time = data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.create_user_id = user_id;
 
