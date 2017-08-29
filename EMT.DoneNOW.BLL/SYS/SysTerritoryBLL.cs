@@ -25,6 +25,15 @@ namespace EMT.DoneNOW.BLL
             return new crm_account_dal().FindListBySql<crm_account>($"select name,id from crm_account  where id not in (SELECT account_id from crm_account_territory where territory_id={id}) and delete_time=0 ").ToList();
         }
 
+        /// <summary>
+        /// 获取员工对应的地域列表
+        /// </summary>
+        /// <param name="resourceId"></param>
+        /// <returns></returns>
+        public List<sys_resource_territory> GetTerritoryByResource(long resourceId)
+        {
+            return new sys_resource_territory_dal().GetListByResourceId(resourceId);
+        }
 
         public ERROR_CODE Insert(crm_account_territory cat,long user_id) {
             cat.id = (int)_dal.GetNextIdCom();
