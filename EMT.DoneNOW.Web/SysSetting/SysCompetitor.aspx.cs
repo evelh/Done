@@ -75,7 +75,15 @@ namespace EMT.DoneNOW.Web
         }
         private bool save_deal()
         {
-            compe.name = this.Competitor_Name.Text.Trim().ToString();
+            if (id > 0)//修改
+            {
+                compe = new GeneralBLL().GetSingleGeneral(id);
+                if (compe == null)
+                {
+                    Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
+                }
+            }
+                compe.name = this.Competitor_Name.Text.Trim().ToString();
             if (!string.IsNullOrEmpty(this.Competitor_Name.Text.Trim().ToString()))
             {
                 compe.remark = this.Competitor_Description.Text.Trim().ToString();

@@ -32,18 +32,28 @@ namespace EMT.DoneNOW.Web
                     }
                 }
             }
-            else {
-            }
-
         }
 
         protected void Save_Close_Click(object sender, EventArgs e)
         {
-            suffix.name = this.Suffix_name.Text.Trim().ToString();
+            if (id > 0)
+            {
+                suffix = new GeneralBLL().GetSingleGeneral(id);
+                if (suffix == null)
+                {
+                    Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
+                }
+            }
+                suffix.name = this.Suffix_name.Text.Trim().ToString();
             if (this.Active.Checked) {
                 suffix.is_active = 1;
             }
-            if (id > 0) {
+            if (id > 0)
+            {
+                //修改
+            }
+            else {
+                //新增
             }
         }
     }

@@ -21,11 +21,6 @@ namespace EMT.DoneNOW.Web
                 {
                     quote_head = HttpUtility.HtmlDecode(Session["quote_head"].ToString()).Replace("\"", "'");
                 }
-                else
-                {
-                   
-                }
-
                 this.AlertVariableFilter.DataTextField = "show";
                 this.AlertVariableFilter.DataValueField = "val";
                 this.AlertVariableFilter.DataSource = new QuoteTemplateBLL().GetVariableField();

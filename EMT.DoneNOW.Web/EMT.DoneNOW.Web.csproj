@@ -161,6 +161,7 @@
     <Content Include="Content\SysUserSecurityLevel.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
+    <Content Include="Content\WorkType.css" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
     <Content Include="Contact\DeleteContact.aspx" />
@@ -197,6 +198,8 @@
     <Content Include="Images\Classification\target.png" />
     <Content Include="Images\Classification\tm.png" />
     <Content Include="Opportunity\CloseOpportunity.aspx" />
+    <Content Include="Opportunity\OpportunityLeadSource.aspx" />
+    <Content Include="Opportunity\OpportunityStage.aspx" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
     <Content Include="Images\export.png" />
@@ -622,8 +625,9 @@
     <Content Include="Common\SearchConditionFrame.aspx" />
     <Content Include="Common\SearchBodyFrame.aspx" />
     <Content Include="Common\SelectCallBack.aspx" />
+    <Content Include="Scripts\WorkType.js" />
     <Content Include="Site.Master" />
-    <Content Include="SysSetting\AccountType.aspx" />
+    <Content Include="SysSetting\AccountClass.aspx" />
     <Content Include="SysSetting\ActionType.aspx" />
     <Content Include="SysSetting\Suffixes.aspx" />
     <Content Include="SysSetting\SysCompetitor.aspx" />
@@ -637,6 +641,7 @@
     <Content Include="SysSetting\SysUserEdit.aspx" />
     <Content Include="SysSetting\SysUserSecurityLevel.aspx" />
     <Content Include="SysSetting\TerritortAddAccount.aspx" />
+    <Content Include="SysSetting\WorkType.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -820,6 +825,20 @@
     <Compile Include="Opportunity\OpportunityAddAndEdit.aspx.designer.cs">
       <DependentUpon>OpportunityAddAndEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Opportunity\OpportunityLeadSource.aspx.cs">
+      <DependentUpon>OpportunityLeadSource.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityLeadSource.aspx.designer.cs">
+      <DependentUpon>OpportunityLeadSource.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityStage.aspx.cs">
+      <DependentUpon>OpportunityStage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityStage.aspx.designer.cs">
+      <DependentUpon>OpportunityStage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Opportunity\ViewOpportunity.aspx.cs">
       <DependentUpon>ViewOpportunity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -982,12 +1001,12 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
-    <Compile Include="SysSetting\AccountType.aspx.cs">
-      <DependentUpon>AccountType.aspx</DependentUpon>
+    <Compile Include="SysSetting\AccountClass.aspx.cs">
+      <DependentUpon>AccountClass.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SysSetting\AccountType.aspx.designer.cs">
-      <DependentUpon>AccountType.aspx</DependentUpon>
+    <Compile Include="SysSetting\AccountClass.aspx.designer.cs">
+      <DependentUpon>AccountClass.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\ActionType.aspx.cs">
       <DependentUpon>ActionType.aspx</DependentUpon>
@@ -1080,6 +1099,13 @@
     <Compile Include="SysSetting\TerritortAddAccount.aspx.designer.cs">
       <DependentUpon>TerritortAddAccount.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\WorkType.aspx.cs">
+      <DependentUpon>WorkType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\WorkType.aspx.designer.cs">
+      <DependentUpon>WorkType.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Test.ashx.cs">
       <DependentUpon>Test.ashx</DependentUpon>
     </Compile>
@@ -1118,7 +1144,7 @@
     </Compile>
     <Compile Include="Tools\SubscriptionAjax.ashx.cs">
       <DependentUpon>SubscriptionAjax.ashx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Tools\TerritoryAjax.ashx.cs">
       <DependentUpon>TerritoryAjax.ashx</DependentUpon>
     </Compile>
@@ -1148,11 +1174,8 @@
     <Content Include="Tools\QuoteTemplateAjax.ashx" />
     <Content Include="Tools\SecurityLevelAjax.ashx" />
     <Content Include="Tools\GeneralAjax.ashx" />
-
     <Content Include="Tools\SubscriptionAjax.ashx" />
-
     <Content Include="Tools\TerritoryAjax.ashx" />
-
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -73,6 +73,9 @@ namespace EMT.DoneNOW.Web.SysSetting
         }
         private bool save_deal()
         {
+            if (id > 0) {
+                mark = new GeneralBLL().GetSingleGeneral(id);
+            }
             mark.name = this.Market_Name.Text.Trim().ToString();
             if (!string.IsNullOrEmpty(this.Market_Description.Text.Trim().ToString()))
             {

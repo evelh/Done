@@ -612,7 +612,7 @@
                                         </div>
                                         <div class="Edit_Tablebody">
                                             <div class="Edit_TableBodyRow">
-                                                <div class="Edit_TwoCells Edit_RightBorder">1）	客户项目和内部项目</div>
+                                                <div class="Edit_TwoCells Edit_RightBorder">客户项目和内部项目</div>
                                                  <div class="Edit_OneCells Edit_RightBorder Edit_Narrow">
                                                    <asp:DropDownList ID="id151" runat="server"></asp:DropDownList>
                                                 </div>

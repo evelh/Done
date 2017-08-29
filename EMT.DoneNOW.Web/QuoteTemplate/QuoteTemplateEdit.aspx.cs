@@ -38,7 +38,7 @@ namespace EMT.DoneNOW.Web
                     {
                         Response.Write("<script>if(confirm('模板被报价引用，如果修改会影响到这些报价。你如果你不想影响这些报价，可以复制一个新的模板，然后对新模板进行修改。是否继续?')==true){}else{window.close();}</script>");
                         //复制一个报价模板
-                        Session["copy"] ="（副本）";
+                        Session["copy"] ="(copy)";
                     }
                 }                           
                     //填充数据
@@ -336,7 +336,7 @@ namespace EMT.DoneNOW.Web
                 Session.Remove("copy");
                 //保存副本
                 //sqt.id = (int)(_dal.GetNextIdCom());
-                sqt.name = sqt.name + name + Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                sqt.name = name+sqt.name+Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 var result = qtbll.Add(sqt, GetLoginUserId(), out id);
                 if (result == ERROR_CODE.SUCCESS)                    // 
                 {
@@ -364,13 +364,7 @@ namespace EMT.DoneNOW.Web
                 }
             }
 
-            //写一个窗口关闭事件
-
-
-           
         }
-
-
 
     }
 }

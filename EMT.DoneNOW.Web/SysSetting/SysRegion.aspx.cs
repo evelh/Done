@@ -49,6 +49,8 @@ namespace EMT.DoneNOW.Web
         /// 处理需要保存的数据
         /// </summary>
         public void save_deal() {
+            if(id>0)
+                region = new GeneralBLL().GetSingleGeneral(id);
             region.name = this.Region_Name.Text.Trim().ToString();
             if (!string.IsNullOrEmpty(this.Region_Description.Text.Trim().ToString()))
             {
