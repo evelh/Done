@@ -553,6 +553,10 @@ namespace EMT.DoneNOW.DTO
             NEED_TYPE_DETAIL = 1018,    // 需要原因类型和详情
             NEED_NONE = 1019,           // 不需要
         }
+
+        /// <summary>
+        /// 报价分组条件-110
+        /// </summary>
         public enum QUOTE_GROUP_BY
         {
             NO = 1192,                    // 按照不分组
@@ -562,6 +566,18 @@ namespace EMT.DoneNOW.DTO
             PRODUCT_CYCLE = 1196,         // 按照产品周期分组
         }
 
+        /// <summary>
+        /// 合同类型-111
+        /// </summary>
+        public enum CONTRACT_TYPE
+        {
+            SERVICE = 1199,             // 定期服务合同
+            TIME_MATERIALS = 1200,      // 工时及物料合同
+            FIXED_PRICE = 1201,         // 固定价格合同
+            BLOCK_HOURS = 1202,         // 预付时间合同
+            RETAINER = 1203,            // 预付费合同
+            PER_TICKET = 1204,          // 事件合同
+        }
     }
 
     /// <summary>
