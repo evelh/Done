@@ -18,7 +18,7 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
-            //id = 396;
+           // id = 532;
             if (!IsPostBack)
             {
 
@@ -96,7 +96,7 @@ namespace EMT.DoneNOW.Web
         }
         protected void Save(object sender, EventArgs e)
         {
-            string t = Request.Form["data"].ToString();
+            string t =Convert.ToString(Request.Form["data"].ToString());
             t = t.Replace("[,", "[").Replace(",]", "]");
             Session["quote_body"] =  t.Replace("\"","'");
             Session["cancel"] = 1;
