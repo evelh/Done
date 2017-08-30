@@ -35,6 +35,7 @@
                 <li id="">通知</li>
             </ul>
         </div>
+        <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:132px;">
         <div class="content clear">
             <div>
                 <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
@@ -510,6 +511,7 @@
         </div>
         <div class="content clear" style="display: none;">
         </div>
+            </div>
     </form>
 </body>
 </html>

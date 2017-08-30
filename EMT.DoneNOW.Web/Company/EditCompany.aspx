@@ -64,7 +64,7 @@
                 <li id="Alerts">提醒</li>
             </ul>
         </div>
-
+        <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:132px;">
         <div class="content clear">
 
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
@@ -658,7 +658,7 @@
             </table>
 
         </div>
-
+            </div>
 
 
 

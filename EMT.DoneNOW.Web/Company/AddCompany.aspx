@@ -40,8 +40,8 @@
                 <li id="accountUDF">站点信息</li>
             </ul>
         </div>
-
-        <div class="content clear">
+        <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:192px;">
+            <div class="content clear">
             <div class="information clear">
                 <p class="informationTitle"><i></i>常规信息</p>
                 <div>
@@ -579,20 +579,20 @@
 
         </div>
 
-        <div class="content clear" style="display: none;">
+            <div class="content clear" style="display: none;">
 
-            <div class="searchSelected clear">
-                <p>子客户列表</p>
-                <span class="on"><i class="icon-dh" onclick="OpenSubCompany()"></i></span>
-                <input type="hidden" id="SubCompany" />
-                <input type="hidden" id="SubCompanyHidden" name="subCompanyIds" />
-                <div class="Selected fl">
-                    <select id="" multiple="" class="dblselect" style="height: 300px;"></select>
+                <div class="searchSelected clear">
+                    <p>子客户列表</p>
+                    <span class="on"><i class="icon-dh" onclick="OpenSubCompany()"></i></span>
+                    <input type="hidden" id="SubCompany" />
+                    <input type="hidden" id="SubCompanyHidden" name="subCompanyIds" />
+                    <div class="Selected fl">
+                        <select id="" multiple="" class="dblselect" style="height: 300px;"></select>
+                    </div>
                 </div>
-            </div>
 
-        </div>
-        <div class="content clear" style="display: none;">
+            </div>
+            <div class="content clear" style="display: none;">
 
             <div class="left fl">
                 <ul>
@@ -640,6 +640,8 @@
             </div>
 
         </div>
+        </div>
+        
 
 
     </form>

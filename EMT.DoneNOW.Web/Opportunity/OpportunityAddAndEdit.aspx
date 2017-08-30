@@ -50,7 +50,7 @@
             </ul>
 
         </div>
-
+        <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:132px;">
         <div class="content clear">
             <div class="information clear">
                 <p class="informationTitle"><i></i>常规信息</p>
@@ -535,6 +535,7 @@
                 <input type="text" name="body_text" id="body_text" value="" />
             </div>
         </div>
+            </div>
     </form>
 </body>
 </html>
