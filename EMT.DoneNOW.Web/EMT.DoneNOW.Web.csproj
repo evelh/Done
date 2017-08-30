@@ -210,6 +210,7 @@
     <Content Include="QuoteTemplate\QuoteTemplateAppendixEdit.aspx" />
     <Content Include="QuoteTemplate\QuoteTemplatePropertiesEdit.aspx" />
     <Content Include="Images\classfication.png" />
+    <Content Include="Quote\QuoteAddAndUpdate.aspx" />
     <Content Include="Quote\QuoteClose.aspx" />
     <Content Include="Quote\QuoteLost.aspx" />
     <Content Include="Quote\QuotePreview.aspx" />
@@ -559,7 +560,8 @@
     <Content Include="QuoteTemplate\QuoteTemplateHeadEdit.aspx" />
     <Content Include="QuoteTemplate\QuoteTemplateTopEdit.aspx" />
     <Content Include="QuoteItem\QuoteItemAddAndUpdate.aspx" />
-    <Content Include="Quote\QuoteAddAndUpdate.aspx" />
+    <Content Include="SaleOrder\SaleOrderEdit.aspx" />
+    <Content Include="SaleOrder\SaleOrderView.aspx" />
     <Content Include="Scripts\bootstrap.min-3.3.4.js" />
     <Content Include="Opportunity\OpportunityAddAndEdit.aspx" />
     <Content Include="Scripts\Common\Address.js" />
@@ -1011,6 +1013,20 @@
     <Compile Include="Quote\QuoteView.aspx.designer.cs">
       <DependentUpon>QuoteView.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SaleOrder\SaleOrderEdit.aspx.cs">
+      <DependentUpon>SaleOrderEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SaleOrder\SaleOrderEdit.aspx.designer.cs">
+      <DependentUpon>SaleOrderEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SaleOrder\SaleOrderView.aspx.cs">
+      <DependentUpon>SaleOrderView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SaleOrder\SaleOrderView.aspx.designer.cs">
+      <DependentUpon>SaleOrderView.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1160,6 +1176,9 @@
     <Compile Include="Tools\RoleAjax.ashx.cs">
       <DependentUpon>RoleAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\SaleOrderAjax.ashx.cs">
+      <DependentUpon>SaleOrderAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\SecurityLevelAjax.ashx.cs">
       <DependentUpon>SecurityLevelAjax.ashx</DependentUpon>
     </Compile>
@@ -1200,6 +1219,7 @@
     <Content Include="Tools\GeneralAjax.ashx" />
     <Content Include="Tools\SubscriptionAjax.ashx" />
     <Content Include="Tools\TerritoryAjax.ashx" />
+    <Content Include="Tools\SaleOrderAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

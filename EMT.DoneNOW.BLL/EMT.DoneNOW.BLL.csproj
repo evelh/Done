@@ -64,6 +64,7 @@
     <Compile Include="CRM\QuoteTemplateBLL.cs" />
     <Compile Include="CRM\QuoteBLL.cs" />
     <Compile Include="CRM\QuoteItemBLL.cs" />
+    <Compile Include="CRM\SaleOrderBLL.cs" />
     <Compile Include="CTT\ContractBLL.cs" />
     <Compile Include="IVT\ProductBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

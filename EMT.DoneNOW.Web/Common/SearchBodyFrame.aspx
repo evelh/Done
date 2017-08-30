@@ -839,8 +839,6 @@
                         $("#ActiveSubscription").removeAttr('onclick');
                         $("#NoActiveSubscription").css("color", "grey");
                         $("#NoActiveSubscription").removeAttr('onclick');
-
-                       
                     }
 
                 }
@@ -850,6 +848,33 @@
 
             return false;
         });
+        <%}else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.SaleOrder){%>
+
+        function Edit() {
+
+        }
+        function NewNote() {
+
+        }
+        function NewTodo() {
+
+        }
+        function CancelSaleOrder() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/SaleOrderAjax.ashx?act=status&status_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.SALES_ORDER_STATUS.CANCELED %>&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    if (data == "True") {
+                        alert('取消成功');
+                        history.go(0);
+                    } else {
+                        alert("取消失败");
+                    }
+
+                }
+            })
+        }
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

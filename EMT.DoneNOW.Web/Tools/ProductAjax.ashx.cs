@@ -135,7 +135,8 @@ namespace EMT.DoneNOW.Web
         public void GetVendorInfo(HttpContext context, long product_id)
         {
             var vendor = new ivt_product_dal().FindSignleBySql<ivt_product>($"SELECT a.name as product_name,v.vendor_product_no as vendor_product_no from crm_account a INNER join ivt_product_vendor v on a.id = v.vendor_id where product_id={product_id}");
-            if (vendor!= null){
+            if (vendor!= null)
+            {
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new {name=vendor.product_name, vendor_product_no = vendor.vendor_product_no }));
             }
 

@@ -191,7 +191,7 @@ namespace EMT.DoneNOW.Web.Quote
                         break;
                     case ERROR_CODE.USER_NOT_FIND:
                         Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
-                        Response.Redirect("Login.aspx");
+                        Response.Redirect("../Login.aspx");
                         break;
                     default:
                         break;

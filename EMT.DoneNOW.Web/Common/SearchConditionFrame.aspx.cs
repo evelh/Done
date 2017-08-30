@@ -64,6 +64,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SUBSCRIPTION:
                     currentQuery.page_name = "订阅查询";
                     break;
+                case (int)DicEnum.QUERY_CATE.SALEORDER:
+                    currentQuery.page_name = "销售订单查询";
+                    break;
                 default:
                     currentQuery.page_name = "客户查询";
                     break;

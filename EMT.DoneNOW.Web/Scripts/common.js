@@ -174,4 +174,14 @@ function DateDiff(sDate1, sDate2) {  //sDate1和sDate2是yyyy-MM-dd格式
     return iDays;  //返回相差天数
 
 }
-
+// 发送邮件 -- eamil代表接收人的地址
+function Email(email) {
+    location.href = "mailto:" + email + "";
+}
+// 返回个带0的整数
+function returnNumber(param) {
+    if (param < 10) {
+        return "0" + param
+    }
+    return param;
+}
