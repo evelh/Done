@@ -103,7 +103,7 @@
                                             <td valign="top" style="width: 480px;">
                                                 <table cellpadding="0" cellspacing="0">
                                                     <tbody>
-                                                        <tr>
+                                                       <%-- <tr>
                                                             <td class="standard_label">
                                                                 <span class="lblNormalClass">前缀</span>
                                                                 <div>
@@ -112,7 +112,7 @@
                                                                     </span>
                                                                 </div>
                                                             </td>
-                                                        </tr>
+                                                        </tr>--%>
                                                         <tr>
                                                             <td class="standard_label">
                                                                 <span class="lblNormalClass">姓<span style="color: red;">*</span></span>
@@ -208,14 +208,14 @@
                                                                     </span>
                                                                 </div>
                                                             </td>
-                                                            <td class="standard_entry_control" style="padding-left: 10px;">
+                                                           <%-- <td class="standard_entry_control" style="padding-left: 10px;">
                                                                 <span class="lblNormalClass">延伸</span>
                                                                 <div>
                                                                     <span style="display: inline-block">
                                                                         <asp:TextBox ID="TextBox1" runat="server"  class="txtBlack8Class" type="text" maxlength="50" style="width: 70px;"></asp:TextBox>                                                                        
                                                                     </span>
                                                                 </div>
-                                                            </td>
+                                                            </td>--%>
                                                         </tr>
                                                         <tr>
                                                             <td class="standard_label">
@@ -379,7 +379,7 @@
                                                                     <span class="lblNormalClass xiugai">请输入密码<span style="color: red;">*</span></span>
                                                                     <div>
                                                                         <span>
-                                                                            <asp:TextBox ID="password" runat="server" type="password" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="password"></asp:TextBox></span>
+                                                                            <asp:TextBox ID="pass_word" runat="server" type="password" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="pass_word"></asp:TextBox></span>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -389,7 +389,7 @@
                                                                     <span class="lblNormalClass">请确认密码<span style="color: red;">*</span></span>
                                                                     <div>
                                                                         <span>
-                                                                            <asp:TextBox ID="password2" runat="server" type="password" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="password2"></asp:TextBox>
+                                                                            <asp:TextBox ID="pass_word2" runat="server" type="password" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="pass_word2"></asp:TextBox>
                                                                             </span>
                                                                     </div>
                                                                 </td>
@@ -611,26 +611,26 @@
                     alert("请在常规选项卡输入用户名");
                     return false;
                 }
-                if ($("#password").val() == null || $("#password").val() == '') {
-                    alert("请在常规选项卡输入密码");
-                    return false;
-                }
-                if ($("#password2").val() == null || $("#password2").val() == '') {
-                    alert("请在常规选项卡再次输入密码");
-                    return false;
-                }
+                //if ($("#pass_word").val() == null || $("#pass_word").val() == '') {
+                //    alert("请在常规选项卡输入密码");
+                //    return false;
+                //}
+                //if ($("#pass_word2").val() == null || $("#pass_word2").val() == '') {
+                //    alert("请在常规选项卡再次输入密码");
+                //    return false;
+                //}
                 //if ($("#Security_Level").val() == 0) {  数据配置不齐全可空
                 //    alert("请输入权限等级");
                 //    return false;
                 //}
             });
-            $("#password2").blur(function () {
-                var ps1 = $("#password").val();
+            $("#pass_word2").blur(function () {
+                var ps1 = $("#pass_word").val();
                 if (ps1 == null | ps1 == '') {
                     alert("请先填写密码！");
                     return false;
                 }
-                if (ps1 != $("#password2").val()) {
+                if (ps1 != $("#pass_word2").val()) {
                     alert("两次输入密码不相同，请确认后再输入！");
                 }
             });

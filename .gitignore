@@ -7,6 +7,6 @@ _log
 *.bak
 *.user
 packages
-ModelGenerator.cs
-ModelGenerator.tt
 *.suo
+app.config
+packages.config

@@ -114,18 +114,21 @@ namespace EMT.DoneNOW.Web
             this.OneTimeSubtotal.Text = data_tax.One_Time_Subtotal;
             this.OneTimeTotal.Text = data_tax.One_Time_Total;
 
-            switch (data.page_number_location_id) {
-                case 588:this.showNO.Checked = true;break;
-                case 589: this.showLeft.Checked = true; break;
-                case 560:this.showCenter.Checked = true;break;               
-                case 561:this.showRight.Checked = true;break;
+            switch (data.page_number_location_id)
+            {
+                case (int)PAGE_NUMBER_LOCATION.NO: this.showNO.Checked = true; break;
+                case (int)PAGE_NUMBER_LOCATION.BOTTOMLEFT: this.showLeft.Checked = true; break;
+                case (int)PAGE_NUMBER_LOCATION.BOTTOMCENTER: this.showCenter.Checked = true; break;
+                case (int)PAGE_NUMBER_LOCATION.BOTTOMRIGHT: this.showRight.Checked = true; break;
 
             }
 
-            switch (data.paper_size_id) {
-                case 584:this.Letter.Checked = true;break;
-                case 585:this.A4.Checked = true;break;
+            switch (data.paper_size_id)
+            {
+                case (int)PAGE_SIZE.LETTER: this.Letter.Checked = true; break;
+                case (int)PAGE_SIZE.A4: this.A4.Checked = true; break;
             }
+
             #endregion
 
         }
@@ -235,7 +238,7 @@ namespace EMT.DoneNOW.Web
         /// <returns>id编号</returns>
         private int page_number_location_id()
         {
-            int id = 588;
+            int id = Convert.ToInt32(PAGE_NUMBER_LOCATION.NO);
             if (this.showNO.Checked)
             {
                 id = Convert.ToInt32(PAGE_NUMBER_LOCATION.NO);
@@ -261,7 +264,7 @@ namespace EMT.DoneNOW.Web
         /// <returns>iD编号</returns>
         private int paper_size_id()
         {
-            int id = 584;
+            int id = Convert.ToInt32(PAGE_SIZE.LETTER);
             if (this.Letter.Checked)
             {
                 id = Convert.ToInt32(PAGE_SIZE.LETTER);

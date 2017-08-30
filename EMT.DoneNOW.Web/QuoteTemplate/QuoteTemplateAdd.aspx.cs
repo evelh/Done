@@ -13,13 +13,83 @@ using Newtonsoft.Json;
 namespace EMT.DoneNOW.Web
 {
     public partial class QuoteTemplateAdd : BasePage
-    {        
-
+    {
+        private long id;
         protected void Page_Load(object sender, EventArgs e)
-        {           
+        {
+            id = Convert.ToInt64(Request.QueryString["id"]);
             if (!IsPostBack) {
+                Bind();
+                if (id > 0) {//修改
+                    var data = new QuoteTemplateBLL().GetSingelTemplate((int)id);
+                    if (data == null)
+                    {
+                        Response.Write("<script>alert('获取相关数据失败，返回上一个页面');window.close();self.opener.location.reload();</script>");
+                    }
+                    else {
+                        this.Name.Text = data.name;
+                        this.Description.Text = data.description;
+                        if (data.is_active == 1)
+                        {
+                            this.Active.Checked = true;
+                        }
+                        if (data.show_each_tax_in_tax_group == 1)
+                        {
+                            this.show_each_tax_in_tax_group.Checked = true;
+                        }
+                        if (data.show_each_tax_in_tax_period == 1)
+                        {
+                            this.show_each_tax_in_tax_period.Checked = true;
+                        }
+                        if (data.show_tax_cate == 1)
+                        {
+                            this.show_tax_cate.Checked = true;
+                        }
+                        if (data.show_tax_cate_superscript == 1)
+                        {
+                            this.show_tax_cate_superscript.Checked = true;
+                        }
 
-                Bind(); 
+                        var data_tax = new EMT.Tools.Serialize().DeserializeJson<QuoteTemplateAddDto.Tax_Total_Disp>(data.tax_total_disp);
+                        this.SemiAnnualTotal.Text = data_tax.Semi_Annual_Total;
+                        this.IncludingOptionalQuoteItems.Text = data_tax.Including_Optional_Quote_Items;
+                        this.ItemTotal.Text = data_tax.Item_Total;
+                        this.Subtotal.Text = data_tax.Subtotal;
+                        this.Total.Text = data_tax.Total;
+                        this.TotalTaxes.Text = data_tax.Total_Taxes;
+                        this.YearlySubtotal.Text = data_tax.Yearly_Subtotal;
+                        this.YearlyTotal.Text = data_tax.Yearly_Total;
+                        this.ShippingTotal.Text = data_tax.Shipping_Total;
+                        this.ShippingSubtotal.Text = data_tax.Shipping_Subtotal;
+                        this.SemiAnnualSubtotal.Text = data_tax.Semi_Annual_Subtotal;
+                        this.QuarterlySubtotal.Text = data_tax.Quarterly_Subtotal;
+                        this.QuarterlyTotal.Text = data_tax.Quarterly_Total;
+                        this.MonthlySubtotal.Text = data_tax.Monthly_Subtotal;
+                        this.OptionalSubtotal.Text = data_tax.Optional_Subtotal;
+                        this.OptionalTotal.Text = data_tax.Optional_Total;
+                        this.MonthlyTotal.Text = data_tax.Monthly_Total;
+                        this.OneTimeDiscountSubtotal.Text = data_tax.One_Time_Discount_Subtotal;
+                        this.OneTimeDiscountTotal.Text = data_tax.One_Time_Discount_Total;
+                        this.OneTimeSubtotal.Text = data_tax.One_Time_Subtotal;
+                        this.OneTimeTotal.Text = data_tax.One_Time_Total;
+
+                        switch (data.page_number_location_id)
+                        {                            
+                            case (int)PAGE_NUMBER_LOCATION.NO: this.showNO.Checked = true; break;
+                            case (int)PAGE_NUMBER_LOCATION.BOTTOMLEFT: this.showLeft.Checked = true; break;
+                            case (int)PAGE_NUMBER_LOCATION.BOTTOMCENTER: this.showCenter.Checked = true; break;
+                            case (int)PAGE_NUMBER_LOCATION.BOTTOMRIGHT: this.showRight.Checked = true; break;
+
+                        }
+
+                        switch (data.paper_size_id)
+                        {
+                            case (int)PAGE_SIZE.LETTER: this.Letter.Checked = true; break;
+                            case (int)PAGE_SIZE.A4: this.A4.Checked = true; break;
+                        }
+
+                    }
+                }
             }         
         }
         public void Bind() {
@@ -108,19 +178,36 @@ namespace EMT.DoneNOW.Web
             if (string.IsNullOrEmpty(sqt.name)) {
                 ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('模板名称未填写！');</script>");
             }
-
-            //var user=Session["dn_session_user_info"] as sys_user;
-            //qtbll.log(user);
-            int id;
-            var result=qtbll.Add(sqt, GetLoginUserId(),out id);
-            if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
-            {
-                Response.Write("<script>alert('报价模板添加成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
-            }else if(result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
-            {
-                Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
-                Response.Redirect("Login.aspx");
+            if (id > 0) {
+                var result = qtbll.update(sqt, GetLoginUserId());
+                if (result == ERROR_CODE.SUCCESS) 
+                {
+                    Response.Write("<script>alert('报价模板属性修改成功');window.close();self.opener.location.reload();</script>"); 
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("Login.aspx");
+                }
+                else
+                {
+                    Response.Write("<script>alert('报价模板属性修改成功');</script>");
+                }
             }
+            else {
+                int id1;
+                var result = qtbll.Add(sqt, GetLoginUserId(), out id1);
+                if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+                {
+                    Response.Write("<script>alert('报价模板添加成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("Login.aspx");
+                }
+
+            }            
 
         }
 
@@ -165,7 +252,7 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <returns>id编号</returns>
         private int page_number_location_id() {
-            int id = 588;
+            int id =(int)PAGE_NUMBER_LOCATION.NO;
             if (this.showNO.Checked)
             {
                 id = Convert.ToInt32(PAGE_NUMBER_LOCATION.NO);
@@ -190,7 +277,7 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <returns>iD编号</returns>
         private int paper_size_id() {
-            int id = 584;
+            int id = Convert.ToInt32(PAGE_SIZE.LETTER);
             if (this.Letter.Checked)
             {
                 id = Convert.ToInt32(PAGE_SIZE.LETTER);

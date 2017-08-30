@@ -159,6 +159,17 @@ namespace EMT.DoneNOW.DTO
     }
 
     /// <summary>
+    /// 权限对象类型
+    /// </summary>
+    public enum ObjectEnum
+    {
+        Account,
+        Contact,
+        Opportunity,
+        Quote,
+    }
+
+    /// <summary>
     /// 操作类型
     /// </summary>
     public enum ActionEnum
@@ -167,15 +178,5 @@ namespace EMT.DoneNOW.DTO
         Edit,
         View,
         Delete,
-    }
-
-    /// <summary>
-    /// 权限判断结果
-    /// </summary>
-    public enum CheckEnum
-    {
-        OK,     // 权限验证通过
-        Fail,   // 权限验证失败
-        Error,  // 错误
     }
 }

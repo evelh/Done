@@ -72,6 +72,14 @@ namespace EMT.DoneNOW.Web
             Response.Write("<script>window.close();self.opener.location.reload();</script>");
         }
         private bool save_deal() {
+            if (id > 0)
+            {
+                action = new GeneralBLL().GetSingleGeneral(id);
+                if (action == null)
+                {
+                    Response.Write("<script>alert('获取市场相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
+                }
+            }
             action.name = this.Name.Text.Trim().ToString();
             action.parent_id = Convert.ToInt32(this.View.SelectedValue.ToString());
             if (this.Active.Checked)
