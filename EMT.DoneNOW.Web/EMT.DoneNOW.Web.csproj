@@ -162,6 +162,7 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\WorkType.css" />
+    <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
     <Content Include="Contact\DeleteContact.aspx" />
@@ -766,6 +767,13 @@
     </Compile>
     <Compile Include="Contact\EditContact.aspx.designer.cs">
       <DependentUpon>EditContact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\ContractAdd.aspx.cs">
+      <DependentUpon>ContractAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractAdd.aspx.designer.cs">
+      <DependentUpon>ContractAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
