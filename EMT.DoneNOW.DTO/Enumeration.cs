@@ -407,6 +407,7 @@ namespace EMT.DoneNOW.DTO
             INSTALLEDPRODUCT=890,               // 配置项管理-查询
             SUBSCRIPTION = 892,                 // 订阅管理-查询
             SALEORDER = 894,                    // 销售订单 - 查询
+            CONTRACT = 895,                     // 合同
         }
 
         /// <summary>
@@ -605,9 +606,10 @@ namespace EMT.DoneNOW.DTO
         SubcompanyCompanyView = 14,        // 客户管理-详情-子客户查询
         OpportunityContactView = 15,       // 联系人管理-详情-商机查询
 
-        InstalledProductView  = 32,      // 配置项管理
-        Subscription = 34,               // 订阅
-        SaleOrder = 36,                  // 销售订单
+        InstalledProductView  = 32,     // 配置项管理
+        Subscription = 34,              // 订阅
+        SaleOrder = 36,                 // 销售订单
+        Contract = 37,                  // 合同
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -666,5 +668,6 @@ namespace EMT.DoneNOW.DTO
         SubscriptionEdit = 220,                // 修改订阅
         SubscriptionAdd = 221,                 // 新增订阅
 
+        ContractAdd = 301,                      // 合同新增
     }
 }
