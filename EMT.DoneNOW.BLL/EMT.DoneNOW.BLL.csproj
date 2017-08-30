@@ -73,6 +73,7 @@
     <Compile Include="SYS\ErrorLogBLL.cs" />
     <Compile Include="SYS\FormTemplateBLL.cs" />
     <Compile Include="SYS\GeneralBLL.cs" />
+    <Compile Include="SYS\SysOpportunityBLL.cs" />
     <Compile Include="SYS\RegionBLL.cs" />
     <Compile Include="SYS\SuffixBLL.cs" />
     <Compile Include="SYS\SysDepartmentBLL.cs" />

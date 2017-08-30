@@ -199,7 +199,9 @@
     <Content Include="Images\Classification\tm.png" />
     <Content Include="Opportunity\CloseOpportunity.aspx" />
     <Content Include="Opportunity\OpportunityLeadSource.aspx" />
+    <Content Include="Opportunity\OpportunityLossReason.aspx" />
     <Content Include="Opportunity\OpportunityStage.aspx" />
+    <Content Include="Opportunity\OpportunityWinReasons.aspx" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
     <Content Include="Images\export.png" />
@@ -832,12 +834,26 @@
     <Compile Include="Opportunity\OpportunityLeadSource.aspx.designer.cs">
       <DependentUpon>OpportunityLeadSource.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Opportunity\OpportunityLossReason.aspx.cs">
+      <DependentUpon>OpportunityLossReason.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityLossReason.aspx.designer.cs">
+      <DependentUpon>OpportunityLossReason.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Opportunity\OpportunityStage.aspx.cs">
       <DependentUpon>OpportunityStage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Opportunity\OpportunityStage.aspx.designer.cs">
       <DependentUpon>OpportunityStage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityWinReasons.aspx.cs">
+      <DependentUpon>OpportunityWinReasons.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityWinReasons.aspx.designer.cs">
+      <DependentUpon>OpportunityWinReasons.aspx</DependentUpon>
     </Compile>
     <Compile Include="Opportunity\ViewOpportunity.aspx.cs">
       <DependentUpon>ViewOpportunity.aspx</DependentUpon>
