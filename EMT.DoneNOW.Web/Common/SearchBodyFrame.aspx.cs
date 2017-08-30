@@ -303,15 +303,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除选中配置项", click_function = "DeleteIProducts()" });
                     break;
                 case (long)QueryType.Subscription:
-                    //    1)	Edit Subscription编辑
-                    //    2)	Renew Subscription 创建订阅副本（当前记录）
-                    //    3)	Renew Selected Subscriptions创建订阅副本（选中记录）
-                    //    4)	Cancel Subscription 取消订阅（当前记录）
-                    //    5)	Cancel Selected Subscriptions取消订阅（选中记录）
-                    //    6)	Activate 激活订阅（选中记录）
-                    //    7)	Inactivate Subscription失活订阅（选中记录）
-                    //    8)	Delete Subscription 删除当前订阅）
-                    //    9)	Delete Selected Subscriptions删除选中订阅
+
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "创建订阅副本", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "创建选中订阅副本", click_function = "openopenopen()\" \" style='color:grey;'" });
@@ -321,7 +313,12 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "失活订阅", click_function = "", id = "NoActiveSubscription" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除当前订阅", click_function = "DeleteSubscription()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除选中订阅", id = "DeleteSubscriptions" });
-
+                    break;
+                case (long)QueryType.SaleOrder:
+                    contextMenu.Add(new PageContextMenuDto { text = "修改销售订单", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "NewNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增待办", click_function = "NewTodo()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "取消销售订单", click_function = "CancelSaleOrder()" });
                     break;
                 default:
                     break;

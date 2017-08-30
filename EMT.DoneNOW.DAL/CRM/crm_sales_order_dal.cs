@@ -9,7 +9,7 @@ namespace EMT.DoneNOW.DAL
     public class crm_sales_order_dal : BaseDAL<crm_sales_order>
     {
         /// <summary>
-        /// 返回销售订单
+        /// 根据条件返回多个销售订单
         /// </summary>
         /// <param name="where"></param>
         /// <returns></returns>
@@ -21,6 +21,11 @@ namespace EMT.DoneNOW.DAL
             }
             return FindListBySql<crm_sales_order>("select * from crm_sales_order where delete_time = 0");
         }
+        /// <summary>
+        /// 根据查询条件查询到单个的销售订单
+        /// </summary>
+        /// <param name="where"></param>
+        /// <returns></returns>
         public crm_sales_order GetSingleSalesOrderByWhere(string where = "")
         {
             if (where != "")
@@ -28,6 +33,15 @@ namespace EMT.DoneNOW.DAL
                 return FindSignleBySql<crm_sales_order>("select * from crm_sales_order where delete_time = 0 " + where);
             }
             return FindSignleBySql<crm_sales_order>("select * from crm_sales_order where delete_time = 0");
+        }
+        /// <summary>
+        /// 根据id查询到单个的销售订单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public crm_sales_order GetSingleSale(long id)
+        {
+            return FindSignleBySql<crm_sales_order>($"select * from crm_sales_order where delete_time = 0 and id = {id} ");
         }
 
     }

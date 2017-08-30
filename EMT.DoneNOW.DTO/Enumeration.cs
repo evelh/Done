@@ -30,6 +30,7 @@ namespace EMT.DoneNOW.DTO
         PROJECTED_CLOSED_DATE = 19,
         NOTIFICATION_TEMPLATE_CATE_DATE_GROUP = 23,//通知大类对应的变量分组
         FORM_TEMPLATE_TYPE = 27,
+        SALES_ORDER_STATUS = 28,                   // 销售订单状态
         PAYMENT_TERM = 29,                         // 报价：付款期限           
         PAYMENT_TYPE = 30,                         // 报价：付款类型
         PAYMENT_SHIP_TYPE = 31,                    // 报价：配送类型
@@ -249,7 +250,9 @@ namespace EMT.DoneNOW.DTO
         {
             OPPORTUNITY = 451,      // 商机
         }
-
+        /// <summary>
+        /// 销售订单状态-28
+        /// </summary>
         public enum SALES_ORDER_STATUS
         {
             OPEN = 465,                // 打开
@@ -273,7 +276,7 @@ namespace EMT.DoneNOW.DTO
             COMPANY = 517,          // 客户
             CONTACT = 518,          // 联系人
             OPPORTUNITY = 519,      // 商机
-            SALES = 520,
+            SALES = 520,            // 销售订单
             ORDERS = 521,
             PROJECTS = 522,
             CONFIGURATION_ITEMS = 523,// 配置项
@@ -402,6 +405,7 @@ namespace EMT.DoneNOW.DTO
             SHIP_CALLBACK = 889,                // 配送费用查找带回
             INSTALLEDPRODUCT=890,               // 配置项管理-查询
             SUBSCRIPTION = 892,                 // 订阅管理-查询
+            SALEORDER = 894,                    // 销售订单 - 查询
         }
 
         /// <summary>
@@ -584,8 +588,9 @@ namespace EMT.DoneNOW.DTO
         SubcompanyCompanyView = 14,        // 客户管理-详情-子客户查询
         OpportunityContactView = 15,       // 联系人管理-详情-商机查询
 
-        InstalledProductView  = 32,    // 配置项管理
-        Subscription = 34,              //  订阅
+        InstalledProductView  = 32,      // 配置项管理
+        Subscription = 34,               // 订阅
+        SaleOrder = 36,                  // 销售订单
     }
     /// <summary>
     /// 打开新窗口的名称

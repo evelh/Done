@@ -38,11 +38,11 @@ namespace EMT.DoneNOW.BLL.CRM
             if (location.id == 0)
             {
                 location.id = _dal.GetNextIdCom();
-                location.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                location.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                location.create_user_id = user.id;
-                location.update_user_id = user.id;
             }
+            location.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            location.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            location.create_user_id = user.id;
+            location.update_user_id = user.id;
             // 修改客户显示默认地址，默认地址不能主动移除
             var default_location = _dal.GetLocationByAccountId((long)location.account_id);
             if (location.is_default == 1&&default_location!=null)
