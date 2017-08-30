@@ -104,37 +104,138 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public static List<ModuleEnum> GetModuleList(long userId, long levelId)
         {
-            var dto = securityLevels.FirstOrDefault(l => l.id == levelId);
+            var dto = GetSecLevelInfo(levelId);
+            if (dto == null)
+                return new List<ModuleEnum>();
 
             return dto.modules;
         }
 
-        private CheckEnum CheckAuth(long userId, long levelId, AuthLimitEnum limit, DicEnum.LIMIT_TYPE_VALUE needValue)
+        /// <summary>
+        /// 判断用户在对应权限点对应操作对象是否有权限，限权限点取值类型962(全部我的无)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="levelId">用户权限等级</param>
+        /// <param name="limit">需要验证的权限点</param>
+        /// <param name="objType">操作对象类型</param>
+        /// <param name="objId">操作对象id</param>
+        /// <returns></returns>
+        public static bool CheckAuth(long userId, long levelId, AuthLimitEnum limit, ObjectEnum objType, long objId)
         {
-            return CheckEnum.Fail;
+            var dto = GetSecLevelInfo(levelId);
+            if (dto == null)
+                throw new Exception("安全等级错误");
+            
+            if (secLevelLimits.First(l => l.id == (int)limit).type_id == (int)DicEnum.LIMIT_TYPE.ALL_MINE_NONE)
+                return CheckAuthAllMyNone(userId, levelId, limit, objType, objId);
+            else
+                throw new Exception("安全等级错误");
         }
 
         /// <summary>
-        /// 判断用户在对应权限点是否有权限，限权限点取值类型960有无
+        /// 判断用户在对应权限点是否有权限，限权限点取值类型960(有无)或者963(全部无)
         /// </summary>
         /// <param name="userId">用户id</param>
         /// <param name="levelId">用户权限等级</param>
         /// <param name="limit">需要验证的权限点</param>
         /// <returns></returns>
-        public static CheckEnum CheckAuth(long userId, long levelId, AuthLimitEnum limit)
+        public static bool CheckAuth(long userId, long levelId, AuthLimitEnum limit)
         {
-            var dto = securityLevels.FirstOrDefault(l => l.id == levelId);
+            var dto = GetSecLevelInfo(levelId);
             if (dto == null)
-                return CheckEnum.Error;
+                throw new Exception("安全等级错误");
 
-            // 权限取值类型是否为960
-            if (secLevelLimits.First(l => l.id == (int)limit).type_id != (int)DicEnum.LIMIT_TYPE.HAVE_NONE)
-                return CheckEnum.Error;
+            // 权限取值类型是否为960或963
+            var secLimit = secLevelLimits.First(l => l.id == (int)limit);
+            if (secLimit.type_id != (int)DicEnum.LIMIT_TYPE.HAVE_NONE
+                && secLimit.type_id != (int)DicEnum.LIMIT_TYPE.ALL_NONE)
+                throw new Exception("安全等级错误");
 
-            if (dto.limit[limit] == DicEnum.LIMIT_TYPE_VALUE.HAVE960)
-                return CheckEnum.OK;
+            if (secLimit.type_id == (int)DicEnum.LIMIT_TYPE.HAVE_NONE
+                && dto.limit[limit] == DicEnum.LIMIT_TYPE_VALUE.HAVE960)
+                return true;
+            if (secLimit.type_id == (int)DicEnum.LIMIT_TYPE.ALL_NONE
+                && dto.limit[limit] == DicEnum.LIMIT_TYPE_VALUE.ALL963)
+                return true;
 
-            return CheckEnum.Fail;
+            return false;
+        }
+
+        /// <summary>
+        /// 判断是否有权限查看客户(对应权限点类型961)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="levelId">安全等级</param>
+        /// <param name="accountId">客户id</param>
+        /// <returns></returns>
+        public static bool CheckAuth(long userId, long levelId, long accountId)
+        {
+            var company = new CompanyBLL().GetCompany(accountId);
+            if (company == null)
+                throw new Exception("参数错误");
+
+            var dto = GetSecLevelInfo(levelId);
+            if (dto == null)
+                throw new Exception("安全等级错误");
+
+            // 客户类型为合作伙伴或者厂商
+            if (company.type_id == (int)DicEnum.ACCOUNT_TYPE.COOPERATIVE_PARTNER
+                || company.type_id == (int)DicEnum.ACCOUNT_TYPE.MANUFACTURER)
+            {
+                if (dto.limit[AuthLimitEnum.CRMCompanyViewVerdor] == DicEnum.LIMIT_TYPE_VALUE.ALL963) // 员工权限可查看所有
+                    return true;
+                else
+                    return false;
+            }
+
+            // 其他客户类型
+            AuthLimitEnum needLimit;
+            if (company.type_id == (int)DicEnum.ACCOUNT_TYPE.CUSTOMER
+                || company.type_id == (int)DicEnum.ACCOUNT_TYPE.CANCELLATION_OF_CUSTOMER)
+            {
+                needLimit = AuthLimitEnum.CRMCompanyViewCustomer;
+            }
+            else
+            {
+                needLimit = AuthLimitEnum.CRMCompanyViewProspect;
+            }
+
+            if (dto.limit[needLimit] == DicEnum.LIMIT_TYPE_VALUE.ALL961) // 员工权限可查看所有
+            {
+                return true;
+            }
+            else if (dto.limit[needLimit] == DicEnum.LIMIT_TYPE_VALUE.NONE961)   // 员工权限不可查看
+            {
+                return false;
+            }
+            else if (dto.limit[needLimit] == DicEnum.LIMIT_TYPE_VALUE.MINE961)   // 员工权限可查看仅自己的客户
+            {
+                if (company.resource_id == userId)
+                    return true;
+                else
+                    return false;
+            }
+            else    // 员工权限可查看自己的地域
+            {
+                var userTerritories = new SysTerritoryBLL().GetTerritoryByResource(userId);
+                if (company.territory_id == null || userTerritories == null || userTerritories.Count == 0)
+                    return false;
+
+                if (userTerritories.Exists(t => t.territory_id == company.territory_id))
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// 从缓存中返回指定id的安全等级
+        /// </summary>
+        /// <param name="secLevelId"></param>
+        /// <returns></returns>
+        public static SecurityLevelDto GetSecLevelInfo(long secLevelId)
+        {
+            return securityLevels.FirstOrDefault(l => l.id == secLevelId);
         }
 
         /// <summary>
@@ -147,7 +248,7 @@ namespace EMT.DoneNOW.BLL
 
             foreach(var sec in list)
             {
-                securityLevels.Add(GetSecLevelInfo(sec.id));
+                securityLevels.Add(GetSecLevelInfoFromDB(sec.id));
             }
 
             secLevelLimits = new sys_limit_dal().FindAll().ToList();
@@ -158,7 +259,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="secLevelId"></param>
         /// <returns></returns>
-        public static SecurityLevelDto GetSecLevelInfo(long secLevelId)
+        private static SecurityLevelDto GetSecLevelInfoFromDB(long secLevelId)
         {
             var secLevel = dal.FindById(secLevelId);
             var limits = new sys_security_level_limit_dal().GetLimitsBySecLevelId(secLevelId).ToDictionary(d => (AuthLimitEnum)d.limit_id, d => (DicEnum.LIMIT_TYPE_VALUE)d.limit_type_value_id);
@@ -177,14 +278,26 @@ namespace EMT.DoneNOW.BLL
             return dto;
         }
 
+        /// <summary>
+        /// 判断是否有权限，限权限点取值类型962
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="levelId"></param>
+        /// <param name="limit"></param>
+        /// <param name="objType"></param>
+        /// <param name="objId"></param>
+        /// <returns></returns>
+        private static bool CheckAuthAllMyNone(long userId, long levelId, AuthLimitEnum limit, ObjectEnum objType, long objId)
+        {
+            return true;
+        }
+
         private static sys_security_level_dal dal = new sys_security_level_dal();
 
         private static List<SecurityLevelDto> securityLevels = null;   // 所有权限等级信息
         private static List<sys_limit> secLevelLimits = null;    // 所有权限点信息
         #endregion
-
-
-
+        
         #region Token鉴权
         private readonly sys_user_dal _dal = new sys_user_dal();
         private const int expire_time_mins = 60;//60 * 8;            // token过期时间(8小时)

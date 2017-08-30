@@ -514,7 +514,8 @@
             </div>
         </div>
         
-         <input id="data" type="hidden" name="data" value=""/>       
+         <input id="data" type="hidden" name="data" value=""/>   
+        <input id="body_item" type="hidden" name="body_item" value=""/>   
    <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="../RichText/js/ueditor.config.js"></script>
     <script type="text/javascript" src="../RichText/js/ueditor.all.js"></script>
@@ -586,7 +587,6 @@
 
             //分组名称设置
             data.push("],\"GROUPING_HEADER_TEXT\":[");
-
             var One_Time_items = $("#One_Time_items").val();
             var Monthly_items = $("#Monthly_items").val();
             var Quarterly_items = $("#Quarterly_items").val();
@@ -636,10 +636,10 @@
         var GROUPING_HEADER_TEXTITEM = { "One_Time_items": One_Time_items, "Monthly_items": Monthly_items, "Quarterly_items": Quarterly_items, "Semi_Annual_items": Semi_Annual_items, "Yearly_items": Yearly_items, "Shipping_items": Shipping_items, "One_Time_Discount_items": One_Time_Discount_items, "Optional_items": Optional_items, "No_category": No_category};
         var jsonArrayFinal = JSON.stringify(GROUPING_HEADER_TEXTITEM);
         data.push(jsonArrayFinal);
-
         data.push("]}");
 
-            $("#data").val(data);
+        $("#data").val($('<div/>').text(data).html());
+           // $("#data").val(data);
 
         });
  $("#OkButton").on("mouseover",function(){
@@ -648,17 +648,27 @@
         $("#OkButton").on("mouseout",function(){
             $("#OkButton").css("background","#f0f0f0");
         });
+        //设置全局变量
+        var a;
 $(".Edit").on("click", function () {
           //  var i = $(this).index();
-            var a = $('.Edit').index(this);
-            var item = $(".Display_Format").eq(a).text();
-           var returnValue = window.showModalDialog('Body_itemEdit.aspx?item='+item, window, 'dialogWidth=800px;dialogHeight=600px;status=no');
-
-            if (returnValue !== "" && returnValue !== undefined) {
-                //处理子窗口的返回值
-                $(".Display_Format").eq(a).html(returnValue);
-            }
+            a = $('.Edit').index(this);
+           var item = $(".Display_Format").eq(a).text();
+           var returnValue = window.open('Body_itemEdit.aspx?item=' + item, window, 'dialogWidth=800px;dialogHeight=600px;status=no');
+           return a;
+            //if (returnValue !== "" && returnValue !== undefined) {
+            //    //处理子窗口的返回值
+            //    $(".Display_Format").eq(a).html(returnValue);
+            //}
         });
+
+        function item_back() {
+            var re = $("#body_item").val();
+            if (re!= ''&&re!= undefined)
+            {
+                $(".Display_Format").eq(a).html(re);
+            }
+        }
     </script>
 </form>
 </body>

@@ -67,15 +67,6 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.Button Cancel;
         
         /// <summary>
-        /// Prefix 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Prefix;
-        
-        /// <summary>
         /// first_name 控件。
         /// </summary>
         /// <remarks>
@@ -146,15 +137,6 @@ namespace EMT.DoneNOW.Web {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox office_phone;
-        
-        /// <summary>
-        /// TextBox1 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
         
         /// <summary>
         /// home_phone 控件。
@@ -274,22 +256,22 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.Label www;
         
         /// <summary>
-        /// password 控件。
+        /// pass_word 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox password;
+        protected global::System.Web.UI.WebControls.TextBox pass_word;
         
         /// <summary>
-        /// password2 控件。
+        /// pass_word2 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox password2;
+        protected global::System.Web.UI.WebControls.TextBox pass_word2;
         
         /// <summary>
         /// ACTIVE 控件。

@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String code { get; set; }
         [DataMember]
-        public String description { get; set; }
+        public String remark { get; set; }
         [DataMember]
         public Int32? parent_id { get; set; }
         [DataMember]
@@ -36,6 +36,10 @@ namespace EMT.DoneNOW.Core
         public String ext1 { get; set; }
         [DataMember]
         public String ext2 { get; set; }
+        [DataMember]
+        public SByte is_system { get; set; }
+        [DataMember]
+        public SByte is_active { get; set; }
 
 
     }

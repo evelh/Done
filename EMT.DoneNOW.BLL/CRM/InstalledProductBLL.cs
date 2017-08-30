@@ -183,6 +183,7 @@ namespace EMT.DoneNOW.BLL.CRM
                 number_of_users = param.number_of_users,
                 serial_number = param.serial_number,
                 reference_number = param.reference_number,
+                reference_name = param.reference_name,
                 contract_id = param.contract_id == 0 ? null : (long?)param.contract_id,
                 location = param.location,
                 contact_id = param.contact_id == 0 ? null : (long?)param.contact_id,
@@ -221,7 +222,7 @@ namespace EMT.DoneNOW.BLL.CRM
                 oid = old_installed_product.oid,
                 parent_id = old_installed_product.parent_id,
                 quote_item_id = old_installed_product.quote_item_id,
-                reference_name = old_installed_product.reference_name,
+                
 
                 service_bundle_id = old_installed_product.service_bundle_id,
                 service_id = old_installed_product.service_id,
@@ -297,16 +298,35 @@ namespace EMT.DoneNOW.BLL.CRM
             #endregion
 
             #region 插入订阅分期信息
+
+            InsertSubPeriod(subscription.effective_date, subscription.expiration_date, subscription, user);
+
+            #endregion
+
+            return ERROR_CODE.SUCCESS;
+        }
+
+        /// <summary>
+        /// 根据订阅的开始时间和结束时间  循环插入分期订阅
+        /// </summary>
+        /// <param name="firstTime"></param>
+        /// <param name="lastTime"></param>
+        /// <param name="subscription"></param>
+        /// <param name="user"></param>
+        public void InsertSubPeriod(DateTime firstTime,DateTime lastTime,crm_subscription subscription, UserInfoDto user)
+        {
             var periods = 1;   // 定义初始的期数为1 
-            var firstTime = subscription.effective_date; // 生效日期
-            var lastTime = subscription.expiration_date; // 结束日期
+            //var firstTime = subscription.effective_date; // 生效日期
+            //var lastTime = subscription.expiration_date; // 结束日期
             // var period_type = subscription.period_type_id;
-            var days =Math.Ceiling((lastTime - firstTime).TotalDays); // 获取到相差几天
+            var days = Math.Ceiling((lastTime - firstTime).TotalDays); // 获取到相差几天
+
+            var months = (lastTime.Year - firstTime.Year) * 12 + (lastTime.Month - firstTime.Month) + (lastTime.Day >= firstTime.Day ? 1 : 0);
             var periodMonths = 0;
             switch (subscription.period_type_id)
             {
                 case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
-                    periods = Convert.ToInt32(Math.Ceiling(days/180));
+                    periods = Convert.ToInt32(Math.Ceiling(days / 180));
                     periodMonths = 6;
                     break;
                 case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
@@ -325,16 +345,15 @@ namespace EMT.DoneNOW.BLL.CRM
                     break;
             }
             var sub_period_dal = new crm_subscription_period_dal();
-            for (int i = 0; i < periods; i++)
+            for (int i = 0; i < months; i++)
             {
-
-                // todo 当计算到最后一个的时候，最后一个的周期价格按照百分比进行折算
-                crm_subscription_period sub_period = new crm_subscription_period() {
+                crm_subscription_period sub_period = new crm_subscription_period()
+                {
                     id = sub_period_dal.GetNextIdCom(),
-                    subscription_id =subscription.id,
+                    subscription_id = subscription.id,
                     period_date = firstTime,
                     period_price = subscription.period_price,
-                  
+
                 };
                 sub_period_dal.Insert(sub_period);
                 new sys_oper_log_dal().Insert(new sys_oper_log()
@@ -355,13 +374,8 @@ namespace EMT.DoneNOW.BLL.CRM
 
             }
 
-
-
-
-            #endregion
-
-            return ERROR_CODE.SUCCESS;
         }
+
         /// <summary>
         /// 编辑订阅
         /// </summary>
@@ -383,7 +397,8 @@ namespace EMT.DoneNOW.BLL.CRM
                 return ERROR_CODE.USER_NOT_FIND;
 
             var old_subscription = new crm_subscription_dal().GetSubscription(subscription.id);
-
+            var old_last_time = old_subscription.expiration_date;  // 获取到旧的过期时间
+            var new_last_time = subscription.expiration_date;      // 获取到新设定的过期时间
             subscription.oid = old_subscription.oid;
             subscription.create_time = old_subscription.create_time;
             subscription.create_user_id = old_subscription.create_user_id;
@@ -406,19 +421,118 @@ namespace EMT.DoneNOW.BLL.CRM
                 remark = "修改订阅相关信息",
             });
 
-            // 暂时这样处理：修改时周期类型不可更改，根据最后的时间去新增或者删除，或者更改这些分期订阅
-            // 修改时的订阅分期管理-- todo 
+
             var subPeriodList = new crm_subscription_period_dal().GetSubPeriodByWhere($" and subscription_id = {subscription.id}");
-            if (subPeriodList != null && subPeriodList.Count > 0)
+
+
+            // 生效日期改变，代表分期订阅均未
+            if (!old_subscription.effective_date.ToString("yyyy-MM-dd").Equals(subscription.effective_date.ToString("yyyy-MM-dd")))
             {
-                //  先写点逻辑吧QAQ
-                //  首先后获取到所有的分期订阅 -- 
-                //  已经审核过的订阅暂不处理
-                //  获取到未审核的分期订阅去删除掉
-                //  根据新的到期时间去创建新的订阅
-                //  那么问题来了，如果是最后一期订阅？？
-                
+                if (subPeriodList != null && subPeriodList.Count > 0)
+                {
+                    subPeriodList.ForEach(_=> {
+                        new sys_oper_log_dal().Insert(new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONFIGURAITEM,
+                            oper_object_id = _.id,
+                            oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                            oper_description = new crm_installed_product_dal().AddValue(_),
+                            remark = "删除分期订阅",
+                        });
+                        new crm_subscription_period_dal().Delete(_);
+                    });
+                }
+                InsertSubPeriod(subscription.effective_date, subscription.expiration_date, subscription, user);
             }
+            else
+            {
+                if (!old_last_time.ToString("yyyy-MM-dd").Equals(new_last_time.ToString("yyyy-MM-dd")))
+                {
+
+                    // 暂时这样处理：修改时周期类型不可更改，根据最后的时间去新增或者删除，或者更改这些分期订阅
+                    // 修改时的订阅分期管理-- todo 
+
+                    if (subPeriodList != null && subPeriodList.Count > 0)
+                    {
+                        //  先写点逻辑吧QAQ
+                        //  首先后获取到所有的分期订阅 -- 
+                        //  已经审核过的订阅暂不处理
+                        //  获取到未审核的分期订阅去删除掉
+                        //  根据新的到期时间去创建新的订阅
+                        //  那么问题来了，如果是最后一期订阅？？
+
+                        var NoDealSub = subPeriodList.Where(_ => _.approve_and_post_user_id == null && _.approve_and_post_date == null).ToList(); // 获取到还未处理的订阅
+
+                        var periodMonths = 0;
+                        switch (subscription.period_type_id)
+                        {
+                            case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
+                                periodMonths = 6;
+                                break;
+                            case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
+                                periodMonths = 1;
+                                break;
+                            case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
+                                periodMonths = 3;
+                                break;
+                            case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
+                                periodMonths = 12;
+                                break;
+                            default:
+                                break;
+                        }
+                        //  获取到最后的生效时间
+                        old_last_time = subPeriodList.Where(_ => _.approve_and_post_user_id != null && _.approve_and_post_date != null).Max(_ => _.period_date);
+                        // 删除未执行的分期订阅
+                        if (NoDealSub != null && NoDealSub.Count > 0)
+                        {
+                            NoDealSub.ForEach(_ => {
+                                new sys_oper_log_dal().Insert(new sys_oper_log()
+                                {
+                                    user_cate = "用户",
+                                    user_id = user.id,
+                                    name = user.name,
+                                    phone = user.mobile == null ? "" : user.mobile,
+                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONFIGURAITEM,
+                                    oper_object_id = _.id,
+                                    oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                                    oper_description = new crm_installed_product_dal().AddValue(_),
+                                    remark = "删除分期订阅",
+                                });
+                                new crm_subscription_period_dal().Delete(_);
+                            });
+                        }
+
+                        if (old_last_time < new_last_time)
+                        {
+                            old_last_time = old_last_time.AddMonths(periodMonths);
+                            if (new_last_time < old_last_time) // 代表结束时间在最后一期分期订阅的范围之内,暂不处理吧QAQ --todo
+                            {
+                                
+                            }
+                            else
+                            {
+                                InsertSubPeriod(old_last_time, new_last_time, subscription, user);
+                            }
+                        }
+                        else
+                        {
+                            InsertSubPeriod(old_last_time, new_last_time, subscription, user);
+                        }
+
+                    }
+
+                }
+            }
+
+            
+   
             
             
 
@@ -552,6 +666,135 @@ namespace EMT.DoneNOW.BLL.CRM
             }
             return false;
         }
+        /// <summary>
+        /// 激活/失活 订阅
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="user_id"></param>
+        /// <param name="isActive"></param>
+        /// <returns></returns>
+        public string ActiveSubsctiption(long sid,long user_id, int status_id)
+        {
+            var user = BLL.UserInfoBLL.GetUserInfo(user_id);
+            var dal = new crm_subscription_dal();
+            var subscription = dal.GetSubscription(sid);
+            if (subscription != null)
+            {
+                if (subscription.status_id != status_id)
+                {
+                    subscription.status_id = status_id;
+                    subscription.update_user_id = user.id;
+                    subscription.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = user.id,
+                        name = user.name,
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONFIGURAITEM,
+                        oper_object_id = subscription.id,
+                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                        oper_description = dal.CompareValue(dal.GetSubscription(sid), subscription),
+                        remark = "更改订阅状态",
+                    });
+                    dal.Update(subscription);
+                    return "ok";
+                }
+                else
+                {
+                    return "Already";
+                }
+            }
+            return "error";
+        }
+        /// <summary>
+        /// 批量激活/失活 订阅
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="user_id"></param>
+        /// <param name="isActive"></param>
+        /// <returns></returns>
+        public bool ActiveSubsctiptions(string ids,long user_id, int status_id)
+        {
+            var user = BLL.UserInfoBLL.GetUserInfo(user_id);
+            if (!string.IsNullOrEmpty(ids)&&user!=null)
+            {
+                var idList = ids.Split(',');
+                foreach (var id in idList)
+                {
+                    ActiveSubsctiption(long.Parse(id), user_id, status_id);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 删除订阅
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public bool DeleteSubsctiption(long sid,long user_id)
+        {
+            var user = BLL.UserInfoBLL.GetUserInfo(user_id);
+            var sDal = new crm_subscription_dal();
+            var subscription = sDal.GetSubscription(sid);
+            if (subscription != null&&user!=null)
+            {
+                //subsctiption.delete_user_id = user.id;
+                //subsctiption.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                sDal.SoftDelete(subscription, user.id);
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SUBSCRIPTION,
+                    oper_object_id = subscription.id,
+                    oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                    oper_description = sDal.AddValue(subscription),
+                    remark = "删除订阅",
+                });
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 批量删除订阅
+        /// </summary>
+        /// <param name="sids"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public bool DeleteSubsctiptions(string sids,long user_id)
+        {
+            var user = BLL.UserInfoBLL.GetUserInfo(user_id);
+            var dal = new crm_installed_product_dal();
+            if (!string.IsNullOrEmpty(sids))
+            {
+                try
+                {
+                    var idList = sids.Split(',');
+                    foreach (var id in idList)
+                    {
+                        DeleteSubsctiption(long.Parse(id), user_id);
+                    }
+                    return true;
+                }
+                catch (Exception)
+                {
+
+                    return false;
+                }
+              
+            }
+            return false;
+        }
+
 
     }
 }

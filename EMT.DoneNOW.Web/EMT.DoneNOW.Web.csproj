@@ -161,6 +161,8 @@
     <Content Include="Content\SysUserSecurityLevel.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
+    <Content Include="Content\WorkType.css" />
+    <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
     <Content Include="Contact\DeleteContact.aspx" />
@@ -197,6 +199,10 @@
     <Content Include="Images\Classification\target.png" />
     <Content Include="Images\Classification\tm.png" />
     <Content Include="Opportunity\CloseOpportunity.aspx" />
+    <Content Include="Opportunity\OpportunityLeadSource.aspx" />
+    <Content Include="Opportunity\OpportunityLossReason.aspx" />
+    <Content Include="Opportunity\OpportunityStage.aspx" />
+    <Content Include="Opportunity\OpportunityWinReasons.aspx" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
     <Content Include="Images\export.png" />
@@ -204,6 +210,7 @@
     <Content Include="QuoteTemplate\QuoteTemplateAppendixEdit.aspx" />
     <Content Include="QuoteTemplate\QuoteTemplatePropertiesEdit.aspx" />
     <Content Include="Images\classfication.png" />
+    <Content Include="Quote\QuoteAddAndUpdate.aspx" />
     <Content Include="Quote\QuoteClose.aspx" />
     <Content Include="Quote\QuoteLost.aspx" />
     <Content Include="Quote\QuotePreview.aspx" />
@@ -553,7 +560,8 @@
     <Content Include="QuoteTemplate\QuoteTemplateHeadEdit.aspx" />
     <Content Include="QuoteTemplate\QuoteTemplateTopEdit.aspx" />
     <Content Include="QuoteItem\QuoteItemAddAndUpdate.aspx" />
-    <Content Include="Quote\QuoteAddAndUpdate.aspx" />
+    <Content Include="SaleOrder\SaleOrderEdit.aspx" />
+    <Content Include="SaleOrder\SaleOrderView.aspx" />
     <Content Include="Scripts\bootstrap.min-3.3.4.js" />
     <Content Include="Opportunity\OpportunityAddAndEdit.aspx" />
     <Content Include="Scripts\Common\Address.js" />
@@ -622,17 +630,23 @@
     <Content Include="Common\SearchConditionFrame.aspx" />
     <Content Include="Common\SearchBodyFrame.aspx" />
     <Content Include="Common\SelectCallBack.aspx" />
+    <Content Include="Scripts\WorkType.js" />
     <Content Include="Site.Master" />
-    <Content Include="SysSetting\syscopy.aspx" />
+    <Content Include="SysSetting\AccountClass.aspx" />
+    <Content Include="SysSetting\ActionType.aspx" />
+    <Content Include="SysSetting\Suffixes.aspx" />
+    <Content Include="SysSetting\SysCompetitor.aspx" />
     <Content Include="SysSetting\SysDataPermission.aspx" />
     <Content Include="SysSetting\SysDepartment.aspx" />
     <Content Include="SysSetting\SysMarket.aspx" />
+    <Content Include="SysSetting\SysRegion.aspx" />
     <Content Include="SysSetting\SysRolesAdd.aspx" />
     <Content Include="SysSetting\SysTerritory.aspx" />
     <Content Include="SysSetting\SysUserAdd.aspx" />
     <Content Include="SysSetting\SysUserEdit.aspx" />
     <Content Include="SysSetting\SysUserSecurityLevel.aspx" />
     <Content Include="SysSetting\TerritortAddAccount.aspx" />
+    <Content Include="SysSetting\WorkType.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -756,6 +770,13 @@
     <Compile Include="Contact\EditContact.aspx.designer.cs">
       <DependentUpon>EditContact.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\ContractAdd.aspx.cs">
+      <DependentUpon>ContractAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractAdd.aspx.designer.cs">
+      <DependentUpon>ContractAdd.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -815,6 +836,34 @@
     </Compile>
     <Compile Include="Opportunity\OpportunityAddAndEdit.aspx.designer.cs">
       <DependentUpon>OpportunityAddAndEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityLeadSource.aspx.cs">
+      <DependentUpon>OpportunityLeadSource.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityLeadSource.aspx.designer.cs">
+      <DependentUpon>OpportunityLeadSource.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityLossReason.aspx.cs">
+      <DependentUpon>OpportunityLossReason.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityLossReason.aspx.designer.cs">
+      <DependentUpon>OpportunityLossReason.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityStage.aspx.cs">
+      <DependentUpon>OpportunityStage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityStage.aspx.designer.cs">
+      <DependentUpon>OpportunityStage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityWinReasons.aspx.cs">
+      <DependentUpon>OpportunityWinReasons.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\OpportunityWinReasons.aspx.designer.cs">
+      <DependentUpon>OpportunityWinReasons.aspx</DependentUpon>
     </Compile>
     <Compile Include="Opportunity\ViewOpportunity.aspx.cs">
       <DependentUpon>ViewOpportunity.aspx</DependentUpon>
@@ -964,6 +1013,20 @@
     <Compile Include="Quote\QuoteView.aspx.designer.cs">
       <DependentUpon>QuoteView.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SaleOrder\SaleOrderEdit.aspx.cs">
+      <DependentUpon>SaleOrderEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SaleOrder\SaleOrderEdit.aspx.designer.cs">
+      <DependentUpon>SaleOrderEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SaleOrder\SaleOrderView.aspx.cs">
+      <DependentUpon>SaleOrderView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SaleOrder\SaleOrderView.aspx.designer.cs">
+      <DependentUpon>SaleOrderView.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -978,12 +1041,33 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
-    <Compile Include="SysSetting\syscopy.aspx.cs">
-      <DependentUpon>syscopy.aspx</DependentUpon>
+    <Compile Include="SysSetting\AccountClass.aspx.cs">
+      <DependentUpon>AccountClass.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SysSetting\syscopy.aspx.designer.cs">
-      <DependentUpon>syscopy.aspx</DependentUpon>
+    <Compile Include="SysSetting\AccountClass.aspx.designer.cs">
+      <DependentUpon>AccountClass.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\ActionType.aspx.cs">
+      <DependentUpon>ActionType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ActionType.aspx.designer.cs">
+      <DependentUpon>ActionType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\Suffixes.aspx.cs">
+      <DependentUpon>Suffixes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\Suffixes.aspx.designer.cs">
+      <DependentUpon>Suffixes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysCompetitor.aspx.cs">
+      <DependentUpon>SysCompetitor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysCompetitor.aspx.designer.cs">
+      <DependentUpon>SysCompetitor.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\SysDataPermission.aspx.cs">
       <DependentUpon>SysDataPermission.aspx</DependentUpon>
@@ -1005,6 +1089,13 @@
     </Compile>
     <Compile Include="SysSetting\SysMarket.aspx.designer.cs">
       <DependentUpon>SysMarket.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysRegion.aspx.cs">
+      <DependentUpon>SysRegion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysRegion.aspx.designer.cs">
+      <DependentUpon>SysRegion.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\SysRolesAdd.aspx.cs">
       <DependentUpon>SysRolesAdd.aspx</DependentUpon>
@@ -1048,6 +1139,13 @@
     <Compile Include="SysSetting\TerritortAddAccount.aspx.designer.cs">
       <DependentUpon>TerritortAddAccount.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\WorkType.aspx.cs">
+      <DependentUpon>WorkType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\WorkType.aspx.designer.cs">
+      <DependentUpon>WorkType.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Test.ashx.cs">
       <DependentUpon>Test.ashx</DependentUpon>
     </Compile>
@@ -1078,11 +1176,17 @@
     <Compile Include="Tools\RoleAjax.ashx.cs">
       <DependentUpon>RoleAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\SaleOrderAjax.ashx.cs">
+      <DependentUpon>SaleOrderAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\SecurityLevelAjax.ashx.cs">
       <DependentUpon>SecurityLevelAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\ServiceAjax.ashx.cs">
       <DependentUpon>ServiceAjax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\SubscriptionAjax.ashx.cs">
+      <DependentUpon>SubscriptionAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\TerritoryAjax.ashx.cs">
       <DependentUpon>TerritoryAjax.ashx</DependentUpon>
@@ -1113,7 +1217,9 @@
     <Content Include="Tools\QuoteTemplateAjax.ashx" />
     <Content Include="Tools\SecurityLevelAjax.ashx" />
     <Content Include="Tools\GeneralAjax.ashx" />
+    <Content Include="Tools\SubscriptionAjax.ashx" />
     <Content Include="Tools\TerritoryAjax.ashx" />
+    <Content Include="Tools\SaleOrderAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

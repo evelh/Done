@@ -42,7 +42,7 @@ namespace EMT.DoneNOW.Web
             var user = context.Session["dn_session_user_info"] as sys_user;
             if (user != null)
             {
-                if (new SysTerritoryBLL().DeleteAccount_Territory(aid, tid))
+                if (new SysTerritoryBLL().DeleteAccount_Territory(aid, tid,user.id))
                 {
                     context.Response.Write("yes");
                 }

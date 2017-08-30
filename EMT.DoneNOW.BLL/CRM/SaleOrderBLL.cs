@@ -1,0 +1,127 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using EMT.DoneNOW.DAL;
+using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DTO;
+using Newtonsoft.Json.Linq;
+using static EMT.DoneNOW.DTO.DicEnum;
+using System.Text.RegularExpressions;
+using EMT.DoneNOW.BLL.CRM;
+
+
+namespace EMT.DoneNOW.BLL.CRM
+{
+    public class SaleOrderBLL
+    {
+        private crm_sales_order_dal _dal = new crm_sales_order_dal();
+        /// <summary>
+        /// 获取到销售订单相关字典表
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, object> GetField()
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("sales_order_status", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.SALES_ORDER_STATUS))); // 销售订单状态
+            dic.Add("sys_resource", new sys_resource_dal().GetDictionary(true));  // 负责人
+            dic.Add("country", new DistrictBLL().GetCountryList()); // 国家
+            return dic;
+        }
+
+        /// <summary>
+        /// 修改销售订单
+        /// </summary>
+        /// <param name="sale_order"></param>
+        /// <param name="udfValue"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE EditSaleOrder(crm_sales_order sale_order, List<UserDefinedFieldValue> udfValue, long user_id)
+        {
+            if (sale_order.status_id == 0 || sale_order.contact_id == 0 || sale_order.owner_resource_id == 0)
+            {
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+            if (sale_order.begin_date.ToString("yyyy-MM-dd") == "0001-01-01" || sale_order.end_date == null || ((DateTime)sale_order.end_date).ToString("yyyy-MM-dd") == "0001-01-01")
+            {
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+            var user = UserInfoBLL.GetUserInfo(user_id);
+
+            if (user == null)
+                return ERROR_CODE.USER_NOT_FIND;
+
+            var old_sale_order = new crm_sales_order_dal().GetSingleSalesOrderByWhere($" and id= {sale_order.id}");
+
+            sale_order.oid = old_sale_order.oid;
+            sale_order.opportunity_id = old_sale_order.opportunity_id;
+            sale_order.create_user_id = old_sale_order.create_user_id;
+            sale_order.create_time = old_sale_order.create_time;
+            sale_order.update_user_id = user.id;
+            sale_order.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            _dal.Update(sale_order);
+
+            new sys_oper_log_dal().Insert(new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = user_id,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SALE_ORDER,
+                oper_object_id = sale_order.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.CompareValue(old_sale_order, sale_order),
+                remark = "修改销售订单"
+            });
+
+
+
+            // 销售订单自定义
+
+            var udf_sales_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.SALES);
+            new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.SALES,  udf_sales_list, sale_order.id, udfValue, user,OPER_LOG_OBJ_CATE.SALE_ORDER);
+
+
+            return ERROR_CODE.SUCCESS;
+        }
+
+        /// <summary>
+        /// 更改销售订单的状态
+        /// </summary>
+        /// <returns></returns>
+        public bool UpdateSaleOrderStatus(long sid,int status_id,long user_id)
+        {
+            var sale = _dal.GetSingleSale(sid);
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (sale != null&&user!=null)
+            {
+                sale.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                sale.update_user_id = user.id;
+                sale.status_id = status_id;
+
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user_id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SALE_ORDER,
+                    oper_object_id = sale.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_description = _dal.CompareValue(_dal.GetSingleSale(sid), sale),
+                    remark = "修改销售订单状态"
+                });
+                _dal.Update(sale);
+                return true;
+            }
+
+            return false;
+        }
+
+
+
+    }
+}

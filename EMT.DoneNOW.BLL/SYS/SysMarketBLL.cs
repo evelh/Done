@@ -27,5 +27,12 @@ namespace EMT.DoneNOW.BLL
             _dal.Insert(data);
             return ERROR_CODE.SUCCESS;
         }
+        public ERROR_CODE UpdateMarket(d_general data, long user_id)
+        {
+            data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.update_user_id = user_id;
+            _dal.Update(data);
+            return ERROR_CODE.SUCCESS;
+        }
     }
 }

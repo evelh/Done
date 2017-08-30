@@ -295,12 +295,30 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "替换", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "激活当前记录", click_function = "ActiveIProduct()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "激活选中记录", click_function = "ActiveIProducts()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活当前记录", click_function = "NoActiveIProduct()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活选中记录", click_function = "NoActiveIProducts()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活当前记录", click_function = "",id="ActiveThis" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活选中记录", click_function = "", id = "ActiveChoose" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活当前记录", click_function = "", id = "NoActiveThis" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活选中记录", click_function = "", id = "NoActiveChoose" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除当前配置项", click_function = "DeleteIProduct()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除选中配置项", click_function = "DeleteIProducts()" });
+                    break;
+                case (long)QueryType.Subscription:
+
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "创建订阅副本", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "创建选中订阅副本", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "取消订阅", click_function = "", id = "CancelSubscription" });
+                    contextMenu.Add(new PageContextMenuDto { text = "取消选中订阅", click_function = "", id = "CancelSubscriptions" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活订阅", click_function = "", id = "ActiveSubscription" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活订阅", click_function = "", id = "NoActiveSubscription" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除当前订阅", click_function = "DeleteSubscription()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除选中订阅", id = "DeleteSubscriptions" });
+                    break;
+                case (long)QueryType.SaleOrder:
+                    contextMenu.Add(new PageContextMenuDto { text = "修改销售订单", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "NewNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增待办", click_function = "NewTodo()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "取消销售订单", click_function = "CancelSaleOrder()" });
                     break;
                 default:
                     break;

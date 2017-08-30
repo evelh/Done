@@ -59,6 +59,12 @@ namespace EMT.DoneNOW.Web
                     var delete_IProductIds = context.Request.QueryString["iProduct_ids"];
                     DeleteIProducts(context,delete_IProductIds);
                     break;
+                case "property":
+                    var property_account_id = context.Request.QueryString["iProduct_id"];
+                    var propertyName = context.Request.QueryString["property"];
+                    GetIProductProperty(context, long.Parse(property_account_id), propertyName);
+                    break;
+
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;
@@ -129,7 +135,8 @@ namespace EMT.DoneNOW.Web
         public void GetVendorInfo(HttpContext context, long product_id)
         {
             var vendor = new ivt_product_dal().FindSignleBySql<ivt_product>($"SELECT a.name as product_name,v.vendor_product_no as vendor_product_no from crm_account a INNER join ivt_product_vendor v on a.id = v.vendor_id where product_id={product_id}");
-            if (vendor!= null){
+            if (vendor!= null)
+            {
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new {name=vendor.product_name, vendor_product_no = vendor.vendor_product_no }));
             }
 
@@ -178,6 +185,20 @@ namespace EMT.DoneNOW.Web
             var res = context.Session["dn_session_user_info"] as sys_user;
             var result = new InstalledProductBLL().DeleteIProducts(ids, res.id);
             context.Response.Write(result);
+        }
+        /// <summary>
+        /// 根据属性名称获取到该类的value
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="iProduct_id"></param>
+        /// <param name="propertyName"></param>
+        public void GetIProductProperty(HttpContext context, long iProduct_id, string propertyName)
+        {
+            var iProduct = new crm_installed_product_dal().GetInstalledProduct(iProduct_id);
+            if (iProduct != null)
+            {
+                context.Response.Write(BaseDAL<Core.crm_account>.GetObjectPropertyValue(iProduct, propertyName));
+            }
         }
 
 

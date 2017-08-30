@@ -65,6 +65,10 @@
     <Compile Include="CRM\crm_sales_order.cs" />
     <Compile Include="CRM\crm_subscription.cs" />
     <Compile Include="CRM\crm_subscription_period.cs" />
+    <Compile Include="CTT\ctt_contract.cs" />
+    <Compile Include="CTT\ctt_contract_block.cs" />
+    <Compile Include="CTT\ctt_contract_cost.cs" />
+    <Compile Include="CTT\ctt_contract_cost_default.cs" />
     <Compile Include="Dictionary\d_tax_region_cate.cs" />
     <Compile Include="Dictionary\d_tax_region_cate_tax.cs" />
     <Compile Include="Dictionary\d_time_zone.cs" />
@@ -97,6 +101,7 @@
     <Compile Include="SYS\sys_notify_tmpl.cs" />
     <Compile Include="SYS\sys_oper_log.cs" />
     <Compile Include="SYS\sys_query_type_user.cs" />
+    <Compile Include="SYS\sys_resource_territory.cs" />
     <Compile Include="SYS\sys_role.cs" />
     <Compile Include="SYS\sys_system_setting.cs" />
     <Compile Include="SYS\sys_udf_field.cs" />

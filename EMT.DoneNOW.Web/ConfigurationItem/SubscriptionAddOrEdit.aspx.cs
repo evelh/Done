@@ -19,6 +19,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
         protected crm_subscription subscription = null;
         protected crm_installed_product iProduct = null;
         protected Dictionary<string, object> dic = new InstalledProductBLL().GetField();
+        protected List<crm_subscription_period> subPeriodList = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -43,7 +44,9 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     subscription = new crm_subscription_dal().GetSubscription(long.Parse(id));
                     iProduct = new crm_installed_product_dal().GetInstalledProduct(subscription.installed_product_id);
                     period_type_id.SelectedValue = subscription.period_type_id.ToString();
+                    // period_type_id.Enabled = false;
                     isAdd = false;
+                    subPeriodList = new crm_subscription_period_dal().GetSubPeriodByWhere($" and subscription_id = {subscription.id}");
                 }
                 if (iProduct == null)
                 {

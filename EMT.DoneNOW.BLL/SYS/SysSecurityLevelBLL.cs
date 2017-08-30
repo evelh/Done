@@ -46,25 +46,41 @@ namespace EMT.DoneNOW.BLL
             Dictionary<int, string> dic = new Dictionary<int, string>();
             return new d_general_dal().FindListBySql($"select * from d_general where parent_id ={parent_id}").ToDictionary(d => d.id, d => d.name);
         }
-        public Dictionary<string, object> GetField()
-        {
-            Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("HAVE_NONE", GetDownList((int)DicEnum.LIMIT_TYPE.HAVE_NONE));                       //有无
-            dic.Add("ALL_PART_MINE_NONE",GetDownList((int)DicEnum.LIMIT_TYPE.ALL_PART_MINE_NONE));      // 全部部分我的无
-            dic.Add("ALL_MINE_NONE", GetDownList((int)DicEnum.LIMIT_TYPE.ALL_MINE_NONE));               // 全部无
-            dic.Add("ALL_NONE", GetDownList((int)DicEnum.LIMIT_TYPE.ALL_NONE));                         // task
-            dic.Add("TASK", GetDownList((int)DicEnum.LIMIT_TYPE.TASK));                                 // ticket
-            dic.Add("CONTACT", GetDownList((int)DicEnum.LIMIT_TYPE.CONTACT));                           // contact
-            dic.Add("NOT_REQUIRE", GetDownList((int)DicEnum.LIMIT_TYPE.NOT_REQUIRE));                   // 无需权限
-            return dic;
-        }
+        //public Dictionary<string, object> GetField()
+        //{
+        //    Dictionary<string, object> dic = new Dictionary<string, object>();
+        //    dic.Add("HAVE_NONE", GetDownList((int)DicEnum.LIMIT_TYPE.HAVE_NONE));                       //有无
+        //    dic.Add("ALL_PART_MINE_NONE",GetDownList((int)DicEnum.LIMIT_TYPE.ALL_PART_MINE_NONE));      // 全部部分我的无
+        //    dic.Add("ALL_MINE_NONE", GetDownList((int)DicEnum.LIMIT_TYPE.ALL_MINE_NONE));               // 全部无
+        //    dic.Add("ALL_NONE", GetDownList((int)DicEnum.LIMIT_TYPE.ALL_NONE));                         // task
+        //    dic.Add("TASK", GetDownList((int)DicEnum.LIMIT_TYPE.TASK));                                 // ticket
+        //    dic.Add("CONTACT", GetDownList((int)DicEnum.LIMIT_TYPE.CONTACT));                           // contact
+        //    dic.Add("NOT_REQUIRE", GetDownList((int)DicEnum.LIMIT_TYPE.NOT_REQUIRE));                   // 无需权限
+        //    return dic;
+        //}
+        /// <summary>
+        /// 通过权限等级id获取，此权限等级下所有的员工信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public List<sys_resource> GetResourceList(int id) {
-            return new sys_resource_dal().FindListBySql<sys_resource>($"SELECT `name`,is_active  FROM  sys_resource WHERE	security_level_id ={id} ORDER BY `name` ").ToList();
+            return new sys_resource_dal().FindListBySql<sys_resource>($"SELECT `name`,is_active  FROM  sys_resource WHERE	security_level_id ={id} and delete_time=0 ORDER BY `name` ").ToList();
         }
+        /// <summary>
+        /// 通过id,范回一个权限等级对象
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public sys_security_level GetSecurityLevel(long id)
         {
             return new sys_security_level_dal().FindById(id);
         }
+        /// <summary>
+        /// 保存权限等级，主要使用更新操作
+        /// </summary>
+        /// <param name="sqt"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
         public ERROR_CODE Save(sys_security_level_limit sqt, long user_id)
         {
             sys_security_level_limit_dal sslld = new sys_security_level_limit_dal();

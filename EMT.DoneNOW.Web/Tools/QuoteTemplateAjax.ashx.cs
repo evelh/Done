@@ -35,6 +35,9 @@ namespace EMT.DoneNOW.Web
                     case "noactive":
                         NOActiveQuoteTemplate(context, long.Parse(QuoteTemp_id));
                         break;
+                    case "copy":
+                        CopyQuoteTemplate(context, long.Parse(QuoteTemp_id));
+                        break;
                     default:
                         break;
                 }
@@ -60,17 +63,39 @@ namespace EMT.DoneNOW.Web
                 }
             }
         }
+        public void CopyQuoteTemplate(HttpContext context, long QuoteTemp_id)
+        {
+            var user = context.Session["dn_session_user_info"] as sys_user;
+            if (user != null)
+            {
+                if (new QuoteTemplateBLL().copy_quote_template(user.id, ref QuoteTemp_id) == DTO.ERROR_CODE.SUCCESS)
+                {
+                    context.Response.Write("复制报价模板成功！");
+                    //跳转到新增界面  id=QuoteTemp_id;
+                    context.Response.Write("<script>alert('复制安全等级成功！');window.location.href='.aspx?id=copy_id'</script>");
+                }
+                else
+                {
+                    context.Response.Write("复制报价模板失败！");
+                }
+            }
+        }
         public void DefaultQuoteTemplate(HttpContext context, long QuoteTemp_id)
         {
             var user = context.Session["dn_session_user_info"] as sys_user;
             if (user != null)
             {
-                if (new QuoteTemplateBLL().default_quote_template(user.id, QuoteTemp_id))
+                var result = new QuoteTemplateBLL().default_quote_template(user.id, QuoteTemp_id);
+                if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("设为默认报价模板成功！");
                 }
                 else
+               if (result == DTO.ERROR_CODE.DEFAULT)
                 {
+                    context.Response.Write("已经是默认状态，无需再操作！");
+                }
+                else {
                     context.Response.Write("设为默认报价模板失败！");
                 }
             }
@@ -80,12 +105,16 @@ namespace EMT.DoneNOW.Web
             var user = context.Session["dn_session_user_info"] as sys_user;
             if (user != null)
             {
-                if (new QuoteTemplateBLL().active_quote_template(user.id, QuoteTemp_id))
+                var result = new QuoteTemplateBLL().active_quote_template(user.id, QuoteTemp_id);
+                if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("设为激活状态报价模板成功！");
                 }
-                else
+                else if (result == DTO.ERROR_CODE.ACTIVATION)
                 {
+                    context.Response.Write("已经是激活状态，无需再操作！");
+                }
+                else {
                     context.Response.Write("设为激活状态报价模板失败！");
                 }
             }
@@ -95,12 +124,16 @@ namespace EMT.DoneNOW.Web
             var user = context.Session["dn_session_user_info"] as sys_user;
             if (user != null)
             {
-                if (new QuoteTemplateBLL().no_active_quote_template(user.id, QuoteTemp_id))
+                var result = new QuoteTemplateBLL().no_active_quote_template(user.id, QuoteTemp_id);
+                if (result==DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("设为失活状态报价模板成功！");
                 }
-                else
+                else if(result==DTO.ERROR_CODE.NO_ACTIVATION)
                 {
+                    context.Response.Write("已经是失活状态，无需再操作！");
+                }
+                else {
                     context.Response.Write("设为失活状态报价模板失败！");
                 }
             }

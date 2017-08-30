@@ -1,0 +1,29 @@
+$("#SaveAndCloneButton").on("mouseover",function(){
+    $("#SaveAndCloneButton").css("background","#fff");
+});
+$("#SaveAndCloneButton").on("mouseout",function(){
+    $("#SaveAndCloneButton").css("background","#f0f0f0");
+});
+$("#SaveAndNewButton").on("mouseover",function(){
+    $("#SaveAndNewButton").css("background","#fff");
+});
+$("#SaveAndNewButton").on("mouseout",function(){
+    $("#SaveAndNewButton").css("background","#f0f0f0");
+});
+$("#CancelButton").on("mouseover",function(){
+    $("#CancelButton").css("background","#fff");
+});
+$("#CancelButton").on("mouseout",function(){
+    $("#CancelButton").css("background","#f0f0f0");
+});
+$("input[name='BillingMethod']").on("click",function(){
+    $(this).parent().parent().parent().parent().siblings().find("input[type='text']").attr("disabled",true);
+    $(this).parent().parent().parent().next().find("input[type='text']").attr("disabled",false);
+});
+$("input[name='neverBillLessThanCheckBox:ATCheckBox']").on("click",function(){
+    if($(this).is(':checked')){
+        $(this).parent().parent().parent().next().find("input[type='text']").attr("disabled",false);
+    }else{
+        $(this).parent().parent().parent().next().find("input[type='text']").attr("disabled",true);
+    }
+});

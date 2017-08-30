@@ -17,18 +17,43 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<crm_account> GetAccountList(long id) {            
-            return new crm_account_dal().FindListBySql<crm_account>($"select a.name,a.id from crm_account a,crm_account_territory b where a.id=b.account_id  and a.delete_time=0 and b.territory_id={id}").ToList();
+        public List<sys_resource> GetAccountList(long id) {            
+            return new sys_resource_dal().FindListBySql<sys_resource>($"select b.name,b.id from sys_resource_territory a,sys_resource b where a.resource_id=b.id  and a.delete_time=0  and b.delete_time=0 and a.territory_id={id}").ToList();
         }
-        public List<crm_account> GetAccount(long id)
+        /// <summary>
+        ///  根据地域的id，查找不属于该地域的员工信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<sys_resource> GetAccount(long id)
         {
-            return new crm_account_dal().FindListBySql<crm_account>($"select name,id from crm_account  where id not in (SELECT account_id from crm_account_territory where territory_id={id}) and delete_time=0 ").ToList();
+            return new sys_resource_dal().FindListBySql<sys_resource>($"select id,`name` from sys_resource where id not in(select resource_id from sys_resource_territory where territory_id={id} and delete_time=0 ) and delete_time=0").ToList();
         }
 
-
-        public ERROR_CODE Insert(crm_account_territory cat,long user_id) {
+        /// <summary>
+        /// 获取员工对应的地域列表
+        /// </summary>
+        /// <param name="resourceId"></param>
+        /// <returns></returns>
+        public List<sys_resource_territory> GetTerritoryByResource(long resourceId)
+        {
+            return new sys_resource_territory_dal().GetListByResourceId(resourceId);
+        }
+        
+        /// <summary>
+        /// 新增员工和地域之间的关联记录
+        /// </summary>
+        /// <param name="cat"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE Insert(sys_resource_territory cat,long user_id) {
             cat.id = (int)_dal.GetNextIdCom();
-            new crm_account_territory_dal().Insert(cat);
+            //不得插入重复数据
+           var kk= new sys_resource_territory_dal().FindSignleBySql<sys_resource_territory>($"select * from sys_resource_territory where territory_id={cat.territory_id} and resource_id={cat.resource_id} and delete_time=0");
+            if (kk != null) {
+                return ERROR_CODE.EXIST;
+            }
+            new sys_resource_territory_dal().Insert(cat);
             return ERROR_CODE.SUCCESS;
         }
 
@@ -70,6 +95,10 @@ namespace EMT.DoneNOW.BLL
             }
             return ERROR_CODE.SUCCESS;
         }
+        /// <summary>
+        /// 获取区域
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, object> GetRegionDownList()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
@@ -77,16 +106,18 @@ namespace EMT.DoneNOW.BLL
             return dic;
         }
         /// <summary>
-        /// 删除crm_account_territory表中的客户和地域的关系
+        /// 删除sys_resource_territory中的员工和地域的关系
         /// </summary>
         /// <param name="aid"></param>
         /// <param name="tid"></param>
         /// <returns></returns>
-        public bool DeleteAccount_Territory(long aid,long tid) {
-            crm_account_territory_dal cat_dal= new crm_account_territory_dal();
-           var i= cat_dal.FindSignleBySql<crm_account_territory>($"select * from crm_account_territory where account_id={aid} and territory_id={tid}");
+        public bool DeleteAccount_Territory(long aid,long tid,long user_id) {
+            sys_resource_territory_dal cat_dal= new sys_resource_territory_dal();
+           var i= cat_dal.FindSignleBySql<sys_resource_territory>($"select * from sys_resource_territory where resource_id={aid} and territory_id={tid} and delete_time=0");
             if (i != null) {
-                if (cat_dal.Delete(i)) {
+                i.delete_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                i.delete_user_id = user_id;
+                if (cat_dal.Update(i)) {
                     return true;
                 }
             }

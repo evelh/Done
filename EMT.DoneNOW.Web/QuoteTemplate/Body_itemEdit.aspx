@@ -136,7 +136,8 @@
         $("#OkButton1").on("click", function () {
             var html = ue.getContent();
             console.log(html);
-            window.returnValue = html;
+            window.opener.document.getElementById("body_item").value = html;
+            window.opener.item_back();
             window.close();
             $("#data").val($('<div/>').text(html).html());
             var txt = ue.getContentTxt();

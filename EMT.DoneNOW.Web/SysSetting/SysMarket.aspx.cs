@@ -12,7 +12,7 @@ namespace EMT.DoneNOW.Web.SysSetting
     public partial class SysMarket :BasePage
     {
         private int id = 0;
-        protected d_general d = new d_general();
+        protected d_general mark = new d_general();
         protected SysMarketBLL smbll = new SysMarketBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,17 +20,17 @@ namespace EMT.DoneNOW.Web.SysSetting
             if (!IsPostBack) {
                 if (id > 0)//修改
                 {
-                    var a = new GeneralBLL().GetSingleGeneral(id);
-                    if (a == null)
+                    mark= new GeneralBLL().GetSingleGeneral(id);
+                    if (mark == null)
                     {
                         Response.Write("<script>alert('获取市场相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
                     }
                     else
                     {
-                        this.Market_Name.Text = a.name.ToString();
-                        if (a.description != null && !string.IsNullOrEmpty(a.description.ToString()))
+                        this.Market_Name.Text = mark.name.ToString();
+                        if (mark.remark != null && !string.IsNullOrEmpty(mark.remark.ToString()))
                         {
-                            this.Market_Description.Text = a.description.ToString();
+                            this.Market_Description.Text = mark.remark.ToString();
                         }
                     }
                 }
@@ -58,7 +58,8 @@ namespace EMT.DoneNOW.Web.SysSetting
         {
             if (save_deal())
             {
-                Response.Redirect("SysMarket.aspx");
+               // Response.Redirect("SysMarket.aspx");
+                Response.Write("<script>alert('市场添加失败！');window.location.href = 'SysMarket.aspx';</script>");
             }
             else
             {
@@ -72,15 +73,28 @@ namespace EMT.DoneNOW.Web.SysSetting
         }
         private bool save_deal()
         {
-            d.name = this.Market_Name.Text.Trim().ToString();
+            if (id > 0) {
+                mark = new GeneralBLL().GetSingleGeneral(id);
+            }
+            mark.name = this.Market_Name.Text.Trim().ToString();
             if (!string.IsNullOrEmpty(this.Market_Description.Text.Trim().ToString()))
             {
-                d.description = this.Market_Description.Text.Trim().ToString();
+                mark.remark = this.Market_Description.Text.Trim().ToString();
             }
-            var result = smbll.InsertMarket(d, GetLoginUserId());
-            if (result == DTO.ERROR_CODE.SUCCESS)
+            if (id > 0)
             {
-                return true;
+                var result = smbll.UpdateMarket(mark, GetLoginUserId());
+                if (result == DTO.ERROR_CODE.SUCCESS)
+                {
+                    return true;
+                }
+            }
+            else {
+                var result = smbll.InsertMarket(mark, GetLoginUserId());
+                if (result == DTO.ERROR_CODE.SUCCESS)
+                {
+                    return true;
+                }
             }
             return false;
         }

@@ -15,16 +15,15 @@ namespace EMT.DoneNOW.Web
     public partial class SysUserEdit : BasePage
     {
         protected string avatarPath = "../Images/pop.jpg";
-        public long id = 0;
-        public string op = string.Empty;
+        protected long id = 0;
+        protected string op = string.Empty;
         private SysUserAddDto param = new SysUserAddDto();
         private SysUserAddDto paramcopy = new SysUserAddDto();
         private UserResourceBLL urbll = new UserResourceBLL();
-        public bool saveop=false;//保存状态
+        private bool saveop=false;//保存状态
        protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
-            id = 840;
             if (Request.QueryString["op"]!=null)
             op = Request.QueryString["op"].ToString();
             if (!IsPostBack)
@@ -79,8 +78,8 @@ namespace EMT.DoneNOW.Web
                         this.ACTIVE.Checked = true;
                     if (resourcedata.security_level_id!=null&&!string.IsNullOrEmpty(resourcedata.security_level_id.ToString()))//权限级别
                         this.Security_Level.SelectedValue = resourcedata.security_level_id.ToString();
-                    this.password.Text = userdata.password.ToString();
-                    this.password2.Text= userdata.password.ToString();
+                    //this.password.Text = userdata.password.ToString();
+                    //this.password2.Text= userdata.password.ToString();
                     if (resourcedata.can_edit_skills > 0)//编辑技能
                         this.can_edit_skills.Checked = true;
                     if (resourcedata.can_manage_kb_articles > 0)//编辑或删除知识库文章
@@ -146,10 +145,10 @@ namespace EMT.DoneNOW.Web
             NameSuffix.DataBind();
             NameSuffix.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             //Prefix前缀
-            Prefix.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-            Prefix.Items.Insert(1, new ListItem() { Value = "1", Text = "Mr." });
-            Prefix.Items.Insert(2, new ListItem() { Value = "2", Text = "Mrs." });
-            Prefix.Items.Insert(3, new ListItem() { Value = "3", Text = "Ms." });
+            //Prefix.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            //Prefix.Items.Insert(1, new ListItem() { Value = "1", Text = "Mr." });
+            //Prefix.Items.Insert(2, new ListItem() { Value = "2", Text = "Mrs." });
+            //Prefix.Items.Insert(3, new ListItem() { Value = "3", Text = "Ms." });
             //主要位置  location_id
 
             this.Position.DataTextField = "name";
@@ -368,7 +367,10 @@ namespace EMT.DoneNOW.Web
                 param.sys_res.suffix_id = Convert.ToInt32(this.NameSuffix.SelectedValue);
             //新增
             param.sys_user = AssembleModel<sys_user>();
-
+            //密码
+            if (!string.IsNullOrEmpty(this.pass_word.Text.ToString())) {
+                param.sys_user.password = this.pass_word.Text.ToString();
+            }
             param.sys_user.status_id = (int)USER_STATUS.NORMAL;
             param.sys_user.email = param.sys_res.email;
             param.sys_user.mobile_phone = param.sys_res.mobile_phone;
