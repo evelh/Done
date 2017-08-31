@@ -79,6 +79,11 @@ namespace EMT.DoneNOW.Web.SysSetting
                 {
                     Response.Write("<script>alert('部门信息修改成功！');window.close();self.opener.location.reload();</script>");
                 }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("../Login.aspx");
+                }
             }
             else {
                 var result = new SysDepartmentBLL().Insert(sd, GetLoginUserId());
@@ -86,6 +91,15 @@ namespace EMT.DoneNOW.Web.SysSetting
                 if (result == ERROR_CODE.SUCCESS)
                 {
                     Response.Write("<script>alert('部门信息保存成功！');window.close();self.opener.location.reload();</script>");
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("../Login.aspx");
+                }
+                else if (result == DTO.ERROR_CODE.EXIST)
+                {
+                    Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
                 }
             }          
         }

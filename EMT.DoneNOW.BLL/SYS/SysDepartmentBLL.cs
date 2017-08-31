@@ -38,6 +38,11 @@ namespace EMT.DoneNOW.BLL
             return "";
         }
         public ERROR_CODE Insert(sys_department sd,long user_id) {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
             sd.id= (int)(_dal.GetNextIdCom());
             sd.create_time=sd.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             sd.create_user_id = user_id;
@@ -47,6 +52,11 @@ namespace EMT.DoneNOW.BLL
         }
         public ERROR_CODE Update(sys_department sd, long user_id)
         {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
             sd.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             sd.update_user_id = user_id;
             sd.cate_id = (int)DEPARTMENT_CATE.DEPARTMENT;
@@ -55,12 +65,21 @@ namespace EMT.DoneNOW.BLL
             }
             return ERROR_CODE.SUCCESS;
         }
-        public ERROR_CODE Delete(sys_department sd, long user_id)
+        public ERROR_CODE Delete(long id, long user_id)
         {
-            sd.delete_user_id= user_id;
-            sd.delete_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            sd.cate_id = (int)DEPARTMENT_CATE.DEPARTMENT;
-            if (!_dal.Update(sd))
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            var data = _dal.FindById(id);
+            if (data == null)
+            {
+                return ERROR_CODE.ERROR;
+            }
+            data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.delete_user_id = user_id;
+            if (!_dal.Update(data))
             {
                 return ERROR_CODE.ERROR;
             }

@@ -24,6 +24,31 @@
     line-height: 28px;
     text-align:center;
 }
+    .RightClickMenu,.LeftClickMenu {
+    padding: 16px;
+    background-color: #FFF;
+    border: solid 1px #CCC;
+    cursor: pointer;
+    z-index: 999;
+    position: absolute;
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.33);
+}
+.RightClickMenuItem {
+    min-height: 24px;
+    min-width: 100px;
+}
+.RightClickMenuItemIcon {
+    padding: 1px 5px 1px 5px;
+    width: 16px;
+}
+.RightClickMenuItemTable tr:first-child td:last-child {
+    white-space: nowrap;
+}
+.RightClickMenuItemLiveLinks>span, .RightClickMenuItemText>span {
+    font-size: 12px;
+    font-weight: normal;
+    color: #4F4F4F;
+}
 </style>
 <body>
     <form id="form1">
@@ -45,11 +70,64 @@
             </div>
         </div>
         <div class="contentboby">
+            <div class="RightClickMenu" style="left: 10px;top: 36px;display:none;">
+                <div class="RightClickMenuItem">
+                    <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
+                        <tbody>
+                            <tr>
+                                <td class="RightClickMenuItemText">
+                                    <span class="lblNormalClass">To-Do</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="RightClickMenuItem">
+                    <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
+                        <tbody>
+                        <tr>
+                            <td class="RightClickMenuItemText">
+                                <span class="lblNormalClass">Note</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="RightClickMenuItem">
+                    <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
+                        <tbody>
+                        <tr>
+                            <td class="RightClickMenuItemText">
+                                <span class="lblNormalClass">Ticket</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="RightClickMenuItem">
+                    <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
+                        <tbody>
+                        <tr>
+                            <td class="RightClickMenuItemText">
+                                <span class="lblNormalClass">Attachment</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="contenttitle clear" style="position: fixed; border-bottom:1px solid #e8e8fa; left:0; top: 0; background: #fff; width: 100%;">
 			<ul class="clear fl">
-                <%if(!string.IsNullOrEmpty(addBtn)){ %>
+                <%if(!string.IsNullOrEmpty(addBtn)){
+                        if (addBtn.Equals("新增合同")) {
+                            %>
+                <li id="ToolsButton"><i style="background-image: url(../Images/new.png);"></i><span style="margin:0;"><%=this.addBtn %></span><img src="../Images/dropdown.png" /></li>
+                <%
+                        }
+                        else { 
+                        %>
 				<li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
-                <%} %>
+                <%}} %>
 				<li><i style="background-image: url(../Images/print.png);"></i></li>
 				<li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
 				<li><i style="background-image: url(../Images/export.png);"></i></li>
@@ -258,7 +336,7 @@
             OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '<%=EMT.DoneNOW.DTO.OpenWindow.CompanyView %>');
         }
         function AddQuote() {
-            OpenWindow("../Quote/QuoteAddAndUpdate.aspx", '<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>');
+            window.open("../Quote/QuoteAddAndUpdate.aspx",'<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>' , 'left=0,top=0,location=no,status=no,width=750,height=750', false);
         }
         function DeleteOpp() {
             $.ajax({
@@ -875,6 +953,36 @@
                 }
             })
         }
+        <%}else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contract){%>
+        function Add(type) {
+            window.open("../Contract/ContractAdd.aspx?type=" + type, '<%=EMT.DoneNOW.DTO.OpenWindow.ContractAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        $("#ToolsButton").on("mouseover", function () {
+            $("#ToolsButton").css("background", "#fff");
+            $(this).css("border-bottom", "none");
+            $(".RightClickMenu").show();
+        });
+        $("#ToolsButton").on("mouseout", function () {
+            $("#ToolsButton").css("background", "#f0f0f0");
+            $(this).css("border-bottom", "1px solid #BCBCBC");
+            $(".RightClickMenu").hide();
+        });
+        $(".RightClickMenu").on("mouseover", function () {
+            $("#ToolsButton").css("background", "#fff");
+            $("#ToolsButton").css("border-bottom", "none");
+            $(this).show();
+        });
+        $(".RightClickMenu").on("mouseout", function () {
+            $("#ToolsButton").css("background", "#f0f0f0");
+            $("#ToolsButton").css("border-bottom", "1px solid #BCBCBC");
+            $(this).hide();
+        });
+        $(".RightClickMenuItem").on("mouseover", function () {
+            $(this).css("background", "#E9F0F8");
+        });
+        $(".RightClickMenuItem").on("mouseout", function () {
+            $(this).css("background", "#FFF");
+        });
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

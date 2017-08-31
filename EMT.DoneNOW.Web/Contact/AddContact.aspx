@@ -41,7 +41,7 @@
                 <li>自助服务台</li>
             </ul>
         </div>
-
+        <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:136px;">
         <div class="content clear" style="width: 880px;">
             <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
                 <tr>
@@ -342,6 +342,7 @@
 
         <div class="content clear" style="display: none">
         </div>
+         </div>
     </form>
 
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>

@@ -34,10 +34,6 @@ namespace EMT.DoneNOW.Web.SysSetting
                         }
                     }
                 }
-                else
-                {//新增
-
-                }
             }
 
         }
@@ -88,12 +84,29 @@ namespace EMT.DoneNOW.Web.SysSetting
                 {
                     return true;
                 }
+                if (result == DTO.ERROR_CODE.USER_NOT_FIND) {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("../Login.aspx");
+                }
+                else if (result == DTO.ERROR_CODE.EXIST)
+                {
+                    Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
+                }
             }
             else {
                 var result = smbll.InsertMarket(mark, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     return true;
+                }
+                else if (result == DTO.ERROR_CODE.USER_NOT_FIND)
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("../Login.aspx");
+                }
+                else if (result == DTO.ERROR_CODE.EXIST)
+                {
+                    Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
                 }
             }
             return false;

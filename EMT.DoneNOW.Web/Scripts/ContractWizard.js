@@ -1,0 +1,112 @@
+$("#b0").on("click",function(){
+    $(".Workspace0").hide();
+    $(".Workspace1").show();
+});
+$("#a1").on("click",function(){
+    $(".Workspace0").show();
+    $(".Workspace1").hide();
+});
+$("#b1").on("click",function(){
+    $(".Workspace1").hide();
+    $(".Workspace2").show();
+});
+$("#a2").on("click",function(){
+    $(".Workspace1").show();
+    $(".Workspace2").hide();
+});
+$("#b2").on("click",function(){
+    $(".Workspace2").hide();
+    $(".Workspace3").show();
+});
+$("#a3").on("click",function(){
+    $(".Workspace2").show();
+    $(".Workspace3").hide();
+});
+$("#b3").on("click",function(){
+    $(".Workspace3").hide();
+    $(".Workspace4").show();
+});
+$("#a4").on("click",function(){
+    $(".Workspace3").show();
+    $(".Workspace4").hide();
+});
+$("#b4").on("click",function(){
+    $(".Workspace4").hide();
+    $(".Workspace5").show();
+});
+$("#a5").on("click",function(){
+    $(".Workspace4").show();
+    $(".Workspace5").hide();
+});
+$("#b5").on("click",function(){
+    $(".Workspace5").hide();
+    $(".Workspace6").show();
+});
+$("#a6").on("click",function(){
+    $(".Workspace5").show();
+    $(".Workspace6").hide();
+});
+$("#b6").on("click",function(){
+    $(".Workspace6").hide();
+    $(".Workspace7").show();
+});
+$("#a7").on("click",function(){
+    $(".Workspace6").show();
+    $(".Workspace7").hide();
+});
+$("#b7").on("click",function(){
+    $(".Workspace7").hide();
+    $(".Workspace8").show();
+});
+$("#a8").on("click",function(){
+    $(".Workspace7").show();
+    $(".Workspace8").hide();
+});
+$("#c8").on("click",function(){
+    $(".Workspace8").hide();
+    $(".Workspace9").show();
+});
+$("#d9").on("click",function(){
+    window.close();
+});
+$("#load111").on("click",function(){
+    $(".grid").show();
+});
+$("#all").on("click",function(){
+    if($(this).is(":checked")){
+        $(".grid input[type=checkbox]").prop('checked',true);
+    }else{
+        $(".grid input[type=checkbox]").prop('checked',false);
+    }
+});
+$(".ImgLink").on("mousemove",function(){
+    $(this).css("background","#fff");
+});
+$(".ImgLink").on("mouseout",function(){
+    $(this).css("background","linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+    $(this).css("background","-ms-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+    $(this).css("background","-webkit-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+    $(this).css("background","-moz-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+});
+
+$("#AddButton").on("mouseover",function(){
+    $("#AddButton").css("background","#fff");
+});
+$("#AddButton").on("mouseout",function(){
+    $("#AddButton").css("background","#f0f0f0");
+});
+$("#OkButton").on("mouseover",function(){
+    $("#OkButton").css("background","#fff");
+})
+$("#OkButton").on("mouseout",function(){
+    $("#OkButton").css("background","#f0f0f0");
+})
+$("#CancelButton").on("mouseover",function(){
+    $("#CancelButton").css("background","#fff");
+})
+$("#CancelButton").on("mouseout",function(){
+    $("#CancelButton").css("background","#f0f0f0");
+})
+window.onload(function () {
+
+})

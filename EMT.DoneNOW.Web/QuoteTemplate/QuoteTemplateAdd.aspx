@@ -39,10 +39,11 @@
             </li></ul>
         </div>
             <div class="text">为这个报价模板配置基本设置</div>
+            <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:118px;">
             <div class="information clear">
                 <p class="informationTitle"><i></i>基本信息</p>
                 <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 500px;margin-left: 31px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width: 500px;margin-left: 31px;border:none;">
                          <tr>
                             <td>
                                 <div class="clear">
@@ -60,7 +61,7 @@
                             </td>
                         </tr>
                         <tr><td>
-                            <asp:TextBox ID="Description" runat="server"  TextMode="MultiLine" CssClass="q1"></asp:TextBox><br />
+                            <asp:TextBox ID="Description" runat="server"  TextMode="MultiLine" CssClass="q1" style="max-width: 466px;width:466px;resize:vertical;"></asp:TextBox><br />
                             <%-- <div class="CharacterInformation"><span class="CurrentCount">0</span>/<span class="Maximum">200</span></div>--%>
                             <asp:CheckBox ID="Active" runat="server" text="激活" Checked="True" />
                             </td></tr>
@@ -70,7 +71,7 @@
             <div class="information clear">
                 <p class="informationTitle"><i></i>数据格式</p>
                 <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 500px; margin-left: 31px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width: 500px; margin-left: 31px;border:none;">
                          <tr>
                             <td>
                                 <div class="clear">
@@ -102,7 +103,7 @@
             <div class="information clear">
                 <p class="informationTitle"><i></i>税收显示格式设置</p>
                 <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 500px;margin-left: 31px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width: 500px;margin-left: 31px;border:none;">
                          <tr>
                             <td>
                                 <div class="clear">
@@ -137,7 +138,7 @@
                 <p class="informationTitle"><i></i>数据税收/汇总显示格式设置格式</p>
              <%--<span class="text">税收显示和总显示包含硬编码的文本。您可以自定义下面的文本,此文本将适用于每个组的总显示，总显示，总税收显示，以及期间类型的税务显示(如果显示)。</span>--%>
         <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 500px;margin-left: 31px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width: 500px;margin-left: 31px;border:none;">
                         <tr><td><div class="clear"><label>子汇总</label></div></td><td><div class="clear"><label>半年收费汇总</label></div></td></tr>
                         <tr><td><div class="clear">
                             <asp:TextBox ID="Subtotal" runat="server">子汇总</asp:TextBox></div></td><td>
@@ -190,7 +191,7 @@
                  <div class="information clear">
                 <p class="informationTitle"><i></i>数据格式</p>
                 <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 500px;margin-left: 31px;">
+                    <table border="none" cellspacing="" cellpadding="" style="width: 500px;margin-left: 31px;border:none;">
                          <tr>
                             <td>
                                 <div class="clear">
@@ -229,7 +230,7 @@
 
         </div>
 
-
+                </div>
     </form>
 </body>
 <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>

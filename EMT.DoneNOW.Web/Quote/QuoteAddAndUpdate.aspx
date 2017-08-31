@@ -35,6 +35,7 @@
                 <li id="">通知</li>
             </ul>
         </div>
+        <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:132px;">
         <div class="content clear">
             <div>
                 <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
@@ -245,7 +246,7 @@
 
             </div>
         </div>
-        <div class="content clear" style="display: none;min-width:1110px;">
+        <div class="content clear" style="display: none;">
             <div style="border: thin;">
                 <table border="none" cellspacing="" cellpadding="" style="width: 100%;">
                     <tr>
@@ -287,8 +288,8 @@
             </div>
 
             <div>
-                <div style="float: left; width: 33%;">
-                    <table>
+                <div>
+                    <table style="margin-top:30px;">
                         <%
 
                             EMT.DoneNOW.Core.crm_location sold_to_location = null;
@@ -372,8 +373,8 @@
                         </tr>
                     </table>
                 </div>
-                <div style="float: left; width: 33%;">
-                    <table>
+                <div>
+                    <table style="margin-top:30px;">
                         <tr>
                             <td style="text-align:left;">
                                 <div class="clear" style="margin-left:140px;">
@@ -439,8 +440,8 @@
                         </tr>
                     </table>
                 </div>
-                <div style="float: left; width: 33%;">
-                    <table>
+                <div>
+                    <table style="margin-top:30px;">
                         <tr>
                             <td style="text-align:left;">  
                                 <div class="clear" style="margin-left:140px;">
@@ -510,6 +511,7 @@
         </div>
         <div class="content clear" style="display: none;">
         </div>
+            </div>
     </form>
 </body>
 </html>
