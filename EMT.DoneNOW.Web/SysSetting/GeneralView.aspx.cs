@@ -1,5 +1,6 @@
 ﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,41 +15,24 @@ namespace EMT.DoneNOW.Web
     {
         public List<d_general> GeneralList = new List<d_general>();
         public int id;
+        public string name;
+        protected GeneralBLL gbll = new GeneralBLL();
+        protected List<PageContextMenuDto> contextMenu = null;  // 右键菜单信息
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
-            id = 2;
+          // id = 3;
+            name = gbll.GetGeneralTableName(id);
             if (!IsPostBack) {
-                bind();
+                GeneralList = new GeneralBLL().GetGeneralList(id);
+                GetMenus();
             }
         }
-        private void bind()
+        private void GetMenus()
         {
-            GeneralList = new GeneralBLL().GetGeneralList(id);
-            StringBuilder table = new StringBuilder();
-            if (GeneralList.Count > 0)
-            {
-                foreach (var i in GeneralList)
-                {
-                    table.Append("<tr>");
-                   // table.Append("<td class=\"Command\" style=\"text-align:center;width:30px; \"><img src = \"../Images/edit.png\" style=\"vertical-align:middle;\"/></td>");
-                    table.Append(" <td class=\"Text\">" + i.name + "</td>");
-                    if (i.remark!=null&&!string.IsNullOrEmpty(i.remark.ToString()))
-                    {
-                        table.Append("<td class=\"Boolean\" style=\"width: 80px; \">"+i.remark.ToString()+"</td>");
-                    }
-                    else
-                    {
-                        table.Append("<td class=\"Boolean\" style=\"width: 80px; \"></td>");
-                    }
-                    table.Append("</tr>");
-                }
-            }
-            else
-            {
-                table.Append("<tr><td><div class=\"NoDataMessage\">There are no records.</div></td></tr>");
-            }
-            //this.table.Text = table.ToString();
+            contextMenu = new List<PageContextMenuDto>();
+                    contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
         }
     }
 }

@@ -1209,6 +1209,9 @@
     <Compile Include="Tools\GeneralAjax.ashx.cs">
       <DependentUpon>GeneralAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\GeneralViewAjax.ashx.cs">
+      <DependentUpon>GeneralViewAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\OpportunityAjax.ashx.cs">
       <DependentUpon>OpportunityAjax.ashx</DependentUpon>
     </Compile>
@@ -1268,6 +1271,7 @@
     <Content Include="Tools\SubscriptionAjax.ashx" />
     <Content Include="Tools\TerritoryAjax.ashx" />
     <Content Include="Tools\SaleOrderAjax.ashx" />
+    <Content Include="Tools\GeneralViewAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
