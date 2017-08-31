@@ -32,13 +32,17 @@ namespace EMT.DoneNOW.Web
             var user = context.Session["dn_session_user_info"] as sys_user;
             if (user!= null)
             {
-                if (new GeneralBLL().Delete(general_id, user.id) == DTO.ERROR_CODE.SUCCESS)
+                var ss = new GeneralBLL().Delete(general_id, user.id);
+                if (ss == DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("删除成功！");
                 }
-                else
+                else if (ss == DTO.ERROR_CODE.SYSTEM)
                 {
-                    context.Response.Write("失败！");
+                    context.Response.Write("系统默认不能删除！");
+                }
+                else {
+                    context.Response.Write("删除失败！");
                 }
             }
         }

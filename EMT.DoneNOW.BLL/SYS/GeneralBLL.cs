@@ -88,8 +88,73 @@ namespace EMT.DoneNOW.BLL
             {
                 return ERROR_CODE.ERROR;
             }
+            if (data.is_system > 0) {
+                return ERROR_CODE.SYSTEM;
+            }
             data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.delete_user_id = user_id;
+            if (!_dal.Update(data))
+            {
+                return ERROR_CODE.ERROR;
+            }
+            return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 激活
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE Active(long id, long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            var data = _dal.FindById(id);
+            if (data == null)
+            {
+                return ERROR_CODE.ERROR;
+            }
+            if (data.is_active > 0)
+            {
+                return ERROR_CODE.ACTIVATION;
+            }
+            data.is_active = 1;
+            data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.update_user_id = user_id;
+            if (!_dal.Update(data))
+            {
+                return ERROR_CODE.ERROR;
+            }
+            return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 失活
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE NoActive(long id, long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            var data = _dal.FindById(id);
+            if (data == null)
+            {
+                return ERROR_CODE.ERROR;
+            }
+            if (data.is_active==0)
+            {
+                return ERROR_CODE.NO_ACTIVATION;
+            }
+            data.is_active = 0;
+            data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.update_user_id = user_id;
             if (!_dal.Update(data))
             {
                 return ERROR_CODE.ERROR;

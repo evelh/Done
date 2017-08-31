@@ -283,7 +283,7 @@
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">客户类别</a>
+                                            <a href="AccountClassView.aspx" class="Button ButtonIcon Link NormalState">客户类别</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
@@ -365,11 +365,11 @@
                                             <div class="StandardText">Set up organizational entities in your company that are associated with resources and work types, and play a role in project security.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">赢得商机的原因</a>
+                                            <a href="../Opportunity/OpportunityWinOrLossReason.aspx?reason=win&id=<%=(int)GeneralTableEnum.OPPORTUNITY_LOSS_REASON_TYPE %>" class="Button ButtonIcon Link NormalState">赢得商机的原因</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">丢失商机的原因</a>
+                                            <a href="../Opportunity/OpportunityWinOrLossReason.aspx?reason=loss&id=<%=(int)GeneralTableEnum.OPPORTUNITY_WIN_REASON_TYPE %>" class="Button ButtonIcon Link NormalState">丢失商机的原因</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">

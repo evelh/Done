@@ -76,6 +76,9 @@ namespace EMT.DoneNOW.BLL
             {
                 return ERROR_CODE.ERROR;
             }
+            if (data.is_system > 0) {
+                return ERROR_CODE.SYSTEM;
+            }
             data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.delete_user_id = user_id;
             if (!_dal.Update(data))
@@ -113,6 +116,12 @@ namespace EMT.DoneNOW.BLL
             }
             return ERROR_CODE.SUCCESS;
         }
+        /// <summary>
+        /// 设置为失活状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
         public ERROR_CODE NoActive(long id, long user_id)
         {
             var user = UserInfoBLL.GetUserInfo(user_id);
@@ -137,6 +146,9 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.ERROR;
             }
             return ERROR_CODE.SUCCESS;
+        }
+        public List<d_account_classification> GetAll() {
+            return _dal.FindListBySql<d_account_classification>($"select * from d_account_classification where delete_time=0 order by id,sort_order").ToList();
         }
     }
 }

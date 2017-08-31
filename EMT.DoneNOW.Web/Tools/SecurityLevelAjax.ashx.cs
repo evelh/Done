@@ -8,13 +8,14 @@ using EMT.DoneNOW.BLL.IVT;
 using static EMT.DoneNOW.DTO.DicEnum;
 using EMT.Tools.Date;
 using EMT.DoneNOW.BLL;
+using System.Web.SessionState;
 
 namespace EMT.DoneNOW.Web
 {
     /// <summary>
     /// SecurityLevelAjax 的摘要说明
     /// </summary>
-    public class SecurityLevelAjax : IHttpHandler
+    public class SecurityLevelAjax : IHttpHandler, IRequiresSessionState
     {
 
         public void ProcessRequest(HttpContext context)

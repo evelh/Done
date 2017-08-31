@@ -40,5 +40,7 @@ namespace EMT.DoneNOW.DTO
         SYS_NAME_EXIST,                              //员工姓名已存在
         EXIST,                                       //已经存在
         DEFAULT,                                     //已经设为默认
+
+        SYSTEM,                                      //无法删除系统默认
     }
 }
