@@ -63,11 +63,20 @@ namespace EMT.DoneNOW.BLL
         /// <param name="data"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public ERROR_CODE InsertTerritory(d_general data, long user_id, ref int id)
+        public ERROR_CODE SaveTerritory(d_general data, long user_id, ref int id)
         {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
             if (id > 0)
             {
-                data.general_table_id = (int)GeneralTableEnum.TERRITORY;
+                var res = new GeneralBLL().GetSingleGeneral(data.name, data.general_table_id);
+                if (res != null && res.id != data.id)
+                {
+                    return ERROR_CODE.EXIST;
+                }
                 data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 data.update_user_id = user_id;
                 if (!_dal.Update(data))
@@ -81,8 +90,8 @@ namespace EMT.DoneNOW.BLL
                 data.create_time = data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 data.create_user_id = user_id;
                 //唯一性校验
-                var general = _dal.FindSignleBySql<d_general>($"select * from d_general where name={data.name}");
-                if (general != null && general.delete_time == 0)
+                var res = new GeneralBLL().GetSingleGeneral(data.name, data.general_table_id);
+                if (res != null)
                 {
                     return ERROR_CODE.EXIST;
                 }

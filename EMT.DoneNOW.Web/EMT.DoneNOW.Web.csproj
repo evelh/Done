@@ -140,12 +140,14 @@
     <Content Include="Company\DeleteCompany.aspx" />
     <Content Include="Company\LocationManage.aspx" />
     <Content Include="Company\ViewCompany.aspx" />
+    <Content Include="Content\Admin.css" />
     <Content Include="Content\bootstrap.min2.2.2.css" />
     <Content Include="Contact\EditContact.aspx" />
     <Content Include="Contact\ViewContact.aspx" />
     <Content Include="Content\base.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\ClassificationIcons.css" />
     <Content Include="Content\index.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\LostQuote.css" />
@@ -181,6 +183,7 @@
     <Content Include="Images\check.png" />
     <Content Include="Images\collection.png" />
     <Content Include="Images\copy.png" />
+    <Content Include="Images\delete.png" />
     <Content Include="Images\down.png" />
     <Content Include="Images\edit.png" />
     <Content Include="Images\dropdown.png" />
@@ -189,6 +192,8 @@
     <Content Include="Images\help.png" />
     <Content Include="Images\move-left.png" />
     <Content Include="Images\move-right.png" />
+    <Content Include="Images\next.png" />
+    <Content Include="Images\prev.png" />
     <Content Include="Images\refresh.png" />
     <Content Include="Images\view.png" />
     <Content Include="Images\Classification\blockhour.png" />
@@ -203,6 +208,7 @@
     <Content Include="Opportunity\OpportunityLossReason.aspx" />
     <Content Include="Opportunity\OpportunityStage.aspx" />
     <Content Include="Opportunity\OpportunityWinReasons.aspx" />
+    <Content Include="Opportunity\OppportunityAdvancedField.aspx" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
     <Content Include="Images\export.png" />
@@ -210,6 +216,7 @@
     <Content Include="QuoteTemplate\QuoteTemplateAppendixEdit.aspx" />
     <Content Include="QuoteTemplate\QuoteTemplatePropertiesEdit.aspx" />
     <Content Include="Images\classfication.png" />
+    <Content Include="QuoteTemplate\QuoteTemplateToPDF.aspx" />
     <Content Include="Quote\QuoteAddAndUpdate.aspx" />
     <Content Include="Quote\QuoteClose.aspx" />
     <Content Include="Quote\QuoteLost.aspx" />
@@ -562,8 +569,10 @@
     <Content Include="QuoteItem\QuoteItemAddAndUpdate.aspx" />
     <Content Include="SaleOrder\SaleOrderEdit.aspx" />
     <Content Include="SaleOrder\SaleOrderView.aspx" />
+    <Content Include="Scripts\Admin.js" />
     <Content Include="Scripts\bootstrap.min-3.3.4.js" />
     <Content Include="Opportunity\OpportunityAddAndEdit.aspx" />
+    <Content Include="Scripts\ClassificationIcons.js" />
     <Content Include="Scripts\Common\Address.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -633,8 +642,11 @@
     <Content Include="Scripts\WorkType.js" />
     <Content Include="Site.Master" />
     <Content Include="SysSetting\AccountClass.aspx" />
+    <Content Include="SysSetting\AccountClassView.aspx" />
     <Content Include="SysSetting\ActionType.aspx" />
+    <Content Include="SysSetting\GeneralView.aspx" />
     <Content Include="SysSetting\Suffixes.aspx" />
+    <Content Include="SysSetting\SysAdmin.aspx" />
     <Content Include="SysSetting\SysCompetitor.aspx" />
     <Content Include="SysSetting\SysDataPermission.aspx" />
     <Content Include="SysSetting\SysDepartment.aspx" />
@@ -865,6 +877,13 @@
     <Compile Include="Opportunity\OpportunityWinReasons.aspx.designer.cs">
       <DependentUpon>OpportunityWinReasons.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Opportunity\OppportunityAdvancedField.aspx.cs">
+      <DependentUpon>OppportunityAdvancedField.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\OppportunityAdvancedField.aspx.designer.cs">
+      <DependentUpon>OppportunityAdvancedField.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Opportunity\ViewOpportunity.aspx.cs">
       <DependentUpon>ViewOpportunity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -964,6 +983,13 @@
     <Compile Include="QuoteTemplate\QuoteTemplatePropertiesEdit.aspx.designer.cs">
       <DependentUpon>QuoteTemplatePropertiesEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateToPDF.aspx.cs">
+      <DependentUpon>QuoteTemplateToPDF.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="QuoteTemplate\QuoteTemplateToPDF.aspx.designer.cs">
+      <DependentUpon>QuoteTemplateToPDF.aspx</DependentUpon>
+    </Compile>
     <Compile Include="QuoteTemplate\QuoteTemplateTopEdit.aspx.cs">
       <DependentUpon>QuoteTemplateTopEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1048,6 +1074,13 @@
     <Compile Include="SysSetting\AccountClass.aspx.designer.cs">
       <DependentUpon>AccountClass.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\AccountClassView.aspx.cs">
+      <DependentUpon>AccountClassView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\AccountClassView.aspx.designer.cs">
+      <DependentUpon>AccountClassView.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\ActionType.aspx.cs">
       <DependentUpon>ActionType.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1055,12 +1088,26 @@
     <Compile Include="SysSetting\ActionType.aspx.designer.cs">
       <DependentUpon>ActionType.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\GeneralView.aspx.cs">
+      <DependentUpon>GeneralView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\GeneralView.aspx.designer.cs">
+      <DependentUpon>GeneralView.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\Suffixes.aspx.cs">
       <DependentUpon>Suffixes.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="SysSetting\Suffixes.aspx.designer.cs">
       <DependentUpon>Suffixes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SysAdmin.aspx.cs">
+      <DependentUpon>SysAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SysAdmin.aspx.designer.cs">
+      <DependentUpon>SysAdmin.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\SysCompetitor.aspx.cs">
       <DependentUpon>SysCompetitor.aspx</DependentUpon>

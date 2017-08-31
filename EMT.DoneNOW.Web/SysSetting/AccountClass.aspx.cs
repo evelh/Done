@@ -19,7 +19,7 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt64(Request.QueryString["id"]);
-            id = 16;
+            //id = 16;测试
             if (!IsPostBack) {
                 if (id > 0)
                 {
@@ -102,11 +102,25 @@ namespace EMT.DoneNOW.Web
                 if (result == DTO.ERROR_CODE.SUCCESS) {
                     return true;
                 }
+                else if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("../Login.aspx");
+                }
             }
             else {//新增
                 var result = acbll.Insert(dac, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS) {
                     return true;
+                }
+                else if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("../Login.aspx");
+                }
+                else if (result == DTO.ERROR_CODE.EXIST)
+                {
+                    Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
                 }
             }
             return false;

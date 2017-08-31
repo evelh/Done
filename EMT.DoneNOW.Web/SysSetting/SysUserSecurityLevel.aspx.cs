@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取角色id    
-            //id = 2;
+           // id = 2;
             if (!IsPostBack) {
                 bindresource();//第三个选项卡数据绑定
                 sys_limitList = sys_security.GetAll();//按照model分组

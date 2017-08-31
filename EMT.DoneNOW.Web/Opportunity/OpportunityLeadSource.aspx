@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OpportunityLeadSource.aspx.cs" Inherits="EMT.DoneNOW.Web.Opportunity.OpportunityLeadSource" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OpportunityLeadSource.aspx.cs" Inherits="EMT.DoneNOW.Web.OpportunityLeadSource" %>
 
 <!DOCTYPE html>
 
@@ -23,10 +23,10 @@
     <div class="ButtonContainer">
         <ul id="btn">
            <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
-                <asp:Button ID="Save_Close" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="Save_Close_Click"/>
+                <asp:Button ID="Save_Close" OnClientClick="save_deal()" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="Save_Close_Click"/>
             </li>
             <li class="Button ButtonIcon NormalState" id="SaveAndNewButton" tabindex="0">
-                <asp:Button ID="Save_New" runat="server" Text="保存并新建" BorderStyle="None" OnClick="Save_New_Click"/>
+                <asp:Button ID="Save_New" OnClientClick="save_deal()" runat="server" Text="保存并新建" BorderStyle="None" OnClick="Save_New_Click"/>
             </li>
             <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
                 <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click"/>
@@ -68,5 +68,14 @@
     </form>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/SysSettingRoles.js"></script>
+    <script>
+        function save_deal() {
+            var n = $("#Name").val();
+            if (n == null || n == '') {
+                alert("请输入商机来源的名称！");
+                return false;
+            }
+        }
+    </script>
 </body>
 </html>

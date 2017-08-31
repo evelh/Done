@@ -1,5 +1,6 @@
 ﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,6 @@ namespace EMT.DoneNOW.Web
         {
             save_deal();
             Response.Write("<script>alert('区域添加成功！');window.location.href = 'SysRegion.aspx';</script>");
-           // Response.Redirect("SysRegion.aspx");
         }
 
         protected void Cancel_Click(object sender, EventArgs e)
@@ -59,12 +59,31 @@ namespace EMT.DoneNOW.Web
             if (id > 0)
             {
                 var result = new RegionBLL().UpdateRegion(region, GetLoginUserId());
-                if (result == DTO.ERROR_CODE.SUCCESS) {
-
+                if (result == ERROR_CODE.ERROR)
+                {
+                    Response.Write("<script>alert('区域修改失败，返回！');window.close();self.opener.location.reload();</script>");
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("../Login.aspx");
+                }
+                else if (result == DTO.ERROR_CODE.EXIST)
+                {
+                    Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
                 }
             }
             else {                
                 var result = new RegionBLL().InsertRegion(region, GetLoginUserId());
+                if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("../Login.aspx");
+                }
+                else if (result == DTO.ERROR_CODE.EXIST)
+                {
+                    Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
+                }
             }
         }
     }

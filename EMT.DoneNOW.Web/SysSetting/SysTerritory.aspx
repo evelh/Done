@@ -46,14 +46,14 @@
     </div>
     <!--切换按钮-->
     <div class="TabBar">
-        <a class="Button ButtonIcon SelectedState">
+        <a class="Button ButtonIcon SelectedState" id="tab1">
             <span class="Text">总结</span>
         </a>
-        <a class="Button ButtonIcon">
+        <a class="Button ButtonIcon" id="tab2">
             <span class="Text">资源</span>
         </a>
     </div>
-    <div class="TabContainer" id="tab1">
+    <div class="TabContainer Tab1">
         <div class="DivSection" style="border:none;padding-left:0;">
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tbody>
@@ -87,12 +87,12 @@
             </table>
         </div>
     </div>
-    <div class="TabContainer" id="tab2" style="display: none;">
+    <div class="TabContainer Tab2" style="display: none;">
         <div class="DivSection" style="border:none;padding-left:0;">
             <div class="ButtonCollectionBase" style="height:25px;">
                 <ul>
                     <li class="Button ButtonIcon NormalState" id="NewButton1" tabindex="0">
-                        <input type="button" id="New_Account" value="新增" />
+                        <input type="button" id="New_Account" value="新增" style="border-style:None;"/>
                     </li>
                 </ul>
             </div>
@@ -118,20 +118,77 @@
         </div>
         <input type="hidden" id="txtId" />
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
-    <script src="../Scripts/SysSettingRoles.js"></script>
+<%--    <script src="../Scripts/SysSettingRoles.js"></script>--%>
     <script>
-        $("#resource").click(function () {
-            var t = $("#Territory_Name").val();
-            var r = $("#Region").val();
-            if (t == null || t == '') {
-                alert("请填写地域名称后再跳转");
-                return false;
-            }
-            if (r == null || r <= 0) {
-                alert("请选择区域");
-                return false;
-            } 
+        $("#SaveAndCloneButton").on("mouseover", function () {
+            $("#SaveAndCloneButton").css("background", "#fff");
         });
+        $("#SaveAndCloneButton").on("mouseout", function () {
+            $("#SaveAndCloneButton").css("background", "#f0f0f0");
+        });
+        $("#SaveAndNewButton").on("mouseover", function () {
+            $("#SaveAndNewButton").css("background", "#fff");
+        });
+        $("#SaveAndNewButton").on("mouseout", function () {
+            $("#SaveAndNewButton").css("background", "#f0f0f0");
+        });
+        $("#CancelButton").on("mouseover", function () {
+            $("#CancelButton").css("background", "#fff");
+        });
+        $("#CancelButton").on("mouseout", function () {
+            $("#CancelButton").css("background", "#f0f0f0");
+        });
+        $("#NewButton").on("mouseover", function () {
+            $("#NewButton").css("background", "#fff");
+        });
+        $("#NewButton").on("mouseout", function () {
+            $("#NewButton").css("background", "#f0f0f0");
+        });
+        $("#SaveButton").on("mouseover", function () {
+            $("#SaveButton").css("background", "#fff");
+        });
+        $("#SaveButton").on("mouseout", function () {
+            $("#SaveButton").css("background", "#f0f0f0");
+        });
+        $("#CancelButton1").on("mouseover", function () {
+            $("#CancelButton1").css("background", "#fff");
+        });
+        $("#CancelButton1").on("mouseout", function () {
+            $("#CancelButton1").css("background", "#f0f0f0");
+        });
+        $("#NewButton1").on("mouseover", function () {
+            $("#NewButton1").css("background", "#fff");
+        });
+        $("#NewButton1").on("mouseout", function () {
+            $("#NewButton1").css("background", "#f0f0f0");
+        });
+        //$.each($(".TabBar a"), function (i) {
+        //    $(this).click(function () {
+        //        $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
+        //        $(".TabContainer").eq(i).show().siblings(".TabContainer").hide();
+        //    })
+        //});
+
+        $.each($(".TabBar a"), function (i) {
+            $(this).click(function () {
+                var t = $("#Territory_Name").val();
+                var r = $("#Region").val();
+                if (t == null || t == '') {
+                    alert("请填写地域名称后再跳转");
+
+                    return false;
+
+                }
+                if (r == null || r <= 0) {
+                    alert("请选择区域");
+
+                    return false;
+                } 
+                $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
+                $(".TabContainer").eq(i).show().siblings(".TabContainer").hide();
+            })
+        });
+
         $("#Save_Close").click(function () {
             var t = $("#Territory_Name").val();
             var r = $("#Region").val();

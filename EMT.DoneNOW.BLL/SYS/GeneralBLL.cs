@@ -52,5 +52,16 @@ namespace EMT.DoneNOW.BLL
         public d_general GetSingleGeneral(long id) {
             return _dal.FindById(id);
         }
+        /// <summary>
+        /// 通过name和general_table_id获取一个d_general对象，并返回
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public d_general GetSingleGeneral(string name,int general_table_id) {
+            return _dal.FindSignleBySql<d_general>($"select * from d_general where name='{name}' and general_table_id={general_table_id} and delete_time=0");
+        }
+        public List<d_general> GetGeneralList(int general_table_id) {
+            return _dal.FindListBySql<d_general>($"select * from d_general where general_table_id={general_table_id} and delete_time=0").ToList();
+        }
     }
 }

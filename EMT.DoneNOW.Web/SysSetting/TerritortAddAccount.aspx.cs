@@ -18,10 +18,16 @@ namespace EMT.DoneNOW.Web.SysSetting
         {
             id = Convert.ToInt64(Request.QueryString["id"]);
             if (!IsPostBack) {
-                this.AccountList.DataTextField = "name";
-                this.AccountList.DataValueField = "id";
-                this.AccountList.DataSource = STBLL.GetAccount(id);
-                this.AccountList.DataBind();
+                if (id > 0)
+                {
+                    this.AccountList.DataTextField = "name";
+                    this.AccountList.DataValueField = "id";
+                    this.AccountList.DataSource = STBLL.GetAccount(id);
+                    this.AccountList.DataBind();
+                }
+                else {
+                    Response.Write("<script>alert('该地域还未创建！返回');window.close();</script>");
+                }                
             }
         }
 
@@ -29,7 +35,6 @@ namespace EMT.DoneNOW.Web.SysSetting
         {
             Response.Write("<script>window.close();</script>");
         }
-
         protected void Save_Click(object sender, EventArgs e)
         {
             StringBuilder name = new StringBuilder();
@@ -41,7 +46,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                     cat.territory_id = (int)id;
                     cat.resource_id = Convert.ToInt64(item.Value);
                     name.Append("{'id':'" + Convert.ToInt64(item.Value) + "','name':'" + (item.Text) + "'},");
-                    STBLL.Insert(cat,GetLoginUserId());
+                   STBLL.Insert(cat,GetLoginUserId());
                 }                    
             }
             string k = name.ToString().TrimEnd(',');
