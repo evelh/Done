@@ -178,7 +178,7 @@
                                 <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?taxAllCateList.IndexOf(quoteItem.tax_cate_id).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
-                                <td>出厂序号待确定--todo</td>
+                                <td><%--出厂序号待确定--todo--%></td>
                                 <td><%=quoteItem.quantity!=null?((int)quoteItem.quantity).ToString():"" %></td>
                                 <td><%=quoteItem.unit_price %></td>
                                 <%--decimal.Round(decimal.Parse("0.3333333"),2)   Math.Round(Convert.ToDouble((quoteItem.unit_discount/quoteItem.unit_price,2,MidpointRounding.AwayFromZero)))  --%>
@@ -281,7 +281,7 @@
                                 <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?taxAllCateList.IndexOf(quoteItem.tax_cate_id).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
-                                <td>出厂序号待确定--todo</td>
+                                <td><%--出厂序号待确定--todo--%></td>
                                 <td><%=quoteItem.quantity!=null?((int)quoteItem.quantity).ToString():"" %></td>
                                 <td><%=quoteItem.unit_price %></td>
                                 <%--decimal.Round(decimal.Parse("0.3333333"),2)   Math.Round(Convert.ToDouble((quoteItem.unit_discount/quoteItem.unit_price,2,MidpointRounding.AwayFromZero)))  --%>
@@ -512,7 +512,7 @@
                                 <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?taxAllCateList.IndexOf(quoteItem.tax_cate_id).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
-                                <td>出厂序号待确定--todo</td>
+                                <td><%--出厂序号待确定--todo--%></td>
                                 <td><%=quoteItem.quantity!=null?((int)quoteItem.quantity).ToString():"" %></td>
                                 <td><%=quoteItem.unit_price %></td>
                                 <%--decimal.Round(decimal.Parse("0.3333333"),2)   Math.Round(Convert.ToDouble((quoteItem.unit_discount/quoteItem.unit_price,2,MidpointRounding.AwayFromZero)))  --%>
@@ -700,7 +700,7 @@
                                 <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?taxAllCateList.IndexOf(quoteItem.tax_cate_id).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
-                                <td>出厂序号待确定--todo</td>
+                                <td><%--出厂序号待确定--todo--%></td>
                                 <td><%=quoteItem.quantity!=null?((int)quoteItem.quantity).ToString():"" %></td>
                                 <td><%=quoteItem.unit_price %></td>
                                 <%--decimal.Round(decimal.Parse("0.3333333"),2)   Math.Round(Convert.ToDouble((quoteItem.unit_discount/quoteItem.unit_price,2,MidpointRounding.AwayFromZero)))  --%>
@@ -790,7 +790,7 @@
                                 <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?taxAllCateList.IndexOf(quoteItem.tax_cate_id).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
-                                <td>出厂序号待确定--todo</td>
+                                <td><%--出厂序号待确定--todo--%></td>
                                 <td><%=quoteItem.quantity!=null?((int)quoteItem.quantity).ToString():"" %></td>
                                 <td><%=quoteItem.unit_price %></td>
                                 <%--decimal.Round(decimal.Parse("0.3333333"),2)   Math.Round(Convert.ToDouble((quoteItem.unit_discount/quoteItem.unit_price,2,MidpointRounding.AwayFromZero)))  --%>
@@ -1020,7 +1020,7 @@
                                 <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?taxAllCateList.IndexOf(quoteItem.tax_cate_id).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
-                                <td>出厂序号待确定--todo</td>
+                                <td><%--出厂序号待确定--todo--%></td>
                                 <td><%=quoteItem.quantity!=null?((int)quoteItem.quantity).ToString():"" %></td>
                                 <td><%=quoteItem.unit_price %></td>
                                 <%--decimal.Round(decimal.Parse("0.3333333"),2)   Math.Round(Convert.ToDouble((quoteItem.unit_discount/quoteItem.unit_price,2,MidpointRounding.AwayFromZero)))  --%>
@@ -1140,7 +1140,7 @@
                                 <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?taxAllCateList.IndexOf(quoteItem.tax_cate_id).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
-                                <td>出厂序号待确定--todo</td>
+                                <td><%--出厂序号待确定--todo--%></td>
                                 <td><%=quoteItem.quantity!=null?((int)quoteItem.quantity).ToString():"" %></td>
                                 <td><%=quoteItem.unit_price %></td>
                                 <%--decimal.Round(decimal.Parse("0.3333333"),2)   Math.Round(Convert.ToDouble((quoteItem.unit_discount/quoteItem.unit_price,2,MidpointRounding.AwayFromZero)))  --%>
@@ -1227,7 +1227,7 @@
                                 <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?taxAllCateList.IndexOf(quoteItem.tax_cate_id).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
-                                <td>出厂序号待确定--todo</td>
+                                <td><%--出厂序号待确定--todo--%></td>
                                 <td><%=quoteItem.quantity!=null?((int)quoteItem.quantity).ToString():"" %></td>
                                 <td><%=quoteItem.unit_price %></td>
                                 <%--decimal.Round(decimal.Parse("0.3333333"),2)   Math.Round(Convert.ToDouble((quoteItem.unit_discount/quoteItem.unit_price,2,MidpointRounding.AwayFromZero)))  --%>
@@ -1460,7 +1460,7 @@
                                 <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?taxAllCateList.IndexOf(quoteItem.tax_cate_id).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
-                                <td>出厂序号待确定--todo</td>
+                                <td><%--出厂序号待确定--todo--%></td>
                                 <td><%=quoteItem.quantity!=null?((int)quoteItem.quantity).ToString():"" %></td>
                                 <td><%=quoteItem.unit_price %></td>
                                 <%--decimal.Round(decimal.Parse("0.3333333"),2)   Math.Round(Convert.ToDouble((quoteItem.unit_discount/quoteItem.unit_price,2,MidpointRounding.AwayFromZero)))  --%>

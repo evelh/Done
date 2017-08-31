@@ -46,8 +46,8 @@
                     添加
 					<i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
-                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=900,height=750', false);">待办</a></li>
-                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=900,height=750', false);">备注</a></li>
+                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=900,height=750', false);"></a>待办</li>
+                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=900,height=750', false);"></a>备注</li>
                         <li>工单</li>
                         <li>附件</li>
                         <%if (quoteList == null || quoteList.Count == 0)

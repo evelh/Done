@@ -633,6 +633,7 @@ namespace EMT.DoneNOW.DTO
         OpportunityEdit = 122,                      // 修改商机
         OpportunityLose = 123,                    // 丢失商机
         OpportunityView = 124,                    // 查看商机
+        OpportunityClose = 125,                     // 关闭商机（即赢得商机）
 
         QuoteAdd = 131,                             // 报价新增
         QuoteEdit = 132,                            // 报价修改
@@ -665,6 +666,11 @@ namespace EMT.DoneNOW.DTO
 
         SubscriptionEdit = 220,                // 修改订阅
         SubscriptionAdd = 221,                 // 新增订阅
+
+        SaleOrderEdit = 225,                  // 销售订单的编辑
+        SaleOrderView = 226,                   // 销售订单的查看
+
+        CostCodeSelect = 230,                  // 物料成本的查找带回
 
     }
 }

@@ -1415,6 +1415,7 @@ textarea {
             //$("object_id").val(product_id);
 
             var productCateId = "";
+            var cost_code_id = "";
             $.ajax({
                 type: "GET",
                 async: false,
@@ -1423,10 +1424,12 @@ textarea {
                 // data: { CompanyName: companyName },
                 success: function (data) {
                     if (data != "") {
+                        debugger;
                         $("#EditProduct").css("display", "");
                         //$("#EditProduct").attr("click", EditProduct())
                         // $("#installed_product_cate_id").val(data.cate_id);   // 配置项种类
                         productCateId = data.cate_id;
+                        cost_code_id = data.cost_code_id;
                     }
                     else {
                         $("#EditProduct").css("display", "none");
@@ -1462,10 +1465,7 @@ textarea {
                 async: false,
                 // dataType: "json",
                 url: "../Tools/CompanyAjax.ashx?act=vendorList&product_id=" + product_id,
-                // data: { CompanyName: companyName },
                 success: function (data) {
-                    debugger;
-                
                     if (data != "") {
                         $("#vendor_id").html(data);
                     }
@@ -1474,7 +1474,24 @@ textarea {
             });
 
             // 带回物料代码 --todo
-
+            if (cost_code_id != "" && productCateId != undefined) {
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    dataType: "json",
+                    url: "../Tools/ProductAjax.ashx?act=costCode&cost_code_id=" + cost_code_id,
+                    // data: { CompanyName: companyName },
+                    success: function (data) {
+                        if (data != "") {
+                            $("#materal_code").text(data.name);
+                            $("#materal_codeHidden").val(data.id);
+                        }
+                        else {
+                         
+                        }
+                    },
+                });
+            }
 
             // 带回制造商
             $.ajax({

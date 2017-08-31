@@ -916,7 +916,7 @@
                         $("#name").val(data.name);
                         $("#name").attr("disabled","disabled");
                         $("#description").text(data.description);
-                        $("#unit_price").val(data.unit_price); //unit_cost
+                        $("#unit_price").val(data.unit_price); 
                         $("#unit_cost").val(data.unit_cost);
                     }
                 },
@@ -926,30 +926,30 @@
 
     // 查找带回计费代码
     function chooseDegression() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COST_CALLBACK %>&field=name&callBack=GetDataByDegression", '<%=EMT.DoneNOW.DTO.OpenWindow.ServiceBundleSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COST_CALLBACK %>&field=name&callBack=GetDataByDegression", '<%=EMT.DoneNOW.DTO.OpenWindow.CostCodeSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDataByDegression() {
-        // - todo 根据计费填充数据
-        //var charge_id = $("#nameHidden").val();
-        //if (charge_id != "") {
+        
+        var charge_id = $("#nameHidden").val();
+        if (charge_id != "") {
 
-        //    $.ajax({
-        //        type: "GET",
-        //        async: false,
-        //        dataType: "json",
-        //        url: "../Tools/RoleAjax.ashx?act=service_bundle&service_bundle_id=" + charge_id,
-        //        // data: { CompanyName: companyName },
-        //        success: function (data) {
-        //            if (data != "") {
-        //                $("#name").val(data.name);
-        //                $("#name").attr("disabled", "disabled");
-        //                $("#description").text(data.description);
-        //                $("#unit_price").val(data.unit_price); //unit_cost
-        //                $("#unit_cost").val(data.unit_cost);
-        //            }
-        //        },
-        //    });
-        //}
+            $.ajax({
+                type: "GET",
+                async: false,
+                dataType: "json",
+                url: "../Tools/QuoteAjax.ashx?act=costCode&id=" + charge_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        // 填充数据
+                        $("#name").val(data.name);
+                        $("#unit_price").val(data.unitprice); //unit_cost
+                        $("#unit_cost").val(data.unitcost);
+                        // todo 税收种类
+                    }
+                },
+            });
+        }
     }
 
     // 多选查找带回产品的时候--直接循环添加多个报价项
@@ -985,6 +985,24 @@
 
     function GetDataByCharge() {
         // - todo 根据费用填充数据
+        var charge_id = $("#nameHidden").val();
+        if (charge_id != "") {
+
+            $.ajax({
+                type: "GET",
+                async: false,
+                dataType: "json",
+                url: "../Tools/QuoteAjax.ashx?act=costCode&id=" + charge_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        // 填充数据
+                        $("#name").val(data.name);
+                        // todo 税收种类
+                    }
+                },
+            });
+        }
     }
 
     function chooseShip() {
@@ -992,6 +1010,21 @@
     }
     function GetDataByShip() {
         // - todo 根据配送方式填充数据
+        var ship_id = $("#nameHidden").val();
+        if (ship_id != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                dataType: "json",
+                url: "../Tools/GeneralAjax.ashx?act=general&id=" + ship_id,
+                success: function (data) {
+                    if (data != "") {
+                        $("#name").val(data.name);
+                        $("#description").text(data.remark);
+                    }
+                },
+            });
+        }
     }
 
 </script>

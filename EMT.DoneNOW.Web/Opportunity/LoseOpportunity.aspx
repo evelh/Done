@@ -727,13 +727,13 @@ textarea {
 
         var account_id = $("#account_id").val();
         if (account_id == "") {
-            alert("客户丢失，请重新选择");
+            alert("客户信息丢失，请重新选择");
             return false;
         }
         // opportunity_id
         var opportunity_id = $("#opportunity_id").val();
         if (opportunity_id == 0) {
-            alert("商机丢失，请重新选择");
+            alert("商机信息丢失，请重新选择");
             return false;
         }
         // stage_id
@@ -749,7 +749,7 @@ textarea {
             return false;
         }
         // 根据系统设置进行必填项校验
-        if (<%=lostSetting.is_visible %> == 1) // 根据系统设置决定是否校验
+        if (<%=lostSetting.setting_value %> == <%=(int)EMT.DoneNOW.DTO.DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_TYPE_DETAIL %>) // 根据系统设置决定是否校验
         {
            // loss_reason_type_id
             var loss_reason_type_id = $("#loss_reason_type_id").val();
@@ -763,7 +763,17 @@ textarea {
                 alert("请填写丢失商机描述");
                 return false;
             }
-        }   
+        }
+        else if (<%=lostSetting.setting_value %> == <%=(int)EMT.DoneNOW.DTO.DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_TYPE %>){
+            var loss_reason_type_id = $("#loss_reason_type_id").val();
+            if (loss_reason_type_id == 0) {
+                alert("请选择丢失商机原因");
+                return false;
+            }
+        }
+        else {
+
+        }
         $(".Workspace1").hide();
         $(".Workspace2").show();
     });

@@ -11,6 +11,8 @@ namespace EMT.DoneNOW.DTO
     /// </summary>
     public enum SysSettingEnum
     {
+       
+        SHIPITEM_COSTCODE_CLOSE = 14,        // 配送类型的报价项关闭商机时默认的物料代码
         CRM_OPPORTUNITY_LOSS_REASON = 16,   // 丢失商机是否需要填写丢失原因
         CRM_OPPORTUNITY_WIN_REASON = 17,    // 赢得商机是否需要填写赢得原因
     }

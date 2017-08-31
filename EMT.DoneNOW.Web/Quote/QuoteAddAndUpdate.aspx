@@ -184,7 +184,7 @@
                                 <label>项目提案名称</label>
                                 <select name="project_id" id="project_id">
                                 </select>
-                                <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                             <%--   <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>--%>
                             </div>
                         </td>
                     </tr>
@@ -522,27 +522,6 @@
 <script type="text/javascript" charset="utf-8" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 <script>
     $(function () {
-
-
-        var values = document.getElementById("opportunity_id");
-        values.append("<option value='3'>test03</option>");
-        var thisOption = new Option("tset", "1");
-        var secOption = new Option("test02", "2");
-        thisOption.selected = true;
-        secOption.selected = false;
-        values.add(thisOption);
-        values.add(secOption);
-        values.value = 1;
-        var objOption = document.createElement("OPTION");
-        objOption.value = '6';
-        objOption.text = 'content';
-        values.add(objOption);
-        //alert(slt.options.length);
-        values.options[values.options.length - 1].selected = 'selected';
-      
-
-
-
 
         var s1 = ["province_id", "city_id", "district_id"];
         var s2 = ["ship_province_id", "ship_city_id", "ship_district_id"];
