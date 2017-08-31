@@ -5,7 +5,7 @@
  * @param data post数据
  * @param calBackFunction 回掉函数
  */
-function requestData(url, data, calBackFunction, isasync = true) {
+function requestData(url, data, calBackFunction) {
     url = "http://localhost:60242/" + url;
     $.ajax({
         type: "POST",
@@ -13,7 +13,7 @@ function requestData(url, data, calBackFunction, isasync = true) {
         data: data,
         dataType: "JSON",
         timeout: 20000,
-        async: isasync,
+        async: true,
         beforeSend : function(){
             //$("body").append(loadDialog);
         },

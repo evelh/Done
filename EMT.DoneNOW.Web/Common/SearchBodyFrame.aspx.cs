@@ -95,6 +95,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.QUOTE_TEMPLATE:
                     addBtn = "新增报价模板";
                     break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT:
+                    addBtn = "新增合同";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -319,6 +322,14 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "NewNote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "新增待办", click_function = "NewTodo()" });
                     contextMenu.Add(new PageContextMenuDto { text = "取消销售订单", click_function = "CancelSaleOrder()" });
+                    break;
+                case (long)QueryType.Contract:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑合同", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看合同", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "在新窗口中查看合同", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "续约", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制合同", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除合同", click_function = "openopenopen()\" \" style='color:grey;'" });
                     break;
                 default:
                     break;

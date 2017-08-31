@@ -30,12 +30,20 @@
                             <dd><a href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE_TEMPLATE %>" target="PageFrame">报价模板管理</a></dd>
                             <dd><a href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSTALLEDPRODUCT %>" target="PageFrame">配置项管理</a></dd>
                             <dd><a href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUBSCRIPTION %>" target="PageFrame">订阅管理</a></dd>
-                             <dd><a href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SALEORDER %>" target="PageFrame">销售订单管理</a></dd>
+                            <dd><a href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SALEORDER %>" target="PageFrame">销售订单管理</a></dd>
 						</dl>
 					</div>
 				</dd>
 				<dd class="ml">目&nbsp;&nbsp;录</dd>
 				<dd class="xm">项&nbsp;&nbsp;目</dd>
+                <dd class="xm">合&nbsp;&nbsp;同
+                    <div class="crmcont clear">
+						<dl>
+							<dt>查询</dt>
+							<dd><a href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT %>" target="PageFrame">合同管理</a></dd>
+						</dl>
+					</div>
+                </dd>
 				<dd class="fwt">服务台</dd>
 				<dd class="sjb">时间表</dd>
 				<dd class="kc">库&nbsp;&nbsp;存</dd>
