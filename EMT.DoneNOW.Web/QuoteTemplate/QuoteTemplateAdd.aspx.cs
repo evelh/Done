@@ -242,7 +242,8 @@ namespace EMT.DoneNOW.Web
             ttd.One_Time_Subtotal = this.OneTimeSubtotal.Text.Trim().ToString();
             ttd.One_Time_Discount_Total = this.OneTimeDiscountTotal.Text.Trim().ToString();
             ttd.One_Time_Discount_Subtotal = this.OneTimeDiscountSubtotal.Text.Trim().ToString();
-            string jsonString = JsonConvert.SerializeObject(ttd);
+            string jsonString = new EMT.Tools.Serialize().SerializeJson(ttd);
+           // string jsonString = JsonConvert.SerializeObject(ttd);
             return jsonString;
            // Response.Write(jsonString);
 

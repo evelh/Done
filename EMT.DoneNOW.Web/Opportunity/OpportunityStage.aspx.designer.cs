@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web.Opportunity {
+namespace EMT.DoneNOW.Web {
     
     
     public partial class OpportunityStage {

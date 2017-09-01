@@ -52,6 +52,8 @@ namespace EMT.DoneNOW.DTO
         INSTALLED_PRODUCT_CATE = 108,           // 配置项种类
         LICENSE_TYPE = 109,                      //安全等级：授权类型
         QUOTE_GROUP_BY = 110,                    // 报价分组条件
+        CONTRACT_CATE = 112,                    // 合同分类
+        BILL_POST_TYPE = 118,                   // 合同：工时计费设置
     }
 
     /// <summary>
@@ -407,6 +409,7 @@ namespace EMT.DoneNOW.DTO
             INSTALLEDPRODUCT=890,               // 配置项管理-查询
             SUBSCRIPTION = 892,                 // 订阅管理-查询
             SALEORDER = 894,                    // 销售订单 - 查询
+            CONTRACT = 895,                     // 合同
         }
 
         /// <summary>
@@ -605,9 +608,10 @@ namespace EMT.DoneNOW.DTO
         SubcompanyCompanyView = 14,        // 客户管理-详情-子客户查询
         OpportunityContactView = 15,       // 联系人管理-详情-商机查询
 
-        InstalledProductView  = 32,      // 配置项管理
-        Subscription = 34,               // 订阅
-        SaleOrder = 36,                  // 销售订单
+        InstalledProductView  = 32,     // 配置项管理
+        Subscription = 34,              // 订阅
+        SaleOrder = 36,                 // 销售订单
+        Contract = 37,                  // 合同
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -633,6 +637,7 @@ namespace EMT.DoneNOW.DTO
         OpportunityEdit = 122,                      // 修改商机
         OpportunityLose = 123,                    // 丢失商机
         OpportunityView = 124,                    // 查看商机
+        OpportunityClose = 125,                     // 关闭商机（即赢得商机）
 
         QuoteAdd = 131,                             // 报价新增
         QuoteEdit = 132,                            // 报价修改
@@ -665,6 +670,15 @@ namespace EMT.DoneNOW.DTO
 
         SubscriptionEdit = 220,                // 修改订阅
         SubscriptionAdd = 221,                 // 新增订阅
+
+
+        SaleOrderEdit = 225,                  // 销售订单的编辑
+        SaleOrderView = 226,                   // 销售订单的查看
+
+        CostCodeSelect = 230,                  // 物料成本的查找带回
+
+
+        ContractAdd = 301,                      // 合同新增
 
     }
 }

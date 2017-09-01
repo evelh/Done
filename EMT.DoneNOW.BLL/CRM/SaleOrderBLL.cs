@@ -27,6 +27,10 @@ namespace EMT.DoneNOW.BLL.CRM
             dic.Add("sales_order_status", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.SALES_ORDER_STATUS))); // 销售订单状态
             dic.Add("sys_resource", new sys_resource_dal().GetDictionary(true));  // 负责人
             dic.Add("country", new DistrictBLL().GetCountryList()); // 国家
+            dic.Add("addressdistrict", new d_district_dal().GetDictionary());                 // 地址表（省市县区）
+
+            dic.Add("opportunity_stage", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STAGE)));          // 商机阶段
+            dic.Add("oppportunity_status", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STATUS)));          // 商机状态
             return dic;
         }
 

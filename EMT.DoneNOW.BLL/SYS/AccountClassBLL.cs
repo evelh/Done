@@ -28,9 +28,13 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Insert(d_account_classification data, long user_id)
         {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
             data.create_time = data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.create_user_id = user_id;
-
             _dal.Insert(data);
             return ERROR_CODE.SUCCESS;
         }
@@ -42,24 +46,45 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Update(d_account_classification data, long user_id)
         {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
             data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.update_user_id = user_id;
-            if (_dal.Update(data)) {
-                return ERROR_CODE.SUCCESS;
+            if (!_dal.Update(data)) {
+                return ERROR_CODE.ERROR;
             }
-            return ERROR_CODE.ERROR;
+            return ERROR_CODE.SUCCESS;
         }
         /// <summary>
-        /// 删除
+        /// 通过id删除
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="id"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public ERROR_CODE Delete(d_account_classification data, long user_id)
-        { 
-             data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+        public ERROR_CODE Delete(long id, long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            var data = _dal.FindById(id);
+            if (data == null)
+            {
+                return ERROR_CODE.ERROR;
+            }
+            if (data.is_system > 0) {
+                return ERROR_CODE.SYSTEM;
+            }
+            data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.delete_user_id = user_id;
-            _dal.Update(data);
+            if (!_dal.Update(data))
+            {
+                return ERROR_CODE.ERROR;
+            }
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -70,6 +95,11 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Active(long id, long user_id)
         {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
             var data = GetSingel(id);
             if (data == null) {
                 return ERROR_CODE.ERROR;
@@ -80,11 +110,25 @@ namespace EMT.DoneNOW.BLL
             data.status_id = 1;
             data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.update_user_id = user_id;
-            _dal.Update(data);
+            if (!_dal.Update(data))
+            {
+                return ERROR_CODE.ERROR;
+            }
             return ERROR_CODE.SUCCESS;
         }
+        /// <summary>
+        /// 设置为失活状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
         public ERROR_CODE NoActive(long id, long user_id)
         {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
             var data = GetSingel(id);
             if (data == null)
             {
@@ -97,8 +141,14 @@ namespace EMT.DoneNOW.BLL
             data.status_id = 0;
             data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.update_user_id = user_id;
-            _dal.Update(data);
+            if (!_dal.Update(data))
+            {
+                return ERROR_CODE.ERROR;
+            }
             return ERROR_CODE.SUCCESS;
+        }
+        public List<d_account_classification> GetAll() {
+            return _dal.FindListBySql<d_account_classification>($"select * from d_account_classification where delete_time=0 order by id,sort_order").ToList();
         }
     }
 }

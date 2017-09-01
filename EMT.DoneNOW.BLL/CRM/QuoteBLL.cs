@@ -744,12 +744,25 @@ namespace EMT.DoneNOW.BLL
             }
 
         }
-
+        /// <summary>
+        /// 检查报价是否关联销售订单
+        /// </summary>
+        /// <param name="quote_id"></param>
+        /// <returns></returns>
         public bool CheckRelatSaleOrder(long quote_id)
         {
             var saleOrder = _dal.FindSignleBySql<crm_sales_order>($"SELECT * from crm_sales_order s where  s.opportunity_id  in (  select op.id FROM crm_quote q LEFT JOIN crm_opportunity op on op.id = q.opportunity_id where q.id={quote_id})");
 
             return saleOrder!=null;
+        }
+        /// <summary>
+        /// 获取到商机下的主报价（商机下如果有报价，一个会有主报价）
+        /// </summary>
+        /// <param name="oppo_id"></param>
+        /// <returns></returns>
+        public crm_quote GetPrimaryQuote(long oppo_id)
+        {
+            return _dal.FindSignleBySql<crm_quote>($"select * from crm_quote where is_primary_quote = 1 and opportunity_id={oppo_id} and delete_time=0");
         }
     }
 }

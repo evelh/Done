@@ -279,7 +279,7 @@
                             <div>
                                 <!-- todo 物料代码名称的显示-->
                                 <input type="text" style="width: 255px;" id="cost_code_id" name="" value="" />
-                                <img src="../Images/data-selector.png" style="vertical-align: middle;">
+                                <img src="../Images/data-selector.png" style="vertical-align: middle;" onclick="CostCodeCallBack()">
                                 <input type="hidden" name="cost_code_id" id="cost_code_idHidden" value="<%=isAdd?"":subscription.cost_code_id.ToString() %>" />
                             </div>
                             </td>
@@ -693,6 +693,10 @@
 
     }
 
+
+    function CostCodeCallBack() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COST_CALLBACK %>&field=cost_code_id", '<%=EMT.DoneNOW.DTO.OpenWindow.ServiceSelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
 
 
     function DateDiff(sDate1, sDate2) {  //sDate1和sDate2是yyyy-MM-dd格式

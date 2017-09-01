@@ -52,5 +52,114 @@ namespace EMT.DoneNOW.BLL
         public d_general GetSingleGeneral(long id) {
             return _dal.FindById(id);
         }
+        /// <summary>
+        /// 通过name和general_table_id获取一个d_general对象，并返回
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public d_general GetSingleGeneral(string name,int general_table_id) {
+            return _dal.FindSignleBySql<d_general>($"select * from d_general where name='{name}' and general_table_id={general_table_id} and delete_time=0");
+        }
+        public List<d_general> GetGeneralList(int general_table_id) {
+            return _dal.FindListBySql<d_general>($"select * from d_general where general_table_id={general_table_id} and delete_time=0 ORDER BY id,sort_order,`code`").ToList();
+        }
+        public string GetGeneralTableName(int general_table_id) {
+            return new d_general_table_dal().FindById(general_table_id).name;
+        }
+        public string GetGeneralParentName(int parent_id)
+        {
+            return _dal.FindSignleBySql<d_general>($"select * from d_general where id={parent_id} and delete_time=0 ").name;
+        }
+        /// <summary>
+        /// 删除一个
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE Delete(long id, long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            var data = _dal.FindById(id);
+            if (data == null)
+            {
+                return ERROR_CODE.ERROR;
+            }
+            if (data.is_system > 0) {
+                return ERROR_CODE.SYSTEM;
+            }
+            data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.delete_user_id = user_id;
+            if (!_dal.Update(data))
+            {
+                return ERROR_CODE.ERROR;
+            }
+            return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 激活
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE Active(long id, long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            var data = _dal.FindById(id);
+            if (data == null)
+            {
+                return ERROR_CODE.ERROR;
+            }
+            if (data.is_active > 0)
+            {
+                return ERROR_CODE.ACTIVATION;
+            }
+            data.is_active = 1;
+            data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.update_user_id = user_id;
+            if (!_dal.Update(data))
+            {
+                return ERROR_CODE.ERROR;
+            }
+            return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 失活
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE NoActive(long id, long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            var data = _dal.FindById(id);
+            if (data == null)
+            {
+                return ERROR_CODE.ERROR;
+            }
+            if (data.is_active==0)
+            {
+                return ERROR_CODE.NO_ACTIVATION;
+            }
+            data.is_active = 0;
+            data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.update_user_id = user_id;
+            if (!_dal.Update(data))
+            {
+                return ERROR_CODE.ERROR;
+            }
+            return ERROR_CODE.SUCCESS;
+        }
     }
 }

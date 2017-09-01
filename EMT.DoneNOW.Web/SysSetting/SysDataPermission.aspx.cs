@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.Web.SysSetting
 
         protected void Back_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("");
+            Response.Redirect("SysAdmin.aspx");
         }
 
         protected void Save_Click(object sender, EventArgs e)
@@ -73,12 +73,11 @@ namespace EMT.DoneNOW.Web.SysSetting
                 }
 
             }
-            
         }
 
         protected void Cancle_Click(object sender, EventArgs e)
         {
-
+            Response.Redirect("SysAdmin.aspx");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,16 +45,44 @@ namespace EMT.DoneNOW.Web
                     Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
                 }
             }
-                suffix.name = this.Suffix_name.Text.Trim().ToString();
+            suffix.name = this.Suffix_name.Text.Trim().ToString();
             if (this.Active.Checked) {
                 suffix.is_active = 1;
             }
             if (id > 0)
             {
                 //修改
+                var result = new SuffixBLL().Update(suffix, GetLoginUserId());
+                if (result == ERROR_CODE.ERROR)
+                {
+                    Response.Write("<script>alert('区域修改失败，返回！');window.close();self.opener.location.reload();</script>");
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("../Login.aspx");
+                }
+                else if (result == DTO.ERROR_CODE.EXIST)
+                {
+                    Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
+                }
             }
             else {
                 //新增
+                var result = new SuffixBLL().Insert(suffix, GetLoginUserId());
+                if (result == ERROR_CODE.ERROR)
+                {
+                    Response.Write("<script>alert('区域修改失败，返回！');window.close();self.opener.location.reload();</script>");
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("../Login.aspx");
+                }
+                else if (result == DTO.ERROR_CODE.EXIST)
+                {
+                    Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
+                }
             }
         }
     }

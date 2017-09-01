@@ -7,12 +7,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
-    <title>新增客户类别</title>
+    <title>客户类别</title>
 </head>
 <body>
     <form id="form1" runat="server">
         <div>
-
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
