@@ -52,6 +52,8 @@ namespace EMT.DoneNOW.DTO
         INSTALLED_PRODUCT_CATE = 108,           // 配置项种类
         LICENSE_TYPE = 109,                      //安全等级：授权类型
         QUOTE_GROUP_BY = 110,                    // 报价分组条件
+        CONTRACT_CATE = 112,                    // 合同分类
+        BILL_POST_TYPE = 118,                   // 合同：工时计费设置
     }
 
     /// <summary>

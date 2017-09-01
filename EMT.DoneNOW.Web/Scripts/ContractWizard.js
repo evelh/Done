@@ -1,76 +1,67 @@
-$("#b0").on("click",function(){
-    $(".Workspace0").hide();
-    $(".Workspace1").show();
+$("#b0").on("click", function () {
+    if ($("#currentPage").val() == 0) {
+        if ($("#typeSelect").val() == "") {
+            alert("请选择合同类型");
+            return;
+        }
+        contractType = $("#typeSelect").val();
+        $(".Workspace0").hide();
+        SelectType();
+        $(".Workspace1").show();
+        $("#a0").show();
+        $("#currentPage").val(1);
+    } else if ($("#currentPage").val() == 1) {
+        // TODO:检查必填项
+        if ($("#currentPage").val() == 0) {
+            $(".Workspace1").hide();
+            $("#a0").show();
+            $("#currentPage").val(3);
+            $("#b0").click();
+        } else {
+            $(".Workspace1").hide();
+            $(".Workspace3").show();
+            $("#a0").show();
+            $("#currentPage").val(3);
+        }
+    } else if ($("#currentPage").val() == 3) {
+        if (contractType == 1199) {
+            $(".Workspace3").hide();
+            $(".Workspace4").show();
+            $("#currentPage").val(4);
+        } else {
+            SetTimeReporting();
+            $(".Workspace3").hide();
+            $(".Workspace5").show();
+            $("#currentPage").val(5);
+        }
+    } else if ($("#currentPage").val() == 4) {
+        SetTimeReporting();
+        $(".Workspace4").hide();
+        $(".Workspace5").show();
+        $("#currentPage").val(5);
+    } else if ($("#currentPage").val() == 5) {
+        if (contractType == 1199 || contractType == 1204) {
+            $("#b0").hide();
+            $("#c0").show();
+            $(".Workspace5").hide();
+            $(".Workspace8").show();
+            $("#currentPage").val(8);
+        } else {
+            $(".Workspace5").hide();
+            $(".Workspace6").show();
+            $("#currentPage").val(6);
+        }
+    }
 });
-$("#a1").on("click",function(){
+$("#a0").on("click",function(){
     $(".Workspace0").show();
     $(".Workspace1").hide();
 });
-$("#b1").on("click",function(){
-    $(".Workspace1").hide();
-    $(".Workspace2").show();
-});
-$("#a2").on("click",function(){
-    $(".Workspace1").show();
-    $(".Workspace2").hide();
-});
-$("#b2").on("click",function(){
-    $(".Workspace2").hide();
-    $(".Workspace3").show();
-});
-$("#a3").on("click",function(){
-    $(".Workspace2").show();
-    $(".Workspace3").hide();
-});
-$("#b3").on("click",function(){
-    $(".Workspace3").hide();
-    $(".Workspace4").show();
-});
-$("#a4").on("click",function(){
-    $(".Workspace3").show();
-    $(".Workspace4").hide();
-});
-$("#b4").on("click",function(){
-    $(".Workspace4").hide();
-    $(".Workspace5").show();
-});
-$("#a5").on("click",function(){
-    $(".Workspace4").show();
-    $(".Workspace5").hide();
-});
-$("#b5").on("click",function(){
-    $(".Workspace5").hide();
-    $(".Workspace6").show();
-});
-$("#a6").on("click",function(){
-    $(".Workspace5").show();
-    $(".Workspace6").hide();
-});
-$("#b6").on("click",function(){
-    $(".Workspace6").hide();
-    $(".Workspace7").show();
-});
-$("#a7").on("click",function(){
-    $(".Workspace6").show();
-    $(".Workspace7").hide();
-});
-$("#b7").on("click",function(){
-    $(".Workspace7").hide();
-    $(".Workspace8").show();
-});
-$("#a8").on("click",function(){
-    $(".Workspace7").show();
-    $(".Workspace8").hide();
-});
-$("#c8").on("click",function(){
-    $(".Workspace8").hide();
-    $(".Workspace9").show();
-});
-$("#d9").on("click",function(){
+$("#d0").on("click",function(){
     window.close();
 });
-$("#load111").on("click",function(){
-    $(".grid").show();
+$("#c0").on("click",function(){
+    $(".Workspace6").show();
 });
 $("#all").on("click",function(){
     if($(this).is(":checked")){
@@ -107,6 +98,27 @@ $("#CancelButton").on("mouseover",function(){
 $("#CancelButton").on("mouseout",function(){
     $("#CancelButton").css("background","#f0f0f0");
 })
-window.onload(function () {
+function InitContact() {
+    requestData("../Tools/CompanyAjax.ashx?act=contact&account_id=" + $("#companyNameHidden").val(), null, function (data) {
+        $("#contactSelect").html(data);
+    })
+}
+// 根据不同合同类型修改表单内容
+function SelectType() {
 
-})
+}
+// 设置工时表单
+function SetTimeReporting() {
+
+}
+var contractType;
+window.onload=function () {
+    contractType = $("#contractType").val();
+    if (contractType == 0) {
+        $(".Workspace0").show();
+        $("#currentPage").val(0);
+    } else {
+        $(".Workspace1").show();
+        $("#currentPage").val(1);
+    }
+}

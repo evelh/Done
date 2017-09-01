@@ -150,6 +150,7 @@
     <Content Include="Content\ClassificationIcons.css" />
     <Content Include="Content\index.css" />
     <Content Include="Content\login.css" />
+    <Content Include="Content\LostOpp.css" />
     <Content Include="Content\LostQuote.css" />
     <Content Include="Content\multiple-select.css" />
     <Content Include="Content\multipleList.css" />

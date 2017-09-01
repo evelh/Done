@@ -1,0 +1,309 @@
+body{
+    overflow: hidden;
+}
+/*顶部内容和帮助*/
+.TitleBar{
+    color: #fff;
+    background-color: #346a95;
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.TitleBar>.Title{
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 97%;
+}
+.help{
+    background-image: url(../img/help.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 16px;
+    border-radius: 50%;
+}
+/*保存按钮*/
+.ButtonContainer{
+    padding: 0 10px 10px 10px;
+    width: auto;
+    height: 26px;
+}
+.ButtonContainer ul li .Button{
+    margin-right: 5px;
+    vertical-align: top;
+}
+li.Button{
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+    border: 1px solid #d7d7d7;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: #4f4f4f;
+    cursor: pointer;
+    height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-decoration: none;
+}
+.Button>.Icon{
+    display: inline-block;
+    flex: 0 0 auto;
+    height: 16px;
+    margin: 0 3px;
+    width: 16px;
+}
+.Save,.SaveAndClone,.SaveAndNew{
+    background-image: url("../img/save.png");
+}
+.Ok{
+    background-image: url("../img/ok.png");
+}
+.Cancel{
+    background-image: url("../img/cancel.png");
+}
+.Tools{
+    background-image: url("../img/dropdown.png");
+}
+.Add{
+    background-image: url("../img/add.png");
+}
+.Print{
+    background-image: url("../img/print.png");
+}
+.Button>.Text{
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/*每一页*/
+.PageInstructions {
+    font-size: 12px;
+    color: #666;
+    padding: 0 16px 12px 16px;
+    margin-top: -1px;
+    line-height: 16px;
+}
+.WizardSection {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+.Workspace table {
+    border-right: 0;
+    padding-right: 0;
+    border-top: 0;
+    padding-left: 0;
+    margin: 0;
+    border-left: 0;
+    border-bottom: 0;
+}
+td {
+    font-size: 12px;
+}
+.FieldLabels, .workspace .FieldLabels {
+    font-size: 12px;
+    color: #4F4F4F;
+    font-weight: bold;
+    line-height: 15px;
+}
+.errorSmall {
+    font-size: 12px;
+    color: #E51937;
+    margin-left: 3px;
+    text-align: center;
+}
+input[type=text] {
+    height: 22px;
+    padding: 0 6px;
+}
+input[type="text"]:disabled, select:disabled, textarea:disabled {
+    background-color: #f0f0f0;
+    color: #6d6d6d;
+    margin-right: 1px;
+}
+input[type=text], select, textarea {
+    border: solid 1px #D7D7D7;
+    font-size: 12px;
+    color: #333;
+    margin: 0;
+}
+#txtBlack8 {
+    font-size: 12px;
+    color: #333;
+    font-weight: 100;
+}
+.step2LeftSelectWidth {
+    width: 292px;
+}
+.WizardSection td[class="FieldLabels"] select {
+    margin-right: 1px;
+}
+select {
+    height: 24px;
+    padding: 0;
+}
+textarea {
+    padding: 6px;
+    resize: vertical;
+}
+.WizardButtonBar {
+    padding: 0 16px 12px 16px;
+    position: absolute;
+    bottom:10px;
+}
+/*下面按钮*/
+.ButtonBar {
+    font-size: 12px;
+    padding: 0 16px 10px 16px;
+    background-color: #FFF;
+}
+.ButtonBar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: 26px;
+    width: 100%;
+}
+.ButtonBar ul li {
+    float: left;
+}
+.contentButton {
+    line-height: 22px;
+}
+.ButtonBar ul li a, .ButtonBar ul li a:visited, .contentButton a, .contentButton a:link, .contentButton a:visited, a.buttons, input.button, .ButtonBar ul li a:visited {
+    background: #d7d7d7;
+    background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #bcbcbc;
+    display: inline-block;
+    color: #4F4F4F;
+    cursor: pointer;
+    padding: 0 5px 0 3px;
+    position: relative;
+    text-decoration: none;
+    vertical-align: middle;
+    height: 24px;
+}
+div.ButtonBar img.ButtonImg, .contentButton img.ButtonImg {
+    margin: 4px 3px 0 3px;
+}
+.ButtonBar ul li img {
+    border: 0;
+}
+.ButtonBar ul li a span.Text, .contentButton a span.Text, a.buttons span.Text, input.button span.Text {
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 26px;
+    padding: 0 1px 0 3px;
+    color: #4F4F4F;
+    vertical-align: top;
+}
+div.ButtonBar li.right {
+    float: right;
+}
+div.ButtonBar img.ButtonRightImg {
+    margin: 4px 1px 0 2px;
+}
+.DivSection td[class="fieldLabels"] input[type=radio], .DivSection td[class="FieldLabels"] input[type=radio], .DivSection td[class="fieldLabels"] input[type=checkbox], .DivSection td[class="FieldLabels"] input[type=checkbox], .WizardSection td[class="fieldLabels"] input[type=radio], .WizardSection td[class="FieldLabels"] input[type=radio], .WizardSection td[class="fieldLabels"] input[type=checkbox], .WizardSection td[class="FieldLabels"] input[type=checkbox] {
+    margin-right: 0;
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-bottom: 1px;
+}
+a:link, a:visited, .dataGridBody a:link, .dataGridBody a:visited {
+    color: #376597;
+    font-size: 12px;
+    text-decoration: none;
+}
+.grid {
+    font-size: 12px;
+    background-color: #FFF;
+}
+.grid table {
+    border-bottom-color: #98b4ca;
+    border-collapse: collapse;
+    width: 100%;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+.grid thead {
+    background-color: #cbd9e4;
+}
+.grid thead tr td {
+    background-color: #cbd9e4;
+    border-color: #98b4ca;
+    color: #64727a;
+}
+.grid thead td {
+    border-width: 1px;
+    border-style: solid;
+    font-size: 13px;
+    font-weight: bold;
+    height: 19px;
+    padding: 4px 4px 4px 4px;
+    word-wrap: break-word;
+}
+.grid .selected {
+    background-color: #e9eeee;
+}
+.grid tbody tr td:first-child, .grid tfoot tr td:first-child {
+    border-left-color: #98b4ca;
+}
+.grid tbody td {
+    border-width: 1px;
+    border-style: solid;
+    border-left-color: #F8F8F8;
+    border-right-color: #F8F8F8;
+    border-top-color: #e8e8e8;
+    border-bottom-width: 0;
+    padding: 4px 4px 4px 4px;
+    vertical-align: top;
+    word-wrap: break-word;
+    font-size: 12px;
+    color: #333;
+}
+.Workspace div {
+     padding-bottom: 21px;
+}
+textarea {
+    padding: 6px;
+    resize: none;
+}
+.sectionBluebg {
+    color: #4F4F4F;
+    font-weight: bold;
+    padding-left: 0;
+    height: 20px;
+    vertical-align: middle;
+    width: auto;
+    margin-bottom: 0;
+    font-size: 12px;
+}
+a.PrimaryLink {
+    color: #376597;
+    text-decoration: none;
+    font-size: 12px;
+    cursor: pointer;
+}

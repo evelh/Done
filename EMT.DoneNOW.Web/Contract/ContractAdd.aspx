@@ -16,7 +16,7 @@
         </div>
     </div>
     <form id="form1" runat="server">
-        <!--第零页-->
+        <!--第零页 选择合同类型-->
         <div class="Workspace Workspace0" style="display: none;">
             <div class="PageInstructions">Please provide type information for the new contract. The contract type cannot be changed once the contract is created.</div>
             <div class="WizardSection">
@@ -27,13 +27,16 @@
                             <table cellspacing="1" cellpadding="0" width="100%">
                                 <tr>
                                     <td class="FieldLabels">
-                                        Contract Type
+                                        合同类型
                                         <div style="position:relative; visibility:visible; display:block;width:100%;">
-                                            <select name="" style="width:190px;">
-                                                <option value="">(Select)</option>
-                                                <option value="">Manually</option>
-                                                <option value="">On timesheet approval</option>
-                                                <option value="">Immediately without review</option>
+                                            <select id="typeSelect" style="width:190px;">
+                                                <option value="">--请选择--</option>
+                                                <option value="1199">定期服务合同</option>
+                                                <option value="1200">工时及物料合同</option>
+                                                <option value="1201">固定价格合同</option>
+                                                <option value="1202">预付时间合同</option>
+                                                <option value="1203">预付费合同</option>
+                                                <option value="1204">事件合同</option>
                                             </select>
                                         </div>
                                     </td>
@@ -44,41 +47,10 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width:97%;">
-                <ul>
-                    <!--上一层-->
-                    <li style="display: none;" id="a0">
-                        <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
-                            <span class="Text">Back</span>
-                        </a>
-                    </li>
-                    <!--下一层-->
-                    <li class="right" id="b0">
-                        <a class="ImgLink">
-                            <span class="Text">Next</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
-                        </a>
-                    </li>
-                    <!--完成-->
-                    <li style="display: none;" class="right" id="c0">
-                        <a class="ImgLink">
-                            <span class="Text">Finish</span>
-                        </a>
-                    </li>
-                    <!--关闭-->
-                    <li class="right" style="display: none;" id="d0">
-                        <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
-                            <span class="Text">Close</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
-        <!--第一页-->
+        <!--第一页 填基本信息-->
         <div class="Workspace Workspace1" style="display: none;">
-            <div class="PageInstructions">Please provide information for the new contract. Be certain to include start and end dates for the contract.</div>
+            <div class="PageInstructions">请为新合同录入开始日期和结束日期等信息。</div>
             <div class="WizardSection">
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tbody>
@@ -89,44 +61,45 @@
                                     <tbody>
                                         <tr>
                                             <td class="FieldLabels">
-                                                公司<span class="errorSmall">*</span>
+                                                合同名称<span class="errorSmall">*</span>
                                                 <div>
-                                                    <input type="text" style="width: 278px; margin-right: 4px;">
+                                                    <input type="text" id="name" name="name" style="width: 278px; margin-right: 4px;"/>
                                                 </div>
                                             </td>
                                             <td class="FieldLabels">
-                                                Contract Description
+                                                合同描述
                                                 <div>
-                                                    <input type="text" style="width: 342px;">
+                                                    <input type="text" name="description" style="width: 342px;"/>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="FieldLabels">
-                                                Company Name<span class="errorSmall">*</span>
+                                                公司名称<span class="errorSmall">*</span>
                                                 <div>
-                                                    <input type="text"style="width: 278px;">
-                                                    <img src="img/data-selector.png" style="vertical-align: middle;cursor: pointer;">
+                                                    <input type="text" id="companyName" disabled="disabled" style="width: 278px;" />
+                                                    <input type="hidden" id="companyNameHidden" name="account_id" />
+                                                    <img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;" />
                                                 </div>
                                             </td>
                                             <td class="FieldLabels">
-                                                Contract Category
+                                                合同种类
                                                 <div>
-                                                    <select class="step2LeftSelectWidth" style="width:356px;">
-                                                        <option value=""></option>
-                                                        <option value="">Need</option>
-                                                        <option value="">Timing</option>
-                                                        <option value="">Price</option>
-                                                        <option value="">Competition</option>
-                                                        <option value="">Feature</option>
+                                                    <select id="cateSelect" name="cate_id" class="step2LeftSelectWidth" style="width:356px;">
+                                                        <option value="">--请选择--</option>
+                                                        <%foreach (var cate in contractCate) {
+                                                                %>
+                                                        <option value="<%=cate.val %>"><%=cate.show %></option>
+                                                        <%
+                                                            } %>
                                                     </select>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="FieldLabels">
-                                                <input type="checkbox" origchecked="true">
-                                                <span>Default Service Desk Contract</span>
+                                                <input type="checkbox" name="is_sdt_default" />
+                                                <span>默认服务台合同</span>
                                             </td>
                                             <td class="FieldLabels">
                                                 <div>
@@ -134,14 +107,14 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td class="FieldLabels">
-                                                                    External Contract Number
-                                                                    <br>
-                                                                    <input type="text" style="width: 155px;">
+                                                                    外部合同号
+                                                                    <br/>
+                                                                    <input type="text" name="external_no" style="width: 155px;"/>
                                                                 </td>
                                                                 <td class="FieldLabels" style=" padding-left :16px;">
-                                                                    Purchase Order Number
-                                                                    <br>
-                                                                    <input type="text" style="width: 156px;">
+                                                                    采购订单号
+                                                                    <br/>
+                                                                    <input type="text" name="purchase_order_no" style="width: 156px;"/>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -151,36 +124,38 @@
                                         </tr>
                                         <tr>
                                             <td class="FieldLabels">
-                                                Contact Name
+                                                联系人
                                                 <div>
-                                                    <select class="step2LeftSelectWidth" style="width:134px;">
+                                                    <select id="contactSelect" name="contact_id" disabled="disabled" class="step2LeftSelectWidth" style="width:134px;">
                                                         <option value=""></option>
-                                                        <option value="">xiaodangjia</option>
-                                                        <option value="">asdsa</option>
-                                                        <option value="">fgdngjia</option>
                                                     </select>
                                                 </div>
                                             </td>
                                             <td class="FieldLabels">
-                                                Service Level Agreement
+                                                服务等级协议
                                                 <div>
-                                                    <select style="width:356px;">
-                                                        <option value=""></option>
-                                                        <option value="">asdsad</option>
+                                                    <select id="slaSelect" name="sla_id" style="width:356px;">
+                                                        <option value="">--请选择--</option>
+                                                        <%foreach (var sla in slaList) {
+                                                                %>
+                                                        <option value="<%=sla.id %>"><%=sla.name %></option>
+                                                        <%
+                                                            } %>
                                                     </select>
-                                                    <img src="img/add.png" style="vertical-align: middle;cursor: pointer;">
+                                                    <img src="../Images/add.png" style="vertical-align: middle;cursor: pointer;" />
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="FieldLabels">
-                                                Contract Period Type
+                                                合同周期类型
                                                 <div>
-                                                    <select class="step2LeftSelectWidth" style="width:134px;">
-                                                        <option value="">mmmm</option>
-                                                        <option value="">xiaodangjia</option>
-                                                        <option value="">asdsa</option>
-                                                        <option value="">fgdngjia</option>
+                                                    <select name="period_type" class="step2LeftSelectWidth" style="width:134px;">
+                                                        <%foreach (var period in periodType) {
+                                                                %>
+                                                        <option value="<%=period.val %>"><%=period.show %></option>
+                                                        <%
+                                                            } %>
                                                     </select>
                                                 </div>
                                             </td>
@@ -190,16 +165,16 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td class="FieldLabels">
-                                                                    Setup Fee
+                                                                    初始费用
                                                                     <div style="width: 88px;padding:0;">
-                                                                        <input type="text" value="0.00" style="width: 88px;padding:0;text-align: right;">
+                                                                        <input type="text" name="setup_fee" value="0.00" style="width: 88px;padding:0;text-align: right;" />
                                                                     </div>
                                                                 </td>
                                                                 <td class="FieldLabels" style="padding-left :16px">
-                                                                    Setup Fee Billing Code
+                                                                    初始费用计费代码
                                                                     <div style="padding:0;">
-                                                                        <input type="text" disabled style="margin: 2px 0px; width:224px;">
-                                                                        <img src="img/add.png" style="vertical-align: middle;cursor: pointer;">
+                                                                        <input type="text" disabled="disabled" style="margin: 2px 0px; width:224px;" />
+                                                                        <img src="../Images/add.png" style="vertical-align: middle;cursor: pointer;" />
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -210,25 +185,25 @@
                                         </tr>
                                         <tr>
                                             <td class="FieldLabels">
-                                                Start Date<span class="errorSmall">*</span>
+                                                开始日期<span class="errorSmall">*</span>
                                                 <div>
-                                                    <input type="text" style="width:120px;" onclick="WdatePicker()" class="Wdate">
+                                                    <input type="text" name="start_date" style="width:120px;" onclick="WdatePicker()" class="Wdate"/>
                                                 </div>
                                             </td>
-                                            <td class="CheckboxLabels">
-                                                <input type="radio" checked name="rEnd">
-                                                <span>End Date</span>
+                                            <td class="CheckboxLabels" id="endTd">
+                                                <input type="radio" checked="checked" name="rEnd"/>
+                                                <span>结束日期</span>
                                                 <span class="errorSmall">*</span>
-                                                <input type="text" onclick="WdatePicker()" class="Wdate">
+                                                <input type="text" name="end_date" onclick="WdatePicker()" class="Wdate"/>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr id="endTr">
                                             <td colspan="1"></td>
                                             <td class="CheckboxLabels" style="padding-top:10px">
-                                                <input type="radio" name="rEnd">
-                                                <span>End After</span>
+                                                <input type="radio" name="rEnd"/>
+                                                <span>结束于</span>
                                                 <span class="errorSmall">*</span>
-                                                <input type="text" style="margin-left: 2px;text-align:right;" size="3"> Occurrences
+                                                <input type="text" name="occurrences" style="margin-left: 2px;text-align:right;" size="3"/>个服务周期后
                                             </td>
                                         </tr>
                                     </tbody>
@@ -237,37 +212,6 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="ButtonBar WizardButtonBar" style="width:97%;">
-                <ul>
-                    <!--上一层-->
-                    <li id="a1">
-                        <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
-                            <span class="Text">Back</span>
-                        </a>
-                    </li>
-                    <!--下一层-->
-                    <li class="right" id="b1">
-                        <a class="ImgLink">
-                            <span class="Text">Next</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
-                        </a>
-                    </li>
-                    <!--完成-->
-                    <li class="right" style="display: none;" id="c1">
-                        <a class="ImgLink">
-                            <span class="Text">Finish</span>
-                        </a>
-                    </li>
-                    <!--关闭-->
-                    <li class="right" style="display: none;" id="d1">
-                        <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
-                            <span class="Text">Close</span>
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
         <!--第二页-->
@@ -285,13 +229,13 @@
                                     <td class="FieldLabels">
                                         公司<span class="errorSmall">*</span>
                                         <div>
-                                            <input type="text" style="width: 278px; margin-right: 4px;">
+                                            <input type="text" style="width: 278px; margin-right: 4px;" />
                                         </div>
                                     </td>
                                     <td class="FieldLabels">
                                         Contract Description
                                         <div>
-                                            <input type="text" style="width: 342px;">
+                                            <input type="text" style="width: 342px;" />
                                         </div>
                                     </td>
                                 </tr>
@@ -299,8 +243,8 @@
                                     <td class="FieldLabels">
                                         Company Name<span class="errorSmall">*</span>
                                         <div>
-                                            <input type="text"style="width: 278px;">
-                                            <img src="img/data-selector.png" style="vertical-align: middle;cursor: pointer;">
+                                            <input type="text"style="width: 278px;" />
+                                            <img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;" />
                                         </div>
                                     </td>
                                     <td class="FieldLabels">
@@ -319,7 +263,7 @@
                                 </tr>
                                 <tr>
                                     <td class="FieldLabels">
-                                        <input type="checkbox" origchecked="true">
+                                        <input type="checkbox" origchecked="true" />
                                         <span>Default Service Desk Contract</span>
                                     </td>
                                     <td class="FieldLabels">
@@ -329,13 +273,13 @@
                                                 <tr>
                                                     <td class="FieldLabels">
                                                         External Contract Number
-                                                        <br>
-                                                        <input type="text" style="width: 155px;">
+                                                        <br/>
+                                                        <input type="text" style="width: 155px;"/>
                                                     </td>
                                                     <td class="FieldLabels" style=" padding-left :16px;">
                                                         Purchase Order Number
-                                                        <br>
-                                                        <input type="text" style="width: 156px;">
+                                                        <br/>
+                                                        <input type="text" style="width: 156px;"/>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -362,7 +306,7 @@
                                                 <option value=""></option>
                                                 <option value="">asdsad</option>
                                             </select>
-                                            <img src="img/add.png" style="vertical-align: middle;cursor: pointer;">
+                                            <img src="../Images/add.png" style="vertical-align: middle;cursor: pointer;"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -370,7 +314,7 @@
                                     <td class="FieldLabels">
                                         Start Date<span class="errorSmall">*</span>
                                         <div>
-                                            <input type="text" style="width:120px;" onclick="WdatePicker()" class="Wdate">
+                                            <input type="text" style="width:120px;" onclick="WdatePicker()" class="Wdate"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -378,7 +322,7 @@
                                     <td class="FieldLabels">
                                         End Date<span class="errorSmall">*</span>
                                         <div>
-                                            <input type="text" style="width:120px;" onclick="WdatePicker()" class="Wdate">
+                                            <input type="text" style="width:120px;" onclick="WdatePicker()" class="Wdate"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -389,41 +333,10 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width:97%;">
-                <ul>
-                    <!--上一层-->
-                    <li id="a2">
-                        <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
-                            <span class="Text">Back</span>
-                        </a>
-                    </li>
-                    <!--下一层-->
-                    <li class="right" id="b2">
-                        <a class="ImgLink">
-                            <span class="Text">Next</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
-                        </a>
-                    </li>
-                    <!--完成-->
-                    <li class="right" style="display: none;" id="c2">
-                        <a class="ImgLink">
-                            <span class="Text">Finish</span>
-                        </a>
-                    </li>
-                    <!--关闭-->
-                    <li class="right" style="display: none;" id="d2">
-                        <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
-                            <span class="Text">Close</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
-        <!--第三页-->
+        <!--第三页 自定义字段-->
         <div class="Workspace Workspace3" style="display: none;">
-            <div class="PageInstructions" style="font-weight: bold;">USER-DEFINED FIELDS</div>
+            <div class="PageInstructions" style="font-weight: bold;">自定义字段</div>
             <div class="WizardSection">
                 <table cellspacing="0" cellpadding="0" width="100%" class="Searchareaborder">
                     <tbody>
@@ -431,14 +344,54 @@
                             <td align="center">
                                 <table  cellspacing="1" cellpadding="0" width="100%">
                                     <tbody>
+                                        <% if (udfList != null && udfList.Count > 0)
+                                            {
+                                                foreach (var udf in udfList)
+                                                {
+                                                    if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                                                    {%>
                                         <tr>
                                             <td valign="top" class="FieldLabels">
-                                                Test<span class="errorSmall">*</span>
+                                                <%=udf.name %>
                                                 <div>
-                                                    <input type="text" style="width:300px;">
+                                                    <input type="text" name="<%=udf.id %>" style="width:300px;" />
                                                 </div>
                                             </td>
                                         </tr>
+                                        <%}
+                                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
+                                            {%>
+                                        <tr>
+                                            <td>
+                                                <label><%=udf.name %></label>
+                                                <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
+
+                                            </td>
+                                        </tr>
+                                        <%}
+                                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
+                                            {%><tr>
+                                                <td>
+                                                    <label><%=udf.name %></label>
+                                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" />
+                                                </td>
+                                            </tr>
+                                        <%}
+                                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
+                                            {%>
+                                        <tr>
+                                            <td>
+                                                <label><%=udf.name %></label>
+                                                <input type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                                            </td>
+                                        </tr>
+                                        <%}
+                                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                                            {%>
+
+                                        <%}
+                                                }
+                                            } %>
                                     </tbody>
                                 </table>
                             </td>
@@ -446,41 +399,10 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width:97%;">
-                <ul>
-                    <!--上一层-->
-                    <li id="a3">
-                        <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
-                            <span class="Text">Back</span>
-                        </a>
-                    </li>
-                    <!--下一层-->
-                    <li class="right" id="b3">
-                        <a class="ImgLink">
-                            <span class="Text">Next</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
-                        </a>
-                    </li>
-                    <!--完成-->
-                    <li class="right" style="display: none;" id="c3">
-                        <a class="ImgLink">
-                            <span class="Text">Finish</span>
-                        </a>
-                    </li>
-                    <!--关闭-->
-                    <li class="right" style="display: none;" id="d3">
-                        <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
-                            <span class="Text">Close</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
-        <!--第四页-->
+        <!--第四页 服务包-->
         <div class="Workspace Workspace4" style="display: none;">
-            <div class="PageInstructions">Select the services and/or service bundles to include in your recurring contract. You can apply an overall discount to all services/bundles on this contract later by opening the contract and going to the Services page.</div>
+            <div class="PageInstructions">选择要添加到定期合同中的服务或服务包，稍后可以通过打开合同进入服务页面对此合同的所有服务/包进行打折。</div>
             <div class="WizardSection">
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tbody>
@@ -492,14 +414,14 @@
                                             <td>
                                                 <span class="contentButton">
                                                     <a class="ImgLink">
-                                                        <img src="img/add.png" class="ButtonImg">
-                                                        <span class="Text">New Service Bundle</span>
+                                                        <img src="../Images/add.png" class="ButtonImg"/>
+                                                        <span class="Text">新建服务包</span>
                                                     </a>
                                                 </span>
                                                  <span class="contentButton">
                                                     <a class="ImgLink">
-                                                        <img src="img/add.png" class="ButtonImg">
-                                                        <span class="Text">New Service</span>
+                                                        <img src="../Images/add.png" class="ButtonImg"/>
+                                                        <span class="Text">新建服务</span>
                                                     </a>
                                                 </span>
                                             </td>
@@ -517,52 +439,21 @@
                         <tr height="10px;"></tr>
                         <tr width="100%">
                             <td width="90%;" colspan="8" align="right">
-                                <span class="FieldLabels">Average Monthly Billing Price</span>
+                                <span class="FieldLabels">平均月度计费价格</span>
                             </td>
                             <td class="FieldLabels" width="10%" style="padding-right:15px;">
                                 <div style="width:130px;height: 24px; padding:0 0 0 10px;">
-                                    <input type="text" value="0.00" style="text-align: right;">
+                                    <input type="text" value="0.00" style="text-align: right;"/>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width:97%;">
-                <ul>
-                    <!--上一层-->
-                    <li id="a4">
-                        <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
-                            <span class="Text">Back</span>
-                        </a>
-                    </li>
-                    <!--下一层-->
-                    <li class="right" id="b4">
-                        <a class="ImgLink">
-                            <span class="Text">Next</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
-                        </a>
-                    </li>
-                    <!--完成-->
-                    <li class="right" style="display: none;" id="c4">
-                        <a class="ImgLink">
-                            <span class="Text">Finish</span>
-                        </a>
-                    </li>
-                    <!--关闭-->
-                    <li class="right" style="display: none;" id="d4">
-                        <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
-                            <span class="Text">Close</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
-        <!--第五页-->
+        <!--第五页 工时计费设置-->
         <div class="Workspace Workspace5" style="display: none;">
-            <div class="PageInstructions">Please provide time reporting information for the new contract.</div>
+            <div class="PageInstructions">请为新合同录入工时信息。</div>
             <div class="WizardSection">
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tbody>
@@ -571,13 +462,15 @@
                                 <table cellspacing="1" cellpadding="0" width="100%">
                                     <tr>
                                         <td class="FieldLabels">
-                                            Approve & Post Labour<span class="errorSmall">*</span>
+                                            工时计费设置<span class="errorSmall">*</span>
                                             <div style="position:relative; visibility:visible; display:block;width:100%;">
-                                                <select name="" id="" style="width:190px;">
-                                                    <option value="">(Select)</option>
-                                                    <option value="">Manually</option>
-                                                    <option value="">On timesheet approval</option>
-                                                    <option value="">Immediately without review</option>
+                                                <select name="bill_post_type_id" id="" style="width:190px;">
+                                                    <option value="">--请选择--</option>
+                                                    <%foreach (var bill in billPostType) {
+                                                            %>
+                                                    <option value="<%=bill.val %>"><%=bill.show %></option>
+                                                    <%
+                                                        } %>
                                                 </select>
                                             </div>
                                         </td>
@@ -585,8 +478,8 @@
                                     <tr>
                                         <td>
                                             <div>
-                                                <input type="checkbox" style="vertical-align: middle;">
-                                                <span class="CheckboxLabels">Time reporting requires start and stop times</span>
+                                                <input type="checkbox" style="vertical-align: middle;"/>
+                                                <span class="CheckboxLabels">要求工时输入开始/结束时间</span>
                                             </div>
                                         </td>
                                     </tr>
@@ -596,41 +489,10 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width:97%;">
-                <ul>
-                    <!--上一层-->
-                    <li id="a5">
-                        <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
-                            <span class="Text">Back</span>
-                        </a>
-                    </li>
-                    <!--下一层-->
-                    <li class="right" id="b5">
-                        <a class="ImgLink">
-                            <span class="Text">Next</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
-                        </a>
-                    </li>
-                    <!--完成-->
-                    <li style="display: none;" class="right" id="c5">
-                        <a class="ImgLink">
-                            <span class="Text">Finish</span>
-                        </a>
-                    </li>
-                    <!--关闭-->
-                    <li class="right" style="display: none;" id="d5">
-                        <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
-                            <span class="Text">Close</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
-        <!--第六页-->
+        <!--第六页 角色费率设置-->
         <div class="Workspace Workspace6" style="display: none;">
-            <div class="PageInstructions">By default, all roles will use the default billing rate. To override a role’s rate, check the role’s checkbox and enter the contract rate. To “lock in" a role’s current default rate for this contract, simply check that role’s checkbox. You can modify the contract rates later, if necessary.</div>
+            <div class="PageInstructions">默认情况下，所有角色会使用默认计费费率。若要覆盖角色费率，请勾选角色复选框并输入新费率。</div>
             <div class="WizardSection">
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tbody>
@@ -693,41 +555,10 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width:97%;">
-                <ul>
-                    <!--上一层-->
-                    <li id="a6">
-                        <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
-                            <span class="Text">Back</span>
-                        </a>
-                    </li>
-                    <!--下一层-->
-                    <li class="right" id="b6">
-                        <a class="ImgLink">
-                            <span class="Text">Next</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
-                        </a>
-                    </li>
-                    <!--完成-->
-                    <li style="display: none;" class="right" id="c6">
-                        <a class="ImgLink">
-                            <span class="Text">Finish</span>
-                        </a>
-                    </li>
-                    <!--关闭-->
-                    <li class="right" style="display: none;" id="d6">
-                        <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
-                            <span class="Text">Close</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
-        <!--第七页-->
+        <!--第七页 里程碑设置-->
         <div class="Workspace Workspace7" style="display: none;">
-            <div class="PageInstructions">Please provide milestone information for the new contract.</div>
+            <div class="PageInstructions">请为新合同输入里程碑信息。</div>
             <div class="WizardSection">
                 <div style="position:relative;">
                     <div style="position:absolute;top:0px;left:0px;width:100%;">
@@ -801,7 +632,7 @@
                                         <div>
                                             <input type="text" style="width:200px;" disabled>
                                             <a class="DataSelectorLinkIcon">
-                                                <img src="img/data-selector.png" style="vertical-align: middle;">
+                                                <img src="../Images/data-selector.png" style="vertical-align: middle;"/>
                                             </a>
                                         </div>
                                     </td>
@@ -809,14 +640,14 @@
                                     <td class="FieldLabels">
                                         Due Date<span class="errorSmall">*</span>
                                         <div>
-                                            <input type="text" style="width:90px;" onclick="WdatePicker()" class="Wdate">
+                                            <input type="text" style="width:90px;" onclick="WdatePicker()" class="Wdate"/>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <div>
-                                            <input type="checkbox">
+                                            <input type="checkbox"/>
                                             <span>Ready to Bill</span>
                                         </div>
                                     </td>
@@ -850,41 +681,10 @@
                     </div>
                 </div>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width:97%;">
-                <ul>
-                    <!--上一层-->
-                    <li id="a7">
-                        <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
-                            <span class="Text">Back</span>
-                        </a>
-                    </li>
-                    <!--下一层-->
-                    <li class="right" id="b7">
-                        <a class="ImgLink">
-                            <span class="Text">Next</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
-                        </a>
-                    </li>
-                    <!--完成-->
-                    <li style="display: none;" class="right" id="c7">
-                        <a class="ImgLink">
-                            <span class="Text">Finish</span>
-                        </a>
-                    </li>
-                    <!--关闭-->
-                    <li class="right" style="display: none;" id="d7">
-                        <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
-                            <span class="Text">Close</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
-        <!--第八页-->
+        <!--第八页 通知设置-->
         <div class="Workspace Workspace8" style="display: none;">
-            <div class="PageInstructions">Select the people you would like to notify and create a message for this notification. Use "Other Email Addresses" field if you have a distribution list; for example, distribution@yourcompany.com.</div>
+            <div class="PageInstructions">选择要通知的人并创建通知信息。</div>
             <div class="WizardSection">
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tbody>
@@ -893,7 +693,7 @@
                                 <table cellspacing="0" cellpadding="0" width="90%">
                                     <tr>
                                         <td class="sectionBluebg">
-                                            Resources
+                                            员工
                                             <span style="font-weight: normal;">
                                                 <a class="PrimaryLink">(Load)</a>
                                             </span>
@@ -904,16 +704,16 @@
                                     </tr>
                                     <tr>
                                         <td class="FieldLabels">
-                                            Other Email Addresses
+                                            其他邮件地址
                                             <span class="FieldLevelInstructions">
-                                                (separate with a semi-colon)
+                                                （用半角逗号分隔）
                                             </span>
                                             <div style="margin-bottom:8px;">
-                                                <input type="text" style="width: 100%">
+                                                <input type="text" style="width: 100%" />
                                             </div>
                                             <div>
-                                                <input type="checkbox">
-                                                <span style="cursor:pointer;" class="CheckboxLabels">Territory Team</span>
+                                                <input type="checkbox" />
+                                                <span style="cursor:pointer;" class="CheckboxLabels">客户地域团队</span>
                                             </div>
                                         </td>
                                     </tr>
@@ -924,15 +724,15 @@
                                     <tbody>
                                         <tr>
                                             <td class="FieldLabels">
-                                                Subject
+                                                主题
                                                 <div style="padding-right: 10px;">
-                                                    <input type="text" style="width:99%;" value="Created Contract">
+                                                    <input type="text" style="width:99%;" value="Created Contract" />
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="FieldLabels">
-                                                Message
+                                                信息
                                                 <div style="padding-right: 10px;">
                                                     <textarea style="width: 99%; height: 291px;" rows="12"></textarea>
                                                 </div>
@@ -945,83 +745,61 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width:97%;">
-                <ul>
-                    <!--上一层-->
-                    <li id="a8">
-                        <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
-                            <span class="Text">Back</span>
-                        </a>
-                    </li>
-                    <!--下一层-->
-                    <li style="display: none;" class="right" id="b8">
-                        <a class="ImgLink">
-                            <span class="Text">Next</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
-                        </a>
-                    </li>
-                    <!--完成-->
-                    <li class="right" id="c8">
-                        <a class="ImgLink">
-                            <span class="Text">Finish</span>
-                        </a>
-                    </li>
-                    <!--关闭-->
-                    <li style="display: none;" class="right" id="d8">
-                        <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
-                            <span class="Text">Close</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
-        <!--第九页-->
+        <!--第九页 完成-->
         <div class="Workspace Workspace9" style="display: none;">
-            <div class="PageInstructions">The Wizard has finished. What would you like to do next?</div>
+            <div class="PageInstructions">向导已经完成，你可以执行以下操作</div>
             <div class="WizardSection">
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tbody>
-                    <tr height="85%">
-                        <td width="90%">
-                            Contract being created... please wait.
-                        </td>
-                    </tr>
+                        <tr height="85%">
+                            <td width="90%">
+                                打开新创建合同
+                            </td>
+                        </tr>
+                        <tr height="85%">
+                            <td width="90%">
+                                创建另一个合同
+                            </td>
+                        </tr>
+                        <tr height="85%">
+                            <td width="90%">
+                                关闭本窗口
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width:97%;">
-                <ul>
-                    <!--上一层-->
-                    <li style="display: none;" id="a9">
-                        <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
-                            <span class="Text">Back</span>
-                        </a>
-                    </li>
-                    <!--下一层-->
-                    <li style="display: none;" class="right" id="b9">
-                        <a class="ImgLink">
-                            <span class="Text">Next</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
-                        </a>
-                    </li>
-                    <!--完成-->
-                    <li style="display: none;" class="right" id="c9">
-                        <a class="ImgLink">
-                            <span class="Text">Finish</span>
-                        </a>
-                    </li>
-                    <!--关闭-->
-                    <li class="right" id="d9">
-                        <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
-                            <span class="Text">Close</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+        </div>
+        <input type="hidden" name="contractType" id="contractType" value="<%=contractType %>" />
+        <input type="hidden" id="currentPage" value="" />
+        <input type="hidden" id="cnt" <%if (udfList != null && udfList.Count != 0) { %> value="1" <%} else { %> value="0" <%} %> />
+        <div class="ButtonBar WizardButtonBar" style="width:97%;">
+            <ul>
+                <li style="display: none;" id="a0">
+                    <a class="ImgLink">
+                        <img class="ButtonImg" src="../Images/move-left.png" />
+                        <span class="Text">上一步</span>
+                    </a>
+                </li>
+                <li class="right" id="b0">
+                    <a class="ImgLink">
+                        <span class="Text">下一步</span>
+                        <img class="ButtonRightImg" src="../Images/move-right.png" />
+                    </a>
+                </li>
+                <li style="display: none;" class="right" id="c0">
+                    <a class="ImgLink">
+                        <span class="Text">完成</span>
+                    </a>
+                </li>
+                <li class="right" style="display: none;" id="d0">
+                    <a class="ImgLink">
+                        <img class="ButtonRightImg" src="../Images/cancel.png" />
+                        <span class="Text">关闭</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </form>
     <script type="text/javascript" src="../Scripts/jquery-3.1.0.min.js"></script>
