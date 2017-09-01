@@ -358,7 +358,7 @@ textarea {
 
             <li class="Button ButtonIcon Edit NormalState" id="SiteConfiguration" tabindex="0">
                 <span class="Icon" style="width:0;margin: 0;"></span>
-                <span class="Text" onclick="window.open('../Company/CompanySiteManage.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>','left=200,top=200,width=960,height=750', false);">站点配置</span>
+                <span class="Text" onclick="window.open('../Company/CompanySiteManage.aspx?id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>','left=200,top=200,width=960,height=750', false);">站点配置</span>
             </li>
             <li class="Button ButtonIcon Appendix NormalState" id="OtherConfigurationItems" tabindex="0">
                 <span class="Icon" style="width:0;margin: 0;"></span>
@@ -1407,7 +1407,7 @@ textarea {
     }
 
     function chooseProduct() { //PRODUCT_CALLBACK
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=product_id&callBack=GetDaraByProduct", '<%=EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=product_id&callBack=GetDaraByProduct", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDaraByProduct() {
         var product_id = $("#product_idHidden").val();
@@ -1524,7 +1524,7 @@ textarea {
     function EditContact() {
         var contact_id = $("#contact_id").val();
         if (contact_id != 0 && contact_id != "") {
-            window.open("../Contact/AddContact.aspx?id=" + contact_id, '<%=EMT.DoneNOW.DTO.OpenWindow.ContactEdit %>', 'left=200,top=200,width=600,height=800', false);
+            window.open("../Contact/AddContact.aspx?id=" + contact_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactEdit %>', 'left=200,top=200,width=600,height=800', false);
         }
         else {
 

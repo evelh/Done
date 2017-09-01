@@ -15,6 +15,7 @@ namespace EMT.DoneNOW.DTO
         public bool addServicesToExistingContract;    // 将服务加入已存在的定期服务合同
         public bool createTicketPostSaleQueue; // 创建服务台工单售后队列
         public List<string> costCodeList;      // todo 报价项对应的物料代码 类型待确定撒
+        public ctt_contract contract = null;   //  界面上输入的合同信息
          // todo 通知
     }
 }

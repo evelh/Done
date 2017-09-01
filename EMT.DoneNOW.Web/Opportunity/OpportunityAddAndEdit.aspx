@@ -74,21 +74,21 @@
                                     %>
                                     <label>客户<span class="red">*</span></label>
                                     <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=company.name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left= 200, top = 200, width = 900, height = 750', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left= 200, top = 200, width = 900, height = 750', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                     <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=company.id %>" />
                                     <%}
                                     else if (isAdd&&account!=null)
                                     { %>
                                     <label>客户<span class="red">*</span></label>
                                     <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=account.name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left= 200, top = 200, width = 900, height = 750', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left= 200, top = 200, width = 900, height = 750', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                     <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=account.id %>" />
                                     <%}
                                     else
                                     { %>
                                         <label>客户<span class="red">*</span></label>
                                     <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd ? "" : conpamyBll.GetCompany(opportunity.account_id).name %>" /><i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left= 200, top = 200, width = 900, height = 750', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                    <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left= 200, top = 200, width = 900, height = 750', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                     <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd ? "" : opportunity.account_id.ToString() %>" />
                                     <%} %>
                                 </div>
@@ -876,13 +876,13 @@
 
     function chooseCompany()
     {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName&callBack=GetContactList", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName&callBack=GetContactList", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
     function AddContact() {
         var account_id = $("#ParentComoanyNameHidden").val();
         if (account_id != "") {
-            window.open('../Contact/AddContact.aspx?callback=AddContactBack&account_id=' + account_id, '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', 'left= 200, top = 200, width = 900, height = 750', false);
+            window.open('../Contact/AddContact.aspx?callback=AddContactBack&account_id=' + account_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', 'left= 200, top = 200, width = 900, height = 750', false);
         } else {
             return false;
         }    

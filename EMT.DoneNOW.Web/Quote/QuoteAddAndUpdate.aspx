@@ -47,7 +47,7 @@
                                     { %>
                                 <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd ? ((isAdd && account != null) ? account.name : "") : companyBLL.GetCompany(quote.account_id).name %>" />
                                 <i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <%--<input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":quote.account_id.ToString() %>" />--%>
                                 <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd && account != null ? account.id.ToString() : (!isAdd && account != null) ? account.id.ToString() : "" %>" />
                                 <%}
@@ -55,7 +55,7 @@
                                     { %>
                                 <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=companyBLL.GetCompany(quote.account_id).name %>" disabled="disabled" />
                                 <i style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <%--<input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":quote.account_id.ToString() %>" />--%>
                                 <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=quote.account_id %>" />
                                 <%} %>
@@ -71,7 +71,7 @@
                                     { %>
                                 <select name="opportunity_id" id="opportunity_id">
                                 </select><input type="hidden" name="opportunity_idHidden" id="opportunity_idHidden" value="<%=(isAdd && opportunity != null) ? opportunity.id.ToString() : (!isAdd ? quote.opportunity_id.ToString() : "") %>" />
-                                <i onclick="AddOppo()",'<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="AddOppo()",'<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <%}
                                     else
                                     { %>
@@ -761,7 +761,7 @@
 
 
     function chooseCompany() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName&callBack=GetDataBySelectCompany", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName&callBack=GetDataBySelectCompany", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
     function SubmitCheck() {
@@ -950,7 +950,7 @@
        
         var account_id = $("#ParentComoanyNameHidden").val();
         if (account_id != "") {
-            window.open('../Opportunity/OpportunityAddAndEdit?callBackFiled=NameOppo&oppo_account_id=' + account_id, '<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>', 'left=200,top=200,width=900,height=800', false);
+            window.open('../Opportunity/OpportunityAddAndEdit?callBackFiled=NameOppo&oppo_account_id=' + account_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>', 'left=200,top=200,width=900,height=800', false);
         }
         else {
             alert("请先选择客户");
@@ -985,7 +985,7 @@
     function AddContact() {
         var account_id = $("#ParentComoanyNameHidden").val();
         if (account_id != "") {
-            window.open('../Contact/AddContact.aspx?callback=AddContactBack&account_id=' + account_id, '<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', 'left=200,top=200,width=900,height=800', false);
+            window.open('../Contact/AddContact.aspx?callback=AddContactBack&account_id=' + account_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>', 'left=200,top=200,width=900,height=800', false);
         } else {
             alert("请先选择客户");
         }

@@ -485,10 +485,10 @@
         });
 
         function OpenWindowCompany() {
-            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=accCallBack&callBack=GetCompany", "<%=EMT.DoneNOW.DTO.OpenWindow.ContactLocationSelect %>", 'left=200,top=200,width=600,height=800', false);
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=accCallBack&callBack=GetCompany", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactLocationSelect %>", 'left=200,top=200,width=600,height=800', false);
         }
         function OpenWindowLocation(fld) {
-            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ADDRESS_CALLBACK %>&field=" + fld, "<%=EMT.DoneNOW.DTO.OpenWindow.ContactLocationSelect %>", 'left=200,top=200,width=600,height=800', false);
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ADDRESS_CALLBACK %>&field=" + fld, "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactLocationSelect %>", 'left=200,top=200,width=600,height=800', false);
         }
         function GetCompany() {
             if ($("#Phone").val() != "")

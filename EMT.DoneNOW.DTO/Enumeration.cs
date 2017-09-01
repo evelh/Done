@@ -454,6 +454,7 @@ namespace EMT.DoneNOW.DTO
             QUOTE = 770,                                // 报价   
             QUOTE_ITEM = 771,                             // 报价项 
             QUOTE_TEMP = 772,                             //报价模板
+            CONTRACT=773,                                  // 合同
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息            
             SECURITY_LEVEL = 776,                             //安全等级
             CONFIGURAITEM = 777,                          // 配置项

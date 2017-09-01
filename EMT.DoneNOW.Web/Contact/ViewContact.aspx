@@ -47,16 +47,16 @@
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
-                    <input type="button" id="Edit" value="修改" onclick="window.open('AddContact.aspx?id=<%=contact.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ContactEdit %>','left= 200, top = 200, width = 900, height = 750', false);" />
+                    <input type="button" id="Edit" value="修改" onclick="window.open('AddContact.aspx?id=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactEdit %>','left= 200, top = 200, width = 900, height = 750', false);" />
                     <%--  <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" />--%>
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
                     添加
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
-                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx?contact_id=<%=account.id %>&type=todo','<%=EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=900,height=750', false);">待办</a></li>
-                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx?contact_id=<%=account.id %>&type=note','<%=EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=900,height=750', false);">客户备注</a></li>
-                        <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_contact_id=<%=contact.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
+                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx?contact_id=<%=account.id %>&type=todo','<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=900,height=750', false);">待办</a></li>
+                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx?contact_id=<%=account.id %>&type=note','<%=(int)EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=900,height=750', false);">客户备注</a></li>
+                        <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_contact_id=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
                     </ul>
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>友情链接</li>

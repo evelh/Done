@@ -803,7 +803,7 @@
 
 
     function chooseRole() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ROLL_CALLBACK %>&field=name&callBack=GetDataByRole", '<%=EMT.DoneNOW.DTO.OpenWindow.RoleSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ROLL_CALLBACK %>&field=name&callBack=GetDataByRole", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.RoleSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDataByRole() {
         var role_id = $("#nameHidden").val();
@@ -846,7 +846,7 @@
     }
     // 查找带回产品
     function chooseProduct() { //PRODUCT_CALLBACK
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=name&callBack=GetDaraByProduct", '<%=EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=name&callBack=GetDaraByProduct", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDaraByProduct() {
         var product_id = $("#nameHidden").val();
@@ -874,7 +874,7 @@
     }
     // 查找带回服务
     function chooseService() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALLBACK %>&field=name&callBack=GetDataByService", '<%=EMT.DoneNOW.DTO.OpenWindow.ServiceSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALLBACK %>&field=name&callBack=GetDataByService", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ServiceSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDataByService() {
         var service_id = $("#nameHidden").val();
@@ -899,7 +899,7 @@
     }
     // 查找带回服务集
     function chooseServiceBundle() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_BUNDLE_CALLBACK %>&field=name&callBack=GetDataByServiceBundle", '<%=EMT.DoneNOW.DTO.OpenWindow.ServiceBundleSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_BUNDLE_CALLBACK %>&field=name&callBack=GetDataByServiceBundle", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ServiceBundleSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDataByServiceBundle() {
         var service_bundle_id = $("#nameHidden").val();
@@ -926,7 +926,7 @@
 
     // 查找带回计费代码
     function chooseDegression() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COST_CALLBACK %>&field=name&callBack=GetDataByDegression", '<%=EMT.DoneNOW.DTO.OpenWindow.CostCodeSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COST_CALLBACK %>&field=name&callBack=GetDataByDegression", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CostCodeSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDataByDegression() {
         
@@ -955,7 +955,7 @@
     // 多选查找带回产品的时候--直接循环添加多个报价项
 
     function chooseManyProduct() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MANY_PRODUCT_CALLBACK %>&field=name&callBack=GetDataByRole", '<%=EMT.DoneNOW.DTO.OpenWindow.ManyProductSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MANY_PRODUCT_CALLBACK %>&field=name&callBack=GetDataByRole", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ManyProductSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function AddManyQuoteItem() {
         var productIds = $("#nameHidden").val();
@@ -980,7 +980,7 @@
 
 
     function chooseCharge() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CHARGE_CALLBACK %>&field=name&callBack=GetDataByCharge", '<%=EMT.DoneNOW.DTO.OpenWindow.ManyProductSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CHARGE_CALLBACK %>&field=name&callBack=GetDataByCharge", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ManyProductSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
     function GetDataByCharge() {
@@ -1006,7 +1006,7 @@
     }
 
     function chooseShip() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SHIP_CALLBACK %>&field=name&callBack=GetDataByShip", '<%=EMT.DoneNOW.DTO.OpenWindow.ManyProductSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SHIP_CALLBACK %>&field=name&callBack=GetDataByShip", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ManyProductSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDataByShip() {
         // - todo 根据配送方式填充数据
