@@ -21,7 +21,7 @@
         height: 100%;
     }
 </style>
-<body>
+<body style="overflow-x:auto;overflow-y:auto;">
     <div class="header">
 		<i>
             <%if (currentQuery.page_query.Count > 4) { %>
