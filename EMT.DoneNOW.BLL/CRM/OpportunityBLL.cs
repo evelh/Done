@@ -381,7 +381,7 @@ namespace EMT.DoneNOW.BLL.CRM
         }
 
         // 关闭商机(赢得商机)
-        public ERROR_CODE CloseOpportunity()
+        public ERROR_CODE CloseOpportunity(CloseOpportunityDto param)
         {
 
             // 1.修改商机操作
@@ -403,10 +403,15 @@ namespace EMT.DoneNOW.BLL.CRM
 
 
             // 验证必填参数-- 根据系统设置决定是否校验（todo）
-            if (opportunityDto.opportunity.loss_reason_type_id == 0)
+            var lostSetting = new SysSettingBLL().GetSetById(SysSettingEnum.CRM_OPPORTUNITY_LOSS_REASON);
+            if(lostSetting.setting_value != ((int)DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_NONE).ToString())
             {
-                return ERROR_CODE.PARAMS_ERROR;
+                if (opportunityDto.opportunity.loss_reason_type_id == 0)
+                {
+                    return ERROR_CODE.PARAMS_ERROR;
+                }
             }
+            
 
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
@@ -612,16 +617,39 @@ namespace EMT.DoneNOW.BLL.CRM
             return ERROR_CODE.SUCCESS;
         }
 
-
+        /// <summary>
+        /// 返回商机总收入
+        /// </summary>
+        /// <param name="opportunity"></param>
+        /// <returns></returns>
         public decimal ReturnOppoRebenue(crm_opportunity opportunity)
         {
             decimal total = 0;
+            var month = opportunity.number_months == null ? 0 : (int)opportunity.number_months;
             total += (decimal)(opportunity.one_time_revenue == null ? 0 : opportunity.one_time_revenue);
-            total += (decimal)((opportunity.monthly_revenue == null ? 0 : opportunity.monthly_revenue) * opportunity.number_months);
-            total += (decimal)((opportunity.quarterly_revenue == null ? 0 : opportunity.monthly_revenue) * opportunity.number_months);
-            total += (decimal)((opportunity.semi_annual_revenue == null ? 0 : opportunity.monthly_revenue) * opportunity.number_months);
-            total += (decimal)((opportunity.yearly_revenue == null ? 0 : opportunity.monthly_revenue) * opportunity.number_months);
+            total += (decimal)((opportunity.monthly_revenue == null ? 0 : opportunity.monthly_revenue) * month);
+            total += (decimal)((opportunity.quarterly_revenue == null ? 0 :( opportunity.quarterly_revenue/3)) * month);
+            total += (decimal)((opportunity.semi_annual_revenue == null ? 0 : (opportunity.semi_annual_revenue/6)) * month);
+            total += (decimal)((opportunity.yearly_revenue == null ? 0 : (opportunity.yearly_revenue/12)) * month);
             return total;
         }
+        /// <summary>
+        /// 返回商机总成本
+        /// </summary>
+        /// <param name="opportunity"></param>
+        /// <returns></returns>
+        public decimal ReturnOppoCost(crm_opportunity opportunity)
+        {
+            decimal total = 0;
+            var month = opportunity.number_months == null ? 0 : (int)opportunity.number_months;
+            total += (decimal)(opportunity.one_time_cost == null ? 0 : opportunity.one_time_cost);
+            total += (decimal)((opportunity.monthly_cost == null ? 0 : opportunity.monthly_cost) * month);
+            total += (decimal)((opportunity.quarterly_cost == null ? 0 : (opportunity.quarterly_cost/3)) * month);
+            total += (decimal)((opportunity.semi_annual_cost == null ? 0 : (opportunity.semi_annual_cost/6)) * month);
+            total += (decimal)((opportunity.yearly_cost == null ? 0 : (opportunity.yearly_cost/12)) * month);
+            return total;
+        }
+
+
     }
 }

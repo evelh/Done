@@ -1,5 +1,6 @@
 ﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,10 @@ namespace EMT.DoneNOW.Web
                     case "isSaleOrder":
                         var relationQuoteId = context.Request.QueryString["id"];
                         IsRelationSaleOrder(context ,long.Parse(relationQuoteId));
+                        break;
+                    case "costCode":
+                        var cid = context.Request.QueryString["id"];
+                        RetuenCostCode(context,long.Parse(cid));
                         break;
                     default:
                         break;
@@ -119,6 +124,19 @@ namespace EMT.DoneNOW.Web
         {
             var result = new QuoteBLL().CheckRelatSaleOrder(quote_id);
             context.Response.Write(result);
+        }
+        /// <summary>
+        /// 根据物料成本ID返回物料成本信息
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="id"></param>
+        public void RetuenCostCode(HttpContext context, long id)
+        {
+            var cost_code = new d_cost_code_dal().GetSingleCostCode(id);
+            if (cost_code != null)
+            {
+                context.Response.Write(cost_code);
+            }
         }
         public bool IsReusable
         {

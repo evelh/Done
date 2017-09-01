@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AccountClassView.aspx.cs" Inherits="EMT.DoneNOW.Web.AccountClassView" %>
-
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OpportunityWinOrLossReason.aspx.cs" Inherits="EMT.DoneNOW.Web.OpportunityWinOrLossReason" %>
+<%@ Import Namespace="EMT.DoneNOW.DTO" %>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href="../Content/reset.css" rel="stylesheet" />
+   <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/ClassificationIcons.css" rel="stylesheet" />
     <title></title>
         <style type="text/css">
@@ -22,13 +22,13 @@
     </style>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" method="post">
         <div>
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
             <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/SysSetting/SysAdmin.aspx"><img src="../Images/move-left.png" style="vertical-align: middle;"/></asp:HyperLink>
-            <span class="text1">客户类别</span>
+            <span class="text1"><%=name %></span>
             <a href="###" class="collection"></a>
             <a href="###" class="help"></a>
         </div>
@@ -36,22 +36,19 @@
     <!--按钮-->
     <div class="ButtonContainer">
         <ul id="btn">
-            <li class="Button ButtonIcon NormalState" id="AddButton" onclick="creat()" tabindex="0">
+            <li class="Button ButtonIcon NormalState" id="AddButton" onclick="create()" tabindex="0">
                 <span class="Icon Add"></span>
-                <span class="Text">新增客户类别</span>
+                <span class="Text">新增<%=name %></span>
             </li>
         </ul>
     </div>
-    <div class="ScrollingContainer ContainsGrid Active" style="top: 82px; bottom: 0;">
+        <div class="ScrollingContainer ContainsGrid Active" style="top: 82px; bottom: 0;">
         <div class="Grid Small">
             <div class="HeaderContainer">
                 <table cellpadding="0">
                     <tbody>
                         <tr class="HeadingRow">
                             <td class="Interaction DragEnabled" style="width:58px;">
-                                <div class="Standard"></div>
-                            </td>
-                            <td class="Context" style="width:23px;">
                                 <div class="Standard"></div>
                             </td>
                             <td class="XL Text" style="width:190px;">
@@ -69,11 +66,6 @@
                                     <div class="Heading">激活</div>
                                 </div>
                             </td>
-                            <td class="Boolean" style="width:70px;">
-                                <div class="Standard">
-                                    <div class="Heading">系统</div>
-                                </div>
-                            </td>
                             <td style="width:6px;"></td>
                         </tr>
                     </tbody>
@@ -82,7 +74,7 @@
             <div class="RowContainer BodyContainer Active" style="top: 27px; bottom: 0px;">
                 <table cellpadding="0">
                     <tbody>
-                        <%foreach (var td in aclist)
+                        <%foreach (var td in ReasonList)
                             { %>
                        <tr title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
                             <td class="Interaction U0" style="width:59px;">                                 
@@ -96,9 +88,6 @@
                                     <div class="Text Sort">1</div>
                                 </div>
                             </td>
-                            <td class="Image U2" style="width:29px;">
-                                <img src="<%=td.icon_path %>" />
-                            </td>
                             <td class="Text XL U3" style="width:192px;">
                                <%=td.name %>
                             </td>
@@ -106,29 +95,21 @@
                                 <%=td.remark %>
                             </td>
                             <td  class="Boolean U5" style="width:72px;text-align:center">
-                                 <%if (Convert.ToInt32(td.status_id) > 0)
+                                 <%if (Convert.ToInt32(td.is_active) > 0)
                                      {%>
                                     <img src="../Images/check.png" />
                                  <%} %>
 
                                 <div class="Decoration Icon CheckMark"></div>
                             </td>
-                            <td  class="Boolean U6" style="width:72px;text-align:center">
-                                 <%if (Convert.ToInt32(td.is_system) > 0)
-                                     {%>
-                                    <img src="../Images/check.png" />
-                                 <%} %>                               
-                            </td>
                         </tr>
-
                         <%} %>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-            <%--右键菜单--%>
- <div id="menu">
+   <div id="menu">
         <%if (contextMenu.Count > 0) { %>
 		<ul style="width:220px;">
             <%foreach (var menu in contextMenu) { %>
@@ -138,23 +119,35 @@
 		</ul>
         <%} %>
 	</div>
-</div>
-    </form>
+ </div>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/ClassificationIcons.js"></script>
     <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
-    <script>
-        function create() {
-            window.open('AccountClass.aspx', window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+
+         <script>
+             function create() {
+            <%if (id == (int)GeneralTableEnum.OPPORTUNITY_WIN_REASON_TYPE)
+             { %>
+                 window.open('OpportunityWinReasons.aspx', window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                 <%}%>
+           <%if(id==(int)GeneralTableEnum.OPPORTUNITY_LOSS_REASON_TYPE){%>
+                 window.open('OpportunityLossReason.aspx', window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                   <%}%>
         }
         function Edit() {
-            window.open('AccountClass.aspx?id=' + entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            <%if (id == (int)GeneralTableEnum.OPPORTUNITY_WIN_REASON_TYPE)
+             { %>
+            window.open('OpportunityWinReasons.aspx?id='+entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                 <%}%>
+             <%if(id==(int)GeneralTableEnum.OPPORTUNITY_LOSS_REASON_TYPE){%>
+             window.open('OpportunityLossReason.aspx?id=' + entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                   <%}%>
         }
         function Delete() {
             if (confirm('确认删除?')) {
                 $.ajax({
                     type: "GET",
-                    url: "../Tools/AccountClassAjax.ashx?act=delete&id=" + entityid,
+                    url: "../Tools/OpportunityReasonAjax.ashx?act=delete&id=" + entityid,
                     success: function (data) {
                         alert(data);
                     }
@@ -165,7 +158,7 @@
         function Active() {
                 $.ajax({
                     type: "GET",
-                    url: "../Tools/AccountClassAjax.ashx?act=active&id=" + entityid,
+                    url: "../Tools/OpportunityReasonAjax.ashx?act=active&id=" + entityid,
                     success: function (data) {
                         alert(data);
                     }
@@ -175,7 +168,7 @@
         function NoActive() {
                 $.ajax({
                     type: "GET",
-                    url: "../Tools/AccountClassAjax.ashx?act=noactive&id=" + entityid,
+                    url: "../Tools/OpportunityReasonAjax.ashx?act=noactive&id=" + entityid,
                     success: function (data) {
                         alert(data);
                     }
@@ -183,5 +176,8 @@
             window.location.reload();
         }
     </script>
+
+
+    </form>
 </body>
 </html>

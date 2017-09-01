@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web.SaleOrder {
+namespace EMT.DoneNOW.Web {
     
     
-    public partial class SaleOrderView {
+    public partial class VendorAdd {
         
         /// <summary>
         /// form1 控件。
@@ -22,21 +22,39 @@ namespace EMT.DoneNOW.Web.SaleOrder {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// isShowLeft 控件。
+        /// Save_Close 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden isShowLeft;
+        protected global::System.Web.UI.WebControls.Button Save_Close;
         
         /// <summary>
-        /// viewSaleOrder_iframe 控件。
+        /// Save_New 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe viewSaleOrder_iframe;
+        protected global::System.Web.UI.WebControls.Button Save_New;
+        
+        /// <summary>
+        /// Cancel 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Cancel;
+        
+        /// <summary>
+        /// Vendor_Name 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Vendor_Name;
     }
 }

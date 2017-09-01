@@ -44,6 +44,7 @@
     <Compile Include="ApiResultDto.cs" />
     <Compile Include="CacheQuerySqlDto.cs" />
     <Compile Include="CloseOpportunity.cs" />
+    <Compile Include="CloseOpportunityDto.cs" />
     <Compile Include="CompanyAddDto.cs" />
     <Compile Include="CompanyConditionDto.cs" />
     <Compile Include="CompanyReportDto.cs" />

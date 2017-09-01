@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SysAdmin.aspx.cs" Inherits="EMT.DoneNOW.Web.SysAdmin" %>
-
+<%@ Import Namespace="EMT.DoneNOW.DTO" %>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -181,15 +181,15 @@
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">资源/用户</a>
+                                            <a class="Button ButtonIcon Link NormalState">资源/用户()</a>
                                             <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">角色</a>
+                                            <a class="Button ButtonIcon Link NormalState">角色()</a>
                                             <div class="StandardText">Set up billing roles that determine the rate at which labour will be billed.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">部门</a>
+                                            <a class="Button ButtonIcon Link NormalState">部门()</a>
                                             <div class="StandardText">Set up organizational entities in your company that are associated with resources and work types, and play a role in project security.</div>
                                         </div>
                                         <div class="PageNavigationLink">
@@ -234,11 +234,11 @@
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">安全等级</a>
+                                            <a class="Button ButtonIcon Link NormalState">安全等级()</a>
                                             <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">保护数据权限</a>
+                                            <a href="SysDataPermission.aspx" class="Button ButtonIcon Link NormalState">保护数据权限</a>
                                             <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
                                         </div>
                                     </div>
@@ -267,23 +267,23 @@
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">市场领域</a>
+                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.MARKET_SEGMENT %>" class="Button ButtonIcon Link NormalState">市场领域</a>
                                             <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">地域</a>
+                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.TERRITORY %>" class="Button ButtonIcon Link NormalState">地域</a>
                                             <div class="StandardText">Set up billing roles that determine the rate at which labour will be billed.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">区域</a>
+                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.REGION %>" class="Button ButtonIcon Link NormalState">区域</a>
                                             <div class="StandardText">Set up organizational entities in your company that are associated with resources and work types, and play a role in project security.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">竞争对手</a>
+                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.COMPETITOR %>" class="Button ButtonIcon Link NormalState">竞争对手</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">客户类别</a>
+                                            <a href="AccountClassView.aspx" class="Button ButtonIcon Link NormalState">客户类别</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
@@ -309,22 +309,22 @@
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">姓名后缀</a>
+                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.NAME_SUFFIX %>" class="Button ButtonIcon Link NormalState">姓名后缀</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="PageNavigationLinkGroup">
                                     <div class="Heading">
-                                        <div class="Text">安全</div>
+                                        <div class="Text">aaa</div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">安全等级</a>
+                                            <a class="Button ButtonIcon Link NormalState">aaaa</a>
                                             <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">保护数据权限</a>
+                                            <a class="Button ButtonIcon Link NormalState">aaaa</a>
                                             <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
                                         </div>
                                     </div>
@@ -353,23 +353,23 @@
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">活动类型</a>
+                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.ACTION_TYPE %>" class="Button ButtonIcon Link NormalState">活动类型</a>
                                             <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">商机阶段</a>
+                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.OPPORTUNITY_STAGE %>" class="Button ButtonIcon Link NormalState">商机阶段</a>
                                             <div class="StandardText">Set up billing roles that determine the rate at which labour will be billed.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">商机来源</a>
+                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.OPPORTUNITY_SOURCE %>" class="Button ButtonIcon Link NormalState">商机来源</a>
                                             <div class="StandardText">Set up organizational entities in your company that are associated with resources and work types, and play a role in project security.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">赢得商机的原因</a>
+                                            <a href="../Opportunity/OpportunityWinOrLossReason.aspx?reason=win&id=<%=(int)GeneralTableEnum.OPPORTUNITY_LOSS_REASON_TYPE %>" class="Button ButtonIcon Link NormalState">赢得商机的原因</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">丢失商机的原因</a>
+                                            <a href="../Opportunity/OpportunityWinOrLossReason.aspx?reason=loss&id=<%=(int)GeneralTableEnum.OPPORTUNITY_WIN_REASON_TYPE %>" class="Button ButtonIcon Link NormalState">丢失商机的原因</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
@@ -395,7 +395,7 @@
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">销售指标度量</a>
+                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD %>" class="Button ButtonIcon Link NormalState">销售指标度量</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                     </div>

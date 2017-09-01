@@ -64,7 +64,10 @@ namespace EMT.DoneNOW.Web
                     var propertyName = context.Request.QueryString["property"];
                     GetIProductProperty(context, long.Parse(property_account_id), propertyName);
                     break;
-
+                case "costCode":
+                    var cost_code_id = context.Request.QueryString["cost_code_id"];
+                    GetCostCode(context,long.Parse(cost_code_id));
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;
@@ -198,6 +201,19 @@ namespace EMT.DoneNOW.Web
             if (iProduct != null)
             {
                 context.Response.Write(BaseDAL<Core.crm_account>.GetObjectPropertyValue(iProduct, propertyName));
+            }
+        }
+        /// <summary>
+        /// 返回单个的物料成本代码的信息
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="cost_code_id"></param>
+        public void GetCostCode(HttpContext context,long cost_code_id)
+        {
+            var costCode = new d_cost_code_dal().GetSingleCostCode(cost_code_id);
+            if (costCode != null)
+            {
+                context.Response.Write(new EMT.Tools.Serialize().SerializeJson(costCode));
             }
         }
 

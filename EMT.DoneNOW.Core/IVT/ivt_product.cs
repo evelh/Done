@@ -55,7 +55,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte is_serialized { get; set; }
         [DataMember]
-        public Int32? cost_allocation_code_id { get; set; }
+        public Int32? cost_code_id { get; set; }
         [DataMember]
         public String internal_id { get; set; }
         [DataMember]

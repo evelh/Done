@@ -18,7 +18,6 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取id
-           id = 5;
             if (!IsPostBack) {
                 //Region下拉框
                 var dic = stbll.GetRegionDownList();

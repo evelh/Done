@@ -10,7 +10,7 @@
 namespace EMT.DoneNOW.Web {
     
     
-    public partial class GeneralView {
+    public partial class OpportunityWinOrLossReason {
         
         /// <summary>
         /// form1 控件。

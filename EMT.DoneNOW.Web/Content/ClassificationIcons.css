@@ -82,8 +82,8 @@ li.Button{
     margin: 0 3px;
     width: 16px;
 }
-.Add{
-    background-image: url("../img/add.png");
+.Add {
+    background-image: url("../Images/add.png");
 }
 .Button>.Text{
     flex: 0 1 auto;
