@@ -52,39 +52,64 @@
                 <tbody>
                     <tr>
                         <td width="50%" class="FieldLabels">
-                            Product Name
+                           产品名称
                             <span class="errorSmall">*</span>
                             <div>
                                 <asp:TextBox ID="Product_Name" runat="server" style="width:268px;"></asp:TextBox>
                             </div>
                         </td>
                         <td width="50%" class="FieldLabels">
-                            Product Category
-                            <div>
+                            产品种类
+                           <%-- <div>
                                 <asp:TextBox ID="Product_Category" runat="server" style="width:268px;"></asp:TextBox>
                                 <img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;"/>
-                            </div>
+                            </div>--%>
+
+                            <%--查找带回--%>
+                           <%if (product.cate_id== null)
+                            { %>
+                        <div>
+                            <label>产品种类<span style="color:red">*</span></label>
+                           <input type="text" disabled="disabled" id="accCallBack" name="account_name" value="" />
+                            <input type="hidden" name="cate_id" id="accCallBackHidden" value="" />
+                            <i onclick="OpenWindowProductCate()"><img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;"/></i>
+                        </div>
+
+                        <%}
+                        else
+                        { %>
+                            <div class="clear input-dh">
+                            <label>产品种类<span style="color:red">*</span></label>
+                            <input type="text" disabled="disabled" id="accCallBack" name="account_name" value="<%=cate_name %>" />
+                            <input type="hidden" name="cate_id" id="accCallBackHidden" value="<%=cate_name %>" />
+                            <i onclick="OpenWindowProductCate()"><img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;"/></i>
+                        </div>
+                        <%} %>
+                         <%--查找带回--%>
+
+
+
                         </td>
                     </tr>
                     <tr>
                         <td class="FieldLabels">
-                            Product Description
+                            产品描述
                             <div>
                                 <asp:TextBox ID="Product_Description" runat="server" maxlength="100" style="width: 268px;height:70px;" TextMode="MultiLine"></asp:TextBox>
                             </div>
                         </td>
                         <td class="FieldLabels" style="vertical-align: top;">
                             <div style="padding: 5px 0;">
-                                <asp:CheckBox ID="Active" runat="server" />Active</div>
+                                <asp:CheckBox ID="Active" runat="server" />激活</div>
                             <div style="padding: 5px 0;">
-                                <asp:CheckBox ID="Serialized" runat="server" />Serialized</div>
+                                <asp:CheckBox ID="Serialized" runat="server" />序列化</div>
                             <div style="padding: 5px 0;">
-                                <asp:CheckBox ID="does_not_require_procurement" runat="server" />Does not require Procurement</div>
+                                <asp:CheckBox ID="does_not_require_procurement" runat="server" />无需采购</div>
                         </td>
                     </tr>
                     <tr>
                         <td class="FieldLabels">
-                            Default Configuration Item Type
+                            默认配置项类型
                             <div>
                                 <asp:DropDownList ID="Item_Type" runat="server"></asp:DropDownList>
                             </div>
@@ -92,18 +117,19 @@
                     </tr>
                     <tr>
                         <td width="50%" class="FieldLabels">
-                            PMaterial Code<span class="errorSmall">*</span>
+                            物料代码<span class="errorSmall">*</span>
                             <div>
-                               <asp:TextBox ID="PMaterial_Code" runat="server"></asp:TextBox>
-                                <img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;"/>
+                             <input type="text" disabled="disabled" id="CallBack" name="account_name" value="<%=code_name %>" />
+                            <input type="hidden" name="" id="CallBackHidden" value="<%=product.cost_code_id %>" />
+                            <i onclick="OpenWindowMaterialCode()"><img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;"/></i>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td width="50%" class="FieldLabels">
-                            <span>Unit Cost</span>
-                            <span style="margin-left: 20px;">Markup %</span>
-                            <span style="margin-left: 12px;">Unit Price</span>
+                            <span>单位成本</span>
+                            <span style="margin-left: 20px;">毛利率</span>
+                            <span style="margin-left: 12px;">单位价格</span>
                             <span style="margin-left: 15px;">MSRP</span>
                             <div style="padding-bottom: 2px;">
                                 <asp:TextBox ID="Unit_Cost" runat="server" style="width:60px;text-align: right;"></asp:TextBox>
@@ -113,7 +139,7 @@
                             </div>
                         </td>
                         <td class="FieldLabels">
-                            Period Type
+                            周期类型
                             <div style="padding-bottom: 2px;">
                                 <asp:DropDownList ID="Period_Type" runat="server"></asp:DropDownList>
                             </div>
@@ -128,13 +154,13 @@
                     </tr>
                     <tr>
                         <td width="50%" class="FieldLabels">
-                            Internal Product ID
+                            内部产品ID
                             <div>
                                 <asp:TextBox ID="Internal_Product_ID" runat="server"></asp:TextBox>
                             </div>
                         </td>
                         <td width="50%" class="FieldLabels">
-                            Manufacturer
+                           制造商
                             <div>
                                 <asp:TextBox ID="Manufacturer" runat="server"></asp:TextBox>
                             </div>
@@ -142,13 +168,13 @@
                     </tr>
                     <tr>
                         <td width="50%" class="FieldLabels">
-                            External Product ID
+                            外部产品ID
                             <div>
                                 <asp:TextBox ID="External_Product_ID" runat="server"></asp:TextBox>
                             </div>
                         </td>
                         <td width="50%" class="FieldLabels">
-                            Manufacturer Product Number
+                           制造商产品编号
                             <div>
                                 <asp:TextBox ID="Manufacturer_Product_Number" runat="server"></asp:TextBox>
                             </div>
@@ -156,13 +182,13 @@
                     </tr>
                     <tr>
                         <td width="50%" class="FieldLabels">
-                            Product Link <a style="color:cadetblue" href="#">Preview</a>
+                            产品链接<a style="color:cadetblue" href="#">Preview</a>
                             <div>
                                 <asp:TextBox ID="Product_Link" runat="server" maxlength="100" style="width: 268px;height:70px;" TextMode="MultiLine"></asp:TextBox>
                             </div>
                         </td>
                         <td width="50%" class="FieldLabels" style="vertical-align: top;">
-                            Product SKU
+                           产品SKU
                             <div>
                                 <asp:TextBox ID="Product_SKU" runat="server"></asp:TextBox>
                             </div>
@@ -186,21 +212,23 @@
                         <tbody>
                             <tr class="dataGridHeader" style="height: 28px;">
                                 <td style="width: auto;">
-                                    <span>Vendor Name</span>
+                                    <span>供应商名称</span>
                                 </td>
                                 <td align="right" style="width: auto;">
-                                    <span>Cost</span>
+                                    <span>单位成本</span>
                                 </td>
                                 <td align="left" style="width: auto;">
-                                    <span>Vendor Part Number</span>
+                                    <span>供应商产品编号</span>
                                 </td>
                                 <td align="center" style="width: 40px;">
-                                    <span>Active</span>
+                                    <span>激活</span>
                                 </td>
                                 <td align="center" style="width: 45px;">
-                                    <span>Default</span>
+                                    <span>默认</span>
                                 </td>
                             </tr>
+
+
                             <tr class="dataGridBody">
                                 <td style="width: auto;">
                                     <span>Vendor</span>
@@ -218,6 +246,8 @@
                                  <img src="../Images/check.png" />
                                 </td>
                             </tr>
+
+
                         </tbody>
                     </table>
                 </div>
@@ -255,8 +285,27 @@
         </div>
     </div>
         </div>
+        <input type="hidden" name="vendor_data" id="vendor_data" />
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../Scripts/SysSettingRoles.js"></script>
+        <script>
+            function OpenWindowProductCate() {
+                window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CATE_CALLBACK %>&field=accCallBack&callBack=GetProductCate", window, 'left=200,top=200,width=600,height=800', false);
+            }
+            function OpenWindowMaterialCode() {
+                window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=CallBack&callBack=GetProductCate", window, 'left=200,top=200,width=600,height=800', false);
+            }
+            function GetProductCate() {
+               // alert($("#accCallBack").val());
+            }
+            $("#NewButton").click(function () {
+                window.open('VendorAdd.aspx', '新增', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            });
+            function vendoradd() {
+                var vendor_data = $("#vendor_data").val();
+                alert(vendor_data);
+            }
+        </script>
     </form>
 </body>
 </html>
