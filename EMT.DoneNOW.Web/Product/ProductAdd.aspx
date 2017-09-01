@@ -75,7 +75,7 @@
                         </td>
                         <td class="FieldLabels" style="vertical-align: top;">
                             <div style="padding: 5px 0;">
-                                <asp:CheckBox ID="Active" runat="server" />>Active</div>
+                                <asp:CheckBox ID="Active" runat="server" />Active</div>
                             <div style="padding: 5px 0;">
                                 <asp:CheckBox ID="Serialized" runat="server" />Serialized</div>
                             <div style="padding: 5px 0;">
@@ -115,11 +115,7 @@
                         <td class="FieldLabels">
                             Period Type
                             <div style="padding-bottom: 2px;">
-                                <select style="width: 282px;">
-                                    <option value=""></option>
-                                    <option value="">1</option>
-                                    <option value="">2</option>
-                                </select>
+                                <asp:DropDownList ID="Period_Type" runat="server"></asp:DropDownList>
                             </div>
                         </td>
                     </tr>
@@ -134,13 +130,13 @@
                         <td width="50%" class="FieldLabels">
                             Internal Product ID
                             <div>
-                                <input type="text" style="width:268px;" id="txtBlack8">
+                                <asp:TextBox ID="Internal_Product_ID" runat="server"></asp:TextBox>
                             </div>
                         </td>
                         <td width="50%" class="FieldLabels">
                             Manufacturer
                             <div>
-                                <input type="text" style="width:268px;" id="txtBlack8">
+                                <asp:TextBox ID="Manufacturer" runat="server"></asp:TextBox>
                             </div>
                         </td>
                     </tr>
@@ -148,27 +144,27 @@
                         <td width="50%" class="FieldLabels">
                             External Product ID
                             <div>
-                                <input type="text" style="width:268px;" id="txtBlack8">
+                                <asp:TextBox ID="External_Product_ID" runat="server"></asp:TextBox>
                             </div>
                         </td>
                         <td width="50%" class="FieldLabels">
                             Manufacturer Product Number
                             <div>
-                                <input type="text" style="width:268px;" id="txtBlack8">
+                                <asp:TextBox ID="Manufacturer_Product_Number" runat="server"></asp:TextBox>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td width="50%" class="FieldLabels">
-                            Internal Product ID
+                            Product Link <a style="color:cadetblue" href="#">Preview</a>
                             <div>
-                                <textarea maxlength="100" style="width: 268px;height:70px;"></textarea>
+                                <asp:TextBox ID="Product_Link" runat="server" maxlength="100" style="width: 268px;height:70px;" TextMode="MultiLine"></asp:TextBox>
                             </div>
                         </td>
                         <td width="50%" class="FieldLabels" style="vertical-align: top;">
                             Product SKU
                             <div>
-                                <input type="text" style="width:268px;" id="txtBlack8">
+                                <asp:TextBox ID="Product_SKU" runat="server"></asp:TextBox>
                             </div>
                         </td>
                     </tr>
@@ -216,10 +212,10 @@
                                     <span>452542</span>
                                 </td>
                                 <td align="center" style="width: 40px;">
-                                    <img src="img/check.png">
+                                   <img src="../Images/check.png" />
                                 </td>
                                 <td align="center" style="width: 45px;">
-                                    <img src="img/check.png">
+                                 <img src="../Images/check.png" />
                                 </td>
                             </tr>
                         </tbody>

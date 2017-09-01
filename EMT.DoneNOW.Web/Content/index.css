@@ -1,92 +1,609 @@
+body {
+    overflow: hidden;
+}
 
+body, input[type="text"], select, textarea {
+    font-family: Arial,Helvetica,Tahoma,sans-serif;
+}
 
-.index-titleLeft{width: 150px;background: #13273b;position: fixed;left: 0;top: 0;z-index: 9;height: 100%;}
-.index-titleLeft dl{border-bottom:1px solid #546675 ;}
-.index-titleLeft dt{height: 107px;background: url(../Images/logotitle.png) no-repeat center;}
-.index-titleLeft dd{height: 69px;border-top:1px solid #546675;line-height:98px ;text-align: center;color: #daf1f9;
-background-repeat:no-repeat ;background-position:center 15px; }
-.index-titleLeft dd:hover{background-color:#34485c;position: relative;}
-.index-titleLeft dd div{left:150px;top:0;position: absolute;box-shadow: 0px 1px 15px 0px #4c4c4c;display: none;background: #FFFFFF;}
-.index-titleLeft dd:hover div{display: block;}
-.index-titleLeft dd div dl{padding:10px 0;border-bottom: none;width:150px;}
-.index-titleLeft dd div dl:last-child{border: none;}
-.index-titleLeft dd div dl dt{height: 30px;line-height: 30px;color: #346a95;font-size: 16px;background: none;font-weight:bolder;}
-.index-titleLeft dd div dl dd{height: 25px;line-height: 25px;color: #151515;font-size: 12px;border: none;}
-.index-titleLeft dd div dl dd:hover{background-color:#CCCCCC;}
-.index-titleLeft dd div dl dd a{height: 25px;line-height: 25px;color: #13273b;font-size: 12px;border: none;display: block;}
+#SiteNavigationBar {
+    background-color: #fcfcfc;
+    box-shadow: rgba(0,0,0,0.29) 0 3px 3px 0;
+    height: 36px;
+    left: 0;
+    margin: 0 -3px;
+    padding: 4px 33px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    -ms-touch-action: none;
+    touch-action: none;
+    z-index: 3;
+}
 
-.index-titleTop{width: 100%;height: 87px;position: fixed;right :0px;top: 0;padding: 0 35px; box-shadow: 0px 1px 15px 0px #4c4c4c;z-index: 8;background: #FFFFFF;}
-.titleTop-up{border-bottom: 1px solid #89939d;margin-left: 207px;min-width: 1004px;}
-.titleTop-up li{cursor: pointer;}
-.titleTop-up .up-left li{width: 50px;height: 49px;float: left;background:url(../Images/icon.png) no-repeat ;}
-.titleTop-up .up-left li input{margin: 15px 0 0 15px;width: 151px;height: 22px;padding-left: 10px;float: left;border: 1px solid #aab1b8;outline: none;
-border-right:none ;border-radius:0px ;}
-.titleTop-up .up-left li button{width: 26px;height:24px;float: left;margin-top: 15px;border: 1px solid #aab1b8;border-left: none;
-background:url(../Images/icon.png) no-repeat -309px -29px  ;outline: none;cursor: pointer;}
-.titleTop-up .up-left li span{width:1px;height: 11px;float: right;display: block;margin: 20px auto 0;background: #13273b;}
-.titleTop-up .up-left li:nth-child(1){background-position:-11px -16px ;}
-.titleTop-up .up-left li:nth-child(2){background-position:-58px -16px ;}
-.titleTop-up .up-left li:nth-child(3){background-position:-106px -16px ;}
-.titleTop-up .up-left li:nth-child(4){background-position:-153px -16px ;}
-.titleTop-up .up-left li:nth-child(5){background-position:-200px -16px ;}
-.titleTop-up .up-left li:nth-child(6){background-position:-247px -16px ;}
-.titleTop-up .up-left li:nth-child(7){background:none;width: auto;}
-.titleTop-up .up-right .name{width:auto;background: none;}
-.titleTop-up .up-right .name span{width:1px;height: 11px;display: block;margin: 20px 8px;background: #13273b;float: left;}
-.titleTop-up .up-right .name p{float: left;height: 49px;line-height: 49px;font-size: 12px;color: #2e3f4d;}
-.titleTop-up .up-right .name a{float: left;line-height: 49px;font-size: 12px;color: #2e3f4d;}
-.titleTop-up .up-right li{width: 50px;height: 49px;float: left;background:url(../Images/icon.png) no-repeat ;}
-.titleTop-up .up-right li span{width:1px;height: 11px;float: right;display: block;margin: 20px auto 0;background: #13273b;}
-.titleTop-up .up-right li:nth-child(2){background-position:-391px -16px ;}
-.titleTop-up .up-right li:nth-child(3){background-position:-438px -16px ;}
-.titleTop-up .up-right li:nth-child(4){background-position:-11px -62px ;}
+    #SiteNavigationBar > .Left, #SiteNavigationBar > .Right {
+        background-color: #fcfcfc;
+        height: 36px;
+        position: absolute;
+        top: 4px;
+        z-index: 4;
+    }
 
-.titleTop-down{margin-left: 185px;min-width: 1004px;}
-.titleTop-down ul{white-space:nowrap}
-.titleTop-down li{cursor: pointer;display:inline-block;}
-.titleTop-down .up-left li{height: 37px;float: left;}
-.titleTop-down .up-left li p{float: left;height: 37px;line-height: 37px;width: 90px;text-align: center;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
-.titleTop-down .up-left li span{width:1px;height: 22px;float: right;display: block;margin: 8px auto 0;background: #a1a9b1;}
-.titleTop-down .up-left li:last-child i{background:url(../Images/icon.png) no-repeat -345px -22px;width: 50px;height: 37px;display: block;}
-.titleTop-down .up-right li{width: 50px;height: 37px;float: left;background:url(../Images/icon.png) no-repeat ;}
-.titleTop-down .up-right li:nth-child(1){background-position:-60px -65px ;}
-.titleTop-down .up-right li:nth-child(2){background-position:-108px -65px ;}
+    #SiteNavigationBar > .Left {
+        left: 33px;
+        width: 486px;
+        z-index: 5;
+    }
 
-.index-titleRight{width: 34px;height: 100%;border-left:1px solid #bbc2c8;position: fixed;right: 0;top: 0;z-index: 8;background: #F5F5F5;}
-.men-top{ background: #464646;padding: 19px 3px 15px;cursor: pointer;border-radius:5px 0px 0px 5px;}
-.men-top i{background: url(../Images/icon.png) no-repeat;}
-.men-top i:nth-child(1){background-position:-168px -75px ;}
-.men-top i:nth-child(2){background:none;}
-.men-top i:nth-child(3){background-position:-215px -75px ;}
-.men-down{background: #464646;margin-top: 9px;}
-.titleRight-men{top:105px ;right: 0;}
-.titleRight-men i{width: 22px; height: 22px;display: block;}
+    #SiteNavigationBar > .Right {
+        right: 33px;
+    }
+    /*左边*/
+    #SiteNavigationBar > .Left > .Button.Logo {
+        border: 1px solid #fcfcfc;
+        cursor: pointer;
+        display: inline-block;
+        height: 34px;
+        left: 0;
+        position: absolute;
+        width: 34px;
+        z-index: 2;
+    }
 
-.men-down{padding: 20px 3px;cursor: pointer;border-radius:5px 0px 0px 5px;}
-.men-down i{background: url(../Images/icon.png) no-repeat -262px -75px;}
+        #SiteNavigationBar > .Left > .Button.Logo > .Icon {
+            background-image: url(../Images/navi.png);
+            background-repeat: no-repeat;
+            height: 28px;
+            left: 3px;
+            position: absolute;
+            top: 3px;
+            width: 28px;
+        }
 
-.cont{padding: 110px 60px 0px 170px;position: relative;z-index: 1;}
-.cont-title{background: #346A95;}
-.title-left i{width: 40px;height:40px;display: block;float: left;background: url(../Images/icon.png) no-repeat -305px -130px;cursor: pointer;}
-.title-left p{height:40px; line-height: 40px;display: block;float: left;font-size: 16px;color: #FFFFFF;float: left;}
-.title-right i{background: url(../Images/icon.png) no-repeat;width: 40px ;height: 40px ;display: block;float: right;cursor: pointer;}
-.title-right .collect{background-position:-205px -20px ;}
-.title-right .help{background-position:-207px -64px ;}
+    #SiteNavigationBar > .Left > .Search {
+        border: 1px solid #d7d7d7;
+        border-right: none;
+        display: inline-block;
+        height: 34px;
+        left: 46px;
+        position: absolute;
+        width: 159px;
+    }
 
+        #SiteNavigationBar > .Left > .Search > input[type="text"] {
+            border: none;
+            font-size: 16px;
+            height: 24px;
+            padding: 5px;
+            width: 148px;
+        }
 
-.hide{display: none;}
-.ba{background: #F3F3F3 !important;}
-.jia{background: url(../Images/jia.png) no-repeat center !important;}
-.information{background: #fff;border:1px solid #d3d3d3;position: relative;margin:5px;padding:5px 0;}
-.informationTitle{padding-left: 10px;height: 30px;line-height: 30px;margin: 0;}
-.informationTitle i{width: 15px; height:30px;display: block; background: url(../Images/jian.png) no-repeat  center;float: left;margin-right: 10px;cursor: pointer;}
-.information .Search{position: absolute;right:5px;top: 7px;}
+    #SiteNavigationBar .ButtonGroup .Button.Search {
+        cursor: pointer;
+    }
 
-.input-dh{position: relative;}
-.input-dh .on{position: absolute;right: 10px; top: 5px;}
-.icon-dh {background-image: url(../Images/data-selector.png) !important;background-position: 0 0 !important; width: 16px !important; height: 20px !important; cursor: pointer !important;background-repeat: no-repeat; display: block;}
-.add-on{position: relative;}
-.contenttitle ul{margin: 10px ;}
-.contenttitle li{cursor: pointer; float:left;height: 26px;line-height: 26px;border: 1px solid #bcbcbc;margin-right: 10px; background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);}
-.contenttitle li span{margin-right: 10px;}
-.contenttitle li i{float:left;width: 26px;height:26px;background-repeat:no-repeat;background-position:center; display: block;}
+    #SiteNavigationBar .ButtonGroup .Button:last-child {
+        border-right: 1px solid #d7d7d7;
+        padding-right: 6px;
+    }
+
+    #SiteNavigationBar .ButtonGroup .Button:first-child {
+        border-left: 1px solid #d7d7d7;
+        padding-left: 6px;
+    }
+
+    #SiteNavigationBar .ButtonGroup .Button {
+        width: 22px;
+    }
+
+    #SiteNavigationBar .ButtonGroup .Button {
+        height: 18px;
+    }
+
+    #SiteNavigationBar > .Left > .ButtonGroup.ExecuteSearch {
+        left: 206px;
+    }
+
+    #SiteNavigationBar .ButtonGroup {
+        background: #f4f4f4;
+        background: -moz-linear-gradient(top,#fbfbfb 0,#f4f4f4 100%);
+        background: -webkit-linear-gradient(top,#fbfbfb 0,#f4f4f4 100%);
+        background: -ms-linear-gradient(top,#fbfbfb 0,#f4f4f4 100%);
+        background: linear-gradient(to bottom,#fbfbfb 0,#f4f4f4 100%);
+        position: absolute;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        #SiteNavigationBar .ButtonGroup .Button {
+            border-bottom: 1px solid #d7d7d7;
+            border-top: 1px solid #d7d7d7;
+            color: #333;
+            cursor: default;
+            padding: 8px 7px;
+            position: relative;
+            z-index: 11;
+        }
+
+            #SiteNavigationBar .ButtonGroup .Button.HoverState, #SiteNavigationBar .ButtonGroup .Button.PressedState {
+                background-color: #fff;
+                border-bottom: none;
+                border-left: 1px solid #d7d7d7;
+                border-right: 1px solid #d7d7d7;
+                padding: 8px 6px 9px 6px;
+            }
+
+        #SiteNavigationBar .ButtonGroup .Search .Icon {
+            background: transparent url(../Images/Fangdaindex.png) no-repeat scroll;
+            height: 22px;
+        }
+
+    #SiteNavigationBar > .Left > .ButtonGroup {
+        left: 252px;
+    }
+
+    #SiteNavigationBar .ButtonGroup .PrimaryActionEnabled {
+        float: left;
+        cursor: pointer;
+    }
+
+.clear {
+    overflow: hidden;
+}
+
+#SiteNavigationBar .ButtonGroup .Dashboard .Icon {
+    background: transparent url(../Images/Listindex.png) no-repeat scroll;
+    height: 22px;
+}
+
+#SiteNavigationBar .ButtonGroup .New .Icon {
+    background: transparent url(../Images/Addindex.png) no-repeat scroll;
+    height: 22px;
+}
+
+#SiteNavigationBar .ButtonGroup .My .Icon {
+    background: transparent url(../Images/Myindex.png) no-repeat scroll;
+    height: 22px;
+}
+
+#SiteNavigationBar .ButtonGroup .Recent .Icon {
+    background: transparent url(../Images/Recentindex.png) no-repeat scroll;
+    height: 22px;
+}
+
+#SiteNavigationBar .ButtonGroup .Bookmark .Icon {
+    background: transparent url(../Images/Bookmarkindex.png) no-repeat scroll;
+    height: 22px;
+}
+
+#SiteNavigationBar .ButtonGroup .Calendar .Icon {
+    background: transparent url(../Images/Calendarindex.png) no-repeat scroll;
+    height: 22px;
+}
+/*右边*/
+#SiteNavigationBar > .Right > .User {
+    height: 36px;
+    position: absolute;
+    right: 110px;
+    text-align: right;
+    width: 360px;
+}
+
+    #SiteNavigationBar > .Right > .User > .Name {
+        padding-left: 10px;
+    }
+
+    #SiteNavigationBar > .Right > .User > .Name, #SiteNavigationBar > .Right > .User > .SignOut {
+        background-color: #fcfcfc;
+        display: inline-block;
+        height: 22px;
+        padding-top: 14px;
+        position: relative;
+        vertical-align: top;
+    }
+
+        #SiteNavigationBar > .Right > .User > .Name > a.Button.Link {
+            display: inline-block;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+    #SiteNavigationBar > .Right > .User a.Button.Link {
+        color: #666;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+
+a.Button.Link {
+    background: none;
+    border: none;
+    color: #376597;
+    display: inline;
+    font-size: 12px;
+    height: auto;
+    padding: 0;
+    vertical-align: inherit;
+}
+
+a.Button {
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+    border: 1px solid #d7d7d7;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: #4f4f4f;
+    cursor: pointer;
+    height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-decoration: none;
+}
+
+#SiteNavigationBar > .Right > .User > .Separator {
+    background-color: #fcfcfc;
+    display: inline-block;
+    height: 21px;
+    padding: 15px 5px 0 5px;
+    position: relative;
+    width: 1px;
+    vertical-align: top;
+}
+
+    #SiteNavigationBar > .Right > .User > .Separator > .VerticalBar {
+        background-color: #666;
+        display: inline-block;
+        height: 10px;
+        width: 1px;
+    }
+
+#SiteNavigationBar > .Right > .User > .SignOut {
+    padding-right: 10px;
+}
+
+#SiteNavigationBar > .Right > .ButtonGroup {
+    right: 0;
+    width: 108px;
+    white-space: nowrap;
+}
+
+#SiteNavigationBar .ButtonGroup .LiveLinks .Icon {
+    background: transparent url(../Images/LiveLinksindex.png) no-repeat scroll;
+    height: 22px;
+}
+
+#SiteNavigationBar .ButtonGroup .Community .Icon {
+    background: transparent url(../Images/Communityindex.png) no-repeat scroll;
+    height: 22px;
+}
+
+#SiteNavigationBar .ButtonGroup .Help .Icon {
+    background: transparent url(../Images/Helpindex.png) no-repeat scroll;
+    height: 22px;
+}
+/*一级菜单*/
+.ContextOverlayContainer {
+    display: inline;
+}
+
+#SiteNavigationBar .ContextOverlay {
+    border: 1px solid #d7d7d7;
+    box-shadow: rgba(0,0,0,0.29) 3px 3px 3px 0;
+}
+
+.ContextOverlay {
+    background-color: #fff;
+    border: 1px solid #d7d7d7;
+    box-shadow: rgba(0,0,0,0.24) 2px 2px 3px 0;
+    display: none;
+    font-size: 12px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+
+#SiteNavigationBar .ContextOverlay > .Content .Title {
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 30px;
+    padding-left: 3px;
+    text-transform: uppercase;
+}
+
+.SiteNavigationFooterSeparator {
+    border-bottom: 1px solid #e4e4e4;
+    margin: 2px 0;
+}
+
+.ContextOverlay .ColumnSet {
+    display: table-row;
+}
+
+    .ContextOverlay .ColumnSet .ContextOverlayColumn {
+        display: table-cell;
+    }
+
+.ContextOverlay .Group > .Content > a.Button.Link {
+    background: none;
+    height: 22px;
+    overflow: hidden;
+    padding-left: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ContextOverlay .Group > .Content > a.Button {
+    border: none;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 0 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#SiteNavigationBar .Guide {
+    display: table-row;
+    margin: 0 -5px 0 -5px;
+}
+
+    #SiteNavigationBar .Guide > .ButtonContainer {
+        background-color: #474747;
+        padding: 0;
+        position: relative;
+    }
+
+    #SiteNavigationBar .Guide > .ButtonContainer, #SiteNavigationBar .Guide > .ModuleContainer {
+        display: table-cell;
+    }
+
+.ButtonContainer {
+    padding: 0 10px 10px 10px;
+    width: auto;
+    height: 26px;
+}
+
+.Guide .Button.GuideNavigation.SelectedState {
+    background: #fff;
+    border-bottom-color: #fff;
+    color: #333;
+}
+
+.Guide .Button.GuideNavigation {
+    background: #474747;
+    background: -moz-linear-gradient(top,#6b6b6b 0,#474747 100%);
+    background: -webkit-linear-gradient(top,#6b6b6b 0,#474747 100%);
+    background: -ms-linear-gradient(top,#6b6b6b 0,#474747 100%);
+    background: linear-gradient(to bottom,#6b6b6b 0,#474747 100%);
+    border-bottom: 1px solid #8a8a8a;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 28px;
+    max-width: 250px;
+    padding: 0 50px 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+/*二级菜单*/
+#SiteNavigationBar .Guide > .ModuleContainer {
+    height: 445px;
+}
+
+    #SiteNavigationBar .Guide > .ModuleContainer > .Module.Active {
+        display: block;
+    }
+
+    #SiteNavigationBar .Guide > .ModuleContainer > .Module {
+        display: none;
+        padding: 0 5px;
+    }
+
+.ContextOverlay .ContextOverlayColumn > div {
+    padding: 0 10px;
+    min-width: 150px;
+    max-width: 300px;
+}
+
+.ContextOverlay .Group {
+    padding-bottom: 10px;
+}
+
+    .ContextOverlay .Group > .Heading {
+        border-bottom: 1px solid #d3d3d3;
+        margin-bottom: 2px;
+    }
+
+        .ContextOverlay .Group > .Heading > .Text {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .ContextOverlay .Group > .Heading > .Text, .ContextOverlay .Group > .Heading > .SecondaryText {
+            display: inline;
+            font-size: 12px;
+            line-height: 20px;
+        }
+
+    .ContextOverlay .Group > .Content > a.Button.NormalState {
+        background: transparent;
+    }
+
+    .ContextOverlay .Group > .Content > a.Button.HoverState {
+        background: #e9f0f8;
+    }
+
+    .ContextOverlay .Group > .Content > a.Button {
+        border: none;
+        display: -ms-flexbox;
+        display: flex;
+        margin: 0 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+        .ContextOverlay .Group > .Content > a.Button .Text {
+            font-weight: normal;
+        }
+
+a.Button > .Text {
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.SearchRadioButton {
+    padding-bottom: 5px;
+    border: 1px solid transparent;
+}
+
+    .SearchRadioButton > input[type="radio"] {
+        margin: 0;
+    }
+
+    .SearchRadioButton > input[type="radio"], .SearchRadioButton > label {
+        cursor: pointer;
+    }
+
+input[type="checkbox"], input[type="radio"] {
+    margin: 0;
+    display: block;
+    float: left;
+    padding: 0;
+    margin-right: 3px;
+}
+
+.SearchRadioButton > label {
+    font-size: 12px;
+    padding-left: 2px;
+    vertical-align: top;
+}
+/*背景布*/
+body #WorkspaceContainer {
+    background-image: url(../Images/Linen.jpg);
+}
+
+body #WorkspaceContainer {
+    background-color: #e4e4e4;
+}
+
+#WorkspaceContainer {
+    background-repeat: repeat;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 46px;
+    z-index: 1;
+}
+
+.cont {
+    margin: 60px 1% 0px 1%;
+    position: relative;
+    z-index: 1;
+}
+
+/*搜索*/
+.jia {
+    background: url(../Images/jia.png) no-repeat center !important;
+}
+
+.information {
+    background: #fff;
+    border: 1px solid #d3d3d3;
+    position: relative;
+    margin: 5px;
+    padding: 5px 0;
+}
+
+.informationTitle {
+    padding-left: 10px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0;
+}
+
+.informationTitle i {
+    width: 15px;
+    height: 30px;
+    display: block;
+    background: url(../Images/jian.png) no-repeat center;
+    float: left;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.information .Search {
+    position: absolute;
+    right: 5px;
+    top: 7px;
+}
+.input-dh {
+    position: relative;
+}
+
+    .input-dh .on {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+    }
+
+.icon-dh {
+    background-image: url(../Images/data-selector.png) !important;
+    background-position: 0 0 !important;
+    width: 16px !important;
+    height: 20px !important;
+    cursor: pointer !important;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.add-on {
+    position: relative;
+}
+
+.contenttitle ul {
+    margin: 10px;
+}
+
+.contenttitle li {
+    cursor: pointer;
+    float: left;
+    height: 26px;
+    line-height: 26px;
+    border: 1px solid #bcbcbc;
+    margin-right: 10px;
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+}
+
+    .contenttitle li span {
+        margin-right: 10px;
+    }
+
+    .contenttitle li i {
+        float: left;
+        width: 26px;
+        height: 26px;
+        background-repeat: no-repeat;
+        background-position: center;
+        display: block;
+    }

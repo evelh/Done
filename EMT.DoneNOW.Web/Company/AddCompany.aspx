@@ -139,8 +139,7 @@
                             <td>
                                 <div class="clear">
                                     <label>是否免税</label>
-                                    <input type="checkbox" name="tax_exempt" id="TaxExempt" value="" />
-                                    <%--  <div style="clear: both; margin-top: -20px; margin-left: 200px;"></div>--%>
+                                    <input type="checkbox" name="tax_exempt" id="TaxExempt" value=""/>
                                 </div>
                             </td>
                         </tr>

@@ -56,6 +56,7 @@
     <Compile Include="AUTH\AuthBLL.cs" />
     <Compile Include="Com\CachedInfoBLL.cs" />
     <Compile Include="Com\QueryCommonBLL.cs" />
+    <Compile Include="CRM\AccountBLL.cs" />
     <Compile Include="CRM\CompanyBLL.cs" />
     <Compile Include="CRM\ContactBLL.cs" />
     <Compile Include="CRM\InstalledProductBLL.cs" />

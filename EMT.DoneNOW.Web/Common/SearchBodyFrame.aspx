@@ -14,7 +14,7 @@
 </head>
 <style>
     .searchcontent{
-  OVERFLOW:   scroll;   width:   100%;   height:   100%;min-width:2200px;
+   width:   100%;   height:   100%;min-width:2200px;
     }
     .searchcontent table th {
     background-color: #cbd9e4;
@@ -50,7 +50,7 @@
     color: #4F4F4F;
 }
 </style>
-<body>
+<body style="overflow-x:auto;overflow-y:auto;">
     <form id="form1">
         <div id="search_list">
             <input type="hidden" id="page_num" name="page_num" <%if (queryResult != null) {%>value="<%=queryResult.page %>"<%} %> />
@@ -171,12 +171,12 @@
         </form>
         <%if (queryResult != null) { %>
 
-			<div class="searchcontent" id="searchcontent" style="overflow:hidden;margin-top: 56px;min-width:<%=tableWidth%>px;">
+			<div class="searchcontent" id="searchcontent" style="margin-top: 56px;min-width:<%=tableWidth%>px;overflow:hidden;">
 				<table border="" cellspacing="0" cellpadding="0"  style="overflow:scroll;width:100%;height:100%;">
 					<tr>
                           <%if (!string.IsNullOrEmpty(isCheck))
                         { %>
-                        <th style="width:30px;"><input id="CheckAll" type="checkbox"/></th>
+                        <th style="padding-left: 4px;"><input id="CheckAll" type="checkbox"/></th>
 
                     <%} %>
                         <%foreach(var para in resultPara)

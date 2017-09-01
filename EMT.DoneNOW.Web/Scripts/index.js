@@ -20,14 +20,6 @@ if(distances<=50){
 */
 //alert("开发中，敬请期待")
 })
-/*添加左侧列表icon*/
-$.each($('.index-titleLeft dd'),function(i){
-	var className=$('.index-titleLeft dd').eq(i).attr('class');//获取类名
-	if($(this).hasClass(className)){
-		$(this).css("background-image","url(Images/"+$(this).attr('class')+".png)");//添加icon
-	}
-})
-
 $(".informationTitle i").click(function(){
 	//$(".information").toggleClass("ba");
     $(this).toggleClass("jia");
@@ -40,7 +32,104 @@ $(".informationTitle i").click(function(){
 var  informationWidth=$(".information").width();
 var leftLenght=$(".information ").children(".left").length;
 var leftWidth=100/leftLenght;
-$(".information ").children(".left").width(leftWidth+"%");
+$(".information ").children(".left").width(leftWidth + "%");
+
+//logo的下拉菜单内容
+$(".Logo").on("mousemove", function () {
+    $(this).css("border-color", "#d7d7d7");
+    $(".GuideOverlay").show();
+});
+$(".Logo").on("mouseout", function () {
+    $(this).css("border-color", "#fff");
+    $(".GuideOverlay").hide();
+});
+$(".GuideOverlay").on("mousemove", function () {
+    $(".Logo").css("border-color", "#d7d7d7");
+    $(this).show();
+});
+$(".GuideOverlay").on("mouseout", function () {
+    $(".Logo").css("border-color", "#fff");
+    $(this).hide();
+});
+//循环一级菜单
+$.each($(".GuideNavigation"), function (i) {
+    $(this).mousemove(function () {
+        $(this).addClass("SelectedState").siblings("div").removeClass("SelectedState").addClass("NormalState");
+        $(".Module").eq(i).show().siblings(".Module").hide();
+    })
+});
+$(".Content").on("mouseover", function () {
+    $(this).children("a").removeClass("NormalState").addClass("HoverState");
+});
+$(".Content").on("mouseout", function () {
+    $(this).children("a").removeClass("HoverState").addClass("NormalState");
+});
+
+//历史记录搜索
+$(".Search").on("click", function () {
+    $(".SearchOverlay").show();
+});
+$(".SearchOverlay").on("mouseover", function () {
+    $(this).show();
+});
+$(".SearchOverlay").on("mouseout", function () {
+    $(this).hide();
+});
+
+//新增的下拉菜单
+$(".New").on("mousemove", function () {
+    $(this).addClass("HoverState");
+    $(this).css("borderBottom", "1px solid #fff");
+    $(".NewOverlay").show();
+});
+$(".New").on("mouseout", function () {
+    $(this).removeClass("HoverState");
+    $(this).css("borderTop", "1px solid #d7d7d7");
+    $(this).css("borderBottom", "1px solid #d7d7d7");
+    $(".NewOverlay").hide();
+});
+$(".NewOverlay").on("mousemove", function () {
+    $(".New").addClass("HoverState");
+    $(".New").css("borderBottom", "1px solid #fff");
+    $(this).show();
+});
+$(".NewOverlay").on("mouseout", function () {
+    $(".New").removeClass("HoverState");
+    $(".New").css("borderTop", "1px solid #d7d7d7");
+    $(".New").css("borderBottom", "1px solid #d7d7d7");
+    $(this).hide();
+});
+
+
+//历史的下拉菜单
+$(".Recent").on("mousemove", function () {
+    $(this).addClass("HoverState");
+    $(this).css("borderBottom", "1px solid #fff");
+    $(".RecentOverlay").show();
+});
+$(".Recent").on("mouseout", function () {
+    $(this).removeClass("HoverState");
+    $(this).css("borderTop", "1px solid #d7d7d7");
+    $(this).css("borderBottom", "1px solid #d7d7d7");
+    $(".RecentOverlay").hide();
+});
+$(".RecentOverlay").on("mousemove", function () {
+    $(".Recent").addClass("HoverState");
+    $(".Recent").css("borderBottom", "1px solid #fff");
+    $(this).show();
+});
+$(".RecentOverlay").on("mouseout", function () {
+    $(".Recent").removeClass("HoverState");
+    $(".Recent").css("borderTop", "1px solid #d7d7d7");
+    $(".Recent").css("borderBottom", "1px solid #d7d7d7");
+    $(this).hide();
+});
+
+
+
+
+
+
 
 
 
