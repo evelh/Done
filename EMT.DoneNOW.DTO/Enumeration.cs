@@ -407,9 +407,12 @@ namespace EMT.DoneNOW.DTO
             CHARGE_CALLBACK = 888,              // 费用查找带回
             SHIP_CALLBACK = 889,                // 配送费用查找带回
             INSTALLEDPRODUCT=890,               // 配置项管理-查询
+            PRODUCT_CATE_CALLBACK=891,          //配置项管理-产品种类查找带回
             SUBSCRIPTION = 892,                 // 订阅管理-查询
             SALEORDER = 894,                    // 销售订单 - 查询
             CONTRACT = 895,                     // 合同
+            MATERIALCODE_CALLBACK=896,          //物料代码查找带回
+            VENDOR_CALLBACK=897,                //供应商查找带回
         }
 
         /// <summary>

@@ -38,40 +38,42 @@
             <tbody>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        Vendor Name
-                        <span class="errorSmall">*</span>
+                        供应商名称
+                       <span class="errorSmall">*</span>
+                            <div>
+                              <asp:TextBox ID="CallBack" runat="server" disabled="disabled" name="account_name"></asp:TextBox>
+                            <input type="hidden" name="CallBackHidden" id="CallBackHidden" value=""/>
+                            <i onclick="OpenWindow()"><img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;"/></i>
+                            </div>                        
+                    </td>
+                </tr>
+                <tr>
+                    <td width="30%" class="FieldLabels">
+                        单位成本
                         <div>
-                            <asp:TextBox ID="Vendor_Name" runat="server"></asp:TextBox><a href="#"><img src="../Images/data-selector.png" /></a>
+                            <asp:TextBox ID="cost" runat="server"></asp:TextBox>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        Cost
+                        供应商产品编号
                         <div>
-                            <input type="text" style="width:220px;">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="30%" class="FieldLabels">
-                        Vendor Part Number
-                        <div>
-                            <input type="text" style="width:220px;">
+                            <asp:TextBox ID="number" runat="server"></asp:TextBox>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td width="30%" class="FieldLabels">
                         <div>
-                            <input type="checkbox" checked>Active
+                           <asp:CheckBox ID="active" runat="server" />激活
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td width="30%" class="FieldLabels">
                         <div>
-                            <input type="checkbox">Default
+                            <asp:CheckBox ID="default" runat="server" />默认
                         </div>
                     </td>
                 </tr>
@@ -79,8 +81,22 @@
         </table>
     </div>
         </div>
-            <script src="../Scripts/jquery-3.1.0.min.js"></script>
+     <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/SysSettingRoles.js"></script>
+        <script>
+            function save_deal() {
+                var ve = $("#VendorName").val();
+                if (ve == '' || ve == 0) {
+
+                }
+            }
+            function OpenWindow() {
+                window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.VENDOR_CALLBACK %>&field=CallBack&callBack=GetProductCate", window, 'left=200,top=200,width=600,height=800', false);
+            }
+            function GetProductCate() {
+                // alert($("#accCallBack").val());
+            }
+        </script>
     </form>
 </body>
 </html>
