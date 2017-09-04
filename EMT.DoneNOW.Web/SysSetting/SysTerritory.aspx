@@ -213,7 +213,7 @@
             }
         });
         $("#New_Account").click(function () {
-            window.open('TerritortAddAccount.aspx?id=<%=id%>', '新增', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open('TerritortAddAccount.aspx?id=<%=id%>', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TerritorySource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         });
         function kkk() {
             returnValue = $("#txtId").val();

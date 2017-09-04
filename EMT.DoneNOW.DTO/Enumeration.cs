@@ -668,7 +668,7 @@ namespace EMT.DoneNOW.DTO
 
         ProductSelect = 190,                    // 产品查找带回
         ManyProductSelect = 191,                // 多选产品查找带回
-
+        
         ServiceSelect = 200,                      // 服务的查找带回
         ServiceBundleSelect = 201,               // 服务集的查找带回
 
@@ -687,5 +687,21 @@ namespace EMT.DoneNOW.DTO
 
         ContractAdd = 301,                      // 合同新增
 
+        ProductCata=310,                        //产品种类查找带回
+        MaterialCode=311,                       //物料代码查找带回
+
+        VendorAdd=320,                          //添加供应商
+        TerritorySource=321,                   //地域带回员工
+        VendorSelect = 322,                    //查找供应商
+
+        SysOPPORTUNITY_ADVANCED_FIELD =322,         //添加商机扩展字段
+        TERRITORY=323,                             //添加地域
+        MARKET_SEGMENT=323,                        //添加市场
+        REGION=324,                                //添加区域
+        COMPETITOR=324,                            //添加竞争对手
+        ACTION_TYPE=325,                           //添加活动类型
+        OPPORTUNITY_STAGE=326,                     //添加商机阶段
+        OPPORTUNITY_SOURCE=327,                    //添加商机来源
+        NAME_SUFFIX=328,                           //添加姓名后缀
     }
 }
