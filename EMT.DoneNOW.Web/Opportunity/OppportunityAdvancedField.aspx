@@ -23,7 +23,7 @@
             <div class="ButtonContainer">
                 <ul id="btn">
                     <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
-                        <asp:Button ID="Save_Close" OnClientClick="save_deal()" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="Save_Close_Click" />
+                        <asp:Button ID="Save_Close" OnClientClick="return save_deal()" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="Save_Close_Click" />
                     </li>
                     <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
                         <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click" />
