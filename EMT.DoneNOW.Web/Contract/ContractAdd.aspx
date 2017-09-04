@@ -79,7 +79,7 @@
                                                 <div>
                                                     <input type="text" id="companyName" disabled="disabled" style="width: 278px;" />
                                                     <input type="hidden" id="companyNameHidden" name="account_id" />
-                                                    <img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;" />
+                                                    <img src="../Images/data-selector.png" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=companyName&callBack=InitContact', '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false)" style="vertical-align: middle;cursor: pointer;" />
                                                 </div>
                                             </td>
                                             <td class="FieldLabels">
@@ -98,7 +98,8 @@
                                         </tr>
                                         <tr>
                                             <td class="FieldLabels">
-                                                <input type="checkbox" name="is_sdt_default" />
+                                                <asp:CheckBox ID="is_sdt_default" runat="server" />
+                                                <%--<input type="checkbox" name="is_sdt_default" />--%>
                                                 <span>默认服务台合同</span>
                                             </td>
                                             <td class="FieldLabels">
@@ -153,7 +154,7 @@
                                                     <select name="period_type" class="step2LeftSelectWidth" style="width:134px;">
                                                         <%foreach (var period in periodType) {
                                                                 %>
-                                                        <option value="<%=period.val %>"><%=period.show %></option>
+                                                        <option value="<%=period.val %>" <%if (period.val.Equals(((int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH).ToString())){%> selected="selected"<% } %>><%=period.show %></option>
                                                         <%
                                                             } %>
                                                     </select>
@@ -187,23 +188,23 @@
                                             <td class="FieldLabels">
                                                 开始日期<span class="errorSmall">*</span>
                                                 <div>
-                                                    <input type="text" name="start_date" style="width:120px;" onclick="WdatePicker()" class="Wdate"/>
+                                                    <input type="text" id="start_date" name="start_date" style="width:120px;" onclick="WdatePicker()" class="Wdate"/>
                                                 </div>
                                             </td>
                                             <td class="CheckboxLabels" id="endTd">
-                                                <input type="radio" checked="checked" name="rEnd"/>
+                                                <input type="radio" checked="checked" onclick="getRadio(1)" name="rEnd"/>
                                                 <span>结束日期</span>
                                                 <span class="errorSmall">*</span>
-                                                <input type="text" name="end_date" onclick="WdatePicker()" class="Wdate"/>
+                                                <input type="text" id="end_date" name="end_date" onclick="WdatePicker()" class="Wdate"/>
                                             </td>
                                         </tr>
                                         <tr id="endTr">
                                             <td colspan="1"></td>
                                             <td class="CheckboxLabels" style="padding-top:10px">
-                                                <input type="radio" name="rEnd"/>
+                                                <input type="radio" name="rEnd" onclick="getRadio(2)"/>
                                                 <span>结束于</span>
                                                 <span class="errorSmall">*</span>
-                                                <input type="text" name="occurrences" style="margin-left: 2px;text-align:right;" size="3"/>个服务周期后
+                                                <input type="text" disabled="disabled" id="occurrences" name="occurrences" style="margin-left: 2px;text-align:right;" size="3"/>个服务周期后
                                             </td>
                                         </tr>
                                     </tbody>
@@ -464,7 +465,7 @@
                                         <td class="FieldLabels">
                                             工时计费设置<span class="errorSmall">*</span>
                                             <div style="position:relative; visibility:visible; display:block;width:100%;">
-                                                <select name="bill_post_type_id" id="" style="width:190px;">
+                                                <select name="bill_post_type_id" id="bill_post_type_id" style="width:190px;">
                                                     <option value="">--请选择--</option>
                                                     <%foreach (var bill in billPostType) {
                                                             %>
@@ -726,7 +727,7 @@
                                             <td class="FieldLabels">
                                                 主题
                                                 <div style="padding-right: 10px;">
-                                                    <input type="text" style="width:99%;" value="Created Contract" />
+                                                    <input type="text" style="width:99%;" value="创建合同" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -803,6 +804,7 @@
         </div>
     </form>
     <script type="text/javascript" src="../Scripts/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="../Scripts/common.js"></script>
     <script type="text/javascript" src="../Scripts/ContractWizard.js"></script>
     <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 </body>

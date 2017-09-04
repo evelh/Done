@@ -23,6 +23,10 @@ namespace EMT.DoneNOW.Web.Contract
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (IsPostBack)
+            {
+                return;
+            }
             if (!int.TryParse(Request.QueryString["type"], out contractType))
                 contractType = 0;
             var generalBll = new GeneralBLL();
