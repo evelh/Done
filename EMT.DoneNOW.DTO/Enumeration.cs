@@ -466,6 +466,9 @@ namespace EMT.DoneNOW.DTO
             SALE_ORDER = 778,                           // 销售订单
             SUBSCRIPTION = 779,                         // 订阅
             CONTRACT_EXTENSION = 780,                   // 合同扩展信息
+            CONTRACT_SERVICE = 783,                     // 合同服务
+            CONTRACT_MILESTONE = 784,                   // 合同里程碑
+
         }
 
         /// <summary>

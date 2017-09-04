@@ -1,31 +1,32 @@
-$("#b0").on("click", function () {
+ï»¿$("#b0").on("click", function () {
     if ($("#currentPage").val() == 0) {
         if ($("#typeSelect").val() == "") {
-            alert("ÇëÑ¡ÔñºÏÍ¬ÀàĞÍ");
+            alert("è¯·é€‰æ‹©åˆåŒç±»å‹");
             return;
         }
         contractType = $("#typeSelect").val();
+        $("#contractType").val(contractType);
         $(".Workspace0").hide();
         SelectType();
         $(".Workspace1").show();
-        $("#a0").show();
+        $("#a0").hide();
         $("#currentPage").val(1);
     } else if ($("#currentPage").val() == 1) {
-        // TODO:¼ì²é±ØÌîÏî
+        // TODO:æ£€æŸ¥å¿…å¡«é¡¹
         if ($("#name").val() == "") {
-            alert("ÇëÌîĞ´ºÏÍ¬Ãû³Æ!");
+            alert("è¯·å¡«å†™åˆåŒåç§°!");
             return;
         }
         if ($("#account_id").val() == "") {
-            alert("ÇëÑ¡Ôñ¹«Ë¾Ãû³Æ!");
+            alert("è¯·é€‰æ‹©å…¬å¸åç§°!");
             return;
         }
         if ($("#start_date").val() == "") {
-            alert("ÇëÌîĞ´¿ªÊ¼ÈÕÆÚ!");
+            alert("è¯·å¡«å†™å¼€å§‹æ—¥æœŸ!");
             return;
         }
         //if ($("#name").val() == "") {
-        //    alert("ÇëÌîĞ´ºÏÍ¬Ãû³Æ!");
+        //    alert("è¯·å¡«å†™åˆåŒåç§°!");
         //    return;
         //}
 
@@ -58,7 +59,7 @@ $("#b0").on("click", function () {
         $("#currentPage").val(5);
     } else if ($("#currentPage").val() == 5) {
         if ($("#bill_post_type_id").val() == "") {
-            alert("ÇëÑ¡Ôñ¹¤Ê±¼Æ·Ñ");
+            alert("è¯·é€‰æ‹©å·¥æ—¶è®¡è´¹");
             return;
         }
         if (contractType == 1199 || contractType == 1204) {
@@ -153,12 +154,6 @@ $("#d0").on("click",function(){
 });
 $("#c0").on("click", function () {
     $("#form1").submit();
-    $("#a0").hide();
-    $("#c0").hide();
-    $("#d0").show();
-    $(".Workspace8").hide();
-    $(".Workspace9").show();
-    $("#currentPage").val(9);
 });
 $(".ImgLink").on("mousemove",function(){
     $(this).css("background","#fff");
@@ -191,23 +186,30 @@ $("#CancelButton").on("mouseout",function(){
 function InitContact() {
     $.ajax({
         type: "GET",
-        url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + $("#companyNameHidden").val(),
+        url: "../Tools/CompanyAjax.ashx?act=contactList&account_id=" + $("#companyNameHidden").val(),
         success: function (data) {
             if (data != "") {
                 $("#contactSelect").html(data).removeAttr("disabled");
             }
         },
     });
-
-    //requestData("../Tools/CompanyAjax.ashx?act=contactList&account_id=" + $("#companyNameHidden").val(), null, function (data) {
-    //    $("#contactSelect").text(data);
-    //})
 }
-// ¸ù¾İ²»Í¬ºÏÍ¬ÀàĞÍĞŞ¸Ä±íµ¥ÄÚÈİ
+// æ ¹æ®ä¸åŒåˆåŒç±»å‹ä¿®æ”¹è¡¨å•å†…å®¹
 function SelectType() {
-
+    if (contractType == 1199)
+        $(".text1").text("åˆåŒå‘å¯¼(å®šæœŸæœåŠ¡åˆåŒ)");
+    if (contractType == 1200)
+        $(".text1").text("åˆåŒå‘å¯¼(å·¥æ—¶åŠç‰©æ–™åˆåŒ)");
+    if (contractType == 1201)
+        $(".text1").text("åˆåŒå‘å¯¼(å›ºå®šä»·æ ¼åˆåŒ)");
+    if (contractType == 1202)
+        $(".text1").text("åˆåŒå‘å¯¼(é¢„ä»˜æ—¶é—´åˆåŒ)");
+    if (contractType == 1203)
+        $(".text1").text("åˆåŒå‘å¯¼(é¢„ä»˜è´¹åˆåŒ)");
+    if (contractType == 1204)
+        $(".text1").text("åˆåŒå‘å¯¼(äº‹ä»¶åˆåŒ)");
 }
-// ÉèÖÃ¹¤Ê±±íµ¥
+// è®¾ç½®å·¥æ—¶è¡¨å•
 function SetTimeReporting() {
 
 }
@@ -226,6 +228,14 @@ window.onload=function () {
     if (contractType == 0) {
         $(".Workspace0").show();
         $("#currentPage").val(0);
+    } else if (contractType == 9) {
+        $("#a0").hide();
+        $("#b0").hide();
+        $("#c0").hide();
+        $("#d0").show();
+        $(".Workspace").hide();
+        $(".Workspace9").show();
+        $("#currentPage").val(9);
     } else {
         $(".Workspace1").show();
         $("#currentPage").val(1);

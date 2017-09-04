@@ -12,7 +12,7 @@
 <body>
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">合同向导(<%=contractTypeName %>)</span>
+            <span class="text1">合同向导<%=contractTypeName %></span>
         </div>
     </div>
     <form id="form1" runat="server">
@@ -755,24 +755,24 @@
                     <tbody>
                         <tr height="85%">
                             <td width="90%">
-                                打开新创建合同
+                                <a>打开新创建合同</a>
                             </td>
                         </tr>
                         <tr height="85%">
                             <td width="90%">
-                                创建另一个合同
+                                <a>创建另一个合同</a>
                             </td>
                         </tr>
                         <tr height="85%">
                             <td width="90%">
-                                关闭本窗口
+                                <a onclick="javascript:window.close();">关闭本窗口</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <input type="hidden" name="contractType" id="contractType" value="<%=contractType %>" />
+        <input type="hidden" name="type_id" id="contractType" value="<%=contractType %>" />
         <input type="hidden" id="currentPage" value="" />
         <input type="hidden" id="cnt" <%if (udfList != null && udfList.Count != 0) { %> value="1" <%} else { %> value="0" <%} %> />
         <div class="ButtonBar WizardButtonBar" style="width:97%;">
