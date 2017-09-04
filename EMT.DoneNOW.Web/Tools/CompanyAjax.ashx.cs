@@ -36,6 +36,10 @@ namespace EMT.DoneNOW.Web
                     var isUserParentContact = context.Request.QueryString["userParentContact"];//userParentContact
                     GetCompanyContact(context, account_id, isUserParentContact);
                     break;
+                case "contactList":    // 通过客户id去获取联系人列表
+                    account_id = context.Request.QueryString["account_id"];
+                    GetCompanyContactList(context, account_id);
+                    break;
                 case "companyPhone":
                     var id = context.Request.QueryString["account_id"];
                     GetCompanyPhone(context, id);
@@ -131,6 +135,34 @@ namespace EMT.DoneNOW.Web
                 }
              
                 context.Response.Write(contacts);
+                return;
+            }
+            catch (Exception)
+            {
+                context.Response.End();
+            }
+        }
+
+        /// <summary>
+        /// 获取联系人列表
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="account_id"></param>
+        private void GetCompanyContactList(HttpContext context, string account_id)
+        {
+            try
+            {
+                StringBuilder contacts = new StringBuilder("<option value='0'>     </option>");
+                var contactList = new ContactBLL().GetContactByCompany(Convert.ToInt64(account_id));
+                if (contactList != null && contactList.Count > 0)
+                {
+                    foreach (var contact in contactList)
+                    {
+                        contacts.Append("<option value='" + contact.id + "'>" + contact.name + "</option>");
+                    }
+                }
+
+                context.Response.Write(new Tools.Serialize().SerializeJson(contacts));
                 return;
             }
             catch (Exception)
