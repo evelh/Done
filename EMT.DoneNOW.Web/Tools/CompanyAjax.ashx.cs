@@ -152,7 +152,7 @@ namespace EMT.DoneNOW.Web
         {
             try
             {
-                StringBuilder contacts = new StringBuilder("<option value='0'>     </option>");
+                StringBuilder contacts = new StringBuilder("<option value=''>     </option>");
                 var contactList = new ContactBLL().GetContactByCompany(Convert.ToInt64(account_id));
                 if (contactList != null && contactList.Count > 0)
                 {

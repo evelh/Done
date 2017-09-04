@@ -83,6 +83,17 @@
     <Compile Include="CTT\ctt_contract_cost_dal.cs" />
     <Compile Include="CTT\ctt_contract_cost_default_dal.cs" />
     <Compile Include="CTT\ctt_contract_dal.cs" />
+    <Compile Include="CTT\ctt_contract_exclusion_cost_code_dal.cs" />
+    <Compile Include="CTT\ctt_contract_exclusion_role_dal.cs" />
+    <Compile Include="CTT\ctt_contract_internal_cost_dal.cs" />
+    <Compile Include="CTT\ctt_contract_milestone_dal.cs" />
+    <Compile Include="CTT\ctt_contract_rate_dal.cs" />
+    <Compile Include="CTT\ctt_contract_service_adjust_bundle_service_dal.cs" />
+    <Compile Include="CTT\ctt_contract_service_adjust_dal.cs" />
+    <Compile Include="CTT\ctt_contract_service_bundle_service_dal.cs" />
+    <Compile Include="CTT\ctt_contract_service_dal.cs" />
+    <Compile Include="CTT\ctt_contract_service_period_bundle_service_dal.cs" />
+    <Compile Include="CTT\ctt_contract_service_period_dal.cs" />
     <Compile Include="Dictionary\d_sla_dal.cs" />
     <Compile Include="Dictionary\d_cost_code_dal.cs" />
     <Compile Include="Dictionary\d_tax_region_cate_dal.cs" />

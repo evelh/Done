@@ -305,10 +305,13 @@ namespace EMT.DoneNOW.BLL
                     table = "crm_installed_product_ext";
                     break;
                 case DicEnum.UDF_CATE.OPPORTUNITY:
-                    table= "crm_opportunity_ext";
+                    table = "crm_opportunity_ext";
                     break;
                 case DicEnum.UDF_CATE.SALES:
                     table = "crm_sales_order_ext";
+                    break;
+                case DicEnum.UDF_CATE.CONTRACTS:
+                    table = "ctt_contract_ext";
                     break;
                 // TODO: 其他类别
                 default:

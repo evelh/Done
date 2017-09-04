@@ -459,13 +459,13 @@ namespace EMT.DoneNOW.DTO
             QUOTE = 770,                                // 报价   
             QUOTE_ITEM = 771,                             // 报价项 
             QUOTE_TEMP = 772,                             //报价模板
-            CONTRACT=773,                                  // 合同
+            CONTRACT = 773,                             // 合同
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息            
-            SECURITY_LEVEL = 776,                             //安全等级
-            CONFIGURAITEM = 777,                          // 配置项
+            SECURITY_LEVEL = 776,                       //安全等级
+            CONFIGURAITEM = 777,                        // 配置项
             SALE_ORDER = 778,                           // 销售订单
-            SUBSCRIPTION = 779,                            // 订阅
-
+            SUBSCRIPTION = 779,                         // 订阅
+            CONTRACT_EXTENSION = 780,                   // 合同扩展信息
         }
 
         /// <summary>
