@@ -20,7 +20,7 @@
             var sys_resource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var competition = dic.FirstOrDefault(_ => _.Key == "competition").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var market_segment = dic.FirstOrDefault(_ => _.Key == "market_segment").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-            var district = dic.FirstOrDefault(_ => _.Key == "district").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+           //  var district = dic.FirstOrDefault(_ => _.Key == "district").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var territory = dic.FirstOrDefault(_ => _.Key == "territory").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var company_type = dic.FirstOrDefault(_ => _.Key == "company_type").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var sufix = dic.FirstOrDefault(_ => _.Key == "sufix").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
@@ -55,21 +55,21 @@
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
-                    <input type="button" id="Edit" value="修改" onclick="window.open('EditCompany.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyEdit %>','left= 200, top = 200, width = 960, height = 750', false);" />
+                    <input type="button" id="Edit" value="修改" onclick="window.open('EditCompany.aspx?id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyEdit %>','left= 200, top = 200, width = 960, height = 750', false);" />
                     <%-- <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" OnClientClick="" />--%>
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
                     <%--  <asp:Button ID="tianjia" runat="server" Text="添加" BorderStyle="None" />--%>添加
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
-                        <li><a href="#" onclick="window.open('AddCompany.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=960,height=750', false);">客户</a></li>
+                        <li><a href="#" onclick="window.open('AddCompany.aspx?id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=960,height=750', false);">客户</a></li>
                         <li>工单</li>
                         <li>待办</li>
                         <li>客户备注</li>
-                        <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
-                        <li><a href="#" onclick="window.open('../Contact/AddContact.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left=200,top=200,width=900,height=750', false);">联系人</a></li>
-                        <li><a href="#" onclick="window.open('AddCompany.aspx?parent_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.Subsidiaries %>','left=200,top=200,width=900,height=750', false);">子客户</a></li>
-                        <li><a href="#" onclick="window.open('../ConfigurationItem/AddOrEditConfigItem.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.AddInstalledProduct %>','left=200,top=200,width=900,height=750', false);">配置项</a></li>
+                        <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
+                        <li><a href="#" onclick="window.open('../Contact/AddContact.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left=200,top=200,width=900,height=750', false);">联系人</a></li>
+                        <li><a href="#" onclick="window.open('AddCompany.aspx?parent_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.Subsidiaries %>','left=200,top=200,width=900,height=750', false);">子客户</a></li>
+                        <li><a href="#" onclick="window.open('../ConfigurationItem/AddOrEditConfigItem.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.AddInstalledProduct %>','left=200,top=200,width=900,height=750', false);">配置项</a></li>
                         <li>附件</li>
                     </ul>
                 </li>
@@ -79,7 +79,7 @@
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
                         <li>关闭商机向导</li>
-                        <li><a href="#" onclick="window.open('../Opportunity/LoseOpportunity.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityLose %>','left=200,top=200,width=900,height=750', false);">丢失商机向导</a></li>
+                        <li><a href="#" onclick="window.open('../Opportunity/LoseOpportunity.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityLose %>','left=200,top=200,width=900,height=750', false);">丢失商机向导</a></li>
                         <li>重新分配商机所有人</li>
                         <li>注销客户向导</li>
                         <%--<li>Microsoft word merge wizard</li>--%>
@@ -132,14 +132,14 @@
 
                 <% if (account.parent_id != null)
                     { %>
-                <p class="clear"><a href="#" onclick="window.open('ViewCompany.aspx?id=<%=account.parent_id %>','<%=EMT.DoneNOW.DTO.OpenWindow.ParentCompanyView %>','left=200,top=200,width=960,height=750', false);"><%=companyBll.GetAllShowCompany((long)account.parent_id).name %> </a></p>
+                <p class="clear"><a href="#" onclick="window.open('ViewCompany.aspx?id=<%=account.parent_id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ParentCompanyView %>','left=200,top=200,width=960,height=750', false);"><%=companyBll.GetAllShowCompany((long)account.parent_id).name %> </a></p>
                 <%} %>
 
                 <p><%=account.phone %></p>
                 <%--<p>(P) <%=location.postal_code %></p>--%>
                 <p>(F) <%=account.fax %></p>
                 <p><%=account.web_site %></p>
-                <p><a href="#" onclick="window.open('CompanySiteManage.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>','left=200,top=200,width=960,height=750', false);">站点配置</a></p>
+                <p><a href="#" onclick="window.open('CompanySiteManage.aspx?id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>','left=200,top=200,width=960,height=750', false);">站点配置</a></p>
             </div>
 
             <div class="viewleftTitle1">
@@ -354,6 +354,9 @@
 
         }
     }
-
+     <% var user = Session["dn_session_user_info"] as EMT.DoneNOW.Core.sys_user; %>
+    function AddCompany() {
+        // var checkResult = <% %>;
+    }
 
 </script>

@@ -407,9 +407,12 @@ namespace EMT.DoneNOW.DTO
             CHARGE_CALLBACK = 888,              // 费用查找带回
             SHIP_CALLBACK = 889,                // 配送费用查找带回
             INSTALLEDPRODUCT=890,               // 配置项管理-查询
+            PRODUCT_CATE_CALLBACK=891,          //配置项管理-产品种类查找带回
             SUBSCRIPTION = 892,                 // 订阅管理-查询
             SALEORDER = 894,                    // 销售订单 - 查询
             CONTRACT = 895,                     // 合同
+            MATERIALCODE_CALLBACK=896,          //物料代码查找带回
+            VENDOR_CALLBACK=897,                //供应商查找带回
         }
 
         /// <summary>
@@ -456,11 +459,15 @@ namespace EMT.DoneNOW.DTO
             QUOTE = 770,                                // 报价   
             QUOTE_ITEM = 771,                             // 报价项 
             QUOTE_TEMP = 772,                             //报价模板
+            CONTRACT = 773,                             // 合同
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息            
-            SECURITY_LEVEL = 776,                             //安全等级
-            CONFIGURAITEM = 777,                          // 配置项
+            SECURITY_LEVEL = 776,                       //安全等级
+            CONFIGURAITEM = 777,                        // 配置项
             SALE_ORDER = 778,                           // 销售订单
-            SUBSCRIPTION = 779,                            // 订阅
+            SUBSCRIPTION = 779,                         // 订阅
+            CONTRACT_EXTENSION = 780,                   // 合同扩展信息
+            CONTRACT_SERVICE = 783,                     // 合同服务
+            CONTRACT_MILESTONE = 784,                   // 合同里程碑
 
         }
 
@@ -661,7 +668,7 @@ namespace EMT.DoneNOW.DTO
 
         ProductSelect = 190,                    // 产品查找带回
         ManyProductSelect = 191,                // 多选产品查找带回
-
+        
         ServiceSelect = 200,                      // 服务的查找带回
         ServiceBundleSelect = 201,               // 服务集的查找带回
 
@@ -680,5 +687,21 @@ namespace EMT.DoneNOW.DTO
 
         ContractAdd = 301,                      // 合同新增
 
+        ProductCata=310,                        //产品种类查找带回
+        MaterialCode=311,                       //物料代码查找带回
+
+        VendorAdd=320,                          //添加供应商
+        TerritorySource=321,                   //地域带回员工
+        VendorSelect = 322,                    //查找供应商
+
+        SysOPPORTUNITY_ADVANCED_FIELD =322,         //添加商机扩展字段
+        TERRITORY=323,                             //添加地域
+        MARKET_SEGMENT=323,                        //添加市场
+        REGION=324,                                //添加区域
+        COMPETITOR=324,                            //添加竞争对手
+        ACTION_TYPE=325,                           //添加活动类型
+        OPPORTUNITY_STAGE=326,                     //添加商机阶段
+        OPPORTUNITY_SOURCE=327,                    //添加商机来源
+        NAME_SUFFIX=328,                           //添加姓名后缀
     }
 }

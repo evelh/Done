@@ -18,6 +18,7 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取id
+            id = 2;
             if (!IsPostBack) {
                 //Region下拉框
                 var dic = stbll.GetRegionDownList();
@@ -63,7 +64,7 @@ namespace EMT.DoneNOW.Web
                 Response.Redirect("SysTerritory.aspx");
             }
             else {
-                Response.Write("<script>alert('地域添加失败！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>alert('地域信息保存失败！');window.close();self.opener.location.reload();</script>");
             }           
         }
 
@@ -71,10 +72,10 @@ namespace EMT.DoneNOW.Web
         {
             if (save_deal())
             {
-                Response.Write("<script>alert('地域添加成功！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>alert('地域信息保存成功！');window.close();self.opener.location.reload();</script>");
             }
             else {
-                Response.Write("<script>alert('地域添加失败！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>alert('地域信息保存失败！');window.close();self.opener.location.reload();</script>");
             }           
         }
         /// <summary>

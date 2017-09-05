@@ -340,7 +340,7 @@
         </div>
         <%--// location_list--%>
         <div class="content clear" style="display: none;margin-right:10px;">
-            <a href="#" style="margin-left: 10px;" onclick="window.open('LocationManage.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.LocationAdd %>','left=200,top=200,width=900,height=750', false);">新增地址</a>
+            <a href="#" style="margin-left: 10px;" onclick="window.open('LocationManage.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.LocationAdd %>','left=200,top=200,width=900,height=750', false);">新增地址</a>
             <table style="text-align: center;" class="table table-hover grid" id="addressManage">
                 <tr style="text-align: center;">
                     <th>地址类型</th>
@@ -383,11 +383,11 @@
                     <td><%=location.is_default==1?"是":"否" %></td>
                     <%if (location.is_default != 1)
                         { %>
-                    <td><a href="#" onclick="window.open('LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.LoactionEdit %>','left=200,top=200,width=900,height=750', false);">修改</a> <a href="#" onclick="deleteLocation(<%=location.id %>)">删除</a></td>
+                    <td><a href="#" onclick="window.open('LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.LoactionEdit %>','left=200,top=200,width=900,height=750', false);">修改</a> <a href="#" onclick="deleteLocation(<%=location.id %>)">删除</a></td>
                     <%}
                         else
                         { %>
-                    <td><a href="#" onclick="window.open('LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.LoactionEdit %>','left=200,top=200,width=900,height=750', false);">修改</a></td>
+                    <td><a href="#" onclick="window.open('LocationManage.aspx?id=<%=location.id %>&account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.LoactionEdit %>','left=200,top=200,width=900,height=750', false);">修改</a></td>
                     <%} %>
                 </tr>
                 <% }%>
@@ -921,7 +921,7 @@
             alert("已添加父客户，不能添加子客户！");
             return;
         }
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUB_COMPANY_CALLBACK %>&field=SubCompany&muilt=1&callBack=ChooseSubCompany", '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUB_COMPANY_CALLBACK %>&field=SubCompany&muilt=1&callBack=ChooseSubCompany", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
     function ChooseSubCompany() {

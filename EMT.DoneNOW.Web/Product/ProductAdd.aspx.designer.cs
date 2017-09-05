@@ -58,15 +58,6 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.TextBox Product_Name;
         
         /// <summary>
-        /// Product_Category 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Product_Category;
-        
-        /// <summary>
         /// Product_Description 控件。
         /// </summary>
         /// <remarks>
@@ -112,15 +103,6 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.DropDownList Item_Type;
         
         /// <summary>
-        /// PMaterial_Code 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PMaterial_Code;
-        
-        /// <summary>
         /// Unit_Cost 控件。
         /// </summary>
         /// <remarks>
@@ -128,15 +110,6 @@ namespace EMT.DoneNOW.Web {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Unit_Cost;
-        
-        /// <summary>
-        /// Markup 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Markup;
         
         /// <summary>
         /// Unit_Price 控件。

@@ -46,13 +46,13 @@
                     添加
 					<i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
-                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=900,height=750', false);"></a>待办</li>
-                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=900,height=750', false);"></a>备注</li>
+                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=900,height=750', false);"></a>待办</li>
+                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=900,height=750', false);"></a>备注</li>
                         <li>工单</li>
                         <li>附件</li>
                         <%if (quoteList == null || quoteList.Count == 0)
                             { %>
-                        <li><a href="#" onclick="window.open('../Quote/QuoteAddAndUpdate?quote_opportunity_id=<%=opportunity.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>','left=200,top=200,width=900,height=750', false);">报价</a></li>
+                        <li><a href="#" onclick="window.open('../Quote/QuoteAddAndUpdate?quote_opportunity_id=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>','left=200,top=200,width=900,height=750', false);">报价</a></li>
                         <%} %>
                         <%-- todo 如果商机已经有报价，则不显示--%>
                     </ul>

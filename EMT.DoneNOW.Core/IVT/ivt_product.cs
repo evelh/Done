@@ -25,11 +25,9 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String sku { get; set; }
         [DataMember]
-        public String link { get; set; }
-        [DataMember]
         public String url { get; set; }
         [DataMember]
-        public Int32 type_id { get; set; }
+        public Int32? installed_product_cate_id { get; set; }
         [DataMember]
         public Int32? cate_id { get; set; }
         [DataMember]
@@ -41,10 +39,6 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? msrp { get; set; }
         [DataMember]
-        public Int64? vendor_id { get; set; }
-        [DataMember]
-        public String vendor_product_no { get; set; }
-        [DataMember]
         public String manu_name { get; set; }
         [DataMember]
         public String manu_product_no { get; set; }
@@ -55,13 +49,19 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte is_serialized { get; set; }
         [DataMember]
-        public Int32? cost_code_id { get; set; }
+        public Int64 cost_code_id { get; set; }
         [DataMember]
         public String internal_id { get; set; }
         [DataMember]
-        public Int32? udf_group_id { get; set; }
-        [DataMember]
         public SByte does_not_require_procurement { get; set; }
+        [DataMember]
+        public String link { get; set; }
+        [DataMember]
+        public String vendor_product_no { get; set; }
+        [DataMember]
+        public Int64? vendor_id { get; set; }
+        [DataMember]
+        public Int32? udf_group_id { get; set; }
 
 
     }

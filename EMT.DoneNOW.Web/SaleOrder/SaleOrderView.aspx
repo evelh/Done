@@ -389,7 +389,7 @@ a:hover {
         <ul id="btn">
             <li class="Button ButtonIcon NormalState" id="EditButton" tabindex="0">
                 <span class="Icon" style="width: 0;margin: 0;"></span>
-                <span class="Text"><a onclick="window.open('../SaleOrder/SaleOrderEdit.aspx?id=<%=sale_order.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.SaleOrderEdit %>','left=200,top=200,width=900,height=750', false);" class="HyperLink">编辑</a> </span>
+                <span class="Text"><a onclick="window.open('../SaleOrder/SaleOrderEdit.aspx?id=<%=sale_order.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.SaleOrderEdit %>','left=200,top=200,width=900,height=750', false);" class="HyperLink">编辑</a> </span>
             </li>
             <li class="Button ButtonIcon NormalState" id="ToolsButton" tabindex="0">
                 <span class="Icon Add"></span>
@@ -541,7 +541,7 @@ a:hover {
           %>
     <div class="SubtitleDiv">
         <span class="htmlLabel"><%=type %>  <%=opportunity.name %></span>
-        (<a onclick="window.open('../company/ViewCompany.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyView %>','left=200,top=200,width=900,height=750', false);" class="HyperLink"><%=account.name %></a>)
+        (<a onclick="window.open('../company/ViewCompany.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyView %>','left=200,top=200,width=900,height=750', false);" class="HyperLink"><%=account.name %></a>)
     </div>
     <!--切换项-->
     <div class="TabContainer">
@@ -656,7 +656,7 @@ a:hover {
                                 <span class="labelText">名称</span>
                             </td>
                             <td class="tableCell">
-                                <a  onclick="window.open('../Opportunity/ViewOpportunity.aspx?id=<%=opportunity.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.OpportunityView %>','left=200,top=200,width=900,height=750', false);" class="linkButton"><%=opportunity.name %></a>
+                                <a  onclick="window.open('../Opportunity/ViewOpportunity.aspx?id=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityView %>','left=200,top=200,width=900,height=750', false);" class="linkButton"><%=opportunity.name %></a>
                             </td>
                         </tr>
                         <tr class="tableRow">
@@ -684,7 +684,7 @@ a:hover {
                                 <span class="labelText">报价</span>
                             </td>
                             <td class="tableCell">
-                                <a class="linkButton" onclick="window.open('../QuoteItem/QuoteItemManage.aspx?quote_id=<%=quote.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.QuoteItemManage %>','left=200,top=200,width=900,height=750', false);"><%=quote.name %></a>
+                                <a class="linkButton" onclick="window.open('../QuoteItem/QuoteItemManage.aspx?quote_id=<%=quote.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteItemManage %>','left=200,top=200,width=900,height=750', false);"><%=quote.name %></a>
                             </td>
                         </tr>
                             <%} %>
@@ -756,7 +756,7 @@ a:hover {
                         <div class="Horizontal"></div>
                     </div>
                     <span class="lblNormalClass">
-                        <a onclick="window.open('../company/ViewCompany.aspx?account_id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyView %>','left=200,top=200,width=900,height=750', false);" ><%=account.name %></a>
+                        <a onclick="window.open('../company/ViewCompany.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyView %>','left=200,top=200,width=900,height=750', false);" ><%=account.name %></a>
                         <img src="../Images/at16.png" style="vertical-align: middle;">
                     </span>
                 </div>
@@ -812,7 +812,7 @@ a:hover {
                         </tr>
                             <tr class="tableRow">
                             <td class="tableCell">
-                                <span class="labelText">  <a class="linkButton" onclick="window.open('../Company/CompanySiteManage.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>','left=200,top=200,width=960,height=750', false);">站点配置</a></span>
+                                <span class="labelText">  <a class="linkButton" onclick="window.open('../Company/CompanySiteManage.aspx?id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>','left=200,top=200,width=960,height=750', false);">站点配置</a></span>
                             </td>
                             <td class="tableCell">
                               
