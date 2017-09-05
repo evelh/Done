@@ -274,7 +274,7 @@ namespace EMT.DoneNOW.DTO
             TICKETS = 512,
             SITE = 513,             // 站点
             CONFIGURATION = 514,
-            PRODUCTS = 515,
+            PRODUCTS = 515,         //产品
             CONTRACTS = 516,        // 合同
             COMPANY = 517,          // 客户
             CONTACT = 518,          // 联系人
@@ -460,6 +460,7 @@ namespace EMT.DoneNOW.DTO
             QUOTE_ITEM = 771,                             // 报价项 
             QUOTE_TEMP = 772,                             //报价模板
             CONTRACT = 773,                             // 合同
+            PRODUCT=774,                                //产品
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息            
             SECURITY_LEVEL = 776,                       //安全等级
             CONFIGURAITEM = 777,                        // 配置项
