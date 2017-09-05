@@ -242,7 +242,7 @@
                                             <div>
                                                 <div class="Group">
                                                     <div class="Heading">
-                                                        <div class="Text">视图</div>
+                                                        <div class="Text">视图3</div>
                                                     </div>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState">
@@ -295,22 +295,339 @@
                                     </div>
                                     <!--第四个-->
                                     <div class="Module">
-                                    
+                                        <div class="Normal ContextOverlayColumn">
+                                            <div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">视图4</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">LiveLinks Designer</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">搜索</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">My Home Page</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">工具</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <!--第五个-->
                                     <div class="Module">
-                                    
+                                        <div class="Normal ContextOverlayColumn">
+                                            <div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">视图5</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">LiveLinks Designer</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">搜索</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">My Home Page</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">工具</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <!--第六个-->
                                     <div class="Module">
-                                    
+                                        <div class="Normal ContextOverlayColumn">
+                                            <div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">视图6</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">LiveLinks Designer</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">搜索</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">My Home Page</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">工具</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <!--第七个-->
                                     <div class="Module">
-                                    
+                                        <div class="Normal ContextOverlayColumn">
+                                            <div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">视图7</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">LiveLinks Designer</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">搜索</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">My Home Page</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">工具</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <!--第八个-->
                                     <div class="Module">
-                                    
+                                        <div class="Normal ContextOverlayColumn">
+                                            <div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">视图8</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">LiveLinks Designer</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">搜索</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">My Home Page</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">工具</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <!--第九个-->
                                     <div class="Module">
-                                    
+                                        <div class="Normal ContextOverlayColumn">
+                                            <div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">视图9</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">LiveLinks Designer</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">搜索</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">My Home Page</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">工具</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--第10个-->
+                                    <div class="Module">
+                                        <div class="Normal ContextOverlayColumn">
+                                            <div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">视图10</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">LiveLinks Designer</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">搜索</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">My Home Page</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">工具</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--第11个-->
+                                    <div class="Module">
+                                        <div class="Normal ContextOverlayColumn">
+                                            <div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">视图11</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">LiveLinks Designer</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">搜索</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">My Home Page</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">工具</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -563,7 +880,7 @@
 
 
 
-        <div class="cont" style="width:98%;">
+        <div class="cont">
             <iframe id="PageFrame" name="PageFrame" style="width:100%;" src="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>"></iframe>
         </div>
 
