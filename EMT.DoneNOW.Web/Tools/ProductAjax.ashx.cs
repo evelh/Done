@@ -68,6 +68,10 @@ namespace EMT.DoneNOW.Web
                     var cost_code_id = context.Request.QueryString["cost_code_id"];
                     GetCostCode(context,long.Parse(cost_code_id));
                     break;
+                case "GetProData":
+                    var product_data_id = context.Request.QueryString["product_id"];
+                    GetProData(context,long.Parse(product_data_id));
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;
@@ -85,6 +89,19 @@ namespace EMT.DoneNOW.Web
             if (product != null)
             {
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(product));
+            }
+        }
+
+        /// <summary>
+        /// 根据产品ID去获取到相对应的平均供应商成本和最高的供应商成本
+        /// </summary>
+        public void GetProData(HttpContext context, long product_id)
+        {
+            string sql = $"SELECT AVG(vendor_cost) as unit_cost,MAX(vendor_cost) as unit_price from ivt_product_vendor where product_id = {product_id}";
+            var product  = new ivt_product_dal().FindSignleBySql<ivt_product>(sql);
+            if (product != null)
+            {
+                context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { avg=product.unit_cost,max = product.unit_price}));
             }
         }
 
@@ -108,6 +125,7 @@ namespace EMT.DoneNOW.Web
                             description = product.description,
                             unit_price = product.unit_price,
                             unit_cost = product.unit_cost,
+                            unit_discount = 0,
                             quantity = 1,
                             quote_id = quote_id,
                             period_type_id = product.period_type_id,
@@ -115,6 +133,8 @@ namespace EMT.DoneNOW.Web
                             create_user_id = user.id,
                             update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                             update_user_id = user.id,  
+                            optional = 0,
+                            
                         };
                         itemDal.Insert(thisQuoteItem);
                         new sys_oper_log_dal().Insert(new sys_oper_log()
@@ -132,12 +152,17 @@ namespace EMT.DoneNOW.Web
                         });
                     }
                 }
+                context.Response.Write("true");
+            }
+            else
+            {
+                context.Response.Write("false");
             }
         }
 
         public void GetVendorInfo(HttpContext context, long product_id)
         {
-            var vendor = new ivt_product_dal().FindSignleBySql<ivt_product>($"SELECT a.name as product_name,v.vendor_product_no as vendor_product_no from crm_account a INNER join ivt_product_vendor v on a.id = v.vendor_id where product_id={product_id}");
+            var vendor = new ivt_product_dal().FindSignleBySql<ivt_product>($"SELECT a.name as product_name,v.vendor_product_no as vendor_product_no from crm_account a INNER join ivt_product_vendor v on a.id = v.vendor_account_id where product_id={product_id}");
             if (vendor!= null)
             {
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new {name=vendor.product_name, vendor_product_no = vendor.vendor_product_no }));
@@ -217,6 +242,8 @@ namespace EMT.DoneNOW.Web
             }
         }
 
+
+        
 
 
         public bool IsReusable

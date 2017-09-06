@@ -693,7 +693,7 @@ a:hover {
                                 %>
 
                             <%
-                                var totalRebenue = new EMT.DoneNOW.BLL.CRM.OpportunityBLL().ReturnOppoRebenue(opportunity);
+                                var totalRebenue = new EMT.DoneNOW.BLL.CRM.OpportunityBLL().ReturnOppoRevenue(opportunity);
                                 var totalCost = new EMT.DoneNOW.BLL.CRM.OpportunityBLL().ReturnOppoCost(opportunity);
                                 var Gross_Profit = totalRebenue - totalCost;
                                 %>

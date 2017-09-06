@@ -274,8 +274,9 @@
         function EditCompany() {
             OpenWindow("../Company/EditCompany.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyEdit %>');
         }
+        
         function ViewCompany() {
-            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyView %>');
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '_blank');
         }
         function Add() {
             OpenWindow("../Company/AddCompany.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>');
@@ -284,7 +285,7 @@
             OpenWindow("../Company/DeleteCompany.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyDelete %>');
         }
         function View(id) {
-            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyView %>');
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + id, '_blank');
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contact
@@ -294,10 +295,10 @@
             OpenWindow("../Contact/AddContact.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactEdit %>');
         }
         function ViewContact() {
-            OpenWindow("../Contact/ViewContact.aspx?type=todo&id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactView %>');
+            OpenWindow("../Contact/ViewContact.aspx?type=todo&id=" + entityid, '_blank');
         }
         function View(id) {
-            OpenWindow("../Contact/ViewContact.aspx?type=todo&id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactView %>');
+            OpenWindow("../Contact/ViewContact.aspx?type=todo&id=" + id, '_blank');
         }
         function DeleteContact() {
             $.ajax({
@@ -327,13 +328,13 @@
             OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityEdit %>');
         }
         function ViewOpp() {
-            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityView %>');
+            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid, '_blank');
         }
         function View(id) {
-            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityView %>');
+            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + id, '_blank');
         }
         function ViewCompany() {
-            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyView %>');
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '_blank');
         }
         function AddQuote() {
             window.open("../Quote/QuoteAddAndUpdate.aspx",'<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>' , 'left=0,top=0,location=no,status=no,width=750,height=750', false);
@@ -367,10 +368,10 @@
             OpenWindow("../Quote/QuoteAddAndUpdate.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteEdit %>');
         }
         function ViewOpp() {
-            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityView %>');
+            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid, '_blank');
         }
         function ViewCompany(id) {
-            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyView %>');
+            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '_blank');
         }
         function LossQuote() {
             OpenWindow("../Quote/QuoteLost.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteLost %>');
@@ -394,7 +395,7 @@
             OpenWindow("../Quote/QuoteAddAndUpdate.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>');
         }
         function ViewQuote() {
-            OpenWindow("../Quote/QuoteView.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteView %>');
+            OpenWindow("../Quote/QuoteView.aspx?id=" + entityid, '_blank');
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.QuoteTemplate) {

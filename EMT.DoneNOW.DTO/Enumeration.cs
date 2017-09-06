@@ -564,6 +564,23 @@ namespace EMT.DoneNOW.DTO
             NEED_TYPE_DETAIL = 1018,    // 需要原因类型和详情
             NEED_NONE = 1019,           // 不需要
         }
+        /// <summary>
+        /// 成本种类 106
+        /// </summary>
+        public enum COST_CODE_CATE
+        {
+            GENERAL_ALLOCATION_CODE=1158,        //  一般成本
+            EXPENSE_CATEGORY=1159,               // 费用
+            INTERNAL_ALLOCATION_CODE=1160,       // 内部成本
+            MATERIAL_COST_CODE=1161,             // 物料成本
+            RECURRING_CONTRACT_SERVICE_CODE=1162,// 周期服务成本
+            MILESTONE_CODE=1163,                 // 里程碑
+            PRODUCT_CODE=1164,                   // 产品
+            QUICKBOOKS=1165,                     // 
+            BLOCK_PURCHASE=1166,                 // 
+            RETAINER_PURCHASE=1167,              // 
+            TICKET_PURCHASE=1168                 // 
+        }
 
         /// <summary>
         /// 报价分组条件-110

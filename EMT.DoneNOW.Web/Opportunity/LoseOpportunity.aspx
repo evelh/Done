@@ -759,7 +759,7 @@ textarea {
             }
             // loss_reason
             var loss_reason = $("#loss_reason").val();
-            if (loss_reason == 0) {
+            if (loss_reason == "") {
                 alert("请填写丢失商机描述");
                 return false;
             }

@@ -146,7 +146,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                         }
                         else if(groupByType == ((int)QUOTE_GROUP_BY.PRODUCT).ToString())  // 按产品分组
                         {
-                            groupList = screenList.GroupBy(_ => _.object_id == null ? "" : _.object_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
+                            groupList = screenList.GroupBy(_ => _.object_id == null ? "" : ReturnProductID((long)_.object_id)).ToDictionary(_ => (object)_.Key, _ => _.ToList());
                             new QuoteBLL().UpdateGroup(quote.id, (int)QUOTE_GROUP_BY.PRODUCT, GetLoginUserId());
                             groupBy.SelectedValue = ((int)QUOTE_GROUP_BY.PRODUCT).ToString();
                         }
@@ -154,13 +154,13 @@ namespace EMT.DoneNOW.Web.QuoteItem
                         {
                             new QuoteBLL().UpdateGroup(quote.id, (int)QUOTE_GROUP_BY.CYCLE_PRODUCT, GetLoginUserId());
                             groupBy.SelectedValue = ((int)QUOTE_GROUP_BY.CYCLE_PRODUCT).ToString();
-                            doubleGroupList = screenList.GroupBy(d => d.period_type_id == null ? "" : d.period_type_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList().GroupBy(d => d.object_id == null ? "" : d.object_id.ToString()).ToDictionary(d => (object)d.Key, d => d.ToList()));
+                            doubleGroupList = screenList.GroupBy(d => d.period_type_id == null ? "" : d.period_type_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList().GroupBy(d => d.object_id == null ? "" : ReturnProductID((long)d.object_id)).ToDictionary(d => (object)d.Key, d => d.ToList()));
                         }
                         else if (groupByType == ((int)QUOTE_GROUP_BY.PRODUCT_CYCLE).ToString()) // 按产品周期分组
                         {
                             new QuoteBLL().UpdateGroup(quote.id, (int)QUOTE_GROUP_BY.PRODUCT_CYCLE, GetLoginUserId());
                             groupBy.SelectedValue = ((int)QUOTE_GROUP_BY.PRODUCT_CYCLE).ToString();
-                            doubleGroupList = screenList.GroupBy(_ => _.object_id == null ? "" : _.object_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList().GroupBy(d => d.period_type_id == null ? "" : d.period_type_id.ToString()).ToDictionary(d=>(object)d.Key,d=>d.ToList()));
+                            doubleGroupList = screenList.GroupBy(_ => _.object_id == null ? "" : ReturnProductID((long)_.object_id)).ToDictionary(_ => (object)_.Key, _ => _.ToList().GroupBy(d => d.period_type_id == null ? "" : d.period_type_id.ToString()).ToDictionary(d=>(object)d.Key,d=>d.ToList()));
                         }
                         else // 不分组
                         {
@@ -224,6 +224,16 @@ namespace EMT.DoneNOW.Web.QuoteItem
             {
                 return (int)new d_general_dal().FindSignleBySql<d_general>($"select * from d_general where id = {period_type_id} ").sort_order;
             }
+        }
+
+        private string ReturnProductID(long object_id)
+        {
+            var product = new EMT.DoneNOW.BLL.IVT.ProductBLL().GetProduct(object_id);
+            if (product != null)
+            {
+                return product.id.ToString();
+            }
+            return "";
         }
     }
 }

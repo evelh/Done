@@ -134,25 +134,6 @@ function myBrowser() {
            if  (isChrome)  {  return  "Chrome"; }
            if  (isEdge)  {  return  "Edge"; }
    }//myBrowser() end  
-// 关闭当前窗口
-function close(){
-    if (navigator.userAgent.indexOf("MSIE") > 0) {
-        if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
-            window.opener = null;
-            window.close();
-        } else {
-            window.open('', '_top');
-            window.top.close();
-        }
-    }
-    else if (navigator.userAgent.indexOf("Firefox") > 0) {
-        window.location.href = 'about:blank ';
-    } else {
-        window.opener = null;
-        window.open('', '_self', '');
-        window.close();
-    }
-}
 
 // 计算两个日期的相差天数
 function DateDiff(sDate1, sDate2) {  //sDate1和sDate2是yyyy-MM-dd格式

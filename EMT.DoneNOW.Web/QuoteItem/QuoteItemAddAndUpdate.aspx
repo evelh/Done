@@ -279,13 +279,13 @@
                                                     <i id="callBackChooseRole" onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                     
                                                     <i id="callBackChooseProduct" onclick="chooseProduct()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="callBackManyProduct" onclick="" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -125px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="AddProduct" onclick="" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="callBackService" onclick="chooseService()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="callBackServiceBundle" onclick="chooseServiceBundle()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="callbackCost" onclick="chooseDegression()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                       <i id="callBackCharge" onclick="chooseCharge()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                       <i id="callBackShip" onclick="chooseShip()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackManyProduct" onclick="chooseManyProduct()" style="width: 15px; height: 20px; margin-left: 0px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -129px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="AddProduct" onclick="" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -81px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackService" onclick="chooseService()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -81px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackServiceBundle" onclick="chooseServiceBundle()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -81px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callbackCost" onclick="chooseDegression()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -81px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
+                                                       <i id="callBackCharge" onclick="chooseCharge()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -81px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
+                                                       <i id="callBackShip" onclick="chooseShip()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -81px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
                                                     <input type="hidden" id="nameHidden"/>
                                                 </div>
                                             </td>
@@ -574,6 +574,7 @@
                 {
                     return false;
                 }
+            
                 return true;
             }
             else {
@@ -581,6 +582,7 @@
                 {
                     return false;
                 }// SubmitDiscountCheck
+                $("#name").removeAttr("disabled");
                 return true;
             }
             
@@ -591,12 +593,14 @@
                 if (!SubmitDiscountCheck()) {
                     return false;
                 }
+               
                 return true;
             }
             else {
                 if (!SubmitCheck()) {
                     return false;
                 }// SubmitDiscountCheck
+                $("#name").removeAttr("disabled");
                 return true;
             }
         });
@@ -738,6 +742,12 @@
             alert("请填写名称");
             return false;
         }
+        // nameHidden
+        var nameHidden = $("#nameHidden").val();
+        if (nameHidden == "") {
+            alert("请通过查找带回功能选择关联项");
+            return false;
+        }
 
         var unit_price = $("#unit_price").val();
         if (unit_price == "") {
@@ -808,7 +818,7 @@
     function GetDataByRole() {
         var role_id = $("#nameHidden").val();
         if (role_id != "") {
-            
+            $("#object_id").val(role_id);
             $.ajax({
                 type: "GET",
                 async: false,
@@ -830,7 +840,7 @@
     function toDecimal2(x) {
         var f = parseFloat(x);
         if (isNaN(f)) {
-            return false;
+            return "";
         }
         var f = Math.round(x * 100) / 100;
         var s = f.toString();
@@ -860,13 +870,28 @@
                 // data: { CompanyName: companyName },
                 success: function (data) {
                     if (data != "") {
-                        $("#name").val(data.name);
+                        debugger;
+                        $("#name").val(data.product_name);
                         $("#description").text(data.description);
                         $("#unit_price").val(data.unit_price); //unit_cost
                         $("#unit_cost").val(data.unit_cost);
                         $("#MSRP").val(data.msrp);
                         $("#Reserved").val(0);
                         Markup();
+                    }
+                },
+            });
+
+            $.ajax({
+                type: "GET",
+                async: false,
+                dataType: "json",
+                url: "../Tools/ProductAjax.ashx?act=GetProData&product_id=" + product_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#avgCost").text(data.avg);  
+                        $("#highCost").text(data.max);
                     }
                 },
             });
@@ -879,7 +904,7 @@
     function GetDataByService() {
         var service_id = $("#nameHidden").val();
         if (service_id != "") {
-
+            $("#object_id").val(service_id);
             $.ajax({
                 type: "GET",
                 async: false,
@@ -904,7 +929,7 @@
     function GetDataByServiceBundle() {
         var service_bundle_id = $("#nameHidden").val();
         if (service_bundle_id != "") {
-
+            $("#object_id").val(service_bundle_id);
             $.ajax({
                 type: "GET",
                 async: false,
@@ -932,7 +957,7 @@
         
         var charge_id = $("#nameHidden").val();
         if (charge_id != "") {
-
+            $("#object_id").val(charge_id);
             $.ajax({
                 type: "GET",
                 async: false,
@@ -955,27 +980,33 @@
     // 多选查找带回产品的时候--直接循环添加多个报价项
 
     function chooseManyProduct() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MANY_PRODUCT_CALLBACK %>&field=name&callBack=GetDataByRole", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ManyProductSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MANY_PRODUCT_CALLBACK %>&field=name&callBack=AddManyQuoteItem&muilt=1", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ManyProductSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function AddManyQuoteItem() {
+        debugger;
         var productIds = $("#nameHidden").val();
         var quote_id = $("#thisQuoteId").val();
         if (productIds != "") {
             $.ajax({
                 type: "GET",
-                async: false,
+                //async: false,
                 dataType: "json",
                 url: "../Tools/ProductAjax.ashx?act=AddQuoteItems&ids=" + productIds + "&quote_id=" + quote_id,
-                // data: { CompanyName: companyName },
                 success: function (data) {
-                    if (data != "") {
+                    debugger;
+                    if (data != "true") {
+                        //close();
+                      
+                    } else {
 
                     }
+                    window.close();
                 },
             });
-            
-            window.close();
+          
         }
+        
+    
     }
 
 
@@ -987,7 +1018,7 @@
         // - todo 根据费用填充数据
         var charge_id = $("#nameHidden").val();
         if (charge_id != "") {
-
+            $("#object_id").val(charge_id);
             $.ajax({
                 type: "GET",
                 async: false,
@@ -1012,6 +1043,7 @@
         // - todo 根据配送方式填充数据
         var ship_id = $("#nameHidden").val();
         if (ship_id != "") {
+            $("#object_id").val(ship_id);
             $.ajax({
                 type: "GET",
                 async: false,

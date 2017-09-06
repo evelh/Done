@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>New Contact</title>
+    <title><%=dto.contact.id == 0?"添加联系人":"编辑联系人" %></title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/index.css" />

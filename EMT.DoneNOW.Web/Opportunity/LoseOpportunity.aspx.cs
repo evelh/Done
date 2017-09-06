@@ -36,7 +36,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                             if (opportunity.status_id == (int)OPPORTUNITY_STATUS.CLOSED)
                             {
                                 Response.Write("<script>alert('商机已关闭，继续则以前创建的已确认计费项和合同不会受影响！');</script>");
-                                Response.Write("<script>if(!confirm('本操作将会改变商机状态，相关的销售订单将被取消，是否继续？')){close();window.close();}</script>");
+                                Response.Write("<script>if(!confirm('本操作将会改变商机状态，相关的销售订单将被取消，是否继续？')){window.close();}</script>");
                             }
 
 

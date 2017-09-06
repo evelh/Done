@@ -506,7 +506,7 @@
 
         </div>
         <div class="content clear" style="display: none;">
-            <%var user = EMT.DoneNOW.BLL.UserInfoBLL.GetUserInfo(GetLoginUserId()); %>
+           <%-- <%var user = EMT.DoneNOW.BLL.UserInfoBLL.GetUserInfo(GetLoginUserId()); %>
             <div class="clear">
                 <input type="checkbox" name="" id="checkUser" />
                 <label><%=user.name %></label>
@@ -533,7 +533,7 @@
             <div class="clear">
                 <label>附加信息</label>
                 <input type="text" name="body_text" id="body_text" value="" />
-            </div>
+            </div>--%>
         </div>
             </div>
     </form>

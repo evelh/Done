@@ -40,15 +40,11 @@ namespace EMT.DoneNOW.BLL.CRM
             dic.Add("sys_resource", new sys_resource_dal().GetDictionary());                // 客户经理
             dic.Add("competition", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.COMPETITOR)));          // 竞争对手
             dic.Add("market_segment", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.MARKET_SEGMENT)));    // 行业
-                                                                                                                                                      //dic.Add("district", new d_general_dal().GetDictionary(new d_general_table_dal().GetGeneralTableByName("行政区")));                // 行政区
+
             dic.Add("territory", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TERRITORY)));              // 销售区域
-                                                                                                                                                      //  dic.Add("company_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACCOUNT_TYPE)));              // 客户类型
-                                                                                                                                                      //  dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));              // 税区
+
             dic.Add("sufix", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.NAME_SUFFIX)));              // 名字后缀
-                                                                                                                                                    //  dic.Add("action_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACTION_TYPE)));        // 活动类型
-
-
-
+            dic.Add("period_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE))); // 周期类型（一次性，按月，按年等）
             return dic;
         }
 
@@ -165,14 +161,6 @@ namespace EMT.DoneNOW.BLL.CRM
 
             #region 3.保存活动
 
-            decimal total = 0;
-            total += (decimal)(param.general.one_time_revenue == null ? 0 : param.general.one_time_revenue);
-            total += (decimal)((param.general.monthly_revenue == null ? 0 : param.general.monthly_revenue) * param.general.number_months);
-            total += (decimal)((param.general.quarterly_revenue == null ? 0 : param.general.monthly_revenue) * param.general.number_months);
-            total += (decimal)((param.general.semi_annual_revenue == null ? 0 : param.general.monthly_revenue) * param.general.number_months);
-            total += (decimal)((param.general.yearly_revenue == null ? 0 : param.general.monthly_revenue) * param.general.number_months);
-
-
             com_activity activity = new com_activity()
             {
                 id = _dal.GetNextIdCom(),
@@ -189,7 +177,7 @@ namespace EMT.DoneNOW.BLL.CRM
                 ticket_id = null,
                 start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),  // todo 从页面获取时间，去页面时间的12：00：00
                 end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),
-                description = $"新商机：{param.general.name},全部收益：{total}，成交概率:{param.general.probability}，阶段:{new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STAGE)).FirstOrDefault(_ => _.val == param.general.stage_id.ToString()).show}，预计完成时间:{param.general.projected_close_date}，商机负责人:{new sys_resource_dal().GetDictionary().FirstOrDefault(_ => _.val == param.general.resource_id.ToString()).show}，状态:{new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STATUS)).FirstOrDefault(_ => _.val == param.general.status_id.ToString()).show}",     // todo 内容描述拼接
+                description = $"新商机：{param.general.name},全部收益：{ReturnOppoRevenue(param.general)}，成交概率:{param.general.probability}，阶段:{new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STAGE)).FirstOrDefault(_ => _.val == param.general.stage_id.ToString()).show}，预计完成时间:{param.general.projected_close_date}，商机负责人:{new sys_resource_dal().GetDictionary().FirstOrDefault(_ => _.val == param.general.resource_id.ToString()).show}，状态:{new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STATUS)).FirstOrDefault(_ => _.val == param.general.status_id.ToString()).show}",     // todo 内容描述拼接
                 create_user_id = user.id,
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 update_user_id = user.id,
@@ -938,7 +926,7 @@ namespace EMT.DoneNOW.BLL.CRM
         /// </summary>
         /// <param name="opportunity"></param>
         /// <returns></returns>
-        public decimal ReturnOppoRebenue(crm_opportunity opportunity)
+        public decimal ReturnOppoRevenue(crm_opportunity opportunity)
         {
             decimal total = 0;
             var month = opportunity.number_months == null ? 0 : (int)opportunity.number_months;

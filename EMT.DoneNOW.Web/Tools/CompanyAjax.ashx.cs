@@ -196,7 +196,7 @@ namespace EMT.DoneNOW.Web
         }
 
         /// <summary>
-        /// 获取到客户下的某个属性的值   // todo 待测试
+        /// 获取到客户下的某个属性的值   
         /// </summary>
         /// <param name="context"></param>
         /// <param name="account_id"></param>
@@ -233,7 +233,7 @@ namespace EMT.DoneNOW.Web
 
         private void GetVendorsByProductId(HttpContext context, long product_id)
         {
-            var vendorList = new crm_account_dal().FindListBySql<crm_account>($"SELECT * from crm_account where id in(  select vendor_id from ivt_product_vendor where  product_id = {product_id} )");
+            var vendorList = new crm_account_dal().FindListBySql<crm_account>($"SELECT * from crm_account where id in(  select vendor_account_id from ivt_product_vendor where  product_id = {product_id} )");
 
             if (vendorList != null && vendorList.Count > 0)
             {

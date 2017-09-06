@@ -88,11 +88,11 @@ namespace EMT.DoneNOW.Web.Opportunity
                 loss_reason_type_id.DataBind();
                 loss_reason_type_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 // 通知模板   --todo 需要过滤商机创建或编辑相关的通知模板
-                notify_tmpl_id.DataTextField = "show";
-                notify_tmpl_id.DataValueField = "val";
-                notify_tmpl_id.DataSource = dic.FirstOrDefault(_ => _.Key == "notify_tmpl").Value;
-                notify_tmpl_id.DataBind();
-                notify_tmpl_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                //notify_tmpl_id.DataTextField = "show";
+                //notify_tmpl_id.DataValueField = "val";
+                //notify_tmpl_id.DataSource = dic.FirstOrDefault(_ => _.Key == "notify_tmpl").Value;
+                //notify_tmpl_id.DataBind();
+                //notify_tmpl_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
 
 
                 var formTemplateList = new FormTemplateBLL().GetTemplateOpportunityByUser(GetLoginUserId());

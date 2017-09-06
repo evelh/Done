@@ -16,5 +16,11 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<d_cost_code>($"SELECT * from d_cost_code where id = {id} and delete_time = 0 ");
         }
+
+        public List<d_cost_code> GetListCostCode(int cate_id)
+        {
+            return FindListBySql<d_cost_code>($"SELECT * from d_cost_code where cate_id = {cate_id} and delete_time = 0");
+           
+        }
     }
 }
