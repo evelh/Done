@@ -154,6 +154,7 @@
     <Content Include="Content\LostQuote.css" />
     <Content Include="Content\multiple-select.css" />
     <Content Include="Content\multipleList.css" />
+    <Content Include="Content\NewConfigurationItem.css" />
     <Content Include="Content\NewContact.css" />
     <Content Include="Content\NewQuoteItem.css" />
     <Content Include="Content\Quote.css" />
@@ -166,6 +167,7 @@
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\ContractAdd.aspx" />
+    <Content Include="Contract\ContractEdit.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
     <Content Include="Contact\DeleteContact.aspx" />
@@ -626,6 +628,7 @@
     <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\bg.jpg" />
     <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\datepicker.css" />
     <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\img.gif" />
+    <Content Include="Scripts\NewConfigurationItem.js" />
     <Content Include="Scripts\NewContact.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -806,6 +809,13 @@
     </Compile>
     <Compile Include="Contract\ContractAdd.aspx.designer.cs">
       <DependentUpon>ContractAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\ContractEdit.aspx.cs">
+      <DependentUpon>ContractEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractEdit.aspx.designer.cs">
+      <DependentUpon>ContractEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>

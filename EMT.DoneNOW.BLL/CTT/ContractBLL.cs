@@ -14,6 +14,21 @@ namespace EMT.DoneNOW.BLL
         private readonly ctt_contract_dal dal = new ctt_contract_dal();
 
         /// <summary>
+        /// 合同相关字典项
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, object> GetField()
+        {
+            GeneralBLL genBll = new GeneralBLL();
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("cate", genBll.GetDicValues(GeneralTableEnum.CONTRACT_CATE));                   // 合同类别
+            dic.Add("periodType", genBll.GetDicValues(GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE));    // 计费周期类型
+            dic.Add("billPostType", genBll.GetDicValues(GeneralTableEnum.BILL_POST_TYPE));          // 工时计费设置
+
+            return dic;
+        }
+
+        /// <summary>
         /// 新增合同
         /// </summary>
         /// <param name="dto"></param>
@@ -27,6 +42,7 @@ namespace EMT.DoneNOW.BLL
             dto.contract.create_user_id = userId;
             dto.contract.update_time = dto.contract.create_time;
             dto.contract.update_user_id = userId;
+            dto.contract.status_id = 1; // 激活
             dal.Insert(dto.contract);
 
             var user = UserInfoBLL.GetUserInfo(userId);

@@ -419,7 +419,7 @@
                                                         <span class="Text">新建服务包</span>
                                                     </a>
                                                 </span>
-                                                 <span class="contentButton">
+                                                <span class="contentButton">
                                                     <a class="ImgLink">
                                                         <img src="../Images/add.png" class="ButtonImg"/>
                                                         <span class="Text">新建服务</span>
@@ -430,7 +430,7 @@
                                         <tr height="10px;"></tr>
                                         <tr>
                                             <td colspan="1" id="txtBlack8">
-                                                这是个iframe海哥可自己加
+                                                
                                             </td>
                                         </tr>
                                     </tbody>
@@ -450,6 +450,8 @@
                         </tr>
                     </tbody>
                 </table>
+                <input type="hidden" id="serBd" />
+                <input type="hidden" id="serBdHidden" />
             </div>
         </div>
         <!--第五页 工时计费设置-->
@@ -774,6 +776,7 @@
         </div>
         <input type="hidden" name="type_id" id="contractType" value="<%=contractType %>" />
         <input type="hidden" id="currentPage" value="" />
+        <input type="hidden" id="serviceBd" name="serviceBd" />
         <input type="hidden" id="cnt" <%if (udfList != null && udfList.Count != 0) { %> value="1" <%} else { %> value="0" <%} %> />
         <div class="ButtonBar WizardButtonBar" style="width:97%;">
             <ul>
