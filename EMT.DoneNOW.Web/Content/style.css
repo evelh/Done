@@ -55,9 +55,9 @@ float: left;overflow: hidden;}
 .savecontent input[type=checkbox]{margin-left: 30%;}
 .warn{background:#FFFFCC url(../Images/alert.png) no-repeat left center;}
 
-.ms-drop input[type="checkbox"] {vertical-align: middle;float: none;margin: 0 !important;}
+.ms-drop input[type="checkbox"] {vertical-align: middle;float: left;}
 .ms-parent {display: inline-block;position: relative;vertical-align: middle; }
-.ms-drop ul > li label {font-weight: normal;display: block;white-space: nowrap; width: auto;float: none;text-align: left;}
+.ms-drop ul > li label {font-weight: normal;display: block;white-space: nowrap; width: auto;float: none;text-align: left;overflow:hidden;}
 .multiplebox{width: 180px;margin-left: 15px;float: left;}
 
 .header i{width: 40px;height: 30px;display: block;background:#F5F5F5 url(../Images/ico_page_menu.png) no-repeat center;float: left;

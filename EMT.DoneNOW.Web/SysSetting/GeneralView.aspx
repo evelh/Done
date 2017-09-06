@@ -373,7 +373,7 @@
                 skip(entityid);
                 <%if (id == (int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD)
             {%>
-                window.open('Suffixes.aspx?id='+ entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('Suffixes.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SysOPPORTUNITY_ADVANCED_FIELD %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 <%}%>
             }
 
@@ -381,28 +381,28 @@
                      <%switch (id)
             {%>
                 <%case (int)GeneralTableEnum.TERRITORY:%>
-                    window.open('SysTerritory.aspx?id=' + entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('SysTerritory.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TERRITORY %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 <%; break;%>
                  <%case (int)GeneralTableEnum.MARKET_SEGMENT:%>
-                    window.open('SysMarket.aspx?id=' + entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('SysMarket.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.MARKET_SEGMENT %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 <%; break;%>
                  <%case (int)GeneralTableEnum.REGION:%>
-                    window.open('SysRegion.aspx?id=' + entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('SysRegion.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.REGION %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 <%; break;%>
                  <%case (int)GeneralTableEnum.COMPETITOR:%>
-                    window.open('SysCompetitor.aspx?id=' + entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('SysCompetitor.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.COMPETITOR %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 <%; break;%>
                  <%case (int)GeneralTableEnum.ACTION_TYPE:%>
-                    window.open('ActionType.aspx?id=' + entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('ActionType.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ACTION_TYPE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 <%; break;%>
                  <%case (int)GeneralTableEnum.OPPORTUNITY_STAGE:%>
-                    window.open('../Opportunity/OpportunityStage.aspx?id=' + entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('../Opportunity/OpportunityStage.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 <%; break;%>
                  <%case (int)GeneralTableEnum.OPPORTUNITY_SOURCE:%>
-                    window.open('../Opportunity/OpportunityLeadSource.aspx?id=' + entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('../Opportunity/OpportunityLeadSource.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_SOURCE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 <%; break;%>
                  <%case (int)GeneralTableEnum.NAME_SUFFIX:%>
-                    window.open('Suffixes.aspx?id=' + entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('Suffixes.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.NAME_SUFFIX %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 <%; break;%>                
                <%} %>
                 }              

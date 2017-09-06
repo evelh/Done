@@ -161,7 +161,7 @@ namespace EMT.DoneNOW.BLL
             var add_account_log = new sys_oper_log()
             {
                 user_cate = "用户",
-                user_id = (int)user.id,
+                user_id = user.id,
                 name = "",
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),

@@ -62,7 +62,7 @@
     <div class="information clear" style="border:none;">
         <button class="Search" id="SearchBtn">搜索</button>
 		<p class="informationTitle"> <i id="Icon"></i>搜索</p>
-		<div class="content clear">
+		<div class="content clear" style="min-width:1210px;">
 			<table border="none" cellspacing="" cellpadding="" style="width: 395px;">
             <% for (int i = 0; i < condition.Count; i += 3) {%> 
 				<tr>
@@ -129,8 +129,8 @@
             <% for (int i = 1; i < condition.Count; i += 3) {%> 
 				<tr>
 					<td>
-						<div class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>"clear input-dh"<%}
-                            else { %>"clear"<%} %>>
+						<div class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>" input-dh"<%}
+                            else { %>""<%} %>>
 							<label><%=condition[i].description %></label>
                         <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
                             || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA
