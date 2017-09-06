@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
+     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <title>角色管理</title>
 </head>
 <body>
@@ -19,23 +20,23 @@
         </div>
     </div>
     <!--按钮-->
-    <div class="ButtonContainer">
+    <div class="ButtonContainer header-title">
         <ul id="btn">
-            <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
-                <asp:Button ID="SaveRole" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="SaveRole_Click"/>
+             <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
+                <asp:Button ID="SaveRole" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="SaveRole_Click"/>
             </li>
-            <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
-                <asp:Button ID="Cancle" runat="server" Text="取消"  BorderStyle="None" OnClick="Cancle_Click"/>
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
+                <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click"/>
             </li>
         </ul>
     </div>
     <!--切换按钮-->
     <div class="TabBar">
-        <a class="Button ButtonIcon SelectedState">
+        <a id="tab1" class="Button ButtonIcon SelectedState">
             <span class="Text">角色</span>
         </a>
-        <a class="Button ButtonIcon">
-            <span class="Text">资源</span>
+        <a id="tab2" class="Button ButtonIcon">
+            <span class="Text">员工</span>
         </a>
     </div>
     <!--切换项-->
@@ -59,7 +60,7 @@
                     </tr>
                     <tr>
                         <td class="FieldLabels">
-                           角色描述
+                           描述
                             <div>
                                 <asp:TextBox ID="Role_Description" runat="server" TextMode="MultiLine"  maxlength="100" cols="50" rows="4"></asp:TextBox>
                             </div>
@@ -67,7 +68,7 @@
                     </tr>
                     <tr>
                         <td class="FieldLabels">
-                            Default Tax Category (when quoting Labor items)
+                            默认税种
                             <div>
                                 <asp:DropDownList ID="Tax_cate" runat="server"></asp:DropDownList>
                             </div>
@@ -75,7 +76,7 @@
                     </tr>
                     <tr>
                         <td class="FieldLabels">
-                            Hourly Billing Rate
+                            费率
                             <div>
                                 <asp:TextBox ID="Hourly_Billing_Rate" runat="server" maxlength="30" size="10" style="text-align: right;" onblur="valid()"></asp:TextBox>
                             </div>
@@ -83,7 +84,7 @@
                     </tr>
                     <tr>
                         <td class="FieldLabels">
-                            Block Hour Multiplier
+                            时间系数
                             <div>
                                  <asp:TextBox ID="Block_Hour_Multiplier" runat="server" maxlength="30" size="10" style="text-align: right;"></asp:TextBox>
                             </div>
@@ -91,7 +92,7 @@
                     </tr>
                     <tr>
                         <td style="padding-bottom:15px;">
-                            <asp:CheckBox ID="Excluded" runat="server" />Excluded from New Contracts
+                            <asp:CheckBox ID="Excluded" runat="server" />从新合同中排除
                         </td>
                     </tr>
                 </tbody>
@@ -109,16 +110,21 @@
                                     <thead>
                                         <tr height="21">
                                             <td width="5">&nbsp;</td>
-                                            <td>Resource Name</td>
-                                            <td>Department</td>
+                                            <td>员工姓名</td>
+                                            <td>部门</td>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <%@ Import Namespace="System.Data" %>  
+                                        <%foreach (DataRow tr in table.Rows)
+                                            { %>                                        
                                         <tr>
                                             <td>&nbsp;</td>
-                                            <td>Li, Hong</td>
-                                            <td>Administration</td>
+                                            <td><%=tr[1].ToString()%></td>
+                                            <td><%=tr[2].ToString()%></td>
                                         </tr>
+
+                                        <%} %>
                                     </tbody>
                                 </table>
                             </div>
@@ -130,8 +136,29 @@
     </div>
     </form>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
-    <script src="../Scripts/SysSettingRoles.js"></script>
+ <%--   <script src="../Scripts/SysSettingRoles.js"></script>--%>
     <script type="text/javascript">
+        //$.each($(".TabBar a"), function (i) {
+        //    $(this).click(function () {
+        //        $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
+        //        $(".TabContainer").eq(i).show().siblings(".TabContainer").hide();
+        //    })
+        //});
+        $("#tab2").click(function () {
+            <%if (id<=0)
+        { %>
+            alert("在新增情况下，角色还未保存，无关联员工存在！");
+            return false;
+            <%}%>
+
+            $("#tab2").addClass("SelectedState").siblings("a").removeClass("SelectedState");
+            $(".TabContainer").eq(1).show().siblings(".TabContainer").hide();
+        });
+        $("#tab1").click(function () {
+            $("#tab1").addClass("SelectedState").siblings("a").removeClass("SelectedState");
+            $(".TabContainer").eq(0).show().siblings(".TabContainer").hide();
+         });
+
         $("#SaveRole").click(function () {
             var r=$("#Role_Name").val();
             var h=$("#Hourly_Billing_Rate").val();
@@ -148,7 +175,7 @@
                 alert("Block Hour Multiplier！");
                 return false;
             }
-            var type = /^\d{1,15}\.\d{0,4}$/;
+            var type = /^\d{1,15}\.?\d{0,4}$/;
             if (type.test(h) == false) {
                 alert("请输入符合decimal(15,4)格式的数值");
                 $("#Hourly_Billing_Rate").focus();
@@ -158,24 +185,53 @@
                 $("#Block_Hour_Multiplier").focus();
             }
         });
-        $("#Hourly_Billing_Rate").blur(function () {
+        $("#Hourly_Billing_Rate").change(function () {
             var h = $("#Hourly_Billing_Rate").val();
             //验证数据格式decimal(15,4)   /^[\d]{5,20}$/
-            var type = /^\d{1,15}\.\d{0,4}$/;
+            var type = /^\d{1,15}\.?\d{0,4}$/;
             if (type.test(h) == false) {
-                alert("请输入符合decimal(15,4)格式的数值");
+                alert("请输入数字格式格式的数值");
                 $("#Hourly_Billing_Rate").focus();
-            }           
-
+            }
+            var f = parseFloat(h);
+            if (isNaN(h)) {
+                return false;
+            }
+            var f = Math.round(h * 100) / 100;
+            var s = f.toString();
+            var rs = s.indexOf('.');
+            if (rs < 0) {
+                rs = s.length;
+                s += '.';
+            }
+            while (s.length <= rs + 2) {
+                s += '0';
+            }
+            $("#Hourly_Billing_Rate").val(s);
         });
         $("#Block_Hour_Multiplier").blur(function () {
             var b = $("#Block_Hour_Multiplier").val();
             //验证数据格式decimal(15,4)
-            var type = /^\d{1,15}\.\d{0,4}$/;
+            var type = /^\d{1,15}\.?\d{0,4}$/;
             if (type.test(b) == false) {
-                alert("请输入符合decimal(15,4)格式的数值");
+                alert("请输入符合数字格式的数值");
                 $("#Block_Hour_Multiplier").focus();
             }
+            var f = parseFloat(b);
+            if (isNaN(f)) {
+                return false;
+            }
+            var f = Math.round(b * 100) / 100;
+            var s = f.toString();
+            var rs = s.indexOf('.');
+            if (rs < 0) {
+                rs = s.length;
+                s += '.';
+            }
+            while (s.length <= rs + 4) {
+                s += '0';
+            }
+            $("#Block_Hour_Multiplier").val(s);
         });
     </script>
 </body>

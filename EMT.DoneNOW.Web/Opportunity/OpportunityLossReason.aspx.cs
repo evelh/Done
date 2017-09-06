@@ -50,20 +50,6 @@ namespace EMT.DoneNOW.Web
             }
 
         }
-
-        protected void Save_New_Click(object sender, EventArgs e)
-        {
-            if (save_deal())
-            {
-                // Response.Redirect("SysMarket.aspx");
-                Response.Write("<script>alert('丢失商机原因添加失败！');window.location.href = 'OpportunityLossReason.aspx';</script>");
-            }
-            else
-            {
-                Response.Write("<script>alert('丢失商机原因添加失败！');window.close();self.opener.location.reload();</script>");
-            }
-        }
-
         protected void Cancel_Click(object sender, EventArgs e)
         {
             Response.Write("<script>window.close();self.opener.location.reload();</script>");

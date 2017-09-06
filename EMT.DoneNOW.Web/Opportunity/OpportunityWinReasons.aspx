@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
-    <title>赢得商机原因</title>
+    <title>关闭商机原因</title>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -15,7 +15,7 @@
             <!--顶部-->
             <div class="TitleBar">
                 <div class="Title">
-                    <span class="text1">新增赢得商机原因</span>
+                    <span class="text1">编辑关闭商机原因</span>
                     <a href="###" class="help"></a>
                 </div>
             </div>
@@ -24,9 +24,6 @@
                 <ul id="btn">
                     <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
                         <asp:Button ID="Save_Close" OnClientClick="return save_deal()" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="Save_Close_Click" />
-                    </li>
-                    <li class="Button ButtonIcon NormalState" id="SaveAndNewButton" tabindex="0">
-                        <asp:Button ID="Save_New" OnClientClick="return save_deal()" runat="server" Text="保存并新建" BorderStyle="None" OnClick="Save_New_Click" />
                     </li>
                     <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
                         <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click" />

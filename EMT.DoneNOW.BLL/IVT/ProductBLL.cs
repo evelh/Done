@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DAL;
 using EMT.DoneNOW.DTO;
+using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.BLL.IVT
 {
@@ -13,6 +14,7 @@ namespace EMT.DoneNOW.BLL.IVT
     {
         private readonly ivt_product_dal _dal = new ivt_product_dal();
         private readonly ivt_product_vendor_dal _dal1 = new ivt_product_vendor_dal();
+        //通过id获取ivt_product产品对象
         public ivt_product GetProduct(long id)
         {
             return _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where id={id} and delete_time = 0 ");
@@ -52,9 +54,10 @@ namespace EMT.DoneNOW.BLL.IVT
         /// <param name="vendordata">供应商集合</param>
         /// <param name="user_id">操作用户</param>
         /// <returns></returns>
-        public ERROR_CODE InsertProductAndVendor(ivt_product product, VendorData vendordata,long user_id) {
+        public ERROR_CODE InsertProductAndVendor(ivt_product product, VendorData vendordata, List<UserDefinedFieldValue> udf, long user_id) {
             //产品
             product.id = (int)(_dal.GetNextIdCom());
+
             product.create_time=product.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             product.create_user_id = user_id;
 
@@ -76,6 +79,14 @@ namespace EMT.DoneNOW.BLL.IVT
                     _dal1.Insert(veve);
                 }
             }
+
+
+            #region 保存产品扩展信息          
+
+            var udf_contact_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PRODUCTS); // 产品的自定义字段
+            var udf_con_list = udf;                                       // 传过来的产品
+            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.PRODUCTS, user_id,product.id, udf_contact_list, udf_con_list, OPER_LOG_OBJ_CATE.PRODUCT); // 保存成功即插入日志
+            #endregion
 
             return ERROR_CODE.SUCCESS;
         }

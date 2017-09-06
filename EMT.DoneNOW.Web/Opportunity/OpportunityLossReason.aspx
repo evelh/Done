@@ -25,9 +25,6 @@
                     <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
                         <asp:Button ID="Save_Close" OnClientClick="return save_deal()" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="Save_Close_Click" />
                     </li>
-                    <li class="Button ButtonIcon NormalState" id="SaveAndNewButton" tabindex="0">
-                        <asp:Button ID="Save_New" OnClientClick="return save_deal()" runat="server" Text="保存并新建" BorderStyle="None" OnClick="Save_New_Click" />
-                    </li>
                     <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
                         <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click" />
                     </li>
@@ -37,7 +34,7 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                         <tr>
-                            <td width="30%" class="FieldLabels">Name
+                            <td width="30%" class="FieldLabels">名称
                         <span class="errorSmall">*</span>
                                 <div>
                                     <asp:TextBox ID="Name" runat="server"></asp:TextBox>
@@ -45,7 +42,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td width="30%" class="FieldLabels">Description
+                            <td width="30%" class="FieldLabels">描述
                         <div>
                             <asp:TextBox ID="Description" runat="server"></asp:TextBox>
                         </div>
@@ -55,7 +52,7 @@
                             <td width="30%" class="FieldLabels">
                                 <div>
                                     <asp:CheckBox ID="Active" runat="server" />
-                                    active
+                                    激活
                                 </div>
                             </td>
                         </tr>

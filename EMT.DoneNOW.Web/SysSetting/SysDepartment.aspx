@@ -7,7 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
      <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
-    <title>部门管理</title>
+     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+    <title>部门</title>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -15,17 +16,17 @@
             <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">部门简介</span>
+            <span class="text1">部门</span>
             <a href="###" class="help"></a>
         </div>
     </div>
     <!--按钮-->
-    <div class="ButtonContainer">
+    <div class="ButtonContainer header-title">
         <ul>
-            <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                 <asp:Button ID="Save_Close" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="Save_Close_Click"/>
             </li>
-            <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                 <asp:Button ID="Cancle" runat="server" Text="取消"  BorderStyle="None" OnClick="Cancle_Click"/>
             </li>
         </ul>
@@ -33,10 +34,10 @@
     <!--切换按钮-->
     <div class="TabBar">
         <a class="Button ButtonIcon SelectedState">
-            <span class="Text">简介</span>
+            <span class="Text">部门</span>
         </a>
         <a class="Button ButtonIcon">
-            <span class="Text">资源</span>
+            <span class="Text">员工</span>
         </a>
         <a class="Button ButtonIcon">
             <span class="Text">工作类型</span>
@@ -64,7 +65,7 @@
                     </tr>
                     <tr>
                         <td align="left" width="30%">
-                            Department Primary Location
+                            主要办公位置
                             <span style="color:red;">*</span>
                             <div>
                                 <span style="display: inline-block">
@@ -76,7 +77,7 @@
                     </tr>
                     <tr>
                         <td align="left" width="30%">
-                            Department Number
+                            部门编号
                             <div>
                                 <span style="display: inline-block">
                                     <asp:TextBox ID="department_no" runat="server"></asp:TextBox>
@@ -86,7 +87,7 @@
                     </tr>
                     <tr>
                         <td align="left" width="30%">
-                            Department Description
+                            描述
                             <div>
                                 <span style="display: inline-block">
                                     <asp:TextBox ID="Description" runat="server" style="height: 142px; width: 300px; margin-top: 0px; margin-bottom: 0px;" TextMode="MultiLine"></asp:TextBox>
@@ -102,7 +103,7 @@
                 <tbody>
                     <tr>
                         <td align="left" width="30%">
-                            Department Primary Location
+                           主要办公位置
                             <div>
                                 <span style="font-weight:normal;height:50px;">
                                    <asp:Literal ID="location_name" runat="server"></asp:Literal>
@@ -112,7 +113,7 @@
                     </tr>
                     <tr>
                         <td align="left" width="30%">
-                            Department Time Zone
+                           时区
                             <div>
                                 <span style="font-weight:normal;" class="lblNormalClass">
                                     <asp:Literal ID="time_zone" runat="server"></asp:Literal>
@@ -129,18 +130,15 @@
  
 
     <div class="TabContainer" style="display: none;">
-        <div class="ButtonCollectionBase" style="height:25px;">
+        <div class="ButtonCollectionBase header-title" style="height:25px;">
             <ul>
-                <li class="Button ButtonIcon NormalState" id="NewButton" tabindex="0">
-                    <span class="Icon New"></span>
+               <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <span class="Text">新建</span>
                 </li>
-                <li class="Button ButtonIcon NormalState" id="SaveButton" tabindex="0">
-                    <span class="Icon Save"></span>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
                     <span class="Text">保存</span>
                 </li>
-                <li class="Button ButtonIcon NormalState" id="CancelButton1" tabindex="0">
-                    <span class="Icon Cancel"></span>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <span class="Text">取消</span>
                 </li>
             </ul>
@@ -151,33 +149,36 @@
                     <tbody>
                         <tr class="dataGridHeader">
                             <td>
-                                <span>Resource Name</span>
+                                <span>员工姓名</span>
                                 <img src="../Images/down.png" alt="">
                             </td>
-                            <td>Role Name</td>
-                            <td align="center" style="width:1%;">Default Department and Role</td>
-                            <td align="center" style="width:1%;">Department Lead</td>
-                            <td align="center" style="width:1%;">Active</td>
+                            <td>角色名称</td>
+                            <td align="center" style="width:20%;">默认部门和角色</td>
+                            <td align="center" style="width:20%;">部门主管</td>
+                            <td align="center" style="width:20%;">激活</td>
                         </tr>
+
+                         <%@ Import Namespace="System.Data" %>  
+                           <%foreach (DataRow tr in table.Rows){%>
                         <tr class="dataGridBody" style="cursor: pointer;">
-                            <td>
-                                <span>ds, liude (inactive)</span>
-                            </td>
-                            <td><span>Engineer</span></td>
-                            <td align="center"><img src="../Images/check.png"/></td>
-                            <td align="center"><img src="../Images/check.png" style="display: none;"/></td>
-                            <td align="center"><img src="../Images/check.png"/></td>
+                            <td align="center"><%=tr[1] %></td>
+                            <td align="center"><%=tr[2] %></td>
+                            <td align="center"><%=tr[3] %></td>
+                            <td align="center"><%=tr[4] %></td>
+                            <td align="center"><%=tr[5] %></td>
                         </tr>
+
+                        <%}%>
+
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     <div class="TabContainer" style="display: none;">
-        <div class="ButtonCollectionBase" style="height:25px;">
+        <div class="ButtonCollectionBase header-title" style="height:25px;">
             <ul>
-                <li class="Button ButtonIcon NormalState" id="NewButton1" tabindex="0">
-                    <span class="Icon New"></span>
+               <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <span class="Text">新建</span>
                 </li>
             </ul>
@@ -187,22 +188,24 @@
                 <table class="dataGridBody" style="width:100%;border-collapse:collapse;">
                     <tbody>
                     <tr class="dataGridHeader" style="height: 39px;">
-                        <td>
-                            <span>Work Type Name</span>
+                        <td style="width:25%;">
+                            <span>工作类型名称</span>
                             <img src="../Images/down.png" alt=""/>
                         </td>
-                        <td>External Number</td>
-                        <td>General Ledger Account</td>
-                        <td align="center" style="width:1%;">Non-Billable</td>
+                        <td style="width:25%;">外部码</td>
+                        <td style="width:25%;">总账代码</td>
+                        <td align="center" style="width:25%;">不计费的</td>
                     </tr>
+                    <% foreach (DataRow tr in worktable.Rows)
+                        {%>
                     <tr class="dataGridBody" style="cursor: pointer;">
-                        <td>
-                            <span>work type test1</span>
-                        </td>
-                        <td><span>7</span></td>
-                        <td></td>
-                        <td align="center"></td>
+                        <td><%=tr[1] %></td>
+                        <td><%=tr[2] %></td>
+                        <td><%=tr[3] %></td>
+                        <td align="center"><%=tr[4] %></td>
                     </tr>
+                        <%} %>
+
                     </tbody>
                 </table>
             </div>

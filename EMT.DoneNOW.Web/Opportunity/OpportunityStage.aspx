@@ -25,9 +25,6 @@
             <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
                 <asp:Button ID="Save_Close" OnClientClick="return save_deal()" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="Save_Close_Click"/>
             </li>
-            <li class="Button ButtonIcon NormalState" id="SaveAndNewButton" tabindex="0">
-                <asp:Button ID="Save_New" OnClientClick="return save_deal()" runat="server" Text="保存并新建" BorderStyle="None" OnClick="Save_New_Click"/>
-            </li>
             <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
                 <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click"/>
             </li>
@@ -38,7 +35,7 @@
             <tbody>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        Name
+                        名称
                         <span class="errorSmall">*</span>
                         <div>
                             <asp:TextBox ID="Name" runat="server" style="width:400px;"></asp:TextBox>
@@ -47,7 +44,7 @@
                 </tr>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        Description
+                        描述
                         <div>
                             <asp:TextBox ID="Description" runat="server" style="width:400px;height:80px;" TextMode="MultiLine"></asp:TextBox>
                         </div>
@@ -57,17 +54,17 @@
                     <td>
                         <div>
                             <asp:CheckBox ID="Won" runat="server" />
-                            Default stage for won opportunities
+                            丢失商机默认阶段
                         </div>
                         <div>
                            <asp:CheckBox ID="Lost" runat="server" />
-                            Default stage for lost opportunities
+                           关闭商机默认
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        Sort Order
+                        阶段排序号
                         <span class="errorSmall">*</span>
                         <div>
                             <asp:TextBox ID="Sort_Order" runat="server" style="width:200px;"></asp:TextBox>

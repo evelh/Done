@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysUserSecurityLevel.css" rel="stylesheet" />
+      <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <title>安全等级<%=SLName%></title>
 </head>
 <body>
@@ -22,12 +23,12 @@
             </div>
         </div>
         <!--按钮-->
-        <div class="ButtonContainer">
+        <div class="ButtonContainer header-title">
             <ul>
-                <li class="Button Save" id="SaveButton" tabindex="0">
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <asp:Button ID="SaveLevel" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="SaveLevel_Click" />
                 </li>
-                <li class="Button Cancel" id="CancelButton" tabindex="0">
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <asp:Button ID="Cancle" runat="server" Text="取消" BorderStyle="None" OnClick="Cancle_Click" />
                 </li>
             </ul>

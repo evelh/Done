@@ -39,7 +39,7 @@ namespace EMT.DoneNOW.DAL
             if (where != "")
                 return FindListBySql<crm_quote>($"select * from crm_quote where delete_time=0 " + where);
             return FindListBySql<crm_quote>($"select * from crm_quote where  delete_time=0 ");
-        }
+        }     
         public DataTable GetVar(int cid, int aid, int qid,int oid)
         {
             StringBuilder sql = new StringBuilder();
@@ -68,14 +68,17 @@ left join (select cl.*,(select name from d_district where id=cl.city_id) city,(s
 
         public DataTable GetQuoteItemVar(int qiid)
         {
+            //以后需要更改9-6
+            //string sql = "select f_rpt_getsql(932,932,null,'{\"q:id\":\""+qiid+"\"}',null)";
+            //sql=ExecuteDataTable(sql).Rows[0][0].ToString();
+            //return ExecuteDataTable(sql);
             StringBuilder sql = new StringBuilder();
             sql.Append("select * from ");
             //报价子项932 body 变量parent_id=106
-            sql.Append(@" (select  q.name as '[报价项: 名称]', q.description as '[报价项: 说明]', (select name from d_general where id = period_type_id) as '[Quote Item: Period Type]', q.unit_price as '[Quote Item: Unit Price]', q.quantity as '[Quote Item: Quantity]', round(q.unit_price*q.quantity,2) as '[Quote Item: Extended Price]', q.unit_discount as '[Quote Item: Unit Discount]', round(q.unit_discount*q.quantity,2) as '[Quote Item: Line Discount]' FROM crm_quote_item q where q.delete_time=0    and q.id =" + qiid+ " and 1=1  order by q.name) as qi");
+            sql.Append(@" (select  q.name as '[报价项: 名称]', q.description as '[报价项: 说明]', (select name from d_general where id = period_type_id) as '[Quote Item: Period Type]', q.unit_price as '[Quote Item: Unit Price]', q.quantity as '[Quote Item: Quantity]', round(q.unit_price*q.quantity,2) as '[Quote Item: Extended Price]', q.unit_discount as '[Quote Item: Unit Discount]', round(q.unit_discount*q.quantity,2) as '[Quote Item: Line Discount]' FROM crm_quote_item q where q.delete_time=0    and q.id =" + qiid + " and 1=1  order by q.name) as qi");
             var list = ExecuteDataTable(sql.ToString());
             return list;
-        }
-
+        }       
         /// <summary>
         /// 根据报价id获取商机信息
         /// </summary>

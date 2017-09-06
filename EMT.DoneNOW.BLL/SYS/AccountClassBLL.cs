@@ -79,6 +79,7 @@ namespace EMT.DoneNOW.BLL
             if (data.is_system > 0) {
                 return ERROR_CODE.SYSTEM;
             }
+            //
             data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.delete_user_id = user_id;
             if (!_dal.Update(data))

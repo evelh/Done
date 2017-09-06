@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
+     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <title>供应商</title>
 </head>
 <body>
@@ -20,13 +21,13 @@
         </div>
     </div>
     <!--按钮-->
-    <div class="ButtonContainer">
+    <div class="ButtonContainer header-title">
         <ul id="btn">
-            <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
-                <asp:Button ID="Save_Close" OnClientClick="return save_deal()" runat="server" Text="保存"  BorderStyle="None" OnClick="Save_Click"/>
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
+                <asp:Button ID="Save_Close" OnClientClick="return save_deal()" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="Save_Close_Click"/>
             </li>
-            <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
-                <asp:Button ID="Cancel" OnClientClick="return cancel()" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click"/>
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
+                <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click"/>
             </li>
         </ul>
     </div>
@@ -48,7 +49,7 @@
                     <td width="30%" class="FieldLabels">
                         单位成本
                         <div>
-                            <asp:TextBox ID="cost" runat="server" onchange=""></asp:TextBox>
+                            <asp:TextBox ID="cost" runat="server" ></asp:TextBox>
                         </div>
                     </td>
                 </tr>
@@ -89,25 +90,44 @@
                         $("#CallBackHidden").val(obj[i].id);
                         $("#cost").val(obj[i].vendor_cost);
                         $("#number").val(obj[i].vendor_product_no);
-                        if (obj[i].is_active != "1") {
+                        if (obj[i].is_active != "y") {
                             $("#active").removeAttr("selected", true);
                         }
                         $("#vvname").val(obj[i].vendorname);
                     }
                 }
-
-
             });
-
+            $("#cost").change(function () {
+                if ((/^\d{1,15}\.?\d{0,2}$/.test(this.value)) == false)
+                { alert('只能输入两位小数'); this.value = ''; this.focus(); return false; }
+                var f = Math.round(this.value * 100) / 100;
+                var s = f.toString();
+                var rs = s.indexOf('.');
+                if (rs < 0) {
+                    rs = s.length;
+                    s += '.';
+                }
+                while (s.length <= rs + 2) {
+                    s += '0';
+                }
+                $("#cost").val(s);
+            });
             function save_deal() {
-                var ve = $("#VendorName").val();
-                var cost = $("#cost").val();
-                if (ve == '' || ve == 0) {
+                var ve = $("#CallBack").val();
+                alert(ve);
+                var kk = $("#" + ve + "", window.opener.document).val();
+                if (kk != null || kk != '') {
+                    alert("已经存在该供应商！");
+                    return false;
+                }
+                if (ve == null || ve == '') {
                     alert("请选择供应商！");
                     return false;
                 }
-                window.opener.EditReturn($("#CallBackHidden").val());
             }
+            
+
+            //取消
             function cancel() {
 
 

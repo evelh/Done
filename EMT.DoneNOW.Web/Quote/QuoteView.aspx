@@ -7,21 +7,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../Content/Quote.css" rel="stylesheet" />
     <link href="../Content/reset.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <style>.bord{border-bottom: 1px solid #eaeaea;border-top: 1px solid #eaeaea;}</style>
     <title>查看报价单</title>
 </head>
 <body>
      <div class="TitleBar">
         <div class="Title">
-            <span class="text1">QUOTE</span>
+            <span class="text1">查看报价单</span>
             <a href="###" class="help"></a>
         </div>
     </div>
     <form id="form1" runat="server">
-         <div class="ButtonContainer">
+         <div class="ButtonContainer header-title">
             <ul>
-                <li class="Button" id="SaveButton" tabindex="0">
-                    <span class="Icon Save"></span>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <asp:Button ID="Save" runat="server" Text="保存" cssclass="Text" BorderStyle="None" OnClick="Save_click" />
                 </li>
                 <li class="Button" id="PrintButton" tabindex="0">
@@ -34,8 +34,7 @@
                 <li class="Button" id="RefreshButton" tabindex="0">
                     <span class="Icon Refresh"></span>
                 </li>
-                <li class="Button" id="CancelButton" tabindex="0">
-                    <span class="Icon CancelButton"></span>
+                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <asp:Button ID="Close" runat="server" Text="关闭" cssclass="Text" BorderStyle="None" OnClick="Close_click" />
                 </li>
                 <li class="Button" id="GroupButton" tabindex="0">

@@ -3,6 +3,7 @@ using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -14,10 +15,12 @@ namespace EMT.DoneNOW.Web.SysSetting
     {
         private int id = 0;
         public sys_department sd = new sys_department();
+        protected DataTable table = new DataTable();
+        protected DataTable worktable = new DataTable();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
-            id = 875;
+            //id = 875;
             if (!IsPostBack) {
                 SysDepartmentBLL sqbll = new SysDepartmentBLL();
                 this.location.DataTextField = "value";
@@ -40,8 +43,9 @@ namespace EMT.DoneNOW.Web.SysSetting
                         this.location_name.Text =this.location.SelectedItem.Text.ToString();
                         //获取时区
                         this.time_zone.Text =sqbll.GetTime_zone(Convert.ToInt32(sd.location_id.ToString()));
-                    }                  
-
+                    }
+                    table = sqbll.resourcelist(id);
+                    worktable = sqbll.worklist(id);
                 }
             }
         }

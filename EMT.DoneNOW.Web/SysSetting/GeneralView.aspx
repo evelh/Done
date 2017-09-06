@@ -357,18 +357,84 @@
     <script src="../Scripts/ClassificationIcons.js"></script>
     <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
         <script>
+
             function Delete() {
-                if (confirm('确认删除?'+entityid)) {
+                //活动类型
+               <%if (id == (int)GeneralTableEnum.ACTION_TYPE)
+            {%>
+                if (confirm('确认删除?')) {
                     $.ajax({
                         type: "GET",
-                        url: "../Tools/GeneralViewAjax.ashx?act=delete&id="+entityid,
+                        url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "GT_id=<%=id%>",//GT_id 表示当前操作的类型
                         success: function (data) {
-                            alert(data);
+                            if (data == "system") {
+                                alert("系统默认不能删除！");
+                                return false;
+                            } else if (data == "other") {
+                                alert("其他原因使得删除失败！");
+                            } else {
+                                alert(data);
+                            }
+                        }
+                    });
+                }
+                return;
+                <%}%>
+                //商机阶段
+                 <%else if (id == (int)GeneralTableEnum.OPPORTUNITY_STAGE)
+            {%>
+                if (confirm('确认删除?')) {
+                    $.ajax({
+                        type: "GET",
+                        url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "GT_id=<%=id%>",//GT_id 表示当前操作的类型
+                        success: function (data) {
+                            if (data == "system") {
+                                alert("系统默认不能删除！");
+                                return false;
+                            } else if (data == "other") {
+                                alert("其他原因使得删除失败！");
+                            } else {
+                                alert(data);
+                            }
+                        }
+                    });
+                   }
+                return;
+                <%}%>
+                <%else
+            {%>
+
+                if (confirm('确认删除?')) {
+                    $.ajax({
+                        type: "GET",
+                        url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "GT_id=<%=id%>",//GT_id 表示当前操作的类型
+                        success: function (data) {
+                            if (data == "system") {
+                                alert("系统默认不能删除！");
+                                return false;
+                            } else if (data == "other") {
+                                alert("其他原因使得删除失败！");
+                            } else {
+                                if (confirm(data)) {
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "GT_id=<%=id%>",//GT_id 表示当前操作的类型
+                                        success: function (data) {
+                                            alert(data);
+                                        }
+                                    });
+                                } else {
+                                    return false;
+                                }
+                            }
                         }
                      });
                 }
+                <%}%>
                 window.location.reload();
             }
+
+
             function Edit() {
                 skip(entityid);
                 <%if (id == (int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD)

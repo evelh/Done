@@ -38,7 +38,7 @@
             <tbody>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        Name
+                       名称
                         <span class="errorSmall">*</span>
                         <div>
                             <asp:TextBox ID="Name" runat="server" style="width:400px;"></asp:TextBox>
@@ -47,7 +47,7 @@
                 </tr>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        Description
+                        描述
                         <div>
                             <asp:TextBox ID="Description" runat="server" style="width:400px;height:80px;" TextMode="MultiLine"></asp:TextBox>
                         </div>
@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        Number
+                        排序号
                         <div>
                             <asp:TextBox ID="Number" runat="server" style="width:400px;"></asp:TextBox>
                         </div>

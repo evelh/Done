@@ -3,6 +3,7 @@ using EMT.DoneNOW.DAL;
 using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace EMT.DoneNOW.BLL
         public Dictionary<long, string> GetDownList()
         {
             Dictionary<long, string> dic = new Dictionary<long, string>();
-            return new sys_organization_location_dal().FindListBySql<sys_organization_location>($"select * from crm_location where delete_time=0").ToDictionary(d => d.id, d =>d.name);
+            return new sys_organization_location_dal().FindListBySql<sys_organization_location>($"select * from crm_location where delete_time=0").ToDictionary(d => d.id, d =>d.address);
         }
         /// <summary>
         /// 根据地址id获取时区//具体显示后期需要修改8-24
@@ -93,6 +94,25 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public sys_department GetOne(int id) {
             return _dal.FindById(id);
+        }
+        /// <summary>
+        /// 返回该部门的员工信息
+        /// </summary>
+        /// <param name="did"></param>
+        /// <returns></returns>
+        public DataTable resourcelist(int did)
+        {
+            string sql = $" select u.id as 员工id, u.name as 姓名, r.name as 角色名称, (case when d.is_default= 1 then '√' end) as  默认部门和角色,(case when d.is_lead=1 then '√' end) as 部门主管,(case when u.is_active=1 then '√' end) as 激活 from sys_resource u left join sys_resource_department d on d.resource_id = u.id left join sys_role r on d.role_id = r.id where d.department_id={did} and  u.delete_time= 0   order by u.name";
+            return _dal.ExecuteDataTable(sql);
+        }
+        /// <summary>
+        /// 返回该部门的工作类型信息
+        /// </summary>
+        /// <param name="did"></param>
+        /// <returns></returns>
+        public DataTable worklist(int did) {
+            string sql = $"select c.id as 工作类型id, (select name from d_general where id = c.cate_id) as 工作类型名称,c.external_id as 外部码,(select name from d_general where id = c.general_ledger_id) as 总账代码,(case when c.show_on_invoice in (1333,1334) then '√' end) as 是否计费 from d_cost_code c left join sys_department d on c.department_id = d.id where c.delete_time= 0 and d.id={did}  order by 工作类型名称";
+            return _dal.ExecuteDataTable(sql);
         }
     }
 }

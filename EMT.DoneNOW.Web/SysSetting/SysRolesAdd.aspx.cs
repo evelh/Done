@@ -3,6 +3,7 @@ using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -12,12 +13,18 @@ namespace EMT.DoneNOW.Web
 {
     public partial class SysRolesAdd : BasePage
     {
-        private int id;
+        protected int id;
         public sys_role role = new sys_role();
+        private SysRoleInfoBLL rolebll = new SysRoleInfoBLL();
+        protected DataTable table = new DataTable();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取角色id
-            //id = 836;
+            id = 492;
+            //测试一个函数         
+
+
+
             if (!IsPostBack) {
                 var dic = new SysRoleInfoBLL().GetField();
                 this.Tax_cate.DataTextField = "show";
@@ -45,8 +52,8 @@ namespace EMT.DoneNOW.Web
                     if (role.is_excluded > 0) {
                         this.Excluded.Checked = true;
                     }
-                   
-           }
+                    table = rolebll.resourcelist(id);
+                }
             }
         }
         protected void SaveRole_Click(object sender, EventArgs e)
@@ -110,7 +117,7 @@ namespace EMT.DoneNOW.Web
             //Response.Write("<script>alert('角色添加成功！');window.close();self.opener.location.reload();</script>");
         }
 
-        protected void Cancle_Click(object sender, EventArgs e)
+        protected void Cancel_Click(object sender, EventArgs e)
         {
             Response.Write("<script>window.close();self.opener.location.reload();</script>");
         }

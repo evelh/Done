@@ -144,35 +144,22 @@
                    <%}%>
         }
         function Delete() {
-            if (confirm('确认删除?')) {
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/OpportunityReasonAjax.ashx?act=delete&id=" + entityid,
-                    success: function (data) {
-                        alert(data);
-                    }
-                });
-            }
-            window.location.reload();
-        }
-        function Active() {
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/OpportunityReasonAjax.ashx?act=active&id=" + entityid,
-                    success: function (data) {
-                        alert(data);
-                    }
-                });
-            window.location.reload();
-        }
-        function NoActive() {
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/OpportunityReasonAjax.ashx?act=noactive&id=" + entityid,
-                    success: function (data) {
-                        alert(data);
-                    }
-                });
+                if (confirm('确认删除?')) {
+                    $.ajax({
+                        type: "GET",
+                        url: "../Tools/OpportunityReasonAjax.ashx?act=delete&id=" + entityid + "GT_id=<%=id%>",//GT_id 表示当前操作的类型
+                        success: function (data) {
+                            if (data == "system") {
+                                alert("系统默认不能删除！");
+                                return false;
+                            } else if (data == "other") {
+                                alert("其他原因使得删除失败！");
+                            } else {
+                                alert(data);
+                            }
+                        }
+                     });
+                 }
             window.location.reload();
         }
     </script>

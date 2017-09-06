@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
+     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <title>活动类型</title>
 </head>
 <body>
@@ -15,20 +16,20 @@
             <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">新的活动类型</span>
+            <span class="text1">活动类型</span>
             <a href="###" class="help"></a>
         </div>
     </div>
     <!--按钮-->
-    <div class="ButtonContainer">
+   <div class="ButtonContainer header-title">
         <ul id="btn">
-            <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                 <asp:Button ID="Save_Close" OnClientClick="return save_deal()" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="Save_Close_Click"/>
             </li>
-            <li class="Button ButtonIcon NormalState" id="SaveAndNewButton" tabindex="0">
-                <asp:Button ID="Save_New" runat="server" OnClientClick="return save_deal()" Text="保存并新建" BorderStyle="None" OnClick="Save_New_Click"/>
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
+                <asp:Button ID="Save_New" OnClientClick="return save_deal()" runat="server" Text="保存并新建" BorderStyle="None" OnClick="Save_New_Click"/>
             </li>
-            <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                 <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click"/>
             </li>
         </ul>
@@ -41,7 +42,7 @@
                     <tbody>
                         <tr>
                             <td align="left" style="width: 120px">
-                                <span class="lblNormalClass">Name</span>
+                                <span class="lblNormalClass">名称</span>
                                 <span class="errorSmallClass">*</span>
                                 <div>
                                     <span style="display: inline-block">
@@ -52,7 +53,7 @@
                         </tr>
                         <tr>
                             <td align="left">
-                                <span class="lblNormalClass">View</span>
+                                <span class="lblNormalClass">显示</span>
                                 <div>
                                     <span style="display: inline-block">
                                         <asp:DropDownList ID="View" runat="server"></asp:DropDownList>
@@ -66,7 +67,7 @@
                                     <span class="FieldLabel">
                                         <span class="txtBlack8Class">
                                             <asp:CheckBox ID="Active" runat="server" />
-                                            <label>Active</label>
+                                            <label>激活</label>
                                         </span>
                                     </span>
                                 </div>
