@@ -313,6 +313,9 @@ namespace EMT.DoneNOW.BLL
                 case DicEnum.UDF_CATE.CONTRACTS:
                     table = "ctt_contract_ext";
                     break;
+                case DicEnum.UDF_CATE.PRODUCTS:
+                    table = "ivt_product_ext";
+                    break;
                 // TODO: 其他类别
                 default:
                     break;

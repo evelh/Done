@@ -703,7 +703,21 @@ namespace EMT.DoneNOW.BLL
             var list = _dal.GetQuoteItemVar(qiid);
             return list;
         }
-
+        /// <summary>
+        /// 在报价子项中获取object_id,返回一个产品名称
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetProductName(int id) {
+           var d=new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={id} and delete_time=0");
+            if (d != null)
+            {
+                return d.product_name;
+            }
+            else {
+                return string.Empty;
+            }
+        }
         public string GetItemTypeName(int id)
         {
             return new d_general_dal().FindById(id).name;
