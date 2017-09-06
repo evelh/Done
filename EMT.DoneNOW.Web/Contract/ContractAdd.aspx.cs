@@ -37,12 +37,13 @@ namespace EMT.DoneNOW.Web.Contract
                 if (!int.TryParse(Request.QueryString["type"], out contractType))
                     contractType = 0;
             }
-            var generalBll = new GeneralBLL();
-            contractCate = generalBll.GetDicValues(GeneralTableEnum.CONTRACT_CATE);
-            periodType = generalBll.GetDicValues(GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE);
+            
+            Dictionary<string, object> dics = bll.GetField();
+            contractCate = dics["cate"] as List<DictionaryEntryDto>;
+            periodType = dics["periodType"] as List<DictionaryEntryDto>;
+            billPostType = dics["billPostType"] as List<DictionaryEntryDto>;
             slaList = bll.GetSLAList();
             udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);
-            billPostType = generalBll.GetDicValues(GeneralTableEnum.BILL_POST_TYPE);
 
             InitContract();
         }

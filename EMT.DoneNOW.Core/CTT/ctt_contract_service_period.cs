@@ -43,8 +43,6 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? approve_and_post_time { get; set; }
         [DataMember]
-        public Decimal? adjusted_unit_code { get; set; }
-        [DataMember]
         public Int64 contract_service_id { get; set; }
 
 
