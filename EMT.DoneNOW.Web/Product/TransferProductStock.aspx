@@ -40,9 +40,10 @@
                             <tbody>
                                 <tr>
                                     <td valign="top">
-                                        Product Name
+                                        产品名称
                                         <div style="Padding-bottom:15px;">
-                                            <span class="lblNormalClass" style="font-weight: normal;">Server</span>
+                                            <span class="lblNormalClass" style="font-weight: normal;">
+                                                <asp:Label ID="product_name" runat="server" Text="Label"></asp:Label></span>
                                         </div>
                                     </td>
                                     <td valign="top">
@@ -61,9 +62,9 @@
                             <tbody>
                                 <tr>
                                     <td valign="top">
-                                        From Inventory Location
+                                        库存位置
                                         <div style="Padding-bottom:15px;">
-                                            <span class="lblNormalClass" style="font-weight: normal;">beijing</span>
+                                            <span class="lblNormalClass" style="font-weight: normal;"><asp:Label ID="warehouse" runat="server" Text="Label"></asp:Label></span>
                                         </div>
                                     </td>
                                     <td valign="top">
@@ -82,17 +83,17 @@
                             <tbody>
                                 <tr>
                                     <td style="width:120px;">
-                                        Quantity
+                                       移库数量
                                         <span class="errorSmall">*</span>
                                         <div>
-                                            <input type="text" style="width:95px;text-align: right;">
+                                            <asp:TextBox ID="remove_quantity" runat="server"></asp:TextBox>
                                         </div>
                                     </td>
                                     <td valign="top">
-                                        Available
+                                        可用数
                                         <div style="Padding-bottom:15px;">
-                                            <span class="lblNormalClass" style="font-weight: normal;">11</span>
-                                        </div>
+                                            <span class="lblNormalClass" style="font-weight: normal;"><asp:Label ID="quantity" runat="server" Text="Label"></asp:Label></span>
+                                        </div>                                        
                                     </td>
                                 </tr>
                             </tbody>
@@ -101,21 +102,18 @@
                 </tr>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        To Inventory Location
+                        目标库存位置
                         <span class="errorSmall">*</span>
                         <div>
-                            <select name="" id="" style="width:214px;">
-                                <option value="">select</option>
-                                <option value="">sdgvsdfsjd</option>
-                            </select>
+                            <asp:DropDownList ID="warehouse_id" runat="server"></asp:DropDownList>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        Transfer Note
+                        备注
                         <div>
-                            <textarea class="txtBlack8Class" style="height: 100px; width: 200px; margin-top: 0px; margin-bottom: 0px;"></textarea>
+                            <asp:TextBox ID="note" runat="server" style="height: 100px; width: 200px; margin-top: 0px; margin-bottom: 0px;" TextMode="MultiLine"></asp:TextBox>
                         </div>
                     </td>
                 </tr>
@@ -131,7 +129,42 @@
         });
         $("#SaveAndCloseButton").on("mouseout",function(){
             $("#SaveAndCloseButton").css("background","#f0f0f0");
-        });
+            });
+
+            function save_deal() {
+                var q = $("#remove_quantity").val();
+                var w = $("#warehouse_id").val();
+                if (q == null || q == '') {
+                    alert("请输入移库数量！");
+                    return false;
+                }
+                if (w == null || w == '') {
+                    alert("请输入目标库存位置！");
+                    return false;
+                }
+            }
+
+            $("#remove_quantity").change(function () {
+                if ((/^\d{1,15}$/.test(this.value)) == false) {
+                    alert('只能输入整数！');
+                    this.value = '';
+                    this.focus();
+                    return false;
+                } else {
+                    var q1 = $("#remove_quantity").val();
+                    var q2 = $("#quantity").text();
+                    q1 = parseFloat(q1);
+                    q2 = parseFloat(q2);
+                        if (q1>q2) {
+                            alert("移库数量只能小于等于可用数！");
+                            this.value = '';
+                            this.focus();
+                            return false;
+                        }
+                }
+
+            });
+
     </script>
     </form>
 </body>

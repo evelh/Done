@@ -22,6 +22,7 @@ namespace EMT.DoneNOW.Web
             {
                 case "active": Active(context, Convert.ToInt64(class_id)); ; break;
                 case "noactive":NoActive(context, Convert.ToInt64(class_id)); ; break;
+                case "delete_validate": Delete_Validate(context, Convert.ToInt64(class_id)); ; break;
                 case "delete": Delete(context, Convert.ToInt64(class_id)); ; break;
                 default: break;
 
@@ -48,7 +49,36 @@ namespace EMT.DoneNOW.Web
                 }
             }
         }
-
+        /// <summary>
+        /// 删除前进行数据校验
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="class_id"></param>
+        public void Delete_Validate(HttpContext context, long class_id)
+        {
+            //此处写复制逻辑
+            var user = context.Session["dn_session_user_info"] as sys_user;
+            if (user != null)
+            {
+                int n;//记录受影响的客户个数
+                var result = new AccountClassBLL().Delete_Validate(class_id, user.id,out n);
+                if (result == DTO.ERROR_CODE.SUCCESS)
+                {
+                    Delete(context, class_id);
+                }
+                else if (result == DTO.ERROR_CODE.SYSTEM)
+                {
+                    context.Response.Write("system");
+                }
+                else if (result==DTO.ERROR_CODE.ACCOUNT_TYPE_USED) {
+                    context.Response.Write("有"+n+"个客户关联此客户类别。如果删除，则相关客户上的客户类别信息将会被清空，请选择操作：删除、停用、取消。点击确认，则进行删除！");
+                }
+                else
+                {
+                    context.Response.Write("other");
+                }
+            }
+        }
         public void Active(HttpContext context, long class_id)
         {
             //此处写复制逻辑

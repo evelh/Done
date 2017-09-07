@@ -1,5 +1,4 @@
 ﻿using EMT.DoneNOW.BLL;
-using EMT.DoneNOW.BLL.IVT;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 using System;
@@ -32,8 +31,7 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取id
-            id = 1377;
-            
+            id = 1377;            
             GetMenus();
             if (!IsPostBack) {
                 product_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PRODUCTS);//自定义
@@ -214,16 +212,31 @@ namespace EMT.DoneNOW.Web
             //更新
             if (id > 0) {
                 var result=pbll.UpdateProductAndVendor(product, tt, GetLoginUserId());
-
-
+                switch (result) {
+                    case ERROR_CODE.EXIST: Response.Write("<script>alert(\"已经存在该名称的产品，请修改后保存！\");</script>"); break; //存在相同名称产品
+                    case ERROR_CODE.ERROR: Response.Write("<script>alert(\"保存失败！\");</script>"); break; //操作失败
+                    case ERROR_CODE.USER_NOT_FIND:
+                        Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                        Response.Redirect("../Login.aspx"); ; break;//获取操作者信息失败
+                    case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"产品新增成功！\");</script>"); break;//成功
+                    default: Response.Write("<script>alert('异常错误，返回上一级！');window.close();self.opener.location.reload();</script>"); ; break;//失败
+                }
             }
             //新增
             else {
                 var result=pbll.InsertProductAndVendor(product,tt,udfv_list,GetLoginUserId());
-
+                switch (result)
+                {
+                    case ERROR_CODE.EXIST:Response.Write("<script>alert(\"已经存在该名称的产品，请修改后保存！\");</script>"); break; //存在相同名称产品
+                    case ERROR_CODE.ERROR: Response.Write("<script>alert(\"保存失败！\");</script>"); break; //操作失败
+                    case ERROR_CODE.USER_NOT_FIND:
+                        Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                        Response.Redirect("../Login.aspx"); ; break;//获取操作者信息失败
+                    case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"产品修改成功！\");</script>"); break;//成功
+                    default: Response.Write("<script>alert('异常错误，返回上一级！');window.close();self.opener.location.reload();</script>"); ; break;//失败
+                }
 
             }
-
             
 
         }

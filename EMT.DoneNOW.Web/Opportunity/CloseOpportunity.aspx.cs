@@ -211,7 +211,7 @@ namespace EMT.DoneNOW.Web.Opportunity
 
                     if (item.object_id != null)
                     {
-                        var product = new EMT.DoneNOW.BLL.IVT.ProductBLL().GetProduct((long)item.object_id);
+                        var product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct((long)item.object_id);
                         if (product != null)
                         {
                             scriptText += $"$('#{item.id}_select').val('{product.cost_code_id}');";

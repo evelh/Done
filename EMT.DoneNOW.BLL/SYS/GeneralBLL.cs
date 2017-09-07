@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DAL;
 using EMT.DoneNOW.DTO;
+using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -191,6 +192,7 @@ namespace EMT.DoneNOW.BLL
             if (data.is_system > 0) {
                 return ERROR_CODE.SYSTEM;
             }
+            string remark="删除通用代码信息";
             //市场
             if (table_id == (int)GeneralTableEnum.MARKET_SEGMENT)
             {
@@ -205,6 +207,7 @@ namespace EMT.DoneNOW.BLL
                         if (!a_dal.Update(account)) {
                             return ERROR_CODE.ERROR;
                         }
+                        remark = "删除市场信息";
                     }
                 }
             }
@@ -224,6 +227,7 @@ namespace EMT.DoneNOW.BLL
                         {
                             return ERROR_CODE.ERROR;
                         }
+                        remark = "删除地域信息";
                     }
                 }
             }
@@ -243,6 +247,7 @@ namespace EMT.DoneNOW.BLL
                         {
                             return ERROR_CODE.ERROR;
                         }
+                        remark = "删除竞争对手信息";
                     }
                 }
             }
@@ -262,6 +267,7 @@ namespace EMT.DoneNOW.BLL
                         {
                             return ERROR_CODE.ERROR;
                         }
+                        remark = "删除商机来源信息";
                     }
                 }
             }
@@ -269,9 +275,24 @@ namespace EMT.DoneNOW.BLL
             data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.delete_user_id = user_id;
             if (!_dal.Update(data))
-            {
+            {              
                 return ERROR_CODE.ERROR;
             }
+            //更新日志
+            var add_account_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//员工
+                oper_object_id = data.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                oper_description = _dal.AddValue(data),
+                remark = remark
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
         }
 

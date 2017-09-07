@@ -17,6 +17,7 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取id
+            id = 10;
             if (!IsPostBack)
             {
                 if (id > 0)//修改
@@ -34,10 +35,6 @@ namespace EMT.DoneNOW.Web
                             this.Competitor_Description.Text = compe.remark.ToString();
                         }
                     }
-                }
-                else
-                {//新增
-
                 }
             }
 
@@ -83,7 +80,7 @@ namespace EMT.DoneNOW.Web
                     Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
                 }
             }
-                compe.name = this.Competitor_Name.Text.Trim().ToString();
+             compe.name = this.Competitor_Name.Text.Trim().ToString();
             if (!string.IsNullOrEmpty(this.Competitor_Name.Text.Trim().ToString()))
             {
                 compe.remark = this.Competitor_Description.Text.Trim().ToString();
