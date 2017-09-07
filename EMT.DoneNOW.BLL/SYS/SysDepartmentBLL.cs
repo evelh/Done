@@ -44,11 +44,32 @@ namespace EMT.DoneNOW.BLL
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }
+            var de = _dal.FindSignleBySql<sys_department>($"select * from  sys_department where name={sd.name} and delete_time=0");
+            if (de != null) {
+                return ERROR_CODE.EXIST;
+            }
             sd.id= (int)(_dal.GetNextIdCom());
             sd.create_time=sd.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             sd.create_user_id = user_id;
             sd.cate_id =(int)DEPARTMENT_CATE.DEPARTMENT;
             _dal.Insert(sd);
+
+            var add_account_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.DEPARTMENT,//部门
+                oper_object_id = sd.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = _dal.AddValue(sd),
+                remark = "保存部门信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
+
+
             return ERROR_CODE.SUCCESS;
         }
         public ERROR_CODE Update(sys_department sd, long user_id)
@@ -58,12 +79,32 @@ namespace EMT.DoneNOW.BLL
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }
+            var de = _dal.FindSignleBySql<sys_department>($"select * from  sys_department where name={sd.name} and delete_time=0");
+            if (de != null&&de.id!=sd.id)
+            {
+                return ERROR_CODE.EXIST;
+            }
             sd.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             sd.update_user_id = user_id;
             sd.cate_id = (int)DEPARTMENT_CATE.DEPARTMENT;
             if (!_dal.Update(sd)) {
                 return ERROR_CODE.ERROR;
             }
+            var add_account_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.DEPARTMENT,//部门
+                oper_object_id = sd.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(sd),
+                remark = "修改部门信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
+
             return ERROR_CODE.SUCCESS;
         }
         public ERROR_CODE Delete(long id, long user_id)
@@ -84,6 +125,21 @@ namespace EMT.DoneNOW.BLL
             {
                 return ERROR_CODE.ERROR;
             }
+            var add_account_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.DEPARTMENT,//部门
+                oper_object_id = data.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                oper_description = _dal.AddValue(data),
+                remark = "删除部门信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
+
             return ERROR_CODE.SUCCESS;
         }
 

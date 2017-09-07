@@ -20,7 +20,7 @@
 #menu ul li .menu-i2{width: 20px;height: 100%;display: block;float: right;}
 #menu ul .disabled{color: #AAAAAA;}
         </style>
-    <title>产品</title>
+    <title>产品管理</title>
 </head>
 <body>
     <form id="form1" runat="server" method="post">
@@ -28,7 +28,7 @@
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">新增产品</span>
+            <span class="text1">产品管理</span>
             <a href="###" class="help"></a>
         </div>
     </div>
@@ -48,13 +48,13 @@
     </div>
     <!--切换按钮-->
     <div class="TabBar">
-        <a class="Button ButtonIcon SelectedState">
+        <a class="Button ButtonIcon SelectedState" id="tab1">
             <span class="Text">总结</span>
         </a>
-        <a class="Button ButtonIcon">
+        <a class="Button ButtonIcon" id="tab2">
             <span class="Text">用户定义的</span>
         </a>
-        <a class="Button ButtonIcon">
+        <a class="Button ButtonIcon" id="tab3">
             <span class="Text">库存</span>
         </a>
     </div>
@@ -69,6 +69,7 @@
                             <span class="errorSmall">*</span>
                             <div>
                                 <asp:TextBox ID="Product_Name" runat="server" style="width:268px;"></asp:TextBox>
+                                <input type="hidden" id="prodct_id" name="prodct_id" value="<%=product.id %>" />
                             </div>
                         </td>
                         <td width="50%" class="FieldLabels">
@@ -80,7 +81,6 @@
                             <i onclick="OpenWindowProductCate()"><img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;"/></i>
                         </div>
                          <%--查找带回--%>
-
                         </td>
                     </tr>
                     <tr>
@@ -126,7 +126,6 @@
                             <div style="padding-bottom: 2px;">
                                 <asp:TextBox ID="Unit_Cost" runat="server" style="width:60px;text-align: right;" ></asp:TextBox>
                                <%-- 计算毛利率--%>
-
                                 <input type="text" disabled="disabled" id="maolilv" style="width:50px"/>
                                 <asp:TextBox ID="Unit_Price" runat="server" style="width:60px;text-align: right;"></asp:TextBox>
                                 <asp:TextBox ID="MSRP" runat="server" style="width:60px;text-align: right;"></asp:TextBox>
@@ -192,11 +191,9 @@
             </table>
         </div>
         <div style="width: 100%; margin-bottom: 10px;">
-            <div class="ButtonContainer">
+            <div class="ButtonContainer header-title">
                 <ul>
-                    <li class="Button ButtonIcon NormalState" id="NewButton" tabindex="0">
-                        <span class="Icon New">
-                            <img src="../Images/add.png" /></span>
+                   <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                         <span class="Text">新建</span>
                     </li>
                 </ul>
@@ -340,9 +337,36 @@
         <%} %>
 	</div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
-        <script src="../Scripts/SysSettingRoles.js"></script>
+        <%--<script src="../Scripts/SysSettingRoles.js"></script>--%>
            <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
         <script>
+            //tab选项卡的控制
+            //$.each($(".TabBar a"), function (i) {
+            //    $(this).click(function () {
+            //        $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
+            //        $(".TabContainer").eq(i).show().siblings(".TabContainer").hide();
+            //    })
+            //});
+            $("#tab1").click(function () {
+                $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
+                $(".TabContainer").eq(0).show().siblings(".TabContainer").hide();
+            });
+            $("#tab2").click(function () {
+                $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
+                $(".TabContainer").eq(1).show().siblings(".TabContainer").hide();
+            });
+            $("#tab3").click(function () {
+                <%if(product.id>0){%>
+                $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
+                $(".TabContainer").eq(2).show().siblings(".TabContainer").hide();
+                <%}else{%>
+                alert("产品还未保存，不存在库存信息！");
+                return false;
+                <%}%>
+            });
+
+
+
             $(document).ready(function () {
                 //填入毛利率
                 var k1 = $("#Unit_Price").val();

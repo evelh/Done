@@ -469,7 +469,13 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_EXTENSION = 780,                   // 合同扩展信息
             CONTRACT_SERVICE = 783,                     // 合同服务
             CONTRACT_MILESTONE = 784,                   // 合同里程碑
-
+            General_Code = 794,                         //通用代码
+            WAREHOUSE_PRODUCT =795,                     //库存产品
+            PRODUCT_VENDOR=796,                         //产品供应商
+            ACCOUNTCLASS=797,                           //客户类别
+            DEPARTMENT=798,                             //部门
+            ROLE=799,                                   //角色
+            RESOURCE=1370,                              //员工
         }
 
         /// <summary>
@@ -611,7 +617,14 @@ namespace EMT.DoneNOW.DTO
             PER_TICKET = 1204,          // 事件合同
         }
     }
-
+    /// <summary>
+    /// 工单-126
+    /// </summary>
+    public enum TICKET {
+        INVENTORY=1481,               //库存1481
+        PROJECT=1482,                 //项目1482
+        TICKET=1483,                  //工单1483
+    }
     /// <summary>
     /// 查询分页面
     /// </summary>

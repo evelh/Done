@@ -11,7 +11,7 @@
     <title>新增库存产品</title>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" method="post">
         <div>
              <!--顶部-->
     <div class="TitleBar">
@@ -42,7 +42,8 @@
                         产品名称
                         <span class="errorSmall">*</span>
                         <div>
-                            <input type="text" style="width:220px;" disabled="disabled">
+                           <input type="text" id="product_name" name="product_name" disabled="disabled"/>
+                            <input type="hidden" id="product_id" name="product_id" value="" />
                            <img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;"/>
                         </div>
                     </td>
@@ -52,10 +53,7 @@
                         库存位置
                         <span class="errorSmall">*</span>
                         <div>
-                            <select name="" id="" style="width:235px;">
-                                <option value="">select</option>
-                                <option value="">325a4f5</option>
-                            </select>
+                           <asp:DropDownList ID="warehouse_id" runat="server"></asp:DropDownList>
                         </div>
                     </td>
                 </tr>
@@ -63,7 +61,7 @@
                     <td width="30%" class="FieldLabels">
                         参考号
                         <div>
-                            <input type="text" style="width:220px;">
+                            <asp:TextBox ID="reference_number" runat="server"></asp:TextBox>
                         </div>
                     </td>
                 </tr>
@@ -71,7 +69,7 @@
                     <td width="30%" class="FieldLabels">
                         货柜
                         <div>
-                            <input type="text" style="width:220px;">
+                            <asp:TextBox ID="bin" runat="server"></asp:TextBox>
                         </div>
                     </td>
                 </tr>
@@ -84,14 +82,14 @@
                                         最小值
                                         <span class="errorSmall">*</span>
                                         <div>
-                                            <input type="text" style="width:95px;text-align: right;">
+                                            <asp:TextBox ID="quantity_minimum" runat="server" ></asp:TextBox>
                                         </div>
                                     </td>
                                     <td>
                                         最大值
                                         <span class="errorSmall">*</span>
                                         <div>
-                                            <input type="text" style="width:95px;text-align: right;">
+                                            <asp:TextBox ID="quantity_maximum" runat="server"></asp:TextBox>
                                         </div>
                                     </td>
                                 </tr>
@@ -108,13 +106,13 @@
                                        库存数
                                         <span class="errorSmall">*</span>
                                         <div>
-                                            <input type="text" style="width:95px;text-align: right;">
+                                            <asp:TextBox ID="quantity" runat="server"></asp:TextBox>
                                         </div>
                                     </td>
                                     <td valign="top" style="display: none;">
                                        订购中数量
                                         <div style="Padding-bottom:15px;">
-                                            <span class="lblNormalClass" style="font-weight: normal;">0</span>
+                                           <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
                                         </div>
                                     </td>
                                 </tr>
@@ -150,6 +148,122 @@
         </div>
          <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../Scripts/SysSettingRoles.js"></script>
+        <script>
+            $(document).ready(function () {
+                //获取产品名称和id
+               var proname = $("#Product_Name", window.opener.document).val();
+               var proid = $("#prodct_id", window.opener.document).val();
+               if (proname !== '' && proname !== undefined) {
+                   $("#product_name").val(proname);
+               } else {
+                   window.close();
+               }
+               if (proid !== '' && proid !== undefined) {
+                   $("#product_id").val(proid);
+               } else {
+                   window.close();
+               }
+            });            
+            function save_deal() {
+                var w = $("#warehouse_id").val();
+                var min = $("#quantity_minimum").val();
+                var max = $("#quantity_maximum").val();
+                var q = $("#quantity").val();
+                if (w == null || w == '') {
+                    alert('请选择库存位置！');
+                    return false;
+                }
+                if (min == null || min == '') {
+                    alert("请输入库存最小值！");
+                    return false;
+                }
+                if (max == null || max == '') {
+                    alert("请输入库存最大值！");
+                    return false;
+                }
+                if (q == null || q == '') {
+                    alert("请输入库存数量！");
+                    return false;
+                }
+                if (min > max) {
+                    alert("最大值不能小于最小值！");
+                    return false;
+                }
+                if (q > max) {
+                    alert("库存数不能大于最大值！");
+                    return false;
+                }
+            }
+                $("#quantity").change(function () {
+                    if ((/^\d{1,15}$/.test(this.value)) == false) {
+                        alert('只能输入整数！');
+                        this.value = '';
+                        this.focus();
+                        return false;
+                    } else {
+                        var max = $("#quantity_maximum").val();
+                        var q = $("#quantity").val();
+                        if (max != null && max != '') {
+                            max = parseFloat(max);
+                            q = parseFloat(q);
+                            if (q > max) {
+                                alert("库存数不能大于最大值！");
+                                this.value = '';
+                                this.focus();
+                                return false;
+                            }
+                        }
+                    }
+                   
+                });
+
+                $("#quantity_minimum").change(function () {
+                    if ((/^\d{1,15}$/.test(this.value)) == false) {
+                        alert('只能输入整数！');
+                        this.value = '';
+                        this.focus();
+                        return false;
+                    } else {
+                        var min = $("#quantity_minimum").val();
+                        var max = $("#quantity_maximum").val();
+                        if (max != null && max != '') {
+                            max = parseFloat(max);
+                            min = parseFloat(min);
+                            if (max < min) {
+                                alert("最大值不能小于最小值！");
+                                this.value = '';
+                                this.focus();
+                                return false;
+                            }
+                        }
+
+                    }
+
+                });
+                $("#quantity_maximum").change(function () {
+                    if ((/^\d{1,15}$/.test(this.value)) == false) {
+                        alert('只能输入整数！');
+                        this.value = '';
+                        this.focus();
+                        return false;
+                    } else {
+                        var min = $("#quantity_minimum").val();
+                        var max = $("#quantity_maximum").val();
+                        if (min != null && min != '') {
+                            max= parseFloat(max);
+                            min= parseFloat(min);
+                            if (max < min) {
+                                alert("最大值不能小于最小值！");
+                                this.value = '';
+                                this.focus();
+                                return false;
+                            }
+                        }
+                    }
+
+                });
+               
+        </script>
     </form>
 </body>
 </html>

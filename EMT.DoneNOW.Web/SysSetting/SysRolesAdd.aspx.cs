@@ -92,7 +92,7 @@ namespace EMT.DoneNOW.Web
                 if (result == ERROR_CODE.ERROR) {
                     Response.Write("<script>alert('修改失败！');</script>");
                 }
-                if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+                else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
                     Response.Write("<script>alert('角色修改成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
                 }
@@ -100,6 +100,8 @@ namespace EMT.DoneNOW.Web
                 {
                     Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                     Response.Redirect("Login.aspx");
+                } else if(result==ERROR_CODE.EXIST){
+                    Response.Write("<script>alert('已经存在相同名称的角色！');</script>");
                 }
             }
             else {                
@@ -112,6 +114,10 @@ namespace EMT.DoneNOW.Web
                 {
                     Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                     Response.Redirect("Login.aspx");
+                }
+                else if (result == ERROR_CODE.EXIST)
+                {
+                    Response.Write("<script>alert('已经存在相同名称的角色！');</script>");
                 }
             }
             //Response.Write("<script>alert('角色添加成功！');window.close();self.opener.location.reload();</script>");

@@ -8,24 +8,39 @@ using EMT.DoneNOW.DAL;
 using EMT.DoneNOW.DTO;
 using static EMT.DoneNOW.DTO.DicEnum;
 
-namespace EMT.DoneNOW.BLL.IVT
+namespace EMT.DoneNOW.BLL
 {
     public class ProductBLL
     {
         private readonly ivt_product_dal _dal = new ivt_product_dal();
         private readonly ivt_product_vendor_dal _dal1 = new ivt_product_vendor_dal();
-        //通过id获取ivt_product产品对象
+        ///通过id获取ivt_product产品对象
         public ivt_product GetProduct(long id)
         {
             return _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where id={id} and delete_time = 0 ");
         }
+        /// <summary>
+        /// 获取物料代码名称
+        /// </summary>
+        /// <param name="cost_code_id"></param>
+        /// <returns></returns>
         public string cost_code_name(long cost_code_id) {
             return new d_cost_code_dal().FindById(cost_code_id).name;
         }
+        /// <summary>
+        /// 获取产品供应商对象
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ivt_product_vendor GetSingelVendor(long id)
         {
             return _dal1.FindSignleBySql<ivt_product_vendor>($"select * from ivt_product_vendor where id={id} and delete_time=0");
         }
+        /// <summary>
+        /// 获取供应商名称
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public string GetVendorName(long id)
         {
             return new crm_account_dal().FindSignleBySql<crm_account>($"select * from crm_account where id={id} and delete_time=0").name;
@@ -56,14 +71,41 @@ namespace EMT.DoneNOW.BLL.IVT
         /// <returns></returns>
         public ERROR_CODE InsertProductAndVendor(ivt_product product, VendorData vendordata, List<UserDefinedFieldValue> udf, long user_id) {
             //产品
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
             product.id = (int)(_dal.GetNextIdCom());
 
             product.create_time=product.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            product.create_user_id = user_id;
+            product.create_user_id =product.update_user_id= user_id;
+           
+            //唯一性校验
+            var propro = _dal.FindListBySql($"select * from ivt_product where product_name='{ product.product_name}' and delete_time=0 ");
+            if (propro != null) {
+                return ERROR_CODE.EXIST;
+            }
 
-            _dal.Insert(product);
-            //供应商
-            foreach (var ve in vendordata.VENDOR)
+            _dal.Insert(product);            
+                //更新日志
+                var add_log = new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = (int)user.id,
+                    name = "",
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT,//员工
+                    oper_object_id = product.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                    oper_description = _dal.AddValue(product),
+                    remark = "新增产品信息"
+                };          // 创建日志
+                new sys_oper_log_dal().Insert(add_log);       // 插入日志
+
+                //供应商
+                foreach (var ve in vendordata.VENDOR)
             {
                 ivt_product_vendor veve = new ivt_product_vendor();
                 if (ve.operate == 3) {
@@ -77,6 +119,21 @@ namespace EMT.DoneNOW.BLL.IVT
                     veve.vendor_cost = ve.vendor_cost;
                     veve.vendor_product_no = ve.vendor_product_no;
                     _dal1.Insert(veve);
+
+                    var add_vendor_log = new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = (int)user.id,
+                        name = "",
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,//员工
+                        oper_object_id = veve.id,// 操作对象id
+                        oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                        oper_description = _dal.AddValue(veve),
+                        remark = "新增供应商信息"
+                    };          // 创建日志
+                    new sys_oper_log_dal().Insert(add_vendor_log);       // 插入日志
                 }
             }
 
@@ -99,13 +156,40 @@ namespace EMT.DoneNOW.BLL.IVT
         /// <returns></returns>
         public ERROR_CODE UpdateProductAndVendor(ivt_product product, VendorData vendordata, long user_id)
         {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
             //产品更新
             product.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             product.update_user_id = user_id;
 
+            //唯一性校验
+            var propro = _dal.FindListBySql($"select * from ivt_product where product_name='{ product.product_name}' and delete_time=0 ");
+            if (propro != null)
+            {
+                return ERROR_CODE.EXIST;
+            }
 
-            _dal.Update(product);
-
+            if (!_dal.Update(product)) {
+                return ERROR_CODE.ERROR;
+            }
+            //更新日志
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT,//员工
+                oper_object_id = product.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(product),
+                remark = "修改产品信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
             //供应商更新
             foreach (var ve in vendordata.VENDOR)
             {
@@ -116,8 +200,21 @@ namespace EMT.DoneNOW.BLL.IVT
                     if (de != null) {
                         de.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         de.delete_user_id = user_id;
-
                         _dal1.Update(de);
+                        var add_vendor_log = new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = (int)user.id,
+                            name = "",
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,//员工
+                            oper_object_id = veve.id,// 操作对象id
+                            oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                            oper_description = _dal.AddValue(veve),
+                            remark = "删除供应商信息"
+                        };          // 创建日志
+                        new sys_oper_log_dal().Insert(add_vendor_log);       // 插入日志
                     }
 
                 }
@@ -135,6 +232,20 @@ namespace EMT.DoneNOW.BLL.IVT
                         veve.vendor_cost = ve.vendor_cost;
                         veve.vendor_product_no = ve.vendor_product_no;
                         _dal1.Update(veve);
+                        var add_vendor_log = new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = (int)user.id,
+                            name = "",
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,//员工
+                            oper_object_id = veve.id,// 操作对象id
+                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                            oper_description = _dal.AddValue(veve),
+                            remark = "修改供应商信息"
+                        };          // 创建日志
+                        new sys_oper_log_dal().Insert(add_vendor_log);       // 插入日志
                     }
                 }
 
@@ -150,13 +261,119 @@ namespace EMT.DoneNOW.BLL.IVT
                     veve.vendor_cost = ve.vendor_cost;
                     veve.vendor_product_no = ve.vendor_product_no;
                     _dal1.Insert(veve);
+                    var add_vendor_log = new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = (int)user.id,
+                        name = "",
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,//员工
+                        oper_object_id = veve.id,// 操作对象id
+                        oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                        oper_description = _dal.AddValue(veve),
+                        remark = "新增供应商信息"
+                    };          // 创建日志
+                    new sys_oper_log_dal().Insert(add_vendor_log);       // 插入日志
                 }
 
             }
-
                 return ERROR_CODE.SUCCESS;
         }
+        /// <summary>
+        /// 获取仓库名称和id
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<long, string> GetWarehouseDownList()
+        {
+            Dictionary<long, string> dic = new Dictionary<long, string>();
+            return new ivt_warehouse_dal().FindListBySql<ivt_warehouse>($"select * from ivt_warehouse where delete_time=0").ToDictionary(d => d.id, d => d.name);
+        }
+        public ivt_warehouse GetWarehouse(long id) {
+            return new ivt_warehouse_dal().FindSignleBySql<ivt_warehouse>($"select * from ivt_warehouse where id={id} and delete_time=0");
+        }
+        /// <summary>
+        /// 通过id获取一个ivt_warehouse_product对象
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ivt_warehouse_product Getwarehouse_product(long id) {
+            return new ivt_warehouse_product_dal().FindSignleBySql<ivt_warehouse_product>($"select * from ivt_warehouse_product where id={id} and delete_time=0");
+        }
+        /// <summary>
+        ///新增产品库存信息
+        /// </summary>
+        /// <param name="stock"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE InsertProductStock(ivt_warehouse_product stock,long user_id) {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            //唯一性校验
+            ivt_warehouse_product_dal kk = new ivt_warehouse_product_dal();
+           var re= kk.FindSignleBySql<ivt_warehouse_product>($"select * from ivt_warehouse_product where product_id={stock.product_id} and warehouse_id={stock.warehouse_id} and delete_time=0");
+            if (re != null) {
+                return ERROR_CODE.EXIST;
+            }
+            stock.id= (int)(_dal.GetNextIdCom());
+            stock.create_time = stock.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            stock.create_user_id = stock.update_user_id = user_id;
+            kk.Insert(stock);
+            //操作日志
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
+                oper_object_id = stock.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = _dal.AddValue(stock),
+                remark = "新增产品库存信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
 
-
+            return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 修改产品供应商信息
+        /// </summary>
+        /// <param name="stock"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE UpdateProductStock(ivt_warehouse_product stock, long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            stock.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            stock.update_user_id = user.id;
+            if (!(new ivt_warehouse_product_dal().Update(stock))) {
+                return ERROR_CODE.ERROR;
+            }
+            //操作日志
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
+                oper_object_id = stock.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(stock),
+                remark = "修改产品库存信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
+            return ERROR_CODE.SUCCESS;
+        }
     }
 }

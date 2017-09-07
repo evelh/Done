@@ -50,5 +50,6 @@ namespace EMT.DoneNOW.DTO
         OPPORTUNITY_STAGE_USED,                      //商机阶段已经被使用
         WIN_OPPORTUNITY_REASON_USED,                 //关闭商机原因已经被使用
         LOSS_OPPORTUNITY_REASON_USED,                //丢失商机原因已经被使用
+        ACCOUNT_TYPE_USED,                           //客户类别已经被使用
     }
 }

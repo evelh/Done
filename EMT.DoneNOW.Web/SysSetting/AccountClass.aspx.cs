@@ -107,6 +107,10 @@ namespace EMT.DoneNOW.Web
                     Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                     Response.Redirect("../Login.aspx");
                 }
+                else if (result == DTO.ERROR_CODE.EXIST)
+                {
+                    Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
+                }
             }
             else {//新增
                 var result = acbll.Insert(dac, GetLoginUserId());

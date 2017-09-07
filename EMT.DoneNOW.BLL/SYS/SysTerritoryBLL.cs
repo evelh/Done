@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -83,6 +84,20 @@ namespace EMT.DoneNOW.BLL
                 {
                     return ERROR_CODE.ERROR;
                 }
+                var add_log = new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = (int)user.id,
+                    name = "",
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//
+                    oper_object_id = data.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                    oper_description = _dal.AddValue(data),
+                    remark = "新增地域信息"
+                };          // 创建日志
+                new sys_oper_log_dal().Insert(add_log);       // 插入日志
             }
             else
             {
@@ -101,6 +116,20 @@ namespace EMT.DoneNOW.BLL
                 {
                     id = re.id;
                 }
+                var add_log = new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = (int)user.id,
+                    name = "",
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//员工
+                    oper_object_id = data.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_description = _dal.AddValue(data),
+                    remark = "新增地域信息"
+                };          // 创建日志
+                new sys_oper_log_dal().Insert(add_log);       // 插入日志
             }
             return ERROR_CODE.SUCCESS;
         }
@@ -121,6 +150,11 @@ namespace EMT.DoneNOW.BLL
         /// <param name="tid"></param>
         /// <returns></returns>
         public bool DeleteAccount_Territory(long aid,long tid,long user_id) {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return false;
+            }
             sys_resource_territory_dal cat_dal= new sys_resource_territory_dal();
            var i= cat_dal.FindSignleBySql<sys_resource_territory>($"select * from sys_resource_territory where resource_id={aid} and territory_id={tid} and delete_time=0");
             if (i != null) {
@@ -128,6 +162,20 @@ namespace EMT.DoneNOW.BLL
                 i.delete_user_id = user_id;
                 if (cat_dal.Update(i)) {
                     return true;
+                    var add_log = new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = (int)user.id,
+                        name = "",
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.RESOURCE,//员工
+                        oper_object_id = i.id,// 操作对象id
+                        oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                        oper_description = _dal.AddValue(i),
+                        remark = "删除地域与员工的关联"
+                    };          // 创建日志
+                    new sys_oper_log_dal().Insert(add_log);       // 插入日志
                 }
             }
             return false;

@@ -228,7 +228,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
 
         private string ReturnProductID(long object_id)
         {
-            var product = new EMT.DoneNOW.BLL.IVT.ProductBLL().GetProduct(object_id);
+            var product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(object_id);
             if (product != null)
             {
                 return product.id.ToString();

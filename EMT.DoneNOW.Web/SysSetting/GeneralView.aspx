@@ -383,7 +383,7 @@
                 //商机阶段
                  <%else if (id == (int)GeneralTableEnum.OPPORTUNITY_STAGE)
             {%>
-                if (confirm('确认删除?')) {
+                if (confirm('删除操作将不能恢复，是否继续?')) {
                     $.ajax({
                         type: "GET",
                         url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "GT_id=<%=id%>",//GT_id 表示当前操作的类型

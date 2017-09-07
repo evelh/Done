@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -35,6 +36,20 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.EXIST;
             }
             _dal.Insert(data);
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//
+                oper_object_id = data.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = _dal.AddValue(data),
+                remark = "新增商机阶段信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -60,6 +75,20 @@ namespace EMT.DoneNOW.BLL
             if (!_dal.Update(data)) {
                 return ERROR_CODE.ERROR;
             }
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//
+                oper_object_id = data.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(data),
+                remark = "修改商机阶段信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -110,6 +139,20 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.EXIST;
             }
             _dal.Insert(data);
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//
+                oper_object_id = data.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = _dal.AddValue(data),
+                remark = "新增商机来源信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -136,6 +179,20 @@ namespace EMT.DoneNOW.BLL
             {
                 return ERROR_CODE.ERROR;
             }
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//
+                oper_object_id = data.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(data),
+                remark = "修改商机来源信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -187,6 +244,20 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.EXIST;
             }
             _dal.Insert(data);
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//
+                oper_object_id = data.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = _dal.AddValue(data),
+                remark = "新增关闭商机原因信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -211,6 +282,20 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.EXIST;
             }
             _dal.Insert(data);
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//
+                oper_object_id = data.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = _dal.AddValue(data),
+                remark = "新增丢失商机原因信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -237,6 +322,20 @@ namespace EMT.DoneNOW.BLL
             {
                 return ERROR_CODE.ERROR;
             }
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//
+                oper_object_id = data.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(data),
+                remark = "修改商机原因信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -286,6 +385,20 @@ namespace EMT.DoneNOW.BLL
             {
                 return ERROR_CODE.ERROR;
             }
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//
+                oper_object_id = data.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(data),
+                remark = "修改商机扩展字段信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
         }
 
