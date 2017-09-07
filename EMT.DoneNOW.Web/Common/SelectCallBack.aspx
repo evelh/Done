@@ -12,7 +12,7 @@
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-    <form id="form1" runat="server" class="clear" style="min-width:600px;">
+    <form id="form1" runat="server" class="clear" style="min-width:580px;position:relative;">
         <div class="header">
 			查找
 		</div>
@@ -30,13 +30,13 @@
 			</div>
 		</div>
         <%} else { %>
-        <div class="header-title fl">
+        <div class="header-title">
 			<ul>
 				<li onclick="ClearSelect();"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -304px -16px;" class="icon-1"></i>清除选择</li>
 			</ul>
 		</div>
         <%}%>
-        <table border="none" cellspacing="" cellpadding="" style="width:350px;margin:15px 0 0 5px;border: none;" class="fl">
+        <table border="none" cellspacing="" cellpadding="" style="width:500px;margin:0;border: none;">
         <% for (int i = 0; i < condition.Count; i++) {%> 
 			<tr>
 				<td>
@@ -98,7 +98,7 @@
 			</tr>
         <% } %>
 		</table>
-        <asp:Button ID="Search" runat="server" Text="搜索" OnClick="Search_Click" style="margin-top: 22px;width: 56px;height: 30px;"/>
+        <asp:Button ID="Search" runat="server" Text="搜索" OnClick="Search_Click" style="width: 56px;height: 30px;position:absolute;left:460px;top:98px;"/>
         <div id="search_list">
             <input type="hidden" id="page_num" name="page_num" <%if (queryResult != null) {%>value="<%=queryResult.page %>"<%} %> />
             <input type="hidden" id="page_size" name="page_size" <%if (queryResult != null) {%>value="<%=queryResult.page_size %>"<%} %> />
@@ -113,7 +113,7 @@
         <!-- 分页信息 -->
         <%if (queryResult != null && queryResult.count>0)
             { %>
-        <div class="page clear" style="float:none;margin:108px 0 0 90px;">
+        <div class="page clear" style="float:none;margin:6px 0 0 90px;">
             <%
                                 int indexFrom = queryResult.page_size * (queryResult.page - 1) + 1;
                                 int indexTo = queryResult.page_size * queryResult.page;

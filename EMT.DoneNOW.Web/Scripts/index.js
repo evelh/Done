@@ -36,20 +36,28 @@ $(".information ").children(".left").width(leftWidth + "%");
 
 //logo的下拉菜单内容
 $(".Logo").on("mousemove", function () {
+    clearTimeout(timer);
     $(this).css("border-color", "#d7d7d7");
     $(".GuideOverlay").show();
 });
 $(".Logo").on("mouseout", function () {
-    $(this).css("border-color", "#fff");
-    $(".GuideOverlay").hide();
+    var _this = this;
+    timer = setTimeout(function () {
+        $(_this).css("border-color", "#fff");
+        $(".GuideOverlay").hide();
+    }, 500)
 });
 $(".GuideOverlay").on("mousemove", function () {
+    clearTimeout(timer);
     $(".Logo").css("border-color", "#d7d7d7");
     $(this).show();
 });
 $(".GuideOverlay").on("mouseout", function () {
-    $(".Logo").css("border-color", "#fff");
-    $(this).hide();
+    var _this = this;
+    timer = setTimeout(function () {
+        $(".Logo").css("border-color", "#fff");
+        $(_this).hide();
+    }, 500)
 });
 //循环一级菜单
 $.each($(".GuideNavigation"), function (i) {
