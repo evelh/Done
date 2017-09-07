@@ -63,16 +63,16 @@
                                                     <td class="FieldLabel">
                                                         客户名称
                                                         <div>
-                                                            <a class="ButtonIcon Link NormalState">Autotask Corporation</a>
+                                                            <a class="ButtonIcon Link NormalState"><%=contract.accountName %></a>
                                                         </div>
                                                     </td>
                                                     <td class="FieldLabel">
                                                         合同状态
                                                         <div>
                                                             <span style="display: inline-block;">
-                                                                <select class="txtBlack8Class" style="width: 265px;">
-                                                                    <option value="">0</option>
-                                                                    <option value="">1</option>
+                                                                <select name="status_id" class="txtBlack8Class" style="width: 265px;">
+                                                                    <option <%if (contract.contract.status_id == 1) { %> selected="selected" <%} %> value="1">激活</option>
+                                                                    <option <%if (contract.contract.status_id == 0) { %> selected="selected" <%} %> value="0">未激活</option>
                                                                 </select>
                                                             </span>
                                                         </div>
@@ -82,16 +82,19 @@
                                                     <td class="FieldLabel">
                                                         合同类型
                                                         <div>
-                                                            Recurring Service
+                                                            <%=contractTypeName %>
                                                         </div>
                                                     </td>
                                                     <td class="FieldLabel" style="width: 330px;">
                                                         合同种类
                                                         <div>
                                                             <span style="display: inline-block;">
-                                                                <select class="txtBlack8Class" style="width: 265px;">
-                                                                    <option value="">0</option>
-                                                                    <option value="">1</option>
+                                                                <select name="cate_id" class="txtBlack8Class" style="width: 265px;">
+                                                                    <%foreach (var cate in contractCate) {
+                                                                            %>
+                                                                    <option <%if (contract.contract.status_id.ToString().Equals(cate.val)) { %> selected="selected" <%} %> value="<%=cate.val %>"><%=cate.show %></option>
+                                                                    <%
+                                                                        } %>
                                                                 </select>
                                                             </span>
                                                         </div>
@@ -101,17 +104,14 @@
                                                     <td class="FieldLabel">
                                                         合同名称<span style="color: Red;">*</span>
                                                         <div>
-                                                            <input type="text" style="width: 265px;" value=""/>
+                                                            <input type="text" id="name" name="name" style="width: 265px;" value="<%=contract.contract.name %>"/>
                                                         </div>
                                                     </td>
                                                     <td class="FieldLabel" style="margin-left:2px;margin-bottom:-3px;">
                                                         联系人
                                                         <div>
                                                             <span style="display: inline-block;">
-                                                                <select class="txtBlack8Class" style="width: 265px;">
-                                                                    <option value="">0</option>
-                                                                    <option value="">1</option>
-                                                                </select>
+                                                                <asp:DropDownList ID="contact_id" runat="server"></asp:DropDownList>
                                                             </span>
                                                         </div>
                                                     </td>
@@ -120,25 +120,25 @@
                                                     <td class="FieldLabel">
                                                         合同描述
                                                         <div>
-                                                            <textarea style="height:90px;width:265px;resize:vertical;"></textarea>
+                                                            <textarea name="description" style="height:90px;width:265px;resize:vertical;"><%=contract.contract.description %></textarea>
                                                         </div>
                                                     </td>
                                                     <td class="FieldLabel" style="margin-left:2px;margin-bottom:-3px;">
                                                         商机
                                                         <div style="margin-bottom: 15px">
                                                             <span style="display: inline-block;">
-                                                                <select class="txtBlack8Class" style="width: 265px;">
-                                                                    <option value="">0</option>
-                                                                    <option value="">1</option>
-                                                                </select>
+                                                                <asp:DropDownList ID="opportunity_id" runat="server"></asp:DropDownList>
                                                             </span>
                                                         </div>
                                                         工时计费设置
                                                         <div>
                                                             <span style="display: inline-block;">
-                                                                <select class="txtBlack8Class" style="width: 265px;">
-                                                                    <option value="">0assafsfsdg</option>
-                                                                    <option value="">1</option>
+                                                                <select name="bill_post_type_id" class="txtBlack8Class" style="width: 265px;">
+                                                                    <%foreach (var bill in billPostType) {
+                                                                            %>
+                                                                    <option value="<%=bill.val %>"><%=bill.show %></option>
+                                                                    <%
+                                                                        } %>
                                                                 </select>
                                                             </span>
                                                         </div>
@@ -148,7 +148,7 @@
                                                     <td class="FieldLabel">
                                                         外部合同号
                                                         <div>
-                                                            <input type="text" style="width: 265px;" value=""/>
+                                                            <input type="text" name="external_no" style="width: 265px;" value="<%=contract.contract.external_no %>"/>
                                                         </div>
                                                     </td>
                                                     <td class="FieldLabel">
@@ -156,7 +156,7 @@
                                                         <div>
                                                            <span style="display: inline-block;">
                                                                <span class="txtBlack8Class">
-                                                                   <input type="checkbox" style="vertical-align:middle;"/>
+                                                                   <input name="" type="checkbox" style="vertical-align:middle;"/>
                                                                    <label>要求工时输入开始/结束时间</label>
                                                                </span>
                                                            </span>
@@ -168,11 +168,15 @@
                                                         服务等级协议
                                                         <div>
                                                              <span style="display: inline-block;">
-                                                                <select class="txtBlack8Class" style="width: 280px;">
-                                                                    <option value="">sdgsd</option>
-                                                                    <option value="">sdfsd</option>
+                                                                <select class="txtBlack8Class" name="sla_id" style="width: 280px;">
+                                                                    <option value=""></option>
+                                                                    <%foreach (var sla in slaList) {
+                                                                            %>
+                                                                    <option value="<%=sla.id %>"><%=sla.name %></option>
+                                                                    <%
+                                                                        } %>
                                                                 </select>
-                                                                 <span style="display: inline-block"><img src="../Images/add.png" style="cursor: pointer;vertical-align: middle;"></span>
+                                                                <span style="display: inline-block"><img src="../Images/add.png" style="cursor: pointer;vertical-align: middle;"/></span>
                                                             </span>
                                                         </div>
                                                     </td>
@@ -181,7 +185,7 @@
                                                         <div>
                                                            <span style="display: inline-block;">
                                                                <span class="txtBlack8Class">
-                                                                   <input type="checkbox" style="vertical-align:middle;"/>
+                                                                   <input type="checkbox" name="is_sdt_default" style="vertical-align:middle;"/>
                                                                    <label>默认服务台合同</label>
                                                                </span>
                                                            </span>
@@ -218,14 +222,14 @@
                                                         <td class="FieldLabel">
                                                             合同周期类型
                                                             <div>
-                                                                Yearly
+                                                                <%if (contract.contract.period_type != null) { %><%=periodType.First(p=>p.val.Equals(contract.contract.period_type.ToString())).show %><%} %>
                                                             </div>
                                                         </td>
                                                         <td class="FieldLabel">
                                                             初始费用
                                                             <div>
                                                                 <span style="display: inline-block;">
-                                                                    <input type="text" value="0.00"/>
+                                                                    <input type="text" name="setup_fee" value="<%=contract.contract.setup_fee %>"/>
                                                                 </span>
                                                             </div>
                                                         </td>

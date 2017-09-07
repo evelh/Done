@@ -12,7 +12,7 @@
 <body>
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">合同向导<%=contractTypeName %></span>
+            <span class="text1">合同向导<%if (!string.IsNullOrEmpty(contractTypeName)) { %><%=contractTypeName %><%} %></span>
         </div>
     </div>
     <form id="form1" runat="server">
@@ -136,7 +136,7 @@
                                                 服务等级协议
                                                 <div>
                                                     <select id="slaSelect" name="sla_id" style="width:356px;">
-                                                        <option value="">--请选择--</option>
+                                                        <option value=""></option>
                                                         <%foreach (var sla in slaList) {
                                                                 %>
                                                         <option value="<%=sla.id %>"><%=sla.name %></option>

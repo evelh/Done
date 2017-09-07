@@ -29,6 +29,29 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 根据合同id获取合同的编辑信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ContractEditDto GetContract(long id)
+        {
+            ContractEditDto dto = new ContractEditDto();
+
+            ctt_contract contract = dal.FindById(id);
+            if (contract == null || contract.delete_time > 0)
+                return null;
+
+            dto.contract = contract;
+            dto.accountName = new CompanyBLL().GetCompany(contract.account_id).name;
+            if (contract.contact_id != null)
+                dto.contactName = new ContactBLL().GetContact((long)contract.contact_id).name;
+            else
+                dto.contactName = "";
+
+            return dto;
+        }
+
+        /// <summary>
         /// 新增合同
         /// </summary>
         /// <param name="dto"></param>
@@ -116,6 +139,41 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
             return dto.contract.id;
+        }
+
+        /// <summary>
+        /// 合同类型值转换为合同类型
+        /// </summary>
+        /// <param name="typeId"></param>
+        /// <returns></returns>
+        public string GetContractTypeName(int typeId)
+        {
+            string contractTypeName = "";
+            switch (typeId)
+            {
+                case 1199:
+                    contractTypeName = "定期服务合同";
+                    break;
+                case 1200:
+                    contractTypeName = "工时及物料合同";
+                    break;
+                case 1201:
+                    contractTypeName = "固定价格合同";
+                    break;
+                case 1202:
+                    contractTypeName = "预付时间合同";
+                    break;
+                case 1203:
+                    contractTypeName = "预付费合同";
+                    break;
+                case 1204:
+                    contractTypeName = "事件合同";
+                    break;
+                default:
+                    contractTypeName = "";
+                    break;
+            }
+            return contractTypeName;
         }
 
         /// <summary>
