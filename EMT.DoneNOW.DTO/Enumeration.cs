@@ -617,7 +617,14 @@ namespace EMT.DoneNOW.DTO
             PER_TICKET = 1204,          // 事件合同
         }
     }
-
+    /// <summary>
+    /// 工单-126
+    /// </summary>
+    public enum TICKET {
+        INVENTORY=1481,               //库存1481
+        PROJECT=1482,                 //项目1482
+        TICKET=1483,                  //工单1483
+    }
     /// <summary>
     /// 查询分页面
     /// </summary>
