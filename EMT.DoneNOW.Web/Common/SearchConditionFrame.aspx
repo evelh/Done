@@ -67,8 +67,7 @@
             <% for (int i = 0; i < condition.Count; i += 3) {%> 
 				<tr>
 					<td>
-						<div class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>"clear input-dh"<%}
-                            else { %>"clear"<%} %>>
+						<div class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>"clear input-dh"<%} %>>
 							<label><%=condition[i].description %></label>
                         <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
                             || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA
@@ -129,8 +128,7 @@
             <% for (int i = 1; i < condition.Count; i += 3) {%> 
 				<tr>
 					<td>
-						<div class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>" input-dh"<%}
-                            else { %>""<%} %>>
+						<div class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>"clear input-dh"<%} %>>
 							<label><%=condition[i].description %></label>
                         <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
                             || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA
@@ -191,8 +189,7 @@
             <% for (int i = 2; i < condition.Count; i += 3) {%> 
 				<tr>
 					<td>
-						<div class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>"clear input-dh"<%}
-                            else { %>"clear"<%} %>>
+						<div class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>"clear input-dh"<%} %>>
 							<label><%=condition[i].description %></label>
                         <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
                             || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA

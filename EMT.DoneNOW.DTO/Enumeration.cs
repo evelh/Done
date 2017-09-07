@@ -704,6 +704,7 @@ namespace EMT.DoneNOW.DTO
 
 
         ContractAdd = 301,                      // 合同新增
+        ContractEdit = 302,                     // 合同编辑
 
         ProductCata=310,                        //产品种类查找带回
         MaterialCode=311,                       //物料代码查找带回

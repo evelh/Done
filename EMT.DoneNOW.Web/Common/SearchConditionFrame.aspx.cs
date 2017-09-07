@@ -71,7 +71,7 @@ namespace EMT.DoneNOW.Web
                     currentQuery.page_name = "合同查询";
                     break;
                 default:
-                    currentQuery.page_name = "客户查询";
+                    currentQuery.page_name = "";
                     break;
             }
 

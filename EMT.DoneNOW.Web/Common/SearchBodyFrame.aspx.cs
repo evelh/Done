@@ -324,7 +324,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "取消销售订单", click_function = "CancelSaleOrder()" });
                     break;
                 case (long)QueryType.Contract:
-                    contextMenu.Add(new PageContextMenuDto { text = "编辑合同", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑合同", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看合同", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "在新窗口中查看合同", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "续约", click_function = "openopenopen()\" \" style='color:grey;'" });

@@ -12,7 +12,7 @@
 <body>
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">合同向导<%if (!string.IsNullOrEmpty(contractTypeName)) { %><%=contractTypeName %><%} %></span>
+            <span class="text1">合同向导<%if (!string.IsNullOrEmpty(contractTypeName)) { %>(<%=contractTypeName %>)<%} %></span>
         </div>
     </div>
     <form id="form1" runat="server">
@@ -174,7 +174,8 @@
                                                                 <td class="FieldLabels" style="padding-left :16px">
                                                                     初始费用计费代码
                                                                     <div style="padding:0;">
-                                                                        <input type="text" disabled="disabled" style="margin: 2px 0px; width:224px;" />
+                                                                        <input type="hidden" id="SetupCodeHidden" name="setup_fee_cost_code_id" />
+                                                                        <input type="text" id="SetupCode" disabled="disabled" style="margin: 2px 0px; width:224px;" />
                                                                         <img src="../Images/add.png" style="vertical-align: middle;cursor: pointer;" />
                                                                     </div>
                                                                 </td>
