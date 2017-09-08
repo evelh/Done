@@ -29,6 +29,22 @@ namespace EMT.DoneNOW.Web.Contract
                 ContractAddDto dto = new ContractAddDto();
                 dto.contract = AssembleModel<ctt_contract>();
 
+                if (udfList != null && udfList.Count > 0)                      // 首先判断是否有自定义信息
+                {
+                    var list = new List<UserDefinedFieldValue>();
+                    foreach (var udf in udfList)                            // 循环添加
+                    {
+                        var new_udf = new UserDefinedFieldValue()
+                        {
+                            id = udf.id,
+                            value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
+                        };
+                        list.Add(new_udf);
+
+                    }
+                    dto.udf = list;
+                }
+
                 contractId = bll.Insert(dto, GetLoginUserId());
                 contractType = 9;
             }

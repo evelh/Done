@@ -48,6 +48,24 @@ namespace EMT.DoneNOW.BLL
             else
                 dto.contactName = "";
 
+            if (contract.bill_to_account_id != null)
+                dto.billToAccount = new CompanyBLL().GetCompany((long)contract.bill_to_account_id).name;
+            else
+                dto.billToAccount = "";
+
+            if (contract.bill_to_contact_id != null)
+                dto.billToContact = new ContactBLL().GetContact((long)contract.bill_to_contact_id).name;
+            else
+                dto.billToContact = "";
+
+            if (contract.setup_fee_cost_code_id != null)
+            {
+                var costCode = new d_cost_code_dal().FindById((long)contract.setup_fee_cost_code_id);
+                dto.costCode = costCode.name;
+            }
+            else
+                dto.costCode = "";
+
             return dto;
         }
 
