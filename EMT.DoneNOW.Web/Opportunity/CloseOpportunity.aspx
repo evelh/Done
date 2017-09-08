@@ -515,7 +515,7 @@
                                               <% EMT.DoneNOW.Core.ivt_product priProduct = null;
                                                   if (opportunity.primary_product_id != null)
                                                   {
-                                                    priProduct = new EMT.DoneNOW.BLL.IVT.ProductBLL().GetProduct((long)opportunity.primary_product_id);
+                                                    priProduct = new EMT.DoneNOW.BLL.ProductBLL().GetProduct((long)opportunity.primary_product_id);
                                                   }
                                               %>
 

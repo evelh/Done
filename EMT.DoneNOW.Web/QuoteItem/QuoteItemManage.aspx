@@ -150,7 +150,7 @@
                                     {
                                         if (!string.IsNullOrEmpty(item.Key.ToString()))
                                         {
-                                            var product = new EMT.DoneNOW.BLL.IVT.ProductBLL().GetProduct(long.Parse(item.Key.ToString()));
+                                            var product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(long.Parse(item.Key.ToString()));
                                             if (product != null)
                                             {
                                                 groupName = product.product_name;
@@ -638,7 +638,7 @@
                                         {
                                             if (!string.IsNullOrEmpty(outGroupBy.Key.ToString()))
                                             {
-                                                var product = new EMT.DoneNOW.BLL.IVT.ProductBLL().GetProduct(long.Parse(outGroupBy.Key.ToString()));
+                                                var product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(long.Parse(outGroupBy.Key.ToString()));
                                                 if (product != null)
                                                 {
                                                     outGroupName = product.product_name;
@@ -663,7 +663,7 @@
                                     {
                                         if (!string.IsNullOrEmpty(inGroupBy.Key.ToString()))
                                         {
-                                            var product = new EMT.DoneNOW.BLL.IVT.ProductBLL().GetProduct(long.Parse(inGroupBy.Key.ToString()));
+                                            var product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(long.Parse(inGroupBy.Key.ToString()));
                                             if (product != null)
                                             {
                                                 inGroupName = product.product_name;
