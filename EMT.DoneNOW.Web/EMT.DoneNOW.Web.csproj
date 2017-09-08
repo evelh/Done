@@ -133,6 +133,7 @@
     <Content Include="Company\UpdateContact.aspx" />
     <Content Include="ConfigurationItem\AddOrEditConfigItem.aspx" />
     <Content Include="ConfigurationItem\ConfigType.aspx" />
+    <Content Include="ConfigurationItem\ConfigUdfField.aspx" />
     <Content Include="ConfigurationItem\SubscriptionAddOrEdit.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
@@ -735,6 +736,13 @@
     </Compile>
     <Compile Include="ConfigurationItem\ConfigType.aspx.designer.cs">
       <DependentUpon>ConfigType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationItem\ConfigUdfField.aspx.cs">
+      <DependentUpon>ConfigUdfField.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\ConfigUdfField.aspx.designer.cs">
+      <DependentUpon>ConfigUdfField.aspx</DependentUpon>
     </Compile>
     <Compile Include="ConfigurationItem\SubscriptionAddOrEdit.aspx.cs">
       <DependentUpon>SubscriptionAddOrEdit.aspx</DependentUpon>

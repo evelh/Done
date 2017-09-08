@@ -38,12 +38,12 @@
                 <tbody>
                     <tr>
                         <td width="50%" class="FieldLabels">
-                            Configuration Item Type Name
+                           配置项类型名称
                             <span class="errorSmall">*</span>
                             <div style="padding-bottom: 10px;">
-                                <input type="text" style="width:268px;">
-                                <input type="checkbox">
-                                <span class="lblNormalClass" style="font-weight: normal;">Active</span>
+                                <asp:TextBox ID="Config_name" runat="server" style="width:268px;"></asp:TextBox>
+                                <asp:CheckBox ID="Active" runat="server" />
+                                <span class="lblNormalClass" style="font-weight: normal;">激活</span>
                             </div>
                         </td>
                     </tr>
@@ -57,7 +57,7 @@
                     <tr>
                         <td class="FieldLabels">
                             <div style="padding-bottom: 10px;">
-                                <span style="font-weight: bold;">Configuration Item User-Defined Fields</span>
+                                <span style="font-weight: bold;">用户自定义字段</span>
                             </div>
                         </td>
                     </tr>
@@ -65,64 +65,106 @@
             </table>
         </div>
         <div style="width: 100%; margin-bottom: 10px;">
-            <div class="ButtonContainer">
+            <div class="ButtonContainer header-title">
                 <ul>
-                    <li class="Button ButtonIcon NormalState" id="NewButton" tabindex="0">
-                        <span class="Icon New"></span>
+                   <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
                         <span class="Text">新建</span>
                     </li>
                 </ul>
             </div>
             <div class="GridContainer" style="height: auto;">
+                <div style="width: 100%; overflow: hidden; position: absolute; z-index: 99; height: 40px;">
+                    <table class="dataGridHeader" style="width:100%;border-collapse:collapse;">
+                        <tbody>
+                           <tr class="dataGridHeader" style="height: 8px;">
+                                <td align="center" style="width:17px;"></td>
+                                <td style="width: 27px;">
+                                    <span></span>
+                                </td>
+                                <td style="width:200px;">
+                                    <span>自定义字段名称</span>
+                                </td>
+                                <td align="center" style="width:57px;">
+                                    <span>必填</span>
+                                </td>
+                                <td align="center" style="width:57px;">
+                                    <span>保护 </span>
+                                </td>
+                                <td align="right" style="width:100px;">
+                                    <span>
+                                        排序号
+                                    </span>
+                                </td>
+                               <td style="width:9.5px;visibility:hidden;">
+                               </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <div style="width: 100%; overflow: auto; z-index: 0;height:700px;">
                     <table class="dataGridBody" cellspacing="0" style="width:100%;border-collapse:collapse;">
-                        <tbody>
-                            <tr class="dataGridHeader" style="height: 28px;">
-                                <td align="center" style="width: 27px;"></td>
-                                <td style="width: auto;">
-                                    <span>Name</span>
+                        <tbody>                            
+                           <tr class="dataGridHeader" style="height: 8px;">
+                                <td align="center" style="width:17px;"></td>
+                                <td style="width: 27px;">
+                                    <span></span>
+                                </td>
+                                <td style="width:200px;">
+                                    <span>自定义字段名称</span>
                                 </td>
                                 <td align="center" style="width:57px;">
-                                    <span>Required</span>
+                                    <span>必填</span>
                                 </td>
                                 <td align="center" style="width:57px;">
-                                    <span>Protected </span>
+                                    <span>保护 </span>
                                 </td>
-                                <td align="right">
+                                <td align="right" style="width:100px;">
                                     <span>
-                                        Sort Order
+                                        排序号
                                     </span>
                                 </td>
                             </tr>
+                            <%foreach (var tr in GetAlludf)
+                                { %>
                             <tr class="dataGridBody">
                                 <td align="center">
-                                    <img src="img/edit.png" alt="">
+                                    <img src="../Images/edit.png" />
                                 </td>
+                                <td style="text-align:center"><input type="checkbox" /></td>
                                 <td style="width: auto;">
-                                    <span>Battery Life</span>
+                                    <span><%=tr.col_comment %></span>
                                 </td>
                                 <td align="center">
-                                    <img src="img/check.png" alt="">
+                                    <%if (tr.is_required > 0)
+                                        { %>
+                                    <img src="../Images/check.png" />
+                                    <%} %>
                                 </td>
                                 <td align="center">
-
+                                    <%if (tr.is_protected > 0)
+                                        { %>
+                                    <img src="../Images/check.png" />
+                                    <%} %>
                                 </td>
                                 <td align="right">
-                                    <span></span>
+                                    <span><%=tr.sort_order %></span>
                                 </td>
                             </tr>
+                            <%} %>
+
                             <tr class="dataGridBody">
                                 <td align="center">
-                                    <img src="img/edit.png" alt="">
+                                   <img src="../Images/edit.png" />
                                 </td>
+                                <td style="text-align:center"><input type="checkbox" /></td>
                                 <td style="width: auto;">
                                     <span>Brand</span>
                                 </td>
                                 <td align="center">
-                                    <img src="img/check.png" alt="">
+                                    <img src="../Images/check.png" />
                                 </td>
                                 <td align="center">
-                                    <img src="img/check.png" alt="">
+                                   <img src="../Images/check.png" />
                                 </td>
                                 <td align="right">
                                     <span>sgg</span>

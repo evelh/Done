@@ -106,7 +106,7 @@
                         { %>
                     <tr class="qqq">
                         <td width="15" style="padding-left: 10px;">
-                            <img class="delete" src="../Images/cancel.png" style="cursor: pointer;"/>
+                            <img class="delete" src="../Images/delete.png" style="cursor: pointer;"/>
                             <input type="hidden" value="<%=i.id %>"/>
                         </td>
                         <td align="left" style="padding-top: 2px;padding-left: 10px;"><%=i.name %></td>
