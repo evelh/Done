@@ -286,7 +286,7 @@
                                                     <i id="callbackCost" onclick="chooseDegression()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -81px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
                                                        <i id="callBackCharge" onclick="chooseCharge()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -81px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
                                                        <i id="callBackShip" onclick="chooseShip()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -81px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
-                                                    <input type="hidden" id="nameHidden"/>
+                                                    <input type="hidden" id="nameHidden" value="<%=quote_item==null?"":quote_item.id.ToString() %>"/>
                                                 </div>
                                             </td>
                                         </tr>

@@ -283,7 +283,7 @@ textarea {
                                         <td width="45%" class="FieldLabels">
                                             总收益
                                             <div>
-                                                <input type="text" id="total_revneue" style="width: 278px;" value="<%= new EMT.DoneNOW.BLL.CRM.OpportunityBLL().ReturnOppoRebenue(opportunity).ToString("0.00") %>">
+                                                <input type="text" id="total_revneue" style="width: 278px;" value="<%= new EMT.DoneNOW.BLL.CRM.OpportunityBLL().ReturnOppoRevenue(opportunity).ToString("0.00") %>">
                                             </div>
                                         </td>
                                     </tr>
@@ -341,7 +341,7 @@ textarea {
                                                 var productname = "";
                                                 if (opportunity.primary_product_id != null)
                                                 {
-                                                    var product = new EMT.DoneNOW.BLL.IVT.ProductBLL().GetProduct((long)opportunity.primary_product_id);
+                                                    var product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct((long)opportunity.primary_product_id);
                                                     if (product != null)
                                                     {
                                                         productname = product.product_name;

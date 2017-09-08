@@ -18,7 +18,7 @@ namespace EMT.DoneNOW.DTO
         TAX_REGION = 5,
         ACCOUNT_TYPE = 6,
         ACTION_TYPE = 7,
-        CALENDAR_DISPLAY=9,       //日历显示模式
+        CALENDAR_DISPLAY = 9,       //日历显示模式
         OPPORTUNITY_STAGE = 11,
         OPPORTUNITY_SOURCE = 12,
         OPPORTUNITY_INTEREST_DEGREE = 13,
@@ -406,8 +406,8 @@ namespace EMT.DoneNOW.DTO
             COST_CALLBACK = 887,                // 成本查找带回
             CHARGE_CALLBACK = 888,              // 费用查找带回
             SHIP_CALLBACK = 889,                // 配送费用查找带回
-            INSTALLEDPRODUCT=890,               // 配置项管理-查询
-            PRODUCT_CATE_CALLBACK=891,          //配置项管理-产品种类查找带回
+            INSTALLEDPRODUCT = 890,               // 配置项管理-查询
+            PRODUCT_CATE_CALLBACK = 891,          //配置项管理-产品种类查找带回
             SUBSCRIPTION = 892,                 // 订阅管理-查询
             SALEORDER = 894,                    // 销售订单 - 查询
             CONTRACT = 895,                     // 合同
@@ -461,13 +461,14 @@ namespace EMT.DoneNOW.DTO
             QUOTE_ITEM = 771,                             // 报价项 
             QUOTE_TEMP = 772,                             //报价模板
             CONTRACT = 773,                             // 合同
-            PRODUCT=774,                                //产品
+            PRODUCT = 774,                                //产品
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息            
             SECURITY_LEVEL = 776,                       //安全等级
             CONFIGURAITEM = 777,                        // 配置项
             SALE_ORDER = 778,                           // 销售订单
             SUBSCRIPTION = 779,                         // 订阅
             CONTRACT_EXTENSION = 780,                   // 合同扩展信息
+            CONTRACT_COST = 782,                        // 合同成本
             CONTRACT_SERVICE = 783,                     // 合同服务
             CONTRACT_MILESTONE = 784,                   // 合同里程碑
             General_Code = 794,                         //通用代码
@@ -580,17 +581,17 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum COST_CODE_CATE
         {
-            GENERAL_ALLOCATION_CODE=1158,        //  一般成本
-            EXPENSE_CATEGORY=1159,               // 费用
-            INTERNAL_ALLOCATION_CODE=1160,       // 内部成本
-            MATERIAL_COST_CODE=1161,             // 物料成本
-            RECURRING_CONTRACT_SERVICE_CODE=1162,// 周期服务成本
-            MILESTONE_CODE=1163,                 // 里程碑
-            PRODUCT_CODE=1164,                   // 产品
-            QUICKBOOKS=1165,                     // 
-            BLOCK_PURCHASE=1166,                 // 
-            RETAINER_PURCHASE=1167,              // 
-            TICKET_PURCHASE=1168                 // 
+            GENERAL_ALLOCATION_CODE = 1158,        //  一般成本
+            EXPENSE_CATEGORY = 1159,               // 费用
+            INTERNAL_ALLOCATION_CODE = 1160,       // 内部成本
+            MATERIAL_COST_CODE = 1161,             // 物料成本
+            RECURRING_CONTRACT_SERVICE_CODE = 1162,// 周期服务成本
+            MILESTONE_CODE = 1163,                 // 里程碑
+            PRODUCT_CODE = 1164,                   // 产品
+            QUICKBOOKS = 1165,                     // 
+            BLOCK_PURCHASE = 1166,                 // 
+            RETAINER_PURCHASE = 1167,              // 
+            TICKET_PURCHASE = 1168                 // 
         }
 
         /// <summary>
@@ -616,6 +617,34 @@ namespace EMT.DoneNOW.DTO
             BLOCK_HOURS = 1202,         // 预付时间合同
             RETAINER = 1203,            // 预付费合同
             PER_TICKET = 1204,          // 事件合同
+        }
+        /// <summary>
+        /// 合同-成本类型 - 114
+        /// </summary>
+        public enum COST_TYPE
+        {
+            OPERATIONA = 1228,          // 运营成本
+            CAPTITALIZED = 1229,        // 投资成本
+        }
+        /// <summary>
+        /// 合同-成本状态 - 115
+        /// </summary>
+        public enum COST_STATUS
+        {
+            UNDETERMINED = 1232,           // 待定
+            PENDING_APPROVAL = 1233,       // 待审批
+            PENDING_PURCHASE = 1234,       // 待采购/待拣货
+            IN_PURCHASING = 1235,          // 采购中
+            PENDING_DELIVERY = 1236,       // 待配送
+            ALREADY_DELIVERED = 1237,      // 已配送
+            CANCELED = 1238,             // 已取消
+        }
+
+        public enum PROJECT_TYPE
+        {
+            ACCOUNT_PROJECT = 1338,
+            IN_PROJECT= 1339,
+            PROJECT_DAY = 1340,
         }
     }
     /// <summary>
@@ -647,7 +676,7 @@ namespace EMT.DoneNOW.DTO
         SubcompanyCompanyView = 14,        // 客户管理-详情-子客户查询
         OpportunityContactView = 15,       // 联系人管理-详情-商机查询
 
-        InstalledProductView  = 32,     // 配置项管理
+        InstalledProductView = 32,     // 配置项管理
         Subscription = 34,              // 订阅
         SaleOrder = 36,                 // 销售订单
         Contract = 37,                  // 合同
@@ -701,7 +730,7 @@ namespace EMT.DoneNOW.DTO
 
         ProductSelect = 190,                    // 产品查找带回
         ManyProductSelect = 191,                // 多选产品查找带回
-        
+
         ServiceSelect = 200,                      // 服务的查找带回
         ServiceBundleSelect = 201,               // 服务集的查找带回
 
@@ -720,13 +749,15 @@ namespace EMT.DoneNOW.DTO
 
         ContractAdd = 301,                      // 合同新增
         ContractEdit = 302,                     // 合同编辑
+        ContractSelectCallBack = 303,           // 合同查找带回
 
-        ProductCata=310,                        //产品种类查找带回
-        MaterialCode=311,                       //物料代码查找带回
+        ProductCata = 310,                        //产品种类查找带回
+        MaterialCode = 311,                       //物料代码查找带回
 
-        VendorAdd=320,                          //添加供应商
-        TerritorySource=321,                   //地域带回员工
+        VendorAdd = 320,                          //添加供应商
+        TerritorySource = 321,                   //地域带回员工
         VendorSelect = 322,                    //查找供应商
+
 
         SysOPPORTUNITY_ADVANCED_FIELD =322,         //添加商机扩展字段
         TERRITORY=323,                             //添加地域
@@ -740,5 +771,6 @@ namespace EMT.DoneNOW.DTO
 
         Inventory=330,                             //产品库存编辑
         InventoryTransfer=331,                     //移库
+
     }
 }

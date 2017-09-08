@@ -148,6 +148,15 @@ namespace EMT.DoneNOW.Web.Opportunity {
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden codeSelect;
         
         /// <summary>
+        /// jqueryCode 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden jqueryCode;
+        
+        /// <summary>
         /// period_type 控件。
         /// </summary>
         /// <remarks>
@@ -202,12 +211,57 @@ namespace EMT.DoneNOW.Web.Opportunity {
         protected global::System.Web.UI.WebControls.CheckBox isIncludeCharges;
         
         /// <summary>
-        /// ShowNext 控件。
+        /// rbProjectCost 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ShowNext;
+        protected global::System.Web.UI.WebControls.RadioButton rbProjectCost;
+        
+        /// <summary>
+        /// RadioPC 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton RadioPC;
+        
+        /// <summary>
+        /// rbContractCost 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rbContractCost;
+        
+        /// <summary>
+        /// RadioCCEx 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton RadioCCEx;
+        
+        /// <summary>
+        /// RadioBI 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton RadioBI;
+        
+        /// <summary>
+        /// Finish 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Finish;
     }
 }

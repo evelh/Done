@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using EMT.DoneNOW.DTO;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.BLL;
+using EMT.DoneNOW.BLL.CRM;
 
 namespace EMT.DoneNOW.Web.Contract
 {

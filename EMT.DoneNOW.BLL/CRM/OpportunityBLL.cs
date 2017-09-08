@@ -9,7 +9,7 @@ using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
 
-namespace EMT.DoneNOW.BLL
+namespace EMT.DoneNOW.BLL.CRM
 {
     public class OpportunityBLL
     {
@@ -368,15 +368,14 @@ namespace EMT.DoneNOW.BLL
             */
         }
 
-        // 关闭商机(赢得商机)
+        /// <summary>
+        /// 关闭商机(赢得商机)
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
         public ERROR_CODE CloseOpportunity(CloseOpportunityDto param, long user_id)
         {
-
-            // 1.修改商机操作
-            // 2.更改商机的客户的客户类型和地址相关操作
-            // 3.当勾选 从报价激活项目提案 更新项目，将计费项关联到项目（未创建表，暂不处理）
-            // 4.新增合同信息
-
             var closeSetting = new SysSettingBLL().GetSetById(SysSettingEnum.CRM_OPPORTUNITY_WIN_REASON);
             if (closeSetting.setting_value != ((int)DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_NONE).ToString())
             {
@@ -392,12 +391,12 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.PARAMS_ERROR;
                 }
             }
+            // todo 根据页面的勾选情况进行不同的必填项验证
 
 
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
-
             #region 处理逻辑1. 修改商机相关信息
             var updateDto = new OpportunityAddOrUpdateDto()
             {
@@ -405,11 +404,9 @@ namespace EMT.DoneNOW.BLL
             };
             Update(updateDto, user.id);
             #endregion
-
             #region 2.更新客户信息
             // 如果商机客户类型不是“客户”或者需要补充地址信息中心，则修改客户信息
             // 目前客户地址是必填无需补充，所以暂时只判断客户类型即可
-
             var account = new CompanyBLL().GetCompany(param.opportunity.account_id);
             if (account != null)
             {
@@ -427,7 +424,7 @@ namespace EMT.DoneNOW.BLL
                         oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
                         oper_object_id = account.id,// 操作对象id
-                        oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
                         oper_description = _dal.CompareValue(new CompanyBLL().GetCompany(param.opportunity.account_id), account),
                         remark = "修改客户类型"
 
@@ -436,10 +433,7 @@ namespace EMT.DoneNOW.BLL
 
                 }
             }
-
             #endregion
-
-
             long? contact_id = null;
             if (param.opportunity.contact_id != null)
             {
@@ -449,45 +443,74 @@ namespace EMT.DoneNOW.BLL
                     contact_id = contact.id;
                 }
             }
-
-
+            var priQuote = new QuoteBLL().GetPrimaryQuote(param.opportunity.id);
+            List<crm_quote_item> quoteItemList = null;
+            if (priQuote != null)
+            {
+                quoteItemList = new crm_quote_item_dal().GetQuoteItems($" and quote_id = {priQuote.id}");
+            }
             #region 3.保存项目信息
             if (param.activateProject) // 代表用户勾选了从报价激活项目提案
             {
+                // ctt_contract_cost 计费项表
+                if (priQuote != null && priQuote.project_id != null)
+                {
+                    var project = new pro_project_dal().GetProjectById((long)priQuote.project_id);
+                    if (project != null)
+                    {
+                        if(project.type_id != (int)PROJECT_TYPE.ACCOUNT_PROJECT)
+                        {
+                            project.type_id = (int)PROJECT_TYPE.ACCOUNT_PROJECT;
+                            project.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                            project.update_user_id = user.id;
+                            new sys_oper_log_dal().Insert(new sys_oper_log()
+                            {
+                                user_cate = "用户",
+                                user_id = (int)user.id,
+                                name = user.name,
+                                phone = user.mobile == null ? "" : user.mobile,
+                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                                oper_object_id = account.id,// 操作对象id
+                                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                                oper_description = _dal.CompareValue(new pro_project_dal().GetProjectById((long)priQuote.project_id), project),
+                                remark = "修改项目提案类型"
 
-
+                            });
+                        }
+                    }
+                }
             }
-
             #endregion
 
             // 新增合同和更新合同二选一的关系
-            #region 4.新增合同信息
+            #region 4.新增合同信息 -- todo 需求逻辑（二，三，四，五）
             if (param.createContract) // 代表用户勾选了创建周期服务合同
             {
-
+                var lastAddContract = new ctt_contract_dal().GetLastAddContract();
                 // 新创建合同对象
                 var contract = new ctt_contract() {
                     id = _dal.GetNextIdCom(),
                     name = param.contract.name,
                     account_id = param.opportunity.account_id,
                     is_sdt_default = 0,
+                    type_id = (int)CONTRACT_TYPE.SERVICE,
                     contact_id = contact_id,
                     start_date = param.contract.start_date,
                     end_date = param.contract.end_date,
                     occurrences = param.contract.occurrences,
                     description="",
-                    cate_id=null,    // 最后一次手工添加定期服务合同时选择的种类?? 从哪里取  todo
+                    cate_id= lastAddContract==null?null:lastAddContract.cate_id,   
                     external_no = null,
-                    sla_id =  null,// 最后一次手工添加定期服务合同时选择的sla?? 从哪里取  todo
+                    sla_id = lastAddContract == null ? null : lastAddContract.sla_id,
                     setup_fee = null,  // 报价项初始费用
-                    timeentry_need_begin_end  =0,  // 最后一次手工添加定期服务合同时选择的该字段值 从哪里取  todo
+                    timeentry_need_begin_end  = lastAddContract == null ? (sbyte)1 : lastAddContract.timeentry_need_begin_end,  
                     // 通知接收人？？todo 
                     create_user_id = user.id,
                     update_user_id = user.id,
                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 };
-
                 new ctt_contract_dal().Insert(contract);
                 new sys_oper_log_dal().Insert(new sys_oper_log()
                 {
@@ -504,6 +527,7 @@ namespace EMT.DoneNOW.BLL
 
                 });
                 // 同时将生成的计费项关联到新合同
+                param.contract.id = contract.id;
             }
 
             #endregion
@@ -512,27 +536,124 @@ namespace EMT.DoneNOW.BLL
             if (param.addServicesToExistingContract ) // 代表用户勾选了将服务加入已存在的定期服务合同
             {
                 var oldContract = new ctt_contract_dal().GetSingleContract(param.contract.id);
-                if(oldContract.setup_fee==null|| oldContract.setup_fee == 0)
+                
+                if(quoteItemList!=null&& quoteItemList.Count > 0)
                 {
-                    oldContract.setup_fee = param.contract.setup_fee;
-                    oldContract.update_user_id = user.id;
-                    oldContract.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    var startCostItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.START_COST).ToList();
+                    if(startCostItem!=null&& startCostItem.Count > 0)
                     {
-                        user_cate = "用户",
-                        user_id = (int)user.id,
-                        name = user.name,
-                        phone = user.mobile == null ? "" : user.mobile,
-                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT,
-                        oper_object_id = oldContract.id,
-                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                        oper_description = _dal.CompareValue(new ctt_contract_dal().GetSingleContract(oldContract.id),oldContract),
-                        remark = "商机关闭，更新合同信息"
+                        var sum = startCostItem.Sum(_ => (_.quantity != null && _.unit_price != null) ? _.quantity * _.unit_price : 0);
 
-                    });
-                    new ctt_contract_dal().Update(oldContract);
+                        if (oldContract.setup_fee == null || oldContract.setup_fee == 0)
+                        {
+                            oldContract.setup_fee = sum;
+                            oldContract.update_user_id = user.id;
+                            oldContract.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                            new sys_oper_log_dal().Insert(new sys_oper_log()
+                            {
+                                user_cate = "用户",
+                                user_id = (int)user.id,
+                                name = user.name,
+                                phone = user.mobile == null ? "" : user.mobile,
+                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT,
+                                oper_object_id = oldContract.id,
+                                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                                oper_description = _dal.CompareValue(new ctt_contract_dal().GetSingleContract(oldContract.id), oldContract),
+                                remark = "商机关闭，更新合同信息"
 
+                            });
+                            new ctt_contract_dal().Update(oldContract);
+
+                        }
+
+                    }
+                }
+
+
+
+                // （二） 报价项中的服务/包，合同中不存在，插入服务包
+                var ccsDal = new ctt_contract_service_dal();
+                var conServiceList = new ctt_contract_service_dal().GetConSerList(param.contract.id);
+                if (quoteItemList!=null&& quoteItemList.Count > 0)
+                {
+                    var serviceItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE).ToList();
+                    if (serviceItem != null && serviceItem.Count > 0)
+                    {
+                        serviceItem.ForEach(_ =>
+                        {
+                            // 如果报价的服务/包在合同中不存在，则插入服务/包信息
+                            if (conServiceList.Any(csl => csl.object_id != _.object_id))
+                            {
+                                // 新增
+                                var service = new ctt_contract_service()
+                                {
+                                    id=_dal.GetNextIdCom(),
+                                    effective_date = param.effective_date,
+                                    object_id = (long)_.object_id,
+                                    object_type = (sbyte)isServiceOrBag((int)_.object_id), 
+                                    unit_price = _.unit_price,
+                                    unit_cost = _.unit_cost,
+                                    quantity = _.quantity==null?0:(int)_.quantity,
+                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    create_user_id = user.id,
+                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    update_user_id = user.id,
+                                };
+                                ccsDal.Insert(service);
+                                new sys_oper_log_dal().Insert(new sys_oper_log()
+                                {
+                                    user_cate = "用户",
+                                    user_id = (int)user.id,
+                                    name = user.name,
+                                    phone = user.mobile == null ? "" : user.mobile,
+                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
+                                    oper_object_id = service.id,// 操作对象id
+                                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                                    oper_description = _dal.AddValue(service),
+                                    remark = "新增合同服务项"
+
+                                });
+                            }
+                            else // 如果报价的服务/包在合同中存在，且用户选择了更新操作，则更新服务/包信息
+                            {
+                                if (param.isAddService)
+                                {
+                                    var conSer = conServiceList.FirstOrDefault(cs => cs.object_id == _.object_id);
+                                    if (conSer != null)
+                                    {
+                                        conSer.effective_date = param.effective_date;
+                                        if (param.isUpdatePrice)
+                                        {
+                                            conSer.unit_price = _.unit_price;
+                                        }
+                                        if (param.isUpdateCost)
+                                        {
+                                            conSer.unit_cost = _.unit_cost;
+                                        }
+                                        conSer.quantity += (int) _.quantity;
+                                        new sys_oper_log_dal().Insert(new sys_oper_log()
+                                        {
+                                            user_cate = "用户",
+                                            user_id = (int)user.id,
+                                            name = user.name,
+                                            phone = user.mobile == null ? "" : user.mobile,
+                                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
+                                            oper_object_id = conSer.id,// 操作对象id
+                                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                                            oper_description = _dal.CompareValue(ccsDal.GetSinConSer(conSer.id),conSer),
+                                            remark = "修改合同服务项"
+
+                                        });
+                                        ccsDal.Update(conSer);
+                                    }
+                                }
+                            }
+
+                        });
+                    }
                 }
 
             }
@@ -550,6 +671,22 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
             #region 7.转换为工单/项目/合同成本，不包括——转换为工单成本（新建已完成工单）逻辑
+            if (param.convertToServiceTicket)
+            {
+                
+            }
+            else if (param.convertToNewContractt|| param.convertToOldContract)
+            {   // 
+                InsertContract(param.costCodeList,param.opportunity,user,param.contract.id,null);
+            }
+            else if (param.convertToProject)
+            {
+                InsertContract(param.costCodeList, param.opportunity, user, param.contract.id, priQuote.project_id);
+            }
+            else if (param.convertToTicket)
+            {
+
+            }
 
             #endregion
 
@@ -574,68 +711,95 @@ namespace EMT.DoneNOW.BLL
 
             #endregion
 
-            #region 10.新增销售订单
-            // todo 只有当  产品/一次性折扣、成本、配送转为计费项时，销售订单就会自动生成
-            // todo 判断是否有这些报价项转换
-            var saleOrder = new crm_sales_order() {
-                id=_dal.GetNextIdCom(),
-                opportunity_id = param.opportunity.id,
-                status_id = (int)SALES_ORDER_STATUS.OPEN,
-                contact_id = contact_id,
-                owner_resource_id = param.opportunity.resource_id,
-                begin_date = DateTime.Now,
-                create_user_id = user.id,
-                update_user_id = user.id,
-                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-            };
+            #region 10.新增销售订单  
+            if (param.isIncludeCharges||param.isIncludePO||param.isIncludeShip)
+            {
+                var saleOrder = new crm_sales_order_dal().GetSingleSalesOrderByWhere($" and opportunity_id = {param.opportunity.id} ");
+                if (saleOrder == null)
+                {
+                    saleOrder = new crm_sales_order()
+                    {
+                        id = _dal.GetNextIdCom(),
+
+                        opportunity_id = param.opportunity.id,
+                        status_id = (int)SALES_ORDER_STATUS.OPEN,
+                        contact_id = contact_id,
+                        owner_resource_id = param.opportunity.resource_id,
+                        begin_date = DateTime.Now,
+                        create_user_id = user.id,
+                        update_user_id = user.id,
+                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    };
+                    new crm_sales_order_dal().Insert(saleOrder);
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = (int)user.id,
+                        name = user.name,
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SALE_ORDER,
+                        oper_object_id = saleOrder.id,// 操作对象id
+                        oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                        oper_description = _dal.AddValue(saleOrder),
+                        remark = "商机关闭，新增销售订单"
+                    });
+                }
+               
+            }
+
             #endregion
 
 
             #region 12.新增项目备注/合同备注
-            // todo 只有转为合同/项目计费项时，才会生成备注。工单不会生成
-            // 待确定
-            //com_activity addActivity = new com_activity()
-            //{
-            //    id = _dal.GetNextIdCom(),
-            //    cate_id = (int)ACTIVITY_CATE.NOTE,
-            //    action_type_id = (int)ACTIVITY_TYPE.OPPORTUNITYUPDATE,// 根据项目/合同 去设置
-            //    parent_id = null,
-            //    object_id = param.opportunity.id,
-            //    object_type_id = (int)OBJECT_TYPE.OPPORTUNITY,
-            //    account_id = param.opportunity.account_id,
-            //    contact_id = contact_id,
-            //    resource_id = param.opportunity.resource_id,
-            //    contract_id = null,// todo - 如果转为合同成本，则为“合同ID”；否则为空
-            //    opportunity_id = param.opportunity.id,
-            //    ticket_id = null,
-            //    start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),  // todo 从页面获取时间，去页面时间的12：00：00
-            //    end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),
-            //    description = $"",     // todo 内容描述拼接
-            //    status_id = null,
-            //    complete_description = null,
-            //    complete_time = null,
-            //    create_user_id = user.id,
-            //    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-            //    update_user_id = user.id,
-            //    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            // todo 只有转为合同/ 项目计费项时，才会生成备注。工单不会生成
+            if (param.convertToNewContractt||param.convertToOldContract||param.convertToProject)
+            {
+                bool isProject = param.convertToProject;
+                com_activity addActivity = new com_activity()
+                {
+                    id = _dal.GetNextIdCom(),
+                    cate_id = (int)ACTIVITY_CATE.NOTE,
+                    action_type_id = (int)ACTIVITY_TYPE.OPPORTUNITYUPDATE,// 根据项目/合同 去设置
+                    parent_id = null,
+                    object_id = param.opportunity.id,
+                    object_type_id = (int)OBJECT_TYPE.OPPORTUNITY,
+                    account_id = param.opportunity.account_id,
+                    contact_id = contact_id,
+                    resource_id = param.opportunity.resource_id,
+                    contract_id = null,// todo - 如果转为合同成本，则为“合同ID”；否则为空
+                    opportunity_id = param.opportunity.id,
+                    ticket_id = null,
+                    start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),  // todo 从页面获取时间，去页面时间的12：00：00
+                    end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),
+                    description = $"",     // todo 内容描述拼接
+                    status_id = null,
+                    complete_description = null,
+                    complete_time = null,
+                    create_user_id = user.id,
+                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    update_user_id = user.id,
+                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
 
-            //};
-            //new com_activity_dal().Insert(addActivity);
-            //new sys_oper_log_dal().Insert(new sys_oper_log()
-            //{
-            //    user_cate = "用户",
-            //    user_id = (int)user.id,
-            //    name = user.name,
-            //    phone = user.mobile == null ? "" : user.mobile,
-            //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-            //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACTIVITY,
-            //    oper_object_id = addActivity.id,// 操作对象id
-            //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-            //    oper_description = _dal.AddValue(addActivity),
-            //    remark = "商机关闭，创建备注"
+                };
+                new com_activity_dal().Insert(addActivity);
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = (int)user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACTIVITY,
+                    oper_object_id = addActivity.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                    oper_description = _dal.AddValue(addActivity),
+                    remark = "商机关闭，创建备注"
 
-            //});
+                });
+            }
+          
 
 
             #endregion
@@ -688,6 +852,169 @@ namespace EMT.DoneNOW.BLL
             return ERROR_CODE.SUCCESS;
         }
 
+        /// <summary>
+        /// 将报价项转换为计费项
+        /// </summary>
+        public void InsertContract( Dictionary<long,string> costCodeList,  crm_opportunity opportunity, UserInfoDto user, long contract_id , long? project_id = null)
+        {
+            var qiDal = new crm_quote_item_dal();
+            var cccDal = new ctt_contract_cost_dal();
+            var qiBLL = new QuoteItemBLL();
+            if (costCodeList != null && costCodeList.Count > 0)
+            {
+                foreach (var item in costCodeList)
+                {
+                    var quote_item = qiDal.GetQuoteItem(item.Key);
+                    if (quote_item == null)
+                    {
+                        continue;
+                    }
+                    long? product_id = null;
+                    int status_id = 0;
+                    if (quote_item.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT)
+                    {
+                        product_id = quote_item.object_id;
+                        status_id = (int)COST_STATUS.PENDING_PURCHASE;
+                    }
+                    else
+                    {
+                        status_id = (int)COST_STATUS.PENDING_DELIVERY;
+                    }
+
+                    if (quote_item.type_id != (int)QUOTE_ITEM_TYPE.DISCOUNT)
+                    {
+                        ctt_contract_cost cost = new ctt_contract_cost()
+                        {
+                            id = _dal.GetNextIdCom(),
+                            opportunity_id = (int)opportunity.id,
+                            quote_item_id = (int)item.Key,
+                            cost_code_id = long.Parse(item.Value),
+                            product_id = product_id,
+                            name =quote_item.name,
+                            description = quote_item.description,
+                            date_purchased = DateTime.Now,
+                            is_billed = 1,
+                            cost_type_id = (int)COST_TYPE.OPERATIONA,
+                            status_id = status_id,
+                            quantity = quote_item.quantity,
+                            unit_price = quote_item.unit_price,
+                            unit_cost = quote_item.unit_cost,
+                            create_user_id = user.id,
+                            update_user_id = user.id,
+                            create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            project_id = project_id,
+                            contract_id = contract_id,
+                        };
+                        cccDal.Insert(cost);
+                        new sys_oper_log_dal().Insert(new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = (int)user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,
+                            oper_object_id = cost.id,// 操作对象id
+                            oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                            oper_description = _dal.AddValue(cost),
+                            remark = "赢得商机时将报价项转换为计费项"
+
+                        });
+                    }
+                    else
+                    {
+                        var qiList = qiDal.GetItemsByItemID(quote_item.id);
+                        if (qiList != null && qiList.Count > 0)
+                        {
+                            var oneItem = qiList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional == 0 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
+
+                            var taxMoney = qiBLL.GetOneTimeMoneyTax(oneItem, quote_item);
+                            ctt_contract_cost taxCost = new ctt_contract_cost()
+                            {
+                                id = _dal.GetNextIdCom(),
+                                opportunity_id = (int)opportunity.id,
+                                quote_item_id = (int)item.Key,
+                                cost_code_id = long.Parse(item.Value),
+                                product_id = product_id,
+                                name = quote_item.name+"(包含税)",
+                                description = quote_item.description,
+                                date_purchased = DateTime.Now,
+                                is_billed = 1,
+                                cost_type_id = (int)COST_TYPE.OPERATIONA,
+                                status_id = status_id,
+                                quantity = quote_item.quantity,
+                                unit_price = taxMoney,
+                                unit_cost = quote_item.unit_cost,
+                                create_user_id = user.id,
+                                update_user_id = user.id,
+                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                project_id = project_id,
+                                contract_id = contract_id,
+                            };
+                            cccDal.Insert(taxCost);
+                            new sys_oper_log_dal().Insert(new sys_oper_log()
+                            {
+                                user_cate = "用户",
+                                user_id = (int)user.id,
+                                name = user.name,
+                                phone = user.mobile == null ? "" : user.mobile,
+                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,
+                                oper_object_id = taxCost.id,// 操作对象id
+                                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                                oper_description = _dal.AddValue(taxCost),
+                                remark = "赢得商机时将报价项转换为计费项"
+
+                            });
+
+                            ctt_contract_cost noTaxCost = new ctt_contract_cost()
+                            {
+                                id = _dal.GetNextIdCom(),
+                                opportunity_id = (int)opportunity.id,
+                                quote_item_id = (int)item.Key,
+                                cost_code_id = long.Parse(item.Value),
+                                product_id = product_id,
+                                name = quote_item.name + "(不包含税)",
+                                description = quote_item.description,
+                                date_purchased = DateTime.Now,
+                                is_billed = 1,
+                                cost_type_id = (int)COST_TYPE.OPERATIONA,
+                                status_id = status_id,
+                                quantity = quote_item.quantity,
+                                unit_price = taxMoney,
+                                unit_cost = quote_item.unit_cost,
+                                create_user_id = user.id,
+                                update_user_id = user.id,
+                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                project_id = project_id,
+                                contract_id = contract_id,
+                            };
+                            cccDal.Insert(noTaxCost);
+                            new sys_oper_log_dal().Insert(new sys_oper_log()
+                            {
+                                user_cate = "用户",
+                                user_id = (int)user.id,
+                                name = user.name,
+                                phone = user.mobile == null ? "" : user.mobile,
+                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,
+                                oper_object_id = noTaxCost.id,// 操作对象id
+                                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                                oper_description = _dal.AddValue(noTaxCost),
+                                remark = "赢得商机时将报价项转换为计费项"
+
+                            });
+                        }
+                    }
+                    
+                }
+            }
+          
+
+        }
         public ERROR_CODE LoseOpportunity(LoseOpportunityDto opportunityDto, long user_id)
         {
 
@@ -954,6 +1281,26 @@ namespace EMT.DoneNOW.BLL
             return total;
         }
 
+        /// <summary>
+        /// 根据id判断是服务还是服务包或者都不是（服务返回1 服务包返回2 ，都不是返回0）
+        /// </summary>
+        /// <param name="object_id"></param>
+        /// <returns></returns>
+        public int isServiceOrBag(long object_id)
+        {
+            // GetSinService
+            var service = new ivt_service_dal().GetSinService(object_id);
+            if (service != null)
+            {
+                return 1;
+            }
 
+            var serviceBundle = new ivt_service_bundle_dal().GetSinSerBun(object_id);
+            if (serviceBundle != null)
+            {
+                return 2;
+            }
+            return 0;
+        }
     }
 }

@@ -59,9 +59,17 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? status_last_modified_time { get; set; }
         [DataMember]
-        public Int32? projectobjectid { get; set; }
+        public Int64? contract_block_id { get; set; }
         [DataMember]
-        public Int32? parentobjectid { get; set; }
+        public Int64? project_id { get; set; }
+        [DataMember]
+        public Int64? ticket_id { get; set; }
+        [DataMember]
+        public Int64? opportunity_id { get; set; }
+        [DataMember]
+        public Int64? quote_item_id { get; set; }
+        [DataMember]
+        public Decimal? extended_price { get; set; }
         [DataMember]
         public Int32? creatorobjectid { get; set; }
         [DataMember]
@@ -69,9 +77,9 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? estimatecost { get; set; }
         [DataMember]
-        public Decimal? actualcost { get; set; }
-        [DataMember]
         public Int32? paymenttype { get; set; }
+        [DataMember]
+        public Int32? parentobjectid { get; set; }
         [DataMember]
         public Decimal? ourcost { get; set; }
         [DataMember]
@@ -83,13 +91,8 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public DateTime? web_service_date { get; set; }
         [DataMember]
-        public Int64? contract_block_id { get; set; }
-        [DataMember]
-        public Int32? quote_item_id { get; set; }
-        [DataMember]
-        public Int32? opportunity_id { get; set; }
-        [DataMember]
         public Decimal? change_order_hours { get; set; }
+
 
 
     }
