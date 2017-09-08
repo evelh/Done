@@ -42,5 +42,14 @@ namespace EMT.DoneNOW.DTO
         DEFAULT,                                     //已经设为默认
 
         SYSTEM,                                      //无法删除系统默认
+        MARKET_USED,                                 //市场已经被使用
+        TERRITORY_USED,                              //地域已经被使用
+        COMPETITOR_USED,                             //竞争对手已经被使用
+        OPPORTUNITY_SOURCE_USED,                     //商机来源已经被使用
+        ACTION_TYPE_USED,                            //活动类型已经被使用
+        OPPORTUNITY_STAGE_USED,                      //商机阶段已经被使用
+        WIN_OPPORTUNITY_REASON_USED,                 //关闭商机原因已经被使用
+        LOSS_OPPORTUNITY_REASON_USED,                //丢失商机原因已经被使用
+        ACCOUNT_TYPE_USED,                           //客户类别已经被使用
     }
 }

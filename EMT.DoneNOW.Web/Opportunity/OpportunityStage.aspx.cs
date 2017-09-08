@@ -1,5 +1,6 @@
 ﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace EMT.DoneNOW.Web
     {
         protected long id;
         private d_general stage = new d_general();
-        private SysOpportunityBLL sobll = new SysOpportunityBLL();
+        private GeneralBLL sobll = new GeneralBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt64(Request.QueryString["id"]);
@@ -58,20 +59,6 @@ namespace EMT.DoneNOW.Web
             }
 
         }
-
-        protected void Save_New_Click(object sender, EventArgs e)
-        {
-            if (save_deal())
-            {
-                // Response.Redirect("SysMarket.aspx");
-                Response.Write("<script>alert('商机阶段添加失败！');window.location.href = 'OpportunityStage.aspx';</script>");
-            }
-            else
-            {
-                Response.Write("<script>alert('商机阶段添加失败！');window.close();self.opener.location.reload();</script>");
-            }
-        }
-
         protected void Cancel_Click(object sender, EventArgs e)
         {
             Response.Write("<script>window.close();self.opener.location.reload();</script>");
@@ -102,7 +89,7 @@ namespace EMT.DoneNOW.Web
             if (id > 0)
             {
                 //修改更新
-                var result = sobll.UpdateOpportunityStage(stage,GetLoginUserId());
+                var result = sobll.Update(stage,GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS) {
                     return true;
                 }
@@ -118,7 +105,8 @@ namespace EMT.DoneNOW.Web
             }
             else {
                 //新增
-                var result = sobll.InsertOpportunityStage(stage,GetLoginUserId());
+                stage.general_table_id= (int)GeneralTableEnum.OPPORTUNITY_STAGE;
+                var result = sobll.Insert(stage,GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     return true;

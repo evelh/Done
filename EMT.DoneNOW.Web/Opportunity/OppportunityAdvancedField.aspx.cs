@@ -52,7 +52,7 @@ namespace EMT.DoneNOW.Web
             else {
                 field.ext1 = "0";
             }
-            var result = new SysOpportunityBLL().UpdateAdvancedField(field, GetLoginUserId());
+            var result = new GeneralBLL().Update(field, GetLoginUserId());
             if (result == DTO.ERROR_CODE.SUCCESS)
             {
                 Response.Write("<script>window.close();self.opener.location.reload();</script>");

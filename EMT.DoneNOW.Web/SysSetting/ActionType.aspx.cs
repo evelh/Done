@@ -1,5 +1,6 @@
 ﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace EMT.DoneNOW.Web
     public partial class ActionType :BasePage
     {
         public long id;
-        public ActionTypeBLL atbll = new ActionTypeBLL();
+        public GeneralBLL atbll = new GeneralBLL();
         public d_general action = new d_general();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,7 +21,7 @@ namespace EMT.DoneNOW.Web
             if (!IsPostBack) {
                 this.View.DataTextField = "show";
                 this.View.DataValueField = "val";
-                this.View.DataSource = atbll.GetField().FirstOrDefault(_ => _.Key == "View").Value;
+                this.View.DataSource = atbll.GetCalendarField().FirstOrDefault(_ => _.Key == "View").Value;
                 this.View.DataBind();
                 this.View.SelectedIndex = 0;
             }
@@ -82,6 +83,7 @@ namespace EMT.DoneNOW.Web
             }
             action.name = this.Name.Text.Trim().ToString();
             action.parent_id = Convert.ToInt32(this.View.SelectedValue.ToString());
+            action.general_table_id = (int)GeneralTableEnum.ACTION_TYPE;
             if (this.Active.Checked)
             {
                 action.is_active = 1;
@@ -90,7 +92,7 @@ namespace EMT.DoneNOW.Web
                 action.is_active = 0;
             }
             if (id > 0) {//更新
-                var result = atbll.UpdateActionType(action, GetLoginUserId());
+                var result = atbll.Update(action, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS) {
                     return true;
                 }
@@ -105,7 +107,7 @@ namespace EMT.DoneNOW.Web
                 }
 
             } else {//新增
-                var result = atbll.InsertActionType(action, GetLoginUserId());
+                var result = atbll.Insert(action, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS) {
                     return true;
                 }

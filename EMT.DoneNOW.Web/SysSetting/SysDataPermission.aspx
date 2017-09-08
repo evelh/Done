@@ -7,7 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
       <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
-    <title>受保护的数据的权限</title>
+     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+    <title>被保护数据权限设置</title>
 </head>
 <body>
     <form id="form1" runat="server" method="post">
@@ -23,13 +24,13 @@
         </div>
     </div>
     <!--按钮-->
-    <div class="ButtonContainer">
+    <div class="ButtonContainer header-title">
         <ul>
-            <li class="Button ButtonIcon NormalState" id="SaveButton" tabindex="0">
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                 <asp:Button ID="Save" runat="server" Text="保存"  BorderStyle="None" OnClick="Save_Click"/>
             </li>
 
-            <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                 <asp:Button ID="Cancle" runat="server" Text="取消"  BorderStyle="None" OnClick="Cancle_Click"/>
             </li>
         </ul>
@@ -41,12 +42,12 @@
                 <tbody>
                     <tr class="dataGridHeader">
                         <td>
-                            <a style="font-weight:bold;">Resource Name</a>
+                            <a style="font-weight:bold;">员工姓名</a>
                         </td>
-                        <td align="center">Edit Protected Data</td>
-                        <td align="center">View Protected Data</td>
-                        <td align="center">Edit Unprotected Data</td>
-                        <td align="center">View Unprotected Data</td>
+                        <td align="center">编辑保护数据</td>
+                        <td align="center">查看保护数据</td>
+                        <td align="center">编辑未保护数据</td>
+                        <td align="center">查看未保护数据</td>
                     </tr>
                     <%foreach (var i in resourcelist)
                         {%>

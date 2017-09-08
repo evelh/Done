@@ -1,5 +1,4 @@
 ﻿using EMT.DoneNOW.BLL;
-using EMT.DoneNOW.BLL.IVT;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 using System;
@@ -16,13 +15,14 @@ namespace EMT.DoneNOW.Web
     public partial class VendorAdd : BasePage
     {
         protected long id;
+        protected string state;//判断需要进行的操作
         protected ProductBLL vendorbll =new ProductBLL();
         protected ivt_product_vendor ivt_pv = new ivt_product_vendor();
         protected string vendorname = string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
            id = Convert.ToInt64(Request.QueryString["id"]);
-          // id = 1;
+           state = Convert.ToString(Request.QueryString["state"]);
             if (!IsPostBack) {
                 //获取类型为供应商的客户集合
                 if (id > 0)
@@ -52,11 +52,11 @@ namespace EMT.DoneNOW.Web
             string is_active;
             if (this.active.Checked)
             {
-              is_active = "1";
+              is_active = "y";
             }
             else
             {
-               is_active ="0";
+               is_active ="n";
             }
             decimal cost = Convert.ToDecimal(this.cost.Text.ToString() == "" ? 0: Convert.ToDecimal(this.cost.Text.ToString()));
             string no = string.Empty;
@@ -67,7 +67,9 @@ namespace EMT.DoneNOW.Web
             veve.Append(@"{'vendorname':'"+Convert.ToString(Request.Form["vvname"])+ "','id':'" + Convert.ToString(Request.Form["CallBackHidden"]) + "','vendor_cost':'" + cost + "','vendor_product_no':'"+no+ "','active':'"+ is_active + "'}");           
             string k =veve.ToString();
             Response.Write("<script>window.opener.document.getElementById(\"vendor_data\").value=\""+k+"\";</script>");
-            if (id <= 0)
+            if (id > 0|| state!=null) {
+                Response.Write("<script>window.opener.EditReturn();</script>");
+            }else
             {
                 Response.Write("<script>window.opener.kkk();</script>");
             }

@@ -37,42 +37,15 @@ namespace EMT.DoneNOW.Web.Contract
                 if (!int.TryParse(Request.QueryString["type"], out contractType))
                     contractType = 0;
             }
-            var generalBll = new GeneralBLL();
-            contractCate = generalBll.GetDicValues(GeneralTableEnum.CONTRACT_CATE);
-            periodType = generalBll.GetDicValues(GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE);
+            
+            Dictionary<string, object> dics = bll.GetField();
+            contractCate = dics["cate"] as List<DictionaryEntryDto>;
+            periodType = dics["periodType"] as List<DictionaryEntryDto>;
+            billPostType = dics["billPostType"] as List<DictionaryEntryDto>;
             slaList = bll.GetSLAList();
             udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);
-            billPostType = generalBll.GetDicValues(GeneralTableEnum.BILL_POST_TYPE);
 
-            InitContract();
-        }
-
-        private void InitContract()
-        {
-            switch(contractType)
-            {
-                case 1199:
-                    contractTypeName = "(定期服务合同)";
-                    break;
-                case 1200:
-                    contractTypeName = "(工时及物料合同)";
-                    break;
-                case 1201:
-                    contractTypeName = "(固定价格合同)";
-                    break;
-                case 1202:
-                    contractTypeName = "(预付时间合同)";
-                    break;
-                case 1203:
-                    contractTypeName = "(预付费合同)";
-                    break;
-                case 1204:
-                    contractTypeName = "(事件合同)";
-                    break;
-                default:
-                    contractTypeName = "";
-                    break;
-            }
+            contractTypeName = bll.GetContractTypeName(contractType);
         }
     }
 }

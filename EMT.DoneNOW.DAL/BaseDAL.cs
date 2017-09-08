@@ -387,5 +387,14 @@ namespace EMT.DoneNOW.DAL
             // 返回Value
             return o.ToString();
         }
+        /// <summary>
+        /// 执行多个sql语句的方法
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public bool SQLTransaction(object param = null, params string[] sql) {
+            return helper.SQLTransaction(param,sql);
+        }
     }
 }

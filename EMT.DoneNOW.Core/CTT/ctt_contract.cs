@@ -94,6 +94,10 @@ namespace EMT.DoneNOW.Core
         public Int32? timeentry { get; set; }
         [DataMember]
         public SByte? deduct_tax { get; set; }
+        [DataMember]
+        public Decimal? adjust_setup_fee { get; set; }
+        [DataMember]
+        public Int64? setup_fee_cost_code_id { get; set; }
 
 
     }

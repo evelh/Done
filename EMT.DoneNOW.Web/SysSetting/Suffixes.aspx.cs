@@ -45,14 +45,14 @@ namespace EMT.DoneNOW.Web
                     Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
                 }
             }
-            suffix.name = this.Suffix_name.Text.Trim().ToString();
+            suffix.name = this.Suffix_name.Text.Trim().ToString();            
             if (this.Active.Checked) {
                 suffix.is_active = 1;
             }
             if (id > 0)
             {
                 //修改
-                var result = new SuffixBLL().Update(suffix, GetLoginUserId());
+                var result = new GeneralBLL().Update(suffix, GetLoginUserId());
                 if (result == ERROR_CODE.ERROR)
                 {
                     Response.Write("<script>alert('区域修改失败，返回！');window.close();self.opener.location.reload();</script>");
@@ -69,7 +69,8 @@ namespace EMT.DoneNOW.Web
             }
             else {
                 //新增
-                var result = new SuffixBLL().Insert(suffix, GetLoginUserId());
+                suffix.general_table_id = (int)GeneralTableEnum.NAME_SUFFIX;
+                var result = new GeneralBLL().Insert(suffix, GetLoginUserId());
                 if (result == ERROR_CODE.ERROR)
                 {
                     Response.Write("<script>alert('区域修改失败，返回！');window.close();self.opener.location.reload();</script>");

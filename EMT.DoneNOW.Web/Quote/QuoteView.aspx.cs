@@ -16,14 +16,14 @@ namespace EMT.DoneNOW.Web
     public partial class QuoteView : BasePage
     {
         public int id;
-        public int colsum = 1;//显示列数
+        public int colsum = 1;                                   //显示列数
         private sys_quote_tmpl data = new sys_quote_tmpl();
-        private QuoteBLL qd = new QuoteBLL();
+        private QuoteBLL qd = new QuoteBLL();                    //qd获取报价项相关信息使用
         private List<sys_quote_tmpl> datalist = new List<sys_quote_tmpl>();
         private crm_quote qddata = new crm_quote();
         private QuoteTemplateAddDto.BODY quote_body = new QuoteTemplateAddDto.BODY();
         private QuoteTemplateAddDto.Tax_Total_Disp ttd = new QuoteTemplateAddDto.Tax_Total_Disp();
-        List<int> showstyle = new List<int>();//存储设置税收显示情况
+        List<int> showstyle = new List<int>();                    //存储设置税收显示情况
         private double Super_toatl = 0;
         private double Super_tax_total = 0;
         private double option = 0;
@@ -36,12 +36,11 @@ namespace EMT.DoneNOW.Web
         {
             //从URL地址获取报价id
             id = Convert.ToInt32(Request.QueryString["id"]);
-           // id = 294;//测试使用数据
+           id = 522;//测试使用数据
             //获取所有的报价模板
             datalist = new QuoteTemplateBLL().GetAllTemplate();
             //获取该报价信息
             qddata = qd.GetQuote(id);
-
             if (!IsPostBack)
             {
                 //绑定数据，在下拉框展示报价模板
@@ -55,24 +54,21 @@ namespace EMT.DoneNOW.Web
                 {
                     //string t = "body_group_by_id";
                     //list.Equals(t);
-                    if (!string.IsNullOrEmpty(qddata.quote_tmpl_id.ToString()) && list.id == qddata.quote_tmpl_id)
+                    if (qddata.quote_tmpl_id != null && !string.IsNullOrEmpty(qddata.quote_tmpl_id.ToString()) && list.id == qddata.quote_tmpl_id)
                     {
                         k = true;
                         this.quoteTemplateDropDownList.SelectedValue = qddata.quote_tmpl_id.ToString();
                         initquote(list);//使用报价单已选择的报价模板显示
                                         //break;
                     }
-                    if (list.is_default == 1)
+                    else if (list.is_default == 1)
                     {
+                        k = true;
                         //判断是否为默认模板
-                        data = list;
+                        initquote(list);//使用默认模板显示
                     }
-                }
-                if (!k && data.id > 0)
-                {
-                    initquote(data);//使用默认模板显示
-                }
-                if (!k && data.id <= 0)
+                }              
+                if (!k)
                 {
                     initquote(datalist[0]);//使用数据库第一个模板显示,
                 }
@@ -116,8 +112,7 @@ namespace EMT.DoneNOW.Web
                 { showstyle.Add(4); }
 
 
-                ///
-                string ccyy = cyclegroup();
+                ///               
                 string page_header = "";
                 if (!string.IsNullOrEmpty(list.page_header_html))
                 {
@@ -135,7 +130,6 @@ namespace EMT.DoneNOW.Web
                     quote_header = HttpUtility.HtmlDecode(quote_header).Replace("\"", "'");//头部
                 }
                 table.Append(page_header);
-
                 //此处需要特别处理
                 table.Append(quote_header);
                 //页眉+top
@@ -154,6 +148,10 @@ namespace EMT.DoneNOW.Web
                     }
                 }
                 table.Append("</tr>");
+
+                string cccccc;
+                cccccc = cyclegroup();
+
                 //测试先屏蔽其他情况
                 if (qddata.group_by_id == (int)DicEnum.QUOTE_GROUP_BY.NO)//不分组
                 {
@@ -161,7 +159,7 @@ namespace EMT.DoneNOW.Web
                 }
                 if (qddata.group_by_id == (int)DicEnum.QUOTE_GROUP_BY.CYCLE)//按周期分组
                 {
-                    table.Append(ccyy);
+                    table.Append(cccccc);
                 }
                 if (qddata.group_by_id == (int)DicEnum.QUOTE_GROUP_BY.PRODUCT)//按产品种类分组
                 {
@@ -202,9 +200,6 @@ namespace EMT.DoneNOW.Web
             }
 
         }
-
-
-
         /// <summary>
         /// 不分组
         /// </summary>
@@ -253,76 +248,125 @@ namespace EMT.DoneNOW.Web
             //double sumtotal = 0;//报价单所有子项汇总
             List<crm_quote_item> three = new List<crm_quote_item>();
             List<crm_quote_item> onetime = new List<crm_quote_item>();
-            Dictionary<string, crm_quote_item> pro = new Dictionary<string, crm_quote_item>();
+            Dictionary<string, List<crm_quote_item>> pro = new Dictionary<string, List<crm_quote_item>>();
+            List<crm_quote_item> groupitem = new List<crm_quote_item>();
             List<string> name = new List<string>();
             int order = 1;//序列号
             double total;//总价
             double sumtotal = 0;
+            string productname=string.Empty;
+
             foreach (var item in cqi)
             {
                 if (item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
                 {
+                    groupitem.Add(item);
                     if (item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME)
                     {
                         onetime.Add(item);
                     }
-                    if (!string.IsNullOrEmpty(item.object_id.ToString()))
-                    {
-                        var prod = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={item.object_id}");
-                        pro.Add(prod.product_name, item);
-                        if (!name.Contains(prod.product_name))
-                        {
-                            name.Add(prod.product_name);
-                        }
-                    }
-                    else
-                    {
-                        if (!name.Contains("y"))
-                            name.Add("y");
-                    }
-
                 }
                 else
                 {
                     three.Add(item);
                 }
             }
-            if (pro.Count > 0)
+
+            var doubleGroupList = groupitem.GroupBy(d => d.object_id == null ? "" : d.object_id.ToString()).ToDictionary(d => (object)d.Key, d => d.ToList());
+
+
+            //foreach (var item in cqi)
+            //{
+            //    if (item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
+            //    {
+            //        if (item.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME)
+            //        {
+            //            onetime.Add(item);
+            //        }
+            //        if (item.object_id!=null&&!string.IsNullOrEmpty(item.object_id.ToString()))
+            //        {
+            //            productname = qd.GetProductName(Convert.ToInt32(item.object_id));
+            //        }
+            //        if (!string.IsNullOrEmpty(productname)&&pro[productname]!=null)
+            //        {
+            //            pro.Add(productname, item);
+            //            pro[]
+            //            if (!name.Contains(productname))
+            //            {
+            //                name.Add(productname);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            if (!name.Contains("y"))
+            //                name.Add("y");
+            //        }
+
+            //    }
+            //    else
+            //    {
+            //        three.Add(item);
+            //    }
+            //}
+            if (doubleGroupList.Count > 0)
             {
-                foreach (var na in name)
+
+                foreach (var proname in doubleGroupList)
                 {
-                    if (na != "y")
-                        productgroup.Append(group_td(na));
-                    foreach (var proname in pro)
+                    if (!string.IsNullOrEmpty(proname.Key.ToString()))
                     {
-                        if (na == proname.Key)//输出同一产品的
+                        string na = qd.GetProductName(Convert.ToInt32(proname.Key.ToString()));
+                        productgroup.Append(group_td(na));
+                        foreach (var pp in proname.Value as List<crm_quote_item>)
                         {
-                            productgroup.Append(td(proname.Value, out total, ref order));
+                            productgroup.Append(td(pp, out total, ref order));
                             sumtotal += total;
                         }
+                        productgroup.Append("<tr><td style = 'text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Total + "(" + na + ")</strong></td><td style = 'text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
+                        sumtotal = 0;
                     }
-                    productgroup.Append("<tr><td style = 'text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Total + "(" + na + ")</strong></td><td style = 'text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
-                    sumtotal = 0;
+
+                    //if (na == proname.Key)//输出同一产品的
+                    //    {
+                    //        productgroup.Append(td(proname.Value, out total, ref order));
+                    //        sumtotal += total;
+                    //    }
+                    //}
                 }
+                foreach (var proname in doubleGroupList)
+                {
+                    if (string.IsNullOrEmpty(proname.Key.ToString()))
+                    {
+                        productgroup.Append(group_td("无产品"));
+                        foreach (var pp in proname.Value as List<crm_quote_item>)
+                        {
+                            productgroup.Append(td(pp, out total, ref order));
+                            sumtotal += total;
+                        }
+                        productgroup.Append("<tr><td style = 'text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Total + "(无产品)</strong></td><td style = 'text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
+                        sumtotal = 0;
+                    }
+                }
+
             }
             //无产品绑定的，object_id为空
-            if (name.Contains("y"))
-            {
-                productgroup.Append(group_td("无产品"));
-                foreach (var item in cqi)
-                {
-                    if (item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
-                    {
-                        if (string.IsNullOrEmpty(item.object_id.ToString()))
-                        {
-                            productgroup.Append(td(item, out total, ref order));
-                            sumtotal += total;
-                        }
-                    }
-                }
-                productgroup.Append("<tr><td style = 'text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Total + "(无产品)</strong></td><td style = 'text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
-                sumtotal = 0;
-            }
+            //if (name.Contains("y"))
+            //{
+            //    productgroup.Append(group_td("无产品"));
+            //    foreach (var item in cqi)
+            //    {
+            //        if (item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)
+            //        {
+            //            if (string.IsNullOrEmpty(item.object_id.ToString()))
+            //            {
+            //                productgroup.Append(td(item, out total, ref order));
+            //                sumtotal += total;
+            //            }
+            //        }
+            //    }
+            //    productgroup.Append("<tr><td style = 'text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Total + "(无产品)</strong></td><td style = 'text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
+            //    sumtotal = 0;
+            //}
             if (three.Count > 0)
                 productgroup.Append(Threesingle(three, onetime, out total, ref order));
             return productgroup.ToString();
@@ -357,6 +401,8 @@ namespace EMT.DoneNOW.Web
                 }
             }
             var doubleGroupList = groupitem.GroupBy(d => d.period_type_id == null ? "" : d.period_type_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList().GroupBy(d => d.object_id == null ? "" : d.object_id.ToString()).ToDictionary(d => (object)d.Key, d => d.ToList()));
+            string productname = string.Empty;
+
             foreach (var item1 in doubleGroupList)
             {
                 //start 一次性收费
@@ -365,10 +411,14 @@ namespace EMT.DoneNOW.Web
                     cycle_productgroup.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].One_Time_items));//周期分组
                     foreach (var item2 in item1.Value)
                     {
-                        if (!string.IsNullOrEmpty(item2.Key.ToString()))
+                        productname = string.Empty;
+                        if (item2.Key != null && !string.IsNullOrEmpty(item2.Key.ToString()))
                         {
-                            var prod = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={item2.Key}");
-                            cycle_productgroup.Append(group_chind_td(prod.product_name));//产品分组
+                            productname = qd.GetProductName(Convert.ToInt32(item2.Key));
+                        }
+                        if (!string.IsNullOrEmpty(productname))
+                        {
+                            cycle_productgroup.Append(group_chind_td(productname));//产品分组
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 cycle_productgroup.Append(td(item3, out total, ref order));
@@ -400,16 +450,25 @@ namespace EMT.DoneNOW.Web
                     cycle_productgroup.Append(cyc_tax["onetotal"]);
 
                 }//stop
+
+            }
+            foreach (var item1 in doubleGroupList)
+            {
+
                 //start  按月分组
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH)
                 {
                     cycle_productgroup.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].Monthly_items));
                     foreach (var item2 in item1.Value)
                     {
+                        productname = string.Empty;
                         if (!string.IsNullOrEmpty(item2.Key.ToString()))
                         {
-                            var prod = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={item2.Key}");
-                            cycle_productgroup.Append(group_chind_td(prod.product_name));//产品分组
+                            productname = qd.GetProductName(Convert.ToInt32(item2.Key));
+                        }
+                        if (!string.IsNullOrEmpty(productname))
+                        {                          
+                            cycle_productgroup.Append(group_chind_td(productname));//产品分组
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 cycle_productgroup.Append(td(item3, out total, ref order));
@@ -441,16 +500,22 @@ namespace EMT.DoneNOW.Web
 
                 }
                 //stop
+            }
+            foreach (var item1 in doubleGroupList)
+            {
                 //start  按季度分组
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
                 {
                     cycle_productgroup.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].Quarterly_items));
                     foreach (var item2 in item1.Value)
                     {
+                        productname = string.Empty;
                         if (!string.IsNullOrEmpty(item2.Key.ToString()))
                         {
-                            var prod = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={item2.Key}");
-                            cycle_productgroup.Append(group_chind_td(prod.product_name));//产品分组
+                            productname = qd.GetProductName(Convert.ToInt32(item2.Key));
+                        }
+                        if (!string.IsNullOrEmpty(productname)) { 
+                            cycle_productgroup.Append(group_chind_td(productname));//产品分组
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 cycle_productgroup.Append(td(item3, out total, ref order));
@@ -482,16 +547,22 @@ namespace EMT.DoneNOW.Web
 
                 }
                 //stop
+            }
+            foreach (var item1 in doubleGroupList)
+            {
                 //start  按半年分组
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
                 {
                     cycle_productgroup.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].Semi_Annual_items));
                     foreach (var item2 in item1.Value)
                     {
+                        productname = string.Empty;
                         if (!string.IsNullOrEmpty(item2.Key.ToString()))
                         {
-                            var prod = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={item2.Key}");
-                            cycle_productgroup.Append(group_chind_td(prod.product_name));//产品分组
+                            productname = qd.GetProductName(Convert.ToInt32(item2.Key));
+                        }
+                        if (!string.IsNullOrEmpty(productname)) { 
+                            cycle_productgroup.Append(group_chind_td(productname));//产品分组
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 cycle_productgroup.Append(td(item3, out total, ref order));
@@ -523,16 +594,22 @@ namespace EMT.DoneNOW.Web
 
                 }
                 //stop
+            }
+            foreach (var item1 in doubleGroupList)
+            {
                 //start  按年分组
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
                 {
                     cycle_productgroup.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].Yearly_items));
                     foreach (var item2 in item1.Value)
                     {
+                        productname = string.Empty;
                         if (!string.IsNullOrEmpty(item2.Key.ToString()))
                         {
-                            var prod = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={item2.Key}");
-                            cycle_productgroup.Append(group_chind_td(prod.product_name));//产品分组
+                            productname = qd.GetProductName(Convert.ToInt32(item2.Key));
+                        }
+                        if (!string.IsNullOrEmpty(productname)) { 
+                            cycle_productgroup.Append(group_chind_td(productname));//产品分组
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 cycle_productgroup.Append(td(item3, out total, ref order));
@@ -562,16 +639,22 @@ namespace EMT.DoneNOW.Web
                     //stop显示税收
                     cycle_productgroup.Append(cyc_tax["yeartotal"]);
                 }
+            }
+            foreach (var item1 in doubleGroupList)
+            {
                 //start  无分组分组
                 if (string.IsNullOrEmpty(item1.Key.ToString()))
                 {
                     cycle_productgroup.Append(group_td("无分组"));
                     foreach (var item2 in item1.Value)
                     {
+                        productname = string.Empty;
                         if (!string.IsNullOrEmpty(item2.Key.ToString()))
                         {
-                            var prod = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={item2.Key}");
-                            cycle_productgroup.Append(group_chind_td(prod.product_name));//产品分组
+                            productname = qd.GetProductName(Convert.ToInt32(item2.Key));
+                        }
+                        if (!string.IsNullOrEmpty(productname)) { 
+                            cycle_productgroup.Append(group_chind_td(productname));//产品分组
                             foreach (var item3 in item2.Value as List<crm_quote_item>)
                             {
                                 cycle_productgroup.Append(td(item3, out total, ref order));
@@ -646,11 +729,14 @@ namespace EMT.DoneNOW.Web
 
             foreach (var item1 in doubleGroupList)
             {
-
-                if (!string.IsNullOrEmpty(item1.Key.ToString()))//有产品
+                string productname = string.Empty;
+                if (!string.IsNullOrEmpty(item1.Key.ToString()))
                 {
-                    var prod = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={item1.Key}");
-                    product_cyclegroup.Append(group_td(prod.product_name));//产品分组
+                    productname = qd.GetProductName(Convert.ToInt32(item1.Key));
+                }
+                if (!string.IsNullOrEmpty(productname))//有产品
+                {
+                    product_cyclegroup.Append(group_td(productname));//产品分组
                     foreach (var item2 in item1.Value)//周期分组
                     {
                         //一次性
@@ -663,6 +749,9 @@ namespace EMT.DoneNOW.Web
                                 sumtotal += total;
                             }
                         }
+                    }
+                    foreach (var item2 in item1.Value)//周期分组
+                    {
                         //按月
                         if (!string.IsNullOrEmpty(item2.Key.ToString()) && Convert.ToInt32(item2.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH)
                         {
@@ -673,6 +762,9 @@ namespace EMT.DoneNOW.Web
                                 sumtotal += total;
                             }
                         }
+                    }
+                    foreach (var item2 in item1.Value)//周期分组
+                    {
                         //按季度
                         if (!string.IsNullOrEmpty(item2.Key.ToString()) && Convert.ToInt32(item2.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
                         {
@@ -683,6 +775,9 @@ namespace EMT.DoneNOW.Web
                                 sumtotal += total;
                             }
                         }
+                    }
+                    foreach (var item2 in item1.Value)//周期分组
+                    {
                         //按半年
                         if (!string.IsNullOrEmpty(item2.Key.ToString()) && Convert.ToInt32(item2.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
                         {
@@ -693,6 +788,9 @@ namespace EMT.DoneNOW.Web
                                 sumtotal += total;
                             }
                         }
+                    }
+                    foreach (var item2 in item1.Value)//周期分组
+                    {
                         //按半年
                         if (!string.IsNullOrEmpty(item2.Key.ToString()) && Convert.ToInt32(item2.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
                         {
@@ -703,6 +801,9 @@ namespace EMT.DoneNOW.Web
                                 sumtotal += total;
                             }
                         }
+                    }
+                    foreach (var item2 in item1.Value)//周期分组
+                    {
                         //按无分组
                         if (string.IsNullOrEmpty(item2.Key.ToString()))
                         {
@@ -714,10 +815,13 @@ namespace EMT.DoneNOW.Web
                             }
                         }
                     }
-                    product_cyclegroup.Append("<tr><td style = 'text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Total + "(" + prod.product_name + ")</strong></td><td style = 'text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
+                    product_cyclegroup.Append("<tr><td style = 'text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Total + "(" + productname + ")</strong></td><td style = 'text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
                     sumtotal = 0;
                 }
-                else//无产品
+            }
+            foreach (var item1 in doubleGroupList)
+            {
+                if (string.IsNullOrEmpty(item1.Key.ToString()))
                 {
                     product_cyclegroup.Append(group_td("无产品"));//产品分组
                     foreach (var item2 in item1.Value)//周期分组
@@ -732,6 +836,9 @@ namespace EMT.DoneNOW.Web
                                 sumtotal += total;
                             }
                         }
+                    }
+                    foreach (var item2 in item1.Value)//周期分组
+                    {
                         //按月
                         if (!string.IsNullOrEmpty(item2.Key.ToString()) && Convert.ToInt32(item2.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH)
                         {
@@ -742,6 +849,9 @@ namespace EMT.DoneNOW.Web
                                 sumtotal += total;
                             }
                         }
+                    }
+                    foreach (var item2 in item1.Value)//周期分组
+                    {
                         //按季度
                         if (!string.IsNullOrEmpty(item2.Key.ToString()) && Convert.ToInt32(item2.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
                         {
@@ -752,6 +862,9 @@ namespace EMT.DoneNOW.Web
                                 sumtotal += total;
                             }
                         }
+                    }
+                    foreach (var item2 in item1.Value)//周期分组
+                    {
                         //按半年
                         if (!string.IsNullOrEmpty(item2.Key.ToString()) && Convert.ToInt32(item2.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
                         {
@@ -762,6 +875,9 @@ namespace EMT.DoneNOW.Web
                                 sumtotal += total;
                             }
                         }
+                    }
+                    foreach (var item2 in item1.Value)//周期分组
+                    {
                         //按半年
                         if (!string.IsNullOrEmpty(item2.Key.ToString()) && Convert.ToInt32(item2.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
                         {
@@ -772,6 +888,9 @@ namespace EMT.DoneNOW.Web
                                 sumtotal += total;
                             }
                         }
+                    }
+                    foreach (var item2 in item1.Value)//周期分组
+                    {
                         //按无分组
                         if (string.IsNullOrEmpty(item2.Key.ToString()))
                         {
@@ -793,9 +912,7 @@ namespace EMT.DoneNOW.Web
             return product_cyclegroup.ToString();
 
         }
-
-
-
+              
 
         private string cyclegroup()
         {
@@ -887,13 +1004,16 @@ namespace EMT.DoneNOW.Web
                         cyc_tax.Add("onetaxsum", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (tax_sum) + "</strong></td></tr>");
                     }
                     //stop显示税收
-                    cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.One_Time_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (onetotal + tax_sum) + "</strong></td></tr>");
-                    Super_toatl += onetotal + tax_sum;
-                    Super_tax_total += tax_sum;
+                    cyclegroup.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.One_Time_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (onetotal+tax_sum) + "</strong></td></tr>");
+
+                    Super_toatl= Super_toatl+onetotal + tax_sum;
+                    Super_tax_total= Super_tax_total+tax_sum;
                     string k2 = "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.One_Time_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (onetotal + tax_sum) + "</strong></td></tr>";
                     cyc_tax.Add("onetotal", k2);
                 }
-
+            }
+            foreach (var item1 in doubleGroupList)
+            {
                 //stop
                 //start  按月分组
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH)
@@ -907,8 +1027,6 @@ namespace EMT.DoneNOW.Web
                         cyclegroup.Append(td(item3, out total, ref order));
                         monthsum += total;
                     }
-
-
                     //statrt显示税收
                     double sum = 0;
                     var tax = item1.Value.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());
@@ -963,6 +1081,9 @@ namespace EMT.DoneNOW.Web
                     Super_tax_total += tax_sum;
                 }
                 //stop
+            }
+            foreach (var item1 in doubleGroupList)
+            {
                 //start  按季度分组
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
                 {
@@ -1028,6 +1149,9 @@ namespace EMT.DoneNOW.Web
                     Super_tax_total += tax_sum;
                 }
                 //stop
+            }
+            foreach (var item1 in doubleGroupList)
+            {
                 //start  按半年分组
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
                 {
@@ -1092,6 +1216,9 @@ namespace EMT.DoneNOW.Web
                     Super_tax_total += tax_sum;
                 }
                 //stop
+            }
+            foreach (var item1 in doubleGroupList)
+            {
                 //start  按年分组
                 if (!string.IsNullOrEmpty(item1.Key.ToString()) && Convert.ToInt32(item1.Key) == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
                 {
@@ -1158,13 +1285,16 @@ namespace EMT.DoneNOW.Web
                     Super_tax_total += tax_sum;
                 }
                 //stop
+            }
+            foreach (var item1 in doubleGroupList)
+            {
                 //start  无分组
                 if (string.IsNullOrEmpty(item1.Key.ToString()))
                 {
                     double nogroupp = 0;
                     double tax_sum = 0;
                     StringBuilder k = new StringBuilder();
-                    cyclegroup.Append(group_td(quote_body.GROUPING_HEADER_TEXT[0].No_category));
+                    cyclegroup.Append(group_td("无分组"));
                     foreach (var item3 in item1.Value as List<crm_quote_item>)
                     {
                         cyclegroup.Append(td(item3, out total, ref order));
@@ -1223,6 +1353,7 @@ namespace EMT.DoneNOW.Web
                 //stop
 
             }
+            Threetotal(three, oneitem);
             cyclegroup.Append(Threesingle(three, oneitem, out total, ref order));
             return cyclegroup.ToString();
         }
@@ -1494,10 +1625,8 @@ namespace EMT.DoneNOW.Web
                 }
                 //配送收费汇总
                 table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Shipping_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (shippsum + tax_sum) + "</strong></td></tr>");
-
-                Super_toatl += shippsum + tax_sum;
-                Super_tax_total += tax_sum;
-
+                tax_sum = 0;
+                shippsum = 0;
             }
             if (itemlist2.Count > 0)
             {
@@ -1560,9 +1689,8 @@ namespace EMT.DoneNOW.Web
                 }
                 //一次性折扣收费汇总
                 table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.One_Time_Discount_Total + "</strong></td><td style='text-align: Right;' class='bord'><font color=\"red\"><strong>(" + ((sum_onetime * (double)discpre) + tax_sum) + ")</strong></font></td></tr>");
-
-                Super_toatl = Super_toatl - (sum_onetime * (double)discpre) - tax_sum;
-                Super_tax_total = Super_tax_total - tax_sum;
+                tax_sum = 0;
+                sum_onetime = 0;
 
             }
             if (itemlist3.Count > 0)
@@ -1618,12 +1746,178 @@ namespace EMT.DoneNOW.Web
                 table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Optional_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (opsum + tax_sum) + "</strong></td></tr>");
                 option = opsum + tax_sum;//全局变量，可选项汇总
                 option_tax = tax_sum;//全局变量，可选项税收汇总
-                Super_toatl += opsum + tax_sum;
-                Super_tax_total += tax_sum;
             }
             return table.ToString();
         }
 
+
+
+        private void Threetotal(List<crm_quote_item> list, List<crm_quote_item> onetime)
+        {
+            double total;
+            int order = 1;
+            List<crm_quote_item> itemlist1 = new List<crm_quote_item>();
+            List<crm_quote_item> itemlist2 = new List<crm_quote_item>();
+            List<crm_quote_item> itemlist3 = new List<crm_quote_item>();
+            foreach (var item in list)
+            {
+                if (item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && item.optional != 1)
+                {
+                    itemlist1.Add(item);
+                }
+                if (item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && item.optional != 1)//一次性折扣
+                {
+                    itemlist2.Add(item);
+                }
+                if (item.optional == 1)
+                {
+                    itemlist3.Add(item);
+                }
+            }
+            //配送
+            if (itemlist1.Count > 0)
+            {
+                double sum = 0;
+                double tax_sum = 0;
+                double shippsum = 0;
+                StringBuilder k = new StringBuilder();
+                foreach (var item in itemlist1)
+                {        //显示配送子项            
+                   td(item, out total, ref order);
+                    shippsum += total;
+                }
+                var tax = itemlist1.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());//税收种类分组
+                foreach (var tax_item in tax)
+                {
+                    if (!string.IsNullOrEmpty(tax_item.Key.ToString()))
+                    {
+                        foreach (var ii in tax_item.Value as List<crm_quote_item>)//税收类型分组
+                        {
+                            if (ii.quantity != null && ii.unit_price != null)
+                            {
+
+                                sum += (double)((ii.unit_price - ii.unit_discount) * ii.quantity);
+                            }
+                        }
+                        //统计税收
+                        if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
+                        {
+                            taxt_item_sum[Convert.ToInt32(tax_item.Key)] += sum;
+                        }
+                        else
+                        {
+                            taxt_item_sum.Add(Convert.ToInt32(tax_item.Key), sum);
+                        }
+
+                        k.Append(ShowTax(Convert.ToInt32(tax_item.Key), ref sum));//计算税收
+                        tax_sum += sum;
+
+                    }
+                }
+                Super_toatl += shippsum + tax_sum;
+                Super_tax_total += tax_sum;
+                tax_sum = 0;
+                shippsum = 0;
+            }
+            if (itemlist2.Count > 0)
+            {
+                double sum = 0;
+                double tax_sum = 0;
+                decimal discpre = 0;//一次性折扣百分比
+                double sum_onetime = 0;
+                StringBuilder k = new StringBuilder();
+                foreach (var one_time in onetime)
+                {
+                    if (one_time.quantity != null && one_time.unit_price != null)
+                    {
+                        sum_onetime += (double)((one_time.unit_price - one_time.unit_discount) * one_time.quantity);//对一次性收费汇总
+                    }
+                }
+                foreach (var dis in itemlist2)
+                {
+                    disc_td(dis, sum_onetime, ref order);
+                    discpre += (decimal)dis.discount_percent;
+
+                }
+                //一次性收费单项已做
+
+                var discount = onetime.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());//税收种类分组               
+
+                foreach (var tax_item in discount)
+                {
+                    if (!string.IsNullOrEmpty(tax_item.Key.ToString()))
+                    {
+                        foreach (var ii in tax_item.Value as List<crm_quote_item>)//税收类型分组
+                        {
+                            if (ii.quantity != null && ii.unit_price != null)
+                            {
+
+                                sum += (double)((ii.unit_price - ii.unit_discount) * ii.quantity);
+                            }
+                        }
+                        sum = sum * (double)discpre;
+                        //统计税收
+                        if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
+                        {
+                            taxt_item_sum[Convert.ToInt32(tax_item.Key)] -= sum;
+                        }
+                        k.Append(ShowTax(Convert.ToInt32(tax_item.Key), ref sum));//计算税收
+                        tax_sum += sum;
+
+                    }
+                    sum = 0;
+                }
+                Super_toatl = Super_toatl - ((sum_onetime * (double)discpre) + tax_sum);
+                Super_tax_total = Super_tax_total - tax_sum;
+                tax_sum = 0;
+                sum_onetime = 0;
+
+            }
+            if (itemlist3.Count > 0)
+            {
+                double sum = 0;
+                double tax_sum = 0;
+                StringBuilder k = new StringBuilder();
+                double opsum = 0;
+                foreach (var item in itemlist3)
+                {
+                   td(item, out total, ref order);
+                    opsum += total;
+                }
+                var tax = itemlist3.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());//税收种类分组
+                foreach (var tax_item in tax)
+                {
+                    if (!string.IsNullOrEmpty(tax_item.Key.ToString()))
+                    {
+                        foreach (var ii in tax_item.Value as List<crm_quote_item>)//税收类型分组
+                        {
+                            if (ii.quantity != null && ii.unit_price != null)
+                            {
+
+                                sum += (double)((ii.unit_price - ii.unit_discount) * ii.quantity);
+                            }
+                        }
+                        //统计税收
+                        if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
+                        {
+                            taxt_item_sum[Convert.ToInt32(tax_item.Key)] += sum;
+                        }
+                        else
+                        {
+                            taxt_item_sum.Add(Convert.ToInt32(tax_item.Key), sum);
+                        }
+                        k.Append(ShowTax(Convert.ToInt32(tax_item.Key), ref sum));//计算税收
+                        tax_sum += sum;
+                        sum = 0;
+                    }
+                }
+                //可选项
+                option = opsum + tax_sum;//全局变量，可选项汇总
+                option_tax = tax_sum;//全局变量，可选项税收汇总
+                Super_toatl += opsum + tax_sum;
+                Super_tax_total += tax_sum;
+            }
+        }
 
         private string ShowTax(int t, ref double sum)
         {

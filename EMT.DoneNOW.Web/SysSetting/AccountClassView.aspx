@@ -150,16 +150,43 @@
         function Edit() {
             window.open('AccountClass.aspx?id=' + entityid, window, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
+
+
         function Delete() {
-            if (confirm('确认删除?')) {
+            if (confirm('删除操作将不能恢复，是否继续?')) {
                 $.ajax({
                     type: "GET",
-                    url: "../Tools/AccountClassAjax.ashx?act=delete&id=" + entityid,
+                    url: "../Tools/AccountClassAjax.ashx?act=delete_validate&id=" + entityid,
                     success: function (data) {
-                        alert(data);
+                        if (data == "system") {
+                            alert("系统默认不能删除！");
+                            return false;
+                        } else if (data == "other") {
+                            alert("其他原因使得删除失败！");
+                        } else {
+                            if (confirm(data)) {
+                                if (confirm(data)) {
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "../Tools/AccountClassAjax.ashx?act=delete&id=" + entityid,
+                                        success: function (data) {
+                                            alert(data);
+                                        }
+                                     });
+                                 } else {
+                                     return false;
+                                 }
+                            }
+                        }
                     }
                 });
             }
+
+
+
+
+
+
             window.location.reload();
         }
         function Active() {

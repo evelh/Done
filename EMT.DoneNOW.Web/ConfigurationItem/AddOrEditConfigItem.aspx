@@ -431,7 +431,7 @@ textarea {
             </a>
         </div>
         <div class="TabContainer">
-           <div class="DivScrollingContainer Tab">
+           <div class="DivScrollingContainer Tab" style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:120px;">
                  <div class="DivSectionWithHeader">
                <div class="HeaderRow">
                     <div class="Toggle Collapse Toggle1">

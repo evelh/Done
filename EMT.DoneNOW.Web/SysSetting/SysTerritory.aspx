@@ -6,7 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
       <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
-    <title>新增地域</title>
+    <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+    <title>客户地域管理</title>
     <style>
     hr.separator {
         color: #b2d0f2;
@@ -26,20 +27,20 @@
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">新增地域</span>
+            <span class="text1">客户地域管理</span>
             <a href="###" class="help"></a>
         </div>
     </div>
     <!--按钮-->
-    <div class="ButtonContainer">
+     <div class="ButtonContainer header-title">
         <ul id="btn">
-            <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
-                <asp:Button ID="Save_Close" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="Save_Close_Click"/>
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
+                <asp:Button ID="Save_Close" OnClientClick="return save_deal()" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="Save_Close_Click"/>
             </li>
-            <li class="Button ButtonIcon NormalState" id="SaveAndNewButton" tabindex="0">
-                <asp:Button ID="Save_New" runat="server" Text="保存并新建" BorderStyle="None" OnClick="Save_New_Click"/>
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
+                <asp:Button ID="Save_New" OnClientClick="return save_deal()" runat="server" Text="保存并新建" BorderStyle="None" OnClick="Save_New_Click"/>
             </li>
-            <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                 <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click"/>
             </li>
         </ul>
@@ -47,10 +48,10 @@
     <!--切换按钮-->
     <div class="TabBar">
         <a class="Button ButtonIcon SelectedState" id="tab1">
-            <span class="Text">总结</span>
+            <span class="Text">地域</span>
         </a>
         <a class="Button ButtonIcon" id="tab2">
-            <span class="Text">资源</span>
+            <span class="Text">员工</span>
         </a>
     </div>
     <div class="TabContainer Tab1">
@@ -59,7 +60,7 @@
                 <tbody>
                     <tr>
                         <td width="30%" class="FieldLabels">
-                            Name
+                            名称
                             <span class="errorSmall">*</span>
                             <div>
                                 <asp:TextBox ID="Territory_Name" runat="server"></asp:TextBox>
@@ -68,7 +69,7 @@
                     </tr>
                     <tr>
                         <td width="30%" class="FieldLabels">
-                            Region
+                            区域
                             <div>
                                 <asp:DropDownList ID="Region" runat="server"></asp:DropDownList>
                             </div>
@@ -76,7 +77,7 @@
                     </tr>
                     <tr>
                         <td width="30%" class="FieldLabels">
-                            Description
+                           描述
                             <div>
                                 <asp:TextBox ID="Territory_Description" runat="server"></asp:TextBox>
                             </div>

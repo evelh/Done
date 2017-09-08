@@ -13,7 +13,7 @@ namespace EMT.DoneNOW.Web.SysSetting
     public partial class TerritortAddAccount : BasePage
     {
         public long id;
-        private SysTerritoryBLL STBLL = new SysTerritoryBLL();
+        private TerritoryBLL STBLL = new TerritoryBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt64(Request.QueryString["id"]);

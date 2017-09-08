@@ -7,7 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
      <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
-    <title>新增姓名后缀</title>
+        <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+    <title>姓名后缀管理</title>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -15,14 +16,14 @@
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">新增姓名后缀</span>
+            <span class="text1">姓名后缀管理</span>
             <a href="###" class="help"></a>
         </div>
     </div>
     <!--按钮-->
-    <div class="ButtonContainer">
+    <div class="ButtonContainer header-title">
         <ul id="btn">
-            <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                 <asp:Button ID="Save_Close" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="Save_Close_Click"/>
             </li>
         </ul>
@@ -32,7 +33,7 @@
             <tbody>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        Suffixes
+                        名称
                         <span class="errorSmall">*</span>
                         <div>
                             <asp:TextBox ID="Suffix_name" runat="server"></asp:TextBox>
@@ -43,7 +44,7 @@
                     <td width="30%" class="FieldLabels">
                         <div>
                             <asp:CheckBox ID="Active" runat="server" />
-                            Active
+                            激活
                         </div>
                     </td>
                 </tr>

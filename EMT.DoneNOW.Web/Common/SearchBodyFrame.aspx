@@ -75,8 +75,8 @@
                     <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
                         <tbody>
                             <tr>
-                                <td class="RightClickMenuItemText">
-                                    <span class="lblNormalClass">To-Do</span>
+                                <td class="RightClickMenuItemText" onclick="Add(1199)">
+                                    <span class="lblNormalClass">定期服务合同</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -86,8 +86,8 @@
                     <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
                         <tbody>
                         <tr>
-                            <td class="RightClickMenuItemText">
-                                <span class="lblNormalClass">Note</span>
+                            <td class="RightClickMenuItemText" onclick="Add(1200)">
+                                <span class="lblNormalClass">工时及物料合同</span>
                             </td>
                         </tr>
                         </tbody>
@@ -97,8 +97,8 @@
                     <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
                         <tbody>
                         <tr>
-                            <td class="RightClickMenuItemText">
-                                <span class="lblNormalClass">Ticket</span>
+                            <td class="RightClickMenuItemText" onclick="Add(1201)">
+                                <span class="lblNormalClass">固定价格合同</span>
                             </td>
                         </tr>
                         </tbody>
@@ -108,8 +108,30 @@
                     <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
                         <tbody>
                         <tr>
-                            <td class="RightClickMenuItemText">
-                                <span class="lblNormalClass">Attachment</span>
+                            <td class="RightClickMenuItemText" onclick="Add(1202)">
+                                <span class="lblNormalClass">预付时间合同</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="RightClickMenuItem">
+                    <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
+                        <tbody>
+                        <tr>
+                            <td class="RightClickMenuItemText" onclick="Add(1203)">
+                                <span class="lblNormalClass">预付费合同</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="RightClickMenuItem">
+                    <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
+                        <tbody>
+                        <tr>
+                            <td class="RightClickMenuItemText" onclick="Add(1204)">
+                                <span class="lblNormalClass">事件合同</span>
                             </td>
                         </tr>
                         </tbody>
@@ -968,6 +990,9 @@
         function Add(type) {
             window.open("../Contract/ContractAdd.aspx?type=" + type, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
+        function Edit() {
+            window.open("../Contract/ContractEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=950', false);
+        }
         $("#ToolsButton").on("mouseover", function () {
             $("#ToolsButton").css("background", "#fff");
             $(this).css("border-bottom", "none");
@@ -994,6 +1019,32 @@
         $(".RightClickMenuItem").on("mouseout", function () {
             $(this).css("background", "#FFF");
         });
+        <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ProuductInventory){%>
+        function Add() {
+            window.open("../Product/ProductStock.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Inventory %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Edit() {
+            window.open("../Product/ProductStock.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Inventory %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Transfer() {
+            window.open("../Product/ProductStock.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InventoryTransfer %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Order() {
+            alert("暂未实现");
+        }
+        function Delete() {
+            if (confirm("删除后无法恢复，是否继续?")) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/SaleOrderAjax.ashx?act=delete&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                }
+                })
+            }            
+
+        }
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

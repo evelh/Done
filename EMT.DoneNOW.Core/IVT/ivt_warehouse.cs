@@ -17,7 +17,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]
-        public Int64 name { get; set; }
+        public String name { get; set; }
         [DataMember]
         public SByte is_default { get; set; }
         [DataMember]

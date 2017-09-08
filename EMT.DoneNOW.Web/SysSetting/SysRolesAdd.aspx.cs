@@ -3,6 +3,7 @@ using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -12,12 +13,18 @@ namespace EMT.DoneNOW.Web
 {
     public partial class SysRolesAdd : BasePage
     {
-        private int id;
+        protected int id;
         public sys_role role = new sys_role();
+        private SysRoleInfoBLL rolebll = new SysRoleInfoBLL();
+        protected DataTable table = new DataTable();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取角色id
-            //id = 836;
+            id = 492;
+            //测试一个函数         
+
+
+
             if (!IsPostBack) {
                 var dic = new SysRoleInfoBLL().GetField();
                 this.Tax_cate.DataTextField = "show";
@@ -45,8 +52,8 @@ namespace EMT.DoneNOW.Web
                     if (role.is_excluded > 0) {
                         this.Excluded.Checked = true;
                     }
-                   
-           }
+                    table = rolebll.resourcelist(id);
+                }
             }
         }
         protected void SaveRole_Click(object sender, EventArgs e)
@@ -85,7 +92,7 @@ namespace EMT.DoneNOW.Web
                 if (result == ERROR_CODE.ERROR) {
                     Response.Write("<script>alert('修改失败！');</script>");
                 }
-                if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+                else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
                     Response.Write("<script>alert('角色修改成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
                 }
@@ -93,6 +100,8 @@ namespace EMT.DoneNOW.Web
                 {
                     Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                     Response.Redirect("Login.aspx");
+                } else if(result==ERROR_CODE.EXIST){
+                    Response.Write("<script>alert('已经存在相同名称的角色！');</script>");
                 }
             }
             else {                
@@ -106,11 +115,15 @@ namespace EMT.DoneNOW.Web
                     Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                     Response.Redirect("Login.aspx");
                 }
+                else if (result == ERROR_CODE.EXIST)
+                {
+                    Response.Write("<script>alert('已经存在相同名称的角色！');</script>");
+                }
             }
             //Response.Write("<script>alert('角色添加成功！');window.close();self.opener.location.reload();</script>");
         }
 
-        protected void Cancle_Click(object sender, EventArgs e)
+        protected void Cancel_Click(object sender, EventArgs e)
         {
             Response.Write("<script>window.close();self.opener.location.reload();</script>");
         }

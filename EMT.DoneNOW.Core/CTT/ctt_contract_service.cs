@@ -40,8 +40,6 @@ namespace EMT.DoneNOW.Core
         public SByte? is_invoice_description_customized { get; set; }
         [DataMember]
         public String internal_description { get; set; }
-        [DataMember]
-        public Decimal? adjusted_unit_code { get; set; }
 
 
     }

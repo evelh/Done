@@ -1,0 +1,362 @@
+body{
+    overflow: hidden;
+}
+/*顶部内容和帮助*/
+.TitleBar{
+    color: #fff;
+    background-color: #346a95;
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.TitleBar>.Title{
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 97%;
+}
+.collection{
+    background-image: url(../Images/collection.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 38px;
+    top: 10px;
+    width: 16px;
+}
+.text2{
+    margin-left: 5px;
+}
+.help{
+    background-image: url(../Images/help.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 16px;
+    border-radius: 50%;
+}
+/*保存按钮*/
+.ButtonContainer{
+    padding: 0 10px 10px 10px;
+    width: auto;
+    height: 26px;
+}
+.ButtonContainer ul li .Button{
+    margin-right: 5px;
+    vertical-align: top;
+}
+li.Button{
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+    border: 1px solid #d7d7d7;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: #4f4f4f;
+    cursor: pointer;
+    height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-decoration: none;
+}
+.Button>.Icon{
+    display: inline-block;
+    flex: 0 0 auto;
+    height: 16px;
+    margin: 0 3px;
+    width: 16px;
+}
+.Save,.SaveAndClone,.SaveAndNew{
+    background-image: url("../Images/save.png");
+}
+.Cancel{
+    background-image: url("../Images/cancel.png");
+}
+.Tools{
+    background-image: url("../Images/dropdown.png");
+}
+.Add{
+    background-image: url("../Images/add.png");
+}
+.Print{
+    background-image: url("../Images/print.png");
+}
+.Button>.Text{
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/*工具*/
+.RightClickMenu {
+    padding: 16px;
+    background-color: #FFF;
+    border: solid 1px #CCC;
+    cursor: pointer;
+    z-index: 999;
+    position: absolute;
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.33);
+}
+.RightClickMenuItem {
+    min-height: 24px;
+    min-width: 100px;
+}
+.RightClickMenuItemIcon {
+    padding: 1px 5px 1px 5px;
+    width: 16px;
+}
+.RightClickMenuItemTable tr:first-child td:last-child {
+    white-space: nowrap;
+}
+.RightClickMenuItemLiveLinks>span, .RightClickMenuItemText>span {
+    font-size: 12px;
+    font-weight: normal;
+    color: #4F4F4F;
+}
+/*切换按钮*/
+.TabBar {
+    border-bottom: solid 1px #adadad;
+    font-size: 0;
+    margin: 0 0 10px 0;
+    padding: 0 0 0 5px;
+}
+.TabBar a.Button.SelectedState {
+    background: #fff;
+    border-color: #adadad;
+    border-bottom-color: #fff;
+}
+.TabBar a.Button {
+    background: #eaeaea;
+    border: solid 1px #dfdfdf;
+    border-bottom-color: #adadad;
+    color: #858585;
+    height: 24px;
+    padding: 0;
+    margin: 0 0 -1px 5px;
+    width:100px;
+}
+a.Button {
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+    border: 1px solid #d7d7d7;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: #4f4f4f;
+    cursor: pointer;
+    height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-decoration: none;
+}
+.TabBar a.Button span.Text {
+    padding: 0 6px 0 6px;
+    margin: 0 auto;
+}
+a.Button>.Text {
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/*切换内容*/
+/*头*/
+.DivSectionWithHeader {
+    border: 1px solid #d3d3d3;
+    margin: 0 10px 10px 10px;
+    padding: 4px 0 0 0;
+}
+.DivSectionWithHeader .HeaderRow {
+    position: relative;
+    padding-bottom: 3px;
+}
+.DivSectionWithHeader>.HeaderRow>.Toggle {
+    background: #d7d7d7;
+    background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #c6c6c6;
+    cursor: pointer;
+    height: 14px;
+    margin: 2px 6px 0 6px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 14px;
+    float: left;
+}
+.DivSectionWithHeader>.HeaderRow>.Toggle.Collapse>.Vertical {
+    display: none;
+}
+.DivSectionWithHeader>.HeaderRow>.Toggle>.Vertical {
+    background-color: #888;
+    height: 8px;
+    left: 13px;
+    position: absolute;
+    top: 6px;
+    width: 2px;
+}
+.DivSectionWithHeader>.HeaderRow>.Toggle>.Horizontal {
+    background-color: #888;
+    height: 2px;
+    left: 10px;
+    position: absolute;
+    top: 9px;
+    width: 8px;
+}
+.DivSectionWithHeader>.HeaderRow>.Toggle+span {
+    padding-left: 0;
+}
+.DivSectionWithHeader>.HeaderRow>span {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+}
+.DivSectionWithHeader>.HeaderRow>span {
+    padding: 2px 4px 6px 6px;
+    color: #666;
+    height: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 17px;
+    text-transform: uppercase;
+}
+/*内容*/
+.DivSectionWithHeader .Content {
+    padding: 0 28px 0 28px;
+}
+.FieldLabel {
+    font-weight: bold;
+    font-size: 12px;
+    color: #4F4F4F;
+    background-color: transparent;
+}
+.DivSection div, .DivSectionWithHeader .Content div {
+    font-weight: normal;
+    padding-bottom: 10px;
+}
+input[type=text], select, textarea, input[type=password] {
+    border: solid 1px #D7D7D7;
+    font-size: 12px;
+    color: #333;
+    margin: 0;
+}
+input[type=text], input[type=password] {
+    height: 24px;
+    padding: 0 6px;
+}
+.DataSelectorLinkIcon img {
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-left: 1px;
+}
+.txtBlack8Class {
+    font-size: 12px;
+    color: #333;
+    font-weight: normal;
+}
+select {
+    height: 24px;
+    padding: 0;
+}
+textarea {
+    padding: 6px;
+    resize: vertical;
+}
+.ip_general_label_udf {
+    width: 120px;
+    padding-right: 3px;
+    height: 22px;
+    padding-left: 2px;
+}
+.ip_general_ctrl {
+    text-align: left;
+}
+.tabTwo{
+    height: 22px;
+}
+.DivSection, .DivSectionOnly {
+    border: 1px solid #d3d3d3;
+    margin: 0 10px 10px 10px;
+    padding: 12px 28px 4px 28px;
+}
+.NoneBorder {
+    border: none;
+}
+.SubtitleDiv {
+    margin: 0 10px;
+    display: block;
+    font-size: 15px;
+    font-weight: bolder;
+    color: #4F4F4F;
+    padding-bottom: 10px;
+}
+a.HyperLink {
+    cursor: pointer;
+    color: #376597;
+}
+.DivSectionWithHeader .Content td.tableCell {
+    width: 50%!important;
+    padding-bottom: 12px;
+}
+.labelBlack, .tableCell {
+    color: #333;
+    font-size: 12px;
+    vertical-align: top;
+}
+.tableCell span.labelText {
+    font-size: 12px;
+    vertical-align: top;
+    padding-right: 5px;
+    color: #4F4F4F;
+    width: 105px;
+    display: block;
+    font-weight: bold;
+}
+.labelText {
+    color: #4f4f4f;
+    font-weight: 700;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+.label {
+    color: #4F4F4F;
+    font-size: 12px;
+}
+a {
+    text-decoration: none;
+    color: #376597;
+}
+a:hover {
+    text-decoration: underline;
+}

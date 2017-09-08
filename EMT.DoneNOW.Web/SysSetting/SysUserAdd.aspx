@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="../Content/sysset_user.css" rel="stylesheet" />
     <link href="../Content/reset.css" rel="stylesheet" />
+      <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <title>系统管理</title>
 </head>
 <body>
@@ -19,10 +20,9 @@
             </div>
         </div>
         <!--按钮部分-->
-        <div class="ButtonBar">
+        <div class="ButtonBar header-title">
             <ul>
-                <li class="LiButton" id="f1">
-                    <img src="../Images/save.png" alt="" class="ButtonImg" />
+                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <%-- <span class="Text">保存 & 克隆</span>--%>
                     <asp:Button ID="Save_Clone" runat="server" Text="保存并关闭" BorderStyle="None" class="Text" OnClick="Save_Cloes_Click" />
                 </li>

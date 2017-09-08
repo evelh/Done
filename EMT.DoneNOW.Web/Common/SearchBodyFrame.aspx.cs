@@ -98,6 +98,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.CONTRACT:
                     addBtn = "新增合同";
                     break;
+                case (int)DicEnum.QUERY_CATE.PRODUCTINVENTORY:
+                    addBtn = "新增产品库存";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -324,12 +327,18 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "取消销售订单", click_function = "CancelSaleOrder()" });
                     break;
                 case (long)QueryType.Contract:
-                    contextMenu.Add(new PageContextMenuDto { text = "编辑合同", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑合同", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看合同", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "在新窗口中查看合同", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "续约", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制合同", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除合同", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    break;
+                case (long)QueryType.ProuductInventory:
+                    contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "移库", click_function = "Transfer()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "订购", click_function = "Order()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除库存", click_function = "Delete()" });
                     break;
                 default:
                     break;

@@ -132,6 +132,7 @@
     <Content Include="Company\CompanySiteManage.aspx" />
     <Content Include="Company\UpdateContact.aspx" />
     <Content Include="ConfigurationItem\AddOrEditConfigItem.aspx" />
+    <Content Include="ConfigurationItem\ConfigType.aspx" />
     <Content Include="ConfigurationItem\SubscriptionAddOrEdit.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
@@ -154,6 +155,7 @@
     <Content Include="Content\LostQuote.css" />
     <Content Include="Content\multiple-select.css" />
     <Content Include="Content\multipleList.css" />
+    <Content Include="Content\NewConfigurationItem.css" />
     <Content Include="Content\NewContact.css" />
     <Content Include="Content\NewQuoteItem.css" />
     <Content Include="Content\Quote.css" />
@@ -166,6 +168,7 @@
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\ContractAdd.aspx" />
+    <Content Include="Contract\ContractEdit.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
     <Content Include="Contact\DeleteContact.aspx" />
@@ -223,6 +226,8 @@
     <Content Include="Opportunity\OpportunityWinReasons.aspx" />
     <Content Include="Opportunity\OppportunityAdvancedField.aspx" />
     <Content Include="Product\ProductAdd.aspx" />
+    <Content Include="Product\ProductStock.aspx" />
+    <Content Include="Product\TransferProductStock.aspx" />
     <Content Include="Product\VendorAdd.aspx" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
@@ -624,6 +629,7 @@
     <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\bg.jpg" />
     <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\datepicker.css" />
     <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\img.gif" />
+    <Content Include="Scripts\NewConfigurationItem.js" />
     <Content Include="Scripts\NewContact.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -723,6 +729,13 @@
     <Compile Include="ConfigurationItem\AddOrEditConfigItem.aspx.designer.cs">
       <DependentUpon>AddOrEditConfigItem.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationItem\ConfigType.aspx.cs">
+      <DependentUpon>ConfigType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\ConfigType.aspx.designer.cs">
+      <DependentUpon>ConfigType.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationItem\SubscriptionAddOrEdit.aspx.cs">
       <DependentUpon>SubscriptionAddOrEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -804,6 +817,13 @@
     </Compile>
     <Compile Include="Contract\ContractAdd.aspx.designer.cs">
       <DependentUpon>ContractAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\ContractEdit.aspx.cs">
+      <DependentUpon>ContractEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractEdit.aspx.designer.cs">
+      <DependentUpon>ContractEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -920,6 +940,20 @@
     </Compile>
     <Compile Include="Product\ProductAdd.aspx.designer.cs">
       <DependentUpon>ProductAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Product\ProductStock.aspx.cs">
+      <DependentUpon>ProductStock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Product\ProductStock.aspx.designer.cs">
+      <DependentUpon>ProductStock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Product\TransferProductStock.aspx.cs">
+      <DependentUpon>TransferProductStock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Product\TransferProductStock.aspx.designer.cs">
+      <DependentUpon>TransferProductStock.aspx</DependentUpon>
     </Compile>
     <Compile Include="Product\VendorAdd.aspx.cs">
       <DependentUpon>VendorAdd.aspx</DependentUpon>
@@ -1251,6 +1285,9 @@
     <Compile Include="Tools\GeneralViewAjax.ashx.cs">
       <DependentUpon>GeneralViewAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\InventoryAjax.ashx.cs">
+      <DependentUpon>InventoryAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\OpportunityAjax.ashx.cs">
       <DependentUpon>OpportunityAjax.ashx</DependentUpon>
     </Compile>
@@ -1316,6 +1353,7 @@
     <Content Include="Tools\GeneralViewAjax.ashx" />
     <Content Include="Tools\AccountClassAjax.ashx" />
     <Content Include="Tools\OpportunityReasonAjax.ashx" />
+    <Content Include="Tools\InventoryAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

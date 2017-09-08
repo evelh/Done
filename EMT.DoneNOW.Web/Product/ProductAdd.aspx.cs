@@ -1,5 +1,4 @@
 ﻿using EMT.DoneNOW.BLL;
-using EMT.DoneNOW.BLL.IVT;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 using System;
@@ -17,8 +16,8 @@ namespace EMT.DoneNOW.Web
 {
     public partial class ProductAdd : BasePage
     {
-        protected List<UserDefinedFieldDto> contact_udfList = null;      // 联系人自定义
-        protected string callBackFiled = "";
+        protected List<UserDefinedFieldDto> product_udfList = null;      // 产品自定义
+        protected List<UserDefinedFieldValue> udfv_list;                 //自定义的值
         protected long id;
         private ProductBLL pbll = new ProductBLL();
         protected ivt_product product = new ivt_product();
@@ -32,9 +31,10 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取id
-            id = 1;
+            id = 1377;            
             GetMenus();
             if (!IsPostBack) {
+                product_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PRODUCTS);//自定义
                 var dic = pbll.GetField();
                 this.Item_Type.DataTextField = "show";
                 this.Item_Type.DataValueField = "val";
@@ -102,12 +102,13 @@ namespace EMT.DoneNOW.Web
             {
                 this.External_Product_ID.Text = product.external_id.ToString();
             }
-            if (product.link != null && !string.IsNullOrEmpty(product.link.ToString()))
-            {
-                this.Product_Link.Text = product.link.ToString();
-            }
+            //if (product.link != null && !string.IsNullOrEmpty(product.link.ToString()))
+            //{
+            //    this.Product_Link.Text = product.link.ToString();
+            //}
             if (product.url != null && !string.IsNullOrEmpty(product.url.ToString()))
             {
+                this.Product_Link.Text= product.url.ToString();
                 url = product.url.ToString();
             }
             if (product.sku != null && !string.IsNullOrEmpty(product.sku.ToString()))
@@ -140,6 +141,7 @@ namespace EMT.DoneNOW.Web
         }
         #endregion
         //处理数据
+#region 处理需要保存的数据
         private void save_deal() {
             if (id > 0)
             {
@@ -148,20 +150,26 @@ namespace EMT.DoneNOW.Web
             //需要进行唯一性校验
             product.product_name = this.Product_Name.Text.ToString();
             string cate,code;
-            if (!string.IsNullOrEmpty(Request.Form["CallBackHidden"].ToString()))
+            //物料
+            if (!string.IsNullOrEmpty(Request.Form["kkCallBackHidden"].ToString()))
             {
-                cate = Convert.ToString(Request.Form["CallBackHidden"]);
-                product.cate_id = Convert.ToInt32(cate);
-            }
-
-            if (!string.IsNullOrEmpty(Request.Form["accCallBackHidden"].ToString())) {
-                code = Convert.ToString(Request.Form["accCallBackHidden"]);
+                code = Convert.ToString(Request.Form["kkCallBackHidden"]);
+                code = code.TrimEnd(',');
                 product.cost_code_id = Convert.ToInt32(code);
             }
+            //产品种类
+            if (Request.Form["accCallBackHidden"]!=null&&!string.IsNullOrEmpty(Request.Form["accCallBackHidden"].ToString())) {
+                cate = Convert.ToString(Request.Form["accCallBackHidden"]);
+                cate = cate.TrimEnd(',');
+                product.cate_id = Convert.ToInt32(cate);
+            }
             product.description = this.Product_Description.Text.ToString();
+            if(!string.IsNullOrEmpty(this.Unit_Cost.Text.ToString()))
             product.unit_cost =Convert.ToDecimal(this.Unit_Cost.Text.ToString());
-            product.unit_price = Convert.ToDecimal(this.Unit_Price.Text.ToString());
-            product.msrp = Convert.ToDecimal(this.MSRP.Text.ToString());
+            if (!string.IsNullOrEmpty(this.Unit_Price.Text.ToString()))
+                product.unit_price = Convert.ToDecimal(this.Unit_Price.Text.ToString());
+            if (!string.IsNullOrEmpty(this.MSRP.Text.ToString()))
+                product.msrp = Convert.ToDecimal(this.MSRP.Text.ToString());
             product.internal_id = this.Internal_Product_ID.Text.ToString();
             product.external_id = this.External_Product_ID.Text.ToString();
             product.link = this.Product_Link.Text.ToString();
@@ -181,30 +189,67 @@ namespace EMT.DoneNOW.Web
             product.manu_name = this.Manufacturer.Text.ToString();
             product.manu_product_no = this.Manufacturer_Product_Number.Text.ToString();
             product.sku = this.Product_SKU.Text.ToString();
-            string t = Convert.ToString(Request.Form["vendor_data"].ToString());
+            string t =Request.Form["vendor_data"].ToString();
             t = t.Replace("[,", "[").Replace(",]", "]");
             var tt=new EMT.Tools.Serialize().DeserializeJson<VendorData>(t);
+            if (product_udfList != null && product_udfList.Count > 0)                      // 首先判断是否有自定义信息
+            {
+                 udfv_list = new List<UserDefinedFieldValue>();
+                foreach (var udf in product_udfList)                            // 循环添加
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == null ? "" : Request.Form[udf.id.ToString()],
+                    };
+                    udfv_list.Add(new_udf);
+                }
+               
+            }
+
+#endregion
+
             //更新
             if (id > 0) {
-                var result=pbll.InsertProductAndVendor(product, tt, GetLoginUserId());
+                var result=pbll.UpdateProductAndVendor(product, tt, GetLoginUserId());
+                switch (result) {
+                    case ERROR_CODE.EXIST: Response.Write("<script>alert(\"已经存在该名称的产品，请修改后保存！\");</script>"); break; //存在相同名称产品
+                    case ERROR_CODE.ERROR: Response.Write("<script>alert(\"保存失败！\");</script>"); break; //操作失败
+                    case ERROR_CODE.USER_NOT_FIND:
+                        Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                        Response.Redirect("../Login.aspx"); ; break;//获取操作者信息失败
+                    case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"产品新增成功！\");</script>"); break;//成功
+                    default: Response.Write("<script>alert('异常错误，返回上一级！');window.close();self.opener.location.reload();</script>"); ; break;//失败
+                }
             }
             //新增
             else {
-                var result=pbll.UpdateProductAndVendor(product,tt,GetLoginUserId());
+                var result=pbll.InsertProductAndVendor(product,tt,udfv_list,GetLoginUserId());
+                switch (result)
+                {
+                    case ERROR_CODE.EXIST:Response.Write("<script>alert(\"已经存在该名称的产品，请修改后保存！\");</script>"); break; //存在相同名称产品
+                    case ERROR_CODE.ERROR: Response.Write("<script>alert(\"保存失败！\");</script>"); break; //操作失败
+                    case ERROR_CODE.USER_NOT_FIND:
+                        Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                        Response.Redirect("../Login.aspx"); ; break;//获取操作者信息失败
+                    case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"产品修改成功！\");</script>"); break;//成功
+                    default: Response.Write("<script>alert('异常错误，返回上一级！');window.close();self.opener.location.reload();</script>"); ; break;//失败
+                }
 
             }
-
             
 
         }
         protected void Save_Close_Click(object sender, EventArgs e)
         {
             save_deal();
+            Response.Write("<script>alert('！');window.close();self.opener.location.reload();</script>");
         }
 
         protected void Save_New_Click(object sender, EventArgs e)
         {
-
+            save_deal();
+            Response.Write("<script>alert('！');window.close();self.opener.location.reload();</script>");
         }
 
         protected void Cancel_Click(object sender, EventArgs e)
@@ -217,7 +262,7 @@ namespace EMT.DoneNOW.Web
             contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
             contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
             contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
-            contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "NoActive()" });
+            contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "NoActive()" });
             contextMenu.Add(new PageContextMenuDto { text = "设为默认", click_function = "Default()" });
         }
     }

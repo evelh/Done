@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.Web
             contextMenu = new List<PageContextMenuDto>();
             contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
             contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
-            contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "NoActive()" });
+            contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "NoActive()" });
             contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
         }
     }

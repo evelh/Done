@@ -185,6 +185,32 @@ namespace EMT.DoneNOW.DAL
             }
         }
         /// <summary>
+        /// 执行多条sql语句的方法
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public bool SQLTransaction(object param = null,params string[] sql)
+        {
+            using (IDbConnection connect = BuildConnection())
+            {
+                var beginTran = connect.BeginTransaction();
+                try {
+                    int i,n=sql.Length;
+                    for(i=0;i<n;++i){
+                        connect.Execute(sql[i], param, beginTran);                        
+                    }
+                    beginTran.Commit();
+                    return true;
+                }
+                catch(Exception ex)
+                    {
+                    beginTran.Rollback();
+                    return false;                    
+                }               
+            }
+        }
+        /// <summary>
         /// 用于更新数据
         /// </summary>
         /// <param name="sql"></param>

@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
+      <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <style>
      #menu { position: absolute;z-index: 999;display: none;}
 #menu ul{margin: 0 ;padding: 0;position: relative;width: 150px;border: 1px solid gray;background-color: #F5F5F5;padding: 10px 0;}
@@ -18,8 +19,16 @@
 #menu ul li .menu-i1{width: 20px;height: 100%;display: block;float: left;}
 #menu ul li .menu-i2{width: 20px;height: 100%;display: block;float: right;}
 #menu ul .disabled{color: #AAAAAA;}
+ @media screen and (max-width: 1430px){
+       .cont{
+           width:1200px;
+           margin:60px 2% 0 2%;
+    position: absolute;
+    z-index: 1;
+       }
+	}
         </style>
-    <title>产品</title>
+    <title>产品管理</title>
 </head>
 <body>
     <form id="form1" runat="server" method="post">
@@ -27,33 +36,33 @@
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">新增产品</span>
+            <span class="text1">产品管理</span>
             <a href="###" class="help"></a>
         </div>
     </div>
     <!--按钮-->
-    <div class="ButtonContainer">
+    <div class="ButtonContainer header-title">
         <ul id="btn">
-            <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                 <asp:Button ID="Save_Close" OnClientClick="return save_deal()" runat="server" Text="保存并关闭"  BorderStyle="None" OnClick="Save_Close_Click"/>
             </li>
-            <li class="Button ButtonIcon NormalState" id="SaveAndNewButton" tabindex="0">
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
                 <asp:Button ID="Save_New" OnClientClick="return save_deal()" runat="server" Text="保存并新建" BorderStyle="None" OnClick="Save_New_Click"/>
             </li>
-            <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
+            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                 <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click"/>
             </li>
         </ul>
     </div>
     <!--切换按钮-->
     <div class="TabBar">
-        <a class="Button ButtonIcon SelectedState">
+        <a class="Button ButtonIcon SelectedState" id="tab1">
             <span class="Text">总结</span>
         </a>
-        <a class="Button ButtonIcon">
+        <a class="Button ButtonIcon" id="tab2">
             <span class="Text">用户定义的</span>
         </a>
-        <a class="Button ButtonIcon">
+        <a class="Button ButtonIcon" id="tab3">
             <span class="Text">库存</span>
         </a>
     </div>
@@ -68,18 +77,18 @@
                             <span class="errorSmall">*</span>
                             <div>
                                 <asp:TextBox ID="Product_Name" runat="server" style="width:268px;"></asp:TextBox>
+                                <input type="hidden" id="prodct_id" name="prodct_id" value="<%=product.id %>" />
                             </div>
                         </td>
                         <td width="50%" class="FieldLabels">
                             产品种类
                         <div>
                             <label>产品种类</label>
-                            <input type="text"disabled="disabled" id="accCallBack" name="CallBack" value="<%=cate_name %>" />
-                            <input type="hidden" name="CallBackHidden" id="accCallBackHidden" value=""/>
+                            <input type="text"disabled="disabled" id="accCallBack" name="accCallBack" value="<%=cate_name %>" />
+                            <input type="hidden" name="accCallBackHidden" id="accCallBackHidden" value=""/>
                             <i onclick="OpenWindowProductCate()"><img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;"/></i>
                         </div>
                          <%--查找带回--%>
-
                         </td>
                     </tr>
                     <tr>
@@ -110,8 +119,8 @@
                         <td width="50%" class="FieldLabels">
                             物料代码<span class="errorSmall">*</span>
                             <div>
-                             <input type="text" disabled="disabled" id="CallBack" name="account_name" value="<%=code_name %>" />
-                            <input type="hidden" name="" id="CallBackHidden" value="" />
+                             <input type="text" disabled="disabled" id="kkCallBack" name="kkCallBack" value="<%=code_name %>" />
+                            <input type="hidden" name="kkCallBackHidden" id="kkCallBackHidden" value="" />
                             <i onclick="OpenWindowMaterialCode()"><img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;"/></i>
                             </div>
                         </td>
@@ -123,12 +132,11 @@
                             <span style="margin-left: 12px;">单位价格</span>
                             <span style="margin-left: 15px;">MSRP</span>
                             <div style="padding-bottom: 2px;">
-                                <asp:TextBox ID="Unit_Cost" runat="server" style="width:60px;text-align: right;" onchange="if(/^[0-9]+(.[0-9]{1,2})?$/.test(this.value)){alert('只能输入两位小数');this.value='';this.focus();}"></asp:TextBox>
+                                <asp:TextBox ID="Unit_Cost" runat="server" style="width:60px;text-align: right;" ></asp:TextBox>
                                <%-- 计算毛利率--%>
-
                                 <input type="text" disabled="disabled" id="maolilv" style="width:50px"/>
                                 <asp:TextBox ID="Unit_Price" runat="server" style="width:60px;text-align: right;"></asp:TextBox>
-                                <asp:TextBox ID="MSRP" runat="server" style="width:60px;text-align: right;" onchange="if(/^[0-9]+(.[0-9]{1,2})?$/.test(this.value)){alert('只能输入两位小数');this.value='';this.focus();}"></asp:TextBox>
+                                <asp:TextBox ID="MSRP" runat="server" style="width:60px;text-align: right;"></asp:TextBox>
                             </div>
                         </td>
                         <td class="FieldLabels">
@@ -175,9 +183,9 @@
                     </tr>
                     <tr>
                         <td width="50%" class="FieldLabels">
-                            产品链接<a style="color:cadetblue" href="#">Preview</a>
+                            产品链接<a id="url" style="color:cadetblue" href="<%=url %>">Preview</a>
                             <div>
-                                <asp:TextBox ID="Product_Link" runat="server" maxlength="100" style="width: 268px;height:70px;" TextMode="MultiLine"></asp:TextBox>
+                                <asp:TextBox ID="Product_Link" runat="server" maxlength="100" style="width: 268px;height:70px;" TextMode="MultiLine" onchange="return checkUrl()"></asp:TextBox>
                             </div>
                         </td>
                         <td width="50%" class="FieldLabels" style="vertical-align: top;">
@@ -191,19 +199,17 @@
             </table>
         </div>
         <div style="width: 100%; margin-bottom: 10px;">
-            <div class="ButtonContainer">
+            <div class="ButtonContainer header-title">
                 <ul>
-                    <li class="Button ButtonIcon NormalState" id="NewButton" tabindex="0">
-                        <span class="Icon New">
-                            <img src="../Images/add.png" /></span>
+                   <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                         <span class="Text">新建</span>
                     </li>
                 </ul>
             </div>
-            <div class="GridContainer">
-                <div style="width: 100%; overflow: auto; z-index: 0;">
+            <div class="GridContainer" style="height:auto;">
+                <div style="width: 100%; overflow: auto; z-index: 0;height:100px;">
                     <table class="dataGridBody" cellspacing="0" width="100%">
-                        <tbody>
+                        <tbody id="vendortable">
                             <tr class="dataGridHeader" style="height: 28px;">
                                 <td style="width: auto;">
                                     <span>供应商名称</span>
@@ -256,34 +262,69 @@
         </div>
     </div>
     <div class="TabContainer" style="display: none;">
-        <div>
-            <table width="100%" border="0" cellspacing="0" cellpadding="3">
-                <tbody>
-                    <tr>
-                        <td style="padding-left:10px;padding-right:10px;">
-                            <div class="grid">
-                                There are no User-Defined Fields.
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+         <div>
+                <div>
+                    <ul>
+                        <% if (product_udfList != null && product_udfList.Count > 0)
+                            {
+                                foreach (var udf in product_udfList)
+                                {
+                                    if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                                    {%>
+                        <li>
+                            <label><%=udf.name %></label>
+                            <input type="text" name="<%=udf.id %>" class="sl_cdt" />
+                        </li>
+                        <%}
+                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
+                            {%>
+                        <li>
+                            <label><%=udf.name %></label>
+                            <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
+                        </li>
+                        <%}
+                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
+                            {%><li>
+                                <label><%=udf.name %></label>
+                                <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" />
+                            </li>
+                        <%}
+                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
+                            {%>
+                        <li>
+                            <label><%=udf.name %></label>
+                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                        </li>
+                        <%}
+                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                            {%>
+                        <li>
+                            <label><%=udf.name %></label>
+                            <select name="<%=udf.id %>">
+                                <%
+                                    if (udf.value_list != null)
+                                    {
+                                        foreach (var v in udf.value_list)
+                                        {
+                                %>
+                                <option value="<%=v.val %>"><%=v.show %></option>
+                                <%
+                                        } // foreach
+                                    } // if
+                                %>
+                            </select>
+                        </li>
+                        <%}
+                                }
+                            } %>
+                    </ul>
+                </div>
+            </div>
     </div>
     <div class="TabContainer" style="display: none;">
-        <div>
-            <table width="100%" border="0" cellspacing="0" cellpadding="3">
-                <tbody>
-                <tr>
-                    <td style="padding-left:10px;padding-right:10px;">
-                        <div class="grid">
-                            暂无
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+            <div class="cont">
+                <iframe id="PageFrame" name="PageFrame" style="width:100%;height:auto" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>"></iframe>
+            </div>
     </div>
         </div>
          <div id="menu">
@@ -298,12 +339,84 @@
         <%} %>
 	</div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
-        <script src="../Scripts/SysSettingRoles.js"></script>
+        <%--<script src="../Scripts/SysSettingRoles.js"></script>--%>
            <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
         <script>
+            $(window).resize(function () {
+                var Height = $(document).height() - 66 + "px";
+                $("#PageFrame").css("height", Height);
+            })
+            var Height = $(document).height() - 66 + "px";
+            $("#PageFrame").css("height", Height);
+            //tab选项卡的控制
+            //$.each($(".TabBar a"), function (i) {
+            //    $(this).click(function () {
+            //        $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
+            //        $(".TabContainer").eq(i).show().siblings(".TabContainer").hide();
+            //    })
+            //});
+            $("#tab1").click(function () {
+                $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
+                $(".TabContainer").eq(0).show().siblings(".TabContainer").hide();
+            });
+            $("#tab2").click(function () {
+                $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
+                $(".TabContainer").eq(1).show().siblings(".TabContainer").hide();
+            });
+            $("#tab3").click(function () {
+                <%if(product.id>0){%>
+                $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
+                $(".TabContainer").eq(2).show().siblings(".TabContainer").hide();
+                <%}else{%>
+                alert("产品还未保存，不存在库存信息！");
+                return false;
+                <%}%>
+            });
+
+
+
+            $(document).ready(function () {
+                //填入毛利率
+                var k1 = $("#Unit_Price").val();
+                var k2 = $("#Unit_Cost").val();
+                var f1 = parseFloat(k1);
+                if (isNaN(f1)) {
+                    $("#Unit_Price").val('');
+                    return false;
+                }
+                var f2 = parseFloat(k2);
+                if (isNaN(f2)) {
+                    $("#Unit_Cost").val('');
+                    return false;
+                }
+                if (k2 == null || k2 == '') {
+                    alert("请先输入单元成本！");
+                    $("#Unit_Cost").focus();
+                    return false;
+                }
+                var m = ((k1 - k2) / k2) * 100;
+                m = Math.round(m * 100) / 100;
+                $("#maolilv").val(m + "%");
+            });
+
+            function checkUrl() {
+                var strReg = "/((http|ftp|https|file):\/\/([\w\-]+\.)+[\w\-]+(\/[\w\u4e00-\u9fa5\-\.\/?\@\%\!\&=\+\~\:\#\;\,]*)?)/ig";
+                var re = new RegExp(strReg);
+                if (!re.test($(this).val())) {
+                    alert("输入的链接不符合规范！");
+                    return false;
+                } else {
+                    $("#url").removeAttr("href");
+                    $("#url").attr({
+                        "href": $(this).val(),
+                        "title": ""
+                    });
+                }
+            }
+
             //供应商右键菜单删除
             function Delete() {
-                alert("delete");
+
                 if ($("tr[data-val=" + entityid + "]").hasClass("oldvendor")) {
                     $("tr[data-val=" + entityid + "]").addClass("deletevendor");
                     $("tr[data-val=" + entityid + "]").removeClass("oldvendor")
@@ -311,12 +424,10 @@
                 } else {
                     $("tr[data-val=" + entityid + "]").remove();
                 }
-                   
-
             }
             //供应商右键菜单修改
             function Edit() {
-                var _this=$("tr[data-val=" + entityid + "]");
+                var _this = $("tr[data-val=" + entityid + "]");
                 var vendorname = _this.children().eq(0).text();
                 var id = _this.children().eq(0).find("input").val();
                 var vendor_cost = _this.children().eq(1).text();
@@ -325,9 +436,17 @@
                 if (_this.children().eq(3).text() != '') {
                     is_active = "1";
                 }
-                var kk = "{'vendorname': '"+vendorname+"', 'id': '"+id+"', 'vendor_cost': '"+vendor_cost+"', 'vendor_product_no':'"+vendor_product_no+"', 'is_active': '"+is_active+"'}";
-                $("#vendor_data").val(kk);
-                window.open('VendorAdd.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.VendorAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                $("#vendor_data").val('');
+                if (_this.hasClass("oldvendor")) {
+                    id = entityid;
+                    window.open('VendorAdd.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.VendorAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                    return entityid;
+                }
+                else {
+                    var kk = "{'vendorname': '" + vendorname + "', 'id': '" + id + "', 'vendor_cost': '" + vendor_cost + "', 'vendor_product_no':'" + vendor_product_no + "', 'is_active': '" + is_active + "'}";
+                    $("#vendor_data").val(kk);
+                    window.open('VendorAdd.aspx?state=new', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.VendorAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                }                
                 return entityid;
             }
             //更新反馈
@@ -337,7 +456,6 @@
                 console.log(returnValue);
                 if (returnValue !== '' && returnValue !== undefined) {
                     _this.addClass("updatevendor");
-
                     result = returnValue.replace(/'/g, '"');
                     var obj = JSON.parse('[' + result + ']');
                     for (var i = 0; i < obj.length; i++) {
@@ -402,147 +520,215 @@
             //供应商右键菜单激活
             function Active() {
                 var _this = $("tr[data-val=" + entityid + "]");
-                if (_this.children().eq(3).text() != '') {
+                if (_this.children().eq(3).find("img").length>0) {
                     alert("已经激活！");
                 } else {
+                    _this.addClass("updatevendor");
                     _this.children().eq(3).append("<img src='../Images/check.png'/>");
                 }
             }
 
             //供应商右键菜单失活活
-            function No_Active() {
+            function NoActive() {
                 var _this = $("tr[data-val=" + entityid + "]");
-                if (_this.children().eq(3).text() == '') {
+                if (_this.children().eq(3).find("img").length <= 0) {
                     alert("已经失活！");
                 } else {
-                    _this.children().eq(3).text()='';
+                    _this.addClass("updatevendor");
+                    _this.children().eq(3).html('');
                 }
             }
              //供应商右键菜单设为默认
             function Default() {
-                $("#def").parent().text('');
+               
                 var _this = $("tr[data-val=" + entityid + "]");
-                _this.children().eq(4).append("<img src='../Images/check.png'/><input type= 'hidden' id= 'def' value='default'/>");
+                if (_this.children().eq(4).find("img").length > 0) {
+                    alert("已经为默认！");
+                } else {
+                    $("#def").parent().html('');
+                    _this.addClass("updatevendor");
+                    _this.children().eq(4).append("<img src='../Images/check.png'/><input type= 'hidden' id= 'def' value='default'/>");
+                }              
+
             }
+
+
             //处理保存数据
             function save_deal() {
                 if ($("#Product_Name").val() == null || ($("#Product_Name").val() == '')){
                     alert("请填入产品名称！");
                     return false;
                 }
-                if ($("#CallBack").val() = null || $("#CallBack").val() == '') {
+                if ($("#kkCallBack").val() ==null || $("#kkCallBack").val() == '') {
                     alert("请选择物料代码");
                     return false;
                 }
-                //原来的供应商
-               // $(".oldvendor")
-
+  
                 var vendor = [];
                 vendor.push("{\"VENDOR\":[");
-                //删除的供应商
-                $(".deletevendor").each(function () {
-                    var id = this.data("val");
-                    var k = { "id": id, "operate": 1 };
-                    var json = JSON.stringify(k);
-                    vendor.push(json);
-                })
-                //新增的供应商
-                $(".newvendor").each(function () {
-                    var vendorname = this.children().eq(0).text();
-                    var vendorid = this.children().eq(0).find("input").val();
-                    var vendor_cost = this.children().eq(1).text();
-                    var vendor_product_no = this.children().eq(2).text();
-                    var is_active = 0;
-                    var is_default = 0;
-                    if (this.children().eq(3).text() != '') {
-                        is_active = 1;
+
+                $("#vendortable").find("tr").each(function () {
+                    var _this = $(this);
+                    if (_this.hasClass("deletevendor")) {
+                        //删除的供应商
+                        var id = _this.data("val");
+                            var k = { "id": id, "operate": 1 };
+                            var json = JSON.stringify(k);
+                            console.log("delete:"+json);
+                            vendor.push(json);
                     }
-                    if (this.children().eq(4).text() != '') {
-                        is_default = 1;
+                    console.log(this);
+                    if (_this.hasClass("newvendor")) {
+                        //新增的供应商
+                        var vendorname = _this.children().eq(0).text();
+                        var vendorid = _this.children().eq(0).find("input").val();
+                        var vendor_cost = _this.children().eq(1).text();
+                        var vendor_product_no = _this.children().eq(2).text();
+                            var is_active = 0;
+                            var is_default = 0;
+                            if (_this.children().eq(3).find("img").length>0) {
+                                is_active = 1;
+                            }
+                            if (_this.children().eq(4).find("img").length>0) {
+                                is_default = 1;
+                            }
+                            var k = { "id": 0, "operate": 3, "vendor_account_id": vendorid, "vendor_product_no": vendor_product_no, "vendor_cost": vendor_cost, "is_default": is_default, "is_active": is_active };
+                            var json = JSON.stringify(k);
+                            console.log("insert"+json);
+                            vendor.push(json);
                     }
-                    var k = { "id":0, "operate": 3, "vendor_account_id": vendorid, "vendor_product_no": vendor_product_no, "vendor_cost": vendor_cost, "is_default": is_default, "is_active": is_active };
-                    var json = JSON.stringify(k);
-                    vendor.push(json);
-                })
-
-
-                //更新的供应商
-                $(".updatevendor").each(function () {
-                    if (this.hasClass("oldvendor")) {
-                        var id = this.data("val");
+                    if (_this.hasClass("updatevendor")) {
+                        //更新的供应商
+                            var id = 0;
+                            var operate = 3;
+                            if (_this.hasClass("oldvendor")) {
+                                id = _this.data("val");
+                                operate = 2;
+                            }
+                            var vendorname = _this.children().eq(0).text();
+                            var vendorid = _this.children().eq(0).find("input").val();
+                            var vendor_cost = _this.children().eq(1).text();
+                            var vendor_product_no = _this.children().eq(2).text();
+                            var is_active = 0;
+                            var is_default = 0;
+                            if (_this.children().eq(3).find("img").length>0) {
+                                is_active = 1;
+                            }
+                            if (_this.children().eq(4).find("img").length > 0) {
+                                is_default = 1;
+                            }
+                            var k = { "id": id, "operate": operate, "vendor_account_id": vendorid, "vendor_product_no": vendor_product_no, "vendor_cost": vendor_cost, "is_default": is_default, "is_active": is_active };
+                            var json = JSON.stringify(k);
+                            console.log("update"+json);
+                            vendor.push(json);
                     }
-                    var vendorname = this.children().eq(0).text();
-                    var vendorid = this.children().eq(0).find("input").val();
-                    var vendor_cost = this.children().eq(1).text();
-                    var vendor_product_no = this.children().eq(2).text();
-                    var is_active = 0;
-                    var is_default = 0;
-                    if (this.children().eq(3).text() != '') {
-                        is_active = "1";
-                    }
-                    if (this.children().eq(4).text() != '') {
-                        is_default = "1";
-                    }
-                    var k = { "id": id, "operate": 3, "vendor_account_id": vendorid, "vendor_product_no": vendor_product_no, "vendor_cost": vendor_cost, "is_default": is_default, "is_active": is_active };
-                    var json = JSON.stringify(k);
-                    vendor.push(json);
-                })
-                $("#vendor_data").val($('<div/>').text(data).html());
-
-
-
-
+                });
+                console.log(vendor);
+                vendor.push("]}");
+                $("#vendor_data").val('');
+                $("#vendor_data").val($('<div/>').text(vendor).html());
             }
             //获取毛利率
+            
             $("#Unit_Price").change(function () {
                 var k1 = $("#Unit_Price").val();
                 var k2 = $("#Unit_Cost").val();
-                if (/^[0-9]+(.[0-9]{1,2})?$/.test(k1)) {
+                if ((/^\d{1,15}\.?\d{0,2}$/.test(k1)) == false) {
                     alert('只能输入两位小数');
-                    $("#Unit_Price").value = '';
+                    $("#Unit_Price").val('');
                     $("#Unit_Price").focus();
                     return false;
                 }
+                var f = parseFloat(k1);
+                if (isNaN(f)) {
+                    return false;
+                }
+                var f = Math.round(k1 * 100) / 100;
+                var s = f.toString();
+                var rs = s.indexOf('.');
+                if (rs < 0) {
+                    rs = s.length;
+                    s += '.';
+                }
+                while (s.length <= rs + 2) {
+                    s += '0';
+                }    
+                $("#Unit_Price").val(s);
                 if (k2 == null || k2 == '') {
                     alert("请先输入单元成本！");
                     $("#Unit_Cost").focus();
                     return false;
                 }                
-                var m = ((k1- k2) / k2) * 100 + "%";
-                $("#maolilv").val(m);
+                var m = ((k1 - k2) / k2) * 100;
+                m = Math.round(m* 100)/100;
+                $("#maolilv").val(m+"%");
 
             });
             $("#Unit_Cost").change(function () {
+                if ((/^\d{1,15}\.?\d{0,2}$/.test(this.value)) == false) { alert('只能输入两位小数'); this.value = ''; this.focus(); return false; }
                 var k1 = $("#Unit_Price").val();
                 var k2 = $("#Unit_Cost").val();
+                var f = parseFloat(k2);
+                if (isNaN(f)) {
+                    return false;
+                }
+                var f = Math.round(k2 * 100) / 100;
+                var s = f.toString();
+                var rs = s.indexOf('.');
+                if (rs < 0) {
+                    rs = s.length;
+                    s += '.';
+                }
+                while (s.length <= rs + 2) {
+                    s += '0';
+                }
+                $("#Unit_Cost").val(s);
+
                 if (k1 != ''&&k2!=0) {
                     var m = ((k1 - k2) / k2) * 100 + "%";
                     $("#maolilv").val(m);
-                }                
+                }               
 
             });
+            $("#MSRP").change(function () {
+                if ((/^\d{1,15}\.?\d{0,2}$/.test(this.value)) == false) { alert('只能输入两位小数'); this.value = ''; this.focus(); return false; }
+                var f = Math.round(this.value * 100) / 100;
+                var s = f.toString();
+                var rs = s.indexOf('.');
+                if (rs < 0) {
+                    rs = s.length;
+                    s += '.';
+                }
+                while (s.length <= rs + 2) {
+                    s += '0';
+                }
+                $("#MSRP").val(s);
+            });
+       
+
             function OpenWindowProductCate() {
                 window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CATE_CALLBACK %>&field=accCallBack&callBack=GetProductCate", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductCata %>', 'left=200,top=200,width=600,height=800', false);
             }
             function OpenWindowMaterialCode() {
-                window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=CallBack&callBack=GetProductCate", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.MaterialCode %>', 'left=200,top=200,width=600,height=800', false);
+                window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=kkCallBack&callBack=GetProductCate", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.MaterialCode %>', 'left=200,top=200,width=600,height=800', false);
             }
             function GetProductCate() {
             }
 
             $("#NewButton").click(function () {
-                $("#vendor_data").value = '';
+                $("#vendor_data").val('');
                 window.open('VendorAdd.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.VendorAdd %>','left=0,top=0,location=no,status=no,width=900,height=750', false);
             });
 
             function kkk() {
                 returnValue = $("#vendor_data").val();
+                $("#vendor_data").val('');
                 console.log(returnValue);
                 if (returnValue !== '' && returnValue !== undefined) {
                     result = returnValue.replace(/'/g, '"');
                     var obj = JSON.parse('[' + result + ']');
                     for (var i = 0; i < obj.length; i++) {
-                        if (obj[i].active == "1") {
+                        if (obj[i].active == "y") {
                             $('.dataGridHeader').after(
                                 $('<tr class="dataGridBody newvendor dn_tr" title="右键显示操作菜单" data-val="' + obj[i].id + '">' +
                                     '<td style= "width: auto;" >' +
@@ -621,7 +807,6 @@
                             } else {
                                 menu.style.top = Top + "px";
                             }
-
                             return false;
                         });
                     }                   

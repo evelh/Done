@@ -411,8 +411,9 @@ namespace EMT.DoneNOW.DTO
             SUBSCRIPTION = 892,                 // 订阅管理-查询
             SALEORDER = 894,                    // 销售订单 - 查询
             CONTRACT = 895,                     // 合同
-            MATERIALCODE_CALLBACK = 896,          //物料代码查找带回
-            VENDOR_CALLBACK = 897,                //供应商查找带回
+            MATERIALCODE_CALLBACK=896,          //物料代码查找带回
+            VENDOR_CALLBACK=897,                //供应商查找带回
+            PRODUCTINVENTORY=909,               //库存
         }
 
         /// <summary>
@@ -470,7 +471,13 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_COST = 782,                        // 合同成本
             CONTRACT_SERVICE = 783,                     // 合同服务
             CONTRACT_MILESTONE = 784,                   // 合同里程碑
-
+            General_Code = 794,                         //通用代码
+            WAREHOUSE_PRODUCT =795,                     //库存产品
+            PRODUCT_VENDOR=796,                         //产品供应商
+            ACCOUNTCLASS=797,                           //客户类别
+            DEPARTMENT=798,                             //部门
+            ROLE=799,                                   //角色
+            RESOURCE=1370,                              //员工
         }
 
         /// <summary>
@@ -640,7 +647,14 @@ namespace EMT.DoneNOW.DTO
             PROJECT_DAY = 1340,
         }
     }
-
+    /// <summary>
+    /// 工单-126
+    /// </summary>
+    public enum TICKET {
+        INVENTORY=1481,               //库存1481
+        PROJECT=1482,                 //项目1482
+        TICKET=1483,                  //工单1483
+    }
     /// <summary>
     /// 查询分页面
     /// </summary>
@@ -666,6 +680,7 @@ namespace EMT.DoneNOW.DTO
         Subscription = 34,              // 订阅
         SaleOrder = 36,                 // 销售订单
         Contract = 37,                  // 合同
+        ProuductInventory=50,           //产品库存
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -733,7 +748,8 @@ namespace EMT.DoneNOW.DTO
 
 
         ContractAdd = 301,                      // 合同新增
-        ContractSelectCallBack = 302,           // 合同查找带回
+        ContractEdit = 302,                     // 合同编辑
+        ContractSelectCallBack = 303,           // 合同查找带回
 
         ProductCata = 310,                        //产品种类查找带回
         MaterialCode = 311,                       //物料代码查找带回
@@ -742,14 +758,19 @@ namespace EMT.DoneNOW.DTO
         TerritorySource = 321,                   //地域带回员工
         VendorSelect = 322,                    //查找供应商
 
-        SysOPPORTUNITY_ADVANCED_FIELD = 322,         //添加商机扩展字段
-        TERRITORY = 323,                             //添加地域
-        MARKET_SEGMENT = 323,                        //添加市场
-        REGION = 324,                                //添加区域
-        COMPETITOR = 324,                            //添加竞争对手
-        ACTION_TYPE = 325,                           //添加活动类型
-        OPPORTUNITY_STAGE = 326,                     //添加商机阶段
-        OPPORTUNITY_SOURCE = 327,                    //添加商机来源
-        NAME_SUFFIX = 328,                           //添加姓名后缀
+
+        SysOPPORTUNITY_ADVANCED_FIELD =322,         //添加商机扩展字段
+        TERRITORY=323,                             //添加地域
+        MARKET_SEGMENT=323,                        //添加市场
+        REGION=324,                                //添加区域
+        COMPETITOR=324,                            //添加竞争对手
+        ACTION_TYPE=325,                           //添加活动类型
+        OPPORTUNITY_STAGE=326,                     //添加商机阶段
+        OPPORTUNITY_SOURCE=327,                    //添加商机来源
+        NAME_SUFFIX=328,                           //添加姓名后缀
+
+        Inventory=330,                             //产品库存编辑
+        InventoryTransfer=331,                     //移库
+
     }
 }
