@@ -6,7 +6,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.BLL;
-using EMT.DoneNOW.BLL.CRM;
 using EMT.DoneNOW.DAL;
 using static EMT.DoneNOW.DTO.DicEnum;
 

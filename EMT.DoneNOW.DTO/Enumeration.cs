@@ -458,12 +458,12 @@ namespace EMT.DoneNOW.DTO
             NOTIFY = 769,                               // 通知
             ACTIVITY = 760,                             // 活动   // todo 数据库添加
             QUOTE = 770,                                // 报价   
-            QUOTE_ITEM = 771,                             // 报价项 
-            QUOTE_TEMP = 772,                             //报价模板
+            QUOTE_ITEM = 771,                           // 报价项 
+            QUOTE_TEMP = 772,                           // 报价模板
             CONTRACT = 773,                             // 合同
-            PRODUCT = 774,                                //产品
+            PRODUCT = 774,                              // 产品
             FROMOPPORTUNITY_EXTENSION_INFORMATION = 775,// 商机扩展信息            
-            SECURITY_LEVEL = 776,                       //安全等级
+            SECURITY_LEVEL = 776,                       // 安全等级
             CONFIGURAITEM = 777,                        // 配置项
             SALE_ORDER = 778,                           // 销售订单
             SUBSCRIPTION = 779,                         // 订阅
@@ -471,13 +471,14 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_COST = 782,                        // 合同成本
             CONTRACT_SERVICE = 783,                     // 合同服务
             CONTRACT_MILESTONE = 784,                   // 合同里程碑
-            General_Code = 794,                         //通用代码
-            WAREHOUSE_PRODUCT =795,                     //库存产品
-            PRODUCT_VENDOR=796,                         //产品供应商
-            ACCOUNTCLASS=797,                           //客户类别
-            DEPARTMENT=798,                             //部门
-            ROLE=799,                                   //角色
-            RESOURCE=1370,                              //员工
+            General_Code = 794,                         // 通用代码
+            WAREHOUSE_PRODUCT =795,                     // 库存产品
+            PRODUCT_VENDOR=796,                         // 产品供应商
+            ACCOUNTCLASS=797,                           // 客户类别
+            DEPARTMENT=798,                             // 部门
+            ROLE=799,                                   // 角色
+            RESOURCE=1370,                              // 员工
+            PROJECT = 1371,                             // 项目
         }
 
         /// <summary>

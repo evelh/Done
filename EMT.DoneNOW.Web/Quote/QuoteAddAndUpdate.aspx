@@ -297,15 +297,15 @@
                             EMT.DoneNOW.Core.crm_location ship_to_location = null;
                             if ((!isAdd) && (quote.sold_to_location_id != null))
                             {
-                                sold_to_location = new EMT.DoneNOW.BLL.CRM.LocationBLL().GetLocation((long)quote.sold_to_location_id);
+                                sold_to_location = new EMT.DoneNOW.BLL.LocationBLL().GetLocation((long)quote.sold_to_location_id);
                             }
                             if ((!isAdd) && (quote.bill_to_location_id != null))
                             {
-                                bill_to_location = new EMT.DoneNOW.BLL.CRM.LocationBLL().GetLocation((long)quote.bill_to_location_id);
+                                bill_to_location = new EMT.DoneNOW.BLL.LocationBLL().GetLocation((long)quote.bill_to_location_id);
                             }
                             if ((!isAdd) && (quote.ship_to_location_id != null))
                             {
-                                ship_to_location = new EMT.DoneNOW.BLL.CRM.LocationBLL().GetLocation((long)quote.ship_to_location_id);
+                                ship_to_location = new EMT.DoneNOW.BLL.LocationBLL().GetLocation((long)quote.ship_to_location_id);
                             }
 
                         %>

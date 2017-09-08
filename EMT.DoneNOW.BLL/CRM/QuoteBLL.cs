@@ -9,7 +9,6 @@ using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
 using System.Text.RegularExpressions;
-using EMT.DoneNOW.BLL.CRM;
 using System.Data;
 
 namespace EMT.DoneNOW.BLL

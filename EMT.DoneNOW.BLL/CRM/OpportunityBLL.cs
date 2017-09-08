@@ -9,7 +9,7 @@ using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
 
-namespace EMT.DoneNOW.BLL.CRM
+namespace EMT.DoneNOW.BLL
 {
     public class OpportunityBLL
     {
@@ -270,7 +270,6 @@ namespace EMT.DoneNOW.BLL.CRM
             param.general.update_user_id = user_id;
             param.general.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             _dal.Update(param.general);    // 更改商机
-
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
                 user_cate = "用户",
@@ -285,12 +284,23 @@ namespace EMT.DoneNOW.BLL.CRM
                 remark = "修改商机信息"
             });
 
-            return ERROR_CODE.SUCCESS;
-            //    optnt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            //    optnt.update_user_id = userId;
 
-            //    // TODO: 日志
-            //    return _dal.Update(optnt);
+
+            var oppo_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);  // 获取到所有的自定义的字段信息
+            if (oppo_list != null && oppo_list.Count > 0)   // 首先判断是否设置自定义字段
+            {
+                var udf_oppo = param.udf;  // 获取到传过来的自定义字段的值
+        
+                if (udf_oppo != null && udf_oppo.Count > 0)   // todo 用户未填写自定义信息为null，是否算更改插日志
+                {
+                    new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, oppo_list, param.general.id, udf_oppo, user, DicEnum.OPER_LOG_OBJ_CATE.FROMOPPORTUNITY_EXTENSION_INFORMATION);
+                }
+
+            }
+
+
+
+            return ERROR_CODE.SUCCESS;
         }
 
         /// <summary>
@@ -398,6 +408,7 @@ namespace EMT.DoneNOW.BLL.CRM
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
             #region 处理逻辑1. 修改商机相关信息
+            param.opportunity.status_id = (int)OPPORTUNITY_STATUS.CLOSED;
             var updateDto = new OpportunityAddOrUpdateDto()
             {
                 general = param.opportunity,
@@ -470,13 +481,14 @@ namespace EMT.DoneNOW.BLL.CRM
                                 name = user.name,
                                 phone = user.mobile == null ? "" : user.mobile,
                                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                                oper_object_id = account.id,// 操作对象id
+                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PROJECT,
+                                oper_object_id = project.id,// 操作对象id
                                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
                                 oper_description = _dal.CompareValue(new pro_project_dal().GetProjectById((long)priQuote.project_id), project),
                                 remark = "修改项目提案类型"
 
                             });
+                            new pro_project_dal().Update(project);
                         }
                     }
                 }

@@ -28,7 +28,6 @@ namespace EMT.DoneNOW.Web.Quote
             }
             catch (Exception)
             {
-              
                 Response.End();
             }
         }

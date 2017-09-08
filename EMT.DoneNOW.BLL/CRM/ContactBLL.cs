@@ -8,7 +8,6 @@ using EMT.DoneNOW.DAL;
 using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
-using EMT.DoneNOW.BLL.CRM;
 
 namespace EMT.DoneNOW.BLL
 {

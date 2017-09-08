@@ -283,7 +283,7 @@ textarea {
                                         <td width="45%" class="FieldLabels">
                                             总收益
                                             <div>
-                                                <input type="text" id="total_revneue" style="width: 278px;" value="<%= new EMT.DoneNOW.BLL.CRM.OpportunityBLL().ReturnOppoRevenue(opportunity).ToString("0.00") %>">
+                                                <input type="text" id="total_revneue" style="width: 278px;" value="<%= new EMT.DoneNOW.BLL.OpportunityBLL().ReturnOppoRevenue(opportunity).ToString("0.00") %>">
                                             </div>
                                         </td>
                                     </tr>

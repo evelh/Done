@@ -464,7 +464,7 @@
                       </td>
                       <td width="45%" class="FieldLabels">总收入 
                                             <div>
-                                              <input type="text" style="width: 278px;" id="total_revneue" value="<%=new EMT.DoneNOW.BLL.CRM.OpportunityBLL().ReturnOppoRevenue(opportunity).ToString("0.00") %>">
+                                              <input type="text" style="width: 278px;" id="total_revneue" value="<%=new EMT.DoneNOW.BLL.OpportunityBLL().ReturnOppoRevenue(opportunity).ToString("0.00") %>">
                                             </div>
                       </td>
                     </tr>
