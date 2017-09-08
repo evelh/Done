@@ -20,10 +20,15 @@ namespace EMT.DoneNOW.Web.Quote
             {
                 var quote_id = Request.QueryString["id"];
                 quote = new QuoteBLL().GetQuote(long.Parse(quote_id));
+                if(quote.is_primary_quote != 1) // 关闭报价只针对主报价
+                {
+                    Response.Write("<script>window.close();</script>");
+                }
                 quoteItemList = new crm_quote_item_dal().GetQuoteItems($"and quote_id = {quote.id}");
             }
             catch (Exception)
             {
+              
                 Response.End();
             }
         }

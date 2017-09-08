@@ -369,14 +369,16 @@
                                 <td></td>
                                 <td></td>
                                 <td><%=quoteItem.unit_price %></td>
-
-                                <td><%=quoteItem.discount_percent!=null?quoteItem.discount_percent.ToString()+"%":"" %></td>
+                                <%  // 计算出一次性的报价项的总价 ，转换成百分比
+                                    var oneTotalPrice = oneTimeList!=null&&oneTimeList.Count>0?(oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)):0;
+                                    %>
+                                <td><%=((decimal)(quoteItem.unit_discount*100/oneTotalPrice)).ToString("#0.00")+"%" %></td>
                                 <td><%=quoteItem.unit_discount %></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td><%=(quoteItem.unit_discount!=null&&quoteItem.quantity!=null)?(quoteItem.unit_discount*quoteItem.quantity).ToString():"" %></td>
+                                <td><%=(quoteItem.unit_discount!=null&&quoteItem.quantity!=null)?((decimal)(quoteItem.unit_discount*quoteItem.quantity)).ToString("#0.00"):"" %></td>
                             </tr>
 
                             <%}%>
@@ -416,19 +418,21 @@
                                 discountQIList.ForEach(discount =>
                                 {
                                     if (discount.discount_percent != null)
+                                    { }
+                                    else
+                                    { var oneTotalPrice = oneTimeList!=null&&oneTimeList.Count>0?(oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)):0;
+                                        discount.discount_percent = (discount.unit_discount / oneTotalPrice);  }
+                                    quote_item_tax_cate.ForEach(_ =>
                                     {
-                                        quote_item_tax_cate.ForEach(_ =>
+                                        var list = oneTimeList.Where(dis => (dis.tax_cate_id == null ? 0 : dis.tax_cate_id) == _.tax_cate_id).ToList();
+                                        if (list != null && list.Count > 0)
                                         {
-                                            var list = oneTimeList.Where(dis => (dis.tax_cate_id == null ? 0 : dis.tax_cate_id) == _.tax_cate_id).ToList();
-                                            if (list != null && list.Count > 0)
-                                            {
-                                                totalAllTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0) * discount.discount_percent * _.total_effective_tax_rate); // 折扣中需要交税的项
-                                                itemTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0) * discount.discount_percent);// 折扣中需要交税的和
-                                            }
+                                            totalAllTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0) * discount.discount_percent * _.total_effective_tax_rate); // 折扣中需要交税的项
+                                            itemTaxPrice += (decimal)(list.Sum(dis => (dis.unit_discount != null && dis.unit_price != null && dis.quantity != null) ? (dis.unit_price - dis.unit_discount) * dis.quantity : 0) * discount.discount_percent);// 折扣中需要交税的和
+                                        }
 
-                                        });
-                                    }
-                                    else { }
+                                    });
+
                                 });  // 在这里首先计算出要一次性折扣的所有的税
                             %>
                             <tr>
@@ -878,8 +882,10 @@
                                 <td></td>
                                 <td></td>
                                 <td><%=quoteItem.unit_price %></td>
-
-                                <td><%=quoteItem.discount_percent!=null?quoteItem.discount_percent.ToString()+"%":"" %></td>
+                                <%  // 计算出一次性的报价项的总价 ，转换成百分比
+                                    var oneTotalPrice = oneTimeList!=null&&oneTimeList.Count>0?(oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)):0;
+                                    %>
+                                <td><%=((decimal)(quoteItem.unit_discount*100/oneTotalPrice)).ToString("#0.00")+"%" %></td>
                                 <td><%=quoteItem.unit_discount %></td>
                                 <td></td>
                                 <td></td>
@@ -924,7 +930,10 @@
                                 discountQIList.ForEach(discount =>
                                 {
                                     if (discount.discount_percent != null)
-                                    {
+                                    { }
+                                    else
+                                    { var oneTotalPrice = oneTimeList!=null&&oneTimeList.Count>0?(oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)):0;
+                                        discount.discount_percent = (discount.unit_discount / oneTotalPrice);  }
                                         quote_item_tax_cate.ForEach(_ =>
                                         {
                                             var list = oneTimeList.Where(dis => (dis.tax_cate_id == null ? 0 : dis.tax_cate_id) == _.tax_cate_id).ToList();
@@ -935,8 +944,7 @@
                                             }
 
                                         });
-                                    }
-                                    else { }
+                                    
                                 });  // 在这里首先计算出要一次性折扣的所有的税
                             %>
                             <tr>
@@ -1313,11 +1321,13 @@
                                 <td><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
-                                <td></td>
+                                 <td></td>
                                 <td></td>
                                 <td><%=quoteItem.unit_price %></td>
-
-                                <td><%=quoteItem.discount_percent!=null?quoteItem.discount_percent.ToString()+"%":"" %></td>
+                                <%  // 计算出一次性的报价项的总价 ，转换成百分比
+                                    var oneTotalPrice = oneTimeList!=null&&oneTimeList.Count>0?(oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)):0;
+                                    %>
+                                <td><%=((decimal)(quoteItem.unit_discount*100/oneTotalPrice)).ToString("#0.00")+"%" %></td>
                                 <td><%=quoteItem.unit_discount %></td>
                                 <td></td>
                                 <td></td>
@@ -1339,7 +1349,7 @@
                                 <td></td>
 
                                 <td><%=quoteItem.discount_percent!=null?(quoteItem.discount_percent*100).ToString()+"%":"" %></td>
-                                <td><%=oneTimeList!=null&&oneTimeList.Count>0?(decimal.Round(decimal.Parse((oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)*quoteItem.discount_percent/100).ToString()),2).ToString()):"" %></td>
+                                <td><%=oneTimeList!=null&&oneTimeList.Count>0?(decimal.Round(decimal.Parse((oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)*quoteItem.discount_percent/100*100).ToString()),2).ToString()):"" %></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -1362,7 +1372,10 @@
                                 discountQIList.ForEach(discount =>
                                 {
                                     if (discount.discount_percent != null)
-                                    {
+                                    { }
+                                    else
+                                    { var oneTotalPrice = oneTimeList!=null&&oneTimeList.Count>0?(oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)):0;
+                                        discount.discount_percent = (discount.unit_discount / oneTotalPrice);  }
                                         quote_item_tax_cate.ForEach(_ =>
                                         {
                                             var list = oneTimeList.Where(dis => (dis.tax_cate_id == null ? 0 : dis.tax_cate_id) == _.tax_cate_id).ToList();
@@ -1373,8 +1386,8 @@
                                             }
 
                                         });
-                                    }
-                                    else { }
+                                    
+                                    
                                 });  // 在这里首先计算出要一次性折扣的所有的税
                             %>
                             <tr>
