@@ -18,6 +18,7 @@ namespace EMT.DoneNOW.Web.Contract
         protected List<d_sla> slaList;      // SLA列表
         protected ContractEditDto contract;     // 编辑的合同对象
         protected string contractTypeName;      // 合同类型名称
+        protected List<UserDefinedFieldDto> udfList;        // 自定义字段信息
         private ContractBLL bll = new ContractBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,6 +31,7 @@ namespace EMT.DoneNOW.Web.Contract
             billPostType = dics["billPostType"] as List<DictionaryEntryDto>;
             contractTypeName = bll.GetContractTypeName(contract.contract.type_id);
             slaList = bll.GetSLAList();
+            udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);
 
             // 绑定联系人列表
             var contactList = new ContactBLL().GetContactByCompany(contract.contract.account_id);
@@ -57,6 +59,27 @@ namespace EMT.DoneNOW.Web.Contract
             {
                 opportunity_id.Items.Insert(0, new ListItem() { Value = "", Text = "   " });
                 opportunity_id.SelectedValue = ((long)contract.contract.opportunity_id).ToString();
+            }
+
+            // 绑定通知联系人列表
+            if (contract.contract.bill_to_account_id == null)
+            {
+                bill_to_contact_id.Enabled = false;
+            }
+            else
+            {
+                var billContact = new ContactBLL().GetContactByCompany(contract.contract.account_id);
+                bill_to_contact_id.DataTextField = "name";
+                bill_to_contact_id.DataValueField = "id";
+                bill_to_contact_id.DataSource = billContact;
+                bill_to_contact_id.DataBind();
+                if (contract.contract.bill_to_contact_id == null)
+                    bill_to_contact_id.Items.Insert(0, new ListItem() { Value = "", Text = "   ", Selected = true });
+                else
+                {
+                    bill_to_contact_id.Items.Insert(0, new ListItem() { Value = "", Text = "   " });
+                    bill_to_contact_id.SelectedValue = ((long)contract.contract.bill_to_contact_id).ToString();
+                }
             }
         }
     }

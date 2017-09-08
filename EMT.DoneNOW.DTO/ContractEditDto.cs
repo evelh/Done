@@ -12,6 +12,8 @@ namespace EMT.DoneNOW.DTO
         public ctt_contract contract;
         public string accountName;      // 客户名称
         public string contactName;      // 联系人名称
-
+        public string billToAccount;    // 计费客户名称
+        public string billToContact;    // 合同通知联系人名称
+        public string costCode;         // 成本代码
     }
 }
