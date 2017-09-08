@@ -1,5 +1,6 @@
 ﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace EMT.DoneNOW.Web.SysSetting
     {
         private int id = 0;
         protected d_general mark = new d_general();
-        protected SysMarketBLL smbll = new SysMarketBLL();
+        protected GeneralBLL smbll = new GeneralBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取id
@@ -79,7 +80,7 @@ namespace EMT.DoneNOW.Web.SysSetting
             }
             if (id > 0)
             {
-                var result = smbll.UpdateMarket(mark, GetLoginUserId());
+                var result = smbll.Update(mark, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     return true;
@@ -94,7 +95,8 @@ namespace EMT.DoneNOW.Web.SysSetting
                 }
             }
             else {
-                var result = smbll.InsertMarket(mark, GetLoginUserId());
+                mark.general_table_id = (int)GeneralTableEnum.MARKET_SEGMENT;
+                var result = smbll.Insert(mark, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     return true;

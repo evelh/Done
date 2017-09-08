@@ -22,7 +22,7 @@ namespace EMT.DoneNOW.Web.SysSetting
             id = Convert.ToInt32(Request.QueryString["id"]);
             //id = 875;
             if (!IsPostBack) {
-                SysDepartmentBLL sqbll = new SysDepartmentBLL();
+                DepartmentBLL sqbll = new DepartmentBLL();
                 this.location.DataTextField = "value";
                 this.location.DataValueField = "key";
                 this.location.DataSource = sqbll.GetDownList();
@@ -78,7 +78,7 @@ namespace EMT.DoneNOW.Web.SysSetting
             if (id > 0)
             {
                 sd.id = id;
-                var result = new SysDepartmentBLL().Update(sd, GetLoginUserId());
+                var result = new DepartmentBLL().Update(sd, GetLoginUserId());
                 if (result == ERROR_CODE.SUCCESS)
                 {
                     Response.Write("<script>alert('部门信息修改成功！');window.close();self.opener.location.reload();</script>");
@@ -90,7 +90,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                 }
             }
             else {
-                var result = new SysDepartmentBLL().Insert(sd, GetLoginUserId());
+                var result = new DepartmentBLL().Insert(sd, GetLoginUserId());
                 //新增成功
                 if (result == ERROR_CODE.SUCCESS)
                 {
@@ -122,7 +122,7 @@ namespace EMT.DoneNOW.Web.SysSetting
             if (Convert.ToInt32(this.location.SelectedValue.ToString()) > 0) {
                 this.location_name.Text = this.location.SelectedItem.Text.ToString();
                 //获取时区
-                this.time_zone.Text = new SysDepartmentBLL().GetTime_zone(Convert.ToInt32(this.location.SelectedValue.ToString()));
+                this.time_zone.Text = new DepartmentBLL().GetTime_zone(Convert.ToInt32(this.location.SelectedValue.ToString()));
             }
         }
     }

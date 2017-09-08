@@ -10,7 +10,7 @@ using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.BLL
 {
-    public class SysTerritoryBLL
+    public class TerritoryBLL
     {
         private readonly d_general_dal _dal = new d_general_dal();
         /// <summary>

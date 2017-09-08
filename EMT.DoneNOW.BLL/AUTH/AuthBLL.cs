@@ -217,7 +217,7 @@ namespace EMT.DoneNOW.BLL
             }
             else    // 员工权限可查看自己的地域
             {
-                var userTerritories = new SysTerritoryBLL().GetTerritoryByResource(userId);
+                var userTerritories = new TerritoryBLL().GetTerritoryByResource(userId);
                 if (company.territory_id == null || userTerritories == null || userTerritories.Count == 0)
                     return false;
 

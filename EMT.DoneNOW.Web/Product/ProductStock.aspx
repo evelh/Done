@@ -42,8 +42,8 @@
                         产品名称
                         <span class="errorSmall">*</span>
                         <div>
-                           <input type="text" id="product_name" name="product_name" disabled="disabled"/>
-                            <input type="hidden" id="product_id" name="product_id" value="" />
+                           <input type="text" id="product_name" name="product_name" disabled="disabled" value="<%=productname %>"/>
+                            <input type="hidden" id="product_id" name="product_id" value="<%=product_id %>" />
                            <img src="../Images/data-selector.png" style="vertical-align: middle;cursor: pointer;"/>
                         </div>
                     </td>
@@ -149,26 +149,29 @@
          <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../Scripts/SysSettingRoles.js"></script>
         <script>
-            $(document).ready(function () {
-                //获取产品名称和id
-               var proname = $("#Product_Name", window.opener.document).val();
-               var proid = $("#prodct_id", window.opener.document).val();
-               if (proname !== '' && proname !== undefined) {
-                   $("#product_name").val(proname);
-               } else {
-                   window.close();
-               }
-               if (proid !== '' && proid !== undefined) {
-                   $("#product_id").val(proid);
-               } else {
-                   window.close();
-               }
-            });            
+            //$(document).ready(function () {
+            //    //获取产品名称和id
+            //   var proname = $("#Product_Name", window.opener.document).val();
+            //   var proid = $("#prodct_id", window.opener.document).val();
+            //   if (proname !== '' && proname !== undefined) {
+            //       $("#product_name").val(proname);
+            //   } else {
+            //       window.close();
+            //   }
+            //   if (proid !== '' && proid !== undefined) {
+            //       $("#product_id").val(proid);
+            //   } else {
+            //       window.close();
+            //   }
+            //});            
             function save_deal() {
                 var w = $("#warehouse_id").val();
                 var min = $("#quantity_minimum").val();
                 var max = $("#quantity_maximum").val();
                 var q = $("#quantity").val();
+                max = parseFloat(max);
+                q = parseFloat(q);
+                min = parseFloat(min);
                 if (w == null || w == '') {
                     alert('请选择库存位置！');
                     return false;

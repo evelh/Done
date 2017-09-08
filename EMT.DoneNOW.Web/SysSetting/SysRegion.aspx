@@ -39,7 +39,7 @@
             <tbody>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        Name
+                        区域名称
                         <span class="errorSmall">*</span>
                         <div>
                             <asp:TextBox ID="Region_Name" runat="server"></asp:TextBox>
@@ -48,7 +48,7 @@
                 </tr>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        Description
+                        描述
                         <div>
                            <asp:TextBox ID="Region_Description" runat="server"></asp:TextBox>
                         </div>

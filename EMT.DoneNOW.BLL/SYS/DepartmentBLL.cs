@@ -11,7 +11,7 @@ using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.BLL
 {
-   public class SysDepartmentBLL
+   public class DepartmentBLL
     {
         private readonly sys_department_dal _dal = new sys_department_dal();
         /// <summary>

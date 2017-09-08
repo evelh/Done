@@ -7,6 +7,7 @@ using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DAL;
 using EMT.DoneNOW.DTO;
 using static EMT.DoneNOW.DTO.DicEnum;
+using System.Data.SqlClient;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -281,17 +282,31 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.SUCCESS;
         }
         /// <summary>
-        /// 获取仓库名称和id
+        /// 不存在该产品的仓库名称和id
         /// </summary>
         /// <returns></returns>
-        public Dictionary<long, string> GetWarehouseDownList()
+        public Dictionary<long, string> GetWarehouseDownList(long product_id)
         {
             Dictionary<long, string> dic = new Dictionary<long, string>();
-            return new ivt_warehouse_dal().FindListBySql<ivt_warehouse>($"select * from ivt_warehouse where delete_time=0").ToDictionary(d => d.id, d => d.name);
+            return new ivt_warehouse_dal().FindListBySql<ivt_warehouse>($"select a.* from ivt_warehouse a,ivt_warehouse_product b where a.delete_time=0 and b.delete_time=0 and a.id=b.warehouse_id and b.product_id={product_id}").ToDictionary(d => d.id, d => d.name);
         }
-        public ivt_warehouse GetWarehouse(long id) {
+        /// <summary>
+        /// 获取存在该产品的仓库名称和id
+        /// </summary>
+        /// <param name="product_id"></param>
+        /// <returns></returns>
+        public Dictionary<long, string> GetNoWarehouseDownList(long product_id)
+        {
+            Dictionary<long, string> dic = new Dictionary<long, string>();
+            return new ivt_warehouse_dal().FindListBySql<ivt_warehouse>($"select a.* from ivt_warehouse a,ivt_warehouse_product b where a.delete_time=0 and b.delete_time=0 and a.id=b.warehouse_id and b.product_id!='{product_id}'").ToDictionary(d => d.id, d => d.name);
+        }
+        public ivt_warehouse Getwarehouse(long id) {
             return new ivt_warehouse_dal().FindSignleBySql<ivt_warehouse>($"select * from ivt_warehouse where id={id} and delete_time=0");
         }
+
+        //public ivt_warehouse GetWarehouse(long id) {
+        //    return new ivt_warehouse_dal().FindSignleBySql<ivt_warehouse>($"select * from ivt_warehouse where id={id} and delete_time=0");
+        //}
         /// <summary>
         /// 通过id获取一个ivt_warehouse_product对象
         /// </summary>
@@ -299,6 +314,92 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ivt_warehouse_product Getwarehouse_product(long id) {
             return new ivt_warehouse_product_dal().FindSignleBySql<ivt_warehouse_product>($"select * from ivt_warehouse_product where id={id} and delete_time=0");
+        }
+        /// <summary>
+        /// 通过产品id和仓库id获取产品库存信息
+        /// </summary>
+        /// <param name="product_id"></param>
+        /// <param name="warehouse_id"></param>
+        /// <returns></returns>
+        public ivt_warehouse_product Getwarehouse_product(long product_id, long warehouse_id) {
+            return new ivt_warehouse_product_dal().FindSignleBySql<ivt_warehouse_product>($"select * from ivt_warehouse_product where product_id={product_id} and warehouse_id={warehouse_id} and delete_time=0");
+        }
+        /// <summary>
+        /// 保存库存转移记录
+        /// </summary>
+        /// <param name="tran"></param>
+        /// <returns></returns>
+        public ERROR_CODE inventory_transfer(ivt_inventory_transfer tran,ivt_warehouse_product from_ware,ivt_warehouse_product to_ware,long user_id) {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            //转移记录
+            tran.id= (int)(_dal.GetNextIdCom());
+            tran.type_id = (int)TICKET.INVENTORY;
+            tran.create_time = tran.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tran.create_user_id = tran.update_user_id = user.id;
+
+            //转出
+            from_ware.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            from_ware.update_user_id = user.id;
+
+            //转入
+            to_ware.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            to_ware.update_user_id = user.id;
+
+
+            //new ivt_inventory_transfer_dal().Insert(tran);
+            //new ivt_warehouse_product_dal().Update(from_ware);
+            //new ivt_warehouse_product_dal().Update(to_ware);
+
+            string sql1 = $"insert into `donenow`.`ivt_inventory_transfer` (`id`, `product_id`, `transfer_from_warehouse_id`, `transfer_to_warehouse_id`,`transfer_quantity`, `notes`, `type_id`, `create_user_id`, `update_user_id`,`create_time`, `update_time`) values ('{tran.id}','{tran.product_id}','{tran.transfer_from_warehouse_id}','{tran.transfer_to_warehouse_id}','{tran.transfer_quantity}','{tran.notes}','{tran.type_id}','{tran.create_user_id}','{tran.update_user_id}','{tran.create_time}','{tran.update_time}');";
+            string sql2 = $"update `ivt_warehouse_product` set `quantity` = '{from_ware.quantity}',`update_user_id` = '{from_ware.update_user_id}',`update_time` = '{from_ware.update_time}' where `id` = '{from_ware.id}'";
+            string sql3 = $"update `ivt_warehouse_product` set `quantity` = '{to_ware.quantity}',`update_user_id` = '{to_ware.update_user_id}',`update_time` = '{to_ware.update_time}' where `id` = '{to_ware.id}'";
+            string[] sql = {sql1,sql2,sql3};
+
+            if (!_dal.SQLTransaction(null, sql)){
+                return ERROR_CODE.ERROR;
+            }          
+           
+
+
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
+                oper_object_id = from_ware.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(from_ware),
+                remark = "修改产品库存数量信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
+
+
+            var add2_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
+                oper_object_id = to_ware.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(to_ware),
+                remark = "修改产品库存数量信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add2_log);       // 插入日志
+
+
+           // _dal.UpdateTran(sql);
+
+            return ERROR_CODE.SUCCESS;
         }
         /// <summary>
         ///新增产品库存信息
@@ -374,6 +475,62 @@ namespace EMT.DoneNOW.BLL
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
+        }
+        public ERROR_CODE DeleteInventory(long id,long user_id) {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            ivt_warehouse_product_dal inv_dal = new ivt_warehouse_product_dal();
+            var inv = inv_dal.FindSignleBySql<ivt_warehouse_product>($"select * from ivt_warehouse_product id={id} and delete_time=0");
+            if (inv == null) {
+                return ERROR_CODE.ERROR;
+            }
+            inv.delete_user_id = user_id;
+            inv.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            if (!inv_dal.Update(inv)) {
+                return ERROR_CODE.ERROR;
+            }
+            //操作日志
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
+                oper_object_id = inv.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                oper_description = _dal.AddValue(inv),
+                remark = "删除产品库存信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
+
+            return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 产品删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ERROR_CODE DeleteProduct(long id,long user_id) {
+            //删除前校验
+            //            如果产品被配置项、工单、报价、商机、库存引用，则不能删除。
+            //产品不能被删除，因为它被以下对象引用：
+            //N1 对象1
+            //N2 对象2
+            //……
+            //crm_opportunity商机
+            //crm_installed_product配置项
+            //ivt_warehouse_product库存
+            //ctt_contract_cost
+
+
+            var del = _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where id={id} and delete_time=0");
+
+            return ERROR_CODE.ERROR;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace EMT.DoneNOW.Web
     {
         protected long id;
         private d_general lossreason = new d_general();
-        private SysOpportunityBLL sobll = new SysOpportunityBLL();
+        private GeneralBLL sobll = new GeneralBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt64(Request.QueryString["id"]);
@@ -77,7 +78,7 @@ namespace EMT.DoneNOW.Web
             if (id > 0)
             {
                 //修改更新
-                var result = sobll.UpdateWinORLossRe(lossreason, GetLoginUserId());
+                var result = sobll.Update(lossreason, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     return true;
@@ -95,7 +96,8 @@ namespace EMT.DoneNOW.Web
             else
             {
                 //新增
-                var result = sobll.InsertLossRe(lossreason, GetLoginUserId());
+                lossreason.general_table_id=(int)GeneralTableEnum.OPPORTUNITY_LOSS_REASON_TYPE;
+                var result = sobll.Insert(lossreason, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     return true;

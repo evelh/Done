@@ -17,7 +17,7 @@ namespace EMT.DoneNOW.Web.SysSetting
         public string SLName = "安全等级名称";
         private long id;
         private List<sys_limit> sys_limitList = new List<sys_limit>();
-        private SysSecurityLevelBLL sys_security = new SysSecurityLevelBLL();
+        private SecurityLevelBLL sys_security = new SecurityLevelBLL();
         protected Dictionary<string, List<sys_limit>> modulegroup = null;
         private sys_security_level_limit SysSecLimit = new sys_security_level_limit();
         protected void Page_Load(object sender, EventArgs e)

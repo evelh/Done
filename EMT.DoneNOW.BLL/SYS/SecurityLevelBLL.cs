@@ -10,7 +10,7 @@ using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.BLL
 {
-    public class SysSecurityLevelBLL
+    public class SecurityLevelBLL
     {
         private readonly sys_limit_dal _dal = new sys_limit_dal();
         private readonly sys_security_level_dal ss_dal = new sys_security_level_dal();

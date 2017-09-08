@@ -61,19 +61,126 @@ namespace EMT.DoneNOW.BLL
         public d_general GetSingleGeneral(string name,int general_table_id) {
             return _dal.FindSignleBySql<d_general>($"select * from d_general where name='{name}' and general_table_id={general_table_id} and delete_time=0");
         }
+        /// <summary>
+        /// 通过table_id返回，所有字典项
+        /// </summary>
+        /// <param name="general_table_id"></param>
+        /// <returns></returns>
         public List<d_general> GetGeneralList(int general_table_id) {
             return _dal.FindListBySql<d_general>($"select * from d_general where general_table_id={general_table_id} and delete_time=0 ORDER BY id,sort_order,`code`").ToList();
         }
+        /// <summary>
+        /// 通过id获取d_general_table的名称
+        /// </summary>
+        /// <param name="general_table_id"></param>
+        /// <returns></returns>
         public string GetGeneralTableName(int general_table_id) {
             return new d_general_table_dal().FindById(general_table_id).name;
         }
+        /// <summary>
+        /// 通过id获取字典项的名称
+        /// </summary>
+        /// <param name="parent_id"></param>
+        /// <returns></returns>
         public string GetGeneralParentName(int parent_id)
         {
             return _dal.FindSignleBySql<d_general>($"select * from d_general where id={parent_id} and delete_time=0 ").name;
         }
-
-
-
+        /// <summary>
+        /// 日历显示模式
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, object> GetCalendarField()
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic.Add("View", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CALENDAR_DISPLAY)));         
+            return dic;
+        }
+        /// <summary>
+        /// 向d_general表插入一条数据
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE Insert(d_general data, long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            data.create_time = data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.create_user_id = user_id;
+            var res = new GeneralBLL().GetSingleGeneral(data.name, data.general_table_id);
+            if (res != null)
+            {
+                return ERROR_CODE.EXIST;
+            }
+            _dal.Insert(data);
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//
+                oper_object_id = data.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = _dal.AddValue(data),
+                remark = "新增d_general表，general_table_id="+data.general_table_id
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
+            return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 更新一条数据
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE Update(d_general data, long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            var res = new GeneralBLL().GetSingleGeneral(data.name, data.general_table_id);
+            if (res != null && res.id != data.id)
+            {
+                return ERROR_CODE.EXIST;
+            }
+            data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.update_user_id = user_id;
+            if (!_dal.Update(data))
+            {
+                return ERROR_CODE.ERROR;
+            }
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,
+                oper_object_id = data.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.AddValue(data),
+                remark = "修改d_general表，general_table_id=" + data.general_table_id
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
+            return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 删除字典项之前进行校验
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user_id"></param>
+        /// <param name="table_id"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
         public ERROR_CODE Delete_Validate(long id, long user_id, long table_id,out int n) {
             var user = UserInfoBLL.GetUserInfo(user_id);
             n = 0;
@@ -90,7 +197,7 @@ namespace EMT.DoneNOW.BLL
             {
                 return ERROR_CODE.SYSTEM;
             }
-            //市场领域删除，如果有客户引用，则提醒“有n个客户关联此市场领域。如果删除，则相关客户上的市场领域信息将会被清空，是否继续” 
+            //市场领域删除
             if (table_id == (int)GeneralTableEnum.MARKET_SEGMENT)
             {
                 var mar = new crm_account_dal().FindListBySql($"select * from crm_account where market_segment_id={id} and delete_time=0");
@@ -100,7 +207,7 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.MARKET_USED;//
                 }
             }
-            //如果有客户引用，则提醒“有n个客户关联此客户地域。如果删除，则相关客户上的客户地域信息将会被清空，是否继续”
+            //客户地域删除
             if (table_id == (int)GeneralTableEnum.TERRITORY)
             {
                 var mar = new crm_account_dal().FindListBySql($"select * from crm_account where territory_id={id} and delete_time=0");
@@ -110,7 +217,7 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.TERRITORY_USED;//
                 }
             }
-            //有n个客户关联此竞争对手。如果删除，则相关客户上的竞争对手信息将会被清空，是否继续
+            //竞争对手删除
             if (table_id == (int)GeneralTableEnum.COMPETITOR)
             {
                 var mar = new crm_account_dal().FindListBySql($"select * from crm_account where competitor_id={id} and delete_time=0");
@@ -120,7 +227,7 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.COMPETITOR_USED;//
                 }
             }
-            //有n个商机关联此商机来源。如果删除，则相关商机上的商机来源信息将会被清空，是否继续
+            //商机来源
             if (table_id == (int)GeneralTableEnum.OPPORTUNITY_SOURCE)
             {
                 var mar = new crm_opportunity_dal().FindListBySql($"select * from crm_opportunity where source_id={id} and delete_time=0");
@@ -130,7 +237,7 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.OPPORTUNITY_SOURCE_USED;//
                 }
             }
-            //被n个活动引用不能删除
+            //活动类型
             if (table_id == (int)GeneralTableEnum.ACTION_TYPE)
             {
                 var mar = new com_activity_dal().FindListBySql($"select * from com_activity where action_type_id={id} and delete_time=0");
@@ -140,7 +247,7 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.ACTION_TYPE_USED;//
                 }
             }
-            //被n个商机引用不能删除
+            //商机阶段
             if (table_id == (int)GeneralTableEnum.OPPORTUNITY_STAGE)
             {
                 var mar = new crm_opportunity_dal().FindListBySql($"select * from com_activity where stage_id={id} and delete_time=0");

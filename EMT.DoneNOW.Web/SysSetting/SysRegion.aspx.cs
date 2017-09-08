@@ -58,7 +58,7 @@ namespace EMT.DoneNOW.Web
             }
             if (id > 0)
             {
-                var result = new RegionBLL().UpdateRegion(region, GetLoginUserId());
+                var result = new GeneralBLL().Update(region, GetLoginUserId());
                 if (result == ERROR_CODE.ERROR)
                 {
                     Response.Write("<script>alert('区域修改失败，返回！');window.close();self.opener.location.reload();</script>");
@@ -73,8 +73,9 @@ namespace EMT.DoneNOW.Web
                     Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
                 }
             }
-            else {                
-                var result = new RegionBLL().InsertRegion(region, GetLoginUserId());
+            else {
+                region.general_table_id = (int)GeneralTableEnum.REGION;
+                var result = new GeneralBLL().Insert(region, GetLoginUserId());
                 if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
                 {
                     Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");

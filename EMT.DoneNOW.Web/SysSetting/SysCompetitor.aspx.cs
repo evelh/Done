@@ -1,5 +1,6 @@
 ﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace EMT.DoneNOW.Web
     {
         private int id = 0;
         protected d_general compe = new d_general();
-        protected CompetitorBLL smbll = new CompetitorBLL();
+        protected GeneralBLL smbll = new GeneralBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取id
@@ -39,7 +40,6 @@ namespace EMT.DoneNOW.Web
             }
 
         }
-
         protected void Save_Close_Click(object sender, EventArgs e)
         {
             if (save_deal())
@@ -52,7 +52,6 @@ namespace EMT.DoneNOW.Web
             }
 
         }
-
         protected void Save_New_Click(object sender, EventArgs e)
         {
             if (save_deal())
@@ -87,7 +86,7 @@ namespace EMT.DoneNOW.Web
             }
             if (id > 0)
             {
-                var result = smbll.UpdateCompetitor(compe, GetLoginUserId());
+                var result = smbll.Update(compe, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     return true;
@@ -104,7 +103,8 @@ namespace EMT.DoneNOW.Web
             }
             else
             {
-                var result = smbll.InsertCompetitor(compe, GetLoginUserId());
+                compe.general_table_id=(int)GeneralTableEnum.COMPETITOR;
+                var result = smbll.Insert(compe, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     return true;

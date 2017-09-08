@@ -19,6 +19,14 @@
 #menu ul li .menu-i1{width: 20px;height: 100%;display: block;float: left;}
 #menu ul li .menu-i2{width: 20px;height: 100%;display: block;float: right;}
 #menu ul .disabled{color: #AAAAAA;}
+ @media screen and (max-width: 1430px){
+       .cont{
+           width:1200px;
+           margin:60px 2% 0 2%;
+    position: absolute;
+    z-index: 1;
+       }
+	}
         </style>
     <title>产品管理</title>
 </head>
@@ -314,14 +322,8 @@
             </div>
     </div>
     <div class="TabContainer" style="display: none;">
-        <div style="width:90%">
-           <iframe src="../Common/SearchBodyFrame.aspx?cat=868&type=10&group=16"></iframe>  
-            
-
-           <%-- <frameset id="SearchFrameSet" name="SearchFrameSet" rows="0,*" cols="100%" framespacing="0" border="0">
-    <frame src="" id="SearchCondition"></frame>
-    <frame src="../Common/SearchBodyFrame.aspx?cat=868&type=10&group=16" id="SearchBody" style="overflow-x: hidden; overflow-y: auto; "></frame>
-</frameset>--%>
+            <div class="cont">
+                <iframe id="PageFrame" name="PageFrame" style="width:100%;height:auto" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>"></iframe>
             </div>
     </div>
         </div>
@@ -340,6 +342,12 @@
         <%--<script src="../Scripts/SysSettingRoles.js"></script>--%>
            <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
         <script>
+            $(window).resize(function () {
+                var Height = $(document).height() - 66 + "px";
+                $("#PageFrame").css("height", Height);
+            })
+            var Height = $(document).height() - 66 + "px";
+            $("#PageFrame").css("height", Height);
             //tab选项卡的控制
             //$.each($(".TabBar a"), function (i) {
             //    $(this).click(function () {

@@ -13,17 +13,15 @@ namespace EMT.DoneNOW.Web
     public partial class ProductStock :BasePage 
     {
         protected long id;//库存表id
+        protected long product_id=0;//产品id
+        protected string productname;
         private ProductBLL probll = new ProductBLL();
         private ivt_warehouse_product ware = new ivt_warehouse_product();
         protected void Page_Load(object sender, EventArgs e)
         {
-            id = Convert.ToInt32(Request.QueryString["id"]);//获取id
+            id = Convert.ToInt32(Request.QueryString["id"]);//修改时，获取库存id
+            //product_id = Convert.ToInt32(Request.QueryString["product_id"]);//新增时，获取产品id
             if (!IsPostBack) {
-                this.warehouse_id.DataTextField = "value";
-                this.warehouse_id.DataValueField = "key";
-                this.warehouse_id.DataSource = probll.GetWarehouseDownList();
-                this.warehouse_id.DataBind();
-                this.warehouse_id.Items.Insert(0, new ListItem() { Value= "0", Text = "    ", Selected = true });
                 if (id > 0)//修改
                 {
                     ware = probll.Getwarehouse_product(id);
@@ -32,8 +30,11 @@ namespace EMT.DoneNOW.Web
                         Response.Write("<script>alert('获取库存信息失败，无法修改，返回上一级！');window.close();</script>");
                     } else {
                         if (ware.warehouse_id!=null&&!string.IsNullOrEmpty(ware.warehouse_id.ToString())) {
-                            this.warehouse_id.SelectedValue = ware.warehouse_id.ToString();
+                            this.warehouse_id.Items.Insert(0, new ListItem() { Text = probll.Getwarehouse(Convert.ToInt64(ware.warehouse_id)).name, Selected = true });
+                            this.warehouse_id.Enabled = false;
                         }
+                        product_id = ware.product_id;
+                        productname = probll.GetProduct(product_id).product_name;
                         this.quantity_minimum.Text = ware.quantity_minimum.ToString();
                         this.quantity_maximum.Text = ware.quantity_maximum.ToString();
                         this.quantity.Text = ware.quantity.ToString();
@@ -46,6 +47,11 @@ namespace EMT.DoneNOW.Web
                         }
                     }
                 }
+                this.warehouse_id.DataTextField = "value";
+                this.warehouse_id.DataValueField = "key";
+                this.warehouse_id.DataSource = probll.GetNoWarehouseDownList(product_id);
+                this.warehouse_id.DataBind();
+                this.warehouse_id.Items.Insert(0, new ListItem() { Value = "0", Text = "    ", Selected = true });
             }
         }
         private void save_deal() {

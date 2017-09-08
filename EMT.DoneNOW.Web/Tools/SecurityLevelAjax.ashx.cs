@@ -45,7 +45,7 @@ namespace EMT.DoneNOW.Web
             if (user != null)
             {
                 int copy_id=-1;
-                if (new SysSecurityLevelBLL().CopySecurityLevel(user.id,(int)securitylevel_id,out copy_id))
+                if (new SecurityLevelBLL().CopySecurityLevel(user.id,(int)securitylevel_id,out copy_id))
                 {
                     //context.Response.Write("复制安全等级成功成功！");
                     context.Response.Write("<script>alert('复制安全等级成功！');window.location.href='SysUserSecurityLevel.aspx?id=copy_id'</script>");
@@ -62,7 +62,7 @@ namespace EMT.DoneNOW.Web
             var user = context.Session["dn_session_user_info"] as sys_user;
             if (user != null)
             {
-                var result = new SysSecurityLevelBLL().DeleteSecurityLevel(user.id, (int)securitylevel_id);
+                var result = new SecurityLevelBLL().DeleteSecurityLevel(user.id, (int)securitylevel_id);
                 if (result==DTO.ERROR_CODE.SUCCESS)
                 {
                     //context.Response.Write("复制安全等级成功成功！");
@@ -80,7 +80,7 @@ namespace EMT.DoneNOW.Web
             var user = context.Session["dn_session_user_info"] as sys_user;
             if (user != null)
             {
-                var result = new SysSecurityLevelBLL().ActiveSecurityLevel(user.id, (int)securitylevel_id);
+                var result = new SecurityLevelBLL().ActiveSecurityLevel(user.id, (int)securitylevel_id);
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("激活安全等级成功！");
@@ -100,7 +100,7 @@ namespace EMT.DoneNOW.Web
             var user = context.Session["dn_session_user_info"] as sys_user;
             if (user != null)
             {
-                var result = new SysSecurityLevelBLL().NOActiveSecurityLevel(user.id, (int)securitylevel_id);
+                var result = new SecurityLevelBLL().NOActiveSecurityLevel(user.id, (int)securitylevel_id);
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("失活安全等级成功！");

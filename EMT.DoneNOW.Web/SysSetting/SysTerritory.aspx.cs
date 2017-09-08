@@ -13,12 +13,12 @@ namespace EMT.DoneNOW.Web
     {
         public int id = 0;
         protected d_general d = new d_general();
-        protected SysTerritoryBLL stbll = new SysTerritoryBLL();
+        protected TerritoryBLL stbll = new TerritoryBLL();
         public List<sys_resource> AccountList = new List<sys_resource>();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取id
-            id = 2;
+           // id = 2;
             if (!IsPostBack) {
                 //Region下拉框
                 var dic = stbll.GetRegionDownList();

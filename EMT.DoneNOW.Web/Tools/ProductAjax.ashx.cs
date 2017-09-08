@@ -72,6 +72,10 @@ namespace EMT.DoneNOW.Web
                     var product_data_id = context.Request.QueryString["product_id"];
                     GetProData(context,long.Parse(product_data_id));
                     break;
+                case "DeleteProduct":
+                    var delete_product_id = context.Request.QueryString["product_id"];
+                    DeleteProduct(context, long.Parse(delete_product_id));
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;
@@ -241,9 +245,29 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(costCode));
             }
         }
+        /// <summary>
+        /// 通过产品id删除产品信息
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="product_id"></param>
+        public void DeleteProduct(HttpContext context, long product_id)
+        {
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            if (res != null) {
+                var result = new ProductBLL().DeleteProduct(product_id, res.id);
+                if (result==DTO.ERROR_CODE.SUCCESS)
+                {
+                    context.Response.Write("ok");
+                }
+                else
+                {
+                    context.Response.Write("error");
+                }
+            }           
+
+        }
 
 
-        
 
 
         public bool IsReusable

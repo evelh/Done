@@ -132,6 +132,7 @@
     <Content Include="Company\CompanySiteManage.aspx" />
     <Content Include="Company\UpdateContact.aspx" />
     <Content Include="ConfigurationItem\AddOrEditConfigItem.aspx" />
+    <Content Include="ConfigurationItem\ConfigType.aspx" />
     <Content Include="ConfigurationItem\SubscriptionAddOrEdit.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
@@ -728,6 +729,13 @@
     <Compile Include="ConfigurationItem\AddOrEditConfigItem.aspx.designer.cs">
       <DependentUpon>AddOrEditConfigItem.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationItem\ConfigType.aspx.cs">
+      <DependentUpon>ConfigType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\ConfigType.aspx.designer.cs">
+      <DependentUpon>ConfigType.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationItem\SubscriptionAddOrEdit.aspx.cs">
       <DependentUpon>SubscriptionAddOrEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1277,6 +1285,9 @@
     <Compile Include="Tools\GeneralViewAjax.ashx.cs">
       <DependentUpon>GeneralViewAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\InventoryAjax.ashx.cs">
+      <DependentUpon>InventoryAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\OpportunityAjax.ashx.cs">
       <DependentUpon>OpportunityAjax.ashx</DependentUpon>
     </Compile>
@@ -1342,6 +1353,7 @@
     <Content Include="Tools\GeneralViewAjax.ashx" />
     <Content Include="Tools\AccountClassAjax.ashx" />
     <Content Include="Tools\OpportunityReasonAjax.ashx" />
+    <Content Include="Tools\InventoryAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

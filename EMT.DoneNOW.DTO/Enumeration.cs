@@ -413,6 +413,7 @@ namespace EMT.DoneNOW.DTO
             CONTRACT = 895,                     // 合同
             MATERIALCODE_CALLBACK=896,          //物料代码查找带回
             VENDOR_CALLBACK=897,                //供应商查找带回
+            PRODUCTINVENTORY=909,               //库存
         }
 
         /// <summary>
@@ -650,6 +651,7 @@ namespace EMT.DoneNOW.DTO
         Subscription = 34,              // 订阅
         SaleOrder = 36,                 // 销售订单
         Contract = 37,                  // 合同
+        ProuductInventory=50,           //产品库存
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -735,5 +737,8 @@ namespace EMT.DoneNOW.DTO
         OPPORTUNITY_STAGE=326,                     //添加商机阶段
         OPPORTUNITY_SOURCE=327,                    //添加商机来源
         NAME_SUFFIX=328,                           //添加姓名后缀
+
+        Inventory=330,                             //产品库存编辑
+        InventoryTransfer=331,                     //移库
     }
 }
