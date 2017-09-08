@@ -9,7 +9,6 @@ using EMT.DoneNOW.DTO;
 using EMT.Tools;
 using EMT.DoneNOW.DAL;
 using System.Text;
-using EMT.DoneNOW.BLL.CRM;
 using EMT.DoneNOW.Core;
 
 namespace EMT.DoneNOW.Web

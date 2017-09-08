@@ -414,16 +414,16 @@ a.Button.Link {
                 </div>
                 <%
                     // dLocaition 是客户的默认地址
-                    EMT.DoneNOW.Core.crm_location dLocation = new EMT.DoneNOW.BLL.CRM.LocationBLL().GetLocationByAccountId(account.id);
+                    EMT.DoneNOW.Core.crm_location dLocation = new EMT.DoneNOW.BLL.LocationBLL().GetLocationByAccountId(account.id);
                     EMT.DoneNOW.Core.crm_location bill_to_location = null;
                     EMT.DoneNOW.Core.crm_location ship_to_location = null;
                     if (sale_order.bill_to_location_id != null)
                     {
-                         bill_to_location = new EMT.DoneNOW.BLL.CRM.LocationBLL().GetLocation((long)sale_order.bill_to_location_id);
+                         bill_to_location = new EMT.DoneNOW.BLL.LocationBLL().GetLocation((long)sale_order.bill_to_location_id);
                     }
                     if (sale_order.ship_to_location_id != null)
                     {
-                         ship_to_location = new EMT.DoneNOW.BLL.CRM.LocationBLL().GetLocation((long)sale_order.ship_to_location_id);
+                         ship_to_location = new EMT.DoneNOW.BLL.LocationBLL().GetLocation((long)sale_order.ship_to_location_id);
                     }
                     %>
 

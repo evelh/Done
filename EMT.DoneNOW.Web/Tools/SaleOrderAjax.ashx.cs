@@ -1,4 +1,4 @@
-﻿using EMT.DoneNOW.BLL.CRM;
+﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
 using EMT.Tools;
 using System;

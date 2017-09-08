@@ -9,7 +9,6 @@ using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
 using System.Text.RegularExpressions;
-using EMT.DoneNOW.BLL.CRM;
 
 
 namespace EMT.DoneNOW.BLL
@@ -51,11 +50,6 @@ namespace EMT.DoneNOW.BLL
             return _dal.FindSignleBySql<crm_account>(sql);
         }
 
-        public crm_account GetAllShowCompany(long id)
-        {
-            string sql = $"select * from crm_account where id = {id}  ";
-            return _dal.FindSignleBySql<crm_account>(sql);
-        }
         /// <summary>
         /// 根据与客户相关联的各种类型的ID 或者客户ID去获取客户信息
         /// </summary>
@@ -75,17 +69,7 @@ namespace EMT.DoneNOW.BLL
         {
             return _dal.FindAll() as List<crm_account>;
         }
-        
-        /// <summary>
-        /// 查找带回取到所有客户，修改的时候去掉自己
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public List<crm_account> GetAccountByFindBack(long? id)
-        {
-            return _dal.GetAccountByFindBack(id);
-        }
-        
+             
         /// <summary>
         /// 新增客户
         /// </summary>

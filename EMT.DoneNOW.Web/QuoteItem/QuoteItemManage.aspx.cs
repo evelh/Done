@@ -6,7 +6,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.BLL;
-using EMT.DoneNOW.BLL.CRM;
 using EMT.DoneNOW.DAL;
 using static EMT.DoneNOW.DTO.DicEnum;
 
@@ -109,7 +108,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     {
                         // 用户需要添加折扣类型的报价项，然后可以针对付费周期类型为一次性的报价项进行折扣
                         // 折扣只针对一次性周期的报价项折扣
-                        oneTimeList = quoteItemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME&&_.optional==0).ToList();
+                        oneTimeList = quoteItemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME&&_.optional==0 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT&& _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
 
                         discountQIList = quoteItemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT&&_.optional==0).ToList();
 

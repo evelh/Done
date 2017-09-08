@@ -89,6 +89,7 @@
     <Compile Include="IVT\ivt_service_bundle.cs" />
     <Compile Include="IVT\ivt_warehouse.cs" />
     <Compile Include="IVT\ivt_warehouse_product.cs" />
+    <Compile Include="PRO\pro_project.cs" />
     <Compile Include="SYS\sys_department.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email.cs" />
     <Compile Include="SYS\sys_organization_location.cs" />

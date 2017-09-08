@@ -9,7 +9,7 @@ using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
 using System.Text.RegularExpressions;
-using EMT.DoneNOW.BLL.CRM;
+
 
 namespace EMT.DoneNOW.BLL
 {
@@ -183,6 +183,59 @@ namespace EMT.DoneNOW.BLL
             return list;
         }
 
+        // 计算出该报价下的所有一次姓报价项中包含税的报价项的折扣
+        public decimal GetOneTimeMoneyTax(List<crm_quote_item> oneTimeList,crm_quote_item qItem)
+        {
+
+            // 按照金钱扣除的折扣转换成为百分比进行运算-- 暂时处理待测试
+            // 折扣记录两种计费项。一个是一次性报价项当中含有税的，一个一次性报价项当中不含有税的
+            // 折扣的计费项命名  为含税和不含税这两种
+            // 计费项的名称命名为报价项的名称
+            decimal totalMoney = 0;
+            var AllTotalMoney = GetAllMoney(oneTimeList);
+            var taxItem = oneTimeList.Where(_ => _.period_type_id != null).ToList();
+            totalMoney = GetAllMoney(taxItem);
+            if (qItem.discount_percent != null)
+            {
+                totalMoney = totalMoney * (decimal)qItem.discount_percent;
+            }
+            else
+            {
+                totalMoney = totalMoney * ((decimal)qItem.unit_discount / AllTotalMoney);
+            }
+            return totalMoney;
+        }
+        // 计算出该报价下的所有一次姓报价项中不包含税的报价项的折扣
+        public decimal GetOneTimeMoney(List<crm_quote_item> oneTimeList, crm_quote_item qItem)
+        {
+            decimal totalMoney = 0;
+            var AllTotalMoney = GetAllMoney(oneTimeList);
+            var noTaxItem = oneTimeList.Where(_ => _.period_type_id == null).ToList();
+             totalMoney = GetAllMoney(noTaxItem);
+            if (qItem.discount_percent != null)
+            {
+                totalMoney = totalMoney * (decimal)qItem.discount_percent;
+            }
+            else
+            {
+                totalMoney = totalMoney * ((decimal)qItem.unit_discount / AllTotalMoney);
+            }
+            return totalMoney;
+        }
+        /// <summary>
+        /// 获取到这个一次性报价的总价
+        /// </summary>
+        /// <param name="oneTimeList"></param>
+        /// <returns></returns>
+        public decimal GetAllMoney(List<crm_quote_item> oneTimeList)
+        {
+            decimal totalMoney = 0;
+            if (oneTimeList != null && oneTimeList.Count > 0)
+            {
+                totalMoney = (decimal)oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0);
+            }
+            return totalMoney;
+        }
 
     }
 }

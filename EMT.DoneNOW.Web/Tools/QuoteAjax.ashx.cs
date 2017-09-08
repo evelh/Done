@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.SessionState;
+using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.Web
 {
@@ -28,19 +29,29 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "deleteQuoteItem":
                         var quoteItemId = context.Request.QueryString["id"];
-                        DeleteQuoteItem(context,long.Parse(quoteItemId));
+                        DeleteQuoteItem(context, long.Parse(quoteItemId));
                         break;
                     case "setPrimaryQuote":
                         var primary_quote_id = context.Request.QueryString["id"];
-                        SetPrimaryQuote(context,long.Parse(primary_quote_id));
+                        SetPrimaryQuote(context, long.Parse(primary_quote_id));
                         break;
                     case "isSaleOrder":
                         var relationQuoteId = context.Request.QueryString["id"];
-                        IsRelationSaleOrder(context ,long.Parse(relationQuoteId));
+                        IsRelationSaleOrder(context, long.Parse(relationQuoteId));
                         break;
                     case "costCode":
                         var cid = context.Request.QueryString["id"];
-                        RetuenCostCode(context,long.Parse(cid));
+                        RetuenCostCode(context, long.Parse(cid));
+                        break;
+                    case "compareSetupFee":
+                        var quoteId = context.Request.QueryString["quote_id"];
+                        var contract_id = context.Request.QueryString["contract_id"];
+                        CompareSetupFee(context, long.Parse(quoteId), long.Parse(contract_id));
+                        break;
+                    case "compareService":
+                        var thisQuoteId = context.Request.QueryString["quote_id"];
+                        var thisContractId = context.Request.QueryString["contract_id"];
+                        CompareService(context,long.Parse(thisQuoteId),long.Parse(thisContractId));
                         break;
                     default:
                         break;
@@ -50,7 +61,6 @@ namespace EMT.DoneNOW.Web
             {
                 context.Response.Write(e.Message);
                 context.Response.End();
-
             }
         }
         /// <summary>
@@ -103,7 +113,7 @@ namespace EMT.DoneNOW.Web
             var user = context.Session["dn_session_user_info"] as sys_user;
             if (user != null)
             {
-                if(new QuoteBLL().SetPrimaryQuote(user.id,quote_id))
+                if (new QuoteBLL().SetPrimaryQuote(user.id, quote_id))
                 {
                     context.Response.Write("设置主报价成功！");
                 }
@@ -138,6 +148,63 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(cost_code);
             }
         }
+
+        /// <summary>
+        /// 判断报价是否包含初始费 并且 合同中是否也有初始费用
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="quote_id"></param>
+        /// <param name="contract_id"></param>
+        public void CompareSetupFee(HttpContext context, long quote_id, long contract_id)
+        {
+            var quote = new QuoteBLL().GetQuote(quote_id);
+            var contract = new ctt_contract_dal().GetSingleContract(contract_id);
+            bool isHasSetupFee = false;
+            if (quote != null && contract != null)
+            {
+                var quoteItemList = new crm_quote_item_dal().GetQuoteItems($" and quote_id = {quote.id}");
+                if (quoteItemList != null && quoteItemList.Count > 0)
+                {
+                    var setupFeeItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.START_COST).ToList();
+                    if (setupFeeItem != null && setupFeeItem.Count > 0 && contract.setup_fee != null)
+                    {
+                        isHasSetupFee = true;
+                    }
+                }
+            }
+            context.Response.Write(isHasSetupFee);
+        }
+        /// <summary>
+        /// 判断报价和合同是否有重复的服务
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="quote_id"></param>
+        /// <param name="contract_id"></param>
+        public void CompareService(HttpContext context, long quote_id, long contract_id)
+        {
+            
+            var quote = new QuoteBLL().GetQuote(quote_id);
+            var conSerList = new ctt_contract_service_dal().GetConSerList(contract_id);
+            bool isHasService = false;
+            if (quote != null && conSerList != null && conSerList.Count>0)
+            {
+                var quoteItemList = new crm_quote_item_dal().GetQuoteItems($" and quote_id = {quote.id}");
+                if (quoteItemList != null && quoteItemList.Count > 0)
+                {
+                    var serviceItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE).ToList();
+                    if(conSerList.Any(_=> serviceItem.Any(item => item.object_id == _.object_id)))
+                    {
+                        isHasService = true;
+                    }
+                }
+            }
+
+            context.Response.Write(isHasService);
+        }
+
+
+
+
         public bool IsReusable
         {
             get

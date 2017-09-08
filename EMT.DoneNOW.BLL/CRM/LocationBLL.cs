@@ -9,7 +9,7 @@ using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
 
-namespace EMT.DoneNOW.BLL.CRM
+namespace EMT.DoneNOW.BLL
 {
     public class LocationBLL
     {

@@ -585,7 +585,7 @@ a:hover {
                             <%
                                 if (sale_order.ship_to_location_id != null)
                                 {
-                                    var shipLocation = new EMT.DoneNOW.BLL.CRM.LocationBLL().GetLocation((long)sale_order.ship_to_location_id);%>
+                                    var shipLocation = new EMT.DoneNOW.BLL.LocationBLL().GetLocation((long)sale_order.ship_to_location_id);%>
                                 
                                      <tr class="tableRow">
                                 <td class="tableCell">
@@ -607,7 +607,7 @@ a:hover {
                        
                             <%if (sale_order.bill_to_location_id != null)
                                 {
-                                    var billLocation = new EMT.DoneNOW.BLL.CRM.LocationBLL().GetLocation((long)sale_order.bill_to_location_id);
+                                    var billLocation = new EMT.DoneNOW.BLL.LocationBLL().GetLocation((long)sale_order.bill_to_location_id);
                                     %>
                              <tr class="tableRow">
                                 <td class="tableCell">
@@ -693,8 +693,8 @@ a:hover {
                                 %>
 
                             <%
-                                var totalRebenue = new EMT.DoneNOW.BLL.CRM.OpportunityBLL().ReturnOppoRevenue(opportunity);
-                                var totalCost = new EMT.DoneNOW.BLL.CRM.OpportunityBLL().ReturnOppoCost(opportunity);
+                                var totalRebenue = new EMT.DoneNOW.BLL.OpportunityBLL().ReturnOppoRevenue(opportunity);
+                                var totalCost = new EMT.DoneNOW.BLL.OpportunityBLL().ReturnOppoCost(opportunity);
                                 var Gross_Profit = totalRebenue - totalCost;
                                 %>
                         <tr class="tableRow">
@@ -763,7 +763,7 @@ a:hover {
                 <div class="Content">
                     <table cellpadding="0" cellspacing="0">
                         <tbody>
-                            <%  var location = new EMT.DoneNOW.BLL.CRM.LocationBLL().GetLocationByAccountId(account.id);
+                            <%  var location = new EMT.DoneNOW.BLL.LocationBLL().GetLocationByAccountId(account.id);
                                 if (location != null)
                                 {
                                 %>
@@ -848,7 +848,7 @@ a:hover {
                             <%
                                 if (contact.location_id != null)
                                 {
-                                    var contactLocation =  new EMT.DoneNOW.BLL.CRM.LocationBLL().GetLocation((long)contact.location_id);%>
+                                    var contactLocation =  new EMT.DoneNOW.BLL.LocationBLL().GetLocation((long)contact.location_id);%>
 
                                <tr class="tableRow">
                             <td class="tableCell">

@@ -1,5 +1,4 @@
 ﻿using EMT.DoneNOW.BLL;
-using EMT.DoneNOW.BLL.CRM;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 using System;

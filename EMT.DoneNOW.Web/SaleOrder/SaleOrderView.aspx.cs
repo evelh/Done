@@ -8,7 +8,6 @@ using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DAL;
 using EMT.DoneNOW.DTO;
 using EMT.DoneNOW.BLL;
-using EMT.DoneNOW.BLL.CRM;
 using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.Web.SaleOrder

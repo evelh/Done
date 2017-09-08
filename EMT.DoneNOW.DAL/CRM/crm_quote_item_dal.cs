@@ -28,5 +28,14 @@ namespace EMT.DoneNOW.DAL
             else
                 return FindListBySql<crm_quote_item>($"select * from crm_quote_item where  delete_time = 0 " + where);
         }
+        /// <summary>
+        /// 根据报价项id获取到该报价下的所有报价项
+        /// </summary>
+        /// <param name="item_id"></param>
+        /// <returns></returns>
+        public List<crm_quote_item> GetItemsByItemID(long item_id)
+        {
+            return FindListBySql<crm_quote_item>($"SELECT * from crm_quote_item where quote_id = (select quote_id from crm_quote_item where id={item_id} and delete_time = 0 )");
+        }
     }
 }
