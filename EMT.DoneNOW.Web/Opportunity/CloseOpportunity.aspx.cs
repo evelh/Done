@@ -33,6 +33,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 opportunity = new crm_opportunity_dal().GetOpportunityById(long.Parse(id));
                 if (opportunity != null)
                 {
+                    // 折扣的下拉框不同于别的下拉框-- 需要去两个数据源去赋值
                     StringBuilder text = new StringBuilder();
                     var costCode = new d_cost_code_dal().GetListCostCode((int)COST_CODE_CATE.MATERIAL_COST_CODE);
                     text.Append($"<option value='0'>   </option>");
@@ -44,6 +45,16 @@ namespace EMT.DoneNOW.Web.Opportunity
                         }
                     }
                     codeSelect.Value = text.ToString();
+                    var disSource = "";
+                    var disCostCode = costCode.Where(_ => _.id == 37 || _.id == 43).ToList();
+                    if (disCostCode != null && disCostCode.Count > 0)
+                    {
+                        foreach (var item in disCostCode)
+                        {
+                            disSource += $"<option value='{item.id}'>{item.name}</option>";
+                        }
+                    }
+                    disCodeSelct.Value = disSource;
                     account = new CompanyBLL().GetCompany(opportunity.account_id);
                     if (opportunity.status_id == (int)OPPORTUNITY_STATUS.CLOSED)
                     {
@@ -82,7 +93,21 @@ namespace EMT.DoneNOW.Web.Opportunity
                     #endregion
                     period_type.SelectedValue = ((int)QUOTE_ITEM_PERIOD_TYPE.MONTH).ToString();
 
-                    stage_id.SelectedValue = opportunity.stage_id == null ? "0" : opportunity.stage_id.ToString();
+                    var stageList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.OPPORTUNITY_STATUS);
+                    var defaultStage = stageList.FirstOrDefault(_ => _.ext1 == "1");
+
+                    if (opportunity.stage_id != null)
+                    {
+                        stage_id.SelectedValue = opportunity.stage_id.ToString();
+                    }
+                    else
+                    {
+                        if (defaultStage != null)
+                        {
+                            stage_id.SelectedValue = defaultStage.id.ToString();
+                        }
+                    }
+                    // stage_id.SelectedValue = opportunity.stage_id == null ? "0" : opportunity.stage_id.ToString();
                     resource_id.SelectedValue = opportunity.resource_id.ToString();
                     competitor_id.SelectedValue = opportunity.competitor_id == null ? "0" : opportunity.competitor_id.ToString();
                     win_reason_type_id.SelectedValue = opportunity.win_reason_type_id == null ? "0" : opportunity.win_reason_type_id.ToString();
@@ -101,7 +126,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                             {
                                 activeproject.Enabled = false;
                                 isactiveproject.Value = "1";
-                                
+
                             }
                         }
                         quoteItemList = new crm_quote_item_dal().GetQuoteItems($" and quote_id = {primaryQuote.id}");
@@ -184,7 +209,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception msg)
             {
 
                 Response.End();
@@ -211,17 +236,26 @@ namespace EMT.DoneNOW.Web.Opportunity
                         }
                     }
                 }
-                return scriptText;
+            }
+            if (degressionItem != null && degressionItem.Count > 0)
+            {
+                foreach (var item in proAndOneTimeItem)
+                {
+                    if (item.object_id != null)
+                    {
+                        scriptText += $"$('#{item.id}_select').val({item.object_id});";
+                    }
+                }
             }
 
 
-            return "";
+            return scriptText;
         }
 
         protected void Finish_Click(object sender, EventArgs e)
         {
             var param = GetParam();
-            var result = new OpportunityBLL().CloseOpportunity(param,GetLoginUserId());
+            var result = new OpportunityBLL().CloseOpportunity(param, GetLoginUserId());
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
@@ -280,6 +314,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 default:
                     break;
             }
+
             if (addContractRequest.Checked) // 创建合同
             {
                 var contract = new ctt_contract()
@@ -293,7 +328,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 {
                     contract.end_date = Convert.ToDateTime(Request.Form["end_date"]);
                 }
-               
+
                 if (Request.Form["RadioBtnEndAfter"] == "on")  // 通过重复周期添加
                 {
                     contract.occurrences = int.Parse(Request.Form["occurrences"]);
@@ -308,6 +343,19 @@ namespace EMT.DoneNOW.Web.Opportunity
                 };
                 param.contract = contract;
                 param.effective_date = Convert.ToDateTime(Request.Form["effective_date"]);
+                if (!string.IsNullOrEmpty(Request.Form["isAddService"]))
+                {
+                    param.isAddService = true;
+                }
+                if (!string.IsNullOrEmpty(Request.Form["isUpdatePrice"]))
+                {
+                    param.isUpdatePrice = true;
+                }
+                if (!string.IsNullOrEmpty(Request.Form["isUpdateCost"]))
+                {
+                    param.isUpdateCost = true;
+                }
+
             }
 
             Dictionary<long, string> dic = new Dictionary<long, string>();
@@ -318,7 +366,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 {
                     foreach (var item in proAndOneTimeItem)
                     {
-                        dic.Add(item.id, Request.Form[item.id.ToString()+"_select"]);
+                        dic.Add(item.id, Request.Form[item.id.ToString() + "_select"]);
                     }
                 }
             }

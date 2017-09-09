@@ -48,6 +48,11 @@ namespace EMT.DoneNOW.DAL
             return FindSignleBySql<d_general>($"select * from d_general where id = {id}");
         }
 
+        public List<d_general> GetGeneralByTableId(long table_id)
+        {
+            return FindListBySql<d_general>($"select * from d_general where general_table_id = {table_id}");
+        }
+
 
 
     }
