@@ -185,7 +185,7 @@
                                             <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">角色()</a>
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_ROLE %>" target="PageFrame">角色()</a>
                                             <div class="StandardText">Set up billing roles that determine the rate at which labour will be billed.</div>
                                         </div>
                                         <div class="PageNavigationLink">

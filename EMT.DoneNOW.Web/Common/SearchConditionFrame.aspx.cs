@@ -70,6 +70,12 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.CONTRACT:
                     currentQuery.page_name = "合同查询";
                     break;
+                case (int)DicEnum.QUERY_CATE.SYS_ROLE:
+                    currentQuery.page_name = "角色管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.SYS_DEPARTMENT:
+                    currentQuery.page_name = "部门管理";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

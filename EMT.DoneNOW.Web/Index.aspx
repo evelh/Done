@@ -61,14 +61,14 @@
                                     <div class="GuideNavigation Button ButtonIcon SelectedState">主页</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">CRM</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">Directory</div>
-                                    <div class="GuideNavigation Button ButtonIcon NormalState">Contracts</div>
-                                    <div class="GuideNavigation Button ButtonIcon NormalState">Projects</div>
-                                    <div class="GuideNavigation Button ButtonIcon NormalState">Service Desk</div>
-                                    <div class="GuideNavigation Button ButtonIcon NormalState">Timesheets</div>
+                                    <div class="GuideNavigation Button ButtonIcon NormalState">合同</div>
+                                    <div class="GuideNavigation Button ButtonIcon NormalState">项目</div>
+                                    <div class="GuideNavigation Button ButtonIcon NormalState">服务台</div>
+                                    <div class="GuideNavigation Button ButtonIcon NormalState">工时</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">Inventory</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">Reports</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">Outsource</div>
-                                    <div class="GuideNavigation Button ButtonIcon NormalState">Admin</div>
+                                    <div class="GuideNavigation Button ButtonIcon NormalState">系统设置</div>
                                 </div>
                                 <!--第二级菜单-->
                                 <div class="ModuleContainer">
@@ -312,8 +312,8 @@
                                                         <div class="Text">搜索</div>
                                                     </div>
                                                     <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT %>" target="PageFrame">
+                                                            <span class="Text">合同</span>
                                                         </a>
                                                     </div>
                                                     <div class="Content">
@@ -593,11 +593,11 @@
                                             <div>
                                                 <div class="Group">
                                                     <div class="Heading">
-                                                        <div class="Text">视图11</div>
+                                                        <div class="Text">视图</div>
                                                     </div>
                                                     <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">LiveLinks Designer</span>
+                                                        <a class="Button ButtonIcon NormalState" href="SysSetting/SysAdmin" target="PageFrame">
+                                                            <span class="Text">设置</span>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -605,25 +605,10 @@
                                                     <div class="Heading">
                                                         <div class="Text">搜索</div>
                                                     </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
                                                 </div>
                                                 <div class="Group">
                                                     <div class="Heading">
                                                         <div class="Text">工具</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>

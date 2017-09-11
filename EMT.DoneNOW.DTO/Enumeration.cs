@@ -415,9 +415,11 @@ namespace EMT.DoneNOW.DTO
             SUBSCRIPTION = 892,                 // 订阅管理-查询
             SALEORDER = 894,                    // 销售订单 - 查询
             CONTRACT = 895,                     // 合同
-            MATERIALCODE_CALLBACK=896,          //物料代码查找带回
-            VENDOR_CALLBACK=897,                //供应商查找带回
-            PRODUCTINVENTORY=909,               //库存
+            MATERIALCODE_CALLBACK = 896,          //物料代码查找带回
+            VENDOR_CALLBACK = 897,                //供应商查找带回
+            SYS_ROLE = 898,                     // 系统管理-角色查询
+            SYS_DEPARTMENT = 899,               // 系统管理-部门查询
+            PRODUCTINVENTORY = 909,               //库存
         }
 
         /// <summary>
@@ -686,6 +688,8 @@ namespace EMT.DoneNOW.DTO
         Subscription = 34,              // 订阅
         SaleOrder = 36,                 // 销售订单
         Contract = 37,                  // 合同
+        Role = 40,                      // 角色
+        Department = 41,                // 部门
         ProuductInventory=50,           //产品库存
     }
     /// <summary>

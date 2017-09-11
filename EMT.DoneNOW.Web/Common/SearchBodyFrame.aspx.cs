@@ -101,6 +101,10 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PRODUCTINVENTORY:
                     addBtn = "新增产品库存";
                     break;
+                case (int)DicEnum.QUERY_CATE.SYS_DEPARTMENT:
+                case (int)DicEnum.QUERY_CATE.SYS_ROLE:
+                    addBtn = "新增";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -339,6 +343,17 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "移库", click_function = "Transfer()" });
                     contextMenu.Add(new PageContextMenuDto { text = "订购", click_function = "Order()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除库存", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.Role:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Transfer()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Order()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "从全部当前激活的合同中排除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.Department:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Transfer()" });
                     break;
                 default:
                     break;
