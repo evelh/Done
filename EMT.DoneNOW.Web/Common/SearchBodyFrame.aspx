@@ -1067,21 +1067,42 @@
             window.open("../Product/SysUserEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Delete() {
+            //if (confirm("删除后无法恢复，是否继续?")) {
+            //    $.ajax({
+            //        type: "GET",
+            //        url: "../Tools/RoleAjax.ashx?act=delete&id=" + entityid,
+            //        async: false,
+            //        success: function (data) {
+            //            alert(data);
+            //        }
+            //    })
+            //}
+
+        }
+        function Active() {
             if (confirm("删除后无法恢复，是否继续?")) {
                 $.ajax({
                     type: "GET",
-                    url: "../Tools/RoleAjax.ashx?act=delete&id=" + entityid,
+                    url: "../Tools/RoleAjax.ashx?act=Active&id=" + entityid,
                     async: false,
                     success: function (data) {
                         alert(data);
                     }
                 })
             }
-
         }
-        function Active() {
+        function Inactive() {
+            if (confirm("删除后无法恢复，是否继续?")) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/RoleAjax.ashx?act=No_Active&id=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                })
+            }
         }
-        function Inactive(){ }
         //从全部激活的合同中排除
         function Exclude() {
             if (confirm("从全部当前激活的合同中排除?")) {

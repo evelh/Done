@@ -772,9 +772,6 @@ namespace EMT.DoneNOW.DTO
         VendorAdd = 320,                          //添加供应商
         TerritorySource = 321,                   //地域带回员工
         VendorSelect = 322,                    //查找供应商
-
-
-        SysOPPORTUNITY_ADVANCED_FIELD =322,         //添加商机扩展字段
         TERRITORY=323,                             //添加地域
         MARKET_SEGMENT=323,                        //添加市场
         REGION=324,                                //添加区域
@@ -783,8 +780,9 @@ namespace EMT.DoneNOW.DTO
         OPPORTUNITY_STAGE=326,                     //添加商机阶段
         OPPORTUNITY_SOURCE=327,                    //添加商机来源
         NAME_SUFFIX=328,                           //添加姓名后缀
+        SysOPPORTUNITY_ADVANCED_FIELD = 329,        //添加商机扩展字段
 
-        Inventory=330,                             //产品库存编辑
+        Inventory =330,                             //产品库存编辑
         InventoryTransfer=331,                     //移库
 
         Resource=340,                              //员工信息展示
