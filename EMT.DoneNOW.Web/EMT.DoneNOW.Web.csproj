@@ -170,6 +170,7 @@
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
+    <Content Include="Contract\RoleRate.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
     <Content Include="Contact\DeleteContact.aspx" />
@@ -836,6 +837,13 @@
     </Compile>
     <Compile Include="Contract\ContractEdit.aspx.designer.cs">
       <DependentUpon>ContractEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\RoleRate.aspx.cs">
+      <DependentUpon>RoleRate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\RoleRate.aspx.designer.cs">
+      <DependentUpon>RoleRate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
