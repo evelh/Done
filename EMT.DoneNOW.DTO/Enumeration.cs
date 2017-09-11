@@ -53,6 +53,7 @@ namespace EMT.DoneNOW.DTO
         LICENSE_TYPE = 109,                      //安全等级：授权类型
         QUOTE_GROUP_BY = 110,                    // 报价分组条件
         CONTRACT_CATE = 112,                    // 合同分类
+        CONTRACT_MILESTONE=117,                  //合同里程碑
         BILL_POST_TYPE = 118,                   // 合同：工时计费设置
     }
 

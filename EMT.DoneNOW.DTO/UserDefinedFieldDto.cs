@@ -36,4 +36,10 @@ namespace EMT.DoneNOW.DTO
         [DataMember]
         public List<DictionaryEntryDto> value_list;   // 字段类型为列表时的列表键值
     }
+    public class ConfigUserDefinedFieldDto
+    {
+        public int id;              // 字段id
+        public SByte is_required;      // 是否必填
+        public string sort_order;      // 排序号
+    }
 }
