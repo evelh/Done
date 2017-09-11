@@ -140,7 +140,7 @@ namespace EMT.DoneNOW.BLL
                                 name = "",
                                 phone = user.mobile == null ? "" : user.mobile,
                                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ROLE,//角色
+                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_EXCLUSTION_ROLE,//角色
                                 oper_object_id = role.id,// 操作对象id
                                 oper_type_id = (int)OPER_LOG_TYPE.ADD,
                                 oper_description = _dal.AddValue(role),

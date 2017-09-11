@@ -108,14 +108,14 @@ namespace EMT.DoneNOW.BLL
             if (user == null)
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
-            }
-            data.create_time = data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            data.create_user_id = user_id;
+            }           
             var res = new GeneralBLL().GetSingleGeneral(data.name, data.general_table_id);
             if (res != null)
             {
                 return ERROR_CODE.EXIST;
             }
+            data.create_time = data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.create_user_id = user_id;
             _dal.Insert(data);
             var add_log = new sys_oper_log()
             {

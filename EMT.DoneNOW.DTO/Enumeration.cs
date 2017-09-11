@@ -42,6 +42,7 @@ namespace EMT.DoneNOW.DTO
         QUOTE_ITEM_TYPE = 42,                      // 报价项：类型
         QUOTE_ITEM_PERIOD_TYPE = 43,               // 报价项：付费周期类型
         QUOTE_ITEM_TAX_CATE = 44,                  // 报价项：税收种类
+        UDF_FILED_GROUP=47,                        //自定义字段分组
         NAME_SUFFIX = 48,
         SEX = 49,
         EMAILTYPE = 50,
@@ -480,6 +481,7 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_COST = 782,                        // 合同成本
             CONTRACT_SERVICE = 783,                     // 合同服务
             CONTRACT_MILESTONE = 784,                   // 合同里程碑
+            CONTRACT_EXCLUSTION_ROLE=793,               //合同例外因素-不计费的角色
             General_Code = 794,                         // 通用代码
             WAREHOUSE_PRODUCT =795,                     // 库存产品
             PRODUCT_VENDOR=796,                         // 产品供应商
@@ -488,6 +490,7 @@ namespace EMT.DoneNOW.DTO
             ROLE=799,                                   // 角色
             RESOURCE=1370,                              // 员工
             PROJECT = 1371,                             // 项目
+
         }
 
         /// <summary>
