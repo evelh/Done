@@ -42,6 +42,7 @@ namespace EMT.DoneNOW.DTO
         QUOTE_ITEM_TYPE = 42,                      // 报价项：类型
         QUOTE_ITEM_PERIOD_TYPE = 43,               // 报价项：付费周期类型
         QUOTE_ITEM_TAX_CATE = 44,                  // 报价项：税收种类
+        UDF_FILED_GROUP=47,                        //自定义字段分组
         NAME_SUFFIX = 48,
         SEX = 49,
         EMAILTYPE = 50,
@@ -417,9 +418,11 @@ namespace EMT.DoneNOW.DTO
             CONTRACT = 895,                     // 合同
             MATERIALCODE_CALLBACK = 896,          //物料代码查找带回
             VENDOR_CALLBACK = 897,                //供应商查找带回
+            RESOURCE=881,                         //系统管理-员工查询
             SYS_ROLE = 898,                     // 系统管理-角色查询
             SYS_DEPARTMENT = 899,               // 系统管理-部门查询
             PRODUCTINVENTORY = 909,               //库存
+            PRODUCT=910,                         //产品
         }
 
         /// <summary>
@@ -478,6 +481,7 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_COST = 782,                        // 合同成本
             CONTRACT_SERVICE = 783,                     // 合同服务
             CONTRACT_MILESTONE = 784,                   // 合同里程碑
+            CONTRACT_EXCLUSTION_ROLE=793,               //合同例外因素-不计费的角色
             General_Code = 794,                         // 通用代码
             WAREHOUSE_PRODUCT =795,                     // 库存产品
             PRODUCT_VENDOR=796,                         // 产品供应商
@@ -486,6 +490,7 @@ namespace EMT.DoneNOW.DTO
             ROLE=799,                                   // 角色
             RESOURCE=1370,                              // 员工
             PROJECT = 1371,                             // 项目
+
         }
 
         /// <summary>
@@ -683,7 +688,7 @@ namespace EMT.DoneNOW.DTO
         ContactCompanyView = 13,           // 客户管理-详情-联系人查询
         SubcompanyCompanyView = 14,        // 客户管理-详情-子客户查询
         OpportunityContactView = 15,       // 联系人管理-详情-商机查询
-
+        Resource=23,                    //员工
         InstalledProductView = 32,     // 配置项管理
         Subscription = 34,              // 订阅
         SaleOrder = 36,                 // 销售订单
@@ -691,6 +696,7 @@ namespace EMT.DoneNOW.DTO
         Role = 40,                      // 角色
         Department = 41,                // 部门
         ProuductInventory=50,           //产品库存
+        Prouduct = 51,                  //产品
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -740,6 +746,8 @@ namespace EMT.DoneNOW.DTO
 
         ProductSelect = 190,                    // 产品查找带回
         ManyProductSelect = 191,                // 多选产品查找带回
+        ProductView=192,                        //产品查看
+        ProuductEdit=193,                       //产品编辑
 
         ServiceSelect = 200,                      // 服务的查找带回
         ServiceBundleSelect = 201,               // 服务集的查找带回
@@ -767,9 +775,6 @@ namespace EMT.DoneNOW.DTO
         VendorAdd = 320,                          //添加供应商
         TerritorySource = 321,                   //地域带回员工
         VendorSelect = 322,                    //查找供应商
-
-
-        SysOPPORTUNITY_ADVANCED_FIELD =322,         //添加商机扩展字段
         TERRITORY=323,                             //添加地域
         MARKET_SEGMENT=323,                        //添加市场
         REGION=324,                                //添加区域
@@ -778,9 +783,14 @@ namespace EMT.DoneNOW.DTO
         OPPORTUNITY_STAGE=326,                     //添加商机阶段
         OPPORTUNITY_SOURCE=327,                    //添加商机来源
         NAME_SUFFIX=328,                           //添加姓名后缀
+        SysOPPORTUNITY_ADVANCED_FIELD = 329,        //添加商机扩展字段
 
-        Inventory=330,                             //产品库存编辑
+        Inventory =330,                             //产品库存编辑
         InventoryTransfer=331,                     //移库
 
+        Resource=340,                              //员工信息展示
+        ResourceCopy = 341,                        //复制员工信息
+
+        SecurityLevel=350,                         //安全等级界面
     }
 }

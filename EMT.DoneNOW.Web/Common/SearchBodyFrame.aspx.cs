@@ -101,9 +101,13 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PRODUCTINVENTORY:
                     addBtn = "新增产品库存";
                     break;
+                case (int)DicEnum.QUERY_CATE.RESOURCE:
                 case (int)DicEnum.QUERY_CATE.SYS_DEPARTMENT:
                 case (int)DicEnum.QUERY_CATE.SYS_ROLE:
                     addBtn = "新增";
+                    break;
+                case (int)DicEnum.QUERY_CATE.PRODUCT:
+                    addBtn = "新增产品";
                     break;
                 default:
                     addBtn = "";
@@ -346,14 +350,25 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.Role:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Transfer()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Order()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "Delete()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "从全部当前激活的合同中排除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "Inactive()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "从全部激活的合同中排除", click_function = "Exclude()" });
                     break;
                 case (long)QueryType.Department:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Transfer()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.Resource:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查找相似员工", click_function = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "发邮件给当前员工", click_function = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "发邮件给选中员工", click_function = "" });
+                    break;
+                case (long)QueryType.Prouduct:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;
