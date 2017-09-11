@@ -1312,6 +1312,9 @@
     <Compile Include="Tools\ContactAjax.ashx.cs">
       <DependentUpon>ContactAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\DepartmentAjax.ashx.cs">
+      <DependentUpon>DepartmentAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\GeneralAjax.ashx.cs">
       <DependentUpon>GeneralAjax.ashx</DependentUpon>
     </Compile>
@@ -1335,6 +1338,9 @@
     </Compile>
     <Compile Include="Tools\QuoteTemplateAjax.ashx.cs">
       <DependentUpon>QuoteTemplateAjax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\ResourceAjax.ashx.cs">
+      <DependentUpon>ResourceAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\RoleAjax.ashx.cs">
       <DependentUpon>RoleAjax.ashx</DependentUpon>
@@ -1387,6 +1393,8 @@
     <Content Include="Tools\AccountClassAjax.ashx" />
     <Content Include="Tools\OpportunityReasonAjax.ashx" />
     <Content Include="Tools\InventoryAjax.ashx" />
+    <Content Include="Tools\DepartmentAjax.ashx" />
+    <Content Include="Tools\ResourceAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

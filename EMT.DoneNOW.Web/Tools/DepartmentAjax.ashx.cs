@@ -8,43 +8,43 @@ using System.Web;
 namespace EMT.DoneNOW.Web
 {
     /// <summary>
-    /// InventoryAjax 的摘要说明
+    /// DepartmentAjax 的摘要说明
     /// </summary>
-    public class InventoryAjax : IHttpHandler
+    public class DepartmentAjax : IHttpHandler
     {
-
         public void ProcessRequest(HttpContext context)
         {
-            var action = context.Request.QueryString["act"];
-            var inven_id = context.Request.QueryString["id"];
+            var action = context.Request.QueryString["act"];            
             switch (action)
             {
-                case "delete": Delete(context, Convert.ToInt64(inven_id)); ; break;             
+                case "delete": var departmen_id = context.Request.QueryString["id"];
+                    Delete(context, Convert.ToInt64(departmen_id));break;
 
                 default: break;
 
             }
         }
-        public void Delete(HttpContext context, long inven_id)
+        public void Delete(HttpContext context, long departmen_id)
         {
-            //此处写复制逻辑
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            if (res != null)
             {
-                var result = new ProductBLL().DeleteInventory(inven_id, user.id);
+                string returnvalue = string.Empty;
+                var result = new DepartmentBLL().Delete(departmen_id, res.id, out returnvalue);
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("删除成功！");
                 }
-                else if (result == DTO.ERROR_CODE.SYSTEM)
+                else if (result == DTO.ERROR_CODE.EXIST)
                 {
-                    context.Response.Write("系统默认不能删除！");
+                    context.Response.Write(returnvalue);
                 }
                 else
                 {
                     context.Response.Write("删除失败！");
                 }
             }
+
         }
         public bool IsReusable
         {

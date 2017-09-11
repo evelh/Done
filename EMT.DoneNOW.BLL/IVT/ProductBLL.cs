@@ -571,10 +571,9 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             if (contract_costlist.Count > 0 || warehouse_productlist.Count > 0 || installed_productlist.Count > 0 || opportunitylist.Count > 0) {
-
+                returnvalue = result.ToString();
                 return ERROR_CODE.EXIST;
-            }
-            returnvalue = result.ToString();
+            }            
             var product_del = _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where id={id} and delete_time=0");
             if (product_del == null) {
                 return ERROR_CODE.ERROR;

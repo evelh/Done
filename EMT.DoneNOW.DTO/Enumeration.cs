@@ -417,9 +417,11 @@ namespace EMT.DoneNOW.DTO
             CONTRACT = 895,                     // 合同
             MATERIALCODE_CALLBACK = 896,          //物料代码查找带回
             VENDOR_CALLBACK = 897,                //供应商查找带回
+            RESOURCE=881,                         //系统管理-员工查询
             SYS_ROLE = 898,                     // 系统管理-角色查询
             SYS_DEPARTMENT = 899,               // 系统管理-部门查询
             PRODUCTINVENTORY = 909,               //库存
+            PRODUCT=910,                         //产品
         }
 
         /// <summary>
@@ -683,7 +685,7 @@ namespace EMT.DoneNOW.DTO
         ContactCompanyView = 13,           // 客户管理-详情-联系人查询
         SubcompanyCompanyView = 14,        // 客户管理-详情-子客户查询
         OpportunityContactView = 15,       // 联系人管理-详情-商机查询
-
+        Resource=23,                    //员工
         InstalledProductView = 32,     // 配置项管理
         Subscription = 34,              // 订阅
         SaleOrder = 36,                 // 销售订单
@@ -691,6 +693,7 @@ namespace EMT.DoneNOW.DTO
         Role = 40,                      // 角色
         Department = 41,                // 部门
         ProuductInventory=50,           //产品库存
+        Prouduct = 51,                  //产品
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -740,6 +743,8 @@ namespace EMT.DoneNOW.DTO
 
         ProductSelect = 190,                    // 产品查找带回
         ManyProductSelect = 191,                // 多选产品查找带回
+        ProductView=192,                        //产品查看
+        ProuductEdit=193,                       //产品编辑
 
         ServiceSelect = 200,                      // 服务的查找带回
         ServiceBundleSelect = 201,               // 服务集的查找带回
@@ -782,5 +787,9 @@ namespace EMT.DoneNOW.DTO
         Inventory=330,                             //产品库存编辑
         InventoryTransfer=331,                     //移库
 
+        Resource=340,                              //员工信息展示
+        ResourceCopy = 341,                        //复制员工信息
+
+        SecurityLevel=350,                         //安全等级界面
     }
 }

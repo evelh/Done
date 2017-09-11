@@ -45,22 +45,13 @@ namespace EMT.DoneNOW.Web.SysSetting
             {
                 Response.Write("<script>alert('市场添加成功！');window.close();self.opener.location.reload();</script>");
             }
-            else {
-                Response.Write("<script>alert('市场添加失败！');window.close();self.opener.location.reload();</script>");
-            }
-           
         }
 
         protected void Save_New_Click(object sender, EventArgs e)
         {
             if (save_deal())
             {
-               // Response.Redirect("SysMarket.aspx");
-                Response.Write("<script>alert('市场添加失败！');window.location.href = 'SysMarket.aspx';</script>");
-            }
-            else
-            {
-                Response.Write("<script>alert('市场添加失败！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>alert('市场添加成功！');window.location.href = 'SysMarket.aspx';</script>");
             }
         }
 
@@ -109,6 +100,9 @@ namespace EMT.DoneNOW.Web.SysSetting
                 else if (result == DTO.ERROR_CODE.EXIST)
                 {
                     Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
+                }
+                else {
+                    return false;
                 }
             }
             return false;

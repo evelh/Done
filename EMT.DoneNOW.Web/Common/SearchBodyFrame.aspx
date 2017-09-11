@@ -1045,6 +1045,94 @@
             }            
 
         }
+         <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Resource){%>//员工
+        function Add() {
+            window.open("../Product/SysUserAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Edit() {
+            window.open("../Product/SysUserEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Copy() {
+           
+        }
+        function k() {
+            alert("暂未实现");
+        }
+        function Delete() {   }
+        <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Role){%>//角色
+        function Add() {
+            window.open("../Product/SysUserAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Edit() {
+            window.open("../Product/SysUserEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Delete() {
+            if (confirm("删除后无法恢复，是否继续?")) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/RoleAjax.ashx?act=delete&id=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                })
+            }
+
+        }
+        function Active() {
+        }
+        function Inactive(){ }
+        //从全部激活的合同中排除
+        function Exclude() {
+            if (confirm("从全部当前激活的合同中排除?")) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/RoleAjax.ashx?act=Exclude&id=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                })
+            }
+        }
+        <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Department){%>//部门
+        function Add() {
+            window.open("../SysSetting/SysUserAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Edit() {
+            window.open("../SysSetting/SysUserEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Delete() {
+            if (confirm("删除后无法恢复，是否继续?")) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/DepartmentAjax.ashx?act=delete&id=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                })
+            }
+        }
+         <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Prouduct){%>//产品
+        function Add() {
+            window.open("../Product/ProductAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductView %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Edit() {
+            window.open("../Product/ProductAdd.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProuductEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Delete() {
+            if (confirm("删除后无法恢复，是否继续?")) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ProductAjax.ashx?act=DeleteProduct&product_id=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                })
+            }
+        }
         <%}%>
         function openopenopen() {
             //alert("暂未实现");
