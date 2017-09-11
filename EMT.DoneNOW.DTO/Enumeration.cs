@@ -90,7 +90,7 @@ namespace EMT.DoneNOW.DTO
             IN_CHARGE = 27,                  // 计费中
             SALES = 28,                      // 销售
             CANCELLATION = 29,               // 注销
-
+            PROJECT_NOTE = 1492,             // 项目备注
         }
 
 
@@ -101,6 +101,9 @@ namespace EMT.DoneNOW.DTO
         {
             TODO = 30,
             NOTE = 31,
+            PROJECT_NOTE = 1497,                  // 项目备注
+            CONTRACT_NOTE = 1498,                 // 合同备注
+            
         }
 
 
@@ -440,6 +443,7 @@ namespace EMT.DoneNOW.DTO
             OPPORTUNITY = 737,  // 商机
             QUOTE = 738,        // 报价
             CONTRACT = 739,     // 合同
+            PROJECT = 740,      // 项目
         }
 
         /// <summary>

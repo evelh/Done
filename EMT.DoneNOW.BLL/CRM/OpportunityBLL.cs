@@ -295,11 +295,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, oppo_list, param.general.id, udf_oppo, user, DicEnum.OPER_LOG_OBJ_CATE.FROMOPPORTUNITY_EXTENSION_INFORMATION);
                 }
-
             }
-
-
-
             return ERROR_CODE.SUCCESS;
         }
 
@@ -772,11 +768,11 @@ namespace EMT.DoneNOW.BLL
                 com_activity addActivity = new com_activity()
                 {
                     id = _dal.GetNextIdCom(),
-                    cate_id = (int)ACTIVITY_CATE.NOTE,
-                    action_type_id = (int)ACTIVITY_TYPE.OPPORTUNITYUPDATE,// 根据项目/合同 去设置
+                    cate_id = isProject ? (int)ACTIVITY_CATE.PROJECT_NOTE:(int)ACTIVITY_CATE.CONTRACT_NOTE,
+                    action_type_id = (int)ACTIVITY_TYPE.PROJECT_NOTE,// 根据项目/合同 去设置
                     parent_id = null,
                     object_id = param.opportunity.id,
-                    object_type_id = (int)OBJECT_TYPE.OPPORTUNITY,
+                    object_type_id = isProject?(int)OBJECT_TYPE.PROJECT:(int)OBJECT_TYPE.CONTRACT,
                     account_id = param.opportunity.account_id,
                     contact_id = contact_id,
                     resource_id = param.opportunity.resource_id,
@@ -867,7 +863,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 将报价项转换为计费项
         /// </summary>
-        public void InsertContract( Dictionary<long,string> costCodeList,  crm_opportunity opportunity, UserInfoDto user, long contract_id , long? project_id = null)
+        public void InsertContract( Dictionary<long,string> costCodeList,  crm_opportunity opportunity, UserInfoDto user, long contract_id , long? project_id = null,long? tickte_id = null)
         {
             var qiDal = new crm_quote_item_dal();
             var cccDal = new ctt_contract_cost_dal();
@@ -917,6 +913,7 @@ namespace EMT.DoneNOW.BLL
                             update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                             project_id = project_id,
                             contract_id = contract_id,
+                            ticket_id = tickte_id,
                         };
                         cccDal.Insert(cost);
                         new sys_oper_log_dal().Insert(new sys_oper_log()

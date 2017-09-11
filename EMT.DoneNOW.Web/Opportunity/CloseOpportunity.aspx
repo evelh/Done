@@ -612,12 +612,13 @@
 
                             <input type="hidden" id="isPass" value="false" />
                             <input type="hidden" id="codeSelect" runat="server" />
+                            <input type="hidden" id="disCodeSelct" runat="server" />
 
                             <input type="hidden" id="jqueryCode" runat="server" />
                             <!-- -->
-                            <input type="hidden" name="isAddService" id="isAddService"/> 
-                            <input type="hidden" name="isUpdatePrice" id="isUpdatePrice"/> 
-                            <input type="hidden" name="isUpdateCost" id="isUpdateCost"/> 
+                            <input type="hidden" name="isAddService" id="isAddService" />
+                            <input type="hidden" name="isUpdatePrice" id="isUpdatePrice" />
+                            <input type="hidden" name="isUpdateCost" id="isUpdateCost" />
                           </td>
                         </tr>
                         <tr id="trCreateContract" style="display: none;">
@@ -851,7 +852,7 @@
                                   <div>
                                     <input type="text" style="width: 200px;" name="ConvertContract" id="ConvertContractId" />
                                     <input type="hidden" name="ConvertContractId" id="ConvertContractIdHidden" />
-                                    <img src="../Images/data-selector.png" alt="" onclick="callBackContractNoDeal()"/>
+                                    <img src="../Images/data-selector.png" alt="" onclick="callBackContractNoDeal()" />
                                   </div>
                                 </td>
                               </tr>
@@ -1024,8 +1025,16 @@
                         <td class="txtBlack8" style="vertical-align: middle;" nowrap align="right"><%=item.quantity %></td>
                         <td nowrap align="left">
                           <span class="errorSmall">*</span>
+                          <% if (item.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT)
+                              {%>
                           <select class="ChooseCostCoseSelect" name="<%=item.id %>_select" id="<%=item.id %>_select" style="width: 90%;">
                           </select>
+                          <%}
+                              else
+                              { %>
+                          <select class="ChooseDiscountCostCoseSelect" name="<%=item.id %>_select" id="<%=item.id %>_select" style="width: 90%;">
+                          </select>
+                          <%} %>
                         </td>
                       </tr>
                       <%}
@@ -1357,30 +1366,30 @@
     }
 
     if (<%=wonSetting.setting_value %> == <%=(int)EMT.DoneNOW.DTO.DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_TYPE_DETAIL %>) // 根据系统设置决定是否校验
-        {
+    {
 
-          var win_reason_type_id = $("#win_reason_type_id").val();
-          if (win_reason_type_id == 0) {
-            alert("请选择关闭商机原因");
-            return false;
-          }
+      var win_reason_type_id = $("#win_reason_type_id").val();
+      if (win_reason_type_id == 0) {
+        alert("请选择关闭商机原因");
+        return false;
+      }
 
-          var win_reason = $("#win_reason").val();
-          if (win_reason == "") {
-            alert("请填写关闭商机描述");
-            return false;
-          }
-        }
-        else if (<%=wonSetting.setting_value %> == <%=(int)EMT.DoneNOW.DTO.DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_TYPE %>){
-          var win_reason_type_id = $("#win_reason_type_id").val();
-          if (win_reason_type_id == 0) {
-            alert("请选择关闭商机原因");
-            return false;
-          }
-        }
+      var win_reason = $("#win_reason").val();
+      if (win_reason == "") {
+        alert("请填写关闭商机描述");
+        return false;
+      }
+    }
+    else if (<%=wonSetting.setting_value %> == <%=(int)EMT.DoneNOW.DTO.DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_TYPE %>){
+      var win_reason_type_id = $("#win_reason_type_id").val();
+      if (win_reason_type_id == 0) {
+        alert("请选择关闭商机原因");
+        return false;
+      }
+    }
 
-        $(".Workspace1").hide();
-        $(".Workspace2").show();
+    $(".Workspace1").hide();
+    $(".Workspace2").show();
   });
   $("#a2").on("click", function () {
     $(".Workspace1").show();
@@ -1497,11 +1506,28 @@
         isTrans += thisValue;
       }
     })
+
+    $(".ChooseDiscountCostCoseSelect").each(function () {
+      debugger;
+      if ($(this).parent().parent().css('display') == 'none') {
+        return true;
+      }
+      var thisValue = $(this).val();
+      if (thisValue == 0) {
+        isTrans += thisValue;
+      }
+    })
+
     if (isTrans != "") {
       alert("你还有报价项未选择物料代码");
 
       return false;
     }
+    // ChooseDiscountCostCoseSelect
+
+
+
+
     $(".Workspace4").hide();
     $(".Workspace5").show();
   });
@@ -1659,153 +1685,156 @@
 </script>
 
 <script>
-    $(function () {
-      var isAddContractRequest = $("#isAddContractRequest").val();
-      if (isAddContractRequest != "") {
-        $("#addContractRequestText").css("color", "rgb(176, 176, 176)");
-      }
+  $(function () {
+    var isAddContractRequest = $("#isAddContractRequest").val();
+    if (isAddContractRequest != "") {
+      $("#addContractRequestText").css("color", "rgb(176, 176, 176)");
+    }
 
-      var isactiveproject = $("#isactiveproject").val();
-      if (isactiveproject != "") {
-        $("#activeprojectText").css("color", "rgb(176, 176, 176)");
-      }
+    var isactiveproject = $("#isactiveproject").val();
+    if (isactiveproject != "") {
+      $("#activeprojectText").css("color", "rgb(176, 176, 176)");
+    }
 
-      var isaddContractServices = $("#isaddContractServices").val();
-      if (isaddContractServices != "") {
-        $("#addContractServicesText").css("color", "rgb(176, 176, 176)");
-      }
+    var isaddContractServices = $("#isaddContractServices").val();
+    if (isaddContractServices != "") {
+      $("#addContractServicesText").css("color", "rgb(176, 176, 176)");
+    }
 
-      var isaddRequest = $("#isaddRequest").val();
-      if (isaddRequest != "") {
-        $("#addRequestText").css("color", "rgb(176, 176, 176)");
-      }
+    var isaddRequest = $("#isaddRequest").val();
+    if (isaddRequest != "") {
+      $("#addRequestText").css("color", "rgb(176, 176, 176)");
+    }
 
-      var IncludePO = $("#IncludePO").val();
-      if (IncludePO != "") {
-        $("#IncludePOText").css("color", "rgb(176, 176, 176)");
-      }
-      var IncludeShip = $("#IncludeShip").val();
-      if (IncludeShip != "") {
-        $("#IncludeShipText").css("color", "rgb(176, 176, 176)");
-      }
-      var IncludeCharges = $("#IncludeCharges").val();
-      if (IncludeCharges != "") {
-        $("#IncludeChargesText").css("color", "rgb(176, 176, 176)");
-      }
-      if (IncludePO != "" && IncludeShip != "" && IncludeCharges != "") {
-        DisabledText();
-      }
-      // checkFirstRb();
+    var IncludePO = $("#IncludePO").val();
+    if (IncludePO != "") {
+      $("#IncludePOText").css("color", "rgb(176, 176, 176)");
+    }
+    var IncludeShip = $("#IncludeShip").val();
+    if (IncludeShip != "") {
+      $("#IncludeShipText").css("color", "rgb(176, 176, 176)");
+    }
+    var IncludeCharges = $("#IncludeCharges").val();
+    if (IncludeCharges != "") {
+      $("#IncludeChargesText").css("color", "rgb(176, 176, 176)");
+    }
+    if (IncludePO != "" && IncludeShip != "" && IncludeCharges != "") {
+      DisabledText();
+    }
+    // checkFirstRb();
+    NoDisabledText();
+
+    $(".ChooseCostCoseSelect").html($("#codeSelect").val());
+    eval($("#jqueryCode").val());
+
+    // ChooseDiscountCostCoseSelect
+    // disCodeSelct
+    $(".ChooseDiscountCostCoseSelect").html($("#disCodeSelct").val());
+  })
+
+  $(".isDisabled").click(function () {
+    debugger;
+    var isIncludePO = $("#isIncludePO").is(":checked");
+    var isIncludeShip = $("#isIncludeShip").is(":checked"); //
+    var isIncludeCharges = $("#isIncludeCharges").is(":checked"); //
+
+    if ((!isIncludePO) && (!isIncludeShip) && (!isIncludeCharges)) {
+      DisabledText();
+    }
+    else {
       NoDisabledText();
+    }
+  })
+  // 禁用转换
+  function DisabledText() {
+    $("#ccexDiv").hide();
+    $(".convertText").css("color", "rgb(176, 176, 176)");
+    $(".convertRb").prop("disabled", true);
+    $("#RadioBI").prop("checked", true);
+  }
+  // 解除禁用转换
+  function NoDisabledText() {
+    var isactiveproject = $("#activeproject").is(":checked");
+    var isaddContractRequest = $("#addContractRequest").is(":checked");
+    var isaddContractServices = $("#addContractServices").is(":checked");
+    var isaddRequest = $("#addRequest").is(":checked");
+    debugger;
+    if (isactiveproject) {
+      $("#RadioPC").prop("disabled", false);// RadioPCText
+      $("#RadioPCText").css("color", "");
+      $("#RadioPC").prop("checked", true);
+    }
+    else {
+      $("#RadioPC").prop("disabled", true);// RadioPCText
+      $("#RadioPC").prop("checked", false);
+      $("#RadioPCText").css("color", "rgb(176, 176, 176)");
+    }
+    if (isaddContractRequest) {
+      $("#rbContractCost").prop("disabled", false);
+      $("#rbContractCostText").css("color", "");
+      $("#rbContractCost").prop("checked", true);
+    }
+    else {
+      $("#rbContractCost").prop("disabled", true);// RadioPCText
+      $("#rbContractCost").prop("checked", false);
+      $("#rbContractCostText").css("color", "rgb(176, 176, 176)");
+    }
+    if (isaddContractServices) {
+      $("#rbContractCost").prop("disabled", false);
+      $("#rbContractCostText").css("color", "");
+      $("#rbContractCost").prop("checked", true);
+    }
+    else {
+      $("#rbContractCost").prop("disabled", true);// RadioPCText
+      $("#rbContractCost").prop("checked", false);
+      $("#rbContractCostText").css("color", "rgb(176, 176, 176)");
+    }
+    if (isaddRequest) {
+      $("#rbProjectCost").prop("disabled", false);
+      $("#rbProjectCostText").css("color", "");
+      $("#rbProjectCost").prop("checked", true);
+      $("#RadioBI").prop("disabled", true);
+      $("#RadioBIText").css("color", "rgb(176, 176, 176)");
+    }
+    else {
+      $("#rbProjectCost").prop("disabled", true);// RadioPCText
+      $("#rbProjectCost").prop("checked", false);
+      $("#rbProjectCostText").css("color", "rgb(176, 176, 176)");
 
-      $(".ChooseCostCoseSelect").html($("#codeSelect").val());
-      eval($("#jqueryCode").val());
-
-    })
-
-    $(".isDisabled").click(function () {
-      debugger;
-      var isIncludePO = $("#isIncludePO").is(":checked");
-      var isIncludeShip = $("#isIncludeShip").is(":checked"); //
-      var isIncludeCharges = $("#isIncludeCharges").is(":checked"); //
-
-      if ((!isIncludePO) && (!isIncludeShip) && (!isIncludeCharges)) {
-        DisabledText();
-      }
-      else {
-        NoDisabledText();
-      }
-    })
-    // 禁用转换
-    function DisabledText() {
-      $("#ccexDiv").hide();
-      $(".convertText").css("color", "rgb(176, 176, 176)");
-      $(".convertRb").prop("disabled", true);
+    }
+    if ((!isactiveproject) && (!isaddContractRequest) && (!isaddContractServices) && (!isaddRequest)) {
+      $("#RadioCCEx").prop("disabled", false);
+      $("#RadioCCExText").css("color", "");
+      $("#RadioBI").prop("disabled", false);
+      $("#RadioBIText").css("color", "");
       $("#RadioBI").prop("checked", true);
     }
-    // 解除禁用转换
-    function NoDisabledText() {
-      var isactiveproject = $("#activeproject").is(":checked");
-      var isaddContractRequest = $("#addContractRequest").is(":checked");
-      var isaddContractServices = $("#addContractServices").is(":checked");
-      var isaddRequest = $("#addRequest").is(":checked");
-      debugger;
-      if (isactiveproject) {
-        $("#RadioPC").prop("disabled", false);// RadioPCText
-        $("#RadioPCText").css("color", "");
-        $("#RadioPC").prop("checked", true);
-      }
-      else {
-        $("#RadioPC").prop("disabled", true);// RadioPCText
-        $("#RadioPC").prop("checked", false);
-        $("#RadioPCText").css("color", "rgb(176, 176, 176)");
-      }
-      if (isaddContractRequest) {
-        $("#rbContractCost").prop("disabled", false);
-        $("#rbContractCostText").css("color", "");
-        $("#rbContractCost").prop("checked", true);
-      }
-      else {
-        $("#rbContractCost").prop("disabled", true);// RadioPCText
-        $("#rbContractCost").prop("checked", false);
-        $("#rbContractCostText").css("color", "rgb(176, 176, 176)");
-      }
-      if (isaddContractServices) {
-        $("#rbContractCost").prop("disabled", false);
-        $("#rbContractCostText").css("color", "");
-        $("#rbContractCost").prop("checked", true);
-      }
-      else {
-        $("#rbContractCost").prop("disabled", true);// RadioPCText
-        $("#rbContractCost").prop("checked", false);
-        $("#rbContractCostText").css("color", "rgb(176, 176, 176)");
-      }
-      if (isaddRequest) {
-        $("#rbProjectCost").prop("disabled", false);
-        $("#rbProjectCostText").css("color", "");
-        $("#rbProjectCost").prop("checked", true);
-        $("#RadioBI").prop("disabled", true);
-        $("#RadioBIText").css("color", "rgb(176, 176, 176)");
-      }
-      else {
-        $("#rbProjectCost").prop("disabled", true);// RadioPCText
-        $("#rbProjectCost").prop("checked", false);
-        $("#rbProjectCostText").css("color", "rgb(176, 176, 176)");
-
-      }
-      if ((!isactiveproject) && (!isaddContractRequest) && (!isaddContractServices) && (!isaddRequest)) {
-        $("#RadioCCEx").prop("disabled", false);
-        $("#RadioCCExText").css("color", "");
-        $("#RadioBI").prop("disabled", false);
-        $("#RadioBIText").css("color", "");
-        $("#RadioBI").prop("checked", true);
-      }
-      if (!isChooseItem()) {
-        DisabledText();
-      }
+    if (!isChooseItem()) {
+      DisabledText();
     }
-    // 判断有没有点击的报价项
-    function isChooseItem() {
-      var isIncludePO = $("#isIncludePO").is(":checked");
-      var isIncludeShip = $("#isIncludeShip").is(":checked"); //
-      var isIncludeCharges = $("#isIncludeCharges").is(":checked");
-      if ((!isIncludePO) && (!isIncludeShip) && (!isIncludeCharges)) {
-        return false;
-      }
-      return true;
+  }
+  // 判断有没有点击的报价项
+  function isChooseItem() {
+    var isIncludePO = $("#isIncludePO").is(":checked");
+    var isIncludeShip = $("#isIncludeShip").is(":checked"); //
+    var isIncludeCharges = $("#isIncludeCharges").is(":checked");
+    if ((!isIncludePO) && (!isIncludeShip) && (!isIncludeCharges)) {
+      return false;
+    }
+    return true;
+  }
+
+  // 主要产品的查找带回
+  function callBackProduct() {
+    // primary_product_id
+    window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=primary_product_id", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
-    // 主要产品的查找带回
-    function callBackProduct() {
-      // primary_product_id
-      window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=primary_product_id", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
-    }
-
-  // 合同查找带回（包括带回事件）
+    // 合同查找带回（包括带回事件）
     function callBackContract() {
       window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT %>&field=contract_id&callBack=GetDataByContract", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>', 'left=200,top=200,width=600,height=800', false);
     }
-  //  合同查找带回（不包括带回事件）
+    //  合同查找带回（不包括带回事件）
     function callBackContractNoDeal() {
       window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT %>&field=ConvertContractId", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>', 'left=200,top=200,width=600,height=800', false);
     }
@@ -1822,18 +1851,18 @@
         $("#ConvertContractIdHidden").val(contract_idHidden);
         // 2.检查报价中包含初始费用且合同中也有，此时会提示“报价中初始费用不会替换已有初始费用
         var quote_id = <%=primaryQuote==null?"":primaryQuote.id.ToString() %>
-        $.ajax({
-          type: "GET",
-          async: false,
-          dataType: "json",
-          url: "../Tools/QuoteAjax.ashx?act=compareSetupFee&quote_id=" + quote_id + "&contract_id" + contract_idHidden,
-          // data: { CompanyName: companyName },
-          success: function (data) {
-            if (data != "True") {
-              alert("报价中初始费用不会替换已有初始费用");
-            }
-          },
-        });
+          $.ajax({
+            type: "GET",
+            async: false,
+            dataType: "json",
+            url: "../Tools/QuoteAjax.ashx?act=compareSetupFee&quote_id=" + quote_id + "&contract_id" + contract_idHidden,
+            // data: { CompanyName: companyName },
+            success: function (data) {
+              if (data != "True") {
+                alert("报价中初始费用不会替换已有初始费用");
+              }
+            },
+          });
 
         // 3.报价中包含的服务/包在合同中也有，此时会给出两个选择，提示“方案1：将服务/包累加到现有服务/包中，价格和成本替换为新的价格/成本；方案2：忽略不做处理
         $.ajax({

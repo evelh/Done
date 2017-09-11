@@ -420,6 +420,13 @@ namespace EMT.DoneNOW.BLL
             #region 1.更新商机信息
             // 根据系统设置来选择商机的阶段-- todo
             param.opportunity.status_id = (int)DicEnum.OPPORTUNITY_STATUS.CLOSED;
+
+            var stageList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.OPPORTUNITY_STATUS);
+            var defaultStage = stageList.FirstOrDefault(_ => _.ext1 == "1");
+            if (defaultStage != null)
+            {
+                param.opportunity.stage_id = defaultStage.id;
+            }
             var old_opportunity = new crm_opportunity_dal().GetOpportunityById(param.opportunity.id);
             new crm_opportunity_dal().Update(param.opportunity);
             new sys_oper_log_dal().Insert(new sys_oper_log()
@@ -441,7 +448,7 @@ namespace EMT.DoneNOW.BLL
             // 2.更新客户信息
             #region 2.更新客户信息
             var account = new CompanyBLL().GetCompany(param.quote.account_id);
-            if(account.type_id != (int)DicEnum.ACCOUNT_TYPE.CUSTOMER)
+            if (account.type_id != (int)DicEnum.ACCOUNT_TYPE.CUSTOMER)
             {
                 account.type_id = (int)DicEnum.ACCOUNT_TYPE.CUSTOMER;
                 new crm_account_dal().Update(account);
@@ -476,8 +483,35 @@ namespace EMT.DoneNOW.BLL
 
             // 3.保存项目信息
             #region 3.如果项目关联了项目提案，修改项目提案信息
-            // todo 与pro_project表相关联
+            if (param.quote.project_id != null)
+            {
+                var project = new pro_project_dal().GetProjectById((long)param.quote.project_id);
+                if (project != null)
+                {
+                    if (project.type_id != (int)PROJECT_TYPE.ACCOUNT_PROJECT)
+                    {
+                        project.type_id = (int)PROJECT_TYPE.ACCOUNT_PROJECT;
+                        project.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        project.update_user_id = user.id;
+                        new sys_oper_log_dal().Insert(new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = (int)user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PROJECT,
+                            oper_object_id = project.id,// 操作对象id
+                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                            oper_description = _dal.CompareValue(new pro_project_dal().GetProjectById((long)param.quote.project_id), project),
+                            remark = "修改项目提案类型"
 
+                        });
+                        new pro_project_dal().Update(project);
+                    }
+                    param.project_id = project.id;
+                }
+            }
             #endregion
 
             // 4.新增工单信息
@@ -493,13 +527,100 @@ namespace EMT.DoneNOW.BLL
             // 一次性折扣根据需要拆分为两行——收税的、不收税的，分别计算折扣额。计算时仍然按照全部周期为一次性的报价项，而不是排除了服务和工时等报价项。
             #endregion
 
+            // 将报价项转换为计费项
+
+            new OpportunityBLL().InsertContract(param.dic,param.opportunity,user,1,param.project_id);
+
 
             // 6.新增销售订单
             #region 6.当有产品/一次性折扣、成本、配送转为计费项时，销售订单就会自动生成。Crm_sales_order
+            if (param.dic != null && param.dic.Count > 0)
+            {
+                var saleOrder = new crm_sales_order_dal().GetSingleSalesOrderByWhere($" and opportunity_id = {param.opportunity.id} ");
+                if (saleOrder == null)
+                {
+                    saleOrder = new crm_sales_order()
+                    {
+                        id = _dal.GetNextIdCom(),
+
+                        opportunity_id = param.opportunity.id,
+                        status_id = (int)SALES_ORDER_STATUS.OPEN,
+                        contact_id = contact_id,
+                        owner_resource_id = param.opportunity.resource_id,
+                        begin_date = DateTime.Now,
+                        create_user_id = user.id,
+                        update_user_id = user.id,
+                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    };
+                    new crm_sales_order_dal().Insert(saleOrder);
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = (int)user.id,
+                        name = user.name,
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SALE_ORDER,
+                        oper_object_id = saleOrder.id,// 操作对象id
+                        oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                        oper_description = _dal.AddValue(saleOrder),
+                        remark = "关闭报价，新增销售订单"
+                    });
+                    param.saleOrderId = saleOrder.id;
+                }
+            }
+
+
             #endregion
 
             // 7.新增项目备注
             #region 7.转为项目计费项时，会生成备注
+            if (param.quote.project_id != null)
+            {
+                com_activity addActivity = new com_activity()
+                {
+                    id = _dal.GetNextIdCom(),
+                    cate_id = (int)ACTIVITY_CATE.PROJECT_NOTE,
+                    action_type_id = (int)ACTIVITY_TYPE.PROJECT_NOTE,
+                    parent_id = null,
+                    object_id = (long)param.quote.project_id,
+                    object_type_id = (int)OBJECT_TYPE.PROJECT,
+                    // todo发布范围
+                    account_id = param.opportunity.account_id,
+                    contact_id = contact_id,
+                    resource_id = param.opportunity.resource_id,
+                    contract_id = contact_id,
+                    opportunity_id = param.opportunity.id,
+                    ticket_id = null,
+                    // todo 标题
+                    description = $"",     // todo 内容描述拼接
+                    status_id = null,
+                    complete_description = null,
+                    complete_time = null,
+                    create_user_id = user.id,
+                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    update_user_id = user.id,
+                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+
+                };
+                new com_activity_dal().Insert(addActivity);
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = (int)user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACTIVITY,
+                    oper_object_id = addActivity.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                    oper_description = _dal.AddValue(addActivity),
+                    remark = "商机关闭，新增项目备注"
+
+                });
+            }
+
             #endregion
 
             // 8.新增备注（商机关闭）
@@ -521,7 +642,7 @@ namespace EMT.DoneNOW.BLL
                 ticket_id = null,
                 start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),  // todo 从页面获取时间，去页面时间的12：00：00
                 end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),
-                description = $"todo",     // todo 内容描述拼接
+                description = $"关闭时间：{DateTime.Now.ToString("dd/MM/yyyy")}/r通知人：{user.email}/r主题：{param.opportunity.name}已经关闭/r内容：商机关闭向导定义",     // todo 内容描述拼接
                 status_id = null,
                 complete_description = null,
                 complete_time = null,
@@ -707,13 +828,15 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string GetProductName(int id) {
-           var d=new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={id} and delete_time=0");
+        public string GetProductName(int id)
+        {
+            var d = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={id} and delete_time=0");
             if (d != null)
             {
                 return d.product_name;
             }
-            else {
+            else
+            {
                 return string.Empty;
             }
         }
@@ -766,7 +889,7 @@ namespace EMT.DoneNOW.BLL
         {
             var saleOrder = _dal.FindSignleBySql<crm_sales_order>($"SELECT * from crm_sales_order s where  s.opportunity_id  in (  select op.id FROM crm_quote q LEFT JOIN crm_opportunity op on op.id = q.opportunity_id where q.id={quote_id})");
 
-            return saleOrder!=null;
+            return saleOrder != null;
         }
         /// <summary>
         /// 获取到商机下的主报价（商机下如果有报价，一个会有主报价）

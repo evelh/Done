@@ -221,6 +221,7 @@
     <Content Include="Images\Classification\target.png" />
     <Content Include="Images\Classification\tm.png" />
     <Content Include="Opportunity\CloseOpportunity.aspx" />
+    <Content Include="Opportunity\ContractExistService.aspx" />
     <Content Include="Opportunity\OpportunityLeadSource.aspx" />
     <Content Include="Opportunity\OpportunityLossReason.aspx" />
     <Content Include="Opportunity\OpportunityStage.aspx" />
@@ -881,6 +882,13 @@
     </Compile>
     <Compile Include="Opportunity\CloseOpportunity.aspx.designer.cs">
       <DependentUpon>CloseOpportunity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Opportunity\ContractExistService.aspx.cs">
+      <DependentUpon>ContractExistService.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Opportunity\ContractExistService.aspx.designer.cs">
+      <DependentUpon>ContractExistService.aspx</DependentUpon>
     </Compile>
     <Compile Include="Opportunity\LoseOpportunity.aspx.cs">
       <DependentUpon>LoseOpportunity.aspx</DependentUpon>
