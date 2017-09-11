@@ -209,6 +209,7 @@
     <Content Include="Images\Myindex.png" />
     <Content Include="Images\navi.png" />
     <Content Include="Images\next.png" />
+    <Content Include="Images\ok.png" />
     <Content Include="Images\prev.png" />
     <Content Include="Images\refresh.png" />
     <Content Include="Images\view.png" />
@@ -667,6 +668,8 @@
     <Content Include="SysSetting\AccountClass.aspx" />
     <Content Include="SysSetting\AccountClassView.aspx" />
     <Content Include="SysSetting\ActionType.aspx" />
+    <Content Include="SysSetting\ContractMilestone.aspx" />
+    <Content Include="SysSetting\ContractType.aspx" />
     <Content Include="SysSetting\GeneralView.aspx" />
     <Content Include="SysSetting\Suffixes.aspx" />
     <Content Include="SysSetting\SysAdmin.aspx" />
@@ -1166,6 +1169,20 @@
     </Compile>
     <Compile Include="SysSetting\ActionType.aspx.designer.cs">
       <DependentUpon>ActionType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\ContractMilestone.aspx.cs">
+      <DependentUpon>ContractMilestone.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ContractMilestone.aspx.designer.cs">
+      <DependentUpon>ContractMilestone.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\ContractType.aspx.cs">
+      <DependentUpon>ContractType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ContractType.aspx.designer.cs">
+      <DependentUpon>ContractType.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\GeneralView.aspx.cs">
       <DependentUpon>GeneralView.aspx</DependentUpon>
