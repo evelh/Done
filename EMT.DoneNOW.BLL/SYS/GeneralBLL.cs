@@ -276,6 +276,16 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.LOSS_OPPORTUNITY_REASON_USED;//
                 }
             }
+            //合同类别
+            if (table_id == (int)GeneralTableEnum.CONTRACT_CATE)
+            {
+                var mar = new ctt_contract_dal().FindListBySql($"select * from ctt_contract where cate_id={id} and delete_time=0");
+                if (mar.Count > 0)
+                {
+                    n = mar.Count;
+                    return ERROR_CODE.CONTRACT_TYPE_USED;//
+                }
+            }
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>

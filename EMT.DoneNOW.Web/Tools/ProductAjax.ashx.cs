@@ -253,21 +253,22 @@ namespace EMT.DoneNOW.Web
         {
             var res = context.Session["dn_session_user_info"] as sys_user;
             if (res != null) {
-                var result = new ProductBLL().DeleteProduct(product_id, res.id);
-                if (result==DTO.ERROR_CODE.SUCCESS)
+                string returnvalue = string.Empty;
+                var result = new ProductBLL().DeleteProduct(product_id, res.id,out returnvalue);
+                if (result == DTO.ERROR_CODE.SUCCESS)
                 {
-                    context.Response.Write("ok");
+                    context.Response.Write("删除成功！");
                 }
-                else
+                else if (result == DTO.ERROR_CODE.EXIST)
                 {
-                    context.Response.Write("error");
+                    context.Response.Write(returnvalue);
+                }
+                else {
+                    context.Response.Write("删除失败！");
                 }
             }           
 
         }
-
-
-
 
         public bool IsReusable
         {

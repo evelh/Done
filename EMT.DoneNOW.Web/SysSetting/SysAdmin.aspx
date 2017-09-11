@@ -259,7 +259,7 @@
                                 <div class="Vertical Vertical1"></div>
                                 <div class="Horizontal"></div>
                             </div>
-                            <span class="Text">COMPANIES & CONTACTS</span>
+                            <span class="Text">公司和联系人</span>
                             <span></span>
                         </div>
                         <div class="Content Content1" id="c4">
@@ -345,7 +345,7 @@
                                 <div class="Vertical Vertical1"></div>
                                 <div class="Horizontal"></div>
                             </div>
-                            <span class="Text">SALES & OPPORTUNITIES</span>
+                            <span class="Text">销售和商机</span>
                             <span></span>
                         </div>
                         <div class="Content Content1" id="c5">
@@ -414,6 +414,112 @@
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState">报价邮件模板</a>
                                             <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <!--第六个框-->
+                    <div class="Normal Section Collapsed Normal1" id="b6">
+                        <div class="Heading">
+                            <div class="Toggle Expand Toggle1" id="a6">
+                                <div class="Vertical Vertical1"></div>
+                                <div class="Horizontal"></div>
+                            </div>
+                            <span class="Text">合同 &  Un-Posting</span>
+                            <span></span>
+                        </div>
+                        <div class="Content Content1" id="c6">
+                            <div class="Large Column">
+                                <div class="PageNavigationLinkGroup">
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.CONTRACT_CATE %>" class="Button ButtonIcon Link NormalState">合同类别</a>
+                                            <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
+                                        </div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.CONTRACT_MILESTONE %>" class="Button ButtonIcon Link NormalState">里程碑状态</a>
+                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="PageNavigationLinkGroup">
+                                    <div class="Heading">
+                                        <div class="Text">aaa</div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
+                                        </div>
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                        </div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState">System Settings (formerly Workflow Policies)</a>
+                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <!--第七个框-->
+                     <div class="Normal Section Collapsed Normal1" id="b7">
+                        <div class="Heading">
+                            <div class="Toggle Expand Toggle1" id="a7">
+                                <div class="Vertical Vertical1"></div>
+                                <div class="Horizontal"></div>
+                            </div>
+                            <span class="Text">产品 &  Un-Posting</span>
+                            <span></span>
+                        </div>
+                        <div class="Content Content1" id="c7">
+                            <div class="Large Column">
+                                <div class="PageNavigationLinkGroup">
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a href="#" class="Button ButtonIcon Link NormalState">产品种类</a>
+                                            <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
+                                        </div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a href="#" class="Button ButtonIcon Link NormalState">产品()</a>
+                                            <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
+                                        </div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a href="#" class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="PageNavigationLinkGroup">
+                                    <div class="Heading">
+                                        <div class="Text">aaa</div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
+                                        </div>
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                        </div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState">System Settings (formerly Workflow Policies)</a>
+                                            <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                     </div>
                                 </div>

@@ -53,9 +53,9 @@ namespace EMT.DoneNOW.Web
             {
                 //修改
                 var result = new GeneralBLL().Update(suffix, GetLoginUserId());
-                if (result == ERROR_CODE.ERROR)
+                if (result == ERROR_CODE.SUCCESS)
                 {
-                    Response.Write("<script>alert('区域修改失败，返回！');window.close();self.opener.location.reload();</script>");
+                    Response.Write("<script>alert('姓名后缀修改成功，返回！');window.close();self.opener.location.reload();</script>");
                 }
                 else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
                 {
@@ -65,15 +65,19 @@ namespace EMT.DoneNOW.Web
                 else if (result == DTO.ERROR_CODE.EXIST)
                 {
                     Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
+                }
+                else
+                {
+                    Response.Write("<script>alert('姓名后缀新增失败！');window.close();self.opener.location.reload();</script>");
                 }
             }
             else {
                 //新增
                 suffix.general_table_id = (int)GeneralTableEnum.NAME_SUFFIX;
                 var result = new GeneralBLL().Insert(suffix, GetLoginUserId());
-                if (result == ERROR_CODE.ERROR)
+                if (result == ERROR_CODE.SUCCESS)
                 {
-                    Response.Write("<script>alert('区域修改失败，返回！');window.close();self.opener.location.reload();</script>");
+                    Response.Write("<script>alert('姓名后缀新增成功！');window.close();self.opener.location.reload();</script>");
                 }
                 else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
                 {
@@ -83,6 +87,9 @@ namespace EMT.DoneNOW.Web
                 else if (result == DTO.ERROR_CODE.EXIST)
                 {
                     Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
+                }
+                else {
+                    Response.Write("<script>alert('姓名后缀新增失败！');window.close();self.opener.location.reload();</script>");
                 }
             }
         }

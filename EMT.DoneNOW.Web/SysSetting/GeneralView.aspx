@@ -151,6 +151,24 @@
                                 </div>
                             </td>
                             <%} %>
+                              <%if (id == (int)GeneralTableEnum.CONTRACT_CATE)
+                                 { %><%--合同类别--%>
+                            <td class="XL Text" style="width:200px;">
+                                <div class="Standard">
+                                    <div class="Heading">名称</div>
+                                </div>
+                            </td>
+                            <td class="Text Dynamic" style="width:auto;">
+                                <div class="Standard">
+                                    <div class="Heading">描述</div>
+                                </div>
+                            </td>
+                             <td class="Text Dynamic" style="width:250px;">
+                                <div class="Standard">
+                                    <div class="Heading">激活</div>
+                                </div>
+                            </td>
+                            <%} %>
                              <%if (id == (int)GeneralTableEnum.NAME_SUFFIX)
                                  { %><%--姓名后缀--%>
                             <td class="XL Text" style="width:200px;">
@@ -196,7 +214,7 @@
                              <%if (id == (int)GeneralTableEnum.MARKET_SEGMENT || id == (int)GeneralTableEnum.REGION || id == (int)GeneralTableEnum.COMPETITOR)
                                  { %>
 
-                        <tr title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
+                        <tr onclick="skip(<%=td.id %>)" title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
 
 
                              <td class="Text XL U3" style="width:201px;">
@@ -211,7 +229,7 @@
                             <%} %>
                             <%if (id == (int)GeneralTableEnum.TERRITORY)
                                 { %><%--地域--%>
-                       <tr title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
+                       <tr onclick="skip(<%=td.id %>)" title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
                              <td class="Text XL U3" style="width:201px;">
                                 <%=td.name %>
                             </td>
@@ -227,7 +245,7 @@
                             <%} %>
                                <%if (id == (int)GeneralTableEnum.ACTION_TYPE)
                                    {%><%--活动类型--%>
-                      <tr title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
+                      <tr onclick="skip(<%=td.id %>)" title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
                              <td class="Text XL U3" style="width:201px;">
                                 <%=td.name %>
                             </td>
@@ -255,7 +273,7 @@
                             <%} %>
                             <%if (id == (int)GeneralTableEnum.OPPORTUNITY_STAGE)
                                 { %><%--商机阶段--%>
-                       <tr title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
+                       <tr onclick="skip(<%=td.id %>)" title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
                             <td class="Text XL U3" style="width:201px;">
                                  <%=td.name %>
                             </td>                           
@@ -286,7 +304,7 @@
                             
                              <%if (id == (int)GeneralTableEnum.OPPORTUNITY_SOURCE)
                                  { %>
-                         <tr title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
+                         <tr onclick="skip(<%=td.id %>)" title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
                              <td class="Text XL U3" style="width:201px;">
                                 <%=td.name %>
                             </td>                           
@@ -302,7 +320,7 @@
                             <%} %>
                         <%if (id == (int)GeneralTableEnum.NAME_SUFFIX)
                             { %><%--姓名后缀--%>
-                        <tr title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
+                        <tr onclick="skip(<%=td.id %>)" title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
                             <td class="Text XL U3" style="width:201px;">
                                  <%=td.name %>
                             </td>                           
@@ -315,9 +333,29 @@
                             </td>
                              </tr>
                         <%} %>
+                         <%if (id == (int)GeneralTableEnum.CONTRACT_CATE)
+                            { %><%--合同类别--%>
+                        <tr onclick="skip(<%=td.id %>)" title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
+                            <td class="Text XL U3" style="width:201px;">
+                                 <%=td.name %>
+                            </td>  
+                             <td class="Text Dynamic" style="width:auto;">
+                                <div class="Standard">
+                                    <div class="Heading"><%=td.remark %></div>
+                                </div>
+                            </td>
+                             <td class="Context" style="width:252px;text-align:center"">
+                                 <%if (Convert.ToInt32(td.is_active) > 0)
+                                     {%>
+                                <div class="Standard">
+                                    <img src="../Images/check.png" /></div>
+                                 <%} %>
+                            </td>
+                             </tr>
+                        <%} %>
                         <%if (id == (int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD)
                             { %><%--销售指标度量--%>
-                        <tr title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
+                        <tr onclick="skip(<%=td.id %>)" title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
                             <td class="Text XL U3" style="width:201px;">
                                 <%=order++ %>
                             </td> 
@@ -353,88 +391,83 @@
         <%} %>
 	</div>
 </div>
+</form>
    <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/ClassificationIcons.js"></script>
     <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
-        <script>
+       <script>
 
-            function Delete() {
-                //活动类型
                <%if (id == (int)GeneralTableEnum.ACTION_TYPE)
-            {%>
-                if (confirm('确认删除?')) {
-                    $.ajax({
-                        type: "GET",
-                        url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "GT_id=<%=id%>",//GT_id 表示当前操作的类型
-                        success: function (data) {
-                            if (data == "system") {
-                                alert("系统默认不能删除！");
-                                return false;
-                            } else if (data == "other") {
-                                alert("其他原因使得删除失败！");
-                            } else {
-                                alert(data);
-                            }
-                        }
-                    });
-                }
-                return;
-                <%}%>
-                //商机阶段
-                 <%else if (id == (int)GeneralTableEnum.OPPORTUNITY_STAGE)
-            {%>
-                if (confirm('删除操作将不能恢复，是否继续?')) {
-                    $.ajax({
-                        type: "GET",
-                        url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "GT_id=<%=id%>",//GT_id 表示当前操作的类型
-                        success: function (data) {
-                            if (data == "system") {
-                                alert("系统默认不能删除！");
-                                return false;
-                            } else if (data == "other") {
-                                alert("其他原因使得删除失败！");
-                            } else {
-                                alert(data);
-                            }
-                        }
-                    });
-                   }
-                return;
+           {%>
+           function Delete() {
+               //活动类型
+               if (confirm('确认删除?')) {
+                   $.ajax({
+                       type: "GET",
+                       url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=id%>",//GT_id 表示当前操作的类型
+                       success: function (data) {
+                           if (data == "system") {
+                               alert("系统默认不能删除！");
+                           } else if (data == "other") {
+                               alert("其他原因使得删除失败！");
+                           } else {
+                               alert(data);
+                           }
+                       }
+                   });
+               }
+               window.location.reload();
+           }                
+                 <%}else if (id == (int)GeneralTableEnum.OPPORTUNITY_STAGE){%>
+           function Delete() {
+               //商机阶段
+               if (confirm('删除操作将不能恢复，是否继续?')) {
+                   $.ajax({
+                       type: "GET",
+                       url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=id%>",//GT_id 表示当前操作的类型
+                       success: function (data) {
+                           if (data == "system") {
+                               alert("系统默认不能删除！");
+                           } else if (data == "other") {
+                               alert("其他原因使得删除失败！");
+                           } else {
+                               alert(data);
+                           }
+                       }
+                   });
+               }
+               window.location.reload();
+           }
                 <%}%>
                 <%else
-            {%>
-
-                if (confirm('确认删除?')) {
-                    $.ajax({
-                        type: "GET",
-                        url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "GT_id=<%=id%>",//GT_id 表示当前操作的类型
-                        success: function (data) {
-                            if (data == "system") {
-                                alert("系统默认不能删除！");
-                                return false;
-                            } else if (data == "other") {
-                                alert("其他原因使得删除失败！");
-                            } else {
-                                if (confirm(data)) {
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "GT_id=<%=id%>",//GT_id 表示当前操作的类型
-                                        success: function (data) {
-                                            alert(data);
-                                        }
-                                    });
-                                } else {
-                                    return false;
-                                }
-                            }
-                        }
-                     });
-                }
+           {%>
+           function Delete() {
+               if (confirm('删除操作将不能恢复，是否继续?')) {
+                   $.ajax({
+                       type: "GET",
+                       url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=id%>",//GT_id 表示当前操作的类型
+                       success: function (data) {
+                           if (data == "system") {
+                               alert("系统默认不能删除！");
+                           } else if (data == "other") {
+                               alert("其他原因使得删除失败！");
+                           } else {
+                               if (confirm(data)) {
+                                   $.ajax({
+                                       type: "GET",
+                                       url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=id%>",//GT_id 表示当前操作的类型
+                                       success: function (data) {
+                                           alert(data);
+                                       }
+                                   });
+                               }
+                           }
+                       }
+                   });
+               }
+               window.location.reload();
+           }
                 <%}%>
-                window.location.reload();
-            }
-
-
             function Edit() {
                 skip(entityid);
                 <%if (id == (int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD)
@@ -442,7 +475,6 @@
                 window.open('Suffixes.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SysOPPORTUNITY_ADVANCED_FIELD %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 <%}%>
             }
-
             function skip(entityid) {
                      <%switch (id)
             {%>
@@ -471,9 +503,8 @@
                 window.open('Suffixes.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.NAME_SUFFIX %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 <%; break;%>                
                <%} %>
-                }              
+                }   
       
         </script>
-    </form>
 </body>
 </html>

@@ -22,7 +22,7 @@ namespace EMT.DoneNOW.Web
             switch (action)
             {
                 case "delete": Delete(context, Convert.ToInt64(general_id),Convert.ToInt64(general_table_id)); ; break;
-                case "delete_validate": Delete_Validate(context, Convert.ToInt64(general_id), Convert.ToInt64(general_table_id)); ; break;
+                case "delete_validate": Delete_Validate(context, Convert.ToInt64(general_id),Convert.ToInt64(general_table_id)); ; break;
 
                 default: break;
 
@@ -83,7 +83,10 @@ namespace EMT.DoneNOW.Web
                 {
                     context.Response.Write("被" + n + "个活动引用不能删除!");
                 }
-
+                else if (result == DTO.ERROR_CODE.CONTRACT_TYPE_USED)
+                {
+                    context.Response.Write("有" + n + "个合同关联此合同类别，不能删除!");
+                }
                 else if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     Delete(context, general_id, general_table_id);

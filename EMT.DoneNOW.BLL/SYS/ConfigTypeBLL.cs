@@ -24,5 +24,13 @@ namespace EMT.DoneNOW.BLL
         public List<sys_udf_field> GetAlludf() {
             return udf_dal.FindListBySql<sys_udf_field>($"select * from sys_udf_field where delete_time=0 order by sort_order,col_name");
         }
+        /// <summary>
+        /// 通过字段组id获取所有关联字段
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<sys_udf_group_field> GetUdfGroup(long id) {
+            return udf_group_dal.FindListBySql<sys_udf_group_field>($"select * from sys_udf_group_field where group_id={id} and delete_time=0");
+        }
     }
 }

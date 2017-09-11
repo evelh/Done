@@ -476,7 +476,7 @@ namespace EMT.DoneNOW.BLL
             new sys_oper_log_dal().Insert(add_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
         }
-        public ERROR_CODE DeleteInventory(long id,long user_id) {
+        public ERROR_CODE DeleteInventory(long id,long user_id) {           
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
             {   // 查询不到用户，用户丢失
@@ -515,9 +515,15 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ERROR_CODE DeleteProduct(long id,long user_id) {
+        public ERROR_CODE DeleteProduct(long id,long user_id, out string returnvalue) {
+            returnvalue = string.Empty;
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
             //删除前校验
-            //            如果产品被配置项、工单、报价、商机、库存引用，则不能删除。
+            //如果产品被配置项、工单、报价、商机、库存引用，则不能删除。
             //产品不能被删除，因为它被以下对象引用：
             //N1 对象1
             //N2 对象2
@@ -526,6 +532,73 @@ namespace EMT.DoneNOW.BLL
             //crm_installed_product配置项
             //ivt_warehouse_product库存
             //ctt_contract_cost
+            StringBuilder result = new StringBuilder();
+            result.Append("产品不能被删除，因为它被以下对象引用：<br/>");
+            var opportunitylist = new crm_opportunity_dal().FindListBySql($"select * from crm_opportunity where primary_product_id={id} and delete_time=0");
+            var installed_productlist = new crm_installed_product_dal().FindListBySql($"select * from crm_installed_product where product_id={id} and delete_time=0");
+            var warehouse_productlist = new ivt_warehouse_product_dal().FindListBySql($"select * from ivt_warehouse_product where product_id={id} and delete_time=0");
+            var contract_costlist = new ctt_contract_cost_dal().FindListBySql($"select * from ctt_contract_cost where product_id={id} and delete_time=0");
+            int n = 1;
+            if (opportunitylist.Count > 0) {
+                result.Append("商机：");
+                foreach (var op in opportunitylist) {
+
+                    result.Append("N"+(n++)+"\t\t"+op.id+"\n");
+                }
+            }
+            if (installed_productlist.Count > 0)
+            {
+                result.Append("配置项：");
+                foreach (var op in installed_productlist)
+                {
+                    result.Append("N" + (n++) + "\t\t" + op.id + "\n");
+                }
+            }
+            if (warehouse_productlist.Count > 0)
+            {
+                result.Append("库存：");
+                foreach (var op in warehouse_productlist)
+                {
+                    result.Append("N" + (n++) + "\t\t" + op.id + "\n");
+                }
+            }
+            if (contract_costlist.Count > 0)
+            {
+                result.Append("工单：");
+                foreach (var op in contract_costlist)
+                {
+                    result.Append("N" + (n++) + "\t\t" + op.id + "\n");
+                }
+            }
+            if (contract_costlist.Count > 0 || warehouse_productlist.Count > 0 || installed_productlist.Count > 0 || opportunitylist.Count > 0) {
+
+                return ERROR_CODE.EXIST;
+            }
+            returnvalue = result.ToString();
+            var product_del = _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where id={id} and delete_time=0");
+            if (product_del == null) {
+                return ERROR_CODE.ERROR;
+            }
+            product_del.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            product_del.delete_user_id = user.id;
+            if (!_dal.Update(product_del)) {
+                return ERROR_CODE.ERROR;
+            }
+            //操作日志
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = (int)user.id,
+                name = "",
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT,//
+                oper_object_id = product_del.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                oper_description = _dal.AddValue(product_del),
+                remark = "删除产品信息"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
 
 
             var del = _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where id={id} and delete_time=0");

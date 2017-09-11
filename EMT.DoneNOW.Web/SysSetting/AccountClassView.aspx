@@ -181,12 +181,6 @@
                     }
                 });
             }
-
-
-
-
-
-
             window.location.reload();
         }
         function Active() {

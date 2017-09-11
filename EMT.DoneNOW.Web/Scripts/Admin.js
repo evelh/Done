@@ -11,6 +11,8 @@ var index2 = 0;
 var index3 = 0;
 var index4 = 0;
 var index5 = 0;
+var index6 = 0;
+var index7 = 0;
 $("#a1").on("click",function(){
     $(this).find(".Vertical1").toggle();
     $("#c1").toggle();
@@ -56,6 +58,25 @@ $("#a5").on("click", function () {
         index5 = 0;
     }
 });
+$("#a6").on("click", function () {
+    $(this).find(".Vertical1").toggle();
+    $("#c6").toggle();
+    var color = colors[index6++];
+    $("#b6").css("background", color);
+    if (index6 == colors.length) {
+        index6 = 0;
+    }
+});
+$("#a7").on("click", function () {
+    $(this).find(".Vertical1").toggle();
+    $("#c7").toggle();
+    var color = colors[index7++];
+    $("#b7").css("background", color);
+    if (index7 == colors.length) {
+        index7 = 0;
+    }
+});
+
 
 
 var bol1 = 0;
@@ -63,6 +84,7 @@ var bol2 = 0;
 var bol3 = 0;
 var bol4 = 0;
 var bol5 = 0;
+var bol6 = 0;
 $("#e1").on("click",function(){
     $(this).find(".Vertical2").toggle();
     $("#g1").toggle();
@@ -102,6 +124,7 @@ $("#d1").on("click",function(){
     index3 = 1;
     index4 = 1;
     index5 = 1;
+    index6 = 1;
 
 });
 $("#d2").on("click",function(){
@@ -114,6 +137,7 @@ $("#d2").on("click",function(){
     index3 = 0;
     index4 = 0;
     index5 = 0;
+    index6 = 0;
 });
 $("#d3").on("click",function(){
     $(".Toggle2").find(".Vertical2").hide();

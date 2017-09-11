@@ -20,13 +20,12 @@ namespace EMT.DoneNOW.Web
         protected List<PageContextMenuDto> contextMenu = null;  // 右键菜单信息
         protected void Page_Load(object sender, EventArgs e)
         {
-            id = Convert.ToInt32(Request.QueryString["id"]);          
+            id = Convert.ToInt32(Request.QueryString["id"]);
             if (!IsPostBack) {
                 if (id > 0) {
                     name = gbll.GetGeneralTableName(id);
                     GeneralList = new GeneralBLL().GetGeneralList(id);
-                }
-                   
+                }                   
                 GetMenus();
             }
         }
