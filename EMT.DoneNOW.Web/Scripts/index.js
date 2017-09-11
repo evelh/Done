@@ -35,6 +35,7 @@ var leftWidth=100/leftLenght;
 $(".information ").children(".left").width(leftWidth + "%");
 
 //logo的下拉菜单内容
+var timer;
 $(".Logo").on("mousemove", function () {
     clearTimeout(timer);
     $(this).css("border-color", "#d7d7d7");

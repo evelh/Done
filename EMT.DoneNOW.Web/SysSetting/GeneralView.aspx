@@ -42,6 +42,7 @@
             <div class="ButtonContainer">
                 <ul id="btn">
                     <li class="Button ButtonIcon NormalState" id="AddButton" tabindex="0" onclick="skip(0)">
+                        <span class="Icon Add"></span>
                         <span class="Text Creat">新增<%=name %></span>
                     </li>
                 </ul>

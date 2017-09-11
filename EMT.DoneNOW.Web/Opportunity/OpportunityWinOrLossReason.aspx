@@ -23,11 +23,13 @@
 </head>
 <body>
     <form id="form1" runat="server" method="post">
-        <div>
+     <div>
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/SysSetting/SysAdmin.aspx"><img src="../Images/move-left.png" style="vertical-align: middle;"/></asp:HyperLink>
+            <div class="TitleBarNavigationButton">
+                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/SysSetting/SysAdmin.aspx" class="buttons"><img src="../Images/move-left.png"/></asp:HyperLink>
+            </div>
             <span class="text1"><%=name %></span>
             <a href="###" class="collection"></a>
             <a href="###" class="help"></a>
@@ -44,7 +46,7 @@
     </div>
         <div class="ScrollingContainer ContainsGrid Active" style="top: 82px; bottom: 0;">
         <div class="Grid Small">
-            <div class="HeaderContainer">
+            <div class="HeaderContainer"> 
                 <table cellpadding="0">
                     <tbody>
                         <tr class="HeadingRow">
@@ -53,7 +55,7 @@
                             </td>
                             <td class="XL Text" style="width:190px;">
                                 <div class="Standard">
-                                    <div class="Heading">名称</div>
+                                    <div class="Heading">名称<span class="errorSmall">*</span></div>
                                 </div>
                             </td>
                             <td class="Text Dynamic" style="width:auto;">
@@ -78,7 +80,7 @@
                             { %>
                        <tr title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
                             <td class="Interaction U0" style="width:59px;">                                 
-                                <div>
+                                <div style="text-align:center;">
                                     <div class="Decoration Icon DragHandle prev">
                                         <img src="../Images/prev.png" />
                                     </div>
@@ -94,13 +96,11 @@
                             <td class="Text U4" style="width:auto;">
                                 <%=td.remark %>
                             </td>
-                            <td  class="Boolean U5" style="width:72px;text-align:center">
+                            <td  class="Boolean U5" style="width:72px;">
                                  <%if (Convert.ToInt32(td.is_active) > 0)
                                      {%>
                                     <img src="../Images/check.png" />
                                  <%} %>
-
-                                <div class="Decoration Icon CheckMark"></div>
                             </td>
                         </tr>
                         <%} %>

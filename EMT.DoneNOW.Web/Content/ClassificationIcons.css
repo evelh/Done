@@ -346,3 +346,7 @@ a.Button>.Icon {
     font-weight: normal;
     color: #4F4F4F;
 }
+.errorSmall {
+    color: #e51937;
+    padding-left: 2px;
+}
