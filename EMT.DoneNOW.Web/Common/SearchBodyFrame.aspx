@@ -1137,7 +1137,6 @@
         function View() {
 
         }
-      <%}%>
          <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Resource){%>//员工
         function View(id) {
             window.open("../SysSetting/SysUserEdit.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
