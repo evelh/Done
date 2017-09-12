@@ -63,19 +63,13 @@
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/SysSettingRoles.js"></script>
     <script>
-        $("#Save_Close").click(function () {
+        function save_deal() {
             var t = $("#Market_Name").val();
             if (t == null || t == '') {
                 alert("请填写市场名称");
                 return false;
             }
-        });
-        $("#Save_New").click(function () {
-            var t = $("#Market_Name").val();
-            if (t == null || t == '') {
-                alert("请填写市场名称");
-                return false;
-            });
+        }
     </script>
 
 </body>

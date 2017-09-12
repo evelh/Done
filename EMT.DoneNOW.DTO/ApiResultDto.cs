@@ -52,5 +52,7 @@ namespace EMT.DoneNOW.DTO
         LOSS_OPPORTUNITY_REASON_USED,                //丢失商机原因已经被使用
         ACCOUNT_TYPE_USED,                           //客户类别已经被使用
         CONTRACT_TYPE_USED,                          //合同类别已经被使用
+
+        CONTRACT_NO_ACTIVE,                               //不存在当前激活的合同
     }
 }

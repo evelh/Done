@@ -1,5 +1,7 @@
-body{
+body {
     overflow: hidden;
+    margin: 0;
+    background: #fff;
 }
 /*顶部内容和帮助*/
 .TitleBar{
@@ -22,6 +24,36 @@ body{
     text-transform: uppercase;
     white-space: nowrap;
     width: 97%;
+}
+.TitleBarNavigationButton {
+    float: left;
+    width: 26px;
+    padding-right: 10px;
+    font-size: 12px;
+    line-height: 33px;
+    margin-left: 10px;
+}
+
+.TitleBarNavigationButton > .buttons {
+    padding: 0 4px 0 4px;
+    background: #d7d7d7;
+    background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #bcbcbc;
+    display: inline-block;
+    color: #4F4F4F;
+    cursor: pointer;
+    position: relative;
+    text-decoration: none;
+    vertical-align: middle;
+    height: 24px;
+    line-height: 24px;
+}
+
+.TitleBarNavigationButton > .buttons > img {
+    margin: 4px 0 0 0;
 }
 .collection{
     background-image: url(../img/collection.png);
@@ -313,4 +345,8 @@ a.Button>.Icon {
     font-size: 12px;
     font-weight: normal;
     color: #4F4F4F;
+}
+.errorSmall {
+    color: #e51937;
+    padding-left: 2px;
 }

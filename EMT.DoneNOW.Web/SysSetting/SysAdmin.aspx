@@ -181,15 +181,15 @@
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">资源/用户()</a>
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE %>" target="PageFrame">资源/用户</a>
                                             <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_ROLE %>" target="PageFrame">角色()</a>
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_ROLE %>" target="PageFrame">角色</a>
                                             <div class="StandardText">Set up billing roles that determine the rate at which labour will be billed.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">部门()</a>
+                                            <a class="Button ButtonIcon Link NormalState"  href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_DEPARTMENT %>" target="PageFrame">部门</a>
                                             <div class="StandardText">Set up organizational entities in your company that are associated with resources and work types, and play a role in project security.</div>
                                         </div>
                                         <div class="PageNavigationLink">
@@ -485,13 +485,13 @@
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a href="#" class="Button ButtonIcon Link NormalState">产品种类</a>
+                                            <a href="#" class="Button ButtonIcon Link NormalState">产品种类(未开始)</a>
                                             <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a href="#" class="Button ButtonIcon Link NormalState">产品()</a>
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT %>" target="PageFrame">产品</a>
                                             <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
                                         </div>
                                     </div>

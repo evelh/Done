@@ -171,6 +171,7 @@
     <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
+    <Content Include="Contract\RoleRate.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
     <Content Include="Contact\DeleteContact.aspx" />
@@ -844,7 +845,14 @@
     </Compile>
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
+	</Compile>
+    <Compile Include="Contract\RoleRate.aspx.cs">
+      <DependentUpon>RoleRate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Contract\RoleRate.aspx.designer.cs">
+      <DependentUpon>RoleRate.aspx</DependentUpon>
+	</Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1322,6 +1330,9 @@
     </Compile>
     <Compile Include="Tools\ContractAjax.ashx.cs">
       <DependentUpon>ContractAjax.ashx</DependentUpon>
+	</Compile>
+    <Compile Include="Tools\DepartmentAjax.ashx.cs">
+      <DependentUpon>DepartmentAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\GeneralAjax.ashx.cs">
       <DependentUpon>GeneralAjax.ashx</DependentUpon>
@@ -1346,6 +1357,9 @@
     </Compile>
     <Compile Include="Tools\QuoteTemplateAjax.ashx.cs">
       <DependentUpon>QuoteTemplateAjax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\ResourceAjax.ashx.cs">
+      <DependentUpon>ResourceAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\RoleAjax.ashx.cs">
       <DependentUpon>RoleAjax.ashx</DependentUpon>
@@ -1399,6 +1413,8 @@
     <Content Include="Tools\OpportunityReasonAjax.ashx" />
     <Content Include="Tools\InventoryAjax.ashx" />
     <Content Include="Tools\ContractAjax.ashx" />
+    <Content Include="Tools\DepartmentAjax.ashx" />
+    <Content Include="Tools\ResourceAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -48,7 +48,7 @@ namespace EMT.DoneNOW.Web
                 if (new SecurityLevelBLL().CopySecurityLevel(user.id,(int)securitylevel_id,out copy_id))
                 {
                     //context.Response.Write("复制安全等级成功成功！");
-                    context.Response.Write("<script>alert('复制安全等级成功！');window.location.href='SysUserSecurityLevel.aspx?id=copy_id'</script>");
+                    context.Response.Write("<script> window.open('SysUserSecurityLevel.aspx?id ="+copy_id+"','"+(int)EMT.DoneNOW.DTO.OpenWindow.SecurityLevel+ "', 'left=0,top=0,location=no,status=no,width=900,height=750', false);</script>");
                 }
                 else
                 {

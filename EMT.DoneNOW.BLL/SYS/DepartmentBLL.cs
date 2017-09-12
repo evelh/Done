@@ -107,13 +107,32 @@ namespace EMT.DoneNOW.BLL
 
             return ERROR_CODE.SUCCESS;
         }
-        public ERROR_CODE Delete(long id, long user_id)
+        /// <summary>
+        /// 删除部门
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public ERROR_CODE Delete(long id, long user_id,out string returnvalue)
         {
+            returnvalue = string.Empty;
+            StringBuilder re = new StringBuilder();
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }
+            var res = new sys_resource_dal().FindListBySql<sys_resource>($"select a.* from sys_resource a,sys_resource_department b where a.id=b.resource_id and a.delete_time=0 and b.department_id={id}");
+            if (res.Count > 0) {
+                re.Append("部门不能被删除，因为它被以下对象引用：");
+                int n = 1;
+                foreach (var ii in res) {
+                    re.Append("N" + (n++) + "\t\t" +ii.name+ "\n");
+                }
+                returnvalue = re.ToString();
+                return ERROR_CODE.EXIST;
+            }
+
             var data = _dal.FindById(id);
             if (data == null)
             {

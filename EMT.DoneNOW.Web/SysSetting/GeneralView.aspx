@@ -27,9 +27,11 @@
             <!--顶部-->
             <div class="TitleBar">
                 <div class="Title">
-                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/SysSetting/SysAdmin.aspx"><img src="../Images/move-left.png" style="vertical-align: middle;"/></asp:HyperLink>
-                    <span class="text1">
-                        <%=name %></span>
+                    <div class="TitleBarNavigationButton">
+                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/SysSetting/SysAdmin.aspx" CssClass="buttons"><img src="../Images/move-left.png"></asp:HyperLink>
+                       
+                    </div> 
+                    <span class="text1"><%=name %></span>
                     <a href="###" class="collection"></a>
                     <a href="###" class="help"></a>
                 </div>
@@ -40,6 +42,7 @@
             <div class="ButtonContainer">
                 <ul id="btn">
                     <li class="Button ButtonIcon NormalState" id="AddButton" tabindex="0" onclick="skip(0)">
+                        <span class="Icon Add"></span>
                         <span class="Text Creat">新增<%=name %></span>
                     </li>
                 </ul>

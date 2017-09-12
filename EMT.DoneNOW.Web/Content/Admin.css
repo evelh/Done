@@ -1,5 +1,7 @@
 body {
     overflow: hidden;
+    margin:0;
+    background:#fff;
 }
 /*顶部内容和帮助*/
 .TitleBar {

@@ -8,13 +8,6 @@
 		<link rel="stylesheet" type="text/css" href="Content/base.css"/>
 		<link rel="stylesheet" type="text/css" href="Content/index.css"/>
 	</head>
-<style>
-    @media screen and (max-width: 1430px){
-       .cont{
-           width:1200px;
-       }
-	}
-</style>
 	<body>
         <!--导航栏-->
         <div id="SiteNavigationBar">

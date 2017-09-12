@@ -40,6 +40,13 @@ namespace EMT.DoneNOW.BLL
             return dic;
 
         }
+        /// <summary>
+        /// 新增员工信息
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="user_id"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ERROR_CODE Insert(SysUserAddDto data, long user_id,out long id) {
             id = data.sys_res.id = (int)(_dal.GetNextIdCom());
             if (_dal.FindSignleBySql<sys_resource>($"select * from sys_resource where `name`='{data.sys_res.name}'") != null) {
@@ -90,8 +97,13 @@ namespace EMT.DoneNOW.BLL
 
             return ERROR_CODE.SUCCESS;
         }
-
-
+        /// <summary>
+        /// 更新员工信息
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="user_id"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ERROR_CODE Update(SysUserAddDto data, long user_id,long id)
         {
             data.sys_res.id = id;
@@ -140,10 +152,19 @@ namespace EMT.DoneNOW.BLL
 
             return ERROR_CODE.SUCCESS;
         }
-
+        /// <summary>
+        /// 通过id获得员工资源信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public sys_resource GetSysResourceSingle(long id) {
            return  _dal.FindSignleBySql<sys_resource>($"select * from sys_resource where id={id} and delete_time=0");
         }
+        /// <summary>
+        /// 返回员工账户信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public sys_user GetSysUserSingle(long id)
         {
             return _dal1.FindSignleBySql<sys_user>($"select * from sys_user where id={id}");
@@ -176,6 +197,16 @@ namespace EMT.DoneNOW.BLL
                 };          // 创建日志
                 new sys_oper_log_dal().Insert(add_account_log);
             }
+        }
+        /// <summary>
+        /// 复制出一个新的员工信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public ERROR_CODE CopyResource(long id,out long copy_id) {
+            copy_id = -1;
+            return ERROR_CODE.SUCCESS;
         }
     }
 }
