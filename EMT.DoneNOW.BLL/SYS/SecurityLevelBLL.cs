@@ -99,7 +99,7 @@ namespace EMT.DoneNOW.BLL
                     {
                         user_cate = "用户",
                         user_id = user.id,
-                        name = "",
+                        name = user.name,
                         phone = user.mobile == null ? "" : user.mobile,
                         oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,
@@ -124,7 +124,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     user_cate = "用户",
                     user_id = user.id,
-                    name = "",
+                    name = user.name,
                     phone = user.mobile == null ? "" : user.mobile,
                     oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,
@@ -158,7 +158,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,
@@ -203,7 +203,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,
@@ -250,7 +250,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,
@@ -328,7 +328,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     user_cate = "用户",
                     user_id = user.id,
-                    name = "",
+                    name = user.name,
                     phone = user.mobile == null ? "" : user.mobile,
                     oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,

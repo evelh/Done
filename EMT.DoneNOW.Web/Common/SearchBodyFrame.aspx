@@ -1262,16 +1262,30 @@
             window.open("../ConfigurationItem/ConfigType.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConfigItemType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Delete() {
-            if (confirm("删除后无法恢复，是否继续?")) {
+            if (confirm('删除操作将不能恢复，是否继续?')) {
                 $.ajax({
                     type: "GET",
-                    url: "../Tools/ConfigItemTypeAjax.ashx?act=Delete&id=" + entityid,
-                    async: false,
+                    url: "../Tools/ConfigItemTypeAjax.ashx?act=delete_validate&id=" + entityid,
                     success: function (data) {
-                        alert(data);
+                        if (data == "system") {
+                            alert("系统默认不能删除！");
+                        } else if (data == "other") {
+                            alert("其他原因使得删除失败！");
+                        } else {
+                            if (confirm(data)) {
+                                $.ajax({
+                                    type: "GET",
+                                    url: "../Tools/ConfigItemTypeAjax.ashx?act=delete&id=" + entityid,
+                                    success: function (data) {
+                                        alert(data);
+                                    }
+                                });
+                            }
+                        }
                     }
-                })
+                });
             }
+            window.location.reload();
         }
         function Active() {
                 $.ajax({
@@ -1292,7 +1306,87 @@
                         alert(data);
                     }
                 })
+        }
+       <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.EXPENSE){%>//撤销审批成本
+        function Add() {
+            var ids = "";
+            $(".IsChecked").each(function () {
+                if ($(this).is(":checked")) {
+                    ids += $(this).val() + ',';
+                }
+            });
+            if (ids != "") {
+                ids = ids.substring(0, ids.length - 1);
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ReverseAjax.ashx?act=Expense&ids=" + ids,
+                    success: function (data) {
+                        alert(data);
+                        history.go(0);
+                    }
+                })
             }
+        }
+       <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.RECURRING_SERVICES){%>//撤销定期服务审批
+        function Add() {
+            var ids = "";
+            $(".IsChecked").each(function () {
+                if ($(this).is(":checked")) {
+                    ids += $(this).val() + ',';
+                }
+            });
+            if (ids != "") {
+                ids = ids.substring(0, ids.length - 1);
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ReverseAjax.ashx?act=Recurring_Services&ids=" + ids,
+                    success: function (data) {
+                        alert(data);
+                        history.go(0);
+                    }
+                })
+            }
+        }
+       <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.MILESTONES){%>//撤销里程碑审批
+        function Add() {
+            var ids = "";
+            $(".IsChecked").each(function () {
+                if ($(this).is(":checked")) {
+                    ids += $(this).val() + ',';
+                }
+            });
+            if (ids != "") {
+                ids = ids.substring(0, ids.length - 1);
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ReverseAjax.ashx?act=Milestones&ids=" + ids,
+                    success: function (data) {
+                        alert(data);
+                        history.go(0);
+                    }
+                })
+            }
+        }
+       <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.SUBSCRIPTIONS){%>//撤销订阅审批
+        function Add() {
+            var ids = "";
+            $(".IsChecked").each(function () {
+                if ($(this).is(":checked")) {
+                    ids += $(this).val() + ',';
+                }
+            });
+            if (ids != "") {
+                ids = ids.substring(0, ids.length - 1);
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ReverseAjax.ashx?act=Subscriptions&ids=" + ids,
+                    success: function (data) {
+                        alert(data);
+                        history.go(0);
+                    }
+                })
+            }
+        }
         <%}%>
         function openopenopen() {
           //alert("暂未实现");

@@ -88,7 +88,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     user_cate = "用户",
                     user_id = (int)user.id,
-                    name = "",
+                    name = user.name,
                     phone = user.mobile == null ? "" : user.mobile,
                     oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//
@@ -120,7 +120,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     user_cate = "用户",
                     user_id = (int)user.id,
-                    name = "",
+                    name = user.name,
                     phone = user.mobile == null ? "" : user.mobile,
                     oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//员工
@@ -160,13 +160,12 @@ namespace EMT.DoneNOW.BLL
             if (i != null) {
                 i.delete_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 i.delete_user_id = user_id;
-                if (cat_dal.Update(i)) {
-                    return true;
+                if (cat_dal.Update(i)) {                   
                     var add_log = new sys_oper_log()
                     {
                         user_cate = "用户",
                         user_id = (int)user.id,
-                        name = "",
+                        name = user.name,
                         phone = user.mobile == null ? "" : user.mobile,
                         oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.RESOURCE,//员工
@@ -176,6 +175,7 @@ namespace EMT.DoneNOW.BLL
                         remark = "删除地域与员工的关联"
                     };          // 创建日志
                     new sys_oper_log_dal().Insert(add_log);       // 插入日志
+                    return true;
                 }
             }
             return false;

@@ -13,6 +13,7 @@ var index4 = 0;
 var index5 = 0;
 var index6 = 0;
 var index7 = 0;
+var index8 = 0;
 $("#a1").on("click",function(){
     $(this).find(".Vertical1").toggle();
     $("#c1").toggle();
@@ -74,6 +75,15 @@ $("#a7").on("click", function () {
     $("#b7").css("background", color);
     if (index7 == colors.length) {
         index7 = 0;
+    }
+});
+$("#a8").on("click", function () {
+    $(this).find(".Vertical1").toggle();
+    $("#c8").toggle();
+    var color = colors[index8++];
+    $("#b8").css("background", color);
+    if (index8 == colors.length) {
+        index8 = 0;
     }
 });
 

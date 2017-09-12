@@ -58,7 +58,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = (int)user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.DEPARTMENT,//部门
@@ -80,6 +80,7 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.USER_NOT_FIND;
             }
             var de = _dal.FindSignleBySql<sys_department>($"select * from  sys_department where name={sd.name} and delete_time=0");
+            var old = _dal.FindSignleBySql<sys_department>($"select * from  sys_department where id={sd.id} and delete_time=0");
             if (de != null&&de.id!=sd.id)
             {
                 return ERROR_CODE.EXIST;
@@ -87,24 +88,25 @@ namespace EMT.DoneNOW.BLL
             sd.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             sd.update_user_id = user_id;
             sd.cate_id = (int)DEPARTMENT_CATE.DEPARTMENT;
-            if (!_dal.Update(sd)) {
-                return ERROR_CODE.ERROR;
-            }
+            
             var add_account_log = new sys_oper_log()
             {
                 user_cate = "用户",
                 user_id = (int)user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.DEPARTMENT,//部门
                 oper_object_id = sd.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(sd),
+                oper_description = _dal.CompareValue(old,sd),
                 remark = "修改部门信息"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
-
+            if (!_dal.Update(sd))
+            {
+                return ERROR_CODE.ERROR;
+            }
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -148,7 +150,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = (int)user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.DEPARTMENT,//部门

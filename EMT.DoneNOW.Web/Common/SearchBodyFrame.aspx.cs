@@ -113,6 +113,12 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PRODUCT:
                     addBtn = "新增产品";
                     break;
+                case (int)DicEnum.QUERY_CATE.REVOKE_EXPENSE:
+                case (int)DicEnum.QUERY_CATE.REVOKE_MILESTONES:
+                case (int)DicEnum.QUERY_CATE.REVOKE_RECURRING_SERVICES:
+                case (int)DicEnum.QUERY_CATE.REVOKE_SUBSCRIPTIONS:
+                    addBtn = "完成";
+                    break;
                 default:
                     addBtn = "";
                     break;

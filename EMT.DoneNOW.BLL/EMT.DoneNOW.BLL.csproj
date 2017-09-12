@@ -76,6 +76,7 @@
     <Compile Include="SYS\FormTemplateBLL.cs" />
     <Compile Include="SYS\GeneralBLL.cs" />
     <Compile Include="SYS\DepartmentBLL.cs" />
+    <Compile Include="SYS\ReverseBLL.cs" />
     <Compile Include="SYS\SysRoleInfoBLL.cs" />
     <Compile Include="SYS\SecurityLevelBLL.cs" />
     <Compile Include="SYS\SysSettingBLL.cs" />

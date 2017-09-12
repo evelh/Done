@@ -426,6 +426,13 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_INTERNAL_COST=911,           // 合同管理-内部成本查询
             RESOURCE_CALLBACK = 913,              // 员工的查找带回（姓名 邮箱）
 			CONFIGITEMTYPE=914,                   //配置项类型
+
+            REVOKE_LABOUR,                //撤销工时审批
+            REVOKE_EXPENSE,               //撤销成本审批
+            REVOKE_RECURRING_SERVICES,    //撤销定期服务审批
+            REVOKE_MILESTONES,            //撤销里程碑审批
+            REVOKE_SUBSCRIPTIONS,         //撤销订阅审批
+            REVOKE_CHARGES,               //撤销费用审批
         }
 
         /// <summary>
@@ -655,7 +662,14 @@ namespace EMT.DoneNOW.DTO
             ALREADY_DELIVERED = 1237,      // 已配送
             CANCELED = 1238,             // 已取消
         }
-
+        /// <summary>
+        /// 合同：里程碑：状态-117
+        /// </summary>
+        public enum MILESTONE_STATUS {
+            IN_PROGRESS=1265,
+            READY_TO_BILL=1266,
+            BILLED=1267,
+        }
         public enum PROJECT_TYPE
         {
             ACCOUNT_PROJECT = 1338,
@@ -700,8 +714,17 @@ namespace EMT.DoneNOW.DTO
         Department = 41,                // 部门       
         ProuductInventory=50,           //产品库存
         Prouduct = 51,                  //产品
-		InternalCost = 52,                // 合同内部成本
-        CONFIGITEM=55,                  //配置项		
+		InternalCost = 52,              // 合同内部成本
+        CONFIGITEM=55,                  //配置项
+
+        CHARGES,               //撤销费用审批
+        LABOUR,                //撤销工时审批
+
+        EXPENSE,               //撤销成本审批
+        RECURRING_SERVICES,    //撤销定期服务审批
+        MILESTONES,            //撤销里程碑审批
+        SUBSCRIPTIONS,         //撤销订阅审批
+        
     }
     /// <summary>
     /// 打开新窗口的名称
