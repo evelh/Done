@@ -234,7 +234,7 @@
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">安全等级()</a>
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SECURITY_LEVEL %>" target="PageFrame">安全等级</a>
                                             <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
                                         </div>
                                         <div class="PageNavigationLink">
@@ -441,7 +441,7 @@
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.CONTRACT_MILESTONE %>" class="Button ButtonIcon Link NormalState">里程碑状态</a>
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_MILESTONE %>" target="PageFrame" class="Button ButtonIcon Link NormalState">里程碑状态</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                     </div>

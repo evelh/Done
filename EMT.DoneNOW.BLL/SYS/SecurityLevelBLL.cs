@@ -295,7 +295,7 @@ namespace EMT.DoneNOW.BLL
             s.is_active = 0;
             s.license_type_id = s1.license_type_id;
             s.create_time = s.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            s.create_user_id = user_id;
+            s.create_user_id =s.update_user_id= user_id;
             ss_dal.Insert(s);
             //更新复制插入语句
             //insert into sys_security_level_limit(id,security_level_id,limit_id,limit_type_value_id)  select (select f_nextval('seq_com')),3,limit_id,limit_type_value_id from  sys_security_level_limit where security_level_id=2

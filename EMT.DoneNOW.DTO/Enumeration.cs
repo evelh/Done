@@ -56,6 +56,7 @@ namespace EMT.DoneNOW.DTO
         CONTRACT_CATE = 112,                    // 合同分类
         CONTRACT_MILESTONE=117,                  //合同里程碑
         BILL_POST_TYPE = 118,                   // 合同：工时计费设置
+        ACCOUNT_DEDUCTION_TYPE=121,              //审批并提交操作类型
     }
 
     /// <summary>
@@ -426,6 +427,8 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_INTERNAL_COST=911,           // 合同管理-内部成本查询
             RESOURCE_CALLBACK = 913,              // 员工的查找带回（姓名 邮箱）
 			CONFIGITEMTYPE=914,                   //配置项类型
+            SECURITY_LEVEL=918,                   //安全等级
+            CONTRACT_MILESTONE=919,               //里程碑状态
 
             REVOKE_LABOUR,                //撤销工时审批
             REVOKE_EXPENSE,               //撤销成本审批
@@ -501,6 +504,8 @@ namespace EMT.DoneNOW.DTO
             ROLE=799,                                   // 角色
             RESOURCE=1370,                              // 员工
             PROJECT = 1371,                             // 项目
+            SUBSCRIPTION_PERIOD=1372,                   //订阅周期
+            ACCOUNT_DEDUCTION=1373,                    //审批并提交
         }
 
         /// <summary>
@@ -676,6 +681,14 @@ namespace EMT.DoneNOW.DTO
             IN_PROJECT= 1339,
             PROJECT_DAY = 1340,
         }
+        /// <summary>
+        /// 审批并提交操作类型 -121
+        /// </summary>
+        public enum ACCOUNT_DEDUCTION_TYPE {
+            SERVICE=1325,               //服务
+            SERVICE_ADJUST=1326,        //服务跳转
+            INITIAL_COST =1327,          //初始费用
+        }
     }
     /// <summary>
     /// 工单-126
@@ -716,6 +729,8 @@ namespace EMT.DoneNOW.DTO
         Prouduct = 51,                  //产品
 		InternalCost = 52,              // 合同内部成本
         CONFIGITEM=55,                  //配置项
+        SECURITYLEVEL=59,               //安全等级
+        MILESTONE=60,                   //里程碑
 
         CHARGES,               //撤销费用审批
         LABOUR,                //撤销工时审批

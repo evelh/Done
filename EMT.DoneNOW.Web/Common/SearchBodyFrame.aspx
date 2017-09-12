@@ -1307,6 +1307,41 @@
                     }
                 })
         }
+       <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.SECURITYLEVEL){%>//安全等级
+        function Copy() {
+            alert("马上开发。。。");
+        }
+        function Edit() {
+            alert("马上开发。。。");
+        }
+        function Active() {
+            alert("马上开发。。。");
+        }
+        function Delete() {
+            alert("马上开发。。。");
+        }
+        function Inactive() {
+            alert("马上开发。。。");
+        }
+        <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.MILESTONE){%>//里程碑状态
+        function View(id) {
+
+        }
+        function Add() {
+            alert("马上开发。。。");
+        }
+        function Edit() {
+            alert("马上开发。。。");
+        }
+        function Active() {
+            alert("马上开发。。。");
+        }
+        function Delete() {
+            alert("马上开发。。。");
+        }
+        function Inactive() {
+            alert("马上开发。。。");
+        }
        <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.EXPENSE){%>//撤销审批成本
         function Add() {
             var ids = "";

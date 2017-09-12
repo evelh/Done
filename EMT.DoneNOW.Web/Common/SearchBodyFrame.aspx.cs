@@ -105,6 +105,7 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYS_DEPARTMENT:
                 case (int)DicEnum.QUERY_CATE.SYS_ROLE:
                 case (int)DicEnum.QUERY_CATE.CONFIGITEMTYPE:
+                case (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONE:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -389,6 +390,19 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.InternalCost:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.SECURITYLEVEL:
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "Inactive()" });
+                    break;
+                case (long)QueryType.MILESTONE:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "Inactive()" });
                     break;
                 default:
                     break;
