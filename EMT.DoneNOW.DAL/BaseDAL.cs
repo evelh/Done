@@ -53,6 +53,17 @@ namespace EMT.DoneNOW.DAL
         }
 
         /// <summary>
+        /// 根据id查找（未删除的）
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public T FindNoDeleteById(long id)
+        {
+            string name = typeof(T).Name;
+            return FindSignleBySql<T>($"SELECT * FROM {name} WHERE delete_time = 0 and id=" + id );
+        }
+
+        /// <summary>
         /// 根据客户ID返回集合
         /// </summary>
         /// <param name="account_id"></param>

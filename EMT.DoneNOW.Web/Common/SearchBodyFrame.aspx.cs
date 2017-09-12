@@ -107,6 +107,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.CONFIGITEMTYPE:
                     addBtn = "新增";
                     break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
+                    addBtn = "新增内部成本";
+					break;
                 case (int)DicEnum.QUERY_CATE.PRODUCT:
                     addBtn = "新增产品";
                     break;
@@ -376,6 +379,10 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "Inactive()" });
+                    break;
+                case (long)QueryType.InternalCost:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;

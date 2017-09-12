@@ -753,6 +753,7 @@ namespace EMT.DoneNOW.BLL
                         oper_description = _dal.AddValue(saleOrder),
                         remark = "商机关闭，新增销售订单"
                     });
+                    param.saleOrderId = saleOrder.id;
                 }
                
             }

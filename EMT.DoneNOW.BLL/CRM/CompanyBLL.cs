@@ -1218,9 +1218,9 @@ namespace EMT.DoneNOW.BLL
             com_report.subsidiaries_list = _dal.GetSubsidiariesById(account_id);
             com_report.opportunity_history_list = new crm_opportunity_dal().FindOpHistoryByAccountId(account_id);   // 商机历史
             com_report.udf_list = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.COMPANY, account_id, new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY));  // todo 返回id 和value，不是name和value
-            com_report.ins_pro_list = new crm_installed_product_dal().FindByAccountId(account_id);
+            // com_report.ins_pro_list = new crm_installed_product_dal().FindByAccountId(account_id);
          
-            com_report.opportunity_list = new crm_opportunity_dal().FindByAccountId(account_id);   // 商机详情 List??? 
+            // com_report.opportunity_list = new crm_opportunity_dal().FindByAccountId(account_id);   // 商机详情 List??? 
 
             return com_report;
         }
