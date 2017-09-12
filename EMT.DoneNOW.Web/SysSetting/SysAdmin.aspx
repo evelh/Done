@@ -526,6 +526,56 @@
                             </div>
                         </div>
                     </div>
+                     <!--第八个框-->
+                     <div class="Normal Section Collapsed Normal1" id="b8">
+                        <div class="Heading">
+                            <div class="Toggle Expand Toggle1" id="a8">
+                                <div class="Vertical Vertical1"></div>
+                                <div class="Horizontal"></div>
+                            </div>
+                            <span class="Text">配置项</span>
+                            <span></span>
+                        </div>
+                        <div class="Content Content1" id="c">
+                            <div class="Large Column">
+                                <div class="PageNavigationLinkGroup">                                   
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONFIGITEMTYPE %>" target="PageFrame">配置项类型</a>
+                                            <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
+                                        </div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a href="#" class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="PageNavigationLinkGroup">
+                                    <div class="Heading">
+                                        <div class="Text">aaa</div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
+                                        </div>
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                        </div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState">System Settings (formerly Workflow Policies)</a>
+                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!--第二部分-->
                 <div class="TabContainer">

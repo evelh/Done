@@ -130,8 +130,9 @@ namespace EMT.DoneNOW.BLL
             {
                 if (t.id != 0)
                 {
-                    var rere = udf_group_dal.FindSignleBySql<sys_udf_group_field>($"select * from sys_udf_group_field where group_id={data.id} and udf_field_id={t.id} and delete_time=0");
-                    if (rere == null)
+                    if(!oldgroup.ContainsKey(t.id))//如果原本的字段组不包含这个字段的id，则说明，这个字段是新增的
+                    //var rere = udf_group_dal.FindSignleBySql<sys_udf_group_field>($"select * from sys_udf_group_field where group_id={data.id} and udf_field_id={t.id} and delete_time=0");
+                    //if (rere == null)
                     {//新增
                         groupfield.udf_field_id = t.id;
                         groupfield.is_required = t.is_required;

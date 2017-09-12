@@ -104,6 +104,7 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.RESOURCE:
                 case (int)DicEnum.QUERY_CATE.SYS_DEPARTMENT:
                 case (int)DicEnum.QUERY_CATE.SYS_ROLE:
+                case (int)DicEnum.QUERY_CATE.CONFIGITEMTYPE:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.PRODUCT:
@@ -369,6 +370,12 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.Prouduct:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.CONFIGITEM:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "Inactive()" });
                     break;
                 default:
                     break;

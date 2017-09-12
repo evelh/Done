@@ -419,10 +419,11 @@ namespace EMT.DoneNOW.DTO
             MATERIALCODE_CALLBACK = 896,          //物料代码查找带回
             VENDOR_CALLBACK = 897,                //供应商查找带回
             RESOURCE=881,                         //系统管理-员工查询
-            SYS_ROLE = 898,                     // 系统管理-角色查询
-            SYS_DEPARTMENT = 899,               // 系统管理-部门查询
+            SYS_ROLE = 898,                       // 系统管理-角色查询
+            SYS_DEPARTMENT = 899,                 // 系统管理-部门查询
             PRODUCTINVENTORY = 909,               //库存
-            PRODUCT=910,                         //产品
+            PRODUCT=910,                          //产品
+            CONFIGITEMTYPE=914,                   //配置项类型
         }
 
         /// <summary>
@@ -490,7 +491,6 @@ namespace EMT.DoneNOW.DTO
             ROLE=799,                                   // 角色
             RESOURCE=1370,                              // 员工
             PROJECT = 1371,                             // 项目
-
         }
 
         /// <summary>
@@ -697,6 +697,7 @@ namespace EMT.DoneNOW.DTO
         Department = 41,                // 部门
         ProuductInventory=50,           //产品库存
         Prouduct = 51,                  //产品
+        CONFIGITEM=55,                  //配置项
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -792,5 +793,9 @@ namespace EMT.DoneNOW.DTO
         ResourceCopy = 341,                        //复制员工信息
 
         SecurityLevel=350,                         //安全等级界面
+
+        Role=360,                                  //角色
+        Department=361,                            //部门
+        ConfigItemType=362,                         //配置项类型
     }
 }

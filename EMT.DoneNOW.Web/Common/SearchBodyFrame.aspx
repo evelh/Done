@@ -1046,11 +1046,14 @@
 
         }
          <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Resource){%>//员工
+        function View(id) {
+            window.open("../SysSetting/SysUserEdit.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
         function Add() {
-            window.open("../Product/SysUserAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("../SysSetting/SysUserAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Edit() {
-            window.open("../Product/SysUserEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("../SysSetting/SysUserEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Copy() {
            
@@ -1060,11 +1063,14 @@
         }
         function Delete() {   }
         <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Role){%>//角色
+        function View(id) {
+            window.open("../SysSetting/SysUserEdit.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Role %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
         function Add() {
-            window.open("../Product/SysUserAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("../SysSetting/SysUserAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Role %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Edit() {
-            window.open("../Product/SysUserEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("../SysSetting/SysUserEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Role %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Delete() {
             //if (confirm("删除后无法恢复，是否继续?")) {
@@ -1080,7 +1086,6 @@
 
         }
         function Active() {
-            if (confirm("删除后无法恢复，是否继续?")) {
                 $.ajax({
                     type: "GET",
                     url: "../Tools/RoleAjax.ashx?act=Active&id=" + entityid,
@@ -1090,9 +1095,7 @@
                     }
                 })
             }
-        }
         function Inactive() {
-            if (confirm("删除后无法恢复，是否继续?")) {
                 $.ajax({
                     type: "GET",
                     url: "../Tools/RoleAjax.ashx?act=No_Active&id=" + entityid,
@@ -1102,7 +1105,6 @@
                     }
                 })
             }
-        }
         //从全部激活的合同中排除
         function Exclude() {
             if (confirm("从全部当前激活的合同中排除?")) {
@@ -1117,11 +1119,14 @@
             }
         }
         <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Department){%>//部门
+        function View(id) {
+            window.open("../SysSetting/SysDepartment.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Department %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
         function Add() {
-            window.open("../SysSetting/SysUserAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("../SysSetting/SysDepartment.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Department %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Edit() {
-            window.open("../SysSetting/SysUserEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("../SysSetting/SysDepartment.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Department %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Delete() {
             if (confirm("删除后无法恢复，是否继续?")) {
@@ -1154,6 +1159,48 @@
                 })
             }
         }
+         <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.CONFIGITEM){%>//配置项类型
+        function View(id) {
+            window.open("../ConfigurationItem/ConfigType.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConfigItemType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Add() {
+            window.open("../ConfigurationItem/ConfigType.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConfigItemType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Edit() {
+            window.open("../ConfigurationItem/ConfigType.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConfigItemType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Delete() {
+            if (confirm("删除后无法恢复，是否继续?")) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ConfigItemTypeAjax.ashx?act=Delete&id=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                })
+            }
+        }
+        function Active() {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ConfigItemTypeAjax.ashx?act=Active&id=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                })
+            }
+        function Inactive() {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ConfigItemTypeAjax.ashx?act=No_Active&id=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                })
+            }
         <%}%>
         function openopenopen() {
             //alert("暂未实现");
