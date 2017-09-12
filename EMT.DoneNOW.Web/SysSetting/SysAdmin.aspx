@@ -234,7 +234,7 @@
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">安全等级()</a>
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SECURITY_LEVEL %>" target="PageFrame">安全等级</a>
                                             <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
                                         </div>
                                         <div class="PageNavigationLink">
@@ -427,7 +427,7 @@
                                 <div class="Vertical Vertical1"></div>
                                 <div class="Horizontal"></div>
                             </div>
-                            <span class="Text">合同 &  Un-Posting</span>
+                            <span class="Text">合同与撤销审批</span>
                             <span></span>
                         </div>
                         <div class="Content Content1" id="c6">
@@ -441,28 +441,40 @@
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.CONTRACT_MILESTONE %>" class="Button ButtonIcon Link NormalState">里程碑状态</a>
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_MILESTONE %>" target="PageFrame" class="Button ButtonIcon Link NormalState">里程碑状态</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="PageNavigationLinkGroup">
                                     <div class="Heading">
-                                        <div class="Text">aaa</div>
+                                        <div class="Text">撤销审批</div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <a class="Button ButtonIcon Link NormalState" <%--href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_LABOUR %>" target="PageFrame"--%>>工时(未开始)</a>
                                             <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_RECURRING_SERVICES %>" target="PageFrame">定期服务（正在进行）</a>
+                                            <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                        </div>
+                                         <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState"<%-- href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_CHARGES %>" target="PageFrame"--%>>费用(未开始)</a>
                                             <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState">System Settings (formerly Workflow Policies)</a>
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_EXPENSE %>" target="PageFrame">成本（正在进行）</a>
+                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                        </div>
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_MILESTONES %>" target="PageFrame">里程碑（正在进行）</a>
+                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                        </div>
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_SUBSCRIPTIONS %>" target="PageFrame">订阅（正在进行）</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                     </div>
@@ -492,6 +504,56 @@
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT %>" target="PageFrame">产品</a>
+                                            <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
+                                        </div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a href="#" class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="PageNavigationLinkGroup">
+                                    <div class="Heading">
+                                        <div class="Text">aaa</div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
+                                        </div>
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState">aaaa</a>
+                                            <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                        </div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState">System Settings (formerly Workflow Policies)</a>
+                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <!--第八个框-->
+                     <div class="Normal Section Collapsed Normal1" id="b8">
+                        <div class="Heading">
+                            <div class="Toggle Expand Toggle1" id="a8">
+                                <div class="Vertical Vertical1"></div>
+                                <div class="Horizontal"></div>
+                            </div>
+                            <span class="Text">配置项</span>
+                            <span></span>
+                        </div>
+                        <div class="Content Content1" id="c8">
+                            <div class="Large Column">
+                                <div class="PageNavigationLinkGroup">                                   
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONFIGITEMTYPE %>" target="PageFrame">配置项类型</a>
                                             <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
                                         </div>
                                     </div>

@@ -69,6 +69,7 @@
     <Compile Include="COM\com_notify_email_dal.cs" />
     <Compile Include="CRM\crm_account_alert_dal.cs" />
     <Compile Include="CRM\crm_account_dal.cs" />
+    <Compile Include="CRM\crm_account_deduction_dal.cs" />
     <Compile Include="CRM\crm_account_territory_dal.cs" />
     <Compile Include="CRM\crm_contact_dal.cs" />
     <Compile Include="CRM\crm_installed_product_dal.cs" />

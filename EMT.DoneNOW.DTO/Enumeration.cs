@@ -56,6 +56,7 @@ namespace EMT.DoneNOW.DTO
         CONTRACT_CATE = 112,                    // 合同分类
         CONTRACT_MILESTONE=117,                  //合同里程碑
         BILL_POST_TYPE = 118,                   // 合同：工时计费设置
+        ACCOUNT_DEDUCTION_TYPE=121,              //审批并提交操作类型
     }
 
     /// <summary>
@@ -426,9 +427,19 @@ namespace EMT.DoneNOW.DTO
 		    PRODUCT=910,                         //产品
             CONTRACT_INTERNAL_COST=911,           // 合同管理-内部成本查询
             RESOURCE_CALLBACK = 913,              // 员工的查找带回（姓名 邮箱）
+			CONFIGITEMTYPE=914,                   //配置项类型
             RELATION_CONFIGITEM=915,              // 关联到该合同的配置项
             NORELATION_CONFIGITEM = 916,          // 未关联到该合同的该合同的客户的配置项
+            SECURITY_LEVEL=918,                   //安全等级
+            CONTRACT_MILESTONE=919,               //里程碑状态
 
+
+            REVOKE_LABOUR,                //撤销工时审批
+            REVOKE_EXPENSE,               //撤销成本审批
+            REVOKE_RECURRING_SERVICES,    //撤销定期服务审批
+            REVOKE_MILESTONES,            //撤销里程碑审批
+            REVOKE_SUBSCRIPTIONS,         //撤销订阅审批
+            REVOKE_CHARGES,               //撤销费用审批
         }
 
         /// <summary>
@@ -497,7 +508,8 @@ namespace EMT.DoneNOW.DTO
             ROLE=799,                                   // 角色
             RESOURCE=1370,                              // 员工
             PROJECT = 1371,                             // 项目
-
+            SUBSCRIPTION_PERIOD=1372,                   //订阅周期
+            ACCOUNT_DEDUCTION=1373,                    //审批并提交
         }
 
         /// <summary>
@@ -659,12 +671,27 @@ namespace EMT.DoneNOW.DTO
             ALREADY_DELIVERED = 1237,      // 已配送
             CANCELED = 1238,             // 已取消
         }
-
+        /// <summary>
+        /// 合同：里程碑：状态-117
+        /// </summary>
+        public enum MILESTONE_STATUS {
+            IN_PROGRESS=1265,
+            READY_TO_BILL=1266,
+            BILLED=1267,
+        }
         public enum PROJECT_TYPE
         {
             ACCOUNT_PROJECT = 1338,
             IN_PROJECT= 1339,
             PROJECT_DAY = 1340,
+        }
+        /// <summary>
+        /// 审批并提交操作类型 -121
+        /// </summary>
+        public enum ACCOUNT_DEDUCTION_TYPE {
+            SERVICE=1325,               //服务
+            SERVICE_ADJUST=1326,        //服务跳转
+            INITIAL_COST =1327,          //初始费用
         }
     }
     /// <summary>
@@ -705,8 +732,20 @@ namespace EMT.DoneNOW.DTO
         ProuductInventory=50,           //产品库存
         Prouduct = 51,                  //产品
 		InternalCost = 52,                // 合同内部成本
+		CONFIGITEM=55,                  //配置项
         Relation_ConfigItem = 56,       // 关联到该合同的配置项
         Norelation_ConfigItem = 57,     // 未关联到该合同的配置项
+        SECURITYLEVEL=59,               //安全等级
+        MILESTONE=60,                   //里程碑
+
+        CHARGES,               //撤销费用审批
+        LABOUR,                //撤销工时审批
+
+        EXPENSE,               //撤销成本审批
+        RECURRING_SERVICES,    //撤销定期服务审批
+        MILESTONES,            //撤销里程碑审批
+        SUBSCRIPTIONS,         //撤销订阅审批
+        
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -806,5 +845,9 @@ namespace EMT.DoneNOW.DTO
         ResourceCopy = 341,                        //复制员工信息
 
         SecurityLevel=350,                         //安全等级界面
+
+        Role=360,                                  //角色
+        Department=361,                            //部门
+        ConfigItemType=362,                         //配置项类型
     }
 }

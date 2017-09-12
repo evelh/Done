@@ -1342,6 +1342,9 @@
     <Compile Include="Tools\CompanyAjax.ashx.cs">
       <DependentUpon>CompanyAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ConfigItemTypeAjax.ashx.cs">
+      <DependentUpon>ConfigItemTypeAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\ContactAjax.ashx.cs">
       <DependentUpon>ContactAjax.ashx</DependentUpon>
     </Compile>
@@ -1377,6 +1380,9 @@
     </Compile>
     <Compile Include="Tools\ResourceAjax.ashx.cs">
       <DependentUpon>ResourceAjax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\ReverseAjax.ashx.cs">
+      <DependentUpon>ReverseAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\RoleAjax.ashx.cs">
       <DependentUpon>RoleAjax.ashx</DependentUpon>
@@ -1432,6 +1438,8 @@
     <Content Include="Tools\ContractAjax.ashx" />
     <Content Include="Tools\DepartmentAjax.ashx" />
     <Content Include="Tools\ResourceAjax.ashx" />
+    <Content Include="Tools\ConfigItemTypeAjax.ashx" />
+    <Content Include="Tools\ReverseAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

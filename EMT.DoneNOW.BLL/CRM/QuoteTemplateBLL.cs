@@ -33,7 +33,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,     
@@ -127,7 +127,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
@@ -169,7 +169,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
@@ -219,7 +219,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
@@ -327,7 +327,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,       //数据库缺少对应，报价模板
@@ -375,7 +375,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,

@@ -94,7 +94,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     user_cate = "用户",
                     user_id = (int)user.id,
-                    name = "",
+                    name = user.name,
                     phone = user.mobile == null ? "" : user.mobile,
                     oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT,//员工
@@ -125,7 +125,7 @@ namespace EMT.DoneNOW.BLL
                     {
                         user_cate = "用户",
                         user_id = (int)user.id,
-                        name = "",
+                        name = user.name,
                         phone = user.mobile == null ? "" : user.mobile,
                         oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,//员工
@@ -167,30 +167,31 @@ namespace EMT.DoneNOW.BLL
             product.update_user_id = user_id;
 
             //唯一性校验
-            var propro = _dal.FindListBySql($"select * from ivt_product where product_name='{ product.product_name}' and delete_time=0 ");
+            var propro = _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where product_name='{product.product_name}' and delete_time=0 ");
+            ivt_product oldpropro = _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where id='{product.id}' and delete_time=0 ");
             if (propro != null)
             {
                 return ERROR_CODE.EXIST;
-            }
-
-            if (!_dal.Update(product)) {
-                return ERROR_CODE.ERROR;
             }
             //更新日志
             var add_log = new sys_oper_log()
             {
                 user_cate = "用户",
                 user_id = (int)user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT,//员工
                 oper_object_id = product.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(product),
+                oper_description = _dal.CompareValue(oldpropro,product),
                 remark = "修改产品信息"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_log);       // 插入日志
+            if (!_dal.Update(product))
+            {
+                return ERROR_CODE.ERROR;
+            }
             //供应商更新
             foreach (var ve in vendordata.VENDOR)
             {
@@ -206,7 +207,7 @@ namespace EMT.DoneNOW.BLL
                         {
                             user_cate = "用户",
                             user_id = (int)user.id,
-                            name = "",
+                            name =user.name,
                             phone = user.mobile == null ? "" : user.mobile,
                             oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                             oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,//员工
@@ -237,7 +238,7 @@ namespace EMT.DoneNOW.BLL
                         {
                             user_cate = "用户",
                             user_id = (int)user.id,
-                            name = "",
+                            name =user.name,
                             phone = user.mobile == null ? "" : user.mobile,
                             oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                             oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,//员工
@@ -266,7 +267,7 @@ namespace EMT.DoneNOW.BLL
                     {
                         user_cate = "用户",
                         user_id = (int)user.id,
-                        name = "",
+                        name =user.name,
                         phone = user.mobile == null ? "" : user.mobile,
                         oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,//员工
@@ -369,7 +370,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = (int)user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
@@ -385,7 +386,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = (int)user.id,
-                name = "",
+                name =user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
@@ -428,7 +429,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = (int)user.id,
-                name = "",
+                name =user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
@@ -464,7 +465,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = (int)user.id,
-                name = "",
+                name =user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
@@ -497,7 +498,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = (int)user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
@@ -588,7 +589,7 @@ namespace EMT.DoneNOW.BLL
             {
                 user_cate = "用户",
                 user_id = (int)user.id,
-                name = "",
+                name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT,//
