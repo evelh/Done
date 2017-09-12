@@ -134,6 +134,7 @@
     <Content Include="ConfigurationItem\AddOrEditConfigItem.aspx" />
     <Content Include="ConfigurationItem\ConfigType.aspx" />
     <Content Include="ConfigurationItem\ConfigUdfField.aspx" />
+    <Content Include="ConfigurationItem\RelatiobContract.aspx" />
     <Content Include="ConfigurationItem\SubscriptionAddOrEdit.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
@@ -162,6 +163,7 @@
     <Content Include="Content\Quote.css" />
     <Content Include="Content\Quotebaojiaxiang.css" />
     <Content Include="Content\reset.css" />
+    <Content Include="Content\Roles.css" />
     <Content Include="Content\searchList.css" />
     <Content Include="Content\SysSettingRoles.css" />
     <Content Include="Content\SysUserSecurityLevel.css" />
@@ -170,6 +172,7 @@
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
+    <Content Include="Contract\ContractView.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Contract\RoleRate.aspx" />
     <Content Include="Default.aspx" />
@@ -750,6 +753,13 @@
     <Compile Include="ConfigurationItem\ConfigUdfField.aspx.designer.cs">
       <DependentUpon>ConfigUdfField.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationItem\RelatiobContract.aspx.cs">
+      <DependentUpon>RelatiobContract.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\RelatiobContract.aspx.designer.cs">
+      <DependentUpon>RelatiobContract.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationItem\SubscriptionAddOrEdit.aspx.cs">
       <DependentUpon>SubscriptionAddOrEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -839,20 +849,27 @@
     <Compile Include="Contract\ContractEdit.aspx.designer.cs">
       <DependentUpon>ContractEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\ContractView.aspx.cs">
+      <DependentUpon>ContractView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractView.aspx.designer.cs">
+      <DependentUpon>ContractView.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Contract\RoleRate.aspx.cs">
       <DependentUpon>RoleRate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Contract\RoleRate.aspx.designer.cs">
       <DependentUpon>RoleRate.aspx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1330,7 +1347,7 @@
     </Compile>
     <Compile Include="Tools\ContractAjax.ashx.cs">
       <DependentUpon>ContractAjax.ashx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Tools\DepartmentAjax.ashx.cs">
       <DependentUpon>DepartmentAjax.ashx</DependentUpon>
     </Compile>

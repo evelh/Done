@@ -112,6 +112,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PRODUCT:
                     addBtn = "新增产品";
                     break;
+                case (int)DicEnum.QUERY_CATE.RELATION_CONFIGITEM:
+                    addBtn = "新增配置项";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -376,6 +379,23 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.InternalCost:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.Relation_ConfigItem:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "替换", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "解除与当前合同关系", click_function = "Norelation()"});
+                    contextMenu.Add(new PageContextMenuDto { text = "LiveLinks", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除当前配置项", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.Norelation_ConfigItem:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
+                   
+                    contextMenu.Add(new PageContextMenuDto { text = "关联当前合同关系", click_function = "Relation()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "Set As Reviewed", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "Set As Not Reviewed", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除当前配置项", click_function = "Delete()" });
                     break;
                 default:
                     break;

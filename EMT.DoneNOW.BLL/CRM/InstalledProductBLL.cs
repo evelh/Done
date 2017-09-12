@@ -773,7 +773,6 @@ namespace EMT.DoneNOW.BLL
         public bool DeleteSubsctiptions(string sids,long user_id)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
-            var dal = new crm_installed_product_dal();
             if (!string.IsNullOrEmpty(sids))
             {
                 try
@@ -795,6 +794,90 @@ namespace EMT.DoneNOW.BLL
             return false;
         }
 
+        /// <summary>
+        /// 解除配置项与合同的绑定
+        /// </summary>
+        /// <param name="contract_id"></param>
+        /// <param name="ipID"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public bool RelieveInsProduct(long contract_id,long ipID,long user_id)
+        {
+            var user = BLL.UserInfoBLL.GetUserInfo(user_id);
+            var insPro = _dal.FindNoDeleteById(ipID);
+            if (user != null && insPro != null)
+            {
+                insPro.contract_id = null;
+                insPro.service_id = null;
+                insPro.service_bundle_id = null;
+                insPro.update_user_id = user.id;
+                insPro.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONFIGURAITEM,
+                    oper_object_id = insPro.id,
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_description = _dal.CompareValue(_dal.FindNoDeleteById(insPro.id),insPro),
+                    remark = "解除配置项与合同的绑定",
+                });
+                _dal.Update(insPro);
+                return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// 将配置项绑定到合同
+        /// </summary>
+        /// <param name="contract_id"></param>
+        /// <param name="ipID"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public bool RelationInsProduct(long contract_id, long ipID, long user_id,long? service_id = null)
+        {
+            var user = BLL.UserInfoBLL.GetUserInfo(user_id);
+            var insPro = _dal.FindNoDeleteById(ipID);
+            if (user != null && insPro != null)
+            {
+                // isServiceOrBag
+                insPro.contract_id = contract_id;
+                insPro.update_user_id = user.id;
+                insPro.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                if (service_id != null)
+                {
+                    var isService = new OpportunityBLL().isServiceOrBag((long)service_id);
+                    if (isService==1)
+                    {
+                        insPro.service_id = service_id;
+                    }
+                    else if(isService == 2)
+                    {
+                        insPro.service_bundle_id = service_id;
+                    }
+                }
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONFIGURAITEM,
+                    oper_object_id = insPro.id,
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_description = _dal.CompareValue(_dal.FindNoDeleteById(insPro.id), insPro),
+                    remark = "关联当前合同",
+                });
+                _dal.Update(insPro);
+                return true;
+            }
+
+            return false;
+        }
 
     }
 }

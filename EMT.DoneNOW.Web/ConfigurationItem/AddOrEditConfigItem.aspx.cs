@@ -14,20 +14,29 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
 {
     public partial class AddOrEditConfigItem : BasePage
     {
-        public bool isAdd = true;
-        public crm_installed_product iProduct = null;
+        protected bool isAdd = true;
+        protected crm_installed_product iProduct = null;
         protected List<UserDefinedFieldDto> iProduct_udfList = null;
         protected List<UserDefinedFieldValue> iProduct_udfValueList = null; //company
         protected Dictionary<string, object> dic = new InstalledProductBLL().GetField();
         protected crm_account account = null;
         protected ivt_product product = null;
+        protected ctt_contract contract = null;
         protected ConfigurationItemAddDto param = new ConfigurationItemAddDto();
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 iProduct_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONFIGURATION_ITEMS);
-
+                var contract_id = Request.QueryString["contract_id"];
+                if (!string.IsNullOrEmpty(contract_id))
+                {
+                    contract = new ctt_contract_dal().FindNoDeleteById(long.Parse(contract_id));
+                    if (contract != null)
+                    {
+                        account = new CompanyBLL().GetCompany(contract.account_id);
+                    }
+                }
 
 
                 var id = Request.QueryString["id"];
@@ -44,11 +53,8 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                 {
                     account = new CompanyBLL().GetCompany(long.Parse(account_id));
                 }
-                
-
                 var contactList = new crm_contact_dal().GetContactByAccountId(account.id);
-                var serviceList = new ivt_service_dal().GetServiceList($" and vendor_id = {account.id}");
-
+                //var serviceList = new ivt_service_dal().GetServiceList($" and vendor_id = {account.id}");
                 #region 配置下拉框数据源
                 installed_product_cate_id.DataTextField = "show";
                 installed_product_cate_id.DataValueField = "val";
@@ -63,21 +69,22 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                 contact_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
 
                 // 
-                service.DataTextField = "name";
-                service.DataValueField = "id";
-                service.DataSource = serviceList;
-                service.DataBind();
-                service.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-
-
-                service.Enabled = false; // 所选合同如果是服务类型的，则此下拉框可选。可选内容为合同项
+                //service.DataTextField = "name";
+                //service.DataValueField = "id";
+                //service.DataSource = serviceList;
+                //service.DataBind();
+                //service.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                //service.Enabled = false; // 所选合同如果是服务类型的，则此下拉框可选。可选内容为合同项
                 #endregion
                 if (iProduct != null)
                 {
                     //account_id = iProduct.account_id.ToString();
                     iProduct_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, iProduct.id, iProduct_udfList);
                     isAdd = false;
-
+                    if (iProduct.contract_id != null)
+                    {
+                        contract = new ctt_contract_dal().FindNoDeleteById((long)iProduct.contract_id);
+                    }
                     installed_product_cate_id.SelectedValue = iProduct.cate_id.ToString();
 
                     if (iProduct.contact_id != null)

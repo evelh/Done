@@ -575,19 +575,22 @@
         }
         // 删除配置项
         function DeleteIProduct() {
-          $.ajax({
-            type: "GET",
-            url: "../Tools/ProductAjax.ashx?act=deleteIP&iProduct_id=" + entityid,
-            success: function (data) {
+          if (confirm("删除后无法恢复，是否继续?")) {
+            $.ajax({
+              type: "GET",
+              url: "../Tools/ProductAjax.ashx?act=deleteIP&iProduct_id=" + entityid,
+              success: function (data) {
 
-              if (data == "True") {
-                alert('删除成功');
-              } else if (data == "False") {
-                alert('删除失败');
+                if (data == "True") {
+                  alert('删除成功');
+                } else if (data == "False") {
+                  alert('删除失败');
+                }
+                history.go(0);
               }
-              history.go(0);
-            }
-          })
+            })
+          }
+       
         }
         // 批量删除配置项
         function DeleteIProducts() {
@@ -1102,7 +1105,7 @@
       else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.InternalCost)
       {%>
         function Edit() {
-          var contract_id = <%=Request.QueryString["contract_id"] %> ;
+          var contract_id = <%=Request.QueryString["id"] %> ;
           if (contract_id != undefined && contract_id != "") {
             window.open("../Contract/InteralCostAddOrEdit.aspx?contract_id=" + contract_id + "&cost_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConIntCostEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
           }
@@ -1128,7 +1131,7 @@
         }
 
         function Add() {
-          var contract_id = <%=Request.QueryString["contract_id"] %> ;
+          var contract_id = <%=Request.QueryString["id"] %> ;
           if (contract_id != undefined && contract_id != "") {
             window.open("../Contract/InteralCostAddOrEdit.aspx?contract_id=" + contract_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
           }
@@ -1137,8 +1140,8 @@
         function View() {
 
         }
-      <%}%>
-         <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Resource){%>//员工
+    
+         <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Resource) {%>//员工
         function Add() {
             window.open("../Product/SysUserAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
@@ -1152,7 +1155,7 @@
             alert("暂未实现");
         }
         function Delete() {   }
-        <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Role){%>//角色
+        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Role) {%>//角色
         function Add() {
             window.open("../Product/SysUserAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
@@ -1209,7 +1212,7 @@
                 })
             }
         }
-        <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Department){%>//部门
+        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Department) {%>//部门
         function Add() {
             window.open("../SysSetting/SysUserAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Resource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
@@ -1228,7 +1231,7 @@
                 })
             }
         }
-         <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Prouduct){%>//产品
+         <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Prouduct) {%>//产品
         function Add() {
             window.open("../Product/ProductAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductView %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
@@ -1246,6 +1249,109 @@
                     }
                 })
             }
+        }
+        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Relation_ConfigItem) {%>
+        function view() {
+
+        }
+        function Edit() {
+          window.open("../ConfigurationItem/AddOrEditConfigItem.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.EditInstalledProduct %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Norelation() {
+          var contract_id = <%=Request.QueryString["id"] %>;
+          $.ajax({
+            type: "GET",
+            url: "../Tools/ContractAjax.ashx?act=RelieveIP&InsProId=" + entityid + "&contract_id=" + contract_id,
+            success: function (data) {
+                if (data == "True") {
+                    alert("解除绑定成功");
+                }
+                else {
+                    alert("解除绑定失败");
+                }
+                // history.go(0);
+                location.reload();
+            }
+          })
+        }
+        function Delete() {
+          if (confirm("删除后无法恢复，是否继续?")) {
+            $.ajax({
+              type: "GET",
+              url: "../Tools/ProductAjax.ashx?act=deleteIP&iProduct_id=" + entityid,
+              success: function (data) {
+                if (data == "True") {
+                  alert('删除成功');
+                } else if (data == "False") {
+                  alert('删除失败');
+                }
+                history.go(0);
+              }
+            })
+          }
+        }
+
+        function Add() {
+            var contract_id = <%=Request.QueryString["id"] %>;
+            window.open("../ConfigurationItem/AddOrEditConfigItem.aspx?contract_id=" + contract_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.EditInstalledProduct %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Norelation_ConfigItem) {%>
+        function view() {
+
+        }
+        function Edit() {
+          window.open("../ConfigurationItem/AddOrEditConfigItem.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.EditInstalledProduct %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Relation() {
+          var contract_id = <%=Request.QueryString["contract_id"] %>;
+          var isopen = "";
+          $.ajax({
+              type: "GET",
+              async: false,
+            url: "../Tools/ContractAjax.ashx?act=isService&contract_id=" + contract_id,
+            success: function (data) {
+              if (data != "") {
+                isopen = data;
+              }
+            }
+          })
+
+
+          if (isopen == "") {
+            $.ajax({
+              type: "GET",
+              url: "../Tools/ContractAjax.ashx?act=RelationIP&InsProId=" + entityid + "&contract_id=" + contract_id,
+              success: function (data) {
+                  if (data == "True") {
+                      alert('关联成功');
+                  } else if (data == "False") {
+                      alert('关联失败');
+                  }
+                  history.go(0);
+              
+              }
+            })
+          }
+          else {
+              // 打开窗口
+              window.open("../ConfigurationItem/RelatiobContract.aspx?insProId=" + entityid + "&contractId=" + contract_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.RelationContract %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+          }
+        }
+        function Delete() {
+          if (confirm("删除后无法恢复，是否继续?")) {
+            $.ajax({
+              type: "GET",
+              url: "../Tools/ProductAjax.ashx?act=deleteIP&iProduct_id=" + entityid,
+              success: function (data) {
+                if (data == "True") {
+                  alert('删除成功');
+                } else if (data == "False") {
+                  alert('删除失败');
+                }
+                history.go(0);
+              }
+            })
+          }
         }
         <%}%>
         function openopenopen() {

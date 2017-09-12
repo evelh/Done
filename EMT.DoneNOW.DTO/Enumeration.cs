@@ -421,10 +421,13 @@ namespace EMT.DoneNOW.DTO
             RESOURCE=881,                         //系统管理-员工查询
             SYS_ROLE = 898,                     // 系统管理-角色查询
             SYS_DEPARTMENT = 899,               // 系统管理-部门查询
+            CONTRACT_CALLBACK = 902,            // 合同查找带回
             PRODUCTINVENTORY = 909,               // 库存
 		    PRODUCT=910,                         //产品
             CONTRACT_INTERNAL_COST=911,           // 合同管理-内部成本查询
             RESOURCE_CALLBACK = 913,              // 员工的查找带回（姓名 邮箱）
+            RELATION_CONFIGITEM=915,              // 关联到该合同的配置项
+            NORELATION_CONFIGITEM = 916,          // 未关联到该合同的该合同的客户的配置项
 
         }
 
@@ -702,6 +705,8 @@ namespace EMT.DoneNOW.DTO
         ProuductInventory=50,           //产品库存
         Prouduct = 51,                  //产品
 		InternalCost = 52,                // 合同内部成本
+        Relation_ConfigItem = 56,       // 关联到该合同的配置项
+        Norelation_ConfigItem = 57,     // 未关联到该合同的配置项
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -760,6 +765,7 @@ namespace EMT.DoneNOW.DTO
 
         AddInstalledProduct = 210,              // 添加配置项
         EditInstalledProduct = 211,             // 修改配置项
+        RelationContract = 212,                 // 将配置项关联合同
 
         SubscriptionEdit = 220,                // 修改订阅
         SubscriptionAdd = 221,                 // 新增订阅

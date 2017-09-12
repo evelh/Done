@@ -1312,5 +1312,26 @@ namespace EMT.DoneNOW.BLL
             }
             return 0;
         }
+        /// <summary>
+        /// 根据服务/包 的Id返回名字
+        /// </summary>
+        /// <param name="object_id"></param>
+        /// <returns></returns>
+        public string ReturnServiceName(long object_id)
+        {
+            // GetSinService
+            var service = new ivt_service_dal().GetSinService(object_id);
+            if (service != null)
+            {
+                return service.name;
+            }
+
+            var serviceBundle = new ivt_service_bundle_dal().GetSinSerBun(object_id);
+            if (serviceBundle != null)
+            {
+                return serviceBundle.name;
+            }
+            return "";
+        }
     }
 }
