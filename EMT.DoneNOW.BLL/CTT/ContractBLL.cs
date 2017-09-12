@@ -202,5 +202,122 @@ namespace EMT.DoneNOW.BLL
         {
             return new d_sla_dal().GetList();
         }
+
+     
+        /// <summary>
+        /// 新增/修改 合同内部成本
+        /// </summary>
+        /// <param name="cis"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public bool ConIntCostAddOrUpdate(ctt_contract_internal_cost cis, long user_id)
+        {
+            try
+            {
+                var user = UserInfoBLL.GetUserInfo(user_id);
+                var cisDal = new ctt_contract_internal_cost_dal();
+                if (cis.id == 0)
+                {
+                    if(cis.resource_id == 0 || cis.role_id == 0)
+                    {
+                        return false;
+                    }
+                    cis.id = cisDal.GetNextIdCom();
+                    //  todo 新增时 resource_id 从何处取值呢
+                    cis.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    cis.create_user_id = user.id;
+                    cis.update_user_id = user.id;
+                    cis.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    cisDal.Insert(cis);
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = user.id,
+                        name = "",
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_INTERNAL_COST,
+                        oper_object_id = cis.id,// 操作对象id
+                        oper_type_id = (int)DicEnum.OPER_LOG_TYPE.ADD,
+                        oper_description = dal.AddValue(cis),
+                        remark = "添加合同内部成本"
+                    });
+                }
+                else
+                {
+                    var oldCost = cisDal.FindNoDeleteById(cis.id);
+                    if (oldCost != null && user != null)
+                    {
+                        cis.create_time = oldCost.create_time;
+                        cis.create_user_id = oldCost.create_user_id;
+                        cis.update_user_id = user.id;
+                        cis.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        cis.oid = oldCost.oid;
+                        cis.resource_id = oldCost.resource_id;
+                        cisDal.Update(cis);
+                        new sys_oper_log_dal().Insert(new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = user.id,
+                            name = "",
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_INTERNAL_COST,
+                            oper_object_id = cis.id,// 操作对象id
+                            oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
+                            oper_description = dal.CompareValue(oldCost, cis),
+                            remark = "修改合同内部成本"
+                        });
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 删除合同内部成本
+        /// </summary>
+        /// <param name="cicId"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public bool DeleteConIntCost(long cicId,long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            var cisDal = new ctt_contract_internal_cost_dal();
+            var oldIntCost = cisDal.FindNoDeleteById(cicId);
+            if (user != null && oldIntCost != null)
+            {
+                oldIntCost.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                oldIntCost.delete_user_id = user.id;
+
+                cisDal.Update(oldIntCost);
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = user.id,
+                    name = "",
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_INTERNAL_COST,
+                    oper_object_id = oldIntCost.id,// 操作对象id
+                    oper_type_id = (int)DicEnum.OPER_LOG_TYPE.DELETE,
+                    oper_description = dal.AddValue(oldIntCost),
+                    remark = "删除合同内部成本"
+                });
+
+            }
+
+
+            return false;
+        }
+
     }
 }

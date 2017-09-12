@@ -1291,15 +1291,17 @@
           <tbody>
             <tr height="85%">
               <td width="90%">
-                <div>
-                  <a href="##">Open the New Ticket</a>
+                <div id="openTicket" style="display:none;">
+                  <a onclick="openTicket()">打开新工单</a>
+                  <input type="hidden" id="newTicketId" />
                 </div>
               </td>
             </tr>
             <tr>
               <td width="90%">
-                <div>
-                  <a href="##">Open the New Sales Order</a>
+                <div id="openSaleOrder" style="display:none;">
+                  <a onclick="openSaleOrder()">打开新的销售订单</a>
+                  <input type="hidden" id="newSaleOrderId" />
                 </div>
               </td>
             </tr>
@@ -1828,29 +1830,29 @@
   function callBackProduct() {
     // primary_product_id
     window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=primary_product_id", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
-    }
+  }
 
-    // 合同查找带回（包括带回事件）
-    function callBackContract() {
-      window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT %>&field=contract_id&callBack=GetDataByContract", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>', 'left=200,top=200,width=600,height=800', false);
-    }
-    //  合同查找带回（不包括带回事件）
-    function callBackContractNoDeal() {
-      window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT %>&field=ConvertContractId", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>', 'left=200,top=200,width=600,height=800', false);
-    }
-    // 根据查找带回的合同进行的处理
-    function GetDataByContract() {
-      // 需要做的处理
+  // 合同查找带回（包括带回事件）
+  function callBackContract() {
+    window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT %>&field=contract_id&callBack=GetDataByContract", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>', 'left=200,top=200,width=600,height=800', false);
+  }
+  //  合同查找带回（不包括带回事件）
+  function callBackContractNoDeal() {
+    window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT %>&field=ConvertContractId", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>', 'left=200,top=200,width=600,height=800', false);
+  }
+  // 根据查找带回的合同进行的处理
+  function GetDataByContract() {
+    // 需要做的处理
 
-      var contract_idHidden = $("#contract_idHidden").val();
-      var contractName = $("#contract_id").val();
-      if (contract_idHidden != "") {
-        // 1.将添加的同和信息赋值给转换的合同信息
-        // ConvertContractId   ConvertContractIdHidden
-        $("#ConvertContractId").val(contractName);
-        $("#ConvertContractIdHidden").val(contract_idHidden);
-        // 2.检查报价中包含初始费用且合同中也有，此时会提示“报价中初始费用不会替换已有初始费用
-        var quote_id = <%=primaryQuote==null?"":primaryQuote.id.ToString() %>
+    var contract_idHidden = $("#contract_idHidden").val();
+    var contractName = $("#contract_id").val();
+    if (contract_idHidden != "") {
+      // 1.将添加的同和信息赋值给转换的合同信息
+      // ConvertContractId   ConvertContractIdHidden
+      $("#ConvertContractId").val(contractName);
+      $("#ConvertContractIdHidden").val(contract_idHidden);
+      // 2.检查报价中包含初始费用且合同中也有，此时会提示“报价中初始费用不会替换已有初始费用
+      var quote_id = <%=primaryQuote==null?"":primaryQuote.id.ToString() %>
           $.ajax({
             type: "GET",
             async: false,
@@ -1883,6 +1885,19 @@
 
         // 记录合同的开始时间和结束时间 ，生效日期必须在开始时间和结束日期之间
       }
+  }
+
+  function openTicket() {
+    var newTicketId = $("#newTicketId").val();
+    if (newTicketId != "") {
+
     }
+  }
+  function openSaleOrder() {
+    var newSaleOrderId = $("#newSaleOrderId").val();
+    if (newSaleOrderId != "") {
+      window.open("../SaleOrder/SaleOrderView.aspx?id=" + newSaleOrderId, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SaleOrderView %>', 'left=200,top=200,width=600,height=800', false);
+    }
+  }
 
 </script>

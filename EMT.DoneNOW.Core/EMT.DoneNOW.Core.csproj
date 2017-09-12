@@ -115,6 +115,7 @@
     <Compile Include="SYS\sys_notify_tmpl.cs" />
     <Compile Include="SYS\sys_oper_log.cs" />
     <Compile Include="SYS\sys_query_type_user.cs" />
+    <Compile Include="SYS\sys_resource_department.cs" />
     <Compile Include="SYS\sys_resource_territory.cs" />
     <Compile Include="SYS\sys_role.cs" />
     <Compile Include="SYS\sys_system_setting.cs" />

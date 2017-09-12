@@ -35,7 +35,7 @@
       }
 
     .help {
-      background-image: url(../img/help.png);
+      background-image: url(../Images/help.png);
       cursor: pointer;
       display: inline-block;
       height: 16px;
@@ -85,27 +85,27 @@
     }
 
     .Save, .SaveAndClone, .SaveAndNew {
-      background-image: url("../img/save.png");
+      background-image: url("../Images/save.png");
     }
 
     .Ok {
-      background-image: url("../img/ok.png");
+      background-image: url("../Images/ok.png");
     }
 
     .Cancel {
-      background-image: url("../img/cancel.png");
+      background-image: url("../Images/cancel.png");
     }
 
     .Tools {
-      background-image: url("../img/dropdown.png");
+      background-image: url("../Images/dropdown.png");
     }
 
     .Add {
-      background-image: url("../img/add.png");
+      background-image: url("../Images/add.png");
     }
 
     .Print {
-      background-image: url("../img/print.png");
+      background-image: url("../Images/print.png");
     }
 
     .Button > .Text {
@@ -497,7 +497,7 @@
           <!--上一层-->
           <li style="display: none;" id="a1">
             <a class="ImgLink">
-              <img class="ButtonImg" src="img/move-left.png">
+              <img class="ButtonImg" src="../Images/move-left.png">
               <span class="Text">上一页</span>
             </a>
           </li>
@@ -505,7 +505,7 @@
           <li class="right" id="b1">
             <a class="ImgLink">
               <span class="Text">下一页</span>
-              <img class="ButtonRightImg" src="img/move-right.png">
+              <img class="ButtonRightImg" src="../Images/move-right.png">
             </a>
           </li>
           <!--完成-->
@@ -517,7 +517,7 @@
           <!--关闭-->
           <li class="right" style="display: none;" id="d1">
             <a class="ImgLink">
-              <img class="ButtonRightImg" src="img/cancel.png">
+              <img class="ButtonRightImg" src="../Images/cancel.png">
               <span class="Text">Close</span>
             </a>
           </li>
@@ -593,7 +593,7 @@
           <!--上一层-->
           <li id="a2">
             <a class="ImgLink">
-              <img class="ButtonImg" src="img/move-left.png">
+              <img class="ButtonImg" src="../Images/move-left.png">
               <span class="Text">上一页</span>
             </a>
           </li>
@@ -601,7 +601,7 @@
           <li class="right" id="b2">
             <a class="ImgLink">
               <span class="Text">下一页</span>
-              <img class="ButtonRightImg" src="img/move-right.png">
+              <img class="ButtonRightImg" src="../Images/move-right.png">
             </a>
           </li>
           <!--完成-->
@@ -613,7 +613,7 @@
           <!--关闭-->
           <li class="right" style="display: none;" id="d2">
             <a class="ImgLink">
-              <img class="ButtonRightImg" src="img/cancel.png">
+              <img class="ButtonRightImg" src="../Images/cancel.png">
               <span class="Text">Close</span>
             </a>
           </li>
@@ -664,7 +664,7 @@
           <!--上一层-->
           <li id="a3">
             <a class="ImgLink">
-              <img class="ButtonImg" src="img/move-left.png">
+              <img class="ButtonImg" src="../Images/move-left.png">
               <span class="Text">上一页</span>
             </a>
           </li>
@@ -672,7 +672,7 @@
           <li class="right" style="display: none;" id="b3">
             <a class="ImgLink">
               <span class="Text">下一页</span>
-              <img class="ButtonRightImg" src="img/move-right.png">
+              <img class="ButtonRightImg" src="../Images/move-right.png">
             </a>
           </li>
           <!--完成-->
@@ -685,7 +685,7 @@
           <!--关闭-->
           <li class="right" style="display: none;" id="d3">
             <a class="ImgLink">
-              <img class="ButtonRightImg" src="img/cancel.png">
+              <img class="ButtonRightImg" src="../Images/cancel.png">
               <span class="Text">Close</span>
             </a>
           </li>
@@ -700,8 +700,9 @@
           <tbody>
             <tr height="85%">
               <td width="90%">
-                <div id="ShowSaleOrder" style="display:none;">
-                   <a href="##">打开新建的销售订单</a>
+                <div class="ShowSaleOrder" style="display:none;">
+                   <a id="OpenSaleOrder" onclick="OpenSaleOrder()">打开新建的销售订单</a>
+                  <input type="hidden" id="newSaleOrderId"/>
                 </div>
                
               </td>
@@ -714,7 +715,7 @@
           <!--上一层-->
           <li style="display: none;" id="a4">
             <a class="ImgLink">
-              <img class="ButtonImg" src="img/move-left.png">
+              <img class="ButtonImg" src="../Images/move-left.png">
               <span class="Text">Back</span>
             </a>
           </li>
@@ -722,7 +723,7 @@
           <li style="display: none;" class="right" id="b4">
             <a class="ImgLink">
               <span class="Text">Next</span>
-              <img class="ButtonRightImg" src="img/move-right.png">
+              <img class="ButtonRightImg" src="../Images/move-right.png">
             </a>
           </li>
           <!--完成-->
@@ -734,7 +735,7 @@
           <!--关闭-->
           <li class="right" id="d4">
             <a class="ImgLink">
-              <img class="ButtonRightImg" src="img/cancel.png">
+              <img class="ButtonRightImg" src="../Images/cancel.png">
               <span class="Text">关闭</span>
             </a>
           </li>
@@ -860,4 +861,11 @@
     eval($("#jqueryCode").val());
     $(".ChooseDiscountCostCoseSelect").html($("#disCodeSelct").val());
   })
+
+  function OpenSaleOrder() {
+    var newSaleOrderId = $("#newSaleOrderId").val();
+    if (newSaleOrderId != "") {
+      window.open("../SaleOrder/SaleOrderView.aspx?id=" + newSaleOrderId, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SaleOrderView %>', 'left=200,top=200,width=600,height=800', false);
+    }
+  }
 </script>

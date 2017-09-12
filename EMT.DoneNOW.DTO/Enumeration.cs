@@ -419,7 +419,9 @@ namespace EMT.DoneNOW.DTO
             VENDOR_CALLBACK = 897,                //供应商查找带回
             SYS_ROLE = 898,                     // 系统管理-角色查询
             SYS_DEPARTMENT = 899,               // 系统管理-部门查询
-            PRODUCTINVENTORY = 909,               //库存
+            PRODUCTINVENTORY = 909,               // 库存
+            CONTRACT_INTERNAL_COST=911,           // 合同管理-内部成本查询
+            RESOURCE_CALLBACK = 913,              // 员工的查找带回（姓名 邮箱）
         }
 
         /// <summary>
@@ -478,6 +480,7 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_COST = 782,                        // 合同成本
             CONTRACT_SERVICE = 783,                     // 合同服务
             CONTRACT_MILESTONE = 784,                   // 合同里程碑
+            CONTRACT_INTERNAL_COST = 791,               // 合同内部成本
             General_Code = 794,                         // 通用代码
             WAREHOUSE_PRODUCT =795,                     // 库存产品
             PRODUCT_VENDOR=796,                         // 产品供应商
@@ -684,13 +687,14 @@ namespace EMT.DoneNOW.DTO
         SubcompanyCompanyView = 14,        // 客户管理-详情-子客户查询
         OpportunityContactView = 15,       // 联系人管理-详情-商机查询
 
-        InstalledProductView = 32,     // 配置项管理
+        InstalledProductView = 32,      // 配置项管理
         Subscription = 34,              // 订阅
         SaleOrder = 36,                 // 销售订单
         Contract = 37,                  // 合同
         Role = 40,                      // 角色
         Department = 41,                // 部门
-        ProuductInventory=50,           //产品库存
+        ProuductInventory=50,           // 产品库存
+        InternalCost = 52,                // 合同内部成本
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -730,6 +734,7 @@ namespace EMT.DoneNOW.DTO
         NoteAdd = 151,                          // 备注新增
 
         RoleSelect = 160,                        // 角色查询
+        ResourceSelect = 161,                    // 员工的查找带回
 
         QuoteItemAdd = 170,                      // 报价项新增
         QuoteItemEdit = 171,                     // 报价项修改
@@ -760,6 +765,8 @@ namespace EMT.DoneNOW.DTO
         ContractAdd = 301,                      // 合同新增
         ContractEdit = 302,                     // 合同编辑
         ContractSelectCallBack = 303,           // 合同查找带回
+        ConIntCostAdd = 304,                    // 合同内部成本新增
+        ConIntCostEdit = 305,                       // 合同内部成本编辑
 
         ProductCata = 310,                        //产品种类查找带回
         MaterialCode = 311,                       //物料代码查找带回

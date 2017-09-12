@@ -123,10 +123,10 @@ namespace EMT.DoneNOW.Web.Quote
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
-                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>document.getElementsByClassName('Workspace1')[0].style.display = 'none';document.getElementsByClassName('Workspace3')[0].style.display = 'none';document.getElementsByClassName('Workspace4')[0].style.display = '';</script>");
-                    if (param.saleOrderId != null)  // todo 拼接新的销售订单打开的链接
+                    ClientScript.RegisterStartupScript(this.GetType(), "显示页面", "<script>document.getElementsByClassName('Workspace1')[0].style.display = 'none';document.getElementsByClassName('Workspace3')[0].style.display = 'none';document.getElementsByClassName('Workspace4')[0].style.display = '';</script>");
+                    if (param.saleOrderId != null)  
                     {
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>document.getElementsByClassName('ShowSaleOrder')[0].style.display = '';</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "显示销售订单", "<script>document.getElementsByClassName('ShowSaleOrder')[0].style.display = '';document.getElementById('newSaleOrderId').value = '" + param.saleOrderId+"';</script>"); 
                     }
                     break;
                 case ERROR_CODE.PARAMS_ERROR:

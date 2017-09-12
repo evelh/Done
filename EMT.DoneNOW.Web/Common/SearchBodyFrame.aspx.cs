@@ -105,6 +105,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYS_ROLE:
                     addBtn = "新增";
                     break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
+                    addBtn = "新增内部成本";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -354,6 +357,10 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.Department:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Transfer()" });
+                    break;
+                case (long)QueryType.InternalCost:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;

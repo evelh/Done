@@ -132,7 +132,7 @@
 
                 <% if (account.parent_id != null)
                     { %>
-                <p class="clear"><a href="#" onclick="window.open('ViewCompany.aspx?id=<%=account.parent_id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ParentCompanyView %>','left=200,top=200,width=960,height=750', false);"><%=companyBll.GetAllShowCompany((long)account.parent_id).name %> </a></p>
+                <p class="clear"><a href="#" onclick="window.open('ViewCompany.aspx?id=<%=account.parent_id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ParentCompanyView %>','left=200,top=200,width=960,height=750', false);"><%=companyBll.GetCompany((long)account.parent_id).name %> </a></p>
                 <%} %>
 
                 <p><%=account.phone %></p>

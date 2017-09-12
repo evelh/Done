@@ -259,6 +259,15 @@ namespace EMT.DoneNOW.Web.Opportunity
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
+                    ClientScript.RegisterStartupScript(this.GetType(), "跳转页面", "<script>document.getElementsByClassName('Workspace1')[0].style.display = 'none';document.getElementsByClassName('Workspace7')[0].style.display = 'none';document.getElementsByClassName('Workspace8')[0].style.display = '';</script>");
+                    if (param.ticketId != null)
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "显示工单", "<script>document.getElementById('openTicket').style.display = '';document.getElementById('newTicketId').value = '" + param.ticketId + "';</script>");
+                    }
+                    if (param.saleOrderId != null)
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "显示销售订单", "<script>document.getElementById('openSaleOrder').style.display = '';document.getElementById('newSaleOrderId').value = '" + param.saleOrderId + "';</script>");
+                    }
                     break;
                 case ERROR_CODE.PARAMS_ERROR:
                     break;

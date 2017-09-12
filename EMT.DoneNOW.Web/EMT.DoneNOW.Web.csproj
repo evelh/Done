@@ -170,6 +170,7 @@
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
+    <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
     <Content Include="Contact\DeleteContact.aspx" />
@@ -837,6 +838,13 @@
     <Compile Include="Contract\ContractEdit.aspx.designer.cs">
       <DependentUpon>ContractEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\InteralCostAddOrEdit.aspx.cs">
+      <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
+      <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1312,6 +1320,9 @@
     <Compile Include="Tools\ContactAjax.ashx.cs">
       <DependentUpon>ContactAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ContractAjax.ashx.cs">
+      <DependentUpon>ContractAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\GeneralAjax.ashx.cs">
       <DependentUpon>GeneralAjax.ashx</DependentUpon>
     </Compile>
@@ -1387,6 +1398,7 @@
     <Content Include="Tools\AccountClassAjax.ashx" />
     <Content Include="Tools\OpportunityReasonAjax.ashx" />
     <Content Include="Tools\InventoryAjax.ashx" />
+    <Content Include="Tools\ContractAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
