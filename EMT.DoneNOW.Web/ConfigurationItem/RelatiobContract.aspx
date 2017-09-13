@@ -97,7 +97,7 @@
                                       continue;
                               }
                                   %>
-                       <tr class="dataGridBody" onclick="Choose(<%=item.object_id %>)" >
+                       <tr class="dataGridBody" onclick="Choose('<%=item.object_id %>')" >
                          <%
                              
                              %>
@@ -126,25 +126,23 @@
     </form>
 </body>
 </html>  
-<script type="text/javascript" src="../Scripts/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../Scripts/jquery-3.1.0.min.js"></script>
 <script>
-  function choose(service_id) {
-    $.ajax({
-      type: "GET",
-      async: false,
-      dataType: "json",
-      url: "../Tools/ContractAjax.ashx?act=costCode&cost_code_id=" + cost_code_id,
-      // data: { CompanyName: companyName },
-      success: function (data) {
-        if (data != "") {
-          $("#materal_code").text(data.name);
-          $("#materal_codeHidden").val(data.id);
-        }
-        else {
+    function Choose(service_id) {
+      $.ajax({
+          type: "GET",
+          url: "../Tools/ContractAjax.ashx?act=RelationIP&InsProId=" + <%=iProduct.id %> + "&contract_id=" + <%=Request.QueryString["contractId"] %>+"&service_id=" + service_id,
+          success: function (data) {
+              if (data == "True") {
+                  alert('关联成功');
+              } else if (data == "False") {
+                  alert('关联失败');
+              }
+              window.close();
 
-        }
-      },
-    });
+              self.opener.parent.location.reload();
+          }
+      })
   }
 </script>
 

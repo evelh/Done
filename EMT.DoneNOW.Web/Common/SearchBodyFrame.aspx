@@ -1281,7 +1281,8 @@
                     alert("解除绑定失败");
                 }
                 // history.go(0);
-                location.reload();
+               
+                parent.location.reload();
             }
           })
         }
@@ -1338,8 +1339,8 @@
                   } else if (data == "False") {
                       alert('关联失败');
                   }
-                  history.go(0);
-              
+                 
+                  parent.location.reload();
               }
             })
           }
@@ -1349,20 +1350,21 @@
           }
         }
         function Delete() {
-          if (confirm("删除后无法恢复，是否继续?")) {
-            $.ajax({
-              type: "GET",
-              url: "../Tools/ProductAjax.ashx?act=deleteIP&iProduct_id=" + entityid,
-              success: function (data) {
-                if (data == "True") {
-                  alert('删除成功');
-                } else if (data == "False") {
-                  alert('删除失败');
-                }
-                history.go(0);
-              }
-            })
-          }
+            if (confirm("删除后无法恢复，是否继续?")) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ProductAjax.ashx?act=deleteIP&iProduct_id=" + entityid,
+                    success: function (data) {
+                        if (data == "True") {
+                            alert('删除成功');
+                        } else if (data == "False") {
+                            alert('删除失败');
+                        }
+                        history.go(0);
+                    }
+                })
+            }
+        }
 
          <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.CONFIGITEM){%>//配置项类型
         function View(id) {

@@ -145,7 +145,7 @@ namespace EMT.DoneNOW.Web
             var cost_code = new d_cost_code_dal().GetSingleCostCode(id);
             if (cost_code != null)
             {
-                context.Response.Write(cost_code);
+                context.Response.Write(new EMT.Tools.Serialize().SerializeJson(cost_code));
             }
         }
 

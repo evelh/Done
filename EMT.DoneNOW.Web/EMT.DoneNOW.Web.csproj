@@ -170,6 +170,7 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\WorkType.css" />
+    <Content Include="Contract\AddCharges.aspx" />
     <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
     <Content Include="Contract\ContractView.aspx" />
@@ -834,6 +835,13 @@
     </Compile>
     <Compile Include="Contact\EditContact.aspx.designer.cs">
       <DependentUpon>EditContact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\AddCharges.aspx.cs">
+      <DependentUpon>AddCharges.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AddCharges.aspx.designer.cs">
+      <DependentUpon>AddCharges.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\ContractAdd.aspx.cs">
       <DependentUpon>ContractAdd.aspx</DependentUpon>

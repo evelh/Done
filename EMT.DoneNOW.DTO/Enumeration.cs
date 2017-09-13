@@ -54,6 +54,8 @@ namespace EMT.DoneNOW.DTO
         LICENSE_TYPE = 109,                      //安全等级：授权类型
         QUOTE_GROUP_BY = 110,                    // 报价分组条件
         CONTRACT_CATE = 112,                    // 合同分类
+        CHARGE_TYPE = 114,                      // 合同的成本类型
+        CHARGE_STATUS = 115,                    // 合同的成本状态
         CONTRACT_MILESTONE=117,                  //合同里程碑
         BILL_POST_TYPE = 118,                   // 合同：工时计费设置
         ACCOUNT_DEDUCTION_TYPE=121,              //审批并提交操作类型
@@ -621,9 +623,9 @@ namespace EMT.DoneNOW.DTO
             MILESTONE_CODE = 1163,                 // 里程碑
             PRODUCT_CODE = 1164,                   // 产品
             QUICKBOOKS = 1165,                     // 
-            BLOCK_PURCHASE = 1166,                 // 
-            RETAINER_PURCHASE = 1167,              // 
-            TICKET_PURCHASE = 1168                 // 
+            BLOCK_PURCHASE = 1166,                 // 预付时间
+            RETAINER_PURCHASE = 1167,              // 预付费用
+            TICKET_PURCHASE = 1168                 // 事件
         }
 
         /// <summary>

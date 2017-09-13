@@ -24,8 +24,10 @@ namespace EMT.DoneNOW.BLL
             dic.Add("cate", genBll.GetDicValues(GeneralTableEnum.CONTRACT_CATE));                   // 合同类别
             dic.Add("periodType", genBll.GetDicValues(GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE));    // 计费周期类型
             dic.Add("billPostType", genBll.GetDicValues(GeneralTableEnum.BILL_POST_TYPE));          // 工时计费设置
+            dic.Add("chargeType", genBll.GetDicValues(GeneralTableEnum.CHARGE_TYPE));// 合同成本类型
+            dic.Add("chargeStatus", genBll.GetDicValues(GeneralTableEnum.CHARGE_STATUS));
 
-            return dic;
+            return dic;// 
         }
 
         /// <summary>

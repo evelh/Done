@@ -13,6 +13,7 @@ namespace EMT.DoneNOW.Core
     public partial class ctt_contract_cost : SoftDeleteCore
     {
 
+
         [Key]
         [DataMember]
         public Int64 id { get; set; }
@@ -31,7 +32,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public DateTime date_purchased { get; set; }
         [DataMember]
-        public SByte is_billed { get; set; }
+        public SByte is_billable { get; set; }
         [DataMember]
         public Int64? service_id { get; set; }
         [DataMember]
@@ -41,7 +42,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String purchase_order_no { get; set; }
         [DataMember]
-        public String po_no { get; set; }
+        public String internal_po_no { get; set; }
         [DataMember]
         public String invoice_no { get; set; }
         [DataMember]
