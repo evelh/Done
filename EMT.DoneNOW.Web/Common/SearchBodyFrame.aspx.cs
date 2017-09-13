@@ -117,11 +117,14 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.RELATION_CONFIGITEM:
                     addBtn = "新增配置项";
 					break;
-                case (int)DicEnum.QUERY_CATE.REVOKE_EXPENSE:
+                case (int)DicEnum.QUERY_CATE.REVOKE_CHARGES:
                 case (int)DicEnum.QUERY_CATE.REVOKE_MILESTONES:
                 case (int)DicEnum.QUERY_CATE.REVOKE_RECURRING_SERVICES:
                 case (int)DicEnum.QUERY_CATE.REVOKE_SUBSCRIPTIONS:
                     addBtn = "完成";
+                    break;
+                case (int)DicEnum.QUERY_CATE.APPROVE_MILESTONES://审批里程碑
+                    addBtn = "审批并提交";
                     break;
                 default:
                     addBtn = "";
@@ -423,6 +426,11 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "Inactive()" });
+                    break;
+                case (long)QueryType.APPROVE_MILESTONES:
+                    contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "Post()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "里程碑详情", click_function = "Miledetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ContractDetail()" });
                     break;
                 default:
                     break;

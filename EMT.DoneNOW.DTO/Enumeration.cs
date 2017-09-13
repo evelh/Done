@@ -432,14 +432,19 @@ namespace EMT.DoneNOW.DTO
             NORELATION_CONFIGITEM = 916,          // 未关联到该合同的该合同的客户的配置项
             SECURITY_LEVEL=918,                   //安全等级
             CONTRACT_MILESTONE=919,               //里程碑状态
-
+            REVOKE_CHARGES = 921,               //撤销成本审批
 
             REVOKE_LABOUR,                //撤销工时审批
-            REVOKE_EXPENSE,               //撤销成本审批
+            REVOKE_EXPENSE,               //撤销费用审批
             REVOKE_RECURRING_SERVICES,    //撤销定期服务审批
             REVOKE_MILESTONES,            //撤销里程碑审批
             REVOKE_SUBSCRIPTIONS,         //撤销订阅审批
-            REVOKE_CHARGES,               //撤销费用审批
+            APPROVE_LABOUR,                //工时审批
+            APPROVE_EXPENSE,               //费用审批
+            APPROVE_RECURRING_SERVICES,    //定期服务审批
+            APPROVE_MILESTONES,            //里程碑审批
+            APPROVE_SUBSCRIPTIONS,         //订阅审批
+            APPROVE_CHARGES,               //成本审批
         }
 
         /// <summary>
@@ -495,9 +500,12 @@ namespace EMT.DoneNOW.DTO
             SALE_ORDER = 778,                           // 销售订单
             SUBSCRIPTION = 779,                         // 订阅
             CONTRACT_EXTENSION = 780,                   // 合同扩展信息
+            CONTRACT_BLOCK,                             //合同预付
             CONTRACT_COST = 782,                        // 合同成本
             CONTRACT_SERVICE = 783,                     // 合同服务
             CONTRACT_MILESTONE = 784,                   // 合同里程碑
+            CONTRACT_SERVICE_ADJUST=788,                //合同服务调整
+            CONTRACT_SERVICE_PERIOD = 789,                        //合同服务周期
             CONTRACT_INTERNAL_COST = 791,               // 合同内部成本
             CONTRACT_EXCLUSTION_ROLE=793,               //合同例外因素-不计费的角色
             General_Code = 794,                         // 通用代码
@@ -689,7 +697,8 @@ namespace EMT.DoneNOW.DTO
         /// 审批并提交操作类型 -121
         /// </summary>
         public enum ACCOUNT_DEDUCTION_TYPE {
-            SERVICE=1325,               //服务
+            MILESTONES=1323,             //里程碑
+            SERVICE =1325,               //服务
             SERVICE_ADJUST=1326,        //服务跳转
             INITIAL_COST =1327,          //初始费用
         }
@@ -737,15 +746,19 @@ namespace EMT.DoneNOW.DTO
         Norelation_ConfigItem = 57,     // 未关联到该合同的配置项
         SECURITYLEVEL=59,               //安全等级
         MILESTONE=60,                   //里程碑
+        REVOKE_CHARGES = 62,               //撤销成本审批
 
-        CHARGES,               //撤销费用审批
-        LABOUR,                //撤销工时审批
-
-        EXPENSE,               //撤销成本审批
-        RECURRING_SERVICES,    //撤销定期服务审批
-        MILESTONES,            //撤销里程碑审批
-        SUBSCRIPTIONS,         //撤销订阅审批
-        
+        REVOKE_LABOUR,                //撤销工时审批
+        REVOKE_EXPENSE,               //撤销费用审批
+        REVOKE_RECURRING_SERVICES,    //撤销定期服务审批
+        REVOKE_MILESTONES,            //撤销里程碑审批
+        REVOKE_SUBSCRIPTIONS,         //撤销订阅审批       
+        APPROVE_LABOUR,                //工时审批
+        APPROVE_EXPENSE,               //费用审批
+        APPROVE_RECURRING_SERVICES,    //定期服务审批
+        APPROVE_MILESTONES,            //里程碑审批
+        APPROVE_SUBSCRIPTIONS,         //订阅审批
+        APPROVE_CHARGES,               //成本审批
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -849,5 +862,7 @@ namespace EMT.DoneNOW.DTO
         Role=360,                                  //角色
         Department=361,                            //部门
         ConfigItemType=362,                         //配置项类型
+
+        ContractMilestone = 363,                    //里程碑
     }
 }

@@ -76,6 +76,24 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYS_DEPARTMENT:
                     currentQuery.page_name = "部门管理";
                     break;
+                case (int)DicEnum.QUERY_CATE.RESOURCE:
+                    currentQuery.page_name = "联系人管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.SECURITY_LEVEL:
+                    currentQuery.page_name = "安全等级管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONE:
+                    currentQuery.page_name = "里程碑状态管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.PRODUCT:
+                    currentQuery.page_name = "产品管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.CONFIGITEMTYPE:
+                    currentQuery.page_name = "配置项类型管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.REVOKE_CHARGES:
+                    currentQuery.page_name = "撤销成本审批";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

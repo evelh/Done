@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="user_id"></param>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public ERROR_CODE Revoke_Expense(long user_id, string ids,out string re)
+        public ERROR_CODE Revoke_CHARGES(long user_id, string ids, out string re)
         {
             re = string.Empty;
             var user = UserInfoBLL.GetUserInfo(user_id);
@@ -43,12 +43,13 @@ namespace EMT.DoneNOW.BLL
                 var idList = ids.Split(',');
                 foreach (var id in idList)
                 {
-                   var oldcad=cad = GetAccountDed(long.Parse(id));
+                    var oldcad = cad = GetAccountDed(long.Parse(id));
                     if (cad.invoice_id != null)
                     {
                         returnvalue.Append(id + "条目已经生成发票（发票ID：" + cad.invoice_id + "），请先作废该发票");
                     }
-                    else {
+                    else
+                    {
                         cad.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         cad.delete_user_id = user.id;
                         var add1_log = new sys_oper_log()
@@ -61,70 +62,76 @@ namespace EMT.DoneNOW.BLL
                             oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,
                             oper_object_id = cad.id,// 操作对象id
                             oper_type_id = (int)OPER_LOG_TYPE.DELETE,
-                            oper_description = cad_dal.CompareValue(oldcad,cad),
+                            oper_description = cad_dal.CompareValue(oldcad, cad),
                             remark = "删除审批并提交"
                         };          // 创建日志
                         new sys_oper_log_dal().Insert(add1_log);       // 插入日志
-                        if (cad_dal.Update(cad))
+                        if (!cad_dal.Update(cad))
                         {
-                            //合同成本
-                           var oldccc= ccc = ccc_dal.FindSignleBySql<ctt_contract_cost>($"select * from ctt_contract_cost where id={cad.object_id} and delete_time=0");
-                            if(ccc!=null){
-                                ccc.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                                ccc.update_user_id = user.id;
-                                ccc.bill_status = 1;
-                                ccc.extended_price = ccc.unit_price * ccc.quantity;
-                                var add_log = new sys_oper_log()
-                                {
-                                    user_cate = "用户",
-                                    user_id = (int)user.id,
-                                    name = user.name,
-                                    phone = user.mobile == null ? "" : user.mobile,
-                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,
-                                    oper_object_id = ccc.id,// 操作对象id
-                                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                                    oper_description = cad_dal.CompareValue(oldccc,ccc),
-                                    remark = "修改合同成本"
-                                };          // 创建日志
+                            return ERROR_CODE.ERROR;
+                        }
+                        //合同成本
+                        var oldccc = ccc = ccc_dal.FindSignleBySql<ctt_contract_cost>($"select * from ctt_contract_cost where id={cad.object_id} and delete_time=0");
+                        if (ccc != null)
+                        {
+                            ccc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                            ccc.update_user_id = user.id;
+                            ccc.bill_status = 1;
+                            ccc.extended_price = ccc.unit_price * ccc.quantity;
+                            var add_log = new sys_oper_log()
+                            {
+                                user_cate = "用户",
+                                user_id = (int)user.id,
+                                name = user.name,
+                                phone = user.mobile == null ? "" : user.mobile,
+                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,
+                                oper_object_id = ccc.id,// 操作对象id
+                                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                                oper_description = cad_dal.CompareValue(oldccc, ccc),
+                                remark = "修改合同成本"
+                            };          // 创建日志
                             new sys_oper_log_dal().Insert(add_log);       // 插入日志
-                            if (ccc_dal.Update(ccc))
+                            if (!ccc_dal.Update(ccc))
+                            {
+                                return ERROR_CODE.ERROR;
+                            }
+                            if (ccc.contract_block_id != null)
+                            {
+                                //合同预付
+                                var oldccb = ccb = ccb_dal.FindSignleBySql<ctt_contract_block>($" select * from ctt_contract_block where id={ccc.contract_block_id} and delete_time=0");
+                                if (ccb != null)
                                 {
-
-                                }
-                                else {
-
-                                }
-                                if (ccc.contract_block_id != null)
-                                {
-                                    //合同预付
-                                    ccb = ccb_dal.FindSignleBySql<ctt_contract_block>($" select * from ctt_contract_block where id={ccc.contract_block_id} and delete_time=0");
-                                    if (ccb != null)
+                                    ccb.status_id = 1;
+                                    ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                                    ccb.update_user_id = user.id;
+                                    var add3_log = new sys_oper_log()
                                     {
-                                        ccb.status_id = 1;
-                                        ccb.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                                        ccb.update_user_id = user.id;
-
-                                        if (ccb_dal.Update(ccb))
-                                        {
-
-                                        }
-                                        else {
-
-                                        }
+                                        user_cate = "用户",
+                                        user_id = (int)user.id,
+                                        name = user.name,
+                                        phone = user.mobile == null ? "" : user.mobile,
+                                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_BLOCK,
+                                        oper_object_id = ccc.id,// 操作对象id
+                                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                                        oper_description = cad_dal.CompareValue(oldccb, ccb),
+                                        remark = "修改合同预付"
+                                    };          // 创建日志
+                                    new sys_oper_log_dal().Insert(add3_log);       // 插入日志
+                                    if (!ccb_dal.Update(ccb))
+                                    {
+                                        return ERROR_CODE.ERROR;
                                     }
                                 }
-
                             }
-                        }
-                        else {
-
                         }
 
                     }
                 }
             }
-            if (!string.IsNullOrEmpty(returnvalue.ToString())) {
+            if (!string.IsNullOrEmpty(returnvalue.ToString()))
+            {
                 re = returnvalue.ToString();
                 return ERROR_CODE.EXIST;
             }
@@ -150,7 +157,8 @@ namespace EMT.DoneNOW.BLL
             ctt_contract cc = new ctt_contract();//合同
             ctt_contract_service_period ccsp = new ctt_contract_service_period();//合同服务周期
             ctt_contract_service_adjust ccsa = new ctt_contract_service_adjust();//合同服务调整
-
+            ctt_contract_service_period_dal ccsp_dal = new ctt_contract_service_period_dal();
+            ctt_contract_service_adjust_dal ccsa_dal = new ctt_contract_service_adjust_dal();
             if (!string.IsNullOrEmpty(ids))
             {
                 var idList = ids.Split(',');
@@ -180,21 +188,71 @@ namespace EMT.DoneNOW.BLL
                             remark = "删除审批并提交"
                         };          // 创建日志
                         new sys_oper_log_dal().Insert(add1_log);       // 插入日志
-                        if (cad_dal.Update(cad))
+                        if (!cad_dal.Update(cad))
                         {
-                           
+                            return ERROR_CODE.ERROR;
                         }
                         //类型为服务
-                        if (cad.type_id == (int)ACCOUNT_DEDUCTION_TYPE.SERVICE) {
+                        if (cad.type_id == (int)ACCOUNT_DEDUCTION_TYPE.SERVICE)
+                        {
+                            var oldccsp = ccsp = ccsp_dal.FindSignleBySql<ctt_contract_service_period>($"select * from ctt_contract_service_period where id={cad.contract_id} and delete_time=0");
+                            ccsp.approve_and_post_time = null;
+                            ccsp.approve_and_post_user_id = null;
+                            ccsp.period_adjusted_price = ccsp.period_price * ccsp.quantity;
+                            ccsp.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                            ccsp.update_user_id = user.id;
+                            var add2_log = new sys_oper_log()
+                            {
+                                user_cate = "用户",
+                                user_id = (int)user.id,
+                                name = user.name,
+                                phone = user.mobile == null ? "" : user.mobile,
+                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_PERIOD,//
+                                oper_object_id = ccsp.id,// 操作对象id
+                                oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                                oper_description = cad_dal.CompareValue(oldccsp, ccsp),
+                                remark = "修改合同服务周期"
+                            };          // 创建日志
+                            new sys_oper_log_dal().Insert(add2_log);       // 插入日志
+                            if (!ccsp_dal.Update(ccsp))
+                            {
+                                return ERROR_CODE.ERROR;
+                            }
+
 
                         }
                         //类型为服务调整
-                        if (cad.type_id == (int)ACCOUNT_DEDUCTION_TYPE.SERVICE_ADJUST) {
+                        if (cad.type_id == (int)ACCOUNT_DEDUCTION_TYPE.SERVICE_ADJUST)
+                        {
+                            var oldccsa = ccsa = ccsa_dal.FindSignleBySql<ctt_contract_service_adjust>($"select * from ctt_contract_service_adjust where id={cad.contract_id} and delete_time=0");
+                            cc = new ctt_contract_dal().FindSignleBySql<ctt_contract>($"select * from ctt_contract where id={cad.contract_id} and delete_time=0");
+                            ccsa.approve_and_post_time = null;
+                            ccsa.approve_and_post_user_id = null;
+                            ccsa.adjust_prorated_price_change = (decimal)cc.setup_fee;
+                            ccsa.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                            ccsa.update_user_id = user.id;
+                            var add2_log = new sys_oper_log()
+                            {
+                                user_cate = "用户",
+                                user_id = (int)user.id,
+                                name = user.name,
+                                phone = user.mobile == null ? "" : user.mobile,
+                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST,//
+                                oper_object_id = ccsp.id,// 操作对象id
+                                oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                                oper_description = cad_dal.CompareValue(oldccsa, ccsa),
+                                remark = "修改合同服务调整"
+                            };          // 创建日志
+                            new sys_oper_log_dal().Insert(add2_log);       // 插入日志
+                            if (ccsp_dal.Update(ccsp)) { }
 
                         }
                         //类型为初始费用
-                        if (cad.type_id == (int)ACCOUNT_DEDUCTION_TYPE.INITIAL_COST) {
-                            var oldcc=cc = new ctt_contract_dal().FindSignleBySql<ctt_contract>($"select * from ctt_contract where id={cad.contract_id} and delete_time=0");
+                        if (cad.type_id == (int)ACCOUNT_DEDUCTION_TYPE.INITIAL_COST)
+                        {
+                            var oldcc = cc = new ctt_contract_dal().FindSignleBySql<ctt_contract>($"select * from ctt_contract where id={cad.contract_id} and delete_time=0");
                             cc.adjust_setup_fee = cc.setup_fee;
                             cc.setup_fee_approve_and_post_user_id = null;
                             cc.setup_fee_approve_and_post_time = null;
@@ -214,8 +272,9 @@ namespace EMT.DoneNOW.BLL
                                 remark = "修改合同初始费用"
                             };          // 创建日志
                             new sys_oper_log_dal().Insert(add2_log);       // 插入日志
-                            if (new ctt_contract_dal().Update(cc)) {
-
+                            if (!new ctt_contract_dal().Update(cc))
+                            {
+                                return ERROR_CODE.ERROR;
                             }
                         }
                     }
@@ -275,17 +334,19 @@ namespace EMT.DoneNOW.BLL
                             remark = "删除审批并提交"
                         };          // 创建日志
                         new sys_oper_log_dal().Insert(add1_log);       // 插入日志
-                        if (cad_dal.Update(cad))
+                        if (!cad_dal.Update(cad))
                         {
+                            return ERROR_CODE.ERROR;
                         }
                         else { }
 
 
                     }
                     //里程碑
-                    if (cad.object_id != null) {
-                       var oldccm= ccm = ccm_dal.FindSignleBySql<ctt_contract_milestone>($"select * from ctt_contract_milestone where id={cad.object_id} and delete_time=0");
-                        ccm.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    if (cad.object_id != null)
+                    {
+                        var oldccm = ccm = ccm_dal.FindSignleBySql<ctt_contract_milestone>($"select * from ctt_contract_milestone where id={cad.object_id} and delete_time=0");
+                        ccm.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         ccm.update_user_id = user.id;
                         ccm.status_id = (int)MILESTONE_STATUS.READY_TO_BILL;
                         var add_log = new sys_oper_log()
@@ -302,6 +363,10 @@ namespace EMT.DoneNOW.BLL
                             remark = "修改合同里程碑"
                         };          // 创建日志
                         new sys_oper_log_dal().Insert(add_log);       // 插入日志
+                        if (!ccm_dal.Update(ccm))
+                        {
+                            return ERROR_CODE.ERROR;
+                        }
                     }
                 }
             }
@@ -337,7 +402,7 @@ namespace EMT.DoneNOW.BLL
                 var idList = ids.Split(',');
                 foreach (var id in idList)
                 {
-                    var oldcad=cad = GetAccountDed(long.Parse(id));
+                    var oldcad = cad = GetAccountDed(long.Parse(id));
                     if (cad.invoice_id != null)
                     {
                         returnvalue.Append(id + "条目已经生成发票（发票ID：" + cad.invoice_id + "），请先作废该发票");
@@ -361,8 +426,9 @@ namespace EMT.DoneNOW.BLL
                             remark = "删除审批并提交"
                         };          // 创建日志
                         new sys_oper_log_dal().Insert(add1_log);       // 插入日志
-                        if (cad_dal.Update(cad))
+                        if (!cad_dal.Update(cad))
                         {
+                            return ERROR_CODE.ERROR;
                         }
                         else { }
 
@@ -394,7 +460,10 @@ namespace EMT.DoneNOW.BLL
                         };          // 创建日志
                         new sys_oper_log_dal().Insert(add_log);       // 插入日志
 
-
+                        if (!csp_dal.Update(csp))
+                        {
+                            return ERROR_CODE.ERROR;
+                        }
 
                     }
                 }
@@ -410,7 +479,8 @@ namespace EMT.DoneNOW.BLL
         /// 审核并提交
         /// </summary>
         /// <returns></returns>
-        public crm_account_deduction GetAccountDed(long id) {
+        public crm_account_deduction GetAccountDed(long id)
+        {
             return cad_dal.FindSignleBySql<crm_account_deduction>($"select * from crm_account_deduction where id={id} and delete_time=0");
         }
     }

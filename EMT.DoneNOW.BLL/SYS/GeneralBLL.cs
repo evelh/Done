@@ -286,6 +286,15 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.CONTRACT_TYPE_USED;//
                 }
             }
+            //里程碑
+            if (table_id == (int)GeneralTableEnum.CONTRACT_MILESTONE) {
+                var mile = new ctt_contract_milestone_dal().FindListBySql<ctt_contract_milestone>($"select * from ctt_contract_milestone where status_id={id} and delete_time=0");
+                if (mile.Count > 0) {
+                    n = mile.Count;
+                    return ERROR_CODE.CONTRACT_MILESTONE_USED;
+                }
+            }
+
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>

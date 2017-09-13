@@ -317,11 +317,11 @@
                                                 </div>
                                                 <div class="Group">
                                                     <div class="Heading">
-                                                        <div class="Text">工具</div>
+                                                        <div class="Text">审批并提交</div>
                                                     </div>
                                                     <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
+                                                        <a class="Button ButtonIcon NormalState" href="Contract/ApproveAndPost.aspx" target="PageFrame"> 
+                                                            <span class="Text">审批并提交</span>
                                                         </a>
                                                     </div>
                                                 </div>

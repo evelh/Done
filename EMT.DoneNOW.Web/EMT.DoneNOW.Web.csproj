@@ -170,8 +170,10 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\WorkType.css" />
+    <Content Include="Contract\ApproveAndPost.aspx" />
     <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
+    <Content Include="Contract\ContractPostDate.aspx" />
     <Content Include="Contract\ContractView.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Contract\RoleRate.aspx" />
@@ -206,6 +208,7 @@
     <Content Include="Images\Fangdaindex.png" />
     <Content Include="Images\help.png" />
     <Content Include="Images\Helpindex.png" />
+    <Content Include="Images\left_block.png" />
     <Content Include="Images\Linen.jpg" />
     <Content Include="Images\Listindex.png" />
     <Content Include="Images\LiveLinksindex.png" />
@@ -835,6 +838,13 @@
     <Compile Include="Contact\EditContact.aspx.designer.cs">
       <DependentUpon>EditContact.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\ApproveAndPost.aspx.cs">
+      <DependentUpon>ApproveAndPost.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ApproveAndPost.aspx.designer.cs">
+      <DependentUpon>ApproveAndPost.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contract\ContractAdd.aspx.cs">
       <DependentUpon>ContractAdd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -848,6 +858,13 @@
     </Compile>
     <Compile Include="Contract\ContractEdit.aspx.designer.cs">
       <DependentUpon>ContractEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\ContractPostDate.aspx.cs">
+      <DependentUpon>ContractPostDate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractPostDate.aspx.designer.cs">
+      <DependentUpon>ContractPostDate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\ContractView.aspx.cs">
       <DependentUpon>ContractView.aspx</DependentUpon>
@@ -1339,6 +1356,9 @@
     <Compile Include="Tools\AddressAjax.ashx.cs">
       <DependentUpon>AddressAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ApproveAndPostAjax.ashx.cs">
+      <DependentUpon>ApproveAndPostAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\CompanyAjax.ashx.cs">
       <DependentUpon>CompanyAjax.ashx</DependentUpon>
     </Compile>
@@ -1440,6 +1460,7 @@
     <Content Include="Tools\ResourceAjax.ashx" />
     <Content Include="Tools\ConfigItemTypeAjax.ashx" />
     <Content Include="Tools\ReverseAjax.ashx" />
+    <Content Include="Tools\ApproveAndPostAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

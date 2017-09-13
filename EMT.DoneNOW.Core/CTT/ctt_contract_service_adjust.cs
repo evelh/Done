@@ -42,6 +42,8 @@ namespace EMT.DoneNOW.Core
         public Int64? vendor_account_id { get; set; }
         [DataMember]
         public Int64 contract_service_id { get; set; }
+        [DataMember]
+        public Decimal adjust_prorated_price_change { get; set; }
 
 
     }
