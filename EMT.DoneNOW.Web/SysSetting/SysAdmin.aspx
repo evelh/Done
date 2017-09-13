@@ -189,7 +189,7 @@
                                             <div class="StandardText">Set up billing roles that determine the rate at which labour will be billed.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState"  href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_DEPARTMENT %>" target="PageFrame">部门</a>
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_DEPARTMENT %>" target="PageFrame">部门</a>
                                             <div class="StandardText">Set up organizational entities in your company that are associated with resources and work types, and play a role in project security.</div>
                                         </div>
                                         <div class="PageNavigationLink">
@@ -466,7 +466,7 @@
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_EXPENSE %>" target="PageFrame">成本（正在进行）</a>
+                                            <a class="Button ButtonIcon Link NormalState" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_CHARGES %>" target="PageFrame">成本</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">

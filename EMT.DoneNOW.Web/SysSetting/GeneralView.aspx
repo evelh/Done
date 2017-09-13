@@ -28,8 +28,7 @@
             <div class="TitleBar">
                 <div class="Title">
                     <div class="TitleBarNavigationButton">
-                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/SysSetting/SysAdmin.aspx" CssClass="buttons"><img src="../Images/move-left.png"></asp:HyperLink>
-                       
+                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/SysSetting/SysAdmin.aspx" CssClass="buttons"><img src="../Images/move-left.png"/></asp:HyperLink>                       
                     </div> 
                     <span class="text1"><%=name %></span>
                     <a href="###" class="collection"></a>

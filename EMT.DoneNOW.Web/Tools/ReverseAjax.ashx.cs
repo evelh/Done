@@ -19,8 +19,8 @@ namespace EMT.DoneNOW.Web
             var ids = context.Request.QueryString["ids"];
             switch (action)
             {
-                case "Expense":                   
-                    Revoke_Expense(context, Convert.ToString(ids)); break;
+                case "CHARGES":
+                    Revoke_CHARGES(context, Convert.ToString(ids)); break;
                 case "Recurring_Services":
                     Revoke_Recurring_Services(context, Convert.ToString(ids)); break;
                 case "Milestones":
@@ -35,12 +35,12 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <param name="context"></param>
         /// <param name="ids"></param>
-        public void Revoke_Expense(HttpContext context, string ids) {
+        public void Revoke_CHARGES(HttpContext context, string ids) {
             var res = context.Session["dn_session_user_info"] as sys_user;
             if (res != null)
             {
                 string re = string.Empty;
-                var result = rebll.Revoke_Expense(res.id, ids,out re);
+                var result = rebll.Revoke_CHARGES(res.id, ids,out re);
                 switch (result) {
                     case DTO.ERROR_CODE.SUCCESS: context.Response.Write("撤销审批成功！");break;
                     case DTO.ERROR_CODE.EXIST: context.Response.Write(re); break;

@@ -81,7 +81,6 @@ namespace EMT.DoneNOW.Web
         }
         public void Active(HttpContext context, long class_id)
         {
-            //此处写复制逻辑
             var user = context.Session["dn_session_user_info"] as sys_user;
             if (user != null)
             {
@@ -101,7 +100,6 @@ namespace EMT.DoneNOW.Web
         }
         public void NoActive(HttpContext context, long class_id)
         {
-            //此处写复制逻辑
             var user = context.Session["dn_session_user_info"] as sys_user;
             if (user != null)
             {
