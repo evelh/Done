@@ -508,6 +508,7 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_MILESTONE = 784,                   // 合同里程碑
             CONTRACT_SERVICE_ADJUST=788,                //合同服务调整
             CONTRACT_SERVICE_PERIOD = 789,                        //合同服务周期
+            CONTRACT_RATE = 790,                        // 合同费率
             CONTRACT_INTERNAL_COST = 791,               // 合同内部成本
             CONTRACT_EXCLUSTION_ROLE=793,               //合同例外因素-不计费的角色
             General_Code = 794,                         // 通用代码

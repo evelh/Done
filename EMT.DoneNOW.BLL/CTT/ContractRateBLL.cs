@@ -34,5 +34,58 @@ namespace EMT.DoneNOW.BLL
 
             return roles;
         }
+
+        /// <summary>
+        /// 新增或编辑角色费率
+        /// </summary>
+        /// <param name="rate"></param>
+        /// <param name="logUserId"></param>
+        public void CreateOrUpdateRate(ctt_contract_rate rate, long logUserId)
+        {
+            rate.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            rate.update_user_id = logUserId;
+            if (rate.id==0)
+            {
+                rate.id = dal.GetNextIdCom();
+                rate.create_time = rate.update_time;
+                rate.create_user_id = rate.update_user_id;
+                dal.Insert(rate);
+                OperLogBLL.OperLogAdd<ctt_contract_rate>(rate, rate.id, logUserId, DTO.DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_RATE, "新增合同费率");
+            }
+            else
+            {
+                var roleRate = dal.FindById(rate.id);
+                roleRate.role_id = rate.role_id;
+                roleRate.rate = rate.rate;
+                roleRate.update_time = rate.update_time;
+                roleRate.update_user_id = rate.update_user_id;
+                dal.Update(roleRate);
+                OperLogBLL.OperLogUpdate<ctt_contract_rate>(roleRate, dal.FindById(rate.id), roleRate.id, logUserId, DTO.DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_RATE, "编辑合同费率");
+            }
+        }
+
+        /// <summary>
+        /// 根据id查找合同角色费率
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ctt_contract_rate GetRoleRate(long id)
+        {
+            return dal.FindById(id);
+        }
+
+        /// <summary>
+        /// 删除合同费率
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        public void DeleteRate(long id, long userId)
+        {
+            var rate = dal.FindById(id);
+            rate.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            rate.delete_user_id = userId;
+            dal.Update(rate);
+            OperLogBLL.OperLogDelete<ctt_contract_rate>(rate, rate.id, userId, DTO.DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_RATE, "删除合同费率");
+        }
     }
 }
