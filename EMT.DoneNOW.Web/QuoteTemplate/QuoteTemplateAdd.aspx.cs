@@ -21,7 +21,7 @@ namespace EMT.DoneNOW.Web
             if (!IsPostBack) {
                 Bind();
                 if (id > 0) {//修改
-                    var data = new QuoteTemplateBLL().GetSingelTemplate((int)id);
+                    var data = new QuoteTemplateBLL().GetQuoteTemplate(id);
                     if (data == null)
                     {
                         Response.Write("<script>alert('获取相关数据失败，返回上一个页面');window.close();self.opener.location.reload();</script>");

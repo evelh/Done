@@ -103,7 +103,14 @@ namespace EMT.DoneNOW.BLL
 
         public ERROR_CODE active_quote_template(long user_id, long id)
         {
-           var temp=_dal.FindById(id);
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {
+                // 查询不到用户，用户丢失
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+            var temp=_dal.FindById(id);
+            var old = temp;
             if (temp == null) {
                 return ERROR_CODE.ERROR;
             }
@@ -116,13 +123,7 @@ namespace EMT.DoneNOW.BLL
             if (_dal.Update(temp) == false)
             {
                 return ERROR_CODE.ERROR;
-            }
-            var user = UserInfoBLL.GetUserInfo(user_id);
-            if (user == null)
-            {
-                // 查询不到用户，用户丢失
-                return ERROR_CODE.PARAMS_ERROR;
-            }
+            }           
             var add_account_log = new sys_oper_log()
             {
                 user_cate = "用户",
@@ -133,7 +134,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
                 oper_object_id = temp.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(temp),
+                oper_description = _dal.CompareValue(old,temp),
                 remark = "修改报价模板"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
@@ -153,6 +154,7 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.PARAMS_ERROR;
             }
             var sq = _dal.FindById(id);
+            var old = sq;
             if (sq == null) {
                 return ERROR_CODE.ERROR;
             }
@@ -175,7 +177,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
                 oper_object_id = sq.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(sq),
+                oper_description = _dal.CompareValue(old,sq),
                 remark = "修改报价模板"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
@@ -192,6 +194,7 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.PARAMS_ERROR;
             }
             var sq = _dal.FindById(id);
+            var old = sq;
             if (sq == null)
             {
                 return ERROR_CODE.ERROR;
@@ -225,7 +228,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
                 oper_object_id = sq.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(sq),
+                oper_description = _dal.CompareValue(old,sq),
                 remark = "修改报价模板"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
@@ -309,13 +312,6 @@ namespace EMT.DoneNOW.BLL
         }
         #region 报价模板编辑的更新保存操作
         public ERROR_CODE update(sys_quote_tmpl sqt, long user_id) {
-            sqt.update_user_id = user_id;
-            sqt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-           if (!_dal.Update(sqt)) {
-                return ERROR_CODE.ERROR;
-            }
-
-            //写个操作日志
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
             {
@@ -323,6 +319,14 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.USER_NOT_FIND;
 
             }
+            var old = GetQuoteTemplate(sqt.id);
+            sqt.update_user_id = user_id;
+            sqt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+           if (!_dal.Update(sqt)) {
+                return ERROR_CODE.ERROR;
+            }
+
+            //写个操作日志            
             var add_account_log = new sys_oper_log()
             {
                 user_cate = "用户",
@@ -330,10 +334,10 @@ namespace EMT.DoneNOW.BLL
                 name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,       //数据库缺少对应，报价模板
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,       //数据库缺少对应，报价模板
                 oper_object_id = sqt.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(sqt),
+                oper_description = _dal.CompareValue(old,sqt),
                 remark = "更新报价模板"
 
             };          // 创建日志
@@ -380,18 +384,14 @@ namespace EMT.DoneNOW.BLL
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
                 oper_object_id = sq.id,// 操作对象id
-                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
                 oper_description = _dal.AddValue(sq),
                 remark = "修改报价模板"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
         }
-        #endregion
-        public sys_quote_tmpl GetSingelTemplate(int id) {
-            var syt = _dal.FindSignleBySql<sys_quote_tmpl>($"select * from sys_quote_tmpl where id={id}");
-            return syt;
-        }
+#endregion
         public sys_quote_tmpl GetSingelTemplate()
         {
             var syt = _dal.FindSignleBySql<sys_quote_tmpl>($"select * from sys_quote_tmpl where is_default=1");

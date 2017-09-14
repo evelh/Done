@@ -20,11 +20,6 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取角色id
-            id = 492;
-            //测试一个函数         
-
-
-
             if (!IsPostBack) {
                 var dic = new SysRoleInfoBLL().GetField();
                 this.Tax_cate.DataTextField = "show";

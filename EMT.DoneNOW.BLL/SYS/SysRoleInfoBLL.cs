@@ -63,6 +63,7 @@ namespace EMT.DoneNOW.BLL
 
         public ERROR_CODE Update(sys_role role, long user_id)
         {
+            var old = GetOneData((int)role.id);
             role.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
@@ -92,7 +93,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ROLE,//角色
                 oper_object_id = role.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(role),
+                oper_description = _dal.CompareValue(old,role),
                 remark = "修改角色"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_log);       // 插入日志
@@ -233,7 +234,8 @@ namespace EMT.DoneNOW.BLL
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }
-            var data = _dal.FindSignleBySql<sys_role>($"select * from sys_role where id={id} and delete_time=0");
+            var data = GetOneData((int)id);
+            var old = data;
             if (data != null && data.is_active > 0) {
                 return ERROR_CODE.ACTIVATION;
             }
@@ -256,7 +258,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ROLE,//角色
                 oper_object_id = data.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(data),
+                oper_description = _dal.CompareValue(old,data),
                 remark = "激活角色信息"
             };          // 创建日志
             return ERROR_CODE.SUCCESS;
@@ -273,7 +275,8 @@ namespace EMT.DoneNOW.BLL
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }
-            var data = _dal.FindSignleBySql<sys_role>($"select * from sys_role where id={id} and delete_time=0");
+            var data = GetOneData((int)id);
+            var old = data;
             if (data != null && data.is_active==0)
             {
                 return ERROR_CODE.NO_ACTIVATION;
@@ -299,7 +302,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ROLE,//角色
                 oper_object_id = data.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(data),
+                oper_description = _dal.CompareValue(old,data),
                 remark = "停用角色信息"
             };          // 创建日志
             return ERROR_CODE.SUCCESS;
@@ -311,7 +314,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public sys_role GetOneData(int id)
         {
-            return _dal.FindById(id);
+            return _dal.FindNoDeleteById(id);
         }
         /// <summary>
         /// 返回与角色关联的部门员工集合
