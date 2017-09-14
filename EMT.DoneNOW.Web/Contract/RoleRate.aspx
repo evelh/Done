@@ -16,7 +16,7 @@
       <!--顶部-->
       <div class="TitleBar">
         <div class="Title">
-          <span class="text1">新增区域</span>
+          <span class="text1"><%if (rateId == 0) { %>新增<%} else { %>编辑<%} %>费率</span>
           <a href="###" class="help"></a>
         </div>
       </div>
@@ -24,13 +24,13 @@
       <div class="ButtonContainer header-title">
         <ul id="btn">
           <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
-            <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" BorderStyle="None" />
+            <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="SaveClose_Click" />
           </li>
           <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
-            <asp:Button ID="SaveNew" runat="server" Text="保存并新建" BorderStyle="None" />
+            <asp:Button ID="SaveNew" runat="server" Text="保存并新建" BorderStyle="None" OnClick="SaveNew_Click" />
           </li>
           <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
-            <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" />
+            <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClientClick="javascript:window.close();" />
           </li>
         </ul>
       </div>
@@ -40,7 +40,7 @@
             <tr>
               <td width="30%" class="FieldLabels">角色名称
                 <div>
-                  <asp:DropDownList ID="role_id" runat="server"></asp:DropDownList>
+                  <asp:DropDownList ID="role_id" runat="server" OnSelectedIndexChanged="role_id_SelectedIndexChanged"></asp:DropDownList>
                 </div>
               </td>
             </tr>
@@ -60,6 +60,8 @@
             </tr>
           </tbody>
         </table>
+        <asp:HiddenField ID="id" runat="server" />
+        <asp:HiddenField ID="contract_id" runat="server" />
       </div>
     </div>
   </form>
