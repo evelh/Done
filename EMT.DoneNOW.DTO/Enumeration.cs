@@ -95,6 +95,7 @@ namespace EMT.DoneNOW.DTO
             SALES = 28,                      // 销售
             CANCELLATION = 29,               // 注销
             PROJECT_NOTE = 1492,             // 项目备注
+            CONTRACT_UDF_EDIT,              // 合同自定义信息更新
         }
 
 
@@ -428,6 +429,7 @@ namespace EMT.DoneNOW.DTO
             PRODUCTINVENTORY = 909,               // 库存
 		    PRODUCT=910,                         //产品
             CONTRACT_INTERNAL_COST=911,           // 合同管理-内部成本查询
+            CONTRACT_RATE = 912,                // 合同费率查询
             RESOURCE_CALLBACK = 913,              // 员工的查找带回（姓名 邮箱）
 			CONFIGITEMTYPE=914,                   //配置项类型
             RELATION_CONFIGITEM=915,              // 关联到该合同的配置项
@@ -435,6 +437,7 @@ namespace EMT.DoneNOW.DTO
             SECURITY_LEVEL=918,                   //安全等级
             CONTRACT_MILESTONE=919,               //里程碑状态
             REVOKE_CHARGES = 921,               //撤销成本审批
+            CONTRACT_UDF = 923,                 // 合同管理-自定义字段
 
             REVOKE_LABOUR,                //撤销工时审批
             REVOKE_EXPENSE,               //撤销费用审批
@@ -744,12 +747,14 @@ namespace EMT.DoneNOW.DTO
         ProuductInventory=50,           //产品库存
         Prouduct = 51,                  //产品
 		InternalCost = 52,                // 合同内部成本
+        ContractRate = 53,              // 合同费率
 		CONFIGITEM=55,                  //配置项
         Relation_ConfigItem = 56,       // 关联到该合同的配置项
         Norelation_ConfigItem = 57,     // 未关联到该合同的配置项
         SECURITYLEVEL=59,               //安全等级
         MILESTONE=60,                   //里程碑
         REVOKE_CHARGES = 62,               //撤销成本审批
+        ContractUDF = 64,               // 合同自定义字段
 
         REVOKE_LABOUR,                //撤销工时审批
         REVOKE_EXPENSE,               //撤销费用审批

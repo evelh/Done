@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DAL;
 using EMT.DoneNOW.DTO;
+using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -205,6 +206,56 @@ namespace EMT.DoneNOW.BLL
             return new d_sla_dal().GetList();
         }
 
+        /// <summary>
+        /// 修改合同的一个自定义字段值
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <param name="udfId"></param>
+        /// <param name="value">修改的自定义字段值</param>
+        /// <param name="desc">修改描述</param>
+        /// <param name="userId"></param>
+        public void EditUdf(long contractId, int udfId, string value, string desc, long userId)
+        {
+            // 更新自定义字段值
+            var bll = new UserDefinedFieldsBLL();
+            var udfList = bll.GetUdf(DicEnum.UDF_CATE.CONTRACTS);
+            var udfValues = bll.GetUdfValue(DicEnum.UDF_CATE.CONTRACTS, contractId, udfList);
+            var user = new UserResourceBLL().GetSysUserSingle(userId);
+            int index = udfValues.FindIndex(f => f.id == udfId);
+            object oldVal = udfValues[index].value;
+            udfValues[index].value = value;
+
+            bll.UpdateUdfValue(DicEnum.UDF_CATE.CONTRACTS, udfList, contractId, udfValues, 
+                new UserInfoDto { id = userId, name = user.name }, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_EXTENSION);
+
+            // 记录备注
+            var contract = dal.FindById(contractId);
+            com_activity_dal actDal = new com_activity_dal();
+            com_activity act = new com_activity
+            {
+                id = actDal.GetNextIdCom(),
+                cate_id = (int)ACTIVITY_CATE.CONTRACT_NOTE,
+                action_type_id = (int)ACTIVITY_TYPE.CONTRACT_UDF_EDIT,
+                parent_id = null,
+                object_id = contractId,
+                object_type_id = (int)OBJECT_TYPE.CONTRACT,
+                account_id = contract.account_id,
+                contact_id = contract.contact_id,
+                resource_id = null,
+                contract_id = contract.id,
+                opportunity_id = contract.opportunity_id,
+                ticket_id = null,
+                start_date = 0,
+                end_date = 0,
+                description = udfList.Find(f => f.id == udfId).name + "修改:" + oldVal.ToString() + "→" + value,
+                create_user_id = user.id,
+                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                update_user_id = user.id,
+                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+            };
+            actDal.Insert(act);
+            OperLogBLL.OperLogAdd<com_activity>(act, act.id, user.id, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+        }
      
         /// <summary>
         /// 新增/修改 合同内部成本
