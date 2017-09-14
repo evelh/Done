@@ -120,6 +120,10 @@ namespace EMT.DoneNOW.Web.Contract
             {
                 case ERROR_CODE.SUCCESS:
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close(); </script>");
+                    if (param.isAddCongigItem)
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');window.close(); </script>");
+                    }
                   
                     break;
                 case ERROR_CODE.PARAMS_ERROR:

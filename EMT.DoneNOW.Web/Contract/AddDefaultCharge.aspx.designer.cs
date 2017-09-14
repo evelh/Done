@@ -10,7 +10,7 @@
 namespace EMT.DoneNOW.Web.Contract {
     
     
-    public partial class ContractView {
+    public partial class AddDefaultCharge {
         
         /// <summary>
         /// form1 控件。
@@ -22,30 +22,21 @@ namespace EMT.DoneNOW.Web.Contract {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// ShowTitle 控件。
+        /// save_close 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ShowTitle;
+        protected global::System.Web.UI.WebControls.Button save_close;
         
         /// <summary>
-        /// viewContractIframe 控件。
+        /// isbillable 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe viewContractIframe;
-        
-        /// <summary>
-        /// second 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe second;
+        protected global::System.Web.UI.WebControls.CheckBox isbillable;
     }
 }

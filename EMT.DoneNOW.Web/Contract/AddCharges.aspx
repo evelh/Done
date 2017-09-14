@@ -384,7 +384,7 @@
                                                         %>
                                                         <input type="text" id="product_id" style="width: 294px;" value="<%=product!=null?product.product_name:"" %>" />
                                                         <input type="hidden" name="product_id" id="product_idHidden" value="<%=product!=null?product.id.ToString():"" %>" />
-                                                        <img src="../Images/data-selector.png" style="vertical-align: middle;" id="ChooseProduct" onclick="ChooseProduct()" />
+                                                        <img src="../Images/data-selector.png" style="vertical-align: middle;" id="ChoosethisProduct" onclick="ChooseProduct()" />
                                                     </div>
                                                 </td>
                                             </tr>
@@ -404,7 +404,7 @@
                                                         <input type="text" name="costName" id="costId" style="width: 294px;" value="<%=costCode!=null?costCode.name:"" %>">
                                                        
                                                         <input type="hidden" name="cost_code_id" id="costIdHidden" value="<%=costCode!=null?costCode.id.ToString():"" %>"/>
-                                                        <img src="../Images/data-selector.png" style="vertical-align: middle;" id="ChooseCostCode" onclick="ChooseCostCode()">
+                                                        <img src="../Images/data-selector.png" style="vertical-align: middle;" id="ChoosethisCostCode" onclick="ChooseCostCode()">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -677,8 +677,8 @@
 
         <%if ((!isAdd) && (conCost.status_id == (int)EMT.DoneNOW.DTO.DicEnum.COST_STATUS.IN_PURCHASING ||conCost.status_id==(int)EMT.DoneNOW.DTO.DicEnum.COST_STATUS.PENDING_DELIVERY||conCost.status_id==(int)EMT.DoneNOW.DTO.DicEnum.COST_STATUS.ALREADY_DELIVERED))
         {%>
-        
-        $("#ChooseProduct").prop("disabled", true);
+
+        $("#ChoosethisProduct").removeAttr("onclick");
         $("#product_id").prop("disabled", true);
         <%}%>
 
@@ -700,9 +700,9 @@
             });
             if (cate_Id ==<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.BLOCK_PURCHASE %>||cate_Id ==<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.RETAINER_PURCHASE %>||cate_Id ==<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.TICKET_PURCHASE %>)
             {
-                $("#ChooseProduct").prop("disabled", true);
+                $("#ChoosethisProduct").removeAttr("onclick");
                 $("#product_id").prop("disabled", true);
-                $("#ChooseCostCode").prop("disabled", true);
+                $("#ChoosethisCostCode").removeAttr("onclick");
                 $("#costId").prop("disabled", true);
             }
         }
@@ -717,8 +717,8 @@
         $("select").each(function () {
             $(this).prop("disabled", true);
         })
-        $("#ChooseProduct").removeAttr("onclick");
-        $("#ChooseCostCode").removeAttr("onclick");
+        $("#ChoosethisProduct").removeAttr("onclick");
+        $("#ChoosethisCostCode").removeAttr("onclick");
 
         $("#status_id").removeAttr("disabled");
         $("#AddConfigItem").prop("disabled", false);
@@ -910,11 +910,11 @@
                     if (data != "") {
                         debugger;
                         
-                        if (data.unitprice != undefined && data.unitprice != "") {
-                            $("#unit_price").val(toDecimal4(data.unitprice));
+                        if (data.unit_price != undefined && data.unit_price != "") {
+                            $("#unit_price").val(toDecimal4(data.unit_price));
                         }
-                        if (data.unitcost != undefined && data.unitcost != "") {
-                            $("#unit_cost").val(toDecimal4(data.unitcost));
+                        if (data.unit_cost != undefined && data.unit_cost != "") {
+                            $("#unit_cost").val(toDecimal4(data.unit_cost));
                         }
                         GetSumCost();
                         GetSumAmount();
