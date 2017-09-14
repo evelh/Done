@@ -90,6 +90,5 @@ namespace EMT.DoneNOW.Core
         public Int32? allocation_code_expense_type_id { get; set; }
 
 
-
     }
 }

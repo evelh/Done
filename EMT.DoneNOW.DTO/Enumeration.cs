@@ -436,13 +436,15 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_MILESTONE=919,               //里程碑状态
             CONTRACT_CHARGE=920,                  // 合同成本查询（无查询条件）
             REVOKE_CHARGES = 921,               //撤销成本审批
-            CONTRACT_DEFAULT_COST = 927,             // 合同默认成本
+            REVOKE_RECURRING_SERVICES = 924,    //撤销定期服务审批
+            REVOKE_MILESTONES = 925,            //撤销里程碑审批
+            REVOKE_SUBSCRIPTIONS = 926,         //撤销订阅审批
+			CONTRACT_DEFAULT_COST = 927,             // 合同默认成本
+
 
             REVOKE_LABOUR,                //撤销工时审批
             REVOKE_EXPENSE,               //撤销费用审批
-            REVOKE_RECURRING_SERVICES,    //撤销定期服务审批
-            REVOKE_MILESTONES,            //撤销里程碑审批
-            REVOKE_SUBSCRIPTIONS,         //撤销订阅审批
+
             APPROVE_LABOUR,                //工时审批
             APPROVE_EXPENSE,               //费用审批
             APPROVE_RECURRING_SERVICES,    //定期服务审批
@@ -511,6 +513,7 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_DEFAULT_COST = 785,                // 合同默认成本
             CONTRACT_SERVICE_ADJUST=788,                //合同服务调整
             CONTRACT_SERVICE_PERIOD = 789,                        //合同服务周期
+            CONTRACT_RATE = 790,                        // 合同费率
             CONTRACT_INTERNAL_COST = 791,               // 合同内部成本
             CONTRACT_EXCLUSTION_ROLE=793,               //合同例外因素-不计费的角色
             General_Code = 794,                         // 通用代码
@@ -702,10 +705,11 @@ namespace EMT.DoneNOW.DTO
         /// 审批并提交操作类型 -121
         /// </summary>
         public enum ACCOUNT_DEDUCTION_TYPE {
-            MILESTONES=1323,             //里程碑
-            SERVICE =1325,               //服务
-            SERVICE_ADJUST=1326,        //服务跳转
-            INITIAL_COST =1327,          //初始费用
+            MILESTONES=1323,            //里程碑
+            SUBSCRIPTIONS=1324,         //订阅
+            SERVICE =1325,              //服务
+            SERVICE_ADJUST=1326,        //服务调整
+            INITIAL_COST =1327,         //初始费用
         }
     }
     /// <summary>
@@ -753,13 +757,14 @@ namespace EMT.DoneNOW.DTO
         MILESTONE=60,                   //里程碑
         Contract_Charge = 61,               // 合同成本
         REVOKE_CHARGES = 62,               //撤销成本审批
-        contract_default_cost = 68,           // 合同默认成本
+        REVOKE_RECURRING_SERVICES = 65,    //撤销定期服务审批
+        REVOKE_MILESTONES = 66,            //撤销里程碑审批
+        REVOKE_SUBSCRIPTIONS = 67,         //撤销订阅审批  
+		CONTRACT_DEFAULT_COST = 68,           // 合同默认成本
 
         REVOKE_LABOUR,                //撤销工时审批
         REVOKE_EXPENSE,               //撤销费用审批
-        REVOKE_RECURRING_SERVICES,    //撤销定期服务审批
-        REVOKE_MILESTONES,            //撤销里程碑审批
-        REVOKE_SUBSCRIPTIONS,         //撤销订阅审批       
+      
         APPROVE_LABOUR,                //工时审批
         APPROVE_EXPENSE,               //费用审批
         APPROVE_RECURRING_SERVICES,    //定期服务审批
@@ -873,6 +878,8 @@ namespace EMT.DoneNOW.DTO
         Department=361,                            //部门
         ConfigItemType=362,                         //配置项类型
 
-        ContractMilestone = 363,                    //里程碑
+        ContractPostDate = 363,                    //合同审批，提交日期
+        ContractAdjust = 364,                      //合同审批，调整总价
+        ContractMilestone= 365,                    //合同审批，查看里程碑详情
     }
 }

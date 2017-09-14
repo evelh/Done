@@ -85,6 +85,10 @@ namespace EMT.DoneNOW.Web
                         var cdcID = context.Request.QueryString["cdcID"];
                         DeleteDefaultCost(context,long.Parse(cdcID));
                         break;
+                    case "DeleteRate":
+                        var rateId = context.Request.QueryString["rateId"];
+                        DeleteContractRate(context, Convert.ToInt64(rateId));
+                        break;
                     default:
                         break;
                 }
@@ -109,6 +113,18 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new ContractBLL().DeleteConIntCost(cicId,res.id));
             }
 
+        }
+
+        /// <summary>
+        /// 删除合同费率
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="rateId"></param>
+        private void DeleteContractRate(HttpContext context, long rateId)
+        {
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            new ContractRateBLL().DeleteRate(rateId, res.id);
+            context.Response.Write(true);
         }
 
         /// <summary>

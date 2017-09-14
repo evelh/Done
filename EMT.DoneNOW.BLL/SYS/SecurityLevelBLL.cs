@@ -142,17 +142,19 @@ namespace EMT.DoneNOW.BLL
             return ERROR_CODE.SUCCESS;
         }
 
-        public ERROR_CODE UpdateSecurityLevel(sys_security_level seclev, long user_id) {
-            seclev.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            seclev.update_user_id = user_id;
-           bool k= new sys_security_level_dal().Update(seclev);
-            if (k == false) {
-                return ERROR_CODE.ERROR;
-            }
+        public ERROR_CODE UpdateSecurityLevel(sys_security_level seclev, long user_id) {            
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
+            }
+            var old = GetSecurityLevel(seclev.id);
+            seclev.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            seclev.update_user_id = user_id;
+            bool k = new sys_security_level_dal().Update(seclev);
+            if (k == false)
+            {
+                return ERROR_CODE.ERROR;
             }
             var add_account_log = new sys_oper_log()
             {
@@ -164,7 +166,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,
                 oper_object_id = seclev.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(seclev),
+                oper_description = new sys_security_level_dal().CompareValue(old,seclev),
                 remark = "修改权限点关联模板"
 
             };          // 创建日志
@@ -180,8 +182,14 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE ActiveSecurityLevel(long user_id, int id)
         {
-           // sys_security_level sclev = new sys_security_level();
-            var seclev = ss_dal.FindById(id);
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
+            var old = GetSecurityLevel(id);
+            // sys_security_level sclev = new sys_security_level();
+            var seclev = old;
             if (seclev == null) {
                 return ERROR_CODE.ERROR;
             }
@@ -194,11 +202,7 @@ namespace EMT.DoneNOW.BLL
             if (ss_dal.Update(seclev)==false) {
                 return ERROR_CODE.ERROR;//更新激活状态失败
             }
-            var user = UserInfoBLL.GetUserInfo(user_id);
-            if (user == null)
-            {   // 查询不到用户，用户丢失
-                return ERROR_CODE.USER_NOT_FIND;
-            }
+           
             var add_account_log = new sys_oper_log()
             {
                 user_cate = "用户",
@@ -209,7 +213,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,
                 oper_object_id = seclev.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(seclev),
+                oper_description = ss_dal.CompareValue(old,seclev),
                 remark = "修改权限点关联模板"
 
             };          // 创建日志
@@ -224,8 +228,13 @@ namespace EMT.DoneNOW.BLL
         /// <param name="id"></param>
         /// <returns></returns>
         public ERROR_CODE NOActiveSecurityLevel(long user_id, int id) {
-
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {   // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+            }
             var seclev = ss_dal.FindById(id);
+            var old = seclev;
             if (seclev == null)
             {
                 return ERROR_CODE.ERROR;
@@ -240,12 +249,7 @@ namespace EMT.DoneNOW.BLL
             if (ss_dal.Update(seclev) == false)
             {
                 return ERROR_CODE.ERROR;//更新激活状态失败
-            }
-            var user = UserInfoBLL.GetUserInfo(user_id);
-            if (user == null)
-            {   // 查询不到用户，用户丢失
-                return ERROR_CODE.USER_NOT_FIND;
-            }
+            }           
             var add_account_log = new sys_oper_log()
             {
                 user_cate = "用户",
@@ -256,7 +260,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,
                 oper_object_id = seclev.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(seclev),
+                oper_description = ss_dal.CompareValue(old,seclev),
                 remark = "修改权限点关联模板"
 
             };          // 创建日志
@@ -334,7 +338,7 @@ namespace EMT.DoneNOW.BLL
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,
                     oper_object_id = s.id,// 操作对象id
                     oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                    oper_description = _dal.AddValue(s),
+                    oper_description = ss_dal.AddValue(s),
                     remark = "新增权限点关联模板"
 
                 };          // 创建日志

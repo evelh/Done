@@ -106,15 +106,16 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Update(SysUserAddDto data, long user_id,long id)
         {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+                return ERROR_CODE.USER_NOT_FIND;
+            var old = GetSysResourceSingle(data.sys_res.id);
             data.sys_res.id = id;
             data.sys_res.update_user_id = user_id;
             data.sys_res.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.sys_user.password = new Tools.Cryptographys().MD5Encrypt(data.sys_user.password, false);
             _dal.Update(data.sys_res);
-            //操作日志新增一条日志,操作对象种类：员工
-            var user = UserInfoBLL.GetUserInfo(user_id);
-            if (user == null)
-                return ERROR_CODE.USER_NOT_FIND;
+            //操作日志新增一条日志,操作对象种类：员工            
             var add_account_log = new sys_oper_log()
             {
                 user_cate = "用户",
@@ -125,7 +126,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,//员工
                 oper_object_id = data.sys_res.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(data.sys_res),
+                oper_description = _dal.CompareValue(old,data.sys_res),
                 remark = "更新员工信息"
 
             };          // 创建日志
@@ -144,7 +145,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
                 oper_object_id = data.sys_user.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(data.sys_user),
+                oper_description = new sys_user_dal().AddValue(data.sys_user),
                 remark = "更新客户信息"
 
             };          // 创建日志
@@ -197,16 +198,6 @@ namespace EMT.DoneNOW.BLL
                 };          // 创建日志
                 new sys_oper_log_dal().Insert(add_account_log);
             }
-        }
-        /// <summary>
-        /// 复制出一个新的员工信息
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name=""></param>
-        /// <returns></returns>
-        public ERROR_CODE CopyResource(long id,out long copy_id) {
-            copy_id = -1;
-            return ERROR_CODE.SUCCESS;
         }
     }
 }

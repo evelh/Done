@@ -126,7 +126,9 @@ li.Button {
 .Ok {
     background-image: url("../Images/ok.png");
 }
-
+.Print {
+    background-image: url("../Images/print.png");
+}
 .Button > .Text {
     flex: 0 1 auto;
     font-size: 12px;

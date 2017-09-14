@@ -1657,22 +1657,100 @@
             });
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
-                window.open('../Contract/ContractPostDate.aspx?type='+queryTypeId+'&ids='+ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractMilestone%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('../Contract/ContractPostDate.aspx?type='+queryTypeId+'&ids='+ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
             }
         }
         //审批并提交
         function Post() {
-            window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId +'&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractMilestone%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId +'&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         //查看里程碑详情
         function Miledetail() {
-
+            window.open('../Contract/ContractMilestoneDetail.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractMilestone%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        //查看合同详情
+        function ContractDetail() {
+           
+        }
+        <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_SUBSCRIPTIONS)
+        {%>//审批订阅
+        //审批并提交(批量)
+        function Add() {
+            var ids = "";
+            $(".IsChecked").each(function () {
+                if ($(this).is(":checked")) {
+                    ids += $(this).val() + ',';
+                }
+            });
+            if (ids != "") {
+                ids = ids.substring(0, ids.length - 1);
+                window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            }
+        }
+        //审批并提交
+        function Post() {
+            window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        //恢复初始值
+        function Restore_Initiall() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ApproveAndPostAjax.ashx?act=init&id=" + entityid + "&type=" + queryTypeId,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                }
+            });
+            window.location.reload();
+        }
+        //调整总价
+        function AdjustExtend() {
+            window.open('../Contract/AdjustExtendedPrice.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+         <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_SUBSCRIPTIONS)
+        {%>//审批服务
+        //审批并提交(批量)
+        function Add() {
+            var ids = "";
+            $(".IsChecked").each(function () {
+                if ($(this).is(":checked")) {
+                    ids += $(this).val() + ',';
+                }
+            });
+            if (ids != "") {
+                ids = ids.substring(0, ids.length - 1);
+                window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            }
+        }
+        //审批并提交
+        function Post() {
+            window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         //查看合同详情
         function ContractDetail() {
 
         }
-        <%}
+
+        //恢复初始值
+        function Restore_Initiall() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ApproveAndPostAjax.ashx?act=init&id=" + entityid + "&type=" + queryTypeId,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                }
+            });
+            window.location.reload();
+        }
+        //调整总价
+        function AdjustExtend() {
+            window.open('../Contract/AdjustExtendedPrice.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+
+        }
+		       <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contract_Charge)
         {%>
         $("#CheckAll").click(function () {
@@ -1918,7 +1996,7 @@
         });
 
         <%}
-        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.contract_default_cost)
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.CONTRACT_DEFAULT_COST)
         { %>
         function Edit() {
             window.open('../Contract/AddDefaultCharge.aspx?contract_id=' + <%=Request.QueryString["id"] %> + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConDefCostEdit%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
@@ -1941,7 +2019,7 @@
         }
         function Add() {
             window.open('../Contract/AddDefaultCharge.aspx?contract_id=' + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConDefCostAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
+			}
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

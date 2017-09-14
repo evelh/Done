@@ -37,7 +37,7 @@ namespace EMT.DoneNOW.Web.Contract
                         ShowTitle.Text = "成本-" + contract.name;
                         break;
                     case "defaultCost":
-                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_DEFAULT_COST + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.contract_default_cost + "&id=" + contract.id;
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_DEFAULT_COST + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.CONTRACT_DEFAULT_COST + "&id=" + contract.id;
                         ShowTitle.Text = "默认成本-" + contract.name;
                         break;
                     default:
