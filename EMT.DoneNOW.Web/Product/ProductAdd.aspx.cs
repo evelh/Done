@@ -125,7 +125,7 @@ namespace EMT.DoneNOW.Web
             }
             if (product.cate_id != null && !string.IsNullOrEmpty(product.cate_id.ToString()))
             {
-                cate_name = new GeneralBLL().GetGeneralParentName((int)product.cate_id);
+                cate_name = new GeneralBLL().GetGeneralName((int)product.cate_id);
                 //this.accCallBack.Text = cate_name;
                 //this.accCallBack.Text = (product.cate_id.ToString());
             }

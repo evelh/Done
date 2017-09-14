@@ -107,10 +107,10 @@
                 <a class="Button ButtonIcon" id="tab3">
                     <span class="Text">费用()</span>
                 </a>
-                <a class="Button ButtonIcon" id="tab4">
+                <a class="Button ButtonIcon" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS %>" target="PageFrame1" id="tab4">
                     <span class="Text">订阅</span>
                 </a>
-                <a class="Button ButtonIcon" id="tab5">
+                <a class="Button ButtonIcon" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES %>" target="PageFrame1" id="tab5">
                     <span class="Text">定期服务</span>
                 </a>
                 <a class="Button ButtonIcon"  href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_MILESTONES %>" target="PageFrame1" id="tab6">

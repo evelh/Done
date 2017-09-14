@@ -82,9 +82,9 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="parent_id"></param>
         /// <returns></returns>
-        public string GetGeneralParentName(int parent_id)
+        public string GetGeneralName(int id)
         {
-            return _dal.FindSignleBySql<d_general>($"select * from d_general where id={parent_id} and delete_time=0 ").name;
+            return _dal.FindSignleBySql<d_general>($"select * from d_general where id={id} and delete_time=0 ").name;
         }
         /// <summary>
         /// 日历显示模式
