@@ -968,8 +968,8 @@
                     if (data != "") {
                         // 填充数据
                         $("#name").val(data.name);
-                        $("#unit_price").val(data.unitprice); //unit_cost
-                        $("#unit_cost").val(data.unitcost);
+                        $("#unit_price").val(data.unit_price); //unit_cost
+                        $("#unit_cost").val(data.unit_cost);
                         // todo 税收种类
                     }
                 },

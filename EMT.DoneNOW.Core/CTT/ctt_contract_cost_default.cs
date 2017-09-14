@@ -27,8 +27,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? unit_price { get; set; }
         [DataMember]
-        public SByte is_billed { get; set; }
-
+        public SByte is_billable { get; set; }
 
     }
 }

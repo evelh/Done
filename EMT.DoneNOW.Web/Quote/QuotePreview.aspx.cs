@@ -30,7 +30,7 @@ namespace EMT.DoneNOW.Web
             {
                 if (!string.IsNullOrEmpty(qddata.quote_tmpl_id.ToString()))
                 {
-                    var data = new QuoteTemplateBLL().GetSingelTemplate(Convert.ToInt32(qddata.quote_tmpl_id.ToString()));
+                    var data = new QuoteTemplateBLL().GetQuoteTemplate(Convert.ToInt64(qddata.quote_tmpl_id.ToString()));
                     initview(data);
                 }
                 else 

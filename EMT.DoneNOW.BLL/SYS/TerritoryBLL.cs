@@ -78,6 +78,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     return ERROR_CODE.EXIST;
                 }
+                var old = new GeneralBLL().GetSingleGeneral(data.id);
                 data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 data.update_user_id = user_id;
                 if (!_dal.Update(data))
@@ -93,9 +94,9 @@ namespace EMT.DoneNOW.BLL
                     oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//
                     oper_object_id = data.id,// 操作对象id
-                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                    oper_description = _dal.AddValue(data),
-                    remark = "新增地域信息"
+                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_description = _dal.CompareValue(old,data),
+                    remark = "修改地域信息"
                 };          // 创建日志
                 new sys_oper_log_dal().Insert(add_log);       // 插入日志
             }
@@ -123,9 +124,9 @@ namespace EMT.DoneNOW.BLL
                     name = user.name,
                     phone = user.mobile == null ? "" : user.mobile,
                     oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//员工
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,
                     oper_object_id = data.id,// 操作对象id
-                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
                     oper_description = _dal.AddValue(data),
                     remark = "新增地域信息"
                 };          // 创建日志
@@ -171,7 +172,7 @@ namespace EMT.DoneNOW.BLL
                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.RESOURCE,//员工
                         oper_object_id = i.id,// 操作对象id
                         oper_type_id = (int)OPER_LOG_TYPE.DELETE,
-                        oper_description = _dal.AddValue(i),
+                        oper_description = cat_dal.AddValue(i),
                         remark = "删除地域与员工的关联"
                     };          // 创建日志
                     new sys_oper_log_dal().Insert(add_log);       // 插入日志

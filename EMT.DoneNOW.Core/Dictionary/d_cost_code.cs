@@ -25,6 +25,14 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte is_active { get; set; }
         [DataMember]
+        public String external_id { get; set; }
+        [DataMember]
+        public Int32? general_ledger_id { get; set; }
+        [DataMember]
+        public Int64? department_id { get; set; }
+        [DataMember]
+        public SByte? show_on_invoice { get; set; }
+        [DataMember]
         public Int32? creditobjectid { get; set; }
         [DataMember]
         public Int32? categoryobjectid { get; set; }
@@ -37,15 +45,13 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? charge { get; set; }
         [DataMember]
-        public Decimal? unitcost { get; set; }
+        public Decimal? unit_cost { get; set; }
         [DataMember]
-        public Decimal? unitprice { get; set; }
+        public Decimal? unit_price { get; set; }
         [DataMember]
         public Int16? timeoff { get; set; }
         [DataMember]
         public Int32? allocationcodetype { get; set; }
-        [DataMember]
-        public String extacctallocationid { get; set; }
         [DataMember]
         public SByte? is_quick_cost { get; set; }
         [DataMember]
@@ -67,8 +73,6 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? max_hours { get; set; }
         [DataMember]
-        public SByte? show_on_invoice { get; set; }
-        [DataMember]
         public SByte? adp_is_unpaid { get; set; }
         [DataMember]
         public SByte? adp_contractor_hours_excluded_from_export { get; set; }
@@ -79,13 +83,11 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte? adp_salary_non_exempt_hours_excluded_from_export { get; set; }
         [DataMember]
-        public SByte? tax_category_id { get; set; }
+        public Int32? tax_category_id { get; set; }
         [DataMember]
         public Decimal? mileage_reimbursement_rate { get; set; }
         [DataMember]
         public Int32? allocation_code_expense_type_id { get; set; }
-        [DataMember]
-        public Int32? general_ledger_id { get; set; }
 
 
     }

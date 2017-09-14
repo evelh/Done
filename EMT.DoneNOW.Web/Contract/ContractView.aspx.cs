@@ -23,12 +23,22 @@ namespace EMT.DoneNOW.Web.Contract
                 var type = Request.QueryString["type"];
                 switch (type)
                 {
-                    case "cost":
+                    case "InternalCost":
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.InternalCost + "&id=" + contract.id;
+                        ShowTitle.Text = "内部成本-"+contract.name;
                         break;
                     case "item":
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RELATION_CONFIGITEM + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.Relation_ConfigItem + "&id=" + contract_id;
                         second.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.NORELATION_CONFIGITEM + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.Norelation_ConfigItem + "&id=" + contract.account_id+"&contract_id="+contract.id;
+                        ShowTitle.Text = "配置项-" + contract.name;
+                        break;
+                    case "charge":
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?isCheck=1&cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_CHARGE + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.Contract_Charge + "&id=" + contract.id;
+                        ShowTitle.Text = "成本-" + contract.name;
+                        break;
+                    case "defaultCost":
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_DEFAULT_COST + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.CONTRACT_DEFAULT_COST + "&id=" + contract.id;
+                        ShowTitle.Text = "默认成本-" + contract.name;
                         break;
                     default:
                         break;

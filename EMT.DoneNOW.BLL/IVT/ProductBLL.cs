@@ -97,7 +97,7 @@ namespace EMT.DoneNOW.BLL
                     name = user.name,
                     phone = user.mobile == null ? "" : user.mobile,
                     oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT,//员工
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT,
                     oper_object_id = product.id,// 操作对象id
                     oper_type_id = (int)OPER_LOG_TYPE.ADD,
                     oper_description = _dal.AddValue(product),
@@ -128,10 +128,10 @@ namespace EMT.DoneNOW.BLL
                         name = user.name,
                         phone = user.mobile == null ? "" : user.mobile,
                         oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,//员工
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,
                         oper_object_id = veve.id,// 操作对象id
                         oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                        oper_description = _dal.AddValue(veve),
+                        oper_description = _dal1.AddValue(veve),
                         remark = "新增供应商信息"
                     };          // 创建日志
                     new sys_oper_log_dal().Insert(add_vendor_log);       // 插入日志
@@ -181,7 +181,7 @@ namespace EMT.DoneNOW.BLL
                 name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT,//员工
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT,
                 oper_object_id = product.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
                 oper_description = _dal.CompareValue(oldpropro,product),
@@ -210,10 +210,10 @@ namespace EMT.DoneNOW.BLL
                             name =user.name,
                             phone = user.mobile == null ? "" : user.mobile,
                             oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,//员工
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,
                             oper_object_id = veve.id,// 操作对象id
                             oper_type_id = (int)OPER_LOG_TYPE.DELETE,
-                            oper_description = _dal.AddValue(veve),
+                            oper_description =_dal1.AddValue(veve),
                             remark = "删除供应商信息"
                         };          // 创建日志
                         new sys_oper_log_dal().Insert(add_vendor_log);       // 插入日志
@@ -233,6 +233,7 @@ namespace EMT.DoneNOW.BLL
                         veve.vendor_account_id = ve.vendor_account_id;
                         veve.vendor_cost = ve.vendor_cost;
                         veve.vendor_product_no = ve.vendor_product_no;
+                        var oldve = GetSingelVendor(veve.id);
                         _dal1.Update(veve);
                         var add_vendor_log = new sys_oper_log()
                         {
@@ -241,10 +242,10 @@ namespace EMT.DoneNOW.BLL
                             name =user.name,
                             phone = user.mobile == null ? "" : user.mobile,
                             oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,//员工
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,
                             oper_object_id = veve.id,// 操作对象id
                             oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                            oper_description = _dal.AddValue(veve),
+                            oper_description = _dal1.CompareValue(oldve,veve),
                             remark = "修改供应商信息"
                         };          // 创建日志
                         new sys_oper_log_dal().Insert(add_vendor_log);       // 插入日志
@@ -270,10 +271,10 @@ namespace EMT.DoneNOW.BLL
                         name =user.name,
                         phone = user.mobile == null ? "" : user.mobile,
                         oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,//员工
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PRODUCT_VENDOR,
                         oper_object_id = veve.id,// 操作对象id
                         oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                        oper_description = _dal.AddValue(veve),
+                        oper_description = _dal1.AddValue(veve),
                         remark = "新增供应商信息"
                     };          // 创建日志
                     new sys_oper_log_dal().Insert(add_vendor_log);       // 插入日志
@@ -355,6 +356,9 @@ namespace EMT.DoneNOW.BLL
             //new ivt_warehouse_product_dal().Update(from_ware);
             //new ivt_warehouse_product_dal().Update(to_ware);
 
+            var oldfrom_ware = Getwarehouse_product(from_ware.id);
+            var oldto_ware = Getwarehouse_product(to_ware.id);
+
             string sql1 = $"insert into `donenow`.`ivt_inventory_transfer` (`id`, `product_id`, `transfer_from_warehouse_id`, `transfer_to_warehouse_id`,`transfer_quantity`, `notes`, `type_id`, `create_user_id`, `update_user_id`,`create_time`, `update_time`) values ('{tran.id}','{tran.product_id}','{tran.transfer_from_warehouse_id}','{tran.transfer_to_warehouse_id}','{tran.transfer_quantity}','{tran.notes}','{tran.type_id}','{tran.create_user_id}','{tran.update_user_id}','{tran.create_time}','{tran.update_time}');";
             string sql2 = $"update `ivt_warehouse_product` set `quantity` = '{from_ware.quantity}',`update_user_id` = '{from_ware.update_user_id}',`update_time` = '{from_ware.update_time}' where `id` = '{from_ware.id}'";
             string sql3 = $"update `ivt_warehouse_product` set `quantity` = '{to_ware.quantity}',`update_user_id` = '{to_ware.update_user_id}',`update_time` = '{to_ware.update_time}' where `id` = '{to_ware.id}'";
@@ -373,10 +377,10 @@ namespace EMT.DoneNOW.BLL
                 name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,
                 oper_object_id = from_ware.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(from_ware),
+                oper_description = new ivt_warehouse_product_dal().CompareValue(oldfrom_ware,from_ware),
                 remark = "修改产品库存数量信息"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_log);       // 插入日志
@@ -392,7 +396,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
                 oper_object_id = to_ware.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(to_ware),
+                oper_description = new ivt_warehouse_product_dal().CompareValue(oldto_ware,to_ware),
                 remark = "修改产品库存数量信息"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add2_log);       // 插入日志
@@ -457,6 +461,7 @@ namespace EMT.DoneNOW.BLL
             }
             stock.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             stock.update_user_id = user.id;
+            var old = Getwarehouse_product(stock.id);
             if (!(new ivt_warehouse_product_dal().Update(stock))) {
                 return ERROR_CODE.ERROR;
             }
@@ -471,7 +476,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.WAREHOUSE_PRODUCT,//
                 oper_object_id = stock.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(stock),
+                oper_description = new ivt_warehouse_product_dal().CompareValue(old,stock),
                 remark = "修改产品库存信息"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_log);       // 插入日志

@@ -436,15 +436,10 @@ namespace EMT.DoneNOW.BLL
                     //订阅
                     if (cad.object_id != null)
                     {
-                        cs = cs_dal.FindSignleBySql<crm_subscription>($"select * from crm_subscription where id={cad.object_id} and delete_time=0");
-
-                        var oldcsp = csp = csp_dal.FindSignleBySql<crm_subscription_period>($"select * from crm_subscription_period where subscription_id={cs.id}");
-
+                        var oldcsp = csp = csp_dal.FindSignleBySql<crm_subscription_period>($"select * from crm_subscription_period where id={cad.object_id}");
                         csp.approve_and_post_user_id = null;
                         csp.approve_and_post_date = null;
                         csp.period_price = cs.period_price;
-
-
                         var add_log = new sys_oper_log()
                         {
                             user_cate = "用户",
@@ -452,11 +447,11 @@ namespace EMT.DoneNOW.BLL
                             name = user.name,
                             phone = user.mobile == null ? "" : user.mobile,
                             oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE,//订阅周期
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SUBSCRIPTION_PERIOD,//订阅周期
                             oper_object_id = csp.id,// 操作对象id
                             oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
                             oper_description = cad_dal.CompareValue(oldcsp, csp),
-                            remark = "修改合同里程碑"
+                            remark = "修改订阅周期"
                         };          // 创建日志
                         new sys_oper_log_dal().Insert(add_log);       // 插入日志
 
@@ -464,7 +459,6 @@ namespace EMT.DoneNOW.BLL
                         {
                             return ERROR_CODE.ERROR;
                         }
-
                     }
                 }
             }

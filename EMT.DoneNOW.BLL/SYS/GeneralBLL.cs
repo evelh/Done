@@ -82,9 +82,9 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="parent_id"></param>
         /// <returns></returns>
-        public string GetGeneralParentName(int parent_id)
+        public string GetGeneralName(int id)
         {
-            return _dal.FindSignleBySql<d_general>($"select * from d_general where id={parent_id} and delete_time=0 ").name;
+            return _dal.FindSignleBySql<d_general>($"select * from d_general where id={id} and delete_time=0 ").name;
         }
         /// <summary>
         /// 日历显示模式
@@ -109,7 +109,7 @@ namespace EMT.DoneNOW.BLL
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }           
-            var res = new GeneralBLL().GetSingleGeneral(data.name, data.general_table_id);
+            var res = GetSingleGeneral(data.name, data.general_table_id);
             if (res != null)
             {
                 return ERROR_CODE.EXIST;
@@ -117,6 +117,10 @@ namespace EMT.DoneNOW.BLL
             data.create_time = data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.create_user_id = user_id;
             _dal.Insert(data);
+            data = GetSingleGeneral(data.name, data.general_table_id);
+            if (data == null) {
+                return ERROR_CODE.ERROR;
+            }
             var add_log = new sys_oper_log()
             {
                 user_cate = "用户",
@@ -153,10 +157,7 @@ namespace EMT.DoneNOW.BLL
             }
             data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.update_user_id = user_id;
-            if (!_dal.Update(data))
-            {
-                return ERROR_CODE.ERROR;
-            }
+            var old = GetSingleGeneral(data.id);
             var add_log = new sys_oper_log()
             {
                 user_cate = "用户",
@@ -167,10 +168,14 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,
                 oper_object_id = data.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.AddValue(data),
+                oper_description = _dal.CompareValue(old,data),
                 remark = "修改d_general表，general_table_id=" + data.general_table_id
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_log);       // 插入日志
+            if (!_dal.Update(data))
+            {
+                return ERROR_CODE.ERROR;
+            }            
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -412,7 +417,7 @@ namespace EMT.DoneNOW.BLL
                 name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,//员工
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,
                 oper_object_id = data.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.DELETE,
                 oper_description = _dal.AddValue(data),

@@ -132,6 +132,7 @@
     <Content Include="Company\CompanySiteManage.aspx" />
     <Content Include="Company\UpdateContact.aspx" />
     <Content Include="ConfigurationItem\AddOrEditConfigItem.aspx" />
+    <Content Include="ConfigurationItem\ConfigItemWizard.aspx" />
     <Content Include="ConfigurationItem\ConfigType.aspx" />
     <Content Include="ConfigurationItem\ConfigUdfField.aspx" />
     <Content Include="ConfigurationItem\RelatiobContract.aspx" />
@@ -171,9 +172,13 @@
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\AddCharges.aspx" />
+    <Content Include="Contract\AddDefaultCharge.aspx" />
+    <Content Include="Contract\AdjustExtendedPrice.aspx" />
     <Content Include="Contract\ApproveAndPost.aspx" />
+    <Content Include="Contract\ChargeDetails.aspx" />
     <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
+    <Content Include="Contract\ContractMilestoneDetail.aspx" />
     <Content Include="Contract\ContractPostDate.aspx" />
     <Content Include="Contract\ContractUdf.aspx" />
     <Content Include="Contract\ContractView.aspx" />
@@ -744,6 +749,13 @@
     <Compile Include="ConfigurationItem\AddOrEditConfigItem.aspx.designer.cs">
       <DependentUpon>AddOrEditConfigItem.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationItem\ConfigItemWizard.aspx.cs">
+      <DependentUpon>ConfigItemWizard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\ConfigItemWizard.aspx.designer.cs">
+      <DependentUpon>ConfigItemWizard.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationItem\ConfigType.aspx.cs">
       <DependentUpon>ConfigType.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -847,12 +859,33 @@
     <Compile Include="Contract\AddCharges.aspx.designer.cs">
       <DependentUpon>AddCharges.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\AddDefaultCharge.aspx.cs">
+      <DependentUpon>AddDefaultCharge.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AddDefaultCharge.aspx.designer.cs">
+      <DependentUpon>AddDefaultCharge.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\AdjustExtendedPrice.aspx.cs">
+      <DependentUpon>AdjustExtendedPrice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AdjustExtendedPrice.aspx.designer.cs">
+      <DependentUpon>AdjustExtendedPrice.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contract\ApproveAndPost.aspx.cs">
       <DependentUpon>ApproveAndPost.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Contract\ApproveAndPost.aspx.designer.cs">
       <DependentUpon>ApproveAndPost.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\ChargeDetails.aspx.cs">
+      <DependentUpon>ChargeDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ChargeDetails.aspx.designer.cs">
+      <DependentUpon>ChargeDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\ContractAdd.aspx.cs">
       <DependentUpon>ContractAdd.aspx</DependentUpon>
@@ -867,6 +900,13 @@
     </Compile>
     <Compile Include="Contract\ContractEdit.aspx.designer.cs">
       <DependentUpon>ContractEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\ContractMilestoneDetail.aspx.cs">
+      <DependentUpon>ContractMilestoneDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractMilestoneDetail.aspx.designer.cs">
+      <DependentUpon>ContractMilestoneDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\ContractPostDate.aspx.cs">
       <DependentUpon>ContractPostDate.aspx</DependentUpon>

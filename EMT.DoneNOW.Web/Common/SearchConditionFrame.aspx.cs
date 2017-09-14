@@ -94,6 +94,15 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.REVOKE_CHARGES:
                     currentQuery.page_name = "撤销成本审批";
                     break;
+                case (int)DicEnum.QUERY_CATE.REVOKE_MILESTONES:
+                    currentQuery.page_name = "撤销里程碑审批";
+                    break;
+                case (int)DicEnum.QUERY_CATE.REVOKE_RECURRING_SERVICES:
+                    currentQuery.page_name = "撤销定期服务审批";
+                    break;
+                case (int)DicEnum.QUERY_CATE.REVOKE_SUBSCRIPTIONS:
+                    currentQuery.page_name = "撤销订阅审批";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

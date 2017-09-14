@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web.Contract {
+namespace EMT.DoneNOW.Web {
     
     
-    public partial class ContractView {
+    public partial class AdjustExtendedPrice {
         
         /// <summary>
         /// form1 控件。
@@ -22,30 +22,30 @@ namespace EMT.DoneNOW.Web.Contract {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// ShowTitle 控件。
+        /// Save_Close 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ShowTitle;
+        protected global::System.Web.UI.WebControls.Button Save_Close;
         
         /// <summary>
-        /// viewContractIframe 控件。
+        /// Cancel 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe viewContractIframe;
+        protected global::System.Web.UI.WebControls.Button Cancel;
         
         /// <summary>
-        /// second 控件。
+        /// Extended_Price 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe second;
+        protected global::System.Web.UI.WebControls.TextBox Extended_Price;
     }
 }

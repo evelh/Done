@@ -124,7 +124,15 @@ namespace EMT.DoneNOW.Web
                     addBtn = "完成";
                     break;
                 case (int)DicEnum.QUERY_CATE.APPROVE_MILESTONES://审批里程碑
+                case (int)DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS://审批订阅
+                case (int)DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES://审批订阅
                     addBtn = "审批并提交";
+                    break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_CHARGE:
+                    addBtn = "添加合同成本";
+                    break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_DEFAULT_COST:
+                    addBtn = "添加合同默认成本";
                     break;
                 default:
                     addBtn = "";
@@ -431,6 +439,31 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "Post()" });
                     contextMenu.Add(new PageContextMenuDto { text = "里程碑详情", click_function = "Miledetail()" });
                     contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ContractDetail()" });
+                    break;
+                case (long)QueryType.Contract_Charge:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看", click_function = "ViewCharge()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "当前成本设置为可计费", click_function = "Post()",id="thisBilled" });
+                    contextMenu.Add(new PageContextMenuDto { text = "选中成本设置为可计费", click_function = "Post()",id="ChooseBilled" });
+                    contextMenu.Add(new PageContextMenuDto { text = "当前成本设置为不可计费", click_function = "Post()",id="thisNoBilled" });
+                    contextMenu.Add(new PageContextMenuDto { text = "选中成本设置为不可计费", click_function = "Post()" ,id="ChooseNoBilled"});
+                    contextMenu.Add(new PageContextMenuDto { text = "删除当前成本", click_function = "Post()",id="delete" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除选中成本", click_function = "Post()",id="ChooseDelete" });
+                    break;
+                case (long)QueryType.CONTRACT_DEFAULT_COST:
+                    contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.APPROVE_SUBSCRIPTIONS:
+                    contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "Post()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "调整总价", click_function = "AdjustExtend()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "恢复初始值", click_function = "Restore_Initiall()" });                   
+                    break;
+                case (long)QueryType.APPROVE_RECURRING_SERVICES:
+                    contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "Post()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ContractDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "调整总价", click_function = "AdjustExtend()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "恢复初始值", click_function = "Restore_Initiall()" });
                     break;
                 default:
                     break;
