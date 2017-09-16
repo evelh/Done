@@ -95,6 +95,7 @@ namespace EMT.DoneNOW.DTO
             SALES = 28,                      // 销售
             CANCELLATION = 29,               // 注销
             PROJECT_NOTE = 1492,             // 项目备注
+            CONTRACT_UDF_EDIT,              // 合同自定义信息更新
         }
 
 
@@ -428,6 +429,7 @@ namespace EMT.DoneNOW.DTO
             PRODUCTINVENTORY = 909,               // 库存
 		    PRODUCT=910,                         //产品
             CONTRACT_INTERNAL_COST=911,           // 合同管理-内部成本查询
+            CONTRACT_RATE = 912,                // 合同费率查询
             RESOURCE_CALLBACK = 913,              // 员工的查找带回（姓名 邮箱）
 			CONFIGITEMTYPE=914,                   //配置项类型
             RELATION_CONFIGITEM=915,              // 关联到该合同的配置项
@@ -436,11 +438,13 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_MILESTONE=919,               //里程碑状态
             CONTRACT_CHARGE=920,                  // 合同成本查询（无查询条件）
             REVOKE_CHARGES = 921,               //撤销成本审批
+            CONTRACT_UDF = 923,                 // 合同管理-自定义字段
             REVOKE_RECURRING_SERVICES = 924,    //撤销定期服务审批
             REVOKE_MILESTONES = 925,            //撤销里程碑审批
             REVOKE_SUBSCRIPTIONS = 926,         //撤销订阅审批
 			CONTRACT_DEFAULT_COST = 927,             // 合同默认成本
-            CONTRACT_RATE = 928,                 // 合同预付时间系数
+            CONTRACT_TIME_RATE = 928,                 // 合同预付时间系数
+
 
 
             REVOKE_LABOUR,                //撤销工时审批
@@ -755,6 +759,7 @@ namespace EMT.DoneNOW.DTO
         ProuductInventory=50,           //产品库存
         Prouduct = 51,                  //产品
 		InternalCost = 52,                // 合同内部成本
+        ContractRate = 53,              // 合同费率
 		CONFIGITEM=55,                  //配置项
         Relation_ConfigItem = 56,       // 关联到该合同的配置项
         Norelation_ConfigItem = 57,     // 未关联到该合同的配置项
@@ -762,6 +767,7 @@ namespace EMT.DoneNOW.DTO
         MILESTONE=60,                   //里程碑
         Contract_Charge = 61,               // 合同成本
         REVOKE_CHARGES = 62,               //撤销成本审批
+        ContractUDF = 64,               // 合同自定义字段
         REVOKE_RECURRING_SERVICES = 65,    //撤销定期服务审批
         REVOKE_MILESTONES = 66,            //撤销里程碑审批
         REVOKE_SUBSCRIPTIONS = 67,         //撤销订阅审批  

@@ -8,7 +8,7 @@
   <link href="../Content/reset.css" rel="stylesheet" />
   <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="../Content/style.css" />
-  <title></title>
+  <title><%if (rateId == 0) { %>新增<%} else { %>编辑<%} %>费率</title>
 </head>
 <body>
   <form id="form1" runat="server">
@@ -65,6 +65,5 @@
       </div>
     </div>
   </form>
-  <script src="../Scripts/jquery-3.1.0.min.js"></script>
 </body>
 </html>

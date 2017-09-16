@@ -181,6 +181,7 @@
     <Content Include="Contract\ContractEdit.aspx" />
     <Content Include="Contract\ContractMilestoneDetail.aspx" />
     <Content Include="Contract\ContractPostDate.aspx" />
+    <Content Include="Contract\ContractUdf.aspx" />
     <Content Include="Contract\ContractView.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Contract\RoleRate.aspx" />
@@ -921,6 +922,13 @@
     </Compile>
     <Compile Include="Contract\ContractPostDate.aspx.designer.cs">
       <DependentUpon>ContractPostDate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\ContractUdf.aspx.cs">
+      <DependentUpon>ContractUdf.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractUdf.aspx.designer.cs">
+      <DependentUpon>ContractUdf.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\ContractView.aspx.cs">
       <DependentUpon>ContractView.aspx</DependentUpon>

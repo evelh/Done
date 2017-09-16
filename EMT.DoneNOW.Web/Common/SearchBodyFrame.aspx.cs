@@ -134,7 +134,7 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.CONTRACT_DEFAULT_COST:
                     addBtn = "添加合同默认成本";
                     break;
-                case (int)DicEnum.QUERY_CATE.CONTRACT_RATE:
+                case (int)DicEnum.QUERY_CATE.CONTRACT_TIME_RATE:
                     addBtn = "添加预付时间系数";
                     break;
                 default:

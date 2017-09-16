@@ -2026,6 +2026,7 @@
             window.open('../Contract/AddContractRate.aspx?contract_id=' + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConRateAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Edit() {
+
             window.open('../Contract/AddContractRate.aspx?contract_id=' + <%=Request.QueryString["id"] %>+"&rate_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConRateEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
 
