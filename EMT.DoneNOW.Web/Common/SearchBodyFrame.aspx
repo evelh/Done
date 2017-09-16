@@ -2020,6 +2020,31 @@
         function Add() {
             window.open('../Contract/AddDefaultCharge.aspx?contract_id=' + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConDefCostAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
 			}
+        <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.CONTRACT_RATE){%>
+
+        function Add() {
+            window.open('../Contract/AddContractRate.aspx?contract_id=' + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConRateAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Edit() {
+            window.open('../Contract/AddContractRate.aspx?contract_id=' + <%=Request.QueryString["id"] %>+"&rate_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConRateEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+
+        function Delete() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ContractAjax.ashx?act=DeleteRate&rateId=" + entityid,
+                async: false,
+                success: function (data) {
+                    if (data == "True") {
+                        alert("删除成功");
+                    }
+                    else {
+                        alert("删除失败");
+                    }
+                    history.go(0);
+                }
+            })
+        }
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

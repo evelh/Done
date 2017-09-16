@@ -172,6 +172,7 @@
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\AddCharges.aspx" />
+    <Content Include="Contract\AddContractRate.aspx" />
     <Content Include="Contract\AddDefaultCharge.aspx" />
     <Content Include="Contract\AdjustExtendedPrice.aspx" />
     <Content Include="Contract\ApproveAndPost.aspx" />
@@ -857,6 +858,13 @@
     </Compile>
     <Compile Include="Contract\AddCharges.aspx.designer.cs">
       <DependentUpon>AddCharges.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\AddContractRate.aspx.cs">
+      <DependentUpon>AddContractRate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AddContractRate.aspx.designer.cs">
+      <DependentUpon>AddContractRate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\AddDefaultCharge.aspx.cs">
       <DependentUpon>AddDefaultCharge.aspx</DependentUpon>

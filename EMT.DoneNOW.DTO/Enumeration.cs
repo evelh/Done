@@ -440,6 +440,7 @@ namespace EMT.DoneNOW.DTO
             REVOKE_MILESTONES = 925,            //撤销里程碑审批
             REVOKE_SUBSCRIPTIONS = 926,         //撤销订阅审批
 			CONTRACT_DEFAULT_COST = 927,             // 合同默认成本
+            CONTRACT_RATE = 928,                 // 合同预付时间系数
 
 
             REVOKE_LABOUR,                //撤销工时审批
@@ -526,6 +527,10 @@ namespace EMT.DoneNOW.DTO
             PROJECT = 1371,                             // 项目
             SUBSCRIPTION_PERIOD=1372,                   //订阅周期
             ACCOUNT_DEDUCTION=1373,                    //审批并提交
+            REFERENCE = 1374,                              // 客户发票/报价设置
+            INVOCIE =1375,                                // 发票
+            INVOCIE_DETAIL=1376,                         // 发票详情
+            
         }
 
         /// <summary>
@@ -760,7 +765,8 @@ namespace EMT.DoneNOW.DTO
         REVOKE_RECURRING_SERVICES = 65,    //撤销定期服务审批
         REVOKE_MILESTONES = 66,            //撤销里程碑审批
         REVOKE_SUBSCRIPTIONS = 67,         //撤销订阅审批  
-		CONTRACT_DEFAULT_COST = 68,           // 合同默认成本
+		CONTRACT_DEFAULT_COST = 68,        // 合同默认成本
+        CONTRACT_RATE=69,                  // 合同预付时间
 
         REVOKE_LABOUR,                //撤销工时审批
         REVOKE_EXPENSE,               //撤销费用审批
@@ -853,6 +859,10 @@ namespace EMT.DoneNOW.DTO
         MaterialCode = 311,                       //物料代码查找带回
         ConDefCostAdd = 312,                      // 合同默认成本新增
         ConDefCostEdit = 313,                     // 合同默认成本修改
+        ConRateAdd=314,                           // 合同预付时间系数新增
+        ConRateEdit = 315,                        // // 合同预付时间系数编辑
+
+
         VendorAdd = 320,                          //添加供应商
         TerritorySource = 321,                   //地域带回员工
         VendorSelect = 322,                    //查找供应商

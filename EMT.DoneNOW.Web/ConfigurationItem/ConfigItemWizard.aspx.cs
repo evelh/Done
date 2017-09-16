@@ -44,7 +44,30 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
 
         protected void btnFinish_Click(object sender, EventArgs e)
         {
+            if (CheckOne.Checked)
+            {
+                var param = GetParam();
+                var result = new InstalledProductBLL().ConfigurationItemAdd(param,GetLoginUserId());
+                if (result)
+                {
+                    conCost.create_ci = 1;
+                    AddChargeDto dto = new AddChargeDto()
+                    {
+                        cost = conCost,
+                        isAddCongigItem = false
+                    };
+                    new ContractCostBLL().UpdateCost(dto, GetLoginUserId());
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('配置项向导成功！');window.close();self.opener.location.reload();</script>");
+                }
+                else
+                {
 
+                }
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>window.close();self.opener.location.reload();</script>");
+            }
         }
         /// <summary>
         /// 获取到页面参数
@@ -55,6 +78,19 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
             var param = AssembleModel<ConfigurationItemAddDto>();
             param.account_id = contract.account_id;
             param.installed_by =(int) GetLoginUserId();
+            param.location = "";
+            param.number_of_users = null;
+            param.status = 1;
+            param.contact_id = null;
+            param.contract_id = null;
+            param.service = null;
+            param.installed_product_cate_id = product.installed_product_cate_id;
+            param.vendor_id = null;
+            param.contract_cost_id = conCost.id;
+            // 是否经过合同审核
+            param.terms = new Terms();
+            param.notice = new Notice();
+            param.udf = null;
             return param;
         }
     }

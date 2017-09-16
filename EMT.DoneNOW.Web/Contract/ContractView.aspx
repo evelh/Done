@@ -73,6 +73,10 @@
             bottom: 0;
             border-left: 1px solid #d3d3d3;
         }
+        a{
+            color:black;
+            text-decoration-line:none;
+        }
     </style>
 </head>
 <body>
@@ -85,6 +89,11 @@
                 <li class="MenuLink">Summary</li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=InternalCost&id=<%=contract.id %>">内部成本</a></li>
                 <li class="MenuLink">Services</li>
+                <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+                { %>
+
+                <li class="MenuLink"><a href="ContractView.aspx?type=rate&id=<%=contract.id %>">预付时间系数</a></li>
+                <%} %>
                 <li class="MenuLink">例外因素</li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=item&id=<%=contract.id %>">配置项</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=charge&id=<%=contract.id %>">成本</a></li>
@@ -99,8 +108,8 @@
              <div class="HeaderRow">
                  <asp:Label ID="ShowTitle" runat="server" Text="Label"></asp:Label>
             </div>
-            <iframe runat="server" id="viewContractIframe" width="1280" height="300" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
-            <iframe runat="server" id="second" width="1280" height="600" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
+            <iframe runat="server" id="viewContractIframe" width="100%" height="300" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
+            <iframe runat="server" id="second" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
         </div>
     </form>
 

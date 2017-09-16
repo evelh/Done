@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web.ConfigurationItem {
+namespace EMT.DoneNOW.Web.Contract {
     
     
-    public partial class ConfigItemWizard {
+    public partial class AddContractRate {
         
         /// <summary>
         /// form1 控件。
@@ -22,66 +22,48 @@ namespace EMT.DoneNOW.Web.ConfigurationItem {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// rbBuyDate 控件。
+        /// save_close 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rbBuyDate;
+        protected global::System.Web.UI.WebControls.Button save_close;
         
         /// <summary>
-        /// rbInstallDate 控件。
+        /// save_new 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rbInstallDate;
+        protected global::System.Web.UI.WebControls.Button save_new;
         
         /// <summary>
-        /// rbNo 控件。
+        /// role_id 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rbNo;
+        protected global::System.Web.UI.WebControls.DropDownList role_id;
         
         /// <summary>
-        /// rbThrDate 控件。
+        /// rbRoleRate 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rbThrDate;
+        protected global::System.Web.UI.WebControls.RadioButton rbRoleRate;
         
         /// <summary>
-        /// rbEffDate 控件。
+        /// rbContractRate 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rbEffDate;
-        
-        /// <summary>
-        /// CheckOne 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckOne;
-        
-        /// <summary>
-        /// btnFinish 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFinish;
+        protected global::System.Web.UI.WebControls.RadioButton rbContractRate;
     }
 }

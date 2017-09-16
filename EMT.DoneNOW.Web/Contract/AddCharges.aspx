@@ -810,6 +810,26 @@
         }
     })
 
+    $("#save").click(function () {
+        if (!SubmitCheck()) {
+            return false;
+        }
+        return true;
+    });
+    $("#save_close_Click").click(function () {
+        if (!SubmitCheck()) {
+            return false;
+        }
+        return true;
+    });
+    $("#save_add").click(function () {
+        if (!SubmitCheck()) {
+            return false;
+        }
+        return true;
+    });
+
+
 
     function toDecimal4(x) {
         var f = parseFloat(x);
@@ -922,5 +942,53 @@
                 },
             });
         }
+    }
+
+
+    function SubmitCheck() {
+        var costId = $("#costIdHidden").val();
+        if (costId == "") {
+            alert("请通过查找带回选择物料代码！");
+            return false;
+        }
+        var name = $("#name").val();
+        if (name == "") {
+            alert("请填写成本名称！");
+            return false;
+        }
+        var date_purchased = $("#date_purchased").val();
+        if (date_purchased == "") {
+            alert("请填写购买日期！");
+            return false;
+        }
+        var status_id = $("#status_id").val();
+        if (status_id == "") {
+            alert("请选择状态！");
+            return false;
+        }
+        // unit_cost
+        var quantity = $("#quantity").val();
+        if (quantity == "") {
+            alert("请填写数量！");
+            return false;
+        }
+        var unit_cost = $("#unit_cost").val();
+        if (unit_cost == "") {
+            alert("请填写单元成本！");
+            return false;
+        }
+        //unit_price
+        var pricequantity = $("#pricequantity").val();
+        if (pricequantity == "") {
+            alert("数量不能为空！");
+            return false;
+        }
+        var unit_price = $("#unit_price").val();
+        if (unit_price == "") {
+            alert("请填写单价！");
+            return false;
+        }
+
+        return true;
     }
 </script>
