@@ -1575,6 +1575,8 @@
                         history.go(0);
                     }
                 })
+            } else {
+                alert("请选择需要审批的数据！");
             }
 
         }
@@ -1598,6 +1600,8 @@
                         history.go(0);
                     }
                 })
+            } else {
+                alert("请选择需要审批的数据！");
             }
         }
        <%}
@@ -1620,6 +1624,8 @@
                         history.go(0);
                     }
                 })
+            } else {
+                alert("请选择需要审批的数据！");
             }
         }
        <%}
@@ -1642,6 +1648,8 @@
                         history.go(0);
                     }
                 })
+            } else {
+                alert("请选择需要审批的数据！");
             }
         }
             <%}
@@ -1658,6 +1666,8 @@
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
                 window.open('../Contract/ContractPostDate.aspx?type='+queryTypeId+'&ids='+ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            } else {
+                alert("请选择需要审批的数据！");
             }
         }
         //审批并提交
@@ -1686,6 +1696,8 @@
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
                 window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            } else {
+                alert("请选择需要审批的数据！");
             }
         }
         //审批并提交
@@ -1709,8 +1721,8 @@
             window.open('../Contract/AdjustExtendedPrice.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
          <%}
-        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_SUBSCRIPTIONS)
-        {%>//审批服务
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_RECURRING_SERVICES)
+        {%>//审批定期服务
         //审批并提交(批量)
         function Add() {
             var ids = "";
@@ -1722,6 +1734,8 @@
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
                 window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            } else {
+                alert("请选择需要审批的数据！");
             }
         }
         //审批并提交
@@ -1750,7 +1764,110 @@
             window.open('../Contract/AdjustExtendedPrice.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
 
         }
-		       <%}
+         <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+        {%>//审批成本
+            //审批并提交(批量)
+            function Add() {
+                var ids = "";
+                $(".IsChecked").each(function () {
+                    if ($(this).is(":checked")) {
+                        ids += $(this).val() + ',';
+                    }
+                });
+                if (ids != "") {
+                    ids = ids.substring(0, ids.length - 1);
+                    window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                   <%-- var strs = new Array(); //定义一数组 
+                    strs = ids.split(","); //字符分割 
+                    for (i = 0; i < strs.length; i++) {
+                        //此处判断成本关联预付费合同
+                        $.ajax({
+                            type: "GET",
+                            url: "../Tools/ApproveAndPostAjax.ashx?act=chargevali&id=" + strs[i],
+                            async: false,
+                            success: function (data) {
+                                if (date == "ok") {
+
+                                } else {
+                                    window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&id=' + strs[i], '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                                }
+                            }
+                        });
+
+                    }--%>                 
+                } else {
+                    alert("请选择需要审批的数据！");
+                }
+            }
+            //审批并提交
+            function Post() {
+                window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+               <%-- //此处判断成本关联预付费合同
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ApproveAndPostAjax.ashx?act=chargevali&id=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        if (date == "ok") {
+
+                        } else {
+                            window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                                }
+                            }
+                 });--%>
+               
+            }
+            //查看合同详情
+            function ContractDetail() {
+
+            }
+            //查看工单详情
+            function TicketDetail() {
+
+            }
+            //设置为可计费
+            function Billing() {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ApproveAndPostAjax.ashx?act=billing&id=" + entityid + "&type=" + queryTypeId,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                });
+                window.location.reload();
+            }
+            //设置为不可计费
+            function NoBilling() {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ApproveAndPostAjax.ashx?act=nobilling&id=" + entityid + "&type=" + queryTypeId,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                });
+                window.location.reload();
+            }
+            //恢复初始值
+            function Restore_Initiall() {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ApproveAndPostAjax.ashx?act=init&id=" + entityid + "&type=" + queryTypeId,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                });
+                window.location.reload();
+            }
+            //调整总价
+            function AdjustExtend() {
+                window.open('../Contract/AdjustExtendedPrice.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+
+        }
+ <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contract_Charge)
         {%>
         $("#CheckAll").click(function () {

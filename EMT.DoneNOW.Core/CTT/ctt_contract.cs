@@ -69,7 +69,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? setup_fee_approve_and_post_user_id { get; set; }
         [DataMember]
-        public Int64? setup_fee_approve_and_post_time { get; set; }
+        public DateTime? setup_fee_approve_and_post_date { get; set; }
         [DataMember]
         public Int64? exclusion_contract_id { get; set; }
         [DataMember]

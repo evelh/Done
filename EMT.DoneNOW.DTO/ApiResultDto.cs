@@ -44,6 +44,7 @@ namespace EMT.DoneNOW.DTO
         SYSTEM,                                      //无法删除系统默认
         MARKET_USED,                                 //市场已经被使用
         TERRITORY_USED,                              //地域已经被使用
+        REGION_USED,                                 //区域已经被使用
         COMPETITOR_USED,                             //竞争对手已经被使用
         OPPORTUNITY_SOURCE_USED,                     //商机来源已经被使用
         ACTION_TYPE_USED,                            //活动类型已经被使用
@@ -53,6 +54,6 @@ namespace EMT.DoneNOW.DTO
         ACCOUNT_TYPE_USED,                           //客户类别已经被使用
         CONTRACT_TYPE_USED,                          //合同类别已经被使用
         CONTRACT_MILESTONE_USED,                     //里程碑状态已经被使用
-        CONTRACT_NO_ACTIVE,                               //不存在当前激活的合同
+        CONTRACT_NO_ACTIVE,                          //不存在当前激活的合同
     }
 }

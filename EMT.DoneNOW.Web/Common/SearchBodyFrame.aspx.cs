@@ -125,7 +125,8 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.APPROVE_MILESTONES://审批里程碑
                 case (int)DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS://审批订阅
-                case (int)DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES://审批订阅
+                case (int)DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES://审批定期服务
+                case (int)DicEnum.QUERY_CATE.APPROVE_CHARGES://审批成本
                     addBtn = "审批并提交";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_CHARGE:
@@ -463,6 +464,15 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "Post()" });
                     contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ContractDetail()" });
                     contextMenu.Add(new PageContextMenuDto { text = "调整总价", click_function = "AdjustExtend()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "恢复初始值", click_function = "Restore_Initiall()" });
+                    break;
+                case (long)QueryType.APPROVE_CHARGES:
+                    contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "Post()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ContractDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "工单详情", click_function = "TicketDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "调整总价", click_function = "AdjustExtend()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设置为可计费", click_function = "Billing()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设置为不可计费", click_function = "NoBilling()" });
                     contextMenu.Add(new PageContextMenuDto { text = "恢复初始值", click_function = "Restore_Initiall()" });
                     break;
                 default:

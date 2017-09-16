@@ -708,6 +708,7 @@ namespace EMT.DoneNOW.DTO
         /// 审批并提交操作类型 -121
         /// </summary>
         public enum ACCOUNT_DEDUCTION_TYPE {
+            CHARGE=1321,                //成本
             MILESTONES=1323,            //里程碑
             SUBSCRIPTIONS=1324,         //订阅
             SERVICE =1325,              //服务
@@ -886,5 +887,6 @@ namespace EMT.DoneNOW.DTO
         ContractPostDate = 363,                    //合同审批，提交日期
         ContractAdjust = 364,                      //合同审批，调整总价
         ContractMilestone= 365,                    //合同审批，查看里程碑详情
+        ContractChargeSelect=366,                  //合同审批，成本关联预付费时的，选择操作窗口
     }
 }
