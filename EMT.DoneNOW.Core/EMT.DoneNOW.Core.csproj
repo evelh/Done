@@ -56,6 +56,7 @@
     <Compile Include="CRM\crm_account.cs" />
     <Compile Include="CRM\crm_account_alert.cs" />
     <Compile Include="CRM\crm_account_deduction.cs" />
+    <Compile Include="CRM\crm_account_reference.cs" />
     <Compile Include="CRM\crm_account_territory.cs" />
     <Compile Include="CRM\crm_contact.cs" />
     <Compile Include="CRM\crm_installed_product.cs" />
@@ -80,6 +81,8 @@
     <Compile Include="CTT\ctt_contract_service_bundle_service.cs" />
     <Compile Include="CTT\ctt_contract_service_period.cs" />
     <Compile Include="CTT\ctt_contract_service_period_bundle_service.cs" />
+    <Compile Include="CTT\ctt_invoice.cs" />
+    <Compile Include="CTT\ctt_invoice_detail.cs" />
     <Compile Include="Dictionary\d_sla.cs" />
     <Compile Include="Dictionary\d_cost_code.cs" />
     <Compile Include="Dictionary\d_tax_region_cate.cs" />

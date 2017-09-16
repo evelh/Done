@@ -135,6 +135,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.CONTRACT_DEFAULT_COST:
                     addBtn = "添加合同默认成本";
                     break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_TIME_RATE:
+                    addBtn = "添加预付时间系数";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -474,6 +477,9 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "设置为可计费", click_function = "Billing()" });
                     contextMenu.Add(new PageContextMenuDto { text = "设置为不可计费", click_function = "NoBilling()" });
                     contextMenu.Add(new PageContextMenuDto { text = "恢复初始值", click_function = "Restore_Initiall()" });
+                case (long)QueryType.CONTRACT_RATE:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;

@@ -334,7 +334,7 @@
                         </tr>
                         <tr>
                             <td class="FieldLabels">配置项名称
-                            <% var ivtdProduct = new EMT.DoneNOW.BLL.IVT.ProductBLL().GetProduct(iProduct.product_id); %>
+                            <% var ivtdProduct = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(iProduct.product_id); %>
                                 <div>
                                     <%=ivtdProduct!=null?ivtdProduct.product_name:"" %>
                                 </div>

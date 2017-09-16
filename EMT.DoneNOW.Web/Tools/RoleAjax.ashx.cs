@@ -54,7 +54,7 @@ namespace EMT.DoneNOW.Web
         /// <param name="role_id"></param>
         public void GetRole(HttpContext context,long role_id)
         {
-            var role = new sys_role_dal().FindSignleBySql<sys_role>($"select * from sys_role where id = {role_id} ");
+            var role = new sys_role_dal().FindSignleBySql<sys_role>($"select * from sys_role where id = {role_id} and delete_time = 0");
             if (role != null)
             {
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(role));
