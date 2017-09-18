@@ -37,7 +37,7 @@ namespace EMT.DoneNOW.Web
                         this.warehouse_id.DataBind();
                         this.warehouse_id.Items.Insert(0, new ListItem() { Value = "0", Text = "    ", Selected = true });
 
-                        this.product_name.Text = probll.GetProduct(ware.product_id).product_name;
+                        this.product_name.Text = probll.GetProduct(ware.product_id).name;
                         string text = this.warehouse.Text = this.warehouse_id.Items.FindByValue(ware.warehouse_id.ToString()).ToString();
                         this.warehouse_id.Items.Remove(new ListItem() { Value = ware.warehouse_id.ToString(), Text = text });
                         this.quantity.Text = ware.quantity.ToString();

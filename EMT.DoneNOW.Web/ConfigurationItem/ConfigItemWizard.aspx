@@ -179,7 +179,7 @@
                                                                     <td><%=costCode!=null?costCode.name:"" %></td>
                                                                     <td style="width: 150px;">
                                                                         <span style="display: inline-block; width: 79%; vertical-align: top; font-size: 12px;">
-                                                                            <input type="text" style="padding-left: 0px; border: 0px; font: bold; background-color: transparent; text-align: left" id="product_id" value="<%=product==null?"":product.product_name %>" />
+                                                                            <input type="text" style="padding-left: 0px; border: 0px; font: bold; background-color: transparent; text-align: left" id="product_id" value="<%=product==null?"":product.name %>" />
                                                                             <input type="hidden" name="product_id" id="product_idHidden" value="<%=product==null?"":product.id.ToString() %>" />
 
 

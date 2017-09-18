@@ -871,7 +871,7 @@
                 success: function (data) {
                     if (data != "") {
                         debugger;
-                        $("#name").val(data.product_name);
+                        $("#name").val(data.name);
                         $("#description").text(data.description);
                         $("#unit_price").val(data.unit_price); //unit_cost
                         $("#unit_cost").val(data.unit_cost);

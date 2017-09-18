@@ -83,7 +83,7 @@ namespace EMT.DoneNOW.BLL
             product.create_user_id =product.update_user_id= user_id;
            
             //唯一性校验
-            var propro = _dal.FindListBySql($"select * from ivt_product where product_name='{ product.product_name}' and delete_time=0 ");
+            var propro = _dal.FindListBySql($"select * from ivt_product where name='{ product.name}' and delete_time=0 ");
             if (propro != null) {
                 return ERROR_CODE.EXIST;
             }
@@ -167,7 +167,7 @@ namespace EMT.DoneNOW.BLL
             product.update_user_id = user_id;
 
             //唯一性校验
-            var propro = _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where product_name='{product.product_name}' and delete_time=0 ");
+            var propro = _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where name='{product.name}' and delete_time=0 ");
             ivt_product oldpropro = _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where id='{product.id}' and delete_time=0 ");
             if (propro != null)
             {

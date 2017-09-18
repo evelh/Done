@@ -344,7 +344,7 @@ textarea {
                                                     var product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct((long)opportunity.primary_product_id);
                                                     if (product != null)
                                                     {
-                                                        productname = product.product_name;
+                                                        productname = product.name;
                                                     }
                                                 }
 

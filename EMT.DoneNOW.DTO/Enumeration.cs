@@ -703,12 +703,31 @@ namespace EMT.DoneNOW.DTO
             READY_TO_BILL=1266,
             BILLED=1267,
         }
-        public enum PROJECT_TYPE
+        /// <summary>
+        /// 合同计费对象子类型
+        /// </summary>
+        public enum BILLING_ENTITY_SUB_TYPE
         {
-            ACCOUNT_PROJECT = 1338,
-            IN_PROJECT= 1339,
-            PROJECT_DAY = 1340,
+            PROJECT_COST_DEDUCTION=1297,                // 项目成本扣除
+            PROJECT_COST =1298,                          // 项目成本
+            TICKET_COST_DEDUCTION = 1299,               // 工单成本扣除
+            TICKET_COST = 1300,                         // 工单成本
+            CHARGE =1301,                                // 费用
+            CHARGE_DEDUCTION =1302,                      // 费用扣除
+            SUBSCRIBE =1303,                             // 订阅
+            SUBSCRIBE_COST = 1304,                      // 订阅成本
+            START_CHARGE =1305,                          // 初始费用
+            REGULAR_SERVICE =1306,                       // 定期服务
+            REGULAR_SERVICE_ADJUSTMENT =1307,            // 定期服务调整
+            REGULAR_SERVICE_PACKAGE =1308,               // 定期服务包
+            REGULAR_SERVICE_PACKAGE_ADJUSTMENT = 1309,  // 定期服务包调整
+            MILEPOST =1310,                              // 里程碑
+            PREPAID_TIME =1311,                          // 预付时间
+            PREPAID_COST =1312,                          // 预付费用
+            EVENTS =1313,                                // 事件
+            CONTRACT_COST = 1314,                       // 合同成本
         }
+
         /// <summary>
         /// 审批并提交操作类型 -121
         /// </summary>
@@ -719,6 +738,15 @@ namespace EMT.DoneNOW.DTO
             SERVICE =1325,              //服务
             SERVICE_ADJUST=1326,        //服务调整
             INITIAL_COST =1327,         //初始费用
+        }
+        /// <summary>
+        /// 项目类型 - 123
+        /// </summary>
+        public enum PROJECT_TYPE
+        {
+            ACCOUNT_PROJECT = 1338,
+            IN_PROJECT = 1339,
+            PROJECT_DAY = 1340,
         }
         /// <summary>
         /// 客户报价发票设置 - 127

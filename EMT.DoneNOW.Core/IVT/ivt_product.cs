@@ -19,7 +19,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 oid { get; set; }
         [DataMember]
-        public String product_name { get; set; }
+        public String name { get; set; }
         [DataMember]
         public String description { get; set; }
         [DataMember]
@@ -62,6 +62,8 @@ namespace EMT.DoneNOW.Core
         public Int64? vendor_id { get; set; }
         [DataMember]
         public Int32? udf_group_id { get; set; }
+        [DataMember]
+        public SByte is_system { get; set; }
 
 
     }

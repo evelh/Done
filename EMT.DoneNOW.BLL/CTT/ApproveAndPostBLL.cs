@@ -334,7 +334,7 @@ namespace EMT.DoneNOW.BLL
             cad.extended_price = csp.period_price;//总价
             cad.account_id = (long)cip.account_id;//客户id
             cad.bill_create_user_id = cs.create_user_id;//订阅创建人
-            cad.purchase_order_number = cs.purchase_order_number;//采购订单号
+            cad.purchase_order_number = cs.purchase_order_no;//采购订单号
 
             cad.tax_category_name = tax_category_name;//税收种类name
             cad.tax_region_name = tax_region_name;//税区

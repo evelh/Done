@@ -382,7 +382,7 @@
                                                                 product = new EMT.DoneNOW.DAL.ivt_product_dal().FindNoDeleteById((long)conCost.product_id);
                                                             }
                                                         %>
-                                                        <input type="text" id="product_id" style="width: 294px;" value="<%=product!=null?product.product_name:"" %>" />
+                                                        <input type="text" id="product_id" style="width: 294px;" value="<%=product!=null?product.name:"" %>" />
                                                         <input type="hidden" name="product_id" id="product_idHidden" value="<%=product!=null?product.id.ToString():"" %>" />
                                                         <img src="../Images/data-selector.png" style="vertical-align: middle;" id="ChoosethisProduct" onclick="ChooseProduct()" />
                                                     </div>
@@ -888,7 +888,7 @@
                         if (data.unit_cost != undefined && data.unit_cost != "") {
                             $("#unit_cost").val(toDecimal4(data.unit_cost));
                         }
-                        $("#name").val(data.product_name);
+                        $("#name").val(data.name);
                         GetSumCost();
                         GetSumAmount();
                         $("#status_id").val(<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_STATUS.PENDING_PURCHASE %>);

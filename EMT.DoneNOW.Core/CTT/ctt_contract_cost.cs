@@ -94,6 +94,8 @@ namespace EMT.DoneNOW.Core
         public Decimal? change_order_hours { get; set; }
         [DataMember]
         public Int64? task_id { get; set; }
+        [DataMember]
+        public Int32 sub_cate_id { get; set; }
 
 
     }
