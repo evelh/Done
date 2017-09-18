@@ -124,6 +124,10 @@ namespace EMT.DoneNOW.Web
                 {
                     context.Response.Write("有" + n + "个商机关联此商机来源。如果删除，则相关商机上的商机来源信息将会被清空，是否继续?");
                 }
+                else if (result == DTO.ERROR_CODE.REGION_USED)
+                {
+                    context.Response.Write("有" + n + "个客户关联此区域。如果删除，则相关客户上的区域信息将会被清空，是否继续?");
+                }
                 else if (result == DTO.ERROR_CODE.OPPORTUNITY_STAGE_USED)
                 {
                     context.Response.Write("被" + n + "个商机引用不能删除!");

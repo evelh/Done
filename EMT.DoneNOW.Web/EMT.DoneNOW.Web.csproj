@@ -176,6 +176,7 @@
     <Content Include="Contract\AddDefaultCharge.aspx" />
     <Content Include="Contract\AdjustExtendedPrice.aspx" />
     <Content Include="Contract\ApproveAndPost.aspx" />
+    <Content Include="Contract\ApproveChargeSelect.aspx" />
     <Content Include="Contract\ChargeDetails.aspx" />
     <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
@@ -238,6 +239,7 @@
     <Content Include="Images\Classification\residential.png" />
     <Content Include="Images\Classification\target.png" />
     <Content Include="Images\Classification\tm.png" />
+    <Content Include="InvoiceTemplate\InvoiceTemplateAttr.aspx" />
     <Content Include="Opportunity\CloseOpportunity.aspx" />
     <Content Include="Opportunity\ContractExistService.aspx" />
     <Content Include="Opportunity\OpportunityLeadSource.aspx" />
@@ -890,6 +892,13 @@
     <Compile Include="Contract\ApproveAndPost.aspx.designer.cs">
       <DependentUpon>ApproveAndPost.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\ApproveChargeSelect.aspx.cs">
+      <DependentUpon>ApproveChargeSelect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ApproveChargeSelect.aspx.designer.cs">
+      <DependentUpon>ApproveChargeSelect.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contract\ChargeDetails.aspx.cs">
       <DependentUpon>ChargeDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -998,6 +1007,13 @@
     </Compile>
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTemplateAttr.aspx.cs">
+      <DependentUpon>InvoiceTemplateAttr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTemplateAttr.aspx.designer.cs">
+      <DependentUpon>InvoiceTemplateAttr.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

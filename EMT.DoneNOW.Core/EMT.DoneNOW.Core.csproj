@@ -73,6 +73,7 @@
     <Compile Include="CTT\ctt_contract_exclusion_role.cs" />
     <Compile Include="CTT\ctt_contract_internal_cost.cs" />
     <Compile Include="CTT\ctt_contract_milestone.cs" />
+    <Compile Include="CTT\ctt_contract_notify_rule.cs" />
     <Compile Include="CTT\ctt_contract_rate.cs" />
     <Compile Include="CTT\ctt_contract_service.cs" />
     <Compile Include="CTT\ctt_contract_service_adjust.cs" />

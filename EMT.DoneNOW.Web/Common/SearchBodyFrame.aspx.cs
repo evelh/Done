@@ -105,7 +105,7 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYS_DEPARTMENT:
                 case (int)DicEnum.QUERY_CATE.SYS_ROLE:
                 case (int)DicEnum.QUERY_CATE.CONFIGITEMTYPE:
-                case (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONE:
+                case (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONE:              
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -125,7 +125,8 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.APPROVE_MILESTONES://审批里程碑
                 case (int)DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS://审批订阅
-                case (int)DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES://审批订阅
+                case (int)DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES://审批定期服务
+                case (int)DicEnum.QUERY_CATE.APPROVE_CHARGES://审批成本
                     addBtn = "审批并提交";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_CHARGE:
@@ -136,6 +137,9 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_TIME_RATE:
                     addBtn = "添加预付时间系数";
+                    break;
+                case (int)DicEnum.QUERY_CATE.INVOICE_TEMPLATE:
+                    addBtn = "新增发票模板";
                     break;
                 default:
                     addBtn = "";
@@ -333,6 +337,14 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "未激活", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
                     break;
+                case (long)QueryType.InvoiceTemplate:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设为默认", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "未激活", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    break;
                 case (long)QueryType.InstalledProductView:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
@@ -468,9 +480,29 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "调整总价", click_function = "AdjustExtend()" });
                     contextMenu.Add(new PageContextMenuDto { text = "恢复初始值", click_function = "Restore_Initiall()" });
                     break;
+                case (long)QueryType.APPROVE_CHARGES:
+                    contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "Post()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ContractDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "工单详情", click_function = "TicketDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "调整总价", click_function = "AdjustExtend()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设置为可计费", click_function = "Billing()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设置为不可计费", click_function = "NoBilling()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "恢复初始值", click_function = "Restore_Initiall()" });
+                    break;
                 case (long)QueryType.CONTRACT_RATE:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.Invoice_History:
+                    contextMenu.Add(new PageContextMenuDto { text = "修改发票", click_function = "EditInvoice()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看发票", click_function = "InvoiceView()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看本批全部发票", click_function = "InvoiceAllView()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "输出本批全部发票到XML文件", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "清除web service日期数据", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "作废发票", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "作废本批次全部发票", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "作废本批全部发票并取消审批", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "发票设置", click_function = "InvoiceEdit()" });
                     break;
                 default:
                     break;
