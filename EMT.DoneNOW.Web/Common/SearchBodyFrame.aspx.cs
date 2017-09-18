@@ -493,6 +493,17 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
+                case (long)QueryType.Invoice_History:
+                    contextMenu.Add(new PageContextMenuDto { text = "修改发票", click_function = "EditInvoice()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看发票", click_function = "InvoiceView()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看本批全部发票", click_function = "InvoiceAllView()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "输出本批全部发票到XML文件", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "清除web service日期数据", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "作废发票", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "作废本批次全部发票", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "作废本批全部发票并取消审批", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "发票设置", click_function = "InvoiceEdit()" });
+                    break;
                 default:
                     break;
             }

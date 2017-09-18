@@ -2368,6 +2368,34 @@
                 }
             })
         }
+         <%}//发票模板（9-20开始做）
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.InvoiceTemplate)
+        {%>
+        function Add() {
+            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>');
+        }
+        function Edit() {
+            
+        }
+         <%}//历史发票查询
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Invoice_History)
+        {%>
+        //修改发票
+        function EditInvoice() {
+
+        }
+        //查看发票
+        function InvoiceView() {
+           
+        }
+        //查看本批全部发票
+        function InvoiceAllView() {
+
+        }
+        //发票设置
+        function InvoiceEdit() {
+
+        }
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

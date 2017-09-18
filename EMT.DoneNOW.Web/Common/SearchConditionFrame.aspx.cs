@@ -106,6 +106,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.INVOICE_TEMPLATE:
                     currentQuery.page_name = "发票模板管理";
                     break;
+                case (int)DicEnum.QUERY_CATE.INVOICE_HISTORY:
+                    currentQuery.page_name = "历史发票管理";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

@@ -446,10 +446,9 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_TIME_RATE = 928,                 // 合同预付时间系数
             INVOICE_TEMPLATE=1512,                    //发票模板
 
-
-            REVOKE_LABOUR,                //撤销工时审批
-            REVOKE_EXPENSE,               //撤销费用审批
-
+            INVOICE_HISTORY,               //历史发票
+            REVOKE_LABOUR,                 //撤销工时审批
+            REVOKE_EXPENSE,                //撤销费用审批
             APPROVE_LABOUR,                //工时审批
             APPROVE_EXPENSE,               //费用审批
             APPROVE_RECURRING_SERVICES,    //定期服务审批
@@ -776,10 +775,9 @@ namespace EMT.DoneNOW.DTO
         CONTRACT_RATE=69,                  // 合同预付时间
         InvoiceTemplate = 82,             //发票模板
 
-
-        REVOKE_LABOUR,                //撤销工时审批
-        REVOKE_EXPENSE,               //撤销费用审批
-      
+        Invoice_History,               //历史发票
+        REVOKE_LABOUR,                 //撤销工时审批
+        REVOKE_EXPENSE,                //撤销费用审批      
         APPROVE_LABOUR,                //工时审批
         APPROVE_EXPENSE,               //费用审批
         APPROVE_RECURRING_SERVICES,    //定期服务审批
@@ -895,11 +893,13 @@ namespace EMT.DoneNOW.DTO
 
         Role=360,                                  //角色
         Department=361,                            //部门
-        ConfigItemType=362,                         //配置项类型
+        ConfigItemType=362,                        //配置项类型
 
         ContractPostDate = 363,                    //合同审批，提交日期
         ContractAdjust = 364,                      //合同审批，调整总价
         ContractMilestone= 365,                    //合同审批，查看里程碑详情
         ContractChargeSelect=366,                  //合同审批，成本关联预付费时的，选择操作窗口
+
+        InvoiceTemplate=370,                      //新增发票模板
     }
 }
