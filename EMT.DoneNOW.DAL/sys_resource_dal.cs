@@ -27,5 +27,13 @@ namespace EMT.DoneNOW.DAL
 
             return list;
         }
+        /// <summary>
+        /// 获取到所有的员工
+        /// </summary>
+        /// <returns></returns>
+        public List<sys_resource> GetSourceList()
+        {
+            return FindListBySql<sys_resource>("select * from sys_resource where is_active = 1 and delete_time = 0");
+        }
     }
 }

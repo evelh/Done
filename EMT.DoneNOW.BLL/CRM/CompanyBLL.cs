@@ -121,8 +121,8 @@ namespace EMT.DoneNOW.BLL
                 competitor_id = param.general.competitor == 0 ? null : param.general.competitor,
                 name = param.general.company_name.Trim(),
                 is_active = 1,                         // 0未激活 1 激活
-                //is_taxable = param.general.tax_exempt ? 1 : 0,// 是否免税 0 否 1 是
-                is_optout_survey=0,            // 是否拒绝问卷调查 0 否 1 是
+                is_tax_exempt = (sbyte)(param.general.tax_exempt?1:0),
+                is_optout_survey =0,            // 是否拒绝问卷调查 0 否 1 是
                 phone = param.general.phone,
                 fax = param.general.fax,
                 web_site = param.general.web_site,
@@ -131,8 +131,8 @@ namespace EMT.DoneNOW.BLL
                 last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 type_id = param.general.company_type == 0 ? null : param.general.company_type,
                 classification_id = param.general.classification == 0 ? null : param.general.classification,
-                tax_region_id = param.general.tax_region == 0 ? null : param.general.tax_region,
-                tax_identification = param.general.tax_id,
+                tax_region_id = (!param.general.tax_exempt)&&param.general.tax_region != 0 ? param.general.tax_region :null,
+                tax_identification = (!param.general.tax_exempt)? param.general.tax_id:"",
                 resource_id = param.general.account_manage == 0 ? null : param.general.account_manage,
             };  //  创建客户实体类
 
@@ -140,6 +140,8 @@ namespace EMT.DoneNOW.BLL
             {
                 _account.parent_id = Convert.ToInt64(param.general.parent_company_name);
             }
+
+
             _dal.Insert(_account);                         // 将客户实体插入到表中
             id = _account.id.ToString();
             var add_account_log = new sys_oper_log()

@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.DTO
             public string email;        // Email
             public int? tax_region;        // 税区域
             public string tax_id;        // 税编号
-            public bool? tax_exempt;        // 是否免税
+            public bool tax_exempt;        // 是否免税
             public string alternate_phone1;        // 备用电话1
             public string alternate_phone2;        // 备用电话2
 

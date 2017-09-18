@@ -97,6 +97,7 @@
     <Compile Include="SYS\sys_department.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email.cs" />
     <Compile Include="SYS\sys_organization_location.cs" />
+    <Compile Include="SYS\sys_quote_email_tmpl.cs" />
     <Compile Include="SYS\sys_quote_tmpl.cs" />
     <Compile Include="CRM\crm_quote.cs" />
     <Compile Include="CRM\crm_quote_item.cs" />

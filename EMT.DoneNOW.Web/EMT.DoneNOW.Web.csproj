@@ -184,6 +184,8 @@
     <Content Include="Contract\ContractUdf.aspx" />
     <Content Include="Contract\ContractView.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
+    <Content Include="Invoice\PreferencesInvoice.aspx" />
+    <Content Include="Invoice\ProcessInvoice.aspx" />
     <Content Include="Contract\RoleRate.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
@@ -943,6 +945,20 @@
     </Compile>
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Invoice\PreferencesInvoice.aspx.cs">
+      <DependentUpon>PreferencesInvoice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Invoice\PreferencesInvoice.aspx.designer.cs">
+      <DependentUpon>PreferencesInvoice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Invoice\ProcessInvoice.aspx.cs">
+      <DependentUpon>ProcessInvoice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Invoice\ProcessInvoice.aspx.designer.cs">
+      <DependentUpon>ProcessInvoice.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\RoleRate.aspx.cs">
       <DependentUpon>RoleRate.aspx</DependentUpon>

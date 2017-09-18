@@ -139,7 +139,8 @@
                             <td>
                                 <div class="clear">
                                     <label>是否免税</label>
-                                    <input type="checkbox" name="tax_exempt" id="TaxExempt" value=""/>
+                                    <asp:CheckBox ID="taxExempt" runat="server" />
+                                    
                                 </div>
                             </td>
                         </tr>
@@ -689,9 +690,9 @@
         });
 
 
-        $("#TaxExempt").click(function () {
+        $("#taxExempt").click(function () {
 
-            if ($('#TaxExempt').is(':checked')) {
+            if ($('#taxExempt').is(':checked')) {
                 // 禁用
                 $("#tax_region").attr("disabled", "disabled");
 

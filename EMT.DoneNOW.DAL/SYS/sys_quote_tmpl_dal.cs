@@ -116,6 +116,22 @@ namespace EMT.DoneNOW.DAL
             }
         }
 
+        /// <summary>
+        /// 获取到发票模板
+        /// </summary>
+        public List<sys_quote_tmpl> GetInvoiceTemp(string where = "")
+        {
+            if (where == "")
+            {
+                return FindListBySql("select * from sys_quote_tmpl where cate_id = 2 and  delete_time=0 ");
+            }
+            else
+            {
+                return FindListBySql("select * from sys_quote_tmpl where cate_id = 2 and delete_time=0 " + where);
+            }
+        }
+
+
     }
 
 }

@@ -720,6 +720,16 @@ namespace EMT.DoneNOW.DTO
             SERVICE_ADJUST=1326,        //服务调整
             INITIAL_COST =1327,         //初始费用
         }
+        /// <summary>
+        /// 客户报价发票设置 - 127
+        /// </summary>
+        public enum INVOICE_ADDRESS_TYPE
+        {
+            USE_ACCOUNT_ADDRESS=1486,          // 使用客户地址
+            USE_PARENT_ACC_ADD =1487,           // 使用父客户地址
+            USE_PARENT_INVOIVE_ADD =1488,       // 使用父客户发票地址
+            USE_INSERT =1489,                   // 手工输入地址
+        }
     }
     /// <summary>
     /// 工单-126
