@@ -105,7 +105,7 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYS_DEPARTMENT:
                 case (int)DicEnum.QUERY_CATE.SYS_ROLE:
                 case (int)DicEnum.QUERY_CATE.CONFIGITEMTYPE:
-                case (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONE:
+                case (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONE:              
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -137,6 +137,9 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_TIME_RATE:
                     addBtn = "添加预付时间系数";
+                    break;
+                case (int)DicEnum.QUERY_CATE.INVOICE_TEMPLATE:
+                    addBtn = "新增发票模板";
                     break;
                 default:
                     addBtn = "";
@@ -327,6 +330,14 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除报价", click_function = "DeleteQuote()" });
                     break;
                 case (long)QueryType.QuoteTemplate:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设为默认", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "未激活", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    break;
+                case (long)QueryType.InvoiceTemplate:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "设为默认", click_function = "openopenopen()\" \" style='color:grey;'" });

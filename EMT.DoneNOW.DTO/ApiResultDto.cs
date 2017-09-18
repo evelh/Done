@@ -55,5 +55,7 @@ namespace EMT.DoneNOW.DTO
         CONTRACT_TYPE_USED,                          //合同类别已经被使用
         CONTRACT_MILESTONE_USED,                     //里程碑状态已经被使用
         CONTRACT_NO_ACTIVE,                          //不存在当前激活的合同
+
+        NOTIFICATION_RULE_RATE_NULL,                 //通知规则表的费率为空
     }
 }

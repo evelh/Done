@@ -325,6 +325,16 @@
                                                         </a>
                                                     </div>
                                                 </div>
+                                                 <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">Tools</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_TEMPLATE %>" target="PageFrame"> 
+                                                            <span class="Text">发票模板</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

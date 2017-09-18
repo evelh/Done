@@ -454,4 +454,51 @@ select {
     margin-right: 5px;
 }
 
+.addText {
+    width: 486px;
+    height: 275px;
+    margin-left: -247px;
+    margin-top: -142px;
+    z-index: 980;
+    display: block;
+    left: 50%;
+    position: fixed;
+    top: 50%;
+    background-color: #b9b9b9;
+    border: solid 4px #b9b9b9;
+}
+
+    .addText > div {
+        background-color: #fff;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+.CancelDialogButton {
+    background-image: url(../Images/cancel.png);
+    background-position: 0 -32px;
+    border: none;
+    cursor: pointer;
+    height: 32px;
+    position: absolute;
+    right: -14px;
+    top: -14px;
+    width: 32px;
+    z-index: 100;
+    border-radius: 50%;
+}
+
+#BackgroundOverLay {
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0.6;
+    z-index: 25;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 

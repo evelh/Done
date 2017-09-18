@@ -103,6 +103,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.REVOKE_SUBSCRIPTIONS:
                     currentQuery.page_name = "撤销订阅审批";
                     break;
+                case (int)DicEnum.QUERY_CATE.INVOICE_TEMPLATE:
+                    currentQuery.page_name = "发票模板管理";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

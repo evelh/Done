@@ -11,8 +11,8 @@
     <form id="form1" runat="server">
         <div>
             <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None"/><br /><br />
-            <asp:Button ID="Button1" runat="server" Text="自动生成预付费" BorderStyle="None"/><br /><br />
-            <asp:Button ID="Button2" runat="server" Text="强制生成（不够的部分单独生成一个条目）" BorderStyle="None"/><br /><br />
+            <asp:Button ID="Auto" runat="server" Text="自动生成预付费" BorderStyle="None"/><br /><br />
+            <asp:Button ID="Force" runat="server" Text="强制生成（不够的部分单独生成一个条目）" BorderStyle="None"/><br /><br />
         </div>
     </form>
 </body>

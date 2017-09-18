@@ -444,7 +444,7 @@ namespace EMT.DoneNOW.DTO
             REVOKE_SUBSCRIPTIONS = 926,         //撤销订阅审批
 			CONTRACT_DEFAULT_COST = 927,             // 合同默认成本
             CONTRACT_TIME_RATE = 928,                 // 合同预付时间系数
-
+            INVOICE_TEMPLATE=1512,                    //发票模板
 
 
             REVOKE_LABOUR,                //撤销工时审批
@@ -774,6 +774,8 @@ namespace EMT.DoneNOW.DTO
         REVOKE_SUBSCRIPTIONS = 67,         //撤销订阅审批  
 		CONTRACT_DEFAULT_COST = 68,        // 合同默认成本
         CONTRACT_RATE=69,                  // 合同预付时间
+        InvoiceTemplate = 82,             //发票模板
+
 
         REVOKE_LABOUR,                //撤销工时审批
         REVOKE_EXPENSE,               //撤销费用审批

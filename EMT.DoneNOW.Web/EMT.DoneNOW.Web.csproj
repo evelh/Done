@@ -237,6 +237,7 @@
     <Content Include="Images\Classification\residential.png" />
     <Content Include="Images\Classification\target.png" />
     <Content Include="Images\Classification\tm.png" />
+    <Content Include="InvoiceTemplate\InvoiceTemplateAttr.aspx" />
     <Content Include="Opportunity\CloseOpportunity.aspx" />
     <Content Include="Opportunity\ContractExistService.aspx" />
     <Content Include="Opportunity\OpportunityLeadSource.aspx" />
@@ -990,6 +991,13 @@
     </Compile>
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTemplateAttr.aspx.cs">
+      <DependentUpon>InvoiceTemplateAttr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTemplateAttr.aspx.designer.cs">
+      <DependentUpon>InvoiceTemplateAttr.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

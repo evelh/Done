@@ -18,21 +18,19 @@ namespace EMT.DoneNOW.Web
         ApproveAndPostBLL aapbll = new ApproveAndPostBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!int.TryParse(Request.QueryString["id"], out id))
-            {
-                id = 0;
-            }
-            ids = Convert.ToString(Request.QueryString["ids"]);
-            if (!long.TryParse(Request.QueryString["type"], out type))
-            {
-                type = 0;
-            }
-            if (id == 0 && string.IsNullOrEmpty(ids)||type==0) {
-                Response.Write("<script>alert('异常！');window.close();self.opener.location.reload();</script>");
-            }
-           
+            //if (!int.TryParse(Request.QueryString["id"], out id))
+            //{
+            //    id = 0;
+            //}
+            //ids = Convert.ToString(Request.QueryString["ids"]);
+            //if (!long.TryParse(Request.QueryString["type"], out type))
+            //{
+            //    type = 0;
+            //}
+            //if (id == 0 && string.IsNullOrEmpty(ids)||type==0) {
+            //    Response.Write("<script>alert('异常！');window.close();self.opener.location.reload();</script>");
+            //}
         }
-
         protected void Post_Click(object sender, EventArgs e)
         {
             string tt = Request.Form["post_date"].Trim().ToString();//获取时间
@@ -40,15 +38,18 @@ namespace EMT.DoneNOW.Web
             if (id != 0)
             {
                 if (type == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES) {
-                        if (aapbll.ChargeBlock(id))
+                    var result1 = aapbll.ChargeBlock(id);
+                        if (result1==DTO.ERROR_CODE.SUCCESS||result1==DTO.ERROR_CODE.NOTIFICATION_RULE_RATE_NULL)
                         {
                         //打开新窗口
+                        int rate_null = 1;
+                        if (result1 == DTO.ERROR_CODE.NOTIFICATION_RULE_RATE_NULL) {
+                            rate_null = 0;
+                        }
+                        Response.Write("<script>window.open('Contract/ApproveChargeSelect.aspx?rate_null="+ rate_null + "&date=" + tt +"&id='"+id+", '"+(int)EMT.DoneNOW.DTO.OpenWindow.ContractChargeSelect+ ", 'left=0,top=0,location=no,status=no,width=900,height=750', false);</script>");
 
-                      
 
 
-
-                        Response.Write("<script>window.open('Contract/ApproveChargeSelect.aspx?type=" + type +"&id='"+id+", '"+(int)EMT.DoneNOW.DTO.OpenWindow.ContractChargeSelect+ ", 'left=0,top=0,location=no,status=no,width=900,height=750', false);</script>");
                         }
                         else
                         {
@@ -84,10 +85,21 @@ namespace EMT.DoneNOW.Web
                     {
                         foreach (var idi in idList)
                         {
-                            if (aapbll.ChargeBlock(id))
+                            var result1 = aapbll.ChargeBlock(id);
+                            if (result1 == DTO.ERROR_CODE.SUCCESS || result1 == DTO.ERROR_CODE.NOTIFICATION_RULE_RATE_NULL)
                             {
-                                //打开新的后续操作选择窗口
-                                Response.Write("<script>window.open('ApproveChargeSelect.aspx?type=" + type + "&id='" + id + ", '" + (int)EMT.DoneNOW.DTO.OpenWindow.ContractChargeSelect + ", 'left=0,top=0,location=no,status=no,width=900,height=750', false);</script>");
+                                //如果成本关联预付费合同，则需要从预付费中扣除费用。系统需要判断预付费是否足够，如果不够可以选择：取消、自动生成预付费、强制生成（不够的部分单独生成一个条目）
+                                //打开新窗口
+                                int rate_null = 1;
+                                if (result1 == DTO.ERROR_CODE.NOTIFICATION_RULE_RATE_NULL)
+                                {
+                                    rate_null = 0;
+                                }
+
+
+                                Response.Write("<script>window.open('ApproveChargeSelect.aspx?rate_null=" + rate_null + "&date="+ tt+ "&id='" + id + ", '" + (int)EMT.DoneNOW.DTO.OpenWindow.ContractChargeSelect + ", 'left=0,top=0,location=no,status=no,width=900,height=750', false);</script>");
+
+
                             }
                             else
                             {

@@ -13,20 +13,83 @@ namespace EMT.DoneNOW.Web
     /// </summary>
     public class ApproveAndPostAjax : IHttpHandler
     {
-
         public void ProcessRequest(HttpContext context)
         {
             var action = context.Request.QueryString["act"];
             var type = context.Request.QueryString["type"];
             var id = context.Request.QueryString["id"];
+            var date = context.Request.QueryString["date"];
             switch (action)
             {
                 case "init":Init(context, Convert.ToInt32(id), Convert.ToInt32(type));break;
                 case "nobilling": NoBilling(context, Convert.ToInt32(id), Convert.ToInt32(type)); break;
                 case "billing": Billing(context, Convert.ToInt32(id), Convert.ToInt32(type)); break;
-                case "chargevali": ChargeBlock(context, Convert.ToInt32(id)); break;
+                case "post": Post(context, Convert.ToInt32(id), Convert.ToInt32(type),Convert.ToInt32(date)); ; break;
+                    //处理合同成本审批
+                case "auto_block":auto_block(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
+                case "force":force(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
+                case "cost": Cost(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
                 default: break;
 
+            }
+        }
+        //合同成本
+        public void Cost(HttpContext context, int id, int type, int date)
+        {
+            ApproveAndPostBLL aapbll = new ApproveAndPostBLL();
+            var user = context.Session["dn_session_user_info"] as sys_user;
+            if (user != null)
+            {
+                var result = aapbll.ChargeBlock(id);
+                if (result == ERROR_CODE.SUCCESS)
+                {
+                    context.Response.Write("less");
+                }
+                else if (result == ERROR_CODE.NOTIFICATION_RULE_RATE_NULL) {
+                    context.Response.Write("rate_null");
+                }
+                else
+                {
+                    Post(context, id, type, date);
+                }
+            }
+        }
+        //自动生成
+        public void auto_block(HttpContext context, int id, int type, int date)
+        {
+            ApproveAndPostBLL aapbll = new ApproveAndPostBLL();
+            var user = context.Session["dn_session_user_info"] as sys_user;
+            if (user != null)
+            {
+                if (aapbll.Post_Charges_a(id,date,user.id)!= ERROR_CODE.SUCCESS)
+                {
+                    context.Response.Write("error");
+                }
+            }
+        }
+        //强制生成
+        public void force(HttpContext context, int id, int type, int date)
+        {
+            ApproveAndPostBLL aapbll = new ApproveAndPostBLL();
+            var user = context.Session["dn_session_user_info"] as sys_user;
+            if (user != null)
+            {
+                if (aapbll.Post_Charges_b(id, date, user.id) != ERROR_CODE.SUCCESS)
+                {
+                    context.Response.Write("error");
+                }
+            }
+        }
+        public void Post(HttpContext context, int id, int type,int date) {
+            ApproveAndPostBLL aapbll = new ApproveAndPostBLL();
+            var user = context.Session["dn_session_user_info"] as sys_user;
+            if (user != null)
+            {
+                var result = aapbll.Post(Convert.ToInt32(id),date,type,user.id);
+                if (result != DTO.ERROR_CODE.SUCCESS)
+                {
+                    context.Response.Write("error");
+                }
             }
         }
         /// <summary>
@@ -80,28 +143,6 @@ namespace EMT.DoneNOW.Web
                 else
                 {
                     context.Response.Write("失败！");
-                }
-            }
-        }
-        /// <summary>
-        ///如果成本关联预付费合同，则需要从预付费中扣除费用。
-        ///系统需要判断预付费是否足够，如果不够可以选择：
-        ///取消、自动生成预付费、强制生成（不够的部分单独生成一个条目）
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="id"></param>
-        public void ChargeBlock(HttpContext context, int id) {
-            ApproveAndPostBLL aapbll = new ApproveAndPostBLL();
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
-            {
-                if (aapbll.ChargeBlock(id))
-                {
-                    context.Response.Write("ok");
-                }
-                else
-                {
-                    context.Response.Write("error");
                 }
             }
         }

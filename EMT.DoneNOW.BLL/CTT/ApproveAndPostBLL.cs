@@ -395,8 +395,15 @@ namespace EMT.DoneNOW.BLL
         /// <param name="op"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        public ERROR_CODE Post_Charges_a(int id, int date, UserInfoDto user)
-        { 
+        public ERROR_CODE Post_Charges_a(int id, int date, long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {
+                // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+
+            }
             GeneralBLL gbll = new GeneralBLL();//字典项  
             ctt_contract_cost_dal ccc_dal = new ctt_contract_cost_dal();
             ctt_contract_block_dal ccb_dal = new ctt_contract_block_dal();
@@ -405,15 +412,15 @@ namespace EMT.DoneNOW.BLL
             var dcc = new d_cost_code_dal().FindSignleBySql<d_cost_code>($"select * from d_cost_code where id={ccc.cost_code_id} and delete_time=0");//物料代码
             var ca = new crm_account_dal().FindSignleBySql<crm_account>($"select * from crm_account where id={cc.account_id} and delete_time=0");//客户
             //成本类型不能是预付费用、预付时间、事件
-            if (dcc.cate_id== (int)COST_CODE_CATE.BLOCK_PURCHASE||dcc.cate_id==(int)COST_CODE_CATE.TICKET_PURCHASE||dcc.cate_id==(int)COST_CODE_CATE.RETAINER_PURCHASE) {
+            if (dcc.cate_id == (int)COST_CODE_CATE.BLOCK_PURCHASE || dcc.cate_id == (int)COST_CODE_CATE.TICKET_PURCHASE || dcc.cate_id == (int)COST_CODE_CATE.RETAINER_PURCHASE)
+            {
                 return ERROR_CODE.ERROR;
             }
             var ccnr = new ctt_contract_notify_rule_dal().FindSignleBySql<ctt_contract_notify_rule>($"select * from ctt_contract_notify_rule where contract_id={ccc.contract_id} and delete_time=0");
-            if (ccnr == null) {
+            if (ccnr == null)
+            {
                 return ERROR_CODE.ERROR;
             }
-
-
 
             string tax_category_name = null;//税收种类
             string tax_region_name = null;//税区
@@ -434,7 +441,6 @@ namespace EMT.DoneNOW.BLL
             cad.tax_category_name = tax_category_name;//税收种类name
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
-
 
             var ccbList = ccb_dal.FindListBySql<ctt_contract_block>($"select * from ctt_contract_block where contract_id={ccc.contract_id} and is_billed=0 and status_id=1");
             decimal extend = 0;
@@ -490,40 +496,130 @@ namespace EMT.DoneNOW.BLL
                         };          // 创建日志
                         new sys_oper_log_dal().Insert(add2_log);       // 插入日志
                     }
-
                 }
             }
-
             extend = (decimal)ccc.extended_price - extend;
-                extend = extend / (decimal)ccnr.rate;
-
-            ctt_contract_block ccb1 = new ctt_contract_block();
-            ccb1.id = (int)ccb_dal.GetNextIdCom();
-            ccb1.rate = (decimal)ccnr.rate;//费率
-            ccb1.contract_id = ccc.contract_id;//合同id
-            ccb1.start_date = cc.start_date;
-            ccb1.end_date = cc.end_date;
-            ccb1.quantity = 1;
-            ccb1.is_billed = 0;
-            ccb1.status_id = 1;
-            ccb1.date_purchased = DateTime.Now.Date;//购买日期
-            ccb1.create_time=ccb1.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            ccb1.create_user_id = ccb1.update_user_id = user.id;
-
-            var add4_log = new sys_oper_log()
+            extend = decimal.Divide(extend, (decimal)ccnr.rate);
+            int n = decimal.ToInt32(extend);
+            decimal m = extend - n;
+            for (int i = 0; i < n; i++)
             {
-                user_cate = "用户",
-                user_id = (int)user.id,
-                name = user.name,
-                phone = user.mobile == null ? "" : user.mobile,
-                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_BLOCK,//合同成本预付
-                oper_object_id = ccb1.id,// 操作对象id
-                oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                oper_description = ccb_dal.AddValue(ccb1),
-                remark = "新增(自动续费功能)合同成本预付时间或费用"
-            };          // 创建日志
-            new sys_oper_log_dal().Insert(add4_log);       // 插入日志
+                ctt_contract_block ccb1 = new ctt_contract_block();
+                ccb1.id = (int)ccb_dal.GetNextIdCom();
+                ccb1.rate = (decimal)ccnr.rate;//费率
+                ccb1.contract_id = ccc.contract_id;//合同id
+                ccb1.start_date = cc.start_date;
+                ccb1.end_date = cc.end_date;
+                ccb1.quantity = 1;
+                ccb1.is_billed = 0;
+                ccb1.status_id = 1;
+                ccb1.date_purchased = DateTime.Now.Date;//购买日期
+                ccb1.create_time = ccb1.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                ccb1.create_user_id = ccb1.update_user_id = user.id;
+                ccb_dal.Insert(ccb1);
+                var add4_log = new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = (int)user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_BLOCK,//合同成本预付
+                    oper_object_id = ccb1.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                    oper_description = ccb_dal.AddValue(ccb1),
+                    remark = "新增(自动续费功能)合同成本预付时间或费用"
+                };          // 创建日志
+                new sys_oper_log_dal().Insert(add4_log);       // 插入日志
+
+                //审批
+                cad.id = (int)(cad_dal.GetNextIdCom());//序列号
+                cad.contract_block_id = ccb1.id;
+                cad.extended_price = ccb1.quantity * ccb1.rate;
+                if (ca.is_tax_exempt != 1)
+                {
+                    cad.tax_dollars = tax_rate * Convert.ToDecimal(cad.extended_price);//税额                    
+                }
+                cad.create_user_id = cad.update_user_id = user.id;
+                cad.create_time = cad.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                cad_dal.Insert(cad);
+                var add_log = new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = (int)user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,//审批并提交
+                    oper_object_id = cad.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                    oper_description = cad_dal.AddValue(cad),
+                    remark = "新增审批并提交"
+                };          // 创建日志
+                new sys_oper_log_dal().Insert(add_log);       // 插入日志
+
+
+
+            }
+            if (m > 0)
+            {
+                //多余部分
+                ctt_contract_block ccb2 = new ctt_contract_block();
+                ccb2.id = (int)ccb_dal.GetNextIdCom();
+                ccb2.rate = (decimal)ccnr.rate;//费率
+                ccb2.contract_id = ccc.contract_id;//合同id
+                ccb2.start_date = cc.start_date;
+                ccb2.end_date = cc.end_date;
+                ccb2.quantity = 1 - m;
+                ccb2.is_billed = 0;
+                ccb2.status_id = 1;
+                ccb2.date_purchased = DateTime.Now.Date;//购买日期
+                ccb2.create_time = ccb2.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                ccb2.create_user_id = ccb2.update_user_id = user.id;
+                ccb_dal.Insert(ccb2);
+                var add5_log = new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = (int)user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_BLOCK,//合同成本预付
+                    oper_object_id = ccb2.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                    oper_description = ccb_dal.AddValue(ccb2),
+                    remark = "新增(自动续费功能)合同成本预付时间或费用"
+                };          // 创建日志
+                new sys_oper_log_dal().Insert(add5_log);       // 插入日志
+
+
+
+                //审批
+                cad.id = (int)(cad_dal.GetNextIdCom());//序列号
+                cad.contract_block_id = ccb2.id;
+                cad.extended_price = ccb2.quantity * ccb2.rate;
+                if (ca.is_tax_exempt != 1)
+                {
+                    cad.tax_dollars = tax_rate * Convert.ToDecimal(cad.extended_price);//税额                    
+                }
+                cad.create_user_id = cad.update_user_id = user.id;
+                cad.create_time = cad.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                cad_dal.Insert(cad);
+                var add_log = new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = (int)user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,//审批并提交
+                    oper_object_id = cad.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                    oper_description = cad_dal.AddValue(cad),
+                    remark = "新增审批并提交"
+                };          // 创建日志
+                new sys_oper_log_dal().Insert(add_log);       // 插入日志
+            }
 
 
             var olaccc = ccc;
@@ -544,6 +640,9 @@ namespace EMT.DoneNOW.BLL
                 remark = "修改合同成本"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add1_log);       // 插入日志
+
+
+
             if (!ccc_dal.Update(ccc))
             {
                 return ERROR_CODE.ERROR;
@@ -551,17 +650,24 @@ namespace EMT.DoneNOW.BLL
 
             return ERROR_CODE.SUCCESS;
         }
-            /// <summary>
-            /// 当成本关联预付费或时间，预付不足时：
-            /// b/强制生成（不够的部分单独生成一个条目）
-            /// </summary>
-            /// <param name="id"></param>
-            /// <param name="date"></param>
-            /// <param name="op"></param>
-            /// <param name="user"></param>
-            /// <returns></returns>
-            public ERROR_CODE Post_Charges_b(int id, int date,UserInfoDto user)
+        /// <summary>
+        /// 当成本关联预付费或时间，预付不足时：
+        /// b/强制生成（不够的部分单独生成一个条目）
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="date"></param>
+        /// <param name="op"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public ERROR_CODE Post_Charges_b(int id, int date, long user_id)
         {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {
+                // 查询不到用户，用户丢失
+                return ERROR_CODE.USER_NOT_FIND;
+
+            }
             GeneralBLL gbll = new GeneralBLL();//字典项  
             ctt_contract_cost_dal ccc_dal = new ctt_contract_cost_dal();
             ctt_contract_block_dal ccb_dal = new ctt_contract_block_dal();
@@ -708,10 +814,24 @@ namespace EMT.DoneNOW.BLL
             GeneralBLL gbll = new GeneralBLL();//字典项  
             ctt_contract_cost_dal ccc_dal = new ctt_contract_cost_dal();
             ctt_contract_block_dal ccb_dal = new ctt_contract_block_dal();
+            crm_account ca = new crm_account();
             var ccc = ccc_dal.FindNoDeleteById(id);//合同成本
-            var cc = cc_dal.FindSignleBySql<crm_contact>($"select * from crm_contact where id={ccc.contract_id} and delete_time=0");//合同
+            //工单(待整理) sdk_task
+            if (ccc.ticket_id != null)
+            {
+               ca= new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,sdk_task b,ctt_contract_cost c where c.ticket_id=b.id and a.id=b.account_id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and c.id={id}");//客户
+            }//项目(待整理) pro_project
+            else if (ccc.project_id != null)
+            {
+                ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,pro_project b,ctt_contract_cost c where c.ticket_id=b.id and a.id=b.account_id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and c.id={id}");//客户
+            }
+            else
+            {
+                ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,ctt_contract_cost b,ctt_contract c where a.id=c.account_id and b.contract_id=c.id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and b.id={id}");//客户
+            }           
+
             var dcc = new d_cost_code_dal().FindSignleBySql<d_cost_code>($"select * from d_cost_code where id={ccc.cost_code_id} and delete_time=0");//物料代码
-            var ca = new crm_account_dal().FindSignleBySql<crm_account>($"select * from crm_account where id={cc.account_id} and delete_time=0");//客户
+         
             string tax_category_name = null;//税收种类
             string tax_region_name = null;//税区
             decimal tax_rate = 0;//税率
@@ -727,7 +847,7 @@ namespace EMT.DoneNOW.BLL
             cad.task_id = ccc.task_id;//任务id           
             cad.quantity = ccc.quantity;//数量
             cad.contract_id = ccc.contract_id;//合同id
-            cad.account_id = cc.account_id;//客户id
+            cad.account_id = ca.id;//客户id
             cad.tax_category_name = tax_category_name;//税收种类name
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
@@ -1409,18 +1529,24 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id">成本id</param>
         /// <returns>true代表不足够</returns>
-        public bool ChargeBlock(int id)
+        public ERROR_CODE ChargeBlock(int id)
         {
             ctt_contract_cost_dal ccc_dal = new ctt_contract_cost_dal();//成本处理
             ctt_contract_block_dal ccb_dal = new ctt_contract_block_dal();//预付费
-            var ccc = ccc_dal.FindNoDeleteById(id);            
+            var ccc = ccc_dal.FindNoDeleteById(id);
             var cc = new ctt_contract_dal().FindNoDeleteById(ccc.contract_id);
             var ccbList = ccb_dal.FindListBySql<ctt_contract_block>($"select * from ctt_contract_block where contract_id={ccc.contract_id} and is_billed=0 and status_id=1");
             if (cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {
+                var ccnr = new ctt_contract_notify_rule_dal().FindSignleBySql<ctt_contract_notify_rule>($"select * from ctt_contract_notify_rule where contract_id={ccc.contract_id} and delete_time=0");
+                //费率为空的判断
+                if (ccnr.rate == null || ccnr.rate == 0)
+                {
+                    return ERROR_CODE.NOTIFICATION_RULE_RATE_NULL;
+                }
                 if (ccbList.Count <= 0)
                 {//没有关联预付费合同
-                    return true;
+                    return ERROR_CODE.SUCCESS;
                 }
                 decimal extended_price = 0;
                 foreach (var ccb in ccbList)
@@ -1429,17 +1555,10 @@ namespace EMT.DoneNOW.BLL
                 }
                 if (ccc.extended_price != null && ccc.extended_price > extended_price)
                 {
-                    return true;
+                    return ERROR_CODE.SUCCESS;
                 }
             }
-            //费率为空
-
-
-
-
-
-            return false;
-
+            return ERROR_CODE.ERROR;
         }
     }
 }
