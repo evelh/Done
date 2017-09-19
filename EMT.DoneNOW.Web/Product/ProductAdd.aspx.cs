@@ -142,7 +142,7 @@ namespace EMT.DoneNOW.Web
         #endregion
         //处理数据
 #region 处理需要保存的数据
-        private void save_deal() {
+        private bool save_deal() {
             if (id > 0)
             {
                 product = pbll.GetProduct(id);
@@ -218,7 +218,8 @@ namespace EMT.DoneNOW.Web
                     case ERROR_CODE.USER_NOT_FIND:
                         Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                         Response.Redirect("../Login.aspx"); ; break;//获取操作者信息失败
-                    case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"产品新增成功！\");</script>"); break;//成功
+                    case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"产品新增成功！\");</script>");
+                        return true;//成功
                     default: Response.Write("<script>alert('异常错误，返回上一级！');window.close();self.opener.location.reload();</script>"); ; break;//失败
                 }
             }
@@ -232,24 +233,27 @@ namespace EMT.DoneNOW.Web
                     case ERROR_CODE.USER_NOT_FIND:
                         Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                         Response.Redirect("../Login.aspx"); ; break;//获取操作者信息失败
-                    case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"产品修改成功！\");</script>"); break;//成功
+                    case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"产品修改成功！\");</script>"); return true;//成功
                     default: Response.Write("<script>alert('异常错误，返回上一级！');window.close();self.opener.location.reload();</script>"); ; break;//失败
                 }
 
             }
-            
+            return false;
 
         }
         protected void Save_Close_Click(object sender, EventArgs e)
         {
-            save_deal();
-            Response.Write("<script>alert('！');window.close();self.opener.location.reload();</script>");
+            if (save_deal()) {
+                Response.Write("<script>window.close();self.opener.location.reload();</script>");
+            }            
         }
 
         protected void Save_New_Click(object sender, EventArgs e)
         {
-            save_deal();
-            Response.Write("<script>alert('！');window.close();self.opener.location.reload();</script>");
+            if (save_deal())
+            {
+                Response.Redirect("ProductAdd.aspx");
+            }
         }
 
         protected void Cancel_Click(object sender, EventArgs e)

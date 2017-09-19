@@ -185,6 +185,7 @@
     <Content Include="Contract\ContractUdf.aspx" />
     <Content Include="Contract\ContractView.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
+    <Content Include="Invoice\InvoiceNumberAndDateEdit.aspx" />
     <Content Include="Invoice\PreferencesInvoice.aspx" />
     <Content Include="Invoice\ProcessInvoice.aspx" />
     <Content Include="Contract\RoleRate.aspx" />
@@ -955,6 +956,13 @@
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Invoice\InvoiceNumberAndDateEdit.aspx.cs">
+      <DependentUpon>InvoiceNumberAndDateEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Invoice\InvoiceNumberAndDateEdit.aspx.designer.cs">
+      <DependentUpon>InvoiceNumberAndDateEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Invoice\PreferencesInvoice.aspx.cs">
       <DependentUpon>PreferencesInvoice.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1476,6 +1484,9 @@
     <Compile Include="Tools\GeneralViewAjax.ashx.cs">
       <DependentUpon>GeneralViewAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\HistoryInvoiceAjax.ashx.cs">
+      <DependentUpon>HistoryInvoiceAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\InventoryAjax.ashx.cs">
       <DependentUpon>InventoryAjax.ashx</DependentUpon>
     </Compile>
@@ -1557,6 +1568,7 @@
     <Content Include="Tools\ConfigItemTypeAjax.ashx" />
     <Content Include="Tools\ReverseAjax.ashx" />
     <Content Include="Tools\ApproveAndPostAjax.ashx" />
+    <Content Include="Tools\HistoryInvoiceAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

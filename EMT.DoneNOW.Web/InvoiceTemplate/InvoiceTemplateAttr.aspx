@@ -165,6 +165,11 @@
 
                 </div>
         </div>
+        
+<script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../Scripts/index.js"></script>
+<script src="../Scripts/common.js"></script>
+<script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
     </form>
 </body>
 </html>

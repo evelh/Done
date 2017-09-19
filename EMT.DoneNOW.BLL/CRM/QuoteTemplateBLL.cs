@@ -62,6 +62,7 @@ namespace EMT.DoneNOW.BLL
             dic.Add("NumberFormat", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.NUMBER_DISPLAY_FORMAT)));              // 数字格式
             dic.Add("CurrencyPositivePattern", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CURRENCY_POSITIVE_FORMAT )));              // 货币格式（正数）
             dic.Add("CurrencyNegativePattern", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CURRENCY_NEGATIVE_FORMAT)));              // 货币格式（负数）
+            dic.Add("Payment_terms", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.PAYMENT_TERM)));              // 付款条件
             return dic;
 
         }
