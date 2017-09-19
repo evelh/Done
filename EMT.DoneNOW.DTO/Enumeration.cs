@@ -96,7 +96,7 @@ namespace EMT.DoneNOW.DTO
             SALES = 28,                      // 销售
             CANCELLATION = 29,               // 注销
             PROJECT_NOTE = 1492,             // 项目备注
-            CONTRACT_UDF_EDIT,              // 合同自定义信息更新
+            CONTRACT_UDF_EDIT = 1493,        // 合同自定义信息更新
         }
 
 
@@ -940,5 +940,7 @@ namespace EMT.DoneNOW.DTO
         ContractChargeSelect=366,                  //合同审批，成本关联预付费时的，选择操作窗口
 
         InvoiceTemplate=370,                      //新增发票模板
+
+        InvoiceHistoryEdit=380,                   //历史发票更改（发票编号和日期）
     }
 }

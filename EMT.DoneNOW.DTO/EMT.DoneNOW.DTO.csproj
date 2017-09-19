@@ -54,6 +54,7 @@
     <Compile Include="ContactAddDto.cs" />
     <Compile Include="ContactConditionDto.cs" />
     <Compile Include="ContractAddDto.cs" />
+    <Compile Include="ContractBlockAddDto.cs" />
     <Compile Include="ContractEditDto.cs" />
     <Compile Include="DataPermissionDto.cs" />
     <Compile Include="DictionaryEntryDto.cs" />

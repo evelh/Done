@@ -174,6 +174,7 @@
     <Content Include="Contract\AddCharges.aspx" />
     <Content Include="Contract\AddContractRate.aspx" />
     <Content Include="Contract\AddDefaultCharge.aspx" />
+    <Content Include="Contract\AddRetainerPurchase.aspx" />
     <Content Include="Contract\AdjustExtendedPrice.aspx" />
     <Content Include="Contract\ApproveAndPost.aspx" />
     <Content Include="Contract\ApproveChargeSelect.aspx" />
@@ -184,10 +185,12 @@
     <Content Include="Contract\ContractPostDate.aspx" />
     <Content Include="Contract\ContractUdf.aspx" />
     <Content Include="Contract\ContractView.aspx" />
+    <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Invoice\InvocieSearch.aspx" />
     <Content Include="Invoice\InvoiceSearchResult.aspx" />
     <Content Include="Invoice\InvoiceWizard.aspx" />
+    <Content Include="Invoice\InvoiceNumberAndDateEdit.aspx" />
     <Content Include="Invoice\PreferencesInvoice.aspx" />
     <Content Include="Invoice\ProcessInvoice.aspx" />
     <Content Include="Contract\RoleRate.aspx" />
@@ -881,6 +884,13 @@
     <Compile Include="Contract\AddDefaultCharge.aspx.designer.cs">
       <DependentUpon>AddDefaultCharge.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\AddRetainerPurchase.aspx.cs">
+      <DependentUpon>AddRetainerPurchase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AddRetainerPurchase.aspx.designer.cs">
+      <DependentUpon>AddRetainerPurchase.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contract\AdjustExtendedPrice.aspx.cs">
       <DependentUpon>AdjustExtendedPrice.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -951,6 +961,13 @@
     <Compile Include="Contract\ContractView.aspx.designer.cs">
       <DependentUpon>ContractView.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\EditRetainerPurchase.aspx.cs">
+      <DependentUpon>EditRetainerPurchase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\EditRetainerPurchase.aspx.designer.cs">
+      <DependentUpon>EditRetainerPurchase.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -978,6 +995,13 @@
     </Compile>
     <Compile Include="Invoice\InvoiceWizard.aspx.designer.cs">
       <DependentUpon>InvoiceWizard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Invoice\InvoiceNumberAndDateEdit.aspx.cs">
+      <DependentUpon>InvoiceNumberAndDateEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Invoice\InvoiceNumberAndDateEdit.aspx.designer.cs">
+      <DependentUpon>InvoiceNumberAndDateEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Invoice\PreferencesInvoice.aspx.cs">
       <DependentUpon>PreferencesInvoice.aspx</DependentUpon>
@@ -1500,6 +1524,9 @@
     <Compile Include="Tools\GeneralViewAjax.ashx.cs">
       <DependentUpon>GeneralViewAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\HistoryInvoiceAjax.ashx.cs">
+      <DependentUpon>HistoryInvoiceAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\InventoryAjax.ashx.cs">
       <DependentUpon>InventoryAjax.ashx</DependentUpon>
     </Compile>
@@ -1581,6 +1608,7 @@
     <Content Include="Tools\ConfigItemTypeAjax.ashx" />
     <Content Include="Tools\ReverseAjax.ashx" />
     <Content Include="Tools\ApproveAndPostAjax.ashx" />
+    <Content Include="Tools\HistoryInvoiceAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

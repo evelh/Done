@@ -2382,6 +2382,18 @@
         {%>
         //修改发票
         function EditInvoice() {
+            window.open('../Invoice/InvoiceNumberAndDateEdit.aspx?id='+ entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceHistoryEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        //作废发票
+        function VoidInvoice() {
+
+        }
+        //作废本批发票
+        function VoidBatchInvoice() {
+
+        }
+        //作废本批全部发票并取消审批
+        function VoidInvoiceAndUnPost() {
 
         }
         //查看发票
@@ -2395,7 +2407,7 @@
         //发票设置
         function InvoiceEdit() {
 
-        }
+        }       
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

@@ -43,6 +43,12 @@ namespace EMT.DoneNOW.Web
             this.CurrencyNegativePattern.DataValueField = "val";
             this.CurrencyNegativePattern.DataSource = dic.FirstOrDefault(_ => _.Key == "CurrencyNegativePattern").Value;
             this.CurrencyNegativePattern.DataBind();
+            //支付条款  Payment_terms
+            this.Payment_terms.DataTextField = "show";
+            this.Payment_terms.DataValueField = "val";
+            this.Payment_terms.DataSource = dic.FirstOrDefault(_ => _.Key == "Payment_terms").Value;
+            this.Payment_terms.DataBind();
+
             #endregion
 
         }
