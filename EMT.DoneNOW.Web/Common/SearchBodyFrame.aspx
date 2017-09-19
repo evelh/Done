@@ -523,6 +523,61 @@
         function Edit() {
             OpenWindow("../QuoteTemplate/QuoteTemplateEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteTemplateEdit %>');
         }
+        function Copy() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteTemplateAjax.ashx?act=copy&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
+        }
+        function Delete() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteTemplateAjax.ashx?act=delete&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
+        }
+        function Default() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteTemplateAjax.ashx?act=default&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
+        }
+        function Active() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteTemplateAjax.ashx?act=active&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
+        }
+        function NoActive() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteTemplateAjax.ashx?act=noactive&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
+        }
         <%
         }
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.InstalledProductView)
@@ -1916,49 +1971,6 @@
                     ids += $(this).val() + ',';
                 }
             });
-            var mask = $('<div id="BackgroundOverLay">' + '</div>');
-            var AddText = $(
-                '<div class="addText">' +
-                '<div>' +
-                '<div class="CancelDialogButton"></div>' +
-                '<div class="TitleBar">' +
-                '<div class="Title">' +
-                '<span class="text1">选择操作</span>' +
-                '</div>' +
-                '</div>' +
-                '<form action="" method="post" >' +
-                '<div class="ButtonContainer">' +
-                '<ul>' +
-                '<li class="Button addButtonIcon Okey" id="post_tttcancel" tabindex="0">' +
-                '<span class="Icon" style="width: 0;margin: 0;"></span>' +
-                '<span class="Text">取消</span>' +
-                '</li>' +
-                '<li class="Button addButtonIcon Okey" id="post_tttauto" tabindex="0">' +
-                '<span class="Icon" style="width: 0;margin: 0;"></span>' +
-                '<span class="Text">自动生成预付费</span>' +
-                '</li>' +
-                '<li class="Button addButtonIcon Okey" id="post_tttforce" tabindex="0">' +
-                '<span class="Icon" style="width: 0;margin: 0;"></span>' +
-                '<span class="Text">强制生成（不够的部分单独生成一个条目）</span>' +
-                '</li>' +
-                '</ul>' +
-                '</div>' +
-                '<div class="DivSection" style="border:none;padding-left:0;">' +
-                '<table width="100%" border="0" cellspacing="0" cellpadding="0">' +
-                '<tbody>' +
-                '<tr>' +
-                '<td width="30%" class="FieldLabels">' +
-                '<div style="padding-bottom: 10px;">' +
-                '<span id="shuming"><span>' +
-                '</div>' +
-                '</td>' +
-                '</tr>' +
-                '</tbody>' +
-                '</table>' +
-                '</div>' +
-                '</form>' +
-                '</div>' +
-                '</div>');
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
                 var id_array = ids.split(',');
@@ -1980,25 +1992,12 @@
                 }
                 });
                 }
-                if (ddd.length > 0) {//918遗留任务，920之前做
-                    $('body').prepend(AddText).prepend(mask);
-                    var j = 0;
-                    $("#post_tttauto").on("click", function () {
-                        var _this = $("tr[data-val=" + ddd[j] + "]");
-                        $("#shuming").html();
-                        return j+=1;
-                    })
+                if (ddd.length > 0) {               
+                    window.open('../Contract/ApproveChargeSelect.aspx?type=auto&ids=' + ddd+'&date=' + postdate, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractChargeSelect%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);                       
                     
                 }
-                if (kkk.length > 0) {//918遗留任务，920之前做
-                    $('body').prepend(AddText).prepend(mask);
-                    $("#post_tttauto").hide();
-                    for (var j = 0; j < kkk.length; j++) {
-                        var _this = $("tr[data-val=" + kkk[j] + "]");
-
-                    }
-                    AddText.remove();
-                    mask.remove();
+                if (kkk.length > 0) {
+                    window.open('../Contract/ApproveChargeSelect.aspx?type=noauto&ids=' + ddd + '&date=' + postdate,'<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractChargeSelect%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);  
                 }
                 alert("批量审批处理结束！");
                 } else {
@@ -2382,19 +2381,46 @@
         {%>
         //修改发票
         function EditInvoice() {
-            window.open('../Invoice/InvoiceNumberAndDateEdit.aspx?id='+ entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceHistoryEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            var _this = $("tr[data-val=" + entityid + "]");
+            var company = _this.children().eq(4).text();
+            var account = _this.children().eq(5).text();
+            window.open('../Invoice/InvoiceNumberAndDateEdit.aspx?id=' + entityid + '&company=' + company + '&account=' + account, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceHistoryEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         //作废发票
         function VoidInvoice() {
-
+            $.ajax({
+                type: "GET",
+                url: "../Tools/HistoryInvoiceAjax.ashx?act=voidone&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
         }
         //作废本批发票
         function VoidBatchInvoice() {
-
+            $.ajax({
+                type: "GET",
+                url: "../Tools/HistoryInvoiceAjax.ashx?act=voidbatch&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
         }
-        //作废本批全部发票并取消审批
+        //作废发票并取消审批
         function VoidInvoiceAndUnPost() {
-
+            $.ajax({
+                type: "GET",
+                url: "../Tools/HistoryInvoiceAjax.ashx?act=voidunpost&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
         }
         //查看发票
         function InvoiceView() {

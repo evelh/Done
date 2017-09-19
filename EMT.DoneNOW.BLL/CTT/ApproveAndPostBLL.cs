@@ -43,7 +43,7 @@ namespace EMT.DoneNOW.BLL
                 var result = Post_Charges(id, date, user);
                 if (result == ERROR_CODE.SUCCESS)
                 {
-
+                    return ERROR_CODE.SUCCESS;
                 }
                 else
                 {
@@ -58,7 +58,7 @@ namespace EMT.DoneNOW.BLL
                 var result = Post_Milestone(id, date, user);
                 if (result == ERROR_CODE.SUCCESS)
                 {
-
+                    return ERROR_CODE.SUCCESS;
                 }
                 else
                 {
@@ -72,7 +72,7 @@ namespace EMT.DoneNOW.BLL
                 var result = Post_Recurring_Services(id, date, user);
                 if (result == ERROR_CODE.SUCCESS)
                 {
-
+                    return ERROR_CODE.SUCCESS;
                 }
                 else
                 {
@@ -86,7 +86,7 @@ namespace EMT.DoneNOW.BLL
                 var result = Post_Subscriptions(id, date, user);
                 if (result == ERROR_CODE.SUCCESS)
                 {
-
+                    return ERROR_CODE.SUCCESS;
                 }
                 else
                 {

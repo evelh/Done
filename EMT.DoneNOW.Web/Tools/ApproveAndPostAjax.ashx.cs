@@ -50,7 +50,7 @@ namespace EMT.DoneNOW.Web
                 }
                 else
                 {
-                    Post(context, id, type, date);
+                    
                 }
             }
         }
