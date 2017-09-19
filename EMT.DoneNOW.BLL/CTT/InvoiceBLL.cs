@@ -20,7 +20,12 @@ namespace EMT.DoneNOW.BLL
             dic.Add("invoice_tmpl", new sys_quote_tmpl_dal().GetInvoiceTemp());  // 发票模板
             dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));
             dic.Add("email_temp",new sys_quote_email_tmpl_dal().GetEmailTemlList());
-            return dic;
+            dic.Add("department",new sys_department_dal().GetDepartment());
+            dic.Add("contract_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CONTRACT_TYPE)));
+            dic.Add("contract_cate", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CONTRACT_CATE)));
+            dic.Add("account_deduction_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACCOUNT_DEDUCTION_TYPE)));
+            dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));
+            return dic;// CONTRACT_CATE
         }
 
         /// <summary>
@@ -67,7 +72,7 @@ namespace EMT.DoneNOW.BLL
                         date_range_from = param.date_range_from,
                         date_range_to = param.date_range_to,
                         payment_term_id = param.payment_term_id,
-                        purchase_order_number = param.purchase_order_number,
+                        purchase_order_no = param.purchase_order_no,
                         invoice_template_id = param.invoice_template_id,
                         page_header_html = temp.page_header_html,
                         page_footer_html = temp.page_footer_html,

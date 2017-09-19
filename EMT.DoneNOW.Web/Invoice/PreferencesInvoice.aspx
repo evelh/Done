@@ -310,7 +310,7 @@
             <!--头部-->
             <div class="HeaderRow">
                 <div class="Toggle5" style="margin: 2px 6px 0 6px;float: left;">
-                    <input type="checkbox" style="width:16px;height:16px;">
+                    <asp:CheckBox ID="enable_email" runat="server" /> <%--<input type="checkbox" style="width:16px;height:16px;">--%>
                 </div>
                 <span class="lblNormalClass">支持发邮件</span>
 
@@ -471,6 +471,12 @@
          GetLocationByAccount();
          $("#_ctl3_rdoAccount").prop("checked", true);
          <%}%>
+
+         if ($("#enable_email").is(":checked")) {
+             $(this).parent().parent().find($('.Content')).toggle();
+             $(this).parent().parent().css("background", colors[index5 % 2]);
+             index5++;
+         }
 
     });
 

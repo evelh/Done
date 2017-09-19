@@ -20,6 +20,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
         protected void Page_Load(object sender, EventArgs e)
         {
             try
+
             {
                 type = Request.QueryString["type_id"];             // 报价项类型
                 var quote_id = Request.QueryString["quote_id"];    // 报价ID 需要根据报价ID 添加报价项
@@ -62,7 +63,6 @@ namespace EMT.DoneNOW.Web.QuoteItem
                                 type = "服务";
                                 break;
                             default:
-                                Response.End();  // 未传类型，暂不创建
                                 break;
                         }
                     }

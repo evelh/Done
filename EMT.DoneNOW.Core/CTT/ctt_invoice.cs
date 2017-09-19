@@ -57,7 +57,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String invoice_appendix_html { get; set; }
         [DataMember]
-        public String purchase_order_number { get; set; }
+        public String purchase_order_no { get; set; }
         [DataMember]
         public String tax_region_name { get; set; }
         [DataMember]

@@ -53,6 +53,7 @@ namespace EMT.DoneNOW.DTO
         INSTALLED_PRODUCT_CATE = 108,           // 配置项种类
         LICENSE_TYPE = 109,                      //安全等级：授权类型
         QUOTE_GROUP_BY = 110,                    // 报价分组条件
+        CONTRACT_TYPE=111,                     // 合同类型
         CONTRACT_CATE = 112,                    // 合同分类
         CHARGE_TYPE = 114,                      // 合同的成本类型
         CHARGE_STATUS = 115,                    // 合同的成本状态

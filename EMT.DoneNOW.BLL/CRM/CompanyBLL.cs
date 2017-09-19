@@ -1217,7 +1217,7 @@ namespace EMT.DoneNOW.BLL
             if (com_report.crm_account == null)
                 return null;               // 查询不到客户信息，直接返回null
             com_report.crm_contact_list = new crm_contact_dal().GetContactByAccountId(account_id);
-            com_report.subsidiaries_list = _dal.GetSubsidiariesById(account_id);
+            //com_report.subsidiaries_list = _dal.GetSubsidiariesById(account_id);
             com_report.opportunity_history_list = new crm_opportunity_dal().FindOpHistoryByAccountId(account_id);   // 商机历史
             com_report.udf_list = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.COMPANY, account_id, new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY));  // todo 返回id 和value，不是name和value
             // com_report.ins_pro_list = new crm_installed_product_dal().FindByAccountId(account_id);

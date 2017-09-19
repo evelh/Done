@@ -108,7 +108,7 @@
                             <td class="FieldLabel">
                                 订单号  
                                 <div>
-                                    <input type="text" name="purchase_order_number" id="purchase_order_number" style="width: 180px;" />
+                                    <input type="text" name="purchase_order_no" id="purchase_order_no" style="width: 180px;" />
                                 </div>
                             </td>
                         </tr>

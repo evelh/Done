@@ -47,6 +47,10 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(general)); 
             }
         }
+        private void GetTaxInfo(HttpContext context, long id)
+        {
+            
+        }
 
         public bool IsReusable
         {
