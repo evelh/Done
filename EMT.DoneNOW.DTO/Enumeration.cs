@@ -95,7 +95,7 @@ namespace EMT.DoneNOW.DTO
             SALES = 28,                      // 销售
             CANCELLATION = 29,               // 注销
             PROJECT_NOTE = 1492,             // 项目备注
-            CONTRACT_UDF_EDIT,              // 合同自定义信息更新
+            CONTRACT_UDF_EDIT = 1493,        // 合同自定义信息更新
         }
 
 
