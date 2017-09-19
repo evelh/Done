@@ -21,7 +21,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 product_id { get; set; }
         [DataMember]
-        public Int32 cate_id { get; set; }
+        public Int32? cate_id { get; set; }
         [DataMember]
         public Int64? account_id { get; set; }
         [DataMember]
@@ -88,7 +88,8 @@ namespace EMT.DoneNOW.Core
         public Int64? inventory_transfer_id { get; set; }
         [DataMember]
         public Int64? extension_adapter_disovery_data_id { get; set; }
-
+        [DataMember]
+        public Int64? contract_cost_id { get; set; }
 
 
     }

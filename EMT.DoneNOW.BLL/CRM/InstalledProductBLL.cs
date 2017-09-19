@@ -67,7 +67,7 @@ namespace EMT.DoneNOW.BLL
             {
                 id = installed_product_dal.GetNextIdCom(),
                 product_id = param.product_id,
-                cate_id = param.installed_product_cate_id,
+                cate_id = (int)param.installed_product_cate_id,
                 account_id = param.account_id,
                 start_date = param.start_date,
                 through_date = param.through_date,
@@ -82,6 +82,7 @@ namespace EMT.DoneNOW.BLL
                 is_active = (sbyte)param.status,
                 installed_resource_id = user.id,
                 remark = param.notes,
+                contract_cost_id = param.contract_cost_id,
                 // installed_contact_id = param.contact_id, // todo -- 安装人与联系人
 
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -176,7 +177,7 @@ namespace EMT.DoneNOW.BLL
             {
                 id = old_installed_product.id,
                 product_id = param.product_id,
-                cate_id = param.installed_product_cate_id,
+                cate_id = (int)param.installed_product_cate_id,
                 account_id = param.account_id,
                 start_date = param.start_date,
                 through_date = param.through_date,

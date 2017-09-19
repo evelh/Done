@@ -102,6 +102,7 @@ namespace EMT.DoneNOW.BLL
                                 var oldccb = ccb = ccb_dal.FindSignleBySql<ctt_contract_block>($" select * from ctt_contract_block where id={ccc.contract_block_id} and delete_time=0");
                                 if (ccb != null)
                                 {
+                                    ccb.is_billed = 0;
                                     ccb.status_id = 1;
                                     ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                     ccb.update_user_id = user.id;
@@ -196,7 +197,7 @@ namespace EMT.DoneNOW.BLL
                         if (cad.type_id == (int)ACCOUNT_DEDUCTION_TYPE.SERVICE)
                         {
                             var oldccsp = ccsp = ccsp_dal.FindSignleBySql<ctt_contract_service_period>($"select * from ctt_contract_service_period where id={cad.contract_id} and delete_time=0");
-                            ccsp.approve_and_post_time = null;
+                            ccsp.approve_and_post_date = null;
                             ccsp.approve_and_post_user_id = null;
                             ccsp.period_adjusted_price = ccsp.period_price * ccsp.quantity;
                             ccsp.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -227,7 +228,7 @@ namespace EMT.DoneNOW.BLL
                         {
                             var oldccsa = ccsa = ccsa_dal.FindSignleBySql<ctt_contract_service_adjust>($"select * from ctt_contract_service_adjust where id={cad.contract_id} and delete_time=0");
                             cc = new ctt_contract_dal().FindSignleBySql<ctt_contract>($"select * from ctt_contract where id={cad.contract_id} and delete_time=0");
-                            ccsa.approve_and_post_time = null;
+                            ccsa.approve_and_post_date = null;
                             ccsa.approve_and_post_user_id = null;
                             ccsa.adjust_prorated_price_change = (decimal)cc.setup_fee;
                             ccsa.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -255,7 +256,7 @@ namespace EMT.DoneNOW.BLL
                             var oldcc = cc = new ctt_contract_dal().FindSignleBySql<ctt_contract>($"select * from ctt_contract where id={cad.contract_id} and delete_time=0");
                             cc.adjust_setup_fee = cc.setup_fee;
                             cc.setup_fee_approve_and_post_user_id = null;
-                            cc.setup_fee_approve_and_post_time = null;
+                            cc.setup_fee_approve_and_post_date = null;
                             cc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                             cc.update_user_id = user.id;
                             var add2_log = new sys_oper_log()

@@ -833,7 +833,7 @@ namespace EMT.DoneNOW.BLL
             var d = new ivt_product_dal().FindSignleBySql<ivt_product>($"select * from ivt_product where id={id} and delete_time=0");
             if (d != null)
             {
-                return d.product_name;
+                return d.name;
             }
             else
             {

@@ -443,11 +443,12 @@ namespace EMT.DoneNOW.DTO
             REVOKE_MILESTONES = 925,            //撤销里程碑审批
             REVOKE_SUBSCRIPTIONS = 926,         //撤销订阅审批
 			CONTRACT_DEFAULT_COST = 927,             // 合同默认成本
-            
+            CONTRACT_TIME_RATE = 928,                 // 合同预付时间系数
+            INVOICE_TEMPLATE=1512,                    //发票模板
 
-            REVOKE_LABOUR,                //撤销工时审批
-            REVOKE_EXPENSE,               //撤销费用审批
-
+            INVOICE_HISTORY,               //历史发票
+            REVOKE_LABOUR,                 //撤销工时审批
+            REVOKE_EXPENSE,                //撤销费用审批
             APPROVE_LABOUR,                //工时审批
             APPROVE_EXPENSE,               //费用审批
             APPROVE_RECURRING_SERVICES,    //定期服务审批
@@ -529,6 +530,10 @@ namespace EMT.DoneNOW.DTO
             PROJECT = 1371,                             // 项目
             SUBSCRIPTION_PERIOD=1372,                   //订阅周期
             ACCOUNT_DEDUCTION=1373,                    //审批并提交
+            REFERENCE = 1374,                              // 客户发票/报价设置
+            INVOCIE =1375,                                // 发票
+            INVOCIE_DETAIL=1376,                         // 发票详情
+            
         }
 
         /// <summary>
@@ -698,21 +703,60 @@ namespace EMT.DoneNOW.DTO
             READY_TO_BILL=1266,
             BILLED=1267,
         }
-        public enum PROJECT_TYPE
+        /// <summary>
+        /// 合同计费对象子类型
+        /// </summary>
+        public enum BILLING_ENTITY_SUB_TYPE
         {
-            ACCOUNT_PROJECT = 1338,
-            IN_PROJECT= 1339,
-            PROJECT_DAY = 1340,
+            PROJECT_COST_DEDUCTION=1297,                // 项目成本扣除
+            PROJECT_COST =1298,                          // 项目成本
+            TICKET_COST_DEDUCTION = 1299,               // 工单成本扣除
+            TICKET_COST = 1300,                         // 工单成本
+            CHARGE =1301,                                // 费用
+            CHARGE_DEDUCTION =1302,                      // 费用扣除
+            SUBSCRIBE =1303,                             // 订阅
+            SUBSCRIBE_COST = 1304,                      // 订阅成本
+            START_CHARGE =1305,                          // 初始费用
+            REGULAR_SERVICE =1306,                       // 定期服务
+            REGULAR_SERVICE_ADJUSTMENT =1307,            // 定期服务调整
+            REGULAR_SERVICE_PACKAGE =1308,               // 定期服务包
+            REGULAR_SERVICE_PACKAGE_ADJUSTMENT = 1309,  // 定期服务包调整
+            MILEPOST =1310,                              // 里程碑
+            PREPAID_TIME =1311,                          // 预付时间
+            PREPAID_COST =1312,                          // 预付费用
+            EVENTS =1313,                                // 事件
+            CONTRACT_COST = 1314,                       // 合同成本
         }
+
         /// <summary>
         /// 审批并提交操作类型 -121
         /// </summary>
         public enum ACCOUNT_DEDUCTION_TYPE {
+            CHARGE=1321,                //成本
             MILESTONES=1323,            //里程碑
             SUBSCRIPTIONS=1324,         //订阅
             SERVICE =1325,              //服务
             SERVICE_ADJUST=1326,        //服务调整
             INITIAL_COST =1327,         //初始费用
+        }
+        /// <summary>
+        /// 项目类型 - 123
+        /// </summary>
+        public enum PROJECT_TYPE
+        {
+            ACCOUNT_PROJECT = 1338,
+            IN_PROJECT = 1339,
+            PROJECT_DAY = 1340,
+        }
+        /// <summary>
+        /// 客户报价发票设置 - 127
+        /// </summary>
+        public enum INVOICE_ADDRESS_TYPE
+        {
+            USE_ACCOUNT_ADDRESS=1486,          // 使用客户地址
+            USE_PARENT_ACC_ADD =1487,           // 使用父客户地址
+            USE_PARENT_INVOIVE_ADD =1488,       // 使用父客户发票地址
+            USE_INSERT =1489,                   // 手工输入地址
         }
     }
     /// <summary>
@@ -765,11 +809,13 @@ namespace EMT.DoneNOW.DTO
         REVOKE_RECURRING_SERVICES = 65,    //撤销定期服务审批
         REVOKE_MILESTONES = 66,            //撤销里程碑审批
         REVOKE_SUBSCRIPTIONS = 67,         //撤销订阅审批  
-		CONTRACT_DEFAULT_COST = 68,           // 合同默认成本
+		CONTRACT_DEFAULT_COST = 68,        // 合同默认成本
+        CONTRACT_RATE=69,                  // 合同预付时间
+        InvoiceTemplate = 82,             //发票模板
 
-        REVOKE_LABOUR,                //撤销工时审批
-        REVOKE_EXPENSE,               //撤销费用审批
-      
+        Invoice_History,               //历史发票
+        REVOKE_LABOUR,                 //撤销工时审批
+        REVOKE_EXPENSE,                //撤销费用审批      
         APPROVE_LABOUR,                //工时审批
         APPROVE_EXPENSE,               //费用审批
         APPROVE_RECURRING_SERVICES,    //定期服务审批
@@ -858,6 +904,10 @@ namespace EMT.DoneNOW.DTO
         MaterialCode = 311,                       //物料代码查找带回
         ConDefCostAdd = 312,                      // 合同默认成本新增
         ConDefCostEdit = 313,                     // 合同默认成本修改
+        ConRateAdd=314,                           // 合同预付时间系数新增
+        ConRateEdit = 315,                        // // 合同预付时间系数编辑
+
+
         VendorAdd = 320,                          //添加供应商
         TerritorySource = 321,                   //地域带回员工
         VendorSelect = 322,                    //查找供应商
@@ -881,10 +931,13 @@ namespace EMT.DoneNOW.DTO
 
         Role=360,                                  //角色
         Department=361,                            //部门
-        ConfigItemType=362,                         //配置项类型
+        ConfigItemType=362,                        //配置项类型
 
         ContractPostDate = 363,                    //合同审批，提交日期
         ContractAdjust = 364,                      //合同审批，调整总价
         ContractMilestone= 365,                    //合同审批，查看里程碑详情
+        ContractChargeSelect=366,                  //合同审批，成本关联预付费时的，选择操作窗口
+
+        InvoiceTemplate=370,                      //新增发票模板
     }
 }

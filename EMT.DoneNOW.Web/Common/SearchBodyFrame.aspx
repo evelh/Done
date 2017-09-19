@@ -10,15 +10,15 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <link rel="stylesheet" type="text/css" href="../Content/searchList.css" />
+    <%--控制日期弹窗--%>
+    <link href="../Content/Roles.css" rel="stylesheet" />
     <title></title>
-</head>
 <style>
     .searchcontent {
         width: 100%;
         height: 100%;
         min-width: 2200px;
     }
-
         .searchcontent table th {
             background-color: #cbd9e4;
             border-color: #98b4ca;
@@ -57,7 +57,54 @@
         font-weight: normal;
         color: #4F4F4F;
     }
+    /*合同审批时，提交日期窗口*/
+    .addText{
+    width: 486px;
+    height:275px;
+    margin-left: -247px;
+    margin-top: -142px;
+    z-index: 980;
+    display: block;
+    left: 50%;
+    position: fixed;
+    top: 50%;
+    background-color: #b9b9b9;
+    border: solid 4px #b9b9b9;
+}
+.addText>div {
+    background-color: #fff;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.CancelDialogButton {
+    background-image: url(../img/cancel1.png);
+    background-position: 0 -32px;
+    border: none;
+    cursor: pointer;
+    height: 32px;
+    position: absolute;
+    right: -14px;
+    top: -14px;
+    width: 32px;
+    z-index: 100;
+    border-radius: 50%;
+}
+#BackgroundOverLay{
+    width:100%;
+    height:100%;
+    background: black;
+    opacity: 0.6;
+    z-index: 25;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /*合同审批时，提交日期窗口（样式尾）*/
+}
 </style>
+</head>
 <body style="overflow-x: auto; overflow-y: auto;">
     <form id="form1">
         <div id="search_list">
@@ -1575,6 +1622,8 @@
                         history.go(0);
                     }
                 })
+            } else {
+                alert("请选择需要审批的数据！");
             }
 
         }
@@ -1598,6 +1647,8 @@
                         history.go(0);
                     }
                 })
+            } else {
+                alert("请选择需要审批的数据！");
             }
         }
        <%}
@@ -1620,6 +1671,8 @@
                         history.go(0);
                     }
                 })
+            } else {
+                alert("请选择需要审批的数据！");
             }
         }
        <%}
@@ -1642,6 +1695,8 @@
                         history.go(0);
                     }
                 })
+            } else {
+                alert("请选择需要审批的数据！");
             }
         }
             <%}
@@ -1649,6 +1704,10 @@
         {%>//审批里程碑
         //审批并提交(批量)
         function Add() {
+            Post_date();
+            if (postcancel == 1) {
+                return false;
+            }
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1657,12 +1716,40 @@
             });
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
-                window.open('../Contract/ContractPostDate.aspx?type='+queryTypeId+'&ids='+ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                var id_array = ids.split(',');
+                for (var i = 0; i < id_array.length;i++){
+                    $.ajax({
+                        type: "GET",
+                        url: '../Tools/ApproveAndPostAjax.ashx?act=post&type=' +  <%=queryTypeId%>  + '&id=' + id_array[i] + '&date=' + postdate,
+                        success: function (data) {
+                            if (date == "error") {
+                                alert("里程碑序列号为："+id_array[i]+"审批失败！");
+                            }
+                        }
+                    });
+                }
+                alert("审批处理结束！");
+            } else {
+                alert("请选择需要审批的数据！");
             }
         }
         //审批并提交
         function Post() {
-            window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId +'&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            Post_date();
+            if (postcancel == 1) {
+                return false;
+            }
+            $.ajax({
+                type: "GET",
+                url: '../Tools/ApproveAndPostAjax.ashx?act=post&type=' + <%=queryTypeId%> + '&id=' + id + '&date=' + postdate,
+                success: function (data) {
+                    if (date == "error") {
+                        alert("里程碑序列号为：" + id_array[i] + "审批失败！");
+                    } else {
+                        alert("审批成功！");
+                    }
+                }
+            });
         }
         //查看里程碑详情
         function Miledetail() {
@@ -1677,6 +1764,10 @@
         {%>//审批订阅
         //审批并提交(批量)
         function Add() {
+            Post_date();
+            if (postcancel == 1) {
+                return false;
+            }
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1685,12 +1776,40 @@
             });
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
-                window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                var id_array = ids.split(',');
+                for (var i = 0; i < id_array.length; i++) {
+                    $.ajax({
+                        type: "GET",
+                        url: '../Tools/ApproveAndPostAjax.ashx?act=post&type=' +  <%=queryTypeId%>  + '&id=' + id_array[i] + '&date=' + postdate,
+                        success: function (data) {
+                            if (date == "error") {
+                                alert("订阅序列号为：" + id_array[i] + "审批失败！");
+                            }
+                        }
+                    });
+                }
+                alert("审批处理结束！");
+            } else {
+                alert("请选择需要审批的数据！");
             }
         }
         //审批并提交
         function Post() {
-            window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            Post_date();
+            if (postcancel == 1) {
+                return false;
+            }
+            $.ajax({
+                type: "GET",
+                url: '../Tools/ApproveAndPostAjax.ashx?act=post&type=' + <%=queryTypeId%> + '&id=' + id + '&date=' + postdate,
+                success: function (data) {
+                    if (date == "error") {
+                        alert("订阅序列号为：" + id_array[i] + "审批失败！");
+                    } else {
+                        alert("审批成功！");
+                    }
+                }
+            });
         }
         //恢复初始值
         function Restore_Initiall() {
@@ -1706,13 +1825,17 @@
         }
         //调整总价
         function AdjustExtend() {
-            window.open('../Contract/AdjustExtendedPrice.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open('../Contract/AdjustExtendedPrice.aspx?type=' +  <%=queryTypeId%>  + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
          <%}
-        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_SUBSCRIPTIONS)
-        {%>//审批服务
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_RECURRING_SERVICES)
+        {%>//审批定期服务
         //审批并提交(批量)
         function Add() {
+            Post_date();
+            if (postcancel == 1) {
+                return false;
+            }
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1721,12 +1844,40 @@
             });
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
-                window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                var id_array = ids.split(',');
+                for (var i = 0; i < id_array.length; i++) {
+                    $.ajax({
+                        type: "GET",
+                        url: '../Tools/ApproveAndPostAjax.ashx?act=post&type=' +  <%=queryTypeId%>  + '&id=' + id_array[i] + '&date=' + postdate,
+                        success: function (data) {
+                            if (date == "error") {
+                                alert("定期服务序列号为：" + id_array[i] + "审批失败！");
+                            }
+                        }
+                    });
+                }
+                alert("审批处理结束！");
+            } else {
+                alert("请选择需要审批的数据！");
             }
         }
         //审批并提交
         function Post() {
-            window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            Post_date();
+            if (postcancel == 1) {
+                return false;
+            }
+            $.ajax({
+                type: "GET",
+                url: '../Tools/ApproveAndPostAjax.ashx?act=post&type=' + <%=queryTypeId%> + '&id=' + id + '&date=' + postdate,
+                success: function (data) {
+                    if (date == "error") {
+                        alert("定期服务序列号为：" + id_array[i] + "审批失败！");
+                    } else {
+                        alert("审批成功！");
+                    }
+                }
+            });
         }
         //查看合同详情
         function ContractDetail() {
@@ -1747,10 +1898,181 @@
         }
         //调整总价
         function AdjustExtend() {
-            window.open('../Contract/AdjustExtendedPrice.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open('../Contract/AdjustExtendedPrice.aspx?type=' +  <%=queryTypeId%>  + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
 
         }
-		       <%}
+         <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+        {%>//审批成本
+            //审批并提交(批量)
+        function Add() {
+            Post_date();
+            if (postcancel == 1) {
+                return false;
+            }
+            var ids = "";
+            $(".IsChecked").each(function () {
+                if ($(this).is(":checked")) {
+                    ids += $(this).val() + ',';
+                }
+            });
+            var mask = $('<div id="BackgroundOverLay">' + '</div>');
+            var AddText = $(
+                '<div class="addText">' +
+                '<div>' +
+                '<div class="CancelDialogButton"></div>' +
+                '<div class="TitleBar">' +
+                '<div class="Title">' +
+                '<span class="text1">选择操作</span>' +
+                '</div>' +
+                '</div>' +
+                '<form action="" method="post" >' +
+                '<div class="ButtonContainer">' +
+                '<ul>' +
+                '<li class="Button addButtonIcon Okey" id="post_tttcancel" tabindex="0">' +
+                '<span class="Icon" style="width: 0;margin: 0;"></span>' +
+                '<span class="Text">取消</span>' +
+                '</li>' +
+                '<li class="Button addButtonIcon Okey" id="post_tttauto" tabindex="0">' +
+                '<span class="Icon" style="width: 0;margin: 0;"></span>' +
+                '<span class="Text">自动生成预付费</span>' +
+                '</li>' +
+                '<li class="Button addButtonIcon Okey" id="post_tttforce" tabindex="0">' +
+                '<span class="Icon" style="width: 0;margin: 0;"></span>' +
+                '<span class="Text">强制生成（不够的部分单独生成一个条目）</span>' +
+                '</li>' +
+                '</ul>' +
+                '</div>' +
+                '<div class="DivSection" style="border:none;padding-left:0;">' +
+                '<table width="100%" border="0" cellspacing="0" cellpadding="0">' +
+                '<tbody>' +
+                '<tr>' +
+                '<td width="30%" class="FieldLabels">' +
+                '<div style="padding-bottom: 10px;">' +
+                '<span id="shuming"><span>' +
+                '</div>' +
+                '</td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>' +
+                '</div>' +
+                '</form>' +
+                '</div>' +
+                '</div>');
+            if (ids != "") {
+                ids = ids.substring(0, ids.length - 1);
+                var id_array = ids.split(',');
+                var ddd = [];
+                var kkk = [];
+                for (var i = 0; i < id_array.length; i++) {
+                    $.ajax({
+                        type: "GET",
+                        url: '../Tools/ApproveAndPostAjax.ashx?act=cost&type=' + <%=queryTypeId%> + '&id=' + id_array[i] + '&date=' + postdate,
+                        success: function (data) {
+                            if (data == "less") {
+                                ddd.push(id_array[i]);
+                            } else if (date == "rate_null") {
+                                kkk.push(id_array[i]);
+                            }
+                            else if (date == "error") {
+                                alert("合同成本序列号为：" + id_array[i] + "审批失败！");
+                            }
+                }
+                });
+                }
+                if (ddd.length > 0) {//918遗留任务，920之前做
+                    $('body').prepend(AddText).prepend(mask);
+                    var j = 0;
+                    $("#post_tttauto").on("click", function () {
+                        var _this = $("tr[data-val=" + ddd[j] + "]");
+                        $("#shuming").html();
+                        return j+=1;
+                    })
+                    
+                }
+                if (kkk.length > 0) {//918遗留任务，920之前做
+                    $('body').prepend(AddText).prepend(mask);
+                    $("#post_tttauto").hide();
+                    for (var j = 0; j < kkk.length; j++) {
+                        var _this = $("tr[data-val=" + kkk[j] + "]");
+
+                    }
+                    AddText.remove();
+                    mask.remove();
+                }
+                alert("批量审批处理结束！");
+                } else {
+                    alert("请选择需要审批的数据！");
+                }
+            }
+            //审批并提交
+            function Post() {
+                window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+               <%-- //此处判断成本关联预付费合同
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ApproveAndPostAjax.ashx?act=chargevali&id=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        if (date == "ok") {
+
+                        } else {
+                            window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                                }
+                            }
+                 });--%>
+               
+            }
+            //查看合同详情
+            function ContractDetail() {
+
+            }
+            //查看工单详情
+            function TicketDetail() {
+
+            }
+            //设置为可计费
+            function Billing() {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ApproveAndPostAjax.ashx?act=billing&id=" + entityid + "&type=" + queryTypeId,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                });
+                window.location.reload();
+            }
+            //设置为不可计费
+            function NoBilling() {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ApproveAndPostAjax.ashx?act=nobilling&id=" + entityid + "&type=" + queryTypeId,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                });
+                window.location.reload();
+            }
+            //恢复初始值
+            function Restore_Initiall() {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ApproveAndPostAjax.ashx?act=init&id=" + entityid + "&type=" + queryTypeId,
+                    async: false,
+                    success: function (data) {
+                        alert(data);
+                    }
+                });
+                window.location.reload();
+            }
+            //调整总价
+            function AdjustExtend() {
+                window.open('../Contract/AdjustExtendedPrice.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+
+        }
+ <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contract_Charge)
         {%>
         $("#CheckAll").click(function () {
@@ -2020,6 +2342,60 @@
         function Add() {
             window.open('../Contract/AddDefaultCharge.aspx?contract_id=' + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConDefCostAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
 			}
+        <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.CONTRACT_RATE){%>
+
+        function Add() {
+            window.open('../Contract/AddContractRate.aspx?contract_id=' + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConRateAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Edit() {
+
+            window.open('../Contract/AddContractRate.aspx?contract_id=' + <%=Request.QueryString["id"] %>+"&rate_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConRateEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+
+        function Delete() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ContractAjax.ashx?act=DeleteRate&rateId=" + entityid,
+                async: false,
+                success: function (data) {
+                    if (data == "True") {
+                        alert("删除成功");
+                    }
+                    else {
+                        alert("删除失败");
+                    }
+                    history.go(0);
+                }
+            })
+        }
+         <%}//发票模板（9-20开始做）
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.InvoiceTemplate)
+        {%>
+        function Add() {
+            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>');
+        }
+        function Edit() {
+            
+        }
+         <%}//历史发票查询
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Invoice_History)
+        {%>
+        //修改发票
+        function EditInvoice() {
+
+        }
+        //查看发票
+        function InvoiceView() {
+           
+        }
+        //查看本批全部发票
+        function InvoiceAllView() {
+
+        }
+        //发票设置
+        function InvoiceEdit() {
+
+        }
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

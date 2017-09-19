@@ -64,6 +64,10 @@ namespace EMT.DoneNOW.Web
                     var product_id = context.Request.QueryString["product_id"];
                     GetVendorsByProductId(context,long.Parse(product_id));
                     break;
+                case "AccReference":
+                    var ref_account_id = context.Request.QueryString["account_id"];
+                    GetAccountReference(context,long.Parse(ref_account_id));
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     return;
@@ -277,6 +281,17 @@ namespace EMT.DoneNOW.Web
             }
         }
 
+        /// <summary>
+        /// 获取到客户的发票模板设置信息
+        /// </summary>
+        private void GetAccountReference(HttpContext context,long account_id)
+        {
+            var accRef = new crm_account_reference_dal().GetAccountRef(account_id);
+            if (accRef != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(accRef));
+            }
+        }
 
         public bool IsReusable
         {

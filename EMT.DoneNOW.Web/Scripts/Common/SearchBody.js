@@ -93,3 +93,73 @@ function ChangeOrder(para) {
     }
     $("#form1").submit();
 }
+//在合同审批时，弹出日期选择窗口
+var postdate;
+var postcancel;
+function Post_date() {
+    var mask = $('<div id="BackgroundOverLay">' + '</div>');
+    var AddText = $(
+        '<div class="addText">' +
+        '<div>' +
+        '<div class="CancelDialogButton"></div>' +
+        '<div class="TitleBar">' +
+        '<div class="Title">' +
+        '<span class="text1">提交日期</span>' +
+        '</div>' +
+        '</div>' +
+        '<form action="" method="post" >' +
+        '<div class="ButtonContainer">' +
+        '<ul>' +
+        '<li class="Button addButtonIcon Okey" id="approvePostButton" tabindex="0">' +
+        '<span class="Icon" style="width: 0;margin: 0;"></span>' +
+        '<span class="Text">审批并提交</span>' +
+        '</li>' +
+        '</ul>' +
+        '</div>' +
+        '<div class="DivSection" style="border:none;padding-left:0;">' +
+        '<table width="100%" border="0" cellspacing="0" cellpadding="0">' +
+        '<tbody>' +
+        '<tr>' +
+        '<td width="30%" class="FieldLabels">' +
+        '<div style="padding-bottom: 10px;">' +
+        '请选择提交日期' +
+        '</div>' +
+        '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td width="30%" class="FieldLabels">' +
+        'Posted Date' + '<span class="errorSmall">*</span>' +
+        '<div>' +
+        '<input id="post_datett" type="text" onclick="WdatePicker()" class="Wdate" style="width:150px;">' +
+        '</div>' +
+        '</td>' +
+        '</tr>' +
+        '</tbody>' +
+        '</table>' +
+        '</div>' +
+        '</form>' +
+        '</div>' +
+        '</div>');
+    $('body').prepend(AddText).prepend(mask);
+    //提交
+    $("#approvePostButton").on("click", function () {
+        var k = $("#post_datett").val();
+        if (k == null || k == '') {
+            alert("请选择提交日期！");
+            return false;
+        }
+        k = k.replace(/[^0-9]+/g, '');
+        postdate = k;
+        postcancel = 0;
+        AddText.remove();
+        mask.remove();
+        return postdate;
+    })
+    //关闭
+    $(".CancelDialogButton").on("click", function () {
+        postcancel =1;
+        AddText.remove();
+        mask.remove();
+        return postcancel;
+    })
+}

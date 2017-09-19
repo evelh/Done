@@ -504,7 +504,7 @@
                                                     产品 <span style="color: Red;">*</span>
                                                             <div>
                                                                 <span style="display: inline-block;">
-                                                                    <input type="text" name="productName" id="product_id" value="<%=product==null?"":product.product_name %>" /></span>
+                                                                    <input type="text" name="productName" id="product_id" value="<%=product==null?"":product.name %>" /></span>
                                                                 <a onclick="chooseProduct()" class="DataSelectorLinkIcon">
                                                                     <img src="../Images/data-selector.png" alt=""></a>
                                                                 <a id="EditProduct" onclick="EditProduct()" style="display: none;" class="DataSelectorLinkIcon">

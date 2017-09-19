@@ -41,7 +41,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? approve_and_post_user_id { get; set; }
         [DataMember]
-        public Int64? approve_and_post_time { get; set; }
+        public DateTime? approve_and_post_date { get; set; }
         [DataMember]
         public Int64 contract_service_id { get; set; }
 

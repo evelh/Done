@@ -123,6 +123,7 @@ namespace EMT.DoneNOW.Web
         {
             var param = new CompanyAddDto();
             param.general = AssembleModel<CompanyAddDto.General>();
+            param.general.tax_exempt = taxExempt.Checked;
             param.contact = AssembleModel<CompanyAddDto.Contact>();
             param.location = AssembleModel<CompanyAddDto.Location>();
             param.note = AssembleModel<CompanyAddDto.Note>();
@@ -212,6 +213,7 @@ namespace EMT.DoneNOW.Web
         {
             var param = new CompanyAddDto();
             param.general = AssembleModel<CompanyAddDto.General>();
+            param.general.tax_exempt = taxExempt.Checked;
             param.contact = AssembleModel<CompanyAddDto.Contact>();
             param.location = AssembleModel<CompanyAddDto.Location>();
             param.note = AssembleModel<CompanyAddDto.Note>();
@@ -298,6 +300,7 @@ namespace EMT.DoneNOW.Web
         {
             var param = new CompanyAddDto();
             param.general = AssembleModel<CompanyAddDto.General>();
+            param.general.tax_exempt = taxExempt.Checked;
             param.contact = AssembleModel<CompanyAddDto.Contact>();
             param.location = AssembleModel<CompanyAddDto.Location>();
             param.note = AssembleModel<CompanyAddDto.Note>();

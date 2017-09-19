@@ -299,6 +299,16 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.CONTRACT_MILESTONE_USED;
                 }
             }
+            //区域
+            if (table_id == (int)GeneralTableEnum.REGION)
+            {
+                var re = new crm_account_dal().FindListBySql<crm_account>($"select a.* from crm_account a,d_general b where a.territory_id=b.id and b.parent_id={id} and a.delete_time=0");
+                if (re.Count > 0)
+                {
+                    n = re.Count;
+                    return ERROR_CODE.REGION_USED;
+                }
+            }
 
             return ERROR_CODE.SUCCESS;
         }
@@ -332,12 +342,27 @@ namespace EMT.DoneNOW.BLL
                 if (mar.Count > 0)
                 {
                     foreach (var account in mar) {
+                        var old = account;
                         account.market_segment_id = null;
                         account.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         account.update_user_id = user.id;
                         if (!a_dal.Update(account)) {
                             return ERROR_CODE.ERROR;
                         }
+                        var add_log = new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = (int)user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                            oper_object_id = account.id,// 操作对象id
+                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                            oper_description = a_dal.CompareValue(old,account),
+                            remark = remark
+                        };          // 创建日志
+                        new sys_oper_log_dal().Insert(add_log);       // 插入日志
                         remark = "删除市场信息";
                     }
                 }
@@ -351,6 +376,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     foreach (var account in mar)
                     {
+                        var old = account;
                         account.territory_id = null;
                         account.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         account.update_user_id = user.id;
@@ -358,6 +384,20 @@ namespace EMT.DoneNOW.BLL
                         {
                             return ERROR_CODE.ERROR;
                         }
+                        var add_log = new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = (int)user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                            oper_object_id = account.id,// 操作对象id
+                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                            oper_description = a_dal.CompareValue(old, account),
+                            remark = remark
+                        };          // 创建日志
+                        new sys_oper_log_dal().Insert(add_log);       // 插入日志
                         remark = "删除地域信息";
                     }
                 }
@@ -371,6 +411,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     foreach (var account in mar)
                     {
+                        var old = account;
                         account.competitor_id = null;
                         account.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         account.update_user_id = user.id;
@@ -378,6 +419,20 @@ namespace EMT.DoneNOW.BLL
                         {
                             return ERROR_CODE.ERROR;
                         }
+                        var add_log = new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = (int)user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                            oper_object_id = account.id,// 操作对象id
+                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                            oper_description = a_dal.CompareValue(old, account),
+                            remark = remark
+                        };          // 创建日志
+                        new sys_oper_log_dal().Insert(add_log);       // 插入日志
                         remark = "删除竞争对手信息";
                     }
                 }
@@ -391,6 +446,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     foreach (var opp in mar)
                     {
+                        var old = opp;
                         opp.source_id = null;
                         opp.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         opp.update_user_id = user.id;
@@ -398,11 +454,59 @@ namespace EMT.DoneNOW.BLL
                         {
                             return ERROR_CODE.ERROR;
                         }
+                        var add_log = new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = (int)user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.OPPORTUNITY,
+                            oper_object_id = opp.id,// 操作对象id
+                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                            oper_description = a_dal.CompareValue(old, opp),
+                            remark = remark
+                        };          // 创建日志
+                        new sys_oper_log_dal().Insert(add_log);       // 插入日志
                         remark = "删除商机来源信息";
                     }
                 }
             }
-
+            //区域
+            if (table_id == (int)GeneralTableEnum.REGION)
+            {
+                crm_account_dal crm_dal = new crm_account_dal();
+                var re = crm_dal.FindListBySql<crm_account>($"select a.* from crm_account a,d_general b where a.territory_id=b.id and b.parent_id={id} and a.delete_time=0");
+                if (re.Count > 0)
+                {
+                    foreach (var i in re) {
+                        var old = i;
+                        i.territory_id = null;
+                        i.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        i.update_user_id = user.id;
+                        if (!crm_dal.Update(i))
+                        {
+                            return ERROR_CODE.ERROR;
+                        }
+                        var add_log = new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = (int)user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                            oper_object_id = i.id,// 操作对象id
+                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                            oper_description = crm_dal.CompareValue(old, i),
+                            remark = remark
+                        };          // 创建日志
+                        new sys_oper_log_dal().Insert(add_log);       // 插入日志
+                        remark = "删除区域信息";
+                    }
+                    
+                }
+            }
             data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.delete_user_id = user_id;
             if (!_dal.Update(data))

@@ -310,6 +310,23 @@ namespace EMT.DoneNOW.DAL
         {
             return GetNextId("seq_sys");
         }
+        /// <summary>
+        /// 获取到发票批号
+        /// </summary>
+        /// <returns></returns>
+        public long GetNextIdInvBat()
+        {
+            return GetNextId("seq_invoice_batch");
+        }
+
+        /// <summary>
+        /// 获取到发票编号
+        /// </summary>
+        /// <returns></returns>
+        public long GetNextIdInvNo()
+        {
+            return GetNextId("seq_invoice_no");
+        }
 
         /// <summary>
         /// 从数据库获取sequence

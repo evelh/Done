@@ -65,7 +65,7 @@ namespace EMT.DoneNOW.Web
         }
         #region 绑定初始值
         private void bind() {
-            this.Product_Name.Text = product.product_name.ToString();
+            this.Product_Name.Text = product.name.ToString();
             if (product.description != null && !string.IsNullOrEmpty(product.description.ToString()))
             {
                 this.Product_Description.Text = product.description.ToString();
@@ -148,7 +148,7 @@ namespace EMT.DoneNOW.Web
                 product = pbll.GetProduct(id);
             }
             //需要进行唯一性校验
-            product.product_name = this.Product_Name.Text.ToString();
+            product.name = this.Product_Name.Text.ToString();
             string cate,code;
             //物料
             if (!string.IsNullOrEmpty(Request.Form["kkCallBackHidden"].ToString()))

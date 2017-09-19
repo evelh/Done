@@ -214,7 +214,7 @@
                               <%foreach (var td in GeneralList)
                                   { %>
                              <%if (id == (int)GeneralTableEnum.MARKET_SEGMENT || id == (int)GeneralTableEnum.REGION || id == (int)GeneralTableEnum.COMPETITOR)
-                                 { %>
+                                 { %><%--市场、区域、竞争对手--%>
 
                         <tr onclick="skip(<%=td.id %>)" title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
 
@@ -254,7 +254,7 @@
                             <td class="Context" style="width:auto;">
                                 <%if (Convert.ToInt32(td.parent_id) > 0)
                                     { %>
-                                <div class="Standard"><%=gbll.GetGeneralParentName((int)td.parent_id)%></div>
+                                <div class="Standard"><%=gbll.GetGeneralName((int)td.parent_id)%></div>
                                 <%} %>
                             </td>
                              <td class="Context" style="width:102px;text-align:center">
@@ -305,7 +305,7 @@
                             <%} %>
                             
                              <%if (id == (int)GeneralTableEnum.OPPORTUNITY_SOURCE)
-                                 { %>
+                                 { %><%--商家来源--%>
                          <tr onclick="skip(<%=td.id %>)" title="右键显示操作菜单" data-val="<%=td.id %>" class="dn_tr">
                              <td class="Text XL U3" style="width:201px;">
                                 <%=td.name %>

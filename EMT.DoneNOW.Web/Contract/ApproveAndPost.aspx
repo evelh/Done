@@ -121,11 +121,12 @@
                 <div class="cont">
                     <iframe id="PageFrame1" name="PageFrame1" style="width:100%;" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>"></iframe>
                 </div>
-            </div>           
+            </div>
         </div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
         <script>
+           
             $(window).resize(function () {
                 var Height = $(document).height() - 66 + "px";
                 $("#PageFrame1").css("height", Height);

@@ -382,7 +382,7 @@
                                                                 product = new EMT.DoneNOW.DAL.ivt_product_dal().FindNoDeleteById((long)conCost.product_id);
                                                             }
                                                         %>
-                                                        <input type="text" id="product_id" style="width: 294px;" value="<%=product!=null?product.product_name:"" %>" />
+                                                        <input type="text" id="product_id" style="width: 294px;" value="<%=product!=null?product.name:"" %>" />
                                                         <input type="hidden" name="product_id" id="product_idHidden" value="<%=product!=null?product.id.ToString():"" %>" />
                                                         <img src="../Images/data-selector.png" style="vertical-align: middle;" id="ChoosethisProduct" onclick="ChooseProduct()" />
                                                     </div>
@@ -810,6 +810,26 @@
         }
     })
 
+    $("#save").click(function () {
+        if (!SubmitCheck()) {
+            return false;
+        }
+        return true;
+    });
+    $("#save_close_Click").click(function () {
+        if (!SubmitCheck()) {
+            return false;
+        }
+        return true;
+    });
+    $("#save_add").click(function () {
+        if (!SubmitCheck()) {
+            return false;
+        }
+        return true;
+    });
+
+
 
     function toDecimal4(x) {
         var f = parseFloat(x);
@@ -868,7 +888,7 @@
                         if (data.unit_cost != undefined && data.unit_cost != "") {
                             $("#unit_cost").val(toDecimal4(data.unit_cost));
                         }
-                        $("#name").val(data.product_name);
+                        $("#name").val(data.name);
                         GetSumCost();
                         GetSumAmount();
                         $("#status_id").val(<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_STATUS.PENDING_PURCHASE %>);
@@ -922,5 +942,53 @@
                 },
             });
         }
+    }
+
+
+    function SubmitCheck() {
+        var costId = $("#costIdHidden").val();
+        if (costId == "") {
+            alert("请通过查找带回选择物料代码！");
+            return false;
+        }
+        var name = $("#name").val();
+        if (name == "") {
+            alert("请填写成本名称！");
+            return false;
+        }
+        var date_purchased = $("#date_purchased").val();
+        if (date_purchased == "") {
+            alert("请填写购买日期！");
+            return false;
+        }
+        var status_id = $("#status_id").val();
+        if (status_id == "") {
+            alert("请选择状态！");
+            return false;
+        }
+        // unit_cost
+        var quantity = $("#quantity").val();
+        if (quantity == "") {
+            alert("请填写数量！");
+            return false;
+        }
+        var unit_cost = $("#unit_cost").val();
+        if (unit_cost == "") {
+            alert("请填写单元成本！");
+            return false;
+        }
+        //unit_price
+        var pricequantity = $("#pricequantity").val();
+        if (pricequantity == "") {
+            alert("数量不能为空！");
+            return false;
+        }
+        var unit_price = $("#unit_price").val();
+        if (unit_price == "") {
+            alert("请填写单价！");
+            return false;
+        }
+
+        return true;
     }
 </script>

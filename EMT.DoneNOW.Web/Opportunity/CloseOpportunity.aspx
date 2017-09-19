@@ -519,7 +519,7 @@
                                                   }
                                               %>
 
-                                              <input type="text" style="width: 278px; margin-right: 4px;" id="primary_product_id" value="<%=priProduct==null?"":priProduct.product_name %>">
+                                              <input type="text" style="width: 278px; margin-right: 4px;" id="primary_product_id" value="<%=priProduct==null?"":priProduct.name %>">
                                               <input type="hidden" name="primary_product_id" id="primary_product_idHidden" value="<%=priProduct==null?"":priProduct.id.ToString() %>" />
                                               <img src="../Images/data-selector.png" style="vertical-align: middle;" onclick="callBackProduct()">
                                             </div>

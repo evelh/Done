@@ -287,7 +287,7 @@
                         <tr>
                             <td class="FieldLabels">订单号
                             <div>
-                                <input type="text" style="width: 255px" name="purchase_order_number" id="purchase_order_number" value="<%=(!isAdd)&&subscription.purchase_order_number!=null?subscription.purchase_order_number.ToString():"" %>" />
+                                <input type="text" style="width: 255px" name="purchase_order_no" id="purchase_orderpurchase_order_no_number" value="<%=(!isAdd)&&subscription.purchase_order_no!=null?subscription.purchase_order_no.ToString():"" %>" />
                             </div>
                             </td>
                         </tr>
@@ -334,9 +334,9 @@
                         </tr>
                         <tr>
                             <td class="FieldLabels">配置项名称
-                            <% var ivtdProduct = new EMT.DoneNOW.BLL.IVT.ProductBLL().GetProduct(iProduct.product_id); %>
+                            <% var ivtdProduct = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(iProduct.product_id); %>
                                 <div>
-                                    <%=ivtdProduct!=null?ivtdProduct.product_name:"" %>
+                                    <%=ivtdProduct!=null?ivtdProduct.name:"" %>
                                 </div>
                             </td>
                         </tr>

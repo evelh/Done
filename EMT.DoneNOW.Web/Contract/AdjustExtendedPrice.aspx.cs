@@ -38,17 +38,13 @@ namespace EMT.DoneNOW.Web
         }
 
         protected void Save_Close_Click(object sender, EventArgs e)
-        {
-            //订阅
-            if (type == (long)QueryType.APPROVE_SUBSCRIPTIONS)
-            {
+        {           
                 period_price = Convert.ToDecimal(Extended_Price.Text.Trim().ToString());
-                var result = aapbll.UpdateSubscriptionPeriod(id, period_price, GetLoginUserId());
+                var result = aapbll.UpdateExtendedPrice(id, period_price, GetLoginUserId(),type);
                 if (result == ERROR_CODE.SUCCESS)
                 {
                     Response.Write("window.close();self.opener.location.reload();</script>");
                 }
-            }
         }
 
         protected void Cancel_Click(object sender, EventArgs e)

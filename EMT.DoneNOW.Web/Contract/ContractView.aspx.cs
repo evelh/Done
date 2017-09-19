@@ -40,6 +40,10 @@ namespace EMT.DoneNOW.Web.Contract
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_DEFAULT_COST + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.CONTRACT_DEFAULT_COST + "&id=" + contract.id;
                         ShowTitle.Text = "默认成本-" + contract.name;
                         break;
+                    case "rate":
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_TIME_RATE + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.CONTRACT_RATE + "&id=" + contract.id;
+                        ShowTitle.Text = "预付时间系数-" + contract.name;
+                        break;
                     default:
                         break;
                 }

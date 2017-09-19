@@ -70,6 +70,7 @@
     <Compile Include="CRM\crm_account_alert_dal.cs" />
     <Compile Include="CRM\crm_account_dal.cs" />
     <Compile Include="CRM\crm_account_deduction_dal.cs" />
+    <Compile Include="CRM\crm_account_reference_dal.cs" />
     <Compile Include="CRM\crm_account_territory_dal.cs" />
     <Compile Include="CRM\crm_contact_dal.cs" />
     <Compile Include="CRM\crm_installed_product_dal.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="CTT\ctt_contract_exclusion_role_dal.cs" />
     <Compile Include="CTT\ctt_contract_internal_cost_dal.cs" />
     <Compile Include="CTT\ctt_contract_milestone_dal.cs" />
+    <Compile Include="CTT\ctt_contract_notify_rule_dal.cs" />
     <Compile Include="CTT\ctt_contract_rate_dal.cs" />
     <Compile Include="CTT\ctt_contract_service_adjust_bundle_service_dal.cs" />
     <Compile Include="CTT\ctt_contract_service_adjust_dal.cs" />
@@ -93,6 +95,8 @@
     <Compile Include="CTT\ctt_contract_service_dal.cs" />
     <Compile Include="CTT\ctt_contract_service_period_bundle_service_dal.cs" />
     <Compile Include="CTT\ctt_contract_service_period_dal.cs" />
+    <Compile Include="CTT\ctt_invoice_dal.cs" />
+    <Compile Include="CTT\ctt_invoice_detail_dal.cs" />
     <Compile Include="Dictionary\d_sla_dal.cs" />
     <Compile Include="Dictionary\d_cost_code_dal.cs" />
     <Compile Include="Dictionary\d_tax_region_cate_dal.cs" />
@@ -108,6 +112,7 @@
     <Compile Include="SYS\sys_department_dal.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email_dal.cs" />
     <Compile Include="SYS\sys_organization_location_dal.cs" />
+    <Compile Include="SYS\sys_quote_email_tmpl_dal.cs" />
     <Compile Include="SYS\sys_quote_tmpl_dal.cs" />
     <Compile Include="CRM\crm_quote_dal.cs" />
     <Compile Include="CRM\crm_quote_item_dal.cs" />

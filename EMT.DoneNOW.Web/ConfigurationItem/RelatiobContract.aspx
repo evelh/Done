@@ -47,7 +47,7 @@
                           <%
                               var  product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(iProduct.product_id);
                               %>
-                            <span class="lblNormalClass" style="font-weight:normal;"><%=product.product_name %></span>
+                            <span class="lblNormalClass" style="font-weight:normal;"><%=product.name %></span>
                         </div>
                     </td>
                 </tr>

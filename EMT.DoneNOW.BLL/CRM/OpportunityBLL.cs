@@ -940,6 +940,15 @@ namespace EMT.DoneNOW.BLL
                             var oneItem = qiList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional == 0 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
 
                             var taxMoney = qiBLL.GetOneTimeMoneyTax(oneItem, quote_item);
+                            BILLING_ENTITY_SUB_TYPE sub_cate = BILLING_ENTITY_SUB_TYPE.CONTRACT_COST;
+                            if (project_id != null)
+                            {
+                                sub_cate = BILLING_ENTITY_SUB_TYPE.PROJECT_COST;
+                            }
+                            if (tickte_id != null)
+                            {
+                                sub_cate = BILLING_ENTITY_SUB_TYPE.TICKET_COST;
+                            }
                             ctt_contract_cost taxCost = new ctt_contract_cost()
                             {
                                 id = _dal.GetNextIdCom(),
@@ -947,7 +956,7 @@ namespace EMT.DoneNOW.BLL
                                 quote_item_id = (int)item.Key,
                                 cost_code_id = long.Parse(item.Value),
                                 product_id = product_id,
-                                name = quote_item.name+"(包含税)",
+                                name = quote_item.name + "(包含税)",
                                 description = quote_item.description,
                                 date_purchased = DateTime.Now,
                                 is_billable = 1,
@@ -962,6 +971,7 @@ namespace EMT.DoneNOW.BLL
                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                 project_id = project_id,
                                 contract_id = contract_id,
+                                sub_cate_id = (int)sub_cate,
                             };
                             cccDal.Insert(taxCost);
                             new sys_oper_log_dal().Insert(new sys_oper_log()

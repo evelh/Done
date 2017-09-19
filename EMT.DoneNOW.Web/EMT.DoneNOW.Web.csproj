@@ -172,10 +172,12 @@
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\AddCharges.aspx" />
+    <Content Include="Contract\AddContractRate.aspx" />
     <Content Include="Contract\AddDefaultCharge.aspx" />
     <Content Include="Contract\AddRetainerPurchase.aspx" />
     <Content Include="Contract\AdjustExtendedPrice.aspx" />
     <Content Include="Contract\ApproveAndPost.aspx" />
+    <Content Include="Contract\ApproveChargeSelect.aspx" />
     <Content Include="Contract\ChargeDetails.aspx" />
     <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
@@ -185,6 +187,8 @@
     <Content Include="Contract\ContractView.aspx" />
     <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
+    <Content Include="Invoice\PreferencesInvoice.aspx" />
+    <Content Include="Invoice\ProcessInvoice.aspx" />
     <Content Include="Contract\RoleRate.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
@@ -237,6 +241,7 @@
     <Content Include="Images\Classification\residential.png" />
     <Content Include="Images\Classification\target.png" />
     <Content Include="Images\Classification\tm.png" />
+    <Content Include="InvoiceTemplate\InvoiceTemplateAttr.aspx" />
     <Content Include="Opportunity\CloseOpportunity.aspx" />
     <Content Include="Opportunity\ContractExistService.aspx" />
     <Content Include="Opportunity\OpportunityLeadSource.aspx" />
@@ -861,6 +866,13 @@
     <Compile Include="Contract\AddCharges.aspx.designer.cs">
       <DependentUpon>AddCharges.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\AddContractRate.aspx.cs">
+      <DependentUpon>AddContractRate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AddContractRate.aspx.designer.cs">
+      <DependentUpon>AddContractRate.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contract\AddDefaultCharge.aspx.cs">
       <DependentUpon>AddDefaultCharge.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -888,6 +900,13 @@
     </Compile>
     <Compile Include="Contract\ApproveAndPost.aspx.designer.cs">
       <DependentUpon>ApproveAndPost.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\ApproveChargeSelect.aspx.cs">
+      <DependentUpon>ApproveChargeSelect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ApproveChargeSelect.aspx.designer.cs">
+      <DependentUpon>ApproveChargeSelect.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\ChargeDetails.aspx.cs">
       <DependentUpon>ChargeDetails.aspx</DependentUpon>
@@ -952,6 +971,20 @@
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Invoice\PreferencesInvoice.aspx.cs">
+      <DependentUpon>PreferencesInvoice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Invoice\PreferencesInvoice.aspx.designer.cs">
+      <DependentUpon>PreferencesInvoice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Invoice\ProcessInvoice.aspx.cs">
+      <DependentUpon>ProcessInvoice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Invoice\ProcessInvoice.aspx.designer.cs">
+      <DependentUpon>ProcessInvoice.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contract\RoleRate.aspx.cs">
       <DependentUpon>RoleRate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -990,6 +1023,13 @@
     </Compile>
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTemplateAttr.aspx.cs">
+      <DependentUpon>InvoiceTemplateAttr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTemplateAttr.aspx.designer.cs">
+      <DependentUpon>InvoiceTemplateAttr.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

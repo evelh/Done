@@ -153,7 +153,7 @@
                                             var product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(long.Parse(item.Key.ToString()));
                                             if (product != null)
                                             {
-                                                groupName = product.product_name;
+                                                groupName = product.name;
                                             }
                                         }
                                         else
@@ -641,7 +641,7 @@
                                                 var product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(long.Parse(outGroupBy.Key.ToString()));
                                                 if (product != null)
                                                 {
-                                                    outGroupName = product.product_name;
+                                                    outGroupName = product.name;
                                                 }
                                             }
                                             else
@@ -666,7 +666,7 @@
                                             var product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(long.Parse(inGroupBy.Key.ToString()));
                                             if (product != null)
                                             {
-                                                inGroupName = product.product_name;
+                                                inGroupName = product.name;
                                             }
                                         }
                                         else
