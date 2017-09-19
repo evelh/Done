@@ -247,7 +247,7 @@ namespace EMT.DoneNOW.BLL
                 ticket_id = null,
                 start_date = 0,
                 end_date = 0,
-                description = udfList.Find(f => f.id == udfId).name + "修改:" + oldVal.ToString() + "→" + value,
+                description = udfList.Find(f => f.id == udfId).name + "修改:" + oldVal.ToString() + "→" + value + "。原因:" + desc,
                 create_user_id = user.id,
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 update_user_id = user.id,

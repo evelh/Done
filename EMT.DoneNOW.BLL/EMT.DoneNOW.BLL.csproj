@@ -67,6 +67,7 @@
     <Compile Include="CRM\SaleOrderBLL.cs" />
     <Compile Include="CTT\ApproveAndPostBLL.cs" />
     <Compile Include="CTT\ContractBLL.cs" />
+    <Compile Include="CTT\ContractBlockBLL.cs" />
     <Compile Include="CTT\ContractCostBLL.cs" />
     <Compile Include="CTT\ContractRateBLL.cs" />
     <Compile Include="IVT\ProductBLL.cs" />

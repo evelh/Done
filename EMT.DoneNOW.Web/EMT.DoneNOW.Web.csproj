@@ -173,6 +173,7 @@
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\AddCharges.aspx" />
     <Content Include="Contract\AddDefaultCharge.aspx" />
+    <Content Include="Contract\AddRetainerPurchase.aspx" />
     <Content Include="Contract\AdjustExtendedPrice.aspx" />
     <Content Include="Contract\ApproveAndPost.aspx" />
     <Content Include="Contract\ChargeDetails.aspx" />
@@ -182,6 +183,7 @@
     <Content Include="Contract\ContractPostDate.aspx" />
     <Content Include="Contract\ContractUdf.aspx" />
     <Content Include="Contract\ContractView.aspx" />
+    <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Contract\RoleRate.aspx" />
     <Content Include="Default.aspx" />
@@ -866,6 +868,13 @@
     <Compile Include="Contract\AddDefaultCharge.aspx.designer.cs">
       <DependentUpon>AddDefaultCharge.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\AddRetainerPurchase.aspx.cs">
+      <DependentUpon>AddRetainerPurchase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AddRetainerPurchase.aspx.designer.cs">
+      <DependentUpon>AddRetainerPurchase.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contract\AdjustExtendedPrice.aspx.cs">
       <DependentUpon>AdjustExtendedPrice.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -928,6 +937,13 @@
     </Compile>
     <Compile Include="Contract\ContractView.aspx.designer.cs">
       <DependentUpon>ContractView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\EditRetainerPurchase.aspx.cs">
+      <DependentUpon>EditRetainerPurchase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\EditRetainerPurchase.aspx.designer.cs">
+      <DependentUpon>EditRetainerPurchase.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>

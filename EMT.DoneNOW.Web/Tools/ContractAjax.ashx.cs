@@ -89,6 +89,10 @@ namespace EMT.DoneNOW.Web
                         var rateId = context.Request.QueryString["rateId"];
                         DeleteContractRate(context, Convert.ToInt64(rateId));
                         break;
+                    case "DeleteBlock":
+                        var blockId = context.Request.QueryString["blockId"];
+                        DeleteContractBlock(context, Convert.ToInt64(blockId));
+                        break;
                     default:
                         break;
                 }
@@ -288,6 +292,24 @@ namespace EMT.DoneNOW.Web
             }
             context.Response.Write(result);
         }
+
+        /// <summary>
+        /// 删除合同预付
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="blockId"></param>
+        public void DeleteContractBlock(HttpContext context, long blockId)
+        {
+            var res = context.Session["dn_session_user_info"];
+            bool result = false;
+            if (res != null)
+            {
+                var user = res as sys_user;
+                result = new ContractBlockBLL().DeletePurchase(blockId, user.id);
+            }
+            context.Response.Write(result);
+        }
+
         public bool IsReusable
         {
             get
