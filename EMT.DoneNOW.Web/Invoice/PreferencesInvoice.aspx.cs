@@ -83,6 +83,7 @@ namespace EMT.DoneNOW.Web.Invoice
                             {
                                 _ctl3_rdoAccountBillTo.Checked = true;
                             }
+                            enable_email.Checked = accRef.enable_email_invoice == 1;
                         }
 
                     }
@@ -114,7 +115,8 @@ namespace EMT.DoneNOW.Web.Invoice
             var thisRef = AssembleModel<crm_account_reference>();
             thisRef.no_contract_bill_to_parent = (sbyte)(nocontract_bill_to_parent.Checked ? 1 : 0);
             thisParam.is_tax_exempt = _ctl3_chkTaxExempt_ATCheckBox.Checked ? 1 : 0;
-
+            thisRef.enable_email_invoice = (sbyte)(enable_email.Checked?1:0);
+            // 是否14)	支持发送邮件：界面输入-todo
             var addressType = Request.Form["_ctl3_rdoBillTo"];
             switch (addressType)
             {

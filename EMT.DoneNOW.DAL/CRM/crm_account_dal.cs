@@ -110,9 +110,6 @@ namespace EMT.DoneNOW.DAL
         /// <returns></returns>
         public List<crm_account> GetSubsidiariesById(long account_id)
         {
-            // 查找指定的列
-            string sql = $"select c.name as '公司名称',d.name as '类型',last_activity_time as '最后活跃时间' from crm_account c,d_general   WHERE c.parent_id = {account_id} and c.delete_time = 0  and c.type_id = d.id"; 
-
             return FindListBySql<crm_account>($"select * from crm_account WHERE parent_id='{account_id}' and delete_time = 0");
         }
         /// <summary>

@@ -17,7 +17,7 @@ namespace EMT.DoneNOW.DTO
         public DateTime invoice_date;         // 发票日期
         public DateTime? date_range_from;     // 发票开始日期
         public DateTime? date_range_to;          // 发票结束日期
-        public string purchase_order_number;     // 订单号
+        public string purchase_order_no;     // 订单号
         public string notes;                    // 发票备注
         public int? payment_term_id;          // 支付条款
         // 需要用到的参数

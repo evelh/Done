@@ -13,5 +13,6 @@ namespace EMT.DoneNOW.DTO
         public int is_tax_exempt;                // 是否免税
         public int? tax_region_id;                // 税区
         public string tax_identification;         // 税号
+        public bool enable_email_invoice;         // 可以发送发票
     }
 }

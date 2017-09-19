@@ -10,7 +10,7 @@
 namespace EMT.DoneNOW.Web.Invoice {
     
     
-    public partial class PreferencesInvoice {
+    public partial class InvoiceWizard {
         
         /// <summary>
         /// form1 控件。
@@ -22,15 +22,6 @@ namespace EMT.DoneNOW.Web.Invoice {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// save_close 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button save_close;
-        
-        /// <summary>
         /// invoice_tmpl_id 控件。
         /// </summary>
         /// <remarks>
@@ -40,84 +31,138 @@ namespace EMT.DoneNOW.Web.Invoice {
         protected global::System.Web.UI.WebControls.DropDownList invoice_tmpl_id;
         
         /// <summary>
-        /// nocontract_bill_to_parent 控件。
+        /// account_idHidden 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox nocontract_bill_to_parent;
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden account_idHidden;
         
         /// <summary>
-        /// _ctl3_chkTaxExempt_ATCheckBox 控件。
+        /// ckchildAccounts 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox _ctl3_chkTaxExempt_ATCheckBox;
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox ckchildAccounts;
         
         /// <summary>
-        /// tax_region_id 控件。
+        /// ckserviceContract 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList tax_region_id;
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox ckserviceContract;
         
         /// <summary>
-        /// _ctl3_rdoAccount 控件。
+        /// ckFixPrice 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton _ctl3_rdoAccount;
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox ckFixPrice;
         
         /// <summary>
-        /// _ctl3_UseParent 控件。
+        /// ckPirceZero 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton _ctl3_UseParent;
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox ckPirceZero;
         
         /// <summary>
-        /// _ctl3UseParInv 控件。
+        /// project_idHidden 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton _ctl3UseParInv;
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden project_idHidden;
         
         /// <summary>
-        /// _ctl3_rdoAccountBillTo 控件。
+        /// department_id 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton _ctl3_rdoAccountBillTo;
+        protected global::System.Web.UI.WebControls.DropDownList department_id;
         
         /// <summary>
-        /// enable_email 控件。
+        /// itemStartDate 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox enable_email;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText itemStartDate;
         
         /// <summary>
-        /// invoice_email_message_tmpl_id 控件。
+        /// itemEndDate 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList invoice_email_message_tmpl_id;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText itemEndDate;
+        
+        /// <summary>
+        /// contract_type_id 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList contract_type_id;
+        
+        /// <summary>
+        /// contract_cate_id 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList contract_cate_id;
+        
+        /// <summary>
+        /// project_item 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect project_item;
+        
+        /// <summary>
+        /// lbnext 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbnext;
+        
+        /// <summary>
+        /// tax_region 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList tax_region;
+        
+        /// <summary>
+        /// finish 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button finish;
     }
 }

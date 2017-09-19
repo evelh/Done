@@ -16,6 +16,7 @@ namespace EMT.DoneNOW.DAL
             }
             return FindListBySql<d_tax_region_cate>($"select * from d_tax_region_cate");
         }
+     
     }
 
 }

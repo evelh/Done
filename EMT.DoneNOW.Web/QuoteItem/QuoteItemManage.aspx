@@ -115,14 +115,8 @@
                                 // 为了给税加入上标获取到集合排序
                                 var taxAllCateList = quoteItemList.Select(_ => _.tax_cate_id).Distinct().ToList();  // 所有的税ID信息相关的集合
 
-
-
-
-
-
-
                                 // EMT.DoneNOW.DAL.d_tax_region_cate_dal.GetTaxRegionCate
-                                var quote_item_tax_cate = new EMT.DoneNOW.DAL.d_tax_region_cate_dal().GetTaxRegionCate(new EMT.DoneNOW.BLL.CompanyBLL().GetCompany(quote.account_id).tax_region_id);
+                                List<EMT.DoneNOW.Core.d_tax_region_cate> quote_item_tax_cate = new EMT.DoneNOW.DAL.d_tax_region_cate_dal().GetTaxRegionCate(quote.tax_region_id);
                                 if (groupList != null && groupList.Count > 0)
                                 {
                                     decimal groupAllTaxPrcie = 0; // 分组下的所有税的总和

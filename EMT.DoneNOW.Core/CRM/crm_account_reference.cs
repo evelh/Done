@@ -57,9 +57,11 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String email_notes { get; set; }
         [DataMember]
-        public SByte quickbooks_invoice_method_id { get; set; }
+        public SByte? quickbooks_invoice_method_id { get; set; }
         [DataMember]
         public String bill_to_address_code { get; set; }
+        [DataMember]
+        public SByte? enable_email_invoice { get; set; }
 
 
     }

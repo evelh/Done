@@ -420,7 +420,7 @@
                                                                 </td>
                                                                 <td class="FieldLabels" align="right">
                                                                     <div style="margin: 0; padding: 0; padding-bottom: 21px;">
-                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="discount_percent" id="Discount" disabled="disabled" class="Calculation" maxlength="5" />&nbsp;%
+                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="discount_percent" id="Discount" disabled="disabled" class="Calculation" maxlength="5" value="<%=quote_item!=null&&quote_item.discount_percent!=null?quote_item.discount_percent.ToString():"" %>" />&nbsp;%
                                                                     </div> 
                                                                 </td>
                                                             </tr>
@@ -664,6 +664,18 @@
                     $("#Discount").val("");
                 }
             })
+
+            <%if (quote_item != null)
+             {
+        if (quote_item.discount_percent != null)
+        { %>
+            $("#DiscountR2").prop("checked", true);
+            $("#Discount").prop("disabled", false);
+            $("#unit_discount").prop("disabled", true);
+
+            <% }}%>
+               
+
         }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES %>)  // 配送
         {
