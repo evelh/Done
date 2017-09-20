@@ -50,7 +50,8 @@
                                                 <td class="FieldLabels" valign="top">
                                                     <div>
                                                         <span style="padding-bottom: 10px; display: block;">
-                                                            <input type="checkbox" id="ckchildAccounts" runat="server">
+                                                            <asp:CheckBox ID="ckchildAccounts" runat="server" />
+                                                            
                                                             <label style="font-weight: 100;" for="ckchildAccounts">显示子客户条目</label>
                                                         </span>
                                                         <span style="padding-bottom: 10px; display: block;">
@@ -118,6 +119,7 @@
                                                             }
                                                         %>
                                                     </select>
+                                                    <input type="hidden" name="thisItemTypeId" id="thisItemTypeId" runat="server"/>
                                                 </div>
                                                 </td>
                                             </tr>
@@ -145,11 +147,11 @@
                                             <tr>
                                                 <td class="FieldLabels">项目条目
                                                 <div>
-                                                    <select style="width: 166px;" id="project_item" runat="server">
-                                                        <option value="">全部</option>
-                                                        <option value="onlyProject">只显示项目条目</option>
-                                                        <option value="onlyNoProject">只显示非项目条目</option>
-                                                    </select>
+                                                    <asp:DropDownList ID="projectItem" runat="server">
+                                                                 <asp:ListItem Value="">全部</asp:ListItem>
+                                                        <asp:ListItem Value="onlyProject">只显示项目条目</asp:ListItem>
+                                                        <asp:ListItem Value="onlyNoProject">只显示非项目条目</asp:ListItem>
+                                                    </asp:DropDownList>
                                                 </div>
                                                 </td>
                                             </tr>
@@ -166,44 +168,44 @@
                     <!--上一层-->
                     <li id="a1">
                         <a class="ImgLink disabledLink">
-                            <img class="ButtonImg" src="img/move-left.png">
+                            <img class="ButtonImg" src="../Images/move-left.png" />
                             <span class="Text">上一页</span>
                         </a>
                     </li>
                     <!--下一层-->
                     <li class="right" id="b1">
-                        <a class="ImgLink">
-                            <span class="Text">
-                                <asp:LinkButton ID="lbnext" runat="server" OnClick="lbnext_Click">下一页</asp:LinkButton>
-                            </span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
-                        </a>
+                      
+                                <asp:LinkButton ID="lbnext" runat="server" OnClick="lbnext_Click">下一页 <img class="ButtonRightImg" src="../Images/move-right.png" /></asp:LinkButton>
+                            
+                          <%--  <img class="ButtonRightImg" src="../Images/move-right.png" />--%>
+                   
                     </li>
                     <!--完成-->
                     <li class="right" id="c1">
                         <a class="ImgLink disabledLink">
-                            <span class="Text">Finish Now</span>
+                            <span class="Text">现在完成</span>
                         </a>
                     </li>
                     <!--关闭-->
                     <li class="right" style="display: none;" id="d1">
                         <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
-                            <span class="Text">Close</span>
+                            <img class="ButtonRightImg" src="../Images/cancel.png">
+                            <span class="Text">关闭</span>
                         </a>
                     </li>
                     <!--打印预览-->
                     <li class="right" id="e1">
                         <a class="ImgLink disabledLink">
-                            <span class="Text">Print Preview</span>
+                            <span class="Text">打印预览</span>
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
+
         <!--第二页-->
         <div class="Workspace Workspace2" style="display: none;">
-            <div class="PageInstructions">Please select the invoice items for this invoice. At least one invoice item must be selected.</div>
+            <div class="PageInstructions">请选择发票条目，至少选择一条。</div>
             <div class="WizardSection" style="overflow: auto; height: 520px;">
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tbody>
@@ -221,375 +223,26 @@
                                                                     <td align="center" style="width: 20px;">
                                                                         <input type="checkbox" style="margin: 0;">
                                                                     </td>
-                                                                    <td width="20" align="center">Type</td>
-                                                                    <td width="20" align="center">Date</td>
-                                                                    <td>Invoice Item Name</td>
-                                                                    <td>Company Name</td>
-                                                                    <td>Contract Name</td>
-                                                                    <td>Department Name</td>
-                                                                    <td>Billing Code Name</td>
-                                                                    <td>Resource Name</td>
-                                                                    <td>Role Name</td>
-                                                                    <td align="right">Project Name</td>
-                                                                    <td align="right">Hourly Billing Rate</td>
-                                                                    <td align="right">Billable Hours / Quantity</td>
-                                                                    <td align="right">Billable Amount</td>
-                                                                    <td align="center">Tax Category</td>
-                                                                    <td align="center">Bill to Parent Company</td>
-                                                                    <td align="center">Bill to Subsidiary</td>
+                                                                    <td width="20" align="center">计费项类型</td>
+                                                                    <td width="20" align="center">条目创建时间</td>
+                                                                    <td>条目名称</td>
+                                                                    <td>客户名称</td>
+                                                                    <td>合同名称</td>
+                                                                    <td>部门名称</td>
+                                                                    <td>计费代码名称</td>
+                                                                    <td>员工姓名</td>
+                                                                    <td>角色名称</td>
+                                                                    <td align="right">项目名称</td>
+                                                                    <td align="right">角色费率</td>
+                                                                    <td align="right">计费时间/数量</td>
+                                                                    <td align="right">金额</td>
+                                                                    <td align="center">税收种类</td>
+                                                                    <td align="center">计费到父客户</td>
+                                                                    <td align="center">计费到子客户</td>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
-                                                                    </td>
-                                                                    <td width="20" align="center">
-                                                                        <img src="" alt=""></td>
-                                                                    <td width="20" align="center">17/08/2017</td>
-                                                                    <td>Opportunity Closed:[shangji-abc-01]
-                                                                    <br>
-                                                                        [T20170815.0003]
-                                                                    </td>
-                                                                    <td>abcdefg</td>
-                                                                    <td>contract_abc_10_block hours</td>
-                                                                    <td>Administration</td>
-                                                                    <td>Onsite Support</td>
-                                                                    <td>Li, Hong</td>
-                                                                    <td>Engineer</td>
-                                                                    <td align="right"></td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="right">5.00</td>
-                                                                    <td align="right">-</td>
-                                                                    <td align="center">zengzhishui</td>
-                                                                    <td align="center"></td>
-                                                                    <td align="center"></td>
-                                                                </tr>
+                                                            <tbody id="showAccountDed">
+                                                            
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -608,7 +261,7 @@
                     <!--上一层-->
                     <li id="a2">
                         <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
+                            <img class="ButtonImg" src="../Images/move-left.png">
                             <span class="Text">上一页</span>
                         </a>
                     </li>
@@ -616,7 +269,7 @@
                     <li class="right" id="b2">
                         <a class="ImgLink">
                             <span class="Text">下一页</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
+                            <img class="ButtonRightImg" src="../Images/move-right.png">
                         </a>
                     </li>
                     <!--完成-->
@@ -628,7 +281,7 @@
                     <!--关闭-->
                     <li class="right" style="display: none;" id="d2">
                         <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
+                            <img class="ButtonRightImg" src="../Images/cancel.png">
                             <span class="Text">关闭</span>
                         </a>
                     </li>
@@ -669,7 +322,7 @@
                                                                     <td class="FieldLabels" width="50%">发票编号 
                                                                     <div>
                                                       <%--=accDedDal.GetNextIdInvNo()--%>
-                                                                        <input type="text" disabled style="width: 104px;" value="自动生成" />
+                                                                        <input type="text" disabled style="width: 104px;" value="<%=accDedDal.GetNextIdInvNo() %>" />
                                                                     </div>
                                                                     </td>
                                                                     <td class="FieldLabels" width="50%">发票日期 <span class="errorSmall">*</span>
@@ -698,9 +351,7 @@
                                                                     </td>
                                                                     <td class="FieldLabels" width="50%">支付条款 
          <div>
-             <select style="width: 120px;">
-                 <option value="">01</option>
-             </select>
+             <asp:DropDownList ID="payment_term_id" runat="server" Width="120px"></asp:DropDownList>
          </div>
                                                                     </td>
                                                                 </tr>
@@ -744,7 +395,7 @@
                                                                 <tr>
                                                                     <td class="FieldLabels">
                                                                         <div>
-                                                                            <input type="checkbox" style="vertical-align: middle;" disabled>
+                                                                            <input type="checkbox" style="vertical-align: middle;" disabled id="emailShow">
                                                                             <label style="font-weight: normal; cursor: pointer;">邮件</label>
                                                                         </div>
                                                                     </td>
@@ -752,7 +403,7 @@
                                                                 <tr>
                                                                     <td class="FieldLabels">
                                                                         <div>
-                                                                            <input type="checkbox" style="vertical-align: middle;" disabled>
+                                                                            <input type="checkbox" style="vertical-align: middle;" disabled id="quickBookShow" />
                                                                             <label style="font-weight: normal; cursor: pointer;">Transfer Invoice to QuickBooks</label>
                                                                         </div>
                                                                     </td>
@@ -775,7 +426,7 @@
                     <!--上一层-->
                     <li id="a3">
                         <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
+                            <img class="ButtonImg" src="../Images/move-left.png">
                             <span class="Text">上一页</span>
                         </a>
                     </li>
@@ -783,19 +434,20 @@
                     <li class="right" id="b3">
                         <a class="ImgLink">
                             <span class="Text">下一页</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
+                            <img class="ButtonRightImg" src="../Images/move-right.png">
                         </a>
                     </li>
                     <!--完成-->
                     <li class="right" id="c3">
                         <a class="ImgLink">
-                            <span class="Text">现在完成</span>
+                            <span class="Text">
+                                <asp:Button ID="finishNowC3" runat="server" Text="现在完成" OnClick="finishNowC3_Click"  BorderStyle="None"/></span>
                         </a>
                     </li>
                     <!--关闭-->
                     <li class="right" style="display: none;" id="d3">
                         <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
+                            <img class="ButtonRightImg" src="../Images/cancel.png">
                             <span class="Text">关闭</span>
                         </a>
                     </li>
@@ -826,10 +478,7 @@
                                                 <tr>
                                                     <td class="FieldLabels">税区                                                   
                                                         <div>
-                                                            <asp:DropDownList ID="tax_region" runat="server"></asp:DropDownList>
-                                                            <input type="hidden" id="taxRate"/>
-                                                            <select style="width: 300px;">
-                                                            </select>
+                                                            <asp:DropDownList ID="tax_region" runat="server" Width="300px"></asp:DropDownList>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -928,7 +577,7 @@
                     <li id="a4">
                         <a class="ImgLink">
 
-                            <img class="ButtonImg" src="img/move-left.png">
+                            <img class="ButtonImg" src="../Images/move-left.png">
                             <span class="Text">上一页</span>
                         </a>
                     </li>
@@ -936,19 +585,19 @@
                     <li class="right" id="b4">
                         <a class="ImgLink">
                             <span class="Text">下一页</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
+                            <img class="ButtonRightImg" src="../Images/move-right.png">
                         </a>
                     </li>
                     <!--完成-->
                     <li class="right" id="c4">
                         <a class="ImgLink">
-                            <span class="Text">现在完成 </span>
+                            <span class="Text"> <asp:Button ID="FinishNowC4" runat="server" Text="现在完成" OnClick="FinishNowC4_Click" BorderStyle="None"/></span>
                         </a>
                     </li>
                     <!--关闭-->
                     <li class="right" style="display: none;" id="d4">
                         <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
+                            <img class="ButtonRightImg" src="../Images/cancel.png">
                             <span class="Text">Close</span>
                         </a>
                     </li>
@@ -979,7 +628,7 @@
                                                 <tr>
                                                     <td class="FieldLabels">
                                                         <div>
-                                                            <img src="img/check.png" style="vertical-align: middle;">
+                                                            <img src="../Images/check.png" style="vertical-align: middle;">
                                                             保存发票 
                                                         </div>
                                                     </td>
@@ -987,8 +636,24 @@
                                                 <tr>
                                                     <td class="FieldLabels">
                                                         <div id="divShowContractPrint">
-                                                            <img src="img/check.png" style="vertical-align: middle;">
+                                                            <img src="../Images/check.png" style="vertical-align: middle;">
                                                                显示发票预览
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                  <tr>
+                                                    <td class="FieldLabels">
+                                                        <div id="divShowEmail">
+                                                            <img src="../Images/check.png" style="vertical-align: middle;">
+                                                               显示邮件
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                  <tr>
+                                                    <td class="FieldLabels">
+                                                        <div id="divShowQuickBooks">
+                                                            <img src="../Images/check.png" style="vertical-align: middle;">
+                                                               显示QuickBooks
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -1006,7 +671,7 @@
                     <!--上一层-->
                     <li id="a5">
                         <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
+                            <img class="ButtonImg" src="../Images/move-left.png">
                             <span class="Text">上一页</span>
                         </a>
                     </li>
@@ -1014,7 +679,7 @@
                     <li style="display: none;" class="right" id="b5">
                         <a class="ImgLink">
                             <span class="Text">下一页</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
+                            <img class="ButtonRightImg" src="../Images/move-right.png">
                         </a>
                     </li>
                     <!--完成-->
@@ -1027,7 +692,7 @@
                     <!--关闭-->
                     <li class="right" style="display: none;" id="d5">
                         <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
+                            <img class="ButtonRightImg" src="../Images/cancel.png">
                             <span class="Text">关闭</span>
                         </a>
                     </li>
@@ -1060,7 +725,7 @@
                     <!--上一层-->
                     <li style="display: none;" id="a6">
                         <a class="ImgLink">
-                            <img class="ButtonImg" src="img/move-left.png">
+                            <img class="ButtonImg" src="../Images/move-left.png">
                             <span class="Text">Back</span>
                         </a>
                     </li>
@@ -1068,7 +733,7 @@
                     <li style="display: none;" class="right" id="b6">
                         <a class="ImgLink">
                             <span class="Text">Next</span>
-                            <img class="ButtonRightImg" src="img/move-right.png">
+                            <img class="ButtonRightImg" src="../Images/move-right.png">
                         </a>
                     </li>
                     <!--完成-->
@@ -1080,7 +745,7 @@
                     <!--关闭-->
                     <li class="right" id="d6">
                         <a class="ImgLink">
-                            <img class="ButtonRightImg" src="img/cancel.png">
+                            <img class="ButtonRightImg" src="../Images/cancel.png">
                             <span class="Text">Close</span>
                         </a>
                     </li>
@@ -1102,15 +767,18 @@
         }
         var itemStartDate = $("#itemStartDate").val();
         if (itemStartDate == "") {
-            alert("请选择条目时间");
+            alert("请选择条目开始时间");
             return false;
         }
         var itemEndDate = $("#itemEndDate").val();
         if (itemEndDate == "") {
-            alert("请选择条目时间");
+            alert("请选择条目结束时间");
             return false;
         }
-
+        debugger;
+        $("#date_range_from").val(itemStartDate);
+        $("#date_range_to").val(itemEndDate);
+          
 
 
         $(".Workspace1").hide();
@@ -1121,19 +789,34 @@
         $(".Workspace2").hide();
     });
     $("#b2").on("click", function () {
-
-        $("#c2").find('a').removeClass("disabledLink");
-        $("#e2").find('a').removeClass("disabledLink");
-        $("#c1").find('a').removeClass("disabledLink");
-        $("#e1").find('a').removeClass("disabledLink");
+        debugger;
+        var ids = "";
+        $(".thisDedCheck").each(function () {
+            debugger;
+            if ($(this).is(":checked")) {
+                ids += $(this).val() + ',';
+            }
+        })
+        if (ids == "") {
+            alert("请至少选择一条条目");
+            return false;
+        }
+        ids = ids.substring(0, ids.length - 1);
+        $("#accDedIds").val(ids);
+        GetTaxSum(ids, $("#tax_region").val());
+        //$("#c2").find('a').removeClass("disabledLink");
+        //$("#e2").find('a').removeClass("disabledLink");
+        //$("#c1").find('a').removeClass("disabledLink");
+        //$("#e1").find('a').removeClass("disabledLink");
         $(".Workspace2").hide();
         $(".Workspace3").show();
+        // thisDedCheck
     });
     $("#a3").on("click", function () {
         $(".Workspace2").show();
         $(".Workspace3").hide();
-        $("#c2").find('a').addClass("disabledLink");
-        $("#c1").find('a').addClass("disabledLink");
+        //$("#c2").find('a').addClass("disabledLink");
+        //$("#c1").find('a').addClass("disabledLink");
     });
     $("#b3").on("click", function () {
         if ($("#invShow").is(":checked")) {
@@ -1141,7 +824,16 @@
         } else {
             $("#divShowContractPrint").hide();
         }
-        // todo 根据check 显示a5页面的字段
+        if ($("#emailShow").is(":checked")) {
+            $("#divShowEmail").show();
+        } else {
+            $("#divShowEmail").hide();
+        }
+        if ($("#quickBookShow").is(":checked")) {
+            $("#divShowQuickBooks").show();
+        } else {
+            $("#divShowQuickBooks").hide();
+        }
         $(".Workspace3").hide();
         $(".Workspace4").show();
     });
@@ -1149,11 +841,19 @@
         $(".Workspace3").show();
         $(".Workspace4").hide();
     });
-    $("#c4").on("click", function () {
+    $("#b4").on("click", function () {
         $(".Workspace4").hide();
         $(".Workspace5").show();
     });
-    $("#d5").on("click", function () {
+    $("#a5").on("click", function () {
+        $(".Workspace4").show();
+        $(".Workspace5").hide();
+    });
+    $("#c5").on("click", function () {
+        $(".Workspace5").hide();
+        $(".Workspace6").show();
+    });
+    $("#d6").on("click", function () {
         window.close();
     });
     $("#load111").on("click", function () {
@@ -1167,13 +867,18 @@
         }
     });
 
+    $("#type_id").change(function () {
+        var thisValue = $(this).val();
+        $("#thisItemTypeId").val(thisValue);
+    })
+
+
     $("#tax_region").change(function () {
-        // taxRate
         var thisValue = $(this).val();
         if (thisValue != undefined && thisValue != "0") {
             var accDedIds = $("#accDedIds").val();
             if (accDedIds != "") {
-                // ajax 请求计算总合  
+                GetTaxSum(accDedIds, thisValue);
             }
         }
     })
@@ -1182,11 +887,25 @@
 
     function chooseAccount() {
         // 客户查找带回 account_idHidden
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=account_id", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
     function ChooseProject() {
         // 项目的查找带回 project_idHidden
     } 
+    // 计算出税额--条目的id的集合（accDedIds），税区id（thisValue）
+    function GetTaxSum(accDedIds, thisValue) {
+        $.ajax({
+            type: "GET",
+            async: false,
+            // dataType: "json",
+            url: "../Tools/GeneralAjax.ashx?act=GetTaxSum&ids=" + accDedIds + "&taxId=" + thisValue,
+            success: function (data) {
+                $("#taxMoney").text(data);
+            },
+        });
+
+    }
 
   
 </script>

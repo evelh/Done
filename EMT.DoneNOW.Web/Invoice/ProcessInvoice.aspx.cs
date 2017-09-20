@@ -38,7 +38,7 @@ namespace EMT.DoneNOW.Web.Invoice
 
         protected void process_Click(object sender, EventArgs e)
         {
-            var param = AssembleModel<ProcessInvoiceDto>();
+            var param = AssembleModel<InvoiceDealDto>();
             param.isInvoiceEmail = is_InvoiceEmail.Checked;
             param.ids = Request.QueryString["ids"];
 

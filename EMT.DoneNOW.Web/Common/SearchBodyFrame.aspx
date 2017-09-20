@@ -435,6 +435,7 @@
         {
             %>
         function EditOpp() {
+            <%--window.open("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityEdit %>', 'left=0,top=0,location=no,status=no,width=750,height=750', false);--%>
             OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx?opportunity_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityEdit %>');
         }
         function ViewOpp() {

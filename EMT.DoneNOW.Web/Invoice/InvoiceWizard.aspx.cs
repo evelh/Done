@@ -8,6 +8,7 @@ using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.DAL;
+using System.Text;
 
 namespace EMT.DoneNOW.Web.Invoice
 {
@@ -34,8 +35,24 @@ namespace EMT.DoneNOW.Web.Invoice
                 contract_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);
                 account = new CompanyBLL().GetCompany(long.Parse(account_id));
 
+                if (!IsPostBack)
+                {
+                    PageDataBind();
+                    var childAccList = new crm_account_dal().GetSubsidiariesById(account.id);
+                    if(childAccList!=null&& childAccList.Count > 0)
+                    {
+                        if (!string.IsNullOrEmpty(isCheckSunAccountPara))
+                        {
+                            ckchildAccounts.Checked = true;
+                        }
+                    }
+                    else
+                    {
+                        ckchildAccounts.Enabled = false;
+                    }
 
-                PageDataBind();
+                }
+                
             }
             catch (Exception)
             {
@@ -71,12 +88,18 @@ namespace EMT.DoneNOW.Web.Invoice
             contract_cate_id.DataSource = dic.FirstOrDefault(_ => _.Key == "contract_cate").Value;
             contract_cate_id.DataBind();
             contract_cate_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-
+            // payment_term
             tax_region.DataTextField = "show";
             tax_region.DataValueField = "val";
             tax_region.DataSource = dic.FirstOrDefault(_ => _.Key == "taxRegion").Value;
             tax_region.DataBind();
             tax_region.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+            payment_term_id.DataTextField = "show";
+            payment_term_id.DataValueField = "val";
+            payment_term_id.DataSource = dic.FirstOrDefault(_ => _.Key == "payment_term").Value;
+            payment_term_id.DataBind();
+            payment_term_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
 
 
 
@@ -102,36 +125,104 @@ namespace EMT.DoneNOW.Web.Invoice
             var endDate = itemEndDate.Value;
             var contractType = contract_type_id.SelectedValue;
             var contractCate = contract_cate_id.SelectedValue;
-            var projectItem = project_item.SelectedIndex;
-            // var type = type_id.SelectedIndex;  // 条目类型-多选--toTest
-
+            var project_item = projectItem.SelectedValue;
+            var type = thisItemTypeId.Value;  // 条目类型-多选--toTest
             var cadDal = new crm_account_deduction_dal();
 
             var chooseAccount = new CompanyBLL().GetCompany(long.Parse(accountId));
             if (chooseAccount == null)
                 return;
-            accDedList = cadDal.GetAccDed(chooseAccount.id);
+            accDedList = cadDal.GetAccDed(chooseAccount.id);  // 将要在页面上显示的条目
             if (accDedList == null)
                 accDedList = new List<crm_account_deduction>();
-            if (showChildAcc) // 代表用户选中展示子客户条目
+
+            StringBuilder sqlWhere = new StringBuilder();
+
+            if (!string.IsNullOrEmpty(project_id))
             {
-                var childAccList = new crm_account_dal().GetSubsidiariesById(chooseAccount.id);
-                if(childAccList!=null&& childAccList.Count > 0)
-                {
-                    foreach (var childAcc in childAccList)
-                    {
-                        var childAccDedList = cadDal.GetAccDed(childAcc.id);
-                        accDedList.AddRange(childAccDedList); // 循环添加子客户条目
-                    }
-                }
+                sqlWhere.Append($" and project_id={project_id}");
+            }
+            if ((!string.IsNullOrEmpty(department)) && (department != "0"))
+            {
+                sqlWhere.Append($" and department_id={department}");
+            }
+            if (!string.IsNullOrEmpty(startDate))
+            {
+                sqlWhere.Append($" and item_date>={startDate}");
+            }
+            if (!string.IsNullOrEmpty(endDate))
+            {
+                sqlWhere.Append($" and item_date>={endDate}");
+            }
+            if (!string.IsNullOrEmpty(type))
+            {
+                sqlWhere.Append($" and item_type in ({type}) ");
+            }
+            if((!string.IsNullOrEmpty(contractType))&& contractType != "0")
+            {
+                sqlWhere.Append($" and contract_type_id={contractType}");
+            }
+            if ((!string.IsNullOrEmpty(contractCate)) && contractCate != "0")
+            {
+                sqlWhere.Append($" and contract_cate_id={contractCate}");
+            }
+            if (project_item == "onlyProject")
+            {
+                sqlWhere.Append($" and project_id is not null");
+            }
+            if (project_item == "onlyNoProject")
+            {
+                sqlWhere.Append($" and project_id is null");
             }
 
             // todo 其余三个Show的过滤
 
-            if (string.IsNullOrEmpty(project_id))
+            var deeList = new crm_account_deduction_dal().GetInvDedDtoList(sqlWhere.ToString()+" and account_name='"+ chooseAccount.name+"'");
+
+            #region  加上子公司的条目
+            if (showChildAcc) // 代表用户选中展示子客户条目
             {
-                
+                var childAccList = new crm_account_dal().GetSubsidiariesById(chooseAccount.id);
+                if (childAccList != null && childAccList.Count > 0)
+                {
+                    foreach (var childAcc in childAccList)
+                    {
+                        var childAccDedList = cadDal.GetInvDedDtoList(sqlWhere.ToString()+" and account_name='"+ chooseAccount.name+"'");
+                        if (childAccDedList != null && childAccDedList.Count > 0)
+                        {
+                            childAccDedList.ForEach(_ => { _.isSub = "1";});
+                            deeList.AddRange(childAccDedList); // 循环添加子客户条目
+                        }
+                    }
+                }
             }
+            StringBuilder dedHtml = new StringBuilder();
+            if (deeList != null && deeList.Count > 0)
+            {
+                foreach (var invDedDto in deeList)
+                {
+                    var ischeck = invDedDto.isSub == "1" ? "disabled" : "checked";
+                    var imgSrc = ""; // 根据类型选择图片位置
+
+                    var itemName = invDedDto.item_name;  // todo 部分有下标名
+                    var rate = invDedDto.rate == null ? "" : ((decimal)invDedDto.rate).ToString("#0.00");
+                    var quantity = invDedDto.quantity == null ? "" : ((decimal)invDedDto.quantity).ToString("#0.00");
+                    var dollars = invDedDto.dollars == null ? "" : ((decimal)invDedDto.dollars).ToString("#0.00");
+                    var bill_to_parent = string.IsNullOrEmpty(invDedDto.bill_to_parent) ? "" : "√";
+                    var bill_to_sub = string.IsNullOrEmpty(invDedDto.bill_to_sub) ? "" : "√";
+
+                    dedHtml.Append($"<tr><td align='center' style='width: 20px;'><input type='checkbox' class='thisDedCheck' style='margin: 0;' value='{invDedDto.id}' {ischeck}></td><td width='20px' align='center'><img src='{imgSrc}' /></td> <td width='20' align='center'>{invDedDto.item_date}</td><td>{itemName}</td><td>{invDedDto.account_name}</td><td>{invDedDto.contract_name}</td><td>{invDedDto.department_name}</td><td>{invDedDto.cost_code_name}</td><td>{invDedDto.resource_name}</td><td>{invDedDto.role_name}</td><td>{invDedDto.project_name}</td><td>{rate}</td><td>{quantity}</td><td>{dollars}</td><td>{invDedDto.tax_category_name}</td><td>{bill_to_parent}</td><td>{bill_to_sub}</td></tr>");
+                    //showAccountDed
+                  
+                }
+                //ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script></script>");
+            }
+
+
+            ClientScript.RegisterStartupScript(this.GetType(), "页面跳转", "<script>document.getElementById('showAccountDed').innerHTML=\"" + dedHtml.ToString() + "\";document.getElementsByClassName('Workspace1')[0].style.display = 'none';document.getElementsByClassName('Workspace2')[0].style.display = '';document.getElementById('date_range_from').value=\""+ startDate + "\";document.getElementById('date_range_to').value=\"" + endDate + "\";</script>");
+
+            #endregion
+
 
 
 
@@ -139,14 +230,65 @@ namespace EMT.DoneNOW.Web.Invoice
 
         protected void finish_Click(object sender, EventArgs e)
         {
-
+            FinishInvoice();
         }
         /// <summary>
         /// 获取到页面参数
         /// </summary>
-        protected void GetParam()
+        protected InvoiceDealDto GetParam()
         {
+            var param = AssembleModel<InvoiceDealDto>();
+            //var invoice = AssembleModel<ctt_invoice>();
+            param.ids = Request.Form["accDedIds"];
+            param.payment_term_id = param.payment_term_id == 0 ? null : param.payment_term_id;
 
+
+
+            if (contract_udfList != null && contract_udfList.Count > 0)                      
+            {
+                var list = new List<UserDefinedFieldValue>();
+                foreach (var udf in contract_udfList)                          
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
+                }
+                param.udf = list;
+            }
+            return param;
+        }
+
+        protected void finishNowC3_Click(object sender, EventArgs e)
+        {
+            FinishInvoice();
+        }
+
+        protected void FinishNowC4_Click(object sender, EventArgs e)
+        {
+            FinishInvoice();
+        }
+        /// <summary>
+        /// 生成发票向导完成事件
+        /// </summary>
+        protected void FinishInvoice()
+        {
+            var param = GetParam();
+            var result = new InvoiceBLL().ProcessInvoice(param, GetLoginUserId());
+            if (result)
+            {
+                // 根据页面选择，展示不同的显示--暂时只支持打印预览
+                if (param.isShowPrint)
+                {
+
+                }
+            }
+            else
+            {
+
+            }
         }
     }
 }

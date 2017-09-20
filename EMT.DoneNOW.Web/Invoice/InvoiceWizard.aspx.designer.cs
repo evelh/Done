@@ -46,7 +46,7 @@ namespace EMT.DoneNOW.Web.Invoice {
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox ckchildAccounts;
+        protected global::System.Web.UI.WebControls.CheckBox ckchildAccounts;
         
         /// <summary>
         /// ckserviceContract 控件。
@@ -112,6 +112,15 @@ namespace EMT.DoneNOW.Web.Invoice {
         protected global::System.Web.UI.HtmlControls.HtmlInputText itemEndDate;
         
         /// <summary>
+        /// thisItemTypeId 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden thisItemTypeId;
+        
+        /// <summary>
         /// contract_type_id 控件。
         /// </summary>
         /// <remarks>
@@ -130,13 +139,13 @@ namespace EMT.DoneNOW.Web.Invoice {
         protected global::System.Web.UI.WebControls.DropDownList contract_cate_id;
         
         /// <summary>
-        /// project_item 控件。
+        /// projectItem 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect project_item;
+        protected global::System.Web.UI.WebControls.DropDownList projectItem;
         
         /// <summary>
         /// lbnext 控件。
@@ -148,6 +157,24 @@ namespace EMT.DoneNOW.Web.Invoice {
         protected global::System.Web.UI.WebControls.LinkButton lbnext;
         
         /// <summary>
+        /// payment_term_id 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList payment_term_id;
+        
+        /// <summary>
+        /// finishNowC3 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button finishNowC3;
+        
+        /// <summary>
         /// tax_region 控件。
         /// </summary>
         /// <remarks>
@@ -155,6 +182,15 @@ namespace EMT.DoneNOW.Web.Invoice {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList tax_region;
+        
+        /// <summary>
+        /// FinishNowC4 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button FinishNowC4;
         
         /// <summary>
         /// finish 控件。

@@ -33,7 +33,11 @@ namespace EMT.DoneNOW.Web.Company
                     additional_address.Text = location.additional_address;
                     postal_code.Text = location.postal_code;
                     location_label.Text = location.location_label;
-
+                    if (!IsPostBack)
+                    {
+                        isDefault.Checked = location.is_default == 1;
+                        isDefault.Enabled = false;
+                    }
                 }
             }
         }
@@ -46,22 +50,24 @@ namespace EMT.DoneNOW.Web.Company
         protected void save_Click(object sender, EventArgs e)
         {
             var location = AssembleModel<crm_location>();
-
+            location.is_default = (sbyte)(isDefault.Checked?1:0);
             if (location.id==0)
             {
                 if(new LocationBLL().Insert(location, GetLoginUserId()))
                 {
-                    Response.Write("<script>alert('添加地址成功！');self.opener.location.reload();</script>");
-                    Response.Redirect("LocationManage?id="+location.id+"&account_id="+location.account_id);
+                    Response.Write("<script>alert('添加地址成功！');</script>");
+                    //Response.Redirect("LocationManage?id="+location.id+"&account_id="+location.account_id);
                 }
             }
             else
             {
                if(new LocationBLL().Update(location, GetLoginUserId()))
                 {
-                    Response.Write("<script>alert('修改地址成功！');window.close();self.opener.location.reload();</script>");
+                    Response.Write("<script>alert('修改地址成功！');</script>");
                 }
             }
+            // self.opener.location.reload();opener.
+            Response.Write($"<script>window.opener.location.href='EditCompany?loaction=1&id={account_id}';window.close();</script>");
         }
     }
 }

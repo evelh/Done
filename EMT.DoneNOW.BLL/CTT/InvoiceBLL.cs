@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DAL;
 using EMT.DoneNOW.DTO;
-
+using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -24,15 +24,15 @@ namespace EMT.DoneNOW.BLL
             dic.Add("contract_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CONTRACT_TYPE)));
             dic.Add("contract_cate", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CONTRACT_CATE)));
             dic.Add("account_deduction_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACCOUNT_DEDUCTION_TYPE)));
-            dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));
-            return dic;// CONTRACT_CATE
+            dic.Add("payment_term", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.PAYMENT_TERM)));
+            return dic;// PAYMENT_TERM
         }
 
         /// <summary>
         /// 发票处理--针对多个发票处理
         /// </summary>
         /// <returns></returns>
-        public bool ProcessInvoice(ProcessInvoiceDto param,long user_id)
+        public bool ProcessInvoice(InvoiceDealDto param,long user_id)
         {
             var user = UserInfoBLL.GetUserInfo(user_id);
            
@@ -54,7 +54,7 @@ namespace EMT.DoneNOW.BLL
                     {
                         continue;
                     }
-                    var account = comBLL.GetCompany(acc_ded.account_id);
+                    var account = comBLL.GetCompany(acc_ded.account_id);                                
                     if (account == null)
                     {
                         continue;
@@ -101,10 +101,14 @@ namespace EMT.DoneNOW.BLL
                         remark = "保存发票"
                     });
 
+                    var udf_contract_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);  
+                    
+                    new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.COMPANY, user.id, invocie.id, udf_contract_list, param.udf, OPER_LOG_OBJ_CATE.CONTRACT_EXTENSION);
+
                     var invDetail = new ctt_invoice_detail()
                     {
                         invoice_id = invocie.id,
-                        is_emailed = (sbyte)(param.isInvoiceEmail?1:0),
+                        //is_emailed = (sbyte)(param.isInvoiceEmail?1:0),
                     };
                     cidDal.Insert(invDetail);
                     new sys_oper_log_dal().Insert(new sys_oper_log()

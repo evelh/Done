@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace EMT.DoneNOW.DTO
 {
-    public class ProcessInvoiceDto
+    /// <summary>
+    /// 发票处理和生成发票向导共用
+    /// </summary>
+    public class InvoiceDealDto
     {
         
         // 页面参数
@@ -22,7 +25,11 @@ namespace EMT.DoneNOW.DTO
         public int? payment_term_id;          // 支付条款
         // 需要用到的参数
         public string ids;                  // 所有的处理的发票的id集合
-        //public long account_id;             // 当前客户
+        public List<UserDefinedFieldValue> udf; // 用户自定义
+
+        public bool isShowPrint = false;  // 向导专用
+        public bool isShowEmail = false;  // 向导专用
+        public bool isQuickBooks = false;  // 向导专用
 
     }
 }

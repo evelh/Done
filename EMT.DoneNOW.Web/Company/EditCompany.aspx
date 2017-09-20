@@ -65,7 +65,7 @@
             </ul>
         </div>
         <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:132px;">
-        <div class="content clear">
+        <div class="content clear" id="EditGeneral">
 
             <table border="none" cellspacing="" cellpadding="" style="width: 650px; margin-left: 40px;">
 
@@ -339,7 +339,7 @@
 
         </div>
         <%--// location_list--%>
-        <div class="content clear" style="display: none;margin-right:10px;">
+        <div class="content clear" style="display: none;margin-right:10px;" id="locationManage">
             <a href="#" style="margin-left: 10px;" onclick="window.open('LocationManage.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.LocationAdd %>','left=200,top=200,width=900,height=750', false);">新增地址</a>
             <table style="text-align: center;" class="table table-hover grid" id="addressManage">
                 <tr style="text-align: center;">
@@ -678,6 +678,13 @@
 </script>
 <script type="text/javascript">
     $(function () {
+
+        <%if (!string.IsNullOrEmpty(Request.QueryString["loaction"]))
+         { %>
+        window.document.getElementById('locationManage').style.display = ''; window.document.getElementById('EditGeneral').style.display = 'none';
+        $("#Location").addClass("boders");
+        $("#general").removeClass("boders")
+        <% }%>
 
         //var targetTimes = 0;
         //// $("a").attr('target', '_blank' + targetTimes);

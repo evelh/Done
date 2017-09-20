@@ -55,12 +55,14 @@
                     <td>
                         <label>是否默认</label></td>
                     <td>
-                        <%if (location != null && location.is_default == 1)
+
+                        <asp:CheckBox ID="isDefault" runat="server" />
+                 <%--       <%if (location != null && location.is_default == 1)
                                                   { %>
                         <input type="checkbox"  name="is_default" data-val="1" value="1" checked="checked" disabled="disabled"/>
                         <%}else{%>
                         <input  type="checkbox" name="is_default" data-val="1" value="1"/>
-                        <%} %>
+                        <%} %>--%>
                        <%-- <asp:CheckBox ID="is_default" data-val="1" value="1" runat="server" />--%></td>
                 </tr>
                 <tr>

@@ -25,6 +25,11 @@ namespace EMT.DoneNOW.Web
                         var general_id = context.Request.QueryString["id"];
                         GetGeneralInfo(context,long.Parse(general_id));
                         break;
+                    case "GetTaxSum":
+                        var accDedIds = context.Request.QueryString["ids"];
+                        var tax_id = context.Request.QueryString["taxId"];
+                        GetTaxSum(context,long.Parse(tax_id),accDedIds);
+                        break;
                     default:
                         break;
                 }
@@ -47,9 +52,43 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(general)); 
             }
         }
-        private void GetTaxInfo(HttpContext context, long id)
+        /// <summary>
+        ///  根据税区和条目税种计算税额
+        /// </summary>
+        private void GetTaxSum(HttpContext context, long tax_id,string accDedIds)
         {
-            
+            if (tax_id == 0 || string.IsNullOrEmpty(accDedIds))
+            {
+                context.Response.Write("0.00");
+                return;
+            }
+                
+            decimal totalMoney = 0;
+            // 所有需要计算的条目的Id的集合
+            var accDedIdList = accDedIds.Split(new char[] { ','},StringSplitOptions.RemoveEmptyEntries);
+            if(accDedIdList != null&& accDedIdList.Count() > 0)
+            {
+                var adDal = new crm_account_deduction_dal();
+                foreach (var accDedId in accDedIdList)
+                {
+                    var accDedList = adDal.GetInvDedDtoList($" and id={accDedId}");
+                    var thisAccDed = adDal.FindNoDeleteById(long.Parse(accDedId));
+                    if (accDedList != null&& accDedList.Count > 0)
+                    {
+                        var accDed = accDedList.FirstOrDefault(_ => _.id.ToString() == accDedId);
+                        if (accDed.tax_category_id != null)
+                        {
+                            var thisTax = new d_tax_region_cate_dal().GetSingleTax(tax_id, (long)accDed.tax_category_id);
+                            if (thisTax != null && thisAccDed.extended_price != null)
+                            {
+                                totalMoney += (decimal)(thisAccDed.extended_price * thisTax.total_effective_tax_rate);
+                            }
+                        }
+                    }
+                }
+            }
+            context.Response.Write(totalMoney.ToString("#0.00"));
+
         }
 
         public bool IsReusable
