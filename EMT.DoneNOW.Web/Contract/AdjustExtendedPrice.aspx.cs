@@ -31,25 +31,27 @@ namespace EMT.DoneNOW.Web
             if (id == 0 || type == 0)
             {
                 Response.Write("<script>alert('异常！');window.close();self.opener.location.reload();</script>");
-            }          
+            }
+            if (!IsPostBack) {
                 decimal extend;//总价
-                name = aapbll.GetAdjustExtend(id,type, out extend);
+                name = aapbll.GetAdjustExtend(id, type, out extend);
                 Extended_Price.Text = extend.ToString();
+            }               
         }
-
         protected void Save_Close_Click(object sender, EventArgs e)
-        {           
-                period_price = Convert.ToDecimal(Extended_Price.Text.Trim().ToString());
+        {
+            string kk = this.Extended_Price.Text.Trim().ToString();
+                period_price = Convert.ToDecimal(kk);
                 var result = aapbll.UpdateExtendedPrice(id, period_price, GetLoginUserId(),type);
                 if (result == ERROR_CODE.SUCCESS)
                 {
-                    Response.Write("window.close();self.opener.location.reload();</script>");
+                    Response.Write("<script>window.close();self.opener.location.reload();</script>");
                 }
         }
 
         protected void Cancel_Click(object sender, EventArgs e)
         {
-            Response.Write("window.close();self.opener.location.reload();</script>");
+            Response.Write("<script>window.close();self.opener.location.reload();</script>");
         }
     }
 }

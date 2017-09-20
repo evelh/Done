@@ -22,30 +22,48 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// Cancel 控件。
+        /// Save_Close 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Cancel;
+        protected global::System.Web.UI.WebControls.Button Save_Close;
         
         /// <summary>
-        /// Auto 控件。
+        /// Radio1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Auto;
+        protected global::System.Web.UI.WebControls.RadioButton Radio1;
         
         /// <summary>
-        /// Force 控件。
+        /// Radio2 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Force;
+        protected global::System.Web.UI.WebControls.RadioButton Radio2;
+        
+        /// <summary>
+        /// Radio3 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton Radio3;
+        
+        /// <summary>
+        /// Post 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Post;
     }
 }

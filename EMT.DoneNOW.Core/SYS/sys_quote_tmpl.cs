@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
@@ -79,23 +78,11 @@ namespace EMT.DoneNOW.Core
         public SByte? show_labels_when_grouped { get; set; }
         [DataMember]
         public Int32? time_display_format_id { get; set; }
+        [DataMember]
+        public Int32? cate_id { get; set; }
+        [DataMember]
+        public Int32? payment_term_id { get; set; }
 
 
     }
 }
-/*
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using EMT.DoneNOW.Core;
-namespace EMT.DoneNOW.DAL
-{
-    public class sys_quote_tmpl_dal : BaseDAL<sys_quote_tmpl>
-    {
-    }
-
-}
-
-*/

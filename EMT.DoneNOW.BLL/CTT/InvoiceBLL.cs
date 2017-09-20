@@ -216,5 +216,153 @@ namespace EMT.DoneNOW.BLL
 
             return true;
         }
+        public bool InvoiceNumberAndDate(int id,string date,string number,long user_id) {
+            var ci = _dal.FindNoDeleteById(id);
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (ci != null&&user!=null) {
+                var old = ci;
+                ci.invoice_no = number;
+                ci.invoice_date= DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式
+                ci.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                ci.update_user_id = user.id;
+                if (_dal.Update(ci)) {
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = user.id,
+                        name = user.name,
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.INVOCIE,
+                        oper_object_id = ci.id,// 操作对象id
+                        oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
+                        oper_description = _dal.CompareValue(old,ci),
+                        remark = "修改发票的编号和日期"
+                    });
+                }               
+            }
+            return false;
+        }
+        /// <summary>
+        /// 作废发票
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool VoidInvoice(int id,long user_id) {
+            var ci = _dal.FindNoDeleteById(id);
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (ci != null && user != null)
+            {
+                if (ci.is_voided == 1) {
+                    return false;
+                }
+                var old = ci;
+                ci.is_voided = 1;
+                ci.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                ci.update_user_id = user.id;
+                if (_dal.Update(ci))
+                {
+                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = user.id,
+                        name = user.name,
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.INVOCIE,
+                        oper_object_id = ci.id,// 操作对象id
+                        oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
+                        oper_description = _dal.CompareValue(old, ci),
+                        remark = "作废发票"
+                    });
+                }
+            }
+            return false;
+        }
+        /// <summary>
+        /// 作废发票并取消审核
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool VoidInvoiceAndUnPost(int id, long user_id) {
+            if (VoidInvoice(id, user_id)) {
+                var cad = new crm_account_deduction_dal().FindSignleBySql<crm_account_deduction>($"select * from crm_account_deduction where invoice_id={id} and delete_time=0");
+                if (cad != null) {
+                    ReverseBLL rbll = new ReverseBLL();
+                    string re;
+                    switch (cad.type_id)
+                    {                       
+                        case (int)ACCOUNT_DEDUCTION_TYPE.CHARGE:
+                            var result0 = rbll.Revoke_CHARGES(user_id,cad.id.ToString(), out re);
+                            if (result0 == ERROR_CODE.SUCCESS) {
+                                return true;
+                            }
+                            break;//成本
+                        case (int)ACCOUNT_DEDUCTION_TYPE.SUBSCRIPTIONS:
+                            var result1 = rbll.Revoke_Subscriptions(user_id,cad.id.ToString(), out re);
+                            if (result1 == ERROR_CODE.SUCCESS)
+                            {
+                                return true;
+                            }
+                            break;//订阅
+                        case (int)ACCOUNT_DEDUCTION_TYPE.MILESTONES:
+                            var result2 = rbll.Revoke_Milestones(user_id,cad.id.ToString(), out re);
+                            if (result2 == ERROR_CODE.SUCCESS)
+                            {
+                                return true;
+                            }
+                            break;//里程碑
+                        case (int)ACCOUNT_DEDUCTION_TYPE.SERVICE://服务
+                        case (int)ACCOUNT_DEDUCTION_TYPE.INITIAL_COST: //初始费用
+                        case (int)ACCOUNT_DEDUCTION_TYPE.SERVICE_ADJUST://服务调整
+                            var result3 = rbll.Revoke_Recurring_Services(user_id,cad.id.ToString(), out re);
+                            if (result3 == ERROR_CODE.SUCCESS)
+                            {
+                                return true;
+                            }
+                            break;
+                        default:break;
+                    }
+                }                
+            }
+            return false;
+        }
+        /// <summary>
+        /// 取消本批次发票
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool VoidBatchInvoice(int id, long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            var list = _dal.FindListBySql($"select * from ctt_invoice where batch_id=(select batch_id from ctt_invoice where id={id} and delete_time=0 ) and is_voided=0 and delete_time=0");
+            if (list.Count > 0&&user!=null) {
+                foreach (var i in list) {
+                    var old = i;
+                    i.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    i.update_user_id = user.id;
+                    if (_dal.Update(i))
+                    {
+                        new sys_oper_log_dal().Insert(new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.INVOCIE,
+                            oper_object_id = i.id,// 操作对象id
+                            oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
+                            oper_description = _dal.CompareValue(old, i),
+                            remark = "作废发票"
+                        });
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

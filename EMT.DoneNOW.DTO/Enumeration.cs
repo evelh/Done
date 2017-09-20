@@ -427,6 +427,8 @@ namespace EMT.DoneNOW.DTO
             SYS_ROLE = 898,                     // 系统管理-角色查询
             SYS_DEPARTMENT = 899,               // 系统管理-部门查询
             CONTRACT_CALLBACK = 902,            // 合同查找带回
+            MARKET=906,                          //市场
+            TERRITORY=907,                          //地域
             PRODUCTINVENTORY = 909,               // 库存
 		    PRODUCT=910,                         //产品
             CONTRACT_INTERNAL_COST=911,           // 合同管理-内部成本查询
@@ -445,17 +447,26 @@ namespace EMT.DoneNOW.DTO
             REVOKE_SUBSCRIPTIONS = 926,         //撤销订阅审批
 			CONTRACT_DEFAULT_COST = 927,             // 合同默认成本
             CONTRACT_TIME_RATE = 928,                 // 合同预付时间系数
-            INVOICE_TEMPLATE=1512,                    //发票模板
+            ACCOUNTREGION=929,                   //客户区域
+            COMPETITOR=930,                       //竞争对手
+            ACCOUNTTYPE=931,                      //客户类型
+            SUFFIXES=933,                           //姓名后缀
+            ACTIONTYPE=934,                        //活动类型
+            OPPORTUNITYAGES=935,                       //商机阶段
+            OPPORTUNITYSOURCE=936,                   //商机来源
+            OPPPORTUNITYWINREASON=937,             //关闭商机的原因
+            OPPPORTUNITYLOSSREASON = 938,             //丢失商机的原因
+            INVOICE_TEMPLATE =1512,                    //发票模板
+            INVOICE_HISTORY = 1513,               //历史发票
+            APPROVE_CHARGES = 1514,               //成本审批
+            APPROVE_MILESTONES = 1515,            //里程碑审批
+            APPROVE_SUBSCRIPTIONS = 1516,         //订阅审批
+            APPROVE_RECURRING_SERVICES = 1517,    //定期服务审批           
 
-            INVOICE_HISTORY,               //历史发票
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
             APPROVE_LABOUR,                //工时审批
-            APPROVE_EXPENSE,               //费用审批
-            APPROVE_RECURRING_SERVICES,    //定期服务审批
-            APPROVE_MILESTONES,            //里程碑审批
-            APPROVE_SUBSCRIPTIONS,         //订阅审批
-            APPROVE_CHARGES,               //成本审批
+            APPROVE_EXPENSE,               //费用审批              
         }
 
         /// <summary>
@@ -794,7 +805,9 @@ namespace EMT.DoneNOW.DTO
         SaleOrder = 36,                 // 销售订单
         Contract = 37,                  // 合同
         Role = 40,                      // 角色
-        Department = 41,                // 部门       
+        Department = 41,                // 部门   
+        Market=47,                        //市场
+        Territory=48,                     //地域
         ProuductInventory=50,           //产品库存
         Prouduct = 51,                  //产品
 		InternalCost = 52,                // 合同内部成本
@@ -812,17 +825,28 @@ namespace EMT.DoneNOW.DTO
         REVOKE_SUBSCRIPTIONS = 67,         //撤销订阅审批  
 		CONTRACT_DEFAULT_COST = 68,        // 合同默认成本
         CONTRACT_RATE=69,                  // 合同预付时间
-        InvoiceTemplate = 82,             //发票模板
+        ACCOUNTREGION = 70,                   //客户区域
+        COMPETITOR = 71,                       //竞争对手
+        ACCOUNTTYPE =72,                      //客户类型
+        SUFFIXES = 74,                           //姓名后缀
+        ACTIONTYPE = 75,                        //活动类型
+        OPPORTUNITYAGES = 76,                       //商机阶段
+        OPPORTUNITYSOURCE = 77,                   //商机来源
+        OPPPORTUNITYWINREASON = 78,             //关闭商机的原因
+        OPPPORTUNITYLOSSREASON = 79,             //丢失商机的原因
+        InvoiceTemplate = 82,               //发票模板
+        Invoice_History = 83,               //历史发票
+        APPROVE_CHARGES = 84,               //成本审批
+        APPROVE_MILESTONES = 85,            //里程碑审批
+        APPROVE_SUBSCRIPTIONS=86,           //订阅审批
+        APPROVE_RECURRING_SERVICES = 87,    //定期服务审批   
 
-        Invoice_History,               //历史发票
         REVOKE_LABOUR,                 //撤销工时审批
         REVOKE_EXPENSE,                //撤销费用审批      
         APPROVE_LABOUR,                //工时审批
-        APPROVE_EXPENSE,               //费用审批
-        APPROVE_RECURRING_SERVICES,    //定期服务审批
-        APPROVE_MILESTONES,            //里程碑审批
-        APPROVE_SUBSCRIPTIONS,         //订阅审批
-        APPROVE_CHARGES,               //成本审批
+        APPROVE_EXPENSE,               //费用审批            
+       
+       
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -942,5 +966,9 @@ namespace EMT.DoneNOW.DTO
         InvoiceTemplate=370,                      //新增发票模板
 
         InvoiceHistoryEdit=380,                   //历史发票更改（发票编号和日期）
+
+        ACCOUNTTYPE=390,                           //客户类别
+        OPPORTUNITYWIN=391,                        //关闭商机原因
+        OPPORTUNITYLOSS= 391,                       //丢失商机原因
     }
 }

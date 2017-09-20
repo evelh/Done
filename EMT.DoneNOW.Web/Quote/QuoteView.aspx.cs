@@ -36,7 +36,6 @@ namespace EMT.DoneNOW.Web
         {
             //从URL地址获取报价id
             id = Convert.ToInt32(Request.QueryString["id"]);
-           id = 522;//测试使用数据
             //获取所有的报价模板
             datalist = new QuoteTemplateBLL().GetAllTemplate();
             //获取该报价信息
@@ -50,10 +49,9 @@ namespace EMT.DoneNOW.Web
                 this.quoteTemplateDropDownList.DataBind();
                 this.quoteTemplateDropDownList.Items.Insert(0, new ListItem() { Value = "0", Text = "未选择报价模板" });
                 bool k = false;
+                sys_quote_tmpl kkk = null;
                 foreach (var list in datalist)
-                {
-                    //string t = "body_group_by_id";
-                    //list.Equals(t);
+                {                    
                     if (qddata.quote_tmpl_id != null && !string.IsNullOrEmpty(qddata.quote_tmpl_id.ToString()) && list.id == qddata.quote_tmpl_id)
                     {
                         k = true;
@@ -61,21 +59,25 @@ namespace EMT.DoneNOW.Web
                         initquote(list);//使用报价单已选择的报价模板显示
                                         //break;
                     }
-                    else if (list.is_default == 1)
-                    {
-                        k = true;
-                        //判断是否为默认模板
-                        initquote(list);//使用默认模板显示
+                   if (list.is_default == 1)
+                    {                     
+                       //判断是否为默认模板
+                       kkk=list;//使用默认模板显示
                     }
                 }              
                 if (!k)
                 {
-                    initquote(datalist[0]);//使用数据库第一个模板显示,
+                    if (kkk != null)
+                    {
+                        initquote(kkk);//使用默认模板显示
+                    }
+                    else {
+                        initquote(datalist[0]);//使用数据库第一个模板显示,
+                    }                    
                 }
 
             }
         }
-
 
         private void initquote(sys_quote_tmpl list)
         {
@@ -175,7 +177,7 @@ namespace EMT.DoneNOW.Web
                 }
                 if (string.IsNullOrEmpty(qddata.group_by_id.ToString()))
                 {
-                    nogroup();//使用不分组展示
+                    table.Append(nogroup());//使用不分组展示
                 }
 
                 //table.Append(cycle_productgroup());
@@ -905,8 +907,6 @@ namespace EMT.DoneNOW.Web
                     product_cyclegroup.Append("<tr><td style = 'text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Total + "(无产品)</strong></td><td style = 'text-align: Right;' class='bord'><strong>" + sumtotal + "</strong></td></tr>");
                     sumtotal = 0;
                 }
-
-
             }
             product_cyclegroup.Append(Threesingle(three, onetime, out total, ref order));
             return product_cyclegroup.ToString();
@@ -981,11 +981,8 @@ namespace EMT.DoneNOW.Web
                             {
                                 taxt_item_sum.Add(Convert.ToInt32(item_tax.Key), sum);
                             }
-
-
                             k.Append(ShowTax(Convert.ToInt32(item_tax.Key), ref sum));//计算税收
                             tax_sum += sum;
-
                         }
 
                     }
@@ -1010,6 +1007,7 @@ namespace EMT.DoneNOW.Web
                     Super_tax_total= Super_tax_total+tax_sum;
                     string k2 = "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.One_Time_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (onetotal + tax_sum) + "</strong></td></tr>";
                     cyc_tax.Add("onetotal", k2);
+                    break;
                 }
             }
             foreach (var item1 in doubleGroupList)
@@ -1079,6 +1077,7 @@ namespace EMT.DoneNOW.Web
                     cyc_tax.Add("monttotal", "<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Monthly_Total + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (monthsum + tax_sum) + "</strong></td></tr>");
                     Super_toatl += monthsum + tax_sum;
                     Super_tax_total += tax_sum;
+                    break;
                 }
                 //stop
             }
@@ -1460,7 +1459,7 @@ namespace EMT.DoneNOW.Web
                         case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_discount + "</td>"); break;
                         case "折后价": table.Append("<td style='text-align: Left;' class='bord'>" + (item.unit_price - item.unit_discount) + "</td>"); break;
                         case "总价": table.Append("<td style='text-align: Right;' class='bord'>" + total + "</td><td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                        case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round((decimal)item.discount_percent * 100, 2) + "%</td>"); break;
+                        case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round(Convert.ToDecimal(item.discount_percent)* 100, 2) + "%</td>"); break;
                     }
                 }
             }
@@ -1504,10 +1503,15 @@ namespace EMT.DoneNOW.Web
                     item.name = type_format;
                 }
             }
-            //item.name 是替换后的报价子项的名字和说明之类
-            if (string.IsNullOrEmpty(item.discount_percent.ToString()))
+            if (item.unit_discount != null)
             {
-                item.discount_percent = item.unit_discount / item.unit_price;//计算折扣比
+                item.discount_percent= (decimal)(Convert.ToDouble(item.unit_discount)/total);
+                total = Convert.ToDouble(item.unit_discount);
+            }
+            else if (string.IsNullOrEmpty(item.discount_percent.ToString()))
+            {
+                item.discount_percent = item.unit_discount/item.unit_price;//计算折扣比
+                total =(total * Convert.ToDouble(item.discount_percent));
             }
             if (showstyle.Contains(4))
             {
@@ -1533,8 +1537,8 @@ namespace EMT.DoneNOW.Web
                         case "单价": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_price + "</td>"); break;
                         case "单元折扣": table.Append("<td style='text-align: Left;' class='bord'>" + item.unit_discount + "</td>"); break;
                         case "折后价": table.Append("<td style='text-align: Left;' class='bord'>" + (item.unit_price - item.unit_discount) + "</td>"); break;
-                        case "总价": table.Append("<td style='text-align: Right;' class='bord'><font color=\"red\">" + (total * (double)item.discount_percent) + "</font></td><td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
-                        case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round((decimal)item.discount_percent * 100, 2) + "%</td>"); break;
+                        case "总价": table.Append("<td style='text-align: Right;' class='bord'><font color=\"red\">" + total+ "</font></td><td style='text-align: Right;' class='bord'>&nbsp; &nbsp;</td>"); break;
+                        case "折扣率": table.Append("<td style='text-align: Left;' class='bord'>" + decimal.Round(Convert.ToDecimal(item.discount_percent) * 100, 2) + "%</td>"); break;
                     }
                 }
             }
@@ -1597,15 +1601,15 @@ namespace EMT.DoneNOW.Web
                                 sum += (double)((ii.unit_price - ii.unit_discount) * ii.quantity);
                             }
                         }
-                        //统计税收
-                        if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
-                        {
-                            taxt_item_sum[Convert.ToInt32(tax_item.Key)] += sum;
-                        }
-                        else
-                        {
-                            taxt_item_sum.Add(Convert.ToInt32(tax_item.Key), sum);
-                        }
+                        ////统计税收
+                        //if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
+                        //{
+                        //    taxt_item_sum[Convert.ToInt32(tax_item.Key)] += sum;
+                        //}
+                        //else
+                        //{
+                        //    taxt_item_sum.Add(Convert.ToInt32(tax_item.Key), sum);
+                        //}
 
                         k.Append(ShowTax(Convert.ToInt32(tax_item.Key), ref sum));//计算税收
                         tax_sum += sum;
@@ -1640,19 +1644,16 @@ namespace EMT.DoneNOW.Web
                 {
                     if (one_time.quantity != null && one_time.unit_price != null)
                     {
-                        sum_onetime += (double)((one_time.unit_price - one_time.unit_discount) * one_time.quantity);//对一次性收费汇总
+                        sum_onetime += (double)((Convert.ToDecimal(one_time.unit_price) - Convert.ToDecimal(one_time.unit_discount)) * Convert.ToDecimal(one_time.quantity));//对一次性收费汇总
                     }
                 }
                 foreach (var dis in itemlist2)
                 {
-                    table.Append(disc_td(dis, sum_onetime, ref order));
-                    discpre += (decimal)dis.discount_percent;
-
+                    discpre += Convert.ToDecimal(dis.discount_percent) + Convert.ToDecimal(dis.unit_discount)/(decimal)sum_onetime;
+                    table.Append(disc_td(dis, sum_onetime, ref order));                   
                 }
                 //一次性收费单项已做
-
-                var discount = onetime.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());//税收种类分组               
-
+                var discount = onetime.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());//税收种类分组 
                 foreach (var tax_item in discount)
                 {
                     if (!string.IsNullOrEmpty(tax_item.Key.ToString()))
@@ -1665,12 +1666,12 @@ namespace EMT.DoneNOW.Web
                                 sum += (double)((ii.unit_price - ii.unit_discount) * ii.quantity);
                             }
                         }
-                        sum = sum * (double)discpre;
-                        //统计税收
-                        if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
-                        {
-                            taxt_item_sum[Convert.ToInt32(tax_item.Key)] -= sum;
-                        }
+                        sum = sum * (double)decimal.Round(discpre,2);
+                        ////统计税收
+                        //if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
+                        //{
+                        //    taxt_item_sum[Convert.ToInt32(tax_item.Key)] -= sum;
+                        //}
                         k.Append(ShowTax(Convert.ToInt32(tax_item.Key), ref sum));//计算税收
                         tax_sum += sum;
 
@@ -1680,7 +1681,7 @@ namespace EMT.DoneNOW.Web
                 if (showstyle.Contains(1))//判断是否每个期间类型分开计算税额
                 {
                     //一次性折扣收费汇总
-                    table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.One_Time_Discount_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><font color=\"red\"><strong>(" + (sum_onetime * (double)discpre) + ")</strong></font></td></tr>");
+                    table.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.One_Time_Discount_Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><font color=\"red\"><strong>(" + decimal.Round(((decimal)sum_onetime *discpre),2) + ")</strong></font></td></tr>");
                     if (showstyle.Contains(2))
                     {
                         table.Append(k.ToString());
@@ -1718,15 +1719,15 @@ namespace EMT.DoneNOW.Web
                                 sum += (double)((ii.unit_price - ii.unit_discount) * ii.quantity);
                             }
                         }
-                        //统计税收
-                        if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
-                        {
-                            taxt_item_sum[Convert.ToInt32(tax_item.Key)] += sum;
-                        }
-                        else
-                        {
-                            taxt_item_sum.Add(Convert.ToInt32(tax_item.Key), sum);
-                        }
+                        ////统计税收
+                        //if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
+                        //{
+                        //    taxt_item_sum[Convert.ToInt32(tax_item.Key)] += sum;
+                        //}
+                        //else
+                        //{
+                        //    taxt_item_sum.Add(Convert.ToInt32(tax_item.Key), sum);
+                        //}
                         k.Append(ShowTax(Convert.ToInt32(tax_item.Key), ref sum));//计算税收
                         tax_sum += sum;
                         sum = 0;
@@ -1749,9 +1750,7 @@ namespace EMT.DoneNOW.Web
             }
             return table.ToString();
         }
-
-
-
+        
         private void Threetotal(List<crm_quote_item> list, List<crm_quote_item> onetime)
         {
             double total;
@@ -1834,19 +1833,17 @@ namespace EMT.DoneNOW.Web
                     }
                 }
                 foreach (var dis in itemlist2)
-                {
-                    disc_td(dis, sum_onetime, ref order);
-                    discpre += (decimal)dis.discount_percent;
-
+                {                   
+                    discpre += Convert.ToDecimal(dis.discount_percent)+Convert.ToDecimal(dis.unit_discount)/(decimal)sum_onetime;
                 }
                 //一次性收费单项已做
 
-                var discount = onetime.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());//税收种类分组               
-
+                var discount = onetime.GroupBy(d => d.tax_cate_id == null ? "" : d.tax_cate_id.ToString()).ToDictionary(_ => (object)_.Key, _ => _.ToList());//税收种类分组      
                 foreach (var tax_item in discount)
                 {
                     if (!string.IsNullOrEmpty(tax_item.Key.ToString()))
                     {
+                        sum = 0;
                         foreach (var ii in tax_item.Value as List<crm_quote_item>)//税收类型分组
                         {
                             if (ii.quantity != null && ii.unit_price != null)
@@ -1855,7 +1852,7 @@ namespace EMT.DoneNOW.Web
                                 sum += (double)((ii.unit_price - ii.unit_discount) * ii.quantity);
                             }
                         }
-                        sum = sum * (double)discpre;
+                        sum = sum * (double)decimal.Round(discpre,2);
                         //统计税收
                         if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
                         {
@@ -1863,15 +1860,12 @@ namespace EMT.DoneNOW.Web
                         }
                         k.Append(ShowTax(Convert.ToInt32(tax_item.Key), ref sum));//计算税收
                         tax_sum += sum;
-
-                    }
-                    sum = 0;
+                    }                   
                 }
-                Super_toatl = Super_toatl - ((sum_onetime * (double)discpre) + tax_sum);
+                Super_toatl = Super_toatl - (sum_onetime * (double)decimal.Round(discpre,4))- tax_sum;
                 Super_tax_total = Super_tax_total - tax_sum;
                 tax_sum = 0;
                 sum_onetime = 0;
-
             }
             if (itemlist3.Count > 0)
             {
@@ -1921,11 +1915,15 @@ namespace EMT.DoneNOW.Web
 
         private string ShowTax(int t, ref double sum)
         {
+            if (qddata.tax_region_id == null) {
+                sum = 0;
+                return string.Empty;
+            }
             StringBuilder table = new StringBuilder();
             decimal ttttt = 0;
             string name = qd.GetTaxName((int)qddata.tax_region_id);   //获取地区收税的数据 
             string tax_type = qd.GetTaxName(t);
-            var tax = qd.GetTaxRegion(Convert.ToInt32(qddata.tax_region_id.ToString()), Convert.ToInt32(t));
+            var tax = qd.GetTaxRegion(Convert.ToInt32(qddata.tax_region_id), Convert.ToInt32(t));
             var tax_cate = qd.GetTaxRegiontax((int)tax.id);
             if (showstyle.Contains(4))
             {
@@ -1949,7 +1947,7 @@ namespace EMT.DoneNOW.Web
                     {
                         // 获取税收地区                                       
 
-                        table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_type + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + decimal.Round(tax.total_effective_tax_rate * (decimal)sum, 4) + "</strong></td>");
+                        table.Append("<td style='text-align: Right;' class='bord'><strong>" + tax_type + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + decimal.Round(tax.total_effective_tax_rate * (decimal)sum, 2) + "</strong></td>");
                     }
                     else
                     {
@@ -1968,7 +1966,7 @@ namespace EMT.DoneNOW.Web
                     {
                         // 获取税收地区                                       
 
-                        table.Append("<td style='text-align: Right;' class='bord'>" + ttt.tax_name + " (税率" + decimal.Round(ttt.tax_rate * 100, 4) + "%)</td><td style='text-align: Right;' class='bord'>" + decimal.Round(ttt.tax_rate * (decimal)sum, 4) + "</td>");
+                        table.Append("<td style='text-align: Right;' class='bord'>" + ttt.tax_name + " (税率" + decimal.Round(ttt.tax_rate * 100, 2) + "%)</td><td style='text-align: Right;' class='bord'>" + decimal.Round(ttt.tax_rate * (decimal)sum, 2) + "</td>");
                     }
                     else
                     {
@@ -1979,7 +1977,7 @@ namespace EMT.DoneNOW.Web
                 table.Append("</tr>");
 
             }
-            sum = (double)decimal.Round(ttttt * (decimal)sum, 4);
+            sum = (double)decimal.Round(ttttt * (decimal)sum, 2);
             return table.ToString();
         }
 
@@ -2008,7 +2006,7 @@ namespace EMT.DoneNOW.Web
                 }
             }
             total.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Total_Taxes + "</strong></td><td style='text-align: Right;' class='bord'>" + Super_tax_total + "</td></tr>");
-            total.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Total + "</strong></td><td style='text-align: Right;' class='bord'>" + Super_toatl + "</td></tr>");
+            total.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Total + "</strong></td><td style='text-align: Right;' class='bord'>" + decimal.Round((decimal)Super_toatl,2) + "</td></tr>");
             return total.ToString();
         }
 

@@ -330,7 +330,7 @@
                                                         <div class="Text">Tools</div>
                                                     </div>
                                                       <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState" href="#" target="PageFrame"> 
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_HISTORY %>" target="PageFrame"> 
                                                             <span class="Text">历史发票</span>
                                                         </a>
                                                     </div>

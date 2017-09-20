@@ -267,23 +267,23 @@
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.MARKET_SEGMENT %>" class="Button ButtonIcon Link NormalState">市场领域</a>
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MARKET %>" target="PageFrame" class="Button ButtonIcon Link NormalState">市场领域</a>
                                             <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.TERRITORY %>" class="Button ButtonIcon Link NormalState">地域</a>
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TERRITORY %>" target="PageFrame" class="Button ButtonIcon Link NormalState">地域</a>
                                             <div class="StandardText">Set up billing roles that determine the rate at which labour will be billed.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.REGION %>" class="Button ButtonIcon Link NormalState">区域</a>
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACCOUNTREGION %>" target="PageFrame" class="Button ButtonIcon Link NormalState">区域</a>
                                             <div class="StandardText">Set up organizational entities in your company that are associated with resources and work types, and play a role in project security.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.COMPETITOR %>" class="Button ButtonIcon Link NormalState">竞争对手</a>
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPETITOR %>" target="PageFrame" class="Button ButtonIcon Link NormalState">竞争对手</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a href="AccountClassView.aspx" class="Button ButtonIcon Link NormalState">客户类别</a>
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACCOUNTTYPE %>" target="PageFrame" class="Button ButtonIcon Link NormalState">客户类别</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
@@ -309,7 +309,7 @@
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.NAME_SUFFIX %>" class="Button ButtonIcon Link NormalState">姓名后缀</a>
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUFFIXES %>" target="PageFrame" class="Button ButtonIcon Link NormalState">姓名后缀</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                     </div>
@@ -353,23 +353,23 @@
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.ACTION_TYPE %>" class="Button ButtonIcon Link NormalState">活动类型</a>
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACTIONTYPE %>" target="PageFrame" class="Button ButtonIcon Link NormalState">活动类型</a>
                                             <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.OPPORTUNITY_STAGE %>" class="Button ButtonIcon Link NormalState">商机阶段</a>
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITYAGES %>" target="PageFrame" class="Button ButtonIcon Link NormalState">商机阶段</a>
                                             <div class="StandardText">Set up billing roles that determine the rate at which labour will be billed.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.OPPORTUNITY_SOURCE %>" class="Button ButtonIcon Link NormalState">商机来源</a>
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITYSOURCE %>" target="PageFrame" class="Button ButtonIcon Link NormalState">商机来源</a>
                                             <div class="StandardText">Set up organizational entities in your company that are associated with resources and work types, and play a role in project security.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a href="../Opportunity/OpportunityWinOrLossReason.aspx?reason=win&id=<%=(int)GeneralTableEnum.OPPORTUNITY_LOSS_REASON_TYPE %>" class="Button ButtonIcon Link NormalState">赢得商机的原因</a>
+                                            <a  href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPPORTUNITYWINREASON %>" target="PageFrame" class="Button ButtonIcon Link NormalState">关闭商机的原因</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a href="../Opportunity/OpportunityWinOrLossReason.aspx?reason=loss&id=<%=(int)GeneralTableEnum.OPPORTUNITY_WIN_REASON_TYPE %>" class="Button ButtonIcon Link NormalState">丢失商机的原因</a>
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPPORTUNITYLOSSREASON %>" target="PageFrame" class="Button ButtonIcon Link NormalState">丢失商机的原因</a>
                                             <div class="StandardText">Manage all Autotask system settings.</div>
                                         </div>
                                         <div class="PageNavigationLink">

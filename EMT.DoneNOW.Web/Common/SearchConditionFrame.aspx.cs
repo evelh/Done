@@ -109,6 +109,36 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.INVOICE_HISTORY:
                     currentQuery.page_name = "历史发票管理";
                     break;
+                case (int)DicEnum.QUERY_CATE.MARKET:
+                    currentQuery.page_name = "市场领域管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.TERRITORY:
+                    currentQuery.page_name = "客户地域管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.COMPETITOR:
+                    currentQuery.page_name = "竞争对手管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.ACCOUNTTYPE:
+                    currentQuery.page_name = "客户类别管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.SUFFIXES:
+                    currentQuery.page_name = "姓名后缀管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.ACTIONTYPE:
+                    currentQuery.page_name = "活动类型管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.OPPORTUNITYAGES:
+                    currentQuery.page_name = "商机阶段管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.OPPORTUNITYSOURCE:
+                    currentQuery.page_name = "商机来源管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.OPPPORTUNITYWINREASON:
+                    currentQuery.page_name = "关闭商机原因管理";
+                    break;
+                case (int)DicEnum.QUERY_CATE.OPPPORTUNITYLOSSREASON:
+                    currentQuery.page_name = "丢失商机原因管理";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

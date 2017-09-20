@@ -11,7 +11,7 @@
     <title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" method="post">
         <div>
             <!--顶部-->
     <div class="TitleBar">
@@ -36,17 +36,17 @@
             <tbody>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                       批次编号
+                       公司名称
                         <div>
-                            <span>sadsafs</span>
+                            <span><%=company %></span>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                       公司名称
+                       客户名称
                         <div>
-                            <span>asfsafsdag</span>
+                            <span><%=account %></span>
                         </div>
                     </td>
                 </tr>
@@ -54,7 +54,7 @@
                     <td width="30%" class="FieldLabels">
                         发票编号
                         <div>
-                            <input type="text" style="width:220px;" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"/>
+                            <input id="InvoiceNumber" name="InvoiceNumber" type="text" style="width:220px;" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"/>
                         </div>
                     </td>
                 </tr>
@@ -63,6 +63,7 @@
                         支付日期
                         <div>
                             <input type="text" style="width:100px;" onclick="WdatePicker()" class="Wdate" id="pay_date"/>
+                            <input type="hidden" id="datevalue" name="datevalue" />
                         </div>
                     </td>
                 </tr>
@@ -81,7 +82,7 @@
                         return false;
                     }
                     k = k.replace(/[^0-9]+/g, '');
-                    $("#").val(k);
+                    $("#datevalue").val(k);
                 }
             </script>
     </form>

@@ -62,7 +62,7 @@
                         <tr><td>
                             <asp:TextBox ID="Description" runat="server"  TextMode="MultiLine" CssClass="q1"></asp:TextBox><br />
                             <%-- <div class="CharacterInformation"><span class="CurrentCount">0</span>/<span class="Maximum">200</span></div>--%>
-                            <asp:CheckBox ID="Active" runat="server" text="激活" />
+                            <asp:CheckBox ID="Active" runat="server" text="激活" Checked="true" />
                             </td></tr>
                          </table>
                     </div>
