@@ -95,7 +95,7 @@ namespace EMT.DoneNOW.BLL
 
             }
 
-            return ERROR_CODE.SUCCESS;
+            return ERROR_CODE.ERROR;
         }
         /// <summary>
         /// 审批定期服务
@@ -334,7 +334,7 @@ namespace EMT.DoneNOW.BLL
             cad.extended_price = csp.period_price;//总价
             cad.account_id = (long)cip.account_id;//客户id
             cad.bill_create_user_id = cs.create_user_id;//订阅创建人
-            cad.purchase_order_number = cs.purchase_order_no;//采购订单号
+            cad.purchase_order_no = cs.purchase_order_no;//采购订单号
 
             cad.tax_category_name = tax_category_name;//税收种类name
             cad.tax_region_name = tax_region_name;//税区
@@ -851,6 +851,7 @@ namespace EMT.DoneNOW.BLL
             cad.tax_category_name = tax_category_name;//税收种类name
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
+            cad.purchase_order_no = ccc.purchase_order_no;//采购订单号
                                               //判断客户是否免税
                                               //成本/工时 不 需要从预付费用/预付时间中扣除
             var ccbList = ccb_dal.FindListBySql<ctt_contract_block>($"select * from ctt_contract_block where contract_id={ccc.contract_id} and is_billed=0 and status_id=1");
@@ -1305,6 +1306,7 @@ namespace EMT.DoneNOW.BLL
             {
                 var ccc = new ctt_contract_cost_dal().FindNoDeleteById(id);
                 var old = ccc;
+                ccc.extended_price = period_price;
                 ccc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 ccc.update_user_id = user.id;
 
@@ -1332,7 +1334,6 @@ namespace EMT.DoneNOW.BLL
 
 
             }
-
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -1536,7 +1537,7 @@ namespace EMT.DoneNOW.BLL
             var ccc = ccc_dal.FindNoDeleteById(id);
             var cc = new ctt_contract_dal().FindNoDeleteById(ccc.contract_id);
             var ccbList = ccb_dal.FindListBySql<ctt_contract_block>($"select * from ctt_contract_block where contract_id={ccc.contract_id} and is_billed=0 and status_id=1");
-            if (cc.type_id == (int)CONTRACT_TYPE.RETAINER)
+            if (cc!= null&&cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {
                 var ccnr = new ctt_contract_notify_rule_dal().FindSignleBySql<ctt_contract_notify_rule>($"select * from ctt_contract_notify_rule where contract_id={ccc.contract_id} and delete_time=0");
                 //费率为空的判断
@@ -1559,6 +1560,23 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             return ERROR_CODE.ERROR;
+        }
+        /// <summary>
+        /// 返回成本名称、客户名称、计费金额
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ApprovePostDto.ChargesSelectList charge(int id) {
+            ctt_contract_cost_dal ccc_dal = new ctt_contract_cost_dal();//成本处理
+            ctt_contract_block_dal ccb_dal = new ctt_contract_block_dal();//预付费
+            var kk =new ApprovePostDto.ChargesSelectList();
+            var ccc = ccc_dal.FindNoDeleteById(id);
+            var cc = new ctt_contract_dal().FindNoDeleteById(ccc.contract_id);
+            var ca = new crm_account_dal().FindNoDeleteById(cc.account_id);
+            kk.accountname = ca.name;
+            kk.costname = ccc.name;
+            kk.extendprice = ccc.extended_price.ToString();
+            return kk;
         }
     }
 }

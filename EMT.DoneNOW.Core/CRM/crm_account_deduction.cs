@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public DateTime posted_date { get; set; }
         [DataMember]
-        public Int64 contract_id { get; set; }
+        public Int64? contract_id { get; set; }
         [DataMember]
         public Int64? task_id { get; set; }
         [DataMember]
@@ -59,21 +59,21 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? object_id { get; set; }
         [DataMember]
-        public Decimal tax_dollars { get; set; }
+        public Decimal? tax_dollars { get; set; }
         [DataMember]
-        public String purchase_order_number { get; set; }
+        public String purchase_order_no { get; set; }
         [DataMember]
         public String tax_category_name { get; set; }
         [DataMember]
-        public Decimal effective_tax_rate { get; set; }
+        public Decimal? effective_tax_rate { get; set; }
         [DataMember]
-        public Int32 invoice_line_item_no { get; set; }
+        public Int32? invoice_line_item_no { get; set; }
         [DataMember]
         public String tax_region_name { get; set; }
         [DataMember]
         public Int32? worksheetobjectid { get; set; }
         [DataMember]
-        public SByte billedposted { get; set; }
+        public SByte? billedposted { get; set; }
         [DataMember]
         public Int64? detailid { get; set; }
         [DataMember]
@@ -96,6 +96,8 @@ namespace EMT.DoneNOW.Core
         public Int64? contract_cost_id { get; set; }
         [DataMember]
         public Decimal? bill_factor { get; set; }
+        [DataMember]
+        public Int64? parent_id { get; set; }
 
 
     }

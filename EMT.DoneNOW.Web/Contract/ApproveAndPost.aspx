@@ -101,25 +101,25 @@
                 <a class="Button ButtonIcon" id="tab1">
                     <span class="Text">工时()</span>
                 </a>
-                <a class="Button ButtonIcon SelectedState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>" target="PageFrame1" id="tab2">
+                <a class="Button ButtonIcon SelectedState" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>" target="PageFrame1" id="tab2">
                     <span class="Text">成本</span>
                 </a>
                 <a class="Button ButtonIcon" id="tab3">
                     <span class="Text">费用()</span>
                 </a>
-                <a class="Button ButtonIcon" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS %>" target="PageFrame1" id="tab4">
+                <a class="Button ButtonIcon" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS %>" target="PageFrame1" id="tab4">
                     <span class="Text">订阅</span>
                 </a>
-                <a class="Button ButtonIcon" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES %>" target="PageFrame1" id="tab5">
+                <a class="Button ButtonIcon" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES %>" target="PageFrame1" id="tab5">
                     <span class="Text">定期服务</span>
                 </a>
-                <a class="Button ButtonIcon"  href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_MILESTONES %>" target="PageFrame1" id="tab6">
+                <a class="Button ButtonIcon"  href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_MILESTONES %>" target="PageFrame1" id="tab6">
                     <span class="Text">里程碑</span>
                 </a>
             </div>
            <div class="TabContainer" style="min-width: 700px;" id="tabcont1">
                 <div class="cont">
-                    <iframe id="PageFrame1" name="PageFrame1" style="width:100%;" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>"></iframe>
+                    <iframe id="PageFrame1" name="PageFrame1" style="width:100%;" src="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>"></iframe>
                 </div>
             </div>
         </div>

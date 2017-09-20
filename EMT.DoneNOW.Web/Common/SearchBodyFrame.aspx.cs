@@ -141,6 +141,36 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.INVOICE_TEMPLATE:
                     addBtn = "新增发票模板";
                     break;
+                case (int)DicEnum.QUERY_CATE.MARKET:
+                    addBtn = "新增市场领域";
+                    break;
+                case (int)DicEnum.QUERY_CATE.TERRITORY:
+                    addBtn = "新增客户地域";
+                    break;
+                case (int)DicEnum.QUERY_CATE.COMPETITOR:
+                    addBtn = "新增竞争对手";
+                    break;
+                case (int)DicEnum.QUERY_CATE.ACCOUNTTYPE:
+                    addBtn = "新增客户类别";
+                    break;
+                case (int)DicEnum.QUERY_CATE.SUFFIXES:
+                    addBtn = "新增姓名后缀";
+                    break;
+                case (int)DicEnum.QUERY_CATE.ACTIONTYPE:
+                    addBtn = "新增活动类型";
+                    break;
+                case (int)DicEnum.QUERY_CATE.OPPORTUNITYAGES:
+                    addBtn = "新增商机阶段";
+                    break;
+                case (int)DicEnum.QUERY_CATE.OPPORTUNITYSOURCE:
+                    addBtn = "新增商机来源";
+                    break;
+                case (int)DicEnum.QUERY_CATE.OPPPORTUNITYWINREASON:
+                    addBtn = "新增关闭商机原因";
+                    break;
+                case (int)DicEnum.QUERY_CATE.OPPPORTUNITYLOSSREASON:
+                    addBtn = "新增丢失商机原因";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -502,6 +532,24 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "作废本批次全部发票", click_function = "VoidBatchInvoice()" });
                     contextMenu.Add(new PageContextMenuDto { text = "作废发票并取消审批", click_function = "VoidInvoiceAndUnPost()" });
                     contextMenu.Add(new PageContextMenuDto { text = "发票设置", click_function = "InvoiceEdit()" });
+                    break;
+                case (long)QueryType.ACCOUNTTYPE:
+                    contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "NoActive()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                    case (long)QueryType.OPPORTUNITYAGES:
+                case (long)QueryType.OPPORTUNITYSOURCE:
+                case (long)QueryType.OPPPORTUNITYLOSSREASON:
+                case (long)QueryType.OPPPORTUNITYWINREASON:
+                case (long)QueryType.ACTIONTYPE:
+                case (long)QueryType.SUFFIXES:
+                case (long)QueryType.ACCOUNTREGION:
+                case (long)QueryType.Market:
+                case (long)QueryType.COMPETITOR:
+                    contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;

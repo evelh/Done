@@ -13,97 +13,101 @@
     <%--控制日期弹窗--%>
     <link href="../Content/Roles.css" rel="stylesheet" />
     <title></title>
-<style>
-    .searchcontent {
-        width: 100%;
-        height: 100%;
-        min-width: 2200px;
-    }
-        .searchcontent table th {
-            background-color: #cbd9e4;
-            border-color: #98b4ca;
-            color: #64727a;
-            height: 28px;
-            line-height: 28px;
-            text-align: center;
+    <style>
+        .searchcontent {
+            width: 100%;
+            height: 100%;
+            min-width: 2200px;
         }
 
-    .RightClickMenu, .LeftClickMenu {
-        padding: 16px;
-        background-color: #FFF;
-        border: solid 1px #CCC;
-        cursor: pointer;
-        z-index: 999;
-        position: absolute;
-        box-shadow: 1px 1px 4px rgba(0,0,0,0.33);
-    }
+            .searchcontent table th {
+                background-color: #cbd9e4;
+                border-color: #98b4ca;
+                color: #64727a;
+                height: 28px;
+                line-height: 28px;
+                text-align: center;
+            }
 
-    .RightClickMenuItem {
-        min-height: 24px;
-        min-width: 100px;
-    }
+        .RightClickMenu, .LeftClickMenu {
+            padding: 16px;
+            background-color: #FFF;
+            border: solid 1px #CCC;
+            cursor: pointer;
+            z-index: 999;
+            position: absolute;
+            box-shadow: 1px 1px 4px rgba(0,0,0,0.33);
+        }
 
-    .RightClickMenuItemIcon {
-        padding: 1px 5px 1px 5px;
-        width: 16px;
-    }
+        .RightClickMenuItem {
+            min-height: 24px;
+            min-width: 100px;
+        }
 
-    .RightClickMenuItemTable tr:first-child td:last-child {
-        white-space: nowrap;
-    }
+        .RightClickMenuItemIcon {
+            padding: 1px 5px 1px 5px;
+            width: 16px;
+        }
 
-    .RightClickMenuItemLiveLinks > span, .RightClickMenuItemText > span {
-        font-size: 12px;
-        font-weight: normal;
-        color: #4F4F4F;
-    }
-    /*合同审批时，提交日期窗口*/
-    .addText{
-    width: 486px;
-    height:275px;
-    margin-left: -247px;
-    margin-top: -142px;
-    z-index: 980;
-    display: block;
-    left: 50%;
-    position: fixed;
-    top: 50%;
-    background-color: #b9b9b9;
-    border: solid 4px #b9b9b9;
-}
-.addText>div {
-    background-color: #fff;
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-.CancelDialogButton {
-    background-image: url(../img/cancel1.png);
-    background-position: 0 -32px;
-    border: none;
-    cursor: pointer;
-    height: 32px;
-    position: absolute;
-    right: -14px;
-    top: -14px;
-    width: 32px;
-    z-index: 100;
-    border-radius: 50%;
-}
-#BackgroundOverLay{
-    width:100%;
-    height:100%;
-    background: black;
-    opacity: 0.6;
-    z-index: 25;
-    position: absolute;
-    top: 0;
-    left: 0;
-    /*合同审批时，提交日期窗口（样式尾）*/
-}
-</style>
+        .RightClickMenuItemTable tr:first-child td:last-child {
+            white-space: nowrap;
+        }
+
+        .RightClickMenuItemLiveLinks > span, .RightClickMenuItemText > span {
+            font-size: 12px;
+            font-weight: normal;
+            color: #4F4F4F;
+        }
+        /*合同审批时，提交日期窗口*/
+        .addText {
+            width: 486px;
+            height: 275px;
+            margin-left: -247px;
+            margin-top: -142px;
+            z-index: 980;
+            display: block;
+            left: 50%;
+            position: fixed;
+            top: 50%;
+            background-color: #b9b9b9;
+            border: solid 4px #b9b9b9;
+        }
+
+            .addText > div {
+                background-color: #fff;
+                bottom: 0;
+                left: 0;
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+
+        .CancelDialogButton {
+            background-image: url(../img/cancel1.png);
+            background-position: 0 -32px;
+            border: none;
+            cursor: pointer;
+            height: 32px;
+            position: absolute;
+            right: -14px;
+            top: -14px;
+            width: 32px;
+            z-index: 100;
+            border-radius: 50%;
+        }
+
+        #BackgroundOverLay {
+            width: 100%;
+            height: 100%;
+            background: black;
+            opacity: 0.6;
+            z-index: 25;
+            position: absolute;
+            top: 0;
+            left: 0;
+            /*合同审批时，提交日期窗口（样式尾）*/
+        }
+    </style>
 </head>
 <body style="overflow-x: auto; overflow-y: auto;">
     <form id="form1">
@@ -247,8 +251,8 @@
                     %><a href="#" onclick="ChangePageSize(50)">50</a><%}
                     %>|<%if (queryResult.page_size == 100)
                            { %>&nbsp;100&nbsp;<%}
-                                        else
-                                        { %><a href="#" onclick="ChangePageSize(100)">100</a><%} %></span>
+                                                  else
+                                                  { %><a href="#" onclick="ChangePageSize(100)">100</a><%} %></span>
                     <i onclick="ChangePage(1)"><<</i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page-1 %>)"><</i>
                     <input type="text" style="width: 30px; text-align: center;" value="<%=queryResult.page %>" />
                     <span>&nbsp;/&nbsp;<%=queryResult.page_count %></span>
@@ -1133,16 +1137,16 @@
             $.ajax({
                 type: "GET",
                 url: "../Tools/SaleOrderAjax.ashx?act=status&status_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.SALES_ORDER_STATUS.CANCELED %>&id=" + entityid,
-            async: false,
-            success: function (data) {
-                if (data == "True") {
-                    alert('取消成功');
-                    history.go(0);
-                } else {
-                    alert("取消失败");
-                }
+                async: false,
+                success: function (data) {
+                    if (data == "True") {
+                        alert('取消成功');
+                        history.go(0);
+                    } else {
+                        alert("取消失败");
+                    }
 
-            }
+                }
             })
         }
         <%}
@@ -1215,7 +1219,7 @@
             var contract_id = <%=Request.QueryString["id"] %> ;
             if (contract_id != undefined && contract_id != "") {
                 window.open("../Contract/InteralCostAddOrEdit.aspx?contract_id=" + contract_id + "&cost_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConIntCostEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-          }
+            }
         }
 
         function Delete() {
@@ -1241,7 +1245,7 @@
             var contract_id = <%=Request.QueryString["id"] %> ;
             if (contract_id != undefined && contract_id != "") {
                 window.open("../Contract/InteralCostAddOrEdit.aspx?contract_id=" + contract_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-          }
+            }
         }
 
         function View() {
@@ -1386,25 +1390,25 @@
             window.open("../ConfigurationItem/AddOrEditConfigItem.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.EditInstalledProduct %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Norelation() {
-          var contract_id = <%=Request.QueryString["id"] %>;
-          $.ajax({
-            type: "GET",
-            url: "../Tools/ContractAjax.ashx?act=RelieveIP&InsProId=" + entityid + "&contract_id=" + contract_id,
-            success: function (data) {
-                if (data == "True") {
-                    alert("解除绑定成功");
+            var contract_id = <%=Request.QueryString["id"] %>;
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ContractAjax.ashx?act=RelieveIP&InsProId=" + entityid + "&contract_id=" + contract_id,
+                success: function (data) {
+                    if (data == "True") {
+                        alert("解除绑定成功");
+                    }
+                    else {
+                        alert("解除绑定失败");
+                    }
+                    // history.go(0);
+
+                    parent.location.reload();
                 }
-                else {
-                    alert("解除绑定失败");
-                }
-                // history.go(0);
-               
-                parent.location.reload();
-            }
-          })
+            })
         }
         function Delete() {
-          if (confirm("删除后无法恢复，是否继续?")) {
+            if (confirm("删除后无法恢复，是否继续?")) {
                 $.ajax({
                     type: "GET",
                     url: "../Tools/ProductAjax.ashx?act=deleteIP&iProduct_id=" + entityid,
@@ -1466,7 +1470,7 @@
             else {
                 // 打开窗口
                 window.open("../ConfigurationItem/RelatiobContract.aspx?insProId=" + entityid + "&contractId=" + contract_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.RelationContract %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-          }
+            }
         }
         function Delete() {
             if (confirm("删除后无法恢复，是否继续?")) {
@@ -1489,63 +1493,63 @@
          <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.CONFIGITEM)
         {%>//配置项类型
-          function View(id) {
-              window.open("../ConfigurationItem/ConfigType.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConfigItemType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        function View(id) {
+            window.open("../ConfigurationItem/ConfigType.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConfigItemType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Add() {
+            window.open("../ConfigurationItem/ConfigType.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConfigItemType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
           }
-          function Add() {
-              window.open("../ConfigurationItem/ConfigType.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConfigItemType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        function Edit() {
-            window.open("../ConfigurationItem/ConfigType.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConfigItemType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        function Delete() {
-            if (confirm('删除操作将不能恢复，是否继续?')) {
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/ConfigItemTypeAjax.ashx?act=delete_validate&id=" + entityid,
-                    success: function (data) {
-                        if (data == "system") {
-                            alert("系统默认不能删除！");
-                        } else if (data == "other") {
-                            alert("其他原因使得删除失败！");
-                        } else {
-                            if (confirm(data)) {
-                                $.ajax({
-                                    type: "GET",
-                                    url: "../Tools/ConfigItemTypeAjax.ashx?act=delete&id=" + entityid,
-                                    success: function (data) {
-                                        alert(data);
-                                    }
-                                });
-                            }
-                        }
-                    }
-                });
-            }
-            window.location.reload();
-        }
-        function Active() {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/ConfigItemTypeAjax.ashx?act=Active&id=" + entityid,
-                async: false,
-                success: function (data) {
-                    alert(data);
-                }
-            })
-            window.location.reload();
-        }
-        function Inactive() {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/ConfigItemTypeAjax.ashx?act=No_Active&id=" + entityid,
-                async: false,
-                success: function (data) {
-                    alert(data);
-                }
-            })
-            window.location.reload();
-        }
+          function Edit() {
+              window.open("../ConfigurationItem/ConfigType.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConfigItemType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+          }
+          function Delete() {
+              if (confirm('删除操作将不能恢复，是否继续?')) {
+                  $.ajax({
+                      type: "GET",
+                      url: "../Tools/ConfigItemTypeAjax.ashx?act=delete_validate&id=" + entityid,
+                      success: function (data) {
+                          if (data == "system") {
+                              alert("系统默认不能删除！");
+                          } else if (data == "other") {
+                              alert("其他原因使得删除失败！");
+                          } else {
+                              if (confirm(data)) {
+                                  $.ajax({
+                                      type: "GET",
+                                      url: "../Tools/ConfigItemTypeAjax.ashx?act=delete&id=" + entityid,
+                                      success: function (data) {
+                                          alert(data);
+                                      }
+                                  });
+                              }
+                          }
+                      }
+                  });
+              }
+              window.location.reload();
+          }
+          function Active() {
+              $.ajax({
+                  type: "GET",
+                  url: "../Tools/ConfigItemTypeAjax.ashx?act=Active&id=" + entityid,
+                  async: false,
+                  success: function (data) {
+                      alert(data);
+                  }
+              })
+              window.location.reload();
+          }
+          function Inactive() {
+              $.ajax({
+                  type: "GET",
+                  url: "../Tools/ConfigItemTypeAjax.ashx?act=No_Active&id=" + entityid,
+                  async: false,
+                  success: function (data) {
+                      alert(data);
+                  }
+              })
+              window.location.reload();
+          }
        <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.SECURITYLEVEL)
         {%>//安全等级
@@ -1759,10 +1763,6 @@
         {%>//审批里程碑
         //审批并提交(批量)
         function Add() {
-            Post_date();
-            if (postcancel == 1) {
-                return false;
-            }
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1771,40 +1771,14 @@
             });
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
-                var id_array = ids.split(',');
-                for (var i = 0; i < id_array.length;i++){
-                    $.ajax({
-                        type: "GET",
-                        url: '../Tools/ApproveAndPostAjax.ashx?act=post&type=' +  <%=queryTypeId%>  + '&id=' + id_array[i] + '&date=' + postdate,
-                        success: function (data) {
-                            if (date == "error") {
-                                alert("里程碑序列号为："+id_array[i]+"审批失败！");
-                            }
-                        }
-                    });
-                }
-                alert("审批处理结束！");
+                window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&id=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
             } else {
                 alert("请选择需要审批的数据！");
             }
         }
         //审批并提交
         function Post() {
-            Post_date();
-            if (postcancel == 1) {
-                return false;
-            }
-            $.ajax({
-                type: "GET",
-                url: '../Tools/ApproveAndPostAjax.ashx?act=post&type=' + <%=queryTypeId%> + '&id=' + id + '&date=' + postdate,
-                success: function (data) {
-                    if (date == "error") {
-                        alert("里程碑序列号为：" + id_array[i] + "审批失败！");
-                    } else {
-                        alert("审批成功！");
-                    }
-                }
-            });
+            window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         //查看里程碑详情
         function Miledetail() {
@@ -1812,17 +1786,13 @@
         }
         //查看合同详情
         function ContractDetail() {
-           
+
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_SUBSCRIPTIONS)
         {%>//审批订阅
         //审批并提交(批量)
         function Add() {
-            Post_date();
-            if (postcancel == 1) {
-                return false;
-            }
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1831,46 +1801,20 @@
             });
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
-                var id_array = ids.split(',');
-                for (var i = 0; i < id_array.length; i++) {
-                    $.ajax({
-                        type: "GET",
-                        url: '../Tools/ApproveAndPostAjax.ashx?act=post&type=' +  <%=queryTypeId%>  + '&id=' + id_array[i] + '&date=' + postdate,
-                        success: function (data) {
-                            if (date == "error") {
-                                alert("订阅序列号为：" + id_array[i] + "审批失败！");
-                            }
-                        }
-                    });
-                }
-                alert("审批处理结束！");
+                window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&id=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
             } else {
                 alert("请选择需要审批的数据！");
             }
         }
         //审批并提交
         function Post() {
-            Post_date();
-            if (postcancel == 1) {
-                return false;
-            }
-            $.ajax({
-                type: "GET",
-                url: '../Tools/ApproveAndPostAjax.ashx?act=post&type=' + <%=queryTypeId%> + '&id=' + id + '&date=' + postdate,
-                success: function (data) {
-                    if (date == "error") {
-                        alert("订阅序列号为：" + id_array[i] + "审批失败！");
-                    } else {
-                        alert("审批成功！");
-                    }
-                }
-            });
+           
         }
         //恢复初始值
         function Restore_Initiall() {
             $.ajax({
                 type: "GET",
-                url: "../Tools/ApproveAndPostAjax.ashx?act=init&id=" + entityid + "&type=" + queryTypeId,
+                url: "../Tools/ApproveAndPostAjax.ashx?act=init&id=" + entityid + "&type=" + <%=queryTypeId%>,
                 async: false,
                 success: function (data) {
                     alert(data);
@@ -1887,10 +1831,6 @@
         {%>//审批定期服务
         //审批并提交(批量)
         function Add() {
-            Post_date();
-            if (postcancel == 1) {
-                return false;
-            }
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1899,18 +1839,7 @@
             });
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
-                var id_array = ids.split(',');
-                for (var i = 0; i < id_array.length; i++) {
-                    $.ajax({
-                        type: "GET",
-                        url: '../Tools/ApproveAndPostAjax.ashx?act=post&type=' +  <%=queryTypeId%>  + '&id=' + id_array[i] + '&date=' + postdate,
-                        success: function (data) {
-                            if (date == "error") {
-                                alert("定期服务序列号为：" + id_array[i] + "审批失败！");
-                            }
-                        }
-                    });
-                }
+                window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&id=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 alert("审批处理结束！");
             } else {
                 alert("请选择需要审批的数据！");
@@ -1918,21 +1847,7 @@
         }
         //审批并提交
         function Post() {
-            Post_date();
-            if (postcancel == 1) {
-                return false;
-            }
-            $.ajax({
-                type: "GET",
-                url: '../Tools/ApproveAndPostAjax.ashx?act=post&type=' + <%=queryTypeId%> + '&id=' + id + '&date=' + postdate,
-                success: function (data) {
-                    if (date == "error") {
-                        alert("定期服务序列号为：" + id_array[i] + "审批失败！");
-                    } else {
-                        alert("审批成功！");
-                    }
-                }
-            });
+            window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         //查看合同详情
         function ContractDetail() {
@@ -1943,7 +1858,7 @@
         function Restore_Initiall() {
             $.ajax({
                 type: "GET",
-                url: "../Tools/ApproveAndPostAjax.ashx?act=init&id=" + entityid + "&type=" + queryTypeId,
+                url: "../Tools/ApproveAndPostAjax.ashx?act=init&id=" + entityid + "&type=" + <%=queryTypeId%>,
                 async: false,
                 success: function (data) {
                     alert(data);
@@ -1959,12 +1874,8 @@
          <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
         {%>//审批成本
-            //审批并提交(批量)
+        //审批并提交(批量)
         function Add() {
-            Post_date();
-            if (postcancel == 1) {
-                return false;
-            }
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1973,69 +1884,28 @@
             });
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
-                var id_array = ids.split(',');
-                var ddd = [];
-                var kkk = [];
-                for (var i = 0; i < id_array.length; i++) {
-                    $.ajax({
-                        type: "GET",
-                        url: '../Tools/ApproveAndPostAjax.ashx?act=cost&type=' + <%=queryTypeId%> + '&id=' + id_array[i] + '&date=' + postdate,
-                        success: function (data) {
-                            if (data == "less") {
-                                ddd.push(id_array[i]);
-                            } else if (date == "rate_null") {
-                                kkk.push(id_array[i]);
-                            }
-                            else if (date == "error") {
-                                alert("合同成本序列号为：" + id_array[i] + "审批失败！");
-                            }
-                }
-                });
-                }
-                if (ddd.length > 0) {               
-                    window.open('../Contract/ApproveChargeSelect.aspx?type=auto&ids=' + ddd+'&date=' + postdate, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractChargeSelect%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);                       
-                    
-                }
-                if (kkk.length > 0) {
-                    window.open('../Contract/ApproveChargeSelect.aspx?type=noauto&ids=' + ddd + '&date=' + postdate,'<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractChargeSelect%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);  
-                }
-                alert("批量审批处理结束！");
-                } else {
-                    alert("请选择需要审批的数据！");
-                }
+                window.open('../Contract/ApproveChargeSelect.aspx?type=' +  <%=queryTypeId%>  + '&id=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractChargeSelect%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            } else {
+                alert("至少选择一项！");
             }
-            //审批并提交
-            function Post() {
-                window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-               <%-- //此处判断成本关联预付费合同
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/ApproveAndPostAjax.ashx?act=chargevali&id=" + entityid,
-                    async: false,
-                    success: function (data) {
-                        if (date == "ok") {
+        }
+        //审批并提交
+        function Post() {
+            window.open('../Contract/ApproveChargeSelect.aspx?type=' +  <%=queryTypeId%>  + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        //查看合同详情
+        function ContractDetail() {
 
-                        } else {
-                            window.open('../Contract/ContractPostDate.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-                                }
-                            }
-                 });--%>
-               
-            }
-            //查看合同详情
-            function ContractDetail() {
+        }
+        //查看工单详情
+        function TicketDetail() {
 
-            }
-            //查看工单详情
-            function TicketDetail() {
-
-            }
-            //设置为可计费
-            function Billing() {
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/ApproveAndPostAjax.ashx?act=billing&id=" + entityid + "&type=" + queryTypeId,
-                    async: false,
+        }
+        //设置为可计费
+        function Billing() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ApproveAndPostAjax.ashx?act=billing&id=" + entityid + "&type=" + <%=queryTypeId%>,
                     success: function (data) {
                         alert(data);
                     }
@@ -2046,7 +1916,7 @@
             function NoBilling() {
                 $.ajax({
                     type: "GET",
-                    url: "../Tools/ApproveAndPostAjax.ashx?act=nobilling&id=" + entityid + "&type=" + queryTypeId,
+                    url: "../Tools/ApproveAndPostAjax.ashx?act=nobilling&id=" + entityid + "&type=" + <%=queryTypeId%>,
                     async: false,
                     success: function (data) {
                         alert(data);
@@ -2058,7 +1928,7 @@
             function Restore_Initiall() {
                 $.ajax({
                     type: "GET",
-                    url: "../Tools/ApproveAndPostAjax.ashx?act=init&id=" + entityid + "&type=" + queryTypeId,
+                    url: "../Tools/ApproveAndPostAjax.ashx?act=init&id=" + entityid + "&type=" + <%=queryTypeId%>,
                     async: false,
                     success: function (data) {
                         alert(data);
@@ -2068,25 +1938,25 @@
             }
             //调整总价
             function AdjustExtend() {
-                window.open('../Contract/AdjustExtendedPrice.aspx?type=' + queryTypeId + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('../Contract/AdjustExtendedPrice.aspx?type=' + <%=queryTypeId%> + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
 
-        }
+            }
  <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contract_Charge)
         {%>
-        $("#CheckAll").click(function () {
-            if ($(this).is(":checked")) {
-                $(".IsChecked").prop("checked", true);
-                $(".IsChecked").css("checked", "checked");
-            }
-            else {
-                $(".IsChecked").prop("checked", false);
-                $(".IsChecked").css("checked", "");
-            }
-        })
-        // 新增
-        function Add() {
-            window.open('../Contract/AddCharges.aspx?contract_id=' + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConChargeEdit%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            $("#CheckAll").click(function () {
+                if ($(this).is(":checked")) {
+                    $(".IsChecked").prop("checked", true);
+                    $(".IsChecked").css("checked", "checked");
+                }
+                else {
+                    $(".IsChecked").prop("checked", false);
+                    $(".IsChecked").css("checked", "");
+                }
+            })
+            // 新增
+            function Add() {
+                window.open('../Contract/AddCharges.aspx?contract_id=' + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConChargeEdit%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         // 修改
         function Edit() {
@@ -2100,7 +1970,7 @@
         function ChangeIsbilled(isBilled) {
             $.ajax({
                 type: "GET",
-                url: "../Tools/ContractAjax.ashx?act=updateCost&isbill=" + isBilled +"&cost_id=" + entityid,
+                url: "../Tools/ContractAjax.ashx?act=updateCost&isbill=" + isBilled + "&cost_id=" + entityid,
                 async: false,
                 success: function (data) {
                     debugger;
@@ -2109,7 +1979,7 @@
                     } else if (data == "Already") {
                         alert('计费无需更改');
                     }
-                    else if (data == "404"){
+                    else if (data == "404") {
                         alert("成本丢失，请重新登陆查看");
                     } else if (data == "billed") {
                         alert("成本已经提交并审批，不可更改");
@@ -2144,7 +2014,7 @@
             }
         }
 
-        function Delete(){
+        function Delete() {
             $.ajax({
                 type: "GET",
                 url: "../Tools/ContractAjax.ashx?act=deleteCost&cost_id=" + entityid,
@@ -2309,9 +2179,9 @@
                     $("#delete").removeAttr('onclick');
                 }
 
-            } 
+            }
 
-        
+
 
             return false;
         });
@@ -2340,8 +2210,10 @@
         }
         function Add() {
             window.open('../Contract/AddDefaultCharge.aspx?contract_id=' + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConDefCostAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-			}
-        <%}else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.CONTRACT_RATE){%>
+        }
+        <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.CONTRACT_RATE)
+        {%>
 
         function Add() {
             window.open('../Contract/AddContractRate.aspx?contract_id=' + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConRateAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
@@ -2371,13 +2243,16 @@
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.InvoiceTemplate)
         {%>
         function Add() {
-            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>');
+            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function View(id) {
+            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Edit() {
-            
+            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
          <%}//历史发票查询
-        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Invoice_History)
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Invoice_History)           
         {%>
         //修改发票
         function EditInvoice() {
@@ -2424,7 +2299,7 @@
         }
         //查看发票
         function InvoiceView() {
-           
+
         }
         //查看本批全部发票
         function InvoiceAllView() {
@@ -2433,7 +2308,423 @@
         //发票设置
         function InvoiceEdit() {
 
-        }       
+        }
+         <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ACCOUNTTYPE)
+        { %>//客户类别
+        function Add() {
+            window.open('../SysSetting/AccountClass.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ACCOUNTTYPE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Edit() {
+            window.open('../SysSetting/AccountClass.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ACCOUNTTYPE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function View(id) {
+            window.open('../SysSetting/AccountClass.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ACCOUNTTYPE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Delete() {
+            if (confirm('删除操作将不能恢复，是否继续?')) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/AccountClassAjax.ashx?act=delete_validate&id=" + entityid,
+                    success: function (data) {
+                        if (data == "system") {
+                            alert("系统默认不能删除！");
+                            return false;
+                        } else if (data == "other") {
+                            alert("其他原因使得删除失败！");
+                        } else {
+                            if (confirm(data)) {
+                                if (confirm(data)) {
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "../Tools/AccountClassAjax.ashx?act=delete&id=" + entityid,
+                                        success: function (data) {
+                                            alert(data);
+                                        }
+                                    });
+                                } else {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            window.location.reload();
+        }
+        function Active() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/AccountClassAjax.ashx?act=active&id=" + entityid,
+                success: function (data) {
+                    alert(data);
+                }
+            });
+            window.location.reload();
+        }
+        function NoActive() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/AccountClassAjax.ashx?act=noactive&id=" + entityid,
+                success: function (data) {
+                    alert(data);
+                }
+            });
+            window.location.reload();
+        }
+         <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.OPPPORTUNITYWINREASON)
+        { %>//关闭商机
+        function Add() {           
+            window.open('../Opportunity/OpportunityWinReasons.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITYWIN %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);               
+        }
+        function Edit() {
+            window.open('../Opportunity/OpportunityWinReasons.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITYWIN %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Delete() {
+             if (confirm('确认删除?')) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/OpportunityReasonAjax.ashx?act=delete&id=" + entityid + "GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_WIN_REASON_TYPE%>",//GT_id 表示当前操作的类型
+                        success: function (data) {
+                            if (data == "system") {
+                                alert("系统默认不能删除！");
+                                return false;
+                            } else if (data == "other") {
+                                alert("其他原因使得删除失败！");
+                            } else {
+                                alert(data);
+                            }
+                        }
+                });
+            }
+            window.location.reload();
+        }
+          <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.OPPPORTUNITYLOSSREASON)
+        { %>//丢失商机
+          function Add() {
+              window.open('../Opportunity/OpportunityLossReason.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITYLOSS %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+          function View(id) {
+              window.open('../Opportunity/OpportunityLossReason.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITYLOSS %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+          }
+          function Edit() {
+              window.open('../Opportunity/OpportunityLossReason.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITYLOSS %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Delete() {
+             if (confirm('确认删除?')) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/OpportunityReasonAjax.ashx?act=delete&id=" + entityid + "GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_LOSS_REASON_TYPE%>",//GT_id 表示当前操作的类型
+                     success: function (data) {
+                         if (data == "system") {
+                             alert("系统默认不能删除！");
+                             return false;
+                         } else if (data == "other") {
+                             alert("其他原因使得删除失败！");
+                         } else {
+                             alert(data);
+                         }
+                     }
+                 });
+             }
+             window.location.reload();
+          }
+         <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Market)
+        { %>//市场
+         function Edit() {
+             window.open('../SysSetting/SysMarket.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.MARKET_SEGMENT %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Add() {
+             window.open('../SysSetting/SysMarket.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.MARKET_SEGMENT %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function View(id) {
+             window.open('../SysSetting/SysMarket.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.MARKET_SEGMENT %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Delete() {
+             if (confirm('删除操作将不能恢复，是否继续?')) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.MARKET_SEGMENT%>",//GT_id 表示当前操作的类型
+                       success: function (data) {
+                           if (data == "system") {
+                               alert("系统默认不能删除！");
+                           } else if (data == "other") {
+                               alert("其他原因使得删除失败！");
+                           } else {
+                               if (confirm(data)) {
+                                   $.ajax({
+                                       type: "GET",
+                                       url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.MARKET_SEGMENT%>",//GT_id 表示当前操作的类型
+                                       success: function (data) {
+                                           alert(data);
+                                       }
+                                   });
+                               }
+                           }
+                       }
+                });
+            }
+            window.location.reload();
+        }
+          <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ACCOUNTREGION)
+        { %>//区域
+         function Edit() {
+             window.open('../SysSetting/SysRegion.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.REGION %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Add() {
+             window.open('../SysSetting/SysRegion.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.REGION %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function View(id) {
+             window.open('../SysSetting/SysRegion.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.REGION %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Delete() {
+             if (confirm('删除操作将不能恢复，是否继续?')) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.REGION%>",//GT_id 表示当前操作的类型
+                     success: function (data) {
+                         if (data == "system") {
+                             alert("系统默认不能删除！");
+                         } else if (data == "other") {
+                             alert("其他原因使得删除失败！");
+                         } else {
+                             if (confirm(data)) {
+                                 $.ajax({
+                                     type: "GET",
+                                     url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.REGION%>",//GT_id 表示当前操作的类型
+                                       success: function (data) {
+                                           alert(data);
+                                       }
+                                 });
+                             }
+                         }
+                     }
+                 });
+             }
+             window.location.reload();
+         }
+          <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Territory)
+        { %>//地域
+         function Edit() {
+             window.open('../SysSetting/SysTerritory.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TERRITORY %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Add() {
+             window.open('../SysSetting/SysTerritory.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TERRITORY %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+           }
+           function View(id) {
+               window.open('../SysSetting/SysTerritory.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TERRITORY %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Delete() {
+             if (confirm('删除操作将不能恢复，是否继续?')) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.TERRITORY%>",//GT_id 表示当前操作的类型
+                     success: function (data) {
+                         if (data == "system") {
+                             alert("系统默认不能删除！");
+                         } else if (data == "other") {
+                             alert("其他原因使得删除失败！");
+                         } else {
+                             if (confirm(data)) {
+                                 $.ajax({
+                                     type: "GET",
+                                     url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.TERRITORY%>",//GT_id 表示当前操作的类型
+                                       success: function (data) {
+                                           alert(data);
+                                       }
+                                 });
+                             }
+                         }
+                     }
+                 });
+             }
+             window.location.reload();
+         }
+
+          <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.COMPETITOR)
+        { %>//竞争对手
+         function Edit() {
+             window.open('../SysSetting/SysCompetitor.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.COMPETITOR %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Add() {
+             window.open('../SysSetting/SysCompetitor.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.COMPETITOR %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function View(id) {
+             window.open('../SysSetting/SysCompetitor.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.COMPETITOR %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+           }
+         function Delete() {
+             if (confirm('删除操作将不能恢复，是否继续?')) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.COMPETITOR%>",//GT_id 表示当前操作的类型
+                     success: function (data) {
+                         if (data == "system") {
+                             alert("系统默认不能删除！");
+                         } else if (data == "other") {
+                             alert("其他原因使得删除失败！");
+                         } else {
+                             if (confirm(data)) {
+                                 $.ajax({
+                                     type: "GET",
+                                     url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.COMPETITOR%>",//GT_id 表示当前操作的类型
+                                       success: function (data) {
+                                           alert(data);
+                                       }
+                                 });
+                             }
+                         }
+                     }
+                 });
+             }
+             window.location.reload();
+         }
+
+          <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.OPPORTUNITYSOURCE)
+        { %>//商机来源
+         function Edit() {
+             window.open('../Opportunity/OpportunityLeadSource.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_SOURCE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Add() {
+             window.open('../Opportunity/OpportunityLeadSource.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_SOURCE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function View(id) {
+             window.open('../Opportunity/OpportunityLeadSource.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_SOURCE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Delete() {
+             if (confirm('删除操作将不能恢复，是否继续?')) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_SOURCE%>",//GT_id 表示当前操作的类型
+                     success: function (data) {
+                         if (data == "system") {
+                             alert("系统默认不能删除！");
+                         } else if (data == "other") {
+                             alert("其他原因使得删除失败！");
+                         } else {
+                             if (confirm(data)) {
+                                 $.ajax({
+                                     type: "GET",
+                                     url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_SOURCE%>",//GT_id 表示当前操作的类型
+                                       success: function (data) {
+                                           alert(data);
+                                       }
+                                 });
+                             }
+                         }
+                     }
+                 });
+             }
+             window.location.reload();
+         }
+
+          <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.SUFFIXES)
+        { %>//后缀
+         function Delete() {
+             if (confirm('删除操作将不能恢复，是否继续?')) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.NAME_SUFFIX%>",//GT_id 表示当前操作的类型
+                     success: function (data) {
+                         if (data == "system") {
+                             alert("系统默认不能删除！");
+                         } else if (data == "other") {
+                             alert("其他原因使得删除失败！");
+                         } else {
+                             if (confirm(data)) {
+                                 $.ajax({
+                                     type: "GET",
+                                     url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.NAME_SUFFIX%>",//GT_id 表示当前操作的类型
+                                       success: function (data) {
+                                           alert(data);
+                                       }
+                                 });
+                             }
+                         }
+                     }
+                 });
+             }
+             window.location.reload();
+         }
+ 
+          <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ACTIONTYPE)
+        { %>//活动类型
+         function Delete() {
+             function Delete() {
+                 if (confirm('删除操作将不能恢复，是否继续?')) {
+                     $.ajax({
+                         type: "GET",
+                         url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE%>",//GT_id 表示当前操作的类型
+                       success: function (data) {
+                           if (data == "system") {
+                               alert("系统默认不能删除！");
+                           } else if (data == "other") {
+                               alert("其他原因使得删除失败！");
+                           } else {
+                               if (confirm(data)) {
+                                   $.ajax({
+                                       type: "GET",
+                                       url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE%>",//GT_id 表示当前操作的类型
+                                       success: function (data) {
+                                           alert(data);
+                                       }
+                                   });
+                               }
+                           }
+                       }
+                     });
+                 }
+                 window.location.reload();
+             }
+         }
+         function Edit() {
+             window.open('../SysSetting/ActionType.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Add() {
+            window.open('../SysSetting/ActionType.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function View(id) {
+             window.open('../SysSetting/ActionType.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+          <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.OPPORTUNITYAGES)
+        { %>
+         function Delete() {
+             //商机阶段
+             if (confirm('删除操作将不能恢复，是否继续?')) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id==<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_STAGE%>",//GT_id 表示当前操作的类型
+                       success: function (data) {
+                           if (data == "system") {
+                               alert("系统默认不能删除！");
+                           } else if (data == "other") {
+                               alert("其他原因使得删除失败！");
+                           } else {
+                               alert(data);
+                           }
+                       }
+                });
+            }
+            window.location.reload();
+         }
+         function Edit() {
+             window.open('../Opportunity/OpportunityStage.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Add() {
+             window.open('../Opportunity/OpportunityStage.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function View(id) {
+             window.open('../Opportunity/OpportunityStage.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

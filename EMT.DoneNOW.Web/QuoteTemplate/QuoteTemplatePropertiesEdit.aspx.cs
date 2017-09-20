@@ -70,8 +70,8 @@ namespace EMT.DoneNOW.Web
 
             this.Name.Text = data.name;
             this.Description.Text = data.description;
-            if (data.is_active == 1) {
-                this.Active.Checked = true;
+            if (data.is_active != 1) {
+                this.Active.Checked = false;
             }
             if (data.show_each_tax_in_tax_group == 1) {
                 this.show_each_tax_in_tax_group.Checked = true;

@@ -140,7 +140,8 @@ namespace EMT.DoneNOW.Web
             sqt.currency_negative_format_id=Convert.ToInt32(this.CurrencyNegativePattern.SelectedValue.Trim().ToString());
             sqt.currency_positive_format_id = Convert.ToInt32(this.CurrencyPositivePattern.SelectedValue.Trim().ToString());
             sqt.number_display_format_id = Convert.ToInt32(this.NumberFormat.SelectedValue.Trim().ToString());
-            sqt.date_display_format_id = Convert.ToInt32(this.DateFormat.SelectedValue.Trim().ToString());            
+            sqt.date_display_format_id = Convert.ToInt32(this.DateFormat.SelectedValue.Trim().ToString());
+            sqt.cate_id = 1;
             if (this.show_each_tax_in_tax_group.Checked)
             {
                 sqt.show_each_tax_in_tax_group = 1;
