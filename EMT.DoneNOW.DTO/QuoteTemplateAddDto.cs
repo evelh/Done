@@ -76,6 +76,10 @@ namespace EMT.DoneNOW.DTO
         public class CUSTOMIZE_THE_ITEM_COLUMNITEM
         {
             /// <summary>
+            /// 报价项类型ID
+            /// </summary>
+            public string Type_of_Quote_Item_ID { get; set; }
+            /// <summary>
             /// 报价项类型
             /// </summary>
             public string Type_of_Quote_Item { get; set; }

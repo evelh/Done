@@ -1393,37 +1393,66 @@ namespace EMT.DoneNOW.Web
             StringBuilder table = new StringBuilder();
             table.Append("<tr>");
             var Vartable = qd.GetQuoteItemVar((int)item.id);//此处获取准备用作替换的数据集
-            string type_name = qd.GetItemTypeName(item.type_id);//获取报价子项的类型
-            foreach (var type in quote_body.CUSTOMIZE_THE_ITEM_COLUMN)
-            {
-                if (type.Type_of_Quote_Item == type_name)//根据报价子项的类型展示相应的数据格式
+                                                            //string type_name = qd.GetItemTypeName(item.type_id);//获取报价子项的类型
+                                                            //var typef = quote_body.CUSTOMIZE_THE_ITEM_COLUMN.Find(_ => _.Type_of_Quote_Item == type_name);          
+
+            //foreach (var type in quote_body.CUSTOMIZE_THE_ITEM_COLUMN)
+            //{
+            //    if (type.Type_of_Quote_Item == type_name)//根据报价子项的类型展示相应的数据格式
+            //    {
+            //Regex reg = new Regex(@"\[(.+?)]");
+            //string type_format = type.Display_Format.ToString();
+            //foreach (Match m in reg.Matches(type_format))
+            //{
+            //    string t = m.Groups[0].ToString();
+            //    if (Vartable.Rows.Count > 0)
+            //    {
+            //        if (Vartable.Columns.Contains(t) && !string.IsNullOrEmpty(Vartable.Rows[0][t].ToString()))
+            //        {
+            //            type_format = type_format.Replace(t, Vartable.Rows[0][t].ToString());
+            //        }
+            //        else
+            //        {
+            //            type_format = type_format.Replace(m.Groups[0].ToString(), "");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        type_format = type_format.Replace(m.Groups[0].ToString(), "");
+            //    }
+
+            //}
+            //item.name = string.Empty;
+            //item.name = type_format;
+            //    }
+            //}
+            var typef2 = quote_body.CUSTOMIZE_THE_ITEM_COLUMN.Find(d=>d.Type_of_Quote_Item_ID ==item.type_id.ToString());
+            if (typef2 != null) {
+                Regex reg = new Regex(@"\[(.+?)]");
+                string type_format = typef2.Display_Format;
+                foreach (Match m in reg.Matches(type_format))
                 {
-                    Regex reg = new Regex(@"\[(.+?)]");
-                    string type_format = type.Display_Format.ToString();
-                    foreach (Match m in reg.Matches(type_format))
+                    string t = m.Groups[0].ToString();
+                    if (Vartable.Rows.Count > 0)
                     {
-                        string t = m.Groups[0].ToString();
-                        if (Vartable.Rows.Count > 0)
+                        if (Vartable.Columns.Contains(t) && !string.IsNullOrEmpty(Vartable.Rows[0][t].ToString()))
                         {
-                            if (Vartable.Columns.Contains(t) && !string.IsNullOrEmpty(Vartable.Rows[0][t].ToString()))
-                            {
-                                type_format = type_format.Replace(t, Vartable.Rows[0][t].ToString());
-                            }
-                            else
-                            {
-                                type_format = type_format.Replace(m.Groups[0].ToString(), "");
-                            }
+                            type_format = type_format.Replace(t, Vartable.Rows[0][t].ToString());
                         }
                         else
                         {
                             type_format = type_format.Replace(m.Groups[0].ToString(), "");
                         }
-
                     }
-                    item.name = string.Empty;
-                    item.name = type_format;
+                    else
+                    {
+                        type_format = type_format.Replace(m.Groups[0].ToString(), "");
+                    }
                 }
-            }
+                item.name = string.Empty;
+                item.name = type_format;
+            }   
+
             //item.name 是替换后的报价子项的名字和说明之类
             if (string.IsNullOrEmpty(item.discount_percent.ToString()))
             {

@@ -331,7 +331,7 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">产品</td>
+                                        <td class="Text U1 Type_of_Quote_Item">产品<input type="hidden" class="quote_item_type_id"  value="600"/></td>
                                         <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
@@ -340,7 +340,7 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">成本</td>
+                                        <td class="Text U1 Type_of_Quote_Item">成本<input type="hidden" class="quote_item_type_id"  value="601"/></td>
                                         <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
@@ -349,7 +349,7 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">工时</td>
+                                        <td class="Text U1 Type_of_Quote_Item">工时<input type="hidden" class="quote_item_type_id"  value="602"/></td>
                                         <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
@@ -358,7 +358,7 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">费用</td>
+                                        <td class="Text U1 Type_of_Quote_Item">费用<input type="hidden" class="quote_item_type_id"  value="603"/></td>
                                         <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
@@ -367,7 +367,7 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">配送费用</td>
+                                        <td class="Text U1 Type_of_Quote_Item">配送费用<input type="hidden" class="quote_item_type_id"  value="604"/></td>
                                         <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
@@ -376,7 +376,7 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">折扣</td>
+                                        <td class="Text U1 Type_of_Quote_Item">折扣<input type="hidden" class="quote_item_type_id"  value="605"/></td>
                                         <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
@@ -385,7 +385,7 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">服务包</td>
+                                        <td class="Text U1 Type_of_Quote_Item">服务包<input type="hidden" class="quote_item_type_id"  value="606"/></td>
                                         <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                     <tr>
@@ -394,7 +394,7 @@
                                                 <span class="Icon"></span>
                                             </div>
                                         </td>
-                                        <td class="Text U1 Type_of_Quote_Item">初始费用</td>
+                                        <td class="Text U1 Type_of_Quote_Item">初始费用<input type="hidden" class="quote_item_type_id"  value="608"/></td>
                                         <td class="FormatPreservation U2 Display_Format">[报价项: 名称] [报价项: 说明]</td>
                                     </tr>
                                 </tbody>
@@ -577,9 +577,10 @@
 
             ////报价项字段设置
             for (i = 0; i < 8; i++) {
+                var quote_item_type_id = $(".quote_item_type_id").eq(i).val();
                 var Type_of_Quote_Item = $(".Type_of_Quote_Item").eq(i).text();
                 var Display_Format = $(".Display_Format").eq(i).text();
-                var CUSTOMIZE_THE_ITEM_COLUMNITEM = {"Type_of_Quote_Item": Type_of_Quote_Item, "Display_Format": Display_Format };
+                var CUSTOMIZE_THE_ITEM_COLUMNITEM = { "Type_of_Quote_Item_ID": quote_item_type_id,"Type_of_Quote_Item": Type_of_Quote_Item, "Display_Format": Display_Format };
                 var jsonArrayFinal = JSON.stringify(CUSTOMIZE_THE_ITEM_COLUMNITEM);
                 data.push(jsonArrayFinal);
                 console.log(jsonArrayFinal);
