@@ -1,8 +1,8 @@
-body{
+body {
     overflow: hidden;
 }
 /*顶部内容和帮助*/
-.TitleBar{
+.TitleBar {
     color: #fff;
     background-color: #346a95;
     display: block;
@@ -12,21 +12,24 @@ body{
     line-height: 38px;
     margin: 0 0 10px 0;
 }
-.TitleBar>.Title{
-    top: 0;
-    height: 36px;
-    left: 10px;
-    overflow: hidden;
-    position: absolute;
-    text-overflow: ellipsis;
-    text-transform: uppercase;
-    white-space: nowrap;
-    width: 95%;
-}
-.text2{
+
+    .TitleBar > .Title {
+        top: 0;
+        height: 36px;
+        left: 10px;
+        overflow: hidden;
+        position: absolute;
+        text-overflow: ellipsis;
+        text-transform: uppercase;
+        white-space: nowrap;
+        width: 95%;
+    }
+
+.text2 {
     margin-left: 5px;
 }
-.help{
+
+.help {
     background-image: url(../img/help.png);
     cursor: pointer;
     display: inline-block;
@@ -38,16 +41,18 @@ body{
     border-radius: 50%;
 }
 /*按钮*/
-.ButtonContainer{
+.ButtonContainer {
     padding: 0 10px 10px 10px;
     width: auto;
     height: 26px;
 }
-.ButtonContainer ul li .Button{
-    margin-right: 5px;
-    vertical-align: top;
-}
-li.Button{
+
+    .ButtonContainer ul li .Button {
+        margin-right: 5px;
+        vertical-align: top;
+    }
+
+li.Button {
     -ms-flex-align: center;
     align-items: center;
     background: #f0f0f0;
@@ -65,23 +70,28 @@ li.Button{
     position: relative;
     text-decoration: none;
 }
-.Button>.Icon{
+
+.Button > .Icon {
     display: inline-block;
     flex: 0 0 auto;
     height: 16px;
     margin: 0 3px;
     width: 16px;
 }
-.Ok{
+
+.Ok {
     background-image: url("../img/ok.png");
 }
-.Cancel{
+
+.Cancel {
     background-image: url("../img/cancel.png");
 }
-.Reset{
+
+.Reset {
     background-image: url("../img/reset.png");
 }
-.Button>.Text{
+
+.Button > .Text {
     flex: 0 1 auto;
     font-size: 12px;
     font-weight: bold;
@@ -90,72 +100,250 @@ li.Button{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 .Section {
     border: 1px solid #d3d3d3;
     margin: 0 0 12px 10px;
     padding: 4px 0 4px 0;
     width: 836px;
-    height:400px;
 }
-.Section>.Heading {
-    overflow: hidden;
-    padding: 2px 4px 8px 6px;
-    position: relative;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+
+    .Section.Collapsed {
+        background: #efefef;
+        background: -moz-linear-gradient(top,#f4f4f4 0,#efefef 100%);
+        background: -webkit-linear-gradient(top,#f4f4f4 0,#efefef 100%);
+        background: -ms-linear-gradient(top,#f4f4f4 0,#efefef 100%);
+        background: linear-gradient(to bottom,#f4f4f4 0,#efefef 100%);
+        padding: 0;
+    }
+
+    .Section > .Heading {
+        overflow: hidden;
+        padding: 2px 4px 8px 6px;
+        position: relative;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+        .Section > .Heading > .Toggle {
+            background: #d7d7d7;
+            background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+            background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+            background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+            background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+            border: 1px solid #c6c6c6;
+            cursor: pointer;
+            height: 14px;
+            margin: 0 6px 0 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            width: 14px;
+        }
+
+        .Section > .Heading > div, .Section > .Heading > span {
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+        }
+
+        .Section > .Heading > .Toggle > .Vertical {
+            background-color: #888;
+            height: 8px;
+            left: 6px;
+            position: absolute;
+            top: 3px;
+            width: 2px;
+        }
+
+        .Section > .Heading > .Toggle > .Horizontal {
+            background-color: #888;
+            height: 2px;
+            left: 3px;
+            position: absolute;
+            top: 6px;
+            width: 8px;
+        }
+
+        .Section > .Heading > .Text {
+            color: #666;
+            height: 16px;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 17px;
+            text-transform: uppercase;
+        }
+
+.EditorLabelContainer .Label label, .EditorLabelContainer .Label .Required {
+    font-size: 12px;
+    color: #4f4f4f;
+    font-weight: 700;
 }
-.Section>.Content {
+
+.Section.Collapsed > .DescriptionText, .Section.Collapsed > .Content {
+    display: none;
+}
+
+.Section > .DescriptionText, .Section > .Content {
     padding-left: 28px;
     padding-right: 28px;
 }
-.Section>.DescriptionText {
+
+.Section > .DescriptionText {
+    color: #666;
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: -4px;
+    padding: 0 0 8px 0;
+}
+
+.Section > .Content {
+    overflow: hidden;
+}
+
+.Section .Column.Normal, .Section .Column.Normal > .Editor, .Section .Column.Normal > .CheckBoxGroupContainer > .Editor, .Section .Column.Normal > .RadioButtonGroupContainer > .Editor, .Section .Column.Normal > .Attachment_TypeContainer > .Editor {
+    width: 390px;
+}
+
+.Section .Column > .Editor, .Section .Column > .RadioButtonAssociation > .Editor, .EditorContainer > .Editor {
+    padding-bottom: 12px;
+}
+
+.Column.Normal > .EditorLabelContainer {
+    width: 380px;
+}
+
+.Column, .ReplaceableColumnContainer {
+    display: inline-block;
+    vertical-align: top;
+    float: left;
+}
+
+.Editor.TextArea textarea.Medium {
+    height: 125px;
+    min-height: 125px;
+}
+
+.Editor.TextArea textarea {
+    max-width: 306px;
+    width: 306px;
+}
+
+.EditorLabelContainer > .Label {
+    color: #4f4f4f;
+    font-weight: 700;
+    height: 14px;
+    overflow: hidden;
+    padding-bottom: 1px;
+    padding-right: 5px;
+    vertical-align: bottom;
+}
+
+.EditorLabelContainer .Label > .SecondaryText {
+    color: #666;
+    display: inline;
+    font-size: 11px;
+    font-weight: 300;
+    padding-left: 4px;
+}
+
+.Section > .DescriptionText {
     color: #666;
     font-size: 12px;
     line-height: 16px;
     margin-top: -4px;
     padding: 0 0 8px 28px;
 }
+
+.Section .Editor.CheckBox {
+    padding-bottom: 14px;
+}
+
+input[type="checkbox"], input[type="radio"] {
+    margin: 0;
+    display: block;
+    float: left;
+    clear: left;
+    padding: 0;
+    margin-right: 3px;
+    color: #333;
+}
+
+input[type="text"] {
+    height: 22px;
+    padding: 0 6px;
+    resize: none;
+}
+
+input[type="text"], select, textarea {
+    border: 1px solid #d7d7d7;
+    font-size: 12px;
+}
+
+.Editor.TextBox input, .Editor.TextBox .Value, .Editor.DataSelector input {
+    width: 306px;
+}
+
+input {
+    color: #333;
+    margin: 0;
+}
+
+.Editor.CheckBox > .InputField > .EditorLabelContainer > .Label {
+    display: inline;
+}
+
+.Editor.CheckBox .InputField > .EditorLabelContainer > .Label label, .Editor.RadioButton .InputField > .EditorLabelContainer > .Label label {
+    color: #333;
+    cursor: pointer;
+    font-weight: 500;
+}
 /*弹出框的图标*/
-.Dialog{
-    width:21px;
-    height:20px;
-    background:#fafafa;
+.Dialog {
+    width: 21px;
+    height: 20px;
+    background: #fafafa;
     position: absolute;
     left: 555px;
-    top: 139px;
-    z-index:1000;
-    border:1px solid #fafafa;
+    top: 58px;
+    z-index: 1000;
+    border: 1px solid #fafafa;
 }
-.Dialog:hover{
-    border:1px solid #dcac6c;
-    background: #ffe69f;
-}
+
+    .Dialog:hover {
+        border: 1px solid #dcac6c;
+        background: #ffe69f;
+    }
 /*弹出框内容*/
-.AlertBox{
-    width: 486px;height: 450px;
+.AlertBox {
+    width: 486px;
+    height: 450px;
     position: absolute;
-    top:0;
+    top: 0;
     left: 0;
-    bottom:0;
+    bottom: 0;
     right: 0;
     margin: auto;
     background-color: #b9b9b9;
     border: solid 4px #b9b9b9;
-    z-index:2000;
+    z-index: 2000;
     display: none;
 }
-.AlertBox>div {
-    background-color: #fff;
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-.CancelDialogButton{
+
+    .AlertBox > div {
+        background-color: #fff;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+.CancelDialogButton {
     background-image: url(../img/cancel1.png);
     background-position: 0 -32px;
-    border-radius:50%;
+    border-radius: 50%;
     cursor: pointer;
     height: 32px;
     position: absolute;
@@ -163,7 +351,8 @@ li.Button{
     top: -14px;
     width: 32px;
 }
-.AlertTitleBar{
+
+.AlertTitleBar {
     color: #fff;
     background-color: #346a95;
     font-size: 15px;
@@ -172,6 +361,7 @@ li.Button{
     line-height: 38px;
     margin: 0 0 10px 0;
 }
+
 .AlertTitle {
     top: 0;
     height: 36px;
@@ -183,7 +373,8 @@ li.Button{
     white-space: nowrap;
     width: 80%;
 }
-.AlertContent{
+
+.AlertContent {
     top: 46px;
     bottom: 0px;
     left: 0;
@@ -193,12 +384,14 @@ li.Button{
     right: 0;
     padding: 0 10px 0 10px;
 }
-.AlertContentTitle{
+
+.AlertContentTitle {
     padding-bottom: 5px;
     color: #666;
     font-size: 12px;
     overflow: hidden;
 }
+
 select {
     color: #333;
     height: 24px;
@@ -209,21 +402,24 @@ select {
     font-size: 12px;
     resize: vertical;
 }
-#AlertVariableFilter{
+
+#AlertVariableFilter {
     margin-bottom: 5px;
     width: 410px;
 }
-#AlertVariableList{
+
+#AlertVariableList {
     height: 249px;
     width: 410px;
 }
+
 select option {
     line-height: 16px;
 }
 /*黑色背景*/
-#BackgroundOverLay{
-    width:100%;
-    height:100%;
+#BackgroundOverLay {
+    width: 100%;
+    height: 100%;
     background: black;
     opacity: 0.6;
     z-index: 1000;

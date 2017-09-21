@@ -39,6 +39,7 @@
                 </li>
             </ul>
         </div>
+        <div style="position: absolute;left: 0;overflow-x: auto;overflow-y: auto;right: 0;top: 82px;bottom: 0px;">
     <div class="Section">
         <div class="Heading">报价底部</div>
         <div class="DescriptionText">这是报价底部</div>
@@ -49,6 +50,7 @@
             </div>
         </div>
     </div>
+            </div>
     <div class="AlertBox">
         <div>
             <div class="CancelDialogButton"></div>

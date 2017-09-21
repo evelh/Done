@@ -187,6 +187,10 @@
     <Content Include="Contract\ContractView.aspx" />
     <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
+    <Content Include="InvoiceTemplate\InvoiceTemp_OneBody.aspx" />
+    <Content Include="InvoiceTemplate\InvoiceTempEdit.aspx" />
+    <Content Include="InvoiceTemplate\InvoiceTemp_OneTop.aspx" />
+    <Content Include="InvoiceTemplate\InvoiceTemp_TwoBottom.aspx" />
     <Content Include="Invoice\InvocieSearch.aspx" />
     <Content Include="Invoice\InvoiceSearchResult.aspx" />
     <Content Include="Invoice\InvoiceWizard.aspx" />
@@ -293,7 +297,10 @@
     <Content Include="RichText\img\prev.png" />
     <Content Include="RichText\img\reset.png" />
     <Content Include="RichText\img\save.png" />
+    <Content Include="RichText\img\set.png" />
     <Content Include="RichText\img\view.png" />
+    <Content Include="RichText\js\InvoiceTemplate.js" />
+    <Content Include="RichText\js\InvoiceTemplateInvoiceBody.js" />
     <Content Include="RichText\js\php\config.json" />
     <Content Include="RichText\js\third-party\jquery-1.10.2.min.map" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.eot" />
@@ -974,6 +981,34 @@
     </Compile>
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTemp_OneBody.aspx.cs">
+      <DependentUpon>InvoiceTemp_OneBody.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTemp_OneBody.aspx.designer.cs">
+      <DependentUpon>InvoiceTemp_OneBody.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTempEdit.aspx.cs">
+      <DependentUpon>InvoiceTempEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTempEdit.aspx.designer.cs">
+      <DependentUpon>InvoiceTempEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTemp_OneTop.aspx.cs">
+      <DependentUpon>InvoiceTemp_OneTop.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTemp_OneTop.aspx.designer.cs">
+      <DependentUpon>InvoiceTemp_OneTop.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTemp_TwoBottom.aspx.cs">
+      <DependentUpon>InvoiceTemp_TwoBottom.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InvoiceTemplate\InvoiceTemp_TwoBottom.aspx.designer.cs">
+      <DependentUpon>InvoiceTemp_TwoBottom.aspx</DependentUpon>
     </Compile>
     <Compile Include="Invoice\InvocieSearch.aspx.cs">
       <DependentUpon>InvocieSearch.aspx</DependentUpon>
