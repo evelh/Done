@@ -35,5 +35,6 @@ namespace EMT.DoneNOW.DTO
         public long? contract_cate_id;
         public string isSub;  // 是否时子公司条目（子公司条目可见不可选）
         public long id;  // 条目ID
+        public long? bill_account_id;     // 该条目的计费客户
     }
 }

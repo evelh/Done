@@ -188,6 +188,7 @@
     <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Invoice\InvocieSearch.aspx" />
+    <Content Include="Invoice\InvoicePreview.aspx" />
     <Content Include="Invoice\InvoiceSearchResult.aspx" />
     <Content Include="Invoice\InvoiceWizard.aspx" />
     <Content Include="Invoice\InvoiceNumberAndDateEdit.aspx" />
@@ -981,6 +982,13 @@
     </Compile>
     <Compile Include="Invoice\InvocieSearch.aspx.designer.cs">
       <DependentUpon>InvocieSearch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Invoice\InvoicePreview.aspx.cs">
+      <DependentUpon>InvoicePreview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Invoice\InvoicePreview.aspx.designer.cs">
+      <DependentUpon>InvoicePreview.aspx</DependentUpon>
     </Compile>
     <Compile Include="Invoice\InvoiceSearchResult.aspx.cs">
       <DependentUpon>InvoiceSearchResult.aspx</DependentUpon>

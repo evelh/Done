@@ -91,7 +91,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     {
                         contact_id.SelectedValue = iProduct.contact_id.ToString();
                     }
-                    viewSubscription_iframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUBSCRIPTION + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.Subscription + "&installed_product_id=" + iProduct.id;
+                    viewSubscription_iframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONFIGSUBSCRIPTION + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.CONFIGSUBSCRIPTION + "&id=" + iProduct.id;
                     // todo 订阅的通用查询
                     // "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_COMPANY_VIEW + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.ContactCompanyView + "&id=" + id;
                 }

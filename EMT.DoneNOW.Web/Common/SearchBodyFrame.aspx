@@ -2253,7 +2253,7 @@
             OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
          <%}//历史发票查询
-        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Invoice_History)           
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Invoice_History)
         {%>
         //修改发票
         function EditInvoice() {
@@ -2726,6 +2726,86 @@
          function View(id) {
              window.open('../Opportunity/OpportunityStage.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
          }
+        <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.CONFIGSUBSCRIPTION)
+        {%>
+
+         function Add() {
+             window.open("../ConfigurationItem/SubscriptionAddOrEdit.aspx?insProId=" + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SubscriptionEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+
+         function Edit() {
+             window.open("../ConfigurationItem/SubscriptionAddOrEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SubscriptionEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Update() {
+
+         }
+         function Cancel()
+         {
+             if (confirm("你选择取消此订阅,将导致该订阅的所有未计费项被立即取消,通常在该客户永久注销的前提下操作, 该操作无法恢复确定无论如何都要取消此订阅?")) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/SubscriptionAjax.ashx?act=activeSubscript&status_id=2&sid=" + entityid,
+                     async: false,
+                     success: function (data) {
+                         if (data == "ok") {
+                             alert('取消成功');
+                             history.go(0);
+                         } else if (data == "Already") {
+                             alert('已经取消');
+                         }
+                         else {
+                             alert("取消失败");
+                         }
+
+                     }
+                 })
+             }
+
+         }
+         function Invalid() {
+             if (confirm("你选择注销(搁置)此订阅,,该订阅的计费项将继续计费,该订阅的关联支持服务将被停止,该操作通常发生在客户发生欠费或者该客户的服务被暂停,你确定无法如何都要注销此订阅?")) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/SubscriptionAjax.ashx?act=activeSubscript&status_id=0&sid=" + entityid,
+                     async: false,
+                     success: function (data) {
+                         if (data == "ok") {
+                             alert('失活成功');
+                             history.go(0);
+                         } else if (data == "Already") {
+                             alert('已经失活');
+                         }
+                         else {
+                             alert("失活失败");
+                         }
+
+                     }
+                 })
+             }
+         }
+         function Delete() {
+             if (confirm("你选择注销(搁置)此订阅,,该订阅的计费项将继续计费,该订阅的关联支持服务将被停止,该操作通常发生在客户发生欠费或者该客户的服务被暂停,你确定无法如何都要注销此订阅?")) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/SubscriptionAjax.ashx?act=activeSubscript&status_id=0&sid=" + entityid,
+                     async: false,
+                     success: function (data) {
+                         if (data == "ok") {
+                             alert('失活成功');
+                             history.go(0);
+                         } else if (data == "Already") {
+                             alert('已经失活');
+                         }
+                         else {
+                             alert("失活失败");
+                         }
+
+                     }
+                 })
+             }
+         }
+
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

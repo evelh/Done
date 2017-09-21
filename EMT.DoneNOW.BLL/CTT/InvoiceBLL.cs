@@ -29,7 +29,7 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
-        /// 发票处理--针对多个发票处理
+        /// 发票处理/生成发票向导--针对多个发票处理
         /// </summary>
         /// <returns></returns>
         public bool ProcessInvoice(InvoiceDealDto param,long user_id)
@@ -108,7 +108,7 @@ namespace EMT.DoneNOW.BLL
                     var invDetail = new ctt_invoice_detail()
                     {
                         invoice_id = invocie.id,
-                        //is_emailed = (sbyte)(param.isInvoiceEmail?1:0),
+                        //is_emailed = (sbyte)(param.isInvoiceEmail?1:0),    
                     };
                     cidDal.Insert(invDetail);
                     new sys_oper_log_dal().Insert(new sys_oper_log()

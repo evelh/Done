@@ -171,6 +171,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.OPPPORTUNITYLOSSREASON:
                     addBtn = "新增丢失商机原因";
                     break;
+                case (int)DicEnum.QUERY_CATE.CONFIGSUBSCRIPTION:
+                    addBtn = "新增订阅";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -549,6 +552,13 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.Market:
                 case (long)QueryType.COMPETITOR:
                     contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.CONFIGSUBSCRIPTION:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "更新", click_function = "Update()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "取消", click_function = "Cancel()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失效", click_function = "Invalid()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:

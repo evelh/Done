@@ -626,30 +626,30 @@
     // 计算订阅期数还有
     function Subscription() {
         var periods = 1;       // 订阅期数
-        var diffDay = 0;
+        //var diffDay = 0;
         var firstDate = $("#effective_date").val();
         var lastDate = $("#expiration_date").val();
         var period_type_id = $("#period_type_id").val();
         var months = 1;
         if (firstDate != "" && lastDate != "") {
-            diffDay = DateDiff(firstDate, lastDate);
+            //diffDay = DateDiff(firstDate, lastDate);
             if (period_type_id == '<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME %>') {
 
             }
             else if (period_type_id =='<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH %>') {
-                // periods = Math.ceil(diffDay / 30);
+               
                 months = MonthDiff(firstDate, lastDate);
             }
             else if (period_type_id =='<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER %>') {
-                // periods = Math.ceil(diffDay / 90);
+                
                 months = Number(MonthDiff(firstDate, lastDate)) / 3;
             }
             else if (period_type_id =='<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR %>') {
-                // periods = Math.ceil(diffDay / 180);
+                
                 months = Number(MonthDiff(firstDate, lastDate)) / 6;
             }
             else if (period_type_id =='<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR %>') {
-                // periods = Math.ceil(diffDay / 365);
+                
                 months = Number(MonthDiff(firstDate, lastDate)) / 12;
             }
 
@@ -698,26 +698,6 @@
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COST_CALLBACK %>&field=cost_code_id", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ServiceSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
-
-    function DateDiff(sDate1, sDate2) {  //sDate1和sDate2是yyyy-MM-dd格式
-
-        var aDate, oDate1, oDate2, iDays;
-
-        aDate = sDate1.split("-");
-
-        oDate1 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0]);  //转换为yyyy-MM-dd格式
-
-        aDate = sDate2.split("-");
-
-        oDate2 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0]);
-
-        iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24); //把相差的毫秒数转换为天数
-
-
-
-        return iDays;  //返回相差天数
-
-    }
 
     function MonthDiff(date1, date2) {
         debugger;

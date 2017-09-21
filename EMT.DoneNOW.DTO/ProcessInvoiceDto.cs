@@ -31,5 +31,7 @@ namespace EMT.DoneNOW.DTO
         public bool isShowEmail = false;  // 向导专用
         public bool isQuickBooks = false;  // 向导专用
 
+        public long account_id;    // 跳转预览界面使用
+
     }
 }

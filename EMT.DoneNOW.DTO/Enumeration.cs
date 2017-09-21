@@ -462,7 +462,8 @@ namespace EMT.DoneNOW.DTO
             APPROVE_MILESTONES = 1515,            //里程碑审批
             APPROVE_SUBSCRIPTIONS = 1516,         //订阅审批
             APPROVE_RECURRING_SERVICES = 1517,    //定期服务审批           
-
+            CONFIGSUBSCRIPTION=1523,              // 配置项中的订阅管理
+            PROJECTCALLBACK=1524,                  // 项目的查找带回
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
             APPROVE_LABOUR,                //工时审批
@@ -840,6 +841,7 @@ namespace EMT.DoneNOW.DTO
         APPROVE_MILESTONES = 85,            //里程碑审批
         APPROVE_SUBSCRIPTIONS=86,           //订阅审批
         APPROVE_RECURRING_SERVICES = 87,    //定期服务审批   
+        CONFIGSUBSCRIPTION = 93,           // 配置项界面订阅管理
 
         REVOKE_LABOUR,                 //撤销工时审批
         REVOKE_EXPENSE,                //撤销费用审批      
@@ -970,5 +972,7 @@ namespace EMT.DoneNOW.DTO
         ACCOUNTTYPE=390,                           //客户类别
         OPPORTUNITYWIN=391,                        //关闭商机原因
         OPPORTUNITYLOSS= 391,                       //丢失商机原因
+
+        PROJECTCALLBACK=400,                  // 项目查找带回
     }
 }

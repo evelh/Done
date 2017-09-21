@@ -148,11 +148,11 @@ namespace EMT.DoneNOW.Web.Invoice
             }
             if (!string.IsNullOrEmpty(startDate))
             {
-                sqlWhere.Append($" and item_date>={startDate}");
+                sqlWhere.Append($" and item_date>='{startDate}'");
             }
             if (!string.IsNullOrEmpty(endDate))
             {
-                sqlWhere.Append($" and item_date>={endDate}");
+                sqlWhere.Append($" and item_date<='{endDate}'");
             }
             if (!string.IsNullOrEmpty(type))
             {
@@ -177,7 +177,20 @@ namespace EMT.DoneNOW.Web.Invoice
 
             // todo 其余三个Show的过滤
 
-            var deeList = new crm_account_deduction_dal().GetInvDedDtoList(sqlWhere.ToString()+" and account_name='"+ chooseAccount.name+"'");
+            if (!showserviceContract)
+            {
+                sqlWhere.Append($" and (item_type in(1318,1319) and contract_type_id not in(1199) or  item_type not in(1318,1319) )");
+            }
+            if (!showFixPrice)
+            {
+                sqlWhere.Append($" and  (item_type in(1318,1319) and contract_type_id not in(1201) or  item_type not in(1318,1319) )");
+            }
+            if (showPriceZero)
+            {
+                sqlWhere.Append($" and dollars <>0");
+            }
+
+            var deeList = new crm_account_deduction_dal().GetInvDedDtoList(sqlWhere.ToString()+ $" and (account_id = {chooseAccount.id} or bill_account_id={chooseAccount.id} ) ");
 
             #region  加上子公司的条目
             if (showChildAcc) // 代表用户选中展示子客户条目
@@ -187,10 +200,12 @@ namespace EMT.DoneNOW.Web.Invoice
                 {
                     foreach (var childAcc in childAccList)
                     {
-                        var childAccDedList = cadDal.GetInvDedDtoList(sqlWhere.ToString()+" and account_name='"+ chooseAccount.name+"'");
+                        var childAccDedList = cadDal.GetInvDedDtoList(sqlWhere.ToString()+ " and account_id=" + childAcc.id+ " and bill_account_id <>"+ chooseAccount.id);
                         if (childAccDedList != null && childAccDedList.Count > 0)
                         {
-                            childAccDedList.ForEach(_ => { _.isSub = "1";});
+                            childAccDedList.ForEach(_ => {                        
+                                    _.isSub = "1";
+                            });
                             deeList.AddRange(childAccDedList); // 循环添加子客户条目
                         }
                     }
@@ -199,10 +214,14 @@ namespace EMT.DoneNOW.Web.Invoice
             StringBuilder dedHtml = new StringBuilder();
             if (deeList != null && deeList.Count > 0)
             {
+                deeList = deeList.Distinct().ToList();
                 foreach (var invDedDto in deeList)
                 {
-                    var ischeck = invDedDto.isSub == "1" ? "disabled" : "checked";
-                    var imgSrc = ""; // 根据类型选择图片位置
+                    // 1 代表是不可选的子客户
+                    // 2 待定 可选但是默认不选
+                    var ischeck = invDedDto.isSub == "1" ? "disabled" : invDedDto.isSub == "2"?"": "checked";
+
+                    var imgSrc = invDedDto.type_icon; // 根据类型选择图片位置
 
                     var itemName = invDedDto.item_name;  // todo 部分有下标名
                     var rate = invDedDto.rate == null ? "" : ((decimal)invDedDto.rate).ToString("#0.00");
@@ -241,8 +260,10 @@ namespace EMT.DoneNOW.Web.Invoice
             //var invoice = AssembleModel<ctt_invoice>();
             param.ids = Request.Form["accDedIds"];
             param.payment_term_id = param.payment_term_id == 0 ? null : param.payment_term_id;
-
-
+            param.invoice_template_id = int.Parse(Request.Form["invoice_tmpl_id"]);
+            param.isShowPrint = invShow.Checked;
+            param.isShowEmail = emailShow.Checked;
+            param.isQuickBooks = quickBookShow.Checked;
 
             if (contract_udfList != null && contract_udfList.Count > 0)                      
             {

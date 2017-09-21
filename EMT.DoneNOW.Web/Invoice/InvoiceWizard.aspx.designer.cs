@@ -166,6 +166,33 @@ namespace EMT.DoneNOW.Web.Invoice {
         protected global::System.Web.UI.WebControls.DropDownList payment_term_id;
         
         /// <summary>
+        /// invShow 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox invShow;
+        
+        /// <summary>
+        /// emailShow 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox emailShow;
+        
+        /// <summary>
+        /// quickBookShow 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox quickBookShow;
+        
+        /// <summary>
         /// finishNowC3 控件。
         /// </summary>
         /// <remarks>

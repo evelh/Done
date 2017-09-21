@@ -21,7 +21,7 @@
         <div class="Workspace Workspace1">
             <div class="WizardSection" style="padding-bottom: 10px;">
                 <span class="FieldLabels">发票模板 
-                </span>
+                </span><span class="errorSmall">*</span>
                 <div>
                     <asp:DropDownList ID="invoice_tmpl_id" runat="server" Width="185px"></asp:DropDownList>
                 </div>
@@ -42,7 +42,7 @@
                                                     <div>
                                                         <input type="text" style="width: 196px;" id="account_id" value="<%=account!=null?account.name:"" %>" />
                                                         <input type="hidden" name="account_id" id="account_idHidden" value="" runat="server" />
-                                                        <img src="../Images/data-selector.png" style="vertical-align: middle;" onclick="chooseAccount()">
+                                                        <img src="../Images/data-selector.png" style="vertical-align: middle;" onclick="chooseAccount()" />
                                                     </div>
                                                 </td>
                                             </tr>
@@ -64,7 +64,7 @@
                                                         </span>
                                                         <span>
                                                             <input type="checkbox" id="ckPirceZero" checked="checked" runat="server" />
-                                                            <label style="font-weight: 100;">显示定期服务/服务包价格为0的条目</label>
+                                                            <label style="font-weight: 100;">不显示定期服务/服务包价格为0的条目</label>
                                                         </span>
                                                     </div>
                                                 </td>
@@ -221,7 +221,7 @@
                                                             <thead>
                                                                 <tr>
                                                                     <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
+                                                                        <input type="checkbox" style="margin: 0;" id="checkAll">
                                                                     </td>
                                                                     <td width="20" align="center">计费项类型</td>
                                                                     <td width="20" align="center">条目创建时间</td>
@@ -332,12 +332,12 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="FieldLabels" width="50%">发票开始日期   
+                                                                    <td class="FieldLabels" width="50%">发票开始日期   <span class="errorSmall">*</span>
                                                                     <div>
                                                                         <input type="text" style="width: 104px;" onclick="WdatePicker()" class="Wdate" name="date_range_from" id="date_range_from" />
                                                                     </div>
                                                                     </td>
-                                                                    <td class="FieldLabels" width="50%">发票结束时间
+                                                                    <td class="FieldLabels" width="50%">发票结束时间<span class="errorSmall">*</span>
                                                                     <div>
                                                                         <input type="text" style="width: 104px;" onclick="WdatePicker()" class="Wdate" name="date_range_to" id="date_range_to">
                                                                     </div>
@@ -387,7 +387,7 @@
                                                                 <tr>
                                                                     <td class="FieldLabels">
                                                                         <div>
-                                                                            <input type="checkbox" style="vertical-align: middle;" id="invShow" checked="checked" />
+                                                                            <input type="checkbox" style="vertical-align: middle;" id="invShow" checked="checked" runat="server" />
                                                                             <label for="invShow" style="font-weight: normal; cursor: pointer;">打印预览</label>
                                                                         </div>
                                                                     </td>
@@ -395,7 +395,7 @@
                                                                 <tr>
                                                                     <td class="FieldLabels">
                                                                         <div>
-                                                                            <input type="checkbox" style="vertical-align: middle;" disabled id="emailShow">
+                                                                            <input type="checkbox" style="vertical-align: middle;" disabled id="emailShow" runat="server">
                                                                             <label style="font-weight: normal; cursor: pointer;">邮件</label>
                                                                         </div>
                                                                     </td>
@@ -403,7 +403,7 @@
                                                                 <tr>
                                                                     <td class="FieldLabels">
                                                                         <div>
-                                                                            <input type="checkbox" style="vertical-align: middle;" disabled id="quickBookShow" />
+                                                                            <input type="checkbox" style="vertical-align: middle;" disabled id="quickBookShow" runat="server" />
                                                                             <label style="font-weight: normal; cursor: pointer;">Transfer Invoice to QuickBooks</label>
                                                                         </div>
                                                                     </td>
@@ -759,7 +759,7 @@
 <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 <script src="../Scripts/common.js"></script>
 <script>
-    $("#b1").on("click", function () {
+    $("#lbnext").on("click", function () {
         var invoice_tmpl_id = $("#invoice_tmpl_id").val();
         if (invoice_tmpl_id == "" || invoice_tmpl_id == "0") {
             alert("请选择发票模板");
@@ -775,14 +775,24 @@
             alert("请选择条目结束时间");
             return false;
         }
+        if (!DateJudge(itemStartDate, itemEndDate)) {
+            alert("条目结束时间必须晚于条目开始时间");
+            return false;
+        }
+        var account_id = $("#account_idHidden").val();
+        if (account_id == "") {
+            alert("请通过查找带回选择客户");
+            return false;
+        }
+
         debugger;
         $("#date_range_from").val(itemStartDate);
         $("#date_range_to").val(itemEndDate);
           
 
 
-        $(".Workspace1").hide();
-        $(".Workspace2").show();
+        //$(".Workspace1").hide();
+        //$(".Workspace2").show();
     });
     $("#a2").on("click", function () {
         $(".Workspace1").show();
@@ -883,6 +893,36 @@
         }
     })
 
+    $("#finishNowC3_Click").click(function () {
+        if (!SubmitCheck()) {
+            return false;
+        }
+        return true;
+    })
+    $("#FinishNowC4").click(function () {
+        if (!SubmitCheck()) {
+            return false;
+        }
+        return true;
+    })
+
+    $("#finish").click(function () {
+        if (!SubmitCheck()) {
+            return false;
+        }
+        return true;
+    })
+    $("#checkAll").click(function () {
+        if ($(this).is(":checked")) {
+            $(".thisDedCheck").prop("checked", true);
+            // $(".IsChecked").css("checked", "checked");
+        }
+        else {
+            $(".thisDedCheck").prop("checked", false);
+            // $(".IsChecked").css("checked", "");
+        }
+    })
+   
 
 
     function chooseAccount() {
@@ -891,7 +931,8 @@
     }
 
     function ChooseProject() {
-        // 项目的查找带回 project_idHidden
+        // 项目的查找带回 project_idHidden // PROJECTCALLBACK
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECTCALLBACK %>&field=project_id", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECTCALLBACK %>', 'left=200,top=200,width=600,height=800', false);
     } 
     // 计算出税额--条目的id的集合（accDedIds），税区id（thisValue）
     function GetTaxSum(accDedIds, thisValue) {
@@ -907,5 +948,52 @@
 
     }
 
-  
+
+    function SubmitCheck() {
+        var invoice_tmpl_id = $("#invoice_tmpl_id").val();
+        if (invoice_tmpl_id == "" || invoice_tmpl_id == "0") {
+            alert("请选择发票模板");
+            return false;
+        }
+        var account_id = $("#account_idHidden").val();
+        if (account_id == "") {
+            alert("请通过查找带回选择客户");
+            return false;
+        }// invoice_date
+        var invoice_date = $("#invoice_date").val();
+        if (invoice_date == "") {
+            alert("请选择发票时间");
+            return false;
+        }
+        var date_range_from = $("#date_range_from").val();
+        if (date_range_from == "") {
+            alert("请选择发票开始时间");
+            return false;
+        }
+        var date_range_to = $("#date_range_to").val();
+        if (date_range_to == "") {
+            alert("请选择发票结束时间");
+            return false;
+        }
+        if (!DateJudge(date_range_from, date_range_to)) {
+            alert("发票结束时间必须晚于发票开始时间");
+            return false;
+        }
+
+
+        return true;
+    }
+
+    // 比较两个时间的先后 相等返回true
+    function DateJudge(beginDate, endDate) {
+        debugger;
+        var d1 = new Date(beginDate.replace(/\-/g, "\/"));
+        var d2 = new Date(endDate.replace(/\-/g, "\/"));
+
+        if (beginDate != "" && endDate != "" && d1 > d2) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 </script>
