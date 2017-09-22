@@ -141,6 +141,7 @@
                                 <div class="clear">
                                     <label>成交概率</label>
                                     <input type="text" name="probability" id="probability" value="<%=(!isAdd)&&(opportunity.probability!=null)?opportunity.probability.ToString():"" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                    <span class="fl" style="margin-top:5px;">%</span>
                                 </div>
                             </td>
                         </tr>

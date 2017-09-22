@@ -35,7 +35,7 @@ ul,ul li{margin: 0;padding: 0;}
 .content label{display:inline-block;color: #151515;font-size:14px;width:170px;text-align: right;height: 30px;line-height: 30px;
 position: relative;
 float: left;overflow: hidden;}
-.content label .red{color: red ;  vertical-align: super; right: -10px;top: 0;} /*position: absolute;*/
+.content label .red{color: red ; right: -10px;top: 0;} /*position: absolute;*/
 .content label .num{color: #666666;font-size: 12px;  vertical-align: super; }
 .content input{float: left;width:180px;margin-left:15px;height:30px;line-height:30px;}
 .content textarea{float: left;width:180px;margin-left:15px;resize:none;height: 100px;}
@@ -173,7 +173,9 @@ border: 1px solid #a9a9a9;border-left:none ;}
 .page select{padding: 0 20px 0 10px;margin: 0 10px;}
    
 .clear{overflow:hidden;}
-
+img,i{
+    cursor:pointer;
+}
 
 
 
