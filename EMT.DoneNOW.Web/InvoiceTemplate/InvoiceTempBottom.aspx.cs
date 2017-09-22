@@ -1,4 +1,5 @@
 ﻿using EMT.DoneNOW.BLL;
+using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,24 +10,38 @@ using System.Web.UI.WebControls;
 
 namespace EMT.DoneNOW.Web
 {
-    public partial class QuoteTemplateTopEdit :BasePage
+    public partial class InvoiceTempBottom : BasePage
     {
-        public int id; 
-        public string quote_head;
+        protected int id;
+        protected InvioceTempDto.TempContent tempinfo = null;
+        protected string foot;
+        protected List<InvioceTempDto.SETTING_ITEM> bottom_value;
+        protected InvioceTempDto.Invoice_ext bottomttt;
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
-            if (!IsPostBack) {                
-                if (Session["quote_head"] != null && !string.IsNullOrEmpty(Session["quote_head"].ToString()))
+            if (!IsPostBack)
+            {
+                tempinfo = Session["tempinfo"] as InvioceTempDto.TempContent;
+                if (tempinfo != null && tempinfo.id == id)
                 {
-                    quote_head = HttpUtility.HtmlDecode(Session["quote_head"].ToString()).Replace("\"", "'");
+                    foot = HttpUtility.HtmlDecode(tempinfo.head).Replace("\"", "'");
+                    bottomttt = new EMT.Tools.Serialize().DeserializeJson<InvioceTempDto.Invoice_ext>(tempinfo.Invoice_text);
+                    if (tempinfo.tax_cat == 1) {
+                        this.tax_cate.Checked = true;
+                    }
+                    if (tempinfo.tax_group == 1) {
+                        this.tax_group.Checked = true;
+                    }
+                    if (tempinfo.tax_sup == 1) {
+                        this.tax_sup.Checked = true;
+                    }
                 }
                 this.AlertVariableFilter.DataTextField = "show";
                 this.AlertVariableFilter.DataValueField = "val";
                 this.AlertVariableFilter.DataSource = new QuoteTemplateBLL().GetVariableField();
                 this.AlertVariableFilter.DataBind();
                 this.AlertVariableFilter.Items.Insert(0, new ListItem() { Value = "0", Text = "显示全部变量", Selected = true });
-                //
                 var list = new QuoteTemplateBLL().GetAllVariable();
                 StringBuilder sb = new StringBuilder();
                 foreach (string va in list)
@@ -35,16 +50,42 @@ namespace EMT.DoneNOW.Web
                 }
                 this.VariableList.Text = sb.ToString();
             }
-            
-            //quote_head = HttpUtility.HtmlDecode(data.quote_header_html).Replace("\"", "'");
         }
 
         protected void Save(object sender, EventArgs e)
         {
-            string tt = Request.Form["data"].Trim().ToString().Replace("\"","'");
-            Session["quote_head"] = tt;
+            string tt = Request.Form["data"].Trim().ToString().Replace("\"", "'");
+            tempinfo = Session["tempinfo"] as InvioceTempDto.TempContent;
+            tempinfo.bottom = tt;
+            string t = Convert.ToString(Request.Form["bottom"].ToString());
+            t = t.Replace("[,", "[").Replace(",]", "]");
+            var addset = new EMT.Tools.Serialize().DeserializeJson<InvioceTempDto.Invoice_ext>(tempinfo.Invoice_text);
+            addset.Bottom_Item = new EMT.Tools.Serialize().DeserializeJson<InvioceTempDto.Invoice_ext2>(t).item;
+            tempinfo.Invoice_text = new EMT.Tools.Serialize().SerializeJson(addset);
+            if (this.tax_sup.Checked)
+            {
+                tempinfo.tax_sup = 1;
+            }
+            else {
+                tempinfo.tax_sup = 0;
+            }
+            if (this.tax_cate.Checked)
+            {
+                tempinfo.tax_cat = 1;
+            }
+            else {
+                tempinfo.tax_cat = 0;
+            }
+            if (this.tax_group.Checked)
+            {
+                tempinfo.tax_group = 1;
+            }
+            else {
+                tempinfo.tax_group = 0;
+            }
+            Session["tempinfo"] = tempinfo;
             Session["cancel"] = 1;
-            Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
+            Response.Redirect("InvoiceTempEdit.aspx?id=" + id + "&op=edit");
         }
 
         protected void AlertVariableFilter_SelectedIndexChanged(object sender, EventArgs e)
@@ -72,11 +113,10 @@ namespace EMT.DoneNOW.Web
                 this.VariableList.Text = sb.ToString();
             }
         }
-
         protected void Button1_Click(object sender, EventArgs e)
         {
             Session["cancel"] = 1;
-            Response.Redirect("QuoteTemplateEdit.aspx?id=" + id + "&op=edit");
+            Response.Redirect("InvoiceTempEdit.aspx?id=" + id + "&op=edit");
         }
     }
 }

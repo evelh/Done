@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="InvoiceTemp_OneTop.aspx.cs" Inherits="EMT.DoneNOW.Web.InvoiceTemp_OneTop" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="InvoiceTempTop.aspx.cs" Inherits="EMT.DoneNOW.Web.InvoiceTempTop" %>
 
 <!DOCTYPE html>
 
@@ -15,8 +15,8 @@
              <!--顶部  内容和帮助-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">发票模板nav</span>
-            <span class="text2">- burberryquotetemplate</span>
+            <span class="text1">发票模板--<%=opop%></span>
+            <span class="text2">--<%=tempinfo.name %></span>
             <a href="###" class="help"></a>
         </div>
     </div>
@@ -24,25 +24,29 @@
         <div></div>
         <!--按钮部分-->
         <div class="ButtonContainer">
-            <ul id="btn">
+           <ul id="btn">
                 <li class="Button ButtonIcon Okey NormalState" id="OkButton" tabindex="0">
                     <span class="Icon Ok"></span>
-                    <span class="Text">确认</span>
+                     <asp:Button ID="OkButton1" runat="server" Text="确认" cssclass="Text" BorderStyle="None" OnClick="Save" />
+                    <input id="data" type="hidden" name="data" value=""/>
                 </li>
                 <li class="Button ButtonIcon Cancel NormalState" id="CancelButton" tabindex="0">
                     <span class="Icon Cancel"></span>
-                    <span class="Text">取消</span>
+                     <asp:Button ID="cancel" runat="server" Text="取消" cssclass="Text" BorderStyle="None" OnClick="Button1_Click"/>
                 </li>
+               <%if (op == "top")
+                   { %>
                 <li class="Button ButtonIcon Reset NormalState" id="ResetButton" tabindex="0">
                     <span class="Icon Reset"></span>
                     <span class="Text">恢复默认内容</span>
                 </li>
+               <%} %>
             </ul>
         </div>
 <div style="position: absolute;left: 0;overflow-x: auto;overflow-y: auto;right: 0;top: 82px;bottom: 0px;">
     <div class="Section">
-        <div class="Heading">发票模板第二部分</div>
-        <div class="DescriptionText">这是发票模板第二部分</div>
+        <div class="Heading">发票模板--<%=opop %></div>
+        <div class="DescriptionText"></div>
         <div class="Content">
             <script id="containerHead" name="content" type="text/plain"></script>
             <div class="Dialog">
@@ -61,39 +65,18 @@
             </div>
             <div class="VariableInsertion">
                 <div class="AlertContent">
-                    <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
-                    <select name="" id="AlertVariableFilter">
-                        <option value="1">Show All Variables</option>
-                        <option value="2">Show Account Variables</option>
-                        <option value="3">Show Contact Variables</option>
-                        <option value="4">Show Opportunity Variables</option>
-                        <option value="5">Show Quote Variables</option>
-                        <option value="6">Show Miscellaneous Variables</option>
-                        <option value="7">Show Your Company Variables</option>
-                        <option value="8">Show Your Location Variables</option>
+               <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
+
+                     <asp:ScriptManager ID="ScriptManager1" runat="server">
+         </asp:ScriptManager>
+         <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">
+             <ContentTemplate>
+              <asp:DropDownList ID="AlertVariableFilter" runat="server" OnSelectedIndexChanged="AlertVariableFilter_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>              
+                 <select name="" multiple="multiple" id="AlertVariableList">
+                         <asp:Literal ID="VariableList" runat="server"></asp:Literal>
                     </select>
-                    <select name="" multiple="multiple" id="AlertVariableList">
-                        <option value="" class="val">1</option>
-                        <option value="" class="val">2</option>
-                        <option value="" class="val">3</option>
-                        <option value="" class="val">4</option>
-                        <option value="" class="val">5</option>
-                        <option value="" class="val">6</option>
-                        <option value="" class="val">7</option>
-                        <option value="" class="val">8</option>
-                        <option value="" class="val">9</option>
-                        <option value="" class="val">10</option>
-                        <option value="" class="val">1</option>
-                        <option value="" class="val">2</option>
-                        <option value="" class="val">3</option>
-                        <option value="" class="val">4</option>
-                        <option value="" class="val">5</option>
-                        <option value="" class="val">6</option>
-                        <option value="" class="val">7</option>
-                        <option value="" class="val">8</option>
-                        <option value="" class="val">9</option>
-                        <option value="" class="val">10</option>
-                    </select>
+             </ContentTemplate>
+         </asp:UpdatePanel>
                 </div>
             </div>
         </div>
@@ -136,6 +119,7 @@
         });
         ue.ready(function(){
             //获取html内容  返回：<p>内容</p>
+            ue.setContent("<%= head%>");
             var html = ue.getContent();
             //获取纯文本内容  返回：内容
             var txt = ue.getContentTxt();
@@ -256,16 +240,13 @@
             ue.setContent(Model);
         });
         //        点击确定数据保存至后台  在展示页展示
-        $("#OkButton").on("click",function(){
+        $("#OkButton1").on("click", function () {
             var html = ue.getContent();
             console.log(html);
+            $("#data").val($('<div/>').text(html).html());
             var txt = ue.getContentTxt();
             console.log(txt);
-        })
-        //        点击取消直接返回
-        $("#CancelButton").on("click",function(){
-            window.location.href="QuotationTemplate.html";
-        })
+        });
         //情空内容
         $("#ResetButton").on("click",function(){
             ue.setContent('')

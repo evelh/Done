@@ -60,7 +60,6 @@
                     <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
 
                    <%-- 这里是弹窗选择项--%>
-
                      <asp:ScriptManager ID="ScriptManager1" runat="server">
          </asp:ScriptManager>
          <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">

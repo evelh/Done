@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="InvoiceTemp_OneBody.aspx.cs" Inherits="EMT.DoneNOW.Web.InvoiceTempBody" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="InvoiceTempBody.aspx.cs" Inherits="EMT.DoneNOW.Web.InvoiceTempBody" %>
 
 <!DOCTYPE html>
 
@@ -16,7 +16,7 @@
             <div class="TitleBar">
                 <div class="Title">
                     <span class="text1">发票模板主体</span>
-                    <span class="text2">- burberryquotetemplate</span>
+                    <span class="text2">--<%=temp.name %></span>
                     <a href="###" class="help"></a>
                 </div>
             </div>
@@ -27,7 +27,9 @@
                 <ul id="btn">
                     <li class="Button ButtonIcon Okey NormalState" id="OkButton" tabindex="0">
                         <span class="Icon Ok"></span>
-                        <span class="Text">确认</span>
+                        <asp:Button ID="OkButton1" runat="server" Text="确认" CssClass="Text" BorderStyle="None" OnClick="Save" />
+                        <input type="hidden" id="typetype" name="typetype" />
+                        <input type="hidden" id="typett" name="typett" /><input type="hidden" id="data" name="data" />
                     </li>
                 </ul>
             </div>
@@ -89,7 +91,7 @@
                                                         <div class="Decoration Icon DragHandle next">
                                                             <img src="../RichText/img/next.png" alt="">
                                                         </div>
-                                                        <div class="Sort">1</div>
+                                                        <div class="Sort Order">1</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">发票中显示序列号，从1开始</td>
@@ -107,7 +109,7 @@
                                                         <div class="Decoration Icon DragHandle next">
                                                             <img src="../RichText/img/next.png" alt="">
                                                         </div>
-                                                        <div class="Sort">2</div>
+                                                        <div class="Sort Order">2</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">条目创建日期</td>
@@ -123,9 +125,9 @@
                                                             <img src="../RichText/img/prev.png" alt="">
                                                         </div>
                                                         <div class="Decoration Icon DragHandle next">
-                                                            <img src="../RichText/img/next.png" alt="">
+                                                            <img src="../RichText/img/next.png" alt="" />
                                                         </div>
-                                                        <div class="Sort">3</div>
+                                                        <div class="Sort Order">3</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">条目描述</td>
@@ -138,12 +140,12 @@
                                                 <td class="Interaction">
                                                     <div>
                                                         <div class="Decoration Icon DragHandle prev">
-                                                            <img src="../RichText/img/prev.png" alt="">
+                                                            <img src="../RichText/img/prev.png" alt="" />
                                                         </div>
                                                         <div class="Decoration Icon DragHandle next">
-                                                            <img src="../RichText/img/next.png" alt="">
+                                                            <img src="../RichText/img/next.png" alt="" />
                                                         </div>
-                                                        <div class="Sort">4</div>
+                                                        <div class="Sort Order">4</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">类型</td>
@@ -161,7 +163,7 @@
                                                         <div class="Decoration Icon DragHandle next">
                                                             <img src="../RichText/img/next.png" alt="">
                                                         </div>
-                                                        <div class="Sort">5</div>
+                                                        <div class="Sort Order">5</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">员工姓名</td>
@@ -174,12 +176,12 @@
                                                 <td class="Interaction">
                                                     <div>
                                                         <div class="Decoration Icon DragHandle prev">
-                                                            <img src="../RichText/img/prev.png" alt="">
+                                                            <img src="../RichText/img/prev.png" alt="" />
                                                         </div>
                                                         <div class="Decoration Icon DragHandle next">
-                                                            <img src="../RichText/img/next.png" alt="">
+                                                            <img src="../RichText/img/next.png" alt="" />
                                                         </div>
-                                                        <div class="Sort">6</div>
+                                                        <div class="Sort Order">6</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">计费时间</td>
@@ -197,7 +199,7 @@
                                                         <div class="Decoration Icon DragHandle next">
                                                             <img src="../RichText/img/next.png" alt="">
                                                         </div>
-                                                        <div class="Sort">7</div>
+                                                        <div class="Sort Order">7</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">数量</td>
@@ -215,7 +217,7 @@
                                                         <div class="Decoration Icon DragHandle next">
                                                             <img src="../RichText/img/next.png" alt="">
                                                         </div>
-                                                        <div class="Sort">8</div>
+                                                        <div class="Sort Order">8</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">费率/成本</td>
@@ -233,7 +235,7 @@
                                                         <div class="Decoration Icon DragHandle next">
                                                             <img src="../RichText/img/next.png" alt="">
                                                         </div>
-                                                        <div class="Sort">9</div>
+                                                        <div class="Sort Order">9</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">税率</td>
@@ -251,7 +253,7 @@
                                                         <div class="Decoration Icon DragHandle next">
                                                             <img src="../RichText/img/next.png" alt="">
                                                         </div>
-                                                        <div class="Sort">10</div>
+                                                        <div class="Sort Order">10</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">税</td>
@@ -269,7 +271,7 @@
                                                         <div class="Decoration Icon DragHandle next">
                                                             <img src="../RichText/img/next.png" alt="">
                                                         </div>
-                                                        <div class="Sort">11</div>
+                                                        <div class="Sort Order">11</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">计费总额</td>
@@ -287,7 +289,7 @@
                                                         <div class="Decoration Icon DragHandle next">
                                                             <img src="../RichText/img/next.png" alt="">
                                                         </div>
-                                                        <div class="Sort">12</div>
+                                                        <div class="Sort Order">12</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">小时费率</td>
@@ -305,7 +307,7 @@
                                                         <div class="Decoration Icon DragHandle next">
                                                             <img src="../RichText/img/next.png" alt="">
                                                         </div>
-                                                        <div class="Sort">13</div>
+                                                        <div class="Sort Order">13</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">角色</td>
@@ -323,7 +325,7 @@
                                                         <div class="Decoration Icon DragHandle next">
                                                             <img src="../RichText/img/next.png" alt="">
                                                         </div>
-                                                        <div class="Sort">14</div>
+                                                        <div class="Sort Order">14</div>
                                                     </div>
                                                 </td>
                                                 <td class="Text E U1">工作类型</td>
@@ -353,7 +355,7 @@
                             <div class="Normal Editor CheckBox">
                                 <div class="InputField">
                                     <div>
-                                        <input type="checkbox" id="ShowGridHeader" checked="checked" style="margin-top: 3px;">
+                                        <input type="checkbox" id="ShowGridHeader" checked="checked" style="margin-top: 3px;"/>
                                     </div>
                                     <div class="EditorLabelContainer">
                                         <div class="Label">
@@ -365,7 +367,7 @@
                             <div class="Normal Editor CheckBox">
                                 <div class="InputField">
                                     <div>
-                                        <input type="checkbox" id="Vertical_Line" checked="checked" style="margin-top: 3px;">
+                                        <input type="checkbox" id="ShowVerticalGridlines" checked="checked" style="margin-top: 3px;">
                                     </div>
                                     <div class="EditorLabelContainer">
                                         <div class="Label">
@@ -468,12 +470,10 @@
                                                     <span class="Icon"></span>
                                                 </div>
                                             </td>
-                                            <td class="Text U2" style="width: 121px;">工时<input type="hidden" class="type_id" value="1928" />
+                                            <td class="Text U2 invoice_type_name" style="width: 121px;">工时<input type="hidden" class="invoice_type_id" value="1928" />
                                             </td>
-                                            <td class="FormatPreservation U3">Task/Ticket: [Ticket: Title][Task: Task Title][Ticket: Number][Task: Task Number]
-Summary Notes: [Task Time Entry: Summary Notes][Ticket Time Entry: Summary Notes]</td>
-                                            <td class="FormatPreservation U4" style="width: 141px;">Display labor associated with Recurring Service Contracts
-Display labor associated with Fixed Price Contracts</td>
+                                            <td class="FormatPreservation U3 Display_Format"></td>
+                                            <td class="FormatPreservation U4 Add_Display_Format" style="width: 141px;"></td>
                                         </tr>
                                         <tr class="D">
                                             <td class="Interaction U0" style="width: 81px;">
@@ -492,10 +492,10 @@ Display labor associated with Fixed Price Contracts</td>
                                                     <span class="Icon"></span>
                                                 </div>
                                             </td>
-                                            <td class="Text U2" style="width: 121px;">工时调整<input type="hidden" class="type_id" value="1929" />
+                                            <td class="Text U2 invoice_type_name" style="width: 121px;">工时调整<input type="hidden" class="invoice_type_id" value="1929" />
                                             </td>
-                                            <td class="FormatPreservation U3"></td>
-                                            <td class="FormatPreservation U4" style="width: 141px;"></td>
+                                            <td class="FormatPreservation U3 Display_Format"></td>
+                                            <td class="FormatPreservation U4 Add_Display_Format" style="width: 141px;"></td>
                                         </tr>
                                         <tr class="D">
                                             <td class="Interaction U0" style="width: 81px;">
@@ -514,10 +514,10 @@ Display labor associated with Fixed Price Contracts</td>
                                                     <span class="Icon"></span>
                                                 </div>
                                             </td>
-                                            <td class="Text U2" style="width: 121px;">成本（工单、项目、合同）<input type="hidden" class="type_id" value="1930" />
+                                            <td class="Text U2 invoice_type_name" style="width: 121px;">成本（工单、项目、合同）<input type="hidden" class="invoice_type_id" value="1930" />
                                             </td>
-                                            <td class="FormatPreservation U3"></td>
-                                            <td class="FormatPreservation U4" style="width: 141px;"></td>
+                                            <td class="FormatPreservation U3 Display_Format"></td>
+                                            <td class="FormatPreservation U4 Add_Display_Format" style="width: 141px;"></td>
                                         </tr>
                                         <tr class="D">
                                             <td class="Interaction U0" style="width: 81px;">
@@ -536,10 +536,10 @@ Display labor associated with Fixed Price Contracts</td>
                                                     <span class="Icon"></span>
                                                 </div>
                                             </td>
-                                            <td class="Text U2" style="width: 121px;">费用<input type="hidden" class="type_id" value="1931" />
+                                            <td class="Text U2 invoice_type_name" style="width: 121px;">费用<input type="hidden" class="invoice_type_id" value="1931" />
                                             </td>
-                                            <td class="FormatPreservation U3"></td>
-                                            <td class="FormatPreservation U4" style="width: 141px;"></td>
+                                            <td class="FormatPreservation U3 Display_Format"></td>
+                                            <td class="FormatPreservation U4 Add_Display_Format" style="width: 141px;"></td>
                                         </tr>
                                         <tr class="D">
                                             <td class="Interaction U0" style="width: 81px;">
@@ -558,10 +558,10 @@ Display labor associated with Fixed Price Contracts</td>
                                                     <span class="Icon"></span>
                                                 </div>
                                             </td>
-                                            <td class="Text U2" style="width: 121px;">订阅<input type="hidden" class="type_id" value="1932" />
+                                            <td class="Text U2 invoice_type_name" style="width: 121px;">订阅<input type="hidden" class="invoice_type_id" value="1932" />
                                             </td>
-                                            <td class="FormatPreservation U3"></td>
-                                            <td class="FormatPreservation U4" style="width: 141px;"></td>
+                                            <td class="FormatPreservation U3 Display_Format"></td>
+                                            <td class="FormatPreservation U4 Add_Display_Format" style="width: 141px;"></td>
                                         </tr>
                                         <tr class="D">
                                             <td class="Interaction U0" style="width: 81px;">
@@ -580,10 +580,10 @@ Display labor associated with Fixed Price Contracts</td>
                                                     <span class="Icon"></span>
                                                 </div>
                                             </td>
-                                            <td class="Text U2" style="width: 121px;">定期服务/服务包<input type="hidden" class="type_id" value="1933" />
+                                            <td class="Text U2 invoice_type_name" style="width: 121px;">定期服务/服务包<input type="hidden" class="invoice_type_id" value="1933" />
                                             </td>
-                                            <td class="FormatPreservation U3"></td>
-                                            <td class="FormatPreservation U4" style="width: 141px;"></td>
+                                            <td class="FormatPreservation U3 Display_Format"></td>
+                                            <td class="FormatPreservation U4 Add_Display_Format" style="width: 141px;"></td>
                                         </tr>
                                         <tr class="D">
                                             <td class="Interaction U0" style="width: 81px;">
@@ -602,10 +602,10 @@ Display labor associated with Fixed Price Contracts</td>
                                                     <span class="Icon"></span>
                                                 </div>
                                             </td>
-                                            <td class="Text U2" style="width: 121px;">初始费用<input type="hidden" class="type_id" value="1934" />
+                                            <td class="Text U2 invoice_type_name" style="width: 121px;">初始费用<input type="hidden" class="invoice_type_id" value="1934" />
                                             </td>
-                                            <td class="FormatPreservation U3"></td>
-                                            <td class="FormatPreservation U4" style="width: 141px;"></td>
+                                            <td class="FormatPreservation U3 Display_Format"></td>
+                                            <td class="FormatPreservation U4 Add_Display_Format" style="width: 141px;"></td>
                                         </tr>
                                         <tr class="D">
                                             <td class="Interaction U0" style="width: 81px;">
@@ -624,10 +624,10 @@ Display labor associated with Fixed Price Contracts</td>
                                                     <span class="Icon"></span>
                                                 </div>
                                             </td>
-                                            <td class="Text U2" style="width: 121px;">里程碑<input type="hidden" class="type_id" value="1935" />
+                                            <td class="Text U2 invoice_type_name" style="width: 121px;">里程碑<input type="hidden" class="invoice_type_id" value="1935" />
                                             </td>
-                                            <td class="FormatPreservation U3"></td>
-                                            <td class="FormatPreservation U4" style="width: 141px;"></td>
+                                            <td class="FormatPreservation U3 Display_Format"></td>
+                                            <td class="FormatPreservation U4 Add_Display_Format" style="width: 141px;"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -655,13 +655,14 @@ Display labor associated with Fixed Price Contracts</td>
                                 </div>
                                 <div class="Normal Editor SingleSelect" style="padding-bottom: 15px;">
                                     <div class="InputField">
-                                        <select name="GroupBy" id="GroupBy" style="width: 320px;">
+                                        <%--<select name="GroupBy" id="GroupBy" style="width: 320px;">
                                             <%@ Import Namespace="EMT.DoneNOW.Core" %>
                                             <%foreach (var d in gbll.GetGeneralList(141) as List<d_general>)
                                                 { %>
                                             <option value="<%=d.id%>"><%=d.name %></option>
                                             <%} %>
-                                        </select>
+                                        </select>--%>
+                                       <asp:DropDownList ID="GroupBy" runat="server"></asp:DropDownList>
                                         <img src="../RichText/img/set.png" style="vertical-align: middle; cursor: pointer;" />
                                     </div>
                                 </div>
@@ -684,12 +685,13 @@ Display labor associated with Fixed Price Contracts</td>
                                 </div>
                                 <div class="Normal Editor SingleSelect" style="padding-bottom: 10px;">
                                     <div class="InputField">
-                                        <select name="Itemize" id="Itemize" style="width: 320px;">
-                                            <%foreach (var d in gbll.GetGeneralList(142) as List<d_general>)
+                                       <%-- <select name="Itemize" id="Itemize" style="width: 320px;">--%>
+                                           <%-- <%foreach (var d in gbll.GetGeneralList(142) as List<d_general>)
                                                 { %>
                                             <option value="<%=d.id%>"><%=d.name %></option>
-                                            <%} %>
-                                        </select>
+                                            <%} %>--%>
+                                             <asp:DropDownList ID="Itemize" runat="server"></asp:DropDownList>
+                                        <%--</select>--%>
                                     </div>
                                 </div>
                             </div>
@@ -701,12 +703,13 @@ Display labor associated with Fixed Price Contracts</td>
                                 </div>
                                 <div class="Normal Editor SingleSelect" style="padding-bottom: 10px;">
                                     <div class="InputField">
-                                        <select name="SortBy" id="SortBy" style="width: 320px;">
+                                      <%--  <select name="SortBy" id="SortBy" style="width: 320px;">
                                             <%foreach (var d in gbll.GetGeneralList(143) as List<d_general>)
                                                 { %>
                                             <option value="<%=d.id%>"><%=d.name %></option>
                                             <%} %>
-                                        </select>
+                                        </select>--%>
+                                        <asp:DropDownList ID="SortBy" runat="server"></asp:DropDownList>
                                     </div>
                                 </div>
                             </div>
@@ -715,7 +718,7 @@ Display labor associated with Fixed Price Contracts</td>
                 </div>
             </div>
             <div id="editedit" style="display: none">
-                <div class="addText">  
+                <div class="addText">
                     <div>
                         <div class="CancelDialogButton"></div>
                         <div class="TitleBar">
@@ -737,8 +740,8 @@ Display labor associated with Fixed Price Contracts</td>
                                         <img src="../RichText/img/Dialog.png">
                                     </div>
                                 </div>
-                               <%-- 工时--%>
-                                <div id="kkk1" style="display:none">
+                                <%-- 工时--%>
+                                <div id="kkk1" style="display: none">
                                     <div class="Section Collapsed" style="margin-left: 16px; z-index: 1000;">
                                         <div class="Heading">
                                             <div class="Toggle Collapse Toggle1">
@@ -751,17 +754,17 @@ Display labor associated with Fixed Price Contracts</td>
                                             <div class="Normal Column">
                                                 <div class="EditorLabelContainer">
                                                     <div class="Label">
-                                                        <label>工时显示该字段</label>
+                                                        <label class="typetype_name">工时显示该字段</label>
                                                     </div>
                                                 </div>
                                                 <div class="Normal Editor CheckBox">
                                                     <div class="InputField">
                                                         <div>
-                                                            <input type="checkbox" style="margin-top: 3px;" checked>
+                                                            <input type="checkbox" class="typetype_value" style="margin-top: 3px;"<%if(addset!=null&&addset.Labour_Item[0].value == "checked") {%> checked="checked"<%} %>/>
                                                         </div>
                                                         <div class="EditorLabelContainer">
                                                             <div class="Label">
-                                                                <label>显示定期服务合同工时</label>
+                                                                <label class="typetype_name">显示定期服务合同工时</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -769,11 +772,11 @@ Display labor associated with Fixed Price Contracts</td>
                                                 <div class="Normal Editor CheckBox">
                                                     <div class="InputField">
                                                         <div>
-                                                            <input type="checkbox" style="margin-top: 3px;" checked>
+                                                            <input type="checkbox" class="typetype_value" style="margin-top: 3px;" <%if (addset!=null&&addset.Labour_Item[1].value == "checked") {%> checked="checked"<%} %>/>
                                                         </div>
                                                         <div class="EditorLabelContainer">
                                                             <div class="Label">
-                                                                <label>显示固定合同工时(如果不勾选则不显示这两种合同的工时，其他工时总是显示)</label>
+                                                                <label class="typetype_name">显示固定合同工时(如果不勾选则不显示这两种合同的工时，其他工时总是显示)</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -782,12 +785,13 @@ Display labor associated with Fixed Price Contracts</td>
                                             <div class="Normal Column">
                                                 <div class="EditorLabelContainer">
                                                     <div class="Label">
-                                                        <label>费率单位显示</label>
+                                                        <label class="typetype_name">费率单位显示</label>
                                                     </div>
                                                 </div>
                                                 <div class="Normal Editor TextBox">
                                                     <div class="InputField">
-                                                        <input type="text" value="/hour">
+                                                        <input class="typetype_value" type="text" <%if (addset != null)
+                                                            {%> value="<%=addset.Labour_Item[3].value %><%} %>"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -805,41 +809,44 @@ Display labor associated with Fixed Price Contracts</td>
                                             <div class="Normal Column">
                                                 <div class="EditorLabelContainer">
                                                     <div class="Label">
-                                                        <label>Recurring Service, Fixed Price, Per-Ticket contract</label>
+                                                        <label class="typetype_name">Recurring Service, Fixed Price, Per-Ticket contract</label>
                                                     </div>
                                                 </div>
                                                 <div class="Normal Editor TextBox">
                                                     <div class="InputField">
-                                                        <input type="text" value="Covered by Contract">
+                                                        <input class="typetype_value" type="text" <%if (addset != null)
+                                                            {%> value="<%=addset.Labour_Item[4].value %><%} %>"/>
                                                     </div>
                                                 </div>
                                                 <div class="EditorLabelContainer">
                                                     <div class="Label">
-                                                        <label>Block Hour, Retainer contract</label>
+                                                        <label class="typetype_name">Block Hour, Retainer contract</label>
                                                     </div>
                                                 </div>
                                                 <div class="Normal Editor TextBox">
                                                     <div class="InputField">
-                                                        <input type="text" value="Pre-Paid">
+                                                        <input class="typetype_value" type="text" <%if (addset != null)
+                                                            {%> value="<%=addset.Labour_Item[5].value %><%} %>"/>
                                                     </div>
                                                 </div>
                                                 <div class="EditorLabelContainer">
                                                     <div class="Label">
-                                                        <label>Non-billable labour</label>
+                                                        <label class="typetype_name">Non-billable labour</label>
                                                     </div>
                                                 </div>
                                                 <div class="Normal Editor TextBox">
                                                     <div class="InputField">
-                                                        <input type="text" value="No Charge">
+                                                        <input class="typetype_value" type="text" <%if (addset != null)
+                                                            {%> value="<%=addset.Labour_Item[6].value %><%} %>"/>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                               </div>
+                                </div>
                                 <%--服务或服务包--%>
-                              <div id="kkk2" style="display:none">
-                                     <div class="Section Collapsed" style="margin-left: 16px; z-index: 1000;">
+                                <div id="kkk2" style="display: none">
+                                    <div class="Section Collapsed" style="margin-left: 16px; z-index: 1000;">
                                         <div class="Heading">
                                             <div class="Toggle Collapse Toggle1">
                                                 <div class="Vertical"></div>
@@ -857,11 +864,12 @@ Display labor associated with Fixed Price Contracts</td>
                                                 <div class="Normal Editor CheckBox">
                                                     <div class="InputField">
                                                         <div>
-                                                            <input type="checkbox" style="margin-top: 3px;" checked>
+                                                            <input class="typetype_value" type="checkbox" style="margin-top: 3px;" <%if (addset!=null&&addset.Service_Bundle_Item[0].value == "checked")
+                                                                { %> checked="checked"<%} %> />
                                                         </div>
                                                         <div class="EditorLabelContainer">
                                                             <div class="Label">
-                                                                <label>显示定时服务/服务包详情（分组时不起作用）</label>
+                                                                <label class="typetype_name">显示定时服务/服务包详情（分组时不起作用）</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -869,11 +877,12 @@ Display labor associated with Fixed Price Contracts</td>
                                                 <div class="Normal Editor CheckBox">
                                                     <div class="InputField">
                                                         <div>
-                                                            <input type="checkbox" style="margin-top: 3px;" checked>
+                                                            <input class="typetype_value" type="checkbox" style="margin-top: 3px;"<%if (addset!=null&&addset.Service_Bundle_Item[1].value == "checked")
+                                                                { %> checked="checked"<%} %> />
                                                         </div>
                                                         <div class="EditorLabelContainer">
                                                             <div class="Label">
-                                                                <label>显示总额为0的条目</label>
+                                                                <label class="typetype_name">显示总额为0的条目</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -881,7 +890,7 @@ Display labor associated with Fixed Price Contracts</td>
                                             </div>
                                         </div>
                                     </div>
-                                 </div>
+                                </div>
                             </div>
                         </div>
                         <div class="AlertBox">
@@ -893,55 +902,35 @@ Display labor associated with Fixed Price Contracts</td>
                                 <div class="VariableInsertion">
                                     <div class="AlertContent">
                                         <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
-                                        <select name="" id="AlertVariableFilter">
-                                            <option value="1">Show All Variables</option>
-                                            <option value="2">Show Account Variables</option>
-                                            <option value="3">Show Contact Variables</option>
-                                            <option value="4">Show Opportunity Variables</option>
-                                            <option value="5">Show Quote Variables</option>
-                                            <option value="6">Show Miscellaneous Variables</option>
-                                            <option value="7">Show Your Company Variables</option>
-                                            <option value="8">Show Your Location Variables</option>
-                                        </select><select name="" multiple="multiple" id="AlertVariableList"><option value="" class="val">1</option>
-                                            <option value="" class="val">2</option>
-                                            <option value="" class="val">3</option>
-                                            <option value="" class="val">4</option>
-                                            <option value="" class="val">5</option>
-                                            <option value="" class="val">6</option>
-                                            <option value="" class="val">7</option>
-                                            <option value="" class="val">8</option>
-                                            <option value="" class="val">9</option>
-                                            <option value="" class="val">10</option>
-                                            <option value="" class="val">1</option>
-                                            <option value="" class="val">2</option>
-                                            <option value="" class="val">3</option>
-                                            <option value="" class="val">4</option>
-                                            <option value="" class="val">5</option>
-                                            <option value="" class="val">6</option>
-                                            <option value="" class="val">7</option>
-                                            <option value="" class="val">8</option>
-                                            <option value="" class="val">9</option>
-                                            <option value="" class="val">10</option>
-                                        </select>
+                                        <asp:ScriptManager ID="ScriptManager1" runat="server">
+                                        </asp:ScriptManager>
+                                        <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">
+                                            <ContentTemplate>
+                                                <asp:DropDownList ID="AlertVariableFilter" runat="server" OnSelectedIndexChanged="AlertVariableFilter_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
+                                                <select name="" multiple="multiple" id="AlertVariableList">
+                                                    <asp:Literal ID="VariableList" runat="server"></asp:Literal>
+                                                </select>
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div id="BackgroundOverLay" style="display: block;"></div>
-            </div> 
-        </div> 
-
+            </div>
+        </div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../RichText/js/ueditor.config.js"></script>
         <script src="../RichText/js/ueditor.all.js"></script>
         <script src="../RichText/js/InvoiceTemplateInvoiceBody.js"></script>
+         <asp:Literal ID="datalist" runat="server"></asp:Literal >
         <script>
             $(".Edit").on("click", function () {
                 var a = $(".Edit").index(this);
-                var k = $(".type_id").eq(a).val();
+                var k = $(".invoice_type_id").eq(a).val();
                 if (k == 1928) {//工时，特殊
                     $("#kkk1").show();
                 } else {
@@ -1014,11 +1003,33 @@ Display labor associated with Fixed Price Contracts</td>
                 $("#resetreset").on("mouseout", function () {
                     $("#resetreset").css("background", "#f0f0f0");
                 });
-                //        点击确定数据保存至后台  在展示页展示
+                // 点击确定数据保存至后台  在展示页展示
                 $("#addadd").on("click", function () {
                     var html = ue.getContent();
                     var txt = ue.getContentTxt();
                     $(".Edit").eq(a).parent().next().next().html(html);
+                    if (k == 1928) {//工时，特殊   
+                        $(".Edit").eq(a).parent().next().next().next().html('');
+                        var tt = '';
+                        if ($(".typetype_value").eq(0).is(':checked')) {
+                            tt =tt+ "显示定期服务合同工时";
+                        }
+                        if ($(".typetype_value").eq(1).is(':checked')) {
+                            tt = tt + "显示固定合同工时(如果不勾选则不显示这两种合同的工时，其他工时总是显示)";
+                        }
+                        $(".Edit").eq(a).parent().next().next().next().html(tt);
+                    }
+                    if (k == 1933) {//服务包
+                        $(".Edit").eq(a).parent().next().next().next().html('');
+                        var tt = '';
+                        if ($(".typetype_value").eq(6).is(':checked')) {
+                            tt = tt + "显示定时服务/服务包详情（分组时不起作用）";
+                        }
+                        if ($(".typetype_value").eq(7).is(':checked')) {
+                            tt = tt + "显示总额为0的条目";
+                        }
+                        $(".Edit").eq(a).parent().next().next().next().html(tt);
+                    } 
                     $("#editedit").hide();
                 });
                 //点击关闭
@@ -1033,8 +1044,118 @@ Display labor associated with Fixed Price Contracts</td>
             $("#OkButton").on("mouseout", function () {
                 $("#OkButton").css("background", "#f0f0f0");
             });
-        </script>
 
+            //保存
+
+            $("#OkButton1").on("click", function () {
+                //json格式
+                var data = [];
+                //表格显示字段设置
+                data.push("{\"GRID_COLUMN\":[");
+                for (i = 0; i < 14; i++) {
+                    var Order = $(".Order").eq(i).text();//显示顺序，从左到右
+                    var Column_Content = $(".Column_Content").eq(i).text();//字段内容
+                    var Column_label = $(".Column_label").eq(i).html();//显示名称            
+                    var Display;
+                    if ($(".Display").eq(i).children().hasClass("CM")) {
+                        Display = "yes";
+                    }
+                    if (!($(".Display").eq(i).children().hasClass("CM"))) {
+                        Display = "no";
+
+                    }
+                    var GRID_COLUMNITEM = { "Order": Order, "Column_Content": Column_Content, "Column_label": Column_label, "Display": Display };
+                    var jsonArrayFinal = JSON.stringify(GRID_COLUMNITEM);
+                    data.push(jsonArrayFinal);
+                    console.log(jsonArrayFinal);
+                }
+                data.push("],\"GRID_OPTIONS\":[");
+
+                //显示表头
+                if ($("#ShowGridHeader").is(':checked')) {
+                    var Show_grid_header = "yes";
+                } else {
+                    var Show_grid_header = "no";
+                }
+                //显示表格的竖线
+                if ($("#ShowVerticalGridlines").is(':checked')) {
+                    var Show_vertical_lines = "yes";
+                }
+                else {
+                    var Show_vertical_lines = "no";
+                }
+                var GRID_OPTIONSITEM = { "Show_grid_header": Show_grid_header, "Show_vertical_lines": Show_vertical_lines };
+
+                var jsonArrayFinal = JSON.stringify(GRID_OPTIONSITEM);
+                data.push(jsonArrayFinal);
+                ////报价项字段设置
+                data.push("],\"CUSTOMIZE_THE_ITEM_COLUMN\":[");
+                for (i = 0; i < 8; i++) {
+                    var Order = $(".SortOrder").eq(i).text();//显示顺序，从左到右
+                    var Type_of_Invoice_Item_ID = $(".invoice_type_id").eq(i).val();
+                    var Type_of_Invoice_Item = $(".invoice_type_name").eq(i).text();
+                    var Display_Format = $(".Display_Format").eq(i).text();
+                    var Add_Display_Format = $(".Add_Display_Format").eq(i).text();
+                    var CUSTOMIZE_THE_ITEM_COLUMNITEM = { "Order": Order, "Type_of_Invoice_Item_ID": Type_of_Invoice_Item_ID, "Type_of_Invoice_Item": Type_of_Invoice_Item, "Display_Format": Display_Format, "Add_Display_Format": Add_Display_Format };
+                    var jsonArrayFinal = JSON.stringify(CUSTOMIZE_THE_ITEM_COLUMNITEM);
+                    data.push(jsonArrayFinal);
+                    console.log(jsonArrayFinal);
+                }
+                data.push("]}");
+                $("#data").val($('<div/>').text(data).html());
+                //工时
+                var data1 = [];
+                //表格显示字段设置
+                data1.push("{\"Item\":[");
+                var name = $(".typetype_name").eq(0).text();
+                var value = '';
+                if ($(".typetype_value").eq(0).is(':checked')) {
+                    value = "checked";
+                }
+                var Item = { "id": "0", "name": name, "value": value };
+                var jsonArrayFinal = JSON.stringify(Item);
+                data1.push(jsonArrayFinal);
+                var name = $(".typetype_name").eq(1).text();
+                var value = '';
+                if ($(".typetype_value").eq(1).is(':checked')) {
+                    value = "checked";
+                }
+                var Item = { "id": "0", "name": name, "value": value };
+                var jsonArrayFinal = JSON.stringify(Item);
+                data1.push(jsonArrayFinal);
+                for (i = 2; i < 6; i++) {
+                    var name = $(".typetype_name").eq(i).text();
+                    var value = $(".typetype_value").eq(i).val();
+                    var Item = { "id": "0", "name": name, "value": value };
+                    var jsonArrayFinal = JSON.stringify(Item);
+                    data1.push(jsonArrayFinal);
+                }                
+                $("#typetype").val($('<div/>').text(data1).html());
+                //服务
+                var data2 = [];
+                //表格显示字段设置
+                data2.push("{\"Item\":[");
+                var name = $(".typetype_name").eq(6).text();
+                var value = '';
+                if ($(".typetype_value").eq(6).is(':checked')) {
+                    value = "checked";
+                }
+                var Item = { "id": "0", "name": name, "value": value };
+                var jsonArrayFinal = JSON.stringify(Item);
+                data2.push(jsonArrayFinal);
+                var name = $(".typetype_name").eq(7).text();
+                var value = '';
+                if ($(".typetype_value").eq(7).is(':checked')) {
+                    value = "checked";
+                }
+                var Item = { "id": "0", "name": name, "value": value };
+                var jsonArrayFinal = JSON.stringify(Item);
+                data2.push(jsonArrayFinal);
+                data2.push("]}");
+                $("#typett").val($('<div/>').text(data2).html());
+                
+            });
+        </script>
     </form>
 </body>
 </html>

@@ -532,7 +532,6 @@
                 var Order = $(".Order").eq(i).text();//显示顺序，从左到右
                 var Column_Content = $(".Column_Content").eq(i).text();//字段内容
                 var Column_label = $(".Column_label").eq(i).html();//显示名称            
-            //此处存在问题
                 var Display;
                 if ($(".Display").eq(i).children().hasClass("CM"))
                 {

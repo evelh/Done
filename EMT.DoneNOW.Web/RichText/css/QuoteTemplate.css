@@ -1,8 +1,8 @@
-body{
+body {
     overflow: hidden;
 }
 /*顶部内容和帮助*/
-.TitleBar{
+.TitleBar {
     color: #fff;
     background-color: #346a95;
     display: block;
@@ -12,21 +12,24 @@ body{
     line-height: 38px;
     margin: 0 0 10px 0;
 }
-.TitleBar>.Title{
-    top: 0;
-    height: 36px;
-    left: 10px;
-    overflow: hidden;
-    position: absolute;
-    text-overflow: ellipsis;
-    text-transform: uppercase;
-    white-space: nowrap;
-    width: 95%;
-}
-.text2{
+
+    .TitleBar > .Title {
+        top: 0;
+        height: 36px;
+        left: 10px;
+        overflow: hidden;
+        position: absolute;
+        text-overflow: ellipsis;
+        text-transform: uppercase;
+        white-space: nowrap;
+        width: 95%;
+    }
+
+.text2 {
     margin-left: 5px;
 }
-.help{
+
+.help {
     background-image: url(../img/help.png);
     cursor: pointer;
     display: inline-block;
@@ -38,16 +41,18 @@ body{
     border-radius: 50%;
 }
 /*中间form表单*/
-.ButtonContainer{
+.ButtonContainer {
     padding: 0 10px 10px 10px;
     width: auto;
     height: 26px;
 }
-.ButtonContainer ul li .Button{
-    margin-right: 5px;
-    vertical-align: top;
-}
-li.Button{
+
+    .ButtonContainer ul li .Button {
+        margin-right: 5px;
+        vertical-align: top;
+    }
+
+li.Button {
     -ms-flex-align: center;
     align-items: center;
     background: #f0f0f0;
@@ -65,32 +70,40 @@ li.Button{
     position: relative;
     text-decoration: none;
 }
-.Button>.Icon{
+
+.Button > .Icon {
     display: inline-block;
     flex: 0 0 auto;
     height: 16px;
     margin: 0 3px;
     width: 16px;
 }
-.SaveAndClone{
+
+.SaveAndClone {
     background-image: url("../img/save.png");
 }
-.Save{
+
+.Save {
     background-image: url("../img/save.png");
 }
-.ViewPdf{
+
+.ViewPdf {
     background-image: url("../img/view.png");
 }
-.EditProperties{
+
+.EditProperties {
     background-image: url("../img/edit.png");
 }
-.EditAppendix{
+
+.EditAppendix {
     background-image: url("../img/book.png");
 }
-.CancelButton{
+
+.CancelButton {
     background-image: url("../img/cancel.png");
 }
-.Button>.Text{
+
+.Button > .Text {
     flex: 0 1 auto;
     font-size: 12px;
     font-weight: bold;
@@ -100,7 +113,7 @@ li.Button{
     white-space: nowrap;
 }
 /*中间主体部分*/
-.ScrollingContainer{
+.ScrollingContainer {
     left: 0;
     overflow-x: auto;
     overflow-y: auto;
@@ -111,79 +124,190 @@ li.Button{
     padding: 0 10px 0 10px;
     margin-top: 30px;
 }
+
 .ImageHotspotContainer {
     display: block;
-    height: 1422px;
+    height: 1086px;
     width: 818px;
     position: relative;
     border: 1px solid #ccc;
 }
-.ImageHotspotContainer>.Image{
-    position: relative;
-    margin: 30px 0;
-    height: 1056px;
-    width: 816px;
-}
-.ImageHotspotContainer .Image .ImageHotspot {
-    border-top: 2px dashed rgba(0,0,0,0.2);
-    left: 0;
-    position: absolute;
-    right: 0;
-}
-.ImageHotspotContainer .Image .ImageHotspot .SimpleLabel {
-    background: rgba(0,0,0,0.3);
-    border-radius: 0 0 5px 5px;
-    color: #fff;
-    font-size: 12px;
-    font-weight: bold;
-    height: 25px;
-    padding-top: 5px;
-    position: absolute;
-    right: 0;
-    text-align: center;
-    top: 0;
-    width: 250px;
-}
-.ImageHotspotContainer .Image .ImageHotspot .CompleteLabel {
-    background: rgba(0,0,0,0.5);
-    bottom: 0;
-    color: #fff;
-    cursor: pointer;
-    font-size: 14px;
+
+    .ImageHotspotContainer > .Image {
+        position: relative;
+        margin: 30px 0;
+        height: 1056px;
+        width: 816px;
+    }
+
+    .ImageHotspotContainer .Image .ImageHotspot {
+        border-top: 2px dashed rgba(0,0,0,0.2);
+        left: 0;
+        position: absolute;
+        right: 0;
+    }
+
+        .ImageHotspotContainer .Image .ImageHotspot .SimpleLabel {
+            background: rgba(0,0,0,0.3);
+            border-radius: 0 0 5px 5px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            height: 25px;
+            padding-top: 5px;
+            position: absolute;
+            right: 0;
+            text-align: center;
+            top: 0;
+            width: 250px;
+        }
+
+        .ImageHotspotContainer .Image .ImageHotspot .CompleteLabel {
+            background: rgba(0,0,0,0.5);
+            bottom: 0;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            display: none;
+            left: 0;
+            position: absolute;
+            right: 0;
+            text-align: center;
+            top: 0;
+        }
+
+            .ImageHotspotContainer .Image .ImageHotspot .CompleteLabel .Information.Compact {
+                height: 16px;
+                margin-top: -8px;
+            }
+
+            .ImageHotspotContainer .Image .ImageHotspot .CompleteLabel .Information {
+                height: 70px;
+                left: 0;
+                margin-top: -35px;
+                padding: 0 100px;
+                position: absolute;
+                right: 0;
+                top: 50%;
+            }
+
+        .ImageHotspotContainer .Image .ImageHotspot .SimpleLabel.Small {
+            height: 20px;
+            padding-top: 3px;
+        }
+
+        .ImageHotspotContainer .Image .ImageHotspot .CompleteLabel .Title1 {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .ImageHotspotContainer .Image .ImageHotspot .CompleteLabel .IntendedAction {
+            text-decoration: underline;
+        }
+
+.Hide {
     display: none;
-    left: 0;
-    position: absolute;
-    right: 0;
-    text-align: center;
-    top: 0;
 }
-.ImageHotspotContainer .Image .ImageHotspot .CompleteLabel .Information.Compact {
-    height: 16px;
-    margin-top: -8px;
-}
-.ImageHotspotContainer .Image .ImageHotspot .CompleteLabel .Information {
-    height: 70px;
-    left: 0;
-    margin-top: -35px;
-    padding: 0 100px;
-    position: absolute;
-    right: 0;
-    top: 50%;
-}
-.ImageHotspotContainer .Image .ImageHotspot .SimpleLabel.Small {
-    height: 20px;
-    padding-top: 3px;
-}
-.ImageHotspotContainer .Image .ImageHotspot .CompleteLabel .Title1 {
-    font-size: 36px;
-    font-weight: bold;
-}
-.ImageHotspotContainer .Image .ImageHotspot .CompleteLabel .IntendedAction {
-    text-decoration: underline;
-}
-.Hide{
-    display: none;
-}
-.Active{
+
+.Active {
     display: block;
+}
+/*第一个发票导航部分*/
+#LogoBlock {
+    width: 100%;
+    padding-bottom: 30px;
+}
+
+#ServiceProviderBlock {
+    padding-bottom: 30px;
+}
+
+#InvoiceInfoBlock {
+    display: table;
+    padding-left: 40px;
+}
+
+.boxHeader {
+    border: 1px solid black;
+    background-color: #f7f7f7;
+    font-weight: bold;
+    padding: 5px 5px 5px 5px;
+}
+
+.boxBody {
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 5px 5px 5px 5px;
+}
+
+.invoiceInfoRow {
+    display: table-row;
+    height: 20px;
+}
+
+.invoiceInfoNameCell {
+    font-weight: bold;
+    text-align: right;
+    display: table-cell;
+}
+
+.invoiceInfoValueCell {
+    text-align: left;
+    display: table-cell;
+    padding-left: 5px;
+}
+/*第一个发票主体部分*/
+.ReadOnlyGrid_Container {
+    font-size: 8pt;
+    width: 100%;
+    line-height: 200%;
+    padding-top: 12px;
+}
+
+.ReadOnlyGrid_Account {
+    font-weight: bold;
+    font-style: normal;
+    text-decoration: none;
+}
+
+.ReadOnlyGrid_Table {
+    width: 100%;
+    border: 1px solid;
+    border-top: none;
+    border-collapse: collapse;
+    font-size: 8pt;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: none;
+    color: #000;
+    line-height: normal;
+}
+
+    .ReadOnlyGrid_Table tbody tr {
+        border-bottom: 1px #ccc solid;
+    }
+
+.ReadOnlyGrid_TableHeader {
+    background-color: #f3f3f3;
+    border: 1px black solid;
+    padding: 3px;
+    border-left: 1px #ccc solid;
+    border-right: 1px #ccc solid;
+}
+
+.ReadOnlyGrid_TableOtherColumn {
+    border-left: 1px #ccc solid;
+}
+
+.ReadOnlyGrid_TableCell {
+    vertical-align: top;
+    padding: 3px;
+}
+
+.ReadOnlyGrid_Subtotal {
+    font-weight: bold;
+    font-style: normal;
+    text-decoration: none;
+    text-align: right;
 }

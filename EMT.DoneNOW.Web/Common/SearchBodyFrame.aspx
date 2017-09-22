@@ -2250,8 +2250,12 @@
             OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Edit() {
-            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            OpenWindow("../InvoiceTemplate/InvoiceTempEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
+
+
+
+
          <%}//历史发票查询
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Invoice_History)
         {%>

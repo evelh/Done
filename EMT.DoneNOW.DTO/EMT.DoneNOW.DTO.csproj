@@ -63,6 +63,7 @@
     <Compile Include="Enumeration.cs" />
     <Compile Include="EnumSysSetting.cs" />
     <Compile Include="FormTmplOpportunityDto.cs" />
+    <Compile Include="InvioceTempDto.cs" />
     <Compile Include="InvoiceDeductionDto.cs" />
     <Compile Include="LoseOpportunityDto.cs" />
     <Compile Include="OpportunityAddOrUpdateDto.cs" />

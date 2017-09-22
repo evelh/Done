@@ -28,7 +28,7 @@
 			<ul id="btn">
 				<li class="Button ButtonIcon Save NormalState" id="SaveAndCloneButton" tabindex="0">
 					<span class="Icon SaveAndClone"></span>
-                    <asp:Button ID="Save_Close" cssclass="Text" BorderStyle="None" runat="server" Text="保存 & 关闭" OnClick="Save_Close_Click" />
+                    <asp:Button ID="Save_Close" cssclass="Text" BorderStyle="None" runat="server" Text="保存并关闭" OnClick="Save_Close_Click" />
 				</li>
 				<li class="Button ButtonIcon Save NormalState" id="SaveButton" tabindex="0">
 					<span class="Icon Save"></span>
