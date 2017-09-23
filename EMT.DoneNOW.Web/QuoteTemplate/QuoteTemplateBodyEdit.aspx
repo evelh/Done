@@ -18,7 +18,7 @@
         </div>
     </div>
     <!--中间form表单-->
-    <form action="" method="post" id="EditQuoteTemplate" runat="server">
+    <form method="post" id="EditQuoteTemplate" runat="server">
         <div></div>
         <!--按钮部分-->
         <div class="ButtonContainer">

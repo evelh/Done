@@ -15,9 +15,12 @@ namespace EMT.DoneNOW.Web
     {
         protected int id;
         private QuoteTemplateBLL temp = new QuoteTemplateBLL();
+        protected string op;
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
+            if(!string.IsNullOrEmpty(Request.QueryString["op"]))
+            op = Request.QueryString["op"];
             Bind();
             if (!IsPostBack) {
                 if (id > 0) {

@@ -126,6 +126,7 @@ namespace EMT.DoneNOW.DTO
             public int body_group_by { get; set; }
             public int body_order_by { get; set; }
             public int body_itemize_id { get; set; }
+            public int show_labels_when_grouped { get; set; }
         }
     }
 }

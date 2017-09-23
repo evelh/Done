@@ -205,7 +205,8 @@ namespace EMT.DoneNOW.DTO
             OTHERS = 104,           // 杂项
             QUOTE_TEMPLATE_OTHERS = 105, //报价模板-其他
             QUOTE_TEMPLATE_BODY = 106,  //报价模板-body           
-
+            INVOICE_TEMPLATE_OTHERS=1967,//发票模板-其他
+            INVOICE_TEMPLATE_BODY=1968,//发票模板body
 
         }
         /// <summary>

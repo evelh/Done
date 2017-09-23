@@ -22,13 +22,13 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// OkButton1 控件。
+        /// Save 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button OkButton1;
+        protected global::System.Web.UI.WebControls.Button Save;
         
         /// <summary>
         /// GroupBy 控件。
@@ -38,6 +38,15 @@ namespace EMT.DoneNOW.Web {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList GroupBy;
+        
+        /// <summary>
+        /// ShowLabelsWhenGrouped 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ShowLabelsWhenGrouped;
         
         /// <summary>
         /// Itemize 控件。
@@ -67,22 +76,22 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
-        /// UpdatePanel2 控件。
+        /// UpdatePanelkk 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
+        protected global::System.Web.UI.UpdatePanel UpdatePanelkk;
         
         /// <summary>
-        /// AlertVariableFilter 控件。
+        /// Variable 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList AlertVariableFilter;
+        protected global::System.Web.UI.WebControls.DropDownList Variable;
         
         /// <summary>
         /// VariableList 控件。

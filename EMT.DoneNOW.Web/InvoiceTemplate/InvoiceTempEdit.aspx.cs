@@ -20,7 +20,7 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
-            id = 1457;
+            //id = 1457;
             if (!IsPostBack)
             {
                 if (Session["cancel"] != null && (int)Session["cancel"] != 1)
@@ -65,8 +65,9 @@ namespace EMT.DoneNOW.Web
                         tempinfo.body_group_by = data.body_group_by_id == null ? 0 : (int)data.body_group_by_id;
                         tempinfo.body_itemize_id = data.body_itemize_id == null ? 0 : (int)data.body_itemize_id;
                         tempinfo.body_order_by = data.body_order_by_id == null ? 0 : (int)data.body_order_by_id;
+                        tempinfo.show_labels_when_grouped = data.show_labels_when_grouped == null ? 0 : (int)data.show_labels_when_grouped;
                         //bottom 合计
-                        if(data.tax_total_disp!=null||!string.IsNullOrEmpty(data.tax_total_disp))
+                        if (data.tax_total_disp!=null||!string.IsNullOrEmpty(data.tax_total_disp))
                         tempinfo.Invoice_text = data.tax_total_disp.Replace("'", "\"");//正文主体
                         //底部备注
                         tempinfo.foot_note = data.quote_footer_notes;
@@ -96,7 +97,7 @@ namespace EMT.DoneNOW.Web
                             sb.Append("</tr>");
                             for (int i = 0; i < 8; i++)
                             {
-                                sb.Append("<tr><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td></tr>");
+                            sb.Append("<tr><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td><td style='text-align:Left;'>占位</td></tr>");
                             }
                             sb.Append("</table>");
                             this.body.Text = sb.ToString();
@@ -197,6 +198,7 @@ namespace EMT.DoneNOW.Web
                 sqt.body_group_by_id = tempinfo.body_group_by;
                 sqt.body_itemize_id = tempinfo.body_itemize_id;
                 sqt.body_order_by_id = tempinfo.body_order_by;
+                sqt.show_labels_when_grouped =(SByte)tempinfo.show_labels_when_grouped;
                 //bottom 合计
                 sqt.tax_total_disp =tempinfo.Invoice_text;
                 //底部备注
@@ -233,7 +235,6 @@ namespace EMT.DoneNOW.Web
                     Response.Redirect("Login.aspx");
                 }
             }
-
         }
     }
 }

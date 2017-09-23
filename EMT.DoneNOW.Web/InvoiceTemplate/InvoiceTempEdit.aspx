@@ -12,7 +12,7 @@
     <style>.bord{border-bottom: 1px solid #eaeaea;border-top: 1px solid #eaeaea;}</style>
 </head>
 <body>
-	<!--顶部  内容和帮助-->
+	<!--顶部 内容和帮助-->
 	<div class="TitleBar">
 		<div class="Title">
 			<span class="text1">报价模板</span>
@@ -21,7 +21,7 @@
 		</div>
 	</div>
 	<!--中间form表单-->
-	<form action="" method="post" id="EditQuoteTemplate" runat="server">
+	<form method="post" id="form1" runat="server">
 		<div></div>
 		<!--按钮部分-->
 		<div class="ButtonContainer">
@@ -113,7 +113,6 @@
 		</div>
       <%--  <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" />--%>
 	</form>
-    
     <input id="hf1" type="hidden"/><asp:TextBox ID="hf" runat="server" Visible="False"></asp:TextBox>
      <%-- <script type="text/javascript" src="../RichText/js/jquery-3.2.1.min.js"></script>--%>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
@@ -137,11 +136,11 @@
         });
         //编辑属性
         $("#EditPropertiesButton").on("click", function () {
-            window.location.href = "InvoiceTemplateAttr.aspx?id=" +<%=id%>+"";
+            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx?id="+<%=id%>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         });
         //修改附录
         $("#EditAppendixButton").on("click", function () {
-            window.location.href = "QuoteTemplateAppendixEdit.aspx?id=" +<%=id%>+"";
+            window.location.href = "InvoiceTempTop.aspx?op=appendix&id=" +<%=id%>+"";
         }); 
     </script>
 </body>

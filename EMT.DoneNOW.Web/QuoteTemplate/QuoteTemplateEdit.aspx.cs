@@ -290,7 +290,6 @@ namespace EMT.DoneNOW.Web
         protected void Save_Click(object sender, EventArgs e)
         {
             save();
-
         }
 
         private void save() {
@@ -325,7 +324,6 @@ namespace EMT.DoneNOW.Web
             {
                 sqt.quote_footer_notes= Session["page_appendix"].ToString();
             }
-
 
             // Response.Write(sqt.id+","+sqt.page_header_html+","+ sqt.quote_header_html+","+ sqt.page_header_html+","+ sqt.body_html+","+ sqt.quote_footer_html+"," + sqt.page_footer_html);
 
