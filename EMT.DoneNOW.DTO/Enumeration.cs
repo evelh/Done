@@ -459,12 +459,14 @@ namespace EMT.DoneNOW.DTO
             OPPORTUNITYSOURCE=936,                   //商机来源
             OPPPORTUNITYWINREASON=937,             //关闭商机的原因
             OPPPORTUNITYLOSSREASON = 938,             //丢失商机的原因
+            CONTRACT_BLOCK_TIME = 1510,             // 合同管理-预付时间
             INVOICE_TEMPLATE =1512,                    //发票模板
             INVOICE_HISTORY = 1513,               //历史发票
             APPROVE_CHARGES = 1514,               //成本审批
             APPROVE_MILESTONES = 1515,            //里程碑审批
             APPROVE_SUBSCRIPTIONS = 1516,         //订阅审批
             APPROVE_RECURRING_SERVICES = 1517,    //定期服务审批           
+            CONTRACT_BLOCK = 1521,                  // 合同管理-预付费用
             CONFIGSUBSCRIPTION=1523,              // 配置项中的订阅管理
             PROJECTCALLBACK=1524,                  // 项目的查找带回
             REVOKE_LABOUR,                 //撤销工时审批
@@ -838,12 +840,14 @@ namespace EMT.DoneNOW.DTO
         OPPORTUNITYSOURCE = 77,                   //商机来源
         OPPPORTUNITYWINREASON = 78,             //关闭商机的原因
         OPPPORTUNITYLOSSREASON = 79,             //丢失商机的原因
+        ContractBlockTime = 80,             // 合同管理-预付时间
         InvoiceTemplate = 82,               //发票模板
         Invoice_History = 83,               //历史发票
         APPROVE_CHARGES = 84,               //成本审批
         APPROVE_MILESTONES = 85,            //里程碑审批
         APPROVE_SUBSCRIPTIONS=86,           //订阅审批
-        APPROVE_RECURRING_SERVICES = 87,    //定期服务审批   
+        APPROVE_RECURRING_SERVICES = 87,    //定期服务审批  
+        ContractBlock = 91,                 // 合同管理-预付费用
         CONFIGSUBSCRIPTION = 93,           // 配置项界面订阅管理
 
         REVOKE_LABOUR,                 //撤销工时审批
@@ -935,7 +939,9 @@ namespace EMT.DoneNOW.DTO
         ConDefCostAdd = 312,                      // 合同默认成本新增
         ConDefCostEdit = 313,                     // 合同默认成本修改
         ConRateAdd=314,                           // 合同预付时间系数新增
-        ConRateEdit = 315,                        // // 合同预付时间系数编辑
+        ConRateEdit = 315,                        // 合同预付时间系数编辑
+        ConBlockAdd = 316,                      // 合同新增预付
+        ConBlockEdit = 317,                     // 合同编辑预付
 
 
         VendorAdd = 320,                          //添加供应商

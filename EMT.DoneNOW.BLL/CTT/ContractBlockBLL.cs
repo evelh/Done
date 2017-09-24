@@ -24,6 +24,52 @@ namespace EMT.DoneNOW.BLL
             return dic;
         }
 
+        public ctt_contract_block GetBlockById(long id)
+        {
+            return dal.FindById(id);
+        }
+
+        /// <summary>
+        /// 修改预付
+        /// </summary>
+        /// <param name="blockEdit"></param>
+        /// <param name="userId"></param>
+        public void EditPurchase(ctt_contract_block blockEdit, long userId)
+        {
+            ctt_contract_block block = dal.FindById(blockEdit.id);
+            ctt_contract_block blockOld = dal.FindById(blockEdit.id);
+
+            block.start_date = blockEdit.start_date;
+            block.end_date = blockEdit.end_date;
+            block.rate = blockEdit.rate;
+            block.quantity = blockEdit.quantity;
+            block.status_id = blockEdit.status_id;
+            block.date_purchased = blockEdit.date_purchased;
+            block.payment_number = blockEdit.payment_number;
+            block.payment_type_id = blockEdit.payment_type_id;
+            block.description = blockEdit.description;
+
+            block.update_time = EMT.Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            block.update_user_id = userId;
+
+            dal.Update(block);
+            OperLogBLL.OperLogUpdate<ctt_contract_block>(block, blockOld, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "修改预付");
+
+            ctt_contract_cost_dal costDal = new ctt_contract_cost_dal();
+            var list = costDal.FindByBlockId(block.id);
+            foreach (var cost in list)
+            {
+                var costEdit = costDal.FindById(cost.id);
+                costEdit.quantity = block.quantity;
+                costEdit.unit_price = block.rate;
+                costEdit.date_purchased = block.date_purchased;
+                costEdit.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                costEdit.update_user_id = userId;
+                costDal.Update(costEdit);
+                OperLogBLL.OperLogUpdate<ctt_contract_cost>(costEdit, cost, costEdit.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改成本");
+            }
+        }
+
         /// <summary>
         /// 新增预付
         /// </summary>
@@ -74,7 +120,16 @@ namespace EMT.DoneNOW.BLL
 
                     block.start_date = dtBlockStart;
                     block.end_date = dtBlockStart.AddMonths(1).AddDays(-1);
-                    block.quantity = ((decimal)dto.hours) * 10000 / 10000;
+                    if (dto.type==1)
+                    {
+                        block.quantity = ((decimal)dto.hours) * 10000 / 10000;
+                        block.rate = ((decimal)dto.hourlyRate) * 100 / 100;
+                    }
+                    else if(dto.type == 2)
+                    {
+                        block.quantity = 1;
+                        block.rate = (decimal)dto.amount;
+                    }
                     if ((bool)dto.firstPart && blockNums == 0)  // 首月部分的处理
                     {
                         block.end_date = new DateTime(dtBlockStart.Year, dtBlockStart.Month + 1, 1).AddDays(-1);    // 结束日期为开始日期同月份的最后一天
@@ -90,7 +145,12 @@ namespace EMT.DoneNOW.BLL
                     dtBlockStart = block.end_date.AddDays(1);   // 下一周期的开始日期
                     ++blockNums;    // 已处理周期数加1
 
-                    block.rate = ((decimal)dto.hourlyRate) * 100 / 100;
+                    // 可以延期
+                    if (dto.delayDays != null && dto.delayDays > 0)
+                    {
+                        block.end_date.AddDays((int)dto.delayDays);
+                    }
+
                     block.status_id = (sbyte)(dto.status ? 1 : 0);
                     block.date_purchased = block.start_date;
                     block.payment_number = dto.paymentNum;
@@ -98,7 +158,7 @@ namespace EMT.DoneNOW.BLL
                     block.description = dto.note;
 
                     dal.Insert(block);
-                    OperLogBLL.OperLogAdd<ctt_contract_block>(block, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "新增合同预付时间");
+                    OperLogBLL.OperLogAdd<ctt_contract_block>(block, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "新增合同预付");
 
 
                     // 新增合同成本
@@ -114,7 +174,7 @@ namespace EMT.DoneNOW.BLL
                     if (costCode == null || costCode.Count == 0)
                         throw new Exception("字典项缺失");
                     cost.cost_code_id = costCode[0].id;
-                    cost.name = $"预付时间[{dto.startDate.ToShortDateString()}-{((DateTime)dto.endDate).ToShortDateString()}]";
+                    cost.name = $"预付[{dto.startDate.ToShortDateString()}-{((DateTime)dto.endDate).ToShortDateString()}]";
                     cost.date_purchased = block.date_purchased;
                     cost.cost_type_id = (int)COST_TYPE.OPERATIONA;
                     cost.status_id = (int)COST_STATUS.UNDETERMINED;
@@ -148,8 +208,16 @@ namespace EMT.DoneNOW.BLL
                 block.update_time = block.create_time;
                 block.start_date = dto.startDate;
                 block.end_date = (DateTime)dto.endDate;
-                block.quantity = ((decimal)dto.hours) * 10000 / 10000;
-                block.rate = ((decimal)dto.hourlyRate) * 100 / 100;
+                if (dto.type == 1)
+                {
+                    block.quantity = ((decimal)dto.hours) * 10000 / 10000;
+                    block.rate = ((decimal)dto.hourlyRate) * 100 / 100;
+                }
+                else if (dto.type == 2)
+                {
+                    block.quantity = 1;
+                    block.rate = (decimal)dto.amount;
+                }
                 block.status_id = (sbyte)(dto.status ? 1 : 0);
                 block.date_purchased = dto.datePurchased;
                 block.payment_number = dto.paymentNum;
@@ -157,7 +225,7 @@ namespace EMT.DoneNOW.BLL
                 block.description = dto.note;
 
                 dal.Insert(block);
-                OperLogBLL.OperLogAdd<ctt_contract_block>(block, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "新增合同预付时间");
+                OperLogBLL.OperLogAdd<ctt_contract_block>(block, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "新增合同预付");
 
 
                 // 新增合同成本
@@ -173,7 +241,7 @@ namespace EMT.DoneNOW.BLL
                 if (costCode == null || costCode.Count == 0)
                     throw new Exception("字典项缺失");
                 cost.cost_code_id = costCode[0].id;
-                cost.name = $"预付时间[{dto.startDate.ToShortDateString()}-{((DateTime)dto.endDate).ToShortDateString()}]";
+                cost.name = $"预付[{dto.startDate.ToShortDateString()}-{((DateTime)dto.endDate).ToShortDateString()}]";
                 cost.date_purchased = block.date_purchased;
                 cost.cost_type_id = (int)COST_TYPE.OPERATIONA;
                 cost.status_id = (int)COST_STATUS.UNDETERMINED;

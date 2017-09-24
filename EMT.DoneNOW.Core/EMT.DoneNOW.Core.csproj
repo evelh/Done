@@ -83,6 +83,7 @@
     <Compile Include="CTT\ctt_contract_service_period_bundle_service.cs" />
     <Compile Include="CTT\ctt_invoice.cs" />
     <Compile Include="CTT\ctt_invoice_detail.cs" />
+    <Compile Include="CTT\v_contract_summary.cs" />
     <Compile Include="Dictionary\d_sla.cs" />
     <Compile Include="Dictionary\d_cost_code.cs" />
     <Compile Include="Dictionary\d_tax_region_cate.cs" />

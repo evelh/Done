@@ -147,6 +147,8 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                      <%if (contractType == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) {
+                                              %>
                                         <tr>
                                             <td class="FieldLabels">
                                                 合同周期类型
@@ -208,6 +210,27 @@
                                                 <input type="text" disabled="disabled" id="occurrences" name="occurrences" style="margin-left: 2px;text-align:right;" size="3"/>个服务周期后
                                             </td>
                                         </tr>
+                                      <%
+                                          } else {
+                                              %>
+                                      <tr>
+                                          <td class="FieldLabels">
+                                              开始日期<span class="errorSmall">*</span>
+                                              <div>
+                                                  <input type="text" style="width:120px;" id="start_date" name="start_date" onclick="WdatePicker()" class="Wdate" />
+                                              </div>
+                                          </td>
+                                      </tr>
+                                      <tr>
+                                          <td class="FieldLabels">
+                                              结束日期<span class="errorSmall">*</span>
+                                              <div>
+                                                  <input type="text" style="width:120px;" id="end_date" name="end_date" onclick="WdatePicker()" class="Wdate" />
+                                              </div>
+                                          </td>
+                                      </tr>
+                                      <%
+                                          } %>
                                     </tbody>
                                 </table>
                             </td>
@@ -415,23 +438,46 @@
                                         <tr>
                                             <td>
                                                 <span class="contentButton">
-                                                    <a class="ImgLink">
-                                                        <img src="../Images/add.png" class="ButtonImg"/>
-                                                        <span class="Text">新建服务包</span>
-                                                    </a>
-                                                </span>
-                                                <span class="contentButton">
-                                                    <a class="ImgLink">
+                                                    <a class="ImgLink" onclick='window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALLBACK %>&field=ServiceName&callBack=AddService", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ServiceSelect %>", "left=200,top=200,width=600,height=800", false);'>
                                                         <img src="../Images/add.png" class="ButtonImg"/>
                                                         <span class="Text">新建服务</span>
                                                     </a>
                                                 </span>
+                                                <span class="contentButton">
+                                                    <a class="ImgLink" onclick='window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_BUNDLE_CALLBACK %>&field=ServiceName&callBack=AddServiceBundle", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ServiceBundleSelect %>", "left=200,top=200,width=600,height=800", false);'>
+                                                        <img src="../Images/add.png" class="ButtonImg"/>
+                                                        <span class="Text">新建服务包</span>
+                                                    </a>
+                                                </span>
+                                              <input type="hidden" id="ServiceName" />
+                                              <input type="hidden" id="ServiceNameHidden" />
+                                              <input type="hidden" id="AddServiceIds" name="AddServiceIds" />
+                                              <input type="hidden" id="AddSerBunIds" name="AddSerBunIds" />
                                             </td>
                                         </tr>
                                         <tr height="10px;"></tr>
                                         <tr>
                                             <td colspan="1" id="txtBlack8">
-                                                
+                                                <div class="DivScrollingContainer" style="top:1px;margin-right:10px;">
+                                                    <div class="grid" style="margin-right :1px;">
+                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td style="padding-left: 10px;"></td>
+                                                                    <td style="text-align:left;padding-left: 5px; ">服务/包名称</td>
+                                                                    <td style="padding-left: 5px; ">供应商名称</td>
+                                                                    <td style="padding-left: 5px; ">周期类型</td>
+                                                                    <td align="right">单元成本</td>
+                                                                    <td align="right">单价</td>
+                                                                    <td align="right">数量</td>
+                                                                    <td align="right">总价</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="ServiceBody">
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -445,7 +491,7 @@
                             </td>
                             <td class="FieldLabels" width="10%" style="padding-right:15px;">
                                 <div style="width:130px;height: 24px; padding:0 0 0 10px;">
-                                    <input type="text" value="0.00" style="text-align: right;"/>
+                                    <input type="text" value="0.00" id="ServicePrice" style="text-align: right;"/>
                                 </div>
                             </td>
                         </tr>
@@ -507,50 +553,29 @@
                                     <thead>
                                         <tr>
                                             <td style="width:20px; text-align:center;">
-                                                <input type="checkbox" style="vertical-align: middle;">
+                                                <input type="checkbox" style="vertical-align: middle;" />
                                             </td>
-                                            <td>Role Name</td>
-                                            <td align="right">Role Hourly Billing Rate</td>
-                                            <td align="right">Contract Hourly Billing Rate</td>
+                                            <td>角色名称</td>
+                                            <td align="right">角色小时计费费率</td>
+                                            <td align="right">合同小时计费费率</td>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                      <%foreach (var role in roleList) { %>
                                         <tr>
                                             <td style="width:20px; text-align:center;">
-                                                <input type="checkbox" style="vertical-align: middle;">
+                                                <input type="checkbox" name="cbRoleRate<%=role.id %>" onclick="CheckRoleRate(<%=role.id%>)" style="vertical-align: middle;"/>
+                                              <input type="hidden" id="roleRateCheck<%=role.id %>" name="roleRateCheck<%=role.id %>" />
                                             </td>
-                                            <td>Emergency Technician</td>
+                                            <td><%=role.name %></td>
                                             <td align="right">
-                                                <input type="text" size="5" value="50.00" disabled style="width: 97%;text-align: right;">
+                                                <input type="text" size="5" value="<%=role.hourly_rate %>" disabled="disabled" style="width: 97%;text-align: right;"/>
                                             </td>
                                             <td align="right">
-                                                <input type="text" size="5" value="50.00" style="text-align: right;">
+                                                <input type="text" size="5" name="txtRoleRate<%=role.id %>" value="<%=role.hourly_rate %>" style="text-align: right;"/>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td style="width:20px; text-align:center;">
-                                                <input type="checkbox" style="vertical-align: middle;">
-                                            </td>
-                                            <td>Help Desk</td>
-                                            <td align="right">
-                                                <input type="text" size="5" value="150.00" disabled style="width: 97%;text-align: right;">
-                                            </td>
-                                            <td align="right">
-                                                <input type="text" size="5" value="150.00" style="text-align: right;">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width:20px; text-align:center;">
-                                                <input type="checkbox" style="vertical-align: middle;">
-                                            </td>
-                                            <td>Administration</td>
-                                            <td align="right">
-                                                <input type="text" size="5" value="250.00" disabled style="width: 97%;text-align: right;">
-                                            </td>
-                                            <td align="right">
-                                                <input type="text" size="5" value="250.00" style="text-align: right;">
-                                            </td>
-                                        </tr>
+                                      <%} %>
                                     </tbody>
                                 </table>
                             </div>
@@ -565,12 +590,26 @@
             <div class="PageInstructions">请为新合同输入里程碑信息。</div>
             <div class="WizardSection">
                 <div style="position:relative;">
-                    <div style="position:absolute;top:0px;left:0px;width:100%;">
+                    <div style="position:absolute;top:0px;left:0px;width:100%;" id="MilList">
                         <table width="100%" cellspacing="0" cellpadding="0" border="0">
                             <tbody>
                                 <tr>
                                     <td colspan="2">
-                                        <div style="height:400px;width:100%;"></div>
+                                        <div style="height:400px;width:100%;">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+                                                <thead>
+                                                    <tr>
+                                                        <td style="padding-left: 10px;"></td>
+                                                        <td style="text-align:left;padding-left: 5px; ">标题</td>
+                                                        <td style="padding-left: 5px; ">总额</td>
+                                                        <td style="padding-left: 5px; ">截止日期</td>
+                                                        <td align="right">计费代码</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="MilListBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -579,7 +618,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="FieldLabels" align="right">
-                                                        Estimated Revenue
+                                                        预估收入
                                                     </td>
                                                     <td align="left" style="padding-left:3px;">
                                                         <b>
@@ -587,19 +626,19 @@
                                                         </b>
                                                     </td>
                                                     <td class="FieldLabels" align="right">
-                                                        Milestone Total
+                                                        里程碑总额
                                                     </td>
                                                     <td align="left" style="padding-left:3px;">
                                                         <b>
-                                                            <span>¥0.00</span>
+                                                            <span id="milAmountTotal">¥0.00</span>
                                                         </b>
                                                     </td>
                                                     <td align="right">
                                                         <div class="ButtonContainer">
                                                             <ul>
-                                                                <li class="Button ButtonIcon NormalState" id="AddButton" tabindex="0">
+                                                                <li class="Button ButtonIcon NormalState" onclick="AddMil()" tabindex="0">
                                                                     <span class="Icon Add"></span>
-                                                                    <span class="Text">新增</span>
+                                                                    <span class="Text">新增里程碑</span>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -611,40 +650,42 @@
                                 </tr>
                             </tbody>
                         </table>
+                      <input type="hidden" name="milestoneAddList" id="milestoneAddList" />
                     </div>
-                    <div style="position:absolute;top:0px;left:0px;">
+                    <div style="position:absolute;top:0px;left:0px;display:none;" id="MilAdd">
                         <table width="100%" cellspacing="0" cellpadding="0" border="0">
                             <tbody>
                                 <tr>
                                     <td class="FieldLabels" colspan="5">
-                                        Name<span class="errorSmall">*</span>
+                                        标题<span class="errorSmall">*</span>
                                         <div>
-                                            <input type="text" style="width:100%;">
+                                            <input type="text" style="width:100%;" id="milName" />
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="FieldLabels">
-                                        Amount
+                                        总额
                                         <div>
-                                            <input type="text" style="width:80px;" value="0.00">
+                                            <input type="text" style="width:80px;" value="0.00" id="milAmout" />
                                         </div>
                                     </td>
                                     <td width="30px"></td>
                                     <td class="FieldLabels">
-                                        Billing Code Name
+                                        计费代码
                                         <div>
-                                            <input type="text" style="width:200px;" disabled>
-                                            <a class="DataSelectorLinkIcon">
+                                            <input type="hidden" id="milAddCodeHidden" />
+                                            <input type="text" id="milAddCode" style="width:200px;" disabled="disabled" />
+                                            <a class="DataSelectorLinkIcon" onclick="window.open('../Common/SelectCallBack.aspx?cat=&field=milAddCode', '_blank', 'left=200,top=200,width=600,height=800', false);">
                                                 <img src="../Images/data-selector.png" style="vertical-align: middle;"/>
                                             </a>
                                         </div>
                                     </td>
                                     <td width="10px"></td>
                                     <td class="FieldLabels">
-                                        Due Date<span class="errorSmall">*</span>
+                                        截止日期<span class="errorSmall">*</span>
                                         <div>
-                                            <input type="text" style="width:90px;" onclick="WdatePicker()" class="Wdate"/>
+                                            <input type="text" style="width:90px;" id="milDate" onclick="WdatePicker()" class="Wdate"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -652,15 +693,15 @@
                                     <td>
                                         <div>
                                             <input type="checkbox"/>
-                                            <span>Ready to Bill</span>
+                                            <span>待计费</span>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="FieldLabels" colspan="5">
-                                        Description
+                                        描述
                                         <div>
-                                            <textarea rows="7" style="width:100%;"></textarea>
+                                            <textarea rows="7" id="milDesc" style="width:100%;"></textarea>
                                         </div>
                                     </td>
                                 </tr>
@@ -668,11 +709,11 @@
                                     <td>
                                         <div class="ButtonContainer">
                                             <ul>
-                                                <li class="Button ButtonIcon Okey NormalState" id="OkButton" tabindex="0">
+                                                <li class="Button ButtonIcon Okey NormalState" onclick="AddMilOk()" tabindex="0">
                                                     <span class="Icon Ok"></span>
                                                     <span class="Text">确认</span>
                                                 </li>
-                                                <li class="Button ButtonIcon Cancel NormalState" id="CancelButton" tabindex="0">
+                                                <li class="Button ButtonIcon Cancel NormalState" onclick="AddMilCancle()" tabindex="0">
                                                     <span class="Icon Cancel"></span>
                                                     <span class="Text">取消</span>
                                                 </li>
@@ -699,10 +740,33 @@
                                         <td class="sectionBluebg">
                                             员工
                                             <span style="font-weight: normal;">
-                                                <a class="PrimaryLink">(Load)</a>
+                                                <a class="PrimaryLink" onclick="ShowResource()">(加载)</a>
                                             </span>
-                                            <div>
-                                                <textarea style="width:99%;height:300px;border:1px solid silver;" rows="12"></textarea>
+                                            <div id="ResourceDiv" style="display:none;">
+                                              <table cellspacing="1" cellpadding="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <td style="width:20px; text-align:center;">
+                                                            <input type="checkbox" style="vertical-align: middle;" />
+                                                        </td>
+                                                        <td>姓名</td>
+                                                        <td align="right">邮件地址</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                  <%foreach (var resource in resourceList) { %>
+                                                  <tr>
+                                                      <td style="width:20px; text-align:center;">
+                                                          <input type="checkbox" name="notify<%=resource.id %>" style="vertical-align: middle;"/>
+                                                      </td>
+                                                      <td><%=resource.name %></td>
+                                                      <td align="right">
+                                                          <%=resource.email %>
+                                                      </td>
+                                                  </tr>
+                                                  <%} %>
+                                                </tbody>
+                                              </table>
                                             </div>
                                         </td>
                                     </tr>
@@ -713,7 +777,7 @@
                                                 （用半角逗号分隔）
                                             </span>
                                             <div style="margin-bottom:8px;">
-                                                <input type="text" style="width: 100%" />
+                                                <input type="text" name="notifyEmails" style="width: 100%" />
                                             </div>
                                             <div>
                                                 <input type="checkbox" />
@@ -730,7 +794,7 @@
                                             <td class="FieldLabels">
                                                 主题
                                                 <div style="padding-right: 10px;">
-                                                    <input type="text" style="width:99%;" value="创建合同" />
+                                                    <input type="text" name="notifyTitle" style="width:99%;" value="创建合同" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -738,7 +802,7 @@
                                             <td class="FieldLabels">
                                                 信息
                                                 <div style="padding-right: 10px;">
-                                                    <textarea style="width: 99%; height: 291px;" rows="12"></textarea>
+                                                    <textarea style="width: 99%; height: 291px;" name="notifyContent" rows="12"></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -758,12 +822,12 @@
                     <tbody>
                         <tr height="85%">
                             <td width="90%">
-                                <a>打开新创建合同</a>
+                                <a href="ContractView.aspx?id=<%=contractId %>">打开新创建合同</a>
                             </td>
                         </tr>
                         <tr height="85%">
                             <td width="90%">
-                                <a>创建另一个合同</a>
+                                <a href="ContractAdd.aspx?type=<%=contractType %>">创建另一个合同</a>
                             </td>
                         </tr>
                         <tr height="85%">
@@ -776,6 +840,7 @@
             </div>
         </div>
         <input type="hidden" name="type_id" id="contractType" value="<%=contractType %>" />
+        <input type="hidden" id="isFinish" value="<%=isFinish %>" />
         <input type="hidden" id="currentPage" value="" />
         <input type="hidden" id="serviceBd" name="serviceBd" />
         <input type="hidden" id="cnt" <%if (udfList != null && udfList.Count != 0) { %> value="1" <%} else { %> value="0" <%} %> />

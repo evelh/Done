@@ -174,6 +174,12 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.CONFIGSUBSCRIPTION:
                     addBtn = "新增订阅";
                     break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_BLOCK:
+                    addBtn = "新增预付费用";
+                    break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_BLOCK_TIME:
+                    addBtn = "新增预付时间";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -408,11 +414,11 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.Contract:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑合同", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看合同", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "在新窗口中查看合同", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看合同", click_function = "ViewContract()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "在新窗口中查看合同", click_function = "ViewNewWindow()" });
                     contextMenu.Add(new PageContextMenuDto { text = "续约", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制合同", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除合同", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除合同", click_function = "DeleteContract()\" \" style='color:grey;'" });
                     break;
                 case (long)QueryType.ProuductInventory:
                     contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
@@ -559,6 +565,16 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "更新", click_function = "Update()" });
                     contextMenu.Add(new PageContextMenuDto { text = "取消", click_function = "Cancel()" });
                     contextMenu.Add(new PageContextMenuDto { text = "失效", click_function = "Invalid()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.ContractUDF:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    break;
+                case (long)QueryType.ContractBlock:
+                case (long)QueryType.ContractBlockTime:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:

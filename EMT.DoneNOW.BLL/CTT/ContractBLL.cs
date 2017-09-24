@@ -36,7 +36,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ContractEditDto GetContract(long id)
+        public ContractEditDto GetContractEdit(long id)
         {
             ContractEditDto dto = new ContractEditDto();
 
@@ -89,27 +89,14 @@ namespace EMT.DoneNOW.BLL
             dto.contract.status_id = 1; // 激活
             dal.Insert(dto.contract);
 
-            var user = UserInfoBLL.GetUserInfo(userId);
+            //var user = UserInfoBLL.GetUserInfo(userId);
 
             // 新增日志
-            var add_contract_log = new sys_oper_log()
-            {
-                user_cate = "用户",
-                user_id = user.id,
-                name = "",
-                phone = user.mobile == null ? "" : user.mobile,
-                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CONTRACT,
-                oper_object_id = dto.contract.id,// 操作对象id
-                oper_type_id = (int)DicEnum.OPER_LOG_TYPE.ADD,
-                oper_description = dal.AddValue(dto.contract),
-                remark = "保存合同信息"
-            };         // 创建日志
-            new sys_oper_log_dal().Insert(add_contract_log);       // 插入日志
+            OperLogBLL.OperLogAdd<ctt_contract>(dto.contract, dto.contract.id, userId, OPER_LOG_OBJ_CATE.CONTRACT, "新增合同");
 
             // 合同自定义字段
             var udf_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);  // 获取合同的自定义字段信息
-            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTRACTS, user.id,
+            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTRACTS, userId,
                 dto.contract.id, udf_list, dto.udf, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_EXTENSION); // 保存合同自定义字段值
 
             // TODO: 邮件通知
@@ -117,8 +104,30 @@ namespace EMT.DoneNOW.BLL
             #region 不同合同类型不同处理
             if (dto.contract.type_id == (int)DicEnum.CONTRACT_TYPE.SERVICE)
             {
+                ctt_contract_service_dal serDal = new ctt_contract_service_dal();
+                ivt_service_dal ivtSerDal = new ivt_service_dal();
                 // 处理合同服务/服务包
+                foreach (var ser in dto.serviceList)
+                {
+                    ctt_contract_service service = new ctt_contract_service();
+                    service.id = serDal.GetNextIdCom();
+                    service.contract_id = dto.contract.id;
+                    service.object_type = 1;
+                    service.object_id = ser.serviceId;
+                    service.quantity = (int)ser.number;
+                    service.unit_price = ser.price;
+                    service.adjusted_price = ser.price * service.quantity;
+                    service.unit_cost = ivtSerDal.FindById(ser.serviceId).unit_cost;
+                    service.effective_date = dto.contract.start_date;
+                    service.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    service.create_user_id = userId;
+                    service.update_user_id = userId;
+                    service.update_time = service.create_time;
 
+                    serDal.Insert(service);
+
+                    OperLogBLL.OperLogAdd<ctt_contract_service>(service, service.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_SERVICE, "新增合同添加服务");
+                }
             }
             else
             {
@@ -128,8 +137,14 @@ namespace EMT.DoneNOW.BLL
                     if (dto.milestone != null && dto.milestone.Count > 0)
                     {
                         ctt_contract_milestone_dal milestoneDal = new ctt_contract_milestone_dal();
-                        foreach (var milestone in dto.milestone)
+                        foreach (var mil in dto.milestone)
                         {
+                            ctt_contract_milestone milestone = new ctt_contract_milestone();
+                            milestone.name = mil.name;
+                            milestone.dollars = mil.dollars;
+                            milestone.due_date = mil.due_date;
+                            milestone.cost_code_id = mil.cost_code_id;
+
                             milestone.id = milestoneDal.GetNextIdCom();
                             milestone.contract_id = dto.contract.id;
                             milestone.create_time = EMT.Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -139,27 +154,45 @@ namespace EMT.DoneNOW.BLL
                             milestoneDal.Insert(milestone);
 
                             // 新增日志
-                            var log = new sys_oper_log()
-                            {
-                                user_cate = "用户",
-                                user_id = user.id,
-                                name = "",
-                                phone = user.mobile == null ? "" : user.mobile,
-                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE,
-                                oper_object_id = milestone.id,// 操作对象id
-                                oper_type_id = (int)DicEnum.OPER_LOG_TYPE.ADD,
-                                oper_description = milestoneDal.AddValue(milestone),
-                                remark = "保存合同里程碑信息"
-                            };         // 创建日志
-                            new sys_oper_log_dal().Insert(log);       // 插入日志
+                            OperLogBLL.OperLogAdd<ctt_contract_milestone>(milestone, milestone.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE, "新增合同里程碑信息");
                         }
+                    }
+                }
+
+                // 除定期服务合同和事件合同，处理角色费率
+                if (dto.contract.type_id != (int)DicEnum.CONTRACT_TYPE.PER_TICKET)
+                {
+                    ctt_contract_rate_dal rateDal = new ctt_contract_rate_dal();
+                    foreach (var rate in dto.rateList)
+                    {
+                        ctt_contract_rate roleRate = new ctt_contract_rate();
+                        roleRate.id = rateDal.GetNextIdCom();
+                        roleRate.contract_id = dto.contract.id;
+                        roleRate.role_id = rate.roleId;
+                        roleRate.rate = rate.rate;
+                        roleRate.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        roleRate.create_user_id = userId;
+                        roleRate.update_time = roleRate.create_time;
+                        roleRate.update_user_id = userId;
+
+                        rateDal.Insert(roleRate);
+                        OperLogBLL.OperLogAdd<ctt_contract_rate>(roleRate, roleRate.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_RATE, "新增合同角色费率");
                     }
                 }
             }
             #endregion
 
             return dto.contract.id;
+        }
+
+        /// <summary>
+        /// 编辑合同
+        /// </summary>
+        /// <param name="ct"></param>
+        /// <param name="userId"></param>
+        public void EditContract(ctt_contract ct, long userId)
+        {
+            var contract = dal.FindById(ct.id);
         }
 
         /// <summary>
@@ -372,5 +405,24 @@ namespace EMT.DoneNOW.BLL
             return false;
         }
 
+        /// <summary>
+        /// 根据合同id获取合同概要视图信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public v_contract_summary GetContractSummary(long id)
+        {
+            return new v_contract_summary_dal().FindByContractId(id);
+        }
+
+        /// <summary>
+        /// 根据合同id获取合同信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ctt_contract GetContract(long id)
+        {
+            return dal.FindById(id);
+        }
     }
 }

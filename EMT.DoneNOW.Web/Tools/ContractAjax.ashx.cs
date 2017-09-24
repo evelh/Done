@@ -1,6 +1,7 @@
 ﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DAL;
+using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,6 +93,14 @@ namespace EMT.DoneNOW.Web
                     case "DeleteBlock":
                         var blockId = context.Request.QueryString["blockId"];
                         DeleteContractBlock(context, Convert.ToInt64(blockId));
+                        break;
+                    case "AddService":
+                        var serId = context.Request.QueryString["id"];
+                        AddService(context, Convert.ToInt64(serId));
+                        break;
+                    case "AddServiceBundle":
+                        var serBunId = context.Request.QueryString["id"];
+                        AddServiceBundle(context, Convert.ToInt64(serBunId));
                         break;
                     default:
                         break;
@@ -308,6 +317,155 @@ namespace EMT.DoneNOW.Web
                 result = new ContractBlockBLL().DeletePurchase(blockId, user.id);
             }
             context.Response.Write(result);
+        }
+
+        /// <summary>
+        /// 新增合同时添加服务
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="id"></param>
+        public void AddService(HttpContext context, long id)
+        {
+            var service = new ivt_service_dal().FindById(id);
+            string txt = "";
+            decimal pricePerMonth = 0;
+            if (service != null)
+            {
+                // 获取供应商名称
+                string vendorName = "";
+                if (service.vendor_id!=null)
+                {
+                    var vendorDal = new ivt_product_vendor_dal();
+                    var accountDal = new crm_account_dal();
+                    var vendor = vendorDal.FindById((long)service.vendor_id);
+                    if (vendor.vendor_account_id!=null)
+                    {
+                        vendorName = accountDal.FindById((long)vendor.vendor_account_id).name;
+                    }
+                }
+
+                // 周期
+                string period = "";
+                if (service.period_type_id != null)
+                {
+                    period = new GeneralBLL().GetGeneralName((int)service.period_type_id);
+                    if (service.unit_price == null)
+                        pricePerMonth = 0;
+                    else
+                    {
+                        if (service.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH)
+                            pricePerMonth = service.unit_price == null ? 0 : (decimal)service.unit_price;
+                        if (service.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
+                            pricePerMonth = service.unit_price == null ? 0 : (decimal)service.unit_price / 3;
+                        if (service.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
+                            pricePerMonth = service.unit_price == null ? 0 : (decimal)service.unit_price / 6;
+                        if (service.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
+                            pricePerMonth = service.unit_price == null ? 0 : (decimal)service.unit_price / 12;
+                    }
+                }
+
+                string unitCost = "";
+                if (service.unit_cost!=null)
+                {
+                    unitCost = "¥" + service.unit_cost.ToString();
+                }
+
+                txt += $"<tr id='service{service.id}'>";
+                txt += $"<td style='white - space:nowrap; '><img src = '../Images/delete.png' onclick='RemoveService({service.id})' alt = '' /></ td > ";
+                txt += $"<td><span>{service.name}</span></td>";
+                txt += $"<td nowrap>{vendorName}</td>";
+                txt += $"<td nowrap><span>{period}</span></td>";
+                txt += $"<td nowrap align='right'><span>{unitCost}</span></td>";
+                txt += $"<td nowrap align='right'><input type = 'text' onblur='CalcService()' id='price{service.id}' name='price{service.id}' value = '{pricePerMonth}' ></ td > ";
+                txt += $"<td nowrap align='right'><input type = 'text' onblur='CalcService()' id='num{service.id}' name='num{service.id}' value = '1' ></ td > ";
+                txt += $"<td nowrap align='right'>￥<input type = 'text' id='pricenum{service.id}' value = '{pricePerMonth}' disabled ></ td > ";
+                txt += "</tr>";
+            }
+
+            List<object> result = new List<object>();
+            result.Add(txt);
+            result.Add(pricePerMonth);
+            result.Add(service.id);
+            
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+
+        /// <summary>
+        /// 新增合同时添加服务包
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="id"></param>
+        public void AddServiceBundle(HttpContext context, long id)
+        {
+            var serBun = new ivt_service_bundle_dal().FindById(id);
+            string txt = "";
+            decimal pricePerMonth = 0;
+            List<object> result = new List<object>();
+
+            if (serBun == null)
+            {
+                result.Add(txt);
+                result.Add(pricePerMonth);
+
+                context.Response.Write(new Tools.Serialize().SerializeJson(result));
+                return;
+            }
+
+            // 获取供应商名称
+            string vendorName = "";
+            if (serBun.vendor_id != null)
+            {
+                var vendorDal = new ivt_product_vendor_dal();
+                var accountDal = new crm_account_dal();
+                var vendor = vendorDal.FindById((long)serBun.vendor_id);
+                if (vendor.vendor_account_id != null)
+                {
+                    vendorName = accountDal.FindById((long)vendor.vendor_account_id).name;
+                }
+            }
+
+            // 周期
+            string period = "";
+            if (serBun.period_type_id != null)
+            {
+                period = new GeneralBLL().GetGeneralName((int)serBun.period_type_id);
+                if (serBun.unit_price == null)
+                    pricePerMonth = 0;
+                else
+                {
+                    if (serBun.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH)
+                        pricePerMonth = serBun.unit_price == null ? 0 : (decimal)serBun.unit_price;
+                    if (serBun.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
+                        pricePerMonth = serBun.unit_price == null ? 0 : (decimal)serBun.unit_price / 3;
+                    if (serBun.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
+                        pricePerMonth = serBun.unit_price == null ? 0 : (decimal)serBun.unit_price / 6;
+                    if (serBun.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
+                        pricePerMonth = serBun.unit_price == null ? 0 : (decimal)serBun.unit_price / 12;
+                }
+            }
+
+            string unitCost = "";
+            if (serBun.unit_cost != null)
+            {
+                unitCost = "¥" + serBun.unit_cost.ToString();
+            }
+            
+            txt += $"<tr id='service{serBun.id}'>";
+            txt += $"<td style='white - space:nowrap; '><img src = '../Images/delete.png' onclick='RemoveServiceBundle({serBun.id})' alt = '' /></ td > ";
+            txt += $"<td><span>{serBun.name}</span></td>";
+            txt += $"<td nowrap>{vendorName}</td>";
+            txt += $"<td nowrap><span>{period}</span></td>";
+            txt += $"<td nowrap align='right'><span>{unitCost}</span></td>";
+            txt += $"<td nowrap align='right'>"+$"<input type='text' onblur='CalcService()' id='price{serBun.id}' name='price{serBun.id}' value = '{pricePerMonth}' >"+"</ td > ";
+            txt += $"<td nowrap align='right'>" + $"<input type='text' onblur='CalcService()' id='num{serBun.id}' name='num{serBun.id}' value = '1' >" + "</ td > ";
+            txt += $"<td nowrap align='right'>￥" + $"<input type='text' id='pricenum{serBun.id}' value = '{pricePerMonth}' disabled >" + "</ td > ";
+            txt += "</tr>";
+
+            result.Add(txt);
+            result.Add(pricePerMonth);
+            result.Add(serBun.id);
+
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
 
         public bool IsReusable

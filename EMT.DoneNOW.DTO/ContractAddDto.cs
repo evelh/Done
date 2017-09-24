@@ -16,9 +16,26 @@ namespace EMT.DoneNOW.DTO
         public List<UserDefinedFieldValue> udf; // 合同自定义字段
         public List<ctt_contract_milestone> milestone;      // 合同里程碑
 
+        public List<ServiceInfoDto> serviceList;        // 服务列表
+
+        public List<ContractRateDto> rateList;          //角色费率
+
         public List<long> notifyUserIds;        // 邮件通知的员工id
         public string notifySubject;            // 邮件通知的主题
         public string notifyMessage;            // 邮件通知的消息
         public string notifyEmails;             // 邮件通知其他邮箱
+    }
+
+    public class ServiceInfoDto
+    {
+        public decimal price;
+        public decimal number;
+        public long serviceId;
+    }
+
+    public class ContractRateDto
+    {
+        public long roleId;
+        public decimal rate;
     }
 }

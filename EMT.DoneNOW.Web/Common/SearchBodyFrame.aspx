@@ -127,7 +127,7 @@
             <input type="hidden" id="cat" name="cat" value="<%=catId %>" />
             <input type="hidden" id="type" name="type" value="<%=queryTypeId %>" />
             <input type="hidden" id="group" name="group" value="<%=paraGroupId %>" />
-            <input type="hidden" name="id" value="<%=objId %>" />
+            <input type="hidden" id="id" name="id" value="<%=objId %>" />
             <input type="hidden" id="isCheck" name="isCheck" value="<%=isCheck %>" />
             <div id="conditions">
                 <%foreach (var para in queryParaValue)
@@ -1158,6 +1158,24 @@
         }
         function Edit() {
             window.open("../Contract/ContractEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=950', false);
+        }
+        function ViewContract() {
+          window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank', 'left=0,top=0,location=no,status=no,width=900,height=950', false);
+        }
+        function View(id) {
+          window.open("../Contract/ContractView.aspx?id=" + id, '_blank', 'left=0,top=0,location=no,status=no,width=900,height=950', false);
+        }
+        function ViewNewWindow() {
+          window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank');
+        }
+        function DeleteContract() {
+          //$.ajax({
+          //  type: "GET",
+          //  url: "../Tools/ContractAjax.ashx?act=delete&id=" + entityid,
+          //  success: function (data) {
+          //    alert(data);
+          //  }
+          //})
         }
         $("#ToolsButton").on("mouseover", function () {
             $("#ToolsButton").css("background", "#fff");
@@ -2810,6 +2828,34 @@
              }
          }
 
+        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractUDF) { %>
+        function Edit() {
+          window.open("../Contract/ContractUdf.aspx?contractId=" + $("#id").val() + "&colName=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SubscriptionEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function View(id) {
+        }
+        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlock
+            || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlockTime) { %>
+        function Edit() {
+          window.open("../Contract/EditRetainerPurchase.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Add() {
+          window.open("../Contract/AddRetainerPurchase.aspx?id=" + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Delete() {
+          if (confirm("预付费用关联了一个合同成本，如果删除，则相关的合同成本也会删除，是否继续?")) {
+            $.ajax({
+              type: "GET",
+              url: "../Tools/ContractAjax.ashx?act=DeleteBlock&blockId=" + entityid,
+              async: false,
+              success: function (data) {
+                window.reload();
+              }
+            })
+          }
+        }
+        function View(id) {
+        }
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

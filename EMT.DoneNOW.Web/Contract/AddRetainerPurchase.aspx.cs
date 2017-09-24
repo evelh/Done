@@ -12,10 +12,12 @@ namespace EMT.DoneNOW.Web.Contract
 {
     public partial class AddRetainerPurchase : BasePage
     {
-        protected ContractEditDto contract;    // 合同
+        protected ctt_contract contract;    // 合同
         protected int blockType;    // 预付类型(1:预付时间;2:预付费用;3:事件)
+        protected string blocktypeName; // 预付名称
         protected long contractId;  // 合同id
         private ContractBlockBLL bll = new ContractBlockBLL();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -23,11 +25,27 @@ namespace EMT.DoneNOW.Web.Contract
                 contractId = 0;
                 string id = Request.QueryString["id"];
                 if (!long.TryParse(id, out contractId))
-                    contractId = 0;
-                if (!int.TryParse(Request.QueryString["type"], out blockType))
-                    blockType = 1;
+                {
+                    Response.Close();
+                    return;
+                }
 
                 contract = new ContractBLL().GetContract(contractId);
+                if (contract.type_id==(int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+                {
+                    blocktypeName = "时间";
+                    blockType = 1;
+                }
+                else if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.RETAINER)
+                {
+                    blocktypeName = "费用";
+                    blockType = 2;
+                }
+                else
+                {
+                    Response.Close();
+                    return;
+                }
 
                 var dic = bll.GetField();
                 paymentType.DataValueField = "val";
@@ -56,6 +74,25 @@ namespace EMT.DoneNOW.Web.Contract
         private void SaveBlock()
         {
             var dto = AssembleModel<ContractBlockAddDto>();
+            if (Request.Form["CreateOneOrMonthly"].Equals("1"))
+                dto.isMonthly = false;
+            else
+                dto.isMonthly = true;
+            if (!(Request.Form["useDelay"] != null && Request.Form["useDelay"].Equals("on")))
+                dto.delayDays = null;
+            if (Request.Form["EndDateLastOrNumbers"].Equals("1"))
+                dto.purchaseNum = null;
+            else
+                dto.endDate = null;
+            if (Request.Form["isFirstPart"] != null && Request.Form["isFirstPart"].Equals("on"))
+                dto.firstPart = true;
+            else
+                dto.firstPart = false;
+            if (Request.Form["rdStatus"].Equals("1"))
+                dto.status = true;
+            else
+                dto.status = false;
+
             bll.NewPurchase(dto, GetLoginUserId());
         }
     }

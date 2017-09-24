@@ -6,8 +6,8 @@
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <link href="../Content/reset.css" rel="stylesheet" />
-  <link rel="stylesheet" href="../Content/LostOpp.css"/>
-    <title>新增预付</title>
+  <link rel="stylesheet" href="../Content/Roles.css"/>
+    <title>新增预付<%=blocktypeName %></title>
   <style>
     .greyColor{
         font-size: 12px;
@@ -28,8 +28,7 @@
         <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">新增预付</span>
-            <a href="###" class="help"></a>
+            <span class="text1">新增预付<%=blocktypeName %></span>
         </div>
     </div>
     <!--按钮-->
@@ -38,13 +37,13 @@
             <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
                 <span class="Icon SaveAndClone"></span>
                 <span class="Text">
-                  <asp:Button ID="SaveClose" runat="server" Text="保存 & 关闭" OnClick="SaveClose_Click" />
+                  <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" OnClick="SaveClose_Click" />
                 </span>
             </li>
             <li class="Button ButtonIcon NormalState" id="SaveAndNewButton" tabindex="0">
                 <span class="Icon SaveAndNew"></span>
                 <span class="Text">
-                  <asp:Button ID="SaveNew" runat="server" Text="保存 & 新建" OnClick="SaveNew_Click" />
+                  <asp:Button ID="SaveNew" runat="server" Text="保存并新建" OnClick="SaveNew_Click" />
                 </span>
             </li>
             <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
@@ -56,7 +55,7 @@
     <!--主体内容-->
     <div class="DivScrollingContainer General">
         <div style="font-size: 12px;color: #666;padding: 0 10px 12px 10px;">
-            每个预付时间购买将创建合同成本。此成本分别经过审批、提交和生成发票，从而对客户的购买进行计费。
+            每个预付<%=blocktypeName %>购买将创建合同成本。此成本分别经过审批、提交和生成发票，从而对客户的购买进行计费。
         </div>
         <div class="DivSection">
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -65,7 +64,7 @@
                         <td class="FieldLabels">
                             合同开始/结束日期
                             <div>
-                                <%=contract.contract.start_date.ToShortDateString() %> - <%=contract.contract.end_date.ToShortDateString() %>
+                                <%=contract.start_date.ToShortDateString() %> - <%=contract.end_date.ToShortDateString() %>
                             </div>
                         </td>
                     </tr>
@@ -73,19 +72,19 @@
                         <td class="FieldLabels">
                             创建
                             <div style="padding-bottom: 6px;padding-left: 10px;">
-                                <input type="radio" style="vertical-align: middle;" name="CreateOneOrMonthly" checked="checked" id="Radio1"/>
-                                一个预付时间
+                                <input type="radio" style="vertical-align: middle;" value="1" name="CreateOneOrMonthly" checked="checked" id="Radio1"/>
+                                一个预付<%=blocktypeName %>
                             </div>
                             <div style="padding-left: 10px;">
-                                <input type="radio" style="vertical-align: middle;" name="CreateOneOrMonthly" id="Radio2"/>
-                                月度预付时间
+                                <input type="radio" style="vertical-align: middle;" value="0" name="CreateOneOrMonthly" id="Radio2"/>
+                                月度预付<%=blocktypeName %>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td class="FieldLabels">
                             <div>
-                                <input type="checkbox" disabled="disabled" id="Checkbox1"/> 延期未使用的时间
+                                <input type="checkbox" disabled="disabled" name="useDelay" id="Checkbox1"/> 延期未使用的时间
                                 <span><input type="text" name="delayDays" style="width:52px;text-align: right;" disabled="disabled" id="DaysOfRollover"/>天</span>
                                 <span>(空表示合同结束时间)</span>
                             </div>
@@ -93,22 +92,27 @@
                     </tr>
                     <tr style="overflow: hidden;">
                         <td class="FieldLabels" style="vertical-align: top;float: left;">
-                            初次预付时间的开始日期<span class="errorSmall">*</span>
+                            初次预付<%=blocktypeName %>的开始日期<span class="errorSmall">*</span>
                             <div>
-                                <input type="text" onclick="WdatePicker()" name="startDate" class="Wdate" style="width:100px;"/>
+                              <%
+                                  DateTime dtStart = DateTime.Now;
+                                  if (contract.start_date > dtStart) {
+                                    dtStart = contract.start_date;
+                                  } %>
+                                <input type="text" value="<%=dtStart.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" name="startDate" class="Wdate" style="width:100px;"/>
                             </div>
                         </td>
                         <td class="FieldLabels" style="float: left;padding-left: 40px;">
                             <div style="padding: 0;">
                                 <div class="checkbox" style="padding-bottom: 10px;">
-                                    <input type="radio" name="EndDateLastOrNumbers" checked="checked" id="Radio3"/>
-                                    <span>最后预付时间的结束日期</span>
+                                    <input type="radio" name="EndDateLastOrNumbers" value="1" checked="checked" id="Radio3"/>
+                                    <span>最后预付<%=blocktypeName %>的结束日期</span>
                                     <span class="errorSmall">*</span>
                                     <input type="text" onclick="WdatePicker()" name="endDate" class="Wdate" style="width:100px;" id="Text1"/>
                                 </div>
                                 <div class="checkbox" style="padding-bottom: 10px;">
-                                    <input type="radio" name="EndDateLastOrNumbers" disabled="disabled" id="Radio4"/>
-                                    <span>预付时间数量</span>
+                                    <input type="radio" name="EndDateLastOrNumbers" value="0" disabled="disabled" id="Radio4"/>
+                                    <span>预付<%=blocktypeName %>数量</span>
                                     <span class="greyColor">*</span>
                                     <input type="text" name="purchaseNum" style="width:100px;margin-left: 26px;" disabled="disabled" id="Text2"/>
                                 </div>
@@ -118,7 +122,7 @@
                     <tr>
                         <td class="FieldLabels">
                             <div>
-                                <input type="checkbox" name="firstPart" disabled="disabled" id="Checkbox2"/>
+                                <input type="checkbox" name="isFirstPart" disabled="disabled" id="Checkbox2"/>
                                 首月部分
                             </div>
                         </td>
@@ -135,9 +139,10 @@
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 404px;">
                                     <tbody>
                                         <tr>
+                                          <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS) { %>
                                             <td class="FieldLabels" colspan="2" nowrap>
                                                 小时
-                                                <span class="FieldLevelInstructions">（每个预付时间）</span>
+                                                <span class="FieldLevelInstructions">（每个预付<%=blocktypeName %>）</span>
                                                 <span class="errorSmall">*</span>
                                             </td>
                                             <td class="FieldLabels" colspan="2" nowrap>
@@ -146,10 +151,19 @@
                                             </td>
                                             <td class="FieldLabels" nowrap>
                                                 价格
-                                                <span class="FieldLevelInstructions">（每个预付时间）</span>
+                                                <span class="FieldLevelInstructions">（每个预付<%=blocktypeName %>）</span>
                                             </td>
+                                          <%} %>
+                                          <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER) { %>
+                                            <td class="FieldLabels" colspan="2" nowrap>
+                                                总额
+                                                <span class="FieldLevelInstructions">（每个预付<%=blocktypeName %>）</span>
+                                                <span class="errorSmall">*</span>
+                                            </td>
+                                          <%} %>
                                         </tr>
                                         <tr>
+                                          <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS) { %>
                                             <td class="FieldLabels">
                                                 <div style="padding-bottom: 0;">
                                                     <input type="text" name="hours" style="width: 90px;text-align: right;" id="Text3"/>
@@ -171,6 +185,14 @@
                                                     <input type="text" style="width: 80px;text-align: right;" value="0.00" disabled="disabled" id="Text5"/>
                                                 </div>
                                             </td>
+                                          <%} %>
+                                          <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER) { %>
+                                            <td class="FieldLabels">
+                                                <div style="padding-bottom: 0;">
+                                                    <input type="text" name="amount" style="width: 90px;text-align: right;" id="Text3"/>
+                                                </div>
+                                            </td>
+                                          <%} %>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -180,7 +202,7 @@
                     <tr>
                         <td class="FieldLabels">
                             <div>
-                                <input type="checkbox" name="is_billed" disabled="disabled"/>
+                                <input type="checkbox" disabled="disabled"/>
                                 已收费的
                             </div>
                         </td>
@@ -189,11 +211,11 @@
                         <td class="FieldLabels">
                             状态
                             <div style="padding-bottom: 6px;padding-left: 10px;">
-                                <input type="radio" style="vertical-align: middle;" name="status" checked="checked"/>
+                                <input type="radio" style="vertical-align: middle;" value="1" name="rdStatus" checked="checked"/>
                                 激活
                             </div>
                             <div style="padding-left: 10px;">
-                                <input type="radio" style="vertical-align: middle;" name="status"/>
+                                <input type="radio" style="vertical-align: middle;" value="0" name="rdStatus"/>
                                 不激活
                             </div>
                         </td>
@@ -208,8 +230,8 @@
                         <td class="FieldLabels">
                             购买日期<span class="errorSmall">*</span>
                             <div>
-                                <input type="text" name="datePurchased" onclick="WdatePicker()" class="Wdate" id="DateField"/>
-                                <span id="SpanId" style="display: none;">Use Block Start Date</span>
+                                <input type="text" value="<%=dtStart.ToString("yyyy-MM-dd") %>" name="datePurchased" onclick="WdatePicker()" class="Wdate" id="DateField"/>
+                                <span id="SpanId" style="display: none;">使用预付时间开始时间</span>
                             </div>
                         </td>
                     </tr>
@@ -239,12 +261,11 @@
                     </tr>
                 </tbody>
             </table>
-          <input type="hidden" name="blockType" value="<%=blockType %>" />
+          <input type="hidden" name="type" value="<%=blockType %>" />
           <input type="hidden" name="contractId" value="<%=contractId %>" />
         </div>
     </div>
     <script type="text/javascript" src="../Scripts/jquery-3.1.0.min.js"></script>
-    <script type="text/javascript" src="../Scripts/Roles.js"></script>
     <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
     <script>
         $("#Radio1").on("click",function(){
@@ -298,6 +319,7 @@
                 alert("请输入数字!");
             }
         });
+      <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS) { %>
         $("#Text3").change(function () {
             var k1 = $("#Text3").val();
             var k2 = $("#Text4").val();
@@ -344,6 +366,19 @@
             $("#Text4").val(s);
             $("#Text5").val(k2*k1);
         });
+      <%} %>
+      <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER) { %>
+        $("#Text3").change(function () {
+          var k1 = $("#Text3").val();
+          if ((/^\d{1,15}\.?\d{0,2}$/.test(k1)) == false) {
+            alert('只能输入两位小数');
+            $("#Text3").val('').focus();
+            return false;
+          }
+          var f = Math.round(k1 * 100) / 100;
+          $("#Text3").val(f);
+        });
+      <%} %>
     </script>
     </form>
 </body>

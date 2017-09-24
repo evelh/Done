@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../Content/NewConfigurationItem.css" />
 </head>
 <body>
-  <form id="form1" runat="server">
+  <form id="form1" onsubmit="CheckForm()" runat="server">
     <!--顶部-->
     <div class="TitleBar">
       <div class="Title">
@@ -22,7 +22,8 @@
       <ul id="btn">
         <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
           <span class="Icon SaveAndClone"></span>
-          <span class="Text">保存并关闭</span>
+          <span class="Text">
+            <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" OnClick="SaveClose_Click" /></span>
         </li>
         <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
           <span class="Icon Cancel"></span>
@@ -64,6 +65,7 @@
                               <div>
                                 <a class="ButtonIcon Link NormalState" style="cursor:pointer;" onclick="javascript:window.open('../Company/ViewCompany.aspx?type=todo&id=' + <%=contract.contract.account_id %>, '_blank', 'left=0,top=0,location=no,status=no,width=900,height=750', false);"><%=contract.accountName %></a>
                               </div>
+                              <input type="hidden" name="id" value="<%=contract.contract.id %>" />
                             </td>
                             <td class="FieldLabel">合同状态
                               <div>
@@ -255,13 +257,13 @@
                             <td class="FieldLabel">
                               <span style="display: inline-block; float: left; padding: 26px 0 0 0;">
                                 <div style="vertical-align: middle">
-                                  <input type="radio" name="date" <%if (contract.contract.occurrences == null) { %> checked="checked" <%} %> />
+                                  <input type="radio" onclick="getRadio(1)" name="date" <%if (contract.contract.occurrences == null) { %> checked="checked" <%} %> />
                                   结束日期
                                 </div>
                               </span>
                               <span style="display: inline-block; float: left; padding-left: 90px; padding-top: 18px;">
                                 <div>
-                                  <input type="text" onclick="WdatePicker()" class="Wdate" />
+                                  <input type="text" id="end_date" name="end_date" <%if (contract.contract.occurrences == null) { %> value="<%=contract.contract.end_date.ToString("yyyy-MM-dd") %>" <%} %> onclick="WdatePicker()" class="Wdate" />
                                 </div>
                               </span>
                             </td>
@@ -278,13 +280,13 @@
                             <td class="FieldLabel">
                               <span style="display: inline-block; float: left; padding: 26px 0 0 0;">
                                 <div style="vertical-align: middle">
-                                  <input type="radio" name="date" <%if (contract.contract.occurrences != null) { %> checked="checked" <%} %> />
+                                  <input type="radio" onclick="getRadio(2)" name="date" <%if (contract.contract.occurrences != null) { %> checked="checked" <%} %> />
                                   结束于(服务周期)
                                 </div>
                               </span>
                               <span style="display: inline-block; float: left; padding-left: 45px; padding-top: 18px;">
                                 <div>
-                                  <input type="text" disabled="disabled" />
+                                  <input type="text" id="occurrences" name="occurrences" <%if (contract.contract.occurrences != null) { %> value="<%=contract.contract.occurrences %>" <%} %> disabled="disabled" />
                                 </div>
                               </span>
                             </td>
@@ -398,13 +400,24 @@
   <script type="text/javascript" src="../Scripts/NewConfigurationItem.js"></script>
   <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
   <script type="text/javascript">
-    $("#SaveAndCloneButton").on("click", function () {
+    function CheckForm() {
       if ($("#name").val() == "") {
         alert("请输入合同名称");
-        return;
+        return false;
       }
-      $("#form1").submit();
+    }
+    $("#CancelButton").on("click", function () {
+      window.close();
     });
+    function getRadio(index) {
+      if (index == 1) {
+        $("#occurrences").attr("disabled", "disabled");
+        $("#end_date").removeAttr("disabled");
+      } else if (index == 2) {
+        $("#end_date").attr("disabled", "disabled");
+        $("#occurrences").removeAttr("disabled");
+      }
+    }
   </script>
 </body>
 </html>

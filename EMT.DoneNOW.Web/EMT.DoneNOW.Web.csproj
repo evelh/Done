@@ -161,6 +161,7 @@
     <Content Include="Content\NewConfigurationItem.css" />
     <Content Include="Content\NewContact.css" />
     <Content Include="Content\NewQuoteItem.css" />
+    <Content Include="Content\NewWorkType.css" />
     <Content Include="Content\Quote.css" />
     <Content Include="Content\Quotebaojiaxiang.css" />
     <Content Include="Content\reset.css" />
@@ -180,6 +181,7 @@
     <Content Include="Contract\ApproveChargeSelect.aspx" />
     <Content Include="Contract\ChargeDetails.aspx" />
     <Content Include="Contract\ContractAdd.aspx" />
+    <Content Include="Contract\ContractSummary.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
     <Content Include="Contract\ContractMilestoneDetail.aspx" />
     <Content Include="Contract\ContractPostDate.aspx" />
@@ -933,6 +935,13 @@
     </Compile>
     <Compile Include="Contract\ContractAdd.aspx.designer.cs">
       <DependentUpon>ContractAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\ContractSummary.aspx.cs">
+      <DependentUpon>ContractSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractSummary.aspx.designer.cs">
+      <DependentUpon>ContractSummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\ContractEdit.aspx.cs">
       <DependentUpon>ContractEdit.aspx</DependentUpon>

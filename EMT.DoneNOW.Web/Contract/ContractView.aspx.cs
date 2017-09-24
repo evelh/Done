@@ -11,7 +11,7 @@ using EMT.DoneNOW.DAL;
 
 namespace EMT.DoneNOW.Web.Contract
 {
-    public partial class ContractView : System.Web.UI.Page
+    public partial class ContractView : BasePage
     {
         protected ctt_contract contract = null;
         protected void Page_Load(object sender, EventArgs e)
@@ -44,13 +44,26 @@ namespace EMT.DoneNOW.Web.Contract
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_TIME_RATE + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.CONTRACT_RATE + "&id=" + contract.id;
                         ShowTitle.Text = "预付时间系数-" + contract.name;
                         break;
+                    case "udf":
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_UDF + "&type=" + (int)QueryType.ContractUDF + "&id=" + contract.id;
+                        ShowTitle.Text = "自定义字段-" + contract.name;
+                        break;
+                    case "block":
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_BLOCK + "&type=" + (int)QueryType.ContractBlock + "&id=" + contract.id;
+                        ShowTitle.Text = "预付费用-" + contract.name;
+                        break;
+                    case "blockTime":
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_BLOCK_TIME + "&type=" + (int)QueryType.ContractBlockTime + "&id=" + contract.id;
+                        ShowTitle.Text = "预付时间-" + contract.name;
+                        break;
                     default:
+                        ShowTitle.Text = "摘要-" + contract.name;
+                        viewContractIframe.Src = "ContractSummary.aspx?id=" + contract.id;
                         break;
                 }
             }
             catch (Exception)
             {
-
                 Response.End();
             }
 

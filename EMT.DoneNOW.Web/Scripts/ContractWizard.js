@@ -25,10 +25,14 @@
             alert("请填写开始日期!");
             return;
         }
-        //if ($("#name").val() == "") {
-        //    alert("请填写合同名称!");
-        //    return;
-        //}
+        if (endType == 1 && $("#end_date").val() == "") {
+            alert("请填写结束日期!");
+            return;
+        }
+        if (endType == 2 && $("#occurrences").val() == "") {
+            alert("请填写结束周期!");
+            return;
+        }
 
         if ($("#cnt").val() == 0) {
             $(".Workspace1").hide();
@@ -213,11 +217,14 @@ function SelectType() {
 function SetTimeReporting() {
 
 }
+var endType = 1;
 function getRadio(index) {
     if (index == 1) {
+        endType = 1;
         $("#occurrences").attr("disabled", "disabled");
         $("#end_date").removeAttr("disabled");
     } else if (index == 2) {
+        endType = 2;
         $("#end_date").attr("disabled", "disabled");
         $("#occurrences").removeAttr("disabled");
     }
@@ -225,10 +232,7 @@ function getRadio(index) {
 var contractType;
 window.onload=function () {
     contractType = $("#contractType").val();
-    if (contractType == 0) {
-        $(".Workspace0").show();
-        $("#currentPage").val(0);
-    } else if (contractType == 9) {
+    if ($("#isFinish").val() == "1") {
         $("#a0").hide();
         $("#b0").hide();
         $("#c0").hide();
@@ -236,8 +240,173 @@ window.onload=function () {
         $(".Workspace").hide();
         $(".Workspace9").show();
         $("#currentPage").val(9);
+        return;
+    }
+    if (contractType == 0) {
+        $(".Workspace0").show();
+        $("#currentPage").val(0);
     } else {
         $(".Workspace1").show();
         $("#currentPage").val(1);
     }
+}
+
+function AddService() {
+    requestData("../Tools/ContractAjax.ashx?act=AddService&id=" + $("#ServiceNameHidden").val(), "", function (data) {
+        var ids = $("#AddServiceIds").val().split(",");
+        for (i = 0; i < ids.length; i++) {
+            if (ids[i] == data[2]) {
+                return;
+            }
+        }
+
+        $("#ServiceBody").append(data[0]);
+        $("#ServicePrice").val($("#ServicePrice").val() + data[1]);
+        if ($("#AddServiceIds").val() == "")
+            $("#AddServiceIds").val(data[2]);
+        else
+            $("#AddServiceIds").val($("#AddServiceIds").val() + "," + data[2]);
+        CalcService();
+    })
+}
+
+function AddServiceBundle() {
+    requestData("../Tools/ContractAjax.ashx?act=AddServiceBundle&id=" + $("#ServiceNameHidden").val(), "", function (data) {
+        var ids = $("#AddSerBunIds").val().split(",");
+        for (i = 0; i < ids.length; i++) {
+            if (ids[i] == data[2]) {
+                return;
+            }
+        }
+
+        $("#ServiceBody").append(data[0]);
+        $("#ServicePrice").val($("#ServicePrice").val() + data[1]);
+        if ($("#AddSerBunIds").val() == "")
+            $("#AddSerBunIds").val(data[2]);
+        else
+            $("#AddSerBunIds").val($("#AddSerBunIds").val() + "," + data[2]);
+        CalcService();
+    })
+}
+
+function CalcService() {
+    var ids = $("#AddServiceIds").val().split(",");
+    var total = 0;
+    for (i = 0; i < ids.length; i++) {
+        var price = $("#price" + ids[i]).val() * $("#num" + ids[i]).val();
+        price = Math.floor(price * 10000) / 10000;
+        total += price;
+        $("#pricenum" + ids[i]).val(price);
+    }
+    $("#ServicePrice").val(total);
+}
+
+function RemoveService(id) {
+    $("#service" + id).hide();
+    var ids = $("#AddServiceIds").val().split(",");
+    var idRm = "";
+    for (i = 0; i < ids.length; i++){
+        if (ids[i] != id) {
+            if (idRm == "")
+                idRm = ids[i];
+            else
+                idRm = idRm + "," + ids[i];
+        }
+    }
+    $("#AddServiceIds").val(idRm);
+    CalcService();
+}
+function RemoveServiceBundle(id) {
+    $("#service" + id).hide();
+    var ids = $("#AddSerBunIds").val().split(",");
+    var idRm = "";
+    for (i = 0; i < ids.length; i++) {
+        if (ids[i] != id) {
+            if (idRm == "")
+                idRm = ids[i];
+            else
+                idRm = idRm + "," + ids[i];
+        }
+    }
+    $("#AddSerBunIds").val(idRm);
+    CalcService();
+}
+
+function AddMil() {
+    $("#MilList").hide();
+    $("#MilAdd").show();
+}
+
+var milCnt = 1;
+function AddMilOk() {
+    if ($("#milName").val() == "") {
+        alert("请输入标题");
+        return;
+    }
+    if ($("#milDate").val() == "") {
+        alert("请输入截止日期");
+        return;
+    }
+    var txt = "<tr id='milestone" + milCnt + "'>";
+    txt += "<td style='white - space:nowrap; '><img src = '../Images/delete.png' onclick='RemoveMil(" + milCnt + ")' alt = '' /></ td > ";
+    txt += "<td><input type='text' disabled name='MilName" + milCnt + "' value='" + $("#milName").val() + "' /><input type='hidden' value='" + $("#milDesc").val() +"' name='MilDetail" + milCnt + "' /></td > ";
+    txt += "<td nowrap><input type='text' disabled id='milAmount" + milCnt + "' name='MilAmount" + milCnt + "' value='" + $("#milAmout").val() +"' /></td>";
+    txt += "<td nowrap><input type='text' disabled name='MilDate" + milCnt + "' value='" + $("#milDate").val() +"' /></td>";
+    txt += "<td nowrap align='right'><input type='text' disabled value='" + $("#milAddCode").val() + "' /><input type='hidden' value='" + $("#milAddCodeHidden").val() +"' name='MilCode" + milCnt + "' /></td>";
+    txt += "</tr>";
+    $("#MilListBody").append(txt);
+    $("#MilList").show();
+    $("#MilAdd").hide();
+
+    if ($("#milestoneAddList").val() == "") {
+        $("#milestoneAddList").val(milCnt);
+    } else {
+        $("#milestoneAddList").val($("#milestoneAddList").val() + "," + milCnt);
+    }
+    milCnt++;
+    CalcMilAmount();
+}
+
+function RemoveMil(id) {
+    $("#milestone" + id).hide();
+
+    var ids = $("#milestoneAddList").val().split(",");
+    var idRm = "";
+    for (i = 0; i < ids.length; i++) {
+        if (ids[i] != id) {
+            if (idRm == "")
+                idRm = ids[i];
+            else
+                idRm = idRm + "," + ids[i];
+        }
+    }
+    $("#milestoneAddList").val(idRm);
+    CalcMilAmount();
+}
+
+function CalcMilAmount() {
+    var ids = $("#milestoneAddList").val().split(",");
+    var total = 0;
+    for (i = 0; i < ids.length; i++) {
+        var price = $("#milAmount" + ids[i]).val();
+        price = Math.floor(price * 100) / 100;
+        total += price;
+    }
+    $("#milAmountTotal").val("¥"+total);
+}
+
+function AddMilCancle() {
+    $("#MilList").show();
+    $("#MilAdd").hide();
+}
+
+function ShowResource() {
+    $("#ResourceDiv").show();
+}
+
+function CheckRoleRate(id) {
+    if ($("#roleRateCheck" + id).val() == "")
+        $("#roleRateCheck" + id).val(id);
+    else
+        $("#roleRateCheck" + id).val("");
 }

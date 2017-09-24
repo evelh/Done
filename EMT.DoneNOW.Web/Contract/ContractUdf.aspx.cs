@@ -18,8 +18,8 @@ namespace EMT.DoneNOW.Web.Contract
         {
             if (!IsPostBack)
             {
-                string colName = Request.QueryString["col_name"];   // 自定义字段col_comment字段
-                contractId = Convert.ToInt64(Request.QueryString["col_name"]);   // 合同id
+                string colName = Request.QueryString["colName"];   // 自定义字段col_comment字段
+                contractId = Convert.ToInt64(Request.QueryString["contractId"]);   // 合同id
                 InitValue(colName);
             }
         }
@@ -29,7 +29,7 @@ namespace EMT.DoneNOW.Web.Contract
         {
             var bll = new UserDefinedFieldsBLL();
             var udfList = bll.GetUdf(DTO.DicEnum.UDF_CATE.CONTRACTS);
-            var udf = udfList.First(f => f.name.Equals(colName));
+            udf = udfList.First(f => f.name.Equals(colName));
             var udfValues = bll.GetUdfValue(DTO.DicEnum.UDF_CATE.CONTRACTS, contractId, udfList);
             udfValue = udfValues.First(v => v.id == udf.id).value;
 
@@ -40,8 +40,10 @@ namespace EMT.DoneNOW.Web.Contract
         protected void SaveClose_Click(object sender, EventArgs e)
         {
             int udfId = int.Parse(id.Value);
-            new ContractBLL().EditUdf(contractId, udfId, Request.Form[udfId.ToString()], Request.Form["description"], GetLoginUserId());
-
+            new ContractBLL().EditUdf(long.Parse(contract_id.Value), udfId, Request.Form[udfId.ToString()], Request.Form["description"], GetLoginUserId());
+            var bll = new UserDefinedFieldsBLL();
+            var udfList = bll.GetUdf(DTO.DicEnum.UDF_CATE.CONTRACTS);
+            udf = udfList.First(f => f.id.Equals(udfId));
             Response.Write("<script>alert('修改自定义字段值成功！');window.close();self.opener.location.reload();</script>");
         }
     }

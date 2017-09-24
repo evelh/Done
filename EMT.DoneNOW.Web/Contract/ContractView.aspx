@@ -86,22 +86,45 @@
                 <span>菜单</span>
             </div>
             <ul class="ButtonBarVert">
-                <li class="MenuLink">Summary</li>
+                <li class="MenuLink"><a href="ContractSummary.aspx?id=<%=contract.id %>">摘要</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=InternalCost&id=<%=contract.id %>">内部成本</a></li>
-                <li class="MenuLink">Services</li>
-                <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
-                { %>
-
-                <li class="MenuLink"><a href="ContractView.aspx?type=rate&id=<%=contract.id %>">预付时间系数</a></li>
-                <%} %>
-                <li class="MenuLink">例外因素</li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=item&id=<%=contract.id %>">配置项</a></li>
+                <li class="MenuLink">例外因素-未实现</li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=charge&id=<%=contract.id %>">成本</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=defaultCost&id=<%=contract.id %>">默认成本</a></li>
-                <li class="MenuLink">Notes</li>
-                <li class="MenuLink">Projects</li>
-                <li class="MenuLink">Projects</li>
-                <li class="MenuLink">User-Defined Fields</li>
+                <li class="MenuLink">备注-未实现</li>
+                <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.TIME_MATERIALS
+                        ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER
+                        ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.FIXED_PRICE) { %>
+                <li class="MenuLink">费率</li>
+                <%} %>
+                <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) { %>
+                <li class="MenuLink">服务-未实现</li>
+                <%} %>
+                <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.FIXED_PRICE) { %>
+                <li class="MenuLink">里程碑-未实现</li>
+                <%} %>
+                <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER) { %>
+                <li class="MenuLink"><a href="ContractView.aspx?type=block&id=<%=contract.id %>">预付费管理</a></li>
+                <%} %>
+                <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+                { %>
+                <li class="MenuLink"><a href="ContractView.aspx?type=blockTime&id=<%=contract.id %>">预付时间</a></li>
+                <li class="MenuLink"><a href="ContractView.aspx?type=rate&id=<%=contract.id %>">预付时间系数</a></li>
+                <%} %>
+                <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
+                <li class="MenuLink">采购工单-未实现</li>
+                <%} %>
+                <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS
+                        ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER
+                        ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
+                <li class="MenuLink">通知规则-未实现</li>
+                <%} %>
+                <% if (contract.type_id != (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
+                <li class="MenuLink">项目管理-未实现</li>
+                <%} %>
+                <li class="MenuLink">工单-未实现</li>
+                <li class="MenuLink"><a href="ContractView.aspx?type=udf&id=<%=contract.id %>">自定义字段</a></li>
             </ul>
         </div>
         <div class="Right">
