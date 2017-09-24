@@ -26,8 +26,6 @@ namespace EMT.DoneNOW.Web
                 this.AlertVariableFilter.DataSource = new QuoteTemplateBLL().GetVariableField();
                 this.AlertVariableFilter.DataBind();
                 this.AlertVariableFilter.Items.Insert(0, new ListItem() { Value = "0", Text = "显示全部变量", Selected = true });
-
-
                 //
                 var list = new QuoteTemplateBLL().GetAllVariable();
                 StringBuilder sb = new StringBuilder();

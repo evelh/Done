@@ -24,13 +24,11 @@ namespace EMT.DoneNOW.Web
                 else {
                     body_item = "";
                 }             
-
                 this.AlertVariableFilter.DataTextField = "show";
                 this.AlertVariableFilter.DataValueField = "val";
                 this.AlertVariableFilter.DataSource = new QuoteTemplateBLL().GetBodyVariableField();
                 this.AlertVariableFilter.DataBind();
                 this.AlertVariableFilter.Items.Insert(0, new ListItem() { Value = "0", Text = "显示全部变量", Selected = true });
- //
                 var list = new QuoteTemplateBLL().GetAllVariable();
                 StringBuilder sb = new StringBuilder();
                 foreach (string va in list)

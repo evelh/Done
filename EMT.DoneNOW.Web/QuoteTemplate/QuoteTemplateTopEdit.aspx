@@ -141,8 +141,6 @@
             $("#BackgroundOverLay").hide();
             $(".AlertBox").hide();
         }
-
-
         //        点击确定数据保存至后台  在展示页展示
         $("#OkButton1").on("click", function () {
             var html = ue.getContent();

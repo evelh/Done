@@ -60,6 +60,9 @@ namespace EMT.DoneNOW.DTO
         CONTRACT_MILESTONE=117,                  //合同里程碑
         BILL_POST_TYPE = 118,                   // 合同：工时计费设置
         ACCOUNT_DEDUCTION_TYPE=121,              //审批并提交操作类型
+        INVOICE_TEMPLATE_BODY_GROUP_BY=141,      //发票模板主体-分组条件
+        INVOICE_TEMPLATE_BODY_ITEMIZE =142,      //发票模板主体-逐项列出
+        INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
     }
 
     /// <summary>
@@ -202,7 +205,8 @@ namespace EMT.DoneNOW.DTO
             OTHERS = 104,           // 杂项
             QUOTE_TEMPLATE_OTHERS = 105, //报价模板-其他
             QUOTE_TEMPLATE_BODY = 106,  //报价模板-body           
-
+            INVOICE_TEMPLATE_OTHERS=1967,//发票模板-其他
+            INVOICE_TEMPLATE_BODY=1968,//发票模板body
 
         }
         /// <summary>

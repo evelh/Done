@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="InvoiceTemp_TwoBottom.aspx.cs" Inherits="EMT.DoneNOW.Web.InvoiceTemp_TwoBottom" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="InvoiceTempBottom.aspx.cs" Inherits="EMT.DoneNOW.Web.InvoiceTempBottom" %>
 
 <!DOCTYPE html>
 
@@ -16,26 +16,24 @@
     <div class="TitleBar">
         <div class="Title">
             <span class="text1">发票模板结尾</span>
-            <span class="text2">- burberryquotetemplate</span>
+            <span class="text2">-<%=tempinfo.name %></span>
             <a href="###" class="help"></a>
         </div>
     </div>
-    <!--中间form表单-->
+    <%--<!--中间form表单-->--%>
         <div></div>
         <!--按钮部分-->
         <div class="ButtonContainer">
             <ul id="btn">
                 <li class="Button ButtonIcon Okey NormalState" id="OkButton" tabindex="0">
                     <span class="Icon Ok"></span>
-                    <span class="Text">确认</span>
+                     <asp:Button ID="OkButton1" runat="server" Text="确认" OnClientClick="return save_deal()" cssclass="Text" BorderStyle="None" OnClick="Save" />
+                    <input id="data" type="hidden" name="data" value=""/>
+                    <input id="bottom" type="hidden" name="bottom" />
                 </li>
                 <li class="Button ButtonIcon Cancel NormalState" id="CancelButton" tabindex="0">
                     <span class="Icon Cancel"></span>
-                    <span class="Text">取消</span>
-                </li>
-                <li class="Button ButtonIcon Reset NormalState" id="ResetButton" tabindex="0">
-                    <span class="Icon Reset"></span>
-                    <span class="Text">恢复默认内容</span>
+                     <asp:Button ID="cancel" runat="server" Text="取消" cssclass="Text" BorderStyle="None" OnClick="Button1_Click"/>
                 </li>
             </ul>
         </div>
@@ -72,7 +70,7 @@
                     <div class="Normal Editor CheckBox">
                         <div class="InputField">
                             <div>
-                                <input type="checkbox" id="DisplayTaxCategory" style="margin-top: 3px;" checked>
+                                <asp:CheckBox ID="tax_cate" runat="server" />
                             </div>
                             <div class="EditorLabelContainer">
                                 <div class="Label">
@@ -84,7 +82,7 @@
                     <div class="Normal Editor CheckBox">
                         <div class="InputField">
                             <div>
-                                <input type="checkbox" id="DisplayTaxCategorySuperscript" style="margin-top: 3px;" checked>
+                               <asp:CheckBox ID="tax_sup" runat="server" />
                             </div>
                             <div class="EditorLabelContainer">
                                 <div class="Label">
@@ -97,7 +95,7 @@
                     <div class="Normal Editor CheckBox">
                         <div class="InputField">
                             <div>
-                                <input type="checkbox" id="DisplaySeparateLineItemPerTax" style="margin-top: 3px;" checked>
+                               <asp:CheckBox ID="tax_group" runat="server" /> 
                             </div>
                             <div class="EditorLabelContainer">
                                 <div class="Label">
@@ -123,64 +121,70 @@
                 <div class="Normal Column">
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>预付时间：已用</label>
+                            <label class="bottom_text">预付时间：已用</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value" <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[0].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[0].value %>"<%}else{ %>value="已用时间"<%} %>/>
                         </div>
                     </div>
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>预付时间：剩余</label>
+                            <label class="bottom_text">预付时间：剩余</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[1].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[1].value %>"<%}else{ %>value="剩余时间"<%} %>/>
                         </div>
                     </div>
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>预付事件：已用</label>
+                            <label class="bottom_text">预付事件：已用</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[2].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[2].value %>"<%}else{ %>value="已用事件"<%} %>/>
                         </div>
                     </div>
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>预付事件：剩余</label>
+                            <label class="bottom_text">预付事件：剩余</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[3].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[3].value %>"<%}else{ %>value="剩余事件"<%} %>/>
                         </div>
                     </div>
                 </div>
                 <div class="Normal Column">
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>预付费用：已用</label>
+                            <label class="bottom_text">预付费用：已用</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[4].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[4].value %>"<%}else{ %>value="已用费用"<%} %>/>
                         </div>
                     </div>
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>预付费用：剩余</label>
+                            <label class="bottom_text">预付费用：剩余</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[5].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[5].value %>"<%}else{ %>value="剩余费用"<%} %>/>
                         </div>
                     </div>
                 </div>
@@ -199,84 +203,92 @@
                 <div class="Normal Column">
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>不计费工时</label>
+                            <label class="bottom_text">不计费工时</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[6].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[6].value %>"<%}else{ %>value="不计费工时"<%} %>/>
                         </div>
                     </div>
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>预付时间</label>
+                            <label class="bottom_text">预付时间</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[7].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[7].value %>"<%}else{ %>value="预付时间"<%} %>/>
                         </div>
                     </div>
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>调整的计费工时</label>
+                            <label class="bottom_text">调整的计费工时</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[8].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[8].value %>"<%}else{ %>value="调整的计费工时"<%} %>/>
                         </div>
                     </div>
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>全部计费工时</label>
+                            <label class="bottom_text">全部计费工时</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[9].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[9].value %>"<%}else{ %>value="全部计费工时"<%} %>/>
                         </div>
                     </div>
                 </div>
                 <div class="Normal Column">
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>全部计费金额（调整前）</label>
+                            <label class="bottom_text">全部计费金额（调整前）</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[10].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[10].value %>"<%}else{ %>value="全部计费金额（调整前）"<%} %>/>
                         </div>
                     </div>
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>付款/信贷</label>
+                            <label class="bottom_text">付款/信贷</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[11].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[11].value %>"<%}else{ %>value="付款/信贷"<%} %>/>
                         </div>
                     </div>
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>税金总额</label>
+                            <label class="bottom_text">税金总额</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[12].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[12].value %>"<%}else{ %>value="税金总额"<%} %>/>
                         </div>
                     </div>
                     <div class="EditorLabelContainer">
                         <div class="Label">
-                            <label>总计</label>
+                            <label class="bottom_text">总计</label>
                         </div>
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" value="Hours Deducted from Block">
+                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[13].value != null)
+                                { %>value="<%=bottomttt.Bottom_Item[13].value %>"<%}else{ %>value="总计"<%} %>/>
                         </div>
                     </div>
                 </div>
@@ -294,38 +306,16 @@
             <div class="VariableInsertion">
                 <div class="AlertContent">
                     <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
-                    <select name="" id="AlertVariableFilter">
-                        <option value="1">Show All Variables</option>
-                        <option value="2">Show Account Variables</option>
-                        <option value="3">Show Contact Variables</option>
-                        <option value="4">Show Opportunity Variables</option>
-                        <option value="5">Show Quote Variables</option>
-                        <option value="6">Show Miscellaneous Variables</option>
-                        <option value="7">Show Your Company Variables</option>
-                        <option value="8">Show Your Location Variables</option>
+                   <asp:ScriptManager ID="ScriptManager1" runat="server">
+         </asp:ScriptManager>
+         <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">
+             <ContentTemplate>
+              <asp:DropDownList ID="AlertVariableFilter" runat="server" OnSelectedIndexChanged="AlertVariableFilter_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>              
+                 <select name="" multiple="multiple" id="AlertVariableList">
+                         <asp:Literal ID="VariableList" runat="server"></asp:Literal>
                     </select>
-                    <select name="" multiple="multiple" id="AlertVariableList">
-                        <option value="" class="val">1</option>
-                        <option value="" class="val">2</option>
-                        <option value="" class="val">3</option>
-                        <option value="" class="val">4</option>
-                        <option value="" class="val">5</option>
-                        <option value="" class="val">6</option>
-                        <option value="" class="val">7</option>
-                        <option value="" class="val">8</option>
-                        <option value="" class="val">9</option>
-                        <option value="" class="val">10</option>
-                        <option value="" class="val">1</option>
-                        <option value="" class="val">2</option>
-                        <option value="" class="val">3</option>
-                        <option value="" class="val">4</option>
-                        <option value="" class="val">5</option>
-                        <option value="" class="val">6</option>
-                        <option value="" class="val">7</option>
-                        <option value="" class="val">8</option>
-                        <option value="" class="val">9</option>
-                        <option value="" class="val">10</option>
-                    </select>
+             </ContentTemplate>
+         </asp:UpdatePanel>
                 </div>
             </div>
         </div>
@@ -398,21 +388,49 @@
                     '</table>';
             ue.setContent(Model);
         });
-        //        点击确定数据保存至后台  在展示页展示
+        //点击确定数据保存至后台  在展示页展示
         $("#OkButton").on("click",function(){
             var html = ue.getContent();
             console.log(html);
             var txt = ue.getContentTxt();
             console.log(txt);
         })
-        //        点击取消直接返回
-        $("#CancelButton").on("click",function(){
-            window.location.href="QuotationTemplate.html";
-        })
+        // 点击取消直接返回
+        //$("#CancelButton").on("click",function(){
+        //    window.location.href="QuotationTemplate.html";
+        //})
         //情空内容
         $("#ResetButton").on("click",function(){
             ue.setContent('')
         })
+        function dbclick(val) {
+            UE.getEditor('containerHead').focus();
+            UE.getEditor('containerHead').execCommand('inserthtml', $(val).html());
+            $("#BackgroundOverLay").hide();
+            $(".AlertBox").hide();
+        }
+        //保存数据
+        function save_deal() {
+            var html = ue.getContent();
+            console.log(html);
+            var data = [];
+            //表格显示字段设置
+            data.push("{\"Item\":[");
+            for (var i = 0; i < 14; i++) {
+                var name = $(".bottom_text").eq(i).text();
+                var value = $(".bottom_value").eq(i).val();
+                var Item = { "id": "0", "name": name, "value": value};
+                var jsonArrayFinal = JSON.stringify(Item);
+                data.push(jsonArrayFinal);
+                console.log(jsonArrayFinal);
+            }
+            data.push("]}");
+            $("#bottom").val($('<div/>').text(data).html());
+            $("#data").val($('<div/>').text(html).html());
+            var txt = ue.getContentTxt();
+            console.log(txt);
+        }
+
     </script>
         </div>
     </form>

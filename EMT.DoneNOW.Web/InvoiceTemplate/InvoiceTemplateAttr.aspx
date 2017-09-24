@@ -91,6 +91,19 @@
                                     </asp:DropDownList>
                                 </td>
                             </tr>
+                              <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>时间格式</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <asp:DropDownList ID="TimeFormat" runat="server">
+                                    </asp:DropDownList>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>
                                     <div class="clear">

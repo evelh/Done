@@ -63,6 +63,11 @@ namespace EMT.DoneNOW.BLL
             dic.Add("CurrencyPositivePattern", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CURRENCY_POSITIVE_FORMAT )));              // 货币格式（正数）
             dic.Add("CurrencyNegativePattern", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CURRENCY_NEGATIVE_FORMAT)));              // 货币格式（负数）
             dic.Add("Payment_terms", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.PAYMENT_TERM)));              // 付款条件
+            dic.Add("GroupBy", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.INVOICE_TEMPLATE_BODY_GROUP_BY)));              // 发票分组
+            dic.Add("Itemize", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.INVOICE_TEMPLATE_BODY_ITEMIZE)));              // 排序字段
+            dic.Add("SortBy", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.INVOICE_TEMPLATE_BODY_ORDER_BY)));              // 显示条目
+            dic.Add("TimeFormat", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TIME_DISPLAY_FORMAT)));              // 时间显示格式         
+
             return dic;
 
         }
@@ -84,7 +89,16 @@ namespace EMT.DoneNOW.BLL
             var list = _dal.GetDictionary((int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP, (int)NOTIFY_CATE.QUOTE_TEMPLATE_BODY);
             return list;
         }
-
+        public List<DictionaryEntryDto> GetInvoiceBodyVariableField()
+        {
+            var list = _dal.GetDictionary((int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP, (int)NOTIFY_CATE.INVOICE_TEMPLATE_BODY);
+            return list;
+        }
+        public List<DictionaryEntryDto> GetInvoiceVariableField()
+        {
+            var list = _dal.GetDictionary((int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP, (int)NOTIFY_CATE.INVOICE_TEMPLATE_OTHERS);
+            return list;
+        }
         /// <summary>
         /// 获取所有可显示变量
         /// </summary>
@@ -92,6 +106,15 @@ namespace EMT.DoneNOW.BLL
         public List<string> GetAllVariable() {
             return _dal.GetAllVariable();
         }
+        /// <summary>
+        /// 获取所有可显示变量
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetAllInvoiceVariable()
+        {
+            return _dal.GetAllInvoiceVariable();
+        }
+        
         /// <summary>
         /// 获取对应
         /// </summary>
@@ -301,7 +324,6 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <returns></returns>
         public ERROR_CODE is_quote(int id) {
-            //var crm_quote = new crm_quote();
             string sql = $"select * from crm_quote where quote_tmpl_id = {id} and delete_time = 0";
             var crm_quote_dal = new crm_quote_dal();
             var templ=crm_quote_dal.FindSignleBySql<crm_quote>(sql);
@@ -311,6 +333,21 @@ namespace EMT.DoneNOW.BLL
             }
             return ERROR_CODE.SUCCESS;
         }
+        /// <summary>
+        /// 判断发票模板是否被引用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ERROR_CODE invoice_used(int id)
+        {
+            string sql = $"select * from ctt_invoice where invoice_template_id = {id} and delete_time = 0";
+            var templ = new ctt_invoice_dal().FindSignleBySql<ctt_invoice>(sql);
+            if (templ != null)
+            {
+                return ERROR_CODE.ERROR;
+            }
+            return ERROR_CODE.SUCCESS;
+        }        
         #region 报价模板编辑的更新保存操作
         public ERROR_CODE update(sys_quote_tmpl sqt, long user_id) {
             var user = UserInfoBLL.GetUserInfo(user_id);

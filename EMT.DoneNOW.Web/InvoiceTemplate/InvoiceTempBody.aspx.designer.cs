@@ -10,7 +10,7 @@
 namespace EMT.DoneNOW.Web {
     
     
-    public partial class InvoiceTempEdit {
+    public partial class InvoiceTempBody {
         
         /// <summary>
         /// form1 控件。
@@ -22,15 +22,6 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// Save_Close 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Save_Close;
-        
-        /// <summary>
         /// Save 控件。
         /// </summary>
         /// <remarks>
@@ -40,66 +31,84 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.Button Save;
         
         /// <summary>
-        /// Cancel 控件。
+        /// GroupBy 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Cancel;
+        protected global::System.Web.UI.WebControls.DropDownList GroupBy;
         
         /// <summary>
-        /// head 控件。
+        /// ShowLabelsWhenGrouped 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal head;
+        protected global::System.Web.UI.WebControls.CheckBox ShowLabelsWhenGrouped;
         
         /// <summary>
-        /// top 控件。
+        /// Itemize 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal top;
+        protected global::System.Web.UI.WebControls.DropDownList Itemize;
         
         /// <summary>
-        /// body 控件。
+        /// SortBy 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal body;
+        protected global::System.Web.UI.WebControls.DropDownList SortBy;
         
         /// <summary>
-        /// bottom 控件。
+        /// ScriptManager1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal bottom;
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
-        /// foot 控件。
+        /// UpdatePanelkk 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal foot;
+        protected global::System.Web.UI.UpdatePanel UpdatePanelkk;
         
         /// <summary>
-        /// hf 控件。
+        /// Variable 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox hf;
+        protected global::System.Web.UI.WebControls.DropDownList Variable;
+        
+        /// <summary>
+        /// VariableList 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal VariableList;
+        
+        /// <summary>
+        /// datalist 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal datalist;
     }
 }
