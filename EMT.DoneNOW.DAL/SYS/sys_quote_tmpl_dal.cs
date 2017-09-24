@@ -32,30 +32,7 @@ namespace EMT.DoneNOW.DAL
             }
 
             return list;
-        }/// <summary>
-         /// 
-         /// </summary>
-         /// <param name="general_table_id"></param>
-         /// <param name="parent_id"></param>
-         /// <returns></returns>
-         /// 
-
-
-        //        SELECT
-        //    c.id,
-        //    b.col_comment
-        //FROM
-
-        //    d_tmpl_cate_var a,
-        //    d_query_result b,
-        //    d_general c
-        //WHERE
-        //    a.query_result_id = b.id
-        //AND c.parent_id = a.template_cate_id
-        //AND c.ext1 = template_data_group_id
-        //AND c.id = 941
-
-
+        }
         /// <summary>
         ///获得全部显示变量
         /// </summary>
@@ -67,6 +44,32 @@ namespace EMT.DoneNOW.DAL
             sql.Append(@"select b.col_comment FROM d_tmpl_cate_var a,d_query_result b,d_general c,");
             sql.Append(@"(SELECT id from d_general where general_table_id="+(int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP);
             sql.Append(" and parent_id = "+(int)DicEnum.NOTIFY_CATE.QUOTE_TEMPLATE_OTHERS + " ORDER BY id) d ");
+            sql.Append(@" WHERE	a.query_result_id = b.id ");
+            sql.Append(@"AND c.parent_id = a.template_cate_id ");
+            sql.Append(@" AND c.ext1 = template_data_group_id");
+            sql.Append(@" AND c.id=d.id");
+            List<d_query_result> all = a.FindListBySql(sql.ToString());
+            List<string> list = new List<string>();
+            if (all == null)
+                return list;
+            foreach (var entry in all)
+            {
+                list.Add(entry.col_comment);
+
+            }
+            return list;
+        }
+        /// <summary>
+        ///获得全部发票显示变量
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetAllInvoiceVariable()
+        {
+            d_query_result_dal a = new d_query_result_dal();
+            StringBuilder sql = new StringBuilder();
+            sql.Append(@"select b.col_comment FROM d_tmpl_cate_var a,d_query_result b,d_general c,");
+            sql.Append(@"(SELECT id from d_general where general_table_id=" + (int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP);
+            sql.Append(" and parent_id = " + (int)DicEnum.NOTIFY_CATE.INVOICE_TEMPLATE_OTHERS + " ORDER BY id) d ");
             sql.Append(@" WHERE	a.query_result_id = b.id ");
             sql.Append(@"AND c.parent_id = a.template_cate_id ");
             sql.Append(@" AND c.ext1 = template_data_group_id");

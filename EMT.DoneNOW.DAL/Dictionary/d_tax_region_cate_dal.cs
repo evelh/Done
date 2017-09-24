@@ -24,6 +24,11 @@ namespace EMT.DoneNOW.DAL
             return FindSignleBySql<d_tax_region_cate>($"select * from d_tax_region_cate where tax_region_id = {tax_region_id} and tax_cate_id = {tax_cate_id};");
         }
 
+        public d_tax_region_cate GetSingleTax(long tax_cate_id)
+        {
+            return FindSignleBySql<d_tax_region_cate>($"select * from d_tax_region_cate where  tax_cate_id = {tax_cate_id};");
+        }
+
     }
 
 }

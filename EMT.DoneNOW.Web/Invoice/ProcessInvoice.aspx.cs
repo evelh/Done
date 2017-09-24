@@ -19,10 +19,35 @@ namespace EMT.DoneNOW.Web.Invoice
         {
             try
             {
-                var ids = Request.QueryString["ids"];
+                var ids = Request.QueryString["account_ids"];
                 if (!string.IsNullOrEmpty(ids))
                 {
-                    idList = ids.Split(new char[] {',' }, StringSplitOptions.RemoveEmptyEntries);
+                    List<string> accDedIds = new List<string>();
+                   var  accountIDS = ids.Split(new char[] {',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var account_id in accountIDS)
+                    {
+                       var paramList = new crm_account_deduction_dal().GetInvDedDtoList(" and account_id=" + account_id);
+                       var billTOThisParamList = new crm_account_deduction_dal().GetInvDedDtoList(" and account_id <> " + account_id + " and bill_account_id=" + account_id);
+                        if (paramList != null && paramList.Count > 0)
+                        {
+                            accDedIds.AddRange(paramList.Select(_=>_.id.ToString()).ToList());
+                        }
+                        if (billTOThisParamList != null && billTOThisParamList.Count > 0)
+                        {
+                            accDedIds.AddRange(billTOThisParamList.Select(_ => _.id.ToString()).ToList());
+                        } 
+                    } 
+                    if(accDedIds!=null&& accDedIds.Count > 0)
+                    {
+                        idList = accDedIds.ToArray();
+                    }
+                    if (!IsPostBack)
+                    {
+                        invoice_template_id.DataValueField = "id";
+                        invoice_template_id.DataTextField = "name";
+                        invoice_template_id.DataSource = dic.FirstOrDefault(_ => _.Key == "invoice_tmpl").Value;
+                        invoice_template_id.DataBind();
+                    }
                 }
                 else
                 {

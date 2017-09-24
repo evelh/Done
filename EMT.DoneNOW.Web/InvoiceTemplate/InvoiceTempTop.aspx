@@ -10,7 +10,7 @@
     <title></title>
 </head>
 <body>
-    <form method="post" id="EditQuoteTemplate" runat="server">
+    <form method="post" id="form1" runat="server">
         <div>
              <!--顶部  内容和帮助-->
     <div class="TitleBar">
@@ -66,7 +66,6 @@
             <div class="VariableInsertion">
                 <div class="AlertContent">
                <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
-
                      <asp:ScriptManager ID="ScriptManager1" runat="server">
          </asp:ScriptManager>
          <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">
@@ -87,7 +86,7 @@
             <script src="../Scripts/jquery-3.1.0.min.js"></script>
             <script src="../RichText/js/ueditor.config.js"></script>
             <script src="../RichText/js/ueditor.all.js"></script>
-    <script>
+    <script>       
         $("#OkButton").on("mouseover",function(){
             $("#OkButton").css("background","#fff");
         })
@@ -106,7 +105,106 @@
         $("#ResetButton").on("mouseout",function(){
             $("#ResetButton").css("background","#f0f0f0");
         })
-        //        富文本编辑器
+        var Model =
+            '<style type="text/css">' +
+            '#LogoBlock' +
+            '{' +
+            'width: 100%;' +
+            'padding-bottom: 30px;' +
+            '}' +
+            '#ServiceProviderBlock' +
+            '{' +
+            'padding-bottom: 30px;' +
+            '}' +
+            '#InvoiceInfoBlock' +
+            '{' +
+            'display: table;' +
+            'padding-left: 40px;' +
+            '}' +
+            '.boxHeader' +
+            '{' +
+            'border: 1px solid black;' +
+            'background-color: #f7f7f7;' +
+            'font-weight: bold;' +
+            'padding: 5px 5px 5px 5px;' +
+            '}' +
+            '.boxBody' +
+            '{' +
+            'border-right: 1px solid black;' +
+            'border-left: 1px solid black;' +
+            'border-bottom: 1px solid black;' +
+            'padding: 5px 5px 5px 5px;' +
+            '}' +
+            '.invoiceInfoRow' +
+            '{' +
+            '}' +
+            '.invoiceInfoNameCell' +
+            '{' +
+            '}' +
+            '.invoiceInfoValueCell' +
+            '{' +
+            '}' +
+            '</style>' +
+            '<table style="width:100%; border-collapse:collapse;font-size:12px;">' +
+            '<tbody><tr>' +
+            '<td width="100%" colspan="2">' +
+            '<div style="width:100%;padding-bottom: 30px;">[Miscellaneous: Primary Logo]</div>' +
+            '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td width="50%">' +
+            '<div style="padding-bottom: 30px;">' +
+            '[Your Company: Name]<br>' +
+            '[Your Company: Address]' +
+            '<br>' +
+            '[Your Company: Phone]<br>' +
+            'Fax: [Your Company: Fax]' +
+            '<div>[Your Company: Tax ID, ACN, ABN, VAT, etc.]</div>' +
+            '</div>' +
+            '<div>' +
+            '<div style="width: 70%; text-align: left;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px 5px 5px 5px;">Bill To</div>' +
+            '<div style="width: 70%;border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px 5px 5px 5px;">' +
+            '[Account: Name] [Billing: Attention]<br>' +
+            '[Billing: Address]' +
+            '</div>' +
+            '</div>' +
+            '</td>' +
+            '<td width="50%" valign="bottom">' +
+            '<div style="float:right;display: table;padding-left: 40px;">' +
+            '<div style="display: table-row;height: 20px">' +
+            '<div style="font-weight: bold;text-align: right;display: table-cell"></div>' +
+            '<div style="text-align: left;display: table-cell;padding-left: 5px;">' +
+            '<div style="height: 70px;">' +
+            '<div style="width: 120px; text-align: center;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px 5px 5px 5px;">Date</div>' +
+            '<div style="width: 120px; text-align: center;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px 5px 5px 5px;border-right: 1px solid black;">[Invoice: Date]</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div style="display: table-row;height: 20px">' +
+            '<div style="font-weight: bold;text-align: right;display: table-cell">Invoice Number:</div>' +
+            '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Number/ID]</div>' +
+            '</div>' +
+            '<div style="display: table-row;height: 20px">' +
+            '<div style="font-weight: bold;text-align: right;display: table-cell">Invoice Date Range:</div>' +
+            '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Date Range From] to [Invoice: Date Range To]</div>' +
+            '</div>' +
+            '<div style="display: table-row;height: 20px">' +
+            '<div style="font-weight: bold;text-align: right;display: table-cell">Purchase Order Number:</div>' +
+            '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Purchase Order Number]</div>' +
+            '</div>' +
+            '<div style="display: table-row;height: 20px">' +
+            '<div style="font-weight: bold;text-align: right;display: table-cell">Payment Terms:</div>' +
+            '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Payment Terms]</div>' +
+            '</div>' +
+            '<div style="display: table-row;height: 20px">' +
+            '<div style="font-weight: bold;text-align: right;display: table-cell">Payment Due:</div>' +
+            '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Payment Due Date]</div>' +
+            '</div>' +
+            '</div>' +
+            '</td>' +
+            '</tr>' +
+            '</tbody></table>';
+        //富文本编辑器
         var ue = UE.getEditor('containerHead',{
             toolbars: [
                 ['source','fontfamily', 'fontsize', 'bold', 'italic', 'underline','fontcolor','backcolor','justifyleft','justifycenter','justifyright','insertorderedlist','insertunorderedlist','insertimage','undo','redo']
@@ -130,116 +228,18 @@
             $(".CancelDialogButton").on("click",function(){
                 $("#BackgroundOverLay").hide();
                 $(".AlertBox").hide();
-            });
-
-            $(".val").on("dblclick",function(){
-                UE.getEditor('containerHead').focus();
-                UE.getEditor('containerHead').execCommand('inserthtml',$(this).html());
-                $("#BackgroundOverLay").hide();
-                $(".AlertBox").hide();
-            });
-            var Model=
-                    '<style type="text/css">'+
-                        '#LogoBlock'+
-                        '{'+
-                            'width: 100%;'+
-                            'padding-bottom: 30px;'+
-                        '}'+
-                        '#ServiceProviderBlock'+
-                        '{'+
-                            'padding-bottom: 30px;'+
-                        '}'+
-                        '#InvoiceInfoBlock'+
-                        '{'+
-                            'display: table;'+
-                            'padding-left: 40px;'+
-                        '}'+
-                        '.boxHeader'+
-                        '{'+
-                            'border: 1px solid black;'+
-                            'background-color: #f7f7f7;'+
-                            'font-weight: bold;'+
-                            'padding: 5px 5px 5px 5px;'+
-                        '}'+
-                        '.boxBody'+
-                        '{'+
-                            'border-right: 1px solid black;'+
-                            'border-left: 1px solid black;'+
-                            'border-bottom: 1px solid black;'+
-                            'padding: 5px 5px 5px 5px;'+
-                        '}'+
-                        '.invoiceInfoRow'+
-                        '{'+
-                        '}'+
-                        '.invoiceInfoNameCell'+
-                        '{'+
-                        '}'+
-                        '.invoiceInfoValueCell'+
-                        '{'+
-                        '}'+
-                    '</style>'+
-                    '<table style="width:100%; border-collapse:collapse;font-size:12px;">'+
-                    '<tbody><tr>'+
-                    '<td width="100%" colspan="2">'+
-                    '<div style="width:100%;padding-bottom: 30px;">[Miscellaneous: Primary Logo]</div>'+
-            '</td>'+
-            '</tr>'+
-            '<tr>'+
-            '<td width="50%">'+
-                    '<div style="padding-bottom: 30px;">'+
-                    '[Your Company: Name]<br>'+
-            '[Your Company: Address]'+
-            '<br>'+
-            '[Your Company: Phone]<br>'+
-            'Fax: [Your Company: Fax]'+
-            '<div>[Your Company: Tax ID, ACN, ABN, VAT, etc.]</div>'+
-            '</div>'+
-            '<div>'+
-                    '<div style="width: 70%; text-align: left;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px 5px 5px 5px;">Bill To</div>'+
-            '<div style="width: 70%;border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px 5px 5px 5px;">'+
-                    '[Account: Name] [Billing: Attention]<br>'+
-            '[Billing: Address]'+
-            '</div>'+
-            '</div>'+
-            '</td>'+
-            '<td width="50%" valign="bottom">'+
-                    '<div style="float:right;display: table;padding-left: 40px;">'+
-                    '<div style="display: table-row;height: 20px">'+
-                    '<div style="font-weight: bold;text-align: right;display: table-cell"></div>'+
-                    '<div style="text-align: left;display: table-cell;padding-left: 5px;">'+
-                    '<div style="height: 70px;">'+
-                    '<div style="width: 120px; text-align: center;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px 5px 5px 5px;">Date</div>'+
-                    '<div style="width: 120px; text-align: center;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px 5px 5px 5px;border-right: 1px solid black;">[Invoice: Date]</div>'+
-            '</div>'+
-            '</div>'+
-            '</div>'+
-            '<div style="display: table-row;height: 20px">'+
-                    '<div style="font-weight: bold;text-align: right;display: table-cell">Invoice Number:</div>'+
-            '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Number/ID]</div>'+
-            '</div>'+
-            '<div style="display: table-row;height: 20px">'+
-                '<div style="font-weight: bold;text-align: right;display: table-cell">Invoice Date Range:</div>'+
-                '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Date Range From] to [Invoice: Date Range To]</div>'+
-            '</div>'+
-            '<div style="display: table-row;height: 20px">'+
-                '<div style="font-weight: bold;text-align: right;display: table-cell">Purchase Order Number:</div>'+
-                '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Purchase Order Number]</div>'+
-            '</div>'+
-            '<div style="display: table-row;height: 20px">'+
-                '<div style="font-weight: bold;text-align: right;display: table-cell">Payment Terms:</div>'+
-                '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Payment Terms]</div>'+
-            '</div>'+
-            '<div style="display: table-row;height: 20px">'+
-                '<div style="font-weight: bold;text-align: right;display: table-cell">Payment Due:</div>'+
-                '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Payment Due Date]</div>'+
-            '</div>'+
-            '</div>'+
-            '</td>'+
-            '</tr>'+
-            '</tbody></table>';
+            });                
+            <%if(opop=="头部"){%>
             ue.setContent(Model);
+            <%}%>            
         });
-        //        点击确定数据保存至后台  在展示页展示
+        function dbclick(val) {
+            UE.getEditor('containerHead').focus();
+            UE.getEditor('containerHead').execCommand('inserthtml', $(val).html());
+            $("#BackgroundOverLay").hide();
+            $(".AlertBox").hide();
+        }
+        //点击确定数据保存至后台  在展示页展示
         $("#OkButton1").on("click", function () {
             var html = ue.getContent();
             console.log(html);
@@ -247,9 +247,9 @@
             var txt = ue.getContentTxt();
             console.log(txt);
         });
-        //情空内容
+        //
         $("#ResetButton").on("click",function(){
-            ue.setContent('')
+            ue.setContent(Model);
         })
     </script>
         </div>

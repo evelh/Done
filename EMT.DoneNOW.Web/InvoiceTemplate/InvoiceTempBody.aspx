@@ -1,7 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="InvoiceTempBody.aspx.cs" Inherits="EMT.DoneNOW.Web.InvoiceTempBody" %>
-
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -27,7 +25,7 @@
                 <ul id="btn">
                     <li class="Button ButtonIcon Okey NormalState" id="OkButton" tabindex="0">
                         <span class="Icon Ok"></span>
-                        <asp:Button ID="OkButton1" runat="server" Text="确认" CssClass="Text" BorderStyle="None" OnClick="Save" />
+                        <asp:Button ID="Save" OnClientClick="return save_deal()" runat="server" Text="确认" CssClass="Text" BorderStyle="None" OnClick="Save_Click" />
                         <input type="hidden" id="typetype" name="typetype" />
                         <input type="hidden" id="typett" name="typett" /><input type="hidden" id="data" name="data" />
                     </li>
@@ -46,7 +44,6 @@
                     </div>
                     <div class="DescriptionText" id="c1">指定显示的字段，可以修改显示名称、是否显示和显示顺序</div>
                     <div class="Content" id="d1">
-                        <form action="" method="post">
                             <div class="Grid Medium">
                                 <!--头部-->
                                 <div class="HeaderContainer">
@@ -94,10 +91,10 @@
                                                         <div class="Sort Order">1</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">发票中显示序列号，从1开始</td>
-                                                <td class="Text E XL U2">发票中显示序列号，从1开始</td>
+                                                <td class="Text E U1 Column_Content">发票中显示序列号，从1开始</td>
+                                                <td class="Text E XL U2 Column_label">发票中显示序列号，从1开始</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark CM"></div>
+                                                    <div class="Decoration Icon CheckMark CM Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -112,10 +109,10 @@
                                                         <div class="Sort Order">2</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">条目创建日期</td>
-                                                <td class="Text E XL U2">条目创建日期</td>
+                                                <td class="Text E U1 Column_Content">条目创建日期</td>
+                                                <td class="Text E XL U2 Column_label">条目创建日期</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark CM"></div>
+                                                    <div class="Decoration Icon CheckMark CM Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -130,10 +127,10 @@
                                                         <div class="Sort Order">3</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">条目描述</td>
-                                                <td class="Text E XL U2">条目描述</td>
+                                                <td class="Text E U1 Column_Content">条目描述</td>
+                                                <td class="Text E XL U2 Column_label">条目描述</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark CM"></div>
+                                                    <div class="Decoration Icon CheckMark CM Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -148,10 +145,10 @@
                                                         <div class="Sort Order">4</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">类型</td>
-                                                <td class="Text E XL U2">类型</td>
+                                                <td class="Text E U1 Column_Content">类型</td>
+                                                <td class="Text E XL U2 Column_label">类型</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark CM"></div>
+                                                    <div class="Decoration Icon CheckMark CM Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -166,10 +163,10 @@
                                                         <div class="Sort Order">5</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">员工姓名</td>
-                                                <td class="Text E XL U2">员工姓名</td>
+                                                <td class="Text E U1 Column_Content">员工姓名</td>
+                                                <td class="Text E XL U2 Column_label">员工姓名</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark CM"></div>
+                                                    <div class="Decoration Icon CheckMark CM Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -184,10 +181,10 @@
                                                         <div class="Sort Order">6</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">计费时间</td>
-                                                <td class="Text E XL U2">计费时间</td>
+                                                <td class="Text E U1 Column_Content">计费时间</td>
+                                                <td class="Text E XL U2 Column_label">计费时间</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark CM"></div>
+                                                    <div class="Decoration Icon CheckMark CM Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -202,10 +199,10 @@
                                                         <div class="Sort Order">7</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">数量</td>
-                                                <td class="Text E XL U2">数量</td>
+                                                <td class="Text E U1 Column_Content">数量</td>
+                                                <td class="Text E XL U2 Column_label">数量</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark CM"></div>
+                                                    <div class="Decoration Icon CheckMark CM Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -220,10 +217,10 @@
                                                         <div class="Sort Order">8</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">费率/成本</td>
-                                                <td class="Text E XL U2">费率/成本</td>
+                                                <td class="Text E U1 Column_Content">费率/成本</td>
+                                                <td class="Text E XL U2 Column_label">费率/成本</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark"></div>
+                                                    <div class="Decoration Icon CheckMark Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -238,10 +235,10 @@
                                                         <div class="Sort Order">9</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">税率</td>
-                                                <td class="Text E XL U2">税率</td>
+                                                <td class="Text E U1 Column_Content">税率</td>
+                                                <td class="Text E XL U2 Column_label">税率</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark"></div>
+                                                    <div class="Decoration Icon CheckMark Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -256,10 +253,10 @@
                                                         <div class="Sort Order">10</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">税</td>
-                                                <td class="Text E XL U2">税</td>
+                                                <td class="Text E U1 Column_Content">税</td>
+                                                <td class="Text E XL U2 Column_label">税</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark"></div>
+                                                    <div class="Decoration Icon CheckMark Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -274,10 +271,10 @@
                                                         <div class="Sort Order">11</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">计费总额</td>
-                                                <td class="Text E XL U2">计费总额</td>
+                                                <td class="Text E U1 Column_Content">计费总额</td>
+                                                <td class="Text E XL U2 Column_label">计费总额</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark"></div>
+                                                    <div class="Decoration Icon CheckMark Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -292,10 +289,10 @@
                                                         <div class="Sort Order">12</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">小时费率</td>
-                                                <td class="Text E XL U2">小时费率</td>
+                                                <td class="Text E U1 Column_Content">小时费率</td>
+                                                <td class="Text E XL U2 Column_label">小时费率</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark"></div>
+                                                    <div class="Decoration Icon CheckMark Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -310,10 +307,10 @@
                                                         <div class="Sort Order">13</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">角色</td>
-                                                <td class="Text E XL U2">角色</td>
+                                                <td class="Text E U1 Column_Content">角色</td>
+                                                <td class="Text E XL U2 Column_label">角色</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark"></div>
+                                                    <div class="Decoration Icon CheckMark Display"></div>
                                                 </td>
                                             </tr>
                                             <tr class="D">
@@ -328,17 +325,16 @@
                                                         <div class="Sort Order">14</div>
                                                     </div>
                                                 </td>
-                                                <td class="Text E U1">工作类型</td>
-                                                <td class="Text E XL U2">工作类型</td>
+                                                <td class="Text E U1 Column_Content">工作类型</td>
+                                                <td class="Text E XL U2 Column_label">工作类型</td>
                                                 <td class="Boolean E">
-                                                    <div class="Decoration Icon CheckMark"></div>
+                                                    <div class="Decoration Icon CheckMark Display"></div>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                        </form>
                     </div>
                 </div>
                 <!--第二个选择框-->
@@ -355,7 +351,7 @@
                             <div class="Normal Editor CheckBox">
                                 <div class="InputField">
                                     <div>
-                                        <input type="checkbox" id="ShowGridHeader" checked="checked" style="margin-top: 3px;"/>
+                                        <input type="checkbox" id="ShowGridHeader" checked="checked" style="margin-top: 3px;" />
                                     </div>
                                     <div class="EditorLabelContainer">
                                         <div class="Label">
@@ -662,14 +658,14 @@
                                             <option value="<%=d.id%>"><%=d.name %></option>
                                             <%} %>
                                         </select>--%>
-                                       <asp:DropDownList ID="GroupBy" runat="server"></asp:DropDownList>
+                                        <asp:DropDownList ID="GroupBy" runat="server"></asp:DropDownList>
                                         <img src="../RichText/img/set.png" style="vertical-align: middle; cursor: pointer;" />
                                     </div>
                                 </div>
                                 <div class="Normal Editor CheckBox" style="padding-bottom: 10px;">
                                     <div class="InputField">
                                         <div>
-                                            <input type="checkbox" style="margin-top: 3px;" id="ShowLabelsWhenGrouped">
+                                            <asp:CheckBox ID="ShowLabelsWhenGrouped" runat="server" />
                                         </div>
                                         <div class="EditorLabelContainer">
                                             <div class="Label">
@@ -685,12 +681,12 @@
                                 </div>
                                 <div class="Normal Editor SingleSelect" style="padding-bottom: 10px;">
                                     <div class="InputField">
-                                       <%-- <select name="Itemize" id="Itemize" style="width: 320px;">--%>
-                                           <%-- <%foreach (var d in gbll.GetGeneralList(142) as List<d_general>)
+                                        <%-- <select name="Itemize" id="Itemize" style="width: 320px;">--%>
+                                        <%-- <%foreach (var d in gbll.GetGeneralList(142) as List<d_general>)
                                                 { %>
                                             <option value="<%=d.id%>"><%=d.name %></option>
                                             <%} %>--%>
-                                             <asp:DropDownList ID="Itemize" runat="server"></asp:DropDownList>
+                                        <asp:DropDownList ID="Itemize" runat="server"></asp:DropDownList>
                                         <%--</select>--%>
                                     </div>
                                 </div>
@@ -703,7 +699,7 @@
                                 </div>
                                 <div class="Normal Editor SingleSelect" style="padding-bottom: 10px;">
                                     <div class="InputField">
-                                      <%--  <select name="SortBy" id="SortBy" style="width: 320px;">
+                                        <%--  <select name="SortBy" id="SortBy" style="width: 320px;">
                                             <%foreach (var d in gbll.GetGeneralList(143) as List<d_general>)
                                                 { %>
                                             <option value="<%=d.id%>"><%=d.name %></option>
@@ -760,7 +756,7 @@
                                                 <div class="Normal Editor CheckBox">
                                                     <div class="InputField">
                                                         <div>
-                                                            <input type="checkbox" class="typetype_value" style="margin-top: 3px;"<%if(addset!=null&&addset.Labour_Item[0].value == "checked") {%> checked="checked"<%} %>/>
+                                                            <input type="checkbox" class="typetype_value" style="margin-top: 3px;" <%if(addset.Labour_Item!=null&&addset.Labour_Item[0].value == "checked") {%> checked="checked" <%} %> />
                                                         </div>
                                                         <div class="EditorLabelContainer">
                                                             <div class="Label">
@@ -772,7 +768,7 @@
                                                 <div class="Normal Editor CheckBox">
                                                     <div class="InputField">
                                                         <div>
-                                                            <input type="checkbox" class="typetype_value" style="margin-top: 3px;" <%if (addset!=null&&addset.Labour_Item[1].value == "checked") {%> checked="checked"<%} %>/>
+                                                            <input type="checkbox" class="typetype_value" style="margin-top: 3px;" <%if (addset.Labour_Item!=null&&addset.Labour_Item[1].value == "checked") {%> checked="checked" <%} %> />
                                                         </div>
                                                         <div class="EditorLabelContainer">
                                                             <div class="Label">
@@ -790,8 +786,9 @@
                                                 </div>
                                                 <div class="Normal Editor TextBox">
                                                     <div class="InputField">
-                                                        <input class="typetype_value" type="text" <%if (addset != null)
-                                                            {%> value="<%=addset.Labour_Item[3].value %><%} %>"/>
+                                                        <input class="typetype_value" type="text" <%if (addset.Labour_Item!= null)
+                                                            {%>
+                                                            value="<%=addset.Labour_Item[2].value %><%} %>" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -803,41 +800,50 @@
                                                 <div class="Vertical"></div>
                                                 <div class="Horizontal"></div>
                                             </div>
-                                            <span class="Text">BILLABLE AMOUNT COLUMN EXCEPTIONS</span>
+                                            <span class="Text">计费总额字段内容例外设置</span>
                                         </div>
                                         <div class="Content">
                                             <div class="Normal Column">
                                                 <div class="EditorLabelContainer">
                                                     <div class="Label">
-                                                        <label class="typetype_name">Recurring Service, Fixed Price, Per-Ticket contract</label>
+                                                        <label class="typetype_name">定期服务合同、固定价格合同、事件合同</label>
                                                     </div>
                                                 </div>
                                                 <div class="Normal Editor TextBox">
                                                     <div class="InputField">
-                                                        <input class="typetype_value" type="text" <%if (addset != null)
-                                                            {%> value="<%=addset.Labour_Item[4].value %><%} %>"/>
+                                                        <input class="typetype_value" type="text" <%if (addset.Labour_Item!= null) {%> value="<%=addset.Labour_Item[3].value %>"<%} else { %> value="合同已包" <%} %> />
                                                     </div>
                                                 </div>
                                                 <div class="EditorLabelContainer">
                                                     <div class="Label">
-                                                        <label class="typetype_name">Block Hour, Retainer contract</label>
+                                                        <label class="typetype_name">预付时间合同、预付费用合同</label>
                                                     </div>
                                                 </div>
                                                 <div class="Normal Editor TextBox">
                                                     <div class="InputField">
-                                                        <input class="typetype_value" type="text" <%if (addset != null)
-                                                            {%> value="<%=addset.Labour_Item[5].value %><%} %>"/>
+                                                        <input class="typetype_value" type="text" <%if (addset.Labour_Item!= null)
+                                                            {%>
+                                                            value="<%=addset.Labour_Item[4].value %>" <%}
+                                                            else
+                                                            {%>
+                                                            value="预支付"
+                                                            <%} %> />
                                                     </div>
                                                 </div>
                                                 <div class="EditorLabelContainer">
                                                     <div class="Label">
-                                                        <label class="typetype_name">Non-billable labour</label>
+                                                        <label class="typetype_name">不计费工时</label>
                                                     </div>
                                                 </div>
                                                 <div class="Normal Editor TextBox">
                                                     <div class="InputField">
-                                                        <input class="typetype_value" type="text" <%if (addset != null)
-                                                            {%> value="<%=addset.Labour_Item[6].value %><%} %>"/>
+                                                        <input class="typetype_value" type="text" <%if (addset.Labour_Item!= null)
+                                                            {%>
+                                                            value="<%=addset.Labour_Item[5].value %>" <%}
+                                                            else
+                                                            {%>
+                                                            value="不计费"
+                                                            <%} %> />
                                                     </div>
                                                 </div>
                                             </div>
@@ -864,8 +870,9 @@
                                                 <div class="Normal Editor CheckBox">
                                                     <div class="InputField">
                                                         <div>
-                                                            <input class="typetype_value" type="checkbox" style="margin-top: 3px;" <%if (addset!=null&&addset.Service_Bundle_Item[0].value == "checked")
-                                                                { %> checked="checked"<%} %> />
+                                                            <input class="typetype_value" type="checkbox" style="margin-top: 3px;" <%if (addset.Service_Bundle_Item!=null&&addset.Service_Bundle_Item[0].value == "checked")
+                                                                { %>
+                                                                checked="checked" <%} %> />
                                                         </div>
                                                         <div class="EditorLabelContainer">
                                                             <div class="Label">
@@ -877,8 +884,9 @@
                                                 <div class="Normal Editor CheckBox">
                                                     <div class="InputField">
                                                         <div>
-                                                            <input class="typetype_value" type="checkbox" style="margin-top: 3px;"<%if (addset!=null&&addset.Service_Bundle_Item[1].value == "checked")
-                                                                { %> checked="checked"<%} %> />
+                                                            <input class="typetype_value" type="checkbox" style="margin-top: 3px;" <%if (addset.Service_Bundle_Item!=null&&addset.Service_Bundle_Item[1].value == "checked")
+                                                                { %>
+                                                                checked="checked" <%} %> />
                                                         </div>
                                                         <div class="EditorLabelContainer">
                                                             <div class="Label">
@@ -904,9 +912,9 @@
                                         <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
                                         <asp:ScriptManager ID="ScriptManager1" runat="server">
                                         </asp:ScriptManager>
-                                        <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">
+                                        <asp:UpdatePanel ID="UpdatePanelkk" runat="server" ChildrenAsTriggers="True">
                                             <ContentTemplate>
-                                                <asp:DropDownList ID="AlertVariableFilter" runat="server" OnSelectedIndexChanged="AlertVariableFilter_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
+                                                <asp:DropDownList ID="Variable" runat="server" OnSelectedIndexChanged="Variable_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
                                                 <select name="" multiple="multiple" id="AlertVariableList">
                                                     <asp:Literal ID="VariableList" runat="server"></asp:Literal>
                                                 </select>
@@ -916,7 +924,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div id="BackgroundOverLay" style="display: block;"></div>
@@ -926,36 +933,38 @@
         <script src="../RichText/js/ueditor.config.js"></script>
         <script src="../RichText/js/ueditor.all.js"></script>
         <script src="../RichText/js/InvoiceTemplateInvoiceBody.js"></script>
-         <asp:Literal ID="datalist" runat="server"></asp:Literal >
+        <asp:Literal ID="datalist" runat="server"></asp:Literal>
         <script>
             $(".Edit").on("click", function () {
                 var a = $(".Edit").index(this);
-                var k = $(".invoice_type_id").eq(a).val();
-                if (k == 1928) {//工时，特殊
+                var k = $(".invoice_type_name").eq(a).text();
+                if (k == "工时") {//工时，特殊
                     $("#kkk1").show();
                 } else {
                     $("#kkk1").hide();
                 }
-                if (k == 1933) {//服务包
+                if (k == "定期服务/服务包") {//服务包
                     $("#kkk2").show();
                 } else {
                     $("#kkk2").hide();
                 }
-                var innerContent = $(this).parent().next().next().html();
+                var innerContent = $(".Edit").eq(a).parent().next().next().html();
                 $("#editedit").show();
                 var colors = ["#efefef", "white"];
                 var index1 = 0;
                 var index2 = 0;
+
                 $(".Toggle1").on("click", function () {
-                    $(this).parent().parent().find($(".Vertical")).toggle();
-                    $(this).parent().parent().find($('.Content')).toggle();
-                    $(this).parent().parent().css("background", colors[index1 % 2]);
+                    $(".Edit").eq(a).parent().parent().find($(".Vertical")).toggle();
+                    $(".Edit").eq(a).parent().parent().find($('.Content')).toggle();
+                    $(".Edit").eq(a).parent().parent().css("background", colors[index1 % 2]);
                     index1++;
                 });
+
                 $(".Toggle2").on("click", function () {
-                    $(this).parent().parent().find($(".Vertical")).toggle();
-                    $(this).parent().parent().find($('.Content')).toggle();
-                    $(this).parent().parent().css("background", colors[index2 % 2]);
+                    $(".Edit").eq(a).parent().parent().find($(".Vertical")).toggle();
+                    $(".Edit").eq(a).parent().parent().find($('.Content')).toggle();
+                    $(".Edit").eq(a).parent().parent().css("background", colors[index2 % 2]);
                     index2++;
                 });
                 //富文本编辑器
@@ -970,6 +979,7 @@
                     elementPathEnabled : false,
                     autoHeightEnabled: false  //设置滚动条
                 });
+
                 ue.ready(function () {
                     //获取html内容  返回：<p>内容</p>
                     var html = ue.getContent();
@@ -983,13 +993,7 @@
                     $(".CancelDialogButton1").on("click", function () {
                         $("#BackgroundOverLay1").hide();
                         $(".AlertBox").hide();
-                    });
-                    $(".val").on("dblclick", function () {
-                        UE.getEditor('containerHead').focus();
-                        UE.getEditor('containerHead').execCommand('inserthtml', $(this).html());
-                        $("#BackgroundOverLay1").hide();
-                        $(".AlertBox").hide();
-                    })
+                    });                    
                 });
                 $("#addadd").on("mouseover", function () {
                     $("#addadd").css("background", "#fff");
@@ -1002,13 +1006,24 @@
                 });
                 $("#resetreset").on("mouseout", function () {
                     $("#resetreset").css("background", "#f0f0f0");
-                });
+                }); 
                 // 点击确定数据保存至后台  在展示页展示
                 $("#addadd").on("click", function () {
                     var html = ue.getContent();
                     var txt = ue.getContentTxt();
+                    var k = $(".invoice_type_name").eq(a).text();
+                    //if (k == "工时") {//工时，特殊
+                    //    $("#kkk1").show();
+                    //} else {
+                    //    $("#kkk1").hide();
+                    //}
+                    //if (k == "定期服务/服务包") {//服务包
+                    //    $("#kkk2").show();
+                    //} else {
+                    //    $("#kkk2").hide();
+                    //}
                     $(".Edit").eq(a).parent().next().next().html(html);
-                    if (k == 1928) {//工时，特殊   
+                    if (k == "工时") {//工时，特殊   
                         $(".Edit").eq(a).parent().next().next().next().html('');
                         var tt = '';
                         if ($(".typetype_value").eq(0).is(':checked')) {
@@ -1019,7 +1034,7 @@
                         }
                         $(".Edit").eq(a).parent().next().next().next().html(tt);
                     }
-                    if (k == 1933) {//服务包
+                    if (k == "定期服务/服务包") {//服务包
                         $(".Edit").eq(a).parent().next().next().next().html('');
                         var tt = '';
                         if ($(".typetype_value").eq(6).is(':checked')) {
@@ -1031,13 +1046,16 @@
                         $(".Edit").eq(a).parent().next().next().next().html(tt);
                     } 
                     $("#editedit").hide();
+                    a = -1;
+                    return a;
                 });
                 //点击关闭
                 $(".CancelDialogButton").on("click", function () {
                     $("#editedit").hide();
+                    a = -1;
+                    return a;
                 })
             });
-
             $("#OkButton").on("mouseover", function () {
                 $("#OkButton").css("background", "#fff");
             });
@@ -1045,9 +1063,16 @@
                 $("#OkButton").css("background", "#f0f0f0");
             });
 
-            //保存
+            //双击选中事件
+            function dbclick(val) {
+                UE.getEditor('containerHead').focus();
+                UE.getEditor('containerHead').execCommand('inserthtml', $(val).html());
+                $("#BackgroundOverLay").hide();
+                $(".AlertBox").hide();
+            }
 
-            $("#OkButton1").on("click", function () {
+            //保存
+         function save_deal() {
                 //json格式
                 var data = [];
                 //表格显示字段设置
@@ -1057,12 +1082,11 @@
                     var Column_Content = $(".Column_Content").eq(i).text();//字段内容
                     var Column_label = $(".Column_label").eq(i).html();//显示名称            
                     var Display;
-                    if ($(".Display").eq(i).children().hasClass("CM")) {
+                    if ($(".Display").eq(i).hasClass("CM")) {
                         Display = "yes";
                     }
-                    if (!($(".Display").eq(i).children().hasClass("CM"))) {
+                    if (!($(".Display").eq(i).hasClass("CM"))) {
                         Display = "no";
-
                     }
                     var GRID_COLUMNITEM = { "Order": Order, "Column_Content": Column_Content, "Column_label": Column_label, "Display": Display };
                     var jsonArrayFinal = JSON.stringify(GRID_COLUMNITEM);
@@ -1070,7 +1094,6 @@
                     console.log(jsonArrayFinal);
                 }
                 data.push("],\"GRID_OPTIONS\":[");
-
                 //显示表头
                 if ($("#ShowGridHeader").is(':checked')) {
                     var Show_grid_header = "yes";
@@ -1129,7 +1152,8 @@
                     var Item = { "id": "0", "name": name, "value": value };
                     var jsonArrayFinal = JSON.stringify(Item);
                     data1.push(jsonArrayFinal);
-                }                
+                }  
+                data1.push("]}");
                 $("#typetype").val($('<div/>').text(data1).html());
                 //服务
                 var data2 = [];
@@ -1143,6 +1167,7 @@
                 var Item = { "id": "0", "name": name, "value": value };
                 var jsonArrayFinal = JSON.stringify(Item);
                 data2.push(jsonArrayFinal);
+
                 var name = $(".typetype_name").eq(7).text();
                 var value = '';
                 if ($(".typetype_value").eq(7).is(':checked')) {
@@ -1152,9 +1177,8 @@
                 var jsonArrayFinal = JSON.stringify(Item);
                 data2.push(jsonArrayFinal);
                 data2.push("]}");
-                $("#typett").val($('<div/>').text(data2).html());
-                
-            });
+                $("#typett").val($('<div/>').text(data2).html());                
+            }
         </script>
     </form>
 </body>

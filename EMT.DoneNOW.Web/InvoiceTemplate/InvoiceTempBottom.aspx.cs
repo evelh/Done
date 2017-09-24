@@ -14,7 +14,7 @@ namespace EMT.DoneNOW.Web
     {
         protected int id;
         protected InvioceTempDto.TempContent tempinfo = null;
-        protected string foot;
+        protected string bottom;
         protected List<InvioceTempDto.SETTING_ITEM> bottom_value;
         protected InvioceTempDto.Invoice_ext bottomttt;
         protected void Page_Load(object sender, EventArgs e)
@@ -25,21 +25,27 @@ namespace EMT.DoneNOW.Web
                 tempinfo = Session["tempinfo"] as InvioceTempDto.TempContent;
                 if (tempinfo != null && tempinfo.id == id)
                 {
-                    foot = HttpUtility.HtmlDecode(tempinfo.head).Replace("\"", "'");
-                    bottomttt = new EMT.Tools.Serialize().DeserializeJson<InvioceTempDto.Invoice_ext>(tempinfo.Invoice_text);
-                    if (tempinfo.tax_cat == 1) {
-                        this.tax_cate.Checked = true;
-                    }
-                    if (tempinfo.tax_group == 1) {
-                        this.tax_group.Checked = true;
-                    }
-                    if (tempinfo.tax_sup == 1) {
-                        this.tax_sup.Checked = true;
-                    }
+                    if(!string.IsNullOrEmpty(tempinfo.bottom))
+                    bottom = HttpUtility.HtmlDecode(tempinfo.bottom).Replace("\"", "'");
+                    if (!string.IsNullOrEmpty(tempinfo.Invoice_text)) {
+                        bottomttt = new EMT.Tools.Serialize().DeserializeJson<InvioceTempDto.Invoice_ext>(tempinfo.Invoice_text);
+                        if (tempinfo.tax_cat == 1)
+                        {
+                            this.tax_cate.Checked = true;
+                        }
+                        if (tempinfo.tax_group == 1)
+                        {
+                            this.tax_group.Checked = true;
+                        }
+                        if (tempinfo.tax_sup == 1)
+                        {
+                            this.tax_sup.Checked = true;
+                        }
+                    }                    
                 }
                 this.AlertVariableFilter.DataTextField = "show";
                 this.AlertVariableFilter.DataValueField = "val";
-                this.AlertVariableFilter.DataSource = new QuoteTemplateBLL().GetVariableField();
+                this.AlertVariableFilter.DataSource = new QuoteTemplateBLL().GetInvoiceVariableField();
                 this.AlertVariableFilter.DataBind();
                 this.AlertVariableFilter.Items.Insert(0, new ListItem() { Value = "0", Text = "显示全部变量", Selected = true });
                 var list = new QuoteTemplateBLL().GetAllVariable();
@@ -54,14 +60,16 @@ namespace EMT.DoneNOW.Web
 
         protected void Save(object sender, EventArgs e)
         {
-            string tt = Request.Form["data"].Trim().ToString().Replace("\"", "'");
+            string tt = Request.Form["data"].Trim().ToString().Replace("\"", "'").Replace(" ", ""); ;
             tempinfo = Session["tempinfo"] as InvioceTempDto.TempContent;
             tempinfo.bottom = tt;
-            string t = Convert.ToString(Request.Form["bottom"].ToString());
+            string t = Convert.ToString(Request.Form["bottom"].ToString()).Replace(" ", ""); ;
             t = t.Replace("[,", "[").Replace(",]", "]");
-            var addset = new EMT.Tools.Serialize().DeserializeJson<InvioceTempDto.Invoice_ext>(tempinfo.Invoice_text);
-            addset.Bottom_Item = new EMT.Tools.Serialize().DeserializeJson<InvioceTempDto.Invoice_ext2>(t).item;
-            tempinfo.Invoice_text = new EMT.Tools.Serialize().SerializeJson(addset);
+            if (tempinfo.Invoice_text != null) {
+                bottomttt = new EMT.Tools.Serialize().DeserializeJson<InvioceTempDto.Invoice_ext>(tempinfo.Invoice_text);                
+            }
+            bottomttt.Bottom_Item = new EMT.Tools.Serialize().DeserializeJson<InvioceTempDto.Invoice_ext2>(t).item;
+            tempinfo.Invoice_text = new EMT.Tools.Serialize().SerializeJson(bottomttt);
             if (this.tax_sup.Checked)
             {
                 tempinfo.tax_sup = 1;
@@ -94,7 +102,7 @@ namespace EMT.DoneNOW.Web
             if (this.AlertVariableFilter.SelectedValue == "0")
             {
                 sb.Clear();
-                var list = new QuoteTemplateBLL().GetAllVariable();
+                var list = new QuoteTemplateBLL().GetAllInvoiceVariable();
                 foreach (string va in list)
                 {
                     sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va.Replace("'", "") + "</option>");

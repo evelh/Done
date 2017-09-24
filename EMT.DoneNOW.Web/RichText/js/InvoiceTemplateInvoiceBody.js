@@ -44,19 +44,19 @@ $("#a4").on("click",function(){
 })
 
 //加载函数
-//function loading(){
-//    var mask = $('<div id="BackgroundOverLay">'+'</div>');
-//    var load = $('<div id="LoadingIndicator">'+'</div>');
-//    $("body").prepend(load).prepend(mask);
-//    $("#BackgroundOverLay").show();
-//    $("#LoadingIndicator").show();
-//    setTimeout(function(){
-//        $("#BackgroundOverLay").hide();
-//        $("#LoadingIndicator").hide();
-//        return mask;
-//    },1000)
+function loading(){
+    var mask = $('<div id="BackgroundOverLay">'+'</div>');
+    var load = $('<div id="LoadingIndicator">'+'</div>');
+    $("body").prepend(load).prepend(mask);
+    $("#BackgroundOverLay").show();
+    $("#LoadingIndicator").show();
+    setTimeout(function(){
+        $("#BackgroundOverLay").hide();
+        $("#LoadingIndicator").hide();
+        return mask;
+    },1000)
 
-//}
+}
 
 
 $(".next").on('click',function() {
@@ -364,12 +364,12 @@ $(".Edit222").on("click",function(){
             $("#BackgroundOverLay1").hide();
             $(".AlertBox").hide();
         });
-        $(".val").on("dblclick",function(){
-            UE.getEditor('containerHead').focus();
-            UE.getEditor('containerHead').execCommand('inserthtml',$(this).html());
-            $("#BackgroundOverLay1").hide();
-            $(".AlertBox").hide();
-        })
+        //$(".val").on("dblclick",function(){
+        //    UE.getEditor('containerHead').focus();
+        //    UE.getEditor('containerHead').execCommand('inserthtml',$(this).html());
+        //    $("#BackgroundOverLay1").hide();
+        //    $(".AlertBox").hide();
+        //})
     });
     //        点击确定数据保存至后台  在展示页展示
     $("#addOkButton").on("click",function(){
@@ -417,7 +417,7 @@ function sortOrder() {
 }
 sortOrder();
 
-//点击ok按钮
-$("#OkButton").on("click",function(){
-    alert("1")
-})
+////点击ok按钮
+//$("#OkButton").on("click",function(){
+//    alert("1")
+//})

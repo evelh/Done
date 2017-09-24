@@ -26,18 +26,46 @@ namespace EMT.DoneNOW.Web.Invoice
         protected string itemEndDatePara;
         protected string contractTypePara;
         protected string contractCatePara;
-        protected string prijectItemPara;
+        protected string projectItemPara;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 var account_id = Request.QueryString["account_id"];
+                itemStartDatePara = Request.QueryString["stareDate"];
+                itemEndDatePara = Request.QueryString["endDate"];
+                contractTypePara = Request.QueryString["contract_type"];
+                contractCatePara = Request.QueryString["contract_cate"];
+                projectItemPara = Request.QueryString["itemDeal"];
+
+
                 contract_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);
                 account = new CompanyBLL().GetCompany(long.Parse(account_id));
 
                 if (!IsPostBack)
                 {
                     PageDataBind();
+                    if (!string.IsNullOrEmpty(itemStartDatePara))
+                    {
+                        itemStartDate.Value = itemStartDatePara;
+                    }
+                    if (!string.IsNullOrEmpty(itemEndDatePara))
+                    {
+                        itemEndDate.Value = itemEndDatePara;
+                    }
+                    if (!string.IsNullOrEmpty(contractTypePara))
+                    {
+                        contract_type_id.SelectedValue = contractTypePara;
+                    }
+                    if (!string.IsNullOrEmpty(contractCatePara))
+                    {
+                        contract_cate_id.SelectedValue = contractCatePara;
+                    }
+                    if (!string.IsNullOrEmpty(projectItemPara))
+                    {
+
+                    }
+                 
                     var childAccList = new crm_account_dal().GetSubsidiariesById(account.id);
                     if(childAccList!=null&& childAccList.Count > 0)
                     {

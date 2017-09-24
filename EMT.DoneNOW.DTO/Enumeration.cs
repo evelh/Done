@@ -205,7 +205,8 @@ namespace EMT.DoneNOW.DTO
             OTHERS = 104,           // 杂项
             QUOTE_TEMPLATE_OTHERS = 105, //报价模板-其他
             QUOTE_TEMPLATE_BODY = 106,  //报价模板-body           
-
+            INVOICE_TEMPLATE_OTHERS=1967,//发票模板-其他
+            INVOICE_TEMPLATE_BODY=1968,//发票模板body
 
         }
         /// <summary>
@@ -466,8 +467,9 @@ namespace EMT.DoneNOW.DTO
             APPROVE_MILESTONES = 1515,            //里程碑审批
             APPROVE_SUBSCRIPTIONS = 1516,         //订阅审批
             APPROVE_RECURRING_SERVICES = 1517,    //定期服务审批           
+            GENERATE_INVOICE=1518,                 // 生成发票
             CONTRACT_BLOCK = 1521,                  // 合同管理-预付费用
-            CONFIGSUBSCRIPTION=1523,              // 配置项中的订阅管理
+            CONFIGSUBSCRIPTION=1523,              // 配置项中的订阅管理 
             PROJECTCALLBACK=1524,                  // 项目的查找带回
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
@@ -846,7 +848,8 @@ namespace EMT.DoneNOW.DTO
         APPROVE_CHARGES = 84,               //成本审批
         APPROVE_MILESTONES = 85,            //里程碑审批
         APPROVE_SUBSCRIPTIONS=86,           //订阅审批
-        APPROVE_RECURRING_SERVICES = 87,    //定期服务审批  
+        APPROVE_RECURRING_SERVICES = 87,    //定期服务审批
+        GENERATE_INVOICE=88,                // 生成发票
         ContractBlock = 91,                 // 合同管理-预付费用
         CONFIGSUBSCRIPTION = 93,           // 配置项界面订阅管理
 
@@ -983,5 +986,9 @@ namespace EMT.DoneNOW.DTO
         OPPORTUNITYLOSS= 391,                       //丢失商机原因
 
         PROJECTCALLBACK=400,                  // 项目查找带回
+        INVOICE_PREFERENCE = 401,             // 发票设置
+        INVOICE_PROCESS = 402,                 // 发票处理
+        INVOICE_WIZARD = 403,                  // 发票向导
+        INVOICE_PREVIEW = 404,                 // 发票预览
     }
 }

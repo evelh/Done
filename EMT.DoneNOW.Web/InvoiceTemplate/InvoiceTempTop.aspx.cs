@@ -25,6 +25,7 @@ namespace EMT.DoneNOW.Web
                 case "head":opop = "页眉";break;
                 case "top": opop = "头部"; break;
                 case "foot": opop = "页脚"; break;
+                case "appendix":opop = "附录";break;
             }
             if (!IsPostBack) 
             {
@@ -33,17 +34,25 @@ namespace EMT.DoneNOW.Web
                 {
                     switch (op)
                     {
-                        case "head": head = HttpUtility.HtmlDecode(tempinfo.head).Replace("\"", "'"); ; break;
-                        case "top": head = HttpUtility.HtmlDecode(tempinfo.top).Replace("\"", "'"); ; break;
-                        case "foot": head = HttpUtility.HtmlDecode(tempinfo.foot).Replace("\"", "'"); ; break;
+                        case "head":
+                            if (!string.IsNullOrEmpty(tempinfo.head))
+                                head = HttpUtility.HtmlDecode(tempinfo.head).Replace("\"", "'"); ; break;
+                        case "top":if(!string.IsNullOrEmpty(tempinfo.top))
+                            head = HttpUtility.HtmlDecode(tempinfo.top).Replace("\"", "'"); ; break;
+                        case "foot":
+                            if (!string.IsNullOrEmpty(tempinfo.foot))
+                                head = HttpUtility.HtmlDecode(tempinfo.foot).Replace("\"", "'"); ; break;
+                        case "appendix":
+                            if (!string.IsNullOrEmpty(tempinfo.foot_note))
+                                head = HttpUtility.HtmlDecode(tempinfo.foot).Replace("\"", "'"); ; break;
                     }                    
                 }
                 this.AlertVariableFilter.DataTextField = "show";
                 this.AlertVariableFilter.DataValueField = "val";
-                this.AlertVariableFilter.DataSource = new QuoteTemplateBLL().GetVariableField();
+                this.AlertVariableFilter.DataSource = new QuoteTemplateBLL().GetInvoiceVariableField();
                 this.AlertVariableFilter.DataBind();
                 this.AlertVariableFilter.Items.Insert(0, new ListItem() { Value = "0", Text = "显示全部变量", Selected = true });
-                var list = new QuoteTemplateBLL().GetAllVariable();
+                var list = new QuoteTemplateBLL().GetAllInvoiceVariable();
                 StringBuilder sb = new StringBuilder();
                 foreach (string va in list)
                 {
@@ -55,7 +64,7 @@ namespace EMT.DoneNOW.Web
 
         protected void Save(object sender, EventArgs e)
         {
-            string tt = Request.Form["data"].Trim().ToString().Replace("\"", "'");
+            string tt = Request.Form["data"].Trim().ToString().Replace("\"", "'").Replace(" ","");
             tempinfo = Session["tempinfo"] as InvioceTempDto.TempContent;
             switch (op)
             {
@@ -74,7 +83,7 @@ namespace EMT.DoneNOW.Web
             if (this.AlertVariableFilter.SelectedValue == "0")
             {
                 sb.Clear();
-                var list = new QuoteTemplateBLL().GetAllVariable();
+                var list = new QuoteTemplateBLL().GetAllInvoiceVariable();
                 foreach (string va in list)
                 {
                     sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va.Replace("'", "") + "</option>");
@@ -88,7 +97,7 @@ namespace EMT.DoneNOW.Web
                 var list = new QuoteTemplateBLL().GetVariable(id);
                 foreach (string va in list)
                 {
-                    sb.Append("<option class='val' ondblclick='dbclick(this);' >" + va.Replace("'", "") + "</option>");
+                    sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va.Replace("'", "") + "</option>");
                 }
                 this.VariableList.Text = sb.ToString();
             }

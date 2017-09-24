@@ -21,7 +21,7 @@ namespace EMT.DoneNOW.DAL
         /// <summary>
         /// 根据sql语句查询出符合条件的条目(从视图中查询)
         /// </summary>
-        public List<InvoiceDeductionDto> GetInvDedDtoList(string where)
+        public List<InvoiceDeductionDto> GetInvDedDtoList(string where="")
         {
             return FindListBySql<InvoiceDeductionDto>("select * from v_posted_all where 1=1 " + where);
         }

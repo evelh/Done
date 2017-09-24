@@ -89,7 +89,16 @@ namespace EMT.DoneNOW.BLL
             var list = _dal.GetDictionary((int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP, (int)NOTIFY_CATE.QUOTE_TEMPLATE_BODY);
             return list;
         }
-
+        public List<DictionaryEntryDto> GetInvoiceBodyVariableField()
+        {
+            var list = _dal.GetDictionary((int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP, (int)NOTIFY_CATE.INVOICE_TEMPLATE_BODY);
+            return list;
+        }
+        public List<DictionaryEntryDto> GetInvoiceVariableField()
+        {
+            var list = _dal.GetDictionary((int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP, (int)NOTIFY_CATE.INVOICE_TEMPLATE_OTHERS);
+            return list;
+        }
         /// <summary>
         /// 获取所有可显示变量
         /// </summary>
@@ -97,6 +106,15 @@ namespace EMT.DoneNOW.BLL
         public List<string> GetAllVariable() {
             return _dal.GetAllVariable();
         }
+        /// <summary>
+        /// 获取所有可显示变量
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetAllInvoiceVariable()
+        {
+            return _dal.GetAllInvoiceVariable();
+        }
+        
         /// <summary>
         /// 获取对应
         /// </summary>

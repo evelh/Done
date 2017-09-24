@@ -2270,7 +2270,61 @@
         function Edit() {
             OpenWindow("../InvoiceTemplate/InvoiceTempEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
-
+        function Copy() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteTemplateAjax.ashx?act=copy&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
+        }
+        function Delete() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteTemplateAjax.ashx?act=delete&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
+        }
+        function Default() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteTemplateAjax.ashx?act=default&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
+        }
+        function Active() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteTemplateAjax.ashx?act=active&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
+        }
+        function NoActive() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/QuoteTemplateAjax.ashx?act=noactive&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                    history.go(0);
+                }
+            })
+        }
 
 
 
