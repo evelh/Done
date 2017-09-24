@@ -15,8 +15,7 @@
     }
 </style>
 </head>
-<body>
-    <form id="form1" runat="server">
+
            <%if (conditionHeight > 0) { %>
 <frameset id="SearchFrameSet" name="SearchFrameSet" rows="<%=conditionHeight %>,*" cols="100%" framespacing="0" border="0">
     <frame src="../Common/SearchConditionFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>&isCheck=<%=isCheck %>" id="SearchCondition"></frame>
@@ -28,6 +27,5 @@
     <frame src="InvoiceSearchResult.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>" id="SearchBody" style="overflow-x: hidden; overflow-y: auto; "></frame>
 </frameset>
     <%} %>
-    </form>
-</body>
+
 </html>

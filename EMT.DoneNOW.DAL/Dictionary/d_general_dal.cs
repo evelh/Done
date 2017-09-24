@@ -37,7 +37,7 @@ namespace EMT.DoneNOW.DAL
             {
                 //if (entry.is_default == 1)
                 //    list.Add(new DictionaryEntryDto(entry.code.ToString(), entry.name, 1));
-                //else
+                //else  
                     list.Add(new DictionaryEntryDto(entry.code, entry.name));
             }
 

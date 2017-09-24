@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using EMT.Tools;
+using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.Web.Invoice
 {
@@ -13,15 +14,19 @@ namespace EMT.DoneNOW.Web.Invoice
         protected int catId = 0;
         protected long queryTypeId = 0;
         protected long paraGroupId = 0;
-        protected int conditionHeight = 0;
+        protected int conditionHeight = 10;
         protected string isCheck = "";  // 用于检测是否显示checkBox框
         protected void Page_Load(object sender, EventArgs e)
+
         {
             var bll = new BLL.QueryCommonBLL();
 
-            catId = DNRequest.GetQueryInt("cat", 0);
+            // catId = DNRequest.GetQueryInt("cat", 0);
+            catId = (int)DicEnum.QUERY_CATE.GENERATE_INVOICE;
             int typeId = DNRequest.GetQueryInt("type", 0);
+            typeId = (int)QueryType.GENERATE_INVOICE;
             int groupId = DNRequest.GetQueryInt("group", 0);
+            groupId = 96;
             isCheck = DNRequest.GetStringValue("isCheck", "");
             if (catId == 0)
             {
