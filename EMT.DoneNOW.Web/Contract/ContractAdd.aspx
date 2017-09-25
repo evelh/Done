@@ -543,46 +543,48 @@
         <!--第六页 角色费率设置-->
         <div class="Workspace Workspace6" style="display: none;">
             <div class="PageInstructions">默认情况下，所有角色会使用默认计费费率。若要覆盖角色费率，请勾选角色复选框并输入新费率。</div>
-            <div class="WizardSection">
-                <table cellspacing="0" cellpadding="0" width="100%">
-                    <tbody>
-                    <tr height="85%">
-                        <td width="90%">
-                            <div class="grid NoPagination">
-                                <table cellspacing="1" cellpadding="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <td style="width:20px; text-align:center;">
-                                                <input type="checkbox" style="vertical-align: middle;" />
-                                            </td>
-                                            <td>角色名称</td>
-                                            <td align="right">角色小时计费费率</td>
-                                            <td align="right">合同小时计费费率</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                      <%foreach (var role in roleList) { %>
-                                        <tr>
-                                            <td style="width:20px; text-align:center;">
-                                                <input type="checkbox" name="cbRoleRate<%=role.id %>" onclick="CheckRoleRate(<%=role.id%>)" style="vertical-align: middle;"/>
-                                              <input type="hidden" id="roleRateCheck<%=role.id %>" name="roleRateCheck<%=role.id %>" />
-                                            </td>
-                                            <td><%=role.name %></td>
-                                            <td align="right">
-                                                <input type="text" size="5" value="<%=role.hourly_rate %>" disabled="disabled" style="width: 97%;text-align: right;"/>
-                                            </td>
-                                            <td align="right">
-                                                <input type="text" size="5" name="txtRoleRate<%=role.id %>" value="<%=role.hourly_rate %>" style="text-align: right;"/>
-                                            </td>
-                                        </tr>
-                                      <%} %>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 82px;top:70px;">
+                <div class="WizardSection">
+                    <table cellspacing="0" cellpadding="0" width="100%">
+                        <tbody>
+                        <tr height="85%">
+                            <td width="90%">
+                                <div class="grid NoPagination">
+                                    <table cellspacing="1" cellpadding="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <td style="width:20px; text-align:center;">
+                                                    <input type="checkbox" style="vertical-align: middle;" />
+                                                </td>
+                                                <td>角色名称</td>
+                                                <td align="right">角色小时计费费率</td>
+                                                <td align="right">合同小时计费费率</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          <%foreach (var role in roleList) { %>
+                                            <tr>
+                                                <td style="width:20px; text-align:center;">
+                                                    <input type="checkbox" name="cbRoleRate<%=role.id %>" onclick="CheckRoleRate(<%=role.id%>)" style="vertical-align: middle;"/>
+                                                  <input type="hidden" id="roleRateCheck<%=role.id %>" name="roleRateCheck<%=role.id %>" />
+                                                </td>
+                                                <td><%=role.name %></td>
+                                                <td align="right">
+                                                    <input type="text" size="5" value="<%=role.hourly_rate %>" disabled="disabled" style="width: 97%;text-align: right;"/>
+                                                </td>
+                                                <td align="right">
+                                                    <input type="text" size="5" name="txtRoleRate<%=role.id %>" value="<%=role.hourly_rate %>" style="text-align: right;"/>
+                                                </td>
+                                            </tr>
+                                          <%} %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <!--第七页 里程碑设置-->
@@ -742,7 +744,7 @@
                                             <span style="font-weight: normal;">
                                                 <a class="PrimaryLink" onclick="ShowResource()">(加载)</a>
                                             </span>
-                                            <div id="ResourceDiv" style="display:none;">
+                                            <div id="ResourceDiv" style="display:none;max-height:300px;overflow:auto;" class="grid">
                                               <table cellspacing="1" cellpadding="0" width="100%">
                                                 <thead>
                                                     <tr>

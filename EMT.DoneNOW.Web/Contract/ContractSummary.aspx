@@ -39,7 +39,7 @@
     </ul>
   </div>
   <!--内容-->
-  <div class="DivScrollingContainer General">
+  <div class="DivScrollingContainer General" style="top:78px;">
     <div class="PageLevelInstructions">
       <%if (contract.end_date < DateTime.Now)
           { %>

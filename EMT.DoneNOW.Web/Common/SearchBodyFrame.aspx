@@ -216,8 +216,8 @@
                     <%
                         } else if(addBtn=="审批并提交"){
   %>
-                    <li onclick="Add()"><span style="margin: 0;">审批并提交</span></li>
-                     <li><a href="../Invoice/InvocieSearch" target="PageFrame"><span style="margin: 0;">生成发票</span></a></li>
+                    <li onclick="Add()"><span style="margin: 0 10px;">审批并提交</span></li>
+                     <li><a href="../Invoice/InvocieSearch" target="PageFrame" style="color:black;text-decoration:none;"><span style="margin: 0 10px;">生成发票</span></a></li>
                     <%
                              } else if(addBtn=="完成"){
   %>
