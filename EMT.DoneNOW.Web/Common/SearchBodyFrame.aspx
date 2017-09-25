@@ -217,7 +217,7 @@
                         } else if(addBtn=="审批并提交"){
   %>
                     <li onclick="Add()"><span style="margin: 0;">审批并提交</span></li>
-                     <li onclick="ToInvoice()"><span style="margin: 0;">生成发票</span></li>
+                     <li><a href="../Invoice/InvocieSearch" target="PageFrame"><span style="margin: 0;">生成发票</span></a></li>
                     <%
                              } else if(addBtn=="完成"){
   %>
@@ -1919,11 +1919,10 @@
         }
 
         //生成发票
-        function ToInvoice() {
-            window.location.href = '../Invoice/InvocieSearch.aspx'; 
-            window.open("../Invoice / InvocieSearch.aspx?isCheck=1&type=' +  <%=queryTypeId%>  + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-
+      <%--  function ToInvoice() {
+            $("#PageFrame").attr("src", "Invoice/InvocieSearch");
+           <%-- window.open('../Invoice/InvocieSearch.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>','left=0,top=0,location=no,status=no,width=900,height=750',false);--%>
+        }--%>
         //审批并提交
         function Post() {
             window.open('../Contract/ApproveChargeSelect.aspx?type=' +  <%=queryTypeId%>  + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);

@@ -215,7 +215,7 @@
                                                             <img src="../RichText/img/next.png" alt="">
                                                         </div>
                                                         <div class="Sort Order">8</div>
-                                                    </div>
+                                                    </div> 
                                                 </td>
                                                 <td class="Text E U1 Column_Content">费率/成本</td>
                                                 <td class="Text E XL U2 Column_label">费率/成本</td>
