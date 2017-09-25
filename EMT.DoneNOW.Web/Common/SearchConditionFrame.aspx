@@ -20,6 +20,61 @@
     #SearchCondition>html{
         height: 100%;
     }
+    /*切换按钮*/
+    .TabBar {
+        border-bottom: solid 1px #adadad;
+        font-size: 0;
+        margin: 0 0 10px 0;
+        padding: 0 0 0 5px;
+    }
+    .TabBar a.Button.SelectedState {
+        background: #fff;
+        border-color: #adadad;
+        border-bottom-color: #fff;
+        color:black;
+    }
+    .TabBar a.Button {
+        background: #eaeaea;
+        border: solid 1px #dfdfdf;
+        border-bottom-color: #adadad;
+        color: #858585;
+        height: 24px;
+        padding: 0;
+        margin: 0 0 -1px 5px;
+        width:100px;
+    }
+    a.Button {
+        -ms-flex-align: center;
+        align-items: center;
+        background: #f0f0f0;
+        background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+        background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+        background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+        background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+        border: 1px solid #d7d7d7;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        color: #4f4f4f;
+        cursor: pointer;
+        height: 24px;
+        padding: 0 3px;
+        position: relative;
+        text-decoration: none;
+    }
+    .TabBar a.Button span.Text {
+        padding: 0 6px 0 6px;
+        margin: 0 auto;
+    }
+    a.Button>.Text {
+        -ms-flex: 0 1 auto;
+        flex: 0 1 auto;
+        font-size: 12px;
+        font-weight: bold;
+        overflow: hidden;
+        padding: 0 3px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 </style>
 <body style="overflow-x:auto;overflow-y:auto;">
  <% if (currentQuery.page_name == "角色管理" || currentQuery.page_name == "部门管理" || currentQuery.page_name == "联系人管理" || currentQuery.page_name == "安全等级管理" || currentQuery.page_name == "里程碑状态管理" || currentQuery.page_name == "产品管理" || currentQuery.page_name == "配置项类型管理" || currentQuery.page_name == "撤销成本审批" || currentQuery.page_name == "撤销里程碑审批" || currentQuery.page_name == "撤销定期服务审批" || currentQuery.page_name == "撤销订阅审批" || currentQuery.page_name == "市场领域管理" || currentQuery.page_name == "客户地域管理" || currentQuery.page_name == "竞争对手管理" || currentQuery.page_name == "客户类别管理" || currentQuery.page_name == "姓名后缀管理" || currentQuery.page_name == "活动类型管理" || currentQuery.page_name == "商机阶段管理" || currentQuery.page_name == "商机来源管理" || currentQuery.page_name == "关闭商机原因管理" || currentQuery.page_name == "丢失商机原因管理")
@@ -31,26 +86,8 @@
     <div class="header">
         <%if (currentQuery.page_name == "审批并提交")
             { %>
-         <div class="TabBar">
-                <a class="Button ButtonIcon" id="tab1">
-                    <span class="Text">工时(未开发)</span>
-                </a>
-                <a class="Button ButtonIcon SelectedState" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>" target="PageFrame" id="tab2">
-                    <span class="Text">成本</span>
-                </a>
-                <a class="Button ButtonIcon" id="tab3">
-                    <span class="Text">费用(未开发)</span>
-                </a>
-                <a class="Button ButtonIcon" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS %>" target="PageFrame" id="tab4">
-                    <span class="Text">订阅</span>
-                </a>
-                <a class="Button ButtonIcon" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES %>" target="PageFrame" id="tab5">
-                    <span class="Text">定期服务</span>
-                </a>
-                <a class="Button ButtonIcon"  href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_MILESTONES %>" target="PageFrame" id="tab6">
-                    <span class="Text">里程碑</span>
-                </a>
-            </div>
+        审批并提交
+       
         <%}
             else
             { %>
@@ -93,7 +130,30 @@
 		</i>
 		<%=currentQuery.page_name %>
         <%} %>
-	</div><%} %>
+	</div><%}%>
+             <% if (currentQuery.page_name == "审批并提交")
+                 {%>
+      <div class="TabBar" style="margin-top:5px;">
+                <a class="Button ButtonIcon" id="tab1">
+                    <span class="Text">工时(未开发)</span>
+                </a>
+                <a class="Button ButtonIcon SelectedState" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>" target="PageFrame" id="tab2">
+                    <span class="Text">成本</span>
+                </a>
+                <a class="Button ButtonIcon" id="tab3">
+                    <span class="Text">费用(未开发)</span>
+                </a>
+                <a class="Button ButtonIcon" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS %>" target="PageFrame" id="tab4">
+                    <span class="Text">订阅</span>
+                </a>
+                <a class="Button ButtonIcon" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES %>" target="PageFrame" id="tab5">
+                    <span class="Text">定期服务</span>
+                </a>
+                <a class="Button ButtonIcon"  href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_MILESTONES %>" target="PageFrame" id="tab6">
+                    <span class="Text">里程碑</span>
+                </a>
+            </div>
+    <%} %>
     <div class="information clear" style="border:none;">
         <button class="Search" id="SearchBtn">搜索</button>
 		<p class="informationTitle"> <i id="Icon"></i>搜索</p>
@@ -333,6 +393,12 @@
         });
         $('.child').on("mouseout", function () {
             $('.child').hide();
+        });
+        $.each($(".TabBar a"), function (i) {
+            $(this).click(function () {
+                $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
+                $(".TabContainer").eq(i).show().siblings(".TabContainer").hide();
+            })
         });
     </script>
 </body>

@@ -744,7 +744,7 @@
                                             <span style="font-weight: normal;">
                                                 <a class="PrimaryLink" onclick="ShowResource()">(加载)</a>
                                             </span>
-                                            <div id="ResourceDiv" style="display:none;" class="grid">
+                                            <div id="ResourceDiv" style="display:none;max-height:300px;overflow:auto;" class="grid">
                                               <table cellspacing="1" cellpadding="0" width="100%">
                                                 <thead>
                                                     <tr>
