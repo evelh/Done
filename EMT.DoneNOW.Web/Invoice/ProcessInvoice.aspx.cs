@@ -15,44 +15,51 @@ namespace EMT.DoneNOW.Web.Invoice
     {
         protected string[] idList = null;
         protected Dictionary<string, object> dic = new InvoiceBLL().GetField();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 var ids = Request.QueryString["account_ids"];
+                var thisAccDedIds = Request.QueryString["accDedIds"];
+
+                
+
                 if (!string.IsNullOrEmpty(ids))
                 {
                     List<string> accDedIds = new List<string>();
-                   var  accountIDS = ids.Split(new char[] {',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var accountIDS = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var account_id in accountIDS)
                     {
-                       var paramList = new crm_account_deduction_dal().GetInvDedDtoList(" and account_id=" + account_id);
-                       var billTOThisParamList = new crm_account_deduction_dal().GetInvDedDtoList(" and account_id <> " + account_id + " and bill_account_id=" + account_id);
+                        var paramList = new crm_account_deduction_dal().GetInvDedDtoList(" and account_id=" + account_id);
+                        var billTOThisParamList = new crm_account_deduction_dal().GetInvDedDtoList(" and account_id <> " + account_id + " and bill_account_id=" + account_id);
                         if (paramList != null && paramList.Count > 0)
                         {
-                            accDedIds.AddRange(paramList.Select(_=>_.id.ToString()).ToList());
+                            accDedIds.AddRange(paramList.Select(_ => _.id.ToString()).ToList());
                         }
                         if (billTOThisParamList != null && billTOThisParamList.Count > 0)
                         {
                             accDedIds.AddRange(billTOThisParamList.Select(_ => _.id.ToString()).ToList());
-                        } 
-                    } 
-                    if(accDedIds!=null&& accDedIds.Count > 0)
+                        }
+                    }
+                    if (accDedIds != null && accDedIds.Count > 0)
                     {
                         idList = accDedIds.ToArray();
                     }
-                    if (!IsPostBack)
-                    {
-                        invoice_template_id.DataValueField = "id";
-                        invoice_template_id.DataTextField = "name";
-                        invoice_template_id.DataSource = dic.FirstOrDefault(_ => _.Key == "invoice_tmpl").Value;
-                        invoice_template_id.DataBind();
-                    }
                 }
-                else
+                if (!string.IsNullOrEmpty(thisAccDedIds))
                 {
-                    Response.Write("<script>window.close();</script>");
+                    idList = thisAccDedIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 }
+                if (!IsPostBack)
+                {
+                    invoice_template_id.DataValueField = "id";
+                    invoice_template_id.DataTextField = "name";
+                    invoice_template_id.DataSource = dic.FirstOrDefault(_ => _.Key == "invoice_tmpl").Value;
+                    invoice_template_id.DataBind();
+                }
+
+
             }
             catch (Exception)
             {
@@ -65,9 +72,18 @@ namespace EMT.DoneNOW.Web.Invoice
         {
             var param = AssembleModel<InvoiceDealDto>();
             param.isInvoiceEmail = is_InvoiceEmail.Checked;
-            param.ids = Request.QueryString["ids"];
+            
+            string ids = "";
+            if (idList.Count() > 0)
+            {
+                foreach (var item in idList)
+                {
+                    ids += item + ',';
+                }
+            }
+            param.ids = ids;
 
-            var result = new InvoiceBLL().ProcessInvoice(param,GetLoginUserId());
+            var result = new InvoiceBLL().ProcessInvoice(param, GetLoginUserId());
             if (result)
             {
                 // 跳转到发票预览
@@ -76,7 +92,7 @@ namespace EMT.DoneNOW.Web.Invoice
             {
                 // 处理失败
             }
-           
+
         }
     }
 }

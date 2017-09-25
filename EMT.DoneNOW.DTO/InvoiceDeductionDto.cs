@@ -42,6 +42,6 @@ namespace EMT.DoneNOW.DTO
         public decimal? billable_hours;
         public long? contract_block_id;  
         public string billable;
-        public long? taxregionid;
+        public long? tax_region_id;
     }
 }

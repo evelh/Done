@@ -54,13 +54,13 @@
                             { %>
                         <li><a href="#" onclick="window.open('../Quote/QuoteAddAndUpdate?quote_opportunity_id=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>','left=200,top=200,width=900,height=750', false);">报价</a></li>
                         <%} %>
-                        <%-- todo 如果商机已经有报价，则不显示--%>
+                        <%-- todo 如果商机已经有报价，则不显示  CloseOpportunity--%>
                     </ul>
                 </li>
-                <li><a href="#">关闭商机</a></li>
-                <li><a href="#">丢失商机</a></li>
-                <li><a href="#">LiveLink</a></li>
-                <li><a href="#">打印</a></li>
+                <li><a onclick="window.open('CloseOpportunity.aspx?id=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityClose %>','left=200,top=200,width=900,height=750', false);">关闭商机</a></li>
+                <li><a onclick="window.open('LoseOpportunity.aspx?id=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityLose %>','left=200,top=200,width=900,height=750', false);">丢失商机</a></li>
+                <li><a></a>LiveLink</li>
+                <li><a></a>打印</li>
 
             </ul>
         </div>

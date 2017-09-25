@@ -138,7 +138,7 @@
             </div>
         </div>
         <div class="contentboby">
-            <%--<div class="RightClickMenu" style="left: 10px; top: 36px; display: none;">
+            <div class="RightClickMenu" style="left: 10px; top: 36px; display: none;">
                 <div class="RightClickMenuItem">
                     <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
                         <tbody>
@@ -205,7 +205,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>--%>
+            </div>
             <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;">
                 <ul class="clear fl">
 
@@ -391,6 +391,32 @@
         $("#liPro").css("color", "grey");
     });
 
+    $("#CheckAll").click(function () {
+        if ($(this).is(":checked")) {
+            $(".IsChecked").prop("checked", true);
+            $("#liPre").prop("disabled", false);
+            $("#liPro").prop("disabled", false);
+            $("#liPre").css("color", "");
+            $("#liPro").css("color", "");
+            $("#liPre").click(function () {
+                Preview();
+            })
+            $("#liPro").click(function () {
+                Process();
+            })
+        }
+        else {
+            $(".IsChecked").prop("checked", false);
+            $("#liPre").prop("disabled", true);
+            $("#liPro").prop("disabled", true);
+            $("#liPre").removeAttr("onclick");
+            $("#liPro").removeAttr("onclick");
+            $("#liPre").css("color", "grey");
+            $("#liPro").css("color", "grey");
+        }
+    })
+
+
     $(".IsChecked").click(function () {
         var ids = "";
         $(".IsChecked").each(function () {
@@ -433,17 +459,6 @@
     }
     function Preview() {
         var account_ids = $("#account_ids").val();
-        if (account_ids != "") {
-            window.open("InvoicePreview.aspx?account_ids=" + account_ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREVIEW %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-    }
-    function Process() {
-        var account_ids = $("#account_ids").val();
-        if (account_ids != "") {
-            window.open("ProcessInvoice.aspx?account_ids=" + account_ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PROCESS %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-    }
-    function xiangdao(account_id) {
         var stareDate = "";
         var endDate = "";
         //var account_id = "";
@@ -451,6 +466,7 @@
         var contract_type = ""; // 589
         var contract_cate = ""; // 590
         var itemDeal = "";      // 596
+        var purchaseNo = "";    // 594  采购订单号
         debugger;
         if ($("input[name = '588_l']").val() != undefined) {
             stareDate = $("input[name = '588_l']").eq(0).val();
@@ -473,7 +489,55 @@
         if ($("input[name = '596']").val() != undefined) {
             itemDeal = $("input[name = '596']").eq(0).val();
         }
-        window.open("InvoiceWizard.aspx?account_id=" + account_id + "&stareDate=" + stareDate + "&endDate=" + endDate + "&item_type=" + item_type + "&contract_type=" + contract_type + "&contract_cate=" + contract_cate + "&itemDeal=" + itemDeal, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_WIZARD %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        if ($("input[name = '594']").val() != undefined) {
+            purchaseNo = $("input[name = '594']").eq(0).val();
+        }
+        if (account_ids != "") {
+            window.open("InvoicePreview.aspx?account_ids=" + account_ids + "&stareDate=" + stareDate + "&endDate=" + endDate + "&item_type=" + item_type + "&contract_type=" + contract_type + "&contract_cate=" + contract_cate + "&itemDeal=" + itemDeal + "&purchaseNo=" + purchaseNo, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREVIEW %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+    }
+    function Process() {
+        var account_ids = $("#account_ids").val();
+        if (account_ids != "") {
+            window.open("ProcessInvoice.aspx?account_ids=" + account_ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PROCESS %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+    }
+    function xiangdao(account_id) {
+        debugger;
+        var stareDate = "";
+        var endDate = "";
+        //var account_id = "";
+        var item_type = ""; //cms591
+        var contract_type = ""; // 589
+        var contract_cate = ""; // 590
+        var itemDeal = "";      // 596
+        var purchaseNo = "";    // 594  采购订单号
+        debugger;
+        if ($("input[name = '588_l']").val() != undefined) {
+            stareDate = $("input[name = '588_l']").eq(0).val();
+        }
+        if ($("input[name = '588_h']").val() != undefined) {
+            endDate = $("input[name = '588_h']").eq(0).val();
+        }
+        //if ($("#586")) {
+        //    account_id = $("#586").val();
+        //}
+        if ($("input[name = 'cms591']").val() != undefined) {
+            item_type = $("input[name = 'cms591']").eq(0).val();
+        }
+        if ($("input[name = '589']").val() != undefined) {
+            contract_type = $("input[name = '589']").eq(0).val();
+        }
+        if ($("input[name = '590']").val() != undefined) {
+            contract_cate = $("input[name = '590']").eq(0).val();
+        }
+        if ($("input[name = '596']").val() != undefined) {
+            itemDeal = $("input[name = '596']").eq(0).val();
+        }
+        if ($("input[name = '594']").val() != undefined) {
+            purchaseNo = $("input[name = '594']").eq(0).val();
+        }
+        window.open("InvoiceWizard.aspx?account_id=" + account_id + "&stareDate=" + stareDate + "&endDate=" + endDate + "&item_type=" + item_type + "&contract_type=" + contract_type + "&contract_cate=" + contract_cate + "&itemDeal=" + itemDeal + "&purchaseNo=" + purchaseNo, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_WIZARD %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
 
     }
 

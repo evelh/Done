@@ -328,11 +328,17 @@
             vertical-align: top;
             font-size: 12pt;
         }
-        #invoice_temp_id{
-            width: 190px; margin: 0 5px 0 0; height: 24px;
+
+        #invoice_temp_id {
+            width: 190px;
+            margin: 0 5px 0 0;
+            height: 24px;
         }
-        #accoultList{
-            width: 200px; margin: 0 5px 0 0; height: 24px;
+
+        #accoultList {
+            width: 200px;
+            margin: 0 5px 0 0;
+            height: 24px;
         }
     </style>
 </head>
@@ -351,7 +357,7 @@
                 <ul>
                     <li>
                         <asp:DropDownList ID="invoice_temp_id" runat="server"></asp:DropDownList>
-                       
+
                     </li>
                     <li>
                         <a id="ToolBar">
@@ -365,26 +371,26 @@
                         </a>
                     </li>
                     <li class="right pagination">
-                        <a class="disabledLink">
+                        <a class="disabledLink"  onclick="changeByAccount('<%=accList.IndexOf(account)==accList.Count-1?"0":accList[accList.Count-1].id.ToString() %>')">
                             <span class="Text">>></span>
                         </a>
                     </li>
                     <li class="right pagination">
-                        <a class="disabledLink">
+                        <a class="disabledLink" onclick="changeByAccount('<%=accList.IndexOf(account)==accList.Count-1?"0":accList[accList.IndexOf(account)+1].id.ToString() %>')">
                             <span class="Text">></span>
                         </a>
                     </li>
                     <li class="right">
                         <asp:DropDownList ID="accoultList" runat="server"></asp:DropDownList>
-                      
+
                     </li>
                     <li class="right pagination">
-                        <a class="disabledLink">
+                        <a class="disabledLink" onclick="changeByAccount('<%=accList.IndexOf(account)==0?"0":accList[accList.IndexOf(account)-1].id.ToString() %>')">
                             <span class="Text"><</span>
                         </a>
                     </li>
                     <li class="right pagination">
-                        <a class="disabledLink">
+                        <a class="disabledLink" onclick="changeByAccount('<%=accList.IndexOf(account)==0?"0":accList[0].id.ToString() %>')">
                             <span class="Text"><<</span>
                         </a>
                     </li>
@@ -500,4 +506,32 @@
     }).on("mouseout", function () {
         $("#ProcessBar").css("background", "linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
     });
+</script>
+<script>
+    $("#invoice_temp_id").change(function () {
+        locationChange();
+    })
+    $("#accoultList").change(function () {
+        locationChange();
+    })
+
+    // 页面参数改变更新页面
+    function locationChange() {
+        var account_id = $("#accoultList").val();
+        var invTempId = $("#invoice_temp_id").val();
+        var ids = '<%=Request.QueryString["account_ids"] %>';
+        if (invTempId != "" && invTempId != "0" && account_id != "" && account_id != "0" && ids != "") {
+            location.href = "InvoicePreview?account_ids=" + ids + "&account_id=" + account_id + "&invoice_temp_id=" + invTempId;
+        }
+    }
+
+    function changeByAccount(account_id) {
+        var invTempId = $("#invoice_temp_id").val();
+        var ids = '<%=Request.QueryString["account_ids"] %>';
+        if (invTempId != "" && invTempId != "0" && account_id != "" && account_id != "0" && ids != "") {
+            location.href = "InvoicePreview?account_ids=" + ids + "&account_id=" + account_id + "&invoice_temp_id=" + invTempId;
+        }
+    }
+
+
 </script>
