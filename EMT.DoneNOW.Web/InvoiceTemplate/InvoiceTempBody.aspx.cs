@@ -69,9 +69,26 @@ namespace EMT.DoneNOW.Web
 
                             }
                             i = 0;
+                            foreach (var ITEM_COLUMN in invoice_body.ADD_THE_ITEM_COLUMN)
+                            {
+                                html.Append("$(\".add_invoice_type_id\").eq("+i+").value=\""+ITEM_COLUMN.Type_of_Invoice_Item_ID+"\";");
+                                html.Append("$(\".add_Order\").eq(" + i + ").text(\"" + ITEM_COLUMN.Order + "\");");
+                                html.Append("$(\".add_invoice_type_name\").eq(" + i + ").html(\"" + ITEM_COLUMN.Type_of_Invoice_Item + "\");");
+                                html.Append("$(\".add_Display_Format\").eq(" + i + ").html(\"" + ITEM_COLUMN.Display_Format + "\");");
+                                if (ITEM_COLUMN.Checked != "yes")
+                                {
+                                    html.Append("$(\".add_Display\").eq(" + i + ").removeClass(\"checked\");");
+                                }
+                               else
+                                {
+                                    html.Append("$(\".add_Display\").eq(" + i + ").addClass(\"CM\");");
+                                }
+                                i++;
+                            }
+                            i = 0;
                             foreach (var ITEM_COLUMN in invoice_body.CUSTOMIZE_THE_ITEM_COLUMN)
                             {
-                                html.Append("$(\".invoice_type_id\").eq(" + i+").val(\""+ITEM_COLUMN.Type_of_Invoice_Item_ID+ "\");");
+                                html.Append("$(\".invoice_type_id\").eq(" + i + ").val(" + ITEM_COLUMN.Type_of_Invoice_Item_ID + ");");
                                 html.Append("$(\".SortOrder\").eq(" + i + ").text(\"" + ITEM_COLUMN.Order + "\");");
                                 html.Append("$(\".invoice_type_name\").eq(" + i + ").html(\"" + ITEM_COLUMN.Type_of_Invoice_Item + "\");");
                                 html.Append("$(\".Display_Format\").eq(" + i + ").html(\"" + ITEM_COLUMN.Display_Format + "\");");
@@ -158,11 +175,11 @@ namespace EMT.DoneNOW.Web
         protected void Save_Click(object sender, EventArgs e)
         {
             string t = Convert.ToString(Request.Form["data"].Trim().ToString());
-            t = t.Replace("[,", "[").Replace(",]", "]").Replace(" ", ""); ;
+            t = t.Replace("[,", "[").Replace(",]", "]").Replace("\n","");
             string tt = Convert.ToString(Request.Form["typetype"].Trim().ToString());
-            tt = tt.Replace("[,", "[").Replace(",]", "]").Replace(" ", ""); ;
+            tt = tt.Replace("[,", "[").Replace(",]", "]").Replace("\n", "");
             string ttt = Convert.ToString(Request.Form["typett"].Trim().ToString());
-            ttt = ttt.Replace("[,", "[").Replace(",]", "]").Replace(" ", ""); ;
+            ttt = ttt.Replace("[,", "[").Replace(",]", "]").Replace("\n", "");
             tempinfo = Session["tempinfo"] as InvioceTempDto.TempContent;
             if (tempinfo != null && tempinfo.id == id)
             {

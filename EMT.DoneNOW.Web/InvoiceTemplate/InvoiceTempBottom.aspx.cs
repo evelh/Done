@@ -60,7 +60,7 @@ namespace EMT.DoneNOW.Web
 
         protected void Save(object sender, EventArgs e)
         {
-            string tt = Request.Form["data"].Trim().ToString().Replace("\"", "'").Replace(" ", ""); ;
+            string tt = Request.Form["data"].Trim().ToString().Replace("\"", "'");
             tempinfo = Session["tempinfo"] as InvioceTempDto.TempContent;
             tempinfo.bottom = tt;
             string t = Convert.ToString(Request.Form["bottom"].ToString()).Replace(" ", ""); ;

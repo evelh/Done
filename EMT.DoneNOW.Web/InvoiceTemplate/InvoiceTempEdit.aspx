@@ -111,10 +111,7 @@
 				</div>
 			</div>
 		</div>
-      <%--  <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" />--%>
 	</form>
-    <input id="hf1" type="hidden"/><asp:TextBox ID="hf" runat="server" Visible="False"></asp:TextBox>
-     <%-- <script type="text/javascript" src="../RichText/js/jquery-3.2.1.min.js"></script>--%>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
     	<script type="text/javascript" src="../RichText/js/QuoteTemplate.js"></script>
     <script type="text/javascript">

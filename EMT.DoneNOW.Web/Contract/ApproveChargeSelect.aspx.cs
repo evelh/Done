@@ -14,8 +14,8 @@ namespace EMT.DoneNOW.Web
         protected int id;
         protected string ids;
         protected long type;
-        protected List<string> ids1;
-        protected List<string> ids2;
+        protected List<string> ids1;//合同预付费不足够
+        protected List<string> ids2;//正常处理
         ApproveAndPostBLL aapbll = new ApproveAndPostBLL();
         protected List<ApprovePostDto.ChargesSelectList> list=new List<ApprovePostDto.ChargesSelectList> ();
         protected void Page_Load(object sender, EventArgs e)

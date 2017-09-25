@@ -38,7 +38,7 @@
     <!--按钮-->
     <div class="ButtonContainer">
         <ul id="btn">
-            <li class="Button ButtonIcon NormalState" id="AddButton" onclick="creat()" tabindex="0">
+            <li class="Button ButtonIcon NormalState" tabindex="0">
                 <span class="Icon Add"></span>
                 <span class="Text">新增客户类别</span>
             </li>

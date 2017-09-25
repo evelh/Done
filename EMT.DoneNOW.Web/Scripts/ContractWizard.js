@@ -410,3 +410,9 @@ function CheckRoleRate(id) {
     else
         $("#roleRateCheck" + id).val("");
 }
+
+$(".grid table tbody tr").on("mousemove", function () {
+    $(this).addClass('selected').siblings().removeClass('selected');
+}).on("mouseout", function () {
+    $(this).removeClass('selected');
+});

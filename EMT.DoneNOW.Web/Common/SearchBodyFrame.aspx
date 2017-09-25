@@ -214,6 +214,15 @@
                     %>
                     <li id="ToolsButton"><i style="background-image: url(../Images/new.png);"></i><span style="margin: 0;"><%=this.addBtn %></span><img src="../Images/dropdown.png" /></li>
                     <%
+                        } else if(addBtn=="审批并提交"){
+  %>
+                    <li onclick="Add()"><span style="margin: 0 10px;">审批并提交</span></li>
+                     <li><a href="../Invoice/InvocieSearch" target="PageFrame" style="color:black;text-decoration:none;"><span style="margin: 0 10px;">生成发票</span></a></li>
+                    <%
+                             } else if(addBtn=="完成"){
+  %>
+                    <li onclick="Add()"><span style="margin: 0;">完成</span></li>
+                    <%
                         }
                         else
                         {
@@ -1908,6 +1917,12 @@
                 alert("至少选择一项！");
             }
         }
+
+        //生成发票
+      <%--  function ToInvoice() {
+            $("#PageFrame").attr("src", "Invoice/InvocieSearch");
+           <%-- window.open('../Invoice/InvocieSearch.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>','left=0,top=0,location=no,status=no,width=900,height=750',false);--%>
+        }--%>
         //审批并提交
         function Post() {
             window.open('../Contract/ApproveChargeSelect.aspx?type=' +  <%=queryTypeId%>  + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);

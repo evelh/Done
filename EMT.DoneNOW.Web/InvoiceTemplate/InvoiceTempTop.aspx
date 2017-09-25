@@ -229,7 +229,7 @@
                 $("#BackgroundOverLay").hide();
                 $(".AlertBox").hide();
             });                
-            <%if(opop=="头部"){%>
+            <%if(opop=="头部"&&string.IsNullOrEmpty(head)){%>
             ue.setContent(Model);
             <%}%>            
         });
