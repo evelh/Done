@@ -14,7 +14,7 @@
             <div class="TitleBar">
                 <div class="Title">
                     <span class="text1">发票模板主体</span>
-                    <span class="text2">--<%=temp.name %></span>
+                    <span class="text2">--<%=tempinfo.name %></span>
                     <a href="###" class="help"></a>
                 </div>
             </div>
@@ -659,7 +659,7 @@
                                             <%} %>
                                         </select>--%>
                                         <asp:DropDownList ID="GroupBy" runat="server"></asp:DropDownList>
-                                        <img src="../RichText/img/set.png" style="vertical-align: middle; cursor: pointer;" />
+                                        <img id="setset" src="../RichText/img/set.png" style="vertical-align: middle; cursor: pointer;" />
                                     </div>
                                 </div>
                                 <div class="Normal Editor CheckBox" style="padding-bottom: 10px;">
@@ -713,10 +713,11 @@
                     </div>
                 </div>
             </div>
+           <%-- 第一个弹窗--%>
             <div id="editedit" style="display: none">
                 <div class="addText">
                     <div>
-                        <div class="CancelDialogButton"></div>
+                        <div class="CancelDialogButton" id="tanchuang1"></div>
                         <div class="TitleBar">
                             <div class="Title"><span class="text1">编辑项目列</span><span class="text2"></span></div>
                         </div>
@@ -729,7 +730,7 @@
                         <div style="position: absolute; left: 0; overflow-y: auto; right: 0; top: 0px; bottom: 0px;">
                             <div class="ScrollingContainer">
                                 <div class="Heading">条目类型格式</div>
-                                <div class="addDescriptionText">aaaa</div>
+                                <div class="addDescriptionText"></div>
                                 <div class="addContent" style="height: 310px; position: relative; top: 66px;">
                                     <script id="containerHead" name="content" type="text/plain" style="display: block;"></script>
                                     <div class="Dialog" style="left: 525px; top: -60px;">
@@ -928,6 +929,336 @@
                 </div>
                 <div id="BackgroundOverLay" style="display: block;"></div>
             </div>
+           <%-- 结束--%>
+
+           <%-- 第二个弹窗--%>
+             <div id="editedit2" style="display: none;">
+            <div class="addText">
+                <div>
+                    <div class="CancelDialogButton" id="tanchuang2"></div>
+                    <div class="TitleBar">
+                        <div class="Title">
+                            <span class="text1">CONFIGURE ROLL UP DESCRIPTIONS</span>
+                        </div>
+                    </div>
+                        <div class="ButtonContainer">
+                            <ul>
+                                <li class="Button addButtonIcon Okey NormalState" id="addOkButton2" tabindex="0">
+                                    <span class="Icon Ok"></span>
+                                    <span class="Text">确认</span>
+                                </li>
+                            </ul>
+                        </div>
+                    <div style="position: absolute;left: 0;overflow-y: auto;right: 0;top: 78px;bottom: 0px;">
+                        <div class="ScrollingContainer" style="top:0;">
+                            <div class="Section">
+                                <div class="Heading">
+                                    <span class="Text">Customize the Roll Up Description</span>
+                                </div>
+                                <div class="DescriptionText">You may customize the content that is displayed in the roll up row for each billing item type.  You may also specify the order in which the roll ups display on the invoice by dragging and dropping the Sort Order column.</div>
+                                <div class="Content">
+                                    <div class="Large Column">
+                                        <div class="Grid Small">
+                                            <div class="HeaderContainer">
+                                                <table cellpadding="0">
+                                                    <tbody>
+                                                        <tr class="HeadingRow">
+                                                            <td class="Interaction DragEnabled" style="width: 90px;">
+                                                                <div class="Standard">
+                                                                    <div class="Heading">排序</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Command" style="width: 27px;">
+                                                                <div class="Standard">
+                                                                    <div></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Text Dynamic" style="width: 130px;">
+                                                                <div class="Standard">
+                                                                    <div class="Heading">条目类型</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="FormatPreservation" style="width: 60px">
+                                                                <div class="Standard">
+                                                                    <div class="Heading">分组描述</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="FormatPreservation" style="width:auto;">
+                                                                <div class="Standard">
+                                                                    <div class="Heading">分组描述的描述</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="ScrollBarSpacer" style="width: 16px;border-right: none;"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="RowContainer BodyContainer">
+                                                <table cellpadding="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="Interaction U0" style="width: 81px;">
+                                                                <div>
+                                                                    <div class="Decoration Icon DragHandle prev">
+                                                                        <img src="../RichText/img/prev.png" alt="">
+                                                                    </div>
+                                                                    <div class="Decoration Icon DragHandle next">
+                                                                        <img src="../RichText/img/next.png" alt="">
+                                                                    </div>
+                                                                    <div class="add_Order">1</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Command U1" style="width: 19px;">
+                                                                <div class="ButtonIcon Button Edit3 NormalState">
+                                                                    <span class="Icon"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Text U2 add_invoice_type_name" style="width: 121px;">
+                                                                工时<input type="hidden" class="add_invoice_type_id" value="1928" />
+                                                            </td>
+                                                            <td class="U3" style="width:53px;">
+                                                                <div class="Decoration Icon CheckMark CM add_Display"></div>
+                                                            </td>
+                                                            <td class="U4 add_Display_Format" style="width:auto;">[Billing Item: Type]: [Billing Item: Billing Code]</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="Interaction U0" style="width: 81px;">
+                                                                <div>
+                                                                    <div class="Decoration Icon DragHandle prev">
+                                                                        <img src="../RichText/img/prev.png" alt="">
+                                                                    </div>
+                                                                    <div class="Decoration Icon DragHandle next">
+                                                                        <img src="../RichText/img/next.png" alt="">
+                                                                    </div>
+                                                                    <div class="add_Order">2</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Command U1" style="width: 19px;">
+                                                                <div class="ButtonIcon Button Edit3 NormalState">
+                                                                    <span class="Icon"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Text U2 add_invoice_type_name" style="width: 121px;">工时调整<input type="hidden" class="add_invoice_type_id" value="1929" />
+                                                            </td>
+                                                            <td class="U3" style="width:53px;">
+                                                                <div class="Decoration Icon CheckMark CM add_Display"></div>
+                                                            </td>
+                                                            <td class="U4 add_Display_Format" style="width:auto;">[Billing Item: Type]: [Billing Item: Billing Code]</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="Interaction U0" style="width: 81px;">
+                                                                <div>
+                                                                    <div class="Decoration Icon DragHandle prev">
+                                                                        <img src="../RichText/img/prev.png" alt="">
+                                                                    </div>
+                                                                    <div class="Decoration Icon DragHandle next">
+                                                                        <img src="../RichText/img/next.png" alt="">
+                                                                    </div>
+                                                                    <div class="add_Order">3</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Command U1" style="width: 19px;">
+                                                                <div class="ButtonIcon Button Edit3 NormalState">
+                                                                    <span class="Icon"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Text U2 add_invoice_type_name" style="width: 121px;">成本（工单、项目、合同<input type="hidden" class="add_invoice_type_id" value="1930" />
+                                                            </td>
+                                                            <td class="U3" style="width:53px;">
+                                                                <div class="Decoration Icon CheckMark CM add_Display"></div>
+                                                            </td>
+                                                            <td class="U4 add_Display_Format" style="width:auto;">[Billing Item: Type]: [Billing Item: Billing Code]</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="Interaction U0" style="width: 81px;">
+                                                                <div>
+                                                                    <div class="Decoration Icon DragHandle prev">
+                                                                        <img src="../RichText/img/prev.png" alt="">
+                                                                    </div>
+                                                                    <div class="Decoration Icon DragHandle next">
+                                                                        <img src="../RichText/img/next.png" alt="">
+                                                                    </div>
+                                                                    <div class="add_Order">4</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Command U1" style="width: 19px;">
+                                                                <div class="ButtonIcon Button Edit3 NormalState">
+                                                                    <span class="Icon"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Text U2 add_invoice_type_name" style="width: 121px;">费用<input type="hidden" class="add_invoice_type_id" value="1931" />
+                                                            </td>
+                                                            <td class="U3" style="width:53px;">
+                                                                <div class="Decoration Icon CheckMark CM add_Display"></div>
+                                                            </td>
+                                                            <td class="U4 add_Display_Format" style="width:auto;">[Billing Item: Type]: [Billing Item: Billing Code]</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="Interaction U0" style="width: 81px;">
+                                                                <div>
+                                                                    <div class="Decoration Icon DragHandle prev">
+                                                                        <img src="../RichText/img/prev.png" alt="">
+                                                                    </div>
+                                                                    <div class="Decoration Icon DragHandle next">
+                                                                        <img src="../RichText/img/next.png" alt="">
+                                                                    </div>
+                                                                    <div class="add_Order">5</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Command U1" style="width: 19px;">
+                                                                <div class="ButtonIcon Button Edit3 NormalState">
+                                                                    <span class="Icon"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Text U2 add_invoice_type_name" style="width: 121px;">订阅<input type="hidden" class="add_invoice_type_id" value="1932" />
+                                                            </td>
+                                                            <td class="U3" style="width:53px;">
+                                                                <div class="Decoration Icon CheckMark CM add_Display"></div>
+                                                            </td>
+                                                            <td class="U4 add_Display_Format" style="width:auto;">[Billing Item: Type]: [Billing Item: Billing Code]</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="Interaction U0" style="width: 81px;">
+                                                                <div>
+                                                                    <div class="Decoration Icon DragHandle prev">
+                                                                        <img src="../RichText/img/prev.png" alt="">
+                                                                    </div>
+                                                                    <div class="Decoration Icon DragHandle next">
+                                                                        <img src="../RichText/img/next.png" alt="">
+                                                                    </div>
+                                                                    <div class="add_Order">6</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Command U1" style="width: 19px;">
+                                                                <div class="ButtonIcon Button Edit3 NormalState">
+                                                                    <span class="Icon"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Text U2 add_invoice_type_name" style="width: 121px;">定期服务/服务包<input type="hidden" class="add_invoice_type_id" value="1933" />
+                                                            </td>
+                                                            <td class="U3" style="width:53px;">
+                                                                <div class="Decoration Icon CheckMark CM add_Display"></div>
+                                                            </td>
+                                                            <td class="U4 add_Display_Format" style="width:auto;">[Billing Item: Type]: [Billing Item: Billing Code]</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="Interaction U0" style="width: 81px;">
+                                                                <div>
+                                                                    <div class="Decoration Icon DragHandle prev">
+                                                                        <img src="../RichText/img/prev.png" alt="">
+                                                                    </div>
+                                                                    <div class="Decoration Icon DragHandle next">
+                                                                        <img src="../RichText/img/next.png" alt="">
+                                                                    </div>
+                                                                    <div class="add_Order">7</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Command U1" style="width: 19px;">
+                                                                <div class="ButtonIcon Button Edit3 NormalState">
+                                                                    <span class="Icon"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Text U2 add_invoice_type_name" style="width: 121px;">初始费用<input type="hidden" class="add_invoice_type_id" value="1934" /></td>
+                                                            <td class="U3" style="width:53px;">
+                                                                <div class="Decoration Icon CheckMark CM add_Display"></div>
+                                                            </td>
+                                                            <td class="U4 add_Display_Format" style="width:auto;">[Billing Item: Type]: [Billing Item: Billing Code]</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="Interaction U0" style="width: 81px;">
+                                                                <div>
+                                                                    <div class="Decoration Icon DragHandle prev">
+                                                                        <img src="../RichText/img/prev.png" alt="">
+                                                                    </div>
+                                                                    <div class="Decoration Icon DragHandle next">
+                                                                        <img src="../RichText/img/next.png" alt="">
+                                                                    </div>
+                                                                    <div class="add_Order">8</div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Command U1" style="width: 19px;">
+                                                                <div class="ButtonIcon Button Edit3 NormalState">
+                                                                    <span class="Icon"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="Text U2 add_invoice_type_name" style="width: 121px;">里程碑<input type="hidden" class="add_invoice_type_id" value="1935" /></td>
+                                                            <td class="U3" style="width:53px;">
+                                                                <div class="Decoration Icon CheckMark CM add_Display"></div>
+                                                            </td>
+                                                            <td class="U4 add_Display_Format" style="width:auto;">[Billing Item: Type]: [Billing Item: Billing Code]</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="BackgroundOverLay2" style="display: block;"></div>
+        </div>
+
+             <%-- 结束--%>
+                <%-- 第三个弹窗--%>
+             <div id="editedit3" style="display: none">
+              <div class="addText">
+                    <div>
+                        <div class="CancelDialogButton" id="tanchuang3"></div>
+                        <div class="TitleBar">
+                            <div class="Title"><span class="text1">编辑项目列</span><span class="text2"></span></div>
+                        </div>
+                        <div class="ButtonContainer" style="position: relative; z-index: 1000;">
+                            <ul>
+                                <li class="Button addButtonIcon Okey NormalState" id="addadd3" tabindex="0"><span class="Icon Ok"></span><span class="Text">确认</span></li>
+                                <li class="Button addButtonIcon Cancel NormalState" id="resetreset3" tabindex="0"><span class="Icon Reset"></span><span class="Text">恢复默认</span></li>
+                            </ul>
+                        </div>
+                    
+                       <div style="position: absolute; left: 0; overflow-y: auto; right: 0; top: 0px; bottom: 0px;">
+                            <div class="ScrollingContainer">
+                                <div class="Heading">
+                                    <input type="checkbox" id="xuanze3" style="margin-top:4px;"/>选择选择
+                                </div>
+                                <div class="addDescriptionText"></div>
+                                <div class="addContent" style="height: 310px; position: relative; top: -6px;">
+                                    <script id="containerHead3" name="content" type="text/plain" style="display: block;"></script>
+                                    <div class="Dialog" style="left: 525px; top:15px;">
+                                        <img src="../RichText/img/Dialog.png"/>
+                                    </div>
+                                </div>                               
+                            </div>
+                        </div>
+                        <div class="AlertBox">
+                            <div>
+                                <div class="CancelDialogButton1"></div>
+                                <div class="AlertTitleBar">
+                                    <div class="AlertTitle"><span>变量</span></div>
+                                </div>
+                                <div class="VariableInsertion">
+                                    <div class="AlertContent">
+                                        <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
+                                      <%--  <asp:ScriptManager ID="ScriptManager2" runat="server">
+                                        </asp:ScriptManager>--%>
+                                        <asp:UpdatePanel ID="UpdatePanel1" runat="server" ChildrenAsTriggers="True">
+                                            <ContentTemplate>
+                                                <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True"></asp:DropDownList>
+                                                <select name="" multiple="multiple" id="AlertVariableList3">
+                                                    <asp:Literal ID="Literal1" runat="server"></asp:Literal>
+                                                </select>
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="BackgroundOverLay3" style="display: block;"></div>
+            </div>
+             <%-- 结束--%>
         </div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../RichText/js/ueditor.config.js"></script>
@@ -935,20 +1266,33 @@
         <script src="../RichText/js/InvoiceTemplateInvoiceBody.js"></script>
         <asp:Literal ID="datalist" runat="server"></asp:Literal>
         <script>
+            var tanchuan = 1;
             $(".Edit").on("click", function () {
                 var a = $(".Edit").index(this);
-                var k = $(".invoice_type_name").eq(a).text();
-                if (k == "工时") {//工时，特殊
-                    $("#kkk1").show();
-                } else {
-                    $("#kkk1").hide();
-                }
-                if (k == "定期服务/服务包") {//服务包
-                    $("#kkk2").show();
-                } else {
-                    $("#kkk2").hide();
-                }
-                var innerContent = $(".Edit").eq(a).parent().next().next().html();
+                //if (tanchuan == 2) {
+                //    $("#showbill").show();
+                //    $("#editedit2").hide();
+                //    var innerContent = $(".add_Display_Format").eq(a).html();
+                //    console.log(a)
+                //    console.log(innerContent);
+
+                //} else {
+                    $("#showbill").hide();
+                    $("#editedit2").hide();
+                    var innerContent = $(".Edit").eq(a).parent().next().next().html();
+                    var k = $(".invoice_type_name").eq(a).text();
+                    if (k == "工时") {//工时，特殊
+                        $("#kkk1").show();
+                    } else {
+                        $("#kkk1").hide();
+                    }
+                    if (k == "定期服务/服务包") {//服务包
+                        $("#kkk2").show();
+                    } else {
+                        $("#kkk2").hide();
+                    }
+                //}
+
                 $("#editedit").show();
                 var colors = ["#efefef", "white"];
                 var index1 = 0;
@@ -1010,8 +1354,7 @@
                 // 点击确定数据保存至后台  在展示页展示
                 $("#addadd").on("click", function () {
                     var html = ue.getContent();
-                    var txt = ue.getContentTxt();
-                    var k = $(".invoice_type_name").eq(a).text();
+                    var txt = ue.getContentTxt();                 
                     //if (k == "工时") {//工时，特殊
                     //    $("#kkk1").show();
                     //} else {
@@ -1022,37 +1365,44 @@
                     //} else {
                     //    $("#kkk2").hide();
                     //}
-                    $(".Edit").eq(a).parent().next().next().html(html);
-                    if (k == "工时") {//工时，特殊   
-                        $(".Edit").eq(a).parent().next().next().next().html('');
-                        var tt = '';
-                        if ($(".typetype_value").eq(0).is(':checked')) {
-                            tt =tt+ "显示定期服务合同工时";
+                    //if (tanchuan == 2) {
+                    //    $(".add_Display_Format").eq(a).html(html);
+                    //    tanchuan = 1;
+                    //    $("#editedit2").show();
+                    //} else {
+                        var k = $(".invoice_type_name").eq(a).text();
+                        $(".Edit").eq(a).parent().next().next().html(html);
+                        if (k == "工时") {//工时，特殊   
+                            $(".Edit").eq(a).parent().next().next().next().html('');
+                            var tt = '';
+                            if ($(".typetype_value").eq(0).is(':checked')) {
+                                tt = tt + "显示定期服务合同工时";
+                            }
+                            if ($(".typetype_value").eq(1).is(':checked')) {
+                                tt = tt + "显示固定合同工时(如果不勾选则不显示这两种合同的工时，其他工时总是显示)";
+                            }
+                            $(".Edit").eq(a).parent().next().next().next().html(tt);
                         }
-                        if ($(".typetype_value").eq(1).is(':checked')) {
-                            tt = tt + "显示固定合同工时(如果不勾选则不显示这两种合同的工时，其他工时总是显示)";
-                        }
-                        $(".Edit").eq(a).parent().next().next().next().html(tt);
-                    }
-                    if (k == "定期服务/服务包") {//服务包
-                        $(".Edit").eq(a).parent().next().next().next().html('');
-                        var tt = '';
-                        if ($(".typetype_value").eq(6).is(':checked')) {
-                            tt = tt + "显示定时服务/服务包详情（分组时不起作用）";
-                        }
-                        if ($(".typetype_value").eq(7).is(':checked')) {
-                            tt = tt + "显示总额为0的条目";
-                        }
-                        $(".Edit").eq(a).parent().next().next().next().html(tt);
-                    } 
-                    $("#editedit").hide();
-                    a = -1;
+                        if (k == "定期服务/服务包") {//服务包
+                            $(".Edit").eq(a).parent().next().next().next().html('');
+                            var tt = '';
+                            if ($(".typetype_value").eq(6).is(':checked')) {
+                                tt = tt + "显示定时服务/服务包详情（分组时不起作用）";
+                            }
+                            if ($(".typetype_value").eq(7).is(':checked')) {
+                                tt = tt + "显示总额为0的条目";
+                            }
+                            $(".Edit").eq(a).parent().next().next().next().html(tt);
+                        } 
+                    //}                                
+                    $("#editedit").hide();        
+                    a = -10;
                     return a;
                 });
                 //点击关闭
                 $(".CancelDialogButton").on("click", function () {
-                    $("#editedit").hide();
-                    a = -1;
+                    $("#editedit").hide();                 
+                    a = -10;
                     return a;
                 })
             });
@@ -1124,6 +1474,24 @@
                     data.push(jsonArrayFinal);
                     console.log(jsonArrayFinal);
                 }
+                data.push("],\"ADD_THE_ITEM_COLUMN\":[");
+                for (i = 0; i < 8; i++) {
+                    var Order = $(".add_Order").eq(i).text();//显示顺序，从左到右
+                    var Type_of_Invoice_Item_ID = $(".add_invoice_type_id").eq(i).val();
+                    if ($(".add_Display").eq(i).hasClass("CM")) {
+                        Display = "yes";
+                    }
+                    if (!($(".add_Display").eq(i).hasClass("CM"))) {
+                        Display = "no";
+                    }
+                    var Type_of_Invoice_Item = $(".add_invoice_type_name").eq(i).text();
+                    var Display_Format = $(".add_Display_Format").eq(i).text();
+                    var CUSTOMIZE_THE_ITEM_COLUMNITEM = { "Order": Order, "Type_of_Invoice_Item_ID": Type_of_Invoice_Item_ID, "Type_of_Invoice_Item": Type_of_Invoice_Item, "Display_Format": Display_Format };
+                    var jsonArrayFinal = JSON.stringify(CUSTOMIZE_THE_ITEM_COLUMNITEM);
+                    data.push(jsonArrayFinal);
+                    console.log(jsonArrayFinal);
+                }
+
                 data.push("]}");
                 $("#data").val($('<div/>').text(data).html());
                 //工时
@@ -1179,6 +1547,117 @@
                 data2.push("]}");
                 $("#typett").val($('<div/>').text(data2).html());                
             }
+            $("#GroupBy").change(function () {
+                if ($("#GroupBy").val() == $("#GroupBy option:first").val()) {
+                    $("#Itemize").attr("disabled","disabled");
+                } else {
+                    $("#Itemize").removeAttr("disabled", "disabled");
+                }
+                if ($("#GroupBy").val() == $("#GroupBy option:last").val()) {
+
+                }
+            });
+            $("#setset").click(function () {
+                if ($("#GroupBy").val() == $("#GroupBy option:last").val()) {
+                    $("#editedit2").show();                   
+                }
+            });
+            //点击关闭
+            $("#tanchuang2").on("click", function () {
+                $("#editedit2").hide();
+            })
+            $("#addOkButton2").on("click", function () {
+                $("#editedit2").hide();
+            })
+            $(".Edit3").on("click", function () {
+                var b = $(".Edit3").index(this);
+                if ($(".add_Display").eq(b).hasClass("CM")) {
+                    $("#xuanze3").attr("checked", true);
+                } else {
+                    $("#xuanze3").removeAttr("checked");
+                }
+                var innerContent = $(".Edit3").eq(b).parent().next().next().next().html();
+                $("#editedit2").hide();
+                $("#editedit3").show();
+                var colors = ["#efefef", "white"];
+                var index1 = 0;
+                var index2 = 0;
+                $(".Toggle1").on("click", function () {
+                    $(".Edit3").eq(b).parent().parent().find($(".Vertical")).toggle();
+                    $(".Edit3").eq(b).parent().parent().find($('.Content')).toggle();
+                    $(".Edit3").eq(b).parent().parent().css("background", colors[index1 % 2]);
+                    index1++;
+                });
+                $(".Toggle2").on("click", function () {
+                    $(".Edit3").eq(b).parent().parent().find($(".Vertical")).toggle();
+                    $(".Edit3").eq(b).parent().parent().find($('.Content')).toggle();
+                    $(".Edit3").eq(b).parent().parent().css("background", colors[index2 % 2]);
+                    index2++;
+                });
+                //富文本编辑器
+                //UE.delEditor('containerHead');
+                var ue = UE.getEditor('containerHead3', {
+                    toolbars: [
+                        ['source', 'fontfamily', 'fontsize', 'bold', 'italic', 'underline', 'fontcolor', 'backcolor', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist', 'insertunorderedlist', 'undo', 'redo']
+                    ],
+                    initialFrameHeight: 270,//设置编辑器高度
+                    initialFrameWidth: 780, //设置编辑器宽度
+                    wordCount: false,
+                    elementPathEnabled : false,
+                    autoHeightEnabled: false  //设置滚动条
+                });
+                ue.ready(function () {
+                    //获取html内容  返回：<p>内容</p>
+                    var html = ue.getContent();
+                    //获取纯文本内容  返回：内容
+                    var txt = ue.getContentTxt();
+                    ue.setContent(innerContent);
+                    $(".Dialog").on("click", function () {
+                        $("#BackgroundOverLay1").show();
+                        $(".AlertBox").show();
+                    });
+                    $(".CancelDialogButton1").on("click", function () {
+                        $("#BackgroundOverLay1").hide();
+                        $(".AlertBox").hide();
+                    });
+                });
+                $("#addadd3").on("mouseover", function () {
+                    $("#addadd3").css("background", "#fff");
+                });
+                $("#addadd3").on("mouseout", function () {
+                    $("#addadd3").css("background", "#f0f0f0");
+                });
+                $("#resetreset3").on("mouseover", function () {
+                    $("#resetreset3").css("background", "#fff");
+                });
+                $("#resetreset3").on("mouseout", function () {
+                    $("#resetreset3").css("background", "#f0f0f0");
+                }); 
+                // 点击确定数据保存至后台  在展示页展示
+                $("#addadd3").on("click", function () {
+                    var html = ue.getContent();
+                    var txt = ue.getContentTxt();  
+                    if ($("#xuanze3").is(':checked')) {
+                        $(".add_Display").eq(b).addClass("CM");
+                          
+                    } else {
+                        $(".add_Display").eq(b).removeClass("CM");
+                    }
+
+                    $(".Edit3").eq(b).parent().next().next().next().html(html);
+                    $("#editedit3").hide();
+                    $("#editedit2").show();
+                    b = -9;
+                    return b;
+                });
+                //点击关闭
+                $(".CancelDialogButton").on("click", function () {
+                    $("#editedit3").hide();
+                    $("#editedit2").show();
+                    b = -9;
+                    return b;
+                })
+            });
         </script>
     </form>
 </body>

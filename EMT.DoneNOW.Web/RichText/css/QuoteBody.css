@@ -529,11 +529,11 @@ body.AutotaskBlueTheme .Grid .HeaderContainer td, body .DashboardTab.AutotaskBlu
     white-space: pre-wrap;
 }
 
-.Edit {
+.Edit,.Edit3 {
     background: transparent url(../img/edit.png) no-repeat scroll;
     cursor: pointer;
 }
-#containerHead > div {
+#containerHead > div{
     width: 876px;
     height: 300px;
     margin: auto;
@@ -544,6 +544,16 @@ body.AutotaskBlueTheme .Grid .HeaderContainer td, body .DashboardTab.AutotaskBlu
     right: 0;
 }
 
+#containerHead3 > div {
+    width: 876px;
+    height: 300px;
+    margin: auto;
+    position: absolute;
+    top: 14px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
 .addText {
     width: 876px;
     height: 600px;

@@ -48,6 +48,10 @@ namespace EMT.DoneNOW.DTO
             /// </summary>
             public string Order { get; set; }
             /// <summary>
+            /// 
+            /// </summary>
+            public string Checked { get; set; }
+            /// <summary>
             /// 类型ID
             /// </summary>
             public string Type_of_Invoice_Item_ID { get; set; }
@@ -64,7 +68,6 @@ namespace EMT.DoneNOW.DTO
             /// </summary>
             public string Add_Display_Format { get; set; }
             //扩展字段设置
-            public List<SETTING_ITEM> ADD_SETTING { get; set; }
         }
         /// <summary>
         /// 扩展字段设置
@@ -93,9 +96,9 @@ namespace EMT.DoneNOW.DTO
             /// </summary>
             public List<CUSTOMIZE_THE_ITEM_COLUMNITEM> CUSTOMIZE_THE_ITEM_COLUMN { get; set; }
             /// <summary>
-            /// 扩展(工时和服务)
+            /// 扩展
             /// </summary>
-            public List<SETTING_ITEM> ADD_SETTING { get; set; }
+            public List<CUSTOMIZE_THE_ITEM_COLUMNITEM> ADD_THE_ITEM_COLUMN { get; set; }
         }
         public class Invoice_ext
         {

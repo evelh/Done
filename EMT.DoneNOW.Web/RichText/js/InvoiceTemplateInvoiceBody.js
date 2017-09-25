@@ -416,6 +416,13 @@ function sortOrder() {
     }
 }
 sortOrder();
+function add_Order() {
+    for (var i = 0; i < $(".SortOrder").length; i++) {
+        var index = i + 1;
+        $(".SortOrder").eq(i).html(index);
+    }
+}
+add_Order();
 
 ////点击ok按钮
 //$("#OkButton").on("click",function(){
