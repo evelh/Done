@@ -651,7 +651,7 @@
 <script src="../Scripts/index.js"></script>
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
-<%--<script src="../Scripts/multiselect.min.js" type="text/javascript" charset="utf-8"></script>--%>\
+<%--<script src="../Scripts/multiselect.min.js" type="text/javascript" charset="utf-8"></script>--%>
      <script type="text/javascript" charset="utf-8" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -751,6 +751,7 @@
         });
 
         function submitcheck() {
+            debugger;
             var companyName = $("#company_name").val();          //  公司名称--必填项校验
             if (companyName == null || companyName == '') {
                 alert("请输入公司名称");
@@ -784,14 +785,14 @@
 
 
 
-            var email = $("#Email").val();
-            //alert(Trim(email,'g'));
-            if (email != '') {
-                if (!checkEmail(email)) {
-                    alert("请输入正确格式的邮箱！");
-                    return false;
-                }
-            }
+            //var email = $("#Email").val();
+            ////alert(Trim(email,'g'));
+            //if (email != '') {
+            //    if (!checkEmail(email)) {
+            //        alert("请输入正确格式的邮箱！");
+            //        return false;
+            //    }
+            //}
 
             // 邮编验证
             var postal_code = $("#postal_code").val();
@@ -833,7 +834,8 @@
 
 
 
-            if ($("#isCheckCompanyName").val() == "yes") {
+            if ($("#isCheckCompanyName").val() == "yes")
+            {
                 var isPass = "pass";
                 $.ajax({
                     type: "GET",
@@ -863,7 +865,87 @@
             }
             return true;
         }
+        function tranCheck() {
+            var companyName = $("#company_name").val();          //  公司名称--必填项校验
+            if (companyName == null || companyName == '') {
+                alert("请输入公司名称");
+                // alert(companyName);
+                return false;
+            }
+            var phone = $("#Phone").val();                        //  电话-- 必填项校验
+            if (phone == null || phone == '') {
+                alert("请输入电话名称");
+                return false;
+            }
+            //if (!checkPhone(phone)) {
+            //    alert("请输入正确格式的电话！");
+            //    return false;
+            //}
+            var firstName = $("#first_name").val();                                  // 姓
+            var lastName = $("#last_name").val();                                    // 名
+            var country = $("#country_id").val();                                      // 国家
+            var province = $("#province_id").val();                                    // 省份
+            var city = $("#city_id").val();                                            // 城市
+            var district = $("#district_id").val();
+            if (country == "" || province == "" || city == "") {
+                alert("请填写选择地址");                                           // 地址下拉框的必填校验
+                return false;
+            }
+            var address = $("#address").val();                                      // 地址信息
+            if (address == null || address == '') {
+                alert("请完善地址信息");                                              // 地址的必填校验
+                return false;
+            }
 
+
+
+            //var email = $("#Email").val();
+            ////alert(Trim(email,'g'));
+            //if (email != '') {
+            //    if (!checkEmail(email)) {
+            //        alert("请输入正确格式的邮箱！");
+            //        return false;
+            //    }
+            //}
+
+            // 邮编验证
+            var postal_code = $("#postal_code").val();
+            //alert(Trim(email, 'g'));
+            if (postal_code != '') {
+                if (!checkPostalCode(postal_code)) {
+                    alert("请输入正确的邮编！");
+                    return false;
+                }
+            }
+
+            var parentId = $("#ParentComoanyNameHidden").val();
+            if (parentId == "" || parentId == undefined) {
+                var ids = "";
+                $("#multiselect_to").each(function () {
+                    var id = $(this).val();
+                    ids += id + ",";
+                })
+                if (ids != "") {
+                    ids = ids.substring(0, ids.length);
+                    $("#subCompanyIds").val(ids);
+                }
+            }
+            var note_start_time = $("#note_start_time").val();
+            if (note_start_time != "") {
+                if (!check(note_start_time)) {
+                    alert("请填写正确的备注开始时间");
+                    return false;
+                }
+            }
+            var note_end_time = $("#note_end_time").val();
+            if (note_end_time != "") {
+                if (!check(note_end_time)) {
+                    alert("请填写正确的备注结束时间");
+                    return false;
+                }
+            }
+            return true;
+        }
         jQuery(document).ready(function ($) {
             $('#multiselect').multiselect({
                 sort: false
@@ -874,7 +956,7 @@
         $.each($(".nav-title li"), function (i) {
             $(this).click(function () {
                 if ($(this).attr("id") != "general") {
-                    if (!submitcheck()) {
+                    if (!tranCheck()) {
                         return false;
                     }
                 }

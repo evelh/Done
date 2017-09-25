@@ -435,22 +435,22 @@
                 //    alert("请填写选择地址");                                           // 地址下拉框的必填校验
                 //    return false;
                 //}
-                var email = $("#email").val();
-                //alert(Trim(email,'g'));
-                if (email != '') {
-                    if (!checkEmail(email)) {
-                        alert("请输入正确格式的邮箱！");
-                        return false;
-                    }
-                }
-                var email2 = $("#email2").val();
-                //alert(Trim(email,'g'));
-                if (email2 != '') {
-                    if (!checkEmail(email2)) {
-                        alert("请输入正确格式的备用邮箱！");
-                        return false;
-                    }
-                }
+                //var email = $("#email").val();
+                ////alert(Trim(email,'g'));
+                //if (email != '') {
+                //    if (!checkEmail(email)) {
+                //        alert("请输入正确格式的邮箱！");
+                //        return false;
+                //    }
+                //}
+                //var email2 = $("#email2").val();
+                ////alert(Trim(email,'g'));
+                //if (email2 != '') {
+                //    if (!checkEmail(email2)) {
+                //        alert("请输入正确格式的备用邮箱！");
+                //        return false;
+                //    }
+                //}
                 if ($("#allowEmail").is(":checked")) {
                     if (email == "") {
                         alert("请填写邮箱");

@@ -341,14 +341,14 @@
                     return false;
                 }
 
-                var email = $("#Email").val();
-                //alert(Trim(email,'g'));
-                if (email != '') {
-                    if (!checkEmail(email)) {
-                        alert("请输入正确格式的邮箱！");
-                        return false;
-                    }
-                }
+                //var email = $("#Email").val();
+                ////alert(Trim(email,'g'));
+                //if (email != '') {
+                //    if (!checkEmail(email)) {
+                //        alert("请输入正确格式的邮箱！");
+                //        return false;
+                //    }
+                //}
 
                 // 邮编验证
                 var postal_code = $("#postal_code").val();

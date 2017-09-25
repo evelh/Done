@@ -178,7 +178,10 @@ namespace EMT.DoneNOW.Web
             var id = "";
             var result = new CompanyBLL().Insert(param, GetLoginUserId(),out id);
 
-
+            if (result != ERROR_CODE.SUCCESS)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "校验名字", "<script>document.getElementById('isCheckCompanyName').value = 'yes';</script>");
+            }
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
 
@@ -267,7 +270,10 @@ namespace EMT.DoneNOW.Web
             }
             var id = "";
             var result = new CompanyBLL().Insert(param, GetLoginUserId(),out id);
-            Response.Write("<script>document.getElementById(\"isCheckCompanyName\").value = 'yes';</script>");
+            if(result!= ERROR_CODE.SUCCESS)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "校验名字", "<script>document.getElementById('isCheckCompanyName').value = 'yes';</script>");
+            }
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
@@ -287,8 +293,9 @@ namespace EMT.DoneNOW.Web
             }
             else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
             {
-                Response.Write("<script>alert('添加客户成功！');</script>");
-                Response.Redirect("AddCompany.aspx");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加客户成功！');window.location.reload; </script>");
+                //Response.Write("<script></script>");
+                //Response.Redirect("AddCompany.aspx");
             }
         }
         /// <summary>
@@ -354,7 +361,10 @@ namespace EMT.DoneNOW.Web
             }
             var id = "";
             var result = new CompanyBLL().Insert(param, GetLoginUserId(),out id);
-            // Response.Write("<script>document.getElementById(\"isCheckCompanyName\").value = 'yes';</script>");
+            if (result != ERROR_CODE.SUCCESS)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "校验名字", "<script>document.getElementById('isCheckCompanyName').value = 'yes';</script>");
+            }
             if (result == ERROR_CODE.PARAMS_ERROR)   // 必填参数丢失，重写
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
