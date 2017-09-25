@@ -139,6 +139,12 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.OPPPORTUNITYLOSSREASON:
                     currentQuery.page_name = "丢失商机原因管理";
                     break;
+                case (int)DicEnum.QUERY_CATE.APPROVE_CHARGES:
+                case (int)DicEnum.QUERY_CATE.APPROVE_MILESTONES:
+                case (int)DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES:
+                case (int)DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS:
+                    currentQuery.page_name = "审批并提交";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

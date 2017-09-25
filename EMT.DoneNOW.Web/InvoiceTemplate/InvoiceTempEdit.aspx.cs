@@ -155,7 +155,6 @@ namespace EMT.DoneNOW.Web
                 }
             }
         }
-
         protected void Save_Close_Click(object sender, EventArgs e)
         {
             save();
@@ -163,7 +162,6 @@ namespace EMT.DoneNOW.Web
             Session["cancel"] = 1;
             Response.Write("<script>window.close();self.opener.location.reload();</script>");
         }
-
         protected void Save_Click(object sender, EventArgs e)
         {
             save();

@@ -320,7 +320,10 @@
                                                         <div class="Text">审批并提交</div>
                                                     </div>
                                                     <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState" href="Contract/ApproveAndPost.aspx" target="PageFrame"> 
+                                                       <%-- <a class="Button ButtonIcon NormalState" href="Contract/ApproveAndPost.aspx" target="PageFrame"> 
+                                                            <span class="Text">审批并提交</span>
+                                                        </a>--%>
+                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>" target="PageFrame"> 
                                                             <span class="Text">审批并提交</span>
                                                         </a>
                                                     </div>

@@ -22,9 +22,41 @@
     }
 </style>
 <body style="overflow-x:auto;overflow-y:auto;">
+ <% if (currentQuery.page_name == "角色管理" || currentQuery.page_name == "部门管理" || currentQuery.page_name == "联系人管理" || currentQuery.page_name == "安全等级管理" || currentQuery.page_name == "里程碑状态管理" || currentQuery.page_name == "产品管理" || currentQuery.page_name == "配置项类型管理" || currentQuery.page_name == "撤销成本审批" || currentQuery.page_name == "撤销里程碑审批" || currentQuery.page_name == "撤销定期服务审批" || currentQuery.page_name == "撤销订阅审批" || currentQuery.page_name == "市场领域管理" || currentQuery.page_name == "客户地域管理" || currentQuery.page_name == "竞争对手管理" || currentQuery.page_name == "客户类别管理" || currentQuery.page_name == "姓名后缀管理" || currentQuery.page_name == "活动类型管理" || currentQuery.page_name == "商机阶段管理" || currentQuery.page_name == "商机来源管理" || currentQuery.page_name == "关闭商机原因管理" || currentQuery.page_name == "丢失商机原因管理")
+     {
+           %>
+        <%}
+            else
+            {%>
     <div class="header">
+        <%if (currentQuery.page_name == "审批并提交")
+            { %>
+         <div class="TabBar">
+                <a class="Button ButtonIcon" id="tab1">
+                    <span class="Text">工时(未开发)</span>
+                </a>
+                <a class="Button ButtonIcon SelectedState" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>" target="PageFrame" id="tab2">
+                    <span class="Text">成本</span>
+                </a>
+                <a class="Button ButtonIcon" id="tab3">
+                    <span class="Text">费用(未开发)</span>
+                </a>
+                <a class="Button ButtonIcon" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS %>" target="PageFrame" id="tab4">
+                    <span class="Text">订阅</span>
+                </a>
+                <a class="Button ButtonIcon" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES %>" target="PageFrame" id="tab5">
+                    <span class="Text">定期服务</span>
+                </a>
+                <a class="Button ButtonIcon"  href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_MILESTONES %>" target="PageFrame" id="tab6">
+                    <span class="Text">里程碑</span>
+                </a>
+            </div>
+        <%}
+            else
+            { %>
 		<i>
-            <%if (currentQuery.page_query.Count > 4) { %>
+            <%if (currentQuery.page_query.Count > 4)
+                { %>
             <ul class="parent">
             <% foreach (var q in currentQuery.page_query)
                 {
@@ -46,10 +78,12 @@
             <%
                 } %>
             </ul>
-            <%} else { %>
+            <%}
+                else
+                { %>
             <ul>
             <% foreach (var q in currentQuery.page_query)
-                    {
+                {
                     %>
 				<li onclick="OpenQuery(<%=catId %>,<%=q.typeId %>,<%=q.groupId %>);"><%=q.query_name %></li>
             <%
@@ -58,7 +92,8 @@
             <%} %>
 		</i>
 		<%=currentQuery.page_name %>
-	</div>
+        <%} %>
+	</div><%} %>
     <div class="information clear" style="border:none;">
         <button class="Search" id="SearchBtn">搜索</button>
 		<p class="informationTitle"> <i id="Icon"></i>搜索</p>
