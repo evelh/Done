@@ -461,6 +461,7 @@ namespace EMT.DoneNOW.DTO
             OPPPORTUNITYWINREASON=937,             //关闭商机的原因
             OPPPORTUNITYLOSSREASON = 938,             //丢失商机的原因
             CONTRACT_BLOCK_TIME = 1510,             // 合同管理-预付时间
+            CONTRACT_MILESTONES = 1511,             // 合同管理-里程碑
             INVOICE_TEMPLATE =1512,                    //发票模板
             INVOICE_HISTORY = 1513,               //历史发票
             APPROVE_CHARGES = 1514,               //成本审批
@@ -843,6 +844,7 @@ namespace EMT.DoneNOW.DTO
         OPPPORTUNITYWINREASON = 78,             //关闭商机的原因
         OPPPORTUNITYLOSSREASON = 79,             //丢失商机的原因
         ContractBlockTime = 80,             // 合同管理-预付时间
+        ContractMilestone = 81,             // 合同管理-里程碑
         InvoiceTemplate = 82,               //发票模板
         Invoice_History = 83,               //历史发票
         APPROVE_CHARGES = 84,               //成本审批

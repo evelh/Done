@@ -405,7 +405,7 @@ input {
     margin: 0;
 }
 
-.Section .Editor.CheckBox {
+.Section .Editor.CheckBox, .Section .Editor.TextBox {
     padding-bottom: 14px;
 }
 
@@ -497,7 +497,7 @@ input[type="checkbox"], input[type="radio"] {
     font-weight: 700;
     height: 14px;
     overflow: hidden;
-    padding-bottom: 1px;
+    padding-bottom: 6px;
     padding-right: 5px;
     vertical-align: bottom;
     white-space: nowrap;
@@ -719,20 +719,8 @@ select {
 select option {
     line-height: 16px;
 }
-
-#BackgroundOverLay1 {
-    width: 100%;
-    height: 100%;
-    background: black;
-    opacity: 0.6;
-    z-index: 1000;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: none;
-}
 /*加载的css样式*/
-#BackgroundOverLay {
+#BackgroundOverLay, #BackgroundOverLay1, #BackgroundOverLay2, #BackgroundOverLay3 {
     width: 100%;
     height: 100%;
     background: black;

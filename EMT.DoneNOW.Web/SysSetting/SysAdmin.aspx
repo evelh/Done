@@ -6,19 +6,9 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="../Content/Admin.css" rel="stylesheet" />
-     <link href="../Content/ClassificationIcons.css" rel="stylesheet" />
-    		<link rel="stylesheet" type="text/css" href="Content/base.css"/>
-		<link rel="stylesheet" type="text/css" href="Content/index.css"/>
-    <style>
-         @media screen and (max-width: 1430px){
-       .cont{
-           width:1200px;
-           margin:60px 2% 0 2%;
-    position: absolute;
-    z-index: 1;
-       }
-	}
-    </style>
+    <link href="../Content/ClassificationIcons.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="Content/base.css"/>
+	<link rel="stylesheet" type="text/css" href="Content/index.css"/>
     <title>管理系统</title>
 </head>
 <body>
@@ -728,21 +718,20 @@
                 </div>
             <div id="chaxun" style="display:none">
             <!--标题-->
-             <div class="TitleBar">
-        <div class="Title">
-            <div class="TitleBarNavigationButton">
-                <a class="Button ButtonIcon NormalState" href="../SysSetting/SysAdmin" target="PageFrame"><img src="../Images/move-left.png"/></a>
+            <div class="TitleBar">
+            <div class="Title">
+                <div class="TitleBarNavigationButton">
+                    <a class="Button ButtonIcon NormalState" href="../SysSetting/SysAdmin" target="PageFrame"><img src="../Images/move-left.png"/></a>
+                </div>
+                <span class="text1" id="opname"></span>
+                <a href="###" class="collection"></a>
+                <a href="###" class="help"></a>
             </div>
-            <span class="text1" id="opname"></span>
-            <a href="###" class="collection"></a>
-            <a href="###" class="help"></a>
-        </div>
-    </div><!--背景布-->
+        </div><!--背景布-->
         <div id="WorkspaceContainer"></div>
         <div class="cont">
-            <iframe id="PageFrame1" style="width:100%;height:auto" name="PageFrame1"></iframe>
+            <iframe id="PageFrame1" style="width:100%;border:none;margin:0;" name="PageFrame1"></iframe>
         </div>
-
 </div>
         </div>
     </form>
