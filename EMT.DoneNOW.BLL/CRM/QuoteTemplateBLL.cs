@@ -387,12 +387,9 @@ namespace EMT.DoneNOW.BLL
         #endregion
         public List<sys_quote_tmpl> GetAllTemplate()
         {
-           // var list = _dal.FindListBySql("select id,name from sys_quote_tmpl");
-            var list = _dal.FindAll().ToList<sys_quote_tmpl>();
+            var list = _dal.FindListBySql<sys_quote_tmpl>($"select * from sys_quote_tmpl where delete_time=0 and cate_id=1");
             return list;
         }
-
-
         #region 复制一个报价模板
         public ERROR_CODE copy_quote_template(long user_id,ref long id)
         {

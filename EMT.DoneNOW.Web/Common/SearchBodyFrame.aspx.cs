@@ -180,6 +180,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.CONTRACT_BLOCK_TIME:
                     addBtn = "新增预付时间";
                     break;
+                case (int)DicEnum.QUERY_CATE.INVOICE_HISTORY:
+                    addBtn = "历史发票";
+                    break;
                 default:
                     addBtn = "";
                     break;

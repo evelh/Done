@@ -7,8 +7,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="../Content/Admin.css" rel="stylesheet" />
     <link href="../Content/ClassificationIcons.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="Content/base.css"/>
-	<link rel="stylesheet" type="text/css" href="Content/index.css"/>
     <title>管理系统</title>
 </head>
 <body>
@@ -747,7 +745,7 @@
         $("#PageFrame1").css("height", Height);
 
         $(".chaxun").on("click", function () {
-            $("#body").hide();
+            $("#body").remove();
             var kk = $(this).text();
             //alert(kk);
             $("#opname").text(kk);

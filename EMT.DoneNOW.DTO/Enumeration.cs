@@ -980,8 +980,9 @@ namespace EMT.DoneNOW.DTO
         ContractChargeSelect=366,                  //合同审批，成本关联预付费时的，选择操作窗口
 
         InvoiceTemplate=370,                      //新增发票模板
+        InvoiceTemplateAttr = 371,                //发票模板属性
 
-        InvoiceHistoryEdit=380,                   //历史发票更改（发票编号和日期）
+        InvoiceHistoryEdit =380,                   //历史发票更改（发票编号和日期）
 
         ACCOUNTTYPE=390,                           //客户类别
         OPPORTUNITYWIN=391,                        //关闭商机原因

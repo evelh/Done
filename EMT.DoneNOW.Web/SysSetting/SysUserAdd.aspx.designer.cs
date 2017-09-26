@@ -67,15 +67,6 @@ namespace EMT.DoneNOW.Web.SysSetting {
         protected global::System.Web.UI.WebControls.Button Cancel;
         
         /// <summary>
-        /// Prefix 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Prefix;
-        
-        /// <summary>
         /// first_name 控件。
         /// </summary>
         /// <remarks>
@@ -130,15 +121,6 @@ namespace EMT.DoneNOW.Web.SysSetting {
         protected global::System.Web.UI.WebControls.DropDownList Position;
         
         /// <summary>
-        /// HyperLink1 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink HyperLink1;
-        
-        /// <summary>
         /// office_phone 控件。
         /// </summary>
         /// <remarks>
@@ -146,15 +128,6 @@ namespace EMT.DoneNOW.Web.SysSetting {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox office_phone;
-        
-        /// <summary>
-        /// TextBox1 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
         
         /// <summary>
         /// home_phone 控件。

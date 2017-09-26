@@ -26,7 +26,9 @@ namespace EMT.DoneNOW.Web
                 case "nobilling": NoBilling(context, Convert.ToInt32(id), Convert.ToInt32(type)); break;
                 case "billing": Billing(context, Convert.ToInt32(id), Convert.ToInt32(type)); break;
                 case "post": Post(context, Convert.ToInt32(id), Convert.ToInt32(type),Convert.ToInt32(date)); ; break;
-                    //处理合同成本审批
+                //查看合同详情
+                case "ContractDetails": ContractDetails(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
+                //处理合同成本审批
                 case "auto_block":auto_block(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
                 case "force":force(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
                 case "cost": Cost(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
@@ -90,6 +92,19 @@ namespace EMT.DoneNOW.Web
                 if (result != DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("error");
+                }
+            }
+        }
+        public void ContractDetails(HttpContext context, int id, int type, int date)
+        {
+            ApproveAndPostBLL aapbll = new ApproveAndPostBLL();
+            var user = context.Session["dn_session_user_info"] as sys_user;
+            if (user != null)
+            {
+                var result = aapbll.ContractDetails(Convert.ToInt32(id), date, type, user.id);
+                if (result>0)
+                {
+                    context.Response.Write("result");
                 }
             }
         }
