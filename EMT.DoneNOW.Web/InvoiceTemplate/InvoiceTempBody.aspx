@@ -739,7 +739,7 @@
                                 </div>
                                 <%-- 工时--%>
                                 <div id="kkk1" style="display: none">
-                                    <div class="Section Collapsed" style="margin-left: 16px; z-index: 1000;">
+                                    <div class="Section Collapsed" style="margin-left: 16px; z-index: 1000;width:96%;">
                                         <div class="Heading">
                                             <div class="Toggle Collapse Toggle1">
                                                 <div class="Vertical"></div>
@@ -795,7 +795,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="Section Collapsed" style="margin-left: 16px;">
+                                    <div class="Section Collapsed" style="margin-left: 16px;width:96%;">
                                         <div class="Heading">
                                             <div class="Toggle Collapse Toggle2">
                                                 <div class="Vertical"></div>
@@ -855,7 +855,7 @@
                                 <div id="kkk2" style="display: none">
                                     <div class="Section Collapsed" style="margin-left: 16px; z-index: 1000;">
                                         <div class="Heading">
-                                            <div class="Toggle Collapse Toggle1">
+                                            <div class="Toggle Collapse Toggle3">
                                                 <div class="Vertical"></div>
                                                 <div class="Horizontal"></div>
                                             </div>
@@ -927,7 +927,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="BackgroundOverLay" style="display: block;"></div>
+                <div id="BackgroundOverLay1" style="display: block;"></div>
             </div>
            <%-- 结束--%>
 
@@ -1266,51 +1266,47 @@
         <script src="../RichText/js/InvoiceTemplateInvoiceBody.js"></script>
         <asp:Literal ID="datalist" runat="server"></asp:Literal>
         <script>
+            var colors = ["#efefef", "white"];
+            var index1 = 0;
+            var index2 = 0;
+            var index3 = 0;
+            $(".Toggle1").on("click", function () {
+                $(this).find($(".Vertical")).toggle();
+                $(this).parent().parent().find($('.Content')).toggle();
+                $(this).parent().parent().css("background", colors[index1 % 2]);
+                index1++;
+            });
+            $(".Toggle2").on("click", function () {
+                $(this).find($(".Vertical")).toggle();
+                $(this).parent().parent().find($('.Content')).toggle();
+                $(this).parent().parent().css("background", colors[index2 % 2]);
+                index2++;
+            });
+            $(".Toggle3").on("click", function () {
+                $(this).find($(".Vertical")).toggle();
+                $(this).parent().parent().find($('.Content')).toggle();
+                $(this).parent().parent().css("background", colors[index3 % 2]);
+                index3++;
+            });
             var tanchuan = 1;
             $(".Edit").on("click", function () {
                 var a = $(".Edit").index(this);
-                //if (tanchuan == 2) {
-                //    $("#showbill").show();
-                //    $("#editedit2").hide();
-                //    var innerContent = $(".add_Display_Format").eq(a).html();
-                //    console.log(a)
-                //    console.log(innerContent);
-
-                //} else {
-                    $("#showbill").hide();
-                    $("#editedit2").hide();
-                    var innerContent = $(".Edit").eq(a).parent().next().next().html();
-                    var k = $(".invoice_type_name").eq(a).text();
-                    if (k == "工时") {//工时，特殊
-                        $("#kkk1").show();
-                    } else {
-                        $("#kkk1").hide();
-                    }
-                    if (k == "定期服务/服务包") {//服务包
-                        $("#kkk2").show();
-                    } else {
-                        $("#kkk2").hide();
-                    }
-                //}
-
+                $("#showbill").hide();
+                $("#editedit2").hide();
+                var innerContent = $(".Edit").eq(a).parent().next().next().html();
+                var k = $(".invoice_type_name").eq(a).text();
+                if (k == "工时") {//工时，特殊
+                    $("#kkk1").show();
+                } else {
+                    $("#kkk1").hide();
+                }
+                if (k == "定期服务/服务包") {//服务包
+                    $("#kkk2").show();
+                } else {
+                    $("#kkk2").hide();
+                }
                 $("#editedit").show();
-                var colors = ["#efefef", "white"];
-                var index1 = 0;
-                var index2 = 0;
-
-                $(".Toggle1").on("click", function () {
-                    $(".Edit").eq(a).parent().parent().find($(".Vertical")).toggle();
-                    $(".Edit").eq(a).parent().parent().find($('.Content')).toggle();
-                    $(".Edit").eq(a).parent().parent().css("background", colors[index1 % 2]);
-                    index1++;
-                });
-
-                $(".Toggle2").on("click", function () {
-                    $(".Edit").eq(a).parent().parent().find($(".Vertical")).toggle();
-                    $(".Edit").eq(a).parent().parent().find($('.Content')).toggle();
-                    $(".Edit").eq(a).parent().parent().css("background", colors[index2 % 2]);
-                    index2++;
-                });
+                
                 //富文本编辑器
                 //UE.delEditor('containerHead');
                 var ue = UE.getEditor('containerHead', {
@@ -1579,21 +1575,6 @@
                 var innerContent = $(".Edit3").eq(b).parent().next().next().next().html();
                 $("#editedit2").hide();
                 $("#editedit3").show();
-                var colors = ["#efefef", "white"];
-                var index1 = 0;
-                var index2 = 0;
-                $(".Toggle1").on("click", function () {
-                    $(".Edit3").eq(b).parent().parent().find($(".Vertical")).toggle();
-                    $(".Edit3").eq(b).parent().parent().find($('.Content')).toggle();
-                    $(".Edit3").eq(b).parent().parent().css("background", colors[index1 % 2]);
-                    index1++;
-                });
-                $(".Toggle2").on("click", function () {
-                    $(".Edit3").eq(b).parent().parent().find($(".Vertical")).toggle();
-                    $(".Edit3").eq(b).parent().parent().find($('.Content')).toggle();
-                    $(".Edit3").eq(b).parent().parent().css("background", colors[index2 % 2]);
-                    index2++;
-                });
                 //富文本编辑器
                 //UE.delEditor('containerHead');
                 var ue = UE.getEditor('containerHead3', {
@@ -1651,7 +1632,7 @@
                     return b;
                 });
                 //点击关闭
-                $(".CancelDialogButton").on("click", function () {
+                $("#tanchuang3").on("click", function () {
                     $("#editedit3").hide();
                     $("#editedit2").show();
                     b = -9;

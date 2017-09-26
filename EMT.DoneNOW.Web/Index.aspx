@@ -878,13 +878,9 @@
         </div>
         <!--背景布-->
         <div id="WorkspaceContainer"></div>
-
-
-
         <div class="cont">
             <iframe id="PageFrame" name="PageFrame" style="width:100%;" src="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>"></iframe>
         </div>
-
 	</body>
 	<script src="Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="Scripts/index.js" type="text/javascript" charset="utf-8"></script>

@@ -13,12 +13,7 @@
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <title></title>
     <style>
-    #SearchCondition{
-        height: 100%;
-    }
-    #SearchCondition>html{
-        height: 100%;
-    }
+
     /*切换按钮*/
     .TabBar {
         border-bottom: solid 1px #adadad;
