@@ -16,7 +16,7 @@
 	<div class="TitleBar">
 		<div class="Title">
 			<span class="text1">报价模板</span>
-			<span class="text2">- burberryquotetemplate</span>
+			<span class="text2">- <%=tempname %></span>
 			<a href="###" class="help"></a>
 		</div>
 	</div>
@@ -36,7 +36,7 @@
 				</li>
 				<li class="Button ButtonIcon Pdf NormalState" id="ViewPdfButton" tabindex="0">
 					<span class="Icon ViewPdf"></span>
-					<span class="Text">PDF显示</span>
+                     <asp:Button ID="ToPdf" cssclass="Text" BorderStyle="None" runat="server" Text="PDF显示" OnClick="ToPdf_Click"/>
 				</li>
 				<li class="Button ButtonIcon Edit NormalState" id="EditPropertiesButton" tabindex="0">
 					<span class="Icon EditProperties"></span>

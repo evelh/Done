@@ -1,29 +1,25 @@
 ﻿using EMT.DoneNOW.BLL;
-using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
 
 namespace EMT.DoneNOW.Web
 {
     public partial class QuoteTemplateEdit : BasePage
     {
-        //public string ht;
         public int id;
         public string op;
-        //public bool copy = false;
+        protected string tempname;
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-            // Session.Timeout = 30;设置该页面的session过期时间
             id = Convert.ToInt32(Request.QueryString["id"]);
-            //id = 396;
+            id = 396;
             if (!IsPostBack)
             {
                 if(Session["cancel"]!=null&&(int)Session["cancel"]!=1)
@@ -49,6 +45,7 @@ namespace EMT.DoneNOW.Web
                 }
                 else
                 {
+                    tempname = data.name;
                     //页眉
                     if (Session["page_head"] != null && !string.IsNullOrEmpty(Session["page_head"].ToString()))
                     {
@@ -363,6 +360,51 @@ namespace EMT.DoneNOW.Web
             }
 
         }
-
+        //转PDF,还没有完成9-26
+        protected void ToPdf_Click(object sender, EventArgs e)
+        {
+            var data = new QuoteTemplateBLL().GetQuoteTemplate(id);
+            string savepath = string.Format("C:\\DoneNowNET" + "\\" + data.name + ".pdf");//最终保存
+            string url = Request.Url.ToString();
+            try
+            {
+                if (!string.IsNullOrEmpty(url) || !string.IsNullOrEmpty(savepath))
+                {
+                    Process p = new Process();
+                    string dllstr = string.Format("C:\\Program Files (x86)\\wkhtmltopdf\\bin\\wkhtmltopdf.exe");
+                    if (File.Exists(dllstr))
+                    {
+                        p.StartInfo.FileName = dllstr;
+                        p.StartInfo.Arguments = " \"" + url + "\"  \"" + savepath + "\"";
+                        p.StartInfo.UseShellExecute = false;
+                        p.StartInfo.RedirectStandardInput = true;
+                        p.StartInfo.RedirectStandardOutput = true;
+                        p.StartInfo.RedirectStandardError = true;
+                        p.StartInfo.CreateNoWindow = true;
+                        p.Start();
+                        p.WaitForExit();
+                        try
+                        {
+                            FileStream fs = new FileStream(savepath, FileMode.Open);
+                            byte[] file = new byte[fs.Length];
+                            fs.Read(file, 0, file.Length);
+                            fs.Close();
+                            Response.Clear();
+                            Response.AddHeader("content-disposition", "attachment; filename=" + data.name + ".pdf");//強制下載 
+                            Response.ContentType = "application/octet-stream";
+                            Response.BinaryWrite(file);
+                        }
+                        catch (Exception ee)
+                        { 
+                            throw new Exception(ee.ToString());
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
     }
 }
