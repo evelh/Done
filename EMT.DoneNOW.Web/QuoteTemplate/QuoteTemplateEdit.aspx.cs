@@ -1,7 +1,5 @@
 ﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.DTO;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 using System;
 using System.Data;
 using System.Diagnostics;

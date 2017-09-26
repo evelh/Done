@@ -1,7 +1,4 @@
-﻿using iTextSharp.text;
-using iTextSharp.text.pdf;
-using iTextSharp.tool.xml;
-using System;
+﻿using System;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
@@ -15,43 +12,43 @@ namespace EMT.DoneNOW.Web
         {
 
         }
-        public void test1() {
-            DataTable datatable = new DataTable("testpdf");
-            try
-            {
-                Document document = new Document();
-                PdfWriter.GetInstance(document, new FileStream(Server.MapPath("Test.pdf"), FileMode.Create));
-                document.Open();
-                BaseFont bfChinese = BaseFont.CreateFont("C:\\WINDOWS\\Fonts\\simsun.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-                Font fontChinese = new Font(bfChinese, 12, Font.BOLD, new BaseColor(0, 0, 0));
+        //public void test1() {
+        //    DataTable datatable = new DataTable("testpdf");
+        //    try
+        //    {
+        //        Document document = new Document();
+        //        PdfWriter.GetInstance(document, new FileStream(Server.MapPath("Test.pdf"), FileMode.Create));
+        //        document.Open();
+        //        BaseFont bfChinese = BaseFont.CreateFont("C:\\WINDOWS\\Fonts\\simsun.ttc,1", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+        //        Font fontChinese = new Font(bfChinese, 12, Font.BOLD, new BaseColor(0, 0, 0));
 
-                //按设置的字体输出文本
-                document.Add(new Paragraph("", fontChinese));
-                //输出图片到PDF文件
-                //Image jpeg01 = iTextSharp.text.Image.GetInstance(Server.MapPath("Images/gyl.jpg"));
-                //document.Add(jpeg01);
-                //iTextSharp.text.Image jpeg02 = iTextSharp.text.Image.GetInstance(Server.MapPath("Images/yy.jpg"));
-                //document.Add(jpeg02);
+        //        //按设置的字体输出文本
+        //        document.Add(new Paragraph("", fontChinese));
+        //        //输出图片到PDF文件
+        //        //Image jpeg01 = iTextSharp.text.Image.GetInstance(Server.MapPath("Images/gyl.jpg"));
+        //        //document.Add(jpeg01);
+        //        //iTextSharp.text.Image jpeg02 = iTextSharp.text.Image.GetInstance(Server.MapPath("Images/yy.jpg"));
+        //        //document.Add(jpeg02);
 
-                PdfPTable table = new PdfPTable(3);
+        //        PdfPTable table = new PdfPTable(3);
 
-                for (int i = 0; i < 4; i++)
-                {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        table.AddCell(new Phrase("ceshi", fontChinese));
-                    }
-                }
+        //        for (int i = 0; i < 4; i++)
+        //        {
+        //            for (int j = 0; j < 3; j++)
+        //            {
+        //                table.AddCell(new Phrase("ceshi", fontChinese));
+        //            }
+        //        }
 
-                document.Add(table);
-                document.Close();
-                Response.Write("<script>alert('导出成功！');</script>");
-            }
-            catch (DocumentException de)
-            {
-                Response.Write(de.ToString());
-            }
-        }
+        //        document.Add(table);
+        //        document.Close();
+        //        Response.Write("<script>alert('导出成功！');</script>");
+        //    }
+        //    catch (DocumentException de)
+        //    {
+        //        Response.Write(de.ToString());
+        //    }
+        //}
         protected void Button1_Click(object sender, EventArgs e)
         {
             test2();
