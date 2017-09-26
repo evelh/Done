@@ -328,16 +328,21 @@
                                                         </a>
                                                     </div>
                                                 </div>
+                                                   <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">发票和工时调整</div>
+                                                    </div>
+                                                    <div class="Content">
+                               <a class="Button ButtonIcon NormalState" href="Invoice/InvocieSearch.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.GENERATE_INVOICE %>" target="PageFrame"> 
+                                                            <span class="Text">生成发票</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
                                                  <div class="Group">
                                                     <div class="Heading">
                                                         <div class="Text">Tools</div>
                                                     </div>
-                                                      <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState" href="Invoice/InvocieSearch.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.GENERATE_INVOICE %>" target="PageFrame"> 
-                                                            <span class="Text">生成发票</span>
-                                                        </a>
-                                                    </div>
-                                                      <div class="Content">
+                                                    <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_HISTORY %>" target="PageFrame"> 
                                                             <span class="Text">历史发票</span>
                                                         </a>

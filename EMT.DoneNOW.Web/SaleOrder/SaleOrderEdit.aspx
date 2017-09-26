@@ -452,7 +452,7 @@ a.Button.Link {
                                         <div>
                                             <span class="FieldLabel">
                                                 <span class="txtBlack8Class">
-                                                    <asp:CheckBox ID="bill_to_use_account_address" runat="server" />
+                                                    <asp:CheckBox ID="billTo_use_account_address" runat="server" />
                                                     <%--<input type="checkbox" style="vertical-align: middle;" />--%>
                                                     <label style="vertical-align: middle;">与客户地址相同</label>
                                                     <input type="hidden" name="billLocationId" value="<%=sale_order.bill_to_location_id==null?"":sale_order.bill_to_location_id.ToString() %>"/>
@@ -552,7 +552,7 @@ a.Button.Link {
                                         <div>
                                             <span class="FieldLabel">
                                                 <span class="txtBlack8Class">
-                                                    <asp:CheckBox ID="ship_to_use_account_address" runat="server" />
+                                                    <asp:CheckBox ID="shipTo_use_account_address" runat="server" />
                                                     <%--<input type="checkbox" style="vertical-align: middle;">--%>
                                                     <label style="vertical-align: middle;">与客户地址相同</label>
                                                 </span>
@@ -565,7 +565,7 @@ a.Button.Link {
                                         <div>
                                             <span class="FieldLabel">
                                                 <span class="txtBlack8Class">
-                                                    <asp:CheckBox ID="ship_to_use_bill_to_address" runat="server" />
+                                                    <asp:CheckBox ID="shipTo_use_bill_to_address" runat="server" />
                                                     <%--<input type="checkbox" style="vertical-align: middle;">--%>
                                                     <label style="vertical-align: middle;">与账单地址相同</label>
                                                 </span>
@@ -768,52 +768,67 @@ a.Button.Link {
     });
 </script>
 <script>
+    var s2 = ["ship_province_id", "ship_city_id", "ship_district_id"];
+    var s3 = ["bill_province_id", "bill_city_id", "bill_district_id"];
     $(function () {
         //var s1 = ["province_id", "city_id", "district_id"];
-        var s2 = ["ship_province_id", "ship_city_id", "ship_district_id"];
-        var s3 = ["bill_province_id", "bill_city_id", "bill_district_id"];
+     
        //  InitArea(s1);  // 地址下拉框
         InitArea(s2);  // 地址下拉框
         InitArea(s3);  // 地址下拉框
     })
 
 
-    $("#bill_to_use_account_address").click(function () {
+    $("#billTo_use_account_address").click(function () {
         if ($(this).is(":checked")) {
             // 代表选中的时候给地址相关信息赋值
             $("#bill_address").val($("#address").val());
             $("#bill_address2").val($("#additional_address").val());
-            $("#bill_province_id").val($("#province_id").val());
-            $("#bill_city_id").val($("#city_id").val());
-            $("#bill_district_id").val($("#district_id").val());
+            //$("#bill_province_id").val($("#province_id").val());
+            //$("#bill_city_id").val($("#city_id").val());
+            //$("#bill_district_id").val($("#district_id").val());
+            $("#bill_province_idInit").val($("#province_id").val());
+            $("#bill_city_idInit").val($("#city_id").val());
+            $("#bill_district_idInit").val($("#district_id").val());
             $("#bill_country_id").val($("#country_id").val());
             $("#bill_postcode").val($("#postal_code").val());
+            InitArea(s3);
         }
     })
 
-    $("#ship_to_use_account_address").click(function () {
+    $("#shipTo_use_account_address").click(function () {
         if ($(this).is(":checked")) {
             // 代表选中的时候给地址相关信息赋值
             $("#ship_address").val($("#address").val());
             $("#ship_address2").val($("#additional_address").val());
-            $("#ship_province_id").val($("#province_id").val());
-            $("#ship_city_id").val($("#city_id").val());
-            $("#ship_district_id").val($("#district_id").val());
+            //$("#ship_province_id").val($("#province_id").val());
+            //$("#ship_city_id").val($("#city_id").val());
+            //$("#ship_district_id").val($("#district_id").val());
+            //$("#ship_country_id").val($("#country_id").val());
+            $("#ship_province_idInit").val($("#province_id").val());
+            $("#ship_city_idInit").val($("#city_id").val());
+            $("#ship_district_idInit").val($("#district_id").val());
             $("#ship_country_id").val($("#country_id").val());
             $("#ship_postcode").val($("#postal_code").val());
+            InitArea(s2);
         }
     })
 
-    $("#ship_to_use_bill_to_address").click(function () {
+    $("#shipTo_use_bill_to_address").click(function () {
         if ($(this).is(":checked")) {
             // 代表选中的时候给地址相关信息赋值
             $("#ship_address").val($("#bill_address").val());
             $("#ship_address2").val($("#bill_address2").val());
-            $("#ship_province_id").val($("#bill_province_id").val());
-            $("#ship_city_id").val($("#bill_city_id").val());
-            $("#ship_district_id").val($("#bill_district_id").val());
+            $("#ship_province_idInit").val($("#bill_province_id").val());
+            $("#ship_city_idInit").val($("#bill_city_id").val());
+            $("#ship_district_idInit").val($("#bill_district_id").val());
             $("#ship_country_id").val($("#bill_country_id").val());
+            //$("#ship_province_id").val($("#bill_province_id").val());
+            //$("#ship_city_id").val($("#bill_city_id").val());
+            //$("#ship_district_id").val($("#bill_district_id").val());
+            //$("#ship_country_id").val($("#bill_country_id").val());
             $("#ship_postcode").val($("#bill_postcode").val());
+            InitArea(s2);
         }
     })
 

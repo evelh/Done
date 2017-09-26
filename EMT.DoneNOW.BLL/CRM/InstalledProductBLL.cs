@@ -488,7 +488,12 @@ namespace EMT.DoneNOW.BLL
                                 break;
                         }
                         //  获取到最后的生效时间
-                        old_last_time = subPeriodList.Where(_ => _.approve_and_post_user_id != null && _.approve_and_post_date != null).Max(_ => _.period_date);
+                        var dealSub = subPeriodList.Where(_ => _.approve_and_post_user_id != null && _.approve_and_post_date != null).ToList();
+                        if (dealSub != null && dealSub.Count > 0)
+                        {
+                            old_last_time = dealSub.Max(_ => _.period_date);
+                        }
+                        
                         // 删除未执行的分期订阅
                         if (NoDealSub != null && NoDealSub.Count > 0)
                         {
