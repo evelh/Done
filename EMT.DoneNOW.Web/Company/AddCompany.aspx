@@ -946,11 +946,11 @@
             }
             return true;
         }
-        jQuery(document).ready(function ($) {
-            $('#multiselect').multiselect({
-                sort: false
-            });
-        });
+        //jQuery(document).ready(function ($) {
+        //    $('#multiselect').multiselect({
+        //        sort: false
+        //    });
+        //});
 
         var conteneClickTimes = 0;       // 定义tab页跳转点击次数，免得一直提醒
         $.each($(".nav-title li"), function (i) {

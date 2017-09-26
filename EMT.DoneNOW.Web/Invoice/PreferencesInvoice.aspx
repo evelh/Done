@@ -146,8 +146,9 @@
             <div class="Content">
                 <div class="SectionLevelInstruction">
                     <span class="lblNormalClass" style="font-weight:normal;color: #666;">
-                        Please note: If you have already exported this company to QuickBooks, manually update this company's address in QuickBooks.
+                    <%--    Please note: If you have already exported this company to QuickBooks, manually update this company's address in QuickBooks.--%>
                     </span>
+                    <input type="hidden" name="billing_location_id" id="billing_location_id" value="<%=accRef!=null&&accRef.billing_location_id!=null?accRef.billing_location_id.ToString():"" %>"/>
                 </div>
                 <table class="Neweditsubsection" style="width: 780px;" cellpadding="0" cellspacing="0">
                     <tbody>
@@ -600,6 +601,7 @@
                 success: function (data) {
                     if (data != "") {
                         debugger;
+                        $("#biling_location_id").val(data.id);  // 应用客户的地址
                         $("#province_idInit").val(data.province_id);
                         $("#city_idInit").val(data.city_id);
                         $("#district_idInit").val(data.district_id);
@@ -630,6 +632,7 @@
                     dataType: "json",
                     success: function (data) {
                         if (data != "") {
+                            $("#biling_location_id").val(data.id);  // 引用父客户的地址
                             $("#province_idInit").val(data.province_id);
                             $("#city_idInit").val(data.city_id);
                             $("#district_idInit").val(data.district_id);
@@ -660,6 +663,7 @@
                     dataType: "json",
                     success: function (data) {
                         if (data != "") {
+                            $("#biling_location_id").val(data.id);  // 引用父客户的发票地址
                             $("#province_idInit").val(data.province_id);
                             $("#city_idInit").val(data.city_id);
                             $("#district_idInit").val(data.district_id);
@@ -682,7 +686,35 @@
             $("#district_id").prop("disabled", false);
             $("#city_id").prop("disabled", false);
             $("#postal_code").prop("disabled", false);
-            
+            $("#biling_location_id").val("");
+
+            <%if (accRef != null && accRef.billing_location_id != null)
+            { %>
+            $("#biling_location_id").val('<%=accRef.billing_location_id %>');
+            <%}%>
+            var location_id = $("#biling_location_id").val();
+            if (location_id != undefined && location_id != "") {
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: "../Tools/AddressAjax.ashx?act=location&location_id=" + location_id,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != "") {
+                            $("#biling_location_id").val(data.id);  // 引用父客户的发票地址
+                            $("#province_idInit").val(data.province_id);
+                            $("#city_idInit").val(data.city_id);
+                            $("#district_idInit").val(data.district_id);
+                            $("#address").val(data.address);
+                            $("#additional_address").val(data.additional_address);
+                            $("#postal_code").val(data.postcode);
+                            InitArea();
+                        }
+                    },
+                });
+            }
+
+
             InitArea();
         });
     </script>

@@ -103,6 +103,7 @@ namespace EMT.DoneNOW.Web.Invoice
                 if (!string.IsNullOrEmpty(Request.QueryString["isInvoice"]))  // 代表是显示发票还是显示条目
                 {
                     // thisInvoiceList
+                    isInvoice = true;
                 }
                 else
                 {
@@ -198,6 +199,7 @@ namespace EMT.DoneNOW.Web.Invoice
                 var quote_body = new EMT.Tools.Serialize().DeserializeJson<QuoteTemplateAddDto.BODY>(temp.body_html.Replace("'", "\""));  // 
                 if (quote_body.GRID_COLUMN != null && quote_body.GRID_COLUMN.Count > 0)
                 {
+                    var aa = quote_body.CUSTOMIZE_THE_ITEM_COLUMN;
                     #region  拼接TH
                     thisHtmlText.Append("<thead><tr>");
                     foreach (var item in quote_body.GRID_COLUMN)
@@ -250,7 +252,7 @@ namespace EMT.DoneNOW.Web.Invoice
                                             thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{param_item.item_date}</td>");
                                             break;
                                         case "条目描述":
-                                            thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'><span class='xiabiao'>{returnTaxIndex(param_item.tax_category_id)}</span></td>");
+                                            thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'><span class='xiabiao'>{returnTaxIndex(param_item.tax_category_id)} {ChangeDescription(quote_body.CUSTOMIZE_THE_ITEM_COLUMN, accDedItem)}</span></td>");
                                             break;
                                         case "类型":
                                             thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{param_item.item_type}</td>");
@@ -452,11 +454,18 @@ namespace EMT.DoneNOW.Web.Invoice
             Regex reg = new Regex(@"\[(.+?)]");
             var account_param = "'{\"a:id\":\"" + account.id + "\"}'";
             StringBuilder sqlList = new StringBuilder();
-            var sql = new sys_query_type_user_dal().GetQuerySql(900, 900, GetLoginUserId(), account_param, null);
-            sqlList.Append($"select * from ({sql}) as account");
+            var accountSql = new sys_query_type_user_dal().GetQuerySql(900, 900, GetLoginUserId(), account_param, null);
+            var jifeiSql = new sys_query_type_user_dal().GetQuerySql(920, 920, GetLoginUserId(), "'{\"a:account_id\":\"" + account.id + "\"}'", null);
+            sqlList.Append($"select * from ({accountSql}) as account,({jifeiSql}) as jifei");
             
-            if (!string.IsNullOrEmpty(sql))
+            if (!string.IsNullOrEmpty(sqlList.ToString()))
             {
+                List<ctt_invoice> invoiceList = null;
+                if (isInvoice && (!string.IsNullOrEmpty(Request.QueryString["invoice_batch_id"])))
+                {
+                    invoiceList = new ctt_invoice_dal().GetInvoiceList("and batch_id ="+ Request.QueryString["invoice_batch_id"]);
+                }
+                
                 // dateTable 里面所拥有的数据实体待确定
                 var varTable = _dal.ExecuteDataTable(sqlList.ToString());
                 foreach (Match m in reg.Matches(thisText))
@@ -488,10 +497,34 @@ namespace EMT.DoneNOW.Web.Invoice
                                 {
                                     thisText = thisText.Replace(t, "");
                                 }
-
                                 break;
                             default:
                                 break;
+                        }
+                    }
+                    else // 将发票信息展示
+                    {
+                        if(invoiceList!=null&& invoiceList.Count > 0)
+                        {
+                            var thisInvoice = invoiceList[0];
+
+                            switch (t)
+                            {
+                                case "[发票：号码/编号]":
+                                    thisText = thisText.Replace(t, thisInvoice.invoice_no);
+                                    break;
+                                case "[发票：日期范围始于]":
+                                    thisText = thisText.Replace(t, thisInvoice.date_range_from == null?"":((DateTime)thisInvoice.date_range_from).ToString("yyyy-MM-dd"));
+                                    break;
+                                case "[发票：日期范围至]":
+                                    thisText = thisText.Replace(t, thisInvoice.date_range_to == null ? "" : ((DateTime)thisInvoice.date_range_to).ToString("yyyy-MM-dd"));
+                                    break;
+                                case "[发票：订单号]":
+                                    thisText = thisText.Replace(t, thisInvoice.purchase_order_no);
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                     }
                   
@@ -503,6 +536,24 @@ namespace EMT.DoneNOW.Web.Invoice
             return thisText;
         }
 
+        /// <summary>
+        /// 不同类型的描述，将会显示不同的描述
+        /// </summary>
+        /// <param name="thisText"></param>
+        /// <param name="accded"></param>
+        /// <returns></returns>
+        private string ChangeDescription(List<QuoteTemplateAddDto.CUSTOMIZE_THE_ITEM_COLUMNITEM> thisText,crm_account_deduction accded)
+        {
+            if (thisText != null && thisText.Count > 0)
+            {
+                var thisTypeSet = thisText.FirstOrDefault(_ => _.Type_of_Quote_Item_ID == accded.type_id.ToString());
+                if (thisTypeSet != null)
+                {
+                    return GetVarSub(thisTypeSet.Display_Format);
+                }
+            }
+            return "";
+        }
 
         /// <summary>
         /// 获取到指定集合的总价
@@ -543,15 +594,15 @@ namespace EMT.DoneNOW.Web.Invoice
         private string returnTaxIndex(long? param)
         {
             // var taxList = dic.FirstOrDefault(_ => _.Key == "quote_item_tax_cate").Value as List<DictionaryEntryDto>;
-            List<long> taxlllll = paramList.Where(_ => _.tax_category_id != null).Select(_ => (long)_.tax_category_id).ToList();
+            List<long> tacCateList = paramList.Where(_ => _.tax_category_id != null).Select(_ => (long)_.tax_category_id).ToList();
             if (billTOThisParamList != null && billTOThisParamList.Count > 0)
             {
-                taxlllll.AddRange(billTOThisParamList.Where(_ => _.tax_category_id != null).Select(_ => (long)_.tax_category_id).ToList());
+                tacCateList.AddRange(billTOThisParamList.Where(_ => _.tax_category_id != null).Select(_ => (long)_.tax_category_id).ToList());
             }
-            if (taxlllll != null && taxlllll.Count > 0 && param != null)
+            if (tacCateList != null && tacCateList.Count > 0 && param != null)
             {
                 // var tax = taxList.FirstOrDefault(_ => _.val == param.ToString());
-                return (taxlllll.IndexOf((long)param) + 1).ToString();
+                return (tacCateList.IndexOf((long)param) + 1).ToString();
             }
             return "";
         }
@@ -607,24 +658,24 @@ namespace EMT.DoneNOW.Web.Invoice
 
         private string GetTaxCateHtml()
         {
-            List<long> taxlllll = paramList.Where(_ => _.tax_category_id != null).Select(_ => (long)_.tax_category_id).ToList();  // 所有的税种信息
+            List<long> tacCateList = paramList.Where(_ => _.tax_category_id != null).Select(_ => (long)_.tax_category_id).ToList();  // 所有的税种信息
             List<long> taxRegionList = paramList.Where(_ => _.tax_region_id != null).Select(_ => (long)_.tax_region_id).ToList();    // 所有的税区信息
 
             var thisParamList = paramList;
             if (billTOThisParamList != null && billTOThisParamList.Count > 0)
             {
                 thisParamList.AddRange(billTOThisParamList);
-                taxlllll.AddRange(billTOThisParamList.Where(_ => _.tax_category_id != null).Select(_ => (long)_.tax_category_id).ToList());
+                tacCateList.AddRange(billTOThisParamList.Where(_ => _.tax_category_id != null).Select(_ => (long)_.tax_category_id).ToList());
 
             }
             StringBuilder taxCateHtml = new StringBuilder();
-            if (taxlllll != null && taxlllll.Count > 0 && account.tax_region_id != null)
+            if (tacCateList != null && tacCateList.Count > 0 && account.tax_region_id != null)
             {
                 var _dal = new crm_account_deduction_dal();
                 var taxCateDal = new d_tax_region_cate_dal();
                 var taxCateTaxDal = new d_tax_region_cate_tax_dal();
                 // 需要计算出分税在这个税种中的金额
-                foreach (var taxCate in taxlllll)   // 循环税种
+                foreach (var taxCate in tacCateList)   // 循环税种
                 {
                     // 该税区下的所有分税信息
                     var thisGeneralTaxCate = new d_general_dal().FindNoDeleteById(taxCate);

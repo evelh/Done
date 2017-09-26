@@ -1089,13 +1089,16 @@
         {%>
 
         function Edit() {
-
+            window.open("../SaleOrder/SaleOrderEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SaleOrderEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function NewNote() {
 
         }
         function NewTodo() {
 
+        }
+        function View() {
+            window.open("../SaleOrder/SaleOrderView.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SaleOrderView %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function CancelSaleOrder() {
             $.ajax({

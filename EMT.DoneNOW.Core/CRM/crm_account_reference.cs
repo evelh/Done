@@ -62,7 +62,8 @@ namespace EMT.DoneNOW.Core
         public String bill_to_address_code { get; set; }
         [DataMember]
         public SByte? enable_email_invoice { get; set; }
-
+        [DataMember]
+        public Int64? billing_location_id { get; set; }
 
     }
 }

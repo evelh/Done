@@ -277,8 +277,13 @@
                             <td class="FieldLabels">物料成本代码
                             
                             <div>
-                                <!-- todo 物料代码名称的显示-->
-                                <input type="text" style="width: 255px;" id="cost_code_id" name="" value="" />
+                                <% EMT.DoneNOW.Core.d_cost_code costCode = null;
+                                    if ((!isAdd) && subscription.cost_code_id != 0)
+                                    {
+                                        costCode = new EMT.DoneNOW.DAL.d_cost_code_dal().FindNoDeleteById(subscription.cost_code_id); 
+                                    }
+                                    %>
+                                <input type="text" style="width: 255px;" id="cost_code_id" name="" value="<%=costCode==null?"":costCode.name %>" />
                                 <img src="../Images/data-selector.png" style="vertical-align: middle;" onclick="CostCodeCallBack()">
                                 <input type="hidden" name="cost_code_id" id="cost_code_idHidden" value="<%=isAdd?"":subscription.cost_code_id.ToString() %>" />
                             </div>
@@ -308,7 +313,12 @@
                         <tr>
                             <td class="FieldLabels">状态
                             <div>
-                                <asp:CheckBox ID="isActive" runat="server" />
+                                <asp:DropDownList ID="status_id" runat="server" Width="270px">
+                                    <asp:ListItem Value="0">未激活</asp:ListItem>
+                                    <asp:ListItem Value="1">激活</asp:ListItem>
+                                    <asp:ListItem Value="2">取消</asp:ListItem>
+                                </asp:DropDownList>
+                                <%--<asp:CheckBox ID="isActive" runat="server" />--%>
                                 <%--     <select style="width:270px">
                                     <option value="">Active</option>
                                     <option value="">Monthly</option>

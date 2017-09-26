@@ -125,7 +125,7 @@
             $ul.append(sprintf('<li class="ms-no-results">%s</li>', this.options.noMatchesFound));
             this.$drop.append($ul);
 
-            this.$drop.find('ul').css('max-height', this.options.maxHeight + 'px');
+            this.$drop.find('ul').css('max-height', this.options.maxHeight-100 + 'px');
             this.$drop.find('.multiple').css('width', this.options.multipleWidth + 'px');
 
             this.$searchInput = this.$drop.find('.ms-search input');
