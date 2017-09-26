@@ -2928,14 +2928,18 @@
              }
          }
 
-        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractUDF) { %>
+        <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractUDF)
+        { %>
         function Edit() {
           window.open("../Contract/ContractUdf.aspx?contractId=" + $("#id").val() + "&colName=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SubscriptionEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function View(id) {
         }
-        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlock
-            || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlockTime) { %>
+        <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlock
+        || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlockTime)
+        { %>
         function Edit() {
           window.open("../Contract/EditRetainerPurchase.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
@@ -2955,6 +2959,25 @@
           }
         }
         function View(id) {
+        }
+        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractRate) { %>
+        function Edit() {
+            window.open("../Contract/RoleRate.aspx?contractId=" + $("#id").val() + "&id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConRateEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Add() {
+            window.open("../Contract/RoleRate.aspx?contractId=" + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConRateAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Delete() {
+            if (confirm("修改将会影响本合同的未提交工时表，是否继续?")) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ContractAjax.ashx?act=DeleteRate&rateId=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        window.reload();
+                    }
+                })
+            }
         }
         <%}%>
         function openopenopen() {

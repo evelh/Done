@@ -86,7 +86,7 @@
                 <span>菜单</span>
             </div>
             <ul class="ButtonBarVert">
-                <li class="MenuLink"><a href="ContractSummary.aspx?id=<%=contract.id %>">摘要</a></li>
+                <li class="MenuLink"><a href="ContractSummary.aspx?id=<%=contract.id %>" target="viewContractIframe">摘要</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=InternalCost&id=<%=contract.id %>">内部成本</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=item&id=<%=contract.id %>">配置项</a></li>
                 <li class="MenuLink">例外因素-未实现</li>
@@ -131,7 +131,7 @@
              <div class="HeaderRow">
                  <asp:Label ID="ShowTitle" runat="server" Text="Label"></asp:Label>
             </div>
-            <iframe runat="server" id="viewContractIframe" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
+            <iframe runat="server" id="viewContractIframe" name="viewContractIframe" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
             <iframe runat="server" id="second" width="100%" height="0" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
         </div>
     </form>

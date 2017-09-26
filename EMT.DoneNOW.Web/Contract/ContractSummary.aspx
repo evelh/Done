@@ -61,7 +61,7 @@
                       <td class="FieldLabel" style="width: 192px;">客户名称
                       </td>
                       <td>
-                        <a href="../Company/ViewCompany.aspx?id=<%=contract.account_id %>"><%=summary.account_name %></a>
+                        <a onclick="window.open('../Common/ViewCompany.aspx?id=<%=contract.account_id %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=summary.account_name %></a>
                       </td>
                     </tr>
                     <tr height="21">
@@ -152,12 +152,12 @@
                     <tr height="21">
                       <td class="FieldLabel">开始日期
                       </td>
-                      <td><%=summary.start_date %></td>
+                      <td><%=summary.start_date.ToString("yyyy-MM-dd") %></td>
                     </tr>
                     <tr height="21">
                       <td class="FieldLabel">结束日期
                       </td>
-                      <td><%=summary.end_date %></td>
+                      <td><%=summary.end_date.ToString("yyyy-MM-dd") %></td>
                     </tr>
                     <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) { %>
                     <tr height="21">

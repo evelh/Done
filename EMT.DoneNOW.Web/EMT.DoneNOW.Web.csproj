@@ -671,6 +671,7 @@
     <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\img.gif" />
     <Content Include="Scripts\NewConfigurationItem.js" />
     <Content Include="Scripts\NewContact.js" />
+    <Content Include="Scripts\NewWorkType.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Common\SearchBody.js" />
