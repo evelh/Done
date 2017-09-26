@@ -1244,9 +1244,9 @@
                                         </asp:ScriptManager>--%>
                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" ChildrenAsTriggers="True">
                                             <ContentTemplate>
-                                                <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True"></asp:DropDownList>
+                                                <asp:DropDownList ID="GetVaild" runat="server" AutoPostBack="True" OnSelectedIndexChanged="GetVaild_SelectedIndexChanged"></asp:DropDownList>
                                                 <select name="" multiple="multiple" id="AlertVariableList3">
-                                                    <asp:Literal ID="Literal1" runat="server"></asp:Literal>
+                                                    <asp:Literal ID="GetVaildlist" runat="server"></asp:Literal>
                                                 </select>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>

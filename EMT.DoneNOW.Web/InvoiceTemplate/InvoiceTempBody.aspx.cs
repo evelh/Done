@@ -145,6 +145,14 @@ namespace EMT.DoneNOW.Web
                 sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va.Replace("'", "") + "</option>");
             }
             this.VariableList.Text = sb.ToString();
+            this.GetVaild.DataTextField = "show";
+            this.GetVaild.DataValueField = "val";
+            this.GetVaild.DataSource = new QuoteTemplateBLL().GetInvoiceBodyVariableField();
+            this.GetVaild.DataBind();
+            this.GetVaild.Items.Insert(0, new ListItem() { Value = "0", Text = "显示全部变量", Selected = true });
+            this.GetVaildlist.Text = sb.ToString();
+
+            
         }
         protected void Variable_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -203,6 +211,32 @@ namespace EMT.DoneNOW.Web
             }
             Session["cancel"] = 1;
             Response.Redirect("InvoiceTempEdit.aspx?id=" + id + "&op=edit");
+        }
+
+        protected void GetVaild_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (this.GetVaild.SelectedValue == "0")
+            {
+                sb.Clear();
+                var list = new QuoteTemplateBLL().GetAllInvoiceVariable();
+                foreach (string va in list)
+                {
+                    sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va.Replace("'", "") + "</option>");
+                }
+                this.GetVaildlist.Text = sb.ToString();
+            }
+            else
+            {
+                int id = Convert.ToInt32(this.GetVaild.SelectedValue.ToString());
+                sb.Clear();
+                var list = new QuoteTemplateBLL().GetVariable(id);
+                foreach (string va in list)
+                {
+                    sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va.Replace("'", "") + "</option>");
+                }
+                this.GetVaildlist.Text = sb.ToString();
+            }
         }
     }
 }
