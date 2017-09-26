@@ -169,15 +169,10 @@
                                                                 <div>
                                                                     <span style="display: inline-block">
                                                                         <asp:DropDownList ID="Position" runat="server"></asp:DropDownList>
-                                                                    </span>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div style="padding-bottom: 0; margin-top: 5px; margin-left: 5px;">
-                                                                    <!--添加主要位置-->
-                                                                    <asp:HyperLink ID="HyperLink1" runat="server" ImageUrl="~/Images/add.png" NavigateUrl="~/Company/LocationManage.aspx">HyperLink</asp:HyperLink>        
-                                                                </div>
-                                                            </td>
+                                                                    </span><!--添加主要位置-->
+                                                                    <img src="../Images/add.png" onclick="alert('后期开发！');" /> 
+                                                                </div> 
+                                                            </td>                                                                 
                                                         </tr>
                                                     </tbody>
                                                 </table>

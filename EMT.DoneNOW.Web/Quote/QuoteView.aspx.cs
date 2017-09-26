@@ -2161,8 +2161,9 @@ namespace EMT.DoneNOW.Web
         protected void Save_click(object sender, EventArgs e)
         {
             qddata.quote_tmpl_id = Convert.ToInt32(this.quoteTemplateDropDownList.SelectedValue.ToString());
-            qd.UpdateQuoteTemp(qddata, GetLoginUserId());
-
+            if (qd.UpdateQuoteTemp(qddata, GetLoginUserId())) {
+                //成功
+            }
         }
         /// <summary>
         /// 关闭当前窗口

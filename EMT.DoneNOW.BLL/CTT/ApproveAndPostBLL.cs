@@ -1578,5 +1578,54 @@ namespace EMT.DoneNOW.BLL
             kk.extendprice = ccc.extended_price.ToString();
             return kk;
         }
+        /// <summary>
+        /// 查看合同详情，返回合同id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="date"></param>
+        /// <param name="type"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public int ContractDetails(int id, int date, long type, long user_id) {
+            //成本
+            if (type == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+            {
+                return (int)new ctt_contract_cost_dal().FindNoDeleteById(id).contract_id;
+            }
+            //审批里程碑
+            if (type == (long)QueryType.APPROVE_MILESTONES)
+            {
+                return (int)new ctt_contract_milestone_dal().FindNoDeleteById(id).contract_id;
+            }
+            //定期服务
+            if (type == (long)QueryType.APPROVE_RECURRING_SERVICES)
+            {
+                //通过id判断
+                var cc = cc_dal.FindNoDeleteById(id);
+                var ccsa = new ctt_contract_service_adjust_dal().FindNoDeleteById(id);
+                var ccsp = new ctt_contract_service_period_dal().FindNoDeleteById(id);
+                if (cc != null & ccsa != null || cc != null && ccsp != null || ccsa != null && ccsp != null || cc == null && ccsa == null && ccsp == null)
+                {
+                    return -1;
+                }
+                //合同
+                if (cc != null)
+                {
+                    return id;
+                }
+                //合同服务调整
+                if (ccsa != null)
+                {
+                    return (int)ccsa.contract_id;
+                }
+                //合同服务周期
+                if (ccsp != null)
+                {
+                    return (int)ccsp.contract_id;
+                }
+            }
+            return -1;
+        }      
+
     }
 }

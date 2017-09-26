@@ -80,7 +80,7 @@ namespace EMT.DoneNOW.BLL
                         {
                             ccc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                             ccc.update_user_id = user.id;
-                            ccc.bill_status = 1;
+                            ccc.bill_status = 0;
                             ccc.extended_price = ccc.unit_price * ccc.quantity;
                             var add_log = new sys_oper_log()
                             {

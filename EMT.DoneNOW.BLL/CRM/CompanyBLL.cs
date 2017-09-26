@@ -108,7 +108,6 @@ namespace EMT.DoneNOW.BLL
             crm_account _account = new crm_account()
             {
                 id = _dal.GetNextIdCom(),
-                // account_id = _dal.GetNextIdCom(), // todo account_id 与 id 的区别 
                 // external_id = "",   //   外部关联用ID【预留】  
                 create_user_id = user.id,
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -138,7 +137,11 @@ namespace EMT.DoneNOW.BLL
 
             if (!string.IsNullOrEmpty(param.general.parent_company_name))
             {
-                _account.parent_id = Convert.ToInt64(param.general.parent_company_name);
+                var parentAccount = GetCompany(long.Parse(param.general.parent_company_name));
+                if (parentAccount != null && parentAccount.parent_id == null)
+                {
+                    _account.parent_id = Convert.ToInt64(param.general.parent_company_name);
+                }
             }
 
 

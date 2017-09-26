@@ -133,7 +133,7 @@
         });
         //编辑属性
         $("#EditPropertiesButton").on("click", function () {
-            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx?id="+<%=id%>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("InvoiceTemplateAttr.aspx?id=" +<%=id%>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplateAttr %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         });
         //修改附录
         $("#EditAppendixButton").on("click", function () {

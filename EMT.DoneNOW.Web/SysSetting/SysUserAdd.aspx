@@ -103,7 +103,7 @@
                                             <td valign="top" style="width: 480px;">
                                                 <table cellpadding="0" cellspacing="0">
                                                     <tbody>
-                                                        <tr>
+                                                       <%-- <tr>
                                                             <td class="standard_label">
                                                                 <span class="lblNormalClass">前缀</span>
                                                                 <div>
@@ -112,7 +112,7 @@
                                                                     </span>
                                                                 </div>
                                                             </td>
-                                                        </tr>
+                                                        </tr>--%>
                                                         <tr>
                                                             <td class="standard_label">
                                                                 <span class="lblNormalClass">姓<span style="color: red;">*</span></span>
@@ -165,19 +165,14 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="standard_label">
-                                                                <span class="lblNormalClass">主要位置<span style="color: red;">*</span></span>
+                                                                <span class="lblNormalClass">主区域<span style="color: red;">*</span></span>
                                                                 <div>
                                                                     <span style="display: inline-block">
                                                                         <asp:DropDownList ID="Position" runat="server"></asp:DropDownList>
-                                                                    </span>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div style="padding-bottom: 0; margin-top: 5px; margin-left: 5px;">
-                                                                    <!--添加主要位置-->
-                                                                        <asp:HyperLink ID="HyperLink1" runat="server" ImageUrl="~/Images/add.png" NavigateUrl="~/Company/LocationManage.aspx">HyperLink</asp:HyperLink>                                                                        
-                                                                </div>
-                                                            </td>
+                                                                    </span><!--添加主要位置-->
+                                                                    <img src="../Images/add.png" onclick="alert('后期开发！');" /> 
+                                                                </div> 
+                                                            </td>                                                                 
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -208,14 +203,14 @@
                                                                     </span>
                                                                 </div>
                                                             </td>
-                                                            <td class="standard_entry_control" style="padding-left: 10px;">
+                                                            <%--<td class="standard_entry_control" style="padding-left: 10px;">
                                                                 <span class="lblNormalClass">延伸</span>
                                                                 <div>
                                                                     <span style="display: inline-block">
                                                                         <asp:TextBox ID="TextBox1" runat="server"  class="txtBlack8Class" type="text" maxlength="50" style="width: 70px;"></asp:TextBox>                                                                        
                                                                     </span>
                                                                 </div>
-                                                            </td>
+                                                            </td>--%>
                                                         </tr>
                                                         <tr>
                                                             <td class="standard_label">

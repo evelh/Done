@@ -40,14 +40,15 @@
                 </tr>
                 <% if (nameSimilarList != null && nameSimilarList.Count > 0)
                     {
+                        var accountType = dic.FirstOrDefault(_ => _.Key == "company_type").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
                         foreach (var item in nameSimilarList)
                         {%>
                 <tr>
                     <td><%=item.name %></td>
-                    <td><%=item.type_id %></td>
-                    <td>地址</td>
-                    <td>城市</td>
-                    <td><%=item.is_active %></td>
+                    <td><%=item.type_id==null?"":accountType.FirstOrDefault(_=>_.val==item.type_id.ToString()).show %></td>
+                    <td></td>
+                    <td></td>
+                    <td><%=item.is_active==1?"激活":"未激活" %></td>
                     <td><%=duplicateReason %></td>
                 </tr>
 
