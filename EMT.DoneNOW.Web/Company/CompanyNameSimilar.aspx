@@ -14,29 +14,29 @@
 <body>
     <form id="form1" runat="server">
         <div class="header">客户名称相似</div>
-        <div class="header-title">
+        <div class="header-title" style="margin:0 10px 10px 0;height:40px;">
             <ul>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;margin-top:6px;"></i>
                     
                     <span id="save_close">保存并关闭</span>
                 </li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;margin-top:6px;"></i>
                   <span id="close">关闭</span>
                     </li>
             </ul>
         </div>
-        <div class="text">
+        <div class="text" style="padding:0;">
             您新建的客户可能已经存在，您要创建新客户，还是更新以下客户的记录、联系人、待办信息？注意已存在客户的信息不会被更新
         </div>
         <div class="content clear savecontent" style="padding: 10px;">
-            <table border="" cellspacing="" cellpadding="" class="savetable">
+            <table border="0" cellspacing="0" cellpadding="0" class="savetable" width="100%">
                 <tr style="background: #CBD9E4;">
-                    <th>客户名称</th>
-                    <th>客户类型</th>
-                    <th>地址</th>
-                    <th>城市</th>
-                    <th>状态</th>
-                    <th>重复原因</th>
+                    <th style="width:20%;text-align:center;">客户名称</th>
+                    <th style="width:100px;text-align:center;">客户类型</th>
+                    <th style="width:30%;text-align:center;">地址</th>
+                    <th style="width:80px;text-align:center;">城市</th>
+                    <th style="width:60px;text-align:center;">状态</th>
+                    <th style="width:20%;text-align:center;">重复原因</th>
                 </tr>
                 <% if (nameSimilarList != null && nameSimilarList.Count > 0)
                     {
