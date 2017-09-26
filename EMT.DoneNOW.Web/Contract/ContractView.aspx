@@ -96,7 +96,7 @@
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.TIME_MATERIALS
                         ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER
                         ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.FIXED_PRICE) { %>
-                <li class="MenuLink">费率</li>
+                <li class="MenuLink"><a href="ContractView.aspx?type=roleRate&id=<%=contract.id %>">费率</a></li>
                 <%} %>
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) { %>
                 <li class="MenuLink">服务-未实现</li>
@@ -131,8 +131,8 @@
              <div class="HeaderRow">
                  <asp:Label ID="ShowTitle" runat="server" Text="Label"></asp:Label>
             </div>
-            <iframe runat="server" id="viewContractIframe" width="100%" height="300" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
-            <iframe runat="server" id="second" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
+            <iframe runat="server" id="viewContractIframe" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
+            <iframe runat="server" id="second" width="100%" height="0" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
         </div>
     </form>
 

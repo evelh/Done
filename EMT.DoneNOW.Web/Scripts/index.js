@@ -36,6 +36,7 @@ $(".information ").children(".left").width(leftWidth + "%");
 
 //logo的下拉菜单内容
 var timer;
+var timer1;
 $(".Logo").on("mousemove", function () {
     clearTimeout(timer);
     $(this).css("border-color", "#d7d7d7");
@@ -60,12 +61,12 @@ $(".GuideOverlay").on("mouseout", function () {
         $(_this).hide();
     }, 500)
 });
-//循环一级菜单
+//循环一级菜单   显示二级菜单
 $.each($(".GuideNavigation"), function (i) {
     $(this).mousemove(function () {
         $(this).addClass("SelectedState").siblings("div").removeClass("SelectedState").addClass("NormalState");
         $(".Module").eq(i).show().siblings(".Module").hide();
-    })
+    });
 });
 $(".Content").on("mouseover", function () {
     $(this).children("a").removeClass("NormalState").addClass("HoverState");
@@ -127,18 +128,9 @@ $(".RecentOverlay").on("mousemove", function () {
     $(".Recent").css("borderBottom", "1px solid #fff");
     $(this).show();
 });
-$(".RecentOverlay").on("mouseout", function () {
-    $(".Recent").removeClass("HoverState");
-    $(".Recent").css("borderTop", "1px solid #d7d7d7");
-    $(".Recent").css("borderBottom", "1px solid #d7d7d7");
-    $(this).hide();
-});
-
-
-
-
-
-
-
-
-
+    $(".RecentOverlay").on("mouseout", function () {
+        $(".Recent").removeClass("HoverState");
+        $(".Recent").css("borderTop", "1px solid #d7d7d7");
+        $(".Recent").css("borderBottom", "1px solid #d7d7d7");
+        $(this).hide();
+    });

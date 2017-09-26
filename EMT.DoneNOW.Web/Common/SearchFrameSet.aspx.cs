@@ -59,6 +59,10 @@ namespace EMT.DoneNOW.Web
                     conditionHeight = 206;
                 if (conditionHeight > 370)
                     conditionHeight = 370;
+                if (catId==(int)DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES|| catId == (int)DTO.DicEnum.QUERY_CATE.APPROVE_EXPENSE|| catId == (int)DTO.DicEnum.QUERY_CATE.APPROVE_LABOUR|| catId == (int)DTO.DicEnum.QUERY_CATE.APPROVE_MILESTONES|| catId == (int)DTO.DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES|| catId == (int)DTO.DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS)
+                {
+                    conditionHeight += 40;
+                }
             }
         }
     }

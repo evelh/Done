@@ -28,6 +28,8 @@ namespace EMT.DoneNOW.Web.Contract
                         ShowTitle.Text = "内部成本-"+contract.name;
                         break;
                     case "item":
+                        viewContractIframe.Style["height"] = "100%";
+                        second.Style["height"] = "600";
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RELATION_CONFIGITEM + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.Relation_ConfigItem + "&id=" + contract_id;
                         second.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.NORELATION_CONFIGITEM + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.Norelation_ConfigItem + "&id=" + contract.account_id+"&contract_id="+contract.id;
                         ShowTitle.Text = "配置项-" + contract.name;
@@ -45,6 +47,8 @@ namespace EMT.DoneNOW.Web.Contract
                         ShowTitle.Text = "预付时间系数-" + contract.name;
                         break;
                     case "udf":
+                        viewContractIframe.Style["height"] = "100%";
+                        second.Style["height"] = "600";
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_UDF + "&type=" + (int)QueryType.ContractUDF + "&id=" + contract.id;
                         ShowTitle.Text = "自定义字段-" + contract.name;
                         break;
@@ -55,6 +59,10 @@ namespace EMT.DoneNOW.Web.Contract
                     case "blockTime":
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_BLOCK_TIME + "&type=" + (int)QueryType.ContractBlockTime + "&id=" + contract.id;
                         ShowTitle.Text = "预付时间-" + contract.name;
+                        break;
+                    case "roleRate":
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_RATE + "&type=" + (int)QueryType.ContractRate + "&id=" + contract.id;
+                        ShowTitle.Text = "费率-" + contract.name;
                         break;
                     default:
                         ShowTitle.Text = "摘要-" + contract.name;

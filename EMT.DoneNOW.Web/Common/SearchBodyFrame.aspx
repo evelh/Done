@@ -10,8 +10,6 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <link rel="stylesheet" type="text/css" href="../Content/searchList.css" />
-    <%--控制日期弹窗--%>
-    <link href="../Content/Roles.css" rel="stylesheet" />
     <title></title>
     <style>
         .searchcontent {
@@ -57,55 +55,6 @@
             font-size: 12px;
             font-weight: normal;
             color: #4F4F4F;
-        }
-        /*合同审批时，提交日期窗口*/
-        .addText {
-            width: 486px;
-            height: 275px;
-            margin-left: -247px;
-            margin-top: -142px;
-            z-index: 980;
-            display: block;
-            left: 50%;
-            position: fixed;
-            top: 50%;
-            background-color: #b9b9b9;
-            border: solid 4px #b9b9b9;
-        }
-
-            .addText > div {
-                background-color: #fff;
-                bottom: 0;
-                left: 0;
-                position: absolute;
-                right: 0;
-                top: 0;
-            }
-
-        .CancelDialogButton {
-            background-image: url(../img/cancel1.png);
-            background-position: 0 -32px;
-            border: none;
-            cursor: pointer;
-            height: 32px;
-            position: absolute;
-            right: -14px;
-            top: -14px;
-            width: 32px;
-            z-index: 100;
-            border-radius: 50%;
-        }
-
-        #BackgroundOverLay {
-            width: 100%;
-            height: 100%;
-            background: black;
-            opacity: 0.6;
-            z-index: 25;
-            position: absolute;
-            top: 0;
-            left: 0;
-            /*合同审批时，提交日期窗口（样式尾）*/
         }
     </style>
 </head>
@@ -217,11 +166,11 @@
                         } else if(addBtn=="审批并提交"){
   %>
                     <li onclick="Add()"><span style="margin: 0 10px;">审批并提交</span></li>
-                     <li><a href="../Invoice/InvocieSearch" target="PageFrame" style="color:black;text-decoration:none;"><span style="margin: 0 10px;">生成发票</span></a></li>
+                     <li><a href="../Invoice/InvocieSearch" target="PageFrame" style="color:#333;text-decoration:none;"><span style="margin: 0 10px;">生成发票</span></a></li>
                     <%
                              } else if(addBtn=="完成"){
   %>
-                    <li onclick="Add()"><span style="margin: 0;">完成</span></li>
+                    <li onclick="Add()"><span style="margin: 0 10px;">完成</span></li>
                     <%
                         }
                         else
@@ -1308,14 +1257,14 @@
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Role)
         {%>//角色
         function View(id) {
-            window.open("../SysSetting/SysUserEdit.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Role %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("../SysSetting/SysRolesAdd.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Role %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
 
         function Add() {
-            window.open("../SysSetting/SysUserAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Role %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("../SysSetting/SysRolesAdd.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Role %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Edit() {
-            window.open("../SysSetting/SysUserEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Role %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("../SysSetting/SysRolesAdd.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Role %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Delete() {
             //if (confirm("删除后无法恢复，是否继续?")) {
@@ -1695,6 +1644,16 @@
        <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.REVOKE_CHARGES)
         {%>//撤销审批成本
+        $("#CheckAll").click(function () {
+            if ($(this).is(":checked")) {
+                $(".IsChecked").prop("checked", true);
+                $(".IsChecked").css("checked", "checked");
+            }
+            else {
+                $(".IsChecked").prop("checked", false);
+                $(".IsChecked").css("checked", "");
+            }
+        })
         function Add() {
             var ids = "";
             $(".IsChecked").each(function () {
@@ -1720,6 +1679,16 @@
        <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.REVOKE_RECURRING_SERVICES)
         {%>//撤销定期服务审批
+        $("#CheckAll").click(function () {
+            if ($(this).is(":checked")) {
+                $(".IsChecked").prop("checked", true);
+                $(".IsChecked").css("checked", "checked");
+            }
+            else {
+                $(".IsChecked").prop("checked", false);
+                $(".IsChecked").css("checked", "");
+            }
+        })
         function Add() {
             var ids = "";
             $(".IsChecked").each(function () {
@@ -1744,6 +1713,16 @@
        <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.REVOKE_MILESTONES)
         {%>//撤销里程碑审批
+        $("#CheckAll").click(function () {
+            if ($(this).is(":checked")) {
+                $(".IsChecked").prop("checked", true);
+                $(".IsChecked").css("checked", "checked");
+            }
+            else {
+                $(".IsChecked").prop("checked", false);
+                $(".IsChecked").css("checked", "");
+            }
+        })
         function Add() {
             var ids = "";
             $(".IsChecked").each(function () {
@@ -1768,6 +1747,16 @@
        <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.REVOKE_SUBSCRIPTIONS)
         {%>//撤销订阅审批
+        $("#CheckAll").click(function () {
+            if ($(this).is(":checked")) {
+                $(".IsChecked").prop("checked", true);
+                $(".IsChecked").css("checked", "checked");
+            }
+            else {
+                $(".IsChecked").prop("checked", false);
+                $(".IsChecked").css("checked", "");
+            }
+        })
         function Add() {
             var ids = "";
             $(".IsChecked").each(function () {
@@ -1793,6 +1782,16 @@
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_MILESTONES)
         {%>//审批里程碑
         //审批并提交(批量)
+        $("#CheckAll").click(function () {
+            if ($(this).is(":checked")) {
+                $(".IsChecked").prop("checked", true);
+                $(".IsChecked").css("checked", "checked");
+            }
+            else {
+                $(".IsChecked").prop("checked", false);
+                $(".IsChecked").css("checked", "");
+            }
+        })
         function Add() {
             var ids = "";
             $(".IsChecked").each(function () {
@@ -1823,6 +1822,16 @@
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_SUBSCRIPTIONS)
         {%>//审批订阅
         //审批并提交(批量)
+        $("#CheckAll").click(function () {
+            if ($(this).is(":checked")) {
+                $(".IsChecked").prop("checked", true);
+                $(".IsChecked").css("checked", "checked");
+            }
+            else {
+                $(".IsChecked").prop("checked", false);
+                $(".IsChecked").css("checked", "");
+            }
+        })
         function Add() {
             var ids = "";
             $(".IsChecked").each(function () {
@@ -1839,7 +1848,7 @@
         }
         //审批并提交
         function Post() {
-           
+            window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         //恢复初始值
         function Restore_Initiall() {
@@ -1861,6 +1870,16 @@
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_RECURRING_SERVICES)
         {%>//审批定期服务
         //审批并提交(批量)
+        $("#CheckAll").click(function () {
+            if ($(this).is(":checked")) {
+                $(".IsChecked").prop("checked", true);
+                $(".IsChecked").css("checked", "checked");
+            }
+            else {
+                $(".IsChecked").prop("checked", false);
+                $(".IsChecked").css("checked", "");
+            }
+        })
         function Add() {
             var ids = "";
             $(".IsChecked").each(function () {
@@ -1906,6 +1925,16 @@
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
         {%>//审批成本
         //审批并提交(批量)
+        $("#CheckAll").click(function () {
+            if ($(this).is(":checked")) {
+                $(".IsChecked").prop("checked", true);
+                $(".IsChecked").css("checked", "checked");
+            }
+            else {
+                $(".IsChecked").prop("checked", false);
+                $(".IsChecked").css("checked", "");
+            }
+        })
         function Add() {
             var ids = "";
             $(".IsChecked").each(function () {
@@ -1925,7 +1954,6 @@
       <%--  function ToInvoice() {
             $("#PageFrame").attr("src", "Invoice/InvocieSearch");
            <%-- window.open('../Invoice/InvocieSearch.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>','left=0,top=0,location=no,status=no,width=900,height=750',false);--%>
-        }--%>
         //审批并提交
         function Post() {
             window.open('../Contract/ApproveChargeSelect.aspx?type=' +  <%=queryTypeId%>  + '&id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdjust%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
