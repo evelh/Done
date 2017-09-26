@@ -10,6 +10,11 @@
     <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <title>修改联系人信息</title>
+    <style>
+        td{
+            text-align:left;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -25,12 +30,12 @@
         <div class="text">
             公司的地址已更新，如下所示。
         </div>
-        <div>
-            <table>
+        <div style="margin-left:50px;">
+            <table style="width:400px;">
 
-                <tr>
-                    <td><span class="fl">国家</span></td>
-                    <td><span><%=country_dic.FirstOrDefault(_=>_.val==defaultLocation.country_id.ToString()).show %></span></td>
+                <tr style="width:400px;">
+                    <td ><span class="fl">国家</span></td>
+                    <td style="width:200px;"><span><%=country_dic.FirstOrDefault(_=>_.val==defaultLocation.country_id.ToString()).show %></span></td>
                 </tr>
                 <tr>
                     <td><span class="fl">省份</span></td>
@@ -67,14 +72,21 @@
                   <span style="margin-left: 10px;"><%=contact.name %></span>
                   <% }%>
                   <%} %>
+                    <% if (faxPhoneContactList != null && faxPhoneContactList.Count > 0)
+                      {
+                          foreach (var contact in faxPhoneContactList)
+                          {%>
+                  <span style="margin-left: 10px;"><%=contact.name %></span>
+                  <% }%>
+                  <%} %>
               </p>
         </div>
-        <div class="text">
+        <div class="text" style="width:600px;">
             客户电话/传真发生变更，请确认以下员工是否同步修改
         </div>
 
         <input type="hidden" id="updateContact" value="" />
-        <div class="content clear savecontent" style="padding: 10px;">
+        <div class="content clear savecontent" style="padding: 10px;width:100%;" >
             <div>
                 <p>
                     电话-
@@ -85,24 +97,24 @@
                 <input type="hidden" name="Phone" value="<%=account.phone %>" />
                 <input type="hidden" name="Fax" value="<%=account.fax %>" />
             </div>
-            <table border="" cellspacing="" cellpadding="" class="savetable">
+            <table border="" cellspacing="" cellpadding="" class="savetable" style="width:100%;" >
                 <tr style="background: #CBD9E4;">
-                    <th>
+                    <th style="text-align:center;">
                         <input type="hidden" id="updateId" name="updateId" value="" />
                         <input type="checkbox" name="" id="" value="" /></th>
-                    <th>联系人名称</th>
-                    <th>电话</th>
-                    <th>传真</th>
+                    <th style="text-align:center;">联系人名称</th>
+                    <th style="text-align:center;">电话</th>
+                    <th style="text-align:center;">传真</th>
                 </tr>
                 <% if (faxPhoneContactList != null && faxPhoneContactList.Count > 0)
                     {
                         foreach (var contact in faxPhoneContactList)
                         {%>
                 <tr>
-                    <td style="padding: 0;"><input type="checkbox" class="idCheck" value="<%=contact.id %>" /></td>
-                    <td><%=contact.name %></td>
-                    <td><%=contact.phone %></td>
-                    <td><%=contact.fax %></td>
+                    <td style="padding: 0;text-align:center;"><input type="checkbox" class="idCheck" value="<%=contact.id %>" /></td>
+                    <td style="padding: 0;text-align:center;"><%=contact.name %></td>
+                    <td style="padding: 0;text-align:center;"><%=contact.phone %></td>
+                    <td style="padding: 0;text-align:center;"><%=contact.fax %></td>
 
                 </tr>
                 <% }%>
