@@ -855,17 +855,20 @@ a:hover {
                                 
                                 <span class="labelText">地址信息</span>
                             </td>
+                                   <%if (contactLocation != null)
+                                           { %>
                             <td class="tableCell">
                                <span class="label">
-                                  <%=country.FirstOrDefault(_=>_.val==location.country_id.ToString()).show %>
+                                  <%=country.FirstOrDefault(_ => _.val == contactLocation.country_id.ToString()).show %>
                                      &nbsp;&nbsp;
-                                        <%=addressdistrict.FirstOrDefault(_=>_.val==location.province_id.ToString()).show %>
-                                        &nbsp;&nbsp;<%=addressdistrict.FirstOrDefault(_=>_.val==location.city_id.ToString()).show %>
-                                        &nbsp;&nbsp;<%=addressdistrict.FirstOrDefault(_=>_.val==location.district_id.ToString()).show %>
+                                        <%=addressdistrict.FirstOrDefault(_ => _.val == contactLocation.province_id.ToString()).show %>
+                                        &nbsp;&nbsp;<%=addressdistrict.FirstOrDefault(_ => _.val == contactLocation.city_id.ToString()).show %>
+                                        &nbsp;&nbsp;<%=addressdistrict.FirstOrDefault(_ => _.val == contactLocation.district_id.ToString()).show %>
                                         <br />
                                        <%=location.address %>&nbsp;&nbsp;<%=location.additional_address %>&nbsp;&nbsp;<%=location.postal_code %>
                                     </span>
                             </td>
+                                   <%} %>
                         </tr>
                                <% }
                                 %>

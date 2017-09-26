@@ -7,5 +7,9 @@ namespace EMT.DoneNOW.DAL
 {
     public class ctt_invoice_dal : BaseDAL<ctt_invoice>
     {
+        public List<ctt_invoice> GetInvoiceList(string where ="")
+        {
+            return FindListBySql<ctt_invoice>($"SELECT * FROM ctt_invoice where delete_time = 0 "+ where);
+        }
     }
 }

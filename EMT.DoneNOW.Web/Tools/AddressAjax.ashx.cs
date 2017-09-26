@@ -36,6 +36,10 @@ namespace EMT.DoneNOW.Web
                     string location_id = DNRequest.GetQueryString("LocationId");
                     context.Response.Write(DeleteLocation(context, Convert.ToInt64(location_id)));
                     break;
+                case "location":
+                    var locaId = context.Request.QueryString["location_id"];
+                    GetLocation(context,long.Parse(locaId));
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     return;                 
@@ -127,6 +131,17 @@ namespace EMT.DoneNOW.Web
                              
             }
             
+        }
+        /// <summary>
+        /// 根据地址ID去获取到地址信息
+        /// </summary>
+        private void GetLocation(HttpContext context,long location_id)
+        {
+            var location = new LocationBLL().GetLocation(location_id);
+            if (location != null)
+            {
+                context.Response.Write(new EMT.Tools.Serialize().SerializeJson(location));
+            }
         }
         #endregion
         public bool IsReusable

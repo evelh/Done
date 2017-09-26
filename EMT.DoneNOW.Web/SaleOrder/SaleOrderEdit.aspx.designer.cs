@@ -67,13 +67,13 @@ namespace EMT.DoneNOW.Web.SaleOrder {
         protected global::System.Web.UI.WebControls.DropDownList owner_resource_id;
         
         /// <summary>
-        /// bill_to_use_account_address 控件。
+        /// billTo_use_account_address 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox bill_to_use_account_address;
+        protected global::System.Web.UI.WebControls.CheckBox billTo_use_account_address;
         
         /// <summary>
         /// bill_country_id 控件。
@@ -85,22 +85,22 @@ namespace EMT.DoneNOW.Web.SaleOrder {
         protected global::System.Web.UI.WebControls.DropDownList bill_country_id;
         
         /// <summary>
-        /// ship_to_use_account_address 控件。
+        /// shipTo_use_account_address 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox ship_to_use_account_address;
+        protected global::System.Web.UI.WebControls.CheckBox shipTo_use_account_address;
         
         /// <summary>
-        /// ship_to_use_bill_to_address 控件。
+        /// shipTo_use_bill_to_address 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox ship_to_use_bill_to_address;
+        protected global::System.Web.UI.WebControls.CheckBox shipTo_use_bill_to_address;
         
         /// <summary>
         /// ship_country_id 控件。

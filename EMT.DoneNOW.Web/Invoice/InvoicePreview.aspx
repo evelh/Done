@@ -515,13 +515,23 @@
         locationChange();
     })
 
+
+    $(function () {
+        <% if (isInvoice)
+        {%>
+        $("#invoice_temp_id").css("display", "none"); // ProcessBar
+        $("#ProcessBar").css("display", "none");
+        $(".PreviewInvoice_TextOverlay").hide();
+        <%} %>
+    })
+
     // 页面参数改变更新页面
     function locationChange() {
         var account_id = $("#accoultList").val();
         var invTempId = $("#invoice_temp_id").val();
         var ids = '<%=Request.QueryString["account_ids"] %>';
         if (invTempId != "" && invTempId != "0" && account_id != "" && account_id != "0" && ids != "") {
-            location.href = "InvoicePreview?account_ids=" + ids + "&account_id=" + account_id + "&invoice_temp_id=" + invTempId;
+            location.href = "InvoicePreview?account_ids=" + ids + "&account_id=" + account_id + "&invoice_temp_id=" + invTempId + "&stareDate=<%=itemStartDatePara %>&endDate=<%=itemEndDatePara %>&contract_type=<%=contractTypePara %>&contract_cate=<%=contractCatePara %>&itemDeal=<%=projectItemPara %>&purchaseNo=<%=purchaseNo %>&isInvoice=<%=isInvoice?"1":"" %>";
         }
     }
 
@@ -529,7 +539,7 @@
         var invTempId = $("#invoice_temp_id").val();
         var ids = '<%=Request.QueryString["account_ids"] %>';
         if (invTempId != "" && invTempId != "0" && account_id != "" && account_id != "0" && ids != "") {
-            location.href = "InvoicePreview?account_ids=" + ids + "&account_id=" + account_id + "&invoice_temp_id=" + invTempId;
+            location.href = "InvoicePreview?account_ids=" + ids + "&account_id=" + account_id + "&invoice_temp_id=" + invTempId + "&stareDate=<%=itemStartDatePara %>&endDate=<%=itemEndDatePara %>&contract_type=<%=contractTypePara %>&contract_cate=<%=contractCatePara %>&itemDeal=<%=projectItemPara %>&purchaseNo=<%=purchaseNo %>&isInvoice=<%=isInvoice?"1":"" %>";
         }
     }
 

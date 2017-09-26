@@ -122,6 +122,7 @@ namespace EMT.DoneNOW.Web.Invoice
             {
                 case "_ctl3_rdoAccount":
                     thisRef.invoice_address_type_id = (int)DicEnum.INVOICE_ADDRESS_TYPE.USE_ACCOUNT_ADDRESS;
+                    
                     break;
                 case "_ctl3_UseParent":
                     thisRef.invoice_address_type_id = (int)DicEnum.INVOICE_ADDRESS_TYPE.USE_PARENT_ACC_ADD;
@@ -131,10 +132,35 @@ namespace EMT.DoneNOW.Web.Invoice
                     break;
                 case "_ctl3_rdoAccountBillTo":
                     thisRef.invoice_address_type_id = (int)DicEnum.INVOICE_ADDRESS_TYPE.USE_INSERT;
+                    var location = AssembleModel<crm_location>();
+                    location.account_id = account.id;
+                    location.is_default = 0;
+                    if (location.province_id != 0 && location.city_id != 0 && location.district_id != null && location.district_id != 0 && (!string.IsNullOrEmpty(location.address)))
+                    {
+                        break;
+                    }
+                    if (thisRef.billing_location_id == null)
+                    {
+                        new LocationBLL().Insert(location,GetLoginUserId());
+                        thisRef.billing_location_id = location.id;
+                    }
+                    else
+                    {
+                        var oldLocation = new crm_location_dal().FindNoDeleteById((long)thisRef.billing_location_id);
+                        location.id = oldLocation.id;
+                        location.is_default = oldLocation.is_default;
+                        location.location_label = oldLocation.location_label;
+                        new LocationBLL().Update(location,GetLoginUserId());
+                        
+                    }
+
                     break;
                 default:
                     break;
             }
+
+
+
 
             if (accRef != null)
             {
@@ -176,7 +202,7 @@ namespace EMT.DoneNOW.Web.Invoice
             }
             else
             {
-
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存失败！');window.close(); </script>");
             }
                  
         }

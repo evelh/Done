@@ -72,11 +72,11 @@ namespace EMT.DoneNOW.Web.SaleOrder
                         {
                             contact_id.SelectedValue = sale_order.contact_id.ToString();
                         }
-                        
+
                         #endregion
-                        bill_to_use_account_address.Checked = sale_order.bill_to_use_account_address == 1;
-                        ship_to_use_account_address.Checked = sale_order.ship_to_use_account_address == 1;
-                        ship_to_use_bill_to_address.Checked = sale_order.ship_to_use_bill_to_address == 1;
+                        billTo_use_account_address.Checked = sale_order.bill_to_use_account_address == 1;
+                        shipTo_use_account_address.Checked = sale_order.ship_to_use_account_address == 1;
+                        shipTo_use_bill_to_address.Checked = sale_order.ship_to_use_bill_to_address == 1;
 
                         status_id.SelectedValue = sale_order.status_id.ToString();
                         owner_resource_id.SelectedValue = sale_order.owner_resource_id.ToString();
@@ -184,13 +184,19 @@ namespace EMT.DoneNOW.Web.SaleOrder
                 return sale;
             }
 
-            if (bill_to_use_account_address.Checked)
+            if (billTo_use_account_address.Checked)
             {
                 sale.bill_to_location_id = location.id;
+                sale.bill_to_use_account_address = 1;
             }
             else
             {
+                sale.bill_to_use_account_address = 0;
                 var bill_id = Request.Params["billLocationId"];
+                if (bill_id == location_id)
+                {
+                    bill_id = "";
+                }
                 var bill_location = new crm_location()
                 {
                     account_id = opportunity.account_id,
@@ -226,13 +232,19 @@ namespace EMT.DoneNOW.Web.SaleOrder
             }
 
 
-            if (ship_to_use_account_address.Checked)
+            if (shipTo_use_account_address.Checked)
             {
                 sale.ship_to_location_id = location.id;
+                sale.ship_to_use_account_address = 1;
             }
             else
             {
+                sale.ship_to_use_account_address = 0;
                 var ship_id = Request.Params["shipLocationId"];
+                if (ship_id == location_id)
+                {
+                    ship_id = "";
+                }
                 var ship_location = new crm_location()
                 {
                     account_id = opportunity.account_id,
@@ -265,14 +277,15 @@ namespace EMT.DoneNOW.Web.SaleOrder
                 }
             }
 
-            if (ship_to_use_bill_to_address.Checked)
+            if (shipTo_use_bill_to_address.Checked)
             {
                 sale.ship_to_location_id = sale.bill_to_location_id;
+                sale.ship_to_use_bill_to_address = 1;
             }
-          
-
-
-
+            else
+            {
+                sale.ship_to_use_bill_to_address = 0;
+            }
             return sale;
         }
 

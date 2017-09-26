@@ -378,10 +378,10 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.InvoiceTemplate:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "设为默认", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "未激活", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设为默认", click_function = "Default()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "未激活", click_function = "NoActive()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
                     break;
                 case (long)QueryType.InstalledProductView:

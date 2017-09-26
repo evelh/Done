@@ -58,10 +58,22 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
 
                 if (!IsPostBack)
                 {
-                    isActive.Checked = true;
-                    if (subscription != null && subscription.status_id != 1)
+                    
+                    if (subscription != null )
                     {
-                        isActive.Checked = false;
+                        if(subscription.status_id != 1)
+                        {
+                            status_id.SelectedValue = subscription.status_id.ToString();
+                        }
+                        else
+                        {
+                            status_id.SelectedValue = "1";
+                        }
+
+                    }
+                    else
+                    {
+                        status_id.SelectedValue = "1";
                     }
                 }
             }
@@ -124,11 +136,11 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                 case ERROR_CODE.SUCCESS:
                     if (isAdd)
                     {
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加成功！');location.href='SubscriptionAddOrEdit.aspx.aspx?insProId=" + subscription.installed_product_id + "';</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加成功！');location.href='SubscriptionAddOrEdit.aspx?insProId=" + subscription.installed_product_id + "';</script>");
                     }
                     else
                     {
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改成功！');location.href='SubscriptionAddOrEdit.aspx.aspx?insProId=" + subscription.installed_product_id + "';</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改成功！');location.href='SubscriptionAddOrEdit.aspx?insProId=" + subscription.installed_product_id + "';</script>");
                     }
                     break;
                 case ERROR_CODE.PARAMS_ERROR:
@@ -147,7 +159,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
         {
             var id = subscription == null ? 0 : subscription.id;
             subscription = AssembleModel<crm_subscription>();
-            subscription.status_id = isActive.Checked ? 1 : 0;
+            //subscription.status_id = isActive.Checked ? 1 : 0;/
             if (!isAdd)
             {
                 subscription.id = id;

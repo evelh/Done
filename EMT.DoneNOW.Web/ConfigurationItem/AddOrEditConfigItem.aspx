@@ -506,9 +506,9 @@
                                                                 <span style="display: inline-block;">
                                                                     <input type="text" name="productName" id="product_id" value="<%=product==null?"":product.name %>" /></span>
                                                                 <a onclick="chooseProduct()" class="DataSelectorLinkIcon">
-                                                                    <img src="../Images/data-selector.png" alt=""></a>
+                                                                    <img src="../Images/data-selector.png" alt="" /></a>
                                                                 <a id="EditProduct" onclick="EditProduct()" style="display: none;" class="DataSelectorLinkIcon">
-                                                                    <img src="../Images/data-selector.png" alt=""></a>
+                                                                    <img src="../Images/edit.png" alt="" /></a>
 
 
                                                                 <input type="hidden" name="product_id" id="product_idHidden" value="<%=product==null?"":product.id.ToString() %>" />
@@ -1356,6 +1356,9 @@
             return false;
         }
         return true;
+    })
+    $("#CancelButton").click(function () {
+        window.close();
     })
 
 

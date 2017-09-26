@@ -73,6 +73,7 @@ namespace EMT.DoneNOW.Web
                         this.EmailType1.SelectedValue = resourcedata.email1_type_id.ToString();
                     if (resourcedata.email2_type_id!=null&&!string.IsNullOrEmpty(resourcedata.email2_type_id.ToString()))
                         this.EmailType2.SelectedValue = resourcedata.email2_type_id.ToString();
+
                     this.name.Text = userdata.name.ToString();//用户名
                     if (resourcedata.is_active > 0)//是否激活
                         this.ACTIVE.Checked = true;
