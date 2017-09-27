@@ -48,7 +48,7 @@
                                 <div class="Vertical Vertical1"></div>
                                 <div class="Horizontal"></div>
                             </div>
-                            <span class="Text">应用范围（共享）功能</span>
+                            <span class="Text">共享功能设置</span>
                             <span></span>
                         </div>
                         <div class="Content Content1" id="c1">
@@ -56,71 +56,71 @@
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">系统设置(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">用户自定义字段(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">工作流规则(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">通知模板(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">通知历史(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">自定义模板(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">接收电子邮件处理(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">备注类型(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">知识库(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">下载(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">存储空间占用查看(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="PageNavigationLinkGroup">
                                     <div class="Heading">
-                                        <div class="Text">Surveys</div>
+                                        <div class="Text">调查</div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">问卷调查(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">问卷调查邮件信息(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">管理问卷调查反馈(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -134,7 +134,7 @@
                                 <div class="Vertical Vertical1"></div>
                                 <div class="Horizontal"></div>
                             </div>
-                            <span class="Text">你的组织</span>
+                            <span class="Text">组织管理</span>
                             <span></span>
                         </div>
                         <div class="Content Content1" id="c2">
@@ -142,26 +142,26 @@
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">区域(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">部门(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">业务范围(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">Logo(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">本地化(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -175,7 +175,7 @@
                                 <div class="Vertical Vertical1"></div>
                                 <div class="Horizontal"></div>
                             </div>
-                            <span class="Text">资源/用户（HR）</span>
+                            <span class="Text">员工/用户管理</span>
                             <span></span>
                         </div>
                         <div class="Content Content1" id="c3">
@@ -183,50 +183,50 @@
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE %>" target="PageFrame1">资源/用户</a>
-                                            <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE %>" target="PageFrame1">员工/用户管理</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_ROLE %>" target="PageFrame1">角色</a>
-                                            <div class="StandardText">Set up billing roles that determine the rate at which labour will be billed.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_DEPARTMENT %>" target="PageFrame1">部门</a>
-                                            <div class="StandardText">Set up organizational entities in your company that are associated with resources and work types, and play a role in project security.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">工作组(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">假期方案(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">休假策略(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">工时表审核人设置(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">费用表审核人设置(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">周计费目标设置(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -237,17 +237,17 @@
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SECURITY_LEVEL %>" target="PageFrame1">安全等级</a>
-                                            <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a href="SysDataPermission.aspx" class="Button ButtonIcon Link NormalState chaxun">保护数据权限</a>
-                                            <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">技能(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -261,7 +261,7 @@
                                 <div class="Vertical Vertical1"></div>
                                 <div class="Horizontal"></div>
                             </div>
-                            <span class="Text">公司和联系人</span>
+                            <span class="Text">客户与联系人</span>
                             <span></span>
                         </div>
                         <div class="Content Content1" id="c4">
@@ -270,70 +270,74 @@
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MARKET %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">市场领域</a>
-                                            <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TERRITORY %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">地域</a>
-                                            <div class="StandardText">Set up billing roles that determine the rate at which labour will be billed.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACCOUNTREGION %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">区域</a>
-                                            <div class="StandardText">Set up organizational entities in your company that are associated with resources and work types, and play a role in project security.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPETITOR %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">竞争对手</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACCOUNTTYPE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">客户类别</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">国家(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">地址格式(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">客户和联系人导入(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">客户移交(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">客户合并(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUFFIXES %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">姓名后缀</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="PageNavigationLinkGroup">
                                     <div class="Heading">
-                                        <div class="Text">aaa</div>
+                                        <div class="Text">客户</div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">aaaa</a>
-                                            <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">客户和联系人导入(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">aaaa</a>
-                                            <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">客户移交(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">客户合并(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                         <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState chaxun">联系人合并(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -356,49 +360,49 @@
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACTIONTYPE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">活动类型</a>
-                                            <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITYAGES %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">商机阶段</a>
-                                            <div class="StandardText">Set up billing roles that determine the rate at which labour will be billed.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITYSOURCE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">商机来源</a>
-                                            <div class="StandardText">Set up organizational entities in your company that are associated with resources and work types, and play a role in project security.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a  href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPPORTUNITYWINREASON %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">关闭商机的原因</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPPORTUNITYLOSSREASON %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">丢失商机的原因</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">销售指标(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD %>" class="Button ButtonIcon Link NormalState chaxun">销售指标度量</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -409,13 +413,13 @@
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun">报价模板</a>
-                                            <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">报价邮件模板</a>
-                                            <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">报价邮件模板(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -438,13 +442,13 @@
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.CONTRACT_CATE %>" class="Button ButtonIcon Link NormalState chaxun">合同类别</a>
-                                            <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_MILESTONE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">里程碑状态</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -455,29 +459,29 @@
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" <%--href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_LABOUR %>" target="PageFrame1"--%>>工时(未开始)</a>
-                                            <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_RECURRING_SERVICES %>" target="PageFrame1">定期服务</a>
-                                            <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                          <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun"<%-- href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_CHARGES %>" target="PageFrame1"--%>>费用(未开始)</a>
-                                            <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_CHARGES %>" target="PageFrame1">成本</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_MILESTONES %>" target="PageFrame1">里程碑</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_SUBSCRIPTIONS %>" target="PageFrame1">订阅</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -500,19 +504,19 @@
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a href="#" class="Button ButtonIcon Link NormalState chaxun">产品种类(未开始)</a>
-                                            <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT %>" target="PageFrame1">产品</a>
-                                            <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a href="#" class="Button ButtonIcon Link NormalState chaxun">aaaa</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -523,17 +527,17 @@
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun">aaaa</a>
-                                            <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun">aaaa</a>
-                                            <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -556,13 +560,13 @@
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONFIGITEMTYPE %>" target="PageFrame1">配置项类型</a>
-                                            <div class="StandardText">Manage user accounts for people in your organization who have an Autotask login.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a href="#" class="Button ButtonIcon Link NormalState chaxun">aaaa</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -573,17 +577,17 @@
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun">aaaa</a>
-                                            <div class="StandardText">Configure the access levels to Autotask features that can be assigned to your resources.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun">aaaa</a>
-                                            <div class="StandardText">Set up read/write/edit permissions for your resources for protected data in Site Configuration UDFs and Configuration Items.</div>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -616,16 +620,16 @@
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>
@@ -669,42 +673,42 @@
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">System Settings (formerly Workflow Policies)</a>
-                                            <div class="StandardText">Manage all Autotask system settings.</div>
+                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                            <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
                                 </div>

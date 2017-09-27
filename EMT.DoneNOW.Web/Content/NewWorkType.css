@@ -321,4 +321,7 @@ a{
 }
 .load{
     background: green;
+    text-align:center;
+    padding:0;
+    color:#fff;
 }

@@ -397,13 +397,13 @@
         <div class="content clear" style="display: none;">
             <div class="clear">
                 <label>承诺履行时间</label>
-                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="start_date" id="start_date" value="<%=(!isAdd)&&opportunity.start_date!=null?((DateTime)opportunity.start_date).ToString("dd/MM/yyyy"):"" %>" />
+                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="start_date" id="start_date" value="<%=(!isAdd)&&opportunity.start_date!=null?((DateTime)opportunity.start_date).ToString("yyyy-MM-dd"):"" %>" />
             </div>
             <div class="clear">
                 <label>承诺完成时间</label>
-                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="end_date" id="end_date" value="<%=(!isAdd)&&opportunity.end_date!=null?((DateTime)opportunity.end_date).ToString("dd/MM/yyyy"):"" %>" />
+                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="end_date" id="end_date" value="<%=(!isAdd)&&opportunity.end_date!=null?((DateTime)opportunity.end_date).ToString("yyyy-MM-dd"):"" %>" />
 
-            </div>0 
+            </div>
             <div class="clear">
                 <label>市场情况</label>
                 <textarea name="market" id="market" cols="20" rows="2"><%=(!isAdd)&&(!string.IsNullOrEmpty(opportunity.market))?opportunity.market:"" %></textarea>

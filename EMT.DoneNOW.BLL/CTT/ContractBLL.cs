@@ -195,6 +195,129 @@ namespace EMT.DoneNOW.BLL
             var contract = dal.FindById(ct.id);
         }
 
+        #region 删除合同
+        /// <summary>
+        /// 删除合同
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteContract(long id, long userId)
+        {
+            ctt_contract contract = dal.FindById(id);
+
+            new ContractBlockBLL().DeleteContractBlockByContractId(id, userId);     // 合同预付费用、合同成本
+            new ContractServiceBLL().DeleteServiceByContractId(id, userId);         // 服务/服务包及调整和周期信息
+            DeleteContractInternalCost(id, userId);     // 内部成本
+            DeleteContractExclusionRole(id, userId);    // 不计费角色
+            DeleteContractExclusionCode(id, userId);    // 例外因素
+            DeleteContractMilestone(id, userId);        // 里程碑
+            DeleteContractNotifyRule(id, userId);       // 通知规则
+
+            contract.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            contract.delete_user_id = userId;
+            OperLogBLL.OperLogDelete<ctt_contract>(contract, contract.id, userId, OPER_LOG_OBJ_CATE.CONTACTS, "删除合同");
+
+            return true;
+        }
+
+        /// <summary>
+        /// 删除对应合同id的所有内部成本
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <param name="userId"></param>
+        private void DeleteContractInternalCost(long contractId, long userId)
+        {
+            ctt_contract_internal_cost_dal icDal = new ctt_contract_internal_cost_dal();
+            var list = icDal.FindListByContractId(contractId);
+            foreach(var entity in list)
+            {
+                entity.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                entity.delete_user_id = userId;
+                icDal.Update(entity);
+
+                OperLogBLL.OperLogDelete<ctt_contract_internal_cost>(entity, entity.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_INTERNAL_COST, "删除合同内部成本");
+            }
+        }
+
+        /// <summary>
+        /// 删除对应合同id的所有不计费角色
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <param name="userId"></param>
+        private void DeleteContractExclusionRole(long contractId, long userId)
+        {
+            ctt_contract_exclusion_role_dal icDal = new ctt_contract_exclusion_role_dal();
+            var list = icDal.FindListByContractId(contractId);
+            foreach (var entity in list)
+            {
+                entity.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                entity.delete_user_id = userId;
+                icDal.Update(entity);
+
+                OperLogBLL.OperLogDelete<ctt_contract_exclusion_role>(entity, entity.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_EXCLUSTION_ROLE, "删除合同不计费角色");
+            }
+        }
+
+        /// <summary>
+        /// 删除对应合同id的所有例外因素
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <param name="userId"></param>
+        private void DeleteContractExclusionCode(long contractId, long userId)
+        {
+            ctt_contract_exclusion_cost_code_dal icDal = new ctt_contract_exclusion_cost_code_dal();
+            var list = icDal.FindListByContractId(contractId);
+            foreach (var entity in list)
+            {
+                entity.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                entity.delete_user_id = userId;
+                icDal.Update(entity);
+
+                OperLogBLL.OperLogDelete<ctt_contract_exclusion_cost_code>(entity, entity.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_EXCLUSTION_COST, "删除合同例外因素");
+            }
+        }
+
+        /// <summary>
+        /// 删除对应合同id的所有里程碑
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <param name="userId"></param>
+        private void DeleteContractMilestone(long contractId, long userId)
+        {
+            ctt_contract_milestone_dal icDal = new ctt_contract_milestone_dal();
+            var list = icDal.FindListByContractId(contractId);
+            foreach (var entity in list)
+            {
+                if (entity.status_id == (int)DicEnum.MILESTONE_STATUS.BILLED)   // 已计费的不删除
+                    continue;
+
+                entity.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                entity.delete_user_id = userId;
+                icDal.Update(entity);
+
+                OperLogBLL.OperLogDelete<ctt_contract_milestone>(entity, entity.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE, "删除合同里程碑");
+            }
+        }
+
+        /// <summary>
+        /// 删除对应合同id的所有通知规则
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <param name="userId"></param>
+        private void DeleteContractNotifyRule(long contractId, long userId)
+        {
+            ctt_contract_notify_rule_dal icDal = new ctt_contract_notify_rule_dal();
+            var list = icDal.FindListByContractId(contractId);
+            foreach (var entity in list)
+            {
+                entity.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                entity.delete_user_id = userId;
+                icDal.Update(entity);
+            }
+        }
+        #endregion
+
         /// <summary>
         /// 合同类型值转换为合同类型
         /// </summary>

@@ -117,7 +117,7 @@
                         <td>
                             <div class="clear">
                                 <label>创建日期<span class="red">*</span></label>
-                                <span id="create_time" name="create_time" style="line-height: 35px;margin-left: -138px;"><%=DateTime.Now.ToString("dd/MM/yyyy") %></span>
+                                <span id="create_time" name="create_time" style="line-height: 35px;margin-left: -138px;"><%=DateTime.Now.ToString("yyyy-MM-dd") %></span>
                             </div>
                         </td>
 
@@ -219,7 +219,7 @@
                         <td>
                             <div class="clear" style="text-align: left;">
                                 <label></label>
-                                <span style="margin-left: 10px;">税的显示方式在<a href="#">报价模板</a>中设置</span>
+                                <span style="margin-left: 10px;">税的显示方式在<a onclick="window.open('../QuoteTemplate/QuoteTemplateAdd.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteTemplateAdd %>','left=200,top=200,width=600,height=800', false)">报价模板</a>中设置</span>
                             </div>
                         </td>
                     </tr>

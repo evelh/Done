@@ -111,11 +111,11 @@ namespace EMT.DoneNOW.DAL
         {
             if (where == "")
             {
-                return FindListBySql("select * from sys_quote_tmpl where delete_time=0 ");
+                return FindListBySql("select * from sys_quote_tmpl where cate_id = 1 and delete_time=0 ");
             }
             else
             {
-                return FindListBySql("select * from sys_quote_tmpl where delete_time=0 "+where);
+                return FindListBySql("select * from sys_quote_tmpl where cate_id = 1 and delete_time=0 " + where);
             }
         }
 

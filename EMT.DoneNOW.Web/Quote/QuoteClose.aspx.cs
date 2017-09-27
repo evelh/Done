@@ -69,10 +69,10 @@ namespace EMT.DoneNOW.Web.Quote
                 if (quoteItemList != null && quoteItemList.Count > 0)
                 {
                      serviceItem = quoteItemList.Where(_ => _.type_id == (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.SERVICE|| _.type_id == (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.START_COST).ToList();
-                    //if (serviceItem != null && serviceItem.Count > 0)
-                    //{
-                    //    Response.Write("<script>alert('报价中包含服务/包、初始费用等,请使用关闭商机向导');window.close();</script>");
-                    //}
+                    if (serviceItem != null && serviceItem.Count > 0)
+                    {
+                        Response.Write("<script>alert('报价中包含服务/包、初始费用等,请使用关闭商机向导');window.close();</script>");
+                    }
 
                     jqueryCode.Value = ReturnJquery();
                 }

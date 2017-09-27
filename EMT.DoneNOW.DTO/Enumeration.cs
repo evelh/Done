@@ -540,7 +540,8 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_SERVICE_PERIOD = 789,                        //合同服务周期
             CONTRACT_RATE = 790,                        // 合同费率
             CONTRACT_INTERNAL_COST = 791,               // 合同内部成本
-            CONTRACT_EXCLUSTION_ROLE=793,               //合同例外因素-不计费的角色
+            CONTRACT_EXCLUSTION_ROLE=792,               //合同例外因素-不计费的角色
+            CONTRACT_EXCLUSTION_COST = 793,             //合同例外因素-不计费工作类型
             General_Code = 794,                         // 通用代码
             WAREHOUSE_PRODUCT =795,                     // 库存产品
             PRODUCT_VENDOR=796,                         // 产品供应商
