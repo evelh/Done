@@ -889,7 +889,12 @@
                     <div class="DashboardTitleBar ThemePrimaryColor">
                         <div class="DashboardButtonContainer">
                             <div class="DashboardTabButtonContainer">
-                                <div class="ButtonIcon Button SelectDashboardTab SelectedState">仪表盘</div>
+                                 <div class="ButtonIcon Button SelectDashboardTab SelectedState">仪表盘1</div>
+                                 <div class="ButtonIcon Button SelectDashboardTab">仪表盘2</div>
+                                 <div class="ButtonIcon Button SelectDashboardTab">仪表盘3</div>
+                                 <div class="ButtonIcon Button SelectDashboardTab">仪表盘4</div>
+                                 <div class="ButtonIcon Button SelectDashboardTab">仪表盘5</div>
+                                 <div class="ButtonIcon Button SelectDashboardTab">仪表盘6</div>
                             </div>
                             <div class="ButtonIcon Button CreateDashboardTab">
                                 <div class="HorizontalLine"></div>

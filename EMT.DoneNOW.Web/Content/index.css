@@ -523,7 +523,7 @@ body #WorkspaceContainer {
 /*上面的tab切花项*/
 #DashboardContainer > .DashboardTitleBar {
     border-bottom: 1px solid #adadad;
-    height: 35px;
+    height: 40px;
     left: 0;
     position: absolute;
     right: 0;
@@ -535,7 +535,7 @@ body #WorkspaceContainer {
 }
 
 #DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer {
-    height: 35px;
+    height: 40px;
     left: 0;
     position: absolute;
     right: 65px;
@@ -544,7 +544,7 @@ body #WorkspaceContainer {
 
 #DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .DashboardTabButtonContainer {
     display: inline-block;
-    height: 35px;
+    height: 40px;
     position: relative;
 }
 
@@ -597,7 +597,7 @@ body #WorkspaceContainer {
     font-size: 12px;
     font-weight: bold;
     line-height: 26px;
-    margin: 10px 0 0 4px;
+    margin: 14px 0 0 4px;
     overflow: hidden;
     padding: 0 7px;
     position: relative;
@@ -634,7 +634,7 @@ body #WorkspaceContainer {
     left: 0;
     position: absolute;
     right: 0;
-    top: 36px;
+    top: 40px;
     touch-action: none;
 }
 

@@ -137,9 +137,16 @@ $(".RecentOverlay").on("mousemove", function () {
     $(".Recent").css("borderBottom", "1px solid #fff");
     $(this).show();
 });
-    $(".RecentOverlay").on("mouseout", function () {
-        $(".Recent").removeClass("HoverState");
-        $(".Recent").css("borderTop", "1px solid #d7d7d7");
-        $(".Recent").css("borderBottom", "1px solid #d7d7d7");
-        $(this).hide();
+$(".RecentOverlay").on("mouseout", function () {
+    $(".Recent").removeClass("HoverState");
+    $(".Recent").css("borderTop", "1px solid #d7d7d7");
+    $(".Recent").css("borderBottom", "1px solid #d7d7d7");
+    $(this).hide();
+});
+
+//内容的选项卡切换
+$.each($(".SelectDashboardTab"), function (i) {
+    $(this).on("click", function () {
+        $(this).addClass("SelectedState").siblings("div").removeClass("SelectedState");
     });
+});
