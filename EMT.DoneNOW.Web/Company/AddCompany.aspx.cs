@@ -97,6 +97,11 @@ namespace EMT.DoneNOW.Web
                 if (!string.IsNullOrEmpty(parent_id))
                 {
                     parent_account = new CompanyBLL().GetCompany(Convert.ToInt64(parent_id));
+                    if (parent_account != null && parent_account.parent_id == null)
+                    {
+                        Response.End();
+                    }
+                    
                 }
                 else
                 {

@@ -15,6 +15,7 @@ namespace EMT.DoneNOW.Web.Company
     {
         protected List<crm_account> nameSimilarList = null;
         protected string duplicateReason = "";
+        protected Dictionary<string,object> dic = new CompanyBLL().GetField();
         protected void Page_Load(object sender, EventArgs e)
         {
             try

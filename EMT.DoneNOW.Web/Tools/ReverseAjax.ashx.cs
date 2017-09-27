@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.SessionState;
 
 namespace EMT.DoneNOW.Web
 {
     /// <summary>
     /// ReverseAjax 的摘要说明 六个撤销审批的操作方法
     /// </summary>
-    public class ReverseAjax : IHttpHandler
+    public class ReverseAjax : IHttpHandler, IRequiresSessionState
     {
         private readonly ReverseBLL rebll = new ReverseBLL();
         public void ProcessRequest(HttpContext context)

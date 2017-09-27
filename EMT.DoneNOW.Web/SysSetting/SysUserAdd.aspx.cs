@@ -82,17 +82,17 @@ namespace EMT.DoneNOW.Web.SysSetting
             NameSuffix.DataBind();
             NameSuffix.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             //Prefix前缀
-            Prefix.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-            Prefix.Items.Insert(1, new ListItem() { Value = "1", Text = "Mr." });
-            Prefix.Items.Insert(2, new ListItem() { Value = "2", Text = "Mrs." });
-            Prefix.Items.Insert(3, new ListItem() { Value = "3", Text = "Ms." });
+            //Prefix.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            //Prefix.Items.Insert(1, new ListItem() { Value = "1", Text = "Mr." });
+            //Prefix.Items.Insert(2, new ListItem() { Value = "2", Text = "Mrs." });
+            //Prefix.Items.Insert(3, new ListItem() { Value = "3", Text = "Ms." });
             //主要位置  location_id   sys_organization_location
 
             this.Position.DataTextField = "name";
             this.Position.DataValueField = "id";
             this.Position.DataSource = dic.FirstOrDefault(_ => _.Key == "Position").Value;
             Position.DataBind();
-            Position.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            Position.Items.Insert(0, new ListItem() { Value = "0", Text = "       ", Selected = true });
             //授权tab页
 
             //权限等级  有争议sys_security_level

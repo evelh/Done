@@ -30,6 +30,7 @@ namespace EMT.DoneNOW.Web.Invoice
         protected string contractCatePara = "";
         protected string projectItemPara = "";
         protected string purchaseNo = "";
+        protected string invoiceDate = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -41,7 +42,7 @@ namespace EMT.DoneNOW.Web.Invoice
                 contractTypePara = Request.QueryString["contract_type"];
                 contractCatePara = Request.QueryString["contract_cate"];
                 projectItemPara = Request.QueryString["itemDeal"];
-
+                invoiceDate = Request.QueryString["invoiceDate"];
                 var invoice_temp_id = Request.QueryString["invoice_temp_id"];
                 if (invTempList != null && invTempList.Count > 0)
                 {
@@ -498,6 +499,9 @@ namespace EMT.DoneNOW.Web.Invoice
                                     thisText = thisText.Replace(t, "");
                                 }
                                 break;
+                            case "[发票：日期]":
+                                thisText = thisText.Replace(t, invoiceDate);
+                                break;
                             default:
                                 break;
                         }
@@ -521,6 +525,9 @@ namespace EMT.DoneNOW.Web.Invoice
                                     break;
                                 case "[发票：订单号]":
                                     thisText = thisText.Replace(t, thisInvoice.purchase_order_no);
+                                    break;
+                                case "[发票：日期]":
+                                    thisText = thisText.Replace(t, invoiceDate);
                                     break;
                                 default:
                                     break;

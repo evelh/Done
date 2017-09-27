@@ -58,9 +58,9 @@
                                     <div class="GuideNavigation Button ButtonIcon NormalState">项目</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">服务台</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">工时</div>
-                                    <div class="GuideNavigation Button ButtonIcon NormalState">Inventory</div>
-                                    <div class="GuideNavigation Button ButtonIcon NormalState">Reports</div>
-                                    <div class="GuideNavigation Button ButtonIcon NormalState">Outsource</div>
+                                    <div class="GuideNavigation Button ButtonIcon NormalState">库存</div>
+                                    <div class="GuideNavigation Button ButtonIcon NormalState">报表</div>
+                                    <div class="GuideNavigation Button ButtonIcon NormalState">外包</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">系统设置</div>
                                 </div>
                                 <!--第二级菜单-->

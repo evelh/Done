@@ -167,6 +167,11 @@
   %>
                     <li onclick="Add()"><span style="margin: 0 10px;">审批并提交</span></li>
                      <li><a href="../Invoice/InvocieSearch" target="PageFrame" style="color:#333;text-decoration:none;"><span style="margin: 0 10px;">生成发票</span></a></li>
+                               <%
+                        } else if(addBtn=="历史发票"){
+  %>
+                    <li onclick="Add()"><span style="margin: 0 10px;">邮件发票</span></li>
+                     <li><a href="../Invoice/InvocieSearch" target="PageFrame" style="color:#333;text-decoration:none;"><span style="margin: 0 10px;">发票查询</span></a></li>
                     <%
                              } else if(addBtn=="完成"){
   %>
@@ -1816,7 +1821,13 @@
         }
         //查看合同详情
         function ContractDetail() {
-
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ApproveAndPostAjax.ashx?act=ContractDetails&id=" + entityid + "&type=" + <%=queryTypeId%>,
+                success: function (data) {
+                    window.open('../Contract/ContractView.aspx?&id=' + data, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConChargeDetails%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                }
+            });
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_SUBSCRIPTIONS)
@@ -1901,9 +1912,14 @@
         }
         //查看合同详情
         function ContractDetail() {
-
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ApproveAndPostAjax.ashx?act=ContractDetails&id=" + entityid + "&type=" + <%=queryTypeId%>,
+                success: function (data) {
+                    window.open('../Contract/ContractView.aspx?&id=' + data, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConChargeDetails%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                }
+            });
         }
-
         //恢复初始值
         function Restore_Initiall() {
             $.ajax({
@@ -1960,7 +1976,13 @@
         }
         //查看合同详情
         function ContractDetail() {
-
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ApproveAndPostAjax.ashx?act=ContractDetails&id=" + entityid + "&type=" + <%=queryTypeId%>,
+                success: function (data) {
+                    window.open('../Contract/ContractView.aspx?&id=' + data, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConChargeDetails%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);  
+                }
+            });    
         }
         //查看工单详情
         function TicketDetail() {
@@ -2304,14 +2326,14 @@
                 }
             })
         }
-         <%}//发票模板（9-20开始做）
+         <%}//发票模板
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.InvoiceTemplate)
         {%>
         function Add() {
-            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplateAttr %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function View(id) {
-            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplateAttr %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Edit() {
             OpenWindow("../InvoiceTemplate/InvoiceTempEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
@@ -2928,14 +2950,18 @@
              }
          }
 
-        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractUDF) { %>
+        <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractUDF)
+        { %>
         function Edit() {
           window.open("../Contract/ContractUdf.aspx?contractId=" + $("#id").val() + "&colName=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SubscriptionEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function View(id) {
         }
-        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlock
-            || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlockTime) { %>
+        <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlock
+        || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlockTime)
+        { %>
         function Edit() {
           window.open("../Contract/EditRetainerPurchase.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
@@ -2955,6 +2981,25 @@
           }
         }
         function View(id) {
+        }
+        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractRate) { %>
+        function Edit() {
+            window.open("../Contract/RoleRate.aspx?contractId=" + $("#id").val() + "&id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConRateEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Add() {
+            window.open("../Contract/RoleRate.aspx?contractId=" + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConRateAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Delete() {
+            if (confirm("修改将会影响本合同的未提交工时表，是否继续?")) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ContractAjax.ashx?act=DeleteRate&rateId=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        window.reload();
+                    }
+                })
+            }
         }
         <%}%>
         function openopenopen() {

@@ -458,7 +458,16 @@
 
     }
     function Preview() {
-        var account_ids = $("#account_ids").val();
+        var account_ids = "";
+        $(".IsChecked").each(function () {
+            if ($(this).is(":checked")) {
+                account_ids += $(this).val() + ",";
+            }
+        })
+        if (account_ids == "") {
+            return false;
+        }
+        account_ids = account_ids.substring(0, account_ids.length - 1);
         var stareDate = "";
         var endDate = "";
         //var account_id = "";
