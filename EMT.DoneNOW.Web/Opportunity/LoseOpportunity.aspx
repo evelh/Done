@@ -283,7 +283,7 @@ textarea {
                                         <td width="45%" class="FieldLabels">
                                             总收益
                                             <div>
-                                                <input type="text" id="total_revneue" style="width: 278px;" value="<%= new EMT.DoneNOW.BLL.OpportunityBLL().ReturnOppoRevenue(opportunity).ToString("0.00") %>">
+                                                <input type="text" id="total_revneue" style="width: 278px;" value="<%= new EMT.DoneNOW.BLL.OpportunityBLL().ReturnOppoRevenue(opportunity.id).ToString("0.00") %>">
                                             </div>
                                         </td>
                                     </tr>
@@ -291,7 +291,7 @@ textarea {
                                         <td class="FieldLabels">
                                             商机<span class="errorSmall">*</span>
                                             <div>
-                                                 <asp:DropDownList ID="opportunity_id" runat="server" CssClass="step2LeftSelectWidth" Enabled="false"></asp:DropDownList>
+                                                 <asp:DropDownList ID="opportunity_id" runat="server" CssClass="step2LeftSelectWidth" ></asp:DropDownList>
                                                 <%--<select disabled="disabled" id="txtBlack8" class="step2LeftSelectWidth">
                                                     <option value="">xiaodangjia</option>
                                                 </select>--%>
@@ -669,7 +669,7 @@ textarea {
                 <tbody>
                 <tr height="85%">
                     <td width="90%">
-                        <a href="##">创建新商机</a>
+                        <a onclick="window.open('OpportunityAddAndEdit.aspx?oppo_account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);" >创建新商机</a>
                     </td>
                 </tr>
                 </tbody>
@@ -723,6 +723,12 @@ textarea {
 <%--<script type="text/javascript" src="js/LostOpp.js"></script>--%>
 <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 <script>
+    $("#opportunity_id").change(function () {
+        var oid = $(this).val();
+        var account_id = '<%=Request.QueryString["account_id"] %>';
+        location.href = "LoseOpportunity?account_id=" + account_id + "&id=" + oid;
+        });
+    
     $("#b1").on("click", function () {
 
         var account_id = $("#account_id").val();

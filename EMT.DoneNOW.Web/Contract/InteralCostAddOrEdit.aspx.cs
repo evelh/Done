@@ -52,11 +52,11 @@ namespace EMT.DoneNOW.Web.Contract
             var result = new ContractBLL().ConIntCostAddOrUpdate(thisCost,GetLoginUserId());
             if (result)
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close();</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close();self.opener.location.reload();</script>");
             }
             else
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存失败！');</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存失败！');self.opener.location.reload();</script>");
             }
         }
     }

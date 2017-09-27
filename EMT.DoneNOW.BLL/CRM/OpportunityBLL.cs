@@ -177,7 +177,7 @@ namespace EMT.DoneNOW.BLL
                 ticket_id = null,
                 start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),  // todo 从页面获取时间，去页面时间的12：00：00
                 end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),
-                description = $"新商机：{param.general.name},全部收益：{ReturnOppoRevenue(param.general)}，成交概率:{param.general.probability}，阶段:{new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STAGE)).FirstOrDefault(_ => _.val == param.general.stage_id.ToString()).show}，预计完成时间:{param.general.projected_close_date}，商机负责人:{new sys_resource_dal().GetDictionary().FirstOrDefault(_ => _.val == param.general.resource_id.ToString()).show}，状态:{new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STATUS)).FirstOrDefault(_ => _.val == param.general.status_id.ToString()).show}",     // todo 内容描述拼接
+                description = $"新商机：{param.general.name},全部收益：{ReturnOppoRevenue(param.general.id)}，成交概率:{param.general.probability}，阶段:{new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STAGE)).FirstOrDefault(_ => _.val == param.general.stage_id.ToString()).show}，预计完成时间:{param.general.projected_close_date}，商机负责人:{new sys_resource_dal().GetDictionary().FirstOrDefault(_ => _.val == param.general.resource_id.ToString()).show}，状态:{new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.OPPORTUNITY_STATUS)).FirstOrDefault(_ => _.val == param.general.status_id.ToString()).show}",     // todo 内容描述拼接
                 create_user_id = user.id,
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 update_user_id = user.id,
@@ -677,7 +677,7 @@ namespace EMT.DoneNOW.BLL
             }
 
             #endregion
-
+            string ids = "";
             #region 7.转换为工单/项目/合同成本，不包括——转换为工单成本（新建已完成工单）逻辑
             if (param.convertToServiceTicket)
             {
@@ -685,11 +685,11 @@ namespace EMT.DoneNOW.BLL
             }
             else if (param.convertToNewContractt|| param.convertToOldContract)
             {   // 
-                InsertContract(param.costCodeList,param.opportunity,user,param.contract.id,null);
+                InsertContract(param.costCodeList,param.opportunity,user,param.contract.id, out ids,null);
             }
             else if (param.convertToProject)
             {
-                InsertContract(param.costCodeList, param.opportunity, user, param.contract.id, priQuote.project_id);
+                InsertContract(param.costCodeList, param.opportunity, user, param.contract.id, out ids,priQuote.project_id,null);
             }
             else if (param.convertToTicket)
             {
@@ -864,8 +864,9 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 将报价项转换为计费项
         /// </summary>
-        public void InsertContract( Dictionary<long,string> costCodeList,  crm_opportunity opportunity, UserInfoDto user, long contract_id , long? project_id = null,long? tickte_id = null)
+        public void InsertContract( Dictionary<long,string> costCodeList,  crm_opportunity opportunity, UserInfoDto user, long? contract_id, out string ids, long? project_id = null,long? tickte_id = null)
         {
+            ids = "";
             var qiDal = new crm_quote_item_dal();
             var cccDal = new ctt_contract_cost_dal();
             var qiBLL = new QuoteItemBLL();
@@ -888,6 +889,15 @@ namespace EMT.DoneNOW.BLL
                     else
                     {
                         status_id = (int)COST_STATUS.PENDING_DELIVERY;
+                    }
+                    int subCateid = 0;
+                    if (project_id != null)
+                    {
+                        subCateid = 1300;   // todo 工单成本
+                    }
+                    else
+                    {
+                        subCateid = 1298;   // todo 项目成本
                     }
 
                     if (quote_item.type_id != (int)QUOTE_ITEM_TYPE.DISCOUNT)
@@ -915,8 +925,10 @@ namespace EMT.DoneNOW.BLL
                             project_id = project_id,
                             contract_id = contract_id,
                             ticket_id = tickte_id,
+                            sub_cate_id = subCateid,
                         };
                         cccDal.Insert(cost);
+                        ids += cost.id.ToString() + ",";
                         new sys_oper_log_dal().Insert(new sys_oper_log()
                         {
                             user_cate = "用户",
@@ -928,7 +940,7 @@ namespace EMT.DoneNOW.BLL
                             oper_object_id = cost.id,// 操作对象id
                             oper_type_id = (int)OPER_LOG_TYPE.ADD,
                             oper_description = _dal.AddValue(cost),
-                            remark = "赢得商机时将报价项转换为计费项"
+                            remark = "将报价项转换为计费项"
 
                         });
                     }
@@ -974,6 +986,7 @@ namespace EMT.DoneNOW.BLL
                                 sub_cate_id = (int)sub_cate,
                             };
                             cccDal.Insert(taxCost);
+                            ids += taxCost.id.ToString() + ",";
                             new sys_oper_log_dal().Insert(new sys_oper_log()
                             {
                                 user_cate = "用户",
@@ -1013,6 +1026,7 @@ namespace EMT.DoneNOW.BLL
                                 contract_id = contract_id,
                             };
                             cccDal.Insert(noTaxCost);
+                            ids += noTaxCost.id.ToString() + ",";
                             new sys_oper_log_dal().Insert(new sys_oper_log()
                             {
                                 user_cate = "用户",
@@ -1273,8 +1287,11 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="opportunity"></param>
         /// <returns></returns>
-        public decimal ReturnOppoRevenue(crm_opportunity opportunity)
+        public decimal ReturnOppoRevenue(long oId)
         {
+            var opportunity = _dal.FindNoDeleteById(oId);
+            if (opportunity == null)
+                return 0;
             decimal total = 0;
             var month = opportunity.number_months == null ? 0 : (int)opportunity.number_months;
             total += (decimal)(opportunity.one_time_revenue == null ? 0 : opportunity.one_time_revenue);

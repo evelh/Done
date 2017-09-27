@@ -279,7 +279,7 @@
                                                     <i id="callBackChooseRole" onclick="chooseRole()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                     
                                                     <i id="callBackChooseProduct" onclick="chooseProduct()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="callBackManyProduct" onclick="chooseManyProduct()" style="width: 15px; height: 20px; margin-left: 0px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -129px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackManyProduct" onclick="chooseManyProduct()" style="width: 15px; height: 20px; margin-left: 0px; margin-top: 5px; background: url(../Images/ServiceSelector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;</i>
                                                     <i id="AddProduct" onclick="" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -81px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
                                                     <i id="callBackService" onclick="chooseService()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -81px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
                                                     <i id="callBackServiceBundle" onclick="chooseServiceBundle()" style="width: 15px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -81px 0;display:none;">&nbsp;&nbsp;&nbsp;</i>
@@ -440,7 +440,7 @@
                                                             </tr>
                                                             <tr style="display:none;" id="productShow">
                                                                 <td>
-                                                                    <div>平均值<span id="avgCost"></span>|最高值<span id="highCost"></span></div>
+                                                                    <div style="margin-top: 108px;width: 120px;">平均值<span id="avgCost"></span>|最高值<span id="highCost"></span></div>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -449,16 +449,22 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div style="display:none;" id="productListTable">
-                                        <table>
-                                            <tr>
+                                
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                    <div style="display:none;" id="productListTable">
+                                        <table class="table table-bordered">
+                                            <tr style="background-color:#cbd9e4">
                                                 <th>库存位置</th>
-                                                <th></th>
-                                                <th></th>
+                                                <th>On Hand</th>
+                                                <th>On Order</th>
+                                                <th>Back Order</th>
                                                 <th>保留/挑选</th>
-                                                <th></th>
+                                                <th>Available</th>
                                                 <th>可用</th>
-                                                <th></th>
                                             </tr>
                                             <tr>
                                                 <td><span id="Inventory_Location"></span></td>
@@ -471,11 +477,6 @@
                                             </tr>
                                         </table>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </form>
@@ -785,14 +786,14 @@
         var typeValue = $("#ItemTypeId").val();
         if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT %>)
         {
-            var Reserved = $("#Reserved").val();
-            if (Reserved != "" && (!isNaN(quantity)) && (!isNaN(quantity))) {
-                debugger;
-                if (Number(quantity) > Number(Reserved)) {
-                    alert("数量要大于保留");
-                    return false;
-                }
-            }
+            //var Reserved = $("#Reserved").val();
+            //if (Reserved != "" && (!isNaN(quantity)) && (!isNaN(quantity))) {
+            //    debugger;
+            //    if (Number(quantity) > Number(Reserved)) {
+            //        alert("数量要大于保留");
+            //        return false;
+            //    }
+            //}
         }
 
         return true;
@@ -841,7 +842,7 @@
                     if (data != "") {
                         $("#name").val(data.name);
                         $("#description").text(data.description);
-                        $("#unit_price").val(data.hourly_factor);
+                        $("#unit_price").val(toDecimal2(data.hourly_rate));
                         Markup();
                     }
                 },
@@ -907,6 +908,11 @@
                     }
                 },
             });
+
+
+            //$("#productListTable").css("display", "");  // todo涉及到库存暂时不做
+        } else {
+            //$("#productListTable").css("display", "none");
         }
     }
     // 查找带回服务
@@ -1006,13 +1012,14 @@
                 url: "../Tools/ProductAjax.ashx?act=AddQuoteItems&ids=" + productIds + "&quote_id=" + quote_id,
                 success: function (data) {
                     debugger;
-                    if (data != "true") {
-                        //close();
+                    if (data != "True") {
+                        alert('批量添加产品报价项成功');
                       
                     } else {
-
+                        alert('批量添加产品报价项失败');
                     }
                     window.close();
+                    self.opener.location.reload();
                 },
             });
           

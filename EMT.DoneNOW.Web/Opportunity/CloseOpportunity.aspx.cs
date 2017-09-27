@@ -28,80 +28,100 @@ namespace EMT.DoneNOW.Web.Opportunity
         {
             try
             {
+               
 
+             
+                #region 下拉框赋值
+                stage_id.DataTextField = "show";
+                stage_id.DataValueField = "val";
+                stage_id.DataSource = dic.FirstOrDefault(_ => _.Key == "opportunity_stage").Value;
+                stage_id.DataBind();
+
+                win_reason_type_id.DataTextField = "show";
+                win_reason_type_id.DataValueField = "val";
+                win_reason_type_id.DataSource = dic.FirstOrDefault(_ => _.Key == "oppportunity_win_reason_type").Value;
+                win_reason_type_id.DataBind();
+                win_reason_type_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+                resource_id.DataTextField = "show";
+                resource_id.DataValueField = "val";
+                resource_id.DataSource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value;
+                resource_id.DataBind();
+
+                competitor_id.DataTextField = "show";
+                competitor_id.DataValueField = "val";
+                competitor_id.DataSource = dic.FirstOrDefault(_ => _.Key == "competition").Value;
+                competitor_id.DataBind();
+                competitor_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+                // period_type
+                period_type.DataTextField = "show";
+                period_type.DataValueField = "val";
+                period_type.DataSource = dic.FirstOrDefault(_ => _.Key == "period_type").Value;
+                period_type.DataBind();
+                period_type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                #endregion
                 var id = Request.QueryString["id"];
-                opportunity = new crm_opportunity_dal().GetOpportunityById(long.Parse(id));
-                if (opportunity != null)
+                var account_id = Request.QueryString["account_id"];
+                if (!string.IsNullOrEmpty(id))
                 {
-                    // 折扣的下拉框不同于别的下拉框-- 需要去两个数据源去赋值
-                    StringBuilder text = new StringBuilder();
-                    var costCode = new d_cost_code_dal().GetListCostCode((int)COST_CODE_CATE.MATERIAL_COST_CODE);
-                    text.Append($"<option value='0'>   </option>");
-                    if (costCode != null && costCode.Count > 0)
+                    if (string.IsNullOrEmpty(account_id))
                     {
-                        foreach (var item in costCode)
+                        if (!IsPostBack)
                         {
-                            text.Append($"<option value='{item.id}'>{item.name}</option>");
+                            opportunity_id.Enabled = false;
                         }
                     }
-                    codeSelect.Value = text.ToString();
-                    var disSource = "";
-                    var disCostCode = costCode.Where(_ => _.id == 37 || _.id == 43).ToList();
-                    if (disCostCode != null && disCostCode.Count > 0)
+                    opportunity = new crm_opportunity_dal().GetOpportunityById(long.Parse(id));
+                    if (opportunity != null)
                     {
-                        foreach (var item in disCostCode)
-                        {
-                            disSource += $"<option value='{item.id}'>{item.name}</option>";
-                        }
+                        account = new CompanyBLL().GetCompany(opportunity.account_id);
+                        account_id = account.id.ToString();
                     }
-                    disCodeSelct.Value = disSource;
-                    account = new CompanyBLL().GetCompany(opportunity.account_id);
+                }
+                if (!string.IsNullOrEmpty(account_id))
+                {
+                    account = new CompanyBLL().GetCompany(long.Parse(account_id));
+                    var oppoList = new crm_opportunity_dal().FindOpHistoryByAccountId(long.Parse(account_id));
+                    if (oppoList != null && oppoList.Count > 0)
+                    {
+                        opportunity_id.DataTextField = "name";
+                        opportunity_id.DataValueField = "id";
+                        opportunity_id.DataSource = oppoList;
+                        opportunity_id.DataBind();
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('该客户还没有商机！');window.close();</script>");
+                    }
+
+                    //opportunity_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                    if (string.IsNullOrEmpty(id))
+                    {
+                        opportunity = oppoList[0];
+                    }
+                    opportunity_id.SelectedValue = opportunity.id.ToString();
+                }
+
+                if (!IsPostBack)
+                {
+
+
+                    if (opportunity != null)
+                {
                     if (opportunity.status_id == (int)OPPORTUNITY_STATUS.CLOSED)
                     {
                         Response.Write("<script>if(!confirm('商机已被关闭，如果继续，系统会重复创建计费项和合同？')){window.close();}</script>");
                     }
-
-                    #region 下拉框赋值
-                    stage_id.DataTextField = "show";
-                    stage_id.DataValueField = "val";
-                    stage_id.DataSource = dic.FirstOrDefault(_ => _.Key == "opportunity_stage").Value;
-                    stage_id.DataBind();
-
-                    win_reason_type_id.DataTextField = "show";
-                    win_reason_type_id.DataValueField = "val";
-                    win_reason_type_id.DataSource = dic.FirstOrDefault(_ => _.Key == "oppportunity_win_reason_type").Value;
-                    win_reason_type_id.DataBind();
-                    win_reason_type_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-
-                    resource_id.DataTextField = "show";
-                    resource_id.DataValueField = "val";
-                    resource_id.DataSource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value;
-                    resource_id.DataBind();
-
-                    competitor_id.DataTextField = "show";
-                    competitor_id.DataValueField = "val";
-                    competitor_id.DataSource = dic.FirstOrDefault(_ => _.Key == "competition").Value;
-                    competitor_id.DataBind();
-                    competitor_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-
-                    // period_type
-                    period_type.DataTextField = "show";
-                    period_type.DataValueField = "val";
-                    period_type.DataSource = dic.FirstOrDefault(_ => _.Key == "period_type").Value;
-                    period_type.DataBind();
-                    period_type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-                    #endregion
-                    period_type.SelectedValue = ((int)QUOTE_ITEM_PERIOD_TYPE.MONTH).ToString();
-
-                    var stageList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.OPPORTUNITY_STATUS);
-                    var defaultStage = stageList.FirstOrDefault(_ => _.ext1 == "1");
-
+                    }
                     if (opportunity.stage_id != null)
                     {
                         stage_id.SelectedValue = opportunity.stage_id.ToString();
                     }
                     else
                     {
+                        var stageList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.OPPORTUNITY_STATUS);
+                        var defaultStage = stageList.FirstOrDefault(_ => _.ext1 == "1");
                         if (defaultStage != null)
                         {
                             stage_id.SelectedValue = defaultStage.id.ToString();
@@ -111,103 +131,128 @@ namespace EMT.DoneNOW.Web.Opportunity
                     resource_id.SelectedValue = opportunity.resource_id.ToString();
                     competitor_id.SelectedValue = opportunity.competitor_id == null ? "0" : opportunity.competitor_id.ToString();
                     win_reason_type_id.SelectedValue = opportunity.win_reason_type_id == null ? "0" : opportunity.win_reason_type_id.ToString();
-                    primaryQuote = new QuoteBLL().GetPrimaryQuote(opportunity.id);
-
-
-                    if (primaryQuote != null)
+                }
+                // 折扣的下拉框不同于别的下拉框-- 需要去两个数据源去赋值
+                StringBuilder text = new StringBuilder();
+                var costCode = new d_cost_code_dal().GetListCostCode((int)COST_CODE_CATE.MATERIAL_COST_CODE);
+                text.Append($"<option value='0'>   </option>");
+                if (costCode != null && costCode.Count > 0)
+                {
+                    foreach (var item in costCode)
                     {
+                        text.Append($"<option value='{item.id}'>{item.name}</option>");
+                    }
+                }
+                codeSelect.Value = text.ToString();
+                var disSource = "";
+                var disCostCode = costCode.Where(_ => _.id == 37 || _.id == 43).ToList();
+                if (disCostCode != null && disCostCode.Count > 0)
+                {
+                    foreach (var item in disCostCode)
+                    {
+                        disSource += $"<option value='{item.id}'>{item.name}</option>";
+                    }
+                }
+                disCodeSelct.Value = disSource;
+                period_type.SelectedValue = ((int)QUOTE_ITEM_PERIOD_TYPE.MONTH).ToString();
+                primaryQuote = new QuoteBLL().GetPrimaryQuote(opportunity.id);
+
+
+                if (primaryQuote != null)
+                {
+                    if (!IsPostBack)
+                    {
+                        if (primaryQuote.project_id != null) // 判断该报价是否关联项目提案，如果关联，默认选中，不关联，灰掉，不可选
+                        {
+                            activeproject.Checked = true;
+                        }
+                        else
+                        {
+                            activeproject.Enabled = false;
+                            isactiveproject.Value = "1";
+
+                        }
+                    }
+                    quoteItemList = new crm_quote_item_dal().GetQuoteItems($" and quote_id = {primaryQuote.id}");
+                    if (quoteItemList != null && quoteItemList.Count > 0)
+                    {
+                        // 如果报价项中包含了服务 / 服务包、初始费用，则可以选中（默认不选）
+                        // 此功能需要具有合同模块权限以及修改合同服务/包权限
+
+                        var isServiceChargeItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE || _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE_PACK || _.type_id == (int)QUOTE_ITEM_TYPE.START_COST).ToList();
                         if (!IsPostBack)
                         {
-                            if (primaryQuote.project_id != null) // 判断该报价是否关联项目提案，如果关联，默认选中，不关联，灰掉，不可选
+                            if (isServiceChargeItem != null && isServiceChargeItem.Count > 0)
                             {
-                                activeproject.Checked = true;
+                                // todo--需要判断用户权限
                             }
                             else
                             {
-                                activeproject.Enabled = false;
-                                isactiveproject.Value = "1";
-
+                                addContractRequest.Enabled = false;
+                                isAddContractRequest.Value = "1";
+                                addContractServices.Enabled = false;
+                                isaddContractServices.Value = "1";
                             }
                         }
-                        quoteItemList = new crm_quote_item_dal().GetQuoteItems($" and quote_id = {primaryQuote.id}");
-                        if (quoteItemList != null && quoteItemList.Count > 0)
+                        proAndOneTimeItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT || _.type_id == (int)QUOTE_ITEM_TYPE.DISCOUNT).ToList();
+                        if (!IsPostBack)
                         {
-                            // 如果报价项中包含了服务 / 服务包、初始费用，则可以选中（默认不选）
-                            // 此功能需要具有合同模块权限以及修改合同服务/包权限
-
-                            var isServiceChargeItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE || _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE_PACK || _.type_id == (int)QUOTE_ITEM_TYPE.START_COST).ToList();
-                            if (!IsPostBack)
+                            if (proAndOneTimeItem != null && proAndOneTimeItem.Count > 0)
                             {
-                                if (isServiceChargeItem != null && isServiceChargeItem.Count > 0)
-                                {
-                                    // todo--需要判断用户权限
-                                }
-                                else
-                                {
-                                    addContractRequest.Enabled = false;
-                                    isAddContractRequest.Value = "1";
-                                    addContractServices.Enabled = false;
-                                    isaddContractServices.Value = "1";
-                                }
+                                isIncludePO.Checked = true;
                             }
-                            proAndOneTimeItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT || _.type_id == (int)QUOTE_ITEM_TYPE.DISCOUNT).ToList();
-                            if (!IsPostBack)
+                            else
                             {
-                                if (proAndOneTimeItem != null && proAndOneTimeItem.Count > 0)
-                                {
-                                    isIncludePO.Checked = true;
-                                }
-                                else
-                                {
-                                    IncludePO.Value = "1";
-                                    isIncludePO.Enabled = false;
-                                }
+                                IncludePO.Value = "1";
+                                isIncludePO.Enabled = false;
                             }
-                            shipItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
-                            if (!IsPostBack)
-                            {
-                                if (shipItem != null && shipItem.Count > 0)
-                                {
-                                    isIncludeShip.Checked = true;
-                                }
-                                else
-                                {
-                                    IncludeShip.Value = "1";
-                                    isIncludeShip.Enabled = false;
-                                }
-                            }
-                            degressionItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.DEGRESSION).ToList();
-                            if (!IsPostBack)
-                            {
-                                if (degressionItem != null && degressionItem.Count > 0)
-                                {
-                                    isIncludeCharges.Checked = true;
-                                }
-                                else
-                                {
-                                    IncludeCharges.Value = "1";
-                                    isIncludeCharges.Enabled = false;
-                                }
-                            }
-                            jqueryCode.Value = ReturnJquery();
                         }
-                    }
-                    else
-                    {
-                        activeproject.Enabled = false;
-                        isactiveproject.Value = "1";
-                        addContractRequest.Enabled = false;
-                        isAddContractRequest.Value = "1";
-                        addContractServices.Enabled = false;
-                        isaddContractServices.Value = "1";
-                        IncludePO.Value = "1";
-                        isIncludePO.Enabled = false;
-                        IncludeShip.Value = "1";
-                        isIncludeShip.Enabled = false;
-                        IncludeCharges.Value = "1";
-                        isIncludeCharges.Enabled = false;
+                        shipItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
+                        if (!IsPostBack)
+                        {
+                            if (shipItem != null && shipItem.Count > 0)
+                            {
+                                isIncludeShip.Checked = true;
+                            }
+                            else
+                            {
+                                IncludeShip.Value = "1";
+                                isIncludeShip.Enabled = false;
+                            }
+                        }
+                        degressionItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.DEGRESSION).ToList();
+                        if (!IsPostBack)
+                        {
+                            if (degressionItem != null && degressionItem.Count > 0)
+                            {
+                                isIncludeCharges.Checked = true;
+                            }
+                            else
+                            {
+                                IncludeCharges.Value = "1";
+                                isIncludeCharges.Enabled = false;
+                            }
+                        }
+                        jqueryCode.Value = ReturnJquery();
                     }
                 }
+                else
+                {
+                    activeproject.Enabled = false;
+                    isactiveproject.Value = "1";
+                    addContractRequest.Enabled = false;
+                    isAddContractRequest.Value = "1";
+                    addContractServices.Enabled = false;
+                    isaddContractServices.Value = "1";
+                    IncludePO.Value = "1";
+                    isIncludePO.Enabled = false;
+                    IncludeShip.Value = "1";
+                    isIncludeShip.Enabled = false;
+                    IncludeCharges.Value = "1";
+                    isIncludeCharges.Enabled = false;
+                }
+                
+
             }
             catch (Exception msg)
             {
@@ -375,7 +420,11 @@ namespace EMT.DoneNOW.Web.Opportunity
                 {
                     foreach (var item in proAndOneTimeItem)
                     {
-                        dic.Add(item.id, Request.Form[item.id.ToString() + "_select"]);
+                        if(!string.IsNullOrEmpty(Request.Form[item.id.ToString() + "_select"]))
+                        {
+                            dic.Add(item.id, Request.Form[item.id.ToString() + "_select"]);
+                        }
+                        
                     }
                 }
             }
@@ -386,7 +435,11 @@ namespace EMT.DoneNOW.Web.Opportunity
                 {
                     foreach (var item in degressionItem)
                     {
-                        dic.Add(item.id, Request.Form[item.id.ToString() + "_select"]);
+                        if(!string.IsNullOrEmpty(Request.Form[item.id.ToString() + "_select"]))
+                        {
+                            dic.Add(item.id, Request.Form[item.id.ToString() + "_select"]);
+                        }
+                        
                     }
                 }
             }

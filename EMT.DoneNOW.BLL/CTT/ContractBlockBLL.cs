@@ -286,5 +286,22 @@ namespace EMT.DoneNOW.BLL
             OperLogBLL.OperLogDelete<ctt_contract_block>(block, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK);
             return true;
         }
+
+        /// <summary>
+        /// 删除合同下未收费的预付和成本信息
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <param name="userId"></param>
+        public void DeleteContractBlockByContractId(long contractId, long userId)
+        {
+            var list = dal.FindListByContractId(contractId);
+            foreach (var entity in list)
+            {
+                if (entity.is_billed == 1)  // 已付费的不删除
+                    continue;
+
+                DeletePurchase(entity.id, userId);
+            }
+        }
     }
 }

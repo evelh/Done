@@ -525,12 +525,27 @@ namespace EMT.DoneNOW.BLL
             #region 5.转换为工单/项目成本
             // todo 关联sdk_ticket_charge
             // 一次性折扣根据需要拆分为两行——收税的、不收税的，分别计算折扣额。计算时仍然按照全部周期为一次性的报价项，而不是排除了服务和工时等报价项。
+
+
             #endregion
 
             // 将报价项转换为计费项
+            #region  将报价项转换为计费项并审批提交 todo-需要项目ID 或者工单ID才可以进行操作
+            //string costIds ="";
+            //new OpportunityBLL().InsertContract(param.dic,param.opportunity,user,null,out costIds, param.project_id,null);
 
-            new OpportunityBLL().InsertContract(param.dic,param.opportunity,user,1,param.project_id);
-
+            //if (!string.IsNullOrEmpty(costIds))
+            //{
+            //    var aapBLL = new ApproveAndPostBLL();
+            //    costIds = costIds.Substring(0,costIds.Length-1);
+            //    var costList = costIds.Split(new char[] { ','},StringSplitOptions.RemoveEmptyEntries);
+            //    foreach (var costId in costList)
+            //    {
+            //        // 审批并提交
+            //        aapBLL.Post_Charges(int.Parse(costId),int.Parse(DateTime.Now.ToString("yyyyMMdd")),user);
+            //    }
+            //}
+            #endregion
 
             // 6.新增销售订单
             #region 6.当有产品/一次性折扣、成本、配送转为计费项时，销售订单就会自动生成。Crm_sales_order
