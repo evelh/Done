@@ -10,11 +10,11 @@
 </head>
 <body>
   <!--顶部-->
-  <div class="TitleBar">
+  <%--<div class="TitleBar">
     <div class="Title">
       <span class="text1"><%=summary.contract_type %></span>
     </div>
-  </div>
+  </div>--%>
   <!--按钮-->
   <div class="ButtonContainer">
     <ul>
@@ -39,7 +39,7 @@
     </ul>
   </div>
   <!--内容-->
-  <div class="DivScrollingContainer General" style="top:78px;">
+  <div class="DivScrollingContainer General" style="top:34px;">
     <div class="PageLevelInstructions">
       <%if (contract.end_date < DateTime.Now)
           { %>

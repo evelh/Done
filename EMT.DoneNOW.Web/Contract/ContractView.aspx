@@ -11,14 +11,6 @@
         body {
             font-family: Arial,Helvetica,Tahoma,sans-serif;
             font-size: 12px;
-            overflow: auto;
-            background: white;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            position: absolute;
-            margin: 0;
         }
 
         .HeaderRow {
@@ -131,7 +123,7 @@
              <div class="HeaderRow">
                  <asp:Label ID="ShowTitle" runat="server" Text="Label"></asp:Label>
             </div>
-            <iframe runat="server" id="viewContractIframe" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
+            <iframe runat="server" id="viewContractIframe" width="100%" height="92%" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
             <iframe runat="server" id="second" width="100%" height="0" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
         </div>
     </form>
