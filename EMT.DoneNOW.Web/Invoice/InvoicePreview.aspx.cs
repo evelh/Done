@@ -455,8 +455,8 @@ namespace EMT.DoneNOW.Web.Invoice
             Regex reg = new Regex(@"\[(.+?)]");
             var account_param = "'{\"a:id\":\"" + account.id + "\"}'";
             StringBuilder sqlList = new StringBuilder();
-            var accountSql = new sys_query_type_user_dal().GetQuerySql(900, 900, GetLoginUserId(), account_param, null);
-            var jifeiSql = new sys_query_type_user_dal().GetQuerySql(920, 920, GetLoginUserId(), "'{\"a:account_id\":\"" + account.id + "\"}'", null);
+            var accountSql = new sys_query_type_user_dal().GetQuerySql(900, 900, GetLoginUserId(), account_param, null);  // 客户相关查询
+            var jifeiSql = new sys_query_type_user_dal().GetQuerySql(920, 920, GetLoginUserId(), "'{\"a:account_id\":\"" + account.id + "\"}'", null);    // 计费相关查询
             sqlList.Append($"select * from ({accountSql}) as account,({jifeiSql}) as jifei");
             
             if (!string.IsNullOrEmpty(sqlList.ToString()))

@@ -220,9 +220,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 switch (result)
                 {
                     case DTO.ERROR_CODE.SUCCESS:
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价项成功');</script>");
-                        Response.Write("QuoteItemAddAndUpdate.aspx?type_id="+type+ "&quote_id"+quote_item.quote_id);
-                       // E:\DoneNOW\EMT.DoneNOW.Web\QuoteItem\QuoteItemAddAndUpdate.aspx
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价项成功');self.opener.location.reload();location.href = 'QuoteItemAddAndUpdate.aspx?type_id=" + quote_item.type_id + "&quote_id" + quote_item.quote_id+"';</script>");
                         break;
                     case DTO.ERROR_CODE.ERROR:
                         break;

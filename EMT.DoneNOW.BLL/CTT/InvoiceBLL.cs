@@ -44,7 +44,7 @@ namespace EMT.DoneNOW.BLL
             if (arr != null && arr.Count() > 0)
             {
                 var invoiceBatch= _dal.GetNextIdInvBat();
-                var invoiceNo = _dal.GetNextIdInvNo();
+                //var invoiceNo = _dal.GetNextIdInvNo();
                 var cadDal = new crm_account_deduction_dal();
                 var cidDal = new ctt_invoice_detail_dal();
                 var comBLL = new CompanyBLL();
@@ -66,7 +66,7 @@ namespace EMT.DoneNOW.BLL
                         batch_id = invoiceBatch,
                         account_id = acc_ded.account_id,
                         owner_resource_id = (long)account.resource_id,
-                        invoice_no = invoiceNo.ToString(),
+                        invoice_no = _dal.GetNextIdInvNo().ToString(),
                         invoice_date = param.invoice_date,
                         total = acc_ded.extended_price,  
                         tax_value = acc_ded.tax_dollars, 

@@ -153,8 +153,8 @@ namespace EMT.DoneNOW.Web.SaleOrder
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
-                    Response.Write("<script>alert('修改销售订单成功！');");
-                    Response.Redirect("../SaleOrder/SaleOrderView.aspx?id=" + sale_order.id);
+                    Response.Write("<script>alert('修改销售订单成功！');window.close();window.open('SaleOrderView.aspx?id="+sale_order.id+"','"+(int)EMT.DoneNOW.DTO.OpenWindow.SaleOrderView +"','left=200,top=200,width=900,height=750', false);</script>");
+                   
 
                     break;
 

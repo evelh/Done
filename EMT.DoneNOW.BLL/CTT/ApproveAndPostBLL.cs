@@ -408,7 +408,7 @@ namespace EMT.DoneNOW.BLL
             ctt_contract_cost_dal ccc_dal = new ctt_contract_cost_dal();
             ctt_contract_block_dal ccb_dal = new ctt_contract_block_dal();
             var ccc = ccc_dal.FindNoDeleteById(id);//合同成本
-            var cc = cc_dal.FindNoDeleteById(ccc.contract_id);//合同
+            var cc = cc_dal.FindNoDeleteById((long)ccc.contract_id);//合同
             var dcc = new d_cost_code_dal().FindSignleBySql<d_cost_code>($"select * from d_cost_code where id={ccc.cost_code_id} and delete_time=0");//物料代码
             var ca = new crm_account_dal().FindSignleBySql<crm_account>($"select * from crm_account where id={cc.account_id} and delete_time=0");//客户
             //成本类型不能是预付费用、预付时间、事件
@@ -507,7 +507,7 @@ namespace EMT.DoneNOW.BLL
                 ctt_contract_block ccb1 = new ctt_contract_block();
                 ccb1.id = (int)ccb_dal.GetNextIdCom();
                 ccb1.rate = (decimal)ccnr.rate;//费率
-                ccb1.contract_id = ccc.contract_id;//合同id
+                ccb1.contract_id = (long)ccc.contract_id;//合同id
                 ccb1.start_date = cc.start_date;
                 ccb1.end_date = cc.end_date;
                 ccb1.quantity = 1;
@@ -567,7 +567,7 @@ namespace EMT.DoneNOW.BLL
                 ctt_contract_block ccb2 = new ctt_contract_block();
                 ccb2.id = (int)ccb_dal.GetNextIdCom();
                 ccb2.rate = (decimal)ccnr.rate;//费率
-                ccb2.contract_id = ccc.contract_id;//合同id
+                ccb2.contract_id = (long)ccc.contract_id;//合同id
                 ccb2.start_date = cc.start_date;
                 ccb2.end_date = cc.end_date;
                 ccb2.quantity = 1 - m;
@@ -1535,7 +1535,7 @@ namespace EMT.DoneNOW.BLL
             ctt_contract_cost_dal ccc_dal = new ctt_contract_cost_dal();//成本处理
             ctt_contract_block_dal ccb_dal = new ctt_contract_block_dal();//预付费
             var ccc = ccc_dal.FindNoDeleteById(id);
-            var cc = new ctt_contract_dal().FindNoDeleteById(ccc.contract_id);
+            var cc = new ctt_contract_dal().FindNoDeleteById((long)ccc.contract_id);
             var ccbList = ccb_dal.FindListBySql<ctt_contract_block>($"select * from ctt_contract_block where contract_id={ccc.contract_id} and is_billed=0 and status_id=1");
             if (cc!= null&&cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {
@@ -1571,7 +1571,7 @@ namespace EMT.DoneNOW.BLL
             ctt_contract_block_dal ccb_dal = new ctt_contract_block_dal();//预付费
             var kk =new ApprovePostDto.ChargesSelectList();
             var ccc = ccc_dal.FindNoDeleteById(id);
-            var cc = new ctt_contract_dal().FindNoDeleteById(ccc.contract_id);
+            var cc = new ctt_contract_dal().FindNoDeleteById((long)ccc.contract_id);
             var ca = new crm_account_dal().FindNoDeleteById(cc.account_id);
             kk.accountname = ca.name;
             kk.costname = ccc.name;

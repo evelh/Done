@@ -85,8 +85,8 @@
                     <%--<asp:Button ID="Tools" runat="server" Text="工具" BorderStyle="None" />--%>工具
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
-                        <li>关闭商机向导</li>
-                        <li><a href="#" onclick="window.open('../Opportunity/LoseOpportunity.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityLose %>','left=200,top=200,width=900,height=750', false);">丢失商机向导</a></li>
+                        <li><a onclick="window.open('../Opportunity/CloseOpportunity.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityClose %>','left=200,top=200,width=900,height=750', false);">关闭商机向导</a></li>
+                        <li><a  onclick="window.open('../Opportunity/LoseOpportunity.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityLose %>','left=200,top=200,width=900,height=750', false);">丢失商机向导</a></li>
                         <li>重新分配商机所有人</li>
                         <li>注销客户向导</li>
                         <%--<li>Microsoft word merge wizard</li>--%>
