@@ -42,7 +42,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                         this.location.SelectedValue = sd.location_id.ToString();
                         this.location_name.Text =this.location.SelectedItem.Text.ToString();
                         //获取时区
-                        this.time_zone.Text =sqbll.GetTime_zone(Convert.ToInt32(sd.location_id.ToString()));
+                        //this.time_zone.Text =sqbll.GetTime_zone(Convert.ToInt32(sd.location_id.ToString()));
                     }
                     table = sqbll.resourcelist(id);
                     worktable = sqbll.worklist(id);
@@ -116,13 +116,13 @@ namespace EMT.DoneNOW.Web.SysSetting
         {
             Response.Write("<script>window.close();self.opener.location.reload();</script>");
         }
-
         protected void location_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Convert.ToInt32(this.location.SelectedValue.ToString()) > 0) {
+            if (Convert.ToInt32(this.location.SelectedValue.ToString()) > 0)
+            {
                 this.location_name.Text = this.location.SelectedItem.Text.ToString();
                 //获取时区
-                this.time_zone.Text = new DepartmentBLL().GetTime_zone(Convert.ToInt32(this.location.SelectedValue.ToString()));
+                //this.time_zone.Text = new DepartmentBLL().GetTime_zone(Convert.ToInt32(this.location.SelectedValue.ToString()));
             }
         }
     }

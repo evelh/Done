@@ -31,7 +31,7 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取id
-            id = 1377;            
+           // id = 1377;            
             GetMenus();
             if (!IsPostBack) {
                 product_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PRODUCTS);//自定义
@@ -258,7 +258,7 @@ namespace EMT.DoneNOW.Web
 
         protected void Cancel_Click(object sender, EventArgs e)
         {
-
+            Response.Write("<script>window.close();self.opener.location.reload();</script>");
         }
         private void GetMenus()
         {

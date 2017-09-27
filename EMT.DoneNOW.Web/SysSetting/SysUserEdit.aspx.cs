@@ -24,6 +24,7 @@ namespace EMT.DoneNOW.Web
        protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
+           id = 1655;
             if (Request.QueryString["op"]!=null)
             op = Request.QueryString["op"].ToString();
             if (!IsPostBack)
@@ -82,13 +83,13 @@ namespace EMT.DoneNOW.Web
                     //this.password.Text = userdata.password.ToString();
                     //this.password2.Text= userdata.password.ToString();
                     if (resourcedata.can_edit_skills > 0)//编辑技能
-                        this.can_edit_skills.Checked = true;
+                        this.CanEditSkills.Checked = true;
                     if (resourcedata.can_manage_kb_articles > 0)//编辑或删除知识库文章
-                        this.can_manage_kb_articles.Checked = true;
+                        this.CanManagekbarticles.Checked = true;
                     if (resourcedata.allow_send_bulk_email > 0)//允许员工群发邮件
-                        this.allow_send_bulk_email.Checked = true;
+                        this.AllowSendbulkemail.Checked = true;
                     if (resourcedata.is_required_to_submit_timesheets > 0)//不要求用户提交工时表
-                        this.is_required_to_submit_timesheets.Checked = true;
+                        this.IsRequiredtosubmittimesheets.Checked = true;
                     if (resourcedata.outsource_security_role_type_id!=null&&!string.IsNullOrEmpty(resourcedata.outsource_security_role_type_id.ToString()))//外部权限
                         this.Outsource_Security.SelectedValue = resourcedata.outsource_security_role_type_id.ToString();
                 }
@@ -308,29 +309,54 @@ namespace EMT.DoneNOW.Web
         }
         private void Save_Contact()
         {
+            if (id > 0)
+            {
+                param.sys_res = urbll.GetSysResourceSingle(id);
+                param.sys_user = urbll.GetSysUserSingle(id);
+            }
             param.sys_res = AssembleModel<sys_resource>();
             param.sys_res.name = param.sys_res.first_name + param.sys_res.last_name;
             param.sys_res.avatar = SavePic();//保存头像
 
-            if (this.can_edit_skills.Checked)
+            if (this.CanEditSkills.Checked)
             {
                 param.sys_res.can_edit_skills = 1;
+            }
+            else
+            {
+                param.sys_res.can_edit_skills = 0;
             }
             if (this.ACTIVE.Checked)
             {
                 param.sys_res.is_active = 1;
             }
-            if (this.can_manage_kb_articles.Checked)
+            else
+            {
+                param.sys_res.is_active = 0;
+            }
+            if (this.CanManagekbarticles.Checked)
             {
                 param.sys_res.can_manage_kb_articles = 1;
             }
-            if (this.allow_send_bulk_email.Checked)
+            else
+            {
+                param.sys_res.can_manage_kb_articles = 0;
+            }
+            if (this.AllowSendbulkemail.Checked)
             {
                 param.sys_res.allow_send_bulk_email = 1;
             }
-            if (this.is_required_to_submit_timesheets.Checked)
+            else
+            {
+                param.sys_res.allow_send_bulk_email = 0;
+            }
+            if (this.IsRequiredtosubmittimesheets.Checked)
             {
                 param.sys_res.is_required_to_submit_timesheets = 1;
+            }
+            else
+            {
+                param.sys_res.is_required_to_submit_timesheets = 0;
             }
 
             param.sys_res.date_display_format_id = Convert.ToInt32(this.DateFormat.SelectedValue);
@@ -369,7 +395,8 @@ namespace EMT.DoneNOW.Web
             //新增
             param.sys_user = AssembleModel<sys_user>();
             //密码
-            if (!string.IsNullOrEmpty(this.pass_word.Text.ToString())) {
+            if (!string.IsNullOrEmpty(this.pass_word.Text.ToString()))
+            {
                 param.sys_user.password = this.pass_word.Text.ToString();
             }
             param.sys_user.status_id = (int)USER_STATUS.NORMAL;

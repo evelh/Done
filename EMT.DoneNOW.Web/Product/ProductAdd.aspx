@@ -67,6 +67,7 @@
         </a>
     </div>
     <!--切换项-->
+ <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:122px;">
     <div class="TabContainer" style="min-width: 700px;">
         <div class="DivSection" style="border:none;padding-left:0;">
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -201,7 +202,7 @@
         <div style="width: 100%; margin-bottom: 10px;">
             <div class="ButtonContainer header-title">
                 <ul>
-                   <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
+                   <li id="NewButton"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                         <span class="Text">新建</span>
                     </li>
                 </ul>
@@ -327,7 +328,7 @@
             </div>
     </div>
         </div>
-         <div id="menu">
+ <div id="menu">
              <input type="hidden" id="vendor_data" name="vendor_data" />
         <%if (contextMenu.Count > 0) { %>
 		<ul style="width:220px;">
@@ -338,6 +339,7 @@
 		</ul>
         <%} %>
 	</div>
+        </div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <%--<script src="../Scripts/SysSettingRoles.js"></script>--%>
            <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
@@ -548,11 +550,8 @@
                     $("#def").parent().html('');
                     _this.addClass("updatevendor");
                     _this.children().eq(4).append("<img src='../Images/check.png'/><input type= 'hidden' id= 'def' value='default'/>");
-                }              
-
+                }
             }
-
-
             //处理保存数据
             function save_deal() {
                 if ($("#Product_Name").val() == null || ($("#Product_Name").val() == '')){
@@ -563,10 +562,8 @@
                     alert("请选择物料代码");
                     return false;
                 }
-  
                 var vendor = [];
                 vendor.push("{\"VENDOR\":[");
-
                 $("#vendortable").find("tr").each(function () {
                     var _this = $(this);
                     if (_this.hasClass("deletevendor")) {

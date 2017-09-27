@@ -21,24 +21,17 @@
         </div>
         <!--按钮部分-->
         <div class="ButtonBar header-title">
-            <ul>
+            <ul id="btn">
                  <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
-                    <%-- <span class="Text">保存 & 克隆</span>--%>
-                    <asp:Button ID="Save_Clone" runat="server" Text="保存并关闭" BorderStyle="None" class="Text" OnClick="Save_Cloes_Click" />
+                    <asp:Button ID="Save_Clone" OnClientClick="return save_deal()" runat="server" Text="保存并关闭" BorderStyle="None" class="Text" OnClick="Save_Cloes_Click" />
                 </li>
-                <li class="LiButton" id="f2">
-                    <img src="../Images/save.png" alt="" class="ButtonImg" />
-                    <%-- <span class="Text">保存</span>--%>
-                    <asp:Button ID="Save" runat="server" Text="保存" BorderStyle="None" class="Text" OnClick="Save_Click" />
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
+                    <asp:Button ID="Save" runat="server" OnClientClick="return save_deal()" Text="保存" BorderStyle="None" class="Text" OnClick="Save_Click" />
                 </li>
-                <li class="LiButton" id="f3">
-                    <img src="../Images/save.png" alt="" class="ButtonImg" />
-                    <%--<span class="Text">保存 & 复制</span>--%>
-                    <asp:Button ID="Save_copy" runat="server" Text="保存并复制" BorderStyle="None" class="Text" OnClick="Save_copy_Click" />
+                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
+                    <asp:Button ID="Save_copy" runat="server" OnClientClick="return save_deal()" Text="保存并复制" BorderStyle="None" class="Text" OnClick="Save_copy_Click" />
                 </li>
-                <li class="LiButton" id="f4">
-                    <img src="../Images/cancel.png" alt="" class="ButtonImg" />
-                    <%-- <span class="Text">取消</span>--%>
+                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" class="Text" OnClick="Cancel_Click" />
                 </li>
                 <span class="FieldLevelInstruction">包含所需字段<span style="color: red;">*</span>选项卡</span>
@@ -413,7 +406,7 @@
                                                                 <td colspan="2">
                                                                     <span>
                                                                         <span class="txtBlack8Class" style="margin-top: 5px">
-                                                                            <asp:CheckBox ID="can_edit_skills" runat="server" />
+                                                                            <asp:CheckBox ID="CanEditSkills" runat="server" />
                                                                             <label>允许员工编辑技能</label>
                                                                         </span>
                                                                     </span>
@@ -423,7 +416,7 @@
                                                                 <td colspan="2">
                                                                     <span>
                                                                         <span class="txtBlack8Class" style="margin-top: 5px">
-                                                                            <asp:CheckBox ID="can_manage_kb_articles" runat="server" />
+                                                                            <asp:CheckBox ID="CanManagekbarticles" runat="server" />
                                                                             <label>允许员工创建、编辑和删除知识库文章</label>
                                                                         </span>
                                                                     </span>
@@ -433,7 +426,7 @@
                                                                 <td colspan="2">
                                                                     <span>
                                                                         <span class="txtBlack8Class" style="margin-top: 5px">
-                                                                            <asp:CheckBox ID="allow_send_bulk_email" runat="server" />
+                                                                            <asp:CheckBox ID="AllowSendbulkemail" runat="server" />
                                                                             <label>允许员工群发邮件</label>
                                                                         </span>
                                                                     </span>
@@ -453,7 +446,7 @@
                                                                     <div>
                                                                         <span>
                                                                             <span class="txtBlack8Class" style="margin-top: 5px">
-                                                                               <asp:CheckBox ID="is_required_to_submit_timesheets" runat="server" />
+                                                                               <asp:CheckBox ID="IsRequiredtosubmittimesheets" runat="server" />
                                                                                 <label>不要求用户提交工时表</label>
                                                                             </span>
                                                                         </span>
@@ -551,7 +544,7 @@
                     return false;
                 }
             });
-            $("#Save").click(function () {
+           function save_deal() {
                 var firstname = $("#first_name").val();
                 var lastname = $("#last_name");
                 if (firstname == null || firstname == '') {
@@ -604,8 +597,29 @@
                 //    alert("请输入权限等级");
                 //    return false;
                 //}
+            }
+            $("#email").change(function () {
+                if (!$("#email").val().match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)) {
+                    alert("邮箱格式不正确");
+                    $("#email").val('');
+                    return false;
+                }
+            }); 
+            $("#email1").change(function () {
+                if (!$("#email1").val().match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)) {
+                    alert("邮箱格式不正确");
+                    $("#email1").val('');
+                    return false;
+                }
             });
-            $("#password2").blur(function () {
+            $("#email2").change(function () {
+                if (!$("#email2").val().match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)) {
+                    alert("邮箱格式不正确");
+                    $("#email2").val('');
+                    return false;
+                }
+            });
+            $("#password2").change(function () {
                 var ps1 = $("#password").val();
                 if (ps1 == null | ps1 == '') {
                     alert("请先填写密码！");

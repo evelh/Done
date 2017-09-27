@@ -74,7 +74,7 @@ namespace EMT.DoneNOW.Web
                 Response.Write("<script>window.opener.kkk();</script>");
             }
         }
-        protected void Save_Click(object sender, EventArgs e)
+        protected void Save_Close_Click(object sender, EventArgs e)
         {
             save_deal();
             Response.Write("<script>window.close();</script>");

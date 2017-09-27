@@ -190,6 +190,7 @@
     <Content Include="Contract\ContractView.aspx" />
     <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
+    <Content Include="Images\Loading.gif" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempEdit.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempTop.aspx" />
