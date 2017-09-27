@@ -606,7 +606,12 @@ namespace EMT.DoneNOW.BLL
             };
             if (!string.IsNullOrEmpty(param.general_update.parent_company_name))
             {
-                new_company_value.parent_id = Convert.ToInt64(param.general_update.parent_company_name);
+                 var parent_id = Convert.ToInt64(param.general_update.parent_company_name);
+                var paracc = GetCompany(parent_id);
+                if(paracc!=null&&paracc.parent_id==null&&paracc.id!= old_company_value.id)
+                {
+                    new_company_value.parent_id = parent_id;
+                }
             }
 
             if (!string.IsNullOrEmpty(param.additional_info.asset_value))

@@ -11,5 +11,10 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<pro_project>($"select * from pro_project where id = {id} and delete_time = 0");
         }
+
+        public List<pro_project> GetProjectList()
+        {
+            return FindListBySql<pro_project>($"select * from pro_project where  delete_time = 0");
+        }
     }
 }

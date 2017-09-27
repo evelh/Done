@@ -19,7 +19,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 oid { get; set; }
         [DataMember]
-        public String title { get; set; }
+        public String name { get; set; }
         [DataMember]
         public Int64 account_id { get; set; }
         [DataMember]
@@ -81,7 +81,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? template_id { get; set; }
         [DataMember]
-        public Int64? project_owner_resource_id { get; set; }
+        public Int64? owner_resource_id { get; set; }
         [DataMember]
         public Int64? sales_id { get; set; }
         [DataMember]

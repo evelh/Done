@@ -182,9 +182,8 @@
                     <tr>
                         <td>
                             <div class="clear">
-                                <label>项目提案名称</label>
-                                <select name="project_id" id="project_id">
-                                </select>
+                                <label>项目提案名称</label><asp:DropDownList ID="project_id" runat="server"></asp:DropDownList>
+                                
                              <%--   <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>--%>
                             </div>
                         </td>

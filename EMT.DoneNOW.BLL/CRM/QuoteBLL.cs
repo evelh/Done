@@ -511,6 +511,20 @@ namespace EMT.DoneNOW.BLL
                     }
                     param.project_id = project.id;
                 }
+                string costIds = "";
+                new OpportunityBLL().InsertContract(param.dic, param.opportunity, user, null, out costIds, param.project_id, null);
+
+                if (!string.IsNullOrEmpty(costIds))
+                {
+                    var aapBLL = new ApproveAndPostBLL();
+                    costIds = costIds.Substring(0, costIds.Length - 1);
+                    var costList = costIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var costId in costList)
+                    {
+                        // 审批并提交
+                        aapBLL.Post_Charges(int.Parse(costId), int.Parse(DateTime.Now.ToString("yyyyMMdd")), user);
+                    }
+                }
             }
             #endregion
 
