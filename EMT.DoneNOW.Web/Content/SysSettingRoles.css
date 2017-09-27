@@ -137,6 +137,8 @@ li.Button {
     padding: 0 3px;
     text-overflow: ellipsis;
     white-space: nowrap;
+    cursor:pointer;
+    background:transparent;
 }
 /*切换按钮*/
 .TabBar {
