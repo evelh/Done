@@ -475,7 +475,9 @@ namespace EMT.DoneNOW.DTO
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
             APPROVE_LABOUR,                //工时审批
-            APPROVE_EXPENSE,               //费用审批              
+            APPROVE_EXPENSE,               //费用审批   
+            
+            BILL_CODE_CALLBACK,             // 计费代码查找带回
         }
 
         /// <summary>
@@ -948,6 +950,9 @@ namespace EMT.DoneNOW.DTO
         ConRateEdit = 315,                        // 合同预付时间系数编辑
         ConBlockAdd = 316,                      // 合同新增预付
         ConBlockEdit = 317,                     // 合同编辑预付
+        ConMilestoneAdd = 318,                  // 合同新增里程碑
+        ConMilestoneEdit = 319,                 // 合同编辑里程碑
+        BillCodeCallback,                       // 计费代码查找带回
 
 
         VendorAdd = 320,                          //添加供应商

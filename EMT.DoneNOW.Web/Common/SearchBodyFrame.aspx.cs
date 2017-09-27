@@ -186,6 +186,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.INVOICE_HISTORY:
                     addBtn = "历史发票";
                     break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONES:
+                    addBtn = "新增合同里程碑";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -584,6 +587,10 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 case (long)QueryType.ContractRate:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.ContractMilestone:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;

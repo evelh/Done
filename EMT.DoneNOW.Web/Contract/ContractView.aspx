@@ -94,7 +94,7 @@
                 <li class="MenuLink">服务-未实现</li>
                 <%} %>
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.FIXED_PRICE) { %>
-                <li class="MenuLink">里程碑-未实现</li>
+                <li class="MenuLink"><a href="ContractView.aspx?type=milestone&id=<%=contract.id %>">里程碑</a></li>
                 <%} %>
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER) { %>
                 <li class="MenuLink"><a href="ContractView.aspx?type=block&id=<%=contract.id %>">预付费管理</a></li>

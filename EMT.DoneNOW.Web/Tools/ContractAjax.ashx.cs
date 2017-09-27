@@ -106,6 +106,10 @@ namespace EMT.DoneNOW.Web
                         var serBunId = context.Request.QueryString["id"];
                         AddServiceBundle(context, Convert.ToInt64(serBunId));
                         break;
+                    case "DeleteMilestone":
+                        var milestoneId = context.Request.QueryString["milestoneId"];
+                        DeleteMilestone(context, Convert.ToInt64(milestoneId));
+                        break;
                     default:
                         break;
                 }
@@ -483,6 +487,23 @@ namespace EMT.DoneNOW.Web
             result.Add(serBun.id);
 
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+
+        /// <summary>
+        /// 删除合同里程碑
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="id"></param>
+        public void DeleteMilestone(HttpContext context, long id)
+        {
+            var res = context.Session["dn_session_user_info"];
+            bool result = false;
+            if (res != null)
+            {
+                var user = res as sys_user;
+                result = new ContractBLL().DeleteMilestone(id, user.id);
+            }
+            context.Response.Write(result);
         }
 
         public bool IsReusable

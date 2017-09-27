@@ -3043,6 +3043,30 @@
                 })
             }
         }
+        <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractMilestone) { %>
+        function Edit() {
+            window.open("../Contract/ContractMilestone.aspx?contractId=" + $("#id").val() + "&id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConMilestoneEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Add() {
+            window.open("../Contract/ContractMilestone.aspx?contractId=" + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConMilestoneAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function Delete() {
+            if (confirm("确定要删除此里程碑吗?")) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ContractAjax.ashx?act=DeleteMilestone&milestoneId=" + entityid,
+                    async: false,
+                    success: function (data) {
+                        if (data == "true") {
+                            alert('删除成功');
+                            window.reload();
+                        } else {
+                            alert("删除失败，已计费状态下不能删除");
+                        }
+                    }
+                })
+            }
+        }
         <%}%>
         function openopenopen() {
             //alert("暂未实现");
