@@ -47,7 +47,7 @@ $(".Logo").on("mouseout", function () {
     timer = setTimeout(function () {
         $(_this).css("border-color", "#fff");
         $(".GuideOverlay").hide();
-    }, 500)
+    }, 200)
 });
 $(".GuideOverlay").on("mousemove", function () {
     clearTimeout(timer);
@@ -59,7 +59,7 @@ $(".GuideOverlay").on("mouseout", function () {
     timer = setTimeout(function () {
         $(".Logo").css("border-color", "#fff");
         $(_this).hide();
-    }, 500)
+    }, 200)
 });
 //循环一级菜单   显示二级菜单
 $.each($(".GuideNavigation"), function (i) {
@@ -73,6 +73,15 @@ $(".Content").on("mouseover", function () {
 });
 $(".Content").on("mouseout", function () {
     $(this).children("a").removeClass("HoverState").addClass("NormalState");
+});
+$(".ModuleContainer").find(".Content").on("click", function () {
+    $("#WorkspaceContainer").css("z-index", "0");
+});
+$(".Logo").on("click", function () {
+    $("#WorkspaceContainer").css("z-index", "2");
+});
+$("#HomePage").on("click", function () {
+    $("#WorkspaceContainer").css("z-index", "2");
 });
 
 //历史记录搜索
@@ -128,9 +137,16 @@ $(".RecentOverlay").on("mousemove", function () {
     $(".Recent").css("borderBottom", "1px solid #fff");
     $(this).show();
 });
-    $(".RecentOverlay").on("mouseout", function () {
-        $(".Recent").removeClass("HoverState");
-        $(".Recent").css("borderTop", "1px solid #d7d7d7");
-        $(".Recent").css("borderBottom", "1px solid #d7d7d7");
-        $(this).hide();
+$(".RecentOverlay").on("mouseout", function () {
+    $(".Recent").removeClass("HoverState");
+    $(".Recent").css("borderTop", "1px solid #d7d7d7");
+    $(".Recent").css("borderBottom", "1px solid #d7d7d7");
+    $(this).hide();
+});
+
+//内容的选项卡切换
+$.each($(".SelectDashboardTab"), function (i) {
+    $(this).on("click", function () {
+        $(this).addClass("SelectedState").siblings("div").removeClass("SelectedState");
     });
+});

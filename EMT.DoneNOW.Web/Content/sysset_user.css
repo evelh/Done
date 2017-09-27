@@ -80,6 +80,8 @@ body{
     padding: 0 3px 0 3px;
     color: #4F4F4F;
     vertical-align: top;
+    background:transparent;
+    cursor:pointer;
 }
 .FieldLevelInstruction{
     margin-left: 10px;
@@ -225,6 +227,9 @@ div[class="Content"] div[class="ButtonCollectionBase"] {
     line-height: 16px;
     font-weight: normal;
     margin-left: 0;
+}
+img{
+    cursor:pointer;
 }
 
 

@@ -105,11 +105,6 @@ body, input[type="text"], select, textarea {
     }
 
     #SiteNavigationBar .ButtonGroup {
-        background: #f4f4f4;
-        background: -moz-linear-gradient(top,#fbfbfb 0,#f4f4f4 100%);
-        background: -webkit-linear-gradient(top,#fbfbfb 0,#f4f4f4 100%);
-        background: -ms-linear-gradient(top,#fbfbfb 0,#f4f4f4 100%);
-        background: linear-gradient(to bottom,#fbfbfb 0,#f4f4f4 100%);
         position: absolute;
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -505,6 +500,174 @@ body #WorkspaceContainer {
 
 body #WorkspaceContainer {
     background-color: #e4e4e4;
+    z-index:2;
+}
+
+#WorkspaceContainer {
+    background-repeat: repeat;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 46px;
+    z-index: 1;
+}
+
+#WorkspaceContainer > div {
+    bottom: 0;
+    left: 30px;
+    position: absolute;
+    right: 30px;
+    top: 15px;
+}
+/*上面的tab切花项*/
+#DashboardContainer > .DashboardTitleBar {
+    border-bottom: 1px solid #adadad;
+    height: 40px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.ThemePrimaryColor {
+    background-color: #346a95;
+}
+
+#DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer {
+    height: 40px;
+    left: 0;
+    position: absolute;
+    right: 65px;
+    top: 0;
+}
+
+#DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .DashboardTabButtonContainer {
+    display: inline-block;
+    height: 40px;
+    position: relative;
+}
+
+#DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .DashboardTabButtonContainer > .Button.SelectedState {
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
+    color: #333;
+    cursor: default;
+}
+
+#DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .DashboardTabButtonContainer > .Button {
+    max-width: 300px;
+}
+
+#DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .Button, #DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .DashboardTabButtonContainer > .Button {
+    background-color: #f2f2f2;
+    color: #858585;
+    cursor: pointer;
+    height: 25px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 26px;
+    margin: 10px 0 0 4px;
+    overflow: hidden;
+    padding: 0 7px;
+    position: relative;
+    text-overflow: ellipsis;
+    touch-action: none;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.Button {
+    display: inline-block;
+}
+
+
+
+/*添加add加号*/
+#DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .Button.CreateDashboardTab {
+    padding: 0;
+    width: 24px;
+}
+
+#DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .Button, #DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .DashboardTabButtonContainer > .Button {
+    background-color: #f2f2f2;
+    color: #858585;
+    cursor: pointer;
+    height: 25px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 26px;
+    margin: 14px 0 0 4px;
+    overflow: hidden;
+    padding: 0 7px;
+    position: relative;
+    text-overflow: ellipsis;
+    touch-action: none;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+#DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .Button.CreateDashboardTab > .HorizontalLine {
+    left: 7px;
+    height: 2px;
+    top: 12px;
+    width: 10px;
+}
+
+#DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .Button.CreateDashboardTab > .VerticalLine {
+    left: 11px;
+    height: 10px;
+    top: 8px;
+    width: 2px;
+}
+
+#DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .Button.CreateDashboardTab > .HorizontalLine, #DashboardContainer > .DashboardTitleBar > .DashboardButtonContainer > .Button.CreateDashboardTab > .VerticalLine {
+    background-color: #858585;
+    display: inline-block;
+    position: absolute;
+}
+
+/*下面的内容项*/
+#DashboardContainer > .DashboardTabContainer {
+    background-color: #fff;
+    bottom: 1px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 40px;
+    touch-action: none;
+}
+
+#DashboardContainer > .DashboardTabContainer > .ContentContainer {
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: auto;
+}
+
+#DashboardContainer > .DashboardTabContainer > .ContentContainer, #DashboardContainer > .DashboardTabContainer > .LoadingIndicator, #DashboardContainer > .DashboardTabContainer > .TransitionContainer {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#DashboardTabContainerContent {
+    bottom: 0;
+    position: absolute;
+    top: 0;
+}
+
+#DashboardContainer > .DashboardTabContainer > .ContentContainer > div > .DashboardTab.AutoFlow {
+    width: auto;
+}
+
+#DashboardContainer > .DashboardTabContainer > .ContentContainer > div > .DashboardTab {
+    display: inline-block;
+    padding: 7px;
+    position: relative;
+    width: 920px;
 }
 
 #WorkspaceContainer {
