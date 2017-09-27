@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.SessionState;
 
 namespace EMT.DoneNOW.Web
 {
     /// <summary>
     /// HistoryInvoiceAjax 的摘要说明
     /// </summary>
-    public class HistoryInvoiceAjax : IHttpHandler
+    public class HistoryInvoiceAjax : IHttpHandler, IRequiresSessionState
     {
 
         public void ProcessRequest(HttpContext context)
@@ -22,9 +23,22 @@ namespace EMT.DoneNOW.Web
                 case "voidone": VoidOne(context,id); break;
                 case "voidbatch": VoidBatch(context, id); break;
                 case "voidunpost": VoidUnpost(context, id); break;
+                case "getaccount_id": GetAccount_id(context, id); break;
+                    
                 default:break;
             }
          }
+        public void GetAccount_id(HttpContext context, int id) {
+            int a_id = new InvoiceBLL().GetAccount_id(id);
+            if (a_id>0)
+            {
+                context.Response.Write(a_id);
+            }
+            else
+            {
+                context.Response.Write("-1");
+            }
+        }
         /// <summary>
         /// 作废单张发票
         /// </summary>

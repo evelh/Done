@@ -56,6 +56,33 @@
             font-weight: normal;
             color: #4F4F4F;
         }
+          /*加载的css样式*/
+#BackgroundOverLay{
+    width:100%;
+    height:100%;
+    background: black;
+    opacity: 0.6;
+    z-index: 25;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+#LoadingIndicator {
+    width: 100px;
+    height:100px;
+    background-image: url(../Images/Loading.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    z-index: 30;
+    margin:auto;
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    display: none;
+}/*加载的css样式(结尾)*/
     </style>
 </head>
 <body style="overflow-x: auto; overflow-y: auto;">
@@ -259,16 +286,8 @@
                     <%} %></th>
                 <%} %>
             </tr>
-            <%
-                if (queryResult.count == 0)
-                {
-            %>
-            <tr>
-                <td align="center" style="color: red;">选定的条件未查找到结果</td>
-            </tr>
-            <%
-                }
-                else
+            <%               
+                if (queryResult.count>0)
                 {
                     var idPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID);
                     foreach (var rslt in queryResult.result)
@@ -314,6 +333,12 @@
             %>
         </table>
     </div>
+     <%
+         if (queryResult.count == 0)
+         {
+            %>
+                <div style="color: red;text-align:center;padding:10px 0;font-size:14px;font-weight:bold;">选定的条件未查找到结果</div>
+            <%}%>
     <%} %>
 
     <div id="menu">
@@ -338,6 +363,10 @@
         </ul>
         <%} %>
     </div>
+        <%--加载--%>
+<div id="BackgroundOverLay"></div>
+<div id="LoadingIndicator"></div>
+     <%--加载结束--%>
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
@@ -1135,13 +1164,16 @@
           window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank');
         }
         function DeleteContract() {
-          //$.ajax({
-          //  type: "GET",
-          //  url: "../Tools/ContractAjax.ashx?act=delete&id=" + entityid,
-          //  success: function (data) {
-          //    alert(data);
-          //  }
-          //})
+            if (confirm('删除合同，是否继续?')) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ContractAjax.ashx?act=deleteContract&id=" + entityid,
+                    success: function (data) {
+                        alert("删除成功");
+                        window.location.reload();
+                    }
+                });
+            }
         }
         $("#ToolsButton").on("mouseover", function () {
             $("#ToolsButton").css("background", "#fff");
@@ -1660,6 +1692,8 @@
             }
         })
         function Add() {
+            $("#BackgroundOverLay").show();
+            $("#LoadingIndicator").show();
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1679,7 +1713,6 @@
             } else {
                 alert("请选择需要审批的数据！");
             }
-
         }
        <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.REVOKE_RECURRING_SERVICES)
@@ -1763,6 +1796,8 @@
             }
         })
         function Add() {
+            $("#BackgroundOverLay").show();
+            $("#LoadingIndicator").show();
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1806,7 +1841,7 @@
             });
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
-                window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&id=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
             } else {
                 alert("请选择需要审批的数据！");
             }
@@ -1852,7 +1887,7 @@
             });
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
-                window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&id=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
             } else {
                 alert("请选择需要审批的数据！");
             }
@@ -1900,7 +1935,7 @@
             });
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
-                window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&id=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 alert("审批处理结束！");
             } else {
                 alert("请选择需要审批的数据！");
@@ -1960,7 +1995,7 @@
             });
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
-                window.open('../Contract/ApproveChargeSelect.aspx?type=' +  <%=queryTypeId%>  + '&id=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractChargeSelect%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('../Contract/ApproveChargeSelect.aspx?type=' +  <%=queryTypeId%>  + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractChargeSelect%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
             } else {
                 alert("至少选择一项！");
             }
@@ -2452,7 +2487,14 @@
         }
         //发票设置
         function InvoiceEdit() {
-
+            $.ajax({
+                type: "GET",
+                url: "../Tools/HistoryInvoiceAjax.ashx?act=getaccount_id&id=" + entityid,
+                async: false,
+                success: function (data) {
+                    window.open("../Invoice/PreferencesInvoice.aspx?account_id=" + data, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREFERENCE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                }
+            })           
         }
          <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ACCOUNTTYPE)
@@ -2530,7 +2572,7 @@
              if (confirm('确认删除?')) {
                  $.ajax({
                      type: "GET",
-                     url: "../Tools/OpportunityReasonAjax.ashx?act=delete&id=" + entityid + "GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_WIN_REASON_TYPE%>",//GT_id 表示当前操作的类型
+                     url: "../Tools/OpportunityReasonAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_WIN_REASON_TYPE%>",//GT_id 表示当前操作的类型
                         success: function (data) {
                             if (data == "system") {
                                 alert("系统默认不能删除！");
@@ -2561,7 +2603,7 @@
              if (confirm('确认删除?')) {
                  $.ajax({
                      type: "GET",
-                     url: "../Tools/OpportunityReasonAjax.ashx?act=delete&id=" + entityid + "GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_LOSS_REASON_TYPE%>",//GT_id 表示当前操作的类型
+                     url: "../Tools/OpportunityReasonAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_LOSS_REASON_TYPE%>",//GT_id 表示当前操作的类型
                      success: function (data) {
                          if (data == "system") {
                              alert("系统默认不能删除！");
@@ -2847,7 +2889,7 @@
              if (confirm('删除操作将不能恢复，是否继续?')) {
                  $.ajax({
                      type: "GET",
-                     url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id==<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_STAGE%>",//GT_id 表示当前操作的类型
+                     url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_STAGE%>",//GT_id 表示当前操作的类型
                        success: function (data) {
                            if (data == "system") {
                                alert("系统默认不能删除！");

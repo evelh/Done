@@ -361,7 +361,6 @@ namespace EMT.DoneNOW.BLL
                 remark = "新增审批并提交"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_log);       // 插入日志
-
             var oldcsp = csp;
             csp.approve_and_post_date = cad.posted_date;
             csp.approve_and_post_user_id = user.id;
@@ -507,7 +506,7 @@ namespace EMT.DoneNOW.BLL
                 ctt_contract_block ccb1 = new ctt_contract_block();
                 ccb1.id = (int)ccb_dal.GetNextIdCom();
                 ccb1.rate = (decimal)ccnr.rate;//费率
-                ccb1.contract_id = (long)ccc.contract_id;//合同id
+                ccb1.contract_id =Convert.ToInt64(ccc.contract_id);//合同id
                 ccb1.start_date = cc.start_date;
                 ccb1.end_date = cc.end_date;
                 ccb1.quantity = 1;
@@ -567,7 +566,7 @@ namespace EMT.DoneNOW.BLL
                 ctt_contract_block ccb2 = new ctt_contract_block();
                 ccb2.id = (int)ccb_dal.GetNextIdCom();
                 ccb2.rate = (decimal)ccnr.rate;//费率
-                ccb2.contract_id = (long)ccc.contract_id;//合同id
+                ccb2.contract_id = Convert.ToInt64(ccc.contract_id);//合同id
                 ccb2.start_date = cc.start_date;
                 ccb2.end_date = cc.end_date;
                 ccb2.quantity = 1 - m;
@@ -840,7 +839,7 @@ namespace EMT.DoneNOW.BLL
             if (ca.tax_region_id != null)
                 tax_region_name = gbll.GetGeneralName((int)ca.tax_region_id);
             if (dcc.tax_category_id != null && ca.tax_region_id != null)
-                tax_rate = new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>($"select * from d_tax_region_cate where tax_region_id='ca.tax_region_id' and tax_cate_id='dcc.tax_category_id' ").total_effective_tax_rate;
+                tax_rate = new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>($"select * from d_tax_region_cate where tax_region_id={ca.tax_region_id} and tax_cate_id={dcc.tax_category_id} ").total_effective_tax_rate;
             cad.object_id = id;//成本表id
             cad.type_id = (int)ACCOUNT_DEDUCTION_TYPE.CHARGE;
             cad.posted_date = DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式
@@ -852,143 +851,145 @@ namespace EMT.DoneNOW.BLL
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
             cad.purchase_order_no = ccc.purchase_order_no;//采购订单号
-                                              //判断客户是否免税
-                                              //成本/工时 不 需要从预付费用/预付时间中扣除
-            var ccbList = ccb_dal.FindListBySql<ctt_contract_block>($"select * from ctt_contract_block where contract_id={ccc.contract_id} and is_billed=0 and status_id=1");
-            if (ccbList.Count <= 0)
+                                                          //判断客户是否免税
+                                                          //成本/工时 不 需要从预付费用/预付时间中扣除
+            if (ccc.contract_id != null || ccc.contract_id <= 0)
             {
-                cad.id = (int)(cad_dal.GetNextIdCom());//序列号
-                cad.extended_price = ccc.extended_price;//总价
-                if (ca.is_tax_exempt != 1)
+                var ccbList = ccb_dal.FindListBySql<ctt_contract_block>($"select * from ctt_contract_block where contract_id={ccc.contract_id} and is_billed=0 and status_id=1");
+                if (ccbList.Count > 0)
                 {
-                    cad.tax_dollars = tax_rate * Convert.ToDecimal(cad.extended_price);//税额                    
-                }
-                cad.create_user_id = cad.update_user_id = user.id;
-                cad.create_time = cad.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                cad_dal.Insert(cad);
-                var add_log = new sys_oper_log()
-                {
-                    user_cate = "用户",
-                    user_id = (int)user.id,
-                    name = user.name,
-                    phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,//审批并提交
-                    oper_object_id = cad.id,// 操作对象id
-                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                    oper_description = cad_dal.AddValue(cad),
-                    remark = "新增审批并提交"
-                };          // 创建日志
-                new sys_oper_log_dal().Insert(add_log);       // 插入日志
-            }//需要
-            else
-            {
-                decimal extend = 0;
-                foreach (var ccb in ccbList)
-                {
-                    extend += ccb.quantity * ccb.rate;
-                    if (ccc.extended_price != null)
+                    decimal extend = 0;
+                    foreach (var ccb in ccbList)
                     {
-                        cad.id = (int)(cad_dal.GetNextIdCom());//序列号
-                        cad.contract_block_id = ccb.id;
-                        if (extend <= ccc.extended_price)
+                        extend += ccb.quantity * ccb.rate;
+                        if (ccc.extended_price != null)
                         {
-                            cad.extended_price = ccb.quantity * ccb.rate;
-                            if (ca.is_tax_exempt != 1)
+                            cad.id = (int)(cad_dal.GetNextIdCom());//序列号
+                            cad.contract_block_id = ccb.id;
+                            if (extend <= ccc.extended_price)
                             {
-                                cad.tax_dollars = tax_rate * Convert.ToDecimal(cad.extended_price);//税额                    
-                            }
-                            cad.create_user_id = cad.update_user_id = user.id;
-                            cad.create_time = cad.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                            cad_dal.Insert(cad);
-                            var add3_log = new sys_oper_log()
-                            {
-                                user_cate = "用户",
-                                user_id = (int)user.id,
-                                name = user.name,
-                                phone = user.mobile == null ? "" : user.mobile,
-                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,//审批并提交
-                                oper_object_id = cad.id,// 操作对象id
-                                oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                                oper_description = cad_dal.AddValue(cad),
-                                remark = "新增审批并提交"
-                            };          // 创建日志
-                            new sys_oper_log_dal().Insert(add3_log);       // 插入日志
+                                cad.extended_price = ccb.quantity * ccb.rate;
+                                if (ca.is_tax_exempt != 1)
+                                {
+                                    cad.tax_dollars = tax_rate * Convert.ToDecimal(cad.extended_price);//税额                    
+                                }
+                                cad.create_user_id = cad.update_user_id = user.id;
+                                cad.create_time = cad.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                                cad_dal.Insert(cad);
+                                var add3_log = new sys_oper_log()
+                                {
+                                    user_cate = "用户",
+                                    user_id = (int)user.id,
+                                    name = user.name,
+                                    phone = user.mobile == null ? "" : user.mobile,
+                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,//审批并提交
+                                    oper_object_id = cad.id,// 操作对象id
+                                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                                    oper_description = cad_dal.AddValue(cad),
+                                    remark = "新增审批并提交"
+                                };          // 创建日志
+                                new sys_oper_log_dal().Insert(add3_log);       // 插入日志
 
-                            var oldccb = ccb;
-                            ccb.is_billed = 1;
-                            ccb.status_id = 0;
-                            ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                            ccb.update_user_id = user.id;
-                            ccb_dal.Update(ccb);
-                            var add2_log = new sys_oper_log()
+                                var oldccb = ccb;
+                                ccb.is_billed = 1;
+                                ccb.status_id = 0;
+                                ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                                ccb.update_user_id = user.id;
+                                ccb_dal.Update(ccb);
+                                var add2_log = new sys_oper_log()
+                                {
+                                    user_cate = "用户",
+                                    user_id = (int)user.id,
+                                    name = user.name,
+                                    phone = user.mobile == null ? "" : user.mobile,
+                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_BLOCK,//合同成本预付
+                                    oper_object_id = ccc.id,// 操作对象id
+                                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                                    oper_description = ccc_dal.CompareValue(oldccb, ccb),
+                                    remark = "修改合同成本预付时间或费用"
+                                };          // 创建日志
+                                new sys_oper_log_dal().Insert(add2_log);       // 插入日志
+                                if (extend == ccc.extended_price)
+                                {
+                                    break;
+                                }
+                            }
+                            else
                             {
-                                user_cate = "用户",
-                                user_id = (int)user.id,
-                                name = user.name,
-                                phone = user.mobile == null ? "" : user.mobile,
-                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_BLOCK,//合同成本预付
-                                oper_object_id = ccc.id,// 操作对象id
-                                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                                oper_description = ccc_dal.CompareValue(oldccb, ccb),
-                                remark = "修改合同成本预付时间或费用"
-                            };          // 创建日志
-                            new sys_oper_log_dal().Insert(add2_log);       // 插入日志
-                            if (extend == ccc.extended_price)
-                            {
+                                cad.extended_price = ccb.quantity * ccb.rate - (extend - (decimal)ccc.extended_price);
+                                if (ca.is_tax_exempt != 1)
+                                {
+                                    cad.tax_dollars = tax_rate * Convert.ToDecimal(cad.extended_price);//税额                    
+                                }
+                                cad.create_user_id = cad.update_user_id = user.id;
+                                cad.create_time = cad.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                                cad_dal.Insert(cad);
+                                var add_log = new sys_oper_log()
+                                {
+                                    user_cate = "用户",
+                                    user_id = (int)user.id,
+                                    name = user.name,
+                                    phone = user.mobile == null ? "" : user.mobile,
+                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,//审批并提交
+                                    oper_object_id = cad.id,// 操作对象id
+                                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                                    oper_description = cad_dal.AddValue(cad),
+                                    remark = "新增审批并提交"
+                                };          // 创建日志
+                                new sys_oper_log_dal().Insert(add_log);       // 插入日志
+                                ccb.quantity = (extend - (decimal)ccc.extended_price) / ccb.rate;
+                                ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                                ccb.update_user_id = user.id;
+                                ccb_dal.Update(ccb);
+                                var oldccb = ccb;
+                                var add2_log = new sys_oper_log()
+                                {
+                                    user_cate = "用户",
+                                    user_id = (int)user.id,
+                                    name = user.name,
+                                    phone = user.mobile == null ? "" : user.mobile,
+                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_BLOCK,//合同成本预付
+                                    oper_object_id = ccc.id,// 操作对象id
+                                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                                    oper_description = ccc_dal.CompareValue(oldccb, ccb),
+                                    remark = "修改合同成本预付时间或费用"
+                                };          // 创建日志
+                                new sys_oper_log_dal().Insert(add2_log);       // 插入日志
                                 break;
                             }
                         }
-                        else
-                        {
-                            cad.extended_price = ccb.quantity * ccb.rate - (extend - (decimal)ccc.extended_price);
-                            if (ca.is_tax_exempt != 1)
-                            {
-                                cad.tax_dollars = tax_rate * Convert.ToDecimal(cad.extended_price);//税额                    
-                            }
-                            cad.create_user_id = cad.update_user_id = user.id;
-                            cad.create_time = cad.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                            cad_dal.Insert(cad);
-                            var add_log = new sys_oper_log()
-                            {
-                                user_cate = "用户",
-                                user_id = (int)user.id,
-                                name = user.name,
-                                phone = user.mobile == null ? "" : user.mobile,
-                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,//审批并提交
-                                oper_object_id = cad.id,// 操作对象id
-                                oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                                oper_description = cad_dal.AddValue(cad),
-                                remark = "新增审批并提交"
-                            };          // 创建日志
-                            new sys_oper_log_dal().Insert(add_log);       // 插入日志
-                            ccb.quantity = (extend - (decimal)ccc.extended_price) / ccb.rate;
-                            ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                            ccb.update_user_id = user.id;
-                            ccb_dal.Update(ccb);
-                            var oldccb = ccb;
-                            var add2_log = new sys_oper_log()
-                            {
-                                user_cate = "用户",
-                                user_id = (int)user.id,
-                                name = user.name,
-                                phone = user.mobile == null ? "" : user.mobile,
-                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_BLOCK,//合同成本预付
-                                oper_object_id = ccc.id,// 操作对象id
-                                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                                oper_description = ccc_dal.CompareValue(oldccb, ccb),
-                                remark = "修改合同成本预付时间或费用"
-                            };          // 创建日志
-                            new sys_oper_log_dal().Insert(add2_log);       // 插入日志
-                            break;
-                        }
                     }
-                }
 
+                }
+            }
+            else {
+                    cad.id = (int)(cad_dal.GetNextIdCom());//序列号
+                    cad.extended_price = ccc.extended_price;//总价
+                    if (ca.is_tax_exempt != 1)
+                    {
+                        cad.tax_dollars = tax_rate * Convert.ToDecimal(cad.extended_price);//税额                    
+                    }
+                    cad.create_user_id = cad.update_user_id = user.id;
+                    cad.create_time = cad.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    cad_dal.Insert(cad);
+                    var add_log = new sys_oper_log()
+                    {
+                        user_cate = "用户",
+                        user_id = (int)user.id,
+                        name = user.name,
+                        phone = user.mobile == null ? "" : user.mobile,
+                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,//审批并提交
+                        oper_object_id = cad.id,// 操作对象id
+                        oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                        oper_description = cad_dal.AddValue(cad),
+                        remark = "新增审批并提交"
+                    };          // 创建日志
+                    new sys_oper_log_dal().Insert(add_log);       // 插入日志
             }
             var olaccc = ccc;
             ccc.bill_status = 1;//已计费

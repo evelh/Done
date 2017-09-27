@@ -29,7 +29,7 @@ namespace EMT.DoneNOW.Web
             }
         }
 
-        protected void Save_close_Click(object sender, EventArgs e)
+        protected void Save_Close_Click(object sender, EventArgs e)
         {
             if (save_deal()) {
                 Response.Write("<script>window.close();self.opener.location.reload();</script>");

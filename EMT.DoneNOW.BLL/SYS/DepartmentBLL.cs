@@ -21,7 +21,7 @@ namespace EMT.DoneNOW.BLL
         public Dictionary<long, string> GetDownList()
         {
             Dictionary<long, string> dic = new Dictionary<long, string>();
-            return new sys_organization_location_dal().FindListBySql<sys_organization_location>($"select * from crm_location where delete_time=0").ToDictionary(d => d.id, d =>d.address);
+            return new sys_organization_location_dal().FindListBySql<sys_organization_location>($"select * from sys_organization_location where delete_time=0").ToDictionary(d => d.id, d =>d.name);
         }
         /// <summary>
         /// 根据地址id获取时区//具体显示后期需要修改8-24
@@ -79,7 +79,7 @@ namespace EMT.DoneNOW.BLL
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }
-            var de = _dal.FindSignleBySql<sys_department>($"select * from  sys_department where name={sd.name} and delete_time=0");
+            var de = _dal.FindSignleBySql<sys_department>($"select * from  sys_department where name='{sd.name}' and delete_time=0");
             var old = _dal.FindSignleBySql<sys_department>($"select * from  sys_department where id={sd.id} and delete_time=0");
             if (de != null&&de.id!=sd.id)
             {

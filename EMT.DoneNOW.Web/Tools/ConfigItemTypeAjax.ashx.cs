@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.SessionState;
 
 namespace EMT.DoneNOW.Web
 {
     /// <summary>
     /// ConfigItemTypeAjax 的摘要说明
     /// </summary>
-    public class ConfigItemTypeAjax : IHttpHandler
+    public class ConfigItemTypeAjax : IHttpHandler, IRequiresSessionState
     {       
         public void ProcessRequest(HttpContext context)
         {

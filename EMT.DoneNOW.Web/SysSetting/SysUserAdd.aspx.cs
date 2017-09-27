@@ -92,7 +92,7 @@ namespace EMT.DoneNOW.Web.SysSetting
             this.Position.DataValueField = "id";
             this.Position.DataSource = dic.FirstOrDefault(_ => _.Key == "Position").Value;
             Position.DataBind();
-            Position.Items.Insert(0, new ListItem() { Value = "0", Text = "       ", Selected = true });
+            Position.Items.Insert(0, new ListItem() { Value = "0", Text = "    ", Selected = true });
             //授权tab页
 
             //权限等级  有争议sys_security_level
@@ -223,25 +223,40 @@ namespace EMT.DoneNOW.Web.SysSetting
             param.sys_res.name = param.sys_res.first_name + param.sys_res.last_name;
             param.sys_res.avatar = SavePic();//保存头像
 
-            if (this.can_edit_skills.Checked)
+            if (this.CanEditSkills.Checked)
             {
                 param.sys_res.can_edit_skills = 1;
+            }
+            else {
+                param.sys_res.can_edit_skills = 0;
             }
             if (this.ACTIVE.Checked)
             {
                 param.sys_res.is_active = 1;
             }
-            if (this.can_manage_kb_articles.Checked)
+            else {
+                param.sys_res.is_active = 0;
+            }
+            if (this.CanManagekbarticles.Checked)
             {
                 param.sys_res.can_manage_kb_articles = 1;
             }
-            if (this.allow_send_bulk_email.Checked)
+            else {
+                param.sys_res.can_manage_kb_articles = 0;
+            }
+            if (this.AllowSendbulkemail.Checked)
             {
                 param.sys_res.allow_send_bulk_email = 1;
             }
-            if (this.is_required_to_submit_timesheets.Checked)
+            else {
+                param.sys_res.allow_send_bulk_email = 0;
+            }
+            if (this.IsRequiredtosubmittimesheets.Checked)
             {
                 param.sys_res.is_required_to_submit_timesheets = 1;
+            }
+            else {
+                param.sys_res.is_required_to_submit_timesheets = 0;
             }
             param.sys_res.email_type_id=Convert.ToInt32(this.EmailType.SelectedValue.ToString());//保存邮件类型
             param.sys_res.date_display_format_id = Convert.ToInt32(this.DateFormat.SelectedValue);

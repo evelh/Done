@@ -147,6 +147,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.TERRITORY:
                     addBtn = "新增客户地域";
                     break;
+                case (int)DicEnum.QUERY_CATE.ACCOUNTREGION:
+                    addBtn = "新增区域";
+                    break;
                 case (int)DicEnum.QUERY_CATE.COMPETITOR:
                     addBtn = "新增竞争对手";
                     break;
@@ -442,10 +445,10 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.Resource:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查找相似员工", click_function = "" });
-                    contextMenu.Add(new PageContextMenuDto { text = "发邮件给当前员工", click_function = "" });
-                    contextMenu.Add(new PageContextMenuDto { text = "发邮件给选中员工", click_function = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查找相似员工", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "发邮件给当前员工", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "发邮件给选中员工", click_function = "openopenopen()\" \" style='color:grey;'" });
                     break;
                 case (long)QueryType.Prouduct:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
@@ -524,7 +527,7 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.APPROVE_CHARGES:
                     contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "Post()" });
                     contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ContractDetail()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "工单详情", click_function = "TicketDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "工单详情", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "调整总价", click_function = "AdjustExtend()" });
                     contextMenu.Add(new PageContextMenuDto { text = "设置为可计费", click_function = "Billing()" });
                     contextMenu.Add(new PageContextMenuDto { text = "设置为不可计费", click_function = "NoBilling()" });

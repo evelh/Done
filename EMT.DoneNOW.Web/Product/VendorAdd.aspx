@@ -114,9 +114,9 @@
             });
             function save_deal() {
                 var ve = $("#CallBack").val();
-                alert(ve);
+               // alert(ve);
                 var kk = $("#" + ve + "", window.opener.document).val();
-                if (kk != null || kk != '') {
+                if (kk != undefined || kk != null) {
                     alert("已经存在该供应商！");
                     return false;
                 }

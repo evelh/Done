@@ -100,10 +100,10 @@ namespace EMT.DoneNOW.BLL
                             {
                                 return ERROR_CODE.ERROR;
                             }
-                            if (ccc.contract_block_id != null)
+                            if (cad.contract_block_id != null)
                             {
                                 //合同预付
-                                var oldccb = ccb = ccb_dal.FindSignleBySql<ctt_contract_block>($" select * from ctt_contract_block where id={ccc.contract_block_id} and delete_time=0");
+                                var oldccb = ccb = ccb_dal.FindSignleBySql<ctt_contract_block>($" select * from ctt_contract_block where id={cad.contract_block_id} and delete_time=0");
                                 if (ccb != null)
                                 {
                                     ccb.is_billed = 0;
@@ -451,8 +451,9 @@ namespace EMT.DoneNOW.BLL
                     }
                     //订阅
                     if (cad.object_id != null)
-                    {
+                    {                       
                         var oldcsp = csp = csp_dal.FindSignleBySql<crm_subscription_period>($"select * from crm_subscription_period where id={cad.object_id}");
+                        cs = cs_dal.FindNoDeleteById(csp.subscription_id);
                         csp.approve_and_post_user_id = null;
                         csp.approve_and_post_date = null;
                         csp.period_price = cs.period_price;

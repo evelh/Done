@@ -14,51 +14,55 @@ namespace EMT.DoneNOW.Web
         protected int id;
         protected string ids;
         protected long type;
-        protected List<string> ids1;//合同预付费不足够
-        protected List<string> ids2;//正常处理
+        protected List<string> ids1=new List<string> ();//合同预付费不足够
+        protected List<string> ids2=new List<string> ();//正常处理
         ApproveAndPostBLL aapbll = new ApproveAndPostBLL();
         protected List<ApprovePostDto.ChargesSelectList> list=new List<ApprovePostDto.ChargesSelectList> ();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!int.TryParse(Request.QueryString["id"], out id))
-            {
-                id = 0;
-            }
-            ids = Convert.ToString(Request.QueryString["ids"]);
-            if (!long.TryParse(Request.QueryString["type"], out type))
-            {
-                type = 0;
-            }
-            if (id == 0 && string.IsNullOrEmpty(ids)||id!=0&&!string.IsNullOrEmpty(ids)|| type == 0)
-            {
-                Response.Write("<script>alert('异常');window.close();self.opener.location.reload();</script>");
-            }
-            if (id != 0) {
-                var result = aapbll.ChargeBlock(id);
-                if (result == DTO.ERROR_CODE.SUCCESS)
+                if (!int.TryParse(Request.QueryString["id"], out id))
                 {
-                   list.Add(aapbll.charge(id));
+                    id = 0;
                 }
-            }
-            if (!string.IsNullOrEmpty(ids))
-            {
-                var idList = ids.Split(',');
-                foreach (var idi in idList) {
-                    var result = aapbll.ChargeBlock(Convert.ToInt32(idi));
+                ids = Convert.ToString(Request.QueryString["ids"]);
+                if (!long.TryParse(Request.QueryString["type"], out type))
+                {
+                    type = 0;
+                }
+                if (id == 0 && string.IsNullOrEmpty(ids) || id != 0 && !string.IsNullOrEmpty(ids) || type == 0)
+                {
+                    Response.Write("<script>alert('异常');window.close();self.opener.location.reload();</script>");
+                }
+                if (id != 0)
+                {
+                    var result = aapbll.ChargeBlock(id);
                     if (result == DTO.ERROR_CODE.SUCCESS)
                     {
-                        list.Add(aapbll.charge(Convert.ToInt32(idi)));
-                        ids1.Add(idi);
-                    }
-                    else if(result==ERROR_CODE.ERROR) {
-                        ids2.Add(idi);
+                        list.Add(aapbll.charge(id));
                     }
                 }
-            }            
-            if (list==null||list.Count <= 0) {
-                string myScript = @"$('#default').hide();$('#postdate').show();";
-                Page.ClientScript.RegisterStartupScript(this.GetType(),"MyScript",myScript,true);
-            }
+                if (!string.IsNullOrEmpty(ids))
+                {
+                    var idList = ids.Split(',');
+                    foreach (var idi in idList)
+                    {
+                        var result = aapbll.ChargeBlock(Convert.ToInt32(idi));
+                        if (result == DTO.ERROR_CODE.SUCCESS)
+                        {
+                            list.Add(aapbll.charge(Convert.ToInt32(idi)));
+                            ids1.Add(idi);
+                        }
+                        else if (result == ERROR_CODE.ERROR)
+                        {
+                            ids2.Add(idi);
+                        }
+                    }
+                }
+                if (list == null || list.Count <= 0)
+                {
+                    string myScript = @"$('#default').hide();$('#postdate').show();";
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "MyScript", myScript, true);
+                }           
         }
         protected void Post_Click(object sender, EventArgs e)
         {
@@ -87,6 +91,7 @@ namespace EMT.DoneNOW.Web
                             Response.Write("<script>alert('" + i + "审批失败！');</script>");
                         }
                     }
+                    Response.Write("<script>alert('批量审批结束！');window.close();self.opener.location.reload();</script>");
                 }
                 
             }
@@ -189,6 +194,7 @@ namespace EMT.DoneNOW.Web
                             Response.Write("<script>alert('" + i + "审批失败！');</script>");
                         }
                     }
+                    Response.Write("<script>alert('批量审批结束！');window.close();self.opener.location.reload();</script>");
                 }
             }           
         }

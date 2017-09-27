@@ -11,14 +11,6 @@
         body {
             font-family: Arial,Helvetica,Tahoma,sans-serif;
             font-size: 12px;
-            overflow: auto;
-            background: white;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            position: absolute;
-            margin: 0;
         }
 
         .HeaderRow {
@@ -86,13 +78,13 @@
                 <span>菜单</span>
             </div>
             <ul class="ButtonBarVert">
-                <li class="MenuLink"><a href="ContractSummary.aspx?id=<%=contract.id %>" target="viewContractIframe">摘要</a></li>
+                <li class="MenuLink"><a href="ContractView.aspx?id=<%=contract.id %>">摘要</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=InternalCost&id=<%=contract.id %>">内部成本</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=item&id=<%=contract.id %>">配置项</a></li>
-                <li class="MenuLink">例外因素-未实现</li>
+                <li class="MenuLink">例外因素-暂未实现</li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=charge&id=<%=contract.id %>">成本</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=defaultCost&id=<%=contract.id %>">默认成本</a></li>
-                <li class="MenuLink">备注-未实现</li>
+                <li class="MenuLink">备注-暂未实现</li>
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.TIME_MATERIALS
                         ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER
                         ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.FIXED_PRICE) { %>
@@ -113,17 +105,17 @@
                 <li class="MenuLink"><a href="ContractView.aspx?type=rate&id=<%=contract.id %>">预付时间系数</a></li>
                 <%} %>
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
-                <li class="MenuLink">采购工单-未实现</li>
+                <li class="MenuLink">采购工单-暂未实现</li>
                 <%} %>
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS
                         ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER
                         ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
-                <li class="MenuLink">通知规则-未实现</li>
+                <li class="MenuLink">通知规则-暂未实现</li>
                 <%} %>
                 <% if (contract.type_id != (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
-                <li class="MenuLink">项目管理-未实现</li>
+                <li class="MenuLink">项目管理-暂未实现</li>
                 <%} %>
-                <li class="MenuLink">工单-未实现</li>
+                <li class="MenuLink">工单-暂未实现</li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=udf&id=<%=contract.id %>">自定义字段</a></li>
             </ul>
         </div>
@@ -131,7 +123,7 @@
              <div class="HeaderRow">
                  <asp:Label ID="ShowTitle" runat="server" Text="Label"></asp:Label>
             </div>
-            <iframe runat="server" id="viewContractIframe" name="viewContractIframe" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
+            <iframe runat="server" id="viewContractIframe" name="viewContractIframe" width="100%" height="92%" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
             <iframe runat="server" id="second" width="100%" height="0" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
         </div>
     </form>

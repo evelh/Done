@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.SessionState;
 using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.Web
@@ -13,7 +14,7 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// RoleAjax 的摘要说明
     /// </summary>
-    public class RoleAjax : IHttpHandler
+    public class RoleAjax : IHttpHandler, IRequiresSessionState
     {
 
         public void ProcessRequest(HttpContext context)

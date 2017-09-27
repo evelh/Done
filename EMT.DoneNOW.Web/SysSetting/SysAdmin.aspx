@@ -719,7 +719,7 @@
             <div class="TitleBar">
             <div class="Title">
                 <div class="TitleBarNavigationButton">
-                    <a class="Button ButtonIcon NormalState" href="../SysSetting/SysAdmin" target="PageFrame"><img src="../Images/move-left.png"/></a>
+                    <a class="Button ButtonIcon NormalState" id="black"><img src="../Images/move-left.png"/></a>
                 </div>
                 <span class="text1" id="opname"></span>
                 <a href="###" class="collection"></a>
@@ -745,14 +745,17 @@
         $("#PageFrame1").css("height", Height);
 
         $(".chaxun").on("click", function () {
-            $("#body").remove();
+                $("#body").hide();
             var kk = $(this).text();
-            //alert(kk);
             $("#opname").text(kk);
             var kkk = $("#opname").text();
-            //alert(kkk);
-            $("#chaxun").show();          
-           
+            setTimeout(function () {
+            $("#chaxun").show();
+            },300)
+        });
+        $("#black").click(function () {
+            $("#chaxun").hide();           
+            $("#body").show();
         });
     </script>
 </body>
