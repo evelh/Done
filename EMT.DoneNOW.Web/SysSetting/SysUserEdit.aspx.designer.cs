@@ -283,40 +283,40 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.DropDownList Security_Level;
         
         /// <summary>
-        /// can_edit_skills 控件。
+        /// CanEditSkills 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox can_edit_skills;
+        protected global::System.Web.UI.WebControls.CheckBox CanEditSkills;
         
         /// <summary>
-        /// can_manage_kb_articles 控件。
+        /// CanManagekbarticles 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox can_manage_kb_articles;
+        protected global::System.Web.UI.WebControls.CheckBox CanManagekbarticles;
         
         /// <summary>
-        /// allow_send_bulk_email 控件。
+        /// AllowSendbulkemail 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox allow_send_bulk_email;
+        protected global::System.Web.UI.WebControls.CheckBox AllowSendbulkemail;
         
         /// <summary>
-        /// is_required_to_submit_timesheets 控件。
+        /// IsRequiredtosubmittimesheets 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox is_required_to_submit_timesheets;
+        protected global::System.Web.UI.WebControls.CheckBox IsRequiredtosubmittimesheets;
         
         /// <summary>
         /// Outsource_Security 控件。

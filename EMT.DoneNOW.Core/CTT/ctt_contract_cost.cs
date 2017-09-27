@@ -19,7 +19,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 oid { get; set; }
         [DataMember]
-        public Int64 contract_id { get; set; }
+        public Int64? contract_id { get; set; }
         [DataMember]
         public Int64? product_id { get; set; }
         [DataMember]

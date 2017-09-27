@@ -51,7 +51,7 @@
                             <div class="Guide">
                                 <!--第一级菜单-->
                                 <div class="ButtonContainer">
-                                    <div class="GuideNavigation Button ButtonIcon SelectedState">主页</div>
+                                    <div class="GuideNavigation Button ButtonIcon SelectedState" id="HomePage">主页</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">CRM</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">目录</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">合同</div>
@@ -883,7 +883,38 @@
             </div>
         </div>
         <!--背景布-->
-        <div id="WorkspaceContainer"></div>
+        <div id="WorkspaceContainer">
+             <div>
+                <div id="DashboardContainer">
+                    <div class="DashboardTitleBar ThemePrimaryColor">
+                        <div class="DashboardButtonContainer">
+                            <div class="DashboardTabButtonContainer">
+                                 <div class="ButtonIcon Button SelectDashboardTab SelectedState">仪表盘1</div>
+                                 <div class="ButtonIcon Button SelectDashboardTab">仪表盘2</div>
+                                 <div class="ButtonIcon Button SelectDashboardTab">仪表盘3</div>
+                                 <div class="ButtonIcon Button SelectDashboardTab">仪表盘4</div>
+                                 <div class="ButtonIcon Button SelectDashboardTab">仪表盘5</div>
+                                 <div class="ButtonIcon Button SelectDashboardTab">仪表盘6</div>
+                            </div>
+                            <div class="ButtonIcon Button CreateDashboardTab">
+                                <div class="HorizontalLine"></div>
+                                <div class="VerticalLine"></div>
+                            </div>
+                        </div>
+                        <div class="DashboardContextMenuContainer"></div>
+                    </div>
+                    <div class="DashboardTabContainer" id="DashboardTabContainer">
+                        <div class="ContentContainer">
+                            <div id="DashboardTabContainerContent">
+                                <div class="LivelyTheme AutoFlow DashboardTab">
+                                    暂无（以后开发）
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="cont">
             <iframe id="PageFrame" name="PageFrame" style="width:100%;" src="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>"></iframe>
         </div>

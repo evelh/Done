@@ -365,5 +365,13 @@ namespace EMT.DoneNOW.BLL
             }
             return false;
         }
+
+        public int GetAccount_id(int id) {
+            var inv = _dal.FindNoDeleteById(id);
+            if (inv != null) {
+                return (int)inv.account_id;
+            }
+            return -1;
+        }
     }
 }

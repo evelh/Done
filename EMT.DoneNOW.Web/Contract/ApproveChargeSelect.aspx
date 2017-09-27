@@ -144,7 +144,7 @@
             <script src="../Scripts/SysSettingRoles.js"></script>
             <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
             <script>
-                <%if (id != 0||ids2.Count<=0)
+                <%if (id != 0||ids2!=null&&ids2.Count<=0)
                 {%>
                 function save_deal() {
                     if ($("#Radio1").is(':checked')) {

@@ -8,6 +8,35 @@
     <title>输入提交日期</title>
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
+    <style>
+        /*加载的css样式*/
+#BackgroundOverLay{
+    width:100%;
+    height:100%;
+    background: black;
+    opacity: 0.6;
+    z-index: 25;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+#LoadingIndicator {
+    width: 100px;
+    height:100px;
+    background-image: url(../Images/Loading.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    z-index: 30;
+    margin:auto;
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    display: none;
+}
+    </style>
 </head>
 <body>
     <form id="form1" runat="server" method="post">
@@ -49,6 +78,9 @@
             </tbody>
         </table>
     </div>
+<%--加载--%>
+<div id="BackgroundOverLay"></div>
+<div id="LoadingIndicator"></div>
             <input type="hidden" name="post_date" id="post_date" />
             <script src="../Scripts/jquery-3.1.0.min.js"></script>
             <script src="../Scripts/SysSettingRoles.js"></script>
@@ -56,13 +88,17 @@
             <script>
                 function kkk() {
                    var k = $("#post_datett").val();
-                    //var k = $("#post_datett").text();
                     if (k == null || k == '') {
                         alert("请选择提交日期！");
                         return false;
                     }
                     k = k.replace(/[^0-9]+/g, '');
                     $("#post_date").val(k);
+                    load();
+                }
+                function load() {
+                    $("#BackgroundOverLay").show();
+                    $("#LoadingIndicator").show();
                 }
             </script>
         </div>

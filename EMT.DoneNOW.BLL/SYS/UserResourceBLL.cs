@@ -113,7 +113,6 @@ namespace EMT.DoneNOW.BLL
             data.sys_res.id = id;
             data.sys_res.update_user_id = user_id;
             data.sys_res.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            data.sys_user.password = new Tools.Cryptographys().MD5Encrypt(data.sys_user.password, false);
             _dal.Update(data.sys_res);
             //操作日志新增一条日志,操作对象种类：员工            
             var add_account_log = new sys_oper_log()
@@ -131,10 +130,11 @@ namespace EMT.DoneNOW.BLL
 
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
-
+            var userdata = GetSysUserSingle(id);
             data.sys_user.id = id;
+            if (userdata.password!=data.sys_user.password)
+                data.sys_user.password = new Tools.Cryptographys().MD5Encrypt(data.sys_user.password, false);
             new sys_user_dal().Update(data.sys_user);
-
             add_account_log = new sys_oper_log()
             {
                 user_cate = "用户",
@@ -142,11 +142,11 @@ namespace EMT.DoneNOW.BLL
                 name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
                 oper_object_id = data.sys_user.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = new sys_user_dal().AddValue(data.sys_user),
-                remark = "更新客户信息"
+                oper_description = new sys_user_dal().CompareValue(userdata,data.sys_user),
+                remark = "更新员工信息"
 
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);

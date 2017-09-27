@@ -58,7 +58,7 @@ namespace EMT.DoneNOW.Web
                         foreach (var idi in idList)
                         {
                             var result = aapbll.Post(Convert.ToInt32(idi), Convert.ToInt32(tt), type, GetLoginUserId());
-                            if (result != DTO.ERROR_CODE.ERROR)
+                            if (result != DTO.ERROR_CODE.SUCCESS)
                             {
                                 Response.Write("<script>alert('" + idi + "审批失败！');</script>");
                             }
