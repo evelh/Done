@@ -70,6 +70,7 @@
     <Compile Include="CTT\ContractBlockBLL.cs" />
     <Compile Include="CTT\ContractCostBLL.cs" />
     <Compile Include="CTT\ContractRateBLL.cs" />
+    <Compile Include="CTT\ContractServiceBLL.cs" />
     <Compile Include="CTT\InvoiceBLL.cs" />
     <Compile Include="IVT\ProductBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

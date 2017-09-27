@@ -24,6 +24,10 @@ namespace EMT.DoneNOW.Web
                 var action = context.Request.QueryString["act"];
                 switch (action)
                 {
+                    case "deleteContract":
+                        var contractId = context.Request.QueryString["id"];
+                        DeleteContract(context, Convert.ToInt64(contractId));
+                        break;
                     case "delete":
                         var cicid = context.Request.QueryString["cicid"];
                         DeleteConIntCost(context, Convert.ToInt64(cicid));
@@ -113,6 +117,19 @@ namespace EMT.DoneNOW.Web
                 
             }
         }
+
+        /// <summary>
+        /// 删除合同
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="id"></param>
+        private void DeleteContract(HttpContext context, long id)
+        {
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            new ContractBLL().DeleteContract(id, res.id);
+            context.Response.Write("success");
+        }
+
         /// <summary>
         /// 删除合同内部成本
         /// </summary>

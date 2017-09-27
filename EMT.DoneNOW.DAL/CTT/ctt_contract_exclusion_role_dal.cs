@@ -12,7 +12,7 @@ namespace EMT.DoneNOW.DAL
         /// </summary>
         /// <param name="contractId"></param>
         /// <returns></returns>
-        public List<ctt_contract_exclusion_role> GetList(long contractId)
+        public List<ctt_contract_exclusion_role> FindListByContractId(long contractId)
         {
             return FindListBySql($"SELECT * FROM ctt_contract_exclusion_role WHERE contract_id={contractId} AND delete_time=0");
         }

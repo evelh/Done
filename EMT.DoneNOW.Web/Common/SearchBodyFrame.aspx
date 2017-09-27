@@ -1135,13 +1135,16 @@
           window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank');
         }
         function DeleteContract() {
-          //$.ajax({
-          //  type: "GET",
-          //  url: "../Tools/ContractAjax.ashx?act=delete&id=" + entityid,
-          //  success: function (data) {
-          //    alert(data);
-          //  }
-          //})
+            if (confirm('删除合同，是否继续?')) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ContractAjax.ashx?act=deleteContract&id=" + entityid,
+                    success: function (data) {
+                        alert("删除成功");
+                        window.location.reload();
+                    }
+                });
+            }
         }
         $("#ToolsButton").on("mouseover", function () {
             $("#ToolsButton").css("background", "#fff");

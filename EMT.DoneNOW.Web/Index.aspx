@@ -53,7 +53,7 @@
                                 <div class="ButtonContainer">
                                     <div class="GuideNavigation Button ButtonIcon SelectedState">主页</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">CRM</div>
-                                    <div class="GuideNavigation Button ButtonIcon NormalState">Directory</div>
+                                    <div class="GuideNavigation Button ButtonIcon NormalState">目录</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">合同</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">项目</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">服务台</div>

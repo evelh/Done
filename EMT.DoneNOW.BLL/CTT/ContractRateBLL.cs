@@ -20,7 +20,7 @@ namespace EMT.DoneNOW.BLL
         public List<sys_role> GetAvailableRoles(long contractId)
         {
             var list = new sys_role_dal().GetList();
-            var exclusionList = new ctt_contract_exclusion_role_dal().GetList(contractId);
+            var exclusionList = new ctt_contract_exclusion_role_dal().FindListByContractId(contractId);
 
             if (exclusionList == null || exclusionList.Count == 0)
                 return list;
