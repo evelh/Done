@@ -275,6 +275,10 @@
                             orderby = strs[0];
                             order = strs[1].ToLower();
                         }
+                        if (para.name == "排序字段")
+                        {
+                            continue;
+                        }
                 %>
                 <th  width="<%=para.length*16 %>px" >
                     <%=para.name %>
@@ -321,6 +325,10 @@
 
                 <%foreach (var para in resultPara)
                     {
+                        if (para.name == "排序字段")
+                        {
+                            continue;
+                        }
                         if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
                             || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
                             || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
@@ -340,7 +348,13 @@
                     <a onclick="xiangdao('<%=id %>')"><%=rslt[para.name] %></a>
                     <%}
                     else
-                    { %>
+                    { 
+                             if (para.name == "排序字段")
+                        {
+                            continue;
+                        }
+                            %>
+
                     <%=rslt[para.name] %>
                     <%} %>
                     </td>

@@ -853,10 +853,12 @@ namespace EMT.DoneNOW.BLL
             cad.purchase_order_no = ccc.purchase_order_no;//采购订单号
                                                           //判断客户是否免税
                                                           //成本/工时 不 需要从预付费用/预付时间中扣除
-            if (ccc.contract_id != null || ccc.contract_id <= 0)
+            List<ctt_contract_block> ccbList = new List<ctt_contract_block>();
+            if (ccc.contract_id != null && ccc.contract_id > 0)
             {
-                var ccbList = ccb_dal.FindListBySql<ctt_contract_block>($"select * from ctt_contract_block where contract_id={ccc.contract_id} and is_billed=0 and status_id=1");
-                if (ccbList.Count > 0)
+                ccbList = ccb_dal.FindListBySql<ctt_contract_block>($"select * from ctt_contract_block where contract_id={ccc.contract_id} and is_billed=0 and status_id=1");
+            }
+            if (ccbList.Count > 0)
                 {
                     decimal extend = 0;
                     foreach (var ccb in ccbList)
@@ -963,9 +965,7 @@ namespace EMT.DoneNOW.BLL
                             }
                         }
                     }
-
                 }
-            }
             else {
                     cad.id = (int)(cad_dal.GetNextIdCom());//序列号
                     cad.extended_price = ccc.extended_price;//总价

@@ -97,14 +97,8 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
-                    if (isAdd)
-                    {
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加成功！');window.close();</script>");
-                    }
-                    else
-                    {
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改成功！');window.close();</script>");
-                    }
+                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close();self.opener.location.reload();</script>");
+                   
                     break;
                 case ERROR_CODE.PARAMS_ERROR:
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
@@ -134,14 +128,10 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
-                    if (isAdd)
-                    {
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加成功！');location.href='SubscriptionAddOrEdit.aspx?insProId=" + subscription.installed_product_id + "';</script>");
-                    }
-                    else
-                    {
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改成功！');location.href='SubscriptionAddOrEdit.aspx?insProId=" + subscription.installed_product_id + "';</script>");
-                    }
+                  
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');location.href='SubscriptionAddOrEdit.aspx?insProId=" + subscription.installed_product_id + "';self.opener.location.reload();</script>");
+                    
+                 
                     break;
                 case ERROR_CODE.PARAMS_ERROR:
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");

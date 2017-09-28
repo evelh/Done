@@ -105,6 +105,7 @@
     <Compile Include="IVT\ivt_inventory_transfer_dal.cs" />
     <Compile Include="IVT\ivt_product_vendor_dal.cs" />
     <Compile Include="IVT\ivt_service_bundle_dal.cs" />
+    <Compile Include="IVT\ivt_service_bundle_service_dal.cs" />
     <Compile Include="IVT\ivt_service_dal.cs" />
     <Compile Include="IVT\ivt_warehouse_dal.cs" />
     <Compile Include="IVT\ivt_warehouse_product_dal.cs" />

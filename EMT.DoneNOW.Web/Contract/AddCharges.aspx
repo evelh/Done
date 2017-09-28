@@ -430,6 +430,8 @@
                                         </tbody>
                                     </table>
                                 </td>
+
+                                <% var defCost = new EMT.DoneNOW.DAL.ctt_contract_cost_default_dal().GetSinCostDef(contract.id);  %>
                                 <td align="right" style="vertical-align: top;">
                                     <div class="DivSectionWithHeader" style="padding: 12px; background-color: #F0F5FB; margin-right: 0px;">
                                         <table width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -463,7 +465,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <span style="display: inline-block;">
-                                                                            <input type="text" style="width: 160px; text-align: right;" name="unit_cost" id="unit_cost" value="<%=conCost!=null&&conCost.unit_cost!=null?((decimal)conCost.unit_cost).ToString("#0.0000"):"0.0000" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                                                            <input type="text" style="width: 160px; text-align: right;" name="unit_cost" id="unit_cost" value="<%=conCost!=null&&conCost.unit_cost!=null?((decimal)conCost.unit_cost).ToString("#0.0000"):defCost!=null&&defCost.unit_cost!=null?((decimal)defCost.unit_cost).ToString("#0.0000"):"0.0000" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                                                         </span>
                                                                     </td>
                                                                     <td align="center" style="width: 20px;">
@@ -507,7 +509,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <span style="display: inline-block;">
-                                                                            <input type="text" style="width: 160px; text-align: right;" name="unit_price" id="unit_price" value="<%=conCost!=null&&conCost.unit_price!=null?((decimal)conCost.unit_price).ToString("#0.0000"):"0.0000" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                                                            <input type="text" style="width: 160px; text-align: right;" name="unit_price" id="unit_price" value="<%=conCost!=null&&conCost.unit_price!=null?((decimal)conCost.unit_price).ToString("#0.0000"):defCost!=null&&defCost.unit_cost!=null?((decimal)defCost.unit_cost).ToString("#0.0000"):"0.0000" %>"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                                                         </span>
                                                                     </td>
                                                                     <td align="center" style="width: 20px;">
@@ -915,7 +917,7 @@
     // costIdHidden  costId
 
     function ChooseCostCode() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=costId&callBack=GetDataByCostCode", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CostCodeSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CHARGE_CALLBACK %>&field=costId&callBack=GetDataByCostCode", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CostCodeSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     function GetDataByCostCode() {
         var costId = $("#costIdHidden").val();

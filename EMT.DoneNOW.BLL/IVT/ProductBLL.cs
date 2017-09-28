@@ -539,7 +539,7 @@ namespace EMT.DoneNOW.BLL
             //ivt_warehouse_product库存
             //ctt_contract_cost
             StringBuilder result = new StringBuilder();
-            result.Append("产品不能被删除，因为它被以下对象引用：<br/>");
+            result.Append("产品不能被删除，因为它被以下对象引用\n");
             var opportunitylist = new crm_opportunity_dal().FindListBySql($"select * from crm_opportunity where primary_product_id={id} and delete_time=0");
             var installed_productlist = new crm_installed_product_dal().FindListBySql($"select * from crm_installed_product where product_id={id} and delete_time=0");
             var warehouse_productlist = new ivt_warehouse_product_dal().FindListBySql($"select * from ivt_warehouse_product where product_id={id} and delete_time=0");
@@ -549,7 +549,7 @@ namespace EMT.DoneNOW.BLL
                 result.Append("商机：");
                 foreach (var op in opportunitylist) {
 
-                    result.Append("N"+(n++)+"\t\t"+op.id+"\n");
+                    result.Append("N"+(n++)+"   "+op.id + "\n");
                 }
             }
             if (installed_productlist.Count > 0)
@@ -557,7 +557,7 @@ namespace EMT.DoneNOW.BLL
                 result.Append("配置项：");
                 foreach (var op in installed_productlist)
                 {
-                    result.Append("N" + (n++) + "\t\t" + op.id + "\n");
+                    result.Append("N" + (n++) + "  " + op.id + "\n");
                 }
             }
             if (warehouse_productlist.Count > 0)
@@ -565,7 +565,7 @@ namespace EMT.DoneNOW.BLL
                 result.Append("库存：");
                 foreach (var op in warehouse_productlist)
                 {
-                    result.Append("N" + (n++) + "\t\t" + op.id + "\n");
+                    result.Append("N" + (n++) + "  " + op.id + "\n");
                 }
             }
             if (contract_costlist.Count > 0)
@@ -573,7 +573,7 @@ namespace EMT.DoneNOW.BLL
                 result.Append("工单：");
                 foreach (var op in contract_costlist)
                 {
-                    result.Append("N" + (n++) + "\t\t" + op.id + "\n");
+                    result.Append("N" + (n++) + "  " + op.id + "\n");
                 }
             }
             if (contract_costlist.Count > 0 || warehouse_productlist.Count > 0 || installed_productlist.Count > 0 || opportunitylist.Count > 0) {

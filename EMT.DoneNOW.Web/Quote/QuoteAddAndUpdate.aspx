@@ -142,7 +142,7 @@
                         <td>
                             <div class="clear">
                                 <label>预计完成日期<span class="red">*</span></label>
-                                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd)&&(quote.projected_close_date!=null)?quote.projected_close_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" <%if (!isAdd)
+                                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd)&&(quote.projected_close_date!=null)?quote.projected_close_date.ToString("yyyy-MM-dd"):opportunity!=null&&opportunity.projected_close_date!=null?((DateTime)opportunity.projected_close_date).ToString("yyyy-MM-dd"): DateTime.Now.ToString("yyyy-MM-dd") %>" <%if (!isAdd)
                                     { %>
                                     disabled="disabled" <%} %> />
                             </div>

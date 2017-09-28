@@ -93,6 +93,7 @@
     <Compile Include="IVT\ivt_product_vendor.cs" />
     <Compile Include="IVT\ivt_service.cs" />
     <Compile Include="IVT\ivt_service_bundle.cs" />
+    <Compile Include="IVT\ivt_service_bundle_service.cs" />
     <Compile Include="IVT\ivt_warehouse.cs" />
     <Compile Include="IVT\ivt_warehouse_product.cs" />
     <Compile Include="PRO\pro_project.cs" />

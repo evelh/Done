@@ -47,15 +47,18 @@ namespace EMT.DoneNOW.Web
                     foreach (var idi in idList)
                     {
                         var result = aapbll.ChargeBlock(Convert.ToInt32(idi));
-                        if (result == DTO.ERROR_CODE.SUCCESS)
-                        {
-                            list.Add(aapbll.charge(Convert.ToInt32(idi)));
-                            ids1.Add(idi);
-                        }
-                        else if (result == ERROR_CODE.ERROR)
-                        {
-                            ids2.Add(idi);
-                        }
+                    if (result == DTO.ERROR_CODE.SUCCESS)
+                    {
+                        list.Add(aapbll.charge(Convert.ToInt32(idi)));
+                        ids1.Add(idi);
+                    }
+                    else if (result == ERROR_CODE.ERROR)
+                    {
+                        ids2.Add(idi);
+                    }
+                    else {
+
+                    }
                     }
                 }
                 if (list == null || list.Count <= 0)

@@ -370,7 +370,7 @@
                                                                 </td>
                                                             </tr>
                                                                    <tr class="ButtonCollectionBase btn1"><td> <span class="ButtonCollectionBase btn1" style="height:27px;">
-                                                                       <input type="button" id="btn1"  value="修改密码" />                                                        
+                                                                       <asp:Button runat="server" type="button" id="btn1"  Text="修改密码" />             
                                                               </span></td></tr>
                                                             <tr class="xiugai">
                                                                 <td colspan="2" class="xiugai">
@@ -490,7 +490,7 @@
                                                     <div class="lblNormalClass" style="padding: 0 0 10px 0;">
                                                         <span>
                                                             <span class="txtBlack8Class" style="margin-top: 5px">
-                                                                <input type="checkbox" style="vertical-align: middle;">
+                                                                <asp:Button runat="server" type="checkbox" style="vertical-align: middle;">
                                                                 <label>需要此资源的双因素认证 </label>
                                                             </span>
                                                         </span>

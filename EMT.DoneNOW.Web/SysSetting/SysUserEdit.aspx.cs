@@ -280,6 +280,7 @@ namespace EMT.DoneNOW.Web
                     Save_Contact();
                     if (Update_deal())
                     {
+                        //Response.Write("window.open(\"SysUserEdit.aspx?id ="+id+", '"+(int)EMT.DoneNOW.DTO.OpenWindow.Resource+"', 'left=0,top=0,location=no,status=no,width=900,height=750', false");
                         Response.Write("<script>window.close();self.opener.location.reload();</script>");
                     }
                 }
@@ -303,6 +304,7 @@ namespace EMT.DoneNOW.Web
                     Save_Contact();
                     if (Save_deal())
                     {
+                        //Response.Write("<script>window.open(\"SysUserEdit.aspx?id =" + id + ", '" + (int)EMT.DoneNOW.DTO.OpenWindow.Resource + "', 'left=0,top=0,location=no,status=no,width=900,height=750', false\");</script>");
                         Response.Write("<script>window.location.href = 'SysUserEdit.aspx?id=" + id + "&op=copy';</script>");
                     }
                 }
@@ -311,6 +313,7 @@ namespace EMT.DoneNOW.Web
                     Save_Contact();
                     if (Update_deal())
                     {
+                        //Response.Write("<script>window.open(\"SysUserEdit.aspx?id =" + id + ", '" + (int)EMT.DoneNOW.DTO.OpenWindow.Resource + "', 'left=0,top=0,location=no,status=no,width=900,height=750', false\");</script>");
                         Response.Write("<script>window.location.href = 'SysUserEdit.aspx?id=" + id + "&op=copy';</script>");
                     }
                 }
@@ -320,6 +323,7 @@ namespace EMT.DoneNOW.Web
             {
                 Save_Contact();
                 if (Update_deal()) {
+                    //Response.Write("<script>window.open(\"SysUserEdit.aspx?id =" + id + ", '" + (int)EMT.DoneNOW.DTO.OpenWindow.Resource + "', 'left=0,top=0,location=no,status=no,width=900,height=750', false\");</script>");
                     Response.Write("<script>window.close();window.location.href = 'SysUserEdit.aspx?id=" + id+ "&op=copy';</script>");
                 }
             }
