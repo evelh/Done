@@ -1112,6 +1112,7 @@ namespace EMT.DoneNOW.BLL
                             description = quote_item.description,
                             date_purchased = DateTime.Now,
                             is_billable = 1,
+                            bill_status = 0,
                             cost_type_id = (int)COST_TYPE.OPERATIONA,
                             status_id = status_id,
                             quantity = quote_item.quantity,
