@@ -133,6 +133,7 @@ namespace EMT.DoneNOW.BLL
                 cad.bill_create_user_id = cc.create_user_id;//条目创建人
                 cad.account_id = cc.account_id;//客户
                 cad.extended_price = cc.adjust_setup_fee;//总收入  
+                if(cc.setup_fee_cost_code_id!=null)
                 dcc = new d_cost_code_dal().FindNoDeleteById((long)cc.setup_fee_cost_code_id);
             }
             //合同服务调整

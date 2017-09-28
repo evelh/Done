@@ -5,10 +5,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link href="../Content/sysset_user.css" rel="stylesheet" />
     <link href="../Content/reset.css" rel="stylesheet" />
-          <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+    <link href="../Content/sysset_user.css" rel="stylesheet" />    
     <title>系统管理</title>
+    <style>
+        ul,ul li{margin: 0;padding: 0;}
+@font-face {
+	font-family:'Glyphicons Halflings';
+	src: url(../fonts/glyphicons-halflings-regular.eot);
+	src: url(../fonts/glyphicons-halflings-regular.svg);
+	src: url(../fonts/glyphicons-halflings-regular.ttf);
+	src: url(../fonts/glyphicons-halflings-regular.woff);
+}
+.header-title{width: 100%;margin:10px;width: auto;height: 30px;}
+.header-title ul li{position: relative;height:30px;line-height:30px; padding: 0 10px;float: left;margin-right: 10px;border: 1px solid #CCCCCC;cursor:pointer;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);}
+.header-title ul li input{height:28px;line-height:28px;}
+.header-title ul li:hover ul{display: block;}
+.header-title ul li .icon-1{width: 16px;height:16px;display: block;float: left;margin-top: 7px;margin-right: 5px;}
+.header-title ul li ul{display: none; position:absolute; left: -1px;top: 28px;border: 1px solid #CCCCCC;background: #F5F5F5;width:160px;padding: 10px 0;z-index: 99;}
+.header-title ul li ul li{float: none;border: none;background: #F5F5F5;height:28px;line-height:28px;}
+.header-title ul li input{outline:none; border: none;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);}
+.icon-1{width: 16px;height:16px;display: block;float: left;margin-top: 7px;margin-right: 5px;}
+    </style>
 </head>
 <body>
     <form id="form1" runat="server" method="post" enctype="multipart/form-data">
@@ -370,7 +388,7 @@
                                                                 </td>
                                                             </tr>
                                                                    <tr class="ButtonCollectionBase btn1"><td> <span class="ButtonCollectionBase btn1" style="height:27px;">
-                                                                       <asp:Button runat="server" type="button" id="btn1"  Text="修改密码" />             
+                                                                       <asp:Button runat="server" type="button" id="btn1" Text="修改密码" style="font-size:12px;"/>             
                                                               </span></td></tr>
                                                             <tr class="xiugai">
                                                                 <td colspan="2" class="xiugai">
