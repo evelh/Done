@@ -470,6 +470,8 @@ namespace EMT.DoneNOW.DTO
             APPROVE_SUBSCRIPTIONS = 1516,         //订阅审批
             APPROVE_RECURRING_SERVICES = 1517,    //定期服务审批           
             GENERATE_INVOICE=1518,                 // 生成发票
+            CONTRACT_SERVICE = 1519,                // 合同管理-服务/服务包
+            CONTRACT_SERVICE_TRANS_HISTORY = 1520,  // 合同管理-服务/包交易历史
             CONTRACT_BLOCK = 1521,                  // 合同管理-预付费用
             CONFIGSUBSCRIPTION=1523,              // 配置项中的订阅管理 
             PROJECTCALLBACK=1524,                  // 项目的查找带回
@@ -855,6 +857,8 @@ namespace EMT.DoneNOW.DTO
         APPROVE_SUBSCRIPTIONS=86,           //订阅审批
         APPROVE_RECURRING_SERVICES = 87,    //定期服务审批
         GENERATE_INVOICE=88,                // 生成发票
+        ContractService = 89,               // 合同管理-服务/服务包
+        ContractServiceTransHistory = 90,   // 合同管理-服务/包-交易历史
         ContractBlock = 91,                 // 合同管理-预付费用
         CONFIGSUBSCRIPTION = 93,           // 配置项界面订阅管理
 

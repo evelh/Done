@@ -127,7 +127,7 @@ namespace EMT.DoneNOW.BLL
 
             string table = GetTableName(cate);
             var dal = new sys_udf_field_dal();
-            string insert = $"INSERT INTO {table} (id,parent_id{select.ToString()}) VALUES ({dal.GetNextIdSys()},{objId}{values.ToString()})";
+            string insert = $"INSERT INTO {table} (id,parent_id{select.ToString()}) VALUES ({dal.GetNextIdCom()},{objId}{values.ToString()})";
             try
             {
                 int rslt = dal.ExecuteSQL(insert);

@@ -76,9 +76,9 @@
      { %>
         <%} else {%>
     <div class="header">
-        <%if (currentQuery.page_name == "审批并提交")
+        <%if (currentQuery.page_query.Count == 1)
             { %>
-        审批并提交
+        <%=currentQuery.page_name %>
        
         <%}
             else
