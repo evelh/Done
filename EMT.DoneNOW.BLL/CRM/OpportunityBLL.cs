@@ -750,13 +750,9 @@ namespace EMT.DoneNOW.BLL
 
                             });
                             new ctt_contract_dal().Update(oldContract);
-
                         }
-
                     }
                 }
-
-
 
                 // （二） 报价项中的服务/包，合同中不存在，插入服务包
                 var ccsDal = new ctt_contract_service_dal();
@@ -801,8 +797,6 @@ namespace EMT.DoneNOW.BLL
                                     remark = "新增合同服务项"
 
                                 });
-
-                                
                             }
                             else // 如果报价的服务/包在合同中存在，且用户选择了更新操作，则更新服务/包信息
                             {
@@ -1071,13 +1065,17 @@ namespace EMT.DoneNOW.BLL
                         status_id = (int)COST_STATUS.PENDING_DELIVERY;
                     }
                     int subCateid = 0;
-                    if (project_id != null)
+                    if (contract_id != null)
                     {
-                        subCateid = 1300;   // todo 工单成本
+                        subCateid = (int)BILLING_ENTITY_SUB_TYPE.CONTRACT_COST;
+                    }
+                    else if (project_id != null)
+                    {
+                        subCateid = (int)BILLING_ENTITY_SUB_TYPE.TICKET_COST;    
                     }
                     else
                     {
-                        subCateid = 1298;   // todo 项目成本
+                        subCateid = (int)BILLING_ENTITY_SUB_TYPE.PROJECT_COST;    
                     }
 
                     if (quote_item.type_id != (int)QUOTE_ITEM_TYPE.DISCOUNT)
