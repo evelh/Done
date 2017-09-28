@@ -22,7 +22,7 @@
  @media screen and (max-width: 1430px){
        .cont{
            width:1200px;
-           margin:60px 2% 0 2%;
+           margin:15px 2% 0 2%;
     position: absolute;
     z-index: 1;
        }
@@ -323,7 +323,7 @@
             </div>
     </div>
     <div class="TabContainer" style="display: none;">
-            <div class="cont">
+            <div class="cont" style="margin-top:15px;">
                 <iframe id="PageFrame" name="PageFrame" style="width:100%;height:auto" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>"></iframe>
             </div>
     </div>

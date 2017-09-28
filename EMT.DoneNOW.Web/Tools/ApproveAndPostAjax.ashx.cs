@@ -104,7 +104,7 @@ namespace EMT.DoneNOW.Web
                 var result = aapbll.ContractDetails(Convert.ToInt32(id), date, type, user.id);
                 if (result>0)
                 {
-                    context.Response.Write("result");
+                    context.Response.Write(result);
                 }
             }
         }

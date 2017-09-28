@@ -20,12 +20,6 @@ namespace EMT.DoneNOW.Web.SysSetting
             resourcelist = urbll.GetAllSysResource();
  
         }
-
-        protected void Back_Click(object sender, ImageClickEventArgs e)
-        {
-            Response.Redirect("SysAdmin.aspx");
-        }
-
         protected void Save_Click(object sender, EventArgs e)
         {
             string t = Request.Form["data"].ToString();

@@ -65,12 +65,12 @@
                                     </span>
                                 </td>
                                 <td style="height: 100%; cursor: pointer;">
-                                    <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">批准者
+                                    <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">审批人
                                     <span style="color: red;">*</span>
                                     </span>
                                 </td>
-                                <td style="height: 100%; cursor: pointer;">
-                                    <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">协会
+                               <%-- <td style="height: 100%; cursor: pointer;">
+                                    <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">隶属
                                     <span style="color: red;">*</span>
                                     </span>
                                 </td>
@@ -81,7 +81,7 @@
                                 <td style="height: 100%; cursor: pointer;">
                                     <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">附件
                                     </span>
-                                </td>
+                                </td>--%>
                             </tr>
                         </tbody>
                     </table>
@@ -126,9 +126,19 @@
                                                                 </div>
                                                             </td>
                                                         </tr>
+                                                                <tr>
+                                                            <td class="standard_label">
+                                                                <span class="lblNormalClass">姓名</span>
+                                                                <div>
+                                                                    <span style="display: inline-block">
+                                                                        <asp:TextBox ID="resource_name" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="title" Visible="True" Enabled="False"></asp:TextBox>
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
                                                         <tr>
                                                             <td class="standard_label">
-                                                                <span class="lblNormalClass">标题</span>
+                                                                <span class="lblNormalClass">头衔</span>
                                                                 <div>
                                                                     <span style="display: inline-block">
                                                                         <asp:TextBox ID="title" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 218px;" name="title"></asp:TextBox>                                                                       
@@ -138,7 +148,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="standard_label">
-                                                                <span class="lblNormalClass">后缀</span>
+                                                                <span class="lblNormalClass">称谓</span>
                                                                 <div>
                                                                     <span style="display: inline-block">
                                                                         <asp:DropDownList ID="NameSuffix" runat="server"></asp:DropDownList>
@@ -354,8 +364,8 @@
                                                                         <span>
                                                                             <asp:TextBox ID="name" runat="server" type="text" maxlength="32" class="txtBlack8Class" style="width: 150px;" name="name" ></asp:TextBox>
                                                                            </span>
-                                                                        <span class="lblNormalClass">
-                                                                            <asp:Label ID="www" runat="server" Text="@itcat.net.cn"></asp:Label></span>
+                                                                        <%--<span class="lblNormalClass">
+                                                                            <asp:Label ID="www" runat="server" Text="@itcat.net.cn"></asp:Label></span>--%>
                                                                     </div>                                                                    
                                                                 </td>
                                                             </tr>
@@ -471,7 +481,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td width="40%" valign="top">
+                                        <td width="40%" valign="top" style="display:none">
                                             <div class="DivSectionWithHeader" style="margin-bottom: 8px;">
                                                 <div class="HeaderRow">
                                                     <span class="lblNormalClass">双因素认证</span>
@@ -524,6 +534,12 @@
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../Scripts/sysset_users.js"></script>
         <script type="text/javascript">
+            $("#first_name").change(function () {
+                $("#resource_name").val($("#first_name").val() + $("#last_name").val());
+            });
+            $("#last_name").change(function () {
+                $("#resource_name").val($("#first_name").val() + $("#last_name").val());
+            });
             //ButtonCollectionBase
             $(document).ready(function () {
                 $(".xiugai").hide();
@@ -541,11 +557,11 @@
                 var firstname = $("#first_name").val();
                 var lastname = $("#last_name");
                 if (firstname == null || firstname == '') {
-                    alert("无法跳转，请输入姓！");
+                    alert("无法跳转，请输入姓名！");
                     return false;
                 }
                 if (lastname == null || lastname == '') {
-                    alert("无法跳转，请输入名！");
+                    alert("无法跳转，请输入姓名！");
                     return false;
                 }
                 var email = $("#email").val();
@@ -562,11 +578,11 @@
                 var firstname = $("#first_name").val();
                 var lastname = $("#last_name");
                 if (firstname == null || firstname == '') {
-                    alert("请输入姓后再进行保存！");
+                    alert("请输入姓名后再进行保存！");
                     return false;
                 }
                 if (lastname == null || lastname == '') {
-                    alert("请输入名后再进行保存！");
+                    alert("请输入姓名后再进行保存！");
                     return false;
                 }
                 //if ($("#Position").val() == 0) { 数据配置不齐全，可空

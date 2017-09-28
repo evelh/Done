@@ -264,6 +264,34 @@ namespace EMT.DoneNOW.BLL
                 ci.update_user_id = user.id;
                 if (_dal.Update(ci))
                 {
+                    var cad_dal = new crm_account_deduction_dal();
+                    var account_deduction = cad_dal.FindListBySql<crm_account_deduction>($"select * from crm_account_deduction where invoice_id={ci.id} and delete_time=0");
+                    if (account_deduction.Count > 0)
+                    {
+                        foreach (var ii in account_deduction)
+                        {
+                            var oldii = ii;
+                            ii.invoice_id = null;
+                            ii.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                            ii.update_user_id = user_id;
+                            if (cad_dal.Update(ii))
+                            {
+                                var add_log = new sys_oper_log()
+                                {
+                                    user_cate = "用户",
+                                    user_id = (int)user.id,
+                                    name = user.name,
+                                    phone = user.mobile == null ? "" : user.mobile,
+                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,//审批并提交
+                                    oper_object_id = ii.id,// 操作对象id
+                                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                                    oper_description = cad_dal.CompareValue(oldii, ii),
+                                    remark = "修改发票清空"
+                                };          // 创建日志
+                            }
+                        }
+                    }
                     new sys_oper_log_dal().Insert(new sys_oper_log()
                     {
                         user_cate = "用户",
@@ -277,6 +305,7 @@ namespace EMT.DoneNOW.BLL
                         oper_description = _dal.CompareValue(old, ci),
                         remark = "作废发票"
                     });
+                    return true;
                 }
             }
             return false;
@@ -347,6 +376,31 @@ namespace EMT.DoneNOW.BLL
                     i.update_user_id = user.id;
                     if (_dal.Update(i))
                     {
+                        var cad_dal=new crm_account_deduction_dal();
+                        var account_deduction = cad_dal.FindListBySql<crm_account_deduction>($"select * from crm_account_deduction where invoice_id={i.id} and delete_time=0");
+                        if (account_deduction.Count > 0) {
+                            foreach (var ii in account_deduction) {
+                                var oldii = ii;
+                                ii.invoice_id = null;
+                                ii.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                                ii.update_user_id = user_id;
+                                if (cad_dal.Update(ii)) {
+                                    var add_log = new sys_oper_log()
+                                    {
+                                        user_cate = "用户",
+                                        user_id = (int)user.id,
+                                        name = user.name,
+                                        phone = user.mobile == null ? "" : user.mobile,
+                                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,//审批并提交
+                                        oper_object_id = ii.id,// 操作对象id
+                                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                                        oper_description = cad_dal.CompareValue(oldii,ii),
+                                        remark = "修改发票清空"
+                                    };          // 创建日志
+                                }
+                            }
+                        }
                         new sys_oper_log_dal().Insert(new sys_oper_log()
                         {
                             user_cate = "用户",
@@ -361,9 +415,12 @@ namespace EMT.DoneNOW.BLL
                             remark = "作废发票"
                         });
                     }
+                    else {
+                        return false;
+                    }
                 }
             }
-            return false;
+            return true;
         }
 
         public int GetAccount_id(int id) {

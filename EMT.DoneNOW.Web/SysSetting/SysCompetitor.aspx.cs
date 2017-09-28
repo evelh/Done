@@ -18,7 +18,6 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取id
-            id = 10;
             if (!IsPostBack)
             {
                 if (id > 0)//修改

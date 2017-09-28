@@ -70,13 +70,11 @@ namespace EMT.DoneNOW.Web
             {
                 if (new QuoteTemplateBLL().copy_quote_template(user.id, ref QuoteTemp_id) == DTO.ERROR_CODE.SUCCESS)
                 {
-                    context.Response.Write("复制报价模板成功！");
-                    //跳转到新增界面  id=QuoteTemp_id;
-                    context.Response.Write("<script>alert('复制安全等级成功！');window.location.href='.aspx?id=copy_id'</script>");
+                    context.Response.Write(QuoteTemp_id);
                 }
                 else
                 {
-                    context.Response.Write("复制报价模板失败！");
+                    context.Response.Write("error");
                 }
             }
         }

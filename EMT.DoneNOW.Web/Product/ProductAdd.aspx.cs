@@ -218,7 +218,7 @@ namespace EMT.DoneNOW.Web
                     case ERROR_CODE.USER_NOT_FIND:
                         Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                         Response.Redirect("../Login.aspx"); ; break;//获取操作者信息失败
-                    case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"产品新增成功！\");</script>");
+                    case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"产品修改成功！\");</script>");
                         return true;//成功
                     default: Response.Write("<script>alert('异常错误，返回上一级！');window.close();self.opener.location.reload();</script>"); ; break;//失败
                 }
@@ -233,7 +233,7 @@ namespace EMT.DoneNOW.Web
                     case ERROR_CODE.USER_NOT_FIND:
                         Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                         Response.Redirect("../Login.aspx"); ; break;//获取操作者信息失败
-                    case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"产品修改成功！\");</script>"); return true;//成功
+                    case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"产品新增成功！\");</script>"); return true;//成功
                     default: Response.Write("<script>alert('异常错误，返回上一级！');window.close();self.opener.location.reload();</script>"); ; break;//失败
                 }
 
