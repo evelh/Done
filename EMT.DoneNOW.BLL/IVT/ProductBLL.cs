@@ -169,7 +169,7 @@ namespace EMT.DoneNOW.BLL
             //唯一性校验
             var propro = _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where name='{product.name}' and delete_time=0 ");
             ivt_product oldpropro = _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where id='{product.id}' and delete_time=0 ");
-            if (propro != null)
+            if (propro != null&&product.id!=propro.id)
             {
                 return ERROR_CODE.EXIST;
             }

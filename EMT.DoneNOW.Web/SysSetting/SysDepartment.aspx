@@ -125,7 +125,7 @@
 
 
             <div class="TabContainer" style="display: none;">
-                <div class="ButtonCollectionBase header-title" style="height: 25px;">
+               <%-- <div class="ButtonCollectionBase header-title" style="height: 25px;">
                     <ul>
                         <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                             <span class="Text">新建</span>
@@ -137,7 +137,7 @@
                             <span class="Text">取消</span>
                         </li>
                     </ul>
-                </div>
+                </div>--%>
                 <div class="GridContainer">
                     <div style="height: 832px; width: 100%; overflow: auto; z-index: 0;">
                         <table class="dataGridBody" style="width: 100%; border-collapse: collapse;">
@@ -145,7 +145,7 @@
                                 <tr class="dataGridHeader">
                                     <td>
                                         <span>员工姓名</span>
-                                        <img src="../Images/down.png" alt="">
+                                       <%-- <img src="../Images/down.png" alt="">--%>
                                     </td>
                                     <td>角色名称</td>
                                     <td align="center" style="width: 20%;">默认部门和角色</td>
@@ -171,13 +171,13 @@
                 </div>
             </div>
             <div class="TabContainer" style="display: none;">
-                <div class="ButtonCollectionBase header-title" style="height: 25px;">
+               <%-- <div class="ButtonCollectionBase header-title" style="height: 25px;">
                     <ul>
                         <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                             <span class="Text">新建</span>
                         </li>
                     </ul>
-                </div>
+                </div>--%>
                 <div class="GridContainer">
                     <div style="height: 832px; width: 100%; overflow: auto; z-index: 0;">
                         <table class="dataGridBody" style="width: 100%; border-collapse: collapse;">
@@ -185,7 +185,7 @@
                                 <tr class="dataGridHeader" style="height: 39px;">
                                     <td style="width: 25%;">
                                         <span>工作类型名称</span>
-                                        <img src="../Images/down.png" alt="" />
+                                        <%--<img src="../Images/down.png" alt="" />--%>
                                     </td>
                                     <td style="width: 25%;">外部码</td>
                                     <td style="width: 25%;">总账代码</td>

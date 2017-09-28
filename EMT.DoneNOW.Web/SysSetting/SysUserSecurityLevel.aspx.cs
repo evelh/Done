@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取角色id    
-           // id = 2;
+          // id =1498;
             if (!IsPostBack) {
                 bindresource();//第三个选项卡数据绑定
                 sys_limitList = sys_security.GetAll();//按照model分组
@@ -31,14 +31,14 @@ namespace EMT.DoneNOW.Web.SysSetting
                 foreach (var drop in sys_limitList) {                    
                         string bindid = "id" + drop.id.ToString();
                         var k =this.FindControl(bindid) as DropDownList;
+                    var k2 = this.FindControl(bindid) as CheckBox;
                     if (k != null) {
                         k.DataTextField = "value";
                         k.DataValueField = "key";
                         k.DataSource = sys_security.GetDownList(drop.type_id);
                         k.DataBind();
                         k.SelectedIndex = 0;
-                    }                      
-                 
+                    }
                 }
                 if (id > 0)
                 {
@@ -67,7 +67,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                     var limitdata = sys_security.GetSecurity_limit((int)id);
                     foreach (var i in limitdata)
                     {
-                        string bindid = "id" + i.id.ToString();
+                        string bindid = "id" + i.limit_id.ToString();
                         var k = this.FindControl(bindid) as DropDownList;
                         var c = this.FindControl(bindid) as CheckBox;
                         if (k != null)
@@ -156,35 +156,32 @@ namespace EMT.DoneNOW.Web.SysSetting
             try {
                 if (UpdateSecyurity())
                 {
-                    sys_limitList = sys_security.GetAll();//按照model分组
-                    foreach (var limit in sys_limitList)
+                    var limitdata = sys_security.GetSecurity_limit((int)id);
+                    foreach (var limit in limitdata)
                     {
-                        string bindid = "id" + limit.id.ToString();
+                        string bindid = "id" + limit.limit_id.ToString();
                         var k = this.FindControl(bindid) as DropDownList;
                         var c = this.FindControl(bindid) as CheckBox;
-                        SysSecLimit.limit_id = limit.id;//权限id
-                        SysSecLimit.security_level_id = id;
                         //下拉框选项
                         if (k != null)
                         {
-                            SysSecLimit.limit_type_value_id = Convert.ToInt32(k.SelectedValue.ToString());
+                            limit.limit_type_value_id = Convert.ToInt32(k.SelectedValue.ToString());
                         }
                         //check选项
                         if (c != null)
                         {
                             if (c.Checked)
                             {//选中就存986
-                                SysSecLimit.limit_type_value_id = (int)LIMIT_TYPE_VALUE.HAVE960;
+                                limit.limit_type_value_id = (int)LIMIT_TYPE_VALUE.HAVE960;
                             }
                             else
                             {//不选就存987
-                                SysSecLimit.limit_type_value_id = (int)LIMIT_TYPE_VALUE.NO960;
+                                limit.limit_type_value_id = (int)LIMIT_TYPE_VALUE.NO960;
                             }
                         }
                         //一条一条进行存储
-                        var result = sys_security.Save(SysSecLimit, GetLoginUserId());
+                        var result = sys_security.Save(limit, GetLoginUserId());
                     }
-
                 }
 
             } catch {
