@@ -282,6 +282,20 @@ namespace EMT.DoneNOW.Web.Opportunity
                     }
                 }
             }
+            // SHIPITEM_COSTCODE_CLOSE
+            if (shipItem != null && shipItem.Count > 0)
+            {
+                var sysSet = new SysSettingBLL().GetSetById(SysSettingEnum.SHIPITEM_COSTCODE_CLOSE);
+                var shipType = new d_general_dal().GetDictionaryByCode(new d_general_table_dal().GetById((int)GeneralTableEnum.MATERIAL_CODE_TO_USE));
+                var thisSet = shipType.FirstOrDefault(_ => _.show.ToLower() == sysSet.setting_value.ToLower());
+                if (thisSet != null)
+                {
+                    foreach (var item in shipItem)
+                    {
+                        scriptText += $"$('#{item.id}_select').val({thisSet.val});";
+                    }
+                }
+            }
             if (degressionItem != null && degressionItem.Count > 0)
             {
                 foreach (var item in proAndOneTimeItem)
@@ -438,6 +452,10 @@ namespace EMT.DoneNOW.Web.Opportunity
                         if(!string.IsNullOrEmpty(Request.Form[item.id.ToString() + "_select"]))
                         {
                             dic.Add(item.id, Request.Form[item.id.ToString() + "_select"]);
+                        }
+                        else if(item.object_id!=null)
+                        {
+                            dic.Add(item.id, item.object_id.ToString());
                         }
                         
                     }

@@ -106,6 +106,10 @@ namespace EMT.DoneNOW.Web
                         var serBunId = context.Request.QueryString["id"];
                         AddServiceBundle(context, Convert.ToInt64(serBunId));
                         break;
+                    case "GetDefaultCost":
+                        var defCostConId = context.Request.QueryString["contract_id"];
+                        GetDefaultCost(context,long.Parse(defCostConId));
+                        break;
                     default:
                         break;
                 }
@@ -484,6 +488,16 @@ namespace EMT.DoneNOW.Web
 
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
+
+        private void GetDefaultCost(HttpContext context,long contract_id)
+        {
+            var defCost = new ctt_contract_cost_default_dal().GetSinCostDef(contract_id);
+            if (defCost != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(defCost));
+            }
+        }
+
 
         public bool IsReusable
         {

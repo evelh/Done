@@ -34,7 +34,8 @@ namespace EMT.DoneNOW.DTO
 
         public long? ticketId = null;        // 新建的工单的Id
         public long? saleOrderId = null;     // 新建的销售订单的ID
-        public DateTime effective_date;  // 生效时间--不知道干嘛用的
-         // todo 通知 
+        public DateTime effective_date;  // 生效时间
+
+        // todo 通知 
     }
 }

@@ -145,6 +145,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS:
                     currentQuery.page_name = "审批并提交";
                     break;
+                case (int)DicEnum.QUERY_CATE.GENERATE_INVOICE:
+                    currentQuery.page_name = "待生成发票的条目查询";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

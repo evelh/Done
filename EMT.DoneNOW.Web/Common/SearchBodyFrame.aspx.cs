@@ -396,8 +396,8 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "替换", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活当前记录", click_function = "",id="ActiveThis" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活选中记录", click_function = "", id = "ActiveChoose" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活当前记录", click_function = "", id = "NoActiveThis" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活选中记录", click_function = "", id = "NoActiveChoose" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用当前记录", click_function = "", id = "NoActiveThis" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用选中记录", click_function = "", id = "NoActiveChoose" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除当前配置项", click_function = "DeleteIProduct()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除选中配置项", click_function = "DeleteIProducts()" });
                     break;
@@ -408,7 +408,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "取消订阅", click_function = "", id = "CancelSubscription" });
                     contextMenu.Add(new PageContextMenuDto { text = "取消选中订阅", click_function = "", id = "CancelSubscriptions" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活订阅", click_function = "", id = "ActiveSubscription" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活订阅", click_function = "", id = "NoActiveSubscription" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用订阅", click_function = "", id = "NoActiveSubscription" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除当前订阅", click_function = "DeleteSubscription()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除选中订阅", id = "DeleteSubscriptions" });
                     break;

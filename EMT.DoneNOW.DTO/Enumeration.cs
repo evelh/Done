@@ -50,6 +50,7 @@ namespace EMT.DoneNOW.DTO
         DEPARTMENT_CATE = 64,                     //部门：类型
         LIMIT_TYPE = 76,                         //系统权限：类型 取值 有无、全部部分 等
         LIMIT_TYPE_VALUE = 77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
+        MATERIAL_CODE_TO_USE = 80,              // 系统管理：系统配置：配送报价项转为账单时使用的物料代码
         INSTALLED_PRODUCT_CATE = 108,           // 配置项种类
         LICENSE_TYPE = 109,                      //安全等级：授权类型
         QUOTE_GROUP_BY = 110,                    // 报价分组条件
@@ -726,7 +727,7 @@ namespace EMT.DoneNOW.DTO
             BILLED=1267,
         }
         /// <summary>
-        /// 合同计费对象子类型
+        /// 合同计费对象子类型 --120
         /// </summary>
         public enum BILLING_ENTITY_SUB_TYPE
         {
@@ -921,7 +922,7 @@ namespace EMT.DoneNOW.DTO
         AddInstalledProduct = 210,              // 添加配置项
         EditInstalledProduct = 211,             // 修改配置项
         RelationContract = 212,                 // 将配置项关联合同
-
+        InstalledProductIwarid=213,             // 配置项向导
         SubscriptionEdit = 220,                // 修改订阅
         SubscriptionAdd = 221,                 // 新增订阅
 

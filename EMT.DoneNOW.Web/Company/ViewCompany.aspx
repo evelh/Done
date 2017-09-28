@@ -44,8 +44,9 @@
                     <li>财务</li>
                     <li>合同</li>
                     <li>发票</li>
-                    <li>发票参数设定</li>
+                    <li><a onclick="window.open('../Invoice/PreferencesInvoice.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREFERENCE %>','left=200,top=200,width=900,height=750', false);">发票参数设定</a></li>
                     <li>报价参数设定</li>
+                    
                     <li>附件</li>
                     <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=Subsidiaries">子客户</a></li>
                 </ul>

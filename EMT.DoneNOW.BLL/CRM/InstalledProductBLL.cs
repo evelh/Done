@@ -323,7 +323,8 @@ namespace EMT.DoneNOW.BLL
             var days = Math.Ceiling((lastTime - firstTime).TotalDays); // 获取到相差几天
 
             var months = (lastTime.Year - firstTime.Year) * 12 + (lastTime.Month - firstTime.Month) + (lastTime.Day >= firstTime.Day ? 1 : 0);
-            var periodMonths = 0;
+            decimal periodMonths = 1;
+            decimal period = 1;
             switch (subscription.period_type_id)
             {
                 case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
@@ -345,8 +346,9 @@ namespace EMT.DoneNOW.BLL
                 default:
                     break;
             }
+            period = Math.Ceiling(months / periodMonths);
             var sub_period_dal = new crm_subscription_period_dal();
-            for (int i = 0; i < months; i++)
+            for (int i = 0; i < period; i++)
             {
                 crm_subscription_period sub_period = new crm_subscription_period()
                 {
@@ -371,7 +373,7 @@ namespace EMT.DoneNOW.BLL
                     remark = "新增分期订阅",
                 });
 
-                firstTime = firstTime.AddMonths(periodMonths);
+                firstTime = firstTime.AddMonths((int)periodMonths);
 
             }
 
