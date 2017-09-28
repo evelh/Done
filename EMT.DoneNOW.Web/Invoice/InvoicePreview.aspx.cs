@@ -112,7 +112,7 @@ namespace EMT.DoneNOW.Web.Invoice
                 }
                 #region 拼接页眉
                 thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
-                //thisHtmlText.Append(HttpUtility.HtmlDecode(GetHtmlHead(invoice_temp)).Replace("\"", "'"));
+                thisHtmlText.Append(HttpUtility.HtmlDecode(GetHtmlHead(invoice_temp)).Replace("\"", "'"));
                 thisHtmlText.Append("</tr></tbody></table></div>");
 
                 thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
@@ -469,6 +469,10 @@ namespace EMT.DoneNOW.Web.Invoice
                 
                 // dateTable 里面所拥有的数据实体待确定
                 var varTable = _dal.ExecuteDataTable(sqlList.ToString());
+                if (varTable.Rows.Count <= 0)
+                {
+                    return thisText;
+                }
                 foreach (Match m in reg.Matches(thisText))
                 {
                     string t = m.Groups[0].ToString();
