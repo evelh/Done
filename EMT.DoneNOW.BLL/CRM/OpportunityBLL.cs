@@ -497,6 +497,26 @@ namespace EMT.DoneNOW.BLL
             {
                 var lastAddContract = new ctt_contract_dal().GetLastAddContract();
                 // 新创建合同对象
+                var thisProced = 1;
+                if (param.contract.occurrences == null)
+                {
+                    thisProced = (int)ReturnPeriod(param.contract.start_date, param.contract.end_date, (int)param.contract.period_type);
+                }
+                else
+                {
+                    thisProced = (int)param.contract.occurrences;
+                }
+
+                var thisEndDate = DateTime.Now;
+                if (param.contract.end_date > Convert.ToDateTime("0002-01-01"))
+                {
+                    thisEndDate = param.contract.end_date;
+                }
+                else
+                {
+                    thisEndDate = param.contract.start_date.AddMonths(thisProced* ReturnMonths((int)param.contract.period_type)).AddDays(-1);
+                }
+                
                 var contract = new ctt_contract() {
                     id = _dal.GetNextIdCom(),
                     name = param.contract.name,
@@ -507,14 +527,15 @@ namespace EMT.DoneNOW.BLL
                     status_id = 1,
                     period_type = param.contract.period_type,
                     start_date = param.contract.start_date,
-                    end_date = param.contract.end_date,
-                    occurrences = param.contract.occurrences,
+                    end_date = thisEndDate,
+                    // occurrences = param.contract.occurrences,
                     description="",
                     cate_id= lastAddContract==null?null:lastAddContract.cate_id,   
                     external_no = null,
                     sla_id = lastAddContract == null ? null : lastAddContract.sla_id,
                     setup_fee = null,  // 报价项初始费用
-                    timeentry_need_begin_end  = lastAddContract == null ? (sbyte)1 : lastAddContract.timeentry_need_begin_end,  
+                    timeentry_need_begin_end  = lastAddContract == null ? (sbyte)1 : lastAddContract.timeentry_need_begin_end,
+                    occurrences = thisProced,
                     // 通知接收人？？todo 
                     create_user_id = user.id,
                     update_user_id = user.id,
@@ -588,7 +609,7 @@ namespace EMT.DoneNOW.BLL
 
                             });
 
-                            var period = ReturnPeriod(param.contract.start_date,param.contract.end_date,(int)param.contract.period_type);
+                            var period = ReturnPeriod(contract.start_date,contract.end_date,(int)contract.period_type);
                             var startTime = param.contract.start_date;
                             
                             for (int i = 0; i < period; i++)
