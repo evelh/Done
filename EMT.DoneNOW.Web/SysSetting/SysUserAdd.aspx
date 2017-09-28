@@ -487,7 +487,7 @@
                                                     <div class="lblNormalClass" style="padding: 0 0 10px 0;">
                                                         <span>
                                                             <span class="txtBlack8Class" style="margin-top: 5px">
-                                                                <input type="checkbox" style="vertical-align: middle;">
+                                                                <input type="checkbox" style="vertical-align: middle;" />
                                                                 <label>需要此资源的双因素认证 </label>
                                                             </span>
                                                         </span>
