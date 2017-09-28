@@ -7,7 +7,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link href="../Content/reset.css" rel="stylesheet" />
   <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
-  <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+  <link rel="stylesheet" type="text/css" href="../Content/Roles.css" />
   <title>编辑自定义字段</title>
 </head>
 <body>
@@ -23,8 +23,8 @@
       <!--按钮-->
       <div class="ButtonContainer header-title">
         <ul id="btn">
-          <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
-            <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="SaveClose_Click" />
+          <li class="Button ButtonIcon NormalState" tabindex="0"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
+            <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="SaveClose_Click" style="outline:none;background:transparent;cursor:pointer;border:none;"/>
           </li>
         </ul>
       </div>
@@ -39,36 +39,44 @@
                         if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
                         {%>
                     <tr>
-                      <td>
+                      <td class="FieldLabels">
                         <label><%=udf.name %></label>
-                        <input type="text" name="<%=udf.id %>" value="<%=udfValue %>" class="sl_cdt" />
+                         <div>
+                            <input type="text" name="<%=udf.id %>" value="<%=udfValue %>" class="sl_cdt" style="width:200px;"/>
+                         </div>
                       </td>
                     </tr>
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
                         {%>
                     <tr>
-                      <td>
+                      <td class="FieldLabels">
                         <label><%=udf.name %></label>
-                        <textarea name="<%=udf.id %>" rows="2" cols="20"><%=udfValue %></textarea>
+                        <div>
+                            <textarea name="<%=udf.id %>" rows="2" cols="20"><%=udfValue %></textarea>
+                        </div>
                       </td>
                     </tr>
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
                         {%>
                     <tr>
-                      <td>
+                      <td class="FieldLabels">
                         <label><%=udf.name %></label>
-                        <input onclick="WdatePicker()" type="text" value="<%=udfValue %>" name="<%=udf.id %>" class="sl_cdt" />
+                        <div>
+                           <input onclick="WdatePicker()" type="text" value="<%=udfValue %>" name="<%=udf.id %>" class="sl_cdt" />
+                        </div>
                       </td>
                     </tr>
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
                         {%>
                     <tr>
-                      <td>
+                      <td class="FieldLabels">
                         <label><%=udf.name %></label>
-                        <input type="text" name="<%=udf.id %>" value="<%=udfValue %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                          <div>
+                               <input type="text" name="<%=udf.id %>" value="<%=udfValue %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                          </div>
                       </td>
                     </tr>
                     <%}
@@ -77,9 +85,11 @@
 
                     <%} %>
                     <tr>
-                      <td>
+                      <td class="FieldLabels">
                         <label>修改原因</label>
-                        <textarea name="description" rows="2" cols="20"></textarea>
+                          <div>
+                               <textarea name="description" style="width:200px;height:100px;"></textarea>
+                          </div>
                       </td>
                     </tr>
                   </table>
