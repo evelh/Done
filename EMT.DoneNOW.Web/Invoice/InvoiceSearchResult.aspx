@@ -520,7 +520,17 @@
         }
     }
     function Process() {
-        var account_ids = $("#account_ids").val();
+        debugger;
+        var account_ids = "";
+        $(".IsChecked").each(function () {
+            if ($(this).is(":checked")) {
+                account_ids += $(this).val() + ",";
+            }
+        })
+        if (account_ids == "") {
+            return false;
+        }
+        account_ids = account_ids.substring(0, account_ids.length - 1);
         if (account_ids != "") {
             window.open("ProcessInvoice.aspx?account_ids=" + account_ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PROCESS %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
