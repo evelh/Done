@@ -168,11 +168,11 @@
                 return false;
             }
             if (h == null || h == '') {
-                alert("Hourly Billing Rate！");
+                alert("请输入费率！");
                 return false;
             }
             if (b == null || b == '') {
-                alert("Block Hour Multiplier！");
+                alert("请输入时间系数！");
                 return false;
             }
             var type = /^\d{1,15}\.?\d{0,4}$/;
