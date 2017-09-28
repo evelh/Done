@@ -24,7 +24,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="cate">操作对象种类</param>
         /// <param name="operDesc">操作内容</param>
         /// <param name="remark">备注</param>
-        public static void OperLog<T>(object entity, long objId, long userId, DicEnum.OPER_LOG_TYPE type, DicEnum.OPER_LOG_OBJ_CATE cate, string operDesc, string remark = "") where T : class
+        public static void OperLog<T>(T entity, long objId, long userId, DicEnum.OPER_LOG_TYPE type, DicEnum.OPER_LOG_OBJ_CATE cate, string operDesc, string remark = "") where T : class
         {
             sys_oper_log log = new sys_oper_log();
             log.user_id = userId;
@@ -48,9 +48,9 @@ namespace EMT.DoneNOW.BLL
         /// <param name="userId">userid</param>
         /// <param name="cate">操作对象种类</param>
         /// <param name="remark">备注</param>
-        public static void OperLogAdd<T>(object entity, long objId, long userId, DicEnum.OPER_LOG_OBJ_CATE cate, string remark = "") where T : class
+        public static void OperLogAdd<T>(T entity, long objId, long userId, DicEnum.OPER_LOG_OBJ_CATE cate, string remark = "") where T : class
         {
-            string desc = dal.AddValue<T>(entity as T);
+            string desc = dal.AddValue<T>(entity);
             OperLog<T>(entity, objId, userId, DicEnum.OPER_LOG_TYPE.ADD, cate, desc, remark);
         }
 
@@ -64,9 +64,9 @@ namespace EMT.DoneNOW.BLL
         /// <param name="userId">userid</param>
         /// <param name="cate">操作对象种类</param>
         /// <param name="remark">备注</param>
-        public static void OperLogUpdate<T>(object entity, object entityOld, long objId, long userId, DicEnum.OPER_LOG_OBJ_CATE cate, string remark = "") where T : class
+        public static void OperLogUpdate<T>(T entity, T entityOld, long objId, long userId, DicEnum.OPER_LOG_OBJ_CATE cate, string remark = "") where T : class
         {
-            string desc = dal.CompareValue<T>(entityOld as T, entity as T);
+            string desc = dal.CompareValue<T>(entityOld, entity);
             OperLog<T>(entity, objId, userId, DicEnum.OPER_LOG_TYPE.UPDATE, cate, desc, remark);
         }
 
@@ -79,9 +79,9 @@ namespace EMT.DoneNOW.BLL
         /// <param name="userId">userid</param>
         /// <param name="cate">操作对象种类</param>
         /// <param name="remark">备注</param>
-        public static void OperLogDelete<T>(object entity, long objId, long userId, DicEnum.OPER_LOG_OBJ_CATE cate, string remark = "") where T : class
+        public static void OperLogDelete<T>(T entity, long objId, long userId, DicEnum.OPER_LOG_OBJ_CATE cate, string remark = "") where T : class
         {
-            string desc = dal.AddValue<T>(entity as T);
+            string desc = dal.AddValue<T>(entity);
             OperLog<T>(entity, objId, userId, DicEnum.OPER_LOG_TYPE.DELETE, cate, desc, remark);
         }
     }

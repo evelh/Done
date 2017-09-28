@@ -539,6 +539,37 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 新增合同里程碑
+        /// </summary>
+        /// <param name="milestone"></param>
+        /// <param name="userId"></param>
+        public void AddMilestone(ctt_contract_milestone milestone, long userId)
+        {
+            milestone.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            milestone.create_user_id = userId;
+            milestone.update_time = milestone.create_time;
+            milestone.update_user_id = userId;
+            new ctt_contract_milestone_dal().Insert(milestone);
+            OperLogBLL.OperLogAdd<ctt_contract_milestone>(milestone, milestone.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE, "新增合同里程碑");
+        }
+
+        /// <summary>
+        /// 编辑合同里程碑
+        /// </summary>
+        /// <param name="milestone"></param>
+        /// <param name="userId"></param>
+        public void UpdateMilestone(ctt_contract_milestone milestone, long userId)
+        {
+            ctt_contract_milestone_dal milDal = new ctt_contract_milestone_dal();
+            var oldMil = milDal.FindById(milestone.id);
+
+            milestone.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            milestone.update_user_id = userId;
+            new ctt_contract_milestone_dal().Update(milestone);
+            OperLogBLL.OperLogUpdate<ctt_contract_milestone>(milestone, oldMil, milestone.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE, "编辑合同里程碑");
+        }
+
+        /// <summary>
         /// 获取里程碑信息
         /// </summary>
         /// <param name="milestoneId"></param>

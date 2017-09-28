@@ -3010,6 +3010,38 @@
         function Add() {
           window.open("../Contract/AddRetainerPurchase.aspx?id=" + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
+        function SetActive() {
+
+            $.ajax({
+              type: "GET",
+              url: "../Tools/ContractAjax.ashx?act=SetBlockActive&blockId=" + entityid,
+              async: false,
+              success: function (data) {
+                if (data == "true") {
+                  alert("设置成功");
+                  window.reload();
+                } else {
+                  alert("设置失败！已审批预付不可修改");
+                }
+              }
+            })
+        }
+        function SetInactive() {
+
+          $.ajax({
+            type: "GET",
+            url: "../Tools/ContractAjax.ashx?act=SetBlockInactive&blockId=" + entityid,
+            async: false,
+            success: function (data) {
+              if (data == "true") {
+                alert("设置成功");
+                window.reload();
+              } else {
+                alert("设置失败！已审批预付不可修改");
+              }
+            }
+          })
+        }
         function Delete() {
           if (confirm("预付费用关联了一个合同成本，如果删除，则相关的合同成本也会删除，是否继续?")) {
             $.ajax({
