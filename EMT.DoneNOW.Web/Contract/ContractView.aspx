@@ -131,3 +131,12 @@
 
 </body>
 </html>
+<script src="../Scripts/jquery-3.1.0.min.js"></script>
+<script>
+    <%
+    var type = Request.QueryString["type"]; ;
+    if (type == "item") {%>
+    $("#viewContractIframe").css("height", "45%");
+    $("#second").css("height", "48%");
+    <%} %>
+</script>
