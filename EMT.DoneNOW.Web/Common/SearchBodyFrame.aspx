@@ -260,7 +260,7 @@
             <tr>
                 <%if (!string.IsNullOrEmpty(isCheck))
                     { %>
-                <th style="padding-left: 4px;">
+                <th style="padding-left: 4px;width:22px;max-width:22px;">
                     <input id="CheckAll" type="checkbox" /></th>
 
                 <%} %>
@@ -301,7 +301,7 @@
 
                 <%if (!string.IsNullOrEmpty(isCheck))
                     { %>
-                <td>
+                <td style="width:22px;max-width:22px;">
                     <input type="checkbox" class="IsChecked" value="<%=id %>" /></td>
 
                 <%} %>
