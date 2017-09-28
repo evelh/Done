@@ -582,7 +582,8 @@ namespace EMT.DoneNOW.BLL
                             ctt_contract_service conService = new ctt_contract_service() {
                                 id=_dal.GetNextIdCom(),
                                 contract_id = contract.id,
-                                object_id = item.id,
+                                object_id = (long)item.object_id,
+                                object_type = (sbyte)isService,
                                 effective_date = param.contract.start_date,
                                 unit_cost = item.unit_cost,
                                 unit_price = item.unit_price,
