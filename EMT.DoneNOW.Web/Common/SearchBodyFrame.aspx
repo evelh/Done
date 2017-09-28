@@ -1179,6 +1179,9 @@
             $("#ToolsButton").css("background", "#fff");
             $(this).css("border-bottom", "none");
             $(".RightClickMenu").show();
+            var scrTop = $(document).scrollTop();
+            var Top = scrTop + 36;
+            $(".RightClickMenu").css("top",Top);
         });
         $("#ToolsButton").on("mouseout", function () {
             $("#ToolsButton").css("background", "#f0f0f0");

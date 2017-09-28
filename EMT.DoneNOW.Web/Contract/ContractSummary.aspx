@@ -43,7 +43,7 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tbody>
                 <tr>
-                    <td>
+                    <td style="vertical-align:top;">
                         <div class="DivSectionWithHeader">
                             <div class="Heading">
                                 <span class="Text">合同摘要</span>
@@ -167,7 +167,7 @@
                                                                     <%
                                                                         int percent = ((int)summary.timeline * 100) / (int)summary.duration;
                                                                         %>
-                                                                    <td style="border: 1px solid black;"><div class="load" style="width: <%=percent%>%;padding:0;"><%=summary.timeline %> 天</div></td>
+                                                                    <td style="border: 1px solid black;"><div class="load" style="width: <%=percent%>%;padding:0;"><%=summary.timeline %></div></td>
                                                                 </tr>
                                                             </table>
                                                         </td>
@@ -237,8 +237,8 @@
                                                                 <table title="<%=title1 %>" width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td class="FieldLabels" width="135px">当前周期</td>
-                                                                            <td style="border: 1px solid black;">
+                                                                            <td class="FieldLabels" width="135px" style="min-width:135px;">当前周期</td>
+                                                                            <td style="border: 1px solid black;width:204px;min-width:204px;">
                                                                                 <div class="load" style="width: <%=per1%>%;position:relative;">
                                                                                     <span style="width:1px;height:18px;background-color:black;position:absolute;left:102px;"></span>
                                                                                 </div>
