@@ -112,7 +112,7 @@ namespace EMT.DoneNOW.Web.Invoice
                 }
                 #region 拼接页眉
                 thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
-                thisHtmlText.Append(HttpUtility.HtmlDecode(GetHtmlHead(invoice_temp)).Replace("\"", "'"));
+                //thisHtmlText.Append(HttpUtility.HtmlDecode(GetHtmlHead(invoice_temp)).Replace("\"", "'"));
                 thisHtmlText.Append("</tr></tbody></table></div>");
 
                 thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
@@ -141,7 +141,7 @@ namespace EMT.DoneNOW.Web.Invoice
 
                 table.Text = thisHtmlText.ToString();
             }
-            catch (Exception)
+            catch (Exception msg)
             {
                 Response.End();
             }

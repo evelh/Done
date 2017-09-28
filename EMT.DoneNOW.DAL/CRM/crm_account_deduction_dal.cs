@@ -25,6 +25,11 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<InvoiceDeductionDto>("select * from v_posted_all where 1=1 " + where);
         }
+
+        public List<crm_account_deduction> GetAccDeds(string ids)
+        {
+            return FindListBySql<crm_account_deduction>($"SELECT * from crm_account_deduction where id in ({ids}) and delete_time = 0");
+        }
     }
 
 }

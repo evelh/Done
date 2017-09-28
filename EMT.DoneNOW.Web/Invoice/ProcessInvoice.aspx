@@ -138,9 +138,9 @@
     </form>
 </body>
 </html>
-    <script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
-    <script type="text/javascript" src="js/NewWorkType.js"></script>
-    <script type="text/javascript" src="js/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="../Scripts/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="../Scripts/NewWorkType.js"></script>
+    <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
     <script>
         $("#is_InvoiceEmail").on("click", function () {
             var _this = $(this);

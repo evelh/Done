@@ -81,16 +81,17 @@ namespace EMT.DoneNOW.Web.Invoice
                     ids += item + ',';
                 }
             }
-            param.ids = ids;
+            param.ids = ids.Substring(0,ids.Length-1);
 
             var result = new InvoiceBLL().ProcessInvoice(param, GetLoginUserId());
             if (result)
             {
-                // 跳转到发票预览
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close(); </script>");
             }
             else
             {
-                // 处理失败
+                
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存失败！');window.close(); </script>");
             }
 
         }
