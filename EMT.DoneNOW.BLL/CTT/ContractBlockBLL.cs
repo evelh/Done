@@ -303,5 +303,49 @@ namespace EMT.DoneNOW.BLL
                 DeletePurchase(entity.id, userId);
             }
         }
+
+        /// <summary>
+        /// 设置预付为激活状态
+        /// </summary>
+        /// <param name="blockId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool SetBlockActive(long blockId, long userId)
+        {
+            var entity = dal.FindById(blockId);
+            var entityOld = dal.FindById(blockId);
+            if (entity.is_billed == 1)
+                return false;
+
+            entity.status_id = 1;
+            entity.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            entity.update_user_id = userId;
+            dal.Update(entity);
+
+            OperLogBLL.OperLogUpdate<ctt_contract_block>(entity, entityOld, entity.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "修改预付设置为激活状态");
+            return true;
+        }
+
+        /// <summary>
+        /// 设置预付为停用状态
+        /// </summary>
+        /// <param name="blockId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool SetBlockInactive(long blockId, long userId)
+        {
+            var entity = dal.FindById(blockId);
+            var entityOld = dal.FindById(blockId);
+            if (entity.is_billed == 1)
+                return false;
+
+            entity.status_id = 0;
+            entity.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            entity.update_user_id = userId;
+            dal.Update(entity);
+
+            OperLogBLL.OperLogUpdate<ctt_contract_block>(entity, entityOld, entity.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "修改预付设置为停用状态");
+            return true;
+        }
     }
 }

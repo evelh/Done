@@ -56,7 +56,7 @@ namespace EMT.DoneNOW.Web
                 return;
             }
 
-            condition = bll.GetConditionPara(GetLoginUserId(), paraGroupId);
+            condition = bll.GetConditionParaVisiable(GetLoginUserId(), paraGroupId);
 
             QueryData();
         }
@@ -91,7 +91,7 @@ namespace EMT.DoneNOW.Web
 
             if (queryResult == null)  // 不使用缓存或缓存过期
             {
-                var para = bll.GetConditionPara(GetLoginUserId(), paraGroupId);   // 查询条件信息
+                var para = bll.GetConditionParaAll(GetLoginUserId(), paraGroupId);   // 查询条件信息
                 QueryParaDto queryPara = new QueryParaDto();
                 queryPara.query_params = new List<Para>();
                 foreach (var p in para)
@@ -101,18 +101,18 @@ namespace EMT.DoneNOW.Web
                         || p.data_type == (int)DicEnum.QUERY_PARA_TYPE.DATE
                         || p.data_type == (int)DicEnum.QUERY_PARA_TYPE.DATETIME)    // 数值和日期类型是范围值
                     {
-                        string ql = keys[p.id.ToString() + "_l"];
-                        string qh = keys[p.id.ToString() + "_h"];
+                        string ql = keys["con" + p.id.ToString() + "_l"];
+                        string qh = keys["con" + p.id.ToString() + "_h"];
                         if (string.IsNullOrEmpty(ql) && string.IsNullOrEmpty(qh))   // 空值，跳过
                             continue;
                         if (!string.IsNullOrEmpty(ql))
                         {
-                            queryParaValue.Add(new DictionaryEntryDto(p.id.ToString() + "_l", ql));     // 记录查询条件和条件值
+                            queryParaValue.Add(new DictionaryEntryDto("con" + p.id.ToString() + "_l", ql));     // 记录查询条件和条件值
                             pa.value = ql;
                         }
                         if (!string.IsNullOrEmpty(qh))
                         {
-                            queryParaValue.Add(new DictionaryEntryDto(p.id.ToString() + "_h", qh));     // 记录查询条件和条件值
+                            queryParaValue.Add(new DictionaryEntryDto("con" + p.id.ToString() + "_h", qh));     // 记录查询条件和条件值
                             pa.value2 = qh;
                         }
                         pa.id = p.id;
@@ -121,12 +121,12 @@ namespace EMT.DoneNOW.Web
                     }
                     else    // 其他类型一个值
                     {
-                        string val = keys[p.id.ToString()];
+                        string val = keys["con" + p.id.ToString()];
                         if (string.IsNullOrEmpty(val))
                             continue;
                         pa.id = p.id;
                         pa.value = val;
-                        queryParaValue.Add(new DictionaryEntryDto(p.id.ToString(), val));     // 记录查询条件和条件值
+                        queryParaValue.Add(new DictionaryEntryDto("con" + p.id.ToString(), val));     // 记录查询条件和条件值
 
                         queryPara.query_params.Add(pa);
                     }

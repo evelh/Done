@@ -476,9 +476,7 @@ namespace EMT.DoneNOW.DTO
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
             APPROVE_LABOUR,                //工时审批
-            APPROVE_EXPENSE,               //费用审批   
-            
-            BILL_CODE_CALLBACK,             // 计费代码查找带回
+            APPROVE_EXPENSE,               //费用审批
         }
 
         /// <summary>

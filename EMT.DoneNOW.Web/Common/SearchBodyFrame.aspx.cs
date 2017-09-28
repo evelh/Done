@@ -234,7 +234,7 @@ namespace EMT.DoneNOW.Web
 
             if (objId != 0)    // 查询条件只有实体id，可以默认带入id查找
             {
-                var cdts = bll.GetConditionPara(GetLoginUserId(), paraGroupId);
+                var cdts = bll.GetConditionParaVisiable(GetLoginUserId(), paraGroupId);
                 if (cdts.Count == 1)
                 {
                     QueryParaDto queryPara = new QueryParaDto();
@@ -258,7 +258,7 @@ namespace EMT.DoneNOW.Web
 
             if (queryResult == null)  // 不使用缓存或缓存过期
             {
-                var para = bll.GetConditionPara(GetLoginUserId(), paraGroupId);   // 查询条件信息
+                var para = bll.GetConditionParaVisiable(GetLoginUserId(), paraGroupId);   // 查询条件信息
                 QueryParaDto queryPara = new QueryParaDto();
                 queryPara.query_params = new List<Para>();
                 foreach (var p in para)
@@ -587,8 +587,8 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.ContractBlock:
                 case (long)QueryType.ContractBlockTime:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "SetInactive()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "SetActive()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 case (long)QueryType.ContractRate:
