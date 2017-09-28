@@ -75,13 +75,22 @@ $(".Content").on("mouseout", function () {
     $(this).children("a").removeClass("HoverState").addClass("NormalState");
 });
 $(".ModuleContainer").find(".Content").on("click", function () {
-    $("#WorkspaceContainer").css("z-index", "0");
+    setTimeout(function () {
+        $(".cont").show();
+    }, 500);
+    $("#yibiaopan").hide();
 });
 $(".Logo").on("click", function () {
-    $("#WorkspaceContainer").css("z-index", "2");
+    $(".cont").hide();
+    setTimeout(function () {
+        $("#yibiaopan").show();
+    }, 500);
 });
 $("#HomePage").on("click", function () {
-    $("#WorkspaceContainer").css("z-index", "2");
+    $(".cont").hide();
+    setTimeout(function () {
+        $("#yibiaopan").show();
+    }, 500);
 });
 
 //历史记录搜索

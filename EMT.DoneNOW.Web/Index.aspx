@@ -884,7 +884,7 @@
         </div>
         <!--背景布-->
         <div id="WorkspaceContainer">
-             <div>
+             <div id="yibiaopan">
                 <div id="DashboardContainer">
                     <div class="DashboardTitleBar ThemePrimaryColor">
                         <div class="DashboardButtonContainer">
@@ -915,7 +915,7 @@
                 </div>
             </div>
         </div>
-        <div class="cont">
+        <div class="cont" style="display:none;">
             <iframe id="PageFrame" name="PageFrame" style="width:100%;" src="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>"></iframe>
         </div>
 	</body>

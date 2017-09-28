@@ -24,7 +24,7 @@
         </ul>
     </div>
     <!--下拉菜单-->
-    <div class="DropDownMenu" id="D1">
+    <div class="DropDownMenu" id="D1" style="top:25px;">
         <ul>
             <li><span class="DropDownMenuItemText" onclick="CopyContract(<%=contract.id %>)">编辑合同</span></li>
             <li><span class="DropDownMenuItemText">续约</span></li>
@@ -239,7 +239,9 @@
                                                                         <tr>
                                                                             <td class="FieldLabels" width="135px">当前周期</td>
                                                                             <td style="border: 1px solid black;">
-                                                                                <div class="load" style="width: <%=per1%>%;"></div>
+                                                                                <div class="load" style="width: <%=per1%>%;position:relative;">
+                                                                                    <span style="width:1px;height:18px;background-color:black;position:absolute;left:102px;"></span>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -257,7 +259,9 @@
                                                                         <tr>
                                                                             <td class="FieldLabels" width="135px">先前周期</td>
                                                                             <td style="border: 1px solid black;">
-                                                                                <div class="load" style="width: <%=per2%>%;"></div>
+                                                                                <div class="load" style="width: <%=per2%>%;position:relative;">
+                                                                                    <span style="width:1px;height:18px;background-color:black;position:absolute;left:102px;"></span>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -275,7 +279,9 @@
                                                                         <tr>
                                                                             <td class="FieldLabels" width="135px">前三周期</td>
                                                                             <td style="border: 1px solid black;">
-                                                                                <div class="load" style="width: <%=per3%>%;"></div>
+                                                                                <div class="load" style="width: <%=per3%>%;position:relative;">
+                                                                                    <span style="width:1px;height:18px;background-color:black;position:absolute;left:102px;"></span>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -293,7 +299,9 @@
                                                                         <tr>
                                                                             <td class="FieldLabels" width="135px">截至目前</td>
                                                                             <td style="border: 1px solid black;">
-                                                                                <div class="load" style="width: <%=per4%>%;"></div>
+                                                                                <div class="load" style="width: <%=per4%>%;position:relative;">
+                                                                                    <span style="width:1px;height:18px;background-color:black;position:absolute;left:102px;"></span>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
