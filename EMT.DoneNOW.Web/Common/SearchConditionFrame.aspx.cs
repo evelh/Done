@@ -33,7 +33,7 @@ namespace EMT.DoneNOW.Web
             }
 
             InitData();
-            condition = bll.GetConditionPara(GetLoginUserId(), paraGroupId);
+            condition = bll.GetConditionParaVisiable(GetLoginUserId(), paraGroupId);
         }
 
         private void InitData()

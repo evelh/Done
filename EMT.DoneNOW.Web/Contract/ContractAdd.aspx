@@ -398,7 +398,9 @@
                                             {%><tr>
                                                 <td>
                                                     <label><%=udf.name %></label>
-                                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" />
+                                                    <div>
+                                                        <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt Wdate" style="width:100px;"/>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <%}
@@ -744,12 +746,12 @@
                                             <span style="font-weight: normal;">
                                                 <a class="PrimaryLink" onclick="ShowResource()">(加载)</a>
                                             </span>
-                                            <div id="ResourceDiv" style="display:none;max-height:300px;overflow:auto;" class="grid">
+                                            <div id="ResourceDiv" style="display:none;max-height:300px;overflow:auto;padding-bottom:0;margin-bottom:21px;" class="grid">
                                               <table cellspacing="1" cellpadding="0" width="100%">
                                                 <thead>
                                                     <tr>
                                                         <td style="width:20px; text-align:center;">
-                                                            <input type="checkbox" style="vertical-align: middle;" />
+                                                            <input type="checkbox" style="vertical-align: middle;" id="CheckAll"/>
                                                         </td>
                                                         <td>姓名</td>
                                                         <td align="right">邮件地址</td>
@@ -759,7 +761,7 @@
                                                   <%foreach (var resource in resourceList) { %>
                                                   <tr>
                                                       <td style="width:20px; text-align:center;">
-                                                          <input type="checkbox" name="notify<%=resource.id %>" style="vertical-align: middle;"/>
+                                                          <input type="checkbox" name="notify<%=resource.id %>" style="vertical-align: middle;" class="IsChecked"/>
                                                       </td>
                                                       <td><%=resource.name %></td>
                                                       <td align="right">
@@ -779,7 +781,7 @@
                                                 （用半角逗号分隔）
                                             </span>
                                             <div style="margin-bottom:8px;">
-                                                <input type="text" name="notifyEmails" style="width: 100%" />
+                                                <input type="text" name="notifyEmails" style="width: 97%" />
                                             </div>
                                             <div>
                                                 <input type="checkbox" />
@@ -878,5 +880,17 @@
     <script type="text/javascript" src="../Scripts/common.js"></script>
     <script type="text/javascript" src="../Scripts/ContractWizard.js"></script>
     <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script>
+        $("#CheckAll").click(function () {
+            if ($(this).is(":checked")) {
+                $(".IsChecked").prop("checked", true);
+                $(".IsChecked").css("checked", "checked");
+            }
+            else {
+                $(".IsChecked").prop("checked", false);
+                $(".IsChecked").css("checked", "");
+            }
+        })
+    </script>
 </body>
 </html>

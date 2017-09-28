@@ -186,6 +186,12 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.INVOICE_HISTORY:
                     addBtn = "历史发票";
                     break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONES:
+                    addBtn = "新增合同里程碑";
+                    break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_TYPE:
+                    addBtn = "新增合同类别";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -228,7 +234,7 @@ namespace EMT.DoneNOW.Web
 
             if (objId != 0)    // 查询条件只有实体id，可以默认带入id查找
             {
-                var cdts = bll.GetConditionPara(GetLoginUserId(), paraGroupId);
+                var cdts = bll.GetConditionParaVisiable(GetLoginUserId(), paraGroupId);
                 if (cdts.Count == 1)
                 {
                     QueryParaDto queryPara = new QueryParaDto();
@@ -252,7 +258,7 @@ namespace EMT.DoneNOW.Web
 
             if (queryResult == null)  // 不使用缓存或缓存过期
             {
-                var para = bll.GetConditionPara(GetLoginUserId(), paraGroupId);   // 查询条件信息
+                var para = bll.GetConditionParaVisiable(GetLoginUserId(), paraGroupId);   // 查询条件信息
                 QueryParaDto queryPara = new QueryParaDto();
                 queryPara.query_params = new List<Para>();
                 foreach (var p in para)
@@ -445,7 +451,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.Resource:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    //contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "查找相似员工", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "发邮件给当前员工", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "发邮件给选中员工", click_function = "openopenopen()\" \" style='color:grey;'" });
@@ -539,8 +545,8 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.Invoice_History:
                     contextMenu.Add(new PageContextMenuDto { text = "修改发票", click_function = "EditInvoice()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看发票", click_function = "InvoiceView()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看本批全部发票", click_function = "InvoiceAllView()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看发票", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看本批全部发票", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "输出本批全部发票到XML文件", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "清除web service日期数据", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "作废发票", click_function = "VoidInvoice()" });
@@ -553,8 +559,9 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "NoActive()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
-                    break;
-                    case (long)QueryType.OPPORTUNITYAGES:
+                    break;                    
+                case (long)QueryType.ContractType:
+                case (long)QueryType.OPPORTUNITYAGES:
                 case (long)QueryType.OPPORTUNITYSOURCE:
                 case (long)QueryType.OPPPORTUNITYLOSSREASON:
                 case (long)QueryType.OPPPORTUNITYWINREASON:
@@ -563,6 +570,7 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.ACCOUNTREGION:
                 case (long)QueryType.Market:
                 case (long)QueryType.COMPETITOR:
+                case (long)QueryType.Territory:
                     contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
@@ -579,11 +587,15 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.ContractBlock:
                 case (long)QueryType.ContractBlockTime:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "SetInactive()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "SetActive()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 case (long)QueryType.ContractRate:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.ContractMilestone:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;

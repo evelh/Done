@@ -23,8 +23,8 @@ $(".dn_tr").bind("contextmenu", function (event) {
             menu.style.display = "none";
         }, 1000);
     };
-    var Top = $(document).scrollTop() + oEvent.clientY;
     var Left = $(document).scrollLeft() + oEvent.clientX;
+    var Top = $(document).scrollTop() + oEvent.clientY;
     var winWidth = window.innerWidth;
     var winHeight = window.innerHeight;
     var menuWidth = menu.clientWidth; 
@@ -33,17 +33,18 @@ $(".dn_tr").bind("contextmenu", function (event) {
     var scrTop = $(document).scrollTop();
     var clientWidth = Left + menuWidth;
     var clientHeight = Top + menuHeight;
-    if (winWidth < clientWidth) {
+    var rightWidth = winWidth - oEvent.clientX;
+    var bottomHeight = winHeight - oEvent.clientY;
+    if (winWidth < clientWidth && rightWidth < menuWidth) {
         menu.style.left = winWidth - menuWidth - 18 + scrLeft + "px";
     } else {
         menu.style.left = Left + "px";
     }
-    if (winHeight < clientHeight) {
+    if (winHeight < clientHeight && bottomHeight < menuHeight) {
         menu.style.top = winHeight - menuHeight - 18 + scrTop + "px";
-    } else {
+    }else {
         menu.style.top = Top + "px";
     }
-    
     return false;
 });
 

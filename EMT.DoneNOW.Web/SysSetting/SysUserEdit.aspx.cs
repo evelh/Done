@@ -17,14 +17,13 @@ namespace EMT.DoneNOW.Web
         protected string avatarPath = "../Images/pop.jpg";
         protected long id = 0;
         protected string op = string.Empty;
-        private SysUserAddDto param = new SysUserAddDto();
-        private SysUserAddDto paramcopy = new SysUserAddDto();
-        private UserResourceBLL urbll = new UserResourceBLL();
+        private SysUserAddDto param=new SysUserAddDto();
+        private SysUserAddDto paramcopy=new SysUserAddDto();
+        private UserResourceBLL urbll=new UserResourceBLL ();
         private bool saveop=false;//保存状态
        protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
-           id = 1655;
             if (Request.QueryString["op"]!=null)
             op = Request.QueryString["op"].ToString();
             if (!IsPostBack)
@@ -42,7 +41,6 @@ namespace EMT.DoneNOW.Web
                     param.sys_user = userdata;
                     if (resourcedata.avatar!=null&&!string.IsNullOrEmpty(resourcedata.avatar.ToString()))
                     avatarPath = resourcedata.avatar.ToString();
-
                     if (!string.IsNullOrEmpty(resourcedata.date_display_format_id.ToString()))//数据库存在日期格式
                     this.DateFormat.SelectedValue = resourcedata.date_display_format_id.ToString();
                     if(!string.IsNullOrEmpty(resourcedata.number_display_format_id.ToString()))//数据库存在数值格式
@@ -51,6 +49,10 @@ namespace EMT.DoneNOW.Web
                     this.TimeFormat.SelectedValue = resourcedata.time_display_format_id.ToString();
                     this.first_name.Text = resourcedata.first_name;
                     this.last_name.Text = resourcedata.last_name;
+                    this.resource_name.Text = resourcedata.name;
+                    if (resourcedata.title != null) {
+                        this.title.Text = resourcedata.title;
+                    }
                     if (!string.IsNullOrEmpty(resourcedata.suffix_id.ToString())) //数据库存在称谓
                         this.NameSuffix.SelectedValue = resourcedata.suffix_id.ToString();
                     if (!string.IsNullOrEmpty(resourcedata.sex.ToString()))//数据库存在性别
@@ -105,19 +107,19 @@ namespace EMT.DoneNOW.Web
             this.DateFormat.DataValueField = "val";
             this.DateFormat.DataSource = dic.FirstOrDefault(_ => _.Key == "DateFormat").Value;
             this.DateFormat.DataBind();
-            DateFormat.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+           // DateFormat.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             //数字格式
             this.NumberFormat.DataTextField = "show";
             this.NumberFormat.DataValueField = "val";
             this.NumberFormat.DataSource = dic.FirstOrDefault(_ => _.Key == "NumberFormat").Value;
             NumberFormat.DataBind();
-            NumberFormat.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+           // NumberFormat.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             //TimeFormat时间格式
             this.TimeFormat.DataTextField = "show";
             this.TimeFormat.DataValueField = "val";
             this.TimeFormat.DataSource = dic.FirstOrDefault(_ => _.Key == "TimeFormat").Value;
             TimeFormat.DataBind();
-            TimeFormat.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+           // TimeFormat.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             //EmailType50
             this.EmailType.DataTextField = "show";
             this.EmailType.DataValueField = "val";
@@ -268,21 +270,29 @@ namespace EMT.DoneNOW.Web
                 if (!string.IsNullOrEmpty(op))
                 {
                     Save_Contact();
-                    Save_deal();
+                    if (Save_deal())
+                    {
+                        Response.Write("<script>window.close();self.opener.location.reload();</script>");
+                    }
                 }
                 else
                 {
                     Save_Contact();
-                    Update_deal();
+                    if (Update_deal())
+                    {
+                        Response.Write("<script>window.close();self.opener.location.reload();</script>");
+                    }
                 }
                 saveop = true;
             }
             else
             {
                 Save_Contact();
-                Update_deal();
+                if (Update_deal())
+                {
+                    Response.Write("<script>window.close();self.opener.location.reload();</script>");
+                }
             }
-            Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
         }
         protected void Save_copy_Click(object sender, EventArgs e)
         {
@@ -291,21 +301,29 @@ namespace EMT.DoneNOW.Web
                 if (!string.IsNullOrEmpty(op))
                 {
                     Save_Contact();
-                    Save_deal();
+                    if (Save_deal())
+                    {
+                        Response.Write("<script>window.location.href = 'SysUserEdit.aspx?id=" + id + "&op=copy';</script>");
+                    }
                 }
                 else
                 {
                     Save_Contact();
-                    Update_deal();
+                    if (Update_deal())
+                    {
+                        Response.Write("<script>window.location.href = 'SysUserEdit.aspx?id=" + id + "&op=copy';</script>");
+                    }
                 }
                 saveop = true;
             }
             else
             {
                 Save_Contact();
-                Update_deal();
+                if (Update_deal()) {
+                    Response.Write("<script>window.close();window.location.href = 'SysUserEdit.aspx?id=" + id+ "&op=copy';</script>");
+                }
             }
-            Response.Redirect("SysUserEdit.aspx?id=" + id + "&op=copy");
+           
         }
         private void Save_Contact()
         {
@@ -314,10 +332,22 @@ namespace EMT.DoneNOW.Web
                 param.sys_res = urbll.GetSysResourceSingle(id);
                 param.sys_user = urbll.GetSysUserSingle(id);
             }
-            param.sys_res = AssembleModel<sys_resource>();
+            param.sys_res.first_name = this.first_name.Text.Trim().ToString();
+            param.sys_res.last_name = this.last_name.Text.Trim().ToString();
             param.sys_res.name = param.sys_res.first_name + param.sys_res.last_name;
-            param.sys_res.avatar = SavePic();//保存头像
+            param.sys_res.title = this.title.Text.Trim().ToString();
+            param.sys_res.office_phone = this.office_phone.Text.Trim().ToString();
+            param.sys_res.home_phone = this.home_phone.Text.Trim().ToString();
+            param.sys_res.mobile_phone = this.mobile_phone.Text.Trim().ToString();
 
+            param.sys_res.email = this.email.Text.Trim().ToString();
+            param.sys_res.email1 = this.email1.Text.Trim().ToString();
+            param.sys_res.email2 = this.email2.Text.Trim().ToString();
+            param.sys_user.mobile_phone = this.mobile_phone.Text.Trim().ToString();
+            param.sys_user.name = this.name.Text.Trim().ToString();
+
+
+            param.sys_res.avatar = SavePic();//保存头像
             if (this.CanEditSkills.Checked)
             {
                 param.sys_res.can_edit_skills = 1;
@@ -358,10 +388,8 @@ namespace EMT.DoneNOW.Web
             {
                 param.sys_res.is_required_to_submit_timesheets = 0;
             }
-
             param.sys_res.date_display_format_id = Convert.ToInt32(this.DateFormat.SelectedValue);
             param.sys_res.number_display_format_id = Convert.ToInt32(this.NumberFormat.SelectedValue);
-
             if (Convert.ToInt32(this.Outsource_Security.SelectedValue) > 0)
             {
                 param.sys_res.outsource_security_role_type_id = Convert.ToInt32(this.Outsource_Security.SelectedValue);
@@ -369,14 +397,15 @@ namespace EMT.DoneNOW.Web
             if (Convert.ToInt32(this.Security_Level.SelectedValue.ToString()) >0) {
                 param.sys_res.security_level_id = Convert.ToInt32(this.Security_Level.SelectedValue.ToString());
             }
-            if (Convert.ToInt32(this.Position.SelectedValue.ToString())>0) {
+            if (Convert.ToInt32(this.Position.SelectedValue.ToString()) > 0)
+            {
                 param.sys_res.location_id = Convert.ToInt32(this.Position.SelectedValue.ToString());
+            }
+            else {
+                param.sys_res.location_id = null;
             }
             if (Convert.ToInt32(this.TimeFormat.SelectedValue) > 0)
                 param.sys_res.time_display_format_id = Convert.ToInt32(this.TimeFormat.SelectedValue);
-
-
-
             if (Convert.ToInt32(this.Sex.SelectedValue) > 0)
             {
                 param.sys_res.sex = Convert.ToInt32(this.Sex.SelectedValue);
@@ -385,15 +414,19 @@ namespace EMT.DoneNOW.Web
             {
                 param.sys_res.sex = null;
             }
+            if (this.NameSuffix.SelectedValue != "0") {
+                param.sys_res.suffix_id = Convert.ToInt32(this.NameSuffix.SelectedValue);
+            }
+            param.sys_res.email_type_id = Convert.ToInt32(this.EmailType.SelectedValue);
 
             if (Convert.ToInt32(this.EmailType1.SelectedValue) > 0)
                 param.sys_res.email1_type_id = Convert.ToInt32(this.EmailType1.SelectedValue);
+            else param.sys_res.email1_type_id = null;
             if (Convert.ToInt32(this.EmailType2.SelectedValue) > 0)
                 param.sys_res.email2_type_id = Convert.ToInt32(this.EmailType2.SelectedValue);
+            else param.sys_res.email2_type_id = null;
             if (Convert.ToInt32(this.NameSuffix.SelectedValue) > 0)
                 param.sys_res.suffix_id = Convert.ToInt32(this.NameSuffix.SelectedValue);
-            //新增
-            param.sys_user = AssembleModel<sys_user>();
             //密码
             if (!string.IsNullOrEmpty(this.pass_word.Text.ToString()))
             {
@@ -422,13 +455,17 @@ namespace EMT.DoneNOW.Web
                 paramcopy = param;
                 return true;
             }
-            if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+            else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
             {
                 Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                 Response.Redirect("Login.aspx");
                 return false;
             }
-            return true;
+            else if (result == ERROR_CODE.EXIST)
+            {
+                Response.Write("<script>alert('存在相同用户名，请修改！');</script>");
+            }
+            return false;
         }
         /// <summary>
         /// 更新处理
@@ -443,13 +480,21 @@ namespace EMT.DoneNOW.Web
                 paramcopy = param;
                 return true;
             }
-            if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+            else if (result == ERROR_CODE.USER_NOT_FIND)// 用户丢失
             {
                 Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                 Response.Redirect("Login.aspx");
                 return false;
             }
-            return true;
+            else if (result == ERROR_CODE.EXIST) {
+                Response.Write("<script>alert('存在相同用户名，请修改！');</script>");
+            }
+            else if (result == ERROR_CODE.SYS_NAME_EXIST)
+            {
+                Response.Write("<script>alert('该姓名已存在！');</script>");
+                return false;
+            }
+            return false;
         }
         /// <summary>
         /// 取消

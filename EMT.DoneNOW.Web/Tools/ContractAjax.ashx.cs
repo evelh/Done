@@ -109,6 +109,18 @@ namespace EMT.DoneNOW.Web
                     case "GetDefaultCost":
                         var defCostConId = context.Request.QueryString["contract_id"];
                         GetDefaultCost(context,long.Parse(defCostConId));
+						break;
+                    case "DeleteMilestone":
+                        var milestoneId = context.Request.QueryString["milestoneId"];
+                        DeleteMilestone(context, Convert.ToInt64(milestoneId));
+                        break;
+                    case "SetBlockActive":
+                        blockId = context.Request.QueryString["blockId"];
+                        SetBlockActive(context, Convert.ToInt64(blockId));
+                        break;
+                    case "SetBlockInactive":
+                        blockId = context.Request.QueryString["blockId"];
+                        SetBlockInactive(context, Convert.ToInt64(blockId));
                         break;
                     default:
                         break;
@@ -341,6 +353,40 @@ namespace EMT.DoneNOW.Web
         }
 
         /// <summary>
+        /// 设置预付为激活状态
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="blockId"></param>
+        public void SetBlockActive(HttpContext context, long blockId)
+        {
+            var res = context.Session["dn_session_user_info"];
+            bool result = false;
+            if (res != null)
+            {
+                var user = res as sys_user;
+                result = new ContractBlockBLL().SetBlockActive(blockId, user.id);
+            }
+            context.Response.Write(result);
+        }
+
+        /// <summary>
+        /// 设置预付为停用状态
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="blockId"></param>
+        public void SetBlockInactive(HttpContext context, long blockId)
+        {
+            var res = context.Session["dn_session_user_info"];
+            bool result = false;
+            if (res != null)
+            {
+                var user = res as sys_user;
+                result = new ContractBlockBLL().SetBlockInactive(blockId, user.id);
+            }
+            context.Response.Write(result);
+        }
+
+        /// <summary>
         /// 新增合同时添加服务
         /// </summary>
         /// <param name="context"></param>
@@ -498,6 +544,23 @@ namespace EMT.DoneNOW.Web
             }
         }
 
+
+        /// <summary>
+        /// 删除合同里程碑
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="id"></param>
+        public void DeleteMilestone(HttpContext context, long id)
+        {
+            var res = context.Session["dn_session_user_info"];
+            bool result = false;
+            if (res != null)
+            {
+                var user = res as sys_user;
+                result = new ContractBLL().DeleteMilestone(id, user.id);
+            }
+            context.Response.Write(result);
+        }
 
         public bool IsReusable
         {

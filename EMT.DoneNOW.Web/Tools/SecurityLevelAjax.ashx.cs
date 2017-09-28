@@ -47,7 +47,6 @@ namespace EMT.DoneNOW.Web
                 int copy_id=-1;
                 if (new SecurityLevelBLL().CopySecurityLevel(user.id,(int)securitylevel_id,out copy_id))
                 {
-                    //context.Response.Write("复制安全等级成功成功！");
                     context.Response.Write(copy_id);
                 }
                 else
@@ -65,8 +64,7 @@ namespace EMT.DoneNOW.Web
                 var result = new SecurityLevelBLL().DeleteSecurityLevel(user.id, (int)securitylevel_id);
                 if (result==DTO.ERROR_CODE.SUCCESS)
                 {
-                    //context.Response.Write("复制安全等级成功成功！");
-                    context.Response.Write("");
+                    context.Response.Write("删除安全等级成功！");
                 }
                 else
                 {

@@ -24,7 +24,7 @@
         </ul>
     </div>
     <!--下拉菜单-->
-    <div class="DropDownMenu" id="D1">
+    <div class="DropDownMenu" id="D1" style="top:25px;">
         <ul>
             <li><span class="DropDownMenuItemText" onclick="CopyContract(<%=contract.id %>)">编辑合同</span></li>
             <li><span class="DropDownMenuItemText">续约</span></li>
@@ -43,7 +43,7 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tbody>
                 <tr>
-                    <td>
+                    <td style="vertical-align:top;">
                         <div class="DivSectionWithHeader">
                             <div class="Heading">
                                 <span class="Text">合同摘要</span>
@@ -55,7 +55,7 @@
                                             <td class="FieldLabel" style="min-width: 200px;width:200px;">客户名称
                                             </td>
                                             <td>
-                                                <a onclick="window.open('../Common/ViewCompany.aspx?id=<%=contract.account_id %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=summary.account_name %></a>
+                                                <a onclick="window.open('../Company/ViewCompany.aspx?id=<%=contract.account_id %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=summary.account_name %></a>
                                             </td>
                                         </tr>
                                         <tr height="21">
@@ -167,7 +167,7 @@
                                                                     <%
                                                                         int percent = ((int)summary.timeline * 100) / (int)summary.duration;
                                                                         %>
-                                                                    <td style="border: 1px solid black;"><div class="load" style="width: <%=percent%>%;padding:0;"><%=summary.timeline %> 天</div></td>
+                                                                    <td style="border: 1px solid black;"><div class="load" style="width: <%=percent%>%;padding:0;"><%=summary.timeline %></div></td>
                                                                 </tr>
                                                             </table>
                                                         </td>
@@ -196,6 +196,35 @@
                                             <div class="Content">
                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                     <tbody>
+                                                        <%
+                                                            string title1, title2, title3, title4;
+                                                            decimal per1, per2, per3, per4;
+                                                            decimal prof1, prof2, prof3, prof4;
+                                                            title1 = $"合同成本=￥{summary.current_period2},合同收入=￥{summary.current_period1}";
+                                                            title2 = $"合同成本=￥{summary.previous_period2},合同收入=￥{summary.previous_period1}";
+                                                            title3 = $"合同成本=￥{summary.previous_3_periods2},合同收入=￥{summary.previous_3_periods1}";
+                                                            title4 = $"合同成本=￥{summary.contract_to_date2},合同收入=￥{summary.contract_to_date1}";
+                                                            prof1 = summary.current_period1 - summary.current_period2;
+                                                            prof2 = summary.previous_period1 - summary.previous_period2;
+                                                            prof3 = summary.previous_3_periods1 - summary.previous_3_periods2;
+                                                            prof4 = summary.contract_to_date1 - summary.contract_to_date2;
+                                                            if (summary.current_period2 == 0)
+                                                                per1 = 0;
+                                                            else
+                                                                per1 = (decimal)((int)(summary.current_period2 / (summary.current_period1 + summary.current_period2) * 10000)) / 100;
+                                                            if (summary.previous_period2 == 0)
+                                                                per2 = 0;
+                                                            else
+                                                                per2 = (decimal)((int)(summary.previous_period2 / (summary.previous_period1 + summary.previous_period2) * 10000)) / 100;
+                                                            if (summary.previous_3_periods2 == 0)
+                                                                per3 = 0;
+                                                            else
+                                                                per3 = (decimal)((int)(summary.previous_3_periods2 / (summary.previous_3_periods1 + summary.previous_3_periods2) * 10000)) / 100;
+                                                            if (summary.contract_to_date2 == 0)
+                                                                per4 = 0;
+                                                            else
+                                                                per4 = (decimal)((int)(summary.contract_to_date2 / (summary.contract_to_date1 + summary.contract_to_date2) * 10000)) / 100;
+                                                            %>
                                                         <tr>
                                                             <td width="340px"></td>
                                                             <td width="5px"></td>
@@ -205,12 +234,14 @@
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                                <table title="<%=title1 %>" width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td class="FieldLabels" width="135px">当前周期</td>
-                                                                            <td style="border: 1px solid black;">
-                                                                                <div class="load" style="width: 20%;"></div>
+                                                                            <td class="FieldLabels" width="135px" style="min-width:135px;">当前周期</td>
+                                                                            <td style="border: 1px solid black;width:204px;min-width:204px;">
+                                                                                <div class="load" style="width: <%=per1%>%;position:relative;">
+                                                                                    <span style="width:1px;height:18px;background-color:black;position:absolute;left:102px;"></span>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -218,17 +249,19 @@
                                                             </td>
                                                             <td></td>
                                                             <td class="FieldLabels" style="padding: 5px 0;">
-                                                                <span>¥13,060.00</span>
+                                                                <span>¥<%=prof1%></span>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                                <table title="<%=title2 %>" width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tbody>
                                                                         <tr>
                                                                             <td class="FieldLabels" width="135px">先前周期</td>
                                                                             <td style="border: 1px solid black;">
-                                                                                <div class="load" style="width: 0%;"></div>
+                                                                                <div class="load" style="width: <%=per2%>%;position:relative;">
+                                                                                    <span style="width:1px;height:18px;background-color:black;position:absolute;left:102px;"></span>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -236,17 +269,19 @@
                                                             </td>
                                                             <td></td>
                                                             <td class="FieldLabels" style="padding: 5px 0;">
-                                                                <span>¥0.00</span>
+                                                                <span>¥<%=prof2%></span>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                                <table title="<%=title3 %>" width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tbody>
                                                                         <tr>
                                                                             <td class="FieldLabels" width="135px">前三周期</td>
                                                                             <td style="border: 1px solid black;">
-                                                                                <div class="load" style="width: 0%;"></div>
+                                                                                <div class="load" style="width: <%=per3%>%;position:relative;">
+                                                                                    <span style="width:1px;height:18px;background-color:black;position:absolute;left:102px;"></span>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -254,17 +289,19 @@
                                                             </td>
                                                             <td></td>
                                                             <td class="FieldLabels" style="padding: 5px 0;">
-                                                                <span>¥0.00</span>
+                                                                <span>¥<%=prof3%></span>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                                <table title="<%=title4 %>" width="100%" border="0" cellspacing="0" cellpadding="0">
                                                                     <tbody>
                                                                         <tr>
                                                                             <td class="FieldLabels" width="135px">截至目前</td>
                                                                             <td style="border: 1px solid black;">
-                                                                                <div class="load" style="width: 40%;"></div>
+                                                                                <div class="load" style="width: <%=per4%>%;position:relative;">
+                                                                                    <span style="width:1px;height:18px;background-color:black;position:absolute;left:102px;"></span>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -272,7 +309,7 @@
                                                             </td>
                                                             <td></td>
                                                             <td class="FieldLabels" style="padding: 5px 0;">
-                                                                <span>¥37,373.34  </span>
+                                                                <span>¥<%=prof4%></span>
                                                             </td>
                                                         </tr>
                                                     </tbody>

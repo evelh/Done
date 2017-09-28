@@ -528,6 +528,81 @@ namespace EMT.DoneNOW.BLL
             return false;
         }
 
+        #region 里程碑
+        /// <summary>
+        /// 获取里程碑状态字典
+        /// </summary>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetMilestoneStatuDic()
+        {
+            return new GeneralBLL().GetDicValues(GeneralTableEnum.CONTRACT_MILESTONE);
+        }
+
+        /// <summary>
+        /// 新增合同里程碑
+        /// </summary>
+        /// <param name="milestone"></param>
+        /// <param name="userId"></param>
+        public void AddMilestone(ctt_contract_milestone milestone, long userId)
+        {
+            milestone.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            milestone.create_user_id = userId;
+            milestone.update_time = milestone.create_time;
+            milestone.update_user_id = userId;
+            new ctt_contract_milestone_dal().Insert(milestone);
+            OperLogBLL.OperLogAdd<ctt_contract_milestone>(milestone, milestone.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE, "新增合同里程碑");
+        }
+
+        /// <summary>
+        /// 编辑合同里程碑
+        /// </summary>
+        /// <param name="milestone"></param>
+        /// <param name="userId"></param>
+        public void UpdateMilestone(ctt_contract_milestone milestone, long userId)
+        {
+            ctt_contract_milestone_dal milDal = new ctt_contract_milestone_dal();
+            var oldMil = milDal.FindById(milestone.id);
+
+            milestone.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            milestone.update_user_id = userId;
+            new ctt_contract_milestone_dal().Update(milestone);
+            OperLogBLL.OperLogUpdate<ctt_contract_milestone>(milestone, oldMil, milestone.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE, "编辑合同里程碑");
+        }
+
+        /// <summary>
+        /// 获取里程碑信息
+        /// </summary>
+        /// <param name="milestoneId"></param>
+        /// <returns></returns>
+        public ctt_contract_milestone GetMilestone(long milestoneId)
+        {
+            return new ctt_contract_milestone_dal().FindById(milestoneId);
+        }
+
+        /// <summary>
+        /// 删除合同里程碑
+        /// </summary>
+        /// <param name="milestoneId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteMilestone(long milestoneId, long userId)
+        {
+            ctt_contract_milestone_dal milDal = new ctt_contract_milestone_dal();
+            var entity = milDal.FindById(milestoneId);
+
+            if (entity.status_id == (int)DicEnum.MILESTONE_STATUS.BILLED)   // 已计费里程碑不可删除
+                return false;
+
+            entity.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            entity.delete_user_id = userId;
+            milDal.Update(entity);
+
+            OperLogBLL.OperLogDelete<ctt_contract_milestone>(entity, entity.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE, "删除合同里程碑");
+
+            return true;
+        }
+        #endregion
+
         /// <summary>
         /// 根据合同id获取合同概要视图信息
         /// </summary>

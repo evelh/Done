@@ -62,6 +62,10 @@ namespace EMT.DoneNOW.Web.Contract
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_RATE + "&type=" + (int)QueryType.ContractRate + "&id=" + contract.id;
                         ShowTitle.Text = "费率-" + contract.name;
                         break;
+                    case "milestone":
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONES + "&type=" + (int)QueryType.ContractMilestone + "&id=" + contract.id;
+                        ShowTitle.Text = "里程碑-" + contract.name;
+                        break;
                     default:
                         ShowTitle.Text = "摘要-" + contract.name;
                         viewContractIframe.Src = "ContractSummary.aspx?id=" + contract.id;

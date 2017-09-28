@@ -184,12 +184,12 @@ namespace EMT.DoneNOW.Web
                 table.Append(Total());
                 table.Append("</table>");
                 //bottom+底部
-
+                if (quote_body.GRID_OPTIONS[0].Show_vertical_lines == "yes")
+                {
+                    Response.Write("<style>.bord{border-left: 1px solid  #eaeaea;border-right: 1px solid #eaeaea;}</style>");
+                }
                 table.Append(quote_footer);
                 table.Append(page_footer);
-
-
-
                 this.table.Text = table.ToString();
                 showstyle.Clear();
                 table.Clear();

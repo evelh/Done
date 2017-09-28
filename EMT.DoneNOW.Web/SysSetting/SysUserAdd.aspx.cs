@@ -40,19 +40,19 @@ namespace EMT.DoneNOW.Web.SysSetting
             this.DateFormat.DataValueField = "val";
             this.DateFormat.DataSource = dic.FirstOrDefault(_ => _.Key == "DateFormat").Value;
             this.DateFormat.DataBind();
-            DateFormat.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+           // DateFormat.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             //数字格式
             this.NumberFormat.DataTextField = "show";
             this.NumberFormat.DataValueField = "val";
             this.NumberFormat.DataSource = dic.FirstOrDefault(_ => _.Key == "NumberFormat").Value;
             NumberFormat.DataBind();
-            NumberFormat.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            //NumberFormat.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             //TimeFormat时间格式
             this.TimeFormat.DataTextField = "show";
             this.TimeFormat.DataValueField = "val";
             this.TimeFormat.DataSource = dic.FirstOrDefault(_ => _.Key == "TimeFormat").Value;
             TimeFormat.DataBind();
-            TimeFormat.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            //TimeFormat.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
             //EmailType50
             this.EmailType.DataTextField = "show";
             this.EmailType.DataValueField = "val";
@@ -192,30 +192,39 @@ namespace EMT.DoneNOW.Web.SysSetting
             if (!save_oper)
             {
                 Save_Contact();
-                Save_deal();
-                save_oper = true;
+                if (Save_deal()) {
+                    save_oper = true;
+                    Response.Write("<script>window.location.href = 'SysUserEdit.aspx?id=" + id + "&op=copy';</script>");
+                }
+               
             }
             else
             {
                 Save_Contact();
-                Update_deal();
+                if (Update_deal()) {
+                    Response.Write("<script>window.location.href = 'SysUserEdit.aspx?id=" + id + "&op=copy';</script>");
+                }
             }
-            Response.Redirect("SysUserEdit.aspx?id="+id+"&op=copy");
         }
         protected void Save_Cloes_Click(object sender, EventArgs e)
         {
             if (!save_oper)
             {
                 Save_Contact();
-                Save_deal();
-                save_oper = true;
+                if (Save_deal()) {
+                    save_oper = true;
+                    Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                }
+                
             }
             else
             {
                 Save_Contact();
-                Update_deal();
+                if (Update_deal()) {
+                    Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                }
             }
-            Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+            
         }
         private void Save_Contact()
         {
@@ -281,6 +290,7 @@ namespace EMT.DoneNOW.Web.SysSetting
             {
                 param.sys_res.sex = null;
             }
+            param.sys_res.title = this.title.Text.Trim().ToString();
             if (Convert.ToInt32(this.EmailType1.SelectedValue) > 0)
                 param.sys_res.email1_type_id = Convert.ToInt32(this.EmailType1.SelectedValue);
             if (Convert.ToInt32(this.EmailType2.SelectedValue) > 0)
@@ -322,7 +332,12 @@ namespace EMT.DoneNOW.Web.SysSetting
                 Response.Redirect("Login.aspx");
                 return false;
             }
-            return true;
+            else if (result == ERROR_CODE.EXIST)
+            {
+                Response.Write("<script>alert('存在相同用户名，请修改！');</script>");
+                return false;
+            }
+            return false;
         }
         /// <summary>
         /// 更新处理
@@ -348,7 +363,11 @@ namespace EMT.DoneNOW.Web.SysSetting
                 Response.Redirect("Login.aspx");
                 return false;
             }
-            return true;
+            else if (result == ERROR_CODE.EXIST)
+            {
+                Response.Write("<script>alert('存在相同用户名，请修改！');</script>");
+            }
+            return false;
         }
         /// <summary>
         /// 取消

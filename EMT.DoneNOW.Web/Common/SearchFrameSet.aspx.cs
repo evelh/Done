@@ -46,7 +46,7 @@ namespace EMT.DoneNOW.Web
                 paraGroupId = groupId;
             }
 
-            var condition = bll.GetConditionPara(GetLoginUserId(), paraGroupId);
+            var condition = bll.GetConditionParaVisiable(GetLoginUserId(), paraGroupId);
             if (condition.Count == 0)
                 conditionHeight = 0;
             else

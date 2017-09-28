@@ -112,7 +112,7 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.EXIST;
                 }
                 _dal.Insert(data);
-                var re = _dal.FindSignleBySql<d_general>($"select * from d_general where name={data.name}");
+                var re = _dal.FindSignleBySql<d_general>($"select * from d_general where name='{data.name}'");
                 if (re != null)
                 {
                     id = re.id;

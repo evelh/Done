@@ -33,12 +33,35 @@ namespace EMT.DoneNOW.BLL
 
         #region 获取查询条件列查询结果列信息
         /// <summary>
+        /// 获取全部查询条件信息
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
+        public List<QueryConditionParaDto> GetConditionParaAll(long userId, long groupId)
+        {
+            return GetConditionParaType(userId, groupId, 0);
+        }
+
+        /// <summary>
+        /// 获取可见的查询条件信息
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
+        public List<QueryConditionParaDto> GetConditionParaVisiable(long userId, long groupId)
+        {
+            return GetConditionParaType(userId, groupId, 1);
+        }
+
+        /// <summary>
         /// 获取查询条件信息
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="groupId">查询条件组id</param>
+        /// <param name="visiable">查询条件范围（1:可见的查询条件，0:全部）</param>
         /// <returns></returns>
-        public List<QueryConditionParaDto> GetConditionPara(long userId, long groupId)
+        private List<QueryConditionParaDto> GetConditionParaType(long userId, long groupId, int visiable)
         {
             var result = new List<QueryConditionParaDto>();
 
@@ -51,7 +74,11 @@ namespace EMT.DoneNOW.BLL
                 return result;
 
             // 获取查询条件列信息并按顺序填充
-            var list = new d_query_para_dal().FindListBySql($"SELECT * FROM d_query_para WHERE id IN ({queryUser.query_para_ids}) AND query_para_group_id={groupId} AND is_visible=1");
+            List<d_query_para> list;
+            if (visiable == 1)
+                list = new d_query_para_dal().FindListBySql($"SELECT * FROM d_query_para WHERE id IN ({queryUser.query_para_ids}) AND query_para_group_id={groupId} AND is_visible=1");
+            else
+                list = new d_query_para_dal().FindListBySql($"SELECT * FROM d_query_para WHERE id IN ({queryUser.query_para_ids}) AND query_para_group_id={groupId}");
             string[] ids = queryUser.query_para_ids.Split(',');
             for (int i = 0; i < ids.Length; ++i)
             {

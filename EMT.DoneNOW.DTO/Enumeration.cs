@@ -446,6 +446,7 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_MILESTONE=919,               //里程碑状态
             CONTRACT_CHARGE=920,                  // 合同成本查询（无查询条件）
             REVOKE_CHARGES = 921,               //撤销成本审批
+            CONTRACT_TYPE = 922,                 // 合同类别
             CONTRACT_UDF = 923,                 // 合同管理-自定义字段
             REVOKE_RECURRING_SERVICES = 924,    //撤销定期服务审批
             REVOKE_MILESTONES = 925,            //撤销里程碑审批
@@ -476,7 +477,7 @@ namespace EMT.DoneNOW.DTO
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
             APPROVE_LABOUR,                //工时审批
-            APPROVE_EXPENSE,               //费用审批              
+            APPROVE_EXPENSE,               //费用审批
         }
 
         /// <summary>
@@ -830,6 +831,7 @@ namespace EMT.DoneNOW.DTO
         MILESTONE=60,                   //里程碑
         Contract_Charge = 61,               // 合同成本
         REVOKE_CHARGES = 62,               //撤销成本审批
+        ContractType=63,                  //合同类别
         ContractUDF = 64,               // 合同自定义字段
         REVOKE_RECURRING_SERVICES = 65,    //撤销定期服务审批
         REVOKE_MILESTONES = 66,            //撤销里程碑审批
@@ -949,6 +951,9 @@ namespace EMT.DoneNOW.DTO
         ConRateEdit = 315,                        // 合同预付时间系数编辑
         ConBlockAdd = 316,                      // 合同新增预付
         ConBlockEdit = 317,                     // 合同编辑预付
+        ConMilestoneAdd = 318,                  // 合同新增里程碑
+        ConMilestoneEdit = 319,                 // 合同编辑里程碑
+        BillCodeCallback,                       // 计费代码查找带回
 
 
         VendorAdd = 320,                          //添加供应商
@@ -975,6 +980,7 @@ namespace EMT.DoneNOW.DTO
         Role=360,                                  //角色
         Department=361,                            //部门
         ConfigItemType=362,                        //配置项类型
+        ContractType=363,                          //合同类别
 
         ContractPostDate = 363,                    //合同审批，提交日期
         ContractAdjust = 364,                      //合同审批，调整总价

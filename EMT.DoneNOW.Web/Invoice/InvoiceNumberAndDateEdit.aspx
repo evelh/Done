@@ -33,15 +33,7 @@
     </div>
     <div class="DivSection" style="border:none;padding-left:0;">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tbody>
-                <tr>
-                    <td width="30%" class="FieldLabels">
-                       公司名称
-                        <div>
-                            <span><%=company %></span>
-                        </div>
-                    </td>
-                </tr>
+            <tbody>               
                 <tr>
                     <td width="30%" class="FieldLabels">
                        客户名称
@@ -54,7 +46,7 @@
                     <td width="30%" class="FieldLabels">
                         发票编号
                         <div>
-                            <input id="InvoiceNumber" name="InvoiceNumber" type="text" style="width:220px;" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"/>
+                            <input id="InvoiceNumber" name="InvoiceNumber" value="<%=number %>" type="text" style="width:220px;" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"/>
                         </div>
                     </td>
                 </tr>
