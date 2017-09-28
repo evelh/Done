@@ -405,7 +405,7 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.ERROR;
             }
             sq.is_default = 0;
-            id=sq.id= (int)(_dal.GetNextIdSys());
+            id=sq.id= (int)(_dal.GetNextIdCom());
             sq.name = "(copy)" + sq.name;
             sq.create_time = sq.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             sq.create_user_id =sq.update_user_id=user_id;

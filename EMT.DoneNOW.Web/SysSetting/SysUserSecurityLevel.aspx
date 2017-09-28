@@ -35,16 +35,16 @@
         </div>
         <div class="TabBar">
             <a class="Button ButtonIcon SelectedState">
-                <span class="Text">一般</span>
+                <span class="Text">常规</span>
             </a>
-            <a class="Button ButtonIcon">
+         <a class="Button ButtonIcon" style="display:none">
                 <span class="Text">文件夹</span>
             </a>
             <a class="Button ButtonIcon">
-                <span class="Text">资源</span>
+                <span class="Text">员工</span>
             </a>
         </div>
-        <div class="ScrollingContainer Active" style="top: 118px; bottom: 0;">
+        <div class="ScrollingContainer Active" style="top: 130px; bottom: 0;">
             <!--第一部分-->
             <div class="TabContainer Active">
                 <div class="Section">
@@ -1576,12 +1576,12 @@ Manage Knowledgebase > Security tab
                                     </td>
                                     <td class="Text Dynamic">
                                         <div class="Standard">
-                                            <div class="Heading">Name</div>
+                                            <div class="Heading">名称</div>
                                         </div>
                                     </td>
                                     <td class="Boolean" style="width: 80px;">
                                         <div class="Standard">
-                                            <div class="Heading">Active</div>
+                                            <div class="Heading">激活</div>
                                         </div>
                                     </td>
                                     <td class="ScrollBarSpacer" style="width: 17px;"></td>

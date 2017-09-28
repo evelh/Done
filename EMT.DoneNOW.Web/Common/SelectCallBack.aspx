@@ -47,9 +47,9 @@
                         || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.AREA
                         || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.NUMBER_EQUAL)
                         { %>
-						<input type="text" name="<%=condition[i].id %>" class="sl_cdt" />
+						<input type="text" name="con<%=condition[i].id %>" class="sl_cdt" />
                     <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DROPDOWN) { %>
-                        <select name="<%=condition[i].id %>" class="sl_cdt">
+                        <select name="con<%=condition[i].id %>" class="sl_cdt">
                             <option value=""></option>
                             <%foreach (var item in condition[i].values) { %>
 							<option value="<%=item.val %>"><%=item.show %></option>
@@ -57,25 +57,25 @@
 						</select>
                     <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.NUMBER) { %>
                         <div class="inputTwo">
-							<input type="text" name="<%=condition[i].id %>_l" class="sl_cdt" />
+							<input type="text" name="con<%=condition[i].id %>_l" class="sl_cdt" />
 							<span>-</span>
-							<input type="text" name="<%=condition[i].id %>_h" class="sl_cdt" />
+							<input type="text" name="con<%=condition[i].id %>_h" class="sl_cdt" />
 						</div>
                     <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATE
                             || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME
                             || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.TIMESPAN) { %>
                         <div class="inputTwo">
-							<input type="text" name="<%=condition[i].id %>_l" class="sl_cdt" onclick="WdatePicker()"/>
+							<input type="text" name="con<%=condition[i].id %>_l" class="sl_cdt" onclick="WdatePicker()"/>
 							<span>-</span>
-							<input type="text" name="<%=condition[i].id %>_h" class="sl_cdt" onclick="WdatePicker()"/>
+							<input type="text" name="con<%=condition[i].id %>_h" class="sl_cdt" onclick="WdatePicker()"/>
 						</div>
                     <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK
                             || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MUILT_CALLBACK) { %>
                         <input type="text" id="con<%=condition[i].id %>" disabled="disabled" />
-                        <input type="hidden" id="con<%=condition[i].id %>Hidden" name="<%=condition[i].id %>" class="sl_cdt" />
+                        <input type="hidden" id="con<%=condition[i].id %>Hidden" name="con<%=condition[i].id %>" class="sl_cdt" />
                         <span class="on" onclick="window.open('<%=condition[i].ref_url %>con<%=condition[i].id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false)"><i class="icon-dh"></i></span>
                     <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN) { %>
-                        <input type="hidden" id="cmsh<%=condition[i].id %>" name="<%=condition[i].id %>" class="sl_cdt" />
+                        <input type="hidden" id="cmsh<%=condition[i].id %>" name="con<%=condition[i].id %>" class="sl_cdt" />
                         <div class="multiplebox">
 							<select id="cms<%=condition[i].id %>" multiple="multiple">
                                 <%foreach (var v in condition[i].values) { %>

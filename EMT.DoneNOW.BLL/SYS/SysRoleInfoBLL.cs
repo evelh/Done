@@ -32,7 +32,7 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.USER_NOT_FIND;
 
             }
-            var ro = _dal.FindSignleBySql<sys_role>($"select * from sys_role where name={role.name} and delete_time=0 ");
+            var ro = _dal.FindSignleBySql<sys_role>($"select * from sys_role where name='{role.name}' and delete_time=0 ");
             if (ro != null)
             {
                 return ERROR_CODE.EXIST;
@@ -73,7 +73,7 @@ namespace EMT.DoneNOW.BLL
 
             }
             role.update_user_id = user.id;
-            var ro = _dal.FindSignleBySql<sys_role>($"select * from sys_role where name={role.name} and delete_time=0 ");
+            var ro = _dal.FindSignleBySql<sys_role>($"select * from sys_role where name='{role.name}' and delete_time=0 ");
             if (ro != null && ro.id != role.id)
             {
                 return ERROR_CODE.EXIST;

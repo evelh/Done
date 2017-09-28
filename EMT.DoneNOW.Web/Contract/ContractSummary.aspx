@@ -55,7 +55,7 @@
                                             <td class="FieldLabel" style="min-width: 200px;width:200px;">客户名称
                                             </td>
                                             <td>
-                                                <a onclick="window.open('../Common/ViewCompany.aspx?id=<%=contract.account_id %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=summary.account_name %></a>
+                                                <a onclick="window.open('../Company/ViewCompany.aspx?id=<%=contract.account_id %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=summary.account_name %></a>
                                             </td>
                                         </tr>
                                         <tr height="21">

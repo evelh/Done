@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="id"></param>
         /// <returns></returns>
         public List<sys_security_level_limit> GetSecurity_limit(int id) {
-            return ssl_dal.FindListBySql($"select * from sys_security_level_limit where security_level_id={id}").ToList();            
+            return ssl_dal.FindListBySql($"select * from sys_security_level_limit where security_level_id={id} ").ToList();            
         }
         /// <summary>
         /// 通过security_level的id获取module
@@ -84,12 +84,11 @@ namespace EMT.DoneNOW.BLL
         public ERROR_CODE Save(sys_security_level_limit sqt, long user_id)
         {
             sys_security_level_limit_dal sslld = new sys_security_level_limit_dal();
-            var da=sslld.FindSignleBySql<sys_security_level_limit>($"select * from sys_security_level_limit where security_level_id={sqt.security_level_id} and limit_id={sqt.limit_id}");
+            var da=sslld.FindSignleBySql<sys_security_level_limit>($"select * from sys_security_level_limit where security_level_id={sqt.security_level_id} and limit_id={sqt.limit_id} ");
             if (da!=null)//判断是否已经保存过权限点数据
             {
-                if (sqt.limit_id != da.limit_id) {
-                    sqt.id = da.id;
-                    sslld.Update(sqt);//把数据保存到数据库表
+                if (sqt.limit_type_value_id != da.limit_type_value_id) {
+                    sslld.Update(sqt);
                     var user = UserInfoBLL.GetUserInfo(user_id);
                     if (user == null)
                     {   // 查询不到用户，用户丢失

@@ -58,12 +58,10 @@ namespace EMT.DoneNOW.Web
                             {
                                 html.Append("$(\"#DisplayQuoteCommentInBody\").removeAttr(\"checked\");");
                             }
-                            //html.Append("$(\"#ShowVerticalGridlines\").attr(\"checked\",'true');");
                             if (OPTIONS.Show_vertical_lines == "yes")
                             {
                                 html.Append("$(\"#ShowVerticalGridlines\").attr(\"checked\",'true');");
-                            }                          
-
+                            }
                         }
                         i = 0;
                         foreach (var ITEM_COLUMN in quote_body.CUSTOMIZE_THE_ITEM_COLUMN)

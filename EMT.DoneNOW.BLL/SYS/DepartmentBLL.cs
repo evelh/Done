@@ -44,7 +44,7 @@ namespace EMT.DoneNOW.BLL
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }
-            var de = _dal.FindSignleBySql<sys_department>($"select * from  sys_department where name={sd.name} and delete_time=0");
+            var de = _dal.FindSignleBySql<sys_department>($"select * from  sys_department where name='{sd.name}' and delete_time=0");
             if (de != null) {
                 return ERROR_CODE.EXIST;
             }

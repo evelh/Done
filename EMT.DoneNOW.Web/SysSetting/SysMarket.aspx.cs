@@ -43,7 +43,7 @@ namespace EMT.DoneNOW.Web.SysSetting
         {
             if (save_deal())
             {
-                Response.Write("<script>alert('市场添加成功！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>window.close();self.opener.location.reload();</script>");
             }
         }
 
@@ -51,7 +51,7 @@ namespace EMT.DoneNOW.Web.SysSetting
         {
             if (save_deal())
             {
-                Response.Write("<script>alert('市场添加成功！');window.location.href = 'SysMarket.aspx';</script>");
+                Response.Write("<script>window.location.href = 'SysMarket.aspx';</script>");
             }
         }
 
@@ -74,6 +74,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                 var result = smbll.Update(mark, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
+                    Response.Write("<script>alert('市场领域修改成功！');</script>");
                     return true;
                 }
                 if (result == DTO.ERROR_CODE.USER_NOT_FIND) {
@@ -90,6 +91,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                 var result = smbll.Insert(mark, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
+                    Response.Write("<script>alert('市场领域添加成功！');</script>");
                     return true;
                 }
                 else if (result == DTO.ERROR_CODE.USER_NOT_FIND)

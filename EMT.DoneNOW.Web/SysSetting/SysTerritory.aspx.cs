@@ -61,22 +61,16 @@ namespace EMT.DoneNOW.Web
         {
             if (save_deal())
             {
-                Response.Redirect("SysTerritory.aspx");
+                Response.Write("<script>window.location.href = 'SysTerritory.aspx';</script>");
             }
-            else {
-                Response.Write("<script>alert('地域信息保存失败！');window.close();self.opener.location.reload();</script>");
-            }           
         }
 
         protected void Save_Close_Click(object sender, EventArgs e)
         {
             if (save_deal())
             {
-                Response.Write("<script>alert('地域信息保存成功！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>window.close();self.opener.location.reload();</script>");
             }
-            else {
-                Response.Write("<script>alert('地域信息保存失败！');window.close();self.opener.location.reload();</script>");
-            }           
         }
         /// <summary>
         /// 数据保存处理
@@ -91,15 +85,22 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(this.Territory_Description.Text.Trim().ToString())) {
                 terr.remark= this.Territory_Description.Text.Trim().ToString();
             }
-                var result = stbll.SaveTerritory(terr, GetLoginUserId(), ref id);
-                if (result == DTO.ERROR_CODE.SUCCESS)
+            var result = stbll.SaveTerritory(terr, GetLoginUserId(), ref id);
+           if (result == DTO.ERROR_CODE.SUCCESS)
+           {
+                if (id > 0)
                 {
-                    return true;
+                    Response.Write("<script>alert('客户地域修改成功！');</script>");
                 }
-                if (result == DTO.ERROR_CODE.EXIST)
-                {
+                else {
+                    Response.Write("<script>alert('客户地域添加成功！');</script>");
+                }               
+                return true;
+            } else
+            if (result == DTO.ERROR_CODE.EXIST)
+             {
                     Response.Write("<script>alert('已经存在该名称地域');</script>");
-                }
+             }else
             if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失
             {
                 Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");

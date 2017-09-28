@@ -110,6 +110,14 @@ namespace EMT.DoneNOW.Web
                         var milestoneId = context.Request.QueryString["milestoneId"];
                         DeleteMilestone(context, Convert.ToInt64(milestoneId));
                         break;
+                    case "SetBlockActive":
+                        blockId = context.Request.QueryString["blockId"];
+                        SetBlockActive(context, Convert.ToInt64(blockId));
+                        break;
+                    case "SetBlockInactive":
+                        blockId = context.Request.QueryString["blockId"];
+                        SetBlockInactive(context, Convert.ToInt64(blockId));
+                        break;
                     default:
                         break;
                 }
@@ -336,6 +344,40 @@ namespace EMT.DoneNOW.Web
             {
                 var user = res as sys_user;
                 result = new ContractBlockBLL().DeletePurchase(blockId, user.id);
+            }
+            context.Response.Write(result);
+        }
+
+        /// <summary>
+        /// 设置预付为激活状态
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="blockId"></param>
+        public void SetBlockActive(HttpContext context, long blockId)
+        {
+            var res = context.Session["dn_session_user_info"];
+            bool result = false;
+            if (res != null)
+            {
+                var user = res as sys_user;
+                result = new ContractBlockBLL().SetBlockActive(blockId, user.id);
+            }
+            context.Response.Write(result);
+        }
+
+        /// <summary>
+        /// 设置预付为停用状态
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="blockId"></param>
+        public void SetBlockInactive(HttpContext context, long blockId)
+        {
+            var res = context.Session["dn_session_user_info"];
+            bool result = false;
+            if (res != null)
+            {
+                var user = res as sys_user;
+                result = new ContractBlockBLL().SetBlockInactive(blockId, user.id);
             }
             context.Response.Write(result);
         }

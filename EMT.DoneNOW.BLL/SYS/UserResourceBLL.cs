@@ -51,7 +51,11 @@ namespace EMT.DoneNOW.BLL
             id = data.sys_res.id = (int)(_dal.GetNextIdCom());
             if (_dal.FindSignleBySql<sys_resource>($"select * from sys_resource where `name`='{data.sys_res.name}'") != null) {
                 return ERROR_CODE.SYS_NAME_EXIST;
-            }        
+            }
+            if (new sys_user_dal().FindSignleBySql<sys_user>($"select * from sys_user where `name`='{data.sys_user.name}'") != null)
+            {
+                return ERROR_CODE.EXIST;
+            }
             data.sys_res.create_user_id = data.sys_res.update_user_id = user_id;
             data.sys_res.create_time = data.sys_res.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             _dal.Insert(data.sys_res);
@@ -109,7 +113,17 @@ namespace EMT.DoneNOW.BLL
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
-            var old = GetSysResourceSingle(data.sys_res.id);
+            var nameex = _dal.FindSignleBySql<sys_resource>($"select * from sys_resource where `name`='{data.sys_res.name}'");
+            if (nameex != null&& nameex.id!=id)
+            {
+                return ERROR_CODE.SYS_NAME_EXIST;
+            }
+            var username = new sys_user_dal().FindSignleBySql<sys_user>($"select * from sys_user where `name`='{data.sys_res.name}'");
+            if (username != null && username.id != id)
+            {
+                return ERROR_CODE.EXIST;
+            }
+            var old = GetSysResourceSingle(id);
             data.sys_res.id = id;
             data.sys_res.update_user_id = user_id;
             data.sys_res.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);

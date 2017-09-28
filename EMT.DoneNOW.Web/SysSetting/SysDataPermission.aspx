@@ -16,9 +16,9 @@
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <div class="TitleBarNavigationButton">
-                <asp:ImageButton ID="Back" runat="server"  ImageUrl="~/Images/move-left.png" OnClick="Back_Click"/>
-            </div>
+  <div class="TitleBarNavigationButton">
+                    <a class="Button ButtonIcon NormalState" id="black"  href="../SysSetting/SysAdmin" target="PageFrame"><img src="../Images/move-left.png"/></a>
+                </div>
             <span class="text2">受保护的数据的权限</span>
             <a href="###" class="help"></a>
         </div>
