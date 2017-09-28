@@ -119,10 +119,14 @@ namespace EMT.DoneNOW.Web.Contract
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
-                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close(); </script>");
+                  
                     if (param.isAddCongigItem)
                     {
-                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');window.close(); </script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');window.close();window.open('../ConfigurationItem/ConfigItemWizard.aspx?contract_id=" + contract.id + "&cost_id=" + param.cost.id + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                    }
+                    else
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close(); </script>");
                     }
                   
                     break;
@@ -155,8 +159,16 @@ namespace EMT.DoneNOW.Web.Contract
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
-                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！'); </script>");
-                    Response.Redirect("AddCharges.aspx?contract_id=" + contract.id + "&id=" + param.cost.id);
+                   
+                    if (param.isAddCongigItem)
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='AddCharges.aspx?contract_id=" + contract.id + "&id=" + param.cost.id + "';window.open('../ConfigurationItem/ConfigItemWizard.aspx?contract_id=" + contract.id + "&cost_id=" + param.cost.id + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                    }
+                    else
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>debugger;alert('保存成功！');location.href='AddCharges.aspx?contract_id=" + contract.id + "&id=" + param.cost.id + "'; </script>");
+                    }
+
                     break;
                 case ERROR_CODE.PARAMS_ERROR:
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写'); </script>");
@@ -187,8 +199,15 @@ namespace EMT.DoneNOW.Web.Contract
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
-                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！'); </script>");
-                    Response.Redirect("AddCharges.aspx?contract_id=" + contract.id);
+                   
+                    if (param.isAddCongigItem)
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='AddCharges.aspx?contract_id=" + contract.id + "';window.open('../ConfigurationItem/ConfigItemWizard.aspx?contract_id=" + contract.id + "&cost_id=" + param.cost.id + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                    }
+                    else
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');location.href='AddCharges.aspx?contract_id=" + contract.id + "'; </script>");
+                    }
                     break;
                 case ERROR_CODE.PARAMS_ERROR:
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写'); </script>");

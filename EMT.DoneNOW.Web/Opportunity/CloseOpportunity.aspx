@@ -479,7 +479,7 @@
                                             </td>
                                             <td class="FieldLabels">关闭日期
                                             <div>
-                                                <input name="projected_close_date" id="projected_close_date" type="text" onclick="WdatePicker()" class="Wdate" />
+                                                <input name="projected_close_date" id="projected_close_date" type="text" onclick="WdatePicker()" class="Wdate" value="<%=opportunity.projected_close_date!=null?((DateTime)opportunity.projected_close_date).ToString("yyyy-MM-dd"):"" %>" />
                                             </div>
                                             </td>
                                         </tr>
@@ -1041,6 +1041,22 @@
                                             <%}
 
                                                 }
+
+                                                if (shipItem != null && shipItem.Count > 0)
+                                                {
+  foreach (var item in shipItem)
+                                                    {%>
+                                            <tr class="shipTr">
+                                                <td class="txtBlack8" style="vertical-align: middle;" nowrap><%=item.name %></td>
+                                                <td class="txtBlack8" style="vertical-align: middle;" nowrap align="right"><%=item.quantity %></td>
+                                                <td nowrap align="left">
+                                                    <span class="errorSmall">*</span>
+                                                    <select class="ChooseCostCoseSelect" name="<%=item.id %>_select" id="<%=item.id %>_select" style="width: 90%;">
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <%}
+                                                }
                                                 if (degressionItem != null && degressionItem.Count > 0)
                                                 {
                                                     foreach (var item in degressionItem)
@@ -1309,7 +1325,7 @@
                         <tr>
                             <td width="90%">
                                 <div>
-                                    <a href="##">Run the Close Opportunity Wizard again from the beginning</a>
+                                    <a>运行关闭商机向导，关闭下一个商机</a>
                                 </div>
                             </td>
                         </tr>
@@ -1481,12 +1497,15 @@
         else {
             $(".proAndOneTr").hide();
             $(".degressionTr").hide();
+            $(".shipTr").hide();
+
             // 产品和一次性折扣
             if (isIncludePO) {
                 $(".proAndOneTr").show();
             }
-            // 配送
+            // 配送shipTr
             if (isIncludeShip) {
+                $(".shipTr").show();
             }
             // 成本的配置项
             if (isIncludeCharges) {

@@ -634,7 +634,7 @@
             }
 
         }
-        // 失活配置项
+        // 停用配置项
         function NoActiveIProduct() {
             $.ajax({
                 type: "GET",
@@ -642,10 +642,10 @@
                 async: false,
                 success: function (data) {
                     if (data == "ok") {
-                        alert('失活成功');
+                        alert('停用成功');
                         history.go(0);
                     } else if (data == "no") {
-                        alert('该报价项已经失活');
+                        alert('该配置项已经停用');
                     }
                     else {
 
@@ -654,7 +654,7 @@
                 }
             })
         }
-        // 批量失活配置项
+        // 批量停用配置项
         function NoActiveIProducts() {
 
             var ids = "";
@@ -670,10 +670,10 @@
                     url: "../Tools/ProductAjax.ashx?act=NoActivationIPs&iProduct_ids=" + ids,
                     success: function (data) {
                         if (data == "ok") {
-                            alert('批量失活成功！');
+                            alert('批量停用成功！');
                         }
                         else if (data == "error") {
-                            alert("批量失活失败！");
+                            alert("批量停用失败！");
                         }
                         history.go(0);
                     }
@@ -942,13 +942,13 @@
                     async: false,
                     success: function (data) {
                         if (data == "ok") {
-                            alert('失活成功');
+                            alert('停用成功');
                             history.go(0);
                         } else if (data == "Already") {
-                            alert('已经失活');
+                            alert('已经停用');
                         }
                         else {
-                            alert("失活失败");
+                            alert("停用失败");
                         }
 
                     }
@@ -1130,8 +1130,8 @@
         function NewTodo() {
 
         }
-        function View() {
-            window.open("../SaleOrder/SaleOrderView.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SaleOrderView %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        function View(id) {
+            window.open("../SaleOrder/SaleOrderView.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SaleOrderView %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function CancelSaleOrder() {
             $.ajax({
@@ -2344,7 +2344,30 @@
             })
         }
         function Add() {
+            debugger;
+            var contract_id = '<%=Request.QueryString["id"] %>';
+            var isAdd = "";
+            if (contract_id != "" && (!isNaN(contract_id))) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ContractAjax.ashx?act=GetDefaultCost&contract_id=" + contract_id,
+                    async: false,
+                    success: function (data) {
+                        if (data != "") {
+                            isAdd = "1";
+                        }
+                    }
+                })
+            }
+            if (isAdd != "") {
+                alert("该合同已经拥有默认成本，不可重复添加！");
+                return false;
+            }
+
             window.open('../Contract/AddDefaultCharge.aspx?contract_id=' + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConDefCostAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function View() {
+
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.CONTRACT_RATE)
@@ -2971,13 +2994,13 @@
                      async: false,
                      success: function (data) {
                          if (data == "ok") {
-                             alert('失活成功');
+                             alert('停用成功');
                              history.go(0);
                          } else if (data == "Already") {
-                             alert('已经失活');
+                             alert('已经停用');
                          }
                          else {
-                             alert("失活失败");
+                             alert("停用失败");
                          }
 
                      }
@@ -2992,13 +3015,13 @@
                      async: false,
                      success: function (data) {
                          if (data == "ok") {
-                             alert('失活成功');
+                             alert('停用成功');
                              history.go(0);
                          } else if (data == "Already") {
-                             alert('已经失活');
+                             alert('已经停用');
                          }
                          else {
-                             alert("失活失败");
+                             alert("停用失败");
                          }
 
                      }
