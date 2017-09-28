@@ -42,7 +42,8 @@
     </div>
     <!--切换项-->
     <div class="TabContainer">
-      <div class="DivScrollingContainer Tab">
+        <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:120px;">
+            <div class="DivScrollingContainer Tab">
         <div class="DivSectionWithHeader">
           <!--头部-->
           <div class="HeaderRow">
@@ -320,9 +321,11 @@
           </div>
         </div>
       </div>
+        </div>
     </div>
     <div class="TabContainer" style="display: none;">
-      <div class="DivScrollingContainer Tab">
+        <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:120px;">
+            <div class="DivScrollingContainer Tab">
         <div class="DivSectionWithHeader">
           <!--头部-->
           <div class="HeaderRow">
@@ -394,6 +397,7 @@
           </div>
         </div>
       </div>
+        </div>
     </div>
   </form>
   <script type="text/javascript" src="../Scripts/jquery-3.1.0.min.js"></script>
