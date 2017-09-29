@@ -49,7 +49,7 @@
         <div class="DescriptionText"></div>
         <div class="Content">
             <script id="containerHead" name="content" type="text/plain"></script>
-            <div class="Dialog">
+            <div class="Dialog" style="top:42px;">
                 <img src="../RichText/img/Dialog.png" alt=""/>
             </div>
         </div>
