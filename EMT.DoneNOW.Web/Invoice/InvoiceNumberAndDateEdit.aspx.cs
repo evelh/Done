@@ -33,16 +33,19 @@ namespace EMT.DoneNOW.Web
             string date;
             date= Request.Form["datevalue"].Trim().ToString();//获取时间
             number = Request.Form["InvoiceNumber"].Trim().ToString();//获取发票编号
-            if (new InvoiceBLL().InvoiceNumberAndDate(id, date, number, GetLoginUserId())) {
+            var result = new InvoiceBLL().InvoiceNumberAndDate(id, date, number, GetLoginUserId());
+            if (result == DTO.ERROR_CODE.SUCCESS) {
                 Response.Write("<script>alert('发票修改成功！');window.close();self.opener.location.reload();</script>");
+            }
+            else if (result==DTO.ERROR_CODE.EXIST) {
+                Response.Write("<script>alert('发票编号已经存在，请修改！');window.close();self.opener.location.reload();</script>");
             }
             else
             {
-                Response.Write("<script>alert('发票修改失败！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>alert('发票修改失败！');window.close();</script>");
             }
 
         }
-
         protected void Cancel_Click(object sender, EventArgs e)
         {
             Response.Write("<script>window.close();</script>");
