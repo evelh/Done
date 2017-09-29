@@ -126,7 +126,7 @@ namespace EMT.DoneNOW.Web.Contract
         {
             var dto = AssembleModel<ContractBlockAddDto>();
             contractId = dto.contractId;
-            if (Request.Form["CreateOneOrMonthly"].Equals("1"))
+            if (!string.IsNullOrEmpty(Request.Form["CreateOneOrMonthly"]) && Request.Form["CreateOneOrMonthly"].Equals("1"))
                 dto.isMonthly = false;
             else
                 dto.isMonthly = true;
@@ -140,7 +140,7 @@ namespace EMT.DoneNOW.Web.Contract
                 dto.firstPart = true;
             else
                 dto.firstPart = false;
-            if (Request.Form["rdStatus"].Equals("1"))
+            if (!string.IsNullOrEmpty(Request.Form["rdStatus"]) && Request.Form["rdStatus"].Equals("1"))
                 dto.status = true;
             else
                 dto.status = false;

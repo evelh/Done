@@ -1173,7 +1173,7 @@
                     type: "GET",
                     url: "../Tools/ContractAjax.ashx?act=deleteContract&id=" + entityid,
                     success: function (data) {
-                      if (data=="true"){
+                      if (data =="True"){
                         alert("删除成功");
                         window.location.reload();
                       } else {
@@ -3165,9 +3165,9 @@
               url: "../Tools/ContractAjax.ashx?act=SetBlockActive&blockId=" + entityid,
               async: false,
               success: function (data) {
-                if (data == "true") {
+                if (data == "True") {
                   alert("设置成功");
-                  window.reload();
+                  history.go(0);
                 } else {
                   alert("设置失败！已审批预付不可修改");
                 }
@@ -3181,9 +3181,9 @@
             url: "../Tools/ContractAjax.ashx?act=SetBlockInactive&blockId=" + entityid,
             async: false,
             success: function (data) {
-              if (data == "true") {
+              if (data == "True") {
                 alert("设置成功");
-                window.reload();
+                history.go(0);
               } else {
                 alert("设置失败！已审批预付不可修改");
               }
@@ -3197,7 +3197,8 @@
               url: "../Tools/ContractAjax.ashx?act=DeleteBlock&blockId=" + entityid,
               async: false,
               success: function (data) {
-                window.reload();
+                alert("删除成功");
+                history.go(0);
               }
             })
           }
@@ -3237,7 +3238,7 @@
                     url: "../Tools/ContractAjax.ashx?act=DeleteMilestone&milestoneId=" + entityid,
                     async: false,
                     success: function (data) {
-                        if (data == "true") {
+                      if (data == "True") {
                             alert('删除成功');
                             window.reload();
                         } else {

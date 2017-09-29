@@ -78,13 +78,28 @@ namespace EMT.DoneNOW.BLL
         public bool NewPurchase(ContractBlockAddDto dto, long userId)
         {
             ctt_contract_cost_dal costDal = new ctt_contract_cost_dal();
+            string blkName = "";
+            if (dto.type == 1)
+                blkName = "时间";
+            if (dto.type == 2)
+                blkName = "费用";
+            if (dto.type == 3)
+                blkName = "事件";
 
-            if(dto.isMonthly)   // 每月计费
+            if (dto.isMonthly)   // 每月计费
             {
                 // 检查必填项
+                if(dto.type==2)
+                {
+                    if (dto.amount == null)
+                        return false;
+                }
+                else
+                {
+                    if (dto.hours == null || dto.hourlyRate == null)
+                        return false;
+                }
                 if (dto.endDate == null && dto.purchaseNum == null)
-                    return false;
-                if (dto.hours == null || dto.hourlyRate == null)
                     return false;
                 // 检查起止日期和计费周期
                 if (dto.endDate != null && (DateTime)dto.endDate < dto.startDate)
@@ -93,7 +108,9 @@ namespace EMT.DoneNOW.BLL
                     return false;
 
                 DateTime dtBlockStart = dto.startDate;          // 一个预付周期开始时间
-                DateTime dtBlockEnd = (DateTime)dto.endDate;    // 所有预付周期结束时间
+                DateTime dtBlockEnd = DateTime.MinValue;    // 所有预付周期结束时间
+                if (dto.endDate != null)
+                    dtBlockEnd = (DateTime)dto.endDate;
                 int blockNums = 0;  // 已处理新增预付时间
                 while(true)
                 {
@@ -134,14 +151,21 @@ namespace EMT.DoneNOW.BLL
                     if ((bool)dto.firstPart && blockNums == 0)  // 首月部分的处理
                     {
                         block.end_date = new DateTime(dtBlockStart.Year, dtBlockStart.Month + 1, 1).AddDays(-1);    // 结束日期为开始日期同月份的最后一天
-                        block.quantity = ((decimal)(block.end_date.Day - block.start_date.Day + 1) / block.end_date.Day) * ((decimal)dto.hours) * 10000 / 10000;    // 预付数量按照天数比例计算
+                        if (dto.type != 2)
+                            block.quantity = (decimal)((int)(((decimal)(block.end_date.Day - block.start_date.Day + 1) / block.end_date.Day) * ((decimal)dto.hours) * 10000)) / 10000;    // 预付数量按照天数比例计算
+                        else
+                            block.rate = (decimal)((int)(((decimal)(block.end_date.Day - block.start_date.Day + 1) / block.end_date.Day) * block.rate * 10000)) / 10000;
                     }
                     if (dto.endDate != null && ((DateTime)dto.endDate) < block.end_date)    // 设置了结束时间的处理
                     {
                         block.end_date = (DateTime)dto.endDate;
-                        block.quantity = ((decimal)((block.end_date - block.start_date).Days + 1)
+                        if (dto.type != 2)
+                            block.quantity = ((decimal)((block.end_date - block.start_date).Days + 1)
                             / DateTime.DaysInMonth(block.start_date.Year, block.start_date.Month))
                             * ((decimal)dto.hours) * 10000 / 10000;    // 预付数量按照天数比例计算
+                        else
+                            block.rate = (decimal)((int)(((decimal)((block.end_date - block.start_date).Days + 1)
+                            / DateTime.DaysInMonth(block.start_date.Year, block.start_date.Month)) * block.rate * 10000)) / 10000;
                     }
                     dtBlockStart = block.end_date.AddDays(1);   // 下一周期的开始日期
                     ++blockNums;    // 已处理周期数加1
@@ -159,7 +183,7 @@ namespace EMT.DoneNOW.BLL
                     block.description = dto.note;
 
                     dal.Insert(block);
-                    OperLogBLL.OperLogAdd<ctt_contract_block>(block, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "新增合同预付");
+                    OperLogBLL.OperLogAdd<ctt_contract_block>(block, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, $"新增合同预付{blkName}");
 
 
                     // 新增合同成本
@@ -171,15 +195,22 @@ namespace EMT.DoneNOW.BLL
                     cost.update_user_id = userId;
                     cost.contract_block_id = block.id;
                     cost.contract_id = dto.contractId;
-                    var costCode = new d_cost_code_dal().GetListCostCode((int)COST_CODE_CATE.BLOCK_PURCHASE);
+                    List<d_cost_code> costCode;
+                    if (dto.type == 1)
+                        costCode = new d_cost_code_dal().GetListCostCode((int)COST_CODE_CATE.BLOCK_PURCHASE);
+                    else if (dto.type == 2)
+                        costCode = new d_cost_code_dal().GetListCostCode((int)COST_CODE_CATE.RETAINER_PURCHASE);
+                    else
+                        costCode = new d_cost_code_dal().GetListCostCode((int)COST_CODE_CATE.TICKET_PURCHASE);
                     if (costCode == null || costCode.Count == 0)
                         throw new Exception("字典项缺失");
                     cost.cost_code_id = costCode[0].id;
-                    cost.name = $"预付[{dto.startDate.ToShortDateString()}-{((DateTime)dto.endDate).ToShortDateString()}]";
+                    cost.name = $"预付{blkName}[{dto.startDate.ToShortDateString()}-{((DateTime)dto.endDate).ToShortDateString()}]";
                     cost.date_purchased = block.date_purchased;
                     cost.cost_type_id = (int)COST_TYPE.OPERATIONA;
                     cost.status_id = (int)COST_STATUS.UNDETERMINED;
-                    cost.bill_status = 1;
+                    cost.bill_status = 0;
+                    cost.is_billable = 1;
                     cost.quantity = block.quantity;
                     cost.unit_cost = 0;
                     cost.unit_price = block.rate;
@@ -199,7 +230,17 @@ namespace EMT.DoneNOW.BLL
             }
             else    // 一次计费
             {
-                if (dto.endDate == null || dto.hours == null || dto.hourlyRate == null) // 检查必填项
+                if (dto.type == 2)
+                {
+                    if (dto.amount == null)
+                        return false;
+                }
+                else
+                {
+                    if (dto.hours == null || dto.hourlyRate == null)
+                        return false;
+                }
+                if (dto.endDate == null) // 检查必填项
                     return false;
                 if ((DateTime)dto.endDate < dto.startDate)  // 检查起止日期和计费周期
                     return false;
@@ -233,7 +274,7 @@ namespace EMT.DoneNOW.BLL
                 block.description = dto.note;
 
                 dal.Insert(block);
-                OperLogBLL.OperLogAdd<ctt_contract_block>(block, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "新增合同预付");
+                OperLogBLL.OperLogAdd<ctt_contract_block>(block, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, $"新增合同预付{blkName}");
 
 
                 // 新增合同成本
@@ -245,15 +286,22 @@ namespace EMT.DoneNOW.BLL
                 cost.update_user_id = userId;
                 cost.contract_block_id = block.id;
                 cost.contract_id = dto.contractId;
-                var costCode = new d_cost_code_dal().GetListCostCode((int)COST_CODE_CATE.BLOCK_PURCHASE);
+                List<d_cost_code> costCode;
+                if (dto.type == 1)
+                    costCode = new d_cost_code_dal().GetListCostCode((int)COST_CODE_CATE.BLOCK_PURCHASE);
+                else if (dto.type == 2)
+                    costCode = new d_cost_code_dal().GetListCostCode((int)COST_CODE_CATE.RETAINER_PURCHASE);
+                else
+                    costCode = new d_cost_code_dal().GetListCostCode((int)COST_CODE_CATE.TICKET_PURCHASE);
                 if (costCode == null || costCode.Count == 0)
                     throw new Exception("字典项缺失");
                 cost.cost_code_id = costCode[0].id;
-                cost.name = $"预付[{dto.startDate.ToShortDateString()}-{((DateTime)dto.endDate).ToShortDateString()}]";
+                cost.name = $"预付{blkName}[{dto.startDate.ToShortDateString()}-{((DateTime)dto.endDate).ToShortDateString()}]";
                 cost.date_purchased = block.date_purchased;
                 cost.cost_type_id = (int)COST_TYPE.OPERATIONA;
                 cost.status_id = (int)COST_STATUS.UNDETERMINED;
-                cost.bill_status = 1;
+                cost.bill_status = 0;
+                cost.is_billable = 1;
                 cost.quantity = block.quantity;
                 cost.unit_cost = 0;
                 cost.unit_price = block.rate;
