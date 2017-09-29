@@ -86,6 +86,13 @@
             <script src="../Scripts/SysSettingRoles.js"></script>
             <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
             <script>
+                $(function () {
+                    var myDate = new Date();
+                    var dd = myDate.toLocaleDateString();
+                    var reg = new RegExp("/", "g");//g,表示全部替换。
+                    dd=dd.replace(reg, "-");
+                    $("#post_datett").val(dd);
+                });
                 function kkk() {
                    var k = $("#post_datett").val();
                     if (k == null || k == '') {

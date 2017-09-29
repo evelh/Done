@@ -20,6 +20,8 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取角色id
+            if(id>0)
+            table = rolebll.resourcelist(id);
             if (!IsPostBack) {
                 var dic = new SysRoleInfoBLL().GetField();
                 this.Tax_cate.DataTextField = "show";
@@ -46,8 +48,7 @@ namespace EMT.DoneNOW.Web
                     this.Block_Hour_Multiplier.Text = role.hourly_factor.ToString();
                     if (role.is_excluded > 0) {
                         this.Excluded.Checked = true;
-                    }
-                    table = rolebll.resourcelist(id);
+                    }                   
                 }
             }
         }

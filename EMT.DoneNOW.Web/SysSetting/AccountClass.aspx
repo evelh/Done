@@ -11,7 +11,7 @@
     <title>客户类别</title>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" method="post" enctype="multipart/form-data">
         <div>
              <!--顶部-->
     <div class="TitleBar">

@@ -40,11 +40,18 @@ namespace EMT.DoneNOW.Web
                         {
                             this.Active.Checked = true;
                         }
+                        else
+                        {
+                            this.Active.Checked = true;
+                        }
                         if (dac.remark != null && !string.IsNullOrEmpty(dac.remark.ToString()))
                         {
                             this.Description.Text = dac.remark.ToString();
                         }
                     }
+                }
+                else {
+                    this.Active.Checked = true;
                 }
             }           
         }
@@ -65,12 +72,11 @@ namespace EMT.DoneNOW.Web
         {
             if (save_deal())
             {
-                // Response.Redirect("SysMarket.aspx");
                 Response.Write("<script>alert('客户分类信息保存成功！');window.location.href = 'AccountClass.aspx';</script>");
             }
             else
             {
-                Response.Write("<script>alert('客户分类信息保存失败！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>alert('客户分类信息保存失败！');</script>");
             }
         }
 
@@ -139,6 +145,7 @@ namespace EMT.DoneNOW.Web
         /// <returns></returns>
         private string SavePic()
         {
+            avatarPath = avatarPath.TrimStart('.');
             var fileForm = Request.Files["browsefile"];
             if (fileForm == null)
                 return avatarPath;
@@ -160,8 +167,14 @@ namespace EMT.DoneNOW.Web
             }
             string virpath = filepath + Guid.NewGuid().ToString() + fileExtension;//这是存到服务器上的虚拟路径
             string mappath = Server.MapPath(virpath);//转换成服务器上的物理路径
-            fileForm.SaveAs(mappath);//保存图片
-
+            //fileForm.SaveAs(mappath);//保存图片
+            //生成缩略图
+            //创建一个图像对象取得上传图片对象
+            System.Drawing.Image myImage = System.Drawing.Image.FromStream(fileForm.InputStream, false);
+            //对绘制前的图片产生一个缩略图(原图片一半大小)
+            System.Drawing.Image thumbImage = myImage.GetThumbnailImage(20, 20, null, System.IntPtr.Zero);//设置图片固定大小128像素图片                                                                                             //保存缩略图
+            thumbImage.Save(mappath);
+            thumbImage.Dispose();
             return virpath;
         }
 

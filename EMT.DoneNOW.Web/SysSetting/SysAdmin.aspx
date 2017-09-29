@@ -417,10 +417,10 @@
                                         </div>
                                         </div>
                                     <div class="PageNavigationLinkColumn">
-                                        <div class="PageNavigationLink">
+                                       <%-- <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun">报价邮件模板(暂未开发)</a>
                                             <div class="StandardText">介绍介绍</div>
-                                        </div>
+                                        </div>--%>
                                     </div>
                                 </div>
                             </div>

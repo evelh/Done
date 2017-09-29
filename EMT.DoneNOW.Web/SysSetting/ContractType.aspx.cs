@@ -27,11 +27,24 @@ namespace EMT.DoneNOW.Web
                 else
                 {
                     this.Name.Text = contract.name.ToString();
+                    if (contract.remark != null)
+                        this.Description.Text = contract.remark.ToString();
+                    if (contract.is_active > 0)
+                    {
+                        this.Active.Checked = true;
+                    }
+                    else
+                    {
+                        this.Active.Checked = false;
+                    }
                     if (contract.is_active > 0)
                     {
                         this.Active.Checked = true;
                     }
                 }
+            }
+            else {
+                this.Active.Checked = true;
             }
         }
 
@@ -51,13 +64,16 @@ namespace EMT.DoneNOW.Web
             {
                 contract.is_active = 1;
             }
+            else {
+                contract.is_active = 0;
+            }
             if (id > 0)
             {
                 //修改
                 var result = new GeneralBLL().Update(contract, GetLoginUserId());
                 if (result == ERROR_CODE.SUCCESS)
                 {
-                    Response.Write("<script>alert('修改成功，返回！');window.close();self.opener.location.reload();</script>");
+                    Response.Write("<script>alert('合同类别修改成功！');window.close();self.opener.location.reload();</script>");
                 }
                 else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
                 {
@@ -69,7 +85,7 @@ namespace EMT.DoneNOW.Web
                     Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
                 }
                 else {
-                    Response.Write("<script>alert('修改失败，返回！');window.close();self.opener.location.reload();</script>");
+                    Response.Write("<script>alert('合同类别修改失败！');window.close();self.opener.location.reload();</script>");
                 }
             }
             else
@@ -79,7 +95,7 @@ namespace EMT.DoneNOW.Web
                 var result = new GeneralBLL().Insert(contract, GetLoginUserId());
                 if (result == ERROR_CODE.SUCCESS)
                 {
-                    Response.Write("<script>alert('添加成功！');window.close();self.opener.location.reload();</script>");
+                    Response.Write("<script>alert('合同类别添加成功！');window.close();self.opener.location.reload();</script>");
                 }
                 else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
                 {
@@ -91,7 +107,7 @@ namespace EMT.DoneNOW.Web
                     Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
                 }
                 else {
-                    Response.Write("<script>alert('添加失败！');window.close();self.opener.location.reload();</script>");
+                    Response.Write("<script>alert('合同添加失败！');window.close();self.opener.location.reload();</script>");
                 }
             }
         }

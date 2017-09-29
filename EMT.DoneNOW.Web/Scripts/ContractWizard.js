@@ -335,6 +335,13 @@ function RemoveServiceBundle(id) {
 function AddMil() {
     $("#MilList").hide();
     $("#MilAdd").show();
+    $("#milName").val("");
+    $("#milAmout").val("");
+    $("#milAddCode").val("");
+    $("#milDate").val("");
+    $("#milCheckbox").prop("checked", false);
+    $("#milCheckbox").css("checked", "");
+    $("#milDesc").val("");
 }
 
 var milCnt = 1;
@@ -348,7 +355,7 @@ function AddMilOk() {
         return;
     }
     var txt = "<tr id='milestone" + milCnt + "'>";
-    txt += "<td style='white - space:nowrap; '><img src = '../Images/delete.png' onclick='RemoveMil(" + milCnt + ")' alt = '' /></ td > ";
+    txt += "<td style='white - space:nowrap; vertical-align:bottom;'><img src = '../Images/delete.png' onclick='RemoveMil(" + milCnt + ")' alt = '' /></ td > ";
     txt += "<td><input type='text' disabled name='MilName" + milCnt + "' value='" + $("#milName").val() + "' /><input type='hidden' value='" + $("#milDesc").val() +"' name='MilDetail" + milCnt + "' /></td > ";
     txt += "<td nowrap><input type='text' disabled id='milAmount" + milCnt + "' name='MilAmount" + milCnt + "' value='" + $("#milAmout").val() +"' /></td>";
     txt += "<td nowrap><input type='text' disabled name='MilDate" + milCnt + "' value='" + $("#milDate").val() +"' /></td>";

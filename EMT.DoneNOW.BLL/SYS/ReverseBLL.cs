@@ -204,7 +204,7 @@ namespace EMT.DoneNOW.BLL
                         //类型为服务
                         if (cad.type_id == (int)ACCOUNT_DEDUCTION_TYPE.SERVICE)
                         {
-                            var oldccsp = ccsp = ccsp_dal.FindSignleBySql<ctt_contract_service_period>($"select * from ctt_contract_service_period where id={cad.contract_id} and delete_time=0");
+                            var oldccsp = ccsp = ccsp_dal.FindSignleBySql<ctt_contract_service_period>($"select * from ctt_contract_service_period where contract_id={cad.contract_id} and delete_time=0");
                             ccsp.approve_and_post_date = null;
                             ccsp.approve_and_post_user_id = null;
                             ccsp.period_adjusted_price = ccsp.period_price * ccsp.quantity;
@@ -234,7 +234,7 @@ namespace EMT.DoneNOW.BLL
                         //类型为服务调整
                         if (cad.type_id == (int)ACCOUNT_DEDUCTION_TYPE.SERVICE_ADJUST)
                         {
-                            var oldccsa = ccsa = ccsa_dal.FindSignleBySql<ctt_contract_service_adjust>($"select * from ctt_contract_service_adjust where id={cad.contract_id} and delete_time=0");
+                            var oldccsa = ccsa = ccsa_dal.FindSignleBySql<ctt_contract_service_adjust>($"select * from ctt_contract_service_adjust where contract_id={cad.contract_id} and delete_time=0");
                             cc = new ctt_contract_dal().FindSignleBySql<ctt_contract>($"select * from ctt_contract where id={cad.contract_id} and delete_time=0");
                             ccsa.approve_and_post_date = null;
                             ccsa.approve_and_post_user_id = null;

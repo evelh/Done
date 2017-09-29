@@ -135,6 +135,8 @@ $("#d1").on("click",function(){
     index4 = 1;
     index5 = 1;
     index6 = 1;
+    index7 = 1;
+    index8 = 1;
 
 });
 $("#d2").on("click",function(){
@@ -148,6 +150,8 @@ $("#d2").on("click",function(){
     index4 = 0;
     index5 = 0;
     index6 = 0;
+    index7 = 0;
+    index8 = 0;
 });
 $("#d3").on("click",function(){
     $(".Toggle2").find(".Vertical2").hide();
@@ -157,8 +161,6 @@ $("#d3").on("click",function(){
     bol1=1;
     bol2=1;
     bol3 = 1;
-    bol4 = 1;
-    bol5 = 1;
 });
 $("#d4").on("click",function(){
     $(".Toggle2").find(".Vertical2").show();
@@ -168,6 +170,4 @@ $("#d4").on("click",function(){
     bol1=0;
     bol2=0;
     bol3 = 0;
-    bol4 = 0;
-    bol5 = 0;
 });

@@ -17,22 +17,31 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id =Convert.ToInt64(Request.QueryString["id"]);
-            if (id > 0)
-            {
-                suffix = new GeneralBLL().GetSingleGeneral(id);
-                if (suffix == null)
+            if (!IsPostBack) {
+                if (id > 0)
                 {
-                    Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
-                }
-                else
-                {
-                    this.Suffix_name.Text = suffix.name.ToString();
-                    if (suffix.is_active>0)
+                    suffix = new GeneralBLL().GetSingleGeneral(id);
+                    if (suffix == null)
                     {
-                        this.Active.Checked = true;
+                        Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
+                    }
+                    else
+                    {
+                        this.Suffix_name.Text = suffix.name.ToString();
+                        if (suffix.is_active > 0)
+                        {
+                            this.Active.Checked = true;
+                        }
+                        else {
+                            this.Active.Checked = false;
+                        }
                     }
                 }
+                else {
+                    this.Active.Checked = true;
+                }
             }
+            
         }
 
         protected void Save_Close_Click(object sender, EventArgs e)
@@ -45,9 +54,13 @@ namespace EMT.DoneNOW.Web
                     Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
                 }
             }
-            suffix.name = this.Suffix_name.Text.Trim().ToString();            
-            if (this.Active.Checked) {
+            suffix.name = this.Suffix_name.Text.Trim().ToString();
+            if (this.Active.Checked)
+            {
                 suffix.is_active = 1;
+            }
+            else {
+                suffix.is_active = 0;
             }
             if (id > 0)
             {
