@@ -23,7 +23,7 @@
         <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
           <span class="Icon SaveAndClone"></span>
           <span class="Text">
-            <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" OnClick="SaveClose_Click" /></span>
+            <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" OnClick="SaveClose_Click" style="background: transparent;cursor: pointer;border: none;outline:none;"/></span>
         </li>
         <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
           <span class="Icon Cancel"></span>

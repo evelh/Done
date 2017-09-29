@@ -8,6 +8,7 @@
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
      <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+     <link rel="stylesheet" type="text/css" href="../Content/NewWorkType.css" />
     <title>活动类型</title>
 </head>
 <body>
@@ -35,8 +36,8 @@
         </ul>
     </div>
     <!--内容-->
-    <div class="DivScrollingContainer General">
-        <div class="DivSectionWithHeader">
+    <div class="DivScrollingContainer General" style="top:84px;">
+        <div class="DivSectionWithHeader" style="border:none;">
             <div class="Content">
                 <table width="100%">
                     <tbody>
