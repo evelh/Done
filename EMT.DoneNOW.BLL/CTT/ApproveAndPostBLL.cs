@@ -1543,7 +1543,7 @@ namespace EMT.DoneNOW.BLL
             {
                 var ccnr = new ctt_contract_notify_rule_dal().FindSignleBySql<ctt_contract_notify_rule>($"select * from ctt_contract_notify_rule where contract_id={ccc.contract_id} and delete_time=0");
                 //费率为空的判断
-                if (ccnr.rate == null || ccnr.rate == 0)
+                if (ccnr == null || ccnr != null && ccnr.rate == null || ccnr != null && ccnr.rate != null && ccnr.rate == 0)
                 {
                     return ERROR_CODE.NOTIFICATION_RULE_RATE_NULL;
                 }

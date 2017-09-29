@@ -78,6 +78,7 @@ namespace EMT.DoneNOW.Web.Contract
         protected AddChargeDto GetParam()
         {
             var thisConCost = AssembleModel<ctt_contract_cost>();
+            thisConCost.bill_status = 0;
             AddChargeDto param = new AddChargeDto();
             param.isAddCongigItem = AddConfigItem.Checked;
             thisConCost.is_billable = (sbyte)(isbillable.Checked?1:0);

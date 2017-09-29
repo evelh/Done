@@ -20,28 +20,44 @@ namespace EMT.DoneNOW.Web
             id = Convert.ToInt64(Request.QueryString["id"]);
             //id = 40;//测试
             if (!IsPostBack) {
-                if (id > 0) {
+                if (id > 0)
+                {
                     //修改
-                   stage = new GeneralBLL().GetSingleGeneral(id);
+                    stage = new GeneralBLL().GetSingleGeneral(id);
                     if (stage == null)
                     {
                         Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
                     }
-                    else {
+                    else
+                    {
                         this.Name.Text = stage.name.ToString();
-                        if (stage.remark != null && !string.IsNullOrEmpty(stage.remark.ToString())){
+                        if (stage.remark != null && !string.IsNullOrEmpty(stage.remark.ToString()))
+                        {
                             this.Description.Text = stage.remark.ToString();
                         }
-                        if (stage.ext1!=null&&Convert.ToInt32(stage.ext1.ToString()) > 0) {
+                        if (stage.ext1 != null && Convert.ToInt32(stage.ext1.ToString()) > 0)
+                        {
                             this.Won.Checked = true;
                         }
-                        if (stage.ext2!=null&&Convert.ToInt32(stage.ext2.ToString()) > 0) {
+                        if (stage.ext2 != null && Convert.ToInt32(stage.ext2.ToString()) > 0)
+                        {
                             this.Lost.Checked = true;
                         }
                         if (stage.sort_order != null && !string.IsNullOrEmpty(stage.sort_order.ToString()))
                         {
                             this.Sort_Order.Text = stage.sort_order.ToString();
                         }
+                    }
+                }
+                else {
+                    //默认唯一性
+                    if (sobll.defulatwonreson()) {
+                        this.Won.Enabled = false;
+                        this.won2.Text = "(当前系统已经存在默认丢失商机原因，不可选！)";
+                    }
+                    if (sobll.defulatlossreson()) {
+                        this.Lost.Enabled = false;
+                        this.loss2.Text = "(当前系统已经存在默认关闭商机原因，不可选！)";
                     }
                 }
             }

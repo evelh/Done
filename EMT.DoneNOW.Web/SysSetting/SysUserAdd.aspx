@@ -85,9 +85,8 @@
                                     <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">审批人
                                     </span>
                                 </td>
-                               <%-- <td style="height: 100%; cursor: pointer;">
-                                    <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">协会
-                                    <span style="color: red;">*</span>
+                                <td style="height: 100%; cursor: pointer;">
+                                    <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">隶属
                                     </span>
                                 </td>
                                 <td style="height: 100%; cursor: pointer;">
@@ -97,7 +96,7 @@
                                 <td style="height: 100%; cursor: pointer;">
                                     <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">附件
                                     </span>
-                                </td>--%>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
