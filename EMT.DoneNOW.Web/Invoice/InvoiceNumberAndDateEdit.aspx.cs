@@ -23,8 +23,8 @@ namespace EMT.DoneNOW.Web
             var invoice = new ctt_invoice_dal().FindNoDeleteById(id);
             number = invoice.invoice_no;
             account = new crm_account_dal().FindNoDeleteById(invoice.account_id).name;
-            if(invoice.paid_date!=null)
-            date = invoice.paid_date.ToString().Substring(0,10).Replace("/","-");
+            if (invoice.paid_date != null)
+                date = invoice.paid_date.ToString().Substring(0, 9).Insert(5,"0").Replace("/","-");
         }
 
         protected void Save_Close_Click(object sender, EventArgs e)
@@ -38,11 +38,11 @@ namespace EMT.DoneNOW.Web
                 Response.Write("<script>alert('发票修改成功！');window.close();self.opener.location.reload();</script>");
             }
             else if (result==DTO.ERROR_CODE.EXIST) {
-                Response.Write("<script>alert('发票编号已经存在，请修改！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>alert('发票编号已经存在，请修改！');</script>");
             }
             else
             {
-                Response.Write("<script>alert('发票修改失败！');window.close();</script>");
+                Response.Write("<script>alert('发票修改失败！');</script>");
             }
 
         }

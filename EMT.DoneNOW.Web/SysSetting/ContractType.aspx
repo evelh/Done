@@ -8,7 +8,7 @@
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
      <link rel="stylesheet" type="text/css" href="../Content/style.css" />
-    <title>合同类型</title>
+    <title>新增合同类型</title>
 </head>
 <body>
     <form id="form1" runat="server" method="post">
@@ -16,7 +16,7 @@
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">合同类型</span>
+            <span class="text1">新增合同类别</span>
             <a href="###" class="help"></a>
         </div>
     </div>

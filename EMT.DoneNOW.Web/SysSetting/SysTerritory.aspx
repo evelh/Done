@@ -178,13 +178,12 @@
                     alert("请填写地域名称后再跳转");
 
                     return false;
-
                 }
-                if (r == null || r <= 0) {
-                    alert("请选择区域");
+                //if (r == null || r <= 0) {
+                //    alert("请选择区域");
 
-                    return false;
-                } 
+                //    return false;
+                //} 
                 $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
                 $(".TabContainer").eq(i).show().siblings(".TabContainer").hide();
             })
@@ -197,10 +196,10 @@
                 alert("请填写地域名称");
                 return false;
             }
-            if (r == null || r <= 0) {
-                alert("请选择区域");
-                return false;
-            } });
+            //if (r == null || r <= 0) {
+            //    alert("请选择区域");
+            //    return false;
+            //} });
         $("#Save_New").click(function () {
             var t = $("#Territory_Name").val();
             var r = $("#Region").val();
@@ -208,10 +207,10 @@
                 alert("请填写地域名称");
                 return false;
             }
-            if (r == null || r <= 0) {
-                alert("请选择区域");
-                return false;
-            }
+            //if (r == null || r <= 0) {
+            //    alert("请选择区域");
+            //    return false;
+            //}
         });
         $("#New_Account").click(function () {
             window.open('TerritortAddAccount.aspx?id=<%=id%>', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TerritorySource %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
@@ -253,7 +252,6 @@
                     });
                 }
         }
-
         $(".delete").on("click", function () {
             var name = $(this).parent().next().text();
             var id = $(this).next().val();

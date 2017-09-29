@@ -71,7 +71,7 @@
                         选择日期
                         <span class="errorSmall">*</span>
                         <div>
-                            <input id="post_datett" name="post_datett" type="text" style="width:100px;" onclick="WdatePicker()" class="Wdate"/>
+                            <input id="post_datett" name="post_datett" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" type="text" style="width:100px;" onclick="WdatePicker()" class="Wdate"/>
                         </div>
                     </td>
                 </tr>
@@ -86,13 +86,6 @@
             <script src="../Scripts/SysSettingRoles.js"></script>
             <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
             <script>
-                $(function () {
-                    var myDate = new Date();
-                    var dd = myDate.toLocaleDateString();
-                    var reg = new RegExp("/", "g");//g,表示全部替换。
-                    dd=dd.replace(reg, "-");
-                    $("#post_datett").val(dd);
-                });
                 function kkk() {
                    var k = $("#post_datett").val();
                     if (k == null || k == '') {
