@@ -89,6 +89,14 @@ namespace EMT.DoneNOW.Web.Contract
         protected void SaveClose_Click(object sender, EventArgs e)
         {
             ctt_contract contractEdit = AssembleModel<ctt_contract>();
+            if (!string.IsNullOrEmpty(Request.Form["MastInput"]) && Request.Form["MastInput"].Equals("on"))
+                contractEdit.timeentry_need_begin_end = 1;
+            else
+                contractEdit.timeentry_need_begin_end = 0;
+            if (!string.IsNullOrEmpty(Request.Form["isSdtDefault"]) && Request.Form["isSdtDefault"].Equals("on"))
+                contractEdit.is_sdt_default = 1;
+            else
+                contractEdit.is_sdt_default = 0;
             bll.EditContract(contractEdit, GetLoginUserId());
             Response.Write("<script>alert('编辑合同成功！');window.close();self.opener.location.reload();</script>");
         }
