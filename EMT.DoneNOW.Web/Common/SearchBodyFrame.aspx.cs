@@ -548,7 +548,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "查看发票", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看本批全部发票", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "输出本批全部发票到XML文件", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "清除web service日期数据", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    //contextMenu.Add(new PageContextMenuDto { text = "清除web service日期数据", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "作废发票", click_function = "VoidInvoice()" });
                     contextMenu.Add(new PageContextMenuDto { text = "作废本批次全部发票", click_function = "VoidBatchInvoice()" });
                     contextMenu.Add(new PageContextMenuDto { text = "作废发票并取消审批", click_function = "VoidInvoiceAndUnPost()" });
