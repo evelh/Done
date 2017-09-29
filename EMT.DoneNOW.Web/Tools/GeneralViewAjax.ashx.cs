@@ -83,15 +83,15 @@ namespace EMT.DoneNOW.Web
                 var result = new GeneralBLL().Delete(general_id, user.id, general_table_id);
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
-                    context.Response.Write("删除成功！");
+                    context.Response.Write("success");
                 }
                 else if (result == DTO.ERROR_CODE.SYSTEM)
                 {
-                    context.Response.Write("系统默认不能删除！");
+                    context.Response.Write("system");
                 }
                 else
                 {
-                    context.Response.Write("删除失败！");
+                    context.Response.Write("error");
                 }
             }
         }

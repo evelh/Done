@@ -24,6 +24,9 @@ namespace EMT.DoneNOW.Web
             if (!IsPostBack) {
                 if (id > 0) {
                     name = gbll.GetGeneralTableName(id);
+                    if (name == "商机扩展字段") {
+                        name = "销售指标度量";
+                    }
                     GeneralList = new GeneralBLL().GetGeneralList(id);
                 }                   
                 GetMenus();

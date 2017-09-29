@@ -18,41 +18,46 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt64(Request.QueryString["id"]);
-            if (id > 0) {
-                winreason = new GeneralBLL().GetSingleGeneral(id);
-                if (winreason == null)
+            if (!IsPostBack) {
+                if (id > 0)
                 {
-                    Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
+                    winreason = new GeneralBLL().GetSingleGeneral(id);
+                    if (winreason == null)
+                    {
+                        Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
+                    }
+                    else
+                    {
+                        this.Name.Text = winreason.name.ToString();
+                        if (winreason.remark != null && !string.IsNullOrEmpty(winreason.remark.ToString()))
+                        {
+                            this.Description.Text = winreason.remark.ToString();
+                        }
+                        if (Convert.ToInt32(winreason.is_active) > 0)
+                        {
+                            this.Active.Checked = true;
+                        }
+                        else {
+                            this.Active.Checked = false;
+                        }
+                    }
                 }
-                else
-                {
-                    this.Name.Text = winreason.name.ToString();
-                    if (winreason.remark != null && !string.IsNullOrEmpty(winreason.remark.ToString()))
-                    {
-                        this.Description.Text = winreason.remark.ToString();
-                    }
-                    if (Convert.ToInt32(winreason.is_active)>0)
-                    {
-                        this.Active.Checked = true;
-                    }
+                else {
+                    this.Active.Checked = true;
                 }
             }
+           
         }
         protected void Save_Close_Click(object sender, EventArgs e)
         {
             if (save_deal())
             {
-                Response.Write("<script>alert('赢得商机原因添加成功！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>window.close();self.opener.location.reload();</script>");
             }
-            else
-            {
-                Response.Write("<script>alert('赢得商机原因添加失败！');window.close();self.opener.location.reload();</script>");
-            }
-
         }
         protected void Cancel_Click(object sender, EventArgs e)
         {
-            Response.Write("<script>window.close();self.opener.location.reload();</script>");
+            Response.Write("<script>window.close();</script>");
         }
         private bool save_deal()
         {
@@ -63,7 +68,7 @@ namespace EMT.DoneNOW.Web
             winreason.name = this.Name.Text.Trim().ToString();
             if (!string.IsNullOrEmpty(this.Description.Text.Trim()))
             {
-                winreason.name = this.Description.Text.Trim().ToString();
+                winreason.remark = this.Description.Text.Trim().ToString();
             }
             if (this.Active.Checked)
             {
@@ -79,6 +84,7 @@ namespace EMT.DoneNOW.Web
                 var result = sobll.Update(winreason, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
+                    Response.Write("<script>alert('关闭商机原因修改成功！');</script>");
                     return true;
                 }
                 else if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失
@@ -98,6 +104,7 @@ namespace EMT.DoneNOW.Web
                 var result = sobll.Insert(winreason, GetLoginUserId());
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
+                    Response.Write("<script>alert('关闭商机原因添加成功！');</script>");
                     return true;
                 }
                 else if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失

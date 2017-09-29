@@ -34,7 +34,7 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                         <tr>
-                            <td width="30%" class="FieldLabels">Name
+                            <td width="30%" class="FieldLabels">名称
                         <span class="errorSmall">*</span>
                                 <div>
                                     <asp:TextBox ID="Name" runat="server"></asp:TextBox>
@@ -42,7 +42,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td width="30%" class="FieldLabels">Description
+                            <td width="30%" class="FieldLabels">描述
                         <div>
                             <asp:TextBox ID="Description" runat="server"></asp:TextBox>
                         </div>
@@ -52,7 +52,7 @@
                             <td width="30%" class="FieldLabels">
                                 <div>
                                     <asp:CheckBox ID="Active" runat="server" />
-                                    active
+                                    激活
                                 </div>
                             </td>
                         </tr>

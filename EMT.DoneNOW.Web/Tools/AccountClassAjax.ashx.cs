@@ -37,15 +37,15 @@ namespace EMT.DoneNOW.Web
                 var result = new AccountClassBLL().Delete(class_id,user.id);
                 if (result==DTO.ERROR_CODE.SUCCESS)
                 {
-                    context.Response.Write("删除成功！");
+                    context.Response.Write("success");
                 }
                 else if(result==DTO.ERROR_CODE.SYSTEM)
                 {
-                    context.Response.Write("系统默认不能删除！");
+                    context.Response.Write("system");
                 }
                 else
                 {
-                    context.Response.Write("删除失败！");
+                    context.Response.Write("error");
                 }
             }
         }
@@ -71,7 +71,7 @@ namespace EMT.DoneNOW.Web
                     context.Response.Write("system");
                 }
                 else if (result==DTO.ERROR_CODE.ACCOUNT_TYPE_USED) {
-                    context.Response.Write("有"+n+"个客户关联此客户类别。如果删除，则相关客户上的客户类别信息将会被清空，请选择操作：删除、停用、取消。点击确认，则进行删除！");
+                    context.Response.Write("有"+n+"个客户关联此客户类别。如果删除，则相关客户上的客户类别信息将会被清空。点击确认，则进行删除！");
                 }
                 else
                 {

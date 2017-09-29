@@ -14,6 +14,7 @@ namespace EMT.DoneNOW.Web
         protected int id;
         protected string number;
         protected string account;
+        protected string date=string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!int.TryParse(Request.QueryString["id"], out id)) {
@@ -22,6 +23,8 @@ namespace EMT.DoneNOW.Web
             var invoice = new ctt_invoice_dal().FindNoDeleteById(id);
             number = invoice.invoice_no;
             account = new crm_account_dal().FindNoDeleteById(invoice.account_id).name;
+            if(invoice.paid_date!=null)
+            date = invoice.paid_date.ToString().Substring(0,10).Replace("/","-");
         }
 
         protected void Save_Close_Click(object sender, EventArgs e)
@@ -35,7 +38,7 @@ namespace EMT.DoneNOW.Web
             }
             else
             {
-                Response.Write("<script>alert('发票编号修改失败！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>alert('发票修改失败！');window.close();self.opener.location.reload();</script>");
             }
 
         }

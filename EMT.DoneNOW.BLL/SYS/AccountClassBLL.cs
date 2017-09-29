@@ -34,7 +34,7 @@ namespace EMT.DoneNOW.BLL
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }
-            var cla = _dal.FindSignleBySql<d_account_classification>($"select * from d_account_classification where name={data.name} and delete_time=0");
+            var cla = _dal.FindSignleBySql<d_account_classification>($"select * from d_account_classification where name='{data.name}' and delete_time=0");
             if (cla != null) {
                 return ERROR_CODE.EXIST;
             }
@@ -70,7 +70,7 @@ namespace EMT.DoneNOW.BLL
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }
-            var cla = _dal.FindSignleBySql<d_account_classification>($"select * from d_account_classification where name={data.name} and delete_time=0");
+            var cla = _dal.FindSignleBySql<d_account_classification>($"select * from d_account_classification where name='{data.name}' and delete_time=0");
             if (cla != null&&cla.id!=data.id)
             {
                 return ERROR_CODE.EXIST;

@@ -90,6 +90,31 @@
                 return false;
             }
         }
+        $("#Sort_Order").change(function () {
+            if ((/^\d{1,3}\.?\d{0,2}$/.test(this.value)) == false)
+            {
+                alert('请输入数字！');
+                this.value = '';
+                this.focus();
+                return false;
+            }
+            var f = Math.round(this.value * 100) / 100;
+            var s = f.toString();
+            var rs = s.indexOf('.');
+            if (rs < 0) {
+                rs = s.length;
+                s += '.';
+            }
+            while (s.length <= rs + 2) {
+                s += '0';
+            }
+            if (s.length > 6) {
+                alert('您输入的数字过大，只可以输入三位整数！');
+                this.value = '';
+                this.focus();
+                return false;
+            }
+        });
     </script>
 </body>
 </html>

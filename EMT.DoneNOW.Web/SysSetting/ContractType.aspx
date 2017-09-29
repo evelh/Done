@@ -68,9 +68,9 @@
     <script src="../Scripts/SysSettingRoles.js"></script>
     <script>
         $("#Save_Close").click(function () {
-            var t = $("#Market_Name").val();
+            var t = $("#Name").val();
             if (t == null || t == '') {
-                alert("请填写合同名称");
+                alert("请填写合同类别名称");
                 return false;
             }
         });

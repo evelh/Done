@@ -440,7 +440,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.Role:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "Inactive()" });
                     contextMenu.Add(new PageContextMenuDto { text = "从全部激活的合同中排除", click_function = "Exclude()" });
@@ -559,7 +559,8 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "NoActive()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
-                    break;                    
+                    break;  
+                    
                 case (long)QueryType.ContractType:
                 case (long)QueryType.OPPORTUNITYAGES:
                 case (long)QueryType.OPPORTUNITYSOURCE:

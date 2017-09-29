@@ -241,7 +241,7 @@ namespace EMT.DoneNOW.BLL
             if (ci != null&&user!=null) {
                 var old = ci;
                 ci.invoice_no = number;
-                ci.invoice_date= DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式
+                ci.paid_date= DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式
                 ci.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 ci.update_user_id = user.id;
                 if (_dal.Update(ci)) {
@@ -258,6 +258,7 @@ namespace EMT.DoneNOW.BLL
                         oper_description = _dal.CompareValue(old,ci),
                         remark = "修改发票的编号和日期"
                     });
+                    return true;
                 }               
             }
             return false;
