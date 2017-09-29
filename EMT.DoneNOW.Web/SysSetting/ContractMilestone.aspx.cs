@@ -27,6 +27,9 @@ namespace EMT.DoneNOW.Web
                 else
                 {
                     this.Name.Text = contract_milestone.name.ToString();
+                    if (contract_milestone.sort_order != null) {
+                        this.SortOrder.Text = contract_milestone.sort_order.ToString();
+                    }
                     if (contract_milestone.is_active > 0)
                     {
                         this.Active.Checked = true;

@@ -2955,7 +2955,17 @@
                  });
              }
          }
- 
+         function Edit() {
+             window.open('../SysSetting/Suffixes.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Add() {
+             window.open('../SysSetting/Suffixes.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function View(id) {
+             window.open('../SysSetting/Suffixes.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+
+
           <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ACTIONTYPE)
         { %>//活动类型
