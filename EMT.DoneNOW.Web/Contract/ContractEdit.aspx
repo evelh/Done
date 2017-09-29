@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../Content/NewConfigurationItem.css" />
 </head>
 <body>
-  <form id="form1" onsubmit="CheckForm()" runat="server">
+  <form id="form1" action="SaveEdit" onsubmit="CheckForm()" runat="server">
     <!--顶部-->
     <div class="TitleBar">
       <div class="Title">
@@ -23,7 +23,7 @@
         <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
           <span class="Icon SaveAndClone"></span>
           <span class="Text">
-            <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" OnClick="SaveClose_Click" /></span>
+            <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" OnClick="SaveClose_Click" style="background: transparent;cursor: pointer;border: none;outline:none;"/></span>
         </li>
         <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
           <span class="Icon Cancel"></span>
@@ -160,7 +160,7 @@
                               <div>
                                 <span style="display: inline-block;">
                                   <span class="txtBlack8Class">
-                                    <input name="" type="checkbox" style="vertical-align: middle;" />
+                                    <input name="MastInput" type="checkbox" style="vertical-align: middle;" />
                                     <label>要求工时输入开始/结束时间</label>
                                   </span>
                                 </span>
@@ -191,7 +191,7 @@
                               <div>
                                 <span style="display: inline-block;">
                                   <span class="txtBlack8Class">
-                                    <input type="checkbox" name="is_sdt_default" style="vertical-align: middle;" />
+                                    <input type="checkbox" name="isSdtDefault" style="vertical-align: middle;" />
                                     <label>默认服务台合同</label>
                                   </span>
                                 </span>
