@@ -1159,10 +1159,10 @@
             window.open("../Contract/ContractEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=950', false);
         }
         function ViewContract() {
-          window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank', 'left=0,top=0,location=no,status=no,width=900,height=950', false);
+          window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank', 'left=0,top=0,location=no,status=no,width=1000,height=950', false);
         }
         function View(id) {
-          window.open("../Contract/ContractView.aspx?id=" + id, '_blank', 'left=0,top=0,location=no,status=no,width=900,height=950', false);
+          window.open("../Contract/ContractView.aspx?id=" + id, '_blank', 'left=0,top=0,location=no,status=no,width=1000,height=950', false);
         }
         function ViewNewWindow() {
           window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank');
@@ -1173,8 +1173,12 @@
                     type: "GET",
                     url: "../Tools/ContractAjax.ashx?act=deleteContract&id=" + entityid,
                     success: function (data) {
+                      if (data=="true"){
                         alert("删除成功");
                         window.location.reload();
+                      } else {
+                        alert("删除失败，合同关联以下对象时不能被删除：项目、工单、合同默认成本、配置项、合同成本、已计费条目、工时、taskfire。")
+                      }
                     }
                 });
             }
@@ -3039,13 +3043,14 @@
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlock
-        || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlockTime)
+        || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlockTime
+        || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlockTicket)
         { %>
         function Edit() {
-          window.open("../Contract/EditRetainerPurchase.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+          window.open("../Contract/EditRetainerPurchase.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=868', false);
         }
         function Add() {
-          window.open("../Contract/AddRetainerPurchase.aspx?id=" + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+          window.open("../Contract/AddRetainerPurchase.aspx?id=" + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=868', false);
         }
         function SetActive() {
 

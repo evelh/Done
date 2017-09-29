@@ -37,7 +37,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String extacctitemid { get; set; }
         [DataMember]
-        public SByte? initialpayment { get; set; }
+        public SByte? is_initial_payment { get; set; }
         [DataMember]
         public Int32? type { get; set; }
 

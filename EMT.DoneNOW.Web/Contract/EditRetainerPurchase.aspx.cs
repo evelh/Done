@@ -31,6 +31,18 @@ namespace EMT.DoneNOW.Web.Contract
 
                 block = bll.GetBlockById(blockId);
                 contract = new ContractBLL().GetContract(block.contract_id);
+                if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+                {
+                    blocktypeName = "时间";
+                }
+                else if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.RETAINER)
+                {
+                    blocktypeName = "费用";
+                }
+                else if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.PER_TICKET)
+                {
+                    blocktypeName = "事件";
+                }
 
                 var dic = bll.GetField();
                 paymentType.DataValueField = "val";
@@ -66,9 +78,25 @@ namespace EMT.DoneNOW.Web.Contract
                 blk.payment_type_id = null;
             else
                 blk.payment_type_id = int.Parse(paymentType.SelectedValue);
-            blk.description = Request.Form["id"];
+            blk.description = Request.Form["note"];
 
             bll.EditPurchase(blk, GetLoginUserId());
+
+            blockId = blk.id;
+            block = bll.GetBlockById(blk.id);
+            contract = new ContractBLL().GetContract(block.contract_id);
+            if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+            {
+                blocktypeName = "时间";
+            }
+            else if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.RETAINER)
+            {
+                blocktypeName = "费用";
+            }
+            else if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.PER_TICKET)
+            {
+                blocktypeName = "事件";
+            }
             Response.Write("<script>alert('修改预付成功！');window.close();self.opener.location.reload();</script>");
         }
     }

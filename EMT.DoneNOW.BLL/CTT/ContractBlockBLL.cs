@@ -111,6 +111,7 @@ namespace EMT.DoneNOW.BLL
                     // 新增预付
                     ctt_contract_block block = new ctt_contract_block();
                     block.id = dal.GetNextIdCom();
+                    block.contract_id = dto.contractId;
                     block.is_billed = 0;
                     block.is_paid = 0;
                     block.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -120,12 +121,12 @@ namespace EMT.DoneNOW.BLL
 
                     block.start_date = dtBlockStart;
                     block.end_date = dtBlockStart.AddMonths(1).AddDays(-1);
-                    if (dto.type==1)
+                    if (dto.type == 1 || dto.type == 3)
                     {
                         block.quantity = ((decimal)dto.hours) * 10000 / 10000;
                         block.rate = ((decimal)dto.hourlyRate) * 100 / 100;
                     }
-                    else if(dto.type == 2)
+                    else if (dto.type == 2)
                     {
                         block.quantity = 1;
                         block.rate = (decimal)dto.amount;
@@ -184,6 +185,12 @@ namespace EMT.DoneNOW.BLL
                     cost.unit_price = block.rate;
                     cost.contract_block_id = block.id;
                     cost.extended_price = (cost.quantity * cost.unit_price) * 100 / 100;
+                    if (dto.type == 1)
+                        cost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.PREPAID_TIME;
+                    else if (dto.type == 2)
+                        cost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.PREPAID_COST;
+                    else if (dto.type == 3)
+                        cost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.EVENTS;
 
                     costDal.Insert(cost);
                     OperLogBLL.OperLogAdd<ctt_contract_cost>(cost, cost.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_COST, "新增合同成本");
@@ -200,6 +207,7 @@ namespace EMT.DoneNOW.BLL
                 // 新增预付
                 ctt_contract_block block = new ctt_contract_block();
                 block.id = dal.GetNextIdCom();
+                block.contract_id = dto.contractId;
                 block.is_billed = 0;
                 block.is_paid = 0;
                 block.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -208,7 +216,7 @@ namespace EMT.DoneNOW.BLL
                 block.update_time = block.create_time;
                 block.start_date = dto.startDate;
                 block.end_date = (DateTime)dto.endDate;
-                if (dto.type == 1)
+                if (dto.type == 1 || dto.type == 3)
                 {
                     block.quantity = ((decimal)dto.hours) * 10000 / 10000;
                     block.rate = ((decimal)dto.hourlyRate) * 100 / 100;
@@ -251,6 +259,12 @@ namespace EMT.DoneNOW.BLL
                 cost.unit_price = block.rate;
                 cost.contract_block_id = block.id;
                 cost.extended_price = (cost.quantity * cost.unit_price) * 100 / 100;
+                if (dto.type == 1)
+                    cost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.PREPAID_TIME;
+                else if (dto.type == 2)
+                    cost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.PREPAID_COST;
+                else if (dto.type == 3)
+                    cost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.EVENTS;
 
                 costDal.Insert(cost);
                 OperLogBLL.OperLogAdd<ctt_contract_cost>(cost, cost.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_COST, "新增合同成本");
@@ -274,7 +288,7 @@ namespace EMT.DoneNOW.BLL
                 cost.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 cost.delete_user_id = userId;
                 costDal.Update(cost);
-                OperLogBLL.OperLogDelete<ctt_contract_cost>(cost, cost.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_COST);
+                OperLogBLL.OperLogDelete<ctt_contract_cost>(cost, cost.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_COST, "删除合同预付");
             }
 
             var block = dal.FindById(blockId);
@@ -283,7 +297,7 @@ namespace EMT.DoneNOW.BLL
             block.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             block.delete_user_id = userId;
             dal.Update(block);
-            OperLogBLL.OperLogDelete<ctt_contract_block>(block, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK);
+            OperLogBLL.OperLogDelete<ctt_contract_block>(block, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "删除合同预付");
             return true;
         }
 

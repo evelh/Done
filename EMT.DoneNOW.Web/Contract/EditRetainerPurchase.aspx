@@ -47,12 +47,14 @@
               </td>
             </tr>
             <tr style="overflow: hidden;">
-              <td class="FieldLabels" style="vertical-align: top; float: left;">初次预付<%=blocktypeName %>的开始日期<span class="errorSmall">*</span>
+              <td class="FieldLabels" style="vertical-align: top; float: left;">开始日期<span class="errorSmall">*</span>
                 <div>
                   <input type="text" value="<%=block.start_date.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" name="startDate" class="Wdate" style="width: 100px;" />
                 </div>
               </td>
-              <td class="FieldLabels" style="float: left; padding-left: 40px;">
+            </tr>
+            <tr style="overflow: hidden;">
+              <td class="FieldLabels" style="vertical-align: top; float: left;">结束日期<span class="errorSmall">*</span>
                 <div>
                   <input type="text" value="<%=block.end_date.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" name="endDate" class="Wdate" style="width: 100px;" />
                 </div>

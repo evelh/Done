@@ -183,6 +183,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.CONTRACT_BLOCK_TIME:
                     addBtn = "新增预付时间";
                     break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_BLOCK_TICKET:
+                    addBtn = "新增事件";
+                    break;
                 case (int)DicEnum.QUERY_CATE.INVOICE_HISTORY:
                     addBtn = "历史发票";
                     break;
@@ -586,6 +589,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.ContractBlock:
                 case (long)QueryType.ContractBlockTime:
+                case (long)QueryType.ContractBlockTicket:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "SetInactive()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "SetActive()" });

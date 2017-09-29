@@ -176,6 +176,7 @@
     <Content Include="Contract\AddContractRate.aspx" />
     <Content Include="Contract\AddDefaultCharge.aspx" />
     <Content Include="Contract\AddRetainerPurchase.aspx" />
+    <Content Include="Contract\AddService.aspx" />
     <Content Include="Contract\AdjustExtendedPrice.aspx" />
     <Content Include="Contract\ApproveAndPost.aspx" />
     <Content Include="Contract\ApproveChargeSelect.aspx" />
@@ -190,6 +191,7 @@
     <Content Include="Contract\ContractView.aspx" />
     <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
+    <Content Include="Images\Recentindex.png" />
     <Content Include="Images\ServiceSelector.png" />
     <Content Include="Images\Loading.gif" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
@@ -904,6 +906,13 @@
     </Compile>
     <Compile Include="Contract\AddRetainerPurchase.aspx.designer.cs">
       <DependentUpon>AddRetainerPurchase.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\AddService.aspx.cs">
+      <DependentUpon>AddService.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AddService.aspx.designer.cs">
+      <DependentUpon>AddService.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\AdjustExtendedPrice.aspx.cs">
       <DependentUpon>AdjustExtendedPrice.aspx</DependentUpon>

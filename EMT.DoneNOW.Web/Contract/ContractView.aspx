@@ -91,7 +91,7 @@
                 <li class="MenuLink"><a href="ContractView.aspx?type=roleRate&id=<%=contract.id %>">费率</a></li>
                 <%} %>
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) { %>
-                <li class="MenuLink">服务-未实现</li>
+                <li class="MenuLink"><a href="ContractView.aspx?type=service&id=<%=contract.id %>">服务</a></li>
                 <%} %>
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.FIXED_PRICE) { %>
                 <li class="MenuLink"><a href="ContractView.aspx?type=milestone&id=<%=contract.id %>">里程碑</a></li>
@@ -105,7 +105,7 @@
                 <li class="MenuLink"><a href="ContractView.aspx?type=rate&id=<%=contract.id %>">预付时间系数</a></li>
                 <%} %>
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
-                <li class="MenuLink">采购工单-暂未实现</li>
+                <li class="MenuLink"><a href="ContractView.aspx?type=blockTicket&id=<%=contract.id %>">事件</a></li>
                 <%} %>
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS
                         ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER
@@ -135,7 +135,7 @@
 <script>
     <%
     var type = Request.QueryString["type"]; ;
-    if (type == "item") {%>
+    if (type == "item" || type == "service") {%>
     $("#viewContractIframe").css("height", "45%");
     $("#second").css("height", "48%");
     <%} %>

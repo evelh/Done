@@ -113,7 +113,7 @@
                                 <div class="checkbox" style="padding-bottom: 10px;">
                                     <input type="radio" name="EndDateLastOrNumbers" value="0" disabled="disabled" id="Radio4"/>
                                     <span>预付<%=blocktypeName %>数量</span>
-                                    <span class="greyColor">*</span>
+                                    <span class="errorSmall">*</span>
                                     <input type="text" name="purchaseNum" style="width:100px;margin-left: 26px;" disabled="disabled" id="Text2"/>
                                 </div>
                             </div>
