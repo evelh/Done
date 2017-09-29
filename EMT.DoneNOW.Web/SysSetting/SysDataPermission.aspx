@@ -10,12 +10,12 @@
      <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <title>被保护数据权限设置</title>
 </head>
-<body>
+<body style="background-color:white">
     <form id="form1" runat="server" method="post">
         <div>
              <!--顶部-->
     <div class="TitleBar">
-        <div class="Title">
+        <div class="Title" style="top:5px">
   <div class="TitleBarNavigationButton">
                     <a class="Button ButtonIcon NormalState" id="black"  href="../SysSetting/SysAdmin" target="PageFrame"><img src="../Images/move-left.png"/></a>
                 </div>

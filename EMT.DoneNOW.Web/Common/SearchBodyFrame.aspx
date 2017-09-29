@@ -1741,6 +1741,8 @@
             }
         })
         function Add() {
+            $("#BackgroundOverLay").show();
+            $("#LoadingIndicator").show();
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1949,7 +1951,6 @@
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
                 window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-                alert("审批处理结束！");
             } else {
                 alert("请选择需要审批的数据！");
             }

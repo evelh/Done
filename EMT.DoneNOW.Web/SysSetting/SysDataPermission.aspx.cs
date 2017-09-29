@@ -65,8 +65,8 @@ namespace EMT.DoneNOW.Web.SysSetting
                         continue;
                     }                   
                 }
-
             }
+            Response.Write("<script>alert('保存成功！');</script>");
         }
 
         protected void Cancle_Click(object sender, EventArgs e)

@@ -139,7 +139,7 @@ namespace EMT.DoneNOW.BLL
             //合同服务调整
             if (ccsa != null)
             {
-                cad.type_id = (int)ACCOUNT_DEDUCTION_TYPE.SERVICE_ADJUST;//类型（合同服务调整）
+                cad.type_id = (int)ACCOUNT_DEDUCTION_TYPE.SERVICE_ADJUST;//类型
                 cad.object_id = id;//对象
                 cad.contract_id = ccsa.contract_id;//合同id
                 cad.extended_price = ccsa.adjust_prorated_price_change;//总收入
@@ -152,7 +152,7 @@ namespace EMT.DoneNOW.BLL
             //合同服务周期
             if (ccsp != null)
             {
-                cad.type_id = (int)ACCOUNT_DEDUCTION_TYPE.SERVICE_ADJUST;//类型（合同服务调整）
+                cad.type_id = (int)ACCOUNT_DEDUCTION_TYPE.SERVICE;//类型（合同服务调整）
                 cad.object_id = id;//对象
                 cad.contract_id = ccsp.contract_id;//合同id
                 cad.extended_price = ccsp.period_adjusted_price;//总收入
