@@ -15,7 +15,7 @@
         <!--顶部-->
         <div class="TitleBar">
             <div class="Title">
-                <span class="text1">角色权限</span>
+                <span class="text1">安全等级</span>
                 <span class="text2">
                     <!--权限模板名称-->
                     <%=SLName%></span>

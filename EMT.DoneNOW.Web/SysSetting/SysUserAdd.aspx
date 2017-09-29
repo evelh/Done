@@ -79,12 +79,10 @@
                                 </td>
                                 <td style="height: 100%; cursor: pointer;">
                                     <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">人力资源
-                                    <span style="color: red;">*</span>
                                     </span>
                                 </td>
                                 <td style="height: 100%; cursor: pointer;">
                                     <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">审批人
-                                    <span style="color: red;">*</span>
                                     </span>
                                 </td>
                                <%-- <td style="height: 100%; cursor: pointer;">
@@ -314,7 +312,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="DivSection">
+                            <div class="DivSection" style="display:none">
                                 <table cellpadding="0" cellspacing="0">
                                     <tbody>
                                         <tr>

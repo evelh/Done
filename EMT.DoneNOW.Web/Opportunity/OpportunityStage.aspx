@@ -85,10 +85,6 @@
                 alert("请输入商机阶段的名称！");
                 return false;
             }
-            if ($("#Sort_Order").val() == null || $("#Sort_Order").val() == '') {
-                alert("请输入商机阶段的Sort_Order！");
-                return false;
-            }
         }
         $("#Sort_Order").change(function () {
             if ((/^\d{1,3}\.?\d{0,2}$/.test(this.value)) == false)

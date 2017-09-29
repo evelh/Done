@@ -101,7 +101,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                 foreach (var i in reslist)
                 {
                     table.Append("<tr>");
-                    table.Append("<td class=\"Command\" style=\"text-align:center;width:30px; \"><img src = \"../Images/edit.png\" style=\"vertical-align:middle;\"/></td>");
+                    table.Append("<td class=\"Command\" style=\"text-align:center;width:30px; \"></td>");
                     table.Append(" <td class=\"Text\">" + i.name + "</td>");
                     if (i.is_active > 0)
                     {

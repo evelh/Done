@@ -28,7 +28,7 @@
             <div class="TitleBar">
                 <div class="Title">
                     <div class="TitleBarNavigationButton" style="margin-top:0;">
-                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/SysSetting/SysAdmin.aspx" CssClass="buttons"><img src="../Images/move-left.png"/></asp:HyperLink>                       
+                        <span id="HyperLink1" class="buttons" onclick=" window.history.go(-1);"><img src="../Images/move-left.png"/></span>                       
                     </div> 
                     <span class="text1"><%=name %></span>
                     <a href="###" class="collection"></a>
@@ -398,7 +398,6 @@
     <script src="../Scripts/ClassificationIcons.js"></script>
     <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
        <script>
-
                <%if (id == (int)GeneralTableEnum.ACTION_TYPE)
            {%>
            function Delete() {

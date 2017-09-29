@@ -2479,6 +2479,9 @@
          <%}//历史发票查询
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Invoice_History)
         {%>
+        function Add() {
+            alert("暂未实现");
+        }
         //修改发票
         function EditInvoice() {
             window.open('../Invoice/InvoiceNumberAndDateEdit.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceHistoryEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
@@ -2672,6 +2675,7 @@
                              alert("删除失败！");
                          } else {
                              alert(data);
+                             history.go(0);
                          }
                      }
                  });

@@ -67,13 +67,6 @@
         <script src="../Scripts/SysSettingRoles.js"></script>
        <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
             <script>
-                /*$(function () {
-                    var myDate = new Date();
-                    var dd = myDate.toLocaleDateString();
-                    var reg = new RegExp("/", "g");//g,表示全部替换。
-                    dd = dd.replace(reg, "-");
-                    $("#pay_date").val(dd);
-                });*/
                 function save_deal() {
                     var k = $("#pay_date").val();
                     if (k == null || k == '') {
