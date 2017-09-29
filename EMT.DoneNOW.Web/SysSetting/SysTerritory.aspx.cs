@@ -38,6 +38,7 @@ namespace EMT.DoneNOW.Web
                     else
                     {
                         this.Territory_Name.Text = a.name.ToString();
+                        if(a.parent_id!=null)
                         this.Region.SelectedValue = a.parent_id.ToString();
                         if (a.remark != null && !string.IsNullOrEmpty(a.remark.ToString()))
                         {
@@ -81,6 +82,7 @@ namespace EMT.DoneNOW.Web
                 terr= new GeneralBLL().GetSingleGeneral(id);
             }
             terr.name = this.Territory_Name.Text.Trim().ToString();
+            if (Convert.ToInt32(this.Region.SelectedValue.ToString())>0)
             terr.parent_id = Convert.ToInt32(this.Region.SelectedValue.ToString());
             if (!string.IsNullOrEmpty(this.Territory_Description.Text.Trim().ToString())) {
                 terr.remark= this.Territory_Description.Text.Trim().ToString();

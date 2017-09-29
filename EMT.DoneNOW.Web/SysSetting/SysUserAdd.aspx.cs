@@ -268,20 +268,17 @@ namespace EMT.DoneNOW.Web.SysSetting
                 param.sys_res.is_required_to_submit_timesheets = 0;
             }
             param.sys_res.email_type_id=Convert.ToInt32(this.EmailType.SelectedValue.ToString());//保存邮件类型
-            param.sys_res.date_display_format_id = Convert.ToInt32(this.DateFormat.SelectedValue);
-            param.sys_res.number_display_format_id = Convert.ToInt32(this.NumberFormat.SelectedValue);
-
+            //param.sys_res.date_display_format_id = Convert.ToInt32(this.DateFormat.SelectedValue);
+            //param.sys_res.number_display_format_id = Convert.ToInt32(this.NumberFormat.SelectedValue);
             if (Convert.ToInt32(this.Outsource_Security.SelectedValue) > 0)
             {
                 param.sys_res.outsource_security_role_type_id = Convert.ToInt32(this.Outsource_Security.SelectedValue);
             }
-
-
-            if (Convert.ToInt32(this.TimeFormat.SelectedValue) > 0)
-                param.sys_res.time_display_format_id = Convert.ToInt32(this.TimeFormat.SelectedValue);
-
-
-
+            //if (Convert.ToInt32(this.TimeFormat.SelectedValue) > 0)
+            //    param.sys_res.time_display_format_id = Convert.ToInt32(this.TimeFormat.SelectedValue);
+            param.sys_res.date_display_format_id = 553;
+            param.sys_res.number_display_format_id = 563;
+            param.sys_res.time_display_format_id = 562;
             if (Convert.ToInt32(this.Sex.SelectedValue) > 0)
             {
                 param.sys_res.sex = Convert.ToInt32(this.Sex.SelectedValue);

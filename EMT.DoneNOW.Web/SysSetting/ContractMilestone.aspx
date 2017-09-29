@@ -68,7 +68,7 @@
     <script src="../Scripts/SysSettingRoles.js"></script>
     <script>
         $("#Save_Close").click(function () {
-            var t = $("#Market_Name").val();
+            var t = $("#Name").val();
             if (t == null || t == '') {
                 alert("请填写里程碑状态名称");
                 return false;
