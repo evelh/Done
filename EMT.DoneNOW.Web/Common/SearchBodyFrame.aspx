@@ -210,14 +210,28 @@
                     %>
                     <li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
                     <%}
-                        } %>
+                        } else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) {%>
+                  <li onclick="AddService()"><i style="background-image: url(../Images/new.png);"></i><span>新增服务</span></li>
+                  <li onclick="AddServiceBundle()"><i style="background-image: url(../Images/new.png);"></i><span>新增服务包</span></li>
+                  <li onclick="ApplyDiscount()"><span>应用全部折扣</span></li>
+                  <%}%>
                     <li><i style="background-image: url(../Images/print.png);"></i></li>
                     <li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
                     <li><i style="background-image: url(../Images/export.png);"></i></li>
                 </ul>
+              <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
+              <div style="margin-top:11px;">
+                <span style="margin-left:60px;">显示数据</span><input type="text" style="margin-left:16px;" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
+              </div>
+              <%} %>
                 <%if (queryResult != null && queryResult.count > 0)
                     { %>
                 <div class="page fl">
+
+                  <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
+                <span>显示数据</span><input type="text" style="margin-left:16px;margin-right:30px;" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
+              <%} %>
+
                     <%
                         int indexFrom = queryResult.page_size * (queryResult.page - 1) + 1;
                         int indexTo = queryResult.page_size * queryResult.page;
@@ -252,8 +266,7 @@
             </div>
         </div>
     </form>
-    <%if (queryResult != null)
-        { %>
+    <%if (queryResult != null) { %>
 
     <div class="searchcontent" id="searchcontent" style="margin-top: 56px; min-width: <%=tableWidth%>px; overflow: hidden;">
         <table border="" cellspacing="0" cellpadding="0" style="overflow: scroll; width: 100%; height: 100%;">
@@ -3219,7 +3232,7 @@
                     url: "../Tools/ContractAjax.ashx?act=DeleteRate&rateId=" + entityid,
                     async: false,
                     success: function (data) {
-                        window.reload();
+                      history.go(0);
                     }
                 })
             }
@@ -3240,7 +3253,7 @@
                     success: function (data) {
                       if (data == "True") {
                             alert('删除成功');
-                            window.reload();
+                            history.go(0);
                         } else {
                             alert("删除失败，已计费状态下不能删除");
                         }
@@ -3296,7 +3309,31 @@
          function View(id) {
              window.open('../SysSetting/ContractType.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
          }
-         <%}
+         <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
+         function AddService() {
+           }
+         function AddServiceBundle() {
+           }
+         function ApplyDiscount() {
+           }
+         function Delete() {
+           if (confirm("所有的合同服务周期和交易历史将会被删除，是否继续?")) {
+            // $.ajax({
+            //  type: "GET",
+            //  url: "../Tools/ContractAjax.ashx?act=DeleteMilestone&milestoneId=" + entityid,
+            //  async: false,
+            //  success: function (data) {
+            //    if (data == "True") {
+            //      alert('删除成功');
+            //      window.reload();
+            //    } else {
+            //      alert("删除失败，已计费状态下不能删除");
+            //    }
+            //  }
+            //})
+          }
+        }
+        <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.SUFFIXES)
         { %>//姓名后缀
          function Edit() {
@@ -3328,5 +3365,6 @@
             //alert("暂未实现");
         }
     </script>
+  <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 </body>
 </html>

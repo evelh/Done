@@ -143,7 +143,6 @@
                                                         <%
                                                             } %>
                                                     </select>
-                                                    <img src="../Images/add.png" style="vertical-align: middle;cursor: pointer;" />
                                                 </div>
                                             </td>
                                         </tr>

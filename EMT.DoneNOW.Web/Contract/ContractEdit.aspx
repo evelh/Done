@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../Content/NewConfigurationItem.css" />
 </head>
 <body>
-  <form id="form1" action="SaveEdit" onsubmit="CheckForm()" runat="server">
+  <form id="form1" onsubmit="CheckForm()" runat="server">
     <!--顶部-->
     <div class="TitleBar">
       <div class="Title">
@@ -182,8 +182,6 @@
                                     <%
                                         } %>
                                   </select>
-                                  <span style="display: inline-block">
-                                    <img src="../Images/add.png" style="cursor: pointer; vertical-align: middle;" /></span>
                                 </span>
                               </div>
                             </td>
@@ -216,6 +214,7 @@
             </div>
             <span class="lblNormalClass">日期和计费</span>
           </div>
+          <%if (contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) { %>
           <div class="Content">
             <table class="Neweditsubsection" style="width: 720px;" cellpadding="0" cellspacing="0">
               <tbody>
@@ -242,13 +241,13 @@
                           <tr>
                             <td class="FieldLabel">开始日期
                               <div>
-                                <input type="text" disabled="disabled" value="<%=contract.contract.start_date.ToShortDateString() %>" onclick="WdatePicker()" class="Wdate" />
+                                <input type="text" disabled="disabled" value="<%=contract.contract.start_date.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
                               </div>
                             </td>
                             <td class="FieldLabel">初始费用计费代码
                               <div>
                                 <input type="hidden" id="SetupCodeHidden" value="<%=contract.contract.setup_fee_cost_code_id %>" name="setup_fee_cost_code_id" />
-                                <input type="text" id="SetupCode" style="width: 265px;" value="<%=contract.costCode %>" />
+                                <input type="text" id="SetupCode" disabled="disabled" style="width: 265px;" value="<%=contract.costCode %>" />
                                 <span style="display: inline-block">
                                   <img src="../Images/data-selector.png" style="cursor: pointer; vertical-align: middle;" /></span>
                               </div>
@@ -258,22 +257,22 @@
                             <td class="FieldLabel">
                               <span style="display: inline-block; float: left; padding: 26px 0 0 0;">
                                 <div style="vertical-align: middle">
-                                  <input type="radio" onclick="getRadio(1)" name="date" <%if (contract.contract.occurrences == null) { %> checked="checked" <%} %> />
+                                  <input type="radio" onclick="getRadio(1)" value="1" name="date" <%if (contract.contract.occurrences == null) { %> checked="checked" <%} %> />
                                   结束日期
                                 </div>
                               </span>
                               <span style="display: inline-block; float: left; padding-left: 90px; padding-top: 18px;">
                                 <div>
-                                  <input type="text" id="end_date" name="end_date" <%if (contract.contract.occurrences == null) { %> value="<%=contract.contract.end_date.ToString("yyyy-MM-dd") %>" <%} %> onclick="WdatePicker()" class="Wdate" />
+                                  <input type="text" id="end_date" name="end_date" <%if (contract.contract.occurrences == null) { %> value="<%=contract.contract.end_date.ToString("yyyy-MM-dd") %>" <%}else{ %> disabled="disabled" <%} %> onclick="WdatePicker()" class="Wdate" />
                                 </div>
                               </span>
                             </td>
                             <td class="FieldLabel">计费客户
                               <div>
-                                <input type="hidden" name="bill_to_account_id" value="<%=contract.contract.bill_to_account_id %>" />
-                                <input type="text" style="width: 265px;" value="<%=contract.billToAccount %>" />
+                                <input type="hidden" id="companyNameHidden" name="bill_to_account_id" value="<%=contract.contract.bill_to_account_id %>" />
+                                <input type="text" style="width: 265px;" id="companyName" disabled="disabled" value="<%=contract.billToAccount %>" />
                                 <span style="display: inline-block">
-                                  <img src="../Images/data-selector.png" style="cursor: pointer; vertical-align: middle;" /></span>
+                                  <img src="../Images/data-selector.png" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=companyName&callBack=InitContact', '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false)" style="cursor: pointer; vertical-align: middle;" /></span>
                               </div>
                             </td>
                           </tr>
@@ -281,13 +280,13 @@
                             <td class="FieldLabel">
                               <span style="display: inline-block; float: left; padding: 26px 0 0 0;">
                                 <div style="vertical-align: middle">
-                                  <input type="radio" onclick="getRadio(2)" name="date" <%if (contract.contract.occurrences != null) { %> checked="checked" <%} %> />
+                                  <input type="radio" onclick="getRadio(2)" value="0" name="date" <%if (contract.contract.occurrences != null) { %> checked="checked" <%} %> />
                                   结束于(服务周期)
                                 </div>
                               </span>
                               <span style="display: inline-block; float: left; padding-left: 45px; padding-top: 18px;">
                                 <div>
-                                  <input type="text" id="occurrences" name="occurrences" <%if (contract.contract.occurrences != null) { %> value="<%=contract.contract.occurrences %>" <%} %> disabled="disabled" />
+                                  <input type="text" id="occurrences" name="occurrences" <%if (contract.contract.occurrences != null) { %> value="<%=contract.contract.occurrences %>" <%} else{%>  disabled="disabled" <%} %> />
                                 </div>
                               </span>
                             </td>
@@ -319,6 +318,100 @@
               </tbody>
             </table>
           </div>
+          <%} else { %>
+          <div class="Content">
+            <table class="Neweditsubsection" style="width: 720px;" cellpadding="0" cellspacing="0">
+              <tbody>
+                <tr>
+                  <td>
+                    <div>
+                      <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                        <tbody>
+                          <tr>
+                            <td class="FieldLabel">开始日期<span style="color: Red;">*</span>
+                              <div>
+                                <input type="text" name="start_date" value="<%=contract.contract.start_date.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
+                              </div>
+                            </td>
+                            <td class="FieldLabel">结束日期<span style="color: Red;">*</span>
+                              <div>
+                                <input type="text" name="end_date" value="<%=contract.contract.end_date.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
+                              </div>
+                            </td>
+                            <td class="FieldLabel">计费客户
+                              <div>
+                                <input type="hidden" id="companyNameHidden" name="bill_to_account_id" value="<%=contract.contract.bill_to_account_id %>" />
+                                <input type="text" style="width: 265px;" id="companyName" disabled="disabled" value="<%=contract.billToAccount %>" />
+                                <span style="display: inline-block">
+                                  <img src="../Images/data-selector.png" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=companyName&callBack=InitContact', '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false)" style="cursor: pointer; vertical-align: middle;" /></span>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="FieldLabel">采购订单号
+                              <div>
+                                <input type="text" name="purchase_order_no" style="width: 265px;" value="<%=contract.contract.purchase_order_no %>" />
+                              </div>
+                            </td>
+                            <td class="FieldLabel">合同通知联系人
+                              <div>
+                                <asp:DropDownList ID="bill_to_contact_id1" CssClass="txtBlack8Class" Width="265" runat="server"></asp:DropDownList>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="FieldLabel">预估收入
+                              <div>
+                                <input type="text" style="width: 130px;" name="dollars" value="<%=contract.contract.dollars %>" />
+                              </div>
+                            </td>
+                            <td class="FieldLabel">预估成本
+                              <div>
+                                <input type="text" style="width: 130px;" name="cost" value="<%=contract.contract.cost %>" />
+                              </div>
+                            </td>
+                            <%if (contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS) { %>
+                            <td class="FieldLabel">&nbsp;
+                              <div>
+                                <span style="display: inline-block;">
+                                  <span class="txtBlack8Class">
+                                    <input type="checkbox" name="isEnableOrverage" <%if (contract.contract.enable_overage_billing_rate != null && contract.contract.enable_overage_billing_rate == 1) { %> checked="checked" <%} %> style="vertical-align: middle;" />
+                                    <label>支持超支费率</label>
+                                  </span>
+                                </span>
+                              </div>
+                            </td>
+                            <%} else if (contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) { %>
+                            <td class="FieldLabel">超额计费率
+                              <div>
+                                <input type="text" style="width: 130px;" name="overage_billing_rate" value="<%=contract.contract.overage_billing_rate %>" />
+                              </div>
+                            </td>
+                            <%}%>
+                          </tr>
+                          <tr>
+                            <td class="FieldLabel">预估工时
+                              <div>
+                                <input type="text" style="width: 130px;" name="hours" value="<%=contract.contract.hours %>" />
+                              </div>
+                            </td>
+                            <%if (contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS) { %>
+                            <td class="FieldLabel">超额计费率
+                              <div>
+                                <input type="text" style="width: 130px;" name="overage_billing_rate" value="<%=contract.contract.overage_billing_rate %>" />
+                              </div>
+                            </td>
+                            <%} %>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <%} %>
         </div>
       </div>
         </div>

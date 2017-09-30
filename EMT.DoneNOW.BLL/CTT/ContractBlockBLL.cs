@@ -151,21 +151,25 @@ namespace EMT.DoneNOW.BLL
                     if ((bool)dto.firstPart && blockNums == 0)  // 首月部分的处理
                     {
                         block.end_date = new DateTime(dtBlockStart.Year, dtBlockStart.Month + 1, 1).AddDays(-1);    // 结束日期为开始日期同月份的最后一天
-                        if (dto.type != 2)
-                            block.quantity = (decimal)((int)(((decimal)(block.end_date.Day - block.start_date.Day + 1) / block.end_date.Day) * ((decimal)dto.hours) * 10000)) / 10000;    // 预付数量按照天数比例计算
-                        else
-                            block.rate = (decimal)((int)(((decimal)(block.end_date.Day - block.start_date.Day + 1) / block.end_date.Day) * block.rate * 10000)) / 10000;
+
+                        /* 修改:所有周期的计费按一整周期算 */
+                        //if (dto.type != 2)
+                        //    block.quantity = (decimal)((int)(((decimal)(block.end_date.Day - block.start_date.Day + 1) / block.end_date.Day) * ((decimal)dto.hours) * 10000)) / 10000;    // 预付数量按照天数比例计算
+                        //else
+                        //    block.rate = (decimal)((int)(((decimal)(block.end_date.Day - block.start_date.Day + 1) / block.end_date.Day) * block.rate * 10000)) / 10000;
                     }
                     if (dto.endDate != null && ((DateTime)dto.endDate) < block.end_date)    // 设置了结束时间的处理
                     {
                         block.end_date = (DateTime)dto.endDate;
-                        if (dto.type != 2)
-                            block.quantity = ((decimal)((block.end_date - block.start_date).Days + 1)
-                            / DateTime.DaysInMonth(block.start_date.Year, block.start_date.Month))
-                            * ((decimal)dto.hours) * 10000 / 10000;    // 预付数量按照天数比例计算
-                        else
-                            block.rate = (decimal)((int)(((decimal)((block.end_date - block.start_date).Days + 1)
-                            / DateTime.DaysInMonth(block.start_date.Year, block.start_date.Month)) * block.rate * 10000)) / 10000;
+
+                        /* 修改:所有周期的计费按一整周期算 */
+                        //if (dto.type != 2)
+                        //    block.quantity = ((decimal)((block.end_date - block.start_date).Days + 1)
+                        //    / DateTime.DaysInMonth(block.start_date.Year, block.start_date.Month))
+                        //    * ((decimal)dto.hours) * 10000 / 10000;    // 预付数量按照天数比例计算
+                        //else
+                        //    block.rate = (decimal)((int)(((decimal)((block.end_date - block.start_date).Days + 1)
+                        //    / DateTime.DaysInMonth(block.start_date.Year, block.start_date.Month)) * block.rate * 10000)) / 10000;
                     }
                     dtBlockStart = block.end_date.AddDays(1);   // 下一周期的开始日期
                     ++blockNums;    // 已处理周期数加1
@@ -173,7 +177,7 @@ namespace EMT.DoneNOW.BLL
                     // 可以延期
                     if (dto.delayDays != null && dto.delayDays > 0)
                     {
-                        block.end_date.AddDays((int)dto.delayDays);
+                        block.end_date = block.end_date.AddDays((int)dto.delayDays);
                     }
 
                     block.status_id = (sbyte)(dto.status ? 1 : 0);
@@ -205,7 +209,7 @@ namespace EMT.DoneNOW.BLL
                     if (costCode == null || costCode.Count == 0)
                         throw new Exception("字典项缺失");
                     cost.cost_code_id = costCode[0].id;
-                    cost.name = $"预付{blkName}[{dto.startDate.ToShortDateString()}-{((DateTime)dto.endDate).ToShortDateString()}]";
+                    cost.name = $"预付{blkName}[{block.start_date.ToShortDateString()}-{block.end_date.ToShortDateString()}]";
                     cost.date_purchased = block.date_purchased;
                     cost.cost_type_id = (int)COST_TYPE.OPERATIONA;
                     cost.status_id = (int)COST_STATUS.UNDETERMINED;
@@ -296,7 +300,7 @@ namespace EMT.DoneNOW.BLL
                 if (costCode == null || costCode.Count == 0)
                     throw new Exception("字典项缺失");
                 cost.cost_code_id = costCode[0].id;
-                cost.name = $"预付{blkName}[{dto.startDate.ToShortDateString()}-{((DateTime)dto.endDate).ToShortDateString()}]";
+                cost.name = $"预付{blkName}[{block.start_date.ToShortDateString()}-{block.end_date.ToShortDateString()}]";
                 cost.date_purchased = block.date_purchased;
                 cost.cost_type_id = (int)COST_TYPE.OPERATIONA;
                 cost.status_id = (int)COST_STATUS.UNDETERMINED;

@@ -69,14 +69,14 @@ namespace EMT.DoneNOW.Web.Contract
 
             if (long.Parse(milstId.Value) == 0)
             {
-                milst.id = long.Parse(milstId.Value);
                 bll.AddMilestone(milst, GetLoginUserId());
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('编辑里程碑成功');window.close();self.opener.location.reload();</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('新增里程碑成功');window.close();self.opener.location.reload();</script>");
             }
             else
             {
+                milst.id = long.Parse(milstId.Value);
                 bll.UpdateMilestone(milst, GetLoginUserId());
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('新增里程碑成功');window.close();self.opener.location.reload();</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('编辑里程碑成功');window.close();self.opener.location.reload();</script>");
             }
             statuList = bll.GetMilestoneStatuDic();
         }

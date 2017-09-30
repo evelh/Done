@@ -195,6 +195,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.CONTRACT_TYPE:
                     addBtn = "新增合同类别";
                     break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_RATE:
+                    addBtn = "新增费率";
+                    break;
                 default:
                     addBtn = "";
                     break;
