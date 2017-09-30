@@ -1029,7 +1029,7 @@ namespace EMT.DoneNOW.BLL
             GeneralBLL gbll = new GeneralBLL();//字典项            
             ctt_contract_milestone_dal ccm_dal = new ctt_contract_milestone_dal();//里程碑处理
             var ccm = ccm_dal.FindSignleBySql<ctt_contract_milestone>($"select * from ctt_contract_milestone where id={id} and delete_time=0");//里程碑
-            var cc = cc_dal.FindSignleBySql<crm_contact>($"select * from crm_contact where id={ccm.contract_id} and delete_time=0");//合同
+            var cc = cc_dal.FindSignleBySql<ctt_contract>($"select * from ctt_contract where id={ccm.contract_id} and delete_time=0");//合同
             var dcc = new d_cost_code_dal().FindSignleBySql<d_cost_code>($"select * from d_cost_code where id={ccm.cost_code_id} and delete_time=0");//物料代码
             var ca = new crm_account_dal().FindSignleBySql<crm_account>($"select * from crm_account where id={cc.account_id} and delete_time=0");//客户
             string tax_category_name = null;//税收种类

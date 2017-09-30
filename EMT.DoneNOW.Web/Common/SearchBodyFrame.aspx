@@ -219,11 +219,6 @@
                     <li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
                     <li><i style="background-image: url(../Images/export.png);"></i></li>
                 </ul>
-              <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
-              <div style="margin-top:11px;">
-                <span style="margin-left:60px;">显示数据</span><input type="text" style="margin-left:16px;" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
-              </div>
-              <%} %>
                 <%if (queryResult != null && queryResult.count > 0)
                     { %>
                 <div class="page fl">
