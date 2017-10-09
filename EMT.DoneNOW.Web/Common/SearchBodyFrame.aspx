@@ -253,7 +253,7 @@
                                                   else
                                                   { %><a href="#" onclick="ChangePageSize(100)">100</a><%} %></span>
                     <i onclick="ChangePage(1)"><<</i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page-1 %>)"><</i>
-                    <input type="text" style="width: 30px; text-align: center;" value="<%=queryResult.page %>" />
+                    <input type="text" style="width: 30px; text-align: center;height:30px;" value="<%=queryResult.page %>" />
                     <span>&nbsp;/&nbsp;<%=queryResult.page_count %></span>
                     <i onclick="ChangePage(<%=queryResult.page+1 %>)">></i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page_count %>)">>></i>
                 </div>
@@ -287,7 +287,7 @@
                             order = strs[1].ToLower();
                         }
                 %>
-                <th title="点击按此列排序" width="<%=para.length*16 %>px" onclick="ChangeOrder('<%=para.name %>')">
+                <th title="点击按此列排序" width="<%=para.length*32 %>px" onclick="ChangeOrder('<%=para.name %>')">
                     <%=para.name %>
                     <%if (orderby != null && para.name.Equals(orderby))
                         { %><img src="../Images/sort-<%=order %>.png" />

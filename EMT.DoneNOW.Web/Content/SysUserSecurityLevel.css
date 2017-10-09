@@ -767,3 +767,6 @@ body .Grid .HeaderContainer td, body .Grid .HeaderContainer td, body .Table .Hea
     position: fixed;
     padding: 10px;
 }
+a {
+    outline: none;
+}
