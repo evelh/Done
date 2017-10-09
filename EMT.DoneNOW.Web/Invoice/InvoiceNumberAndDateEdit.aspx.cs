@@ -33,6 +33,12 @@ namespace EMT.DoneNOW.Web
             string date;
             date= Request.Form["datevalue"].Trim().ToString();//获取时间
             number = Request.Form["InvoiceNumber"].Trim().ToString();//获取发票编号
+            if (string.IsNullOrEmpty(date)) {
+                date = string.Empty;
+            }
+            if (string.IsNullOrEmpty(number)) {
+                number = string.Empty;
+            }
             var result = new InvoiceBLL().InvoiceNumberAndDate(id, date, number, GetLoginUserId());
             if (result == DTO.ERROR_CODE.SUCCESS) {
                 Response.Write("<script>alert('发票修改成功！');window.close();self.opener.location.reload();</script>");

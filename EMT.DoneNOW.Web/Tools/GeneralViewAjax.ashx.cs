@@ -62,15 +62,15 @@ namespace EMT.DoneNOW.Web
                 var result = new GeneralBLL().NoActive(general_i, user.id);
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
-                    context.Response.Write("失活成功！");
+                    context.Response.Write("停用成功！");
                 }
                 else if (result == DTO.ERROR_CODE.NO_ACTIVATION)
                 {
-                    context.Response.Write("已经失活，无需此操作！");
+                    context.Response.Write("已经是停用状态，无需此操作！");
                 }
                 else
                 {
-                    context.Response.Write("失活失败！");
+                    context.Response.Write("停用失败！");
                 }
             }
         }

@@ -530,11 +530,11 @@
                 }
             }
 
-            //供应商右键菜单失活活
+            //供应商右键菜单停用活
             function NoActive() {
                 var _this = $("tr[data-val=" + entityid + "]");
                 if (_this.children().eq(3).find("img").length <= 0) {
-                    alert("已经失活！");
+                    alert("已经停用！");
                 } else {
                     _this.addClass("updatevendor");
                     _this.children().eq(3).html('');

@@ -241,13 +241,22 @@ namespace EMT.DoneNOW.BLL
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (ci != null && user != null)
             {
-                var kk = _dal.FindSignleBySql<ctt_invoice>($"select * from ctt_invoice where invoice_no='{number}' and delete_time=0");
-                if (kk != null && kk.id != id) {
-                    return ERROR_CODE.EXIST;
+                if (!string.IsNullOrEmpty(number)) {
+                    var kk = _dal.FindSignleBySql<ctt_invoice>($"select * from ctt_invoice where invoice_no='{number}' and delete_time=0");
+                    if (kk != null && kk.id != id)
+                    {
+                        return ERROR_CODE.EXIST;
+                    }                    
                 }
-                var old = ci;
                 ci.invoice_no = number;
-                ci.paid_date = DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式
+                var old = ci;
+                if (!string.IsNullOrEmpty(date))
+                {
+                    ci.paid_date = DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式
+                }
+                else {
+                    ci.paid_date = null;
+                }               
                 ci.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 ci.update_user_id = user.id;
                 if (_dal.Update(ci))

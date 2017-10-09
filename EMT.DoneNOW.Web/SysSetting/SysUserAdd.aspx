@@ -659,6 +659,26 @@
                     alert("两次输入密码不相同，请确认后再输入！");
                 }
             });
+
+            $("#browsefile").change(function (e) {
+                for (var i = 0; i < e.target.files.length; i++) {
+                    var file = e.target.files.item(i);
+                    //允许文件MIME类型 也可以在input标签中指定accept属性
+                    //console.log(/^image\/.*$/i.test(file.type));
+                    if (!(/^image\/.*$/i.test(file.type))) {
+                        continue;            //不是图片 就跳出这一次循环
+                    }
+
+                    //实例化FileReader API
+                    var freader = new FileReader();
+                    freader.readAsDataURL(file);
+                    freader.onload = function (e) {
+                        $("#imgshow").attr("src", e.target.result);
+                        //var img = '<img src="' + e.target.result + '" width="200px" height="200px"/>';
+                        //$("#images_show").empty().append(img);
+                    }
+                }
+            });
         </script>
     </form>
 </body>

@@ -43,6 +43,18 @@ namespace EMT.DoneNOW.Web
                         {
                             this.Lost.Checked = true;
                         }
+                        //默认唯一性
+                        if (sobll.defulatwonreson(id))
+                        {
+                            this.Won.Enabled = false;
+                            this.won2.Text = "(当前系统已经存在默认丢失商机原因，不可选！)";
+                        }
+                        if (sobll.defulatlossreson(id))
+                        {
+                            this.Lost.Enabled = false;
+                            this.loss2.Text = "(当前系统已经存在默认关闭商机原因，不可选！)";
+                        }
+
                         if (stage.sort_order != null && !string.IsNullOrEmpty(stage.sort_order.ToString()))
                         {
                             this.Sort_Order.Text = stage.sort_order.ToString();

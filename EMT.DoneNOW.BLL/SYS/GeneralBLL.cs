@@ -623,21 +623,26 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
 
-        public bool defulatwonreson() {
+        public bool defulatwonreson(long id=0) {
 
             var kk = _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id=11 and ext2=1 and delete_time=0");
             if (kk != null) {
-                return true;
+                if (kk.id != id||id==0) {
+                    return true;
+                }                
             }
             return false;
         }
-        public bool defulatlossreson()
+        public bool defulatlossreson(long id=0)
         {
 
             var kk = _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id=11 and ext1=1 and delete_time=0");
             if (kk != null)
             {
-                return true;
+                if (kk.id != id || id == 0)
+                {
+                    return true;
+                }
             }
             return false;
         }

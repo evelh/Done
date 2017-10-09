@@ -33,7 +33,7 @@ namespace EMT.DoneNOW.Web
                     DeleteSecurityLevel(context, Convert.ToInt64(securitylevel_id));//暂未实现，部分逻辑不明了。8-24
                     ; break;
                 case "noactive":
-                    NoActiveSecurityLevel(context, Convert.ToInt64(securitylevel_id));//设置为失活状态
+                    NoActiveSecurityLevel(context, Convert.ToInt64(securitylevel_id));//设置为停用状态
                     ; break;
                 default:break;
             }
@@ -101,15 +101,15 @@ namespace EMT.DoneNOW.Web
                 var result = new SecurityLevelBLL().NOActiveSecurityLevel(user.id, (int)securitylevel_id);
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
-                    context.Response.Write("失活安全等级成功！");
+                    context.Response.Write("停用安全等级成功！");
                 }
                 if (result == DTO.ERROR_CODE.NO_ACTIVATION)
                 {
-                    context.Response.Write("失活状态的模板不可以进行该操作！");
+                    context.Response.Write("停用状态的模板不可以进行该操作！");
                 }
                 if (result == DTO.ERROR_CODE.ERROR)
                 {
-                    context.Response.Write("失活安全等级失败！");
+                    context.Response.Write("停用安全等级失败！");
                 }
             }
         }

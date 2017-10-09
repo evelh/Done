@@ -711,6 +711,7 @@
     <Content Include="SysSetting\AccountClass.aspx" />
     <Content Include="SysSetting\AccountClassView.aspx" />
     <Content Include="SysSetting\ActionType.aspx" />
+    <Content Include="SysSetting\Admin.aspx" />
     <Content Include="SysSetting\ContractMilestone.aspx" />
     <Content Include="SysSetting\ContractType.aspx" />
     <Content Include="SysSetting\GeneralView.aspx" />
@@ -1443,6 +1444,13 @@
     </Compile>
     <Compile Include="SysSetting\ActionType.aspx.designer.cs">
       <DependentUpon>ActionType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\Admin.aspx.cs">
+      <DependentUpon>Admin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\Admin.aspx.designer.cs">
+      <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\ContractMilestone.aspx.cs">
       <DependentUpon>ContractMilestone.aspx</DependentUpon>
