@@ -42,7 +42,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
-<div id="default">
+<div id="default" style="display:none">
             <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
@@ -54,7 +54,7 @@
   <div class="ButtonContainer header-title">
         <ul id="btn">
             <li>
-                <asp:Button ID="Save_Close" OnClientClick="return save_deal()" runat="server" Text="继续"  BorderStyle="None"/>
+                <asp:Button ID="Save_Close" OnClientClick="return save_deal()" runat="server" Text="继续"  BorderStyle="None" OnClick="Save_Close_Click"/>
             </li>
         </ul>
     </div>
@@ -74,7 +74,7 @@
                 <tr>
                     <td width="30%" class="FieldLabels">
                         <div>
-                            <asp:RadioButton ID="Radio2" runat="server" GroupName="post"/> 自动生成预付费
+                            <asp:RadioButton ID="Radio2" runat="server" GroupName="post"/><asp:Label ID="Label1" runat="server" Text="自动生成预付费"></asp:Label>
                         </div>
                     </td>
                 </tr>
@@ -126,86 +126,10 @@
         </table>
     </div>          
 </div>
- <div id="postdate" style="display:none">
-                <div class="TitleBar">
-        <div class="Title">
-            <span class="text1">输入提交日期</span>
-            <a href="###" class="help"></a>
-        </div>
-</div>
-    <!--按钮-->
-    <div class="ButtonContainer">
-        <ul id="btn">
-            <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
-                <span class="Icon" style="margin: 0;width: 0;"></span>
-                <asp:Button ID="Post" OnClientClick="return kkk()" runat="server" Text="审批并提交" BorderStyle="None" OnClick="Post_Click" />
-            </li>
-        </ul>
-    </div>
-    <div class="DivSection" style="border:none;padding-left:0;">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tbody>
-                <tr>
-                    <td width="30%" class="FieldLabels" style="padding:  0 0 10px 10px;">
-                        <div style="padding: 0;">
-                            请输入提交日期
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="30%" class="FieldLabels" style="padding:  0 0 10px 10px;font-weight: normal;">
-                        选择日期
-                        <span class="errorSmall">*</span>
-                        <div>
-                            <input id="post_datett" name="post_datett" type="text" style="width:100px;" onclick="WdatePicker()" class="Wdate"/>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-        </div>
-</div>
-        <%--加载--%>
+</div>        <%--加载--%>
 <div id="BackgroundOverLay"></div>
 <div id="LoadingIndicator"></div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
-        <script src="../Scripts/SysSettingRoles.js"></script>
-         <input type="hidden" name="post_date" id="post_date" />
-            <script src="../Scripts/jquery-3.1.0.min.js"></script>
-            <script src="../Scripts/SysSettingRoles.js"></script>
-            <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
-            <script>
-                <%if (id != 0||ids2!=null&&ids2.Count<=0)
-                {%>
-                function save_deal() {
-                    if ($("#Radio1").is(':checked')) {
-                        window.close();
-                    } else {
-                        $("#default").hide();
-                        $("#postdate").show();
-                    }
-                }
-                <%}else{%>
-                function save_deal() {
-                    $("#default").hide();
-                    $("#postdate").show();
-                }<%}%>
-                function kkk() {
-                    var k = $("#post_datett").val();
-                    if (k == null || k == '') {
-                        alert("请选择提交日期！");
-                        return false;
-                    }
-                    k = k.replace(/[^0-9]+/g, '');
-                    $("#post_date").val(k);
-                    load();
-                }
-                function load() {
-                    $("#BackgroundOverLay").show();
-                    $("#LoadingIndicator").show();
-                }
-            </script>
     </form>
 </body>
 </html>

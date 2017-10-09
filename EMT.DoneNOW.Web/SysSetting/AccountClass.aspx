@@ -11,7 +11,7 @@
     <title>客户类别</title>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" method="post" enctype="multipart/form-data">
         <div>
              <!--顶部-->
     <div class="TitleBar">
@@ -88,6 +88,21 @@
                 return false;
             }
         }
+        $("#browsefile").change(function (e) {
+            for (var i = 0; i < e.target.files.length; i++) {
+                var file = e.target.files.item(i);
+                if (!(/^image\/.*$/i.test(file.type))) {
+                    continue;            //不是图片 就跳出这一次循环
+                }
+
+                //实例化FileReader API
+                var freader = new FileReader();
+                freader.readAsDataURL(file);
+                freader.onload = function (e) {
+                    $("#imgshow").attr("src", e.target.result);
+                }
+            }
+        });
     </script>
 </body>
 </html>

@@ -47,31 +47,21 @@ namespace EMT.DoneNOW.Web
         {
             if (save_deal())
             {
-                Response.Write("<script>alert('商机来源添加成功！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>window.close();self.opener.location.reload();</script>");
             }
-            else
-            {
-                Response.Write("<script>alert('商机来源添加失败！');window.close();self.opener.location.reload();</script>");
-            }
-
         }
 
         protected void Save_New_Click(object sender, EventArgs e)
         {
             if (save_deal())
             {
-                // Response.Redirect("SysMarket.aspx");
-                Response.Write("<script>alert('商机来源添加失败！');window.location.href = 'OpportunityLeadSource.aspx';</script>");
-            }
-            else
-            {
-                Response.Write("<script>alert('商机来源添加失败！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>window.location.href = 'OpportunityLeadSource.aspx';</script>");
             }
         }
 
         protected void Cancel_Click(object sender, EventArgs e)
         {
-            Response.Write("<script>window.close();self.opener.location.reload();</script>");
+            Response.Write("<script>window.close();</script>");
         }
         private bool save_deal()
         {
@@ -82,44 +72,62 @@ namespace EMT.DoneNOW.Web
             leadsource.name = this.Name.Text.Trim().ToString();
             if (!string.IsNullOrEmpty(this.Description.Text.Trim()))
             {
-                leadsource.name = this.Description.Text.Trim().ToString();
+                leadsource.remark = this.Description.Text.Trim().ToString();
             }
-            leadsource.code = this.Number.Text.Trim().ToString();
+            if(!string.IsNullOrEmpty(this.Number.Text.Trim().ToString()))
+            leadsource.sort_order =Convert.ToDecimal( this.Number.Text.Trim().ToString());
             if (id > 0)
             {
                 //修改更新
-                var result = sobll.Update(leadsource, GetLoginUserId());
-                if (result == DTO.ERROR_CODE.SUCCESS)
+                if ((leadsource.sort_order != null && sobll.update_sort_order(leadsource.id, leadsource.general_table_id, (Decimal)leadsource.sort_order)) || leadsource.sort_order == null)
                 {
-                    return true;
+                    var result = sobll.Update(leadsource, GetLoginUserId());
+                    if (result == DTO.ERROR_CODE.SUCCESS)
+                    {
+                        Response.Write("<script>alert('商机来源修改成功！');</script>");
+                        return true;
+                    }
+                    else if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                    {
+                        Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                        Response.Redirect("../Login.aspx");
+                    }
+                    else if (result == DTO.ERROR_CODE.EXIST)
+                    {
+                        Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
+                    }
                 }
-                else if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失
-                {
-                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
-                    Response.Redirect("../Login.aspx");
+                else {
+                    Response.Write("<script>alert('已经存在的商机来源中包含该序列号，请修改！');</script>");
                 }
-                else if (result == DTO.ERROR_CODE.EXIST)
-                {
-                    Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
-                }
+                   
             }
             else
             {
+
                 //新增
                 leadsource.general_table_id = (int)GeneralTableEnum.OPPORTUNITY_SOURCE;
-                var result = sobll.Insert(leadsource, GetLoginUserId());
-                if (result == DTO.ERROR_CODE.SUCCESS)
+                if (leadsource.sort_order == null || (leadsource.sort_order != null && sobll.sort_order(leadsource.general_table_id, (Decimal)leadsource.sort_order)))
                 {
-                    return true;
+                    var result = sobll.Insert(leadsource, GetLoginUserId());
+                    if (result == DTO.ERROR_CODE.SUCCESS)
+                    {
+                        Response.Write("<script>alert('商机来源添加成功！');</script>");
+                        return true;
+                    }
+                    else if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                    {
+                        Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                        Response.Redirect("../Login.aspx");
+                    }
+                    else if (result == DTO.ERROR_CODE.EXIST)
+                    {
+                        Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
+                    }
                 }
-                else if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失
-                {
-                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
-                    Response.Redirect("../Login.aspx");
-                }
-                else if (result == DTO.ERROR_CODE.EXIST) {
-                    Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
-                }
+                else {
+                    Response.Write("<script>alert('已经存在的商机来源中包含该序列号，请修改！');</script>");
+                }                    
             }
             return false;
         }

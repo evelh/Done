@@ -474,7 +474,8 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_SERVICE = 1519,                // 合同管理-服务/服务包
             CONTRACT_SERVICE_TRANS_HISTORY = 1520,  // 合同管理-服务/包交易历史
             CONTRACT_BLOCK = 1521,                  // 合同管理-预付费用
-            CONFIGSUBSCRIPTION=1523,              // 配置项中的订阅管理 
+            CONTRACT_BLOCK_TICKET = 1522,           // 合同管理-事件查询
+            CONFIGSUBSCRIPTION =1523,              // 配置项中的订阅管理 
             PROJECTCALLBACK=1524,                  // 项目的查找带回
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
@@ -861,6 +862,7 @@ namespace EMT.DoneNOW.DTO
         ContractService = 89,               // 合同管理-服务/服务包
         ContractServiceTransHistory = 90,   // 合同管理-服务/包-交易历史
         ContractBlock = 91,                 // 合同管理-预付费用
+        ContractBlockTicket = 92,           // 合同管理-事件查询
         CONFIGSUBSCRIPTION = 93,           // 配置项界面订阅管理
 
         REVOKE_LABOUR,                 //撤销工时审批

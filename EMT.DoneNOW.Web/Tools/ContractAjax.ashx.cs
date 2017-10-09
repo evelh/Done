@@ -142,8 +142,7 @@ namespace EMT.DoneNOW.Web
         private void DeleteContract(HttpContext context, long id)
         {
             var res = context.Session["dn_session_user_info"] as sys_user;
-            new ContractBLL().DeleteContract(id, res.id);
-            context.Response.Write("success");
+            context.Response.Write(new ContractBLL().DeleteContract(id, res.id));
         }
 
         /// <summary>

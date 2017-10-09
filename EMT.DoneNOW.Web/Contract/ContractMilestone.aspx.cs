@@ -12,12 +12,12 @@ namespace EMT.DoneNOW.Web.Contract
 {
     public partial class ContractMilestone : BasePage
     {
-        protected long milestoneId;         // 里程碑id
+        protected long milestoneId = 0;     // 里程碑id
         protected string duDate = "";       // 截至日期
         protected string billCode = "";     // 计费代码
         protected int statu = 0;            // 编辑合同的状态
         protected List<DictionaryEntryDto> statuList;
-        private long contractId;            // 合同id
+        private long contractId = 0;        // 合同id
         private ContractBLL bll = new ContractBLL();
 
         protected void Page_Load(object sender, EventArgs e)
@@ -69,15 +69,16 @@ namespace EMT.DoneNOW.Web.Contract
 
             if (long.Parse(milstId.Value) == 0)
             {
-                milst.id = long.Parse(milstId.Value);
                 bll.AddMilestone(milst, GetLoginUserId());
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('编辑里程碑成功');window.parent.location.reload();window.close();</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('新增里程碑成功');window.close();self.opener.location.reload();</script>");
             }
             else
             {
+                milst.id = long.Parse(milstId.Value);
                 bll.UpdateMilestone(milst, GetLoginUserId());
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('新增里程碑成功');window.parent.location.reload();window.close();</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('编辑里程碑成功');window.close();self.opener.location.reload();</script>");
             }
+            statuList = bll.GetMilestoneStatuDic();
         }
     }
 }

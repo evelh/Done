@@ -41,6 +41,11 @@ namespace EMT.DoneNOW.Web.Contract
                     blocktypeName = "费用";
                     blockType = 2;
                 }
+                else if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.PER_TICKET)
+                {
+                    blocktypeName = "事件";
+                    blockType = 3;
+                }
                 else
                 {
                     Response.Close();
@@ -58,23 +63,70 @@ namespace EMT.DoneNOW.Web.Contract
 
         protected void SaveClose_Click(object sender, EventArgs e)
         {
-            SaveBlock();
-            Response.Write("<script>alert('添加预付成功！');window.close();self.opener.location.reload();</script>");
+            if (!SaveBlock())
+            {
+                Response.Write("<script>alert('添加预付失败，必填项填写不完整！');</script>");
+
+            }
+            else
+                Response.Write("<script>alert('添加预付成功！');window.close();self.opener.location.reload();</script>");
+
+            contract = new ContractBLL().GetContract(contractId);
+            if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+            {
+                blocktypeName = "时间";
+                blockType = 1;
+            }
+            else if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.RETAINER)
+            {
+                blocktypeName = "费用";
+                blockType = 2;
+            }
+            else if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.PER_TICKET)
+            {
+                blocktypeName = "事件";
+                blockType = 3;
+            }
         }
 
         protected void SaveNew_Click(object sender, EventArgs e)
         {
             long ctId = long.Parse(Request.Form["contractId"]);
             int type = int.Parse(Request.Form["blockType"]);
-            SaveBlock();
-            Response.Write("<script>alert('添加预付成功！');</script>");
-            Response.Redirect($"AddRetainerPurchase.aspx?id={ctId}&type={type}");
+
+            if (SaveBlock())
+            {
+                Response.Write("<script>alert('添加预付成功！');</script>");
+                Response.Redirect($"AddRetainerPurchase.aspx?id={ctId}&type={type}");
+            }
+            else
+            {
+                Response.Write("<script>alert('添加预付失败，必填项填写不完整！');</script>");
+            }
+
+            contract = new ContractBLL().GetContract(contractId);
+            if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+            {
+                blocktypeName = "时间";
+                blockType = 1;
+            }
+            else if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.RETAINER)
+            {
+                blocktypeName = "费用";
+                blockType = 2;
+            }
+            else if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.PER_TICKET)
+            {
+                blocktypeName = "事件";
+                blockType = 3;
+            }
         }
 
-        private void SaveBlock()
+        private bool SaveBlock()
         {
             var dto = AssembleModel<ContractBlockAddDto>();
-            if (Request.Form["CreateOneOrMonthly"].Equals("1"))
+            contractId = dto.contractId;
+            if (!string.IsNullOrEmpty(Request.Form["CreateOneOrMonthly"]) && Request.Form["CreateOneOrMonthly"].Equals("1"))
                 dto.isMonthly = false;
             else
                 dto.isMonthly = true;
@@ -88,12 +140,12 @@ namespace EMT.DoneNOW.Web.Contract
                 dto.firstPart = true;
             else
                 dto.firstPart = false;
-            if (Request.Form["rdStatus"].Equals("1"))
+            if (!string.IsNullOrEmpty(Request.Form["rdStatus"]) && Request.Form["rdStatus"].Equals("1"))
                 dto.status = true;
             else
                 dto.status = false;
 
-            bll.NewPurchase(dto, GetLoginUserId());
+            return bll.NewPurchase(dto, GetLoginUserId());
         }
     }
 }

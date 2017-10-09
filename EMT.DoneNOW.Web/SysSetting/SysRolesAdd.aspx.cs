@@ -20,6 +20,8 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取角色id
+            if(id>0)
+            table = rolebll.resourcelist(id);
             if (!IsPostBack) {
                 var dic = new SysRoleInfoBLL().GetField();
                 this.Tax_cate.DataTextField = "show";
@@ -31,7 +33,8 @@ namespace EMT.DoneNOW.Web
                 {
                     role = new SysRoleInfoBLL().GetOneData(id);
                     this.Role_Name.Text = role.name.ToString();
-                    if (Convert.ToInt32(role.is_active.ToString()) > 0) {
+                    if (Convert.ToInt32(role.is_active.ToString()) > 0)
+                    {
                         this.Active.Checked = true;
                     }
                     if (role.description != null && !string.IsNullOrEmpty(role.description.ToString()))
@@ -44,10 +47,13 @@ namespace EMT.DoneNOW.Web
                     }
                     this.Hourly_Billing_Rate.Text = role.hourly_rate.ToString();
                     this.Block_Hour_Multiplier.Text = role.hourly_factor.ToString();
-                    if (role.is_excluded > 0) {
+                    if (role.is_excluded > 0)
+                    {
                         this.Excluded.Checked = true;
                     }
-                    table = rolebll.resourcelist(id);
+                }
+                else {
+                    this.Active.Checked = true;
                 }
             }
         }

@@ -87,6 +87,22 @@ namespace EMT.DoneNOW.BLL
             dto.contract.update_time = dto.contract.create_time;
             dto.contract.update_user_id = userId;
             dto.contract.status_id = 1; // 激活
+            if (dto.contract.type_id == (int)DicEnum.CONTRACT_TYPE.SERVICE)
+            {
+                if(dto.contract.occurrences!=null&&dto.contract.occurrences>0)
+                {
+                    if (dto.contract.period_type == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
+                        dto.contract.end_date = dto.contract.start_date.AddMonths((int)(dto.contract.occurrences) * 6).AddDays(-1);
+                    else if (dto.contract.period_type == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH)
+                        dto.contract.end_date = dto.contract.start_date.AddMonths((int)(dto.contract.occurrences) * 1).AddDays(-1);
+                    else if (dto.contract.period_type == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
+                        dto.contract.end_date = dto.contract.start_date.AddMonths((int)(dto.contract.occurrences) * 3).AddDays(-1);
+                    else if (dto.contract.period_type == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
+                        dto.contract.end_date = dto.contract.start_date.AddMonths((int)(dto.contract.occurrences) * 12).AddDays(-1);
+                    else
+                        throw new Exception("新增合同，周期类型错误");
+                }
+            }
             dal.Insert(dto.contract);
 
             //var user = UserInfoBLL.GetUserInfo(userId);
@@ -193,6 +209,71 @@ namespace EMT.DoneNOW.BLL
         public void EditContract(ctt_contract ct, long userId)
         {
             var contract = dal.FindById(ct.id);
+            var contractOld = dal.FindById(ct.id);
+
+            contract.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            contract.update_user_id = userId;
+            contract.status_id = ct.status_id;
+            contract.cate_id = ct.cate_id;
+            contract.name = ct.name;
+            contract.contact_id = ct.contact_id;
+            contract.description = ct.description;
+            contract.opportunity_id = ct.opportunity_id;
+            contract.bill_post_type_id = ct.bill_post_type_id;
+            contract.timeentry_need_begin_end = ct.timeentry_need_begin_end;
+            contract.is_sdt_default = ct.is_sdt_default;
+            contract.external_no = ct.external_no;
+            contract.sla_id = ct.sla_id;
+            contract.bill_to_account_id = ct.bill_to_account_id;
+            contract.bill_to_contact_id = ct.bill_to_contact_id;
+            contract.purchase_order_no = ct.purchase_order_no;
+            if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.SERVICE)   // 服务合同
+            {
+                contract.setup_fee = ct.setup_fee;
+                contract.setup_fee_cost_code_id = ct.setup_fee_cost_code_id;
+                if (ct.occurrences == null)
+                {
+                    contract.occurrences = null;
+                    contract.end_date = ct.end_date;
+                }
+                else
+                {
+                    contract.occurrences = ct.occurrences;
+
+                    if (contract.period_type == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
+                        contract.end_date = contract.start_date.AddMonths((int)(contract.occurrences) * 6).AddDays(-1);
+                    else if (contract.period_type == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH)
+                        contract.end_date = contract.start_date.AddMonths((int)(contract.occurrences) * 1).AddDays(-1);
+                    else if (contract.period_type == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
+                        contract.end_date = contract.start_date.AddMonths((int)(contract.occurrences) * 3).AddDays(-1);
+                    else if (contract.period_type == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
+                        contract.end_date = contract.start_date.AddMonths((int)(contract.occurrences) * 12).AddDays(-1);
+                    else
+                        throw new Exception("修改合同，周期类型错误");
+                }
+
+                // TODO: 修改合同，修改周期
+            }
+            else
+            {
+                contract.start_date = contract.start_date;
+                contract.end_date = contract.end_date;
+                contract.dollars = ct.dollars;
+                contract.cost = ct.cost;
+                contract.hours = ct.hours;
+                if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+                {
+                    contract.enable_overage_billing_rate = ct.enable_overage_billing_rate;
+                    contract.overage_billing_rate = ct.overage_billing_rate;
+                }
+                if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.PER_TICKET)
+                {
+                    contract.overage_billing_rate = ct.overage_billing_rate;
+                }
+            }
+
+            dal.Update(contract);
+            OperLogBLL.OperLogUpdate<ctt_contract>(contract, contractOld, contract.id, userId, OPER_LOG_OBJ_CATE.CONTACTS, "修改合同");
         }
 
         #region 删除合同
@@ -206,8 +287,30 @@ namespace EMT.DoneNOW.BLL
         {
             ctt_contract contract = dal.FindById(id);
 
+            // 判断是否可以删除，关联以下对象时不能被删除：项目、工单、配置项、合同成本、已计费条目、工时、taskfire（本期不实现 TODO:）
+            int count = 0;
+            count = dal.FindSignleBySql<int>($"SELECT COUNT(0) FROM pro_project WHERE contract_id={id} AND delete_time=0");             // 项目
+            if (count > 0)
+                return false;
+            count = dal.FindSignleBySql<int>($"SELECT COUNT(0) FROM sdk_task WHERE contract_id={id} AND delete_time=0");                // 工单
+            if (count > 0)
+                return false;
+            count = dal.FindSignleBySql<int>($"SELECT COUNT(0) FROM crm_installed_product WHERE contract_id={id} AND delete_time=0");   // 配置项
+            if (count > 0)
+                return false;
+            count = dal.FindSignleBySql<int>($"SELECT COUNT(0) FROM ctt_contract_cost WHERE contract_id={id} AND delete_time=0");       // 合同成本
+            if (count > 0)
+                return false;   
+            count = dal.FindSignleBySql<int>($"SELECT COUNT(0) FROM crm_account_deduction WHERE contract_id={id} AND delete_time=0");   // 已计费条目
+            if (count > 0)
+                return false;
+            count = dal.FindSignleBySql<int>($"SELECT COUNT(0) FROM sdk_work_entry WHERE contract_id={id} AND delete_time=0");          // 工时
+            if (count > 0)
+                return false;
+
             new ContractBlockBLL().DeleteContractBlockByContractId(id, userId);     // 合同预付费用、合同成本
             new ContractServiceBLL().DeleteServiceByContractId(id, userId);         // 服务/服务包及调整和周期信息
+            DeleteContractCostDefault(id, userId);      // 默认成本
             DeleteContractInternalCost(id, userId);     // 内部成本
             DeleteContractExclusionRole(id, userId);    // 不计费角色
             DeleteContractExclusionCode(id, userId);    // 例外因素
@@ -216,9 +319,30 @@ namespace EMT.DoneNOW.BLL
 
             contract.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             contract.delete_user_id = userId;
+            dal.Update(contract);
             OperLogBLL.OperLogDelete<ctt_contract>(contract, contract.id, userId, OPER_LOG_OBJ_CATE.CONTACTS, "删除合同");
 
             return true;
+        }
+
+        /// <summary>
+        /// 删除对应id合同的默认成本
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <param name="userId"></param>
+        private void DeleteContractCostDefault(long contractId, long userId)
+        {
+            ctt_contract_cost_default_dal cdDal = new ctt_contract_cost_default_dal();
+            while(true)
+            {
+                var entity = cdDal.GetSinCostDef(contractId);
+                if (entity == null)
+                    break;
+                entity.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                entity.delete_user_id = userId;
+                cdDal.Update(entity);
+                OperLogBLL.OperLogDelete<ctt_contract_cost_default>(entity, entity.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_DEFAULT_COST, "删除合同默认成本");
+            }
         }
 
         /// <summary>
@@ -545,11 +669,13 @@ namespace EMT.DoneNOW.BLL
         /// <param name="userId"></param>
         public void AddMilestone(ctt_contract_milestone milestone, long userId)
         {
+            ctt_contract_milestone_dal milDal = new ctt_contract_milestone_dal();
+            milestone.id = milDal.GetNextIdCom();
             milestone.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             milestone.create_user_id = userId;
             milestone.update_time = milestone.create_time;
             milestone.update_user_id = userId;
-            new ctt_contract_milestone_dal().Insert(milestone);
+            milDal.Insert(milestone);
             OperLogBLL.OperLogAdd<ctt_contract_milestone>(milestone, milestone.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE, "新增合同里程碑");
         }
 

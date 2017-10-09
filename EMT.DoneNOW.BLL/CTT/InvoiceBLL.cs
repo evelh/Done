@@ -12,15 +12,15 @@ namespace EMT.DoneNOW.BLL
 {
     public class InvoiceBLL
     {
-        private readonly  ctt_invoice_dal _dal = new ctt_invoice_dal();
+        private readonly ctt_invoice_dal _dal = new ctt_invoice_dal();
 
         public Dictionary<string, object> GetField()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("invoice_tmpl", new sys_quote_tmpl_dal().GetInvoiceTemp());  // 发票模板
             dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));
-            dic.Add("email_temp",new sys_quote_email_tmpl_dal().GetEmailTemlList());
-            dic.Add("department",new sys_department_dal().GetDepartment());
+            dic.Add("email_temp", new sys_quote_email_tmpl_dal().GetEmailTemlList());
+            dic.Add("department", new sys_department_dal().GetDepartment());
             dic.Add("contract_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CONTRACT_TYPE)));
             dic.Add("contract_cate", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CONTRACT_CATE)));
             dic.Add("account_deduction_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACCOUNT_DEDUCTION_TYPE)));
@@ -33,12 +33,12 @@ namespace EMT.DoneNOW.BLL
         /// 发票处理/生成发票向导--针对多个发票处理
         /// </summary>
         /// <returns></returns>
-        public bool ProcessInvoice(InvoiceDealDto param,long user_id)
+        public bool ProcessInvoice(InvoiceDealDto param, long user_id)
         {
             var user = UserInfoBLL.GetUserInfo(user_id);
-           
+
             var temp = new sys_quote_tmpl_dal().FindNoDeleteById(param.invoice_template_id);
-            if (user == null|| temp==null)
+            if (user == null || temp == null)
                 return false;
             //  var arr = param.ids.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
             //if (arr != null && arr.Count() > 0)
@@ -51,7 +51,7 @@ namespace EMT.DoneNOW.BLL
                 var cidDal = new ctt_invoice_detail_dal();
                 var comBLL = new CompanyBLL();
                 var thisAccList = cadDal.GetAccDeds(param.ids);
-                var dicList = thisAccList.GroupBy(_ => _.account_id).ToDictionary(_=>_.Key,_=>_.ToList());
+                var dicList = thisAccList.GroupBy(_ => _.account_id).ToDictionary(_ => _.Key, _ => _.ToList());
 
                 if (dicList != null && dicList.Count > 0)
                 {
@@ -66,7 +66,7 @@ namespace EMT.DoneNOW.BLL
                             owner_resource_id = (long)account.resource_id,
                             invoice_no = _dal.GetNextIdInvNo().ToString(),
                             invoice_date = param.invoice_date,
-                            total = item.Value.Sum(_=>_.extended_price==null?0: _.extended_price),
+                            total = item.Value.Sum(_ => _.extended_price == null ? 0 : _.extended_price),
                             tax_value = item.Value.Sum(_ => _.tax_dollars == null ? 0 : _.tax_dollars),
                             date_range_from = param.date_range_from,
                             date_range_to = param.date_range_to,
@@ -144,8 +144,8 @@ namespace EMT.DoneNOW.BLL
                     }
                 }
 
-                
-               
+
+
 
                 return true;
             }
@@ -157,13 +157,13 @@ namespace EMT.DoneNOW.BLL
         /// 发票设置
         /// </summary>
         /// <returns></returns>
-        public bool PreferencesInvoice(PreferencesInvoiceDto param,long user_id)
+        public bool PreferencesInvoice(PreferencesInvoiceDto param, long user_id)
         {
             var user = UserInfoBLL.GetUserInfo(user_id);
             var account = new CompanyBLL().GetCompany(param.accRef.account_id);
             if (user == null || account == null)
                 return false;
-          
+
             param.accRef.update_user_id = user.id;
             param.accRef.update_time = param.accRef.create_time;
             var oldAccRef = new crm_account_reference_dal().GetAccountRef(param.accRef.account_id);
@@ -199,13 +199,13 @@ namespace EMT.DoneNOW.BLL
                     oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.REFERENCE,
                     oper_object_id = param.accRef.account_id,// 操作对象id
                     oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
-                    oper_description = _dal.CompareValue(oldAccRef,param.accRef),
+                    oper_description = _dal.CompareValue(oldAccRef, param.accRef),
                     remark = "修改发票设置"
                 });
             }
-         
 
-            if(account.is_tax_exempt==param.is_tax_exempt&&account.tax_region_id == param.tax_region_id && account.tax_identification == param.tax_identification)
+
+            if (account.is_tax_exempt == param.is_tax_exempt && account.tax_region_id == param.tax_region_id && account.tax_identification == param.tax_identification)
             {
                 return true;
             }
@@ -227,7 +227,7 @@ namespace EMT.DoneNOW.BLL
                     oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER,
                     oper_object_id = account.id,
                     oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
-                    oper_description = _dal.CompareValue(new CompanyBLL().GetCompany(param.accRef.account_id),account),
+                    oper_description = _dal.CompareValue(new CompanyBLL().GetCompany(param.accRef.account_id), account),
                     remark = "修改客户信息"
                 });
                 new crm_account_dal().Update(account);
@@ -236,16 +236,32 @@ namespace EMT.DoneNOW.BLL
 
             return true;
         }
-        public bool InvoiceNumberAndDate(int id,string date,string number,long user_id) {
+        public ERROR_CODE InvoiceNumberAndDate(int id, string date, string number, long user_id)
+        {
             var ci = _dal.FindNoDeleteById(id);
             var user = UserInfoBLL.GetUserInfo(user_id);
-            if (ci != null&&user!=null) {
-                var old = ci;
+            if (ci != null && user != null)
+            {
+                if (!string.IsNullOrEmpty(number)) {
+                    var kk = _dal.FindSignleBySql<ctt_invoice>($"select * from ctt_invoice where invoice_no='{number}' and delete_time=0");
+                    if (kk != null && kk.id != id)
+                    {
+                        return ERROR_CODE.EXIST;
+                    }                    
+                }
                 ci.invoice_no = number;
-                ci.invoice_date= DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式
+                var old = ci;
+                if (!string.IsNullOrEmpty(date))
+                {
+                    ci.paid_date = DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式
+                }
+                else {
+                    ci.paid_date = null;
+                }               
                 ci.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 ci.update_user_id = user.id;
-                if (_dal.Update(ci)) {
+                if (_dal.Update(ci))
+                {
                     new sys_oper_log_dal().Insert(new sys_oper_log()
                     {
                         user_cate = "用户",
@@ -256,12 +272,13 @@ namespace EMT.DoneNOW.BLL
                         oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.INVOCIE,
                         oper_object_id = ci.id,// 操作对象id
                         oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
-                        oper_description = _dal.CompareValue(old,ci),
+                        oper_description = _dal.CompareValue(old, ci),
                         remark = "修改发票的编号和日期"
                     });
-                }               
+                    return ERROR_CODE.SUCCESS;
+                }
             }
-            return false;
+            return ERROR_CODE.ERROR;
         }
         /// <summary>
         /// 作废发票
@@ -269,12 +286,14 @@ namespace EMT.DoneNOW.BLL
         /// <param name="id"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool VoidInvoice(int id,long user_id) {
+        public bool VoidInvoice(int id, long user_id)
+        {
             var ci = _dal.FindNoDeleteById(id);
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (ci != null && user != null)
             {
-                if (ci.is_voided == 1) {
+                if (ci.is_voided == 1)
+                {
                     return false;
                 }
                 var old = ci;
@@ -335,48 +354,59 @@ namespace EMT.DoneNOW.BLL
         /// <param name="id"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool VoidInvoiceAndUnPost(int id, long user_id) {
-            if (VoidInvoice(id, user_id)) {
-                var cad = new crm_account_deduction_dal().FindSignleBySql<crm_account_deduction>($"select * from crm_account_deduction where invoice_id={id} and delete_time=0");
-                if (cad != null) {
-                    ReverseBLL rbll = new ReverseBLL();
-                    string re;
-                    switch (cad.type_id)
-                    {                       
-                        case (int)ACCOUNT_DEDUCTION_TYPE.CHARGE:
-                            var result0 = rbll.Revoke_CHARGES(user_id,cad.id.ToString(), out re);
-                            if (result0 == ERROR_CODE.SUCCESS) {
-                                return true;
-                            }
-                            break;//成本
-                        case (int)ACCOUNT_DEDUCTION_TYPE.SUBSCRIPTIONS:
-                            var result1 = rbll.Revoke_Subscriptions(user_id,cad.id.ToString(), out re);
-                            if (result1 == ERROR_CODE.SUCCESS)
-                            {
-                                return true;
-                            }
-                            break;//订阅
-                        case (int)ACCOUNT_DEDUCTION_TYPE.MILESTONES:
-                            var result2 = rbll.Revoke_Milestones(user_id,cad.id.ToString(), out re);
-                            if (result2 == ERROR_CODE.SUCCESS)
-                            {
-                                return true;
-                            }
-                            break;//里程碑
-                        case (int)ACCOUNT_DEDUCTION_TYPE.SERVICE://服务
-                        case (int)ACCOUNT_DEDUCTION_TYPE.INITIAL_COST: //初始费用
-                        case (int)ACCOUNT_DEDUCTION_TYPE.SERVICE_ADJUST://服务调整
-                            var result3 = rbll.Revoke_Recurring_Services(user_id,cad.id.ToString(), out re);
-                            if (result3 == ERROR_CODE.SUCCESS)
-                            {
-                                return true;
-                            }
-                            break;
-                        default:break;
-                    }
-                }                
+        public bool VoidInvoiceAndUnPost(int id, long user_id)
+        {
+            var cadlist = new crm_account_deduction_dal().FindListBySql<crm_account_deduction>($"select * from crm_account_deduction where invoice_id={id} and delete_time=0");
+            if (!VoidInvoice(id, user_id))
+            {
+                return false;
             }
-            return false;
+            if (cadlist.Count > 0)
+            {
+                foreach (var cad in cadlist)
+                {
+                    if (cad.type_id != null)
+                    {
+                        ReverseBLL rbll = new ReverseBLL();
+                        string re;
+                        switch (cad.type_id)
+                        {
+                            case (int)ACCOUNT_DEDUCTION_TYPE.CHARGE:
+                                var result0 = rbll.Revoke_CHARGES(user_id, cad.id.ToString(), out re);
+                                if (result0 != ERROR_CODE.SUCCESS)
+                                {
+                                    return false;
+                                }
+                                break;//成本
+                            case (int)ACCOUNT_DEDUCTION_TYPE.SUBSCRIPTIONS:
+                                var result1 = rbll.Revoke_Subscriptions(user_id, cad.id.ToString(), out re);
+                                if (result1 != ERROR_CODE.SUCCESS)
+                                {
+                                    return false;
+                                }
+                                break;//订阅
+                            case (int)ACCOUNT_DEDUCTION_TYPE.MILESTONES:
+                                var result2 = rbll.Revoke_Milestones(user_id, cad.id.ToString(), out re);
+                                if (result2 != ERROR_CODE.SUCCESS)
+                                {
+                                    return false;
+                                }
+                                break;//里程碑
+                            case (int)ACCOUNT_DEDUCTION_TYPE.SERVICE://服务
+                            case (int)ACCOUNT_DEDUCTION_TYPE.INITIAL_COST: //初始费用
+                            case (int)ACCOUNT_DEDUCTION_TYPE.SERVICE_ADJUST://服务调整
+                                var result3 = rbll.Revoke_Recurring_Services(user_id, cad.id.ToString(), out re);
+                                if (result3 != ERROR_CODE.SUCCESS)
+                                {
+                                    return false;
+                                }
+                                break;
+                            default: break;
+                        }
+                    }
+                }
+            }
+            return true;
         }
         /// <summary>
         /// 取消本批次发票
@@ -388,22 +418,28 @@ namespace EMT.DoneNOW.BLL
         {
             var user = UserInfoBLL.GetUserInfo(user_id);
             var list = _dal.FindListBySql($"select * from ctt_invoice where batch_id=(select batch_id from ctt_invoice where id={id} and delete_time=0 ) and is_voided=0 and delete_time=0");
-            if (list.Count > 0&&user!=null) {
-                foreach (var i in list) {
+            if (list.Count > 0 && user != null)
+            {
+                foreach (var i in list)
+                {
                     var old = i;
                     i.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     i.update_user_id = user.id;
+                    i.is_voided = 1;
                     if (_dal.Update(i))
                     {
-                        var cad_dal=new crm_account_deduction_dal();
+                        crm_account_deduction_dal cad_dal = new crm_account_deduction_dal();
                         var account_deduction = cad_dal.FindListBySql<crm_account_deduction>($"select * from crm_account_deduction where invoice_id={i.id} and delete_time=0");
-                        if (account_deduction.Count > 0) {
-                            foreach (var ii in account_deduction) {
+                        if (account_deduction.Count > 0)
+                        {
+                            foreach (var ii in account_deduction)
+                            {
                                 var oldii = ii;
                                 ii.invoice_id = null;
                                 ii.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                 ii.update_user_id = user_id;
-                                if (cad_dal.Update(ii)) {
+                                if (cad_dal.Update(ii))
+                                {
                                     var add_log = new sys_oper_log()
                                     {
                                         user_cate = "用户",
@@ -414,7 +450,7 @@ namespace EMT.DoneNOW.BLL
                                         oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,//审批并提交
                                         oper_object_id = ii.id,// 操作对象id
                                         oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                                        oper_description = cad_dal.CompareValue(oldii,ii),
+                                        oper_description = cad_dal.CompareValue(oldii, ii),
                                         remark = "修改发票清空"
                                     };          // 创建日志
                                 }
@@ -434,7 +470,8 @@ namespace EMT.DoneNOW.BLL
                             remark = "作废发票"
                         });
                     }
-                    else {
+                    else
+                    {
                         return false;
                     }
                 }
@@ -442,9 +479,11 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
 
-        public int GetAccount_id(int id) {
+        public int GetAccount_id(int id)
+        {
             var inv = _dal.FindNoDeleteById(id);
-            if (inv != null) {
+            if (inv != null)
+            {
                 return (int)inv.account_id;
             }
             return -1;

@@ -136,6 +136,8 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? labor_amount_billed { get; set; }
         [DataMember]
+        public Int32 block_hours_used_amount { get; set; }
+        [DataMember]
         public Decimal? initial_pay { get; set; }
         [DataMember]
         public Decimal? total_pay { get; set; }

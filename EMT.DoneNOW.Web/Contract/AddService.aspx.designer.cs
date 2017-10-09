@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web {
+namespace EMT.DoneNOW.Web.Contract {
     
     
-    public partial class GeneralView {
+    public partial class AddService {
         
         /// <summary>
         /// form1 控件。

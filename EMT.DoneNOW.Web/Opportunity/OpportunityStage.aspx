@@ -54,17 +54,17 @@
                     <td>
                         <div>
                             <asp:CheckBox ID="Won" runat="server" />
-                            丢失商机默认阶段
+                            丢失商机默认阶段<asp:Label ID="won2" runat="server" Text=""></asp:Label>
                         </div>
                         <div>
                            <asp:CheckBox ID="Lost" runat="server" />
-                           关闭商机默认
+                           关闭商机默认阶段<asp:Label ID="loss2" runat="server" Text=""></asp:Label>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                        阶段排序号
+                        排序号
                         <span class="errorSmall">*</span>
                         <div>
                             <asp:TextBox ID="Sort_Order" runat="server" style="width:200px;"></asp:TextBox>
@@ -85,11 +85,32 @@
                 alert("请输入商机阶段的名称！");
                 return false;
             }
-            if ($("#Sort_Order").val() == null || $("#Sort_Order").val() == '') {
-                alert("请输入商机阶段的Sort_Order！");
+        }
+        $("#Sort_Order").change(function () {
+            if ((/^\d{1,3}\.?\d{0,2}$/.test(this.value)) == false)
+            {
+                alert('请输入数字！');
+                this.value = '';
+                this.focus();
                 return false;
             }
-        }
+            var f = Math.round(this.value * 100) / 100;
+            var s = f.toString();
+            var rs = s.indexOf('.');
+            if (rs < 0) {
+                rs = s.length;
+                s += '.';
+            }
+            while (s.length <= rs + 2) {
+                s += '0';
+            }
+            if (s.length > 6) {
+                alert('您输入的数字过大，只可以输入三位整数！');
+                this.value = '';
+                this.focus();
+                return false;
+            }
+        });
     </script>
 </body>
 </html>

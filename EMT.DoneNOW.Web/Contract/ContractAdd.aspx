@@ -143,7 +143,6 @@
                                                         <%
                                                             } %>
                                                     </select>
-                                                    <img src="../Images/add.png" style="vertical-align: middle;cursor: pointer;" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -556,7 +555,7 @@
                                         <thead>
                                             <tr>
                                                 <td style="width:20px; text-align:center;">
-                                                    <input type="checkbox" style="vertical-align: middle;" />
+                                                    <input type="checkbox" style="vertical-align: middle;" id="CheckAll1"/>
                                                 </td>
                                                 <td>角色名称</td>
                                                 <td align="right">角色小时计费费率</td>
@@ -567,7 +566,7 @@
                                           <%foreach (var role in roleList) { %>
                                             <tr>
                                                 <td style="width:20px; text-align:center;">
-                                                    <input type="checkbox" name="cbRoleRate<%=role.id %>" onclick="CheckRoleRate(<%=role.id%>)" style="vertical-align: middle;"/>
+                                                    <input class="IsChecked1" type="checkbox" name="cbRoleRate<%=role.id %>" onclick="CheckRoleRate(<%=role.id%>)" style="vertical-align: middle;"/>
                                                   <input type="hidden" id="roleRateCheck<%=role.id %>" name="roleRateCheck<%=role.id %>" />
                                                 </td>
                                                 <td><%=role.name %></td>
@@ -599,11 +598,11 @@
                             <tbody>
                                 <tr>
                                     <td colspan="2">
-                                        <div style="height:400px;width:100%;">
+                                        <div style="max-height:400px;width:100%;overflow:auto;height:400px;" class="grid">
                                             <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
                                                 <thead>
                                                     <tr>
-                                                        <td style="padding-left: 10px;"></td>
+                                                        <td style="width:16px;"></td>
                                                         <td style="text-align:left;padding-left: 5px; ">标题</td>
                                                         <td style="padding-left: 5px; ">总额</td>
                                                         <td style="padding-left: 5px; ">截止日期</td>
@@ -680,7 +679,7 @@
                                         <div>
                                             <input type="hidden" id="milAddCodeHidden" />
                                             <input type="text" id="milAddCode" style="width:200px;" disabled="disabled" />
-                                            <a class="DataSelectorLinkIcon" onclick="window.open('../Common/SelectCallBack.aspx?cat=&field=milAddCode', '_blank', 'left=200,top=200,width=600,height=800', false);">
+                                            <a class="DataSelectorLinkIcon" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=milAddCode', '_blank', 'left=200,top=200,width=600,height=800', false);">
                                                 <img src="../Images/data-selector.png" style="vertical-align: middle;"/>
                                             </a>
                                         </div>
@@ -696,7 +695,7 @@
                                 <tr>
                                     <td>
                                         <div>
-                                            <input type="checkbox"/>
+                                            <input type="checkbox" id="milCheckbox"/>
                                             <span>待计费</span>
                                         </div>
                                     </td>
@@ -890,7 +889,17 @@
                 $(".IsChecked").prop("checked", false);
                 $(".IsChecked").css("checked", "");
             }
-        })
+        });
+        $("#CheckAll1").click(function () {
+            if ($(this).is(":checked")) {
+                $(".IsChecked1").prop("checked", true);
+                $(".IsChecked1").css("checked", "checked");
+            }
+            else {
+                $(".IsChecked1").prop("checked", false);
+                $(".IsChecked1").css("checked", "");
+            }
+        });
     </script>
 </body>
 </html>

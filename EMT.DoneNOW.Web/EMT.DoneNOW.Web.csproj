@@ -176,6 +176,7 @@
     <Content Include="Contract\AddContractRate.aspx" />
     <Content Include="Contract\AddDefaultCharge.aspx" />
     <Content Include="Contract\AddRetainerPurchase.aspx" />
+    <Content Include="Contract\AddService.aspx" />
     <Content Include="Contract\AdjustExtendedPrice.aspx" />
     <Content Include="Contract\ApproveAndPost.aspx" />
     <Content Include="Contract\ApproveChargeSelect.aspx" />
@@ -190,6 +191,7 @@
     <Content Include="Contract\ContractView.aspx" />
     <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
+    <Content Include="Images\Recentindex.png" />
     <Content Include="Images\ServiceSelector.png" />
     <Content Include="Images\Loading.gif" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
@@ -709,6 +711,7 @@
     <Content Include="SysSetting\AccountClass.aspx" />
     <Content Include="SysSetting\AccountClassView.aspx" />
     <Content Include="SysSetting\ActionType.aspx" />
+    <Content Include="SysSetting\Admin.aspx" />
     <Content Include="SysSetting\ContractMilestone.aspx" />
     <Content Include="SysSetting\ContractType.aspx" />
     <Content Include="SysSetting\GeneralView.aspx" />
@@ -904,6 +907,13 @@
     </Compile>
     <Compile Include="Contract\AddRetainerPurchase.aspx.designer.cs">
       <DependentUpon>AddRetainerPurchase.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\AddService.aspx.cs">
+      <DependentUpon>AddService.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AddService.aspx.designer.cs">
+      <DependentUpon>AddService.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\AdjustExtendedPrice.aspx.cs">
       <DependentUpon>AdjustExtendedPrice.aspx</DependentUpon>
@@ -1434,6 +1444,13 @@
     </Compile>
     <Compile Include="SysSetting\ActionType.aspx.designer.cs">
       <DependentUpon>ActionType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\Admin.aspx.cs">
+      <DependentUpon>Admin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\Admin.aspx.designer.cs">
+      <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\ContractMilestone.aspx.cs">
       <DependentUpon>ContractMilestone.aspx</DependentUpon>

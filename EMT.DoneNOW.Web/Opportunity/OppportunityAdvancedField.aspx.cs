@@ -20,7 +20,7 @@ namespace EMT.DoneNOW.Web
                     var field = new GeneralBLL().GetSingleGeneral(id);
                     if (field == null)
                     {
-                        Response.Write("<script>alert('获取相关信息失败，返回上一个页面');window.close();self.opener.location.reload();</script>");
+                        Response.Write("<script>alert('获取相关信息失败，返回上一个页面');window.close();</script>");
                     }
                     else {
                         this.Name.Text = field.name.ToString();
@@ -29,19 +29,17 @@ namespace EMT.DoneNOW.Web
                         }
                     }
                 } else {
-                    Response.Write("<script>alert('获取相关信息失败，返回上一个页面');window.close();self.opener.location.reload();</script>");
+                    Response.Write("<script>alert('获取相关信息失败，返回上一个页面');window.close();</script>");
                 }
 
             }
            
         }
-
-        protected void Save_Close_Click(object sender, EventArgs e)
-        {
-            Response.Write("<script>window.close();self.opener.location.reload();</script>");
-        }
-
         protected void Cancel_Click(object sender, EventArgs e)
+        {
+            Response.Write("<script>window.close();</script>");
+        }
+        protected void Save_Close_Click(object sender, EventArgs e)
         {
             var field = new GeneralBLL().GetSingleGeneral(id);
             field.name = this.Name.Text.Trim().ToString();
@@ -55,7 +53,7 @@ namespace EMT.DoneNOW.Web
             var result = new GeneralBLL().Update(field, GetLoginUserId());
             if (result == DTO.ERROR_CODE.SUCCESS)
             {
-                Response.Write("<script>window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>alert('销售指标度量修改成功！');window.close();self.opener.location.reload();</script>");
             }
             else if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失
             {

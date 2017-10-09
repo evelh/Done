@@ -77,20 +77,22 @@ $(".Content").on("mouseout", function () {
 $(".ModuleContainer").find(".Content").on("click", function () {
     setTimeout(function () {
         $(".cont").show();
-    }, 500);
-    $("#yibiaopan").hide();
+    }, 300);
+    setTimeout(function () {
+        $("#yibiaopan").hide();
+    }, 100);
 });
 $(".Logo").on("click", function () {
     $(".cont").hide();
     setTimeout(function () {
         $("#yibiaopan").show();
-    }, 500);
+    }, 300);
 });
 $("#HomePage").on("click", function () {
     $(".cont").hide();
     setTimeout(function () {
         $("#yibiaopan").show();
-    }, 500);
+    }, 300);
 });
 
 //历史记录搜索

@@ -54,7 +54,7 @@
                     <td width="30%" class="FieldLabels">
                         支付日期
                         <div>
-                            <input type="text" style="width:100px;" onclick="WdatePicker()" class="Wdate" id="pay_date"/>
+                            <input type="text" style="width:100px;" onclick="WdatePicker()" class="Wdate" id="pay_date" value="<%=date %>"/>
                             <input type="hidden" id="datevalue" name="datevalue" />
                         </div>
                     </td>
@@ -67,15 +67,15 @@
         <script src="../Scripts/SysSettingRoles.js"></script>
        <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
             <script>
-                function save_deal() {
-                    var k = $("#pay_date").val();
-                    if (k == null || k == '') {
-                        alert("请选择提交日期！");
-                        return false;
-                    }
-                    k = k.replace(/[^0-9]+/g, '');
-                    $("#datevalue").val(k);
-                }
+                //function save_deal() {
+                //    var k = $("#pay_date").val();
+                //    if (k == null || k == '') {
+                //        alert("请选择提交日期！");
+                //        return false;
+                //    }
+                //    k = k.replace(/[^0-9]+/g, '');
+                //    $("#datevalue").val(k);
+                //}
             </script>
     </form>
 </body>

@@ -27,8 +27,8 @@
             <!--顶部-->
             <div class="TitleBar">
                 <div class="Title">
-                    <div class="TitleBarNavigationButton">
-                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/SysSetting/SysAdmin.aspx" CssClass="buttons"><img src="../Images/move-left.png"/></asp:HyperLink>                       
+                    <div class="TitleBarNavigationButton" style="margin-top:0;">
+                        <span id="HyperLink1" class="buttons" onclick=" window.history.go(-1);"><img src="../Images/move-left.png"/></span>                       
                     </div> 
                     <span class="text1"><%=name %></span>
                     <a href="###" class="collection"></a>
@@ -47,7 +47,7 @@
                 </ul>
             </div>
             <%} %>            
-    <div class="ScrollingContainer ContainsGrid Active" style="top: 82px; bottom: 0;margin: 0 10px;overflow: auto">
+    <div class="ScrollingContainer ContainsGrid Active" style="top: 45px; bottom: 0;margin: 0 10px;overflow: auto">
         <div class="Grid Small">
             <div class="HeaderContainer">
                 <table cellpadding="0">
@@ -398,7 +398,6 @@
     <script src="../Scripts/ClassificationIcons.js"></script>
     <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
        <script>
-
                <%if (id == (int)GeneralTableEnum.ACTION_TYPE)
            {%>
            function Delete() {
@@ -474,7 +473,7 @@
                 skip(entityid);
                 <%if (id == (int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD)
             {%>
-                window.open('Suffixes.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SysOPPORTUNITY_ADVANCED_FIELD %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                window.open('../Opportunity/OppportunityAdvancedField.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SysOPPORTUNITY_ADVANCED_FIELD %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
                 <%}%>
             }
             function skip(entityid) {

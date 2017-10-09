@@ -54,7 +54,7 @@
 		</div>
 		<!--中间主体部分-->
 		<div class="ScrollingContainer">
-			<div class="ImageHotspotContainer">
+			<div class="ImageHotspotContainer" style="height:1361px;width:815px;">
 				<div class="Image">
 					<div class="ImageHotspot" style="height: 60px; top: 0px;" id="a1">
 						<div class="SimpleLabel" id="b1">报价页眉</div>

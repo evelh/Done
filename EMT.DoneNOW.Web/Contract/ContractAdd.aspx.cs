@@ -129,6 +129,7 @@ namespace EMT.DoneNOW.Web.Contract
             Dictionary<string, object> dics = bll.GetField();
             contractCate = dics["cate"] as List<DictionaryEntryDto>;
             periodType = dics["periodType"] as List<DictionaryEntryDto>;
+            periodType.Remove(periodType.Find(pt => pt.val.Equals(((int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToString())));
             billPostType = dics["billPostType"] as List<DictionaryEntryDto>;
             slaList = bll.GetSLAList();
 

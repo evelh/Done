@@ -115,7 +115,7 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.EXIST;
             }
             data.create_time = data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            data.create_user_id = user_id;
+            data.create_user_id = data.update_user_id= user_id;
             _dal.Insert(data);
             data = GetSingleGeneral(data.name, data.general_table_id);
             if (data == null) {
@@ -255,7 +255,7 @@ namespace EMT.DoneNOW.BLL
             //商机阶段
             if (table_id == (int)GeneralTableEnum.OPPORTUNITY_STAGE)
             {
-                var mar = new crm_opportunity_dal().FindListBySql($"select * from com_activity where stage_id={id} and delete_time=0");
+                var mar = new crm_opportunity_dal().FindListBySql($"select * from crm_opportunity where stage_id={id} and delete_time=0");
                 if (mar.Count > 0)
                 {
                     n = mar.Count;
@@ -593,6 +593,58 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.ERROR;
             }
             return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 新增时判断排序
+        /// </summary>
+        /// <param name="table_id"></param>
+        /// <param name="sort_order"></param>
+        /// <returns></returns>
+        public bool sort_order(int table_id,decimal sort_order) {
+            var kk = _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id={table_id} and sort_order={sort_order} and delete_time=0 ");
+            if (kk != null) {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 修改是判断排序
+        /// </summary>
+        /// <param name="table_id"></param>
+        /// <param name="sort_order"></param>
+        /// <returns></returns>
+        public bool update_sort_order(int id,int table_id, decimal sort_order)
+        {
+            var kk = _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id={table_id} and sort_order={sort_order} and delete_time=0 ");
+            if (kk != null&&kk.id!=id)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool defulatwonreson(long id=0) {
+
+            var kk = _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id=11 and ext2=1 and delete_time=0");
+            if (kk != null) {
+                if (kk.id != id||id==0) {
+                    return true;
+                }                
+            }
+            return false;
+        }
+        public bool defulatlossreson(long id=0)
+        {
+
+            var kk = _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id=11 and ext1=1 and delete_time=0");
+            if (kk != null)
+            {
+                if (kk.id != id || id == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

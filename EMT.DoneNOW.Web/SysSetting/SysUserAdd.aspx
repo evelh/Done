@@ -79,17 +79,14 @@
                                 </td>
                                 <td style="height: 100%; cursor: pointer;">
                                     <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">人力资源
-                                    <span style="color: red;">*</span>
                                     </span>
                                 </td>
                                 <td style="height: 100%; cursor: pointer;">
                                     <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">审批人
-                                    <span style="color: red;">*</span>
                                     </span>
                                 </td>
-                               <%-- <td style="height: 100%; cursor: pointer;">
-                                    <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">协会
-                                    <span style="color: red;">*</span>
+                                <td style="height: 100%; cursor: pointer;">
+                                    <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">隶属
                                     </span>
                                 </td>
                                 <td style="height: 100%; cursor: pointer;">
@@ -99,7 +96,7 @@
                                 <td style="height: 100%; cursor: pointer;">
                                     <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">附件
                                     </span>
-                                </td>--%>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -314,7 +311,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="DivSection">
+                            <div class="DivSection" style="display:none">
                                 <table cellpadding="0" cellspacing="0">
                                     <tbody>
                                         <tr>
@@ -660,6 +657,26 @@
                 }
                 if (ps1 != $("#password2").val()) {
                     alert("两次输入密码不相同，请确认后再输入！");
+                }
+            });
+
+            $("#browsefile").change(function (e) {
+                for (var i = 0; i < e.target.files.length; i++) {
+                    var file = e.target.files.item(i);
+                    //允许文件MIME类型 也可以在input标签中指定accept属性
+                    //console.log(/^image\/.*$/i.test(file.type));
+                    if (!(/^image\/.*$/i.test(file.type))) {
+                        continue;            //不是图片 就跳出这一次循环
+                    }
+
+                    //实例化FileReader API
+                    var freader = new FileReader();
+                    freader.readAsDataURL(file);
+                    freader.onload = function (e) {
+                        $("#imgshow").attr("src", e.target.result);
+                        //var img = '<img src="' + e.target.result + '" width="200px" height="200px"/>';
+                        //$("#images_show").empty().append(img);
+                    }
                 }
             });
         </script>

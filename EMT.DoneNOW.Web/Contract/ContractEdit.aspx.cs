@@ -64,23 +64,48 @@ namespace EMT.DoneNOW.Web.Contract
                 }
 
                 // 绑定通知联系人列表
-                if (contract.contract.bill_to_account_id == null)
+                if (contract.contract.type_id == (int)DicEnum.CONTRACT_TYPE.SERVICE)
                 {
-                    bill_to_contact_id.Enabled = false;
+                    if (contract.contract.bill_to_account_id == null)
+                    {
+                        bill_to_contact_id.Enabled = false;
+                    }
+                    else
+                    {
+                        var billContact = new ContactBLL().GetContactByCompany(contract.contract.account_id);
+                        bill_to_contact_id.DataTextField = "name";
+                        bill_to_contact_id.DataValueField = "id";
+                        bill_to_contact_id.DataSource = billContact;
+                        bill_to_contact_id.DataBind();
+                        if (contract.contract.bill_to_contact_id == null)
+                            bill_to_contact_id.Items.Insert(0, new ListItem() { Value = "", Text = "   ", Selected = true });
+                        else
+                        {
+                            bill_to_contact_id.Items.Insert(0, new ListItem() { Value = "", Text = "   " });
+                            bill_to_contact_id.SelectedValue = ((long)contract.contract.bill_to_contact_id).ToString();
+                        }
+                    }
                 }
                 else
                 {
-                    var billContact = new ContactBLL().GetContactByCompany(contract.contract.account_id);
-                    bill_to_contact_id.DataTextField = "name";
-                    bill_to_contact_id.DataValueField = "id";
-                    bill_to_contact_id.DataSource = billContact;
-                    bill_to_contact_id.DataBind();
-                    if (contract.contract.bill_to_contact_id == null)
-                        bill_to_contact_id.Items.Insert(0, new ListItem() { Value = "", Text = "   ", Selected = true });
+                    if (contract.contract.bill_to_account_id == null)
+                    {
+                        bill_to_contact_id1.Enabled = false;
+                    }
                     else
                     {
-                        bill_to_contact_id.Items.Insert(0, new ListItem() { Value = "", Text = "   " });
-                        bill_to_contact_id.SelectedValue = ((long)contract.contract.bill_to_contact_id).ToString();
+                        var billContact = new ContactBLL().GetContactByCompany(contract.contract.account_id);
+                        bill_to_contact_id1.DataTextField = "name";
+                        bill_to_contact_id1.DataValueField = "id";
+                        bill_to_contact_id1.DataSource = billContact;
+                        bill_to_contact_id1.DataBind();
+                        if (contract.contract.bill_to_contact_id == null)
+                            bill_to_contact_id1.Items.Insert(0, new ListItem() { Value = "", Text = "   ", Selected = true });
+                        else
+                        {
+                            bill_to_contact_id1.Items.Insert(0, new ListItem() { Value = "", Text = "   " });
+                            bill_to_contact_id1.SelectedValue = ((long)contract.contract.bill_to_contact_id).ToString();
+                        }
                     }
                 }
             }
@@ -89,6 +114,30 @@ namespace EMT.DoneNOW.Web.Contract
         protected void SaveClose_Click(object sender, EventArgs e)
         {
             ctt_contract contractEdit = AssembleModel<ctt_contract>();
+            if (!string.IsNullOrEmpty(Request.Form["MastInput"]) && Request.Form["MastInput"].Equals("on"))
+                contractEdit.timeentry_need_begin_end = 1;
+            else
+                contractEdit.timeentry_need_begin_end = 0;
+            if (!string.IsNullOrEmpty(Request.Form["isSdtDefault"]) && Request.Form["isSdtDefault"].Equals("on"))
+                contractEdit.is_sdt_default = 1;
+            else
+                contractEdit.is_sdt_default = 0;
+            if (contract.contract.type_id != (int)DicEnum.CONTRACT_TYPE.SERVICE)
+            {
+                if (!string.IsNullOrEmpty(Request.Form["isEnableOrverage"]) && Request.Form["isEnableOrverage"].Equals("on"))
+                    contractEdit.enable_overage_billing_rate = 1;
+                else
+                    contractEdit.enable_overage_billing_rate = 0;
+                if (string.IsNullOrEmpty(Request.Form["bill_to_contact_id1"]))
+                    contractEdit.contact_id = null;
+                else
+                    contractEdit.contact_id = long.Parse(Request.Form["bill_to_contact_id1"]);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(Request.Form["date"]) && Request.Form["date"].Equals("1"))
+                    contractEdit.occurrences = null;
+            }
             bll.EditContract(contractEdit, GetLoginUserId());
             Response.Write("<script>alert('编辑合同成功！');window.close();self.opener.location.reload();</script>");
         }

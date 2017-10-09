@@ -376,9 +376,15 @@ a.Button {
     margin: 0 10px 11px 10px;
     padding: 0 0 5px 0;
 }
+.InstructionItem p{
+    margin:0;
+}
 .oh{
     overflow: hidden;
 }
 .fl{
     float: left;
+}
+a{
+    outline:none;
 }

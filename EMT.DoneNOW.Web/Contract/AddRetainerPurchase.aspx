@@ -113,7 +113,7 @@
                                 <div class="checkbox" style="padding-bottom: 10px;">
                                     <input type="radio" name="EndDateLastOrNumbers" value="0" disabled="disabled" id="Radio4"/>
                                     <span>预付<%=blocktypeName %>数量</span>
-                                    <span class="greyColor">*</span>
+                                    <span class="errorSmall">*</span>
                                     <input type="text" name="purchaseNum" style="width:100px;margin-left: 26px;" disabled="disabled" id="Text2"/>
                                 </div>
                             </div>
@@ -154,6 +154,21 @@
                                                 <span class="FieldLevelInstructions">（每个预付<%=blocktypeName %>）</span>
                                             </td>
                                           <%} %>
+                                          <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
+                                            <td class="FieldLabels" colspan="2" nowrap>
+                                                数量
+                                                <span class="FieldLevelInstructions">（每个预付<%=blocktypeName %>）</span>
+                                                <span class="errorSmall">*</span>
+                                            </td>
+                                            <td class="FieldLabels" colspan="2" nowrap>
+                                                费率
+                                                <span class="errorSmall">*</span>
+                                            </td>
+                                            <td class="FieldLabels" nowrap>
+                                                价格
+                                                <span class="FieldLevelInstructions">（每个预付<%=blocktypeName %>）</span>
+                                            </td>
+                                          <%} %>
                                           <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER) { %>
                                             <td class="FieldLabels" colspan="2" nowrap>
                                                 总额
@@ -163,7 +178,8 @@
                                           <%} %>
                                         </tr>
                                         <tr>
-                                          <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS) { %>
+                                          <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS
+                                                || contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
                                             <td class="FieldLabels">
                                                 <div style="padding-bottom: 0;">
                                                     <input type="text" name="hours" style="width: 90px;text-align: right;" id="Text3"/>

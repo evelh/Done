@@ -125,14 +125,14 @@ namespace EMT.DoneNOW.Web
                 var result = new QuoteTemplateBLL().no_active_quote_template(user.id, QuoteTemp_id);
                 if (result==DTO.ERROR_CODE.SUCCESS)
                 {
-                    context.Response.Write("设为失活状态报价模板成功！");
+                    context.Response.Write("设为停用状态报价模板成功！");
                 }
                 else if(result==DTO.ERROR_CODE.NO_ACTIVATION)
                 {
-                    context.Response.Write("已经是失活状态，无需再操作！");
+                    context.Response.Write("已经是停用状态，无需再操作！");
                 }
                 else {
-                    context.Response.Write("设为失活状态报价模板失败！");
+                    context.Response.Write("设为停用状态报价模板失败！");
                 }
             }
         }

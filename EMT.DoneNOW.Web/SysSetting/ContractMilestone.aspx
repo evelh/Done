@@ -8,7 +8,7 @@
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
      <link rel="stylesheet" type="text/css" href="../Content/style.css" />
-    <title>计费里程碑状态</title>
+    <title>新增里程碑状态</title>
 </head>
 <body>
     <form id="form1" runat="server" method="post">
@@ -16,7 +16,7 @@
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">计费里程碑状态</span>
+            <span class="text1">新增里程碑状态</span>
             <a href="###" class="help"></a>
         </div>
     </div>
@@ -68,9 +68,9 @@
     <script src="../Scripts/SysSettingRoles.js"></script>
     <script>
         $("#Save_Close").click(function () {
-            var t = $("#Market_Name").val();
+            var t = $("#Name").val();
             if (t == null || t == '') {
-                alert("请填写计费里程碑状态名称");
+                alert("请填写里程碑状态名称");
                 return false;
             }
         });
@@ -78,6 +78,31 @@
             if ((/^\d{1,15}$/.test(this.value)) == false)
             {
                 alert('只能输入数值!');
+                this.value = '';
+                this.focus();
+                return false;
+            }
+        });
+
+        $("#SortOrder").change(function () {
+            if ((/^\d{1,3}\.?\d{0,2}$/.test(this.value)) == false) {
+                alert('请输入数字！');
+                this.value = '';
+                this.focus();
+                return false;
+            }
+            var f = Math.round(this.value * 100) / 100;
+            var s = f.toString();
+            var rs = s.indexOf('.');
+            if (rs < 0) {
+                rs = s.length;
+                s += '.';
+            }
+            while (s.length <= rs + 2) {
+                s += '0';
+            }
+            if (s.length > 6) {
+                alert('您输入的数字过大，只可以输入三位整数！');
                 this.value = '';
                 this.focus();
                 return false;

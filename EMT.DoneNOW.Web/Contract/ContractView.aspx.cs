@@ -58,6 +58,10 @@ namespace EMT.DoneNOW.Web.Contract
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_BLOCK_TIME + "&type=" + (int)QueryType.ContractBlockTime + "&id=" + contract.id;
                         ShowTitle.Text = "预付时间-" + contract.name;
                         break;
+                    case "blockTicket":
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_BLOCK_TICKET + "&type=" + (int)QueryType.ContractBlockTicket + "&id=" + contract.id;
+                        ShowTitle.Text = "事件-" + contract.name;
+                        break;
                     case "roleRate":
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_RATE + "&type=" + (int)QueryType.ContractRate + "&id=" + contract.id;
                         ShowTitle.Text = "费率-" + contract.name;
@@ -65,6 +69,11 @@ namespace EMT.DoneNOW.Web.Contract
                     case "milestone":
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONES + "&type=" + (int)QueryType.ContractMilestone + "&id=" + contract.id;
                         ShowTitle.Text = "里程碑-" + contract.name;
+                        break;
+                    case "service":
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_SERVICE + "&type=" + (int)QueryType.ContractService + "&id=" + contract.id;
+                        second.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_SERVICE_TRANS_HISTORY + "&type=" + (int)QueryType.ContractServiceTransHistory + "&id=" + contract.id;
+                        ShowTitle.Text = "服务-" + contract.name;
                         break;
                     default:
                         ShowTitle.Text = "摘要-" + contract.name;

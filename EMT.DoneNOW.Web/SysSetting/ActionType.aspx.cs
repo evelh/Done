@@ -24,22 +24,32 @@ namespace EMT.DoneNOW.Web
                 this.View.DataSource = atbll.GetCalendarField().FirstOrDefault(_ => _.Key == "View").Value;
                 this.View.DataBind();
                 this.View.SelectedIndex = 0;
-            }
-            if (id > 0) {
-                action=new GeneralBLL().GetSingleGeneral(id);
-                if (action == null)
+                if (id > 0)
                 {
-                    Response.Write("<script>alert('获取市场相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
-                }
-                else
-                {
-                    this.Name.Text = action.name.ToString();
-                    this.View.SelectedValue = action.parent_id.ToString();
-                    if (action.is_active > 0) {
-                        this.Active.Checked = true;
+                    action = new GeneralBLL().GetSingleGeneral(id);
+                    if (action == null)
+                    {
+                        Response.Write("<script>alert('获取市场相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
+                    }
+                    else
+                    {
+                        this.Name.Text = action.name.ToString();
+                        this.View.SelectedValue = action.parent_id.ToString();
+                        if (action.is_active > 0)
+                        {
+                            this.Active.Checked = true;
+                        }
+                        else
+                        {
+                            this.Active.Checked = true;
+                        }
                     }
                 }
+                else {
+                    this.Active.Checked = true;
+                }
             }
+            
         }
 
 
@@ -47,24 +57,15 @@ namespace EMT.DoneNOW.Web
         {
             if (save_deal())
             {
-                Response.Write("<script>alert('活动类型添加成功！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>window.close();self.opener.location.reload();</script>");
             }
-            else
-            {
-                Response.Write("<script>alert('活动类型添加失败！');window.close();self.opener.location.reload();</script>");
-            }
-
         }
 
         protected void Save_New_Click(object sender, EventArgs e)
         {
             if (save_deal())
             {
-                Response.Write("<script>alert('活动类型添加失败！');window.location.href = 'ActionType.aspx';</script>");
-            }
-            else
-            {
-                Response.Write("<script>alert('活动类型添加失败！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>window.location.href = 'ActionType.aspx';</script>");
             }
         }
 
@@ -93,7 +94,9 @@ namespace EMT.DoneNOW.Web
             }
             if (id > 0) {//更新
                 var result = atbll.Update(action, GetLoginUserId());
-                if (result == DTO.ERROR_CODE.SUCCESS) {
+                if (result == DTO.ERROR_CODE.SUCCESS)
+                {
+                    Response.Write("<script>alert('活动类型修改成功！');</script>");
                     return true;
                 }
                 else if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失
@@ -104,11 +107,16 @@ namespace EMT.DoneNOW.Web
                 else if (result == DTO.ERROR_CODE.EXIST)
                 {
                     Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
+                }
+                else {
+                    Response.Write("<script>alert('活动类型修改失败！');</script>");
                 }
 
             } else {//新增
                 var result = atbll.Insert(action, GetLoginUserId());
-                if (result == DTO.ERROR_CODE.SUCCESS) {
+                if (result == DTO.ERROR_CODE.SUCCESS)
+                {
+                    Response.Write("<script>alert('活动类型添加成功！');</script>");
                     return true;
                 }
                 else if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失
@@ -119,6 +127,9 @@ namespace EMT.DoneNOW.Web
                 else if (result == DTO.ERROR_CODE.EXIST)
                 {
                     Response.Write("<script>alert('已经存在相同名称，请修改！');</script>");
+                }
+                else {
+                    Response.Write("<script>alert('活动类型添加失败！');</script>");
                 }
             }
 

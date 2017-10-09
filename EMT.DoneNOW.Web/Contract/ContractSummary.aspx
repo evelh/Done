@@ -55,7 +55,7 @@
                                             <td class="FieldLabel" style="min-width: 200px;width:200px;">客户名称
                                             </td>
                                             <td>
-                                                <a onclick="window.open('../Company/ViewCompany.aspx?id=<%=contract.account_id %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=summary.account_name %></a>
+                                                <a style="cursor:pointer;" onclick="window.open('../Company/ViewCompany.aspx?id=<%=contract.account_id %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=summary.account_name %></a>
                                             </td>
                                         </tr>
                                         <tr height="21">
@@ -335,7 +335,7 @@
                                             { %>
                                         <tr height="24px">
                                             <td class="FieldLabels">
-                                                <a onclick="javascript:window.parent.location.href='ContractView.aspx?type=roleRate&id=<%=contract.id %>'">费率</a>
+                                                <a style="cursor:pointer;" onclick="javascript:window.parent.location.href='ContractView.aspx?type=roleRate&id=<%=contract.id %>'">费率</a>
                                             </td>
                                             <td><%=summary.rate %></td>
                                         </tr>
@@ -344,7 +344,7 @@
                                             { %>
                                         <tr height="24px">
                                             <td class="FieldLabels">
-                                                <a onclick="javascript:window.parent.location.href='ContractView.aspx?type=item&id=<%=contract.id %>'">配置项</a>
+                                                <a style="cursor:pointer;" onclick="javascript:window.parent.location.href='ContractView.aspx?type=item&id=<%=contract.id %>'">配置项</a>
                                             </td>
                                             <td><%=summary.ci %></td>
                                         </tr>
@@ -371,7 +371,7 @@
                                             { %>
                                         <tr height="24px">
                                             <td class="FieldLabels">
-                                                <a onclick="javascript:window.parent.location.href='ContractView.aspx?type=roleRate&id=<%=contract.id %>'">里程碑</a>
+                                                <a style="cursor:pointer;" onclick="javascript:window.parent.location.href='ContractView.aspx?type=roleRate&id=<%=contract.id %>'">里程碑</a>
                                             </td>
                                             <td><%=summary.milestone %></td>
                                         </tr>
@@ -633,7 +633,7 @@
                                         <tr height="24px">
                                             <td class="FieldLabel">已用预付时间总额
                                             </td>
-                                            <td></td>
+                                            <td><%=summary.block_hours_used_amount %></td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabel">合同首付
@@ -654,30 +654,35 @@
                                             <td class="FieldLabel">初始费用
                                             </td>
                                             <td>
+                                              <%=summary.setup_fee %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabel">合同期
                                             </td>
                                             <td>
+                                              <%=summary.contract_periods %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabel">初次计费日期
                                             </td>
                                             <td>
+                                              <%=summary.first_billed_date == null ? "" : (((DateTime)(summary.first_billed_date)).ToString("yyyy-MM-dd")) %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabel">下一个计费日期
                                             </td>
                                             <td>
+                                              <%=summary.second_billing_date == null ? "" : (((DateTime)(summary.second_billing_date)).ToString("yyyy-MM-dd")) %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabel">最终计费日期
                                             </td>
                                             <td>
+                                              <%=summary.final_billing_Date == null ? "" : (((DateTime)(summary.final_billing_Date)).ToString("yyyy-MM-dd")) %>
                                             </td>
                                         </tr>
                                         <%} %>

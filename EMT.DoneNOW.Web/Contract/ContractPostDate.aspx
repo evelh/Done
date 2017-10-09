@@ -8,6 +8,7 @@
     <title>输入提交日期</title>
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <style>
         /*加载的css样式*/
 #BackgroundOverLay{
@@ -48,10 +49,9 @@
         </div>
     </div>
     <!--按钮-->
-    <div class="ButtonContainer">
+    <div class="ButtonContainer header-title">
         <ul id="btn">
-            <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
-                <span class="Icon" style="margin: 0;width: 0;"></span>
+            <li>
                 <asp:Button ID="Post" OnClientClick="return kkk()" runat="server" Text="审批并提交" BorderStyle="None" OnClick="Post_Click" />
             </li>
         </ul>
@@ -71,7 +71,7 @@
                         选择日期
                         <span class="errorSmall">*</span>
                         <div>
-                            <input id="post_datett" name="post_datett" type="text" style="width:100px;" onclick="WdatePicker()" class="Wdate"/>
+                            <input id="post_datett" name="post_datett" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" type="text" style="width:100px;" onclick="WdatePicker()" class="Wdate"/>
                         </div>
                     </td>
                 </tr>

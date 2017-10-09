@@ -38,6 +38,7 @@ namespace EMT.DoneNOW.Web
                     else
                     {
                         this.Territory_Name.Text = a.name.ToString();
+                        if(a.parent_id!=null)
                         this.Region.SelectedValue = a.parent_id.ToString();
                         if (a.remark != null && !string.IsNullOrEmpty(a.remark.ToString()))
                         {
@@ -76,11 +77,14 @@ namespace EMT.DoneNOW.Web
         /// 数据保存处理
         /// </summary>
         private bool save_deal() {
+            bool status = false;
             d_general terr = new d_general();
             if (id > 0) {
                 terr= new GeneralBLL().GetSingleGeneral(id);
+                status = true;
             }
             terr.name = this.Territory_Name.Text.Trim().ToString();
+            if (Convert.ToInt32(this.Region.SelectedValue.ToString())>0)
             terr.parent_id = Convert.ToInt32(this.Region.SelectedValue.ToString());
             if (!string.IsNullOrEmpty(this.Territory_Description.Text.Trim().ToString())) {
                 terr.remark= this.Territory_Description.Text.Trim().ToString();
@@ -88,7 +92,7 @@ namespace EMT.DoneNOW.Web
             var result = stbll.SaveTerritory(terr, GetLoginUserId(), ref id);
            if (result == DTO.ERROR_CODE.SUCCESS)
            {
-                if (id > 0)
+                if (status)
                 {
                     Response.Write("<script>alert('客户地域修改成功！');</script>");
                 }

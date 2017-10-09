@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <link rel="stylesheet" type="text/css" href="../Content/searchList.css" />
+     <link href="../Content/ClassificationIcons.css" rel="stylesheet" />
     <title></title>
     <style>
         .searchcontent {
@@ -210,7 +211,11 @@
                     %>
                     <li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
                     <%}
-                        } %>
+                        } else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) {%>
+                  <li onclick="AddService()"><i style="background-image: url(../Images/new.png);"></i><span>新增服务</span></li>
+                  <li onclick="AddServiceBundle()"><i style="background-image: url(../Images/new.png);"></i><span>新增服务包</span></li>
+                  <li onclick="ApplyDiscount()"><span>应用全部折扣</span></li>
+                  <%}%>
                     <li><i style="background-image: url(../Images/print.png);"></i></li>
                     <li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
                     <li><i style="background-image: url(../Images/export.png);"></i></li>
@@ -218,6 +223,11 @@
                 <%if (queryResult != null && queryResult.count > 0)
                     { %>
                 <div class="page fl">
+
+                  <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
+                <span>显示数据</span><input type="text" style="margin-left:16px;margin-right:30px;" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
+              <%} %>
+
                     <%
                         int indexFrom = queryResult.page_size * (queryResult.page - 1) + 1;
                         int indexTo = queryResult.page_size * queryResult.page;
@@ -244,16 +254,16 @@
                                                   else
                                                   { %><a href="#" onclick="ChangePageSize(100)">100</a><%} %></span>
                     <i onclick="ChangePage(1)"><<</i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page-1 %>)"><</i>
-                    <input type="text" style="width: 30px; text-align: center;" value="<%=queryResult.page %>" />
+                    <input type="text" style="width: 30px; text-align: center;height:30px;" value="<%=queryResult.page %>" />
                     <span>&nbsp;/&nbsp;<%=queryResult.page_count %></span>
                     <i onclick="ChangePage(<%=queryResult.page+1 %>)">></i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page_count %>)">>></i>
                 </div>
                 <%} %>
             </div>
+
         </div>
     </form>
-    <%if (queryResult != null)
-        { %>
+    <%if (queryResult != null) { %>
 
     <div class="searchcontent" id="searchcontent" style="margin-top: 56px; min-width: <%=tableWidth%>px; overflow: hidden;">
         <table border="" cellspacing="0" cellpadding="0" style="overflow: scroll; width: 100%; height: 100%;">
@@ -279,7 +289,7 @@
                             order = strs[1].ToLower();
                         }
                 %>
-                <th title="点击按此列排序" width="<%=para.length*16 %>px" onclick="ChangeOrder('<%=para.name %>')">
+                <th title="点击按此列排序" width="<%=para.length*32 %>px" onclick="ChangeOrder('<%=para.name %>')">
                     <%=para.name %>
                     <%if (orderby != null && para.name.Equals(orderby))
                         { %><img src="../Images/sort-<%=order %>.png" />
@@ -362,6 +372,32 @@
             <%} %>
         </ul>
         <%} %>
+    </div>
+    
+ <!--弹框-->
+    <div class="Dialog" id="accounttanchuan">
+        <div>
+            <div class="CancelDialogButton cancel_account"></div>
+            <div class="TitleBar"></div>
+            <div class="NoHeading Section">
+                <div class="Content">
+                    <div class="StandardText">分类图标：有<span id="accountcount"></span>个客户关联此客户类别。</div>
+                    <div class="StandardText HighImportance">如果删除，则相关客户上的客户类别信息将会被清空。</div>
+                    <div class="StandardText">您确定要删除此分类吗？</div>
+                </div>
+            </div>
+            <div class="GridBar ButtonContainer">
+                <a class="Button ButtonIcon NormalState" id="delete_account">
+                    <span class="Text">是的，删除</span>
+                </a>
+                <a class="Button ButtonIcon NormalState" id="noactive_account">
+                    <span class="Text">不，停用</span>
+                </a>
+                <a class="Button ButtonIcon NormalState cancel_account">
+                    <span class="Text">取消</span>
+                </a>
+            </div>
+        </div>
     </div>
         <%--加载--%>
 <div id="BackgroundOverLay"></div>
@@ -1159,10 +1195,10 @@
             window.open("../Contract/ContractEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=950', false);
         }
         function ViewContract() {
-          window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank', 'left=0,top=0,location=no,status=no,width=900,height=950', false);
+          window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank', 'left=0,top=0,location=no,status=no,width=1000,height=950', false);
         }
         function View(id) {
-          window.open("../Contract/ContractView.aspx?id=" + id, '_blank', 'left=0,top=0,location=no,status=no,width=900,height=950', false);
+          window.open("../Contract/ContractView.aspx?id=" + id, '_blank', 'left=0,top=0,location=no,status=no,width=1000,height=950', false);
         }
         function ViewNewWindow() {
           window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank');
@@ -1173,8 +1209,12 @@
                     type: "GET",
                     url: "../Tools/ContractAjax.ashx?act=deleteContract&id=" + entityid,
                     success: function (data) {
+                      if (data =="True"){
                         alert("删除成功");
                         window.location.reload();
+                      } else {
+                        alert("删除失败，合同关联以下对象时不能被删除：项目、工单、合同默认成本、配置项、合同成本、已计费条目、工时、taskfire。")
+                      }
                     }
                 });
             }
@@ -1548,6 +1588,7 @@
                                       url: "../Tools/ConfigItemTypeAjax.ashx?act=delete&id=" + entityid,
                                       success: function (data) {
                                           alert(data);
+                                          history.go(0);
                                       }
                                   });
                               }
@@ -1564,6 +1605,7 @@
                   async: false,
                   success: function (data) {
                       alert(data);
+                      history.go(0);
                   }
               })
               window.location.reload();
@@ -1575,6 +1617,7 @@
                   async: false,
                   success: function (data) {
                       alert(data);
+                      history.go(0);
                   }
               })
               window.location.reload();
@@ -1595,7 +1638,8 @@
                         alert("安全等级复制失败！");
                     } else {
                         alert("安全等级复制成功，点击确定进入编辑界面！");
-                        window.open('../SysSetting/SysUserSecurityLevel.aspx?id=' + data,'<%=(int)EMT.DoneNOW.DTO.OpenWindow.SecurityLevel%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                        window.open('../SysSetting/SysUserSecurityLevel.aspx?id=' + data, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SecurityLevel%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                        history.go(0);
                     }
                 }
             })
@@ -1610,6 +1654,7 @@
                 async: false,
                 success: function (data) {
                     alert(data);
+                    history.go(0);
                 }
             })
             window.location.reload();
@@ -1622,6 +1667,7 @@
                     async: false,
                     success: function (data) {
                         alert(data);
+                        history.go(0);
                     }
                 })
             }
@@ -1634,6 +1680,7 @@
                 async: false,
                 success: function (data) {
                     alert(data);
+                    history.go(0);
                 }
             })
             window.location.reload();
@@ -1657,9 +1704,9 @@
                 async: false,
                 success: function (data) {
                     alert(data);
+                    history.go(0);
                 }
             });
-            window.location.reload();
         }
         function Delete() {
             if (confirm('删除操作将不能恢复，是否继续?')) {
@@ -1669,16 +1716,16 @@
                     async: false,
                     success: function (data) {
                         if (data == "system") {
-                            alert("系统默认不能删除！");
+                            alert("系统状态不能删除！");
                         } else if (data == "other") {
                             alert("其他原因使得删除失败！");
                         } else {
                             alert(data);
+                            history.go(0);
                         }
                     }
                 });
             }
-            window.location.reload();
         }
         function Inactive() {
             $.ajax({
@@ -1687,9 +1734,9 @@
                 async: false,
                 success: function (data) {
                     alert(data);
+                    history.go(0);
                 }
             });
-            window.location.reload();
         }
        <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.REVOKE_CHARGES)
@@ -1705,8 +1752,8 @@
             }
         })
         function Add() {
-            $("#BackgroundOverLay").show();
-            $("#LoadingIndicator").show();
+            //$("#BackgroundOverLay").show();
+            //$("#LoadingIndicator").show();
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1741,6 +1788,8 @@
             }
         })
         function Add() {
+            //$("#BackgroundOverLay").show();
+            //$("#LoadingIndicator").show();
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1809,8 +1858,8 @@
             }
         })
         function Add() {
-            $("#BackgroundOverLay").show();
-            $("#LoadingIndicator").show();
+            //$("#BackgroundOverLay").show();
+            //$("#LoadingIndicator").show();
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1949,7 +1998,6 @@
             if (ids != "") {
                 ids = ids.substring(0, ids.length - 1);
                 window.open('../Contract/ContractPostDate.aspx?type=' +  <%=queryTypeId%>  + '&ids=' + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractPostDate%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-                alert("审批处理结束！");
             } else {
                 alert("请选择需要审批的数据！");
             }
@@ -2013,7 +2061,6 @@
                 alert("至少选择一项！");
             }
         }
-
         //生成发票
       <%--  function ToInvoice() {
             $("#PageFrame").attr("src", "Invoice/InvocieSearch");
@@ -2474,6 +2521,9 @@
          <%}//历史发票查询
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Invoice_History)
         {%>
+        function Add() {
+            alert("暂未实现");
+        }
         //修改发票
         function EditInvoice() {
             window.open('../Invoice/InvoiceNumberAndDateEdit.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceHistoryEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
@@ -2556,25 +2606,49 @@
                             return false;
                         } else if (data == "other") {
                             alert("其他原因使得删除失败！");
+                        } else if (data == "success") {
+                            alert("删除成功！");
+                            history.go(0);
+                        } else if (data == "error") {
+                            alert("删除失败！");
                         } else {
-                            if (confirm(data)) {
-                                if (confirm(data)) {
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "../Tools/AccountClassAjax.ashx?act=delete&id=" + entityid,
-                                        success: function (data) {
-                                            alert(data);
+                            $("#accountcount").text(data);
+                            $("#BackgroundOverLay").show();
+                            $("#accounttanchuan").addClass("Active");
+                            $("#delete_account").on("click", function () {                               
+                                //点击删除
+                                $.ajax({
+                                    type: "GET",
+                                    url: "../Tools/AccountClassAjax.ashx?act=delete&id=" + entityid,
+                                    success: function (data) {
+                                        if (data == "success") {
+                                            alert("删除成功！");
+                                            history.go(0);
+                                        } else if (data == "error") {
+                                            alert("删除失败！");
                                         }
-                                    });
-                                } else {
-                                    return false;
-                                }
-                            }
+                                    }
+                                });
+                                $("#BackgroundOverLay").hide();
+                                $("#accounttanchuan").removeClass("Active");
+                            });   
+                             
+                            //选择停用
+                            $("#noactive_account").on("click", function () {
+                                NoActive();
+                                $("#BackgroundOverLay").hide();
+                                $("#accounttanchuan").removeClass("Active");
+                            });
+
+                            //取消
+                            $(".cancel_account").on("click", function () {
+                                $("#BackgroundOverLay").hide();
+                                $("#accounttanchuan").removeClass("Active");
+                            });
                         }
                     }
                 });
             }
-            window.location.reload();
         }
         function Active() {
             $.ajax({
@@ -2582,9 +2656,9 @@
                 url: "../Tools/AccountClassAjax.ashx?act=active&id=" + entityid,
                 success: function (data) {
                     alert(data);
+                    history.go(0);
                 }
             });
-            window.location.reload();
         }
         function NoActive() {
             $.ajax({
@@ -2592,9 +2666,9 @@
                 url: "../Tools/AccountClassAjax.ashx?act=noactive&id=" + entityid,
                 success: function (data) {
                     alert(data);
+                    history.go(0);
                 }
             });
-            window.location.reload();
         }
          <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.OPPPORTUNITYWINREASON)
@@ -2616,13 +2690,18 @@
                                 return false;
                             } else if (data == "other") {
                                 alert("其他原因使得删除失败！");
+                            } else if (data == "success") {
+                                alert("删除成功！");
+                                history.go(0);
+                            } else if (data == "error") {
+                                alert("删除失败！");
                             } else {
                                 alert(data);
+                                history.go(0);
                             }
                         }
                 });
             }
-            window.location.reload();
         }
           <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.OPPPORTUNITYLOSSREASON)
@@ -2647,13 +2726,18 @@
                              return false;
                          } else if (data == "other") {
                              alert("其他原因使得删除失败！");
+                         } else if (data == "success") {
+                             alert("删除成功！");
+                             history.go(0);
+                         } else if (data == "error") {
+                             alert("删除失败！");
                          } else {
                              alert(data);
+                             history.go(0);
                          }
                      }
                  });
              }
-             window.location.reload();
           }
          <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Market)
@@ -2677,6 +2761,11 @@
                                alert("系统默认不能删除！");
                            } else if (data == "other") {
                                alert("其他原因使得删除失败！");
+                           } else if (data == "success") {
+                               alert("删除成功！");
+                               history.go(0);
+                           } else if (data == "error") {
+                               alert("删除失败！");
                            } else {
                                if (confirm(data)) {
                                    $.ajax({
@@ -2684,6 +2773,12 @@
                                        url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.MARKET_SEGMENT%>",//GT_id 表示当前操作的类型
                                        success: function (data) {
                                            alert(data);
+                                           if (data == "success") {
+                                               alert("删除成功！");
+                                               history.go(0);
+                                           } else if (data == "error") {
+                                               alert("删除失败！");
+                                           }
                                        }
                                    });
                                }
@@ -2691,7 +2786,6 @@
                        }
                 });
             }
-            window.location.reload();
         }
           <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ACCOUNTREGION)
@@ -2715,6 +2809,11 @@
                              alert("系统默认不能删除！");
                          } else if (data == "other") {
                              alert("其他原因使得删除失败！");
+                         } else if (data == "success") {
+                             alert("删除成功！");
+                             history.go(0);
+                         } else if (data == "error") {
+                             alert("删除失败！");
                          } else {
                              if (confirm(data)) {
                                  $.ajax({
@@ -2722,6 +2821,12 @@
                                      url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.REGION%>",//GT_id 表示当前操作的类型
                                        success: function (data) {
                                            alert(data);
+                                           if (data == "success") {
+                                               alert("删除成功！");
+                                               history.go(0);
+                                           } else if (data == "error") {
+                                               alert("删除失败！");
+                                           }
                                        }
                                  });
                              }
@@ -2729,7 +2834,6 @@
                      }
                  });
              }
-             window.location.reload();
          }
           <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Territory)
@@ -2753,6 +2857,11 @@
                              alert("系统默认不能删除！");
                          } else if (data == "other") {
                              alert("其他原因使得删除失败！");
+                         } else if (data == "success") {
+                             alert("删除成功！");
+                             history.go(0);
+                         } else if (data == "error") {
+                             alert("删除失败！");
                          } else {
                              if (confirm(data)) {
                                  $.ajax({
@@ -2760,6 +2869,12 @@
                                      url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.TERRITORY%>",//GT_id 表示当前操作的类型
                                        success: function (data) {
                                            alert(data);
+                                           if (data == "success") {
+                                               alert("删除成功！");
+                                               history.go(0);
+                                           } else if (data == "error") {
+                                               alert("删除失败！");
+                                           }
                                        }
                                  });
                              }
@@ -2767,7 +2882,6 @@
                      }
                  });
              }
-             window.location.reload();
          }
 
           <%}
@@ -2792,6 +2906,11 @@
                              alert("系统默认不能删除！");
                          } else if (data == "other") {
                              alert("其他原因使得删除失败！");
+                         } else if (data == "success") {
+                             alert("删除成功！");
+                             history.go(0);
+                         } else if (data == "error") {
+                             alert("删除失败！");
                          } else {
                              if (confirm(data)) {
                                  $.ajax({
@@ -2799,6 +2918,12 @@
                                      url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.COMPETITOR%>",//GT_id 表示当前操作的类型
                                        success: function (data) {
                                            alert(data);
+                                           if (data == "success") {
+                                               alert("删除成功！");
+                                               history.go(0);
+                                           } else if (data == "error") {
+                                               alert("删除失败！");
+                                           }
                                        }
                                  });
                              }
@@ -2806,7 +2931,6 @@
                      }
                  });
              }
-             window.location.reload();
          }
 
           <%}
@@ -2831,6 +2955,11 @@
                              alert("系统默认不能删除！");
                          } else if (data == "other") {
                              alert("其他原因使得删除失败！");
+                         } else if (data == "success") {
+                             alert("删除成功！");
+                             history.go(0);
+                         } else if (data == "error") {
+                             alert("删除失败！");
                          } else {
                              if (confirm(data)) {
                                  $.ajax({
@@ -2838,6 +2967,12 @@
                                      url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_SOURCE%>",//GT_id 表示当前操作的类型
                                        success: function (data) {
                                            alert(data);
+                                           if (data == "success") {
+                                               alert("删除成功！");
+                                               history.go(0);
+                                           } else if (data == "error") {
+                                               alert("删除失败！");
+                                           }
                                        }
                                  });
                              }
@@ -2845,7 +2980,6 @@
                      }
                  });
              }
-             window.location.reload();
          }
 
           <%}
@@ -2861,6 +2995,11 @@
                              alert("系统默认不能删除！");
                          } else if (data == "other") {
                              alert("其他原因使得删除失败！");
+                         } else if (data == "success") {
+                             alert("删除成功！");
+                             history.go(0);
+                         } else if (data == "error") {
+                             alert("删除失败！");
                          } else {
                              if (confirm(data)) {
                                  $.ajax({
@@ -2868,6 +3007,12 @@
                                      url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.NAME_SUFFIX%>",//GT_id 表示当前操作的类型
                                        success: function (data) {
                                            alert(data);
+                                           if (data == "success") {
+                                               alert("删除成功！");
+                                               history.go(0);
+                                           } else if (data == "error") {
+                                               alert("删除失败！");
+                                           }
                                        }
                                  });
                              }
@@ -2875,14 +3020,22 @@
                      }
                  });
              }
-             window.location.reload();
          }
- 
+         function Edit() {
+             window.open('../SysSetting/Suffixes.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Add() {
+             window.open('../SysSetting/Suffixes.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function View(id) {
+             window.open('../SysSetting/Suffixes.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+
+
           <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ACTIONTYPE)
         { %>//活动类型
          function Delete() {
-             function Delete() {
                  if (confirm('删除操作将不能恢复，是否继续?')) {
                      $.ajax({
                          type: "GET",
@@ -2892,6 +3045,11 @@
                                alert("系统默认不能删除！");
                            } else if (data == "other") {
                                alert("其他原因使得删除失败！");
+                           } else if (data == "success") {
+                               alert("删除成功！");
+                               history.go(0);
+                           } else if (data == "error") {
+                               alert("删除失败！");
                            } else {
                                if (confirm(data)) {
                                    $.ajax({
@@ -2899,6 +3057,12 @@
                                        url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE%>",//GT_id 表示当前操作的类型
                                        success: function (data) {
                                            alert(data);
+                                           if (data == "success") {
+                                               alert("删除成功！");
+                                               history.go(0);
+                                           } else if (data == "error") {
+                                               alert("删除失败！");
+                                           }
                                        }
                                    });
                                }
@@ -2906,9 +3070,7 @@
                        }
                      });
                  }
-                 window.location.reload();
              }
-         }
          function Edit() {
              window.open('../SysSetting/ActionType.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
@@ -2926,19 +3088,25 @@
              if (confirm('删除操作将不能恢复，是否继续?')) {
                  $.ajax({
                      type: "GET",
-                     url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_STAGE%>",//GT_id 表示当前操作的类型
+                     url: '../Tools/GeneralViewAjax.ashx?act=delete_validate&id='+ entityid + '&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.OPPORTUNITY_STAGE%>',//GT_id 表示当前操作的类型
                        success: function (data) {
                            if (data == "system") {
                                alert("系统默认不能删除！");
                            } else if (data == "other") {
                                alert("其他原因使得删除失败！");
-                           } else {
+                           } else if (data == "success") {
+                               alert("删除成功！");
+                               history.go(0);
+                           } else if (data == "error") {
+                               alert("删除失败！");
+                           }
+                           else {
                                alert(data);
+                               history.go(0);
                            }
                        }
                 });
             }
-            window.location.reload();
          }
          function Edit() {
              window.open('../Opportunity/OpportunityStage.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OPPORTUNITY_STAGE %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
@@ -3039,13 +3207,14 @@
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlock
-        || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlockTime)
+        || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlockTime
+        || queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractBlockTicket)
         { %>
         function Edit() {
-          window.open("../Contract/EditRetainerPurchase.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+          window.open("../Contract/EditRetainerPurchase.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=868', false);
         }
         function Add() {
-          window.open("../Contract/AddRetainerPurchase.aspx?id=" + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+          window.open("../Contract/AddRetainerPurchase.aspx?id=" + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConBlockAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=868', false);
         }
         function SetActive() {
 
@@ -3054,9 +3223,9 @@
               url: "../Tools/ContractAjax.ashx?act=SetBlockActive&blockId=" + entityid,
               async: false,
               success: function (data) {
-                if (data == "true") {
+                if (data == "True") {
                   alert("设置成功");
-                  window.reload();
+                  history.go(0);
                 } else {
                   alert("设置失败！已审批预付不可修改");
                 }
@@ -3070,9 +3239,9 @@
             url: "../Tools/ContractAjax.ashx?act=SetBlockInactive&blockId=" + entityid,
             async: false,
             success: function (data) {
-              if (data == "true") {
+              if (data == "True") {
                 alert("设置成功");
-                window.reload();
+                history.go(0);
               } else {
                 alert("设置失败！已审批预付不可修改");
               }
@@ -3086,7 +3255,8 @@
               url: "../Tools/ContractAjax.ashx?act=DeleteBlock&blockId=" + entityid,
               async: false,
               success: function (data) {
-                window.reload();
+                alert("删除成功");
+                history.go(0);
               }
             })
           }
@@ -3107,7 +3277,7 @@
                     url: "../Tools/ContractAjax.ashx?act=DeleteRate&rateId=" + entityid,
                     async: false,
                     success: function (data) {
-                        window.reload();
+                      history.go(0);
                     }
                 })
             }
@@ -3126,9 +3296,9 @@
                     url: "../Tools/ContractAjax.ashx?act=DeleteMilestone&milestoneId=" + entityid,
                     async: false,
                     success: function (data) {
-                        if (data == "true") {
+                      if (data == "True") {
                             alert('删除成功');
-                            window.reload();
+                            history.go(0);
                         } else {
                             alert("删除失败，已计费状态下不能删除");
                         }
@@ -3139,24 +3309,34 @@
          <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractType)
         { %>//合同类别
-        function Delete() {
             function Delete() {
                 if (confirm('删除操作将不能恢复，是否继续?')) {
                     $.ajax({
                         type: "GET",
-                        url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.CONTRACT_TYPE%>",//GT_id 表示当前操作的类型
+                        url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.CONTRACT_CATE%>",//GT_id 表示当前操作的类型
                          success: function (data) {
-                             if (data == "system") {
+                             if (data== "system") {
                                  alert("系统默认不能删除！");
                              } else if (data == "other") {
-                                 alert("其他原因使得删除失败！");
-                             } else {
+                                alert("其他原因使得删除失败！");
+                             } else if (data == "success") {
+                                 alert("删除成功！");
+                                 history.go(0);
+                             } else if (data == "error") {
+                                 alert("删除失败！");
+                             }
+                                 else {
                                  if (confirm(data)) {
                                      $.ajax({
                                          type: "GET",
-                                         url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.CONTRACT_TYPE%>",//GT_id 表示当前操作的类型
+                                         url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.CONTRACT_CATE%>",//GT_id 表示当前操作的类型
                                        success: function (data) {
-                                           alert(data);
+                                           if (data == "success") {
+                                               alert("删除成功！");
+                                               history.go(0);
+                                           } else if(data=="error") {
+                                               alert("删除失败！");
+                                           }
                                        }
                                      });
                                  }
@@ -3164,9 +3344,7 @@
                          }
                     });
                 }
-                window.location.reload();
             }
-        }
         function Edit() {
             window.open('../SysSetting/ContractType.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
          }
@@ -3175,11 +3353,63 @@
          }
          function View(id) {
              window.open('../SysSetting/ContractType.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
+         function AddService() {
+           }
+         function AddServiceBundle() {
+           }
+         function ApplyDiscount() {
+           }
+         function Delete() {
+           if (confirm("所有的合同服务周期和交易历史将会被删除，是否继续?")) {
+            // $.ajax({
+            //  type: "GET",
+            //  url: "../Tools/ContractAjax.ashx?act=DeleteMilestone&milestoneId=" + entityid,
+            //  async: false,
+            //  success: function (data) {
+            //    if (data == "True") {
+            //      alert('删除成功');
+            //      window.reload();
+            //    } else {
+            //      alert("删除失败，已计费状态下不能删除");
+            //    }
+            //  }
+            //})
+          }
         }
+        <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.SUFFIXES)
+        { %>//姓名后缀
+         function Edit() {
+             window.open('../SysSetting/Suffixes.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Add() {
+             window.open('../SysSetting/Suffixes.aspx', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function View(id) {
+             window.open('../SysSetting/Suffixes.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Delete() {
+             if (confirm('删除操作将不能恢复，是否继续?')) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid + "&GT_id=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.NAME_SUFFIX%>",//GT_id 表示当前操作的类型
+                     success: function (data) {
+                         if (data == "success") {
+                             alert("删除成功！");
+                             history.go(0);
+                         } else if (data == "error") {
+                             alert("删除失败！");
+                         }
+                     }
+                 });
+             }
         <%}%>
         function openopenopen() {
             //alert("暂未实现");
         }
     </script>
+  <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 </body>
 </html>

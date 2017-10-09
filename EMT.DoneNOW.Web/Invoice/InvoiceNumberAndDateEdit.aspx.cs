@@ -14,6 +14,7 @@ namespace EMT.DoneNOW.Web
         protected int id;
         protected string number;
         protected string account;
+        protected string date=string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!int.TryParse(Request.QueryString["id"], out id)) {
@@ -22,6 +23,8 @@ namespace EMT.DoneNOW.Web
             var invoice = new ctt_invoice_dal().FindNoDeleteById(id);
             number = invoice.invoice_no;
             account = new crm_account_dal().FindNoDeleteById(invoice.account_id).name;
+            if (invoice.paid_date != null)
+                date = invoice.paid_date.ToString().Substring(0, 9).Insert(5,"0").Replace("/","-");
         }
 
         protected void Save_Close_Click(object sender, EventArgs e)
@@ -30,16 +33,25 @@ namespace EMT.DoneNOW.Web
             string date;
             date= Request.Form["datevalue"].Trim().ToString();//获取时间
             number = Request.Form["InvoiceNumber"].Trim().ToString();//获取发票编号
-            if (new InvoiceBLL().InvoiceNumberAndDate(id, date, number, GetLoginUserId())) {
+            if (string.IsNullOrEmpty(date)) {
+                date = string.Empty;
+            }
+            if (string.IsNullOrEmpty(number)) {
+                number = string.Empty;
+            }
+            var result = new InvoiceBLL().InvoiceNumberAndDate(id, date, number, GetLoginUserId());
+            if (result == DTO.ERROR_CODE.SUCCESS) {
                 Response.Write("<script>alert('发票修改成功！');window.close();self.opener.location.reload();</script>");
+            }
+            else if (result==DTO.ERROR_CODE.EXIST) {
+                Response.Write("<script>alert('发票编号已经存在，请修改！');</script>");
             }
             else
             {
-                Response.Write("<script>alert('发票编号修改失败！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>alert('发票修改失败！');</script>");
             }
 
         }
-
         protected void Cancel_Click(object sender, EventArgs e)
         {
             Response.Write("<script>window.close();</script>");

@@ -274,9 +274,16 @@ namespace EMT.DoneNOW.BLL
         /// <param name="id"></param>
         /// <returns></returns>
         public ERROR_CODE DeleteSecurityLevel(long user_id, int id) {
-            var seclev = ss_dal.FindById(id);
+            var seclev = ss_dal.FindNoDeleteById(id);
+            if (seclev.is_system == 1) {
+                return ERROR_CODE.SYSTEM;
+            }
             seclev.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             seclev.delete_user_id = user_id;
+            if (ss_dal.Update(seclev))
+            {
+                return ERROR_CODE.SUCCESS;
+            }
             return ERROR_CODE.ERROR;
         }
         /// <summary>
