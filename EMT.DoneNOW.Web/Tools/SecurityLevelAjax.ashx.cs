@@ -62,13 +62,16 @@ namespace EMT.DoneNOW.Web
             if (user != null)
             {
                 var result = new SecurityLevelBLL().DeleteSecurityLevel(user.id, (int)securitylevel_id);
-                if (result==DTO.ERROR_CODE.SUCCESS)
+                if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("删除安全等级成功！");
                 }
+                else if (result == DTO.ERROR_CODE.SYSTEM) {
+                    context.Response.Write("系统安全等级不能删除！");
+                }
                 else
                 {
-                    context.Response.Write("删除安全等级失败失败！");
+                    context.Response.Write("删除安全等级失败！");
                 }
             }
         }
