@@ -74,7 +74,7 @@
                 <tr>
                     <td width="30%" class="FieldLabels">
                         <div>
-                            <asp:RadioButton ID="Radio2" runat="server" GroupName="post"/> 自动生成预付费
+                            <asp:RadioButton ID="Radio2" runat="server" GroupName="post"/><asp:Label ID="Label1" runat="server" Text="自动生成预付费"></asp:Label>
                         </div>
                     </td>
                 </tr>

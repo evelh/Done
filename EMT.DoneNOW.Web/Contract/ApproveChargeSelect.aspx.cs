@@ -47,6 +47,7 @@ namespace EMT.DoneNOW.Web
                 {
                     list.Add(aapbll.charge(Convert.ToInt32(id)));
                     this.Radio2.Enabled = false;
+                    this.Label1.ForeColor = System.Drawing.Color.Gray;
                 }
             }
 
@@ -66,6 +67,7 @@ namespace EMT.DoneNOW.Web
                     {
                         list.Add(aapbll.charge(Convert.ToInt32(idi)));
                         this.Radio2.Enabled = false;
+                        this.Label1.ForeColor = System.Drawing.Color.Gray;
                     }
                     else {
 
