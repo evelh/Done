@@ -74,7 +74,7 @@ namespace EMT.DoneNOW.Web.Invoice
             param.isInvoiceEmail = is_InvoiceEmail.Checked;
             
             string ids = "";
-            if (idList.Count() > 0)
+            if (idList!=null&&idList.Count() > 0)
             {
                 foreach (var item in idList)
                 {

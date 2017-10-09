@@ -522,6 +522,9 @@
         GetCheckValue();
         return true;
     })
+    $("#CancelButton").click(function () {
+        window.close();
+    })
     // 将通知中选中的信息以，分割存入隐藏input中，
     function GetCheckValue() {
         debugger;

@@ -53,6 +53,10 @@ namespace EMT.DoneNOW.Web
                         var thisContractId = context.Request.QueryString["contract_id"];
                         CompareService(context,long.Parse(thisQuoteId),long.Parse(thisContractId));
                         break;
+                    case "isHasStart":
+                        var isHasStartQuoteId = context.Request.QueryString["quote_id"];
+                        ReturnStart(context,long.Parse(isHasStartQuoteId));
+                        break;
                     default:
                         break;
                 }
@@ -201,8 +205,21 @@ namespace EMT.DoneNOW.Web
 
             context.Response.Write(isHasService);
         }
+        /// <summary>
+        /// 判断报价是否含有初始费用报价项，有返回，没有返回空
+        /// </summary>
+        public void ReturnStart(HttpContext context, long quote_id)
+        {
+            var thisQuoteItem = new crm_quote_item_dal().GetStartItem(quote_id);
+            if (thisQuoteItem != null)
+            {
+                context.Response.Write(new EMT.Tools.Serialize().SerializeJson(thisQuoteItem));
+            }
+            else
+            {
 
-
+            }
+        }
 
 
         public bool IsReusable

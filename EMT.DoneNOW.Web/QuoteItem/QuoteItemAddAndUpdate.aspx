@@ -266,11 +266,11 @@
                                 <table width="100%" border="0" callpadding="3" callspacing="0">
                                     <tbody>
                                         <tr class="serviceTr" style="display:none;">
-                                            <td><input type="radio" name="11" id="" checked="checked" />服务/服务集</td>
+                                            <td><input type="radio" name="11" id="service" checked="checked" />服务/服务集</td>
                                            
                                         </tr>
                                         <tr class="serviceTr" style="display:none;">
-                                             <td><input type="radio" name="11" id="" checked="checked" />合同初始费用</td></tr>
+                                             <td><input type="radio" name="11" id="startCost" />合同初始费用</td></tr>
                                         <tr>
                                             <td class="FieldLabels">报价项名称
                                             <span id="errorSmall">*</span>
@@ -281,7 +281,7 @@
                                                     <i id="callBackChooseProduct" onclick="chooseProduct()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                     <i id="callBackManyProduct" onclick="chooseManyProduct()" style="width: 20px; height: 20px; margin-left: 0px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -129px 0;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                     <i id="AddProduct" onclick="" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px;padding:1px; background: url(../Images/add.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                                                    <i id="callBackService" onclick="chooseService()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px;padding:1px; background: url(../Images/add.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <i id="callBackService" onclick="chooseService()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px;padding:1px; background: url(../Images/ServiceSelector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                     <i id="callBackServiceBundle" onclick="chooseServiceBundle()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px;padding:1px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp</i>
                                                     <i id="callbackCost" onclick="chooseDegression()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px;padding:1px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                        <i id="callBackCharge" onclick="chooseCharge()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px;padding:1px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;</i>
@@ -550,8 +550,50 @@
        
     })
     $("#Reserved").blur(function () {
-        var quanity = $("#quantity").val();
+        var quanity = $("#quantity").val(); // 库存，暂不处理
     })
+
+    // startCost service tax_cate_id
+    $("#startCost").click(function () {
+        $("#ItemTypeId").val('<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.START_COST %>');
+        $("#name").prop("disabled", false);
+        $("#callBackService").css("display", "none");
+        $("#callBackServiceBundle").css("display", "none");
+        $("#description").val("");
+        $("#tax_cate_id").val("0");
+        $("#tax_cate_id").prop("disabled", true);
+        $(".Calculation").prop("disabled", true);
+        $("#unit_price").prop("disabled", false);
+        $("#DiscountR1").prop("disabled", true);
+        $("#DiscountR2").prop("disabled", true);
+        $("#DiscountR3").prop("disabled", true);
+        $("#unit_discount").val("0");
+        $("#Line_Discount").val("0");
+        $("#Discount").val("0");
+        $("#quantity").val("1");
+        $("#unit_price").val("0");
+        $("#unit_cost").val("0");
+        $("#name").val("");
+        $("#nameHidden").val("");
+        $("#object_id").val("");
+    });
+
+    $("#service").click(function () {
+        $("#ItemTypeId").val('<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.SERVICE %>');
+        // name quantity
+        $("#name").prop("disabled", true);
+        $("#callBackService").css("display", "");
+        $("#callBackServiceBundle").css("display", "");
+        $("#tax_cate_id").prop("disabled", false);
+        $("#quantity").prop("disabled", false);
+        $("#DiscountR1").prop("disabled", false);
+        $("#unit_discount").prop("disabled", false);
+        $("#DiscountR3").prop("disabled", false);
+        //$("#Line_Discount").prop("disabled", false);
+        $("#DiscountR2").prop("disabled", false);
+        //$("#Discount").prop("disabled", false);
+        //$("#quantity").prop("disabled", false);
+    });
 
     $(function () {
 
@@ -575,7 +617,7 @@
                 {
                     return false;
                 }
-            
+                $("input").prop("disabled", false);
                 return true;
             }
             else {
@@ -584,6 +626,7 @@
                     return false;
                 }// SubmitDiscountCheck
                 $("#name").removeAttr("disabled");
+                $("input").prop("disabled", false);
                 return true;
             }
             
@@ -594,7 +637,7 @@
                 if (!SubmitDiscountCheck()) {
                     return false;
                 }
-               
+                $("input").prop("disabled", false);
                 return true;
             }
             else {
@@ -602,6 +645,7 @@
                     return false;
                 }// SubmitDiscountCheck
                 $("#name").removeAttr("disabled");
+                $("input").prop("disabled", false);
                 return true;
             }
         });
@@ -624,12 +668,35 @@
             $("#callBackChooseProduct").css("display", "");// callBackChooseProduct
             $("#AddProduct").css("display", "");
         }
-        else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.SERVICE %>)  // 服务
+        else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.SERVICE %>)  // 服务和初始费用
         {
             $("#name").attr("disabled", "disabled");
             $(".serviceTr").css("display", "");
             $("#callBackService").css("display", ""); 
-            $("#callBackServiceBundle").css("display", ""); 
+            $("#callBackServiceBundle").css("display", "");
+            $("#unit_cost").prop("disabled", true);
+            $("#periodTypeTr").css("display", "none");
+            $("#period_type_id").val("0");
+            // 判断是否可以新增初始费用
+            debugger;
+            var quote_id = '<%=Request.QueryString["quote_id"] %>';
+            if (quote_id != "")
+            {
+                // 判断是否有初始费用
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    dataType: "json",
+                    url: "../Tools/QuoteAjax.ashx?act=isHasStart&quote_id=" + quote_id,
+                    success: function (data) {
+                        debugger;
+                        if (data != "") {
+                            $("#startCost").attr("disabled", true);
+                            $("#startCost").removeAttr("onclick");
+                        }
+                    },
+                });
+            }
         }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DEGRESSION %>) // 成本
         {
@@ -756,11 +823,20 @@
             return false;
         }
         // nameHidden
-        var nameHidden = $("#nameHidden").val();
-        if (nameHidden == "") {
-            alert("请通过查找带回功能选择关联项");
-            return false;
+        var typeValue = $("#ItemTypeId").val();
+        if (typeValue !=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.START_COST %>){
+            var nameHidden = $("#nameHidden").val();
+            if (nameHidden == "") {
+                alert("请通过查找带回功能选择关联项");
+                return false;
+            }
+            //var period_type_id = $("#period_type_id").val();
+            //if (period_type_id == undefined || period_type_id == "" || period_type_id=="0") {
+            //    alert("请");
+            //    return false;
+            //}
         }
+      
 
         var unit_price = $("#unit_price").val();
         if (unit_price == "") {
@@ -782,6 +858,8 @@
             alert("请填写单元折扣");
             return false;
         }
+
+
 
         var typeValue = $("#ItemTypeId").val();
         if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT %>)
@@ -931,7 +1009,7 @@
                 // data: { CompanyName: companyName },
                 success: function (data) {
                     if (data != "") {
-                        $("#name").val(data.name);
+                        // $("#name").val(data.name);
                         $("#description").text(data.description);
                         $("#unit_price").val(data.unit_price); //unit_cost
                         $("#unit_cost").val(data.unit_cost);
@@ -956,8 +1034,9 @@
                 // data: { CompanyName: companyName },
                 success: function (data) {
                     if (data != "") {
-                        $("#name").val(data.name);
-                        $("#name").attr("disabled","disabled");
+                        debugger;
+                        // $("#name").val(data.name);
+                        //$("#name").attr("disabled","disabled");
                         $("#description").text(data.description);
                         $("#unit_price").val(data.unit_price); 
                         $("#unit_cost").val(data.unit_cost);

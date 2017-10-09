@@ -20,11 +20,11 @@ namespace EMT.DoneNOW.Web
             {
                 case "service":
                     var service_id = context.Request.QueryString["service_id"];
-                    
+                    GetService(context,long.Parse(service_id));
                     break;// service_bundle
                 case "service_bundle":
                     var service_bundle_id = context.Request.QueryString["service_bundle_id"];
-
+                    GetServiceBundle(context,long.Parse(service_bundle_id));
                     break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -51,7 +51,7 @@ namespace EMT.DoneNOW.Web
         /// <param name="service_bundle_id"></param>
         public void GetServiceBundle(HttpContext context, long service_bundle_id)
         {
-            var service_bundle = new ivt_service_dal().FindSignleBySql<ivt_service>($"select * from ivt_service where id= {service_bundle_id} ");
+            var service_bundle = new ivt_service_dal().FindSignleBySql<ivt_service>($"select * from ivt_service_bundle where id= {service_bundle_id} ");
             if (service_bundle != null)
             {
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(service_bundle));

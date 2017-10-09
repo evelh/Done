@@ -40,8 +40,9 @@ namespace EMT.DoneNOW.BLL
             var temp = new sys_quote_tmpl_dal().FindNoDeleteById(param.invoice_template_id);
             if (user == null|| temp==null)
                 return false;
-            var arr = param.ids.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
-            if (arr != null && arr.Count() > 0)
+            //  var arr = param.ids.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
+            //if (arr != null && arr.Count() > 0)
+            if(!string.IsNullOrEmpty(param.ids))
             {
                 //param.ids = param.ids.Substring(0, param.ids.Length-1);
                 var invoiceBatch = _dal.GetNextIdInvBat();

@@ -170,7 +170,9 @@
                             <td>
                                 <div class="clear">
                                     <label>主要产品</label>
-                                    <input type="text" name="primary_product_id" id="primary_product_id" /><%-- todo 主要产品的查找带回--%>
+                                    <input type="text" id="primary_product_id" />
+                                    <input type="hidden" name="primary_product_id" id="primary_product_idHidden"/>
+                                     <i onclick="chooseProduct()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
                                 </div>
                             </td>
                         </tr>
@@ -874,10 +876,14 @@
         }
         return param;
     }
-
+    // 客户查找带回
     function chooseCompany()
     {
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=ParentComoanyName&callBack=GetContactList", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    // 产品查找带回
+    function chooseProduct() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=primary_product_id", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
     function AddContact() {
