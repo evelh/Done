@@ -324,7 +324,7 @@
     </div>
     <div class="TabContainer" style="display: none;">
             <div class="cont" style="margin-top:15px;">
-                <iframe id="PageFrame" name="PageFrame" style="width:100%;height:auto" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>"></iframe>
+                <iframe id="PageFrame" name="PageFrame" style="width:100%;height:auto" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>&id=99"></iframe>
             </div>
     </div>
         </div>
@@ -341,7 +341,6 @@
 	</div>
         </div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
-        <%--<script src="../Scripts/SysSettingRoles.js"></script>--%>
            <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
         <script>
             $(window).resize(function () {
@@ -350,13 +349,6 @@
             })
             var Height = $(document).height() - 66 + "px";
             $("#PageFrame").css("height", Height);
-            //tab选项卡的控制
-            //$.each($(".TabBar a"), function (i) {
-            //    $(this).click(function () {
-            //        $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
-            //        $(".TabContainer").eq(i).show().siblings(".TabContainer").hide();
-            //    })
-            //});
             $("#tab1").click(function () {
                 $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
                 $(".TabContainer").eq(0).show().siblings(".TabContainer").hide();
@@ -374,9 +366,6 @@
                 return false;
                 <%}%>
             });
-
-
-
             $(document).ready(function () {
                 //填入毛利率
                 var k1 = $("#Unit_Price").val();

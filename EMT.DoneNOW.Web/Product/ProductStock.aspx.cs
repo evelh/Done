@@ -20,7 +20,6 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//修改时，获取库存id
-            //product_id = Convert.ToInt32(Request.QueryString["product_id"]);//新增时，获取产品id
             if (!IsPostBack) {
                 if (id > 0)//修改
                 {
@@ -34,7 +33,7 @@ namespace EMT.DoneNOW.Web
                             this.warehouse_id.Enabled = false;
                         }
                         product_id = ware.product_id;
-                        productname = probll.GetProduct(product_id).name;
+                        productname = probll.GetProduct(id).name;
                         this.quantity_minimum.Text = ware.quantity_minimum.ToString();
                         this.quantity_maximum.Text = ware.quantity_maximum.ToString();
                         this.quantity.Text = ware.quantity.ToString();

@@ -1256,7 +1256,7 @@
         });
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ProuductInventory)
-        {%>
+        {%>//产品库存管理
         function Add() {
             window.open("../Product/ProductStock.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Inventory %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
@@ -1440,6 +1440,9 @@
         }
         function Edit() {
             window.open("../Product/ProductAdd.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProuductEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        function View(id) {
+            window.open("../Product/ProductAdd.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProuductEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Delete() {
             if (confirm("删除后无法恢复，是否继续?")) {
