@@ -910,7 +910,7 @@ namespace EMT.DoneNOW.BLL
 
         }
         /// <summary>
-        /// 检查报价是否关联销售订单
+        /// 检查报价是否关联销售订单  true关联  false不关联
         /// </summary>
         /// <param name="quote_id"></param>
         /// <returns></returns>

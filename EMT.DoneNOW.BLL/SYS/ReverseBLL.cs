@@ -49,7 +49,7 @@ namespace EMT.DoneNOW.BLL
                         var ci = new ctt_invoice_dal().FindNoDeleteById((long)cad.invoice_id);
                         if (ci.is_voided != 1)
                         {
-                            returnvalue.Append(id + "条目已经生成发票（发票ID：" + cad.invoice_id + "），请先作废该发票");
+                            returnvalue.Append(id + "条目已经生成发票（发票ID：" + cad.invoice_id + "），请先作废该发票\n");
                         }
                     }
                     else
@@ -175,7 +175,7 @@ namespace EMT.DoneNOW.BLL
                         var ci = new ctt_invoice_dal().FindNoDeleteById((long)cad.invoice_id);
                         if (ci.is_voided != 1)
                         {
-                            returnvalue.Append(id + "条目已经生成发票（发票ID：" + cad.invoice_id + "），请先作废该发票");
+                            returnvalue.Append(id + "条目已经生成发票（发票ID：" + cad.invoice_id + "），请先作废该发票\n");
                         }
                     }
                     else
@@ -325,7 +325,7 @@ namespace EMT.DoneNOW.BLL
                         var ci = new ctt_invoice_dal().FindNoDeleteById((long)cad.invoice_id);
                         if (ci.is_voided != 1)
                         {
-                            returnvalue.Append(id + "条目已经生成发票（发票ID：" + cad.invoice_id + "），请先作废该发票");
+                            returnvalue.Append(id + "条目已经生成发票（发票ID：" + cad.invoice_id + "），请先作废该发票\n");
                         }
                     }
                     else
@@ -420,7 +420,7 @@ namespace EMT.DoneNOW.BLL
                     {
                         var ci = new ctt_invoice_dal().FindNoDeleteById((long)cad.invoice_id);
                         if (ci.is_voided != 1) {
-                            returnvalue.Append(id + "条目已经生成发票（发票ID：" + cad.invoice_id + "），请先作废该发票");
+                            returnvalue.Append(id + "条目已经生成发票（发票ID：" + cad.invoice_id + "），请先作废该发票\n");
                         }                        
                     }
                     else

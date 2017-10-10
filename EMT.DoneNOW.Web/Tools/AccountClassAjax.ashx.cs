@@ -71,7 +71,7 @@ namespace EMT.DoneNOW.Web
                     context.Response.Write("system");
                 }
                 else if (result==DTO.ERROR_CODE.ACCOUNT_TYPE_USED) {
-                    context.Response.Write("有"+n+"个客户关联此客户类别。如果删除，则相关客户上的客户类别信息将会被清空。点击确认，则进行删除！");
+                    context.Response.Write(n);
                 }
                 else
                 {
@@ -106,14 +106,14 @@ namespace EMT.DoneNOW.Web
                 var result = new AccountClassBLL().NoActive(class_id, user.id);
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
-                    context.Response.Write("失活成功！");
+                    context.Response.Write("停用成功！");
                 }
                 else if (result == DTO.ERROR_CODE.NO_ACTIVATION)
                 {
-                    context.Response.Write("已经失活，无需此操作！");
+                    context.Response.Write("已经是停用状态，无需此操作！");
                 }
                 else {
-                    context.Response.Write("失活失败！");
+                    context.Response.Write("停用失败！");
                 }
             }
         }

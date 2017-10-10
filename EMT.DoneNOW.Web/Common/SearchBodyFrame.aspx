@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <link rel="stylesheet" type="text/css" href="../Content/searchList.css" />
+     <link href="../Content/ClassificationIcons.css" rel="stylesheet" />
     <title></title>
     <style>
         .searchcontent {
@@ -259,6 +260,7 @@
                 </div>
                 <%} %>
             </div>
+
         </div>
     </form>
     <%if (queryResult != null) { %>
@@ -370,6 +372,32 @@
             <%} %>
         </ul>
         <%} %>
+    </div>
+    
+ <!--弹框-->
+    <div class="Dialog" id="accounttanchuan">
+        <div>
+            <div class="CancelDialogButton cancel_account"></div>
+            <div class="TitleBar"></div>
+            <div class="NoHeading Section">
+                <div class="Content">
+                    <div class="StandardText">分类图标：有<span id="accountcount"></span>个客户关联此客户类别。</div>
+                    <div class="StandardText HighImportance">如果删除，则相关客户上的客户类别信息将会被清空。</div>
+                    <div class="StandardText">您确定要删除此分类吗？</div>
+                </div>
+            </div>
+            <div class="GridBar ButtonContainer">
+                <a class="Button ButtonIcon NormalState" id="delete_account">
+                    <span class="Text">是的，删除</span>
+                </a>
+                <a class="Button ButtonIcon NormalState" id="noactive_account">
+                    <span class="Text">不，停用</span>
+                </a>
+                <a class="Button ButtonIcon NormalState cancel_account">
+                    <span class="Text">取消</span>
+                </a>
+            </div>
+        </div>
     </div>
         <%--加载--%>
 <div id="BackgroundOverLay"></div>
@@ -1560,6 +1588,7 @@
                                       url: "../Tools/ConfigItemTypeAjax.ashx?act=delete&id=" + entityid,
                                       success: function (data) {
                                           alert(data);
+                                          history.go(0);
                                       }
                                   });
                               }
@@ -1576,6 +1605,7 @@
                   async: false,
                   success: function (data) {
                       alert(data);
+                      history.go(0);
                   }
               })
               window.location.reload();
@@ -1587,6 +1617,7 @@
                   async: false,
                   success: function (data) {
                       alert(data);
+                      history.go(0);
                   }
               })
               window.location.reload();
@@ -1607,7 +1638,8 @@
                         alert("安全等级复制失败！");
                     } else {
                         alert("安全等级复制成功，点击确定进入编辑界面！");
-                        window.open('../SysSetting/SysUserSecurityLevel.aspx?id=' + data,'<%=(int)EMT.DoneNOW.DTO.OpenWindow.SecurityLevel%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                        window.open('../SysSetting/SysUserSecurityLevel.aspx?id=' + data, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SecurityLevel%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                        history.go(0);
                     }
                 }
             })
@@ -1622,6 +1654,7 @@
                 async: false,
                 success: function (data) {
                     alert(data);
+                    history.go(0);
                 }
             })
             window.location.reload();
@@ -1634,6 +1667,7 @@
                     async: false,
                     success: function (data) {
                         alert(data);
+                        history.go(0);
                     }
                 })
             }
@@ -1646,6 +1680,7 @@
                 async: false,
                 success: function (data) {
                     alert(data);
+                    history.go(0);
                 }
             })
             window.location.reload();
@@ -1717,8 +1752,8 @@
             }
         })
         function Add() {
-            $("#BackgroundOverLay").show();
-            $("#LoadingIndicator").show();
+            //$("#BackgroundOverLay").show();
+            //$("#LoadingIndicator").show();
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1753,8 +1788,8 @@
             }
         })
         function Add() {
-            $("#BackgroundOverLay").show();
-            $("#LoadingIndicator").show();
+            //$("#BackgroundOverLay").show();
+            //$("#LoadingIndicator").show();
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -1823,8 +1858,8 @@
             }
         })
         function Add() {
-            $("#BackgroundOverLay").show();
-            $("#LoadingIndicator").show();
+            //$("#BackgroundOverLay").show();
+            //$("#LoadingIndicator").show();
             var ids = "";
             $(".IsChecked").each(function () {
                 if ($(this).is(":checked")) {
@@ -2026,7 +2061,6 @@
                 alert("至少选择一项！");
             }
         }
-
         //生成发票
       <%--  function ToInvoice() {
             $("#PageFrame").attr("src", "Invoice/InvocieSearch");
@@ -2578,23 +2612,39 @@
                         } else if (data == "error") {
                             alert("删除失败！");
                         } else {
-                            if (confirm(data)) {
-                                if (confirm(data)) {
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "../Tools/AccountClassAjax.ashx?act=delete&id=" + entityid,
-                                        success: function (data) {
-                                            alert(data);
-                                            if (data == "success") {
-                                                alert("删除成功！");
-                                                history.go(0);
-                                            } else if (data == "error") {
-                                                alert("删除失败！");
-                                            }
+                            $("#accountcount").text(data);
+                            $("#BackgroundOverLay").show();
+                            $("#accounttanchuan").addClass("Active");
+                            $("#delete_account").on("click", function () {                               
+                                //点击删除
+                                $.ajax({
+                                    type: "GET",
+                                    url: "../Tools/AccountClassAjax.ashx?act=delete&id=" + entityid,
+                                    success: function (data) {
+                                        if (data == "success") {
+                                            alert("删除成功！");
+                                            history.go(0);
+                                        } else if (data == "error") {
+                                            alert("删除失败！");
                                         }
-                                    });
-                                } 
-                            }
+                                    }
+                                });
+                                $("#BackgroundOverLay").hide();
+                                $("#accounttanchuan").removeClass("Active");
+                            });   
+                             
+                            //选择停用
+                            $("#noactive_account").on("click", function () {
+                                NoActive();
+                                $("#BackgroundOverLay").hide();
+                                $("#accounttanchuan").removeClass("Active");
+                            });
+
+                            //取消
+                            $(".cancel_account").on("click", function () {
+                                $("#BackgroundOverLay").hide();
+                                $("#accounttanchuan").removeClass("Active");
+                            });
                         }
                     }
                 });

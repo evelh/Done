@@ -578,14 +578,14 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="FieldLabel">安装日期
+                                                        <td class="FieldLabel">安装日期<span style="color: Red;">*</span>
                                                     <div>
                                                         <span style="display: inline-block;">
                                                             <input type="text" onclick="WdatePicker()" class="Wdate" name="start_date" id="start_date" value="<%=(!isAdd)&&iProduct.start_date!=null?((DateTime)iProduct.start_date).ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
                                                         </span>
                                                     </div>
                                                         </td>
-                                                        <td class="FieldLabel" style="cursor: pointer; margin-left: 2px; margin-bottom: -3px;">位置 <span style="color: Red;">*</span>
+                                                        <td class="FieldLabel" style="cursor: pointer; margin-left: 2px; margin-bottom: -3px;">位置 
                                                             <div>
                                                                 <span style="display: inline-block;">
                                                                     <input type="text" style="width: 250px;" name="location" id="location" value="<%=(!isAdd)&&iProduct.location!=null?iProduct.location:"" %>" /></span>
@@ -595,14 +595,14 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="FieldLabel">质保过期日期
+                                                        <td class="FieldLabel">质保过期日期<span style="color: Red;">*</span>
                                                        <div>
                                                            <span style="display: inline-block;">
                                                                <input type="text" onclick="WdatePicker()" class="Wdate" name="through_date" id="through_date" value="<%=(!isAdd)&&iProduct.through_date!=null?((DateTime)iProduct.through_date).ToString("yyyy-MM-dd"):DateTime.Now.AddYears(1).ToString("yyyy-MM-dd") %>" />
                                                            </span>
                                                        </div>
                                                         </td>
-                                                        <td class="FieldLabel" style="cursor: pointer; margin-left: 2px; margin-bottom: -3px;">合同 <span style="color: Red;">*</span>
+                                                        <td class="FieldLabel" style="cursor: pointer; margin-left: 2px; margin-bottom: -3px;">合同
                                                             <div>
 
                                                                 <input type="text" name="contract_name" id="contract_id" value="<%=contract!=null?contract.name:"" %>" />
@@ -1418,11 +1418,11 @@
             return false;
         }
         // location
-        var location = $("#location").val();
-        if (location == "") {
-            alert('请填写位置！');
-            return false;
-        }
+        //var location = $("#location").val();
+        //if (location == "") {
+        //    alert('请填写位置！');
+        //    return false;
+        //}
         // service
         // 所选合同如果是服务类型的，则此下拉框可选。可选内容为合同项--todo
         //var service = $("#service").val();

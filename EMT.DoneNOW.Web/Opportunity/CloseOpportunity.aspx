@@ -1325,7 +1325,7 @@
                         <tr>
                             <td width="90%">
                                 <div>
-                                    <a>运行关闭商机向导，关闭下一个商机</a>
+                                  <%--  <a>运行关闭商机向导，关闭下一个商机</a>--%>
                                 </div>
                             </td>
                         </tr>
@@ -1371,14 +1371,7 @@
 <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 <script>
 
-<%--    <%if (opportunity == null)
-    { %>
-    $("#opportunity_id").prop("disabled", false);
-    <%}
-    else
-    { %>
-    $("#opportunity_id").prop("disabled", true);
-    <%}%>--%>
+
 
     $("#opportunity_id").change(function () {
         var oid = $(this).val();
@@ -1605,6 +1598,7 @@
         $(".Workspace7").hide();
     });
     $("#c7").on("click", function () {
+        $("#c7").removeAttr("onclick");
         //$(".Workspace7").hide();
         //$(".Workspace8").show();
     });
@@ -1614,6 +1608,15 @@
     $("#load111").on("click", function () {
         $(".grid").show();
     });
+
+    var times = 0;
+    $("#Finish").click(function () {
+        if (times != 0) {
+            return false;
+        }
+        times += 1;
+        return true;
+    })
     $("#all").on("click", function () {
         if ($(this).is(":checked")) {
             $(".grid input[type=checkbox]").prop('checked', true);
@@ -1708,9 +1711,12 @@
                 $("#RadioPC").prop('disabled', false);
                 $("#RadioPC").prop('checked', true);
                 $("#RadioPCText").css("color", "");
+            } else {
+                $("#RadioPC").prop('disabled', true);
             }
             $("#ccexDiv").hide();
         } else {
+            debugger;
             $("#RadioBI").prop('checked', true);
             $("#ccexDiv").hide();
             $("#RadioPC").prop('disabled', true);
@@ -1775,6 +1781,7 @@
         // ChooseDiscountCostCoseSelect
         // disCodeSelct
         $(".ChooseDiscountCostCoseSelect").html($("#disCodeSelct").val());
+    
     })
 
     $(".isDisabled").click(function () {
@@ -1790,24 +1797,33 @@
             NoDisabledText();
         }
     })
-    // 禁用转换
+    // 禁用转换  rbContractCost
     function DisabledText() {
         $("#ccexDiv").hide();
+        $("#RadioCCEx").prop("disabled", true);
         $(".convertText").css("color", "rgb(176, 176, 176)");
         $(".convertRb").prop("disabled", true);
         $("#RadioBI").prop("checked", true);
+        $("#RadioBI").prop("disabled", true);
+        $("#RadioPC").prop("disabled", true);
+        $("#rbContractCost").prop("disabled", true);
     }
     // 解除禁用转换
     function NoDisabledText() {
+        debugger;
         var isactiveproject = $("#activeproject").is(":checked");
         var isaddContractRequest = $("#addContractRequest").is(":checked");
         var isaddContractServices = $("#addContractServices").is(":checked");
         var isaddRequest = $("#addRequest").is(":checked");
+        var isCheck = true;
         debugger;
         if (isactiveproject) {
             $("#RadioPC").prop("disabled", false);// RadioPCText
             $("#RadioPCText").css("color", "");
-            $("#RadioPC").prop("checked", true);
+            if (isCheck) {
+                $("#RadioPC").prop("checked", true);
+                isCheck = false;
+            }
         }
         else {
             $("#RadioPC").prop("disabled", true);// RadioPCText
@@ -1817,7 +1833,10 @@
         if (isaddContractRequest) {
             $("#rbContractCost").prop("disabled", false);
             $("#rbContractCostText").css("color", "");
-            $("#rbContractCost").prop("checked", true);
+            if (isCheck) {
+                $("#rbContractCost").prop("checked", true);
+                isCheck = false;
+            }
         }
         else {
             $("#rbContractCost").prop("disabled", true);// RadioPCText
@@ -1827,17 +1846,25 @@
         if (isaddContractServices) {
             $("#rbContractCost").prop("disabled", false);
             $("#rbContractCostText").css("color", "");
-            $("#rbContractCost").prop("checked", true);
+            if (isCheck) {
+                $("#rbContractCost").prop("checked", true);
+                isCheck = false;
+            }
         }
         else {
-            $("#rbContractCost").prop("disabled", true);// RadioPCText
-            $("#rbContractCost").prop("checked", false);
-            $("#rbContractCostText").css("color", "rgb(176, 176, 176)");
+            if (!isaddContractRequest) {
+                $("#rbContractCost").prop("disabled", true);// RadioPCText
+                $("#rbContractCost").prop("checked", false);
+                $("#rbContractCostText").css("color", "rgb(176, 176, 176)");
+            }
         }
         if (isaddRequest) {
             $("#rbProjectCost").prop("disabled", false);
             $("#rbProjectCostText").css("color", "");
-            $("#rbProjectCost").prop("checked", true);
+            if (isCheck) {
+                $("#rbProjectCost").prop("checked", true);
+                isCheck = false;
+            }
             $("#RadioBI").prop("disabled", true);
             $("#RadioBIText").css("color", "rgb(176, 176, 176)");
         }
@@ -1847,13 +1874,16 @@
             $("#rbProjectCostText").css("color", "rgb(176, 176, 176)");
 
         }
-        if ((!isactiveproject) && (!isaddContractRequest) && (!isaddContractServices) && (!isaddRequest)) {
+       
             $("#RadioCCEx").prop("disabled", false);
             $("#RadioCCExText").css("color", "");
             $("#RadioBI").prop("disabled", false);
             $("#RadioBIText").css("color", "");
-            $("#RadioBI").prop("checked", true);
-        }
+            //$("#RadioBI").prop("checked", true);
+            if (isCheck) {
+                $("#RadioBI").prop("checked", true);
+            }
+        
         if (!isChooseItem()) {
             DisabledText();
         }

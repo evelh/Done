@@ -617,7 +617,7 @@
                                                         <div class="Text">视图</div>
                                                     </div>
                                                     <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState" href="SysSetting/SysAdmin" target="PageFrame">
+                                                        <a class="Button ButtonIcon NormalState" href="SysSetting/Admin" target="PageFrame">
                                                             <span class="Text">设置</span>
                                                         </a>
                                                     </div>

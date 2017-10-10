@@ -37,5 +37,14 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<crm_quote_item>($"SELECT * from crm_quote_item where quote_id = (select quote_id from crm_quote_item where id={item_id} and delete_time = 0 )");
         }
+
+        /// <summary>
+        /// 根据报价ID获取改报价下的初始费用报价项
+        /// </summary>
+        public crm_quote_item GetStartItem(long quote_id)
+        {
+            return FindSignleBySql<crm_quote_item>($"SELECT * from crm_quote_item where quote_id = {quote_id} and type_id = {(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.START_COST} and delete_time = 0");
+        }
+
     }
 }

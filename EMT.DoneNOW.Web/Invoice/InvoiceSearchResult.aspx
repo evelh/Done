@@ -139,72 +139,7 @@
         </div>
         <div class="contentboby">
             <div class="RightClickMenu" style="left: 10px; top: 36px; display: none;">
-                <div class="RightClickMenuItem">
-                    <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
-                        <tbody>
-                            <tr>
-                                <td class="RightClickMenuItemText" onclick="Add(1199)">
-                                    <span class="lblNormalClass">定期服务合同</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="RightClickMenuItem">
-                    <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
-                        <tbody>
-                            <tr>
-                                <td class="RightClickMenuItemText" onclick="Add(1200)">
-                                    <span class="lblNormalClass">工时及物料合同</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="RightClickMenuItem">
-                    <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
-                        <tbody>
-                            <tr>
-                                <td class="RightClickMenuItemText" onclick="Add(1201)">
-                                    <span class="lblNormalClass">固定价格合同</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="RightClickMenuItem">
-                    <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
-                        <tbody>
-                            <tr>
-                                <td class="RightClickMenuItemText" onclick="Add(1202)">
-                                    <span class="lblNormalClass">预付时间合同</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="RightClickMenuItem">
-                    <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
-                        <tbody>
-                            <tr>
-                                <td class="RightClickMenuItemText" onclick="Add(1203)">
-                                    <span class="lblNormalClass">预付费合同</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="RightClickMenuItem">
-                    <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
-                        <tbody>
-                            <tr>
-                                <td class="RightClickMenuItemText" onclick="Add(1204)">
-                                    <span class="lblNormalClass">事件合同</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+         
             </div>
             <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;">
                 <ul class="clear fl">
@@ -259,8 +194,8 @@
     <div class="searchcontent" id="searchcontent" style="margin-top: 56px; min-width: <%=tableWidth%>px; overflow: hidden;">
         <table border="" cellspacing="0" cellpadding="0" style="overflow: scroll; width: 100%; height: 100%;">
             <tr>
-                <th style="padding-left: 4px;">
-                    <input id="CheckAll" type="checkbox" /></th>
+                <th style="padding-left: 4px;" style="width:20px;">
+                    <input id="CheckAll"  type="checkbox" /></th>
                 <%foreach (var para in resultPara)
                     {
                         if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID

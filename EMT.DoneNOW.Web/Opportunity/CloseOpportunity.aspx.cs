@@ -28,9 +28,9 @@ namespace EMT.DoneNOW.Web.Opportunity
         {
             try
             {
-               
 
-             
+
+
                 #region 下拉框赋值
                 stage_id.DataTextField = "show";
                 stage_id.DataValueField = "val";
@@ -108,11 +108,11 @@ namespace EMT.DoneNOW.Web.Opportunity
 
 
                     if (opportunity != null)
-                {
-                    if (opportunity.status_id == (int)OPPORTUNITY_STATUS.CLOSED)
                     {
-                        Response.Write("<script>if(!confirm('商机已被关闭，如果继续，系统会重复创建计费项和合同？')){window.close();}</script>");
-                    }
+                        if (opportunity.status_id == (int)OPPORTUNITY_STATUS.CLOSED)
+                        {
+                            Response.Write("<script>if(!confirm('商机已被关闭，如果继续，系统会重复创建计费项和合同？')){window.close();}</script>");
+                        }
                     }
                     if (opportunity.stage_id != null)
                     {
@@ -165,9 +165,15 @@ namespace EMT.DoneNOW.Web.Opportunity
                         if (primaryQuote.project_id != null) // 判断该报价是否关联项目提案，如果关联，默认选中，不关联，灰掉，不可选
                         {
                             activeproject.Checked = true;
+                            activeproject.Enabled = true;
+                            addRequest.Enabled = false;
+                            isaddRequest.Value = "1";
                         }
                         else
                         {
+                            activeproject.Checked = false;
+                            addRequest.Enabled = true;
+
                             activeproject.Enabled = false;
                             isactiveproject.Value = "1";
 
@@ -235,6 +241,21 @@ namespace EMT.DoneNOW.Web.Opportunity
                         }
                         jqueryCode.Value = ReturnJquery();
                     }
+                    else
+                    {
+                        // activeproject.Enabled = false;
+                        //isactiveproject.Value = "1";
+                        addContractRequest.Enabled = false;
+                        isAddContractRequest.Value = "1";
+                        addContractServices.Enabled = false;
+                        isaddContractServices.Value = "1";
+                        IncludePO.Value = "1";
+                        isIncludePO.Enabled = false;
+                        IncludeShip.Value = "1";
+                        isIncludeShip.Enabled = false;
+                        IncludeCharges.Value = "1";
+                        isIncludeCharges.Enabled = false;
+                    }
                 }
                 else
                 {
@@ -251,7 +272,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                     IncludeCharges.Value = "1";
                     isIncludeCharges.Enabled = false;
                 }
-                
+
 
             }
             catch (Exception msg)
@@ -286,13 +307,20 @@ namespace EMT.DoneNOW.Web.Opportunity
             if (shipItem != null && shipItem.Count > 0)
             {
                 var sysSet = new SysSettingBLL().GetSetById(SysSettingEnum.SHIPITEM_COSTCODE_CLOSE);
-                var shipType = new d_general_dal().GetDictionaryByCode(new d_general_table_dal().GetById((int)GeneralTableEnum.MATERIAL_CODE_TO_USE));
-                var thisSet = shipType.FirstOrDefault(_ => _.show.ToLower() == sysSet.setting_value.ToLower());
-                if (thisSet != null)
+    
+                foreach (var item in shipItem)
                 {
-                    foreach (var item in shipItem)
+                    if (item.object_id != null)
                     {
-                        scriptText += $"$('#{item.id}_select').val({thisSet.val});";
+                        var thisGeneral = new d_general_dal().GetGeneralById((long)item.object_id);
+                        if (thisGeneral.parent_id != null)
+                        {
+                            scriptText += $"$('#{item.id}_select').val({thisGeneral.parent_id});";
+                        }
+                    }
+                    else if (sysSet != null && (!string.IsNullOrEmpty(sysSet.setting_value)))
+                    {
+                        scriptText += $"$('#{item.id}_select').val({sysSet.setting_value});";
                     }
                 }
             }
@@ -306,8 +334,6 @@ namespace EMT.DoneNOW.Web.Opportunity
                     }
                 }
             }
-
-
             return scriptText;
         }
 
@@ -434,11 +460,26 @@ namespace EMT.DoneNOW.Web.Opportunity
                 {
                     foreach (var item in proAndOneTimeItem)
                     {
-                        if(!string.IsNullOrEmpty(Request.Form[item.id.ToString() + "_select"]))
+                        if (!string.IsNullOrEmpty(Request.Form[item.id.ToString() + "_select"]))
                         {
                             dic.Add(item.id, Request.Form[item.id.ToString() + "_select"]);
                         }
-                        
+
+                    }
+                }
+            }
+            param.isIncludeShip = isIncludeShip.Checked;
+            if (isIncludeShip.Checked)
+            {
+                if (shipItem != null && shipItem.Count > 0)
+                {
+                    foreach (var item in shipItem)
+                    {
+                        if (!string.IsNullOrEmpty(Request.Form[item.id.ToString() + "_select"]))
+                        {
+                            dic.Add(item.id, Request.Form[item.id.ToString() + "_select"]);
+                        }
+
                     }
                 }
             }
@@ -449,15 +490,15 @@ namespace EMT.DoneNOW.Web.Opportunity
                 {
                     foreach (var item in degressionItem)
                     {
-                        if(!string.IsNullOrEmpty(Request.Form[item.id.ToString() + "_select"]))
+                        if (!string.IsNullOrEmpty(Request.Form[item.id.ToString() + "_select"]))
                         {
                             dic.Add(item.id, Request.Form[item.id.ToString() + "_select"]);
                         }
-                        else if(item.object_id!=null)
+                        else if (item.object_id != null)
                         {
                             dic.Add(item.id, item.object_id.ToString());
                         }
-                        
+
                     }
                 }
             }

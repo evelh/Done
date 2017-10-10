@@ -516,7 +516,15 @@ namespace EMT.DoneNOW.BLL
                 {
                     thisEndDate = param.contract.start_date.AddMonths(thisProced* ReturnMonths((int)param.contract.period_type)).AddDays(-1);
                 }
-                
+                decimal? setup_fee = null;   // 初始费用报价项
+                if (priQuote != null)
+                {
+                    var thisStatrItem = new crm_quote_item_dal().GetStartItem(priQuote.id);
+                    if (thisStatrItem != null)
+                    {
+                        setup_fee = thisStatrItem.unit_price;
+                    }
+                }
                 var contract = new ctt_contract() {
                     id = _dal.GetNextIdCom(),
                     name = param.contract.name,
@@ -533,7 +541,7 @@ namespace EMT.DoneNOW.BLL
                     cate_id= lastAddContract==null?null:lastAddContract.cate_id,   
                     external_no = null,
                     sla_id = lastAddContract == null ? null : lastAddContract.sla_id,
-                    setup_fee = null,  // 报价项初始费用
+                    setup_fee = setup_fee,  
                     timeentry_need_begin_end  = lastAddContract == null ? (sbyte)1 : lastAddContract.timeentry_need_begin_end,
                     occurrences = thisProced,
                     // 通知接收人？？todo 
@@ -559,7 +567,7 @@ namespace EMT.DoneNOW.BLL
 
                 });
 
-                var udf_contract_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);  // 获取到所有关于客户的自定义字段
+                var udf_contract_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);  // 
                 List<UserDefinedFieldValue> udf_general_list = null;
                 new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTRACTS, user.id, contract.id, udf_contract_list, udf_general_list, OPER_LOG_OBJ_CATE.CONTRACT_EXTENSION);
 
@@ -616,6 +624,12 @@ namespace EMT.DoneNOW.BLL
                             for (int i = 0; i < period; i++)
                             {
                                 var endDate = startTime.AddMonths(ReturnMonths((int)param.contract.period_type)).AddDays(-1);
+
+                                if (i == period - 1)
+                                {
+                                    endDate = param.contract.end_date;
+                                }
+
                                 ctt_contract_service_period thisSerPri = new ctt_contract_service_period() {
                                     id = conserPriDal.GetNextIdCom(),
                                     contract_id = contract.id,
@@ -754,24 +768,27 @@ namespace EMT.DoneNOW.BLL
 
                         if (oldContract.setup_fee == null || oldContract.setup_fee == 0)
                         {
-                            oldContract.setup_fee = sum;
-                            oldContract.update_user_id = user.id;
-                            oldContract.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                            new sys_oper_log_dal().Insert(new sys_oper_log()
+                            if (sum!=null && sum != 0)
                             {
-                                user_cate = "用户",
-                                user_id = (int)user.id,
-                                name = user.name,
-                                phone = user.mobile == null ? "" : user.mobile,
-                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT,
-                                oper_object_id = oldContract.id,
-                                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                                oper_description = _dal.CompareValue(new ctt_contract_dal().GetSingleContract(oldContract.id), oldContract),
-                                remark = "商机关闭，更新合同信息"
+                                oldContract.setup_fee = sum;
+                                oldContract.update_user_id = user.id;
+                                oldContract.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                                new sys_oper_log_dal().Insert(new sys_oper_log()
+                                {
+                                    user_cate = "用户",
+                                    user_id = (int)user.id,
+                                    name = user.name,
+                                    phone = user.mobile == null ? "" : user.mobile,
+                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT,
+                                    oper_object_id = oldContract.id,
+                                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                                    oper_description = _dal.CompareValue(new ctt_contract_dal().GetSingleContract(oldContract.id), oldContract),
+                                    remark = "商机关闭，更新合同信息"
 
-                            });
-                            new ctt_contract_dal().Update(oldContract);
+                                });
+                                new ctt_contract_dal().Update(oldContract);
+                            }
                         }
                     }
                 }

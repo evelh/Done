@@ -119,7 +119,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 period_type_id.DataValueField = "val";
                 period_type_id.DataSource = dic.FirstOrDefault(_ => _.Key == "quote_item_period_type").Value;
                 period_type_id.DataBind();
-                // period_type_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                period_type_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 period_type_id.SelectedValue = ((int)QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToString();
                 period_type_id.Enabled = true;
                 #endregion
@@ -150,58 +150,32 @@ namespace EMT.DoneNOW.Web.QuoteItem
         /// <param name="e"></param>
         protected void save_close_Click(object sender, EventArgs e)
         {
-            var quote_item = AssembleModel<crm_quote_item>();
-            quote_item.optional = Convert.ToUInt64(_optional.Checked ? 1 : 0);
+            var param = GetParam();
+            var result = DTO.ERROR_CODE.SUCCESS;
             if (isAdd)
             {
-                quote_item.type_id = int.Parse(Request.QueryString["type_id"]);
-                quote_item.quote_id = int.Parse(Request.QueryString["quote_id"]);
-                var result = new QuoteItemBLL().Insert(quote_item,GetLoginUserId());
-                switch (result)
-                {
-                    case DTO.ERROR_CODE.SUCCESS:
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价项成功');window.close();self.opener.location.reload();</script>");
-                        break;
-                    case DTO.ERROR_CODE.ERROR:
-                        break;
-                    case DTO.ERROR_CODE.PARAMS_ERROR:
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
-                        break;
-                    case DTO.ERROR_CODE.USER_NOT_FIND:
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('用户信息丢失');</script>");
-                        Response.Redirect("../login.aspx");
-                        break;
-                    default:
-                        break;
-                }
+                 result = new QuoteItemBLL().Insert(param, GetLoginUserId());
             }
             else
             {
-                quote_item.type_id = this.quote_item.type_id;
-                quote_item.create_time = this.quote_item.create_time;
-                quote_item.create_user_id = this.quote_item.create_user_id;
-                quote_item.update_time = this.quote_item.update_time;
-                quote_item.update_user_id = this.quote_item.update_user_id;
-                quote_item.id = this.quote_item.id;
-                quote_item.quote_id = this.quote_item.quote_id;
-                var result = new QuoteItemBLL().Update(quote_item, GetLoginUserId());
-                switch (result)
-                {
-                    case DTO.ERROR_CODE.SUCCESS:
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改报价项成功');window.close();self.opener.location.reload();</script>");
-                        break;
-                    case DTO.ERROR_CODE.ERROR:
-                        break;
-                    case DTO.ERROR_CODE.PARAMS_ERROR:
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
-                        break;
-                    case DTO.ERROR_CODE.USER_NOT_FIND:
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('用户信息丢失');</script>");
-                        Response.Redirect("../login.aspx");
-                        break;
-                    default:
-                        break;
-                }
+                 result = new QuoteItemBLL().Update(quote_item, GetLoginUserId());
+            }
+            switch (result)
+            {
+                case DTO.ERROR_CODE.SUCCESS:
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存报价项成功');window.close();self.opener.location.reload();</script>");
+                    break;
+                case DTO.ERROR_CODE.ERROR:
+                    break;
+                case DTO.ERROR_CODE.PARAMS_ERROR:
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
+                    break;
+                case DTO.ERROR_CODE.USER_NOT_FIND:
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('用户信息丢失');</script>");
+                    Response.Redirect("../login.aspx");
+                    break;
+                default:
+                    break;
             }
 
 
@@ -214,13 +188,14 @@ namespace EMT.DoneNOW.Web.QuoteItem
             quote_item.optional = Convert.ToUInt64(_optional.Checked ? 1 : 0);
             if (isAdd)
             {
-                quote_item.type_id = int.Parse(Request.QueryString["type_id"]);
+                //quote_item.type_id = int.Parse(Request.QueryString["type_id"]);
+                quote_item.type_id = int.Parse(ItemTypeId.Value);
                 quote_item.quote_id = int.Parse(Request.QueryString["quote_id"]);
                 var result = new QuoteItemBLL().Insert(quote_item, GetLoginUserId());
                 switch (result)
                 {
                     case DTO.ERROR_CODE.SUCCESS:
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价项成功');self.opener.location.reload();location.href = 'QuoteItemAddAndUpdate.aspx?type_id=" + quote_item.type_id + "&quote_id" + quote_item.quote_id+"';</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价项成功');self.opener.location.reload();location.href = 'QuoteItemAddAndUpdate.aspx?type_id=" + quote_item.type_id + "&quote_id=" + quote_item.quote_id+"';</script>");
                         break;
                     case DTO.ERROR_CODE.ERROR:
                         break;
@@ -265,6 +240,30 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 }
             }
 
+        }
+
+
+        private crm_quote_item GetParam()
+        {
+            var quote_item = AssembleModel<crm_quote_item>();
+            quote_item.optional = Convert.ToUInt64(_optional.Checked ? 1 : 0);
+            quote_item.period_type_id = quote_item.period_type_id == 0 ? null : quote_item.period_type_id;
+            if (isAdd)
+            {
+                quote_item.type_id = int.Parse(Request.Form["ItemTypeId"]);
+                quote_item.quote_id = int.Parse(Request.QueryString["quote_id"]);
+            }
+            else
+            {
+                quote_item.type_id = this.quote_item.type_id;
+                quote_item.create_time = this.quote_item.create_time;
+                quote_item.create_user_id = this.quote_item.create_user_id;
+                quote_item.update_time = this.quote_item.update_time;
+                quote_item.update_user_id = this.quote_item.update_user_id;
+                quote_item.id = this.quote_item.id;
+                quote_item.quote_id = this.quote_item.quote_id;
+            }
+            return quote_item;
         }
     }
 }

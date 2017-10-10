@@ -65,6 +65,7 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.USER_NOT_FIND;
             quote_item.id = _dal.GetNextIdCom();
             quote_item.tax_cate_id = quote_item.tax_cate_id == 0 ? null : quote_item.tax_cate_id;
+            quote_item.period_type_id = quote_item.period_type_id == 0 ? null : quote_item.period_type_id;
             quote_item.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             quote_item.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             quote_item.create_user_id = user_id;
