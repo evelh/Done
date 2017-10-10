@@ -71,7 +71,7 @@ namespace EMT.DoneNOW.Web.SysSetting
 
         protected void Cancle_Click(object sender, EventArgs e)
         {
-            Response.Redirect("SysAdmin.aspx");
+            Response.Redirect("Admin.aspx");
         }
     }
 }

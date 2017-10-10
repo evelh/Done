@@ -306,9 +306,15 @@
                         if (idPara != null)
                             id = rslt[idPara.name].ToString();
             %>
-
+           <%-- 如果是撤销审批，则不需要右键菜单--%>
+            <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_CHARGES || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_MILESTONES || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_MILESTONES || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_SUBSCRIPTIONS)
+                {%>
+            <tr onclick="View(<%=id %>)" data-val="<%=id %>" class="dn_tr">
+            <%}
+    else
+    { %>
             <tr onclick="View(<%=id %>)" title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
-
+                <%} %>
                 <%if (!string.IsNullOrEmpty(isCheck))
                     { %>
                 <td style="width:22px;max-width:22px;">

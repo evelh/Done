@@ -17,9 +17,9 @@
     <div class="TitleBar">
         <div class="Title" style="top:5px">
   <div class="TitleBarNavigationButton">
-                    <a class="Button ButtonIcon NormalState" id="black"  href="../SysSetting/SysAdmin" target="PageFrame"><img src="../Images/move-left.png"/></a>
+                    <a class="Button ButtonIcon NormalState" id="black"  href="../SysSetting/Admin" target="PageFrame"><img src="../Images/move-left.png"/></a>
                 </div>
-            <span class="text2">受保护的数据的权限</span>
+            <span class="text2">受保护的数据权限</span>
             <a href="###" class="help"></a>
         </div>
     </div>

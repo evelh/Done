@@ -336,7 +336,6 @@ namespace EMT.DoneNOW.BLL
             cad.account_id = (long)cip.account_id;//客户id
             cad.bill_create_user_id = cs.create_user_id;//订阅创建人
             cad.purchase_order_no = cs.purchase_order_no;//采购订单号
-
             cad.tax_category_name = tax_category_name;//税收种类name
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
@@ -430,7 +429,8 @@ namespace EMT.DoneNOW.BLL
             cad.tax_category_name = tax_category_name;//税收种类name
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
-
+            cad.bill_create_user_id = ccc.create_user_id;//条目创建
+            cad.purchase_order_no = ccc.purchase_order_no;//采购订单号
             Dictionary<int, decimal> block = new Dictionary<int, decimal>();//存储预付id，和总价
                                                                             //工单(待整理) sdk_task
             if (ccc.ticket_id != null)
@@ -1230,7 +1230,8 @@ namespace EMT.DoneNOW.BLL
             cad.tax_category_name = tax_category_name;//税收种类name
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
-
+            cad.bill_create_user_id = ccc.create_user_id;//条目创建
+            cad.purchase_order_no = ccc.purchase_order_no;//采购订单号
             Dictionary<int, decimal> block = new Dictionary<int, decimal>();//存储预付id，和总价
                                                                             //工单(待整理) sdk_task
             if (ccc.ticket_id != null)
@@ -1576,6 +1577,7 @@ namespace EMT.DoneNOW.BLL
             cad.posted_date = DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式
             cad.task_id = ccc.task_id;//任务id           
             cad.contract_id = ccc.contract_id;//合同id
+            cad.bill_create_user_id = ccc.create_user_id;//条目创建
             cad.account_id = ca.id;//客户id
             cad.quantity = ccc.quantity;//数量
             cad.tax_category_name = tax_category_name;//税收种类name
@@ -1588,7 +1590,7 @@ namespace EMT.DoneNOW.BLL
             if (cc != null && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {
                 //统计预付表中的预付剩余
-                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0");
+                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0");
                 decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                 //如果成本表总额为null,或是小于预付表总计的总价，则正常处理
                 if (ccc.extended_price != null || ccc.extended_price < extended_price)
