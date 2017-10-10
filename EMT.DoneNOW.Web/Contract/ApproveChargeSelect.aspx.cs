@@ -34,7 +34,7 @@ namespace EMT.DoneNOW.Web
             {
                 Response.Write("<script>alert('异常');window.close();self.opener.location.reload();</script>");
             }
-
+            this.Radio2.Enabled = false;
             //单个id审批
             if (id != 0)
             {
@@ -43,10 +43,10 @@ namespace EMT.DoneNOW.Web
                 {
                     list.Add(aapbll.charge(id));
                 }
-                else if (result == ERROR_CODE.NOTIFICATION_RULE_RATE_NULL)
+                else if (result == ERROR_CODE.NOTIFICATION_RULE)
                 {
                     list.Add(aapbll.charge(Convert.ToInt32(id)));
-                    this.Radio2.Enabled = false;
+                    this.Radio2.Enabled = true;
                     this.Label1.ForeColor = System.Drawing.Color.Gray;
                 }
             }
@@ -63,10 +63,10 @@ namespace EMT.DoneNOW.Web
                         list.Add(aapbll.charge(Convert.ToInt32(idi)));
                         ids1.Add(idi);
                     }
-                    else if (result == ERROR_CODE.NOTIFICATION_RULE_RATE_NULL)
+                    else if (result == ERROR_CODE.NOTIFICATION_RULE)
                     {
                         list.Add(aapbll.charge(Convert.ToInt32(idi)));
-                        this.Radio2.Enabled = false;
+                        this.Radio2.Enabled = true;
                         this.Label1.ForeColor = System.Drawing.Color.Gray;
                     }
                     else {

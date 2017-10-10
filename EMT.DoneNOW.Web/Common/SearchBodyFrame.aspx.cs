@@ -551,9 +551,9 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.Invoice_History:
                     contextMenu.Add(new PageContextMenuDto { text = "修改发票", click_function = "EditInvoice()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看发票", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看本批全部发票", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "输出本批全部发票到XML文件", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看发票", click_function = "InvoiceView()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看本批发票", click_function = "InvoiceAllView()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "输出本批发票到XML文件", click_function = "openopenopen()\" \" style='color:grey;'" });
                     //contextMenu.Add(new PageContextMenuDto { text = "清除web service日期数据", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "作废发票", click_function = "VoidInvoice()" });
                     contextMenu.Add(new PageContextMenuDto { text = "作废本批次全部发票", click_function = "VoidBatchInvoice()" });

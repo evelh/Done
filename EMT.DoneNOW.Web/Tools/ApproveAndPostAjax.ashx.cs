@@ -48,7 +48,7 @@ namespace EMT.DoneNOW.Web
                 {
                     context.Response.Write("less");
                 }
-                else if (result == ERROR_CODE.NOTIFICATION_RULE_RATE_NULL) {
+                else if (result == ERROR_CODE.NOTIFICATION_RULE) {
                     context.Response.Write("rate_null");
                 }
                 else

@@ -24,6 +24,7 @@ namespace EMT.DoneNOW.Web
                 case "voidbatch": VoidBatch(context, id); break;
                 case "voidunpost": VoidUnpost(context, id); break;
                 case "getaccount_id": GetAccount_id(context, id); break;
+                case "getbatch_id":  GetBatch_id(context, id); break;
                     
                 default:break;
             }
@@ -31,6 +32,18 @@ namespace EMT.DoneNOW.Web
         public void GetAccount_id(HttpContext context, int id) {
             int a_id = new InvoiceBLL().GetAccount_id(id);
             if (a_id>0)
+            {
+                context.Response.Write(a_id);
+            }
+            else
+            {
+                context.Response.Write("-1");
+            }
+        }
+        public void GetBatch_id(HttpContext context, int id)
+        {
+            int a_id = new InvoiceBLL().GetBatch_id(id);
+            if (a_id > 0)
             {
                 context.Response.Write(a_id);
             }

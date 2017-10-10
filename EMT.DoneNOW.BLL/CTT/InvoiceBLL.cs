@@ -478,6 +478,11 @@ namespace EMT.DoneNOW.BLL
             }
             return true;
         }
+        /// <summary>
+        /// 返回发票相关客户id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
 
         public int GetAccount_id(int id)
         {
@@ -488,5 +493,20 @@ namespace EMT.DoneNOW.BLL
             }
             return -1;
         }
+        /// <summary>
+        /// 返回发票所在批次
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public int GetBatch_id(int id)
+        {
+            var inv = _dal.FindNoDeleteById(id);
+            if (inv != null)
+            {
+                return (int)inv.batch_id;
+            }
+            return -1;
+        }
+        
     }
 }
