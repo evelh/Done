@@ -88,5 +88,13 @@ left join (select cl.*,(select name from d_district where id=cl.city_id) city,(s
         {
             return FindSignleBySql<crm_opportunity>($"select op.* FROM crm_quote q LEFT JOIN crm_opportunity op on op.id = q.opportunity_id where q.id={quote_id}");
         }
+
+        /// <summary>
+        /// 根据商机Id 获取到该商机的主报价
+        /// </summary>
+        public crm_quote GetPriQuote(long oid)
+        {
+            return FindSignleBySql<crm_quote>($"SELECT * from crm_quote where is_primary_quote = 1 and delete_time = 0 and opportunity_id= {oid}");
+        }
     }
 }

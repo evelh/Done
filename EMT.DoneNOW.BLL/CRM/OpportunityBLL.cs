@@ -290,7 +290,7 @@ namespace EMT.DoneNOW.BLL
             if (oppo_list != null && oppo_list.Count > 0)   // 首先判断是否设置自定义字段
             {
                 var udf_oppo = param.udf;  // 获取到传过来的自定义字段的值
-        
+
                 if (udf_oppo != null && udf_oppo.Count > 0)   // todo 用户未填写自定义信息为null，是否算更改插日志
                 {
                     new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, oppo_list, param.general.id, udf_oppo, user, DicEnum.OPER_LOG_OBJ_CATE.FROMOPPORTUNITY_EXTENSION_INFORMATION);
@@ -465,27 +465,32 @@ namespace EMT.DoneNOW.BLL
                     var project = new pro_project_dal().GetProjectById((long)priQuote.project_id);
                     if (project != null)
                     {
-                        if(project.type_id != (int)PROJECT_TYPE.ACCOUNT_PROJECT)
+                        project.type_id = (int)PROJECT_TYPE.ACCOUNT_PROJECT;
+                        if (project.labor_revenue == 0)
                         {
-                            project.type_id = (int)PROJECT_TYPE.ACCOUNT_PROJECT;
-                            project.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                            project.update_user_id = user.id;
-                            new sys_oper_log_dal().Insert(new sys_oper_log()
-                            {
-                                user_cate = "用户",
-                                user_id = (int)user.id,
-                                name = user.name,
-                                phone = user.mobile == null ? "" : user.mobile,
-                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PROJECT,
-                                oper_object_id = project.id,// 操作对象id
-                                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                                oper_description = _dal.CompareValue(new pro_project_dal().GetProjectById((long)priQuote.project_id), project),
-                                remark = "修改项目提案类型"
-
-                            });
-                            new pro_project_dal().Update(project);
+                            project.labor_revenue = ReturnOppoRevenue(param.opportunity.id);
                         }
+                        if (project.labor_budget == 0)
+                        {
+                            project.labor_budget = ReturnOppoCost(param.opportunity.id);
+                        }
+                        project.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        project.update_user_id = user.id;
+                        new sys_oper_log_dal().Insert(new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = (int)user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.PROJECT,
+                            oper_object_id = project.id,// 操作对象id
+                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                            oper_description = _dal.CompareValue(new pro_project_dal().GetProjectById((long)priQuote.project_id), project),
+                            remark = "修改项目提案类型"
+
+                        });
+                        new pro_project_dal().Update(project);
                     }
                 }
             }
@@ -514,7 +519,7 @@ namespace EMT.DoneNOW.BLL
                 }
                 else
                 {
-                    thisEndDate = param.contract.start_date.AddMonths(thisProced* ReturnMonths((int)param.contract.period_type)).AddDays(-1);
+                    thisEndDate = param.contract.start_date.AddMonths(thisProced * ReturnMonths((int)param.contract.period_type)).AddDays(-1);
                 }
                 decimal? setup_fee = null;   // 初始费用报价项
                 if (priQuote != null)
@@ -525,7 +530,8 @@ namespace EMT.DoneNOW.BLL
                         setup_fee = thisStatrItem.unit_price;
                     }
                 }
-                var contract = new ctt_contract() {
+                var contract = new ctt_contract()
+                {
                     id = _dal.GetNextIdCom(),
                     name = param.contract.name,
                     account_id = param.opportunity.account_id,
@@ -537,19 +543,19 @@ namespace EMT.DoneNOW.BLL
                     start_date = param.contract.start_date,
                     end_date = thisEndDate,
                     // occurrences = param.contract.occurrences,
-                    description="",
-                    cate_id= lastAddContract==null?null:lastAddContract.cate_id,   
+                    description = "",
+                    cate_id = lastAddContract == null ? null : lastAddContract.cate_id,
                     external_no = null,
                     sla_id = lastAddContract == null ? null : lastAddContract.sla_id,
-                    setup_fee = setup_fee,  
-                    timeentry_need_begin_end  = lastAddContract == null ? (sbyte)1 : lastAddContract.timeentry_need_begin_end,
+                    setup_fee = setup_fee,
+                    timeentry_need_begin_end = lastAddContract == null ? (sbyte)1 : lastAddContract.timeentry_need_begin_end,
                     occurrences = thisProced,
                     // 通知接收人？？todo 
                     create_user_id = user.id,
                     update_user_id = user.id,
                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    
+
                 };
                 new ctt_contract_dal().Insert(contract);
                 new sys_oper_log_dal().Insert(new sys_oper_log()
@@ -571,9 +577,9 @@ namespace EMT.DoneNOW.BLL
                 List<UserDefinedFieldValue> udf_general_list = null;
                 new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTRACTS, user.id, contract.id, udf_contract_list, udf_general_list, OPER_LOG_OBJ_CATE.CONTRACT_EXTENSION);
 
-                if (quoteItemList!=null&& quoteItemList.Count > 0)
+                if (quoteItemList != null && quoteItemList.Count > 0)
                 {
-                    var serviceItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE&&_.optional!=1).ToList();
+                    var serviceItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE && _.optional != 1).ToList();
                     if (serviceItem != null && serviceItem.Count > 0)
                     {
                         var conSerDal = new ctt_contract_service_dal();
@@ -587,15 +593,16 @@ namespace EMT.DoneNOW.BLL
                         foreach (var item in serviceItem)
                         {
                             var isService = isServiceOrBag((long)item.object_id);
-                            ctt_contract_service conService = new ctt_contract_service() {
-                                id=_dal.GetNextIdCom(),
+                            ctt_contract_service conService = new ctt_contract_service()
+                            {
+                                id = _dal.GetNextIdCom(),
                                 contract_id = contract.id,
                                 object_id = (long)item.object_id,
                                 object_type = (sbyte)isService,
                                 effective_date = param.contract.start_date,
                                 unit_cost = item.unit_cost,
                                 unit_price = item.unit_price,
-                                adjusted_price = item.unit_price*item.quantity,
+                                adjusted_price = item.unit_price * item.quantity,
                                 quantity = (int)item.quantity,
                                 create_user_id = user.id,
                                 update_user_id = user.id,
@@ -618,9 +625,9 @@ namespace EMT.DoneNOW.BLL
 
                             });
 
-                            var period = ReturnPeriod(contract.start_date,contract.end_date,(int)contract.period_type);
+                            var period = ReturnPeriod(contract.start_date, contract.end_date, (int)contract.period_type);
                             var startTime = param.contract.start_date;
-                            
+
                             for (int i = 0; i < period; i++)
                             {
                                 var endDate = startTime.AddMonths(ReturnMonths((int)param.contract.period_type)).AddDays(-1);
@@ -630,17 +637,18 @@ namespace EMT.DoneNOW.BLL
                                     endDate = param.contract.end_date;
                                 }
 
-                                ctt_contract_service_period thisSerPri = new ctt_contract_service_period() {
+                                ctt_contract_service_period thisSerPri = new ctt_contract_service_period()
+                                {
                                     id = conserPriDal.GetNextIdCom(),
                                     contract_id = contract.id,
                                     contract_service_id = conService.id,
                                     object_id = (long)item.object_id,
                                     object_type = (sbyte)isService,
                                     period_begin_date = startTime,
-                                    period_end_date = param.contract.period_type==(int)QUOTE_ITEM_PERIOD_TYPE.ONE_TIME?param.contract.end_date: endDate,
+                                    period_end_date = param.contract.period_type == (int)QUOTE_ITEM_PERIOD_TYPE.ONE_TIME ? param.contract.end_date : endDate,
                                     quantity = (int)item.quantity,
                                     period_adjusted_price = item.unit_price * item.quantity,
-                                    period_cost = item.quantity*item.unit_cost,
+                                    period_cost = item.quantity * item.unit_cost,
                                     period_price = item.quantity * item.unit_price,
                                     create_user_id = user.id,
                                     update_user_id = user.id,
@@ -668,7 +676,7 @@ namespace EMT.DoneNOW.BLL
                                 startTime = startTime.AddMonths(ReturnMonths((int)param.contract.period_type));
 
 
-                                if(isService == 2)
+                                if (isService == 2)
                                 {
                                     var serIdList = ivtSerBunSerDal.GetSerList((long)item.object_id);
                                     if (serIdList != null && serIdList.Count > 0)
@@ -684,7 +692,7 @@ namespace EMT.DoneNOW.BLL
                                                 contract_service_period_id = thisSerPri.id,
                                                 service_id = serID.service_id,
                                                 vendor_account_id = ivtSer.vendor_id,
-                                                period_cost = ivtSer.unit_cost==null?0:(decimal)ivtSer.unit_cost,     
+                                                period_cost = ivtSer.unit_cost == null ? 0 : (decimal)ivtSer.unit_cost,
                                             };
                                             ccspbsDal.Insert(ccspbs);
                                             new sys_oper_log_dal().Insert(new sys_oper_log()
@@ -755,20 +763,20 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
             #region 5.更新合同信息
-            if (param.addServicesToExistingContract ) // 代表用户勾选了将服务加入已存在的定期服务合同
+            if (param.addServicesToExistingContract) // 代表用户勾选了将服务加入已存在的定期服务合同
             {
                 var oldContract = new ctt_contract_dal().GetSingleContract(param.contract.id);
-                
-                if(quoteItemList!=null&& quoteItemList.Count > 0)
+
+                if (quoteItemList != null && quoteItemList.Count > 0)
                 {
                     var startCostItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.START_COST).ToList();
-                    if(startCostItem!=null&& startCostItem.Count > 0)
+                    if (startCostItem != null && startCostItem.Count > 0)
                     {
                         var sum = startCostItem.Sum(_ => (_.quantity != null && _.unit_price != null) ? _.quantity * _.unit_price : 0);
 
                         if (oldContract.setup_fee == null || oldContract.setup_fee == 0)
                         {
-                            if (sum!=null && sum != 0)
+                            if (sum != null && sum != 0)
                             {
                                 oldContract.setup_fee = sum;
                                 oldContract.update_user_id = user.id;
@@ -796,7 +804,7 @@ namespace EMT.DoneNOW.BLL
                 // （二） 报价项中的服务/包，合同中不存在，插入服务包
                 var ccsDal = new ctt_contract_service_dal();
                 var conServiceList = new ctt_contract_service_dal().GetConSerList(param.contract.id);
-                if (quoteItemList!=null&& quoteItemList.Count > 0)
+                if (quoteItemList != null && quoteItemList.Count > 0)
                 {
                     var serviceItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE).ToList();
                     if (serviceItem != null && serviceItem.Count > 0)
@@ -809,13 +817,13 @@ namespace EMT.DoneNOW.BLL
                                 // 新增
                                 var service = new ctt_contract_service()
                                 {
-                                    id=_dal.GetNextIdCom(),
+                                    id = _dal.GetNextIdCom(),
                                     effective_date = param.effective_date,
                                     object_id = (long)_.object_id,
-                                    object_type = (sbyte)isServiceOrBag((int)_.object_id), 
+                                    object_type = (sbyte)isServiceOrBag((int)_.object_id),
                                     unit_price = _.unit_price,
                                     unit_cost = _.unit_cost,
-                                    quantity = _.quantity==null?0:(int)_.quantity,
+                                    quantity = _.quantity == null ? 0 : (int)_.quantity,
                                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                     create_user_id = user.id,
                                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -853,7 +861,7 @@ namespace EMT.DoneNOW.BLL
                                         {
                                             conSer.unit_cost = _.unit_cost;
                                         }
-                                        conSer.quantity += (int) _.quantity;
+                                        conSer.quantity += (int)_.quantity;
                                         new sys_oper_log_dal().Insert(new sys_oper_log()
                                         {
                                             user_cate = "用户",
@@ -864,7 +872,7 @@ namespace EMT.DoneNOW.BLL
                                             oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
                                             oper_object_id = conSer.id,// 操作对象id
                                             oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                                            oper_description = _dal.CompareValue(ccsDal.GetSinConSer(conSer.id),conSer),
+                                            oper_description = _dal.CompareValue(ccsDal.GetSinConSer(conSer.id), conSer),
                                             remark = "修改合同服务项"
 
                                         });
@@ -894,15 +902,15 @@ namespace EMT.DoneNOW.BLL
             #region 7.转换为工单/项目/合同成本，不包括——转换为工单成本（新建已完成工单）逻辑
             if (param.convertToServiceTicket)
             {
-                
+
             }
-            else if (param.convertToNewContractt|| param.convertToOldContract)
+            else if (param.convertToNewContractt || param.convertToOldContract)
             {   // 
-                InsertContract(param.costCodeList,param.opportunity,user,param.contract.id, out ids,null);
+                InsertContract(param.costCodeList, param.opportunity, user, param.contract.id, out ids, null);
             }
             else if (param.convertToProject)
             {
-                InsertContract(param.costCodeList, param.opportunity, user, param.contract.id, out ids,priQuote.project_id,null);
+                InsertContract(param.costCodeList, param.opportunity, user, param.contract.id, out ids, priQuote.project_id, null);
             }
             else if (param.convertToTicket)
             {
@@ -933,7 +941,7 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
             #region 10.新增销售订单  
-            if (param.isIncludeCharges||param.isIncludePO||param.isIncludeShip)
+            if (param.isIncludeCharges || param.isIncludePO || param.isIncludeShip)
             {
                 var saleOrder = new crm_sales_order_dal().GetSingleSalesOrderByWhere($" and opportunity_id = {param.opportunity.id} ");
                 if (saleOrder == null)
@@ -968,7 +976,7 @@ namespace EMT.DoneNOW.BLL
                     });
                     param.saleOrderId = saleOrder.id;
                 }
-               
+
             }
 
             #endregion
@@ -976,17 +984,17 @@ namespace EMT.DoneNOW.BLL
 
             #region 12.新增项目备注/合同备注
             // todo 只有转为合同/ 项目计费项时，才会生成备注。工单不会生成
-            if (param.convertToNewContractt||param.convertToOldContract||param.convertToProject)
+            if (param.convertToNewContractt || param.convertToOldContract || param.convertToProject)
             {
                 bool isProject = param.convertToProject;
                 com_activity addActivity = new com_activity()
                 {
                     id = _dal.GetNextIdCom(),
-                    cate_id = isProject ? (int)ACTIVITY_CATE.PROJECT_NOTE:(int)ACTIVITY_CATE.CONTRACT_NOTE,
+                    cate_id = isProject ? (int)ACTIVITY_CATE.PROJECT_NOTE : (int)ACTIVITY_CATE.CONTRACT_NOTE,
                     action_type_id = (int)ACTIVITY_TYPE.PROJECT_NOTE,// 根据项目/合同 去设置
                     parent_id = null,
                     object_id = param.opportunity.id,
-                    object_type_id = isProject?(int)OBJECT_TYPE.PROJECT:(int)OBJECT_TYPE.CONTRACT,
+                    object_type_id = isProject ? (int)OBJECT_TYPE.PROJECT : (int)OBJECT_TYPE.CONTRACT,
                     account_id = param.opportunity.account_id,
                     contact_id = contact_id,
                     resource_id = param.opportunity.resource_id,
@@ -1021,7 +1029,7 @@ namespace EMT.DoneNOW.BLL
 
                 });
             }
-          
+
 
 
             #endregion
@@ -1077,7 +1085,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 将报价项转换为计费项
         /// </summary>
-        public void InsertContract( Dictionary<long,string> costCodeList,  crm_opportunity opportunity, UserInfoDto user, long? contract_id, out string ids, long? project_id = null,long? tickte_id = null)
+        public void InsertContract(Dictionary<long, string> costCodeList, crm_opportunity opportunity, UserInfoDto user, long? contract_id, out string ids, long? project_id = null, long? tickte_id = null)
         {
             ids = "";
             var qiDal = new crm_quote_item_dal();
@@ -1110,11 +1118,11 @@ namespace EMT.DoneNOW.BLL
                     }
                     else if (project_id != null)
                     {
-                        subCateid = (int)BILLING_ENTITY_SUB_TYPE.TICKET_COST;    
+                        subCateid = (int)BILLING_ENTITY_SUB_TYPE.TICKET_COST;
                     }
                     else
                     {
-                        subCateid = (int)BILLING_ENTITY_SUB_TYPE.PROJECT_COST;    
+                        subCateid = (int)BILLING_ENTITY_SUB_TYPE.PROJECT_COST;
                     }
 
                     if (quote_item.type_id != (int)QUOTE_ITEM_TYPE.DISCOUNT)
@@ -1126,7 +1134,7 @@ namespace EMT.DoneNOW.BLL
                             quote_item_id = (int)item.Key,
                             cost_code_id = long.Parse(item.Value),
                             product_id = product_id,
-                            name =quote_item.name,
+                            name = quote_item.name,
                             description = quote_item.description,
                             date_purchased = DateTime.Now,
                             is_billable = 1,
@@ -1136,7 +1144,7 @@ namespace EMT.DoneNOW.BLL
                             quantity = quote_item.quantity,
                             unit_price = quote_item.unit_price,
                             unit_cost = quote_item.unit_cost,
-                            extended_price = quote_item.unit_price* quote_item.quantity,
+                            extended_price = quote_item.unit_price * quote_item.quantity,
                             create_user_id = user.id,
                             update_user_id = user.id,
                             create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -1262,10 +1270,10 @@ namespace EMT.DoneNOW.BLL
                             });
                         }
                     }
-                    
+
                 }
             }
-          
+
 
         }
         public ERROR_CODE LoseOpportunity(LoseOpportunityDto opportunityDto, long user_id)
@@ -1518,6 +1526,34 @@ namespace EMT.DoneNOW.BLL
             total += (decimal)((opportunity.quarterly_revenue == null ? 0 : (opportunity.quarterly_revenue / 3)) * month);
             total += (decimal)((opportunity.semi_annual_revenue == null ? 0 : (opportunity.semi_annual_revenue / 6)) * month);
             total += (decimal)((opportunity.yearly_revenue == null ? 0 : (opportunity.yearly_revenue / 12)) * month);
+            if (opportunity.use_quote == 1)
+            {
+                var priQuote = new crm_quote_dal().GetPriQuote(oId);
+                if (priQuote != null)
+                {
+                    var itemList = new crm_quote_item_dal().GetAllQuoteItem(priQuote.id);
+                    if (itemList != null && itemList.Count > 0)
+                    {
+                       var shipList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional == 0).ToList(); // 配送类型的报价项
+                        var oneTimeList = itemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional == 0 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
+                        var discountQIList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.optional == 0).ToList();
+
+                        // 加上配送的金额
+                        if (shipList != null && shipList.Count > 0)
+                        {
+                            var totalPrice = shipList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0);
+                            total += (decimal)totalPrice;
+                        }
+                        // 减去折扣的金额
+                        if (discountQIList != null && discountQIList.Count > 0)
+                        {
+                            var totalPrice = (discountQIList.Where(_ => _.discount_percent == null).ToList().Sum(_ => (_.unit_discount != null && _.quantity != null) ? _.unit_discount * _.quantity : 0) + (oneTimeList != null && oneTimeList.Count > 0 ? discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_ => oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0) * _.discount_percent * 100 / 100) : 0));
+                            total -= (decimal)totalPrice;
+                        }
+
+                    }
+                }
+            }
             return total;
         }
         /// <summary>
@@ -1525,8 +1561,11 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="opportunity"></param>
         /// <returns></returns>
-        public decimal ReturnOppoCost(crm_opportunity opportunity)
+        public decimal ReturnOppoCost(long oId)
         {
+            var opportunity = _dal.FindNoDeleteById(oId);
+            if (opportunity == null)
+                return 0;
             decimal total = 0;
             var month = opportunity.number_months == null ? 0 : (int)opportunity.number_months;
             total += (decimal)(opportunity.one_time_cost == null ? 0 : opportunity.one_time_cost);
@@ -1534,6 +1573,23 @@ namespace EMT.DoneNOW.BLL
             total += (decimal)((opportunity.quarterly_cost == null ? 0 : (opportunity.quarterly_cost / 3)) * month);
             total += (decimal)((opportunity.semi_annual_cost == null ? 0 : (opportunity.semi_annual_cost / 6)) * month);
             total += (decimal)((opportunity.yearly_cost == null ? 0 : (opportunity.yearly_cost / 12)) * month);
+            if (opportunity.use_quote == 1)
+            {
+                var priQuote = new crm_quote_dal().GetPriQuote(oId);
+                if (priQuote != null)
+                {
+                    var itemList = new crm_quote_item_dal().GetAllQuoteItem(priQuote.id);
+                    if (itemList != null && itemList.Count > 0)
+                    {
+                        var shipList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional == 0).ToList(); // 配送类型的报价项
+                        if (shipList != null && shipList.Count > 0)
+                        {
+                            var totalPrice = shipList.Sum(_ => ( _.unit_cost != null && _.quantity != null) ? _.unit_cost * _.quantity : 0);
+                            total += (decimal)totalPrice;
+                        }
+                    }
+                }
+            }
             return total;
         }
 
@@ -1587,7 +1643,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="endDate">结束时间</param>
         /// <param name="type">周期类型</param>
         /// <returns></returns>
-        public decimal ReturnPeriod(DateTime start_date,DateTime endDate,int type)
+        public decimal ReturnPeriod(DateTime start_date, DateTime endDate, int type)
         {
             // period_type 43
             decimal period = 1; // 周期数
@@ -1597,7 +1653,7 @@ namespace EMT.DoneNOW.BLL
             {
                 case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
                     periodMonths = 6;
-                    period = Math.Ceiling(months/periodMonths);
+                    period = Math.Ceiling(months / periodMonths);
                     break;
                 case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
                     periodMonths = 1;

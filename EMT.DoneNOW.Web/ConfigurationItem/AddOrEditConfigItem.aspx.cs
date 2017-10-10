@@ -122,7 +122,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                  result = new InstalledProductBLL().ConfigurationItemAdd(GetPara(), GetLoginUserId());
                 if (result)
                 {
-                    Response.Write("<script>alert('添加配置项成功！');location.href='AddOrEditConfigItem.aspx?id=" + param.id + "&account_id=" + account.id + "';</script>");
+                    Response.Write("<script>alert('添加配置项成功！');location.href='AddOrEditConfigItem.aspx?id=" + param.id + "&account_id=" + account.id + "';self.opener.location.reload();</script>");
                 }
                 
             }
@@ -131,7 +131,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                  result = new InstalledProductBLL().EditConfigurationItem(GetPara(), GetLoginUserId());
                 if (result)
                 {
-                    Response.Write("<script>alert('修改配置项成功！');location.href='AddOrEditConfigItem.aspx?id=" + param.id + "&account_id=" + account.id + "';</script>");
+                    Response.Write("<script>alert('修改配置项成功！');location.href='AddOrEditConfigItem.aspx?id=" + param.id + "&account_id=" + account.id + "';self.opener.location.reload();</script>");
                 }
                 
             }

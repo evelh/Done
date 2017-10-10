@@ -84,7 +84,19 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
             param.contact_id = null;
             param.contract_id = null;
             param.service = null;
-            param.installed_product_cate_id = product.installed_product_cate_id;
+            if (product.installed_product_cate_id != null)
+            {
+                param.installed_product_cate_id = product.installed_product_cate_id;
+            }
+            else
+            {
+                var thisGeneral = new d_general_dal().GetGeneralById((long)product.cate_id);
+                if (thisGeneral != null)
+                {
+                    param.installed_product_cate_id = int.Parse(thisGeneral.ext1);
+                }
+            }
+            
             param.vendor_id = null;
             param.contract_cost_id = conCost.id;
             // 是否经过合同审核

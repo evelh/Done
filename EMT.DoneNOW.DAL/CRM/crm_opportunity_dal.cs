@@ -76,6 +76,13 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<crm_opportunity>($"SELECT o.* FROM crm_opportunity o LEFT JOIN crm_quote q on o.id = q.opportunity_id where(o.id = {id} AND o.delete_time = 0) or(q.id = {id} and q.delete_time = 0) ");
         }
+        /// <summary>
+        /// 根据报价项ID 查询出相关联的商机
+        /// </summary>
+        public crm_opportunity GetOpByItemID(long item_id)
+        {
+            return FindSignleBySql<crm_opportunity>($"SELECT o.* from crm_opportunity o,crm_quote q,crm_quote_item qi WHERE o.id = q.opportunity_id and q.id = qi.quote_id AND q.delete_time = 0 and o.delete_time = 0 and qi.delete_time = 0 and qi.id = {item_id} ");
+        }
 
 
     }

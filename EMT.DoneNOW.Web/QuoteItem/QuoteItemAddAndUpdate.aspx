@@ -618,6 +618,7 @@
                     return false;
                 }
                 $("input").prop("disabled", false);
+                $("select").prop("disabled", false);
                 return true;
             }
             else {
@@ -626,6 +627,7 @@
                     return false;
                 }// SubmitDiscountCheck
                 $("#name").removeAttr("disabled");
+                $("select").prop("disabled", false);
                 $("input").prop("disabled", false);
                 return true;
             }
@@ -638,6 +640,7 @@
                     return false;
                 }
                 $("input").prop("disabled", false);
+                $("select").prop("disabled", false);
                 return true;
             }
             else {
@@ -646,6 +649,7 @@
                 }// SubmitDiscountCheck
                 $("#name").removeAttr("disabled");
                 $("input").prop("disabled", false);
+                $("select").prop("disabled", false);
                 return true;
             }
         });

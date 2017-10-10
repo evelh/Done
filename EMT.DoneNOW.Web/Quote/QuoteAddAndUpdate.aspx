@@ -556,9 +556,7 @@
                 // 根据选中的商机为预计完成时间赋值
                 $.ajax({
                     type: "GET",
-                    //async: false,
                     url: "../Tools/OpportunityAjax.ashx?property=projected_close_date&act=property&id=" + opportunity_id,
-                    // data: { CompanyName: companyName },
                     success: function (data) {
                         if (data != "") {
                             var date = new Date(data);
@@ -566,6 +564,17 @@
                             var newDate = date.getFullYear() + '-' + returnNumber((date.getMonth() + 1)) + '-' + returnNumber(date.getDate());
 
                             $("#projected_close_date").val(newDate);
+                        }
+                    },
+                });
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/OpportunityAjax.ashx?property=probability&act=property&id=" + opportunity_id,
+                    success: function (data) {
+                        if (data != "") {
+                            $("#probability").val(data);
+                        } else {
+                            $("#probability").val("");
                         }
                     },
                 });

@@ -390,11 +390,14 @@
                 
             }
         }
-
         $(".Workspace1").hide();
         $(".Workspace2").show();
     });
     $("#a2").on("click", function () {
+        $(".Workspace1").show();
+        $(".Workspace2").hide();
+    });
+    $("#b2").on("click", function () {
         var product_id = $("#product_idHidden").val();
         if (product_id == "") {
             alert("请通过查找带回选择产品");
@@ -406,11 +409,6 @@
         else {
             $("#sum").text("0");
         }
-
-        $(".Workspace1").show();
-        $(".Workspace2").hide();
-    });
-    $("#b2").on("click", function () {
         $(".Workspace2").hide();
         $(".Workspace3").show();
     });

@@ -54,12 +54,12 @@ namespace EMT.DoneNOW.BLL
                 {
                     return ERROR_CODE.PARAMS_ERROR;
                 }
-                if(quote_item.discount_percent==null&& quote_item.unit_discount == null)
+                if (quote_item.discount_percent == null && quote_item.unit_discount == null)
                 {
                     return ERROR_CODE.PARAMS_ERROR;
                 }
             }
-            
+
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
@@ -85,6 +85,125 @@ namespace EMT.DoneNOW.BLL
                 oper_description = _dal.AddValue(quote_item),
                 remark = "保存报价项信息"
             });
+
+            var oDal = new crm_opportunity_dal();
+            var oppo = oDal.GetOpByItemID(quote_item.id);
+            if (oppo != null && oppo.use_quote == 1)
+            {
+                if (quote_item.optional != 1 && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES)
+                {
+                    decimal? changeRevenue = quote_item.quantity * quote_item.unit_price ;
+                    decimal? changeCost = quote_item.quantity * quote_item.unit_cost ;
+
+                    switch (quote_item.period_type_id)
+                    {
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME:
+                            if (oppo.one_time_revenue != null)
+                            {
+                                oppo.one_time_revenue += changeRevenue;
+                            }
+                            else
+                            {
+                                oppo.one_time_revenue = changeRevenue;
+                            }
+                            if (oppo.one_time_cost != null)
+                            {
+                                oppo.one_time_cost += changeCost;
+                            }
+                            else
+                            {
+                                oppo.one_time_cost = changeCost;
+                            }
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
+                            if (oppo.monthly_revenue != null)
+                            {
+                                oppo.monthly_revenue += changeRevenue;
+                            }
+                            else
+                            {
+                                oppo.monthly_revenue = changeRevenue;
+                            }
+                            if (oppo.monthly_cost != null)
+                            {
+                                oppo.monthly_cost += changeCost;
+                            }
+                            else
+                            {
+                                oppo.monthly_cost = changeCost;
+                            }
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
+                            if (oppo.quarterly_revenue != null)
+                            {
+                                oppo.quarterly_revenue += changeRevenue;
+                            }
+                            else
+                            {
+                                oppo.quarterly_revenue = changeRevenue;
+                            }
+                            if (oppo.quarterly_cost != null)
+                            {
+                                oppo.quarterly_cost += changeCost;
+                            }
+                            else
+                            {
+                                oppo.quarterly_cost = changeCost;
+                            }
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
+                            if (oppo.semi_annual_revenue != null)
+                            {
+                                oppo.semi_annual_revenue += changeRevenue;
+                            }
+                            else
+                            {
+                                oppo.semi_annual_revenue = changeRevenue;
+                            }
+                            if (oppo.semi_annual_cost != null)
+                            {
+                                oppo.semi_annual_cost += changeCost;
+                            }
+                            else
+                            {
+                                oppo.semi_annual_cost = changeCost;
+                            }
+    
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
+                            if (oppo.yearly_revenue != null)
+                            {
+                                oppo.yearly_revenue += changeRevenue;
+                            }
+                            else
+                            {
+                                oppo.yearly_revenue = changeRevenue;
+                            }
+                            if (oppo.yearly_cost != null)
+                            {
+                                oppo.yearly_cost += changeCost;
+                            }
+                            else
+                            {
+                                oppo.yearly_cost = changeCost;
+                            }
+
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // var udfDto = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
+                    // var udfValue = 
+                    OpportunityAddOrUpdateDto param = new OpportunityAddOrUpdateDto()
+                    {
+                        general = oppo,
+                        udf = null,
+                        notify = null
+                    };
+                    new OpportunityBLL().Update(param, user.id);
+                }
+            }
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -139,6 +258,128 @@ namespace EMT.DoneNOW.BLL
                 oper_description = _dal.CompareValue(old_quote_item, quote_item),
                 remark = "编辑报价项信息"
             });
+
+            var oDal = new crm_opportunity_dal();
+            var oppo = oDal.GetOpByItemID(quote_item.id);
+            if (oppo != null && oppo.use_quote == 1)
+            {
+                if (quote_item.optional != 1 && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES)
+                {
+                    decimal? changeRevenue = quote_item.quantity * quote_item.unit_price - old_quote_item.quantity * old_quote_item.unit_price;
+                    decimal? changeCost = quote_item.quantity * quote_item.unit_cost - old_quote_item.quantity * old_quote_item.unit_cost;
+
+
+
+                    switch (quote_item.period_type_id)
+                    {
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME:
+                            if (oppo.one_time_revenue != null)
+                            {
+                                oppo.one_time_revenue += changeRevenue;
+                            }
+                            else
+                            {
+                                oppo.one_time_revenue = changeRevenue;
+                            }
+                            if (oppo.one_time_cost != null)
+                            {
+                                oppo.one_time_cost += changeCost;
+                            }
+                            else
+                            {
+                                oppo.one_time_cost = changeCost;
+                            }
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
+                            if (oppo.monthly_revenue != null)
+                            {
+                                oppo.monthly_revenue += changeRevenue;
+                            }
+                            else
+                            {
+                                oppo.monthly_revenue = changeRevenue;
+                            }
+                            if (oppo.monthly_cost != null)
+                            {
+                                oppo.monthly_cost += changeCost;
+                            }
+                            else
+                            {
+                                oppo.monthly_cost = changeCost;
+                            }
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
+                            if (oppo.quarterly_revenue != null)
+                            {
+                                oppo.quarterly_revenue += changeRevenue;
+                            }
+                            else
+                            {
+                                oppo.quarterly_revenue = changeRevenue;
+                            }
+                            if (oppo.quarterly_cost != null)
+                            {
+                                oppo.quarterly_cost += changeCost;
+                            }
+                            else
+                            {
+                                oppo.quarterly_cost = changeCost;
+                            }
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
+                            if (oppo.semi_annual_revenue != null)
+                            {
+                                oppo.semi_annual_revenue += changeRevenue;
+                            }
+                            else
+                            {
+                                oppo.semi_annual_revenue = changeRevenue;
+                            }
+                            if (oppo.semi_annual_cost != null)
+                            {
+                                oppo.semi_annual_cost += changeCost;
+                            }
+                            else
+                            {
+                                oppo.semi_annual_cost = changeCost;
+                            }
+
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
+                            if (oppo.yearly_revenue != null)
+                            {
+                                oppo.yearly_revenue += changeRevenue;
+                            }
+                            else
+                            {
+                                oppo.yearly_revenue = changeRevenue;
+                            }
+                            if (oppo.yearly_cost != null)
+                            {
+                                oppo.yearly_cost += changeCost;
+                            }
+                            else
+                            {
+                                oppo.yearly_cost = changeCost;
+                            }
+
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // var udfDto = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
+                    // var udfValue = 
+                    OpportunityAddOrUpdateDto param = new OpportunityAddOrUpdateDto()
+                    {
+                        general = oppo,
+                        udf = null,
+                        notify = null
+                    };
+                    new OpportunityBLL().Update(param, user.id);
+                }
+            }
+
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -151,41 +392,169 @@ namespace EMT.DoneNOW.BLL
         {
             // todo 报价如果关联了销售订单，则不可删除报价项  -- 验证 
             var quote_item = _dal.GetQuoteItem(quote_item_id);
-            if (quote_item != null)
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (quote_item != null && user != null)
             {
-                var user = UserInfoBLL.GetUserInfo(user_id);
-                if (user != null)
+                var isSaleOrder = new QuoteBLL().CheckRelatSaleOrder(quote_item_id);
+                if (isSaleOrder)
                 {
-                    quote_item.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                    quote_item.delete_user_id = user_id;
-                    _dal.Update(quote_item);
-                    new sys_oper_log_dal().Insert(new sys_oper_log()
-                    {
-                        user_cate = "用户",
-                        user_id = (int)user.id,
-                        name = user.name,
-                        phone = user.mobile == null ? "" : user.mobile,
-                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_ITEM,
-                        oper_object_id = quote_item.id,// 操作对象id
-                        oper_type_id = (int)OPER_LOG_TYPE.DELETE,
-                        oper_description = _dal.AddValue(quote_item),
-                        remark = "删除报价项"
-                    });
-                    return true;
+                    return false;
                 }
+
+                quote_item.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                quote_item.delete_user_id = user_id;
+                _dal.Update(quote_item);
+                new sys_oper_log_dal().Insert(new sys_oper_log()
+                {
+                    user_cate = "用户",
+                    user_id = (int)user.id,
+                    name = user.name,
+                    phone = user.mobile == null ? "" : user.mobile,
+                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_ITEM,
+                    oper_object_id = quote_item.id,// 操作对象id
+                    oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                    oper_description = _dal.AddValue(quote_item),
+                    remark = "删除报价项"
+                });
+
+                var oDal = new crm_opportunity_dal();
+                var oppo = oDal.GetOpByItemID(quote_item.id);
+                if (oppo != null && oppo.use_quote == 1)
+                {
+                    if (quote_item.optional != 1 && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES)
+                    {
+                        decimal? changeRevenue = quote_item.quantity * quote_item.unit_price ;
+                        decimal? changeCost = quote_item.quantity * quote_item.unit_cost;
+
+
+
+                        switch (quote_item.period_type_id)
+                        {
+                            case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME:
+                                if (oppo.one_time_revenue != null)
+                                {
+                                    oppo.one_time_revenue += changeRevenue;
+                                }
+                                else
+                                {
+                                    oppo.one_time_revenue = changeRevenue;
+                                }
+                                if (oppo.one_time_cost != null)
+                                {
+                                    oppo.one_time_cost += changeCost;
+                                }
+                                else
+                                {
+                                    oppo.one_time_cost = changeCost;
+                                }
+                                break;
+                            case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
+                                if (oppo.monthly_revenue != null)
+                                {
+                                    oppo.monthly_revenue += changeRevenue;
+                                }
+                                else
+                                {
+                                    oppo.monthly_revenue = changeRevenue;
+                                }
+                                if (oppo.monthly_cost != null)
+                                {
+                                    oppo.monthly_cost += changeCost;
+                                }
+                                else
+                                {
+                                    oppo.monthly_cost = changeCost;
+                                }
+                                break;
+                            case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
+                                if (oppo.quarterly_revenue != null)
+                                {
+                                    oppo.quarterly_revenue += changeRevenue;
+                                }
+                                else
+                                {
+                                    oppo.quarterly_revenue = changeRevenue;
+                                }
+                                if (oppo.quarterly_cost != null)
+                                {
+                                    oppo.quarterly_cost += changeCost;
+                                }
+                                else
+                                {
+                                    oppo.quarterly_cost = changeCost;
+                                }
+                                break;
+                            case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
+                                if (oppo.semi_annual_revenue != null)
+                                {
+                                    oppo.semi_annual_revenue += changeRevenue;
+                                }
+                                else
+                                {
+                                    oppo.semi_annual_revenue = changeRevenue;
+                                }
+                                if (oppo.semi_annual_cost != null)
+                                {
+                                    oppo.semi_annual_cost += changeCost;
+                                }
+                                else
+                                {
+                                    oppo.semi_annual_cost = changeCost;
+                                }
+
+                                break;
+                            case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
+                                if (oppo.yearly_revenue != null)
+                                {
+                                    oppo.yearly_revenue += changeRevenue;
+                                }
+                                else
+                                {
+                                    oppo.yearly_revenue = changeRevenue;
+                                }
+                                if (oppo.yearly_cost != null)
+                                {
+                                    oppo.yearly_cost += changeCost;
+                                }
+                                else
+                                {
+                                    oppo.yearly_cost = changeCost;
+                                }
+
+                                break;
+                            default:
+                                break;
+                        }
+
+                        // var udfDto = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
+                        // var udfValue = 
+                        OpportunityAddOrUpdateDto param = new OpportunityAddOrUpdateDto()
+                        {
+                            general = oppo,
+                            udf = null,
+                            notify = null
+                        };
+                        new OpportunityBLL().Update(param, user.id);
+                    }
+                }
+
+
+                return true;
+
             }
 
             return false;
         }
-        public List<crm_quote_item> GetAllQuoteItem(long id) {
-            string sql = " and quote_id="+id+" ";
+        public List<crm_quote_item> GetAllQuoteItem(long id)
+        {
+            string sql = " and quote_id=" + id + " ";
             var list = _dal.GetQuoteItems(sql);
             return list;
         }
 
         // 计算出该报价下的所有一次姓报价项中包含税的报价项的折扣
-        public decimal GetOneTimeMoneyTax(List<crm_quote_item> oneTimeList,crm_quote_item qItem)
+        public decimal GetOneTimeMoneyTax(List<crm_quote_item> oneTimeList, crm_quote_item qItem)
         {
 
             // 按照金钱扣除的折扣转换成为百分比进行运算-- 暂时处理待测试
@@ -212,7 +581,7 @@ namespace EMT.DoneNOW.BLL
             decimal totalMoney = 0;
             var AllTotalMoney = GetAllMoney(oneTimeList);
             var noTaxItem = oneTimeList.Where(_ => _.period_type_id == null).ToList();
-             totalMoney = GetAllMoney(noTaxItem);
+            totalMoney = GetAllMoney(noTaxItem);
             if (qItem.discount_percent != null)
             {
                 totalMoney = totalMoney * (decimal)qItem.discount_percent;

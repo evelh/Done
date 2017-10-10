@@ -124,7 +124,11 @@ namespace EMT.DoneNOW.Web.Opportunity
                     competitor_id.SelectedValue = opportunity.competitor_id == null ? "0" : opportunity.competitor_id.ToString();
                     win_reason_type_id.SelectedValue = opportunity.win_reason_type_id == null ? "0" : opportunity.win_reason_type_id.ToString();
                     loss_reason_type_id.SelectedValue = opportunity.loss_reason_type_id == null ? "0" : opportunity.loss_reason_type_id.ToString();
-                    spread_unit.SelectedValue = opportunity.spread_unit;               
+                    spread_unit.SelectedValue = opportunity.spread_unit;
+                    if (!IsPostBack)
+                    {
+                        is_use_quote.Checked = opportunity.use_quote == 1;
+                    }
                 }
                 else
                 {
@@ -411,6 +415,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 general = AssembleModel<crm_opportunity>(),
                 notify = AssembleModel<com_notify_email>(),
             };
+            param.general.use_quote = (sbyte)(is_use_quote.Checked ? 1 : 0);
             if (opportunity_udfList != null && opportunity_udfList.Count > 0)                      // 首先判断是否有自定义信息
             {
                 var list = new List<UserDefinedFieldValue>();

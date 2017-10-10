@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.SessionState;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.BLL;
+using EMT.DoneNOW.DAL;
 
 namespace EMT.DoneNOW.Web
 {
@@ -33,6 +34,10 @@ namespace EMT.DoneNOW.Web
                         var id = context.Request.QueryString["id"];
                         var propertyName = context.Request.QueryString["property"];
                         GetOpportunityProperty(context,id,propertyName);
+                        break;
+                    case "returnMoney":
+                        var oid = context.Request.QueryString["id"];
+                        GetQuoteItemMoney(context,long.Parse(oid));
                         break;
                     default:
                         break;
@@ -100,6 +105,98 @@ namespace EMT.DoneNOW.Web
                 var value = DAL.BaseDAL<crm_opportunity>.GetObjectPropertyValue(opportunity, propertyName);
                 context.Response.Write(value);
             }
+        }
+
+        /// <summary>
+        /// 商机计算
+        /// </summary>
+        private void GetQuoteItemMoney(HttpContext context,long oid)
+        {
+            var oppo = new crm_opportunity_dal().FindNoDeleteById(oid);
+            if (oppo != null)
+            {
+                // 将一次性，按月，季度，赋值之后 ， 需要将配送的金额和折扣的金额 存储之后计算
+                var priQuote = new crm_quote_dal().GetPriQuote(oid);
+                if (priQuote != null)
+                {
+                    decimal oneTimeRevenue = 0; 
+                    decimal oneTimeCost = 0;
+                    decimal monthRevenue = 0;
+                    decimal monthCost = 0;
+                    decimal quarterRevenue = 0;
+                    decimal quarterCost = 0;
+                    decimal halfRevenue = 0;
+                    decimal halfCost = 0;
+                    decimal yearRevenue = 0;
+                    decimal yearCost = 0;
+                    decimal shipRevenue = 0;
+                    decimal shipCost = 0;
+                    decimal discount = 0;
+
+                    var itemList = new crm_quote_item_dal().GetAllQuoteItem(priQuote.id);
+                    if (itemList != null && itemList.Count > 0)
+                    {
+                        var thisItem = itemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional != 1 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT).ToList();
+
+                        var shipList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional == 0).ToList(); // 配送类型的报价项
+                        var thisOneTimeList = itemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional == 0 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
+                        var discountQIList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.optional == 0).ToList();
+                        if (shipList != null && shipList.Count > 0)
+                        {
+                            var totalPrice = shipList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0);
+                            shipRevenue = (decimal)totalPrice;
+                            var totalCost = shipList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? _.unit_cost * _.quantity : 0);
+                            shipCost = (decimal)totalCost;
+                        }
+                        if (discountQIList != null && discountQIList.Count > 0)
+                        {
+                            var totalPrice = (discountQIList.Where(_ => _.discount_percent == null).ToList().Sum(_ => (_.unit_discount != null && _.quantity != null) ? _.unit_discount * _.quantity : 0) + (thisOneTimeList != null && thisOneTimeList.Count > 0 ? discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_ => thisOneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0) * _.discount_percent * 100 / 100) : 0));
+                            discount = (decimal)totalPrice;
+                        }
+
+
+                        if (thisItem != null && thisItem.Count > 0)
+                        {
+                            var oneTimeList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
+                            var monthList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH).ToList();
+                            var quarterList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER).ToList();
+                            var halfList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR).ToList();
+                            var yearList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR).ToList();
+                            if (oneTimeList != null && oneTimeList.Count > 0)
+                            {
+                                oneTimeRevenue = (decimal)oneTimeList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (_.unit_price * _.quantity) : 0);
+                                oneTimeCost = (decimal)oneTimeList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (monthList != null && monthList.Count > 0)
+                            {
+                                monthRevenue = (decimal)monthList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (_.unit_price * _.quantity) : 0);
+                                monthCost = (decimal)monthList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (quarterList != null && quarterList.Count > 0)
+                            {
+                                quarterRevenue = (decimal)quarterList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (_.unit_price * _.quantity) : 0);
+                                quarterCost = (decimal)quarterList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (halfList != null && halfList.Count > 0)
+                            {
+                                halfRevenue = (decimal)halfList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (_.unit_price * _.quantity) : 0);
+                                halfCost = (decimal)halfList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (yearList != null && yearList.Count > 0)
+                            {
+                                yearRevenue = (decimal)yearList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (_.unit_price * _.quantity) : 0);
+                                yearCost = (decimal)yearList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                        }
+
+
+                    }
+                    context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { oneTimeRevenue = oneTimeRevenue, oneTimeCost = oneTimeCost, monthRevenue = monthRevenue, monthCost = monthCost, quarterRevenue = quarterRevenue, quarterCost = quarterCost, halfRevenue = halfRevenue, halfCost = halfCost, yearRevenue = yearRevenue, yearCost = yearCost, shipRevenue = shipRevenue, shipCost = shipCost, discount = discount}));
+                }
+            }
+               
+
+            // quoteItemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional != 1&&_.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT).ToList();
         }
         public bool IsReusable
         {

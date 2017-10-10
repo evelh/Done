@@ -132,6 +132,10 @@
         return true;
     })
 
+    $("#CancelButton").click(function () {
+        window.close();
+    })
+
     $(".return2").blur(function () {
         var value = $(this).val();
         if (!isNaN(value) && value != "") {

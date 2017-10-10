@@ -144,12 +144,11 @@
             <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;">
                 <ul class="clear fl">
 
-                    <li id="liPre" onclick="Preview()"><i style="background-image: url(../Images/new.png);"></i><span>预览选中</span></li>
-                    <li id="liPro" onclick="Process()"><i style="background-image: url(../Images/new.png);"></i><span>处理全部</span></li>
-
+                    <li id="liPre" onclick="Preview()"><span>预览选中</span></li>
+                    <li id="liPro" onclick="Process()"><span>处理全部</span></li>
+                    <li id=""><i style="background-image: url(../Images/forward_arrow.png);"></i><a class="Button ButtonIcon NormalState" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_HISTORY %>" target="PageFrame"><span class="Text">历史发票</span></a></li>
                     <li><i style="background-image: url(../Images/print.png);"></i></li>
-
-                    <li><i style="background-image: url(../Images/export.png);"></i></li>
+<%--                    <li><i style="background-image: url(../Images/export.png);"></i></li>--%>
                 </ul>
                 <%if (queryResult != null && queryResult.count > 0)
                     { %>

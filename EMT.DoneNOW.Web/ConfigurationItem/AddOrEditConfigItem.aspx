@@ -585,7 +585,7 @@
                                                         </span>
                                                     </div>
                                                         </td>
-                                                        <td class="FieldLabel" style="cursor: pointer; margin-left: 2px; margin-bottom: -3px;">位置 
+                                                        <td class="FieldLabel" style="cursor: pointer; margin-left: 2px; margin-bottom: -3px;">位置 <span style="color: Red;">*</span>
                                                             <div>
                                                                 <span style="display: inline-block;">
                                                                     <input type="text" style="width: 250px;" name="location" id="location" value="<%=(!isAdd)&&iProduct.location!=null?iProduct.location:"" %>" /></span>
@@ -1418,11 +1418,11 @@
             return false;
         }
         // location
-        //var location = $("#location").val();
-        //if (location == "") {
-        //    alert('请填写位置！');
-        //    return false;
-        //}
+        var location = $("#location").val();
+        if (location == "") {
+            alert('请填写位置！');
+            return false;
+        }
         // service
         // 所选合同如果是服务类型的，则此下拉框可选。可选内容为合同项--todo
         //var service = $("#service").val();

@@ -45,6 +45,16 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<crm_quote_item>($"SELECT * from crm_quote_item where quote_id = {quote_id} and type_id = {(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.START_COST} and delete_time = 0");
         }
+        /// <summary>
+        /// 根据报价ID 获取到该报价下的所有报价项
+        /// </summary>
+        public List<crm_quote_item> GetAllQuoteItem(long quote_id,string where="")
+        {
+            string sql = $"SELECT * from crm_quote_item where quote_id = {quote_id} and delete_time = 0 "+where;
+            return FindListBySql<crm_quote_item>(sql);
+        }
+
+
 
     }
 }

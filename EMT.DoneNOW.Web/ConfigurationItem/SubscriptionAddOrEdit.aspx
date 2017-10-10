@@ -275,7 +275,7 @@
                         </tr>
                         <tr>
                             <td class="FieldLabels">物料成本代码
-                            
+                             <span style="color: red;">*</span>
                             <div>
                                 <% EMT.DoneNOW.Core.d_cost_code costCode = null;
                                     if ((!isAdd) && subscription.cost_code_id != 0)
@@ -628,6 +628,11 @@
         var total_price = $("#total_price").val();
         if (total_price == "") {
             alert("请填写总价");
+            return false;
+        }
+        var cost_code_idHidden = $("#cost_code_idHidden").val();
+        if (cost_code_idHidden == "") {
+            alert("请填写物料成本代码");
             return false;
         }
 
