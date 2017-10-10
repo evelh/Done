@@ -17,8 +17,7 @@ namespace EMT.DoneNOW.Web.SysSetting
         public UserResourceBLL urbll = new UserResourceBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
-            resourcelist = urbll.GetAllSysResource();
- 
+            resourcelist = urbll.GetAllSysResource(); 
         }
         protected void Save_Click(object sender, EventArgs e)
         {
@@ -67,11 +66,6 @@ namespace EMT.DoneNOW.Web.SysSetting
                 }
             }
             Response.Write("<script>alert('保存成功！');</script>");
-        }
-
-        protected void Cancle_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("Admin.aspx");
         }
     }
 }

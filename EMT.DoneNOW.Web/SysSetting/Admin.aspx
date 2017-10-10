@@ -84,7 +84,7 @@
                                          </div>
                                         <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">
-                                            <a href="SysDataPermission.aspx" class="Button ButtonIcon Link NormalState chaxun">保护数据权限</a>
+                                            <a href="SysDataPermission.aspx" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">被保护数据权限设置</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
@@ -461,6 +461,10 @@
             $("#chaxun").hide();           
             $("#body").show();
         });
+        function black() {
+            $("#chaxun").hide();
+            $("#body").show();
+        }
     </script>
 </body>
 </html>

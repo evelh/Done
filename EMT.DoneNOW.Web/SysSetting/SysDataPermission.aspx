@@ -13,25 +13,14 @@
 <body style="background-color:white">
     <form id="form1" runat="server" method="post">
         <div>
-             <!--顶部-->
-    <div class="TitleBar">
-        <div class="Title" style="top:5px">
-  <div class="TitleBarNavigationButton">
-                    <a class="Button ButtonIcon NormalState" id="black"  href="../SysSetting/Admin" target="PageFrame"><img src="../Images/move-left.png"/></a>
-                </div>
-            <span class="text2">受保护的数据权限</span>
-            <a href="###" class="help"></a>
-        </div>
-    </div>
     <!--按钮-->
     <div class="ButtonContainer header-title">
         <ul>
             <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                 <asp:Button ID="Save" runat="server" Text="保存"  BorderStyle="None" OnClick="Save_Click"/>
             </li>
-
             <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
-                <asp:Button ID="Cancle" runat="server" Text="取消"  BorderStyle="None" OnClick="Cancle_Click"/>
+                <span id="Cancle">取消</span>
             </li>
         </ul>
     </div>
@@ -120,7 +109,9 @@
             data.push("]}");
             $("#data").val(data);
         });
-      
+        $("#Cancle").on("click", function () {
+            parent.black();
+        });
     </script>
 </body>
 </html>
