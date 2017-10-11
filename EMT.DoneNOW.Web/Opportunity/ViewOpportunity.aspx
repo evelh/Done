@@ -140,8 +140,11 @@
                         {
                     %>
 
-                    <%} %>
-                    <p class="clear"><span class="fl">毛利</span><span class="fr"> todo </span></p>
+                    <%}
+                          var totalRebenue = new EMT.DoneNOW.BLL.OpportunityBLL().ReturnOppoRevenue(opportunity.id);
+                                var totalCost = new EMT.DoneNOW.BLL.OpportunityBLL().ReturnOppoCost(opportunity.id);
+                        %>
+                    <p class="clear"><span class="fl">毛利</span><span class="fr"><%=(totalRebenue-totalCost).ToString("#0.00") %></span></p>
                     <p class="clear"><span class="fl">创建日期</span><span class="fr"><%=opportunity.projected_close_date!=null?((DateTime)opportunity.projected_close_date).ToString("dd/MM/yyyy"):"" %>（距今<%=opportunity.projected_begin_date!=null?((DateTime)opportunity.projected_begin_date).Subtract(DateTime.Now).Days.ToString():"" %>天）  </span></p>
                     <%if (opportunity.status_id != null)
                         {%>
