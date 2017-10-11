@@ -118,6 +118,10 @@
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACCOUNTREGION %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">区域</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                        <div class="PageNavigationLink">
+                                            <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COUNTRY %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">国家</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
                                          </div>
                                         <div class="PageNavigationLinkColumn">
                                         <div class="PageNavigationLink">

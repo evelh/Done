@@ -63,7 +63,15 @@ namespace EMT.DoneNOW.Web
             }
         }
         private void save_deal() {
-            ware= AssembleModel<ivt_warehouse_product>();
+            if (id > 0) {
+                ware = probll.Getwarehouse_product(id);
+            }
+            ware.warehouse_id = Convert.ToInt64(warehouse_id.SelectedValue.ToString());
+            ware.reference_number = reference_number.Text.ToString();
+            ware.bin = bin.Text.ToString();
+            ware.quantity_minimum =quantity_minimum.Text.ToString().Length > 0 ? Convert.ToInt32(quantity_minimum.Text.ToString()) : 0;
+            ware.quantity_maximum = quantity_maximum.Text.ToString().Length > 0 ? Convert.ToInt32(quantity_maximum.Text.ToString()) : 0;
+            ware.quantity= quantity.Text.ToString().Length > 0 ? Convert.ToInt32(quantity.Text.ToString()) : 0;
             if (id > 0)
             {
                 var result = probll.UpdateProductStock(ware, GetLoginUserId());
@@ -77,9 +85,9 @@ namespace EMT.DoneNOW.Web
                     case ERROR_CODE.SUCCESS: Response.Write("<script>alert(\"库存信息修改成功！\");</script>"); break;//成功
                     default: Response.Write("<script>alert('异常错误，返回上一级！');window.close();self.opener.location.reload();</script>"); ; break;//失败
                 }
-
             }
             else {
+                ware.product_id = product_id;
                 var result = probll.InsertProductStock(ware, GetLoginUserId());
                 switch (result)
                 {
@@ -99,12 +107,12 @@ namespace EMT.DoneNOW.Web
         protected void Save_Close_Click(object sender, EventArgs e)
         {
             save_deal();
-            Response.Write("<script>window.close();window.opener.refrekkk();</script>");
+            Response.Write("<script>window.opener.parent.parent.refrekkk();window.close();</script>");
         }
 
         protected void Cancel_Click(object sender, EventArgs e)
         {
-            Response.Write("<script>window.close();window.opener.refrekkk();</script>");
+            Response.Write("<script>window.opener.parent.parent.refrekkk();window.close();</script>");
         }
 
         protected void Save_New_Click(object sender, EventArgs e)

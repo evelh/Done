@@ -324,7 +324,7 @@
     </div>
     <div class="TabContainer" style="display: none;">
             <div class="cont" style="margin-top:15px;">
-                <iframe id="PageFrame22" name="PageFrame22" style="width:100%;height:auto" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>&id=99"></iframe>
+                <iframe id="PageFrame22" name="PageFrame22" style="width:100%;height:auto" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>&id=<%=product.id %>"></iframe>
             </div>
     </div>
         </div>
@@ -807,7 +807,8 @@
             }
             //刷新库存管理
             function refrekkk() {
-                ('#PageFrame22').attr('src', $('#PageFrame22').attr('src'));
+                var src = $("#PageFrame22").attr("src");
+                $("#PageFrame22").attr("src",src );
             }
         </script>
     </form>

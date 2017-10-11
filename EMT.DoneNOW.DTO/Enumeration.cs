@@ -456,7 +456,8 @@ namespace EMT.DoneNOW.DTO
             ACCOUNTREGION=929,                   //客户区域
             COMPETITOR=930,                       //竞争对手
             ACCOUNTTYPE=931,                      //客户类型
-            SUFFIXES=933,                           //姓名后缀
+            COUNTRY=932,                          //国家
+            SUFFIXES =933,                           //姓名后缀
             ACTIONTYPE=934,                        //活动类型
             OPPORTUNITYAGES=935,                       //商机阶段
             OPPORTUNITYSOURCE=936,                   //商机来源
