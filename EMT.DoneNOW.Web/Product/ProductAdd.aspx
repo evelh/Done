@@ -184,9 +184,9 @@
                     </tr>
                     <tr>
                         <td width="50%" class="FieldLabels">
-                            产品链接<a id="url" style="color:cadetblue" href="<%=url %>">Preview</a>
+                            产品链接<a id="pre_url" style="color:cadetblue;cursor:pointer">Preview</a><input type="hidden" id="urlhidden" name="urlhidden" value="<%=url %>" />
                             <div>
-                                <asp:TextBox ID="Product_Link" runat="server" maxlength="100" style="width: 268px;height:70px;" TextMode="MultiLine" onchange="return checkUrl()"></asp:TextBox>
+                                <asp:TextBox ID="Product_Link" runat="server" maxlength="100" style="width: 268px;height:70px;" TextMode="MultiLine"></asp:TextBox>
                             </div>
                         </td>
                         <td width="50%" class="FieldLabels" style="vertical-align: top;">
@@ -324,7 +324,7 @@
     </div>
     <div class="TabContainer" style="display: none;">
             <div class="cont" style="margin-top:15px;">
-                <iframe id="PageFrame22" name="PageFrame22" style="width:100%;height:auto" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>&id=99"></iframe>
+                <iframe id="PageFrame22" name="PageFrame22" style="width:100%;height:auto" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>&id=<%=product.id %>"></iframe>
             </div>
     </div>
         </div>
@@ -389,22 +389,25 @@
                 m = Math.round(m * 100) / 100;
                 $("#maolilv").val(m + "%");
             });
-
-            function checkUrl() {
-                var strReg = "/((http|ftp|https|file):\/\/([\w\-]+\.)+[\w\-]+(\/[\w\u4e00-\u9fa5\-\.\/?\@\%\!\&=\+\~\:\#\;\,]*)?)/ig";
-                var re = new RegExp(strReg);
+            $("#Product_Link").change(function () {
+                regExp = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+                var re = new RegExp(regExp);
                 if (!re.test($(this).val())) {
                     alert("输入的链接不符合规范！");
+                    $(this).val('<%=url%>');
                     return false;
                 } else {
-                    $("#url").removeAttr("href");
-                    $("#url").attr({
-                        "href": $(this).val(),
-                        "title": ""
-                    });
+                    $("#urlhidden").val($(this).val());
                 }
-            }
-
+                //$("#urlhidden").val($(this).val());
+            });
+            //点击产品预览
+            $("#pre_url").on("click", function () {
+                var k = $("#urlhidden").val();
+                if (k!="#") {
+                    window.open(k,'kk', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                }
+            });
             //供应商右键菜单删除
             function Delete() {
 
@@ -807,7 +810,8 @@
             }
             //刷新库存管理
             function refrekkk() {
-                ('#PageFrame22').attr('src', $('#PageFrame22').attr('src'));
+                var src = $("#PageFrame22").attr("src");
+                $("#PageFrame22").attr("src",src );
             }
         </script>
     </form>

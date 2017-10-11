@@ -21,7 +21,7 @@ namespace EMT.DoneNOW.Web
         protected long id;
         private ProductBLL pbll = new ProductBLL();
         protected ivt_product product = new ivt_product();
-        protected string url;
+        protected string url="#";
         protected string cate_name;
         protected string code_name;
         protected List<VendorDto> VendorList = new List<VendorDto>();
@@ -30,8 +30,7 @@ namespace EMT.DoneNOW.Web
         protected string vendor_json;
         protected void Page_Load(object sender, EventArgs e)
         {
-            id = Convert.ToInt32(Request.QueryString["id"]);//获取id
-           // id = 1377;            
+            id = Convert.ToInt32(Request.QueryString["id"]);//获取id          
             GetMenus();
             if (!IsPostBack) {
                 product_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PRODUCTS);//自定义
@@ -108,9 +107,9 @@ namespace EMT.DoneNOW.Web
             //}
             if (product.url != null && !string.IsNullOrEmpty(product.url.ToString()))
             {
-                this.Product_Link.Text= product.url.ToString();
+                this.Product_Link.Text = product.url.ToString();
                 url = product.url.ToString();
-            }
+            }            
             if (product.sku != null && !string.IsNullOrEmpty(product.sku.ToString()))
             {
                 this.Product_SKU.Text = product.sku.ToString();

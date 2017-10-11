@@ -44,9 +44,7 @@ namespace EMT.DoneNOW.BLL
             //if (arr != null && arr.Count() > 0)
             if(!string.IsNullOrEmpty(param.ids))
             {
-                //param.ids = param.ids.Substring(0, param.ids.Length-1);
                 var invoiceBatch = _dal.GetNextIdInvBat();
-                //var invoiceNo = _dal.GetNextIdInvNo();
                 var cadDal = new crm_account_deduction_dal();
                 var cidDal = new ctt_invoice_detail_dal();
                 var comBLL = new CompanyBLL();
@@ -58,74 +56,42 @@ namespace EMT.DoneNOW.BLL
                     foreach (var item in dicList)
                     {
                         var account = comBLL.GetCompany(item.Key);
-                        var invocie = new ctt_invoice()
-                        {
-                            id = _dal.GetNextIdCom(),
-                            batch_id = invoiceBatch,
-                            account_id = account.id,
-                            owner_resource_id = (long)account.resource_id,
-                            invoice_no = _dal.GetNextIdInvNo().ToString(),
-                            invoice_date = param.invoice_date,
-                            total = item.Value.Sum(_ => _.extended_price == null ? 0 : _.extended_price),
-                            tax_value = item.Value.Sum(_ => _.tax_dollars == null ? 0 : _.tax_dollars),
-                            date_range_from = param.date_range_from,
-                            date_range_to = param.date_range_to,
-                            payment_term_id = param.payment_term_id,
-                            purchase_order_no = param.purchase_order_no,
-                            invoice_template_id = param.invoice_template_id,
-                            page_header_html = temp.page_header_html,
-                            page_footer_html = temp.page_footer_html,
-                            invoice_header_html = temp.quote_header_html,
-                            invoice_body_html = temp.body_html,
-                            invoice_footer_html = temp.quote_footer_html,
-                            invoice_appendix_html = "", // 模板里面没有todo
-                            tax_region_name = account.tax_region_id == null ? "" : new GeneralBLL().GetGeneralName((int)account.tax_region_id),
-                            create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            create_user_id = user.id,
-                            update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            update_user_id = user.id,
-                        };
-                        _dal.Insert(invocie);
-                        new sys_oper_log_dal().Insert(new sys_oper_log()
-                        {
-                            user_cate = "用户",
-                            user_id = user.id,
-                            name = user.name,
-                            phone = user.mobile == null ? "" : user.mobile,
-                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.INVOCIE,
-                            oper_object_id = invocie.id,// 操作对象id
-                            oper_type_id = (int)DicEnum.OPER_LOG_TYPE.ADD,
-                            oper_description = _dal.AddValue(invocie),
-                            remark = "保存发票"
-                        });
 
-                        var udf_contract_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);
-
-                        new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.COMPANY, user.id, invocie.id, udf_contract_list, param.udf, OPER_LOG_OBJ_CATE.CONTRACT_EXTENSION);
-
-                        var invDetail = new ctt_invoice_detail()
+                        var noPurOrderList = item.Value.Where(_ => string.IsNullOrEmpty(_.purchase_order_no
+                             )).ToList(); // 代表无
+                        var purchOrderList = item.Value.Where(_ => !string.IsNullOrEmpty(_.purchase_order_no
+                           )).ToList();
+                        if (noPurOrderList != null && noPurOrderList.Count > 0)
                         {
-                            invoice_id = invocie.id,
-                            //is_emailed = (sbyte)(param.isInvoiceEmail?1:0),    
-                        };
-                        cidDal.Insert(invDetail);
-                        new sys_oper_log_dal().Insert(new sys_oper_log()
-                        {
-                            user_cate = "用户",
-                            user_id = user.id,
-                            name = user.name,
-                            phone = user.mobile == null ? "" : user.mobile,
-                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.INVOCIE_DETAIL,
-                            oper_object_id = invDetail.invoice_id,// 操作对象id
-                            oper_type_id = (int)DicEnum.OPER_LOG_TYPE.ADD,
-                            oper_description = _dal.AddValue(invDetail),
-                            remark = "保存发票详情"
-                        });
-                        foreach (var thisacc_ded in item.Value)
-                        {
-                            thisacc_ded.invoice_id = invocie.id;
+                            
+                            var invocie = new ctt_invoice()
+                            {
+                                id = _dal.GetNextIdCom(),
+                                batch_id = invoiceBatch,
+                                account_id = account.id,
+                                owner_resource_id = (long)account.resource_id,
+                                invoice_no = _dal.GetNextIdInvNo().ToString(),
+                                invoice_date = param.invoice_date,
+                                total = item.Value.Sum(_ => _.extended_price == null ? 0 : _.extended_price),
+                                tax_value = item.Value.Sum(_ => _.tax_dollars == null ? 0 : _.tax_dollars),
+                                date_range_from = param.date_range_from,
+                                date_range_to = param.date_range_to,
+                                payment_term_id = param.payment_term_id,
+                                purchase_order_no = param.purchase_order_no,
+                                invoice_template_id = param.invoice_template_id,
+                                page_header_html = temp.page_header_html,
+                                page_footer_html = temp.page_footer_html,
+                                invoice_header_html = temp.quote_header_html,
+                                invoice_body_html = temp.body_html,
+                                invoice_footer_html = temp.quote_footer_html,
+                                invoice_appendix_html = "", // 模板里面没有todo
+                                tax_region_name = account.tax_region_id == null ? "" : new GeneralBLL().GetGeneralName((int)account.tax_region_id),
+                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                create_user_id = user.id,
+                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                update_user_id = user.id,
+                            };
+                            _dal.Insert(invocie);
                             new sys_oper_log_dal().Insert(new sys_oper_log()
                             {
                                 user_cate = "用户",
@@ -133,13 +99,150 @@ namespace EMT.DoneNOW.BLL
                                 name = user.name,
                                 phone = user.mobile == null ? "" : user.mobile,
                                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,
-                                oper_object_id = thisacc_ded.id,// 操作对象id
-                                oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
-                                oper_description = _dal.CompareValue(cadDal.FindNoDeleteById(thisacc_ded.id), thisacc_ded),
-                                remark = ""
+                                oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.INVOCIE,
+                                oper_object_id = invocie.id,// 操作对象id
+                                oper_type_id = (int)DicEnum.OPER_LOG_TYPE.ADD,
+                                oper_description = _dal.AddValue(invocie),
+                                remark = "保存发票"
                             });
-                            cadDal.Update(thisacc_ded);
+                            var udf_contract_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);
+                            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.COMPANY, user.id, invocie.id, udf_contract_list, param.udf, OPER_LOG_OBJ_CATE.CONTRACT_EXTENSION);
+
+                            var invDetail = new ctt_invoice_detail()
+                            {
+                                invoice_id = invocie.id,
+                                //is_emailed = (sbyte)(param.isInvoiceEmail?1:0),    
+                            };
+                            cidDal.Insert(invDetail);
+                            new sys_oper_log_dal().Insert(new sys_oper_log()
+                            {
+                                user_cate = "用户",
+                                user_id = user.id,
+                                name = user.name,
+                                phone = user.mobile == null ? "" : user.mobile,
+                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.INVOCIE_DETAIL,
+                                oper_object_id = invDetail.invoice_id,// 操作对象id
+                                oper_type_id = (int)DicEnum.OPER_LOG_TYPE.ADD,
+                                oper_description = _dal.AddValue(invDetail),
+                                remark = "保存发票详情"
+                            });
+                            int invoice_line = 1;
+                            foreach (var thisacc_ded in noPurOrderList)
+                            {
+                                thisacc_ded.invoice_id = invocie.id;
+                                thisacc_ded.invoice_line_item_no = invoice_line;
+                                invoice_line += 1;
+                                new sys_oper_log_dal().Insert(new sys_oper_log()
+                                {
+                                    user_cate = "用户",
+                                    user_id = user.id,
+                                    name = user.name,
+                                    phone = user.mobile == null ? "" : user.mobile,
+                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,
+                                    oper_object_id = thisacc_ded.id,// 操作对象id
+                                    oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
+                                    oper_description = _dal.CompareValue(cadDal.FindNoDeleteById(thisacc_ded.id), thisacc_ded),
+                                    remark = ""
+                                });
+                                cadDal.Update(thisacc_ded);
+                            }
+
+                        }
+                        if (purchOrderList != null && purchOrderList.Count > 0)
+                        {
+                            var poDic = purchOrderList.GroupBy(_ => _.purchase_order_no).ToDictionary(_ => _.Key, _ => _.ToList());
+                            if (poDic != null && poDic.Count > 0)
+                            {
+                                foreach (var po in poDic)
+                                {
+                                    var invocie = new ctt_invoice()
+                                    {
+                                        id = _dal.GetNextIdCom(),
+                                        batch_id = invoiceBatch,
+                                        account_id = account.id,
+                                        owner_resource_id = (long)account.resource_id,
+                                        invoice_no = _dal.GetNextIdInvNo().ToString(),
+                                        invoice_date = param.invoice_date,
+                                        total = item.Value.Sum(_ => _.extended_price == null ? 0 : _.extended_price),
+                                        tax_value = item.Value.Sum(_ => _.tax_dollars == null ? 0 : _.tax_dollars),
+                                        date_range_from = param.date_range_from,
+                                        date_range_to = param.date_range_to,
+                                        payment_term_id = param.payment_term_id,
+                                        purchase_order_no = po.Key,
+                                        invoice_template_id = param.invoice_template_id,
+                                        page_header_html = temp.page_header_html,
+                                        page_footer_html = temp.page_footer_html,
+                                        invoice_header_html = temp.quote_header_html,
+                                        invoice_body_html = temp.body_html,
+                                        invoice_footer_html = temp.quote_footer_html,
+                                        invoice_appendix_html = "", // 模板里面没有todo
+                                        tax_region_name = account.tax_region_id == null ? "" : new GeneralBLL().GetGeneralName((int)account.tax_region_id),
+                                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        create_user_id = user.id,
+                                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        update_user_id = user.id,
+                                    };
+                                    _dal.Insert(invocie);
+                                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                                    {
+                                        user_cate = "用户",
+                                        user_id = user.id,
+                                        name = user.name,
+                                        phone = user.mobile == null ? "" : user.mobile,
+                                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.INVOCIE,
+                                        oper_object_id = invocie.id,// 操作对象id
+                                        oper_type_id = (int)DicEnum.OPER_LOG_TYPE.ADD,
+                                        oper_description = _dal.AddValue(invocie),
+                                        remark = "保存发票"
+                                    });
+                                    var udf_contract_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);
+                                    new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.COMPANY, user.id, invocie.id, udf_contract_list, param.udf, OPER_LOG_OBJ_CATE.CONTRACT_EXTENSION);
+
+                                    var invDetail = new ctt_invoice_detail()
+                                    {
+                                        invoice_id = invocie.id,
+                                        //is_emailed = (sbyte)(param.isInvoiceEmail?1:0),    
+                                    };
+                                    cidDal.Insert(invDetail);
+                                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                                    {
+                                        user_cate = "用户",
+                                        user_id = user.id,
+                                        name = user.name,
+                                        phone = user.mobile == null ? "" : user.mobile,
+                                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.INVOCIE_DETAIL,
+                                        oper_object_id = invDetail.invoice_id,// 操作对象id
+                                        oper_type_id = (int)DicEnum.OPER_LOG_TYPE.ADD,
+                                        oper_description = _dal.AddValue(invDetail),
+                                        remark = "保存发票详情"
+                                    });
+                                    int invoice_line = 1;
+                                    foreach (var thisacc_ded in po.Value)
+                                    {
+                                        thisacc_ded.invoice_id = invocie.id;
+                                        thisacc_ded.invoice_line_item_no = invoice_line;
+                                        invoice_line += 1;
+                                        new sys_oper_log_dal().Insert(new sys_oper_log()
+                                        {
+                                            user_cate = "用户",
+                                            user_id = user.id,
+                                            name = user.name,
+                                            phone = user.mobile == null ? "" : user.mobile,
+                                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                            oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,
+                                            oper_object_id = thisacc_ded.id,// 操作对象id
+                                            oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
+                                            oper_description = _dal.CompareValue(cadDal.FindNoDeleteById(thisacc_ded.id), thisacc_ded),
+                                            remark = ""
+                                        });
+                                        cadDal.Update(thisacc_ded);
+                                    }
+                                }
+                            }
                         }
                     }
                 }

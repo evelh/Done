@@ -28,7 +28,6 @@ namespace EMT.DoneNOW.Web
         }
         public void Delete(HttpContext context, long inven_id)
         {
-            //此处写复制逻辑
             var user = context.Session["dn_session_user_info"] as sys_user;
             if (user != null)
             {
