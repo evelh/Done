@@ -20,20 +20,27 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//修改时，获取库存id
-            if (!IsPostBack) {
+            product_id= Convert.ToInt32(Request.QueryString["pid"]);//产品id
+            productname = Convert.ToString(Request.QueryString["pname"]);//产品名称
+            if (!IsPostBack) {                
                 if (id > 0)//修改
                 {
                     ware = probll.Getwarehouse_product(id);
-                    if (ware == null) {
+                    if (ware == null)
+                    {
                         //获取相关信息失败
                         Response.Write("<script>alert('获取库存信息失败，无法修改，返回上一级！');window.close();</script>");
-                    } else {
-                        if (ware.warehouse_id!=null&&!string.IsNullOrEmpty(ware.warehouse_id.ToString())) {
-                            this.warehouse_id.Items.Insert(0, new ListItem() { Text = probll.Getwarehouse(Convert.ToInt64(ware.warehouse_id)).name, Selected = true });
+                    }
+                    else
+                    {
+                        if (ware.warehouse_id != null && !string.IsNullOrEmpty(ware.warehouse_id.ToString()))
+                        {
+                            string name = probll.Getwarehouse(Convert.ToInt64(ware.warehouse_id)).name;
+                            this.warehouse_id.Items.Insert(0, new ListItem() { Text =name, Selected = true });
                             this.warehouse_id.Enabled = false;
                         }
                         product_id = ware.product_id;
-                        productname = probll.GetProduct(id).name;
+                        productname = probll.GetProduct(product_id).name;
                         this.quantity_minimum.Text = ware.quantity_minimum.ToString();
                         this.quantity_maximum.Text = ware.quantity_maximum.ToString();
                         this.quantity.Text = ware.quantity.ToString();
@@ -41,16 +48,18 @@ namespace EMT.DoneNOW.Web
                         {
                             this.bin.Text = ware.bin.ToString();
                         }
-                        if (ware.reference_number != null && !string.IsNullOrEmpty(ware.reference_number.ToString())) {
+                        if (ware.reference_number != null && !string.IsNullOrEmpty(ware.reference_number.ToString()))
+                        {
                             this.reference_number.Text = ware.reference_number.ToString();
                         }
                     }
                 }
-                this.warehouse_id.DataTextField = "value";
-                this.warehouse_id.DataValueField = "key";
-                this.warehouse_id.DataSource = probll.GetNoWarehouseDownList(product_id);
-                this.warehouse_id.DataBind();
-                this.warehouse_id.Items.Insert(0, new ListItem() { Value = "0", Text = "    ", Selected = true });
+               if(product_id>0){
+                    this.warehouse_id.DataTextField = "value";
+                    this.warehouse_id.DataValueField = "key";
+                    this.warehouse_id.DataSource = probll.GetNoWarehouseDownList(product_id);
+                    this.warehouse_id.DataBind();
+                }                
             }
         }
         private void save_deal() {
@@ -90,12 +99,12 @@ namespace EMT.DoneNOW.Web
         protected void Save_Close_Click(object sender, EventArgs e)
         {
             save_deal();
-            Response.Write("<script>window.close();self.opener.location.reload();</script>");
+            Response.Write("<script>window.close();window.opener.refrekkk();</script>");
         }
 
         protected void Cancel_Click(object sender, EventArgs e)
         {
-            Response.Write("<script>window.close();self.opener.location.reload();</script>");
+            Response.Write("<script>window.close();window.opener.refrekkk();</script>");
         }
 
         protected void Save_New_Click(object sender, EventArgs e)

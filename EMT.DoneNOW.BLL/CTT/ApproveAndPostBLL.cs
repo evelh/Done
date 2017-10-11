@@ -425,7 +425,6 @@ namespace EMT.DoneNOW.BLL
             cad.task_id = ccc.task_id;//任务id           
             cad.quantity = ccc.quantity;//数量
             cad.contract_id = ccc.contract_id;//合同id
-            cad.account_id = cc.account_id;//客户id
             cad.tax_category_name = tax_category_name;//税收种类name
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
@@ -446,6 +445,7 @@ namespace EMT.DoneNOW.BLL
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,ctt_contract_cost b,ctt_contract c where a.id=c.account_id and b.contract_id=c.id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and b.id={id}");//客户
                 cc = new ctt_contract_dal().FindNoDeleteById((long)ccc.contract_id);
             }
+            cad.account_id =ca.id;//客户id
             //关联预付费合同
             if (cc != null && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {
@@ -1226,7 +1226,6 @@ namespace EMT.DoneNOW.BLL
             cad.task_id = ccc.task_id;//任务id           
             cad.quantity = ccc.quantity;//数量
             cad.contract_id = ccc.contract_id;//合同id
-            cad.account_id = cc.account_id;//客户id
             cad.tax_category_name = tax_category_name;//税收种类name
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
@@ -1247,6 +1246,7 @@ namespace EMT.DoneNOW.BLL
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,ctt_contract_cost b,ctt_contract c where a.id=c.account_id and b.contract_id=c.id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and b.id={id}");//客户
                 cc = new ctt_contract_dal().FindNoDeleteById((long)ccc.contract_id);
             }
+            cad.account_id = ca.id;//客户id
             //关联预付费合同
             if (cc != null && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {

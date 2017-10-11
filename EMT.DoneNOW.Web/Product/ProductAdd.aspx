@@ -324,7 +324,7 @@
     </div>
     <div class="TabContainer" style="display: none;">
             <div class="cont" style="margin-top:15px;">
-                <iframe id="PageFrame" name="PageFrame" style="width:100%;height:auto" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>&id=99"></iframe>
+                <iframe id="PageFrame22" name="PageFrame22" style="width:100%;height:auto" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>&id=99"></iframe>
             </div>
     </div>
         </div>
@@ -345,10 +345,10 @@
         <script>
             $(window).resize(function () {
                 var Height = $(document).height() - 66 + "px";
-                $("#PageFrame").css("height", Height);
+                $("#PageFrame22").css("height", Height);
             })
             var Height = $(document).height() - 66 + "px";
-            $("#PageFrame").css("height", Height);
+            $("#PageFrame22").css("height", Height);
             $("#tab1").click(function () {
                 $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
                 $(".TabContainer").eq(0).show().siblings(".TabContainer").hide();
@@ -797,6 +797,17 @@
                         });
                     }                   
                 }
+            }
+
+            //打开新增库存窗口
+            function openkk() {
+                var kk = $("#prodct_id").val();
+                var kkk = $("#Product_Name").val();
+                window.open("../Product/ProductStock.aspx?pid=" + kk + "&pname=" + kkk, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Inventory %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            }
+            //刷新库存管理
+            function refrekkk() {
+                ('#PageFrame22').attr('src', $('#PageFrame22').attr('src'));
             }
         </script>
     </form>

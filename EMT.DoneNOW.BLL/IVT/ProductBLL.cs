@@ -290,7 +290,7 @@ namespace EMT.DoneNOW.BLL
         public Dictionary<long, string> GetWarehouseDownList(long product_id)
         {
             Dictionary<long, string> dic = new Dictionary<long, string>();
-            return new ivt_warehouse_dal().FindListBySql<ivt_warehouse>($"select a.* from ivt_warehouse a,ivt_warehouse_product b where a.delete_time=0 and b.delete_time=0 and a.id=b.warehouse_id and b.product_id={product_id}").ToDictionary(d => d.id, d => d.name);
+            return new ivt_warehouse_dal().FindListBySql<ivt_warehouse>($"select distinct a.* from ivt_warehouse a,ivt_warehouse_product b where a.delete_time=0 and b.delete_time=0 and a.id=b.warehouse_id and b.product_id={product_id}").ToDictionary(d => d.id, d => d.name);
         }
         /// <summary>
         /// 获取存在该产品的仓库名称和id
@@ -300,7 +300,7 @@ namespace EMT.DoneNOW.BLL
         public Dictionary<long, string> GetNoWarehouseDownList(long product_id)
         {
             Dictionary<long, string> dic = new Dictionary<long, string>();
-            return new ivt_warehouse_dal().FindListBySql<ivt_warehouse>($"select a.* from ivt_warehouse a,ivt_warehouse_product b where a.delete_time=0 and b.delete_time=0 and a.id=b.warehouse_id and b.product_id!='{product_id}'").ToDictionary(d => d.id, d => d.name);
+            return new ivt_warehouse_dal().FindListBySql<ivt_warehouse>($"select distinct a.* from ivt_warehouse a,ivt_warehouse_product b where a.delete_time=0 and b.delete_time=0 and a.id=b.warehouse_id and b.product_id!='{product_id}'").ToDictionary(d => d.id, d => d.name);
         }
         public ivt_warehouse Getwarehouse(long id) {
             return new ivt_warehouse_dal().FindSignleBySql<ivt_warehouse>($"select * from ivt_warehouse where id={id} and delete_time=0");

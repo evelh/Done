@@ -1258,13 +1258,19 @@
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ProuductInventory)
         {%>//产品库存管理
         function Add() {
-            window.open("../Product/ProductStock.aspx?", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Inventory %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            parent.parent.parent.openkk();
+
+
+           
+
+
+<%--          //  window.open("../Product/ProductStock.aspx?id="+id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Inventory %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);--%>
         }
         function Edit() {
             window.open("../Product/ProductStock.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Inventory %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Transfer() {
-            window.open("../Product/ProductStock.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InventoryTransfer %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("../Product/TransferProductStock.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InventoryTransfer %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Order() {
             alert("暂未实现");

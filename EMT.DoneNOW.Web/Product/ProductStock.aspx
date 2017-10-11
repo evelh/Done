@@ -148,22 +148,7 @@
         </div>
          <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../Scripts/SysSettingRoles.js"></script>
-        <script>
-            //$(document).ready(function () {
-            //    //获取产品名称和id
-            //   var proname = $("#Product_Name", window.opener.document).val();
-            //   var proid = $("#prodct_id", window.opener.document).val();
-            //   if (proname !== '' && proname !== undefined) {
-            //       $("#product_name").val(proname);
-            //   } else {
-            //       window.close();
-            //   }
-            //   if (proid !== '' && proid !== undefined) {
-            //       $("#product_id").val(proid);
-            //   } else {
-            //       window.close();
-            //   }
-            //});            
+        <script>        
             function save_deal() {
                 var w = $("#warehouse_id").val();
                 var min = $("#quantity_minimum").val();
