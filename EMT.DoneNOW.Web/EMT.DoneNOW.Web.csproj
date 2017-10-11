@@ -195,6 +195,7 @@
     <Content Include="Images\Recentindex.png" />
     <Content Include="Images\ServiceSelector.png" />
     <Content Include="Images\Loading.gif" />
+    <Content Include="Images\time.png" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempEdit.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempTop.aspx" />
@@ -267,6 +268,7 @@
     <Content Include="Opportunity\OpportunityWinOrLossReason.aspx" />
     <Content Include="Opportunity\OpportunityWinReasons.aspx" />
     <Content Include="Opportunity\OppportunityAdvancedField.aspx" />
+    <Content Include="Organization\LocationAddAndEdit.aspx" />
     <Content Include="Product\ProductAdd.aspx" />
     <Content Include="Product\ProductStock.aspx" />
     <Content Include="Product\TransferProductStock.aspx" />
@@ -715,6 +717,7 @@
     <Content Include="SysSetting\Admin.aspx" />
     <Content Include="SysSetting\ContractMilestone.aspx" />
     <Content Include="SysSetting\ContractType.aspx" />
+    <Content Include="SysSetting\GeneralAdd.aspx" />
     <Content Include="SysSetting\GeneralView.aspx" />
     <Content Include="SysSetting\OppoAdvancedField.aspx" />
     <Content Include="SysSetting\Suffixes.aspx" />
@@ -1222,6 +1225,13 @@
     <Compile Include="Opportunity\ViewOpportunity.aspx.designer.cs">
       <DependentUpon>ViewOpportunity.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Organization\LocationAddAndEdit.aspx.cs">
+      <DependentUpon>LocationAddAndEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Organization\LocationAddAndEdit.aspx.designer.cs">
+      <DependentUpon>LocationAddAndEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Product\ProductAdd.aspx.cs">
       <DependentUpon>ProductAdd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1467,6 +1477,13 @@
     </Compile>
     <Compile Include="SysSetting\ContractType.aspx.designer.cs">
       <DependentUpon>ContractType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\GeneralAdd.aspx.cs">
+      <DependentUpon>GeneralAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\GeneralAdd.aspx.designer.cs">
+      <DependentUpon>GeneralAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\GeneralView.aspx.cs">
       <DependentUpon>GeneralView.aspx</DependentUpon>
