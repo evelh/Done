@@ -20,7 +20,10 @@ namespace EMT.DoneNOW.Web.Invoice
         protected sys_quote_tmpl invoice_temp = null;
         protected List<sys_quote_tmpl> invTempList = new sys_quote_tmpl_dal().GetInvoiceTemp();
         protected bool isInvoice = false;  // 判断是显示发票还是条目--去控制页面上一些东西的显示与否
+        protected ctt_invoice thisInvoice = null;
         protected Dictionary<string, object> dic = new InvoiceBLL().GetField();
+        protected Dictionary<string, string> accInvDic = new Dictionary<string, string>();   // 页面右上角的数据源
+        protected string account_id;
         protected List<InvoiceDeductionDto> paramList = null;
         protected List<InvoiceDeductionDto> billTOThisParamList = null;
         protected StringBuilder thisHtmlText = new StringBuilder();    // 需要替换到页面上的html文本
@@ -44,6 +47,9 @@ namespace EMT.DoneNOW.Web.Invoice
                 projectItemPara = Request.QueryString["itemDeal"];
                 invoiceDate = Request.QueryString["invoiceDate"];
                 var invoice_temp_id = Request.QueryString["invoice_temp_id"];
+
+
+
                 if (invTempList != null && invTempList.Count > 0)
                 {
                     if (!string.IsNullOrEmpty(invoice_temp_id))
@@ -56,49 +62,97 @@ namespace EMT.DoneNOW.Web.Invoice
                         // invoice_temp为客户默认发票
                     }
                 }
+                // 发票预览可能遇到的情况
+                // 1.传进多个客户ID （后台分类进行查看，默认选择第一个）
+                // 2.传进多个条目ID （获取全部进行分类）
+                // 3.传进发票批次    （获取这一批次的发票，获取相条目分类显示）
+                // 4.传进多个发票ID   （获取多个发票，获取相条目分类显示）
 
 
-                var accountIds = Request.QueryString["account_ids"];
-                var account_id = Request.QueryString["account_id"];
-                accList = new crm_account_dal().GetCompanyByIds(accountIds);
-                if (accList != null && accList.Count > 0)
+                // 下拉框数据源-- 客户，客户项目，客户采购订单
+
+
+
+
+
+                var cadDal = new crm_account_deduction_dal();
+                if (!string.IsNullOrEmpty(Request.QueryString["account_ids"]))
                 {
-                    if (!string.IsNullOrEmpty(account_id))
+                    var accountIds = Request.QueryString["account_ids"];
+                    accList = new crm_account_dal().GetCompanyByIds(accountIds);
+                    if (accList != null && accList.Count > 0)
                     {
-                        var thisAccount = new CompanyBLL().GetCompany(long.Parse(account_id));
-                        account = accList.FirstOrDefault(_ => _.id == thisAccount.id);
-                       
+                        foreach (var thisAcc in accList)
+                        {
+                            var thisAccParamList = cadDal.GetInvDedDtoList(" and account_id=" + thisAcc.id + " and invoice_id is null");
+                            if (thisAccParamList != null && thisAccParamList.Count > 0)
+                            {
+                                var noPurOrderList = thisAccParamList.Where(_ => string.IsNullOrEmpty(_.purchase_order_no
+                                )).ToList(); // 该客户下没有采购订单的发票
+                                var purchOrderList = thisAccParamList.Where(_ => !string.IsNullOrEmpty(_.purchase_order_no
+                                   )).ToList(); // 该客户下有采购订单的发票
+                                if (noPurOrderList != null && noPurOrderList.Count > 0)
+                                {
+                                    accInvDic.Add(thisAcc.id.ToString(),thisAcc.name);
+                                }
+                                if (purchOrderList != null && purchOrderList.Count > 0)
+                                {
+                                    var poDic = purchOrderList.GroupBy(_ => _.purchase_order_no).ToDictionary(_ => _.Key, _ => _.ToList());
+                                    if (poDic != null && poDic.Count > 0)
+                                    {
+                                        foreach (var thisDic in poDic)
+                                        {
+                                            accInvDic.Add(thisAcc.id.ToString()+"_"+ thisDic.Key, thisAcc.name+"(PO:"+ thisDic.Key + ")");
+                                        }
+                                                    
+                                    }
+                                }
+
+
+
+                            }
+                        }
                     }
-                    else
-                    {
-                        account = accList[0];
-                    }
-                    if (account == null)
-                    {
-                        Response.End();
-                    }
+                }     // 客户ID
+                else if(!string.IsNullOrEmpty(Request.QueryString["accDedIds"]))
+                {
                     var accDedIds = Request.QueryString["accDedIds"];
-                    if (!string.IsNullOrEmpty(accDedIds))
+                    var thisList = new crm_account_deduction_dal().GetInvDedDtoList($" and id in({accDedIds})");
+                    if (thisList != null && thisList.Count > 0)
                     {
-                        var thisList = new crm_account_deduction_dal().GetInvDedDtoList($" and id in({accDedIds})");
-                        paramList = thisList.Where(_ => _.account_id == account.id).ToList();
-                        billTOThisParamList = thisList.Where(_ => _.bill_account_id == account.id && _.account_id != account.id).ToList();
+                        GetDateByDto(thisList);
                     }
-                    else
+                }   // 条目ID
+                else if (!string.IsNullOrEmpty(Request.QueryString["inv_batch"]))     
+                {
+                    var thisBatch = Request.QueryString["inv_batch"];
+                    var invoiceList = new ctt_invoice_dal().GetListByBatch(long.Parse(thisBatch));
+                    if (invoiceList != null && invoiceList.Count > 0)
                     {
-                        paramList = new crm_account_deduction_dal().GetInvDedDtoList(" and account_id=" + account.id);
-                        billTOThisParamList = new crm_account_deduction_dal().GetInvDedDtoList(" and account_id <> " + account.id + " and bill_account_id=" + account.id);
+                        var accDal = new crm_account_deduction_dal();
+                        List<InvoiceDeductionDto> thisList = new List<InvoiceDeductionDto>();
+                        foreach (var invoice in invoiceList)
+                        {
+                            var thisInvAccDed = accDal.GetInvDedDtoList($" and invoice_id ={invoice.id}");
+                            if (thisInvAccDed != null && thisInvAccDed.Count > 0)
+                            {
+                                thisList.AddRange(thisInvAccDed);
+                            }
+                        }
+                        if (thisList != null && thisList.Count > 0)
+                        {
+                            GetDateByDto(thisList);
+                        }
                     }
-                    
-                }
-                else
+                }   // 发票批次
+                else if (!string.IsNullOrEmpty(Request.QueryString["inv_nos"]))
+                {
+
+                }    // 多个发票号
+
+                if (accInvDic.Count == 0)
                 {
                     Response.End();
-                }
-
-                if (!IsPostBack)
-                {
-                    PageDataBind();
                 }
 
                 if (!string.IsNullOrEmpty(Request.QueryString["isInvoice"]))  // 代表是显示发票还是显示条目
@@ -110,6 +164,58 @@ namespace EMT.DoneNOW.Web.Invoice
                 {
 
                 }
+                account_id = Request.QueryString["account_id"];
+                if (string.IsNullOrEmpty(account_id))
+                {
+                    account_id = accInvDic.FirstOrDefault(_ => !string.IsNullOrEmpty(_.Key)).Key;
+                }
+                if (Regex.IsMatch(account_id, @"^[+-]?\d*$")) // 代表是客户
+                {
+                    account = new CompanyBLL().GetCompany(long.Parse(account_id));
+                    if (isInvoice)
+                    {
+                        paramList = cadDal.GetInvDedDtoList($" and account_id={account_id} and invoice_id is not null ");
+                        billTOThisParamList = cadDal.GetInvDedDtoList($" and bill_account_id={account_id} and account_id <> {account_id} and invoice_id is not null ");
+                       
+                    }
+                    else
+                    {
+                        paramList = cadDal.GetInvDedDtoList($" and account_id = {account_id} and invoice_id is null");
+                        billTOThisParamList = cadDal.GetInvDedDtoList($" and bill_account_id={account_id} and account_id <> {account_id} and invoice_id is  null ");
+                    }
+                    
+                }
+                else  // 代表是采购订单
+                {
+                    var thisAccount_id = account_id.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (thisAccount_id.Count() == 2)
+                    {
+                        account = new CompanyBLL().GetCompany(long.Parse(thisAccount_id[0]));
+                        if (isInvoice)
+                        {
+                            paramList = cadDal.GetInvDedDtoList($" and account_id={thisAccount_id[0]} and purchase_order_no ='{thisAccount_id[1]}' and invoice_id is not null ");
+                        }
+                        else
+                        {
+                            paramList = cadDal.GetInvDedDtoList($" and account_id={thisAccount_id[0]} and purchase_order_no ='{thisAccount_id[1]}' and invoice_id is null");
+                        }
+                    }
+                }
+                if (isInvoice)
+                {
+                    var invoiceId = paramList.FirstOrDefault(_ => _.invoice_id != null);
+                    if (invoiceId != null)
+                    {
+                        thisInvoice = new ctt_invoice_dal().FindNoDeleteById((long)invoiceId.invoice_id);
+                    }
+                }
+
+                if (!IsPostBack)
+                {
+                    PageDataBind();
+                }
+
+                
                 #region 拼接页眉
                 thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
                 thisHtmlText.Append(HttpUtility.HtmlDecode(GetHtmlHead(invoice_temp)).Replace("\"", "'"));
@@ -143,11 +249,44 @@ namespace EMT.DoneNOW.Web.Invoice
             }
             catch (Exception msg)
             {
+                throw;
                 Response.End();
             }
 
         }
+        /// <summary>
+        /// 根据条目DTO，生成页面发票下拉框的数据源
+        /// </summary>
+        private void GetDateByDto(List<InvoiceDeductionDto> thisList)
+        {
+            var dicList = thisList.GroupBy(_ => _.account_id).ToDictionary(_ => _.Key, _ => _.ToList());
+            var comBLL = new CompanyBLL();
+            foreach (var item in dicList)
+            {
+                var account = comBLL.GetCompany((long)item.Key);
 
+                var noPurOrderList = item.Value.Where(_ => string.IsNullOrEmpty(_.purchase_order_no
+                     )).ToList(); // 代表无
+                var purchOrderList = item.Value.Where(_ => !string.IsNullOrEmpty(_.purchase_order_no
+                   )).ToList();
+                if (noPurOrderList != null && noPurOrderList.Count > 0)
+                {
+                    accInvDic.Add(account.id.ToString(), account.name);
+                }
+                if (purchOrderList != null && purchOrderList.Count > 0)
+                {
+                    var poDic = purchOrderList.GroupBy(_ => _.purchase_order_no).ToDictionary(_ => _.Key, _ => _.ToList());
+                    if (poDic != null && poDic.Count > 0)
+                    {
+                        foreach (var thisDic in poDic)
+                        {
+                            accInvDic.Add(account.id.ToString() + "_" + thisDic.Key, account.name + "(PO:" + thisDic.Key + ")");
+                        }
+
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// 为页面的下拉框配置数据源
@@ -160,11 +299,11 @@ namespace EMT.DoneNOW.Web.Invoice
             invoice_temp_id.DataBind();
             invoice_temp_id.SelectedValue = invoice_temp.id.ToString();
 
-            accoultList.DataValueField = "id";
-            accoultList.DataTextField = "name";
-            accoultList.DataSource = accList;
-            accoultList.DataBind();
-            accoultList.SelectedValue = account.id.ToString();
+            //accoultList.DataValueField = "id";
+            //accoultList.DataTextField = "name";
+            //accoultList.DataSource = accList;
+            //accoultList.DataBind();
+            //accoultList.SelectedValue = account.id.ToString();
 
         }
 
@@ -215,6 +354,7 @@ namespace EMT.DoneNOW.Web.Invoice
 
                     thisHtmlText.Append("<tbody>");
                     #region  拼接表格内容
+                    var itemTypeList = new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACCOUNT_DEDUCTION_TYPE));
                     if (paramList != null && paramList.Count > 0)
                     {
 
@@ -256,7 +396,7 @@ namespace EMT.DoneNOW.Web.Invoice
                                             thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'><span class='xiabiao'>{returnTaxIndex(param_item.tax_category_id)} {ChangeDescription(quote_body.CUSTOMIZE_THE_ITEM_COLUMN, accDedItem)}</span></td>");
                                             break;
                                         case "类型":
-                                            thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{param_item.item_type}</td>");
+                                            thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{itemTypeList.FirstOrDefault(_ => _.val == param_item.item_type.ToString()).show}</td>");
                                             break;
                                         case "员工姓名":
                                             thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{param_item.resource_name}</td>");
@@ -306,7 +446,7 @@ namespace EMT.DoneNOW.Web.Invoice
                     thisHtmlText.Append("</div>");
 
                     #region 计费到这个客户的条目
-
+                   
                     if (billTOThisParamList != null && billTOThisParamList.Count > 0)
                     {
 
@@ -347,7 +487,8 @@ namespace EMT.DoneNOW.Web.Invoice
                                                 thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{"没有描述"}</td>");
                                                 break;
                                             case "类型":
-                                                thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{param_item.item_type}</td>");
+
+                                                thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{itemTypeList.FirstOrDefault(_=>_.val==param_item.item_type.ToString()).show}</td>");
                                                 break;
                                             case "员工姓名":
                                                 thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{param_item.resource_name}</td>");
@@ -458,14 +599,15 @@ namespace EMT.DoneNOW.Web.Invoice
             var accountSql = new sys_query_type_user_dal().GetQuerySql(900, 900, GetLoginUserId(), account_param, null);  // 客户相关查询
             var jifeiSql = new sys_query_type_user_dal().GetQuerySql(920, 920, GetLoginUserId(), "'{\"a:account_id\":\"" + account.id + "\"}'", null);    // 计费相关查询
             sqlList.Append($"select * from ({accountSql}) as account,({jifeiSql}) as jifei");
-            
+
+            if (thisInvoice != null)
+            {
+                var invoiceSql = new sys_query_type_user_dal().GetQuerySql(925, 925, GetLoginUserId(), "'{\"a:id\":\"" + thisInvoice.id + "\"}'", null);
+                sqlList.Append($",({invoiceSql}) as invoice");
+            }
+
             if (!string.IsNullOrEmpty(sqlList.ToString()))
             {
-                List<ctt_invoice> invoiceList = null;
-                if (isInvoice && (!string.IsNullOrEmpty(Request.QueryString["invoice_batch_id"])))
-                {
-                    invoiceList = new ctt_invoice_dal().GetInvoiceList("and batch_id ="+ Request.QueryString["invoice_batch_id"]);
-                }
                 
                 // dateTable 里面所拥有的数据实体待确定
                 var varTable = _dal.ExecuteDataTable(sqlList.ToString());
@@ -512,10 +654,8 @@ namespace EMT.DoneNOW.Web.Invoice
                     }
                     else // 将发票信息展示
                     {
-                        if(invoiceList!=null&& invoiceList.Count > 0)
+                        if(thisInvoice!=null)
                         {
-                            var thisInvoice = invoiceList[0];
-
                             switch (t)
                             {
                                 case "[发票：号码/编号]":
@@ -573,8 +713,11 @@ namespace EMT.DoneNOW.Web.Invoice
         private decimal GetTotalMoney(List<InvoiceDeductionDto> param)
         {
             decimal totalMoney = 0;
-
-            totalMoney = param.Sum(_ => _.dollars == null ? 0 : (decimal)_.dollars);
+            if (param != null && param.Count > 0)
+            {
+                totalMoney = param.Sum(_ => _.dollars == null ? 0 : (decimal)_.dollars);
+            }
+            
             return totalMoney;
         }
 

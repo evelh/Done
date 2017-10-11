@@ -38,7 +38,7 @@
     <!--内容-->
     <div class="DivScrollingContainer General">
         <div class="PageLevelInstructions">
-            <span>你正准备处理<%=idList.Count() %>个发票。请选择处理活动并设置下列发票属性.</span>
+            <span>你正准备处理<%=invoiceNum %>个发票。请选择处理活动并设置下列发票属性.</span>
         </div>
         <div class="DivSectionWithHeader">
             <div class="Content">

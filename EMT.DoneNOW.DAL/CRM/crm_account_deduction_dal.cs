@@ -18,6 +18,14 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<crm_account_deduction>($"SELECT * from crm_account_deduction where account_id = {account_id} and delete_time = 0");
         }
+
+        /// <summary>
+        /// 根据条件查询出对应条目
+        /// </summary>
+        public List<crm_account_deduction> GetAccDed(string where)
+        {
+            return FindListBySql<crm_account_deduction>($"SELECT * from crm_account_deduction where  delete_time = 0 "+where);
+        }
         /// <summary>
         /// 根据sql语句查询出符合条件的条目(从视图中查询)
         /// </summary>
@@ -30,6 +38,7 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<crm_account_deduction>($"SELECT * from crm_account_deduction where id in ({ids}) and delete_time = 0");
         }
+    
     }
 
 }

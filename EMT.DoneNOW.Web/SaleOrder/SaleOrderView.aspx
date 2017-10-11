@@ -462,7 +462,7 @@ a:hover {
                 <tbody>
                 <tr>
                     <td class="RightClickMenuItemText">
-                        <span class="lblNormalClass"><a href="SaleOrderView.aspx?id=<%=sale_order.id %>&type=entry">配置项</a></span>
+                        <span class="lblNormalClass"><a href="SaleOrderView.aspx?id=<%=sale_order.id %>&type=entry">报价项</a></span>
                     </td>
                 </tr>
                 </tbody>
@@ -694,14 +694,14 @@ a:hover {
 
                             <%
                                 var totalRebenue = new EMT.DoneNOW.BLL.OpportunityBLL().ReturnOppoRevenue(opportunity.id);
-                                var totalCost = new EMT.DoneNOW.BLL.OpportunityBLL().ReturnOppoCost(opportunity);
+                                var totalCost = new EMT.DoneNOW.BLL.OpportunityBLL().ReturnOppoCost(opportunity.id);
                                 var Gross_Profit = totalRebenue - totalCost;
                                 %>
                         <tr class="tableRow">
                             <td class="tableCell">
                                 <span class="labelText">毛利</span>
                             </td>
-                            <td class="tableCell">
+                            <td class="tableCell">r
                                 <span>
                                     <%=Gross_Profit.ToString("#0.00") %>
                                     <br />

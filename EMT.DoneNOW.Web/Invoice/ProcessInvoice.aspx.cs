@@ -13,7 +13,8 @@ namespace EMT.DoneNOW.Web.Invoice
 {
     public partial class ProcessInvoice : BasePage
     {
-        protected string[] idList = null;
+        protected List<string> accDedIds = null;
+        protected int invoiceNum = 0;
         protected Dictionary<string, object> dic = new InvoiceBLL().GetField();
 
         protected void Page_Load(object sender, EventArgs e)
@@ -21,36 +22,40 @@ namespace EMT.DoneNOW.Web.Invoice
             try
             {
                 var ids = Request.QueryString["account_ids"];
-                var thisAccDedIds = Request.QueryString["accDedIds"];
-
-                
-
                 if (!string.IsNullOrEmpty(ids))
                 {
-                    List<string> accDedIds = new List<string>();
+                     accDedIds = new List<string>();
                     var accountIDS = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var account_id in accountIDS)
                     {
-                        var paramList = new crm_account_deduction_dal().GetInvDedDtoList(" and account_id=" + account_id);
-                        var billTOThisParamList = new crm_account_deduction_dal().GetInvDedDtoList(" and account_id <> " + account_id + " and bill_account_id=" + account_id);
+                        var paramList = new crm_account_deduction_dal().GetInvDedDtoList(" and account_id=" + account_id+ " and invoice_id is null");
+                        // 区分为包括 采购订单和不包括采购订单
                         if (paramList != null && paramList.Count > 0)
                         {
-                            accDedIds.AddRange(paramList.Select(_ => _.id.ToString()).ToList());
-                        }
-                        if (billTOThisParamList != null && billTOThisParamList.Count > 0)
-                        {
-                            accDedIds.AddRange(billTOThisParamList.Select(_ => _.id.ToString()).ToList());
+                            accDedIds.AddRange(paramList.Select(_=>_.id.ToString()));
+
+                            var noPurOrderList = paramList.Where(_=>string.IsNullOrEmpty(_.purchase_order_no
+                                )).ToList(); // 代表无
+                            var purchOrderList = paramList.Where(_ => !string.IsNullOrEmpty(_.purchase_order_no
+                               )).ToList();
+                            if (noPurOrderList != null && noPurOrderList.Count > 0)
+                            {
+
+                                invoiceNum+=1;
+                            }
+                            if (purchOrderList != null && purchOrderList.Count > 0)
+                            {
+                                var poDic = purchOrderList.GroupBy(_ => _.purchase_order_no).ToDictionary(_ => _.Key, _ => _.ToList());
+                                if (poDic != null && poDic.Count > 0)
+                                {
+                                    invoiceNum += poDic.Count;
+                                }
+                            }
                         }
                     }
-                    if (accDedIds != null && accDedIds.Count > 0)
-                    {
-                        idList = accDedIds.ToArray();
-                    }
+                 
                 }
-                if (!string.IsNullOrEmpty(thisAccDedIds))
-                {
-                    idList = thisAccDedIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                }
+            
                 if (!IsPostBack)
                 {
                     invoice_template_id.DataValueField = "id";
@@ -74,9 +79,9 @@ namespace EMT.DoneNOW.Web.Invoice
             param.isInvoiceEmail = is_InvoiceEmail.Checked;
             
             string ids = "";
-            if (idList!=null&&idList.Count() > 0)
+            if (accDedIds != null&& accDedIds.Count > 0)
             {
-                foreach (var item in idList)
+                foreach (var item in accDedIds)
                 {
                     ids += item + ',';
                 }

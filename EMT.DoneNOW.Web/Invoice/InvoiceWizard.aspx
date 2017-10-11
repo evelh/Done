@@ -42,7 +42,7 @@
                                                     <div>
                                                         <input type="text" style="width: 196px;" id="account_id" value="<%=account!=null?account.name:"" %>" />
                                                         <input type="hidden" name="account_id" id="account_idHidden" value="" runat="server" />
-                                                        <img src="../Images/data-selector.png" style="vertical-align: middle;" onclick="chooseAccount()" />
+                                                        <%--<img src="../Images/data-selector.png" style="vertical-align: middle;" onclick="" />--%> <%--chooseAccount() 客户查找带回，AT未发现可使用，暂不处理 --%>
                                                     </div>
                                                 </td>
                                             </tr>
