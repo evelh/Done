@@ -53,7 +53,7 @@ namespace EMT.DoneNOW.Web
             var result = new GeneralBLL().Update(field, GetLoginUserId());
             if (result == DTO.ERROR_CODE.SUCCESS)
             {
-                Response.Write("<script>alert('销售指标度量修改成功！');window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>alert('销售指标度量修改成功！');self.opener.location.reload();window.close();</script>");
             }
             else if (result == DTO.ERROR_CODE.USER_NOT_FIND)               // 用户丢失
             {

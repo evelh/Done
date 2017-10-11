@@ -1259,12 +1259,6 @@
         {%>//产品库存管理
         function Add() {
             parent.parent.parent.openkk();
-
-
-           
-
-
-<%--          //  window.open("../Product/ProductStock.aspx?id="+id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Inventory %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);--%>
         }
         function Edit() {
             window.open("../Product/ProductStock.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.Inventory %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
@@ -1279,10 +1273,11 @@
             if (confirm("删除后无法恢复，是否继续?")) {
                 $.ajax({
                     type: "GET",
-                    url: "../Tools/SaleOrderAjax.ashx?act=delete&id=" + entityid,
+                    url: "../Tools/InventoryAjax.ashx?act=delete&id=" + entityid,
                     async: false,
                     success: function (data) {
                         alert(data);
+                        parent.parent.parent.refrekkk();
                     }
                 })
             }

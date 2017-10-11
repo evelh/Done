@@ -716,6 +716,7 @@
     <Content Include="SysSetting\ContractMilestone.aspx" />
     <Content Include="SysSetting\ContractType.aspx" />
     <Content Include="SysSetting\GeneralView.aspx" />
+    <Content Include="SysSetting\OppoAdvancedField.aspx" />
     <Content Include="SysSetting\Suffixes.aspx" />
     <Content Include="SysSetting\SysAdmin.aspx" />
     <Content Include="SysSetting\SysCompetitor.aspx" />
@@ -1473,6 +1474,13 @@
     </Compile>
     <Compile Include="SysSetting\GeneralView.aspx.designer.cs">
       <DependentUpon>GeneralView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\OppoAdvancedField.aspx.cs">
+      <DependentUpon>OppoAdvancedField.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\OppoAdvancedField.aspx.designer.cs">
+      <DependentUpon>OppoAdvancedField.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\Suffixes.aspx.cs">
       <DependentUpon>Suffixes.aspx</DependentUpon>
