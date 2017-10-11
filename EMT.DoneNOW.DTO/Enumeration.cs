@@ -959,6 +959,7 @@ namespace EMT.DoneNOW.DTO
         ConBlockEdit = 317,                     // 合同编辑预付
         ConMilestoneAdd = 318,                  // 合同新增里程碑
         ConMilestoneEdit = 319,                 // 合同编辑里程碑
+        ConServiceAdd,                          // 合同新增服务/服务包
         BillCodeCallback,                       // 计费代码查找带回
 
 

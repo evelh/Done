@@ -73,6 +73,7 @@
     <Compile Include="CTT\ContractServiceBLL.cs" />
     <Compile Include="CTT\InvoiceBLL.cs" />
     <Compile Include="IVT\ProductBLL.cs" />
+    <Compile Include="IVT\ServiceBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SYS\AccountClassBLL.cs" />
     <Compile Include="SYS\ConfigTypeBLL.cs" />
