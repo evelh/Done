@@ -225,7 +225,7 @@
                 <div class="page fl">
 
                   <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
-                <span>显示数据</span><input type="text" style="margin-left:16px;margin-right:30px;" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
+                <span>显示数据</span><input type="text" name="time" style="margin-left:16px;margin-right:30px;" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
               <%} %>
 
                     <%
@@ -1201,10 +1201,10 @@
             window.open("../Contract/ContractEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=950', false);
         }
         function ViewContract() {
-          window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank', 'left=0,top=0,location=no,status=no,width=1000,height=950', false);
+          window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank', 'left=0,top=0,location=no,status=no,width=1350,height=950', false);
         }
         function View(id) {
-          window.open("../Contract/ContractView.aspx?id=" + id, '_blank', 'left=0,top=0,location=no,status=no,width=1000,height=950', false);
+          window.open("../Contract/ContractView.aspx?id=" + id, '_blank', 'left=0,top=0,location=no,status=no,width=1350,height=950', false);
         }
         function ViewNewWindow() {
           window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank');
@@ -3377,27 +3377,41 @@
          }
          <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
          function AddService() {
+           window.open('../Contract/AddService.aspx?type=1&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
            }
          function AddServiceBundle() {
+           window.open('../Contract/AddService.aspx?type=2&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
            }
          function ApplyDiscount() {
            }
          function Delete() {
-           if (confirm("所有的合同服务周期和交易历史将会被删除，是否继续?")) {
-            // $.ajax({
-            //  type: "GET",
-            //  url: "../Tools/ContractAjax.ashx?act=DeleteMilestone&milestoneId=" + entityid,
-            //  async: false,
-            //  success: function (data) {
-            //    if (data == "True") {
-            //      alert('删除成功');
-            //      window.reload();
-            //    } else {
-            //      alert("删除失败，已计费状态下不能删除");
-            //    }
-            //  }
-            //})
-          }
+            $.ajax({
+            type: "GET",
+            url: "../Tools/ContractAjax.ashx?act=IsApprove&id=" + entityid,
+            async: false,
+            success: function (data) {
+              if (data == "True") {
+                alert('该服务/服务包不能删除，因为已经计费');
+                return;
+              } else {
+                if (confirm("所有的合同服务周期和交易历史将会被删除，是否继续?")) {
+                  $.ajax({
+                    type: "GET",
+                    url: "../Tools/ContractAjax.ashx?act=DeleteService&id=" + entityid,
+                    async: false,
+                    success: function (data) {
+                      if (data == "True") {
+                        alert('删除成功');
+                        window.location.reload();
+                      } else {
+                        alert('该服务/服务包不能删除，因为已经计费');
+                      }
+                    }
+                  })
+                }
+              }
+            }
+          })
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.SUFFIXES)
@@ -3426,6 +3440,56 @@
                      }
                  });
              }
+
+              <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Line_Of_Business)
+        { %>//general表的通用处理
+             function Edit() {
+                 window.open('../SysSetting/GeneralAdd.aspx?id=' + entityid + '&type=' +<%=queryTypeId%>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.GeneralAddAndEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+             }
+             function Add() {
+                 window.open('../SysSetting/GeneralAdd.aspx?type=' +<%=queryTypeId%>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.GeneralAddAndEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function View(id) {
+             window.open('../SysSetting/GeneralAdd.aspx?id=' + id + 'type=' +<%=queryTypeId%>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.GeneralAddAndEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Delete() {
+             if (confirm('删除操作将不能恢复，是否继续?')) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid,
+                     success: function (data) {
+                         if (data == "system") {
+                             alert("系统默认不能删除！");
+                         } else if (data == "other") {
+                             alert("其他原因使得删除失败！");
+                         } else if (data == "success") {
+                             alert("删除成功！");
+                             history.go(0);
+                         } else if (data == "error") {
+                             alert("删除失败！");
+                         } else {
+                             if (confirm(data)) {
+                                 $.ajax({
+                                     type: "GET",
+                                     url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid,
+                                     success: function (data) {
+                                         alert(data);
+                                         if (data == "success") {
+                                             alert("删除成功！");
+                                             history.go(0);
+                                         } else if (data == "error") {
+                                             alert("删除失败！");
+                                         }
+                                     }
+                                 });
+                             }
+                         }
+                     }
+                 });
+             }
+         }
+
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

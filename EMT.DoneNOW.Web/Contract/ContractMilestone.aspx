@@ -54,7 +54,7 @@
             <tr>
               <td width="30%" class="FieldLabels">计费代码
                 <div>
-                  <input type="hidden" id="billCodeSelectHidden" name="cost_code_id" />
+                  <input type="hidden" id="billCodeSelectHidden" value="<%=billCode %>" name="cost_code_id" />
                   <asp:TextBox ID="billCodeSelect" Enabled="false" runat="server" style="width:200px;"></asp:TextBox>
                   <img src="../Images/data-selector.png" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=billCodeSelect&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MILESTONE_CODE %>', '<%=EMT.DoneNOW.DTO.OpenWindow.BillCodeCallback %>', 'left=200,top=200,width=600,height=800', false)" style="vertical-align: middle;cursor: pointer;" />
                 </div>
