@@ -10,7 +10,7 @@
 namespace EMT.DoneNOW.Web.Contract {
     
     
-    public partial class ContractAdd {
+    public partial class AdjustService {
         
         /// <summary>
         /// form1 控件。

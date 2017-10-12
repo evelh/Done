@@ -22,6 +22,30 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 获取合同服务
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ctt_contract_service GetService(long id)
+        {
+            return new ctt_contract_service_dal().FindById(id);
+        }
+
+        /// <summary>
+        /// 获取合同服务的服务名称
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public string GetServiceName(ctt_contract_service entity)
+        {
+            if (entity.object_type == 1)
+                return new ServiceBLL().GetServiceById(entity.object_id).name;
+            else if (entity.object_type == 2)
+                return new ServiceBLL().GetServiceBundleById(entity.object_id).name;
+            return "";
+        }
+
+        /// <summary>
         /// 新增合同服务/服务包
         /// </summary>
         /// <param name="service"></param>
@@ -108,6 +132,9 @@ namespace EMT.DoneNOW.BLL
                     sa.create_user_id = userId;
                     sa.update_user_id = userId;
                     sa.contract_id = service.contract_id;
+                    sa.object_id = cs.object_id;
+                    sa.object_type = cs.object_type;
+                    sa.quantity_change = cs.quantity;
                     sa.contract_service_id = cs.id;
                     sa.effective_date = contract.start_date;
                     sa.end_date = dtStart.AddDays(-1);
@@ -236,6 +263,9 @@ namespace EMT.DoneNOW.BLL
                     sa.create_user_id = userId;
                     sa.update_user_id = userId;
                     sa.contract_id = service.contract_id;
+                    sa.object_id = cs.object_id;
+                    sa.object_type = cs.object_type;
+                    sa.quantity_change = cs.quantity;
                     sa.contract_service_id = cs.id;
                     sa.effective_date = contract.start_date;
                     sa.end_date = dtStart.AddDays(-1);
@@ -307,6 +337,58 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 调整合同服务
+        /// </summary>
+        /// <param name="ser"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool AdjustService(ctt_contract_service ser, long userId)
+        {
+            ctt_contract_service_dal dal = new ctt_contract_service_dal();
+            var contract = new ContractBLL().GetContract(ser.contract_id);
+
+            var service = dal.FindById(ser.id);
+            var serviceOld = dal.FindById(ser.id);
+
+            service.unit_price = ser.unit_price;
+            service.quantity = ser.quantity;
+            service.adjusted_price = service.unit_price * service.quantity;
+            service.unit_cost = ser.unit_cost;
+            service.effective_date = contract.start_date;
+            service.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            service.update_user_id = userId;
+
+            dal.Update(service);
+            OperLogBLL.OperLogUpdate<ctt_contract_service>(service, serviceOld, service.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE, "调整合同服务");
+
+            var periodList = GetServicePeriodList(ser.id);
+            if (periodList == null || periodList.Count == 0)
+                return false;
+            int periodDaysCnt = (GetNextPeriodStart(periodList[0].period_begin_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type) - periodList[0].period_begin_date).Days; // 每周期天数
+            if (periodList[0].period_begin_date.AddDays(periodDaysCnt) != periodList[0].period_end_date)    // 首周期不是完整周期
+            {
+
+            }
+
+            if (service.quantity != serviceOld.quantity || periodList[0].period_begin_date.AddDays(periodDaysCnt) != periodList[0].period_end_date)    // 数量调整或者生效日期不是完整周期的开始时间
+            {
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 调整合同服务包
+        /// </summary>
+        /// <param name="ser"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool AdjustServiceBundle(ctt_contract_service ser, long userId)
+        {
+            return false;
+        }
+
+        /// <summary>
         /// 获取下一周期开始时间
         /// </summary>
         /// <param name="start"></param>
@@ -327,6 +409,16 @@ namespace EMT.DoneNOW.BLL
                 default:
                     return start;
             }
+        }
+
+        /// <summary>
+        /// 获取按时间顺序的合同服务周期
+        /// </summary>
+        /// <param name="serviceId"></param>
+        /// <returns></returns>
+        private List<ctt_contract_service_period> GetServicePeriodList(long serviceId)
+        {
+            return new ctt_contract_service_period_dal().FindListBySql($"SELECT * FROM ctt_contract_service_period WHERE contract_service_id={serviceId} AND delete_time=0 ORDER BY period_begin_date ASC");
         }
 
         /// <summary>

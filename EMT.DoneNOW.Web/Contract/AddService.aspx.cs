@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.Web.Contract
 
                 if (objType == 1)
                     serviceName = "服务";
-                else if (objType == 1)
+                else if (objType == 2)
                     serviceName = "服务包";
 
                 long contractId = 0;

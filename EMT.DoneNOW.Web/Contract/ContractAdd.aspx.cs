@@ -36,6 +36,9 @@ namespace EMT.DoneNOW.Web.Contract
                 ContractAddDto dto = new ContractAddDto();
                 dto.contract = AssembleModel<ctt_contract>();
 
+                if (!string.IsNullOrEmpty(Request.Form["isSdtDefault"]) && Request.Form["isSdtDefault"].Equals("on"))
+                    dto.contract.is_sdt_default = 1;
+
                 if (udfList != null && udfList.Count > 0)                      // 首先判断是否有自定义信息
                 {
                     var list = new List<UserDefinedFieldValue>();

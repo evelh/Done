@@ -178,6 +178,7 @@
     <Content Include="Contract\AddRetainerPurchase.aspx" />
     <Content Include="Contract\AddService.aspx" />
     <Content Include="Contract\AdjustExtendedPrice.aspx" />
+    <Content Include="Contract\AdjustService.aspx" />
     <Content Include="Contract\ApproveAndPost.aspx" />
     <Content Include="Contract\ApproveChargeSelect.aspx" />
     <Content Include="Contract\ChargeDetails.aspx" />
@@ -926,6 +927,13 @@
     </Compile>
     <Compile Include="Contract\AdjustExtendedPrice.aspx.designer.cs">
       <DependentUpon>AdjustExtendedPrice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\AdjustService.aspx.cs">
+      <DependentUpon>AdjustService.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AdjustService.aspx.designer.cs">
+      <DependentUpon>AdjustService.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\ApproveAndPost.aspx.cs">
       <DependentUpon>ApproveAndPost.aspx</DependentUpon>
