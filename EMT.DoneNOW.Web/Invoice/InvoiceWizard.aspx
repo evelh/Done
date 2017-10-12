@@ -452,7 +452,7 @@
                         </a>
                     </li>
                     <!--打印预览-->
-                    <li class="right" id="e3">
+                    <li class="right" id="e3" onclick="preview()" >
                         <a class="ImgLink">
                             <span class="Text">打印预览</span>
                         </a>
@@ -602,7 +602,7 @@
                         </a>
                     </li>
                     <!--打印预览-->
-                    <li class="right" id="e4">
+                    <li class="right" id="e4"  onclick="preview()">
                         <a class="ImgLink">
                             <span class="Text">打印预览</span>
                         </a>
@@ -697,7 +697,7 @@
                         </a>
                     </li>
                     <!--打印预览-->
-                    <li class="right" id="e5">
+                    <li class="right" id="e5"  onclick="preview()">
                         <a class="ImgLink">
                             <span class="Text">打印预览</span>
                         </a>
@@ -995,5 +995,45 @@
         } else {
             return true;
         }
+    }
+
+    // 打印预览
+    function preview() {
+        var ids = $("#accDedIds").val();
+        if (ids == "") {
+            return false;
+        } // invoice_date
+        var date_range_from = $("#date_range_from").val();
+        var date_range_to = $("#date_range_to").val();
+        var invoice_date = $("#invoice_date").val();
+        var payment_term_id = $("#payment_term_id").val();
+        var notes = $("#notes").val();
+        
+        var stareDate = $("#itemStartDate").val();
+        var endDate = $("#itemEndDate").val();
+        if (date_range_from != "") {
+            stareDate = date_range_from;
+        }
+        if (date_range_to != "") {
+            endDate = date_range_to;
+        }
+
+        //var account_id = "";
+        var item_type = $("#type_id").val(); //cms591type_id
+        var contract_type = $("#contract_type_id").val(); // 589
+        var contract_cate = $("#contract_cate_id").val(); // 590
+        var itemDeal = $("#projectItem").val();;      // 596
+        //var purchaseNo = "";    // 594  采购订单号
+        var invoice_tmpl_id = $("#invoice_tmpl_id").val();
+        var account_id = $("#account_idHidden").val();
+        var sortOrder = '<%=Request.QueryString["sortOrder"] %>';
+        if (sortOrder == '3') {
+            account_id = account_id + '_' + '<%=Request.QueryString["thisProject"] %>';
+        } else if (sortOrder == '4') {
+            account_id = account_id + '_' + '<%=Request.QueryString["thisPurOrder"] %>';
+        }
+        window.open("InvoicePreview.aspx?accDedIds=" + ids + "&stareDate=" + stareDate + "&endDate=" + endDate + "&item_type=" + item_type + "&contract_type=" + contract_type + "&contract_cate=" + contract_cate + "&itemDeal=" + itemDeal + "&account_id=" + account_id + "&invoiceDate=" + invoice_date + "&notes=" + notes + "&pay_term=" + payment_term_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREVIEW %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+
+
     }
 </script>

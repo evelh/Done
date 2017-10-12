@@ -10,6 +10,8 @@ using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.DAL;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
+using System.IO;
 
 namespace EMT.DoneNOW.Web.Invoice
 {
@@ -34,6 +36,9 @@ namespace EMT.DoneNOW.Web.Invoice
         protected string projectItemPara = "";
         protected string purchaseNo = "";
         protected string invoiceDate = "";
+        protected string notes = "";
+        protected string pay_term = "";  // 支付条款
+        protected string isPrint = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -46,10 +51,15 @@ namespace EMT.DoneNOW.Web.Invoice
                 contractCatePara = Request.QueryString["contract_cate"];
                 projectItemPara = Request.QueryString["itemDeal"];
                 invoiceDate = Request.QueryString["invoiceDate"];
+                notes = Request.QueryString["notes"];
+                pay_term = Request.QueryString["pay_term"];
+                isPrint = Request.QueryString["isPrint"];
+                if (string.IsNullOrEmpty(invoiceDate))
+                {
+                    invoiceDate = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+
                 var invoice_temp_id = Request.QueryString["invoice_temp_id"];
-
-
-
                 if (invTempList != null && invTempList.Count > 0)
                 {
                     if (!string.IsNullOrEmpty(invoice_temp_id))
@@ -246,10 +256,10 @@ namespace EMT.DoneNOW.Web.Invoice
 
 
                 table.Text = thisHtmlText.ToString();
+                
             }
             catch (Exception msg)
             {
-                throw;
                 Response.End();
             }
 
@@ -339,7 +349,8 @@ namespace EMT.DoneNOW.Web.Invoice
                 var quote_body = new EMT.Tools.Serialize().DeserializeJson<QuoteTemplateAddDto.BODY>(temp.body_html.Replace("'", "\""));  // 
                 if (quote_body.GRID_COLUMN != null && quote_body.GRID_COLUMN.Count > 0)
                 {
-                    var aa = quote_body.CUSTOMIZE_THE_ITEM_COLUMN;
+                    StringBuilder thisIds = new StringBuilder();
+                    // var aa = quote_body.CUSTOMIZE_THE_ITEM_COLUMN;
                     #region  拼接TH
                     thisHtmlText.Append("<thead><tr>");
                     foreach (var item in quote_body.GRID_COLUMN)
@@ -364,7 +375,7 @@ namespace EMT.DoneNOW.Web.Invoice
                             var accDedItem = new crm_account_deduction_dal().FindNoDeleteById(param_item.id);
                             if (accDedItem == null)
                                 continue;
-
+                            thisIds.Append(accDedItem.id+",");
                             var billable_hours = param_item.billable_hours == null ? "" : ((decimal)param_item.billable_hours).ToString();
                             if (param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.SERVICE || param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.FIXED_PRICE)
                             {
@@ -386,11 +397,18 @@ namespace EMT.DoneNOW.Web.Invoice
                                     switch (column_item.Column_Content)
                                     {
                                         case "发票中显示序列号，从1开始":
-                                            thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{AddNum}</td>");
-                                            AddNum++;
+                                            if (isInvoice)
+                                            {
+                                                thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{param_item.invoice_line_item_no}</td>");
+                                            }
+                                            else
+                                            {
+                                                thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{AddNum}</td>");
+                                                AddNum++;
+                                            }
                                             break;
                                         case "条目创建日期":
-                                            thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{param_item.item_date}</td>");
+                                            thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{param_item.item_date.ToString("yyyy-MM-dd")}</td>");
                                             break;
                                         case "条目描述":
                                             thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'><span class='xiabiao'>{returnTaxIndex(param_item.tax_category_id)} {ChangeDescription(quote_body.CUSTOMIZE_THE_ITEM_COLUMN, accDedItem)}</span></td>");
@@ -456,6 +474,7 @@ namespace EMT.DoneNOW.Web.Invoice
                             var billToThisAccount = new CompanyBLL().GetCompany((long)billToThis.Key);
                             if (billToThisAccount == null)
                                 continue;
+                            
                             thisHtmlText.Append($"<div class='ReadOnlyGrid_Container'><div class='ReadOnlyGrid_Account'>{billToThis.Key}</div><table class='ReadOnlyGrid_Table' style='border-color: #ccc;'>");
 
                             #region  拼接TH
@@ -473,6 +492,7 @@ namespace EMT.DoneNOW.Web.Invoice
                             #region 拼接表格内容
                             foreach (var param_item in billToThis.Value as List<InvoiceDeductionDto>)
                             {
+                                thisIds.Append(param_item.id + ",");
                                 thisHtmlText.Append("<tbody><tr>");
                                 foreach (var column_item in quote_body.GRID_COLUMN)
                                 {
@@ -481,7 +501,7 @@ namespace EMT.DoneNOW.Web.Invoice
                                         switch (column_item.Column_Content)
                                         {
                                             case "日期":
-                                                thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{param_item.item_date}</td>");
+                                                thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{param_item.item_date.ToString("yyyy-MM-dd")}</td>");
                                                 break;
                                             case "条目描述":
                                                 thisHtmlText.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{"没有描述"}</td>");
@@ -546,7 +566,12 @@ namespace EMT.DoneNOW.Web.Invoice
                     var billHours = GetBillHours(paramList, true) + GetBillHours(billTOThisParamList, true); // 计费
                     var prepaidHours = GetPrepaidHours(paramList) + GetPrepaidHours(billTOThisParamList);     // 预付费
                     var taxCate = GetTaxCateHtml();  // 分税信息的展示
-
+                    string stringThisIds = thisIds.ToString();
+                    if (!string.IsNullOrEmpty(stringThisIds))
+                    {
+                        stringThisIds = stringThisIds.Substring(0, stringThisIds.Length-1);
+                        thisAccDedIds.Value = stringThisIds;
+                    }
 
 
                     thisHtmlText.Append($"<div><table style = 'width:100%; padding-top:20px; border-collapse:collapse;' ><tbody><tr><td style = 'vertical-align:top;' ></td><td style = 'vertical-align:top;width:300px; '><table class='InvoiceTotalsBlock'><tbody><tr class='invoiceTotalsRow'><td class='invoiceTotalsNameCell'>不计费时间</td><td class='invoiceTotalsValueCell'>{noBillHours.ToString("#0.00")}</td></tr><tr class='invoiceTotalsRow'> <td class='invoiceTotalsNameCell'>预付费时间</td><td class='invoiceTotalsValueCell'>{prepaidHours.ToString("#0.00")}</td></tr><tr class='invoiceTotalsRow'> <td class='invoiceTotalsNameCell'>付费时间汇总</td><td class='invoiceTotalsValueCell'>{billHours.ToString("#0.00")}</td></tr>{totalTaxHtml}<tr class='invoiceTotalsRow'><td class='invoiceTotalsNameCell'>总额汇总</td><td class='invoiceTotalsValueCell'>{totalMoney.ToString("#0.00")}</td></tr><tr class='invoiceTotalsRow'><td class='invoiceGrandTotalNameCell'>总价</td><td class='invoiceGrandTotalValueCell'>{(totalMoney + totalTax).ToString("#0.00")}</td></tr>{taxCate}</tbody></table></td></tr></tbody></table></div>");
@@ -597,92 +622,93 @@ namespace EMT.DoneNOW.Web.Invoice
             var account_param = "'{\"a:id\":\"" + account.id + "\"}'";
             StringBuilder sqlList = new StringBuilder();
             var accountSql = new sys_query_type_user_dal().GetQuerySql(900, 900, GetLoginUserId(), account_param, null);  // 客户相关查询
-            var jifeiSql = new sys_query_type_user_dal().GetQuerySql(920, 920, GetLoginUserId(), "'{\"a:account_id\":\"" + account.id + "\"}'", null);    // 计费相关查询
-            sqlList.Append($"select * from ({accountSql}) as account,({jifeiSql}) as jifei");
-
-            if (thisInvoice != null)
+            if (!string.IsNullOrEmpty(accountSql))
             {
-                var invoiceSql = new sys_query_type_user_dal().GetQuerySql(925, 925, GetLoginUserId(), "'{\"a:id\":\"" + thisInvoice.id + "\"}'", null);
-                sqlList.Append($",({invoiceSql}) as invoice");
-            }
-
-            if (!string.IsNullOrEmpty(sqlList.ToString()))
-            {
-                
-                // dateTable 里面所拥有的数据实体待确定
-                var varTable = _dal.ExecuteDataTable(sqlList.ToString());
-                if (varTable.Rows.Count <= 0)
+                var varTable = _dal.ExecuteDataTable(accountSql.ToString());
+                if (varTable.Rows.Count > 0)
                 {
-                    return thisText;
-                }
-                foreach (Match m in reg.Matches(thisText))
-                {
-                    string t = m.Groups[0].ToString();
-                    if (varTable.Columns.Contains(t) && !string.IsNullOrEmpty(varTable.Rows[0][t].ToString()))
+                    foreach (Match m in reg.Matches(thisText))
                     {
-                        thisText = thisText.Replace(t, varTable.Rows[0][t].ToString());
-                    }
-                    if (!isInvoice)  // 不发票的情况，参数从页面传递
-                    {
-                        switch (t)
+                        string t = m.Groups[0].ToString();
+                        if (varTable.Columns.Contains(t) && !string.IsNullOrEmpty(varTable.Rows[0][t].ToString()))
                         {
-                            case "[发票：号码/编号]":
-                                thisText = thisText.Replace(t, "预览");
-                                break;
-                            case "[发票：日期范围始于]":
-                                thisText = thisText.Replace(t, itemStartDatePara);
-                                break;
-                            case "[发票：日期范围至]":
-                                thisText = thisText.Replace(t, itemEndDatePara);
-                                break;
-                            case "[发票：订单号]":
-                                if (!string.IsNullOrEmpty(purchaseNo))
-                                {
-                                    thisText = thisText.Replace(t, purchaseNo);
-                                }
-                                else
-                                {
-                                    thisText = thisText.Replace(t, "");
-                                }
-                                break;
-                            case "[发票：日期]":
-                                thisText = thisText.Replace(t, invoiceDate);
-                                break;
-                            default:
-                                break;
+                            thisText = thisText.Replace(t, varTable.Rows[0][t].ToString());
                         }
                     }
-                    else // 将发票信息展示
+                }
+            }
+
+
+            var jifeiSql = new sys_query_type_user_dal().GetQuerySql(920, 920, GetLoginUserId(), "'{\"a:account_id\":\"" + account.id + "\"}'", null);    // 计费相关查询
+            if (!string.IsNullOrEmpty(jifeiSql))
+            {
+                var varTable = _dal.ExecuteDataTable(jifeiSql.ToString());
+                if (varTable.Rows.Count > 0)
+                {
+                    foreach (Match m in reg.Matches(thisText))
                     {
-                        if(thisInvoice!=null)
+                        string t = m.Groups[0].ToString();
+                        if (varTable.Columns.Contains(t) && !string.IsNullOrEmpty(varTable.Rows[0][t].ToString()))
                         {
-                            switch (t)
+                            thisText = thisText.Replace(t, varTable.Rows[0][t].ToString());
+                        }
+                    }
+                }
+
+            }
+
+            if (isInvoice&&thisInvoice != null)
+            {
+                var firstInvAccDed = paramList.FirstOrDefault(_ => _.invoice_id != null);
+                if (firstInvAccDed != null)
+                {
+                    var invoiceSql = new sys_query_type_user_dal().GetQuerySql(925, 925, GetLoginUserId(), "'{\"a:id\":\"" + firstInvAccDed.id + "\"}'", null);
+                    sqlList.Append($",({invoiceSql}) as invoice");
+                    if (!string.IsNullOrEmpty(invoiceSql))
+                    {
+                        var varTable = _dal.ExecuteDataTable(invoiceSql.ToString());
+                        if (varTable.Rows.Count > 0)
+                        {
+                            foreach (Match m in reg.Matches(thisText))
                             {
-                                case "[发票：号码/编号]":
-                                    thisText = thisText.Replace(t, thisInvoice.invoice_no);
-                                    break;
-                                case "[发票：日期范围始于]":
-                                    thisText = thisText.Replace(t, thisInvoice.date_range_from == null?"":((DateTime)thisInvoice.date_range_from).ToString("yyyy-MM-dd"));
-                                    break;
-                                case "[发票：日期范围至]":
-                                    thisText = thisText.Replace(t, thisInvoice.date_range_to == null ? "" : ((DateTime)thisInvoice.date_range_to).ToString("yyyy-MM-dd"));
-                                    break;
-                                case "[发票：订单号]":
-                                    thisText = thisText.Replace(t, thisInvoice.purchase_order_no);
-                                    break;
-                                case "[发票：日期]":
-                                    thisText = thisText.Replace(t, invoiceDate);
-                                    break;
-                                default:
-                                    break;
+                                string t = m.Groups[0].ToString();
+                                if (varTable.Columns.Contains(t) && !string.IsNullOrEmpty(varTable.Rows[0][t].ToString()))
+                                {
+                                    thisText = thisText.Replace(t, varTable.Rows[0][t].ToString());
+                                }
                             }
                         }
                     }
-                  
                 }
 
             }
-
+            else
+            {
+                foreach (Match m in reg.Matches(thisText))
+                {
+                    string t = m.Groups[0].ToString();
+                    switch (t)
+                    {
+                        case "[发票：号码/编号]":
+                            thisText = thisText.Replace(t, "预览");
+                            break;
+                        case "[发票：日期范围始于]":
+                            thisText = thisText.Replace(t, itemStartDatePara);
+                            break;
+                        case "[发票：日期范围至]":
+                            thisText = thisText.Replace(t, itemEndDatePara);
+                            break;
+                        case "[发票：订单号]":
+                            thisText = thisText.Replace(t, purchaseNo);
+                            break;
+                        case "[发票：日期]":
+                            thisText = thisText.Replace(t,invoiceDate);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
 
             return thisText;
         }
@@ -862,6 +888,80 @@ namespace EMT.DoneNOW.Web.Invoice
                 }
             }
             return taxCateHtml.ToString();
+        }
+
+        private bool HtmlToPdf(string url,string where="")
+        {
+            bool success = true;
+            // string dwbh = url.Split('?')[1].Split('=')[1];
+            //CommonBllHelper.CreateUserDir(dwbh);
+            //url = Request.Url.Host + "/html/" + url;
+            string guid = DateTime.Now.ToString("yyyyMMddhhmmss");
+            string pdfName = "1.pdf";
+            //string path = Server.MapPath("~/kehu/" + dwbh + "/pdf/") + pdfName;
+            string path = Server.MapPath( "\\" + pdfName);
+            try
+            {
+                if (string.IsNullOrEmpty(url) || string.IsNullOrEmpty(path))
+                    success = false;
+                string str = Server.MapPath("~\\bin\\wkhtmltopdf.exe");
+                Process p = System.Diagnostics.Process.Start(str+where, url + " " + path);
+                p.WaitForExit();
+                if (!System.IO.File.Exists(str))
+                    success = false;
+                if (System.IO.File.Exists(path))
+                {
+                    FileStream fs = new FileStream(path, FileMode.Open);
+                    byte[] bytes = new byte[(int)fs.Length];
+                    fs.Read(bytes, 0, bytes.Length);
+                    fs.Close();
+                    if (Request.UserAgent != null)
+                    {
+                        string userAgent = Request.UserAgent.ToUpper();
+                        if (userAgent.IndexOf("FIREFOX", StringComparison.Ordinal) <= 0)
+                        {
+                            Response.AddHeader("Content-Disposition",
+                                          "attachment;  filename=" + HttpUtility.UrlEncode(pdfName, Encoding.UTF8));
+                        }
+                        else
+                        {
+                            Response.AddHeader("Content-Disposition", "attachment;  filename=" + pdfName);
+                        }
+                    }
+                    Response.ContentEncoding = Encoding.UTF8;
+                    Response.ContentType = "application/octet-stream";
+                    //通知浏览器下载文件而不是打开
+                    Response.BinaryWrite(bytes);
+                    Response.Buffer = true;
+                    Response.Flush();
+                   
+                    fs.Close();
+                    System.IO.File.Delete(path);
+                    //Response.End();
+                }
+                else
+                {
+                    Response.Write("文件未找到,可能已经被删除");
+                    Response.Flush();
+                    Response.End();
+                }
+            }
+            catch (Exception ex)
+            {
+                success = false;
+            }
+            return success;
+        }
+
+        protected void ConToPdf_Click(object sender, EventArgs e)
+        {
+            string url = Request.Url.ToString();
+            var result =  HtmlToPdf(url+"&isPrint=1");
+            if (!result)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('转换PDF失败！');</script>");
+            }
+            //ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>var obj = document.getElementById('thisDiv');obj.style.overflow-y= 'auto';</script>");
         }
     }
 }

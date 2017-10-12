@@ -31,6 +31,15 @@ namespace EMT.DoneNOW.Web.Invoice {
         protected global::System.Web.UI.WebControls.DropDownList invoice_temp_id;
         
         /// <summary>
+        /// ConToPdf 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button ConToPdf;
+        
+        /// <summary>
         /// table 控件。
         /// </summary>
         /// <remarks>
@@ -38,5 +47,14 @@ namespace EMT.DoneNOW.Web.Invoice {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal table;
+        
+        /// <summary>
+        /// thisAccDedIds 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden thisAccDedIds;
     }
 }
