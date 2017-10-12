@@ -160,9 +160,10 @@ namespace EMT.DoneNOW.Web.Invoice
             var chooseAccount = new CompanyBLL().GetCompany(long.Parse(accountId));
             if (chooseAccount == null)
                 return;
-            accDedList = cadDal.GetAccDed(chooseAccount.id);  // 将要在页面上显示的条目
-            if (accDedList == null)
-                accDedList = new List<crm_account_deduction>();
+          
+            //accDedList = cadDal.GetAccDed(chooseAccount.id);  // 将要在页面上显示的条目
+            //if (accDedList == null)
+            //    accDedList = new List<crm_account_deduction>();
 
             StringBuilder sqlWhere = new StringBuilder();
 
@@ -218,7 +219,32 @@ namespace EMT.DoneNOW.Web.Invoice
                 sqlWhere.Append($" and dollars <>0");
             }
 
-            var deeList = new crm_account_deduction_dal().GetInvDedDtoList(sqlWhere.ToString()+ $" and (account_id = {chooseAccount.id} or bill_account_id={chooseAccount.id} ) ");
+            List<InvoiceDeductionDto> deeList = null;
+            var sortOrder = Request.QueryString["sortOrder"];
+            switch (sortOrder)
+            {
+                case "1":    // 客户
+                    deeList = cadDal.GetInvDedDtoList(sqlWhere.ToString() + " and account_id=" + chooseAccount.id.ToString() + " and    invoice_id is null and purchase_order_no is null");
+                    break;
+                case "2":    // ticket
+                    deeList = cadDal.GetInvDedDtoList(sqlWhere.ToString() + " and account_id=" + chooseAccount.id.ToString() + " and    invoice_id is null and purchase_order_no is null AND project_id is null");
+                    break;
+                case "3":    // 项目
+                    var thisProject = Request.QueryString["thisProject"];
+                    deeList = cadDal.GetInvDedDtoList(sqlWhere.ToString() + " and account_id=" + chooseAccount.id.ToString() + " and    invoice_id is null and purchase_order_no is null AND project_id = " + thisProject);
+                    break;
+                case "4":    // 采购订单
+                    var thisPurOrder = Request.QueryString["thisPurOrder"];
+                    if (!string.IsNullOrEmpty(thisPurOrder))
+                    {
+                        thisPurOrder = thisPurOrder.Substring(5, thisPurOrder.Length - 5);
+                        deeList = cadDal.GetInvDedDtoList(sqlWhere.ToString() + " and account_id=" + chooseAccount.id.ToString() + " and    invoice_id is null and purchase_order_no =" + thisPurOrder);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
 
             #region  加上子公司的条目
             if (showChildAcc) // 代表用户选中展示子客户条目
@@ -228,7 +254,7 @@ namespace EMT.DoneNOW.Web.Invoice
                 {
                     foreach (var childAcc in childAccList)
                     {
-                        var childAccDedList = cadDal.GetInvDedDtoList(sqlWhere.ToString()+ " and account_id=" + childAcc.id+ " and bill_account_id <>"+ chooseAccount.id);
+                        var childAccDedList = cadDal.GetInvDedDtoList(sqlWhere.ToString()+ " and account_id=" + childAcc.id);  //+ " and bill_account_id <>"+ chooseAccount.id
                         if (childAccDedList != null && childAccDedList.Count > 0)
                         {
                             childAccDedList.ForEach(_ => {                        

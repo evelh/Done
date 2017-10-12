@@ -370,32 +370,46 @@
                             <span class="Text">处理全部</span>
                         </a>
                     </li>
+                    <%
+                        var accInvDicList = accInvDic.ToList();
+                        var firstDic = accInvDicList.FirstOrDefault(_ => _.Key == account_id);
+                        
+                        %>
                     <li class="right pagination">
-                        <a class="disabledLink"  onclick="changeByAccount('<%=accList.IndexOf(account)==accList.Count-1?"0":accList[accList.Count-1].id.ToString() %>')">
+                        <a class="disabledLink" onclick="changeByAccount('<%=accInvDicList.IndexOf(firstDic) == accInvDicList.Count - 1 ? "0" : accInvDicList[accInvDicList.Count - 1].Key.ToString() %>')">
                             <span class="Text">>></span>
                         </a>
                     </li>
                     <li class="right pagination">
-                        <a class="disabledLink" onclick="changeByAccount('<%=accList.IndexOf(account)==accList.Count-1?"0":accList[accList.IndexOf(account)+1].id.ToString() %>')">
+                        <a class="disabledLink" onclick="changeByAccount('<%=accInvDicList.IndexOf(firstDic) == accInvDicList.Count - 1 ? "0" : accInvDicList[accInvDicList.IndexOf(firstDic) + 1].Key.ToString() %>')">
                             <span class="Text">></span>
                         </a>
                     </li>
                     <li class="right">
-                        <asp:DropDownList ID="accoultList" runat="server"></asp:DropDownList>
+                        <%--<asp:DropDownList ID="accoultList" runat="server"></asp:DropDownList>--%>
+                        <select id="accoultList">
+                            <%if (accInvDic != null && accInvDic.Count > 0)
+                                {
+                                    foreach (var item in accInvDic)
+                                    {%>
+                                     <option value="<%=item.Key %>" <%=item.Key==account_id?"selected":"" %>><%=item.Value %></option>
+                                     <%}
+                                }%>
+                        </select>
 
                     </li>
                     <li class="right pagination">
-                        <a class="disabledLink" onclick="changeByAccount('<%=accList.IndexOf(account)==0?"0":accList[accList.IndexOf(account)-1].id.ToString() %>')">
+                        <a class="disabledLink" onclick="changeByAccount('<%=accInvDicList.IndexOf(firstDic)==0?"0":accInvDicList[accInvDicList.IndexOf(firstDic)-1].Key.ToString() %>')">
                             <span class="Text"><</span>
                         </a>
                     </li>
                     <li class="right pagination">
-                        <a class="disabledLink" onclick="changeByAccount('<%=accList.IndexOf(account)==0?"0":accList[0].id.ToString() %>')">
+                        <a class="disabledLink" onclick="changeByAccount('<%=accInvDicList.IndexOf(firstDic)==0?"0":accInvDicList[0].Key.ToString() %>')">
                             <span class="Text"><<</span>
                         </a>
                     </li>
                     <li class="right" style="width: 50px; padding-top: 5px;">
-                        <span><%=accList.IndexOf(account)+1 %></span> of <%=accList.Count %>
+                        <span><%=accInvDicList.IndexOf(firstDic)+1 %></span> of <%=accInvDicList.Count %>
                     </li>
                 </ul>
                 <div class="DropDownMenu">
@@ -518,7 +532,7 @@
 
     $(function () {
         <% if (isInvoice)
-        {%>
+    {%>
         $("#invoice_temp_id").css("display", "none"); // ProcessBar
         $("#ProcessBar").css("display", "none");
         $(".PreviewInvoice_TextOverlay").hide();

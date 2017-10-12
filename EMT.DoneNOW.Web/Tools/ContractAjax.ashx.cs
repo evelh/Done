@@ -122,6 +122,17 @@ namespace EMT.DoneNOW.Web
                         blockId = context.Request.QueryString["blockId"];
                         SetBlockInactive(context, Convert.ToInt64(blockId));
                         break;
+                    case "GetService":
+                        GetService(context);
+                        break;
+                    case "DeleteService":
+                        string id = context.Request.QueryString["id"];
+                        DeleteService(context, Convert.ToInt64(id));
+                        break;
+                    case "IsApprove":
+                        id = context.Request.QueryString["id"];
+                        IsServiceApproveAndPost(context, Convert.ToInt64(id));
+                        break;
                     default:
                         break;
                 }
@@ -549,7 +560,7 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <param name="context"></param>
         /// <param name="id"></param>
-        public void DeleteMilestone(HttpContext context, long id)
+        private void DeleteMilestone(HttpContext context, long id)
         {
             var res = context.Session["dn_session_user_info"];
             bool result = false;
@@ -557,6 +568,61 @@ namespace EMT.DoneNOW.Web
             {
                 var user = res as sys_user;
                 result = new ContractBLL().DeleteMilestone(id, user.id);
+            }
+            context.Response.Write(result);
+        }
+
+        /// <summary>
+        /// 获取服务/服务包信息
+        /// </summary>
+        /// <param name="context"></param>
+        private void GetService(HttpContext context)
+        {
+            var bll = new ServiceBLL();
+            var id = context.Request.QueryString["id"];
+            var type = context.Request.QueryString["type"];
+            if ("2".Equals(type))
+            {
+                var serviceBundle = bll.GetServiceBundleById(long.Parse(id));
+                context.Response.Write(new Tools.Serialize().SerializeJson(serviceBundle));
+            }
+            else
+            {
+                var service = bll.GetServiceById(long.Parse(id));
+                context.Response.Write(new Tools.Serialize().SerializeJson(service));
+            }
+        }
+
+        /// <summary>
+        /// 删除服务/服务包
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="serviceId"></param>
+        private void DeleteService(HttpContext context, long serviceId)
+        {
+            var res = context.Session["dn_session_user_info"];
+            bool result = false;
+            if (res != null)
+            {
+                var user = res as sys_user;
+                result = new ContractServiceBLL().DeleteService(serviceId, user.id);
+            }
+            context.Response.Write(result);
+        }
+
+        /// <summary>
+        /// 判断服务/服务包是否已计费
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="serviceId"></param>
+        private void IsServiceApproveAndPost(HttpContext context, long serviceId)
+        {
+            var res = context.Session["dn_session_user_info"];
+            bool result = false;
+            if (res != null)
+            {
+                var user = res as sys_user;
+                result = new ContractServiceBLL().IsServiceApproveAndPost(serviceId);
             }
             context.Response.Write(result);
         }

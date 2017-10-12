@@ -489,7 +489,7 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.USER_NOT_FIND;
             }
             ivt_warehouse_product_dal inv_dal = new ivt_warehouse_product_dal();
-            var inv = inv_dal.FindSignleBySql<ivt_warehouse_product>($"select * from ivt_warehouse_product id={id} and delete_time=0");
+            var inv = inv_dal.FindNoDeleteById(id);
             if (inv == null) {
                 return ERROR_CODE.ERROR;
             }
@@ -528,16 +528,6 @@ namespace EMT.DoneNOW.BLL
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }
-            //删除前校验
-            //如果产品被配置项、工单、报价、商机、库存引用，则不能删除。
-            //产品不能被删除，因为它被以下对象引用：
-            //N1 对象1
-            //N2 对象2
-            //……
-            //crm_opportunity商机
-            //crm_installed_product配置项
-            //ivt_warehouse_product库存
-            //ctt_contract_cost
             StringBuilder result = new StringBuilder();
             result.Append("产品不能被删除，因为它被以下对象引用\n");
             var opportunitylist = new crm_opportunity_dal().FindListBySql($"select * from crm_opportunity where primary_product_id={id} and delete_time=0");
@@ -608,7 +598,7 @@ namespace EMT.DoneNOW.BLL
 
             var del = _dal.FindSignleBySql<ivt_product>($"select * from ivt_product where id={id} and delete_time=0");
 
-            return ERROR_CODE.ERROR;
+            return ERROR_CODE.SUCCESS;
         }
     }
 }

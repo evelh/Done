@@ -251,6 +251,25 @@ namespace EMT.DoneNOW.Web
                     pa.value = objId.ToString();
                     queryPara.query_params.Add(pa);
 
+                    #region 查询合同服务，特殊处理，添加时间条件
+                    if (catId == (int)DicEnum.QUERY_CATE.CONTRACT_SERVICE)
+                    {
+                        var cdas = bll.GetConditionParaAll(GetLoginUserId(), paraGroupId);
+                        if (cdas.Count == 2)
+                        {
+                            var cd = cdas[0];
+                            if (cdas[0].id == cdts[0].id)
+                                cd = cdas[1];
+                            pa = new Para();
+                            pa.id = cd.id;
+                            pa.value = Request.QueryString["time"];
+                            if (pa.value == null)
+                                pa.value = Request.Form["serviceTime"];
+                            queryPara.query_params.Add(pa);
+                        }
+                    }
+                    #endregion
+
                     queryPara.query_type_id = queryTypeId;
                     queryPara.para_group_id = paraGroupId;
                     queryPara.page = page;
@@ -610,7 +629,7 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.ContractService:
                     contextMenu.Add(new PageContextMenuDto { text = "调整服务/服务包", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑发票描述", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;

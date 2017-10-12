@@ -50,7 +50,7 @@
                     <td width="30%" class="FieldLabels">
                        描述
                         <div>
-                            <asp:TextBox ID="Market_Description" runat="server"></asp:TextBox>
+                            <asp:TextBox ID="Market_Description" runat="server" TextMode="MultiLine" Height="90px" Width="300px"></asp:TextBox>
                         </div>
                     </td>
 

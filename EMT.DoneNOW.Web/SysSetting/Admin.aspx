@@ -179,7 +179,7 @@
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
                                         <div class="PageNavigationLink">
-                                            <a href="GeneralView.aspx?id=<%=(int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD %>" class="Button ButtonIcon Link NormalState chaxun">销售指标度量</a>
+                                            <a href="OppoAdvancedField.aspx?id=<%=(int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD %>" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">销售指标度量</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>

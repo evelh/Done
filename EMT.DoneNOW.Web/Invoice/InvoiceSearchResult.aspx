@@ -144,9 +144,9 @@
             <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;">
                 <ul class="clear fl">
 
-                    <li id="liPre" onclick="Preview()"><span>预览选中</span></li>
-                    <li id="liPro" onclick="Process()"><span>处理全部</span></li>
-                    <li id=""><i style="background-image: url(../Images/forward_arrow.png);"></i><a class="Button ButtonIcon NormalState" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_HISTORY %>" target="PageFrame"><span class="Text">历史发票</span></a></li>
+                    <li id="liPre" onclick="Preview()"><span style="margin-right:5px;margin-left:5px;">预览选中</span></li>
+                    <li id="liPro" onclick="Process()"><span style="margin-right:5px;margin-left:5px;">处理全部</span></li>
+                    <li id="" onclick="window.open('../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_HISTORY %>','PageFrame')"><i style="background-image: url(../Images/forward_arrow.png);"></i><span class="Text">历史发票</span></li>
                     <li><i style="background-image: url(../Images/print.png);"></i></li>
 <%--                    <li><i style="background-image: url(../Images/export.png);"></i></li>--%>
                 </ul>
@@ -193,7 +193,7 @@
     <div class="searchcontent" id="searchcontent" style="margin-top: 56px; min-width: <%=tableWidth%>px; overflow: hidden;">
         <table border="" cellspacing="0" cellpadding="0" style="overflow: scroll; width: 100%; height: 100%;">
             <tr>
-                <th style="padding-left: 4px;" style="width:20px;">
+                <th style="padding-left: 4px;width:20px;">
                     <input id="CheckAll"  type="checkbox" /></th>
                 <%foreach (var para in resultPara)
                     {
@@ -244,7 +244,7 @@
 
             %>
 
-            <tr title="右键显示操作菜单" data-val="<%=id %>" <%=rslt["排序字段"].ToString() == "1"?"class='dn_tr'":"" %>>
+            <tr  data-val="<%=id %>" <%=rslt["排序字段"].ToString() == "1"?"class='dn_tr'":"" %>>
 
                 <%
                     if (rslt["排序字段"].ToString() == "1")
@@ -279,7 +279,7 @@
                     { %>
                 <td><%if (rslt["排序字段"].ToString() != "1"&&para.name=="客户名称")
                         { %>
-                    <a onclick="xiangdao('<%=id %>')"><%=rslt[para.name] %></a>
+                    <a onclick="xiangdao('<%=id %>','<%=rslt["排序字段"].ToString() %>','<%=rslt["客户名称"].ToString() %>')"><%=rslt[para.name] %></a>
                     <%}
                     else
                     { 
@@ -364,6 +364,43 @@
         }
     })
 
+    $(".dn_tr").click(function () {
+        var account_id = $(this).data("val");
+        var stareDate = "";
+        var endDate = "";
+        //var account_id = "";
+        var item_type = ""; //cms591
+        var contract_type = ""; // 589
+        var contract_cate = ""; // 590
+        var itemDeal = "";      // 596
+        var purchaseNo = "";    // 594  采购订单号
+        debugger;
+        if ($("input[name = '588_l']").val() != undefined) {
+            stareDate = $("input[name = '588_l']").eq(0).val();
+        }
+        if ($("input[name = '588_h']").val() != undefined) {
+            endDate = $("input[name = '588_h']").eq(0).val();
+        }
+        //if ($("#586")) {
+        //    account_id = $("#586").val();
+        //}
+        if ($("input[name = 'cms591']").val() != undefined) {
+            item_type = $("input[name = 'cms591']").eq(0).val();
+        }
+        if ($("input[name = '589']").val() != undefined) {
+            contract_type = $("input[name = '589']").eq(0).val();
+        }
+        if ($("input[name = '590']").val() != undefined) {
+            contract_cate = $("input[name = '590']").eq(0).val();
+        }
+        if ($("input[name = '596']").val() != undefined) {
+            itemDeal = $("input[name = '596']").eq(0).val();
+        }
+        if ($("input[name = '594']").val() != undefined) {
+            purchaseNo = $("input[name = '594']").eq(0).val();
+        }
+        window.open("InvoiceWizard.aspx?account_id=" + account_id + "&stareDate=" + stareDate + "&endDate=" + endDate + "&item_type=" + item_type + "&contract_type=" + contract_type + "&contract_cate=" + contract_cate + "&itemDeal=" + itemDeal + "&purchaseNo=" + purchaseNo +"&sortOrder="+1, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_WIZARD %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+    });
 
     $(".IsChecked").click(function () {
         var ids = "";
@@ -469,7 +506,8 @@
             window.open("ProcessInvoice.aspx?account_ids=" + account_ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PROCESS %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
     }
-    function xiangdao(account_id) {
+    // name 代表采购订单号，或者项目名称，根据sortOrder进行判断
+    function xiangdao(account_id,sortOrder,name) {
         debugger;
         var stareDate = "";
         var endDate = "";
@@ -504,7 +542,15 @@
         if ($("input[name = '594']").val() != undefined) {
             purchaseNo = $("input[name = '594']").eq(0).val();
         }
-        window.open("InvoiceWizard.aspx?account_id=" + account_id + "&stareDate=" + stareDate + "&endDate=" + endDate + "&item_type=" + item_type + "&contract_type=" + contract_type + "&contract_cate=" + contract_cate + "&itemDeal=" + itemDeal + "&purchaseNo=" + purchaseNo, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_WIZARD %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+
+        var tranUrl = "InvoiceWizard.aspx?account_id=" + account_id + "&stareDate=" + stareDate + "&endDate=" + endDate + "&item_type=" + item_type + "&contract_type=" + contract_type + "&contract_cate=" + contract_cate + "&itemDeal=" + itemDeal + "&purchaseNo=" + purchaseNo + "&sortOrder=" + sortOrder;
+        if (sortOrder == "3") {
+            tranUrl = tranUrl + "&thisProject=" + name;
+        }
+        if (sortOrder == "4") {
+            tranUrl = tranUrl + "&thisPurOrder=" + name;
+        }
+        window.open(tranUrl, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_WIZARD %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
 
     }
 
