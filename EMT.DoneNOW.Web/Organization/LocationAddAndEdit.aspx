@@ -462,8 +462,13 @@
         $(".time").on("click",function(){
             var NowData=new Date();
             console.log(NowData);
-            var str='';
-            str=NowData.getHours()+':'+NowData.getMinutes();
+            var str = '';
+            var k = NowData.getMinutes();
+            if (k < 10) {
+                str = NowData.getHours() + ':0' + k;
+            } else {
+                str = NowData.getHours() + ':' + k; 
+            } 
             $(this).prev().val(str);
         });
     </script>
