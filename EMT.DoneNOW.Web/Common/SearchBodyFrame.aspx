@@ -3440,6 +3440,56 @@
                      }
                  });
              }
+
+              <%}
+        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Line_Of_Business)
+        { %>//general表的通用处理
+             function Edit() {
+                 window.open('../SysSetting/GeneralAdd.aspx?id=' + entityid + '&type=' +<%=queryTypeId%>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.GeneralAddAndEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+             }
+             function Add() {
+                 window.open('../SysSetting/GeneralAdd.aspx?type=' +<%=queryTypeId%>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.GeneralAddAndEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function View(id) {
+             window.open('../SysSetting/GeneralAdd.aspx?id=' + id + 'type=' +<%=queryTypeId%>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.GeneralAddAndEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+         }
+         function Delete() {
+             if (confirm('删除操作将不能恢复，是否继续?')) {
+                 $.ajax({
+                     type: "GET",
+                     url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&id=" + entityid,
+                     success: function (data) {
+                         if (data == "system") {
+                             alert("系统默认不能删除！");
+                         } else if (data == "other") {
+                             alert("其他原因使得删除失败！");
+                         } else if (data == "success") {
+                             alert("删除成功！");
+                             history.go(0);
+                         } else if (data == "error") {
+                             alert("删除失败！");
+                         } else {
+                             if (confirm(data)) {
+                                 $.ajax({
+                                     type: "GET",
+                                     url: "../Tools/GeneralViewAjax.ashx?act=delete&id=" + entityid,
+                                     success: function (data) {
+                                         alert(data);
+                                         if (data == "success") {
+                                             alert("删除成功！");
+                                             history.go(0);
+                                         } else if (data == "error") {
+                                             alert("删除失败！");
+                                         }
+                                     }
+                                 });
+                             }
+                         }
+                     }
+                 });
+             }
+         }
+
         <%}%>
         function openopenopen() {
             //alert("暂未实现");

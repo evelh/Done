@@ -244,7 +244,7 @@
 
             %>
 
-            <tr  data-val="<%=id %>" <%=rslt["排序字段"].ToString() == "1"?"class='dn_tr'":"" %>>
+            <tr  data-val="<%=id %>">
 
                 <%
                     if (rslt["排序字段"].ToString() == "1")
@@ -277,7 +277,7 @@
                 <%}
                     else
                     { %>
-                <td><%if (rslt["排序字段"].ToString() != "1"&&para.name=="客户名称")
+                <td data-val="<%=id %>" <%=rslt["排序字段"].ToString() == "1"?"class='dn_tr'":"" %>><%if (rslt["排序字段"].ToString() != "1"&&para.name=="客户名称")
                         { %>
                     <a onclick="xiangdao('<%=id %>','<%=rslt["排序字段"].ToString() %>','<%=rslt["客户名称"].ToString() %>')"><%=rslt[para.name] %></a>
                     <%}
@@ -365,6 +365,8 @@
     })
 
     $(".dn_tr").click(function () {
+
+
         var account_id = $(this).data("val");
         var stareDate = "";
         var endDate = "";

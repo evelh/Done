@@ -119,7 +119,6 @@
         </div>
         <input type="hidden" id="txtId" />
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
-<%--    <script src="../Scripts/SysSettingRoles.js"></script>--%>
     <script>
         $("#SaveAndCloneButton").on("mouseover", function () {
             $("#SaveAndCloneButton").css("background", "#fff");
@@ -163,13 +162,6 @@
         $("#NewButton1").on("mouseout", function () {
             $("#NewButton1").css("background", "#f0f0f0");
         });
-        //$.each($(".TabBar a"), function (i) {
-        //    $(this).click(function () {
-        //        $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
-        //        $(".TabContainer").eq(i).show().siblings(".TabContainer").hide();
-        //    })
-        //});
-
         $.each($(".TabBar a"), function (i) {
             $(this).click(function () {
                 var t = $("#Territory_Name").val();
@@ -179,16 +171,10 @@
 
                     return false;
                 }
-                //if (r == null || r <= 0) {
-                //    alert("请选择区域");
-
-                //    return false;
-                //} 
                 $(this).addClass("SelectedState").siblings("a").removeClass("SelectedState");
                 $(".TabContainer").eq(i).show().siblings(".TabContainer").hide();
             })
         });
-
         $("#Save_Close").click(function () {
             var t = $("#Territory_Name").val();
             var r = $("#Region").val();
@@ -199,7 +185,8 @@
             //if (r == null || r <= 0) {
             //    alert("请选择区域");
             //    return false;
-            //} });
+            //}
+        });
         $("#Save_New").click(function () {
             var t = $("#Territory_Name").val();
             var r = $("#Region").val();
@@ -225,7 +212,7 @@
                     $('.ppp').after(
                         $('<tr class="qqq">' +
                             '<td width="15" style="padding-left: 10px;">' +
-                            '<img class="delete1" src="../Images/cancel.png" style="cursor: pointer;"/>' +
+                            '<img class="delete1" src="../Images/delete.png" style="cursor: pointer;"/>' +
                             '<input type="hidden" value="' + obj[i].id + '"/>' +
                             '</td>' +
                             '<td align="left" style="padding-top: 2px;padding-left: 10px;">' + obj[i].name + '</td>' +

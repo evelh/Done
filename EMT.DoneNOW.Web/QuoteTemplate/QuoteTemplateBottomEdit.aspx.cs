@@ -13,6 +13,7 @@ namespace EMT.DoneNOW.Web
     {
         public int id;
         public string quote_foot;
+        protected QuoteTemplateBLL qtb = new QuoteTemplateBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);

@@ -7,7 +7,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
-
     <style>
         .header-title {
             width: 100%;
@@ -89,7 +88,7 @@
             <!--顶部-->
             <div class="TitleBar">
                 <div class="Title">
-                    <span class="text1">操作名称</span>
+                    <span class="text1">组织：区域</span>
                     <a href="###" class="help"></a>
                 </div>
             </div>
@@ -107,7 +106,7 @@
                 <!--切换按钮-->
     <div class="TabBar">
         <a class="Button ButtonIcon SelectedState">
-            <span class="Text">一般的</span>
+            <span class="Text">常规</span>
         </a>
         <a class="Button ButtonIcon">
             <span class="Text">小时</span>
@@ -462,8 +461,13 @@
         $(".time").on("click",function(){
             var NowData=new Date();
             console.log(NowData);
-            var str='';
-            str=NowData.getHours()+':'+NowData.getMinutes();
+            var str = '';
+            var k = NowData.getMinutes();
+            if (k < 10) {
+                str = NowData.getHours() + ':0' + k;
+            } else {
+                str = NowData.getHours() + ':' + k; 
+            } 
             $(this).prev().val(str);
         });
     </script>

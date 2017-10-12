@@ -13,7 +13,7 @@
     <div class="TitleBar">
         <div class="Title">
             <span class="text1">报价模板</span>
-            <span class="text2">- burberryquotetemplate</span>
+            <span class="text2">- <%=qtb.GetQuoteTemplate(id).name %></span>
             <a href="###" class="help"></a>
         </div>
     </div>

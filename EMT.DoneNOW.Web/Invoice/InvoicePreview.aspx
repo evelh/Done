@@ -341,10 +341,16 @@
             height: 24px;
         }
     </style>
+    <style media="print">
+    @page {
+      size: auto;  /* auto is the initial value */
+      margin: 0mm; /* this affects the margin in the printer settings */
+    }
+</style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
+        <div id="thisTitle">
             <div class="TitleBar">
                 <div class="Title">
                     <span class="text1">发票预览</span>
@@ -365,7 +371,7 @@
                             <img src="../Images/dropdown.png" class="ButtonRightImg">
                         </a>
                     </li>
-                    <li>
+                    <li onclick="processAll()">
                         <a id="ProcessBar">
                             <span class="Text">处理全部</span>
                         </a>
@@ -424,7 +430,7 @@
                             <tr class="DropDownMenuItemSeparator">
                                 <td class="DropDownMenuItemTextSeparator"></td>
                             </tr>
-                            <tr class="DropDownMenuItem">
+                            <tr class="DropDownMenuItem" onclick="Print()">
                                 <td class="DropDownMenuItemText">&nbsp;&nbsp;This Invoice</td>
                             </tr>
                             <tr style="height: 8px;">
@@ -432,6 +438,7 @@
                             </tr>
                             <tr class="DropDownMenuItem">
                                 <td class="DropDownMenuItemHeaderText">
+                                    <asp:Button ID="ConToPdf" runat="server" Text="转化为PDF格式<" OnClick="ConToPdf_Click" />
                                     <span class="DropDownMenuSectionHeaderText">转化为PDF格式</span>
                                     <span class="FieldLevelInstructions">(view, print, or save)</span>
                                 </td>
@@ -455,14 +462,14 @@
                                 <td class="DropDownMenuItemTextSeparator"></td>
                             </tr>
                             <tr class="DropDownMenuItem">
-                                <td class="DropDownMenuItemText">&nbsp;&nbsp;Un-Post</td>
+                                <td class="DropDownMenuItemText" onclick="UnPost()">&nbsp;&nbsp;撤销审批</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <div style="position: absolute; left: 10px; overflow-y: auto; right: 10px; top: 112px; bottom: 0px;">
+        <div id="thisDiv" style="position: absolute; left: 10px; overflow-y: auto; right: 10px; top: 112px; bottom: 0px;">
             <!--水印-->
             <div class="PreviewInvoice_OuterTextOverlay">
                 <div class="PreviewInvoice_TextOverlay">
@@ -496,6 +503,7 @@
             </asp:UpdatePanel>--%>
             <asp:Literal ID="table" runat="server"></asp:Literal>
         </div>
+        <input type="hidden" id="thisAccDedIds" runat="server"/>
     </form>
 </body>
 </html>
@@ -531,12 +539,19 @@
 
 
     $(function () {
+        
         <% if (isInvoice)
     {%>
         $("#invoice_temp_id").css("display", "none"); // ProcessBar
         $("#ProcessBar").css("display", "none");
         $(".PreviewInvoice_TextOverlay").hide();
         <%} %>
+
+        <%if (!string.IsNullOrEmpty(isPrint)){ %>
+        $("#thisDiv").css("overflow-y", "visible");
+        $("#thisTitle").hide();
+        <%}%>
+
     })
 
     // 页面参数改变更新页面
@@ -557,5 +572,110 @@
         }
     }
 
+    // 处理全部发票--注意开始时间和结束时间没有不进行处理
+    function processAll() {
+        var thisAccDedIds = $("#thisAccDedIds").val();
+        var startDate = '<%=itemStartDatePara %>';
+        var endDate = '<%=itemEndDatePara %>';
+        var invTempId = $("#invoice_temp_id").val();
+        var invoiceDate = '<%=invoiceDate %>';
+        var purNo = '<%=purchaseNo %>';
+        var notes = '<%=notes %>';
+        var pay_term = '<%=pay_term %>';
+        if (thisAccDedIds == "") {
+            alert("当前暂无条目");
+            return false;
+        }
+        if (invTempId == undefined || invTempId == '0' || invTempId == "") {
+            alert('请选择发票模板');
+            return false;
+        }
+        $.ajax({
+            type: "GET",
+            async: false,
+            // dataType: "json",
+            url: "../Tools/ContractAjax.ashx?act=processAll&thisAccDedIds=" + thisAccDedIds + "&startDate=" + startDate + "&endDate=" + endDate + "&invTempId=" + invTempId + "&invoiceDate=" + invoiceDate + "&purNo=" + purNo + "&notes=" + notes + "&pay_term=" + pay_term,
+            success: function (data) {
+                if (data == 'True') {
+                    alert('处理成功');
+                } else {
+                    alert('处理失败');
+                }
+                window.close();
+                self.opener.location.reload();
+            },
+        });
+    }
+    // 撤销审批
+    function UnPost() {
+        var thisAccDedIds = $("#thisAccDedIds").val();
+        if (thisAccDedIds == "") {
+            alert("当前暂无条目");
+            return false;
+        }
+        $.ajax({
+            type: "GET",
+            async: false,
+            // dataType: "json",
+            url: "../Tools/ReverseAjax.ashx?act=UnPostAll&ids=" + thisAccDedIds ,
+            success: function (data) {
+                if (data != "") {
+                    alert("撤销审批成功");
+                }
+                window.close();
+                self.opener.location.reload();
+            },
+        });
+    }
+
+    function Print()
+    {
+        // overflow-y
+        $("#thisTitle").hide();
+        $("#thisDiv").css("overflow-y", "");
+        if (getExplorer() == "IE") {
+            pagesetup_null();
+        }
+        window.print();
+        $("#thisDiv").css("overflow-y", "auto");
+        $("#thisTitle").show();
+    }
+
+
+    function pagesetup_null() {
+        var hkey_root, hkey_path, hkey_key;
+        hkey_root = "HKEY_CURRENT_USER";
+        hkey_path = "\\Software\\Microsoft\\Internet Explorer\\PageSetup\\";
+        try {
+            var RegWsh = new ActiveXObject("WScript.Shell");
+            hkey_key = "header";
+            RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "");
+            hkey_key = "footer";
+            RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "");
+        } catch (e) { }
+    }
+    function getExplorer() {
+        var explorer = window.navigator.userAgent;
+        //ie 
+        if (explorer.indexOf("MSIE") >= 0) {
+            return "IE";
+        }
+        //firefox 
+        else if (explorer.indexOf("Firefox") >= 0) {
+            return "Firefox";
+        }
+        //Chrome
+        else if (explorer.indexOf("Chrome") >= 0) {
+            return "Chrome";
+        }
+        //Opera
+        else if (explorer.indexOf("Opera") >= 0) {
+            return "Opera";
+        }
+        //Safari
+        else if (explorer.indexOf("Safari") >= 0) {
+            return "Safari";
+        }
+    }
 
 </script>

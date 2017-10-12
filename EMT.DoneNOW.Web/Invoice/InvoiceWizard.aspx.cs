@@ -357,12 +357,19 @@ namespace EMT.DoneNOW.Web.Invoice
                 // 根据页面选择，展示不同的显示--暂时只支持打印预览
                 if (param.isShowPrint)
                 {
-
+                    if (param.invoice_batch != 0)
+                    {
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('向导完成！');window.close(); self.opener.location.reload();window.open('InvoicePreview?isInvoice=1&inv_batch=" + param.invoice_batch + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREVIEW + "','left= 200, top = 200, width = 960, height = 750', false); </script>");
+                    }
+                }
+                else
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('向导完成！');window.close(); self.opener.location.reload(); </script>");
                 }
             }
             else
             {
-
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('向导失败！');window.close(); self.opener.location.reload(); </script>");
             }
         }
     }
