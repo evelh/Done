@@ -732,6 +732,7 @@
     <Content Include="SysSetting\SysUserAdd.aspx" />
     <Content Include="SysSetting\SysUserEdit.aspx" />
     <Content Include="SysSetting\SysUserSecurityLevel.aspx" />
+    <Content Include="SysSetting\TaskLibrary.aspx" />
     <Content Include="SysSetting\TerritortAddAccount.aspx" />
     <Content Include="SysSetting\WorkType.aspx" />
     <Content Include="ViewSwitcher.ascx" />
@@ -1582,6 +1583,13 @@
     </Compile>
     <Compile Include="SysSetting\SysUserSecurityLevel.aspx.designer.cs">
       <DependentUpon>SysUserSecurityLevel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\TaskLibrary.aspx.cs">
+      <DependentUpon>TaskLibrary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\TaskLibrary.aspx.designer.cs">
+      <DependentUpon>TaskLibrary.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\TerritortAddAccount.aspx.cs">
       <DependentUpon>TerritortAddAccount.aspx</DependentUpon>

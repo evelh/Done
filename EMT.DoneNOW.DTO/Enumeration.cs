@@ -51,6 +51,8 @@ namespace EMT.DoneNOW.DTO
         LIMIT_TYPE = 76,                         //系统权限：类型 取值 有无、全部部分 等
         LIMIT_TYPE_VALUE = 77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
         MATERIAL_CODE_TO_USE = 80,              // 系统管理：系统配置：配送报价项转为账单时使用的物料代码
+        LINE_OF_BUSINESS=95,                    //系统管理：组织：业务条线
+        COST_CODE_CATE=106,                     //产品：成本种类
         INSTALLED_PRODUCT_CATE = 108,           // 配置项种类
         LICENSE_TYPE = 109,                      //安全等级：授权类型
         QUOTE_GROUP_BY = 110,                    // 报价分组条件
@@ -61,7 +63,9 @@ namespace EMT.DoneNOW.DTO
         CONTRACT_MILESTONE=117,                  //合同里程碑
         BILL_POST_TYPE = 118,                   // 合同：工时计费设置
         ACCOUNT_DEDUCTION_TYPE=121,              //审批并提交操作类型
-        INVOICE_TEMPLATE_BODY_GROUP_BY=141,      //发票模板主体-分组条件
+        PROJECT_STATUS=124,                       //项目：项目状态
+        TASK_TYPE=130,                            //任务类型
+        INVOICE_TEMPLATE_BODY_GROUP_BY =141,      //发票模板主体-分组条件
         INVOICE_TEMPLATE_BODY_ITEMIZE =142,      //发票模板主体-逐项列出
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
     }
@@ -478,10 +482,19 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_BLOCK_TICKET = 1522,           // 合同管理-事件查询
             CONFIGSUBSCRIPTION =1523,              // 配置项中的订阅管理 
             PROJECTCALLBACK=1524,                  // 项目的查找带回
+
+            //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
             APPROVE_LABOUR,                //工时审批
             APPROVE_EXPENSE,               //费用审批
+            General,                       //general表的通用处理
+            Line_Of_Business,              //系统管理：组织：业务条线
+            Project_Status,                 //项目：项目状态
+            Task_Type,                       //任务类型
+            Payment_Term,                    //付款期限
+            Payment_Type,                    //付款类型
+            Payment_Ship_Type,               //配送类型
         }
 
         /// <summary>
@@ -866,12 +879,18 @@ namespace EMT.DoneNOW.DTO
         ContractBlockTicket = 92,           // 合同管理-事件查询
         CONFIGSUBSCRIPTION = 93,           // 配置项界面订阅管理
 
+        //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
         REVOKE_EXPENSE,                //撤销费用审批      
         APPROVE_LABOUR,                //工时审批
         APPROVE_EXPENSE,               //费用审批            
-       
-       
+        General,                       //general表的通用处理
+        Line_Of_Business,              //系统管理：组织：业务条线
+        Project_Status,                 //项目：项目状态
+        Task_Type,                       //任务类型
+        Payment_Term,                    //付款期限
+        Payment_Type,                    //付款类型
+        Payment_Ship_Type,               //配送类型
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -1009,5 +1028,8 @@ namespace EMT.DoneNOW.DTO
         INVOICE_PROCESS = 402,                 // 发票处理
         INVOICE_WIZARD = 403,                  // 发票向导
         INVOICE_PREVIEW = 404,                 // 发票预览
+
+        GeneralAddAndEdit=410,                         //general表的新增和修改
+        GeneralJs=411,                                 //注册js语句
     }
 }
