@@ -1695,7 +1695,7 @@ namespace EMT.DoneNOW.Web
                                 sum += (double)((ii.unit_price - ii.unit_discount) * ii.quantity);
                             }
                         }
-                        sum = sum * (double)decimal.Round(discpre,2);
+                        sum = sum * (double)discpre;
                         ////统计税收
                         //if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
                         //{
@@ -1881,7 +1881,7 @@ namespace EMT.DoneNOW.Web
                                 sum += (double)((ii.unit_price - ii.unit_discount) * ii.quantity);
                             }
                         }
-                        sum = sum * (double)decimal.Round(discpre,2);
+                        sum = sum * (double)discpre;
                         //统计税收
                         if (taxt_item_sum.ContainsKey(Convert.ToInt32(tax_item.Key)))
                         {
@@ -2022,7 +2022,7 @@ namespace EMT.DoneNOW.Web
             if (showstyle.Contains(1))//判断是否每个期间类型分开计算税额
             {
                 //可选项
-                total.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + (Super_toatl - Super_tax_total) + "</strong></td></tr>");
+                total.Append("<tr><td style='text-align: Right;' class='bord' colspan=" + (colsum - 1) + "><strong>" + ttd.Subtotal + "</strong></td><td style='text-align: Right;' class='bord'><strong>" + decimal.Round((decimal)(Super_toatl - Super_tax_total),2) + "</strong></td></tr>");
                 if (showstyle.Contains(2))
                 {
                     //汇总说有税收
