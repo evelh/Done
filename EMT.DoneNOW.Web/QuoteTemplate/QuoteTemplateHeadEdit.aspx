@@ -69,21 +69,22 @@
                          <asp:Literal ID="VariableList" runat="server"></asp:Literal>
                     </select>
              </ContentTemplate>
-         </asp:UpdatePanel>   
-                    
-
+         </asp:UpdatePanel> 
                 </div>
             </div>
         </div>
     </div>
     <!--黑色幕布-->
     <div id="BackgroundOverLay"></div>
-</form>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <%-- <script type="text/javascript" src="../RichText/js/jquery-3.2.1.min.js"></script>--%>
     <script type="text/javascript" src="../RichText/js/ueditor.config.js"></script>
     <script type="text/javascript" src="../RichText/js/ueditor.all.js"></script>
     <script>
+        function View() {
+            alert("lll");
+        }
+
         $("#OkButton").on("mouseover", function () {
             $("#OkButton").css("background", "#fff");
         })
@@ -123,13 +124,19 @@
             });
         });
 
-        function dbclick(e, val) {
+        function dbclick(val) {
             UE.getEditor('containerHead').focus();
             UE.getEditor('containerHead').execCommand('inserthtml', $(val).html());
             $("#BackgroundOverLay").hide();
             $(".AlertBox").hide();
         }
-
+        function bindkk() {
+            $(".bind").each(function () {
+                $(this).click(function () {
+                    alert("nihao");
+                });
+            });
+        }
 
         //  点击确定数据保存至后台  在展示页展示
         $("#OkButton1").on("click", function () {
@@ -145,5 +152,6 @@
         });--%>
 
     </script>
+        </form>
 </body>
 </html>

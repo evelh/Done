@@ -324,7 +324,7 @@
     </div>
     <div class="TabContainer" style="display: none;">
             <div class="cont" style="margin-top:15px;">
-                <iframe id="PageFrame22" name="PageFrame22" style="width:100%;height:auto" src="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>&id=<%=product.id %>"></iframe>
+                <iframe id="PageFrame22" name="PageFrame22" style="width:100%;height:auto" src="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>&id=<%=product.id %>&type=50"></iframe>
             </div>
     </div>
         </div>
@@ -699,7 +699,7 @@
                 window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CATE_CALLBACK %>&field=accCallBack&callBack=GetProductCate", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductCata %>', 'left=200,top=200,width=600,height=800', false);
             }
             function OpenWindowMaterialCode() {
-                window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=kkCallBack&callBack=GetProductCate", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.MaterialCode %>', 'left=200,top=200,width=600,height=800', false);
+                window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MATERIAL_COST_CODE %>&field=kkCallBack&callBack=GetProductCate", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CostCodeSelect %>', 'left=200,top=200,width=600,height=800', false);
             }
             function GetProductCate() {
             }
