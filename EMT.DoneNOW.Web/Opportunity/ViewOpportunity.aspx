@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" style="margin:0;">
 
         <%
             var defaultLocation = locationBLL.GetLocationByAccountId(account.id);
@@ -344,7 +344,7 @@
             </div>
 
             <div id="ShowOpportunity_Right" style="float: left; margin-left: 0px;width:100%;" class="activityTitleright f1">
-                <iframe runat="server" id="viewOpportunity_iframe" width="100%;" height="100%" frameborder="0" marginheight="0" marginwidth="0" style="height:800px;"></iframe>
+                <iframe runat="server" id="viewOpportunity_iframe" width="100%;" height="100%" frameborder="0" marginheight="0" marginwidth="0"></iframe>
             </div>
         </div>
     </form>
@@ -384,4 +384,11 @@
     $(".alt").on("click", function () {
          alert("暂未实现");
     })
+     //iframe大小
+    $(window).resize(function () {
+        var Height = $(window).height() - 95 + "px";
+        $("#viewOpportunity_iframe").css("height", Height);
+    })
+    var Height = $(window).height() - 95 + "px";
+    $("#viewOpportunity_iframe").css("height", Height);
 </script>

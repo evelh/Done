@@ -13,7 +13,7 @@ ul,ul li{margin: 0;padding: 0;}
 .content tr {} 
 .boders{border: 1px solid #000000;border-bottom: 1px solid #FFFFFF !important;}    
 .header-title{width: 100%;margin:10px;width: auto;height: 30px;}
-.header-title ul li{position: relative;height:30px;line-height:30px; padding: 0 10px;float: left;margin-right: 10px;border: 1px solid #CCCCCC;cursor:pointer;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);}
+.header-title ul li{position: relative;height:27px;line-height:27px; padding: 0 10px;float: left;margin-right: 10px;border: 1px solid #CCCCCC;cursor:pointer;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);}
 .header-title ul li input{height:28px;line-height:28px;}
 .header-title ul li:hover ul{display: block;}
 .header-title ul li .icon-1{width: 16px;height:16px;display: block;float: left;margin-top: 7px;margin-right: 5px;}
