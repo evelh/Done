@@ -562,6 +562,9 @@
         function Edit() {
             OpenWindow("../QuoteTemplate/QuoteTemplateEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteTemplateEdit %>');
         }
+        function View(id) {
+            OpenWindow("../QuoteTemplate/QuoteTemplateEdit.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteTemplateEdit %>');
+         }
         function Copy() {
             $.ajax({
                 type: "GET",
@@ -2461,7 +2464,7 @@
             OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplateAttr %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function View(id) {
-            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplateAttr %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            OpenWindow("../InvoiceTemplate/InvoiceTempEdit.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Edit() {
             OpenWindow("../InvoiceTemplate/InvoiceTempEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);

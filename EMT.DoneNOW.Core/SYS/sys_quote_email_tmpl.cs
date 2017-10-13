@@ -46,6 +46,10 @@ namespace EMT.DoneNOW.Core
         public String text_body { get; set; }
         [DataMember]
         public SByte is_system_default { get; set; }
+        [DataMember]
+        public SByte? email_attached_pdf { get; set; }
+        [DataMember]
+        public SByte? cate_id { get; set; }
 
 
     }
