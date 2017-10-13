@@ -240,6 +240,7 @@ window.onload=function () {
         $(".Workspace").hide();
         $(".Workspace9").show();
         $("#currentPage").val(9);
+        self.opener.location.reload();
         return;
     }
     if (contractType == 0) {

@@ -3377,10 +3377,10 @@
          }
          <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
          function AddService() {
-           window.open('../Contract/AddService.aspx?type=1&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+           window.open('../Contract/AddService.aspx?type=1&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=710,height=524', false);
            }
          function AddServiceBundle() {
-           window.open('../Contract/AddService.aspx?type=2&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+           window.open('../Contract/AddService.aspx?type=2&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=710,height=524', false);
            }
          function ApplyDiscount() {
            }
