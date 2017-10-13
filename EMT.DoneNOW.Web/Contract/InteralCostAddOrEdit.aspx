@@ -117,6 +117,10 @@ td {
 .FieldLabels img{
     cursor: pointer;
 }
+.FieldLabels div{
+    padding-top:3px;
+    padding-bottom:20px;
+}
 .errorSmall {
     font-size: 12px;
     color: #E51937;
@@ -174,13 +178,6 @@ a:link, a:visited, .dataGridBody a:link, .dataGridBody a:visited {
 .DivSection td{
   margin-top:5px;
 }
-
-
-
-
-
-
-
   </style>
 </head>
 <body>
@@ -195,7 +192,7 @@ a:link, a:visited, .dataGridBody a:link, .dataGridBody a:visited {
       <ul id="btn">
         <li class="Button ButtonIcon NormalState" id="OkButton" tabindex="0">
           <span class="Icon Ok"></span>
-          <span class="Text"><asp:Button ID="save" runat="server" Text="保存" OnClick="save_Click" /></span>
+          <span class="Text"><asp:Button ID="save" runat="server" Text="保存" OnClick="save_Click" style="border:none;background:transparent;outline:none;cursor:pointer;font-weight:bold;color:#666;" /></span>
         </li>
         <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
           <span class="Icon Cancel"></span>

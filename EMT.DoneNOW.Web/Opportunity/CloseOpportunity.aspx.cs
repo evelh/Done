@@ -200,7 +200,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                                 isaddContractServices.Value = "1";
                             }
                         }
-                        proAndOneTimeItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT || _.type_id == (int)QUOTE_ITEM_TYPE.DISCOUNT).ToList();
+                        proAndOneTimeItem = quoteItemList.Where(_=> _.optional != 1).Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT || _.type_id == (int)QUOTE_ITEM_TYPE.DISCOUNT).ToList();
                         if (!IsPostBack)
                         {
                             if (proAndOneTimeItem != null && proAndOneTimeItem.Count > 0)
@@ -213,7 +213,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                                 isIncludePO.Enabled = false;
                             }
                         }
-                        shipItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
+                        shipItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES&&_.optional!=1).ToList();
                         if (!IsPostBack)
                         {
                             if (shipItem != null && shipItem.Count > 0)
@@ -226,7 +226,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                                 isIncludeShip.Enabled = false;
                             }
                         }
-                        degressionItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.DEGRESSION).ToList();
+                        degressionItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.DEGRESSION&_.optional != 1).ToList();
                         if (!IsPostBack)
                         {
                             if (degressionItem != null && degressionItem.Count > 0)
