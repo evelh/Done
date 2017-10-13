@@ -37,11 +37,11 @@ namespace EMT.DoneNOW.Web
                         }
                         if (stage.ext1 != null && Convert.ToInt32(stage.ext1.ToString()) > 0)
                         {
-                            this.Won.Checked = true;
+                            this.Lost.Checked = true;
                         }
                         if (stage.ext2 != null && Convert.ToInt32(stage.ext2.ToString()) > 0)
                         {
-                            this.Lost.Checked = true;
+                            this.Won.Checked = true;
                         }
                         //默认唯一性
                         if (sobll.defulatwonreson(id))
@@ -54,7 +54,6 @@ namespace EMT.DoneNOW.Web
                             this.Lost.Enabled = false;
                             this.loss2.Text = "(当前系统已经存在默认关闭商机原因，不可选！)";
                         }
-
                         if (stage.sort_order != null && !string.IsNullOrEmpty(stage.sort_order.ToString()))
                         {
                             this.Sort_Order.Text = stage.sort_order.ToString();
@@ -94,14 +93,14 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(this.Description.Text.Trim())) {
                 stage.remark = this.Description.Text.Trim().ToString();
             }
-            if (this.Won.Checked)
+            if (this.Lost.Checked)
             {
                 stage.ext1 = "1";
             }
             else {
                 stage.ext1 = "0";
             }
-            if (this.Lost.Checked)
+            if (this.Won.Checked)
             {
                 stage.ext2 = "1";
             }

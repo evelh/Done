@@ -16,7 +16,10 @@
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">新增区域</span>
+            <span class="text1"><%if (id > 0)
+                                    { %>修改区域<%}
+    else
+    { %>新增区域<%} %></span>
             <a href="###" class="help"></a>
         </div>
     </div>

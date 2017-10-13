@@ -15,7 +15,10 @@
             <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">新增商机阶段</span>
+            <span class="text1"><%if (id > 0)
+                                    { %>修改商机阶段<%}
+    else
+    { %>新增商机阶段<%} %></span>
             <a href="###" class="help"></a>
         </div>
     </div>
@@ -54,11 +57,11 @@
                     <td>
                         <div>
                             <asp:CheckBox ID="Won" runat="server" />
-                            丢失商机默认阶段<asp:Label ID="won2" runat="server" Text=""></asp:Label>
+                            丢失商机默认阶段<asp:Label ID="won2" runat="server" Text=""  style="color:red"></asp:Label>
                         </div>
                         <div>
                            <asp:CheckBox ID="Lost" runat="server" />
-                           关闭商机默认阶段<asp:Label ID="loss2" runat="server" Text=""></asp:Label>
+                           关闭商机默认阶段<asp:Label ID="loss2" runat="server" Text="" style="color:red"></asp:Label>
                         </div>
                     </td>
                 </tr>

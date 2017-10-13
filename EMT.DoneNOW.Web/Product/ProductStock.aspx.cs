@@ -36,7 +36,7 @@ namespace EMT.DoneNOW.Web
                         if (ware.warehouse_id != null && !string.IsNullOrEmpty(ware.warehouse_id.ToString()))
                         {
                             string name = probll.Getwarehouse(Convert.ToInt64(ware.warehouse_id)).name;
-                            this.warehouse_id.Items.Insert(0, new ListItem() { Text =name, Selected = true });
+                            this.warehouse_id.Items.Insert(0, new ListItem() { Value="0",Text =name, Selected = true });
                             this.warehouse_id.Enabled = false;
                         }
                         product_id = ware.product_id;
@@ -54,11 +54,15 @@ namespace EMT.DoneNOW.Web
                         }
                     }
                 }
-               if(product_id>0){
+               if(product_id>0&&id<=0){
+                    var list = probll.GetNoWarehouseDownList(product_id);
                     this.warehouse_id.DataTextField = "value";
                     this.warehouse_id.DataValueField = "key";
-                    this.warehouse_id.DataSource = probll.GetNoWarehouseDownList(product_id);
+                    this.warehouse_id.DataSource = list;
                     this.warehouse_id.DataBind();
+                    if (list.Count<=0) {
+                        Response.Write("<script>alert('已存在的仓库都存储该产品，请选择修改库存数量！');window.close();</script>");
+                    }
                 }                
             }
         }

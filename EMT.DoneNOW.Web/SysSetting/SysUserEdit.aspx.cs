@@ -39,48 +39,50 @@ namespace EMT.DoneNOW.Web
                     var userdata = urbll.GetSysUserSingle(id);
                     param.sys_res = resourcedata;
                     param.sys_user = userdata;
-                    if (resourcedata.avatar!=null&&!string.IsNullOrEmpty(resourcedata.avatar.ToString()))
-                    avatarPath = resourcedata.avatar.ToString();
+                    if (resourcedata.avatar != null && !string.IsNullOrEmpty(resourcedata.avatar.ToString()))
+                        avatarPath = resourcedata.avatar.ToString();
                     if (!string.IsNullOrEmpty(resourcedata.date_display_format_id.ToString()))//数据库存在日期格式
-                    this.DateFormat.SelectedValue = resourcedata.date_display_format_id.ToString();
-                    if(!string.IsNullOrEmpty(resourcedata.number_display_format_id.ToString()))//数据库存在数值格式
-                    this.NumberFormat.SelectedValue = resourcedata.number_display_format_id.ToString();
-                    if(!string.IsNullOrEmpty(resourcedata.time_display_format_id.ToString()))//数据库存在时间格式
-                    this.TimeFormat.SelectedValue = resourcedata.time_display_format_id.ToString();
+                        this.DateFormat.SelectedValue = resourcedata.date_display_format_id.ToString();
+                    if (!string.IsNullOrEmpty(resourcedata.number_display_format_id.ToString()))//数据库存在数值格式
+                        this.NumberFormat.SelectedValue = resourcedata.number_display_format_id.ToString();
+                    if (!string.IsNullOrEmpty(resourcedata.time_display_format_id.ToString()))//数据库存在时间格式
+                        this.TimeFormat.SelectedValue = resourcedata.time_display_format_id.ToString();
                     this.first_name.Text = resourcedata.first_name;
                     this.last_name.Text = resourcedata.last_name;
                     this.resource_name.Text = resourcedata.name;
-                    if (resourcedata.title != null) {
+                    if (resourcedata.title != null)
+                    {
                         this.title.Text = resourcedata.title;
                     }
                     if (!string.IsNullOrEmpty(resourcedata.suffix_id.ToString())) //数据库存在称谓
                         this.NameSuffix.SelectedValue = resourcedata.suffix_id.ToString();
                     if (!string.IsNullOrEmpty(resourcedata.sex.ToString()))//数据库存在性别
                         this.Sex.SelectedValue = resourcedata.sex.ToString();
-                    if (resourcedata.location_id!=null&&!string.IsNullOrEmpty(resourcedata.location_id.ToString())) {//办公地址
+                    if (resourcedata.location_id != null && !string.IsNullOrEmpty(resourcedata.location_id.ToString()))
+                    {//办公地址
                         this.Position.SelectedValue = resourcedata.location_id.ToString();
                     }
-                    if (resourcedata.office_phone!=null)//办公电话
+                    if (resourcedata.office_phone != null)//办公电话
                         this.office_phone.Text = resourcedata.office_phone.ToString();
-                    if (resourcedata.home_phone!=null)//家庭电话
+                    if (resourcedata.home_phone != null)//家庭电话
                         this.home_phone.Text = resourcedata.home_phone.ToString();
-                    if (resourcedata.mobile_phone != null&&!string.IsNullOrEmpty(resourcedata.mobile_phone.ToString()))//移动电话
+                    if (resourcedata.mobile_phone != null && !string.IsNullOrEmpty(resourcedata.mobile_phone.ToString()))//移动电话
                         this.mobile_phone.Text = resourcedata.mobile_phone.ToString();
                     this.email.Text = resourcedata.email.ToString();//邮箱地址
-                    this.EmailType.SelectedValue=resourcedata.email_type_id.ToString();//邮箱类型
-                    if (resourcedata.email1!=null&&!string.IsNullOrEmpty(resourcedata.email1.ToString()))//附加邮箱
+                    this.EmailType.SelectedValue = resourcedata.email_type_id.ToString();//邮箱类型
+                    if (resourcedata.email1 != null && !string.IsNullOrEmpty(resourcedata.email1.ToString()))//附加邮箱
                         this.email1.Text = resourcedata.email1.ToString();
-                    if (resourcedata.email2!=null&&!string.IsNullOrEmpty(resourcedata.email2.ToString()))
+                    if (resourcedata.email2 != null && !string.IsNullOrEmpty(resourcedata.email2.ToString()))
                         this.email2.Text = resourcedata.email2.ToString();
-                    if (resourcedata.email1_type_id!=null&&!string.IsNullOrEmpty(resourcedata.email1_type_id.ToString()))//附加邮箱类型
+                    if (resourcedata.email1_type_id != null && !string.IsNullOrEmpty(resourcedata.email1_type_id.ToString()))//附加邮箱类型
                         this.EmailType1.SelectedValue = resourcedata.email1_type_id.ToString();
-                    if (resourcedata.email2_type_id!=null&&!string.IsNullOrEmpty(resourcedata.email2_type_id.ToString()))
+                    if (resourcedata.email2_type_id != null && !string.IsNullOrEmpty(resourcedata.email2_type_id.ToString()))
                         this.EmailType2.SelectedValue = resourcedata.email2_type_id.ToString();
 
                     this.name.Text = userdata.name.ToString();//用户名
                     if (resourcedata.is_active > 0)//是否激活
                         this.ACTIVE.Checked = true;
-                    if (resourcedata.security_level_id!=null&&!string.IsNullOrEmpty(resourcedata.security_level_id.ToString()))//权限级别
+                    if (resourcedata.security_level_id != null && !string.IsNullOrEmpty(resourcedata.security_level_id.ToString()))//权限级别
                         this.Security_Level.SelectedValue = resourcedata.security_level_id.ToString();
                     //this.password.Text = userdata.password.ToString();
                     //this.password2.Text= userdata.password.ToString();
@@ -92,9 +94,12 @@ namespace EMT.DoneNOW.Web
                         this.AllowSendbulkemail.Checked = true;
                     if (resourcedata.is_required_to_submit_timesheets > 0)//不要求用户提交工时表
                         this.IsRequiredtosubmittimesheets.Checked = true;
-                    if (resourcedata.outsource_security_role_type_id!=null&&!string.IsNullOrEmpty(resourcedata.outsource_security_role_type_id.ToString()))//外部权限
+                    if (resourcedata.outsource_security_role_type_id != null && !string.IsNullOrEmpty(resourcedata.outsource_security_role_type_id.ToString()))//外部权限
                         this.Outsource_Security.SelectedValue = resourcedata.outsource_security_role_type_id.ToString();
                 }
+            }
+            else {
+                avatarPath=SavePic();//保存头像
             }
 
         }

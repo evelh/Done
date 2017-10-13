@@ -15,7 +15,10 @@
             <!--顶部-->
             <div class="TitleBar">
                 <div class="Title">
-                    <span class="text1">新增丢失商机原因</span>
+                    <span class="text1"><%if (id > 0)
+                                    { %>修改丢失商机的原因<%}
+    else
+    { %>新增丢失商机的原因<%} %></span>
                     <a href="###" class="help"></a>
                 </div>
             </div>

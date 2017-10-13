@@ -30,6 +30,10 @@ namespace EMT.DoneNOW.Web.SysSetting
                 //下拉框
                 Bind();
             }
+            else
+            {
+                avatarPath = SavePic();//保存头像
+            }
         }
 
         private void Bind()
