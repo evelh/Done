@@ -1210,7 +1210,7 @@ namespace EMT.DoneNOW.BLL
                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                 project_id = project_id,
                                 contract_id = contract_id,
-                                sub_cate_id = (int)sub_cate,
+                                sub_cate_id = (int)subCateid,
                             };
                             cccDal.Insert(taxCost);
                             ids += taxCost.id.ToString() + ",";
@@ -1251,6 +1251,7 @@ namespace EMT.DoneNOW.BLL
                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                 project_id = project_id,
                                 contract_id = contract_id,
+                                sub_cate_id = subCateid,
                             };
                             cccDal.Insert(noTaxCost);
                             ids += noTaxCost.id.ToString() + ",";
