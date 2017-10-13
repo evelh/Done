@@ -486,7 +486,7 @@
             OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '_blank');
         }
         function AddQuote() {
-            window.open("../Quote/QuoteAddAndUpdate.aspx",'<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>', 'left=0,top=0,location=no,status=no,width=750,height=750', false);
+            window.open("../Quote/QuoteAddAndUpdate.aspx",'<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>', 'left=0,top=0,width=750,height=750', false);
         }
         function DeleteOpp() {
             $.ajax({

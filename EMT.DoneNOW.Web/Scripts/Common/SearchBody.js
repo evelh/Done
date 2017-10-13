@@ -53,7 +53,7 @@ document.onclick = function () {
 }
 
 function OpenWindow(winname,target) {
-    window.open(winname, target, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+    window.open(winname, target, 'left=0,top=0,width=900,height=750,resizable=yes', false);
     //window.open(winname, "_blank", "toolbar=yes, location=yes,directories=no,status=no, menubar=yes, scrollbars=yes,resizable=no, copyhistory=yes, width=600, height=600,top=150,left=300")
 }
 
