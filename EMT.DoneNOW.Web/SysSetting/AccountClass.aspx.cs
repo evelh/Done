@@ -20,22 +20,22 @@ namespace EMT.DoneNOW.Web
         {
             id = Convert.ToInt64(Request.QueryString["id"]);
             //id = 16;测试
+            if (id > 0) {
+                //获取id对象，再进行修改
+                dac = acbll.GetSingel(id);
+                if (dac == null)
+                {
+                    Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
+                }
+                if (dac.icon_path != null && !string.IsNullOrEmpty(dac.icon_path.ToString()))
+                {
+                    avatarPath = dac.icon_path.ToString();
+                }
+            }
             if (!IsPostBack) {
                 if (id > 0)
                 {
-                    //获取id对象，再进行修改
-                    dac = acbll.GetSingel(id);
-                    if (dac == null)
-                    {
-                        Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
-                    }
-                    else
-                    {
-                        this.Name.Text = dac.name;
-                        if (dac.icon_path != null && !string.IsNullOrEmpty(dac.icon_path.ToString()))
-                        {
-                            avatarPath = dac.icon_path.ToString();
-                        }
+                        this.Name.Text = dac.name;                       
                         if (dac.status_id != null && Convert.ToInt32(dac.status_id) > 0)
                         {
                             this.Active.Checked = true;
@@ -48,7 +48,6 @@ namespace EMT.DoneNOW.Web
                         {
                             this.Description.Text = dac.remark.ToString();
                         }
-                    }
                 }
                 else {
                     this.Active.Checked = true;

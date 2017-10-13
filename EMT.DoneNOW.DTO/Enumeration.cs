@@ -1033,5 +1033,7 @@ namespace EMT.DoneNOW.DTO
 
         GeneralAddAndEdit=410,                         //general表的新增和修改
         GeneralJs=411,                                 //注册js语句
+
+        QuoteBodyItem=420,                             //打开报价模板编辑
     }
 }

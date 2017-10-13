@@ -70,10 +70,18 @@ namespace EMT.DoneNOW.Web
                     this.Cost_Code.Visible = true;
                     this.Save_New.Visible = true;                   
                     break;
-                default: break;
+                default: Response.Write("<script>alert('获取相关信息失败，返回上一页');window.close();</script>"); break;
             }
             if (!IsPostBack)
             {
+                if (type == (long)QueryType.Payment_Ship_Type)
+                {
+                    Cost_Code.DataTextField = "value";
+                    Cost_Code.DataValueField = "key";
+                    Cost_Code.DataSource = gbll.GetCodeList();
+                    Cost_Code.DataBind();
+                    Cost_Code.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                }
                 this.Active.Checked = true;
                 if (id > 0)//修改
                 {
@@ -113,11 +121,6 @@ namespace EMT.DoneNOW.Web
                         }
                         if (type == (long)QueryType.Payment_Ship_Type)
                         {
-                            Cost_Code.DataTextField = "value";
-                            Cost_Code.DataValueField = "key";
-                            Cost_Code.DataSource = gbll.GetCodeList();
-                            Cost_Code.DataBind();
-                            Cost_Code.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                             int co;
                             if (int.TryParse(general.ext1, out co))
                             {
@@ -132,6 +135,9 @@ namespace EMT.DoneNOW.Web
                     {
                         Response.Write("<script>alert('获取相关信息失败，返回上一页');window.close();</script>");
                     }
+                }
+                else {
+                   
                 }
             }
             else {

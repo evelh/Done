@@ -123,7 +123,7 @@
             });
         });
 
-        function dbclick(val) {
+        function dbclick(e, val) {
             UE.getEditor('containerHead').focus();
             UE.getEditor('containerHead').execCommand('inserthtml', $(val).html());
             $("#BackgroundOverLay").hide();

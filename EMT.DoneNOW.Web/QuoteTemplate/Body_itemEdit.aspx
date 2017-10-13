@@ -13,7 +13,7 @@
     <div class="TitleBar">
         <div class="Title">
             <span class="text1">编辑项目列：服务或捆绑</span>
-            <span class="text2">- burberryquotetemplate</span>
+            <span class="text2"></span>
             <a href="###" class="help"></a>
         </div>
     </div>

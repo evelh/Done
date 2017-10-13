@@ -1732,6 +1732,9 @@
                             alert("系统状态不能删除！");
                         } else if (data == "other") {
                             alert("其他原因使得删除失败！");
+                        } else if (data=="success"){
+                            alert("删除成功！");
+                            history.go(0);
                         } else {
                             alert(data);
                             history.go(0);

@@ -654,7 +654,7 @@ $(".Edit").on("click", function () {
           //  var i = $(this).index();
             a = $('.Edit').index(this);
            var item = $(".Display_Format").eq(a).text();
-           var returnValue = window.open('Body_itemEdit.aspx?item=' + item, window, 'dialogWidth=800px;dialogHeight=600px;status=no');
+           var returnValue = window.open('Body_itemEdit.aspx?item=' + item, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteBodyItem%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
            return a;
             //if (returnValue !== "" && returnValue !== undefined) {
             //    //处理子窗口的返回值

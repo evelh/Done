@@ -13,7 +13,17 @@
             <asp:CheckBox ID="Active" runat="server" />激活
             <br />
             下拉框
-            <asp:DropDownList ID="VariableList" runat="server"></asp:DropDownList>
+           <asp:ScriptManager ID="ScriptManager1" runat="server">
+         </asp:ScriptManager>
+         <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">
+             <ContentTemplate>
+              <asp:DropDownList ID="AlertVariableFilter" runat="server" OnSelectedIndexChanged="AlertVariableFilter_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>              
+                 <select name="" multiple="multiple" id="AlertVariableList">
+                         <asp:Literal ID="VariableList" runat="server"></asp:Literal>
+                    </select>
+             </ContentTemplate>
+         </asp:UpdatePanel>  
+
         </div>
     </form>
 </body>
