@@ -64,7 +64,7 @@
                       <td class="FieldLabels">
                         <label><%=udf.name %></label>
                         <div>
-                           <input onclick="WdatePicker()" type="text" value="<%=udfValue %>" name="<%=udf.id %>" class="sl_cdt" />
+                           <input onclick="WdatePicker()" type="text" value="<%=udfValue %>" name="<%=udf.id %>" class="Wdate" />
                         </div>
                       </td>
                     </tr>
@@ -103,5 +103,7 @@
       </div>
     </div>
   </form>
+  <script type="text/javascript" src="../Scripts/jquery-3.1.0.min.js"></script>
+  <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 </body>
 </html>

@@ -270,7 +270,7 @@
             font-size: 12px;
             font-weight: bold;
             line-height: 26px;
-            padding: 0 1px 0 3px;
+            padding: 0 5px 0 3px;
             color: #4F4F4F;
             vertical-align: top;
         }
@@ -354,7 +354,6 @@
                 font-size: 12px;
                 color: #333;
             }
-
         .Workspace div {
             padding-bottom: 21px;
         }
@@ -541,7 +540,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width: 97%;">
+            <div class="ButtonBar WizardButtonBar" style="width: 96%;">
                 <ul>
                     <!--上一层-->
                     <li style="display: none;" id="a1">
@@ -576,7 +575,7 @@
         <!--第二页-->
         <div class="Workspace Workspace2" style="display: none;">
             <div class="PageInstructions">请选择该向导即将进行的操作</div>
-            <div>
+            <div style="width:100%;position:fixed;top: 70px; bottom:60px;overflow-y:auto;">
                 <div class="DivSectionWithHeader">
                     <div class="Heading">
                         <span class="Text">激活/创建</span>
@@ -876,7 +875,8 @@
                     </div>
                 </div>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width: 97%;">
+        
+            <div class="ButtonBar WizardButtonBar" style="width: 96%;">
                 <ul>
                     <!--上一层-->
                     <li id="a2">
@@ -966,7 +966,7 @@
                     </tbody>
                 </table>
             </div>--%>
-            <div class="ButtonBar WizardButtonBar" style="width: 97%;">
+            <div class="ButtonBar WizardButtonBar" style="width: 96%;">
                 <ul>
                     <!--上一层-->
                     <li id="a3">
@@ -1089,7 +1089,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width: 97%;">
+            <div class="ButtonBar WizardButtonBar" style="width: 96%;">
                 <ul>
                     <!--上一层-->
                     <li id="a4">
@@ -1179,7 +1179,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width: 97%;">
+            <div class="ButtonBar WizardButtonBar" style="width: 96%;">
                 <ul>
                     <!--上一层-->
                     <li id="a5">
@@ -1213,7 +1213,7 @@
         </div>
         <!--第六页-->
         <div class="Workspace Workspace6" style="display: none;">
-            <div class="ButtonBar WizardButtonBar" style="width: 97%;">
+            <div class="ButtonBar WizardButtonBar" style="width: 96%;">
                 <ul>
                     <!--上一层-->
                     <li id="a6">
@@ -1267,7 +1267,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width: 97%;">
+            <div class="ButtonBar WizardButtonBar" style="width: 96%;">
                 <ul>
                     <!--上一层-->
                     <li id="a7">
@@ -1285,9 +1285,9 @@
                     </li>
                     <!--完成-->
                     <li class="right" id="c7">
-                        <a class="ImgLink">
-                            <span class="Text">
-                                <asp:Button ID="Finish" runat="server" Text="完成" BorderStyle="None" OnClick="Finish_Click" /></span>
+                        <a class="ImgLink" style="padding:0;">
+                            <span class="Text" style="padding:0;">
+                                <asp:Button ID="Finish" runat="server" Text="完成" BorderStyle="None" OnClick="Finish_Click" style="background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);width:42px;height:24px;cursor:pointer;outline:none;" /></span>
                         </a>
                     </li>
                     <!--关闭-->
@@ -1332,7 +1332,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ButtonBar WizardButtonBar" style="width: 97%;">
+            <div class="ButtonBar WizardButtonBar" style="width: 96%;">
                 <ul>
                     <!--上一层-->
                     <li style="display: none;" id="a8">

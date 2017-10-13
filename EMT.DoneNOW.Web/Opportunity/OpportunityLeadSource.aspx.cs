@@ -34,9 +34,9 @@ namespace EMT.DoneNOW.Web
                         {
                             this.Description.Text = leadsource.remark.ToString();
                         }
-                        if (leadsource.code != null && !string.IsNullOrEmpty(leadsource.code.ToString()))
+                        if (leadsource.sort_order != null && !string.IsNullOrEmpty(leadsource.sort_order.ToString()))
                         {
-                            this.Number.Text = leadsource.code.ToString();
+                            this.Number.Text = leadsource.sort_order.ToString();
                         }
                     }
                 }

@@ -27,8 +27,10 @@
           <span class="Text">取消</span>
         </li>
       </ul>
-      <input type="hidden" name="contract_id" value="<%=contract.id %>" />
+      <input type="hidden" id="contractId" name="contract_id" value="<%=contract.id %>" />
       <input type="hidden" id="object_type" name="object_type" value="<%=objType %>" />
+      <input type="hidden" id="conBgDate" value="<%=contract.start_date.ToString("yyyy-MM-dd") %>" />
+      <input type="hidden" id="conEndDate" value="<%=contract.end_date.ToString("yyyy-MM-dd") %>" />
     </div>
     <div class="DivSection" style="width: 622px;">
       <table border="0">
@@ -49,7 +51,7 @@
                 <span style="font-weight: normal;">(输入一个<%=contract.start_date.ToString("yyyy-MM-dd")+" - "+contract.end_date.ToString("yyyy-MM-dd") %>之间的日期)</span>
               </span>
               <div>
-                <input type="text" onclick="WdatePicker()" value="<%=effDate.ToString("yyyy-MM-dd") %>" name="effective_date" class="Wdate" style="width: 90px;" />
+                <input type="text" onclick="WdatePicker()" value="<%=effDate.ToString("yyyy-MM-dd") %>" id="effDate" name="effective_date" class="Wdate" style="width: 90px;" />
               </div>
             </td>
           </tr>
@@ -111,7 +113,7 @@
                   <span>按比例分配的总价</span>
                 </td>
                 <td align="right">
-                  <input type="text" disabled="disabled" style="width: 320px; text-align: right;"/>
+                  <input type="text" id="adjustPrice" disabled="disabled" style="width: 320px; text-align: right;"/>
                 </td>
               </tr>
               <tr class="dataGridBody">
@@ -130,13 +132,19 @@
   </form>
   <script type="text/javascript" src="../Scripts/jquery-3.1.0.min.js"></script>
   <script type="text/javascript" src="../Scripts/common.js"></script>
+  <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
   <script type="text/javascript">
+    var percent = 0;
     function GetService() {
       requestData("../Tools/ContractAjax.ashx?act=GetService&id=" + $("#ServiceIdHidden").val() + "&type=" + $("#object_type").val(), "", function (data) {
         $("#unit_price").val(data.unit_price);
         $("#total_price").val(data.unit_price * $("#quantity").val());
         $("#unit_cost").val(data.unit_cost);
         $("#total_cost").val(data.unit_cost * $("#quantity").val());
+        requestData("../Tools/ContractAjax.ashx?act=CalcServiceAdjustPercent&contractId=" + $("#contractId").val() + "&date=" + $("#effDate").val(), null, function (data) {
+          percent = data;
+          calcAdjust();
+        })
       })
     }
 
@@ -145,15 +153,89 @@
         alert("请选择<%=serviceName%>");
         return;
       }
+      if ($("#effDate").val() == "") {
+        alert("请选择生效日期");
+        return;
+      }
+      if ($("#unit_price").val() == "") {
+        alert("请输入单价");
+        return;
+      }
+      if ($("#unit_cost").val() == "") {
+        alert("请输入单位成本");
+        return;
+      }
+      if (compareTime($("#conBgDate").val(), $("#effDate").val())) {
+        alert("生效日期应不小于合同开始日期，请重新选择");
+        return;
+      }
+      if (compareTime($("#effDate").val(), $("#conEndDate").val())) {
+        alert("生效日期应不大于合同结束日期，请重新选择");
+        return;
+      }
       if ($("#adjustCost").val() == "") {
         alert("请输入按比例分配的总成本");
         return;
       }
       $("#form1").submit();
     })
+    $("#quantity").change(function () {
+      if (!checkNumInt($("#quantity").val())) {
+        alert("请输入大于0的整数数字");
+        $("#quantity").val('').focus();
+        return;
+      }
+      if ($("#unit_price").val() != "") {
+        $("#total_price").val($("#unit_price").val() * $("#quantity").val());
+        $("#adjustPrice").val(($("#total_price").val() * percent).toFixed(2));
+      }
+      if ($("#unit_cost").val() != "") {
+        $("#total_cost").val($("#unit_cost").val() * $("#quantity").val());
+        $("#adjustCost").val(($("#total_cost").val() * percent).toFixed(2));
+      }
+    })
+    $("#unit_price").change(function () {
+      $("#total_price").val($("#unit_price").val() * $("#quantity").val());
+      $("#adjustPrice").val(($("#total_price").val() * percent).toFixed(2));
+    })
+    $("#unit_cost").change(function () {
+      $("#total_cost").val($("#unit_cost").val() * $("#quantity").val());
+      $("#adjustCost").val(($("#total_cost").val() * percent).toFixed(2));
+    })
+    $("#effDate").blur(function () {
+      if ($("#effDate").val() == "") {
+        return;
+      }
+      if (compareTime($("#conBgDate").val(), $("#effDate").val())) {
+        return;
+      }
+      if (compareTime($("#effDate").val(), $("#conEndDate").val())) {
+        return;
+      }
+      requestData("../Tools/ContractAjax.ashx?act=CalcServiceAdjustPercent&contractId=" + $("#contractId").val() + "&date=" + $("#effDate").val(), null, function (data) {
+        percent = data;
+        calcAdjust();
+      })
+    })
     $("#CancelButton").click(function () {
       window.close();
     })
+    function calcAdjust() {
+      if ($("#unit_price").val() != "") {
+        $("#adjustPrice").val(($("#total_price").val() * percent).toFixed(2));
+      }
+      if ($("#unit_cost").val() != "") {
+        $("#adjustCost").val(($("#total_cost").val() * percent).toFixed(2));
+      }
+    }
+    function checkNumInt(num) {
+      var r = /^\+?[1-9][0-9]*$/;
+      return r.test(num);
+    }
+    function checkNumFloat(num) {
+      var r = /^(\d+)(\.\d+)?$/;
+      return r.test(num);
+    }
   </script>
 </body>
 </html>

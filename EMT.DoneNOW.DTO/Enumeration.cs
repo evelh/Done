@@ -891,6 +891,8 @@ namespace EMT.DoneNOW.DTO
         Payment_Term,                    //付款期限
         Payment_Type,                    //付款类型
         Payment_Ship_Type,               //配送类型
+        Quote_Email_Tmpl,                //报价邮件模板
+        Invoice_Email_Tmpl,              //发票邮件模板
     }
     /// <summary>
     /// 打开新窗口的名称
@@ -1031,5 +1033,7 @@ namespace EMT.DoneNOW.DTO
 
         GeneralAddAndEdit=410,                         //general表的新增和修改
         GeneralJs=411,                                 //注册js语句
+
+        QuoteBodyItem=420,                             //打开报价模板编辑
     }
 }

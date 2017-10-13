@@ -163,6 +163,9 @@ namespace EMT.DoneNOW.Web
                         id = context.Request.QueryString["id"];
                         IsServiceApproveAndPost(context, Convert.ToInt64(id));
                         break;
+                    case "CalcServiceAdjustPercent":
+                        CalcServiceAdjustPercent(context);
+                        break;
                     default:
                         break;
                 }
@@ -665,6 +668,18 @@ namespace EMT.DoneNOW.Web
                 var user = res as sys_user;
                 result = new ContractServiceBLL().IsServiceApproveAndPost(serviceId);
             }
+            context.Response.Write(result);
+        }
+
+        /// <summary>
+        /// 根据生效时间计算生效时间开始的首周期所占整周期的天数百分比(保留4位小数)
+        /// </summary>
+        /// <param name="context"></param>
+        private void CalcServiceAdjustPercent(HttpContext context)
+        {
+            long contractId = long.Parse(context.Request.QueryString["contractId"]);
+            DateTime date = DateTime.Parse(context.Request.QueryString["date"]);
+            var result = new Tools.Serialize().SerializeJson(new ContractServiceBLL().CalcServiceAdjustDatePercent(contractId, date));
             context.Response.Write(result);
         }
 

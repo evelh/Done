@@ -65,7 +65,7 @@
             </ul>
         </div>
         <%--<div class="text warn">eave these fields blank. All fields marked with a “1” apply to the Contact only.</div>--%>
-        <div class="content clear savecontent" style="padding: 0;">
+        <div class="content clear savecontent" style="padding: 0;margin-left:10px;">
             <input type="hidden" id="isHide" runat="server" value="hide" />
             <div class="activityTitleleft fl" id="showGeneralInformation">
                 <%switch (type)
@@ -360,7 +360,7 @@
             </div>
 
             <div id="ShowOpportunity_Right" style="float: left; margin-left: 0px;width:100%;" class="activityTitleright f1">
-                <iframe runat="server" id="viewOpportunity_iframe" width="100%;" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" style="min-height:260px;"></iframe>
+                <iframe runat="server" id="viewOpportunity_iframe" width="100%;" height="100%" frameborder="0" marginheight="0" marginwidth="0" style="height:800px;"></iframe>
             </div>
         </div>
     </form>

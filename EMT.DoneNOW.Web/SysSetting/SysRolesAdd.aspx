@@ -15,7 +15,10 @@
         <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">新增/修改角色</span>
+            <span class="text1"><%if (id > 0)
+                                           { %>修改角色<%}
+    else
+    { %>新增角色<%} %></span>
             <a href="###" class="help"></a>
         </div>
     </div>

@@ -12,7 +12,7 @@ namespace EMT.DoneNOW.Web.SysSetting
 {
     public partial class SysMarket :BasePage
     {
-        private int id = 0;
+        protected  int id = 0;
         protected d_general mark = new d_general();
         protected GeneralBLL smbll = new GeneralBLL();
         protected void Page_Load(object sender, EventArgs e)

@@ -486,7 +486,7 @@
             OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '_blank');
         }
         function AddQuote() {
-            window.open("../Quote/QuoteAddAndUpdate.aspx",'<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>', 'left=0,top=0,location=no,status=no,width=750,height=750', false);
+            window.open("../Quote/QuoteAddAndUpdate.aspx",'<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>', 'left=0,top=0,width=750,height=750', false);
         }
         function DeleteOpp() {
             $.ajax({
@@ -562,6 +562,9 @@
         function Edit() {
             OpenWindow("../QuoteTemplate/QuoteTemplateEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteTemplateEdit %>');
         }
+        function View(id) {
+            OpenWindow("../QuoteTemplate/QuoteTemplateEdit.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteTemplateEdit %>');
+         }
         function Copy() {
             $.ajax({
                 type: "GET",
@@ -1729,6 +1732,9 @@
                             alert("系统状态不能删除！");
                         } else if (data == "other") {
                             alert("其他原因使得删除失败！");
+                        } else if (data=="success"){
+                            alert("删除成功！");
+                            history.go(0);
                         } else {
                             alert(data);
                             history.go(0);
@@ -2461,7 +2467,7 @@
             OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplateAttr %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function View(id) {
-            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplateAttr %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            OpenWindow("../InvoiceTemplate/InvoiceTempEdit.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Edit() {
             OpenWindow("../InvoiceTemplate/InvoiceTempEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
@@ -3377,10 +3383,10 @@
          }
          <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
          function AddService() {
-           window.open('../Contract/AddService.aspx?type=1&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+           window.open('../Contract/AddService.aspx?type=1&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=710,height=524', false);
            }
          function AddServiceBundle() {
-           window.open('../Contract/AddService.aspx?type=2&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+           window.open('../Contract/AddService.aspx?type=2&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=710,height=524', false);
            }
          function ApplyDiscount() {
            }
