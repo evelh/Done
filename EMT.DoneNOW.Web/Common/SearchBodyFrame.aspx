@@ -419,7 +419,7 @@
         }
 
         function ViewCompany() {
-            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '_blank');
+            OpenWindow("../Company/ViewCompany.aspx?id=" + entityid, '_blank');
         }
         function Add() {
             OpenWindow("../Company/AddCompany.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>');
@@ -428,7 +428,7 @@
             OpenWindow("../Company/DeleteCompany.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyDelete %>');
         }
         function View(id) {
-            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + id, '_blank');
+            OpenWindow("../Company/ViewCompany.aspx?id=" + id, '_blank');
         }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contact
@@ -439,10 +439,10 @@
             OpenWindow("../Contact/AddContact.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactEdit %>');
         }
         function ViewContact() {
-            OpenWindow("../Contact/ViewContact.aspx?type=todo&id=" + entityid, '_blank');
+            OpenWindow("../Contact/ViewContact.aspx?id=" + entityid, '_blank');
         }
         function View(id) {
-            OpenWindow("../Contact/ViewContact.aspx?type=todo&id=" + id, '_blank');
+            OpenWindow("../Contact/ViewContact.aspx?id=" + id, '_blank');
         }
         function DeleteContact() {
             $.ajax({
@@ -3383,10 +3383,10 @@
          }
          <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
          function AddService() {
-           window.open('../Contract/AddService.aspx?type=1&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+           window.open('../Contract/AddService.aspx?type=1&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=710,height=524', false);
            }
          function AddServiceBundle() {
-           window.open('../Contract/AddService.aspx?type=2&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+           window.open('../Contract/AddService.aspx?type=2&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=710,height=524', false);
            }
          function ApplyDiscount() {
            }

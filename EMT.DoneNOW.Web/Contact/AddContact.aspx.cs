@@ -199,6 +199,7 @@ namespace EMT.DoneNOW.Web
         {
             var param = new ContactAddAndUpdateDto();
             param.contact = AssembleModel<crm_contact>();
+            param.contact.id = id;
             param.contact.name = param.contact.first_name + param.contact.last_name;
             param.contact.avatar = SavePic();
             param.contact.is_active = active.Checked ? 1 : 0;

@@ -40,7 +40,10 @@ namespace EMT.DoneNOW.Web.Contract
         protected void SaveClose_Click(object sender, EventArgs e)
         {
             int udfId = int.Parse(id.Value);
-            new ContractBLL().EditUdf(long.Parse(contract_id.Value), udfId, Request.Form[udfId.ToString()], Request.Form["description"], GetLoginUserId());
+            string udfValue = null;
+            if (!string.IsNullOrEmpty(Request.Form[udfId.ToString()]))
+                udfValue = Request.Form[udfId.ToString()];
+            new ContractBLL().EditUdf(long.Parse(contract_id.Value), udfId, udfValue, Request.Form["description"], GetLoginUserId());
             var bll = new UserDefinedFieldsBLL();
             var udfList = bll.GetUdf(DTO.DicEnum.UDF_CATE.CONTRACTS);
             udf = udfList.First(f => f.id.Equals(udfId));

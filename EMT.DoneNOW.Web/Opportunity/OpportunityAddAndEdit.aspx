@@ -170,8 +170,14 @@
                                 <td>
                                     <div class="clear">
                                         <label>主要产品</label>
-                                        <input type="text" id="primary_product_id" />
-                                        <input type="hidden" name="primary_product_id" id="primary_product_idHidden" />
+                                        <%  EMT.DoneNOW.Core.ivt_product priProduct = null;
+                                            if ((!isAdd) && opportunity != null && opportunity.primary_product_id != null)
+                                            {
+                                                priProduct = new EMT.DoneNOW.DAL.ivt_product_dal().FindNoDeleteById((long)opportunity.primary_product_id);
+                                            }
+                                            %>
+                                        <input type="text" id="primary_product_id" value="<%=priProduct==null?"":priProduct.name %>"/>
+                                        <input type="hidden" name="primary_product_id" id="primary_product_idHidden" value="<%=priProduct==null?"":priProduct.id.ToString() %>" />
                                         <i onclick="chooseProduct()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
                                     </div>
                                 </td>

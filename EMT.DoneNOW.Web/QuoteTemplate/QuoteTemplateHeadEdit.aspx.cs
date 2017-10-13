@@ -1,4 +1,5 @@
 ﻿using EMT.DoneNOW.BLL;
+using EMT.DoneNOW.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace EMT.DoneNOW.Web
         public int id;
         public string page_head;
         protected QuoteTemplateBLL qtb = new QuoteTemplateBLL();
+        protected List<string> list = new List<string>();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
@@ -31,18 +33,17 @@ namespace EMT.DoneNOW.Web
                 this.AlertVariableFilter.DataSource = new QuoteTemplateBLL().GetVariableField();
                 this.AlertVariableFilter.DataBind();
                 this.AlertVariableFilter.Items.Insert(0, new ListItem() { Value = "0", Text = "显示全部变量", Selected = true });
-               
-
-//
-                var list=new QuoteTemplateBLL().GetAllVariable();
+                // list = new QuoteTemplateBLL().GetAllVariable();
+                //
+                list = new QuoteTemplateBLL().GetAllVariable();
                 StringBuilder sb = new StringBuilder();
-               foreach (string va in list) {
-                    sb.Append("<option class='val' ondblclick='dbclick(this)'>" + va.Replace("'", "") + "</option>");               
-               }
+                foreach (string va in list)
+                {
+                    sb.Append("<option class='val' ondblclick='dbclick(this)'>" + va.Replace("'", "") + "</option>");
+                }
                 this.VariableList.Text = sb.ToString();
+                //Page.ClientScript.RegisterStartupScript(this.GetType(), OpenWindow.GeneralJs.ToString(), @"$('.bind').each(function(){$(this).attachEvent("dblclick",function(){);", true);
             }
-            
-           
         }
 
         protected void Save(object sender, EventArgs e)

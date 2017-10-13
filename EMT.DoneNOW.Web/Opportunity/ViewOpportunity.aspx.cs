@@ -64,7 +64,8 @@ namespace EMT.DoneNOW.Web.Opportunity
                             }
                             else
                             {
-                                Response.Write("<script>if(confirm('商机尚未创建报价，需要现在创建吗?')){window.open(\"../Quote/QuoteAddAndUpdate.aspx?quote_opportunity_id=" + opportunity.id +"\", '"+ (int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect +"', 'left=200,top=200,width=600,height=800', false);}history.go(-1);</script>");
+                                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>if(confirm('商机尚未创建报价，需要现在创建吗?')){window.open('../Quote/QuoteAddAndUpdate.aspx?quote_opportunity_id=" + opportunity.id + "', '" + (int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd + "', 'left=200,top=200,width=960,height=750', false);}</script>");
+                                //Response.Write("<script>debugger;</script>");
                             }
 
                            

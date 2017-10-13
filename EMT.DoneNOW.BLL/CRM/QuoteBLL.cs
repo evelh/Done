@@ -133,6 +133,7 @@ namespace EMT.DoneNOW.BLL
             quote.shipping_type_id = quote.shipping_type_id == 0 ? null : quote.shipping_type_id;
             quote.tax_region_id = quote.tax_region_id == 0 ? null : quote.tax_region_id;
             quote.quote_tmpl_id = quote.quote_tmpl_id == 0 ? null : quote.quote_tmpl_id;
+            quote.project_id = quote.project_id == 0 ? null : quote.project_id;
             _dal.Insert(quote);
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {

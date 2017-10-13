@@ -389,6 +389,33 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 根据生效时间计算生效时间开始的首周期所占整周期的天数百分比(保留4位小数)
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <param name="effDate"></param>
+        /// <returns></returns>
+        public decimal CalcServiceAdjustDatePercent(long contractId,DateTime effDate)
+        {
+            var contract = new ContractBLL().GetContract(contractId);
+            if (effDate < contract.start_date || effDate > contract.end_date)
+                return 0;
+
+            DateTime endDate = GetNextPeriodStart(contract.start_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+            int periodDaysCnt = (endDate - contract.start_date).Days;
+            DateTime startDate = contract.start_date;
+            while(true)
+            {
+                if (endDate.AddDays(-1) >= effDate)
+                    break;
+                startDate = endDate;
+                endDate = GetNextPeriodStart(endDate, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+            }
+            if (effDate == startDate)
+                return 0;
+            return decimal.Round(((decimal)((endDate - effDate).Days) / periodDaysCnt), 4);
+        }
+
+        /// <summary>
         /// 获取下一周期开始时间
         /// </summary>
         /// <param name="start"></param>

@@ -322,7 +322,8 @@ namespace EMT.DoneNOW.Web.Opportunity
                         Response.Write("<script>debugger;window.opener." + callBackFiled + "('" + param.general.name + "','" + id + "');</script>");
 
                     }
-                    Response.Write("<script>alert('添加商机成功！');window.close();window.open('../Quote/QuoteAddAndUpdate?quote_opportunity_id=" + id+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加商机成功！');window.close();window.open('../Quote/QuoteAddAndUpdate?quote_opportunity_id=" + id + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                    //Response.Write("<script></script>");
                     //Response.Write("<script>alert('添加商机成功！');</script>");  //  
                     //Response.Redirect("../Quote/QuoteAddAndUpdate?opportunity_id="+id);
                 }

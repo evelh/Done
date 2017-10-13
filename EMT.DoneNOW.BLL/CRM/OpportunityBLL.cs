@@ -731,7 +731,7 @@ namespace EMT.DoneNOW.BLL
                                         {
                                             id = _dal.GetNextIdCom(),
                                             contract_service_id = conService.id,
-                                            service_id = (long)item.object_id,
+                                            service_id = serID.id,
                                         };
                                         ccsbsDal.Insert(ccsbs);
                                         new sys_oper_log_dal().Insert(new sys_oper_log()
@@ -910,7 +910,7 @@ namespace EMT.DoneNOW.BLL
             }
             else if (param.convertToProject)
             {
-                InsertContract(param.costCodeList, param.opportunity, user, param.contract.id, out ids, priQuote.project_id, null);
+                 InsertContract(param.costCodeList, param.opportunity, user, null, out ids, priQuote.project_id, null);
             }
             else if (param.convertToTicket)
             {
@@ -1210,7 +1210,7 @@ namespace EMT.DoneNOW.BLL
                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                 project_id = project_id,
                                 contract_id = contract_id,
-                                sub_cate_id = (int)sub_cate,
+                                sub_cate_id = (int)subCateid,
                             };
                             cccDal.Insert(taxCost);
                             ids += taxCost.id.ToString() + ",";
@@ -1251,6 +1251,7 @@ namespace EMT.DoneNOW.BLL
                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                 project_id = project_id,
                                 contract_id = contract_id,
+                                sub_cate_id = subCateid,
                             };
                             cccDal.Insert(noTaxCost);
                             ids += noTaxCost.id.ToString() + ",";

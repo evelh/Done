@@ -20,7 +20,7 @@
             var sys_resource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var competition = dic.FirstOrDefault(_ => _.Key == "competition").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var market_segment = dic.FirstOrDefault(_ => _.Key == "market_segment").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
-           //  var district = dic.FirstOrDefault(_ => _.Key == "district").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+            //  var district = dic.FirstOrDefault(_ => _.Key == "district").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var territory = dic.FirstOrDefault(_ => _.Key == "territory").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var company_type = dic.FirstOrDefault(_ => _.Key == "company_type").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var sufix = dic.FirstOrDefault(_ => _.Key == "sufix").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
@@ -51,7 +51,7 @@
                     <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=Subsidiaries">子客户</a></li>
                 </ul>
             </i>
-            客户-<%=account.name %>
+            客户-<%=account.name %>(<%="ID:" + account.oid.ToString() %>)&nbsp;<%=account.is_active == 1 ? "激活" : "未激活" %>&nbsp;<%=account.type_id == null ? "" : company_type.FirstOrDefault(_ => _.val == account.type_id.ToString()).show %>
         </div>
         <div class="header-title">
             <ul>
@@ -73,8 +73,8 @@
                                 { %>
                             <a href="#" onclick="window.open('AddCompany.aspx?parent_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.Subsidiaries %>','left=200,top=200,width=900,height=750', false);">子客户</a>
                             <%}
-                            else
-                            { %>子客户
+                                else
+                                { %>子客户
                             <%} %>
                         </li>
                         <li><a href="#" onclick="window.open('../ConfigurationItem/AddOrEditConfigItem.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.AddInstalledProduct %>','left=200,top=200,width=900,height=750', false);">配置项</a></li>
@@ -110,9 +110,17 @@
             <input type="hidden" id="isHide" runat="server" value="hide" />
             <input type="hidden" id="activitytype" runat="server" value="" />
             <%-- 客户的基本信息 --%>
-            <h1><span id="acType">活动</span>客户-<%=account.name %></h1>
+            <h1><span id="acType">活动</span>-<%=account.name %></h1>
             <div class="address">
-                <label><%=account.name %>(<%="ID:"+account.oid.ToString() %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%=account.type_id==null?"":company_type.FirstOrDefault(_=>_.val==account.type_id.ToString()).show %><%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
+                <label><%=account.name %>  
+                    <%if (account.classification_id != null)
+                        {
+                            var thisClasss = new EMT.DoneNOW.DAL.d_account_classification_dal().FindNoDeleteById((long)account.classification_id);
+                            if (thisClasss != null) { 
+                            %>
+                        <img src="<%=thisClasss.icon_path %>"/>
+                    <%} } %>
+                    <%-- <span>自助服务台图标</span>--%></label>
                 <p>
                     <span><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></span>
                     <span><%=addressdistrict.First(_=>_.val.ToString()==location.province_id.ToString()).show  %></span>

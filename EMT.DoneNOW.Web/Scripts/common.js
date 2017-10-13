@@ -29,6 +29,24 @@ function requestData(url, data, calBackFunction) {
     });
 }
 
+/**
+ * 比较两个日期时间（格式yyyy-MM-dd）
+ * @param time1 时间1
+ * @param time2 时间2
+ * @returns time1大于time2返回true,否则返回false
+ */
+function compareTime(time1, time2) {
+    var arr1 = time1.split("-");
+    var arr2 = time2.split("-");
+    var date1 = new Date(parseInt(arr1[0]), parseInt(arr1[1]) - 1, parseInt(arr1[2]), 0, 0, 0);
+    var date2 = new Date(parseInt(arr2[0]), parseInt(arr2[1]) - 1, parseInt(arr2[2]), 0, 0, 0);
+    if (date1.getTime() > date2.getTime()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 // 校验电话格式
 function checkPhone(str) {
     var re = /^0\d{2,3}-?\d{7,8}$/;

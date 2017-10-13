@@ -219,7 +219,7 @@
                     <td>
                         <div class="clear">
                             <label>备用电话</label>
-                            <input type="text" name="alternate_phone" id="" value="<%=dto.contact.alternate_phone %>" />
+                            <input type="text" name="alternate_phone" id="" value="<%=dto.contact.id==0?account==null?"":account.phone:dto.contact.alternate_phone %>" />
                         </div>
                     </td>
                 </tr>
@@ -435,7 +435,7 @@
                 //    alert("请填写选择地址");                                           // 地址下拉框的必填校验
                 //    return false;
                 //}
-                //var email = $("#email").val();
+                var email = $("#email").val();
                 ////alert(Trim(email,'g'));
                 //if (email != '') {
                 //    if (!checkEmail(email)) {

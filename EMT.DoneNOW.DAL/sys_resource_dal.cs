@@ -22,7 +22,11 @@ namespace EMT.DoneNOW.DAL
                 //if (entry.is_default == 1)
                 //    list.Add(new DictionaryEntryDto(entry.country_name_display, entry.country_name_display, 1));
                 //else
-                    list.Add(new DictionaryEntryDto(entry.id.ToString(), entry.name));
+                if (entry.delete_time != 0)
+                {
+                    continue;
+                }
+                list.Add(new DictionaryEntryDto(entry.id.ToString(), entry.name));
             }
 
             return list;

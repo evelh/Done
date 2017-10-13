@@ -114,7 +114,7 @@
                                 var quote_item_tax_cate_name = dic.First(_ => _.Key == "quote_item_tax_cate").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>; // 报价项相关税
 
                                 // 为了给税加入上标获取到集合排序
-                                var taxAllCateList = quoteItemList.Select(_ => _.tax_cate_id).Distinct().ToList();  // 所有的税ID信息相关的集合
+                                var taxAllCateList = quoteItemList.Where(_=>_.tax_cate_id!=null).Select(_ => _.tax_cate_id).Distinct().ToList();  // 所有的税ID信息相关的集合
 
                                 // EMT.DoneNOW.DAL.d_tax_region_cate_dal.GetTaxRegionCate
                                 List<EMT.DoneNOW.Core.d_tax_region_cate> quote_item_tax_cate = null;
@@ -1628,13 +1628,13 @@
         $("#groupBy").change(function () {
             var groupType = $(this).val();
             var quote_id = $("#quoteDropList").val();
-            location.href = "QuoteItemManage?quote_id=" + quote_id + "&group_by=" + groupType;
+            location.href = "QuoteItemManage?quote_id=" + quote_id + "&group_by=" + groupType + "&isShow=" +'<%=Request.QueryString["isShow"] %>';
         })
 
         $("#quoteDropList").change(function () {
             var groupType = $("#groupBy").val();
             var quote_id = $(this).val();
-            location.href = "QuoteItemManage?quote_id=" + quote_id + "&group_by=" + groupType;
+            location.href = "QuoteItemManage?quote_id=" + quote_id + "&group_by=" + groupType +"&isShow="+'<%=Request.QueryString["isShow"] %>';
         })
 
         var show_each_tax_in_tax_group = $("#show_each_tax_in_tax_group").val();
@@ -1737,6 +1737,7 @@
         $.ajax({
             type: "GET",
             url: "../Tools/QuoteAjax.ashx?act=isSaleOrder&id=" + <%=quote.id %>,
+            async: false,
             success: function (data) {
                 if (data == "True") {
                     $("#isRelationSaleOrder").val("1");

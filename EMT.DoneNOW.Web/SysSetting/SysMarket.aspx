@@ -16,7 +16,10 @@
              <!--顶部-->
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">新增市场领域</span>
+            <span class="text1"><%if (id > 0)
+                                    { %>修改市场领域<%}
+    else
+    { %>新增市场领域<%} %></span>
             <a href="###" class="help"></a>
         </div>
     </div>
