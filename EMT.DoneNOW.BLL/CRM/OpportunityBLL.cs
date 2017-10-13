@@ -731,7 +731,7 @@ namespace EMT.DoneNOW.BLL
                                         {
                                             id = _dal.GetNextIdCom(),
                                             contract_service_id = conService.id,
-                                            service_id = (long)item.object_id,
+                                            service_id = serID.id,
                                         };
                                         ccsbsDal.Insert(ccsbs);
                                         new sys_oper_log_dal().Insert(new sys_oper_log()
@@ -910,7 +910,7 @@ namespace EMT.DoneNOW.BLL
             }
             else if (param.convertToProject)
             {
-                InsertContract(param.costCodeList, param.opportunity, user, param.contract.id, out ids, priQuote.project_id, null);
+                 InsertContract(param.costCodeList, param.opportunity, user, null, out ids, priQuote.project_id, null);
             }
             else if (param.convertToTicket)
             {

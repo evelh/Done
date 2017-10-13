@@ -1628,13 +1628,13 @@
         $("#groupBy").change(function () {
             var groupType = $(this).val();
             var quote_id = $("#quoteDropList").val();
-            location.href = "QuoteItemManage?quote_id=" + quote_id + "&group_by=" + groupType;
+            location.href = "QuoteItemManage?quote_id=" + quote_id + "&group_by=" + groupType + "&isShow=" +<%=Request.QueryString["isShow"] %>;
         })
 
         $("#quoteDropList").change(function () {
             var groupType = $("#groupBy").val();
             var quote_id = $(this).val();
-            location.href = "QuoteItemManage?quote_id=" + quote_id + "&group_by=" + groupType;
+            location.href = "QuoteItemManage?quote_id=" + quote_id + "&group_by=" + groupType +"&isShow="+<%=Request.QueryString["isShow"] %>;
         })
 
         var show_each_tax_in_tax_group = $("#show_each_tax_in_tax_group").val();
@@ -1737,6 +1737,7 @@
         $.ajax({
             type: "GET",
             url: "../Tools/QuoteAjax.ashx?act=isSaleOrder&id=" + <%=quote.id %>,
+            async: false,
             success: function (data) {
                 if (data == "True") {
                     $("#isRelationSaleOrder").val("1");

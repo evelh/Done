@@ -34,7 +34,7 @@
                     <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem">报价项</a></li>
                 </ul>
             </i>
-            查看商机
+            查看商机-<%=opportunity.name %>(ID:<%=opportunity.oid %>)-<%=account.name %> 
         </div>
         <div class="header-title">
             <ul>
@@ -100,11 +100,11 @@
                 <div class="opportunityWidgetMediumHigh clear opportunityWidgetMediumHigh2">
                     <h2>成交概率</h2>
                     <h3>
-                        <p><%=opportunity.probability %></p>
+                        <p><%=opportunity.probability==null?"":opportunity.probability.ToString()+"%" %></p>
                     </h3>
                 </div>
                 <div class="address opportunityaddress viewleftTitle1">
-                    <p class="switch pr"><i class="switchicon switchicon1"></i>商机-<%=opportunity.name %>(ID:<%=opportunity.oid %>)-<%=account.name %> </p>
+                    <p class="switch pr"><i class="switchicon switchicon1"></i>商机</p>
                     <p class="clear">
                         <span class="fl">商机ID</span><span class="fr"><%=opportunity.oid %><br />
                         </span>
@@ -164,10 +164,19 @@
                 <div class="account address opportunityaddress viewleftTitle1 ">
                     <p class="switch pr">
                         <i class="switchicon switchicon1"></i>客户
-                        <img src="../Images/at16.png" />
+                  <%--      <img src="../Images/at16.png" />--%>
                       
                     </p>
-                      <p><%=account.name %> (<%="ID:"+account.oid %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%--<span>类别图标</span> <span>自助服务台图标</span>--%></p>
+                      <p><%=account.name %> 
+                        <%if (account.classification_id != null)
+                        {
+                            var thisClasss = new EMT.DoneNOW.DAL.d_account_classification_dal().FindNoDeleteById((long)account.classification_id);
+                            if (thisClasss != null) { 
+                            %>
+                        <img src="<%=thisClasss.icon_path %>"/>
+                    <%} } %>
+
+                      </p>
                     <p><%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %>
                    <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.province_id.ToString()).show  %>
                   <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.city_id.ToString()).show  %>
@@ -216,10 +225,10 @@
                 <div class="contact address opportunityaddress viewleftTitle1">
                     <p class="switch pr">
                         <i class="switchicon switchicon1"></i>联系人
-                        <img src="../Images/at16.png" />
+                   <%--     <img src="../Images/at16.png" />--%>
                           
                     </p>
-                    <p><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %>|<%=contact.title %>-<%=account.name %></p>
+                    <p><%=contact.name %><%--<%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %>|<%=contact.title %>-<%=account.name %>--%></p>
                    <%-- <label><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %></label>--%>
                     <%if (!string.IsNullOrEmpty(contact.title))
                         { %>
@@ -247,7 +256,7 @@
                         { %>
                     <p >
                         <span class="fl">邮编</span>
-                        <span class="fr"><%=contactLocation.address %> </span>
+                        <span class="fr"><%=contactLocation.postal_code %> </span>
                     </p>
                     <%} %>
                     <% if (!string.IsNullOrEmpty(contactLocation.additional_address))
@@ -332,7 +341,14 @@
                     <p class="clear"><span class="fl">当期困难</span><span class="fr"><%=opportunity.barriers %></span></p>
                     <p class="clear"><span class="fl">所需帮助</span><span class="fr"><%=opportunity.help_needed %></span></p>
                     <p class="clear"><span class="fl">后续跟进</span><span class="fr"><%=opportunity.next_step %></span></p>
-                    <p class="clear"><span class="fl">主要产品</span><span class="fr"><%=opportunity.primary_product_id==null?"":opportunity.primary_product_id.ToString() %></span></p>
+                    <p class="clear"><span class="fl">主要产品</span><span class="fr">
+                        <%if (opportunity.primary_product_id != null)
+                            {
+                                var product = new EMT.DoneNOW.DAL.ivt_product_dal().FindNoDeleteById((long)opportunity.primary_product_id);
+                                %>
+                         <%=product==null?"":product.name %>
+                        <%} %>
+                       </span></p>
 
 
                 </div>

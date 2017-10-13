@@ -273,7 +273,7 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <label>公司类型</label>
+                                    <label>公司类型<span class="red">*</span></label>
                                     <asp:DropDownList ID="company_type" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
@@ -281,7 +281,7 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <label>客户经理</label>
+                                    <label>客户经理<span class="red">*</span></label>
                                     <asp:DropDownList ID="account_manage" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
@@ -763,10 +763,22 @@
                 alert("请输入电话名称");
                 return false;
             }
+            var company_type = $("#company_type").val();
+            if (company_type == "" || company_type == "0") {
+                alert("请选择公司类型！");
+                return false;
+            }
+
+            var account_manage = $("#account_manage").val();
+            if (account_manage == "" || account_manage == "0") {
+                alert("请选择客户经理！");
+                return false;
+            }
+
             //if (!checkPhone(phone)) {
             //    alert("请输入正确格式的电话！");
             //    return false;
-            //}
+            //} account_manage
             var firstName = $("#first_name").val();                                  // 姓
             var lastName = $("#last_name").val();                                    // 名
             var country = $("#country_id").val();                                      // 国家
@@ -774,12 +786,12 @@
             var city = $("#city_id").val();                                            // 城市
             var district = $("#district_id").val();
             if (country == "" || province == "" || city == "") {
-                alert("请填写选择地址");                                           // 地址下拉框的必填校验
+                alert("请选择省市县");                                           // 地址下拉框的必填校验
                 return false;
             }
             var address = $("#address").val();                                      // 地址信息
             if (address == null || address == '') {
-                alert("请完善地址信息");                                              // 地址的必填校验
+                alert("请填写地址信息");                                              // 地址的必填校验
                 return false;
             }
 

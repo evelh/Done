@@ -31,7 +31,7 @@ namespace EMT.DoneNOW.DTO
         public bool isShowEmail = false;  // 向导专用
         public bool isQuickBooks = false;  // 向导专用
 
-        public long account_id;    // 跳转预览界面使用
+        public long account_id;    // 跳转预览界面使用--待定
 
         public long invoice_batch;  // 这一批次生成的发票的批次ID
     }

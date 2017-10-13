@@ -41,7 +41,7 @@
                     <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=configura">配置项</a></li>
                 </ul>
             </i>
-            联系人-<%=contact.name %>
+            联系人-<%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %>|<%=contact.title %>-<%=account.name %>
         </div>
 
         <div class="header-title">
@@ -69,20 +69,20 @@
             <%switch (type)
                 {
                     case "activity":%>
-            <h1>活动-<%=contact.name %></h1>
+            <h1>活动-<%=contact.name %><%=account==null?"":"("+account.name+")" %></h1>
             <%break;
                 case "todo":%>
-            <h1>待办-<%=contact.name %></h1>
+            <h1>待办-<%=contact.name %><%=account==null?"":"("+account.name+")" %></h1>
             <%break;
                 case "note":%>
-            <h1>备注-<%=contact.name %></h1>
+            <h1>备注-<%=contact.name %><%=account==null?"":"("+account.name+")" %></h1>
             <%break;
                     default:
                         break;
                 } %>
 
             <div class="contact address">
-                <label><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %>|<%=contact.title %>-<%=account.name %></label>
+                <label><%=contact.name %></label>
             <%--    <%if (!string.IsNullOrEmpty(contact.title))
                     { %>
                 <p class="clear">
@@ -146,7 +146,16 @@
 
 
             <div class="address ">
-                 <label><%=account.name %> (<%="ID:"+account.oid %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%=account.type_id==null?"":company_type.FirstOrDefault(_=>_.val==account.type_id.ToString()).show %><%--<span>类别图标</span> <span>自助服务台图标</span>--%></label>
+                 <label><%=account.name %> <%--(<%="ID:"+account.oid %>)&nbsp;<%=account.is_active==1?"激活":"未激活" %>&nbsp;<%=account.type_id==null?"":company_type.FirstOrDefault(_=>_.val==account.type_id.ToString()).show %>--%><%--<span>类别图标</span> <span>自助服务台图标</span>--%>
+                       <%if (account.classification_id != null)
+                        {
+                            var thisClasss = new EMT.DoneNOW.DAL.d_account_classification_dal().FindNoDeleteById((long)account.classification_id);
+                            if (thisClasss != null) { 
+                            %>
+                        <img src="<%=thisClasss.icon_path %>"/>
+                    <%} } %>
+
+                 </label>
          
                 <p>
                     <span><%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %></span>

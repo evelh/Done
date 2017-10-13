@@ -54,8 +54,8 @@
                                     else
                                     { %>
                                 <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=companyBLL.GetCompany(quote.account_id).name %>" disabled="disabled" />
-                                <i style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <%--<i style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>--%>
+                               <%-- <i onclick="javascript:window.open('../Company/AddCompany.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>--%>
                                 <%--<input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=isAdd?"":quote.account_id.ToString() %>" />--%>
                                 <input type="hidden" id="ParentComoanyNameHidden" name="account_id" value="<%=quote.account_id %>" />
                                 <%} %>
@@ -77,7 +77,7 @@
                                     { %>
                                 <select name="opportunity_id" id="opportunity_id" disabled="disabled">
                                 </select><input type="hidden" name="opportunity_idHidden" id="opportunity_idHidden" value="<%= quote.opportunity_id %>" />
-                                <i onclick="AddOppo()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                           <%--     <i onclick="AddOppo()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>--%>
                                 <%} %>
                             </div>
                         </td>
@@ -536,13 +536,13 @@
         //change(0, s3);
         //change(1, s3);
         GetDataBySelectCompany();  // 用于修改的时候赋值
-        
+       
         var opportunity_idHidden = $("#opportunity_idHidden").val();
         if (opportunity_idHidden != "") {
 
             $("#opportunity_id").val(opportunity_idHidden);
         }
-
+        GetDataByOp();
         var contact_idHidden = $("#contact_idHidden").val();
         if (contact_idHidden != "") {
             $("#contact_id").val(contact_idHidden);
@@ -551,48 +551,7 @@
 
         $("#opportunity_id").change(function () {
             
-            var opportunity_id = $("#opportunity_id").val();
-            if (opportunity_id != 0 && opportunity_id != null && opportunity_id != undefined) {
-                // 根据选中的商机为预计完成时间赋值
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/OpportunityAjax.ashx?property=projected_close_date&act=property&id=" + opportunity_id,
-                    success: function (data) {
-                        if (data != "") {
-                            var date = new Date(data);
-                            // date.setTime(data);
-                            var newDate = date.getFullYear() + '-' + returnNumber((date.getMonth() + 1)) + '-' + returnNumber(date.getDate());
-
-                            $("#projected_close_date").val(newDate);
-                        }
-                    },
-                });
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/OpportunityAjax.ashx?property=probability&act=property&id=" + opportunity_id,
-                    success: function (data) {
-                        if (data != "") {
-                            $("#probability").val(data);
-                        } else {
-                            $("#probability").val("");
-                        }
-                    },
-                });
-                // 根据选中的时间为联系人下拉赋值选中  // 注意 新增商机的时候联系人是可以为空
-                $.ajax({
-                    type: "GET",
-                    //async: false,
-                    url: "../Tools/OpportunityAjax.ashx?property=contact_id&act=property&id=" + opportunity_id,
-                    // data: { CompanyName: companyName },
-                    success: function (data) {
-                        if (data != "") {
-                            $("#contact_id").val(data);
-                        }
-                    },
-                });
-
-
-            }
+            GetDataByOp();
         })
 
 
@@ -749,6 +708,51 @@
 
                 },
             });
+        }
+    }
+
+    function GetDataByOp() {
+        var opportunity_id = $("#opportunity_id").val();
+        if (opportunity_id != 0 && opportunity_id != null && opportunity_id != undefined) {
+            // 根据选中的商机为预计完成时间赋值
+            $.ajax({
+                type: "GET",
+                url: "../Tools/OpportunityAjax.ashx?property=projected_close_date&act=property&id=" + opportunity_id,
+                success: function (data) {
+                    if (data != "") {
+                        var date = new Date(data);
+                        // date.setTime(data);
+                        var newDate = date.getFullYear() + '-' + returnNumber((date.getMonth() + 1)) + '-' + returnNumber(date.getDate());
+
+                        $("#projected_close_date").val(newDate);
+                    }
+                },
+            });
+            $.ajax({
+                type: "GET",
+                url: "../Tools/OpportunityAjax.ashx?property=probability&act=property&id=" + opportunity_id,
+                success: function (data) {
+                    if (data != "") {
+                        $("#probability").val(data);
+                    } else {
+                        $("#probability").val("");
+                    }
+                },
+            });
+            // 根据选中的时间为联系人下拉赋值选中  // 注意 新增商机的时候联系人是可以为空
+            $.ajax({
+                type: "GET",
+                //async: false,
+                url: "../Tools/OpportunityAjax.ashx?property=contact_id&act=property&id=" + opportunity_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#contact_id").val(data);
+                    }
+                },
+            });
+
+
         }
     }
 

@@ -16,10 +16,13 @@ namespace EMT.DoneNOW.DAL
             List<DictionaryEntryDto> list = new List<DictionaryEntryDto>();
             foreach (var entry in all)
             {
+                if (entry.delete_time != 0)
+                    continue;
                 list.Add(new DictionaryEntryDto(entry.id.ToString(), entry.name));
             }
 
             return list;
         }
+
     }
 }

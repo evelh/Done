@@ -99,6 +99,10 @@ namespace EMT.DoneNOW.Web
                     parent_account = new CompanyBLL().GetCompany(Convert.ToInt64(parent_id));
                     if (parent_account != null && parent_account.parent_id == null)
                     {
+
+                    }
+                    else
+                    {
                         Response.End();
                     }
                     
@@ -298,7 +302,7 @@ namespace EMT.DoneNOW.Web
             }
             else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加客户成功！');window.location.reload; </script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加客户成功！');window.location.reload;self.opener.location.reload(); </script>");
                 //Response.Write("<script></script>");
                 //Response.Redirect("AddCompany.aspx");
             }
@@ -389,7 +393,7 @@ namespace EMT.DoneNOW.Web
             }
             else if (result == ERROR_CODE.SUCCESS)
             {
-                Response.Write("<script>alert('添加客户成功！');window.close();window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id="+id+"','"+ (int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd +"','left= 200, top = 200, width = 960, height = 750', false);</script>");  //  
+                Response.Write("<script>alert('添加客户成功！');self.opener.location.reload();window.close();window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id=" + id+"','"+ (int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd +"','left= 200, top = 200, width = 960, height = 750', false);</script>");  //  
                 //Response.Redirect("../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id="+id); // 跳转到新建商机
 
                 //window.open('EditCompany.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyEdit %>','left= 200, top = 200, width = 960, height = 750', false);
