@@ -91,7 +91,10 @@ namespace EMT.DoneNOW.Web.Invoice
             var result = new InvoiceBLL().ProcessInvoice(param, GetLoginUserId());
             if (result)
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close(); </script>");
+                if (param.invoice_batch != 0)
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close();self.opener.location.reload();window.open('InvoicePreview?isInvoice=1&inv_batch=" + param.invoice_batch + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREVIEW + "','left= 200, top = 200, width = 960, height = 750', false);  </script>");
+                }
             }
             else
             {

@@ -45,6 +45,7 @@ namespace EMT.DoneNOW.BLL
             if(!string.IsNullOrEmpty(param.ids))
             {
                 var invoiceBatch = _dal.GetNextIdInvBat();
+                param.invoice_batch = invoiceBatch;
                 var cadDal = new crm_account_deduction_dal();
                 var cidDal = new ctt_invoice_detail_dal();
                 var comBLL = new CompanyBLL();
@@ -63,7 +64,10 @@ namespace EMT.DoneNOW.BLL
                            )).ToList();
                         if (noPurOrderList != null && noPurOrderList.Count > 0)
                         {
-                            
+                            if (account.resource_id == null) // 客户的客户经理在发票中是必填项，没有客户经理暂时不创建发票
+                            {
+                                continue;
+                            }
                             var invocie = new ctt_invoice()
                             {
                                 id = _dal.GetNextIdCom(),

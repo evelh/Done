@@ -122,6 +122,36 @@ namespace EMT.DoneNOW.Web
                         blockId = context.Request.QueryString["blockId"];
                         SetBlockInactive(context, Convert.ToInt64(blockId));
                         break;
+                    case "processAll":   // 处理全部条目
+                        var thisAccDedIds = context.Request.QueryString["thisAccDedIds"];
+                        var startDate = context.Request.QueryString["startDate"];
+                        var endDate = context.Request.QueryString["endDate"];
+                        var invTempId = context.Request.QueryString["invTempId"];
+                        var invoiceDate = context.Request.QueryString["invoiceDate"];
+                        var purNo = context.Request.QueryString["purNo"];
+                        var notes = context.Request.QueryString["notes"];
+                        var pay_term = context.Request.QueryString["pay_term"];
+                        InvoiceDealDto param = new InvoiceDealDto() {
+                            invoice_template_id = int.Parse(invTempId),
+                            invoice_date = DateTime.Parse(invoiceDate),
+                            purchase_order_no = purNo,
+                            notes = notes,
+                            ids = thisAccDedIds,
+                        };
+                        if (!string.IsNullOrEmpty(startDate))
+                        {
+                            param.date_range_from = DateTime.Parse(startDate);
+                        }
+                        if (!string.IsNullOrEmpty(endDate))
+                        {
+                            param.date_range_to = DateTime.Parse(endDate);
+                        }
+                        if (!string.IsNullOrEmpty(pay_term))
+                        {
+                            param.payment_term_id = int.Parse(pay_term);
+                        }
+                        ProcessAll(context,param);
+                        break;
                     case "GetService":
                         GetService(context);
                         break;
@@ -572,6 +602,17 @@ namespace EMT.DoneNOW.Web
             context.Response.Write(result);
         }
 
+        private void ProcessAll(HttpContext context, InvoiceDealDto param)
+		{
+            var res = context.Session["dn_session_user_info"];
+            bool result = false;
+            if (res != null)
+            {
+				var user = res as sys_user;
+				 result = new InvoiceBLL().ProcessInvoice(param, user.id);
+            }
+            context.Response.Write(result);
+        }
         /// <summary>
         /// 获取服务/服务包信息
         /// </summary>

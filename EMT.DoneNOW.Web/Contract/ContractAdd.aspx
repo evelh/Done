@@ -98,8 +98,7 @@
                                         </tr>
                                         <tr>
                                             <td class="FieldLabels">
-                                                <asp:CheckBox ID="is_sdt_default" runat="server" />
-                                                <%--<input type="checkbox" name="is_sdt_default" />--%>
+                                                <input type="checkbox" name="isSdtDefault" />
                                                 <span>默认服务台合同</span>
                                             </td>
                                             <td class="FieldLabels">

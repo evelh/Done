@@ -622,7 +622,11 @@ namespace EMT.DoneNOW.BLL
             }
             return true;
         }
-
+       /// <summary>
+       /// 判断是否是默认关闭商机的原因
+       /// </summary>
+       /// <param name="id"></param>
+       /// <returns></returns>
         public bool defulatwonreson(long id=0) {
 
             var kk = _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id=11 and ext2=1 and delete_time=0");
@@ -633,9 +637,13 @@ namespace EMT.DoneNOW.BLL
             }
             return false;
         }
+        /// <summary>
+        /// 判断是否为默认丢失商机的原因
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool defulatlossreson(long id=0)
         {
-
             var kk = _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id=11 and ext1=1 and delete_time=0");
             if (kk != null)
             {
@@ -645,6 +653,13 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             return false;
+        }
+        /// <summary>
+        /// 获取配送类型的物料代码table=1161
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<long, string> GetCodeList() {
+          return new d_cost_code_dal().FindListBySql<d_cost_code>($"select * from d_cost_code where cate_id={(int)COST_CODE_CATE.MATERIAL_COST_CODE} and delete_time=0").ToDictionary(_ => _.id, _ =>_.name);
         }
     }
 }

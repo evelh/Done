@@ -178,6 +178,7 @@
     <Content Include="Contract\AddRetainerPurchase.aspx" />
     <Content Include="Contract\AddService.aspx" />
     <Content Include="Contract\AdjustExtendedPrice.aspx" />
+    <Content Include="Contract\AdjustService.aspx" />
     <Content Include="Contract\ApproveAndPost.aspx" />
     <Content Include="Contract\ApproveChargeSelect.aspx" />
     <Content Include="Contract\ChargeDetails.aspx" />
@@ -732,6 +733,7 @@
     <Content Include="SysSetting\SysUserAdd.aspx" />
     <Content Include="SysSetting\SysUserEdit.aspx" />
     <Content Include="SysSetting\SysUserSecurityLevel.aspx" />
+    <Content Include="SysSetting\TaskLibrary.aspx" />
     <Content Include="SysSetting\TerritortAddAccount.aspx" />
     <Content Include="SysSetting\WorkType.aspx" />
     <Content Include="ViewSwitcher.ascx" />
@@ -926,6 +928,13 @@
     </Compile>
     <Compile Include="Contract\AdjustExtendedPrice.aspx.designer.cs">
       <DependentUpon>AdjustExtendedPrice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\AdjustService.aspx.cs">
+      <DependentUpon>AdjustService.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AdjustService.aspx.designer.cs">
+      <DependentUpon>AdjustService.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\ApproveAndPost.aspx.cs">
       <DependentUpon>ApproveAndPost.aspx</DependentUpon>
@@ -1582,6 +1591,13 @@
     </Compile>
     <Compile Include="SysSetting\SysUserSecurityLevel.aspx.designer.cs">
       <DependentUpon>SysUserSecurityLevel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\TaskLibrary.aspx.cs">
+      <DependentUpon>TaskLibrary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\TaskLibrary.aspx.designer.cs">
+      <DependentUpon>TaskLibrary.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\TerritortAddAccount.aspx.cs">
       <DependentUpon>TerritortAddAccount.aspx</DependentUpon>
