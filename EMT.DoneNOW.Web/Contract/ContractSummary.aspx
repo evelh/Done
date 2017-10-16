@@ -371,7 +371,7 @@
                                             { %>
                                         <tr height="24px">
                                             <td class="FieldLabels">
-                                                <a style="cursor:pointer;" onclick="javascript:window.parent.location.href='ContractView.aspx?type=roleRate&id=<%=contract.id %>'">里程碑</a>
+                                                <a style="cursor:pointer;" onclick="javascript:window.parent.location.href='ContractView.aspx?type=milestone&id=<%=contract.id %>'">里程碑</a>
                                             </td>
                                             <td><%=summary.milestone %></td>
                                         </tr>

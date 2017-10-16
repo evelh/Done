@@ -138,7 +138,7 @@ namespace EMT.DoneNOW.Web
             this.Variable.DataSource = new QuoteTemplateBLL().GetInvoiceBodyVariableField();
             this.Variable.DataBind();
             this.Variable.Items.Insert(0, new ListItem() { Value = "0", Text = "显示全部变量", Selected = true });
-            var list = new QuoteTemplateBLL().GetAllInvoiceVariable();
+            var list = new QuoteTemplateBLL().GetBodyAllInvoiceVariable();
             StringBuilder sb = new StringBuilder();
             foreach (string va in list)
             {
@@ -160,7 +160,7 @@ namespace EMT.DoneNOW.Web
             if (this.Variable.SelectedValue == "0")
             {
                 sb.Clear();
-                var list = new QuoteTemplateBLL().GetAllInvoiceVariable();
+                var list = new QuoteTemplateBLL().GetBodyAllInvoiceVariable();
                 foreach (string va in list)
                 {
                     sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va.Replace("'", "") + "</option>");
@@ -219,7 +219,7 @@ namespace EMT.DoneNOW.Web
             if (this.GetVaild.SelectedValue == "0")
             {
                 sb.Clear();
-                var list = new QuoteTemplateBLL().GetAllInvoiceVariable();
+                var list = new QuoteTemplateBLL().GetBodyAllInvoiceVariable();
                 foreach (string va in list)
                 {
                     sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va.Replace("'", "") + "</option>");

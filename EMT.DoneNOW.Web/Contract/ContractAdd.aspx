@@ -218,6 +218,16 @@
                                                   <input type="text" style="width:120px;" id="start_date" name="start_date" onclick="WdatePicker()" class="Wdate" />
                                               </div>
                                           </td>
+                                        <%if (contractType == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.FIXED_PRICE) { %>
+                                          <td class="FieldLabels">
+                                              默认里程碑计费代码
+                                              <div style="padding:0;">
+                                                  <input type="hidden" id="defaultCostCodeHidden" name="defaultCostCode" />
+                                                  <input type="text" id="defaultCostCode" disabled="disabled" style="margin: 2px 0px; width:224px;" />
+                                                  <img src="../Images/data-selector.png" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=defaultCostCode&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MILESTONE_CODE %>', 'left=200,top=200,width=600,height=800', false)" style="vertical-align: middle;cursor: pointer;" />
+                                              </div>
+                                          </td>
+                                        <%} %>
                                       </tr>
                                       <tr>
                                           <td class="FieldLabels">
@@ -503,13 +513,23 @@
         </div>
         <!--第五页 工时计费设置-->
         <div class="Workspace Workspace5" style="display: none;">
-            <div class="PageInstructions">请为新合同录入工时信息。</div>
+            <div class="PageInstructions">请为新合同录入收入和计费信息。</div>
             <div class="WizardSection">
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tbody>
                         <tr height="85%">
                             <td width="90%">
                                 <table cellspacing="1" cellpadding="0" width="100%">
+                                  <%if (contractType != (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) { %>
+                                    <tr>
+                                        <td class="FieldLabels">
+                                            预估收入
+                                            <div>
+                                              <input type="text" id="revenue" name="dollars" value="0.00" style="text-align: right;width: 176px;" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                  <%}%>
                                     <tr>
                                         <td class="FieldLabels">
                                             工时计费设置<span class="errorSmall">*</span>
@@ -525,6 +545,16 @@
                                             </div>
                                         </td>
                                     </tr>
+                                  <%if (contractType == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
+                                    <tr>
+                                        <td class="FieldLabels">
+                                            超额费率<span class="errorSmall">*</span>
+                                            <div>
+                                              <input type="text" value="0" name="overage_billing_rate" style="text-align: right;width: 176px;" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                  <%} else { %>
                                     <tr>
                                         <td>
                                             <div>
@@ -533,6 +563,66 @@
                                             </div>
                                         </td>
                                     </tr>
+                                  <%}%>
+                                  <%if (contractType == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS) { %>
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <input type="checkbox" id="enableOverage" name="enableOverage" style="vertical-align: middle;"/>
+                                                <span class="CheckboxLabels">启用超额计费费率</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="FieldLabels">
+                                            超额计费费率
+                                            <div>
+                                              <input type="text" id="overagRate" name="overage_billing_rate" disabled="disabled" style="text-align: right;width: 176px;" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                  <%}%>
+                                  <%if (contractType == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.FIXED_PRICE) { %>
+                                    <tr>
+                                        <td style="width: 30%;">
+                                            <div style="height: 25px;line-height: 25px;">
+                                                <input type="checkbox" id="applyPayment" name="applyPayment" />
+                                                <span class="CheckboxLabels">使用初期付款</span>
+                                            </div>
+                                        </td>
+                                        <td style="padding-top: 10px;">
+                                            <div class="FieldLevelInstructions" style="padding-bottom:10px;">
+                                                如果需要，请在此输入合同初期付款信息。合同初期付款一般用于固定价格合同，它是在合同初期交付的定金或预付款。
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="FieldLabels">
+                                            已收款总额
+                                            <div>
+                                                <input type="text" value="0.00" id="alreadyReceived" name="alreadyReceived" style="text-align: right;width: 176px;" disabled="disabled" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="FieldLevelInstructions" style="padding-bottom:10px;">
+                                                如果输入已收款总额，将创建一个里程碑条目并被标记为已开发票。
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="FieldLabels">
+                                            待开票总额
+                                            <div>
+                                                <input type="text" value="0.00" id="toBeInvoiced" name="toBeInvoiced" style="text-align: right;width: 176px;" disabled="disabled" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="FieldLevelInstructions" style="padding-bottom:10px;">
+                                                如果输入待开票总额，将创建一个里程碑条目并被标记为已审批并提交。
+                                            </div>
+                                        </td>
+                                    </tr>
+                                  <%}%>
                                 </table>
                             </td>
                         </tr>
@@ -624,7 +714,7 @@
                                                     </td>
                                                     <td align="left" style="padding-left:3px;">
                                                         <b>
-                                                            <span>¥0.00</span>
+                                                            <span id="milRevenue">¥0.00</span>
                                                         </b>
                                                     </td>
                                                     <td class="FieldLabels" align="right">
@@ -674,11 +764,11 @@
                                     </td>
                                     <td width="30px"></td>
                                     <td class="FieldLabels">
-                                        计费代码
+                                        计费代码<span class="errorSmall">*</span>
                                         <div>
                                             <input type="hidden" id="milAddCodeHidden" />
                                             <input type="text" id="milAddCode" style="width:200px;" disabled="disabled" />
-                                            <a class="DataSelectorLinkIcon" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=milAddCode', '_blank', 'left=200,top=200,width=600,height=800', false);">
+                                            <a class="DataSelectorLinkIcon" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=milAddCode&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MILESTONE_CODE %>', '_blank', 'left=200,top=200,width=600,height=800', false);">
                                                 <img src="../Images/data-selector.png" style="vertical-align: middle;"/>
                                             </a>
                                         </div>
@@ -822,18 +912,18 @@
             <div class="WizardSection">
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tbody>
-                        <tr height="85%">
-                            <td width="90%">
+                        <tr>
+                            <td>
                                 <a href="ContractView.aspx?id=<%=contractId %>">打开新创建合同</a>
                             </td>
                         </tr>
-                        <tr height="85%">
-                            <td width="90%">
+                        <tr>
+                            <td>
                                 <a href="ContractAdd.aspx?type=<%=contractType %>">创建另一个合同</a>
                             </td>
                         </tr>
-                        <tr height="85%">
-                            <td width="90%">
+                        <tr>
+                            <td>
                                 <a onclick="javascript:window.close();">关闭本窗口</a>
                             </td>
                         </tr>
@@ -899,6 +989,29 @@
                 $(".IsChecked1").css("checked", "");
             }
         });
+      <%if (contractType == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS) { %>
+        $("#enableOverage").click(function () {
+          if ($(this).is(":checked")) {
+            $("#overagRate").attr("disabled", false);
+          } else {
+            $("#overagRate").attr("disabled", true);
+          }
+        })
+      <%} %>
+      <%if (contractType == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.FIXED_PRICE) { %>
+        $("#applyPayment").click(function () {
+          if ($(this).is(":checked")) {
+            $("#alreadyReceived").attr("disabled", false);
+            $("#toBeInvoiced").attr("disabled", false);
+          } else {
+            $("#alreadyReceived").attr("disabled", true);
+            $("#toBeInvoiced").attr("disabled", true);
+          }
+        })
+        $("#revenue").change(function () {
+          $("#milRevenue").text("¥" + $("#revenue").val());
+        })
+      <%} %>
     </script>
 </body>
 </html>

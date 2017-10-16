@@ -54,7 +54,7 @@
 		</div>
 		<!--中间主体部分-->
 		<div class="ScrollingContainer">
-			<div class="ImageHotspotContainer">
+			<div class="ImageHotspotContainer" style="width:816px;height:1254px;">
 				<div class="Image">
 					<div class="ImageHotspot" style="height: 60px; top: 0px;" id="a1">
 						<div class="SimpleLabel" id="b1">报价页眉</div>
@@ -88,7 +88,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="ImageHotspot" style="height: 400px;top:930px" id="a4">
+					<div class="ImageHotspot" style="height: 208px;top:930px" id="a4">
 						<div class="SimpleLabel" id="b4">报价底部</div>
                         <asp:Literal ID="bottom" runat="server"></asp:Literal>
 						<div class="CompleteLabel" id="c4">
@@ -99,7 +99,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="ImageHotspot" style="height: 60px;top:1331px" id="a5">
+					<div class="ImageHotspot" style="height: 82px;top:1140px" id="a5">
 						<div class="SimpleLabel" id="b5">页脚</div>
                         <asp:Literal ID="foot" runat="server"></asp:Literal>
 						<div class="CompleteLabel" id="c5">

@@ -68,7 +68,7 @@
                  <select name="" multiple="multiple" id="AlertVariableList">
                          <asp:Literal ID="VariableList" runat="server"></asp:Literal>
                     </select>
-             </ContentTemplate>
+             </ContentTemplate> 
          </asp:UpdatePanel> 
                 </div>
             </div>
@@ -81,10 +81,6 @@
     <script type="text/javascript" src="../RichText/js/ueditor.config.js"></script>
     <script type="text/javascript" src="../RichText/js/ueditor.all.js"></script>
     <script>
-        function View() {
-            alert("lll");
-        }
-
         $("#OkButton").on("mouseover", function () {
             $("#OkButton").css("background", "#fff");
         })
@@ -130,13 +126,7 @@
             $("#BackgroundOverLay").hide();
             $(".AlertBox").hide();
         }
-        function bindkk() {
-            $(".bind").each(function () {
-                $(this).click(function () {
-                    alert("nihao");
-                });
-            });
-        }
+
 
         //  点击确定数据保存至后台  在展示页展示
         $("#OkButton1").on("click", function () {

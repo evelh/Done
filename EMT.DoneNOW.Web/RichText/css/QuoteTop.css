@@ -90,7 +90,9 @@ li.Button {
 .Reset {
     background-image: url("../img/reset.png");
 }
-
+.Down {
+    background: transparent url("../img/down.png") no-repeat scroll;
+}
 .Button > .Text {
     flex: 0 1 auto;
     font-size: 12px;
@@ -100,7 +102,70 @@ li.Button {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+/*下拉菜单*/
+.DropDownButton {
+    background-color: #fff;
+    border: 1px solid #d7d7d7;
+    box-shadow: rgba(0,0,0,0.24) 2px 2px 3px 0;
+    display: none;
+    font-size: 12px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    z-index: 2000;
+}
 
+.DropDownButtonDiv {
+    padding: 10px;
+    min-width: 140px;
+    max-width: 300px;
+}
+
+.DropDownButton .Group {
+    padding-bottom: 10px;
+}
+
+    .DropDownButton .Group > .Heading {
+        border-bottom: 1px solid #d3d3d3;
+        margin-bottom: 2px;
+    }
+
+        .DropDownButton .Group > .Heading > .Text {
+            color: #333;
+            font-weight: bold;
+            display: inline;
+            font-size: 12px;
+            line-height: 20px;
+        }
+
+.Button1, .Button2 {
+    border: none;
+    display: flex;
+    margin: 0 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 3px 0;
+}
+
+    .Button1:hover {
+        background: #e9f0f8;
+    }
+
+    .Button1 > .Text, .Button2 > .Text {
+        flex: 0 1 auto;
+        font-size: 12px;
+        font-weight: normal;
+        overflow: hidden;
+        padding: 0 3px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .Button2 > .Text {
+        color: #c0c0c0;
+    }
 .Section {
     border: 1px solid #d3d3d3;
     margin: 0 0 12px 10px;

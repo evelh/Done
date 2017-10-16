@@ -24,6 +24,10 @@ namespace EMT.DoneNOW.DTO
         public string notifySubject;            // 邮件通知的主题
         public string notifyMessage;            // 邮件通知的消息
         public string notifyEmails;             // 邮件通知其他邮箱
+
+        public decimal? alreadyReceived;        // 固定价格合同-已收款总额
+        public decimal? toBeInvoiced;           // 固定价格合同-待开票总额
+        public long? defaultCostCode;           // 固定价格合同-默认里程碑计费代码
     }
 
     public class ServiceInfoDto

@@ -918,7 +918,6 @@ a:hover {
       </div>
 
        <div  style="float: left;width:750px;min-width:750px;height:500px;">
-           
             <iframe runat="server" id="viewSaleOrder_iframe" width="860" height="500" frameborder="0" marginheight="0" marginwidth="0" style="overflow:scroll;"></iframe>
        </div>
 
@@ -1085,4 +1084,12 @@ a:hover {
         $(".Toggle4").parent().parent().css("background", colors[index4 % 2]);
         index4++;
     })
+    var Height = $(window).height() - 80 + "px";
+    var Width = $(window).width() + "px";
+    $("#viewSaleOrder_iframe").css("height", Height).css("width", Width);
+    $(window).resize(function () {
+        var Height = $(window).height() - 80 + "px";
+        var Width = $(window).width() + "px";
+        $("#viewSaleOrder_iframe").css("height", Height).css("width", Width);
+    });
 </script>
