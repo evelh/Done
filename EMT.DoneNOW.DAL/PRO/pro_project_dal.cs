@@ -16,5 +16,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<pro_project>($"select * from pro_project where  delete_time = 0");
         }
+        /// <summary>
+        /// 根据客户ID 获取到该客户的项目提案
+        /// </summary>
+        public List<pro_project> GetProjectListByAcc(long account_id)
+        {
+            return FindListBySql<pro_project>($"select * from pro_project where  delete_time = 0 and account_id = {account_id}");
+        }
     }
 }

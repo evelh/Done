@@ -182,8 +182,11 @@
                     <tr>
                         <td>
                             <div class="clear">
-                                <label>项目提案名称</label><asp:DropDownList ID="project_id" runat="server"></asp:DropDownList>
-                                
+                                <label>项目提案名称</label>
+                                <%--<asp:DropDownList ID="project_id" runat="server"></asp:DropDownList>--%>
+                                <select name="project_id" id="project_id">
+                                </select>
+                                <input type="hidden" name="project_idHidden" id="project_idHidden" value="<%=(!isAdd&&quote.project_id!=null)?quote.project_id.ToString():"" %>"/>
                              <%--   <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>--%>
                             </div>
                         </td>
@@ -548,6 +551,12 @@
             $("#contact_id").val(contact_idHidden);
         }
 
+        var project_idHidden = $("#project_idHidden").val();
+        if (project_idHidden != "") {
+            $("#project_id").val(project_idHidden);
+        }
+            
+
 
         $("#opportunity_id").change(function () {
             
@@ -614,7 +623,6 @@
                 $(".shipLoca").removeAttr("disabled")
             }
         })
-
     })
 
     // 根据查找带回的客户，为页面上的基本信息赋值
@@ -708,6 +716,24 @@
 
                 },
             });
+
+
+            // 获取项目提案信息
+            $("#project_id").html("<option value='0'>暂无项目提案</option>");
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/CompanyAjax.ashx?act=project&account_id=" + account_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#project_id").html(data);
+                    }
+                },
+            });
+        }
+        else {
+            $("#project_id").html("<option value='0'>暂无项目提案</option>");
         }
     }
 
