@@ -299,6 +299,14 @@ function CalcService() {
         total += price;
         $("#pricenum" + ids[i]).val(price);
     }
+
+    ids = $("#AddSerBunIds").val().split(",");
+    for (i = 0; i < ids.length; i++) {
+        var price = $("#price" + ids[i]).val() * $("#num" + ids[i]).val();
+        price = Math.floor(price * 10000) / 10000;
+        total += price;
+        $("#pricenum" + ids[i]).val(price);
+    }
     $("#ServicePrice").val(total);
 }
 

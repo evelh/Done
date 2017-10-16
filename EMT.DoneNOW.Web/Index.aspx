@@ -923,10 +923,10 @@
 	<script src="Scripts/index.js" type="text/javascript" charset="utf-8"></script>
     <script>
         $(window).resize(function (){
-        var Height = $(document).height()-71+"px";
+        var Height = $(window).height()-66+"px";
         $("#PageFrame").css("height", Height);
-        })
-        var Height = $(document).height()-66 + "px";
+        }) 
+        var Height = $(window).height()-66 + "px";
         $("#PageFrame").css("height", Height);
     </script>
 </html>

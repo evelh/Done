@@ -39,6 +39,9 @@ namespace EMT.DoneNOW.Web.Contract
                 if (!string.IsNullOrEmpty(Request.Form["isSdtDefault"]) && Request.Form["isSdtDefault"].Equals("on"))
                     dto.contract.is_sdt_default = 1;
 
+                if (!string.IsNullOrEmpty(Request.Form["needTimeSheet"]) && Request.Form["needTimeSheet"].Equals("on"))
+                    dto.contract.timeentry_need_begin_end = 1;
+
                 if (udfList != null && udfList.Count > 0)                      // 首先判断是否有自定义信息
                 {
                     var list = new List<UserDefinedFieldValue>();
@@ -57,16 +60,33 @@ namespace EMT.DoneNOW.Web.Contract
 
                 // 服务
                 dto.serviceList = new List<ServiceInfoDto>();
-                if (dto.contract.type_id == (int)DicEnum.CONTRACT_TYPE.SERVICE && (!string.IsNullOrEmpty(Request.Form["AddServiceIds"])))
+                if (dto.contract.type_id == (int)DicEnum.CONTRACT_TYPE.SERVICE)
                 {
-                    string[] ids = Request.Form["AddServiceIds"].Split(',');
-                    foreach (string id in ids)
+                    if (!string.IsNullOrEmpty(Request.Form["AddServiceIds"]))   // 服务
                     {
-                        ServiceInfoDto si = new ServiceInfoDto();
-                        si.price = decimal.Parse(Request.Form["price" + id]);
-                        si.number = decimal.Parse(Request.Form["num" + id]);
-                        si.serviceId = long.Parse(id);
-                        dto.serviceList.Add(si);
+                        string[] ids = Request.Form["AddServiceIds"].Split(',');
+                        foreach (string id in ids)
+                        {
+                            ServiceInfoDto si = new ServiceInfoDto();
+                            si.price = decimal.Parse(Request.Form["price" + id]);
+                            si.number = decimal.Parse(Request.Form["num" + id]);
+                            si.serviceId = long.Parse(id);
+                            si.type = 1;
+                            dto.serviceList.Add(si);
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(Request.Form["AddSerBunIds"]))    // 服务包
+                    {
+                        string[] ids = Request.Form["AddSerBunIds"].Split(',');
+                        foreach (string id in ids)
+                        {
+                            ServiceInfoDto si = new ServiceInfoDto();
+                            si.price = decimal.Parse(Request.Form["price" + id]);
+                            si.number = decimal.Parse(Request.Form["num" + id]);
+                            si.serviceId = long.Parse(id);
+                            si.type = 2;
+                            dto.serviceList.Add(si);
+                        }
                     }
                 }
 

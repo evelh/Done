@@ -71,7 +71,7 @@ namespace EMT.DoneNOW.Web.Contract
                         ShowTitle.Text = "里程碑-" + contract.name;
                         break;
                     case "service":
-                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?time=" + DateTime.Now.ToString("yyyy-MM-dd") + "&cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_SERVICE + "&type=" + (int)QueryType.ContractService + "&id=" + contract.id;
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_SERVICE + "&type=" + (int)QueryType.ContractService + "&id=" + contract.id;
                         second.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_SERVICE_TRANS_HISTORY + "&type=" + (int)QueryType.ContractServiceTransHistory + "&id=" + contract.id;
                         ShowTitle.Text = "服务-" + contract.name;
                         break;

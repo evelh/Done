@@ -76,7 +76,7 @@ li.Button {
 }
 
 .Save, .SaveAndClone, .SaveAndNew {
-    background-image: url("../img/save.png");
+    background-image: url("../Images/save.png");
 }
 
 .Ok {

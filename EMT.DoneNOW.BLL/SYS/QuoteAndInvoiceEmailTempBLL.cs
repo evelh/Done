@@ -62,5 +62,20 @@ namespace EMT.DoneNOW.BLL
                 return null;
             }            
         }
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <returns></returns>
+        public ERROR_CODE Insert(sys_quote_email_tmpl tmpl,long user_id) {
+            return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <returns></returns>
+        public ERROR_CODE Update(sys_quote_email_tmpl tmpl, long user_id)
+        {
+            return ERROR_CODE.SUCCESS;
+        }
     }
 }

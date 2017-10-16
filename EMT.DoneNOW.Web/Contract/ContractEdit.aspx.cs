@@ -19,6 +19,7 @@ namespace EMT.DoneNOW.Web.Contract
         protected ContractEditDto contract;     // 编辑的合同对象
         protected string contractTypeName;      // 合同类型名称
         protected List<UserDefinedFieldDto> udfList;        // 自定义字段信息
+        protected List<UserDefinedFieldValue> udfValues;    // 自定义字段值
         private ContractBLL bll = new ContractBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -32,6 +33,7 @@ namespace EMT.DoneNOW.Web.Contract
             contractTypeName = bll.GetContractTypeName(contract.contract.type_id);
             slaList = bll.GetSLAList();
             udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);
+            udfValues = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.CONTRACTS, contract_id, udfList);
 
             if (!IsPostBack)
             {
@@ -129,9 +131,9 @@ namespace EMT.DoneNOW.Web.Contract
                 else
                     contractEdit.enable_overage_billing_rate = 0;
                 if (string.IsNullOrEmpty(Request.Form["bill_to_contact_id1"]))
-                    contractEdit.contact_id = null;
+                    contractEdit.bill_to_contact_id = null;
                 else
-                    contractEdit.contact_id = long.Parse(Request.Form["bill_to_contact_id1"]);
+                    contractEdit.bill_to_contact_id = long.Parse(Request.Form["bill_to_contact_id1"]);
             }
             else
             {

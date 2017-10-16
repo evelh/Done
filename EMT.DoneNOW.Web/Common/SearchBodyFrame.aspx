@@ -220,13 +220,16 @@
                     <li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
                     <li><i style="background-image: url(../Images/export.png);"></i></li>
                 </ul>
+
+              <div class="fl" style="line-height:47px;">
+              <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
+                <span>显示数据</span><input type="text" name="serviceTime" style="margin-left:16px;margin-right:30px;" onchange="editTime()" value="<%=searchTime.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
+              <%} %>
+              </div>
+
                 <%if (queryResult != null && queryResult.count > 0)
                     { %>
                 <div class="page fl">
-
-                  <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
-                <span>显示数据</span><input type="text" name="time" style="margin-left:16px;margin-right:30px;" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
-              <%} %>
 
                     <%
                         int indexFrom = queryResult.page_size * (queryResult.page - 1) + 1;
@@ -1201,7 +1204,7 @@
             window.open("../Contract/ContractAdd.aspx?type=" + type, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }
         function Edit() {
-            window.open("../Contract/ContractEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=950', false);
+            window.open("../Contract/ContractEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=980', false);
         }
         function ViewContract() {
           window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank', 'left=0,top=0,location=no,status=no,width=1350,height=950', false);
@@ -3389,7 +3392,10 @@
            window.open('../Contract/AddService.aspx?type=2&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=710,height=524', false);
            }
          function ApplyDiscount() {
-           }
+         }
+         function editTime() {
+           $("#form1").submit();
+         }
          function Delete() {
             $.ajax({
             type: "GET",

@@ -42,7 +42,7 @@
                     <span class="Icon Right"></span>
                 </li>
                 <!--下拉菜单-->
-                <li class="DropDownButton">
+                <div class="DropDownButton">
                     <div style="padding:10px 0;">
                         <div class="Group">
                             <div class="Button1" id="QuickPublishButton" tabindex="0">
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                     </div>
-                </li>
+                </div>
             </ul>
         </div>
     <!--内容部分-->
