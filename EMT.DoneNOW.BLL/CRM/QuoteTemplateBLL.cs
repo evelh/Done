@@ -107,6 +107,14 @@ namespace EMT.DoneNOW.BLL
             return _dal.GetAllVariable();
         }
         /// <summary>
+        /// 获取body所有可显示变量
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetBodyAllVariable()
+        {
+            return _dal.GetBodyAllVariable();
+        }
+        /// <summary>
         /// 获取所有可显示变量
         /// </summary>
         /// <returns></returns>
@@ -114,7 +122,14 @@ namespace EMT.DoneNOW.BLL
         {
             return _dal.GetAllInvoiceVariable();
         }
-        
+        /// <summary>
+        /// 获取body所有可显示变量
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetBodyAllInvoiceVariable()
+        {
+            return _dal.GetBodyAllInvoiceVariable();
+        }
         /// <summary>
         /// 获取对应
         /// </summary>
@@ -355,7 +370,6 @@ namespace EMT.DoneNOW.BLL
             {
                 // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
-
             }
             var old = GetQuoteTemplate(sqt.id);
             sqt.update_user_id = user_id;
@@ -363,7 +377,6 @@ namespace EMT.DoneNOW.BLL
            if (!_dal.Update(sqt)) {
                 return ERROR_CODE.ERROR;
             }
-
             //写个操作日志            
             var add_account_log = new sys_oper_log()
             {
@@ -380,7 +393,6 @@ namespace EMT.DoneNOW.BLL
 
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
-
             return ERROR_CODE.SUCCESS;
 
         }

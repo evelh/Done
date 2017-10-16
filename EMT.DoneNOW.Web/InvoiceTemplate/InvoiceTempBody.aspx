@@ -424,31 +424,6 @@
                             <div class="RowContainer BodyContainer">
                                 <table cellpadding="0">
                                     <tbody>
-                                        <%--    <%if (GeneralList != null) {int n = 1; foreach (var i in GeneralList){%>
-                                    <tr class="D">
-                                        <td class="Interaction U0" style="width: 81px;">
-                                            <div>
-                                                <div class="Decoration Icon DragHandle prev">
-                                                    <img src="../RichText/img/prev.png" alt="">
-                                                </div>
-                                                <div class="Decoration Icon DragHandle next">
-                                                    <img src="../RichText/img/next.png" alt="">
-                                                </div>
-                                                <div class="SortOrder"><%=n++%></div>
-                                            </div>
-                                        </td>
-                                        <td class="Command U1" style="width:19px;">
-                                            <div class="ButtonIcon Button Edit NormalState">
-                                                <span class="Icon"></span>
-                                            </div>
-                                        </td>
-                                        <td class="Text U2" style="width: 121px;">
-                                           <%=i.name %><input type="hidden" class="type_id" value="<%=i.id %>" />
-                                        </td>
-                                        <td class="FormatPreservation U3"></td>
-                                        <td class="FormatPreservation U4" style="width: 141px;"></td>
-                                    </tr>
-                                    <%}}%>--%>
                                         <tr class="D">
                                             <td class="Interaction U0" style="width: 81px;">
                                                 <div>
@@ -651,13 +626,6 @@
                                 </div>
                                 <div class="Normal Editor SingleSelect" style="padding-bottom: 15px;">
                                     <div class="InputField">
-                                        <%--<select name="GroupBy" id="GroupBy" style="width: 320px;">
-                                            <%@ Import Namespace="EMT.DoneNOW.Core" %>
-                                            <%foreach (var d in gbll.GetGeneralList(141) as List<d_general>)
-                                                { %>
-                                            <option value="<%=d.id%>"><%=d.name %></option>
-                                            <%} %>
-                                        </select>--%>
                                         <asp:DropDownList ID="GroupBy" runat="server"></asp:DropDownList>
                                         <img id="setset" src="../RichText/img/set.png" style="vertical-align: middle; cursor: pointer;" />
                                     </div>
@@ -681,13 +649,7 @@
                                 </div>
                                 <div class="Normal Editor SingleSelect" style="padding-bottom: 10px;">
                                     <div class="InputField">
-                                        <%-- <select name="Itemize" id="Itemize" style="width: 320px;">--%>
-                                        <%-- <%foreach (var d in gbll.GetGeneralList(142) as List<d_general>)
-                                                { %>
-                                            <option value="<%=d.id%>"><%=d.name %></option>
-                                            <%} %>--%>
                                         <asp:DropDownList ID="Itemize" runat="server"></asp:DropDownList>
-                                        <%--</select>--%>
                                     </div>
                                 </div>
                             </div>
@@ -699,12 +661,6 @@
                                 </div>
                                 <div class="Normal Editor SingleSelect" style="padding-bottom: 10px;">
                                     <div class="InputField">
-                                        <%--  <select name="SortBy" id="SortBy" style="width: 320px;">
-                                            <%foreach (var d in gbll.GetGeneralList(143) as List<d_general>)
-                                                { %>
-                                            <option value="<%=d.id%>"><%=d.name %></option>
-                                            <%} %>
-                                        </select>--%>
                                         <asp:DropDownList ID="SortBy" runat="server"></asp:DropDownList>
                                     </div>
                                 </div>
@@ -1220,7 +1176,7 @@
                        <div style="position: absolute; left: 0; overflow-y: auto; right: 0; top: 0px; bottom: 0px;">
                             <div class="ScrollingContainer">
                                 <div class="Heading">
-                                    <input type="checkbox" id="xuanze3" style="margin-top:4px;"/>选择选择
+                                    <input type="checkbox" id="xuanze3" style="margin-top:4px;"/>Roll up by Roll Up Description
                                 </div>
                                 <div class="addDescriptionText"></div>
                                 <div class="addContent" style="height: 310px; position: relative; top: -6px;">
@@ -1308,7 +1264,6 @@
                 $("#editedit").show();
                 
                 //富文本编辑器
-                //UE.delEditor('containerHead');
                 var ue = UE.getEditor('containerHead', {
                     toolbars: [
                         ['source', 'fontfamily', 'fontsize', 'bold', 'italic', 'underline', 'fontcolor', 'backcolor', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist', 'insertunorderedlist', 'undo', 'redo']
@@ -1347,25 +1302,14 @@
                 $("#resetreset").on("mouseout", function () {
                     $("#resetreset").css("background", "#f0f0f0");
                 }); 
+                //恢复默认
+                $("#resetreset").on("click", function () {
+                    ue.setContent("Task/Ticket: [Ticket: Title][Task: Task Title]<br>[Ticket: Number][Task: Task Number]");
+                })
                 // 点击确定数据保存至后台  在展示页展示
                 $("#addadd").on("click", function () {
                     var html = ue.getContent();
-                    var txt = ue.getContentTxt();                 
-                    //if (k == "工时") {//工时，特殊
-                    //    $("#kkk1").show();
-                    //} else {
-                    //    $("#kkk1").hide();
-                    //}
-                    //if (k == "定期服务/服务包") {//服务包
-                    //    $("#kkk2").show();
-                    //} else {
-                    //    $("#kkk2").hide();
-                    //}
-                    //if (tanchuan == 2) {
-                    //    $(".add_Display_Format").eq(a).html(html);
-                    //    tanchuan = 1;
-                    //    $("#editedit2").show();
-                    //} else {
+                    var txt = ue.getContentTxt(); 
                         var k = $(".invoice_type_name").eq(a).text();
                         $(".Edit").eq(a).parent().next().next().html(html);
                         if (k == "工时") {//工时，特殊   
@@ -1613,6 +1557,10 @@
                 });
                 $("#resetreset3").on("mouseout", function () {
                     $("#resetreset3").css("background", "#f0f0f0");
+                }); 
+                //恢复默认
+                $("#resetreset3").on("click", function () {
+                    ue.setContent("[Billing Item: Type]: [Billing Item: Billing Code]");
                 }); 
                 // 点击确定数据保存至后台  在展示页展示
                 $("#addadd3").on("click", function () {

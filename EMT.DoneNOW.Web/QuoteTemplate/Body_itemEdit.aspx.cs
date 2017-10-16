@@ -29,7 +29,7 @@ namespace EMT.DoneNOW.Web
                 this.AlertVariableFilter.DataSource = new QuoteTemplateBLL().GetBodyVariableField();
                 this.AlertVariableFilter.DataBind();
                 this.AlertVariableFilter.Items.Insert(0, new ListItem() { Value = "0", Text = "显示全部变量", Selected = true });
-                var list = new QuoteTemplateBLL().GetAllVariable();
+                var list = new QuoteTemplateBLL().GetBodyAllVariable();
                 StringBuilder sb = new StringBuilder();
                 foreach (string va in list)
                 {
@@ -46,7 +46,7 @@ namespace EMT.DoneNOW.Web
             if (this.AlertVariableFilter.SelectedValue == "0")
             {
                 sb.Clear();
-                var list = new QuoteTemplateBLL().GetAllVariable();
+                var list = new QuoteTemplateBLL().GetBodyAllVariable();
                 foreach (string va in list)
                 {
                     sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va.Replace("'","") + "</option>");

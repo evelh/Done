@@ -16,7 +16,7 @@ namespace EMT.DoneNOW.Web
         protected InvioceTempDto.TempContent tempinfo = null;
         protected string bottom;
         protected List<InvioceTempDto.SETTING_ITEM> bottom_value;
-        protected InvioceTempDto.Invoice_ext bottomttt;
+        protected InvioceTempDto.Invoice_ext bottomttt=new InvioceTempDto.Invoice_ext ();
         protected void Page_Load(object sender, EventArgs e)
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
@@ -68,7 +68,8 @@ namespace EMT.DoneNOW.Web
             if (tempinfo.Invoice_text != null) {
                 bottomttt = new EMT.Tools.Serialize().DeserializeJson<InvioceTempDto.Invoice_ext>(tempinfo.Invoice_text);                
             }
-            bottomttt.Bottom_Item = new EMT.Tools.Serialize().DeserializeJson<InvioceTempDto.Invoice_ext2>(t).item;
+            var kk = new EMT.Tools.Serialize().DeserializeJson<InvioceTempDto.Invoice_ext2>(t).item;
+            bottomttt.Bottom_Item = kk;
             tempinfo.Invoice_text = new EMT.Tools.Serialize().SerializeJson(bottomttt);
             if (this.tax_sup.Checked)
             {

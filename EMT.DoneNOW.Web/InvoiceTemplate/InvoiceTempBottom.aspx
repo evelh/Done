@@ -126,7 +126,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value" <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[0].value != null)
+                            <input type="text" class="bottom_value" <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[0].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[0].value %>"<%}else{ %>value="已用时间"<%} %>/>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[1].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[1].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[1].value %>"<%}else{ %>value="剩余时间"<%} %>/>
                         </div>
                     </div>
@@ -148,7 +148,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[2].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[2].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[2].value %>"<%}else{ %>value="已用事件"<%} %>/>
                         </div>
                     </div>
@@ -159,7 +159,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[3].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[3].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[3].value %>"<%}else{ %>value="剩余事件"<%} %>/>
                         </div>
                     </div>
@@ -172,7 +172,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[4].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[4].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[4].value %>"<%}else{ %>value="已用费用"<%} %>/>
                         </div>
                     </div>
@@ -183,7 +183,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[5].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[5].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[5].value %>"<%}else{ %>value="剩余费用"<%} %>/>
                         </div>
                     </div>
@@ -208,7 +208,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[6].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[6].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[6].value %>"<%}else{ %>value="不计费工时"<%} %>/>
                         </div>
                     </div>
@@ -219,7 +219,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[7].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[7].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[7].value %>"<%}else{ %>value="预付时间"<%} %>/>
                         </div>
                     </div>
@@ -230,7 +230,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[8].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[8].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[8].value %>"<%}else{ %>value="调整的计费工时"<%} %>/>
                         </div>
                     </div>
@@ -241,7 +241,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[9].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[9].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[9].value %>"<%}else{ %>value="全部计费工时"<%} %>/>
                         </div>
                     </div>
@@ -254,7 +254,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[10].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[10].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[10].value %>"<%}else{ %>value="全部计费金额（调整前）"<%} %>/>
                         </div>
                     </div>
@@ -265,7 +265,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[11].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[11].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[11].value %>"<%}else{ %>value="付款/信贷"<%} %>/>
                         </div>
                     </div>
@@ -276,7 +276,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[12].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[12].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[12].value %>"<%}else{ %>value="税金总额"<%} %>/>
                         </div>
                     </div>
@@ -287,7 +287,7 @@
                     </div>
                     <div class="Normal Editor TextBox">
                         <div class="InputField">
-                            <input type="text" class="bottom_value"  <%if (bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[13].value != null)
+                            <input type="text" class="bottom_value"  <%if (bottomttt!=null&&bottomttt.Bottom_Item!=null&&bottomttt.Bottom_Item[13].value != null)
                                 { %>value="<%=bottomttt.Bottom_Item[13].value %>"<%}else{ %>value="总计"<%} %>/>
                         </div>
                     </div>
@@ -356,8 +356,9 @@
             elementPathEnabled : false,
             autoHeightEnabled:false  //设置滚动条
         });
-        ue.ready(function(){
+        ue.ready(function () {
             //获取html内容  返回：<p>内容</p>
+            ue.setContent("<%=bottom%>");
             var html = ue.getContent();
             //获取纯文本内容  返回：内容
             var txt = ue.getContentTxt();
@@ -375,18 +376,7 @@
                 UE.getEditor('containerHead').execCommand('inserthtml',$(this).html());
                 $("#BackgroundOverLay").hide();
                 $(".AlertBox").hide();
-            });
-            var Model = '<table style="width:100%; padding-top:20px; border-collapse:collapse;font-size:12px;">dgssdfjghk,hjdgs'+
-                    '<tbody>'+
-                    '<tr>'+
-                    '<td id="InvoiceNotesBlock" style="vertical-align:top;border:none;">[Invoice: Invoice Notes]</td>'+
-                    '<td id="InvoiceSummaryBlock" style="vertical-align:top;width:300px;border:none;" align="right">[Invoice: Totals]<br><br>'+
-                    '<div>[Invoice: Tax Detail]</div>'+
-                    '</td>'+
-                    '</tr>'+
-                    '</tbody>'+
-                    '</table>';
-            ue.setContent(Model);
+            });           
         });
         //点击确定数据保存至后台  在展示页展示
         $("#OkButton").on("click",function(){
@@ -399,9 +389,18 @@
         //$("#CancelButton").on("click",function(){
         //    window.location.href="QuotationTemplate.html";
         //})
-        //情空内容
         $("#ResetButton").on("click",function(){
-            ue.setContent('')
+            var Model = '<table style="width:100%; padding-top:20px; border-collapse:collapse;font-size:12px;">' +
+                '<tbody>' +
+                '<tr>' +
+                '<td id="InvoiceNotesBlock" style="vertical-align:top;border:none;">[Invoice: Invoice Notes]</td>' +
+                '<td id="InvoiceSummaryBlock" style="vertical-align:top;width:300px;border:none;" align="right">[Invoice: Totals]<br><br>' +
+                '<div>[Invoice: Tax Detail]</div>' +
+                '</td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>';
+            ue.setContent(Model);
         })
         function dbclick(val) {
             UE.getEditor('containerHead').focus();
@@ -430,7 +429,6 @@
             var txt = ue.getContentTxt();
             console.log(txt);
         }
-
     </script>
         </div>
     </form>

@@ -26,7 +26,6 @@
     }
 </style>
 </head>
-
 <body>
     <form id="form1" runat="server">
         <div>
@@ -39,67 +38,66 @@
             </li></ul>
         </div>
             <div class="text">为这个报价模板配置基本设置</div>
-            <div class="information clear">
-                <p class="informationTitle"><i></i>基本信息</p>
-                <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 500px;margin-left: 31px;">
-                         <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>模板名称<span style="color:red">*</span></label>
-                                </div>
-                            </td>
-                             </tr>
-                        <tr><td> <asp:TextBox ID="Name" runat="server" class="q1"></asp:TextBox></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>说明</label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr><td>
-                            <asp:TextBox ID="Description" runat="server"  TextMode="MultiLine" CssClass="q1"></asp:TextBox><br />
-                            <%-- <div class="CharacterInformation"><span class="CurrentCount">0</span>/<span class="Maximum">200</span></div>--%>
-                            <asp:CheckBox ID="Active" runat="server" text="激活" Checked="true" />
-                            </td></tr>
-                         </table>
+            <div style="left: 0; overflow-x: auto; overflow-y: auto; position: fixed; right: 0; bottom: 0; top: 118px;">
+                <div class="information clear">
+                    <p class="informationTitle"><i></i>基本信息</p>
+                    <div>
+                        <table border="none" cellspacing="" cellpadding="" style="width: 500px;margin-left: 31px;">
+                             <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>模板名称<span style="color:red">*</span></label>
+                                    </div>
+                                </td>
+                                 </tr>
+                            <tr><td> <asp:TextBox ID="Name" runat="server" class="q1"></asp:TextBox></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>说明</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr><td>
+                                <asp:TextBox ID="Description" runat="server"  TextMode="MultiLine" CssClass="q1"></asp:TextBox><br />
+                                <%-- <div class="CharacterInformation"><span class="CurrentCount">0</span>/<span class="Maximum">200</span></div>--%>
+                                <asp:CheckBox ID="Active" runat="server" text="激活" Checked="true" />
+                                </td></tr>
+                             </table>
+                        </div>
                     </div>
-                </div>
-            <div class="information clear">
-                <p class="informationTitle"><i></i>数据格式</p>
-                <div>
-                    <table border="none" cellspacing="" cellpadding="" style="width: 500px; margin-left: 31px;">
-                         <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>日期格式</label>
-                                </div>
-                            </td>
-                             </tr>
-                        <tr><td>
-                            <asp:DropDownList ID="DateFormat" runat="server">      
-                               </asp:DropDownList>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>数字格式</label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr><td>
-                            <asp:DropDownList ID="NumberFormat" runat="server">
-                            </asp:DropDownList>
-                            </td></tr>
-                         </table>
+                <div class="information clear">
+                    <p class="informationTitle"><i></i>数据格式</p>
+                    <div>
+                        <table border="none" cellspacing="" cellpadding="" style="width: 500px; margin-left: 31px;">
+                             <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>日期格式</label>
+                                    </div>
+                                </td>
+                                 </tr>
+                            <tr><td>
+                                <asp:DropDownList ID="DateFormat" runat="server">      
+                                   </asp:DropDownList>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>数字格式</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr><td>
+                                <asp:DropDownList ID="NumberFormat" runat="server">
+                                </asp:DropDownList>
+                                </td></tr>
+                             </table>
+                        </div>
                     </div>
-                </div>
-
-
-            <div class="information clear">
+                <div class="information clear">
                 <p class="informationTitle"><i></i>税收显示格式设置</p>
                 <div>
                     <table border="none" cellspacing="" cellpadding="" style="width: 500px;margin-left: 31px;">
@@ -229,6 +227,7 @@
                 </div>
 
         </div>
+            </div>
 </form>
 </body>
 <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
