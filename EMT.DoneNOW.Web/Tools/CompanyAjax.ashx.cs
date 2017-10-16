@@ -68,6 +68,10 @@ namespace EMT.DoneNOW.Web
                     var ref_account_id = context.Request.QueryString["account_id"];
                     GetAccountReference(context,long.Parse(ref_account_id));
                     break;
+                case "project":
+                    var pro_account_id = context.Request.QueryString["account_id"];
+                    GetAccountProject(context,long.Parse(pro_account_id));
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     return;
@@ -290,6 +294,23 @@ namespace EMT.DoneNOW.Web
             if (accRef != null)
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson(accRef));
+            }
+        }
+        /// <summary>
+        ///  获取到该客户的项目提案信息
+        /// </summary>
+        private void GetAccountProject(HttpContext context, long account_id)
+        {
+            var proList = new pro_project_dal().GetProjectListByAcc(account_id);
+            if (proList != null && proList.Count > 0)
+            {
+                StringBuilder proText = new StringBuilder();
+                proText.Append("<option value='0'>请选择一个项目提案</option>");
+                foreach (var pro in proList)
+                {
+                    proText.Append($"<option value='{pro.id}'>{pro.name}</option>");
+                }
+                context.Response.Write(proText.ToString());
             }
         }
 

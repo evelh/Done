@@ -612,7 +612,7 @@
                     success: function (data) {
                         if (data != "") {
                             $("#one_time_revenue").val(toDecimal2(data.oneTimeRevenue));
-                            $("#one_time_cost").val(toDecimal2(data.oneTimeRevenue));
+                            $("#one_time_cost").val(toDecimal2(data.oneTimeCost));
                             $("#monthly_revenue").val(toDecimal2(data.monthRevenue));
                             $("#monthly_cost").val(toDecimal2(data.monthCost));
                             $("#quarterly_revenue").val(toDecimal2(data.quarterRevenue));

@@ -39,11 +39,17 @@ namespace EMT.DoneNOW.Web
                 StringBuilder sb = new StringBuilder();
                 foreach (string va in list)
                 {
-                    sb.Append("<option class='val' ondblclick='dbclick(this)'>" + va.Replace("'", "") + "</option>");
+                    sb.Append("<option class='val' ondblclick='dbclick(this)' >" + va.Replace("'", "") + "</option>");
                 }
                 this.VariableList.Text = sb.ToString();
-                //Page.ClientScript.RegisterStartupScript(this.GetType(), OpenWindow.GeneralJs.ToString(), @"$('.bind').each(function(){$(this).attachEvent("dblclick",function(){);", true);
-            }
+            //    Page.ClientScript.RegisterStartupScript(this.GetType(), OpenWindow.GeneralJs.ToString(), @"function dbclick2(val) {
+            //UE.getEditor('containerHead').focus();
+            //UE.getEditor('containerHead').execCommand('inserthtml', $(val).html());
+            //$('#BackgroundOverLay').hide();
+            //$('.AlertBox').hide();
+            //}
+            //", true);
+         }
         }
 
         protected void Save(object sender, EventArgs e)

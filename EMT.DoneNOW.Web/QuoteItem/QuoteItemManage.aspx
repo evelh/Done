@@ -16,6 +16,12 @@
             font-size: 12px;
             vertical-align: super;
         }
+        .quoteName{
+            text-align:left;
+        }
+        .serial_number{
+            text-align:right;
+        }
     </style>
 </head>
 <body>
@@ -110,6 +116,8 @@
                         </thead>
                         <tbody>
                             <%
+                                var serial_number = 1;
+
                                 var type = dic.First(_ => _.Key == "quote_item_type").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>; // 报价项分类
                                 var quote_item_tax_cate_name = dic.First(_ => _.Key == "quote_item_tax_cate").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>; // 报价项相关税
 
@@ -174,8 +182,8 @@
                                 {
                             %>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)).ToString():"" %></span><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)+1).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td><%--出厂序号待确定--todo--%></td>
@@ -212,7 +220,7 @@
                                         {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)+1).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_=>_.val==taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice*taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -279,8 +287,8 @@
                             <% foreach (var quoteItem in distributionList)
                                 {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)).ToString():"" %></span><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)+1).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td><%--出厂序号待确定--todo--%></td>
@@ -317,7 +325,7 @@
                                         {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)+1).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice * taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -366,8 +374,8 @@
                             <%foreach (var quoteItem in discountQIList.Where(_ => _.discount_percent == null).ToList())
                                 {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td></td>
@@ -389,8 +397,8 @@
                             <%foreach (var quoteItem in discountQIList.Where(_ => _.discount_percent != null).ToList())
                                 {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)).ToString():"" %></span><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)+1).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td></td>
@@ -456,7 +464,7 @@
                                         if (taxQI != null && taxQI.Count > 0)
                                         {      %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)+1).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(itemTaxPrice * taxcate.total_effective_tax_rate).ToString("#0.000") %></td>
                             </tr>
                             <%
@@ -522,8 +530,8 @@
                                 foreach (var quoteItem in optionalItemList)
                                 {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)).ToString():"" %></span><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)+1).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td><%--出厂序号待确定--todo--%></td>
@@ -560,7 +568,7 @@
                                         {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)+1).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice * taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -704,7 +712,7 @@
 
                             <tr>
                                 <td></td>
-                                <td><%=inGroupName %></td>
+                                <td class="quoteName"><%=inGroupName %></td>
                                 <td colspan="11"></td>
                             </tr>
                             <% 
@@ -712,8 +720,8 @@
                                 {
                             %>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)).ToString():"" %></span><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)+1).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td><%--出厂序号待确定--todo--%></td>
@@ -748,7 +756,7 @@
                                         {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)+1).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice * taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -804,8 +812,8 @@
                             <% foreach (var quoteItem in distributionList)
                                 {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)).ToString():"" %></span><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)+1).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td><%--出厂序号待确定--todo--%></td>
@@ -842,7 +850,7 @@
                                         {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)+1).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice * taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -891,8 +899,8 @@
                             <%foreach (var quoteItem in discountQIList.Where(_ => _.discount_percent == null).ToList())
                                 {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td></td>
@@ -914,8 +922,8 @@
                             <%foreach (var quoteItem in discountQIList.Where(_ => _.discount_percent != null).ToList())
                                 {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td></td>
@@ -980,7 +988,7 @@
                                         if (taxQI != null && taxQI.Count > 0)
                                         {      %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)+1).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(itemTaxPrice * taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -1046,8 +1054,8 @@
                                 foreach (var quoteItem in optionalItemList)
                                 {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)).ToString():"" %></span><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)+1).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td><%--出厂序号待确定--todo--%></td>
@@ -1084,7 +1092,7 @@
                                         {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)+1).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice * taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -1168,8 +1176,8 @@
                                         foreach (var quoteItem in generalList)
                                         {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)).ToString():"" %></span><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)+1).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td><%--出厂序号待确定--todo--%></td>
@@ -1206,7 +1214,7 @@
                                         {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)+1).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice * taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -1257,8 +1265,8 @@
                             <% foreach (var quoteItem in distributionList)
                                 {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)).ToString():"" %></span><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)+1).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td><%--出厂序号待确定--todo--%></td>
@@ -1295,7 +1303,7 @@
                                         {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)+1).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice * taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -1345,8 +1353,8 @@
                             <%foreach (var quoteItem in discountQIList.Where(_ => _.discount_percent == null).ToList())
                                 {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td></td>
@@ -1368,8 +1376,8 @@
                             <%foreach (var quoteItem in discountQIList.Where(_ => _.discount_percent != null).ToList())
                                 {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)).ToString():"" %></span><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)+1).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td></td>
@@ -1435,7 +1443,7 @@
                                         if (taxQI != null && taxQI.Count > 0)
                                         {      %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)+1).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(itemTaxPrice * taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%
@@ -1505,8 +1513,8 @@
                                 foreach (var quoteItem in optionalItemList)
                                 {%>
                             <tr data-val="<%=quoteItem.id %>" class="dn_tr">
-                                <td><%=quoteItem.oid %></td>
-                                <td><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)).ToString():"" %></span><%=quoteItem.name %></td>
+                                <td class="serial_number"><%=serial_number.ToString()+")" %> <% serial_number++; %></td>
+                                <td class="quoteName"><span class="ITG num"><%=quoteItem.tax_cate_id!=null?(taxAllCateList.IndexOf(quoteItem.tax_cate_id)+1).ToString():"" %></span><%=quoteItem.name %></td>
                                 <td><%=type.First(_=>_.val==quoteItem.type_id.ToString())==null?"":type.First(_=>_.val==quoteItem.type_id.ToString()).show %>
                                 </td>
                                 <td><%--出厂序号待确定--todo--%></td>
@@ -1542,7 +1550,7 @@
                                         {
                             %>
                             <tr class="STC">
-                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
+                                <td colspan="12" style="text-align: right;"><span class="ITG num"><%=(taxAllCateList.IndexOf(taxcate.tax_cate_id)+1).ToString() %></span><%=quote_item_tax_cate_name.FirstOrDefault(_ => _.val == taxcate.tax_cate_id.ToString()).show %></td>
                                 <td><%=(taxTotalPrice * taxcate.total_effective_tax_rate).ToString("#0.00") %></td>
                             </tr>
                             <%

@@ -84,7 +84,7 @@ namespace EMT.DoneNOW.Web.Invoice
 
 
 
-
+                var accDal = new crm_account_deduction_dal();
                 var cadDal = new crm_account_deduction_dal();
                 if (!string.IsNullOrEmpty(Request.QueryString["account_ids"]))
                 {
@@ -139,7 +139,7 @@ namespace EMT.DoneNOW.Web.Invoice
                     var invoiceList = new ctt_invoice_dal().GetListByBatch(long.Parse(thisBatch));
                     if (invoiceList != null && invoiceList.Count > 0)
                     {
-                        var accDal = new crm_account_deduction_dal();
+                    
                         List<InvoiceDeductionDto> thisList = new List<InvoiceDeductionDto>();
                         foreach (var invoice in invoiceList)
                         {
@@ -155,9 +155,17 @@ namespace EMT.DoneNOW.Web.Invoice
                         }
                     }
                 }   // 发票批次
-                else if (!string.IsNullOrEmpty(Request.QueryString["inv_nos"]))
+                else if (!string.IsNullOrEmpty(Request.QueryString["invoice_id"]))
                 {
-
+                    if (Regex.IsMatch(Request.QueryString["invoice_id"], @"^[+-]?\d*$"))
+                    {
+                        var thisInvAccDed = accDal.GetInvDedDtoList($" and invoice_id ={Request.QueryString["invoice_id"]}");
+                        if(thisInvAccDed!=null&& thisInvAccDed.Count > 0)
+                        {
+                            GetDateByDto(thisInvAccDed);
+                        }
+                    }
+                       
                 }    // 多个发票号
 
                 if (accInvDic.Count == 0)

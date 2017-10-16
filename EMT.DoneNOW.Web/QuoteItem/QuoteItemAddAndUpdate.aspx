@@ -309,8 +309,16 @@
                                                 <input type="checkbox" name="ByProject" id="ByProject" />
                                                 <span class="CheckBoxLabels">项目提案工时</span>
                                                 <div>
-                                                    <input type="text" name="project_id" id="project_id" style="width: 17em;" />
-                                                    <i onclick="" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                                    <% EMT.DoneNOW.Core.pro_project project = null;
+                                                        var thisQuote = new EMT.DoneNOW.DAL.crm_quote_dal().FindNoDeleteById(long.Parse(Request.QueryString["quote_id"]));
+                                                        if (thisQuote != null && thisQuote.project_id != null)
+                                                        {
+                                                            project = new EMT.DoneNOW.DAL.pro_project_dal().FindNoDeleteById((long)thisQuote.project_id);
+                                                        }
+                                                        %>
+                                                    <input type="text" name="" id="project_id" style="width: 17em;" value="<%=project==null?"":project.name %>"/>
+                                                    <input type="hidden" name="project_id" id="project_idHidden" value="<%=project==null?"":project.id.ToString() %>"/>
+                                                    <i onclick="ViewProject()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                 </div>
                                             </td>
                                         </tr>
@@ -400,7 +408,7 @@
                                                                 </td>
                                                                 <td class="FieldLabels" align="right">
                                                                     <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
-                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="unit_discount" id="unit_discount" value="<%=(!isAdd)&&(quote_item.unit_discount!=null)?quote_item.unit_discount.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="unit_discount" id="unit_discount" value="<%=(!isAdd)&&(quote_item.unit_discount!=null)?quote_item.unit_discount.ToString():"0.00" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -567,8 +575,8 @@
         $("#DiscountR1").prop("disabled", true);
         $("#DiscountR2").prop("disabled", true);
         $("#DiscountR3").prop("disabled", true);
-        $("#unit_discount").val("0");
-        $("#Line_Discount").val("0");
+        $("#unit_discount").val("0.00");
+        $("#Line_Discount").val("0.00");
         $("#Discount").val("0");
         $("#quantity").val("1");
         $("#unit_price").val("0");
@@ -1131,7 +1139,9 @@
                     if (data != "") {
                         // 填充数据
                         $("#name").val(data.name);
-                        // todo 税收种类
+                        $("#unit_price").val(toDecimal2(data.unit_price));
+                        $("#unit_cost").val(toDecimal2(data.unit_cost));
+                        $("#tax_category_id").val(data.tax_category_id);
                     }
                 },
             });
@@ -1158,6 +1168,22 @@
                     }
                 },
             });
+        }
+    }
+
+    function ViewProject() {
+        var project_idHidden = $("#project_idHidden").val();
+        if (project_idHidden == "") {
+            alert("该报价还未关联项目提案");
+            return false;
+        }
+        if ($("#ByProject").is(":checked")) {
+            alert("暂未开发呦");
+            return false;
+
+        } else {
+            alert("您还未勾选项目提案工时");
+            return false;
         }
     }
 

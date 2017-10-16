@@ -911,13 +911,13 @@ namespace EMT.DoneNOW.BLL
 
         }
         /// <summary>
-        /// 检查报价是否关联销售订单  true关联  false不关联
+        /// 检查报价是否关联销售订单  true关联  false不关联 (只针对主报价)
         /// </summary>
         /// <param name="quote_id"></param>
         /// <returns></returns>
         public bool CheckRelatSaleOrder(long quote_id)
         {
-            var saleOrder = _dal.FindSignleBySql<crm_sales_order>($"SELECT * from crm_sales_order s where  s.opportunity_id  in (  select op.id FROM crm_quote q LEFT JOIN crm_opportunity op on op.id = q.opportunity_id where q.id={quote_id})");
+            var saleOrder = _dal.FindSignleBySql<crm_sales_order>($"SELECT * from crm_sales_order s where  s.opportunity_id  in (  select op.id FROM crm_quote q LEFT JOIN crm_opportunity op on op.id = q.opportunity_id where q.id={quote_id} and q.is_primary_quote = 1)");
 
             return saleOrder != null;
         }

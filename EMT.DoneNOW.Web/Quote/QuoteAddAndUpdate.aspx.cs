@@ -59,11 +59,11 @@ namespace EMT.DoneNOW.Web.Quote
                 quote_tmpl_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 var prolist = new pro_project_dal().GetProjectList();
                 // project_id
-                project_id.DataValueField = "id";
-                project_id.DataTextField = "name";
-                project_id.DataSource = prolist;
-                project_id.DataBind();
-                project_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                //project_id.DataValueField = "id";
+                //project_id.DataTextField = "name";
+                //project_id.DataSource = prolist;
+                //project_id.DataBind();
+                //project_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 #endregion
 
                 if (!string.IsNullOrEmpty(id))
@@ -98,7 +98,7 @@ namespace EMT.DoneNOW.Web.Quote
                             payment_type_id.SelectedValue = quote.payment_type_id != null ? quote.payment_type_id.ToString() : "0"; //shipping_type_id
                             shipping_type_id.SelectedValue = quote.shipping_type_id != null ? quote.shipping_type_id.ToString() : "0";
                             quote_tmpl_id.SelectedValue = quote.quote_tmpl_id != null ? quote.quote_tmpl_id.ToString() : "0";
-                            project_id.SelectedValue = quote.project_id!=null ?  quote.project_id.ToString() : "0";
+                            //project_id.SelectedValue = quote.project_id!=null ?  quote.project_id.ToString() : "0";
                             BillLocation.Checked = quote.bill_to_location_id == quote.sold_to_location_id;
                             ShipLocation.Checked = quote.ship_to_location_id == quote.sold_to_location_id;
                         }

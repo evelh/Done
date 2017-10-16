@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ContractEdit.aspx.cs" Inherits="EMT.DoneNOW.Web.Contract.ContractEdit" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ContractEdit.aspx.cs" Inherits="EMT.DoneNOW.Web.Contract.ContractEdit" EnableEventValidation="false" %>
 
 <!DOCTYPE html>
 
@@ -8,6 +8,7 @@
   <title>合同编辑</title>
   <link rel="stylesheet" href="../Content/reset.css" />
   <link rel="stylesheet" href="../Content/NewConfigurationItem.css" />
+  <link rel="stylesheet" href="../Content/LostOpp.css"/>
 </head>
 <body>
   <form id="form1" onsubmit="CheckForm()" runat="server">
@@ -97,7 +98,7 @@
                                     <%foreach (var cate in contractCate)
                                         {
                                     %>
-                                    <option <%if (contract.contract.status_id.ToString().Equals(cate.val))
+                                    <option <%if (contract.contract.cate_id.ToString().Equals(cate.val))
                                         { %>
                                       selected="selected" <%} %> value="<%=cate.val %>"><%=cate.show %></option>
                                     <%
@@ -160,7 +161,7 @@
                               <div>
                                 <span style="display: inline-block;">
                                   <span class="txtBlack8Class">
-                                    <input name="MastInput" type="checkbox" style="vertical-align: middle;" />
+                                    <input name="MastInput" type="checkbox" <%if (contract.contract.timeentry_need_begin_end == 1) { %> checked="checked" <% } %> style="vertical-align: middle;" />
                                     <label>要求工时输入开始/结束时间</label>
                                   </span>
                                 </span>
@@ -176,7 +177,7 @@
                                     <%foreach (var sla in slaList)
                                         {
                                     %>
-                                    <option <%if (contract.contract.sla_id != null && contract.contract.sla_id.ToString().Equals(sla.id))
+                                    <option <%if (contract.contract.sla_id != null && contract.contract.sla_id.ToString().Equals(sla.id.ToString()))
                                         { %>
                                       selected="selected" <%} %> value="<%=sla.id %>"><%=sla.name %></option>
                                     <%
@@ -189,7 +190,7 @@
                               <div>
                                 <span style="display: inline-block;">
                                   <span class="txtBlack8Class">
-                                    <input type="checkbox" name="isSdtDefault" style="vertical-align: middle;" />
+                                    <input type="checkbox" name="isSdtDefault" <%if (contract.contract.is_sdt_default == 1) { %> checked="checked" <% } %> style="vertical-align: middle;" />
                                     <label>默认服务台合同</label>
                                   </span>
                                 </span>
@@ -428,66 +429,77 @@
             </div>
             <span class="lblNormalClass">用户自定义</span>
           </div>
-          <div class="Content">
-            <table class="Neweditsubsection" style="width: 720px;" cellpadding="0" cellspacing="0">
-              <tbody>
-                <tr>
-                  <td>
-                    <div>
-                      <table cellpadding="0" cellspacing="0" style="width: 100%;">
-                        <% if (udfList != null && udfList.Count > 0)
-                            {
-                                foreach (var udf in udfList)
-                                {
-                                    if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
-                                    {%>
-                        <tr>
-                            <td>
-                                <label><%=udf.name %></label>
-                                <input type="text" name="<%=udf.id %>" class="sl_cdt" />
-                            </td>
-                        </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
-                            {%>
-                        <tr>
-                            <td>
-                                <label><%=udf.name %></label>
-                                <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
+          <div class="WizardSection">
+              <table cellspacing="0" cellpadding="0" width="100%" class="Searchareaborder">
+                  <tbody>
+                      <tr>
+                          <td align="center">
+                              <table  cellspacing="1" cellpadding="0" width="100%">
+                                  <tbody>
+                                      <% if (udfList != null && udfList.Count > 0)
+                                          {
+                                              foreach (var udf in udfList)
+                                              {
+                                                  if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                                                  {%>
+                                      <tr>
+                                          <td valign="top" class="FieldLabels">
+                                              <%=udf.name %>
+                                              <div>
+                                                  <input type="text" name="<%=udf.id %>" value="<%=udfValues.FirstOrDefault(_=>_.id==udf.id).value %>" style="width:300px;" />
+                                              </div>
+                                          </td>
+                                      </tr>
+                                      <%}
+                                          else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
+                                          {%>
+                                      <tr>
+                                          <td>
+                                              <label><%=udf.name %></label>
+                                              <textarea name="<%=udf.id %>" rows="2" cols="20"><%=udfValues.FirstOrDefault(_=>_.id==udf.id).value %></textarea>
 
-                            </td>
-                        </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
-                            {%><tr>
-                                <td>
-                                    <label><%=udf.name %></label>
-                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" />
-                                </td>
-                            </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
-                            {%>
-                        <tr>
-                            <td>
-                                <label><%=udf.name %></label>
-                                <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
-                            </td>
-                        </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
-                            {%>
+                                          </td>
+                                      </tr>
+                                      <%}
+                                          else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
+                                          {%><tr>
+                                              <td>
+                                                  <label><%=udf.name %></label>
+                                                  <div>
+                                                    <%
+                                                        object value = udfValues.FirstOrDefault(_ => _.id == udf.id).value;
+                                                        string val = "";
+                                                        if (value != null && (!string.IsNullOrEmpty(value.ToString())))
+                                                            val = DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd");
+                                                        %>
+                                                      <input onclick="WdatePicker()" type="text" value="<%=val %>" name="<%=udf.id %>" class="sl_cdt Wdate" style="width:100px;"/>
+                                                  </div>
+                                              </td>
+                                          </tr>
+                                      <%}
+                                          else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
+                                          {%>
+                                      <tr>
+                                          <td>
+                                              <label><%=udf.name %></label>
+                                              <input type="text" name="<%=udf.id %>" value="<%=udfValues.FirstOrDefault(_=>_.id==udf.id).value %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                                          </td>
+                                      </tr>
+                                      <%}
+                                          else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                                          {%>
 
-                        <%}
-                                }
-                            } %>
-                      </table>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                                      <%}
+                                              }
+                                          } %>
+                                  </tbody>
+                              </table>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
+          
         </div>
       </div>
         </div>
@@ -514,6 +526,20 @@
         $("#end_date").attr("disabled", "disabled");
         $("#occurrences").removeAttr("disabled");
       }
+    }
+    function InitContact() {
+      $.ajax({
+        type: "GET",
+        url: "../Tools/CompanyAjax.ashx?act=contactList&account_id=" + $("#companyNameHidden").val(),
+        success: function (data) {
+          if (data != "") {
+            if ($("#bill_to_contact_id").length != 0)
+              $("#bill_to_contact_id").html(data).removeAttr("disabled");
+            else if ($("#bill_to_contact_id1").length != 0)
+              $("#bill_to_contact_id1").html(data).removeAttr("disabled");
+          }
+        },
+      });
     }
   </script>
 </body>

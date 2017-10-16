@@ -197,6 +197,7 @@
     <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Images\forward_arrow.png" />
+    <Content Include="Images\open.png" />
     <Content Include="Images\Recentindex.png" />
     <Content Include="Images\ServiceSelector.png" />
     <Content Include="Images\Loading.gif" />

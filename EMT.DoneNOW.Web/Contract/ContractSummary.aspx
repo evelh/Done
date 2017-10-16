@@ -733,7 +733,7 @@
         });
 
         function CopyContract(id) {
-            window.parent.location.href = "ContractEdit.aspx?id=" + id;
+          window.open("ContractEdit.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=980', false);
         }
 
         function DeleteContract(id) {

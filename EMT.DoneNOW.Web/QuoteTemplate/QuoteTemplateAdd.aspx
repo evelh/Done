@@ -71,7 +71,6 @@
                             <tr>
                                 <td>
                                     <asp:TextBox ID="Description" runat="server" TextMode="MultiLine" CssClass="q1" Style="max-width: 466px; width: 466px; resize: vertical;"></asp:TextBox><br />
-                                    <%-- <div class="CharacterInformation"><span class="CurrentCount">0</span>/<span class="Maximum">200</span></div>--%>
                                     <asp:CheckBox ID="Active" runat="server" Text="激活" Checked="True" />
                                 </td>
                             </tr>

@@ -528,7 +528,7 @@
                                     <tr>
                                         <td>
                                             <div>
-                                                <input type="checkbox" style="vertical-align: middle;"/>
+                                                <input type="checkbox" name="needTimeSheet" style="vertical-align: middle;"/>
                                                 <span class="CheckboxLabels">要求工时输入开始/结束时间</span>
                                             </div>
                                         </td>

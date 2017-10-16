@@ -20,9 +20,9 @@ namespace EMT.DoneNOW.Web
         {
             id = Convert.ToInt32(Request.QueryString["id"]);
             if(!string.IsNullOrEmpty(Request.QueryString["op"]))
-            op = Request.QueryString["op"];
-            Bind();
+            op = Request.QueryString["op"];            
             if (!IsPostBack) {
+                Bind();
                 if (id > 0) {
                     var tem = temp.GetQuoteTemplate(id);
                     this.Name.Text = tem.name;

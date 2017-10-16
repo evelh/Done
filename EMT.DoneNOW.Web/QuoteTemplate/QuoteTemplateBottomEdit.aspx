@@ -158,7 +158,7 @@
         })--%>
         //情空内容
         $("#ResetButton").on("click", function () {
-            ue.setContent("");
+            ue.setContent("<style type='text/css'>table{font-size: 11px;border-collapse: collapse;}.alignRight{text-align: right;}</style><br><br><table style='margin-bottom:20px' align='right'><tbody><tr><td class='alignRight' style='padding-bottom: 15px;'>签字：______________________________________</td></tr><tr><td class='alignRight'>日期：______________________________________</td></tr></tbody></table>");
         })
     </script>
 </body>
