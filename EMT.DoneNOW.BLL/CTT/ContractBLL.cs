@@ -171,10 +171,50 @@ namespace EMT.DoneNOW.BLL
             {
                 if (dto.contract.type_id == (int)DicEnum.CONTRACT_TYPE.FIXED_PRICE)
                 {
+                    ctt_contract_milestone_dal milestoneDal = new ctt_contract_milestone_dal();
+                    if (dto.alreadyReceived != null)
+                    {
+                        ctt_contract_milestone milestone = new ctt_contract_milestone();
+                        milestone.id = milestoneDal.GetNextIdCom();
+                        milestone.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        milestone.update_time = milestone.create_time;
+                        milestone.create_user_id = userId;
+                        milestone.update_user_id = userId;
+                        milestone.contract_id = dto.contract.id;
+                        milestone.status_id = (int)DicEnum.MILESTONE_STATUS.BILLED;
+                        milestone.due_date = dto.contract.start_date;
+                        milestone.dollars = dto.alreadyReceived;
+                        milestone.name = "初始化合同支付";
+                        milestone.cost_code_id = dto.defaultCostCode;
+                        milestone.description = "";
+
+                        milestoneDal.Insert(milestone);
+                        // 新增日志
+                        OperLogBLL.OperLogAdd<ctt_contract_milestone>(milestone, milestone.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE, "新增合同里程碑信息");
+                    }
+                    if (dto.toBeInvoiced != null)
+                    {
+                        ctt_contract_milestone milestone = new ctt_contract_milestone();
+                        milestone.id = milestoneDal.GetNextIdCom();
+                        milestone.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        milestone.update_time = milestone.create_time;
+                        milestone.create_user_id = userId;
+                        milestone.update_user_id = userId;
+                        milestone.contract_id = dto.contract.id;
+                        milestone.status_id = (int)DicEnum.MILESTONE_STATUS.READY_TO_BILL;
+                        milestone.due_date = dto.contract.start_date;
+                        milestone.dollars = dto.toBeInvoiced;
+                        milestone.name = "初始化合同支付";
+                        milestone.cost_code_id = dto.defaultCostCode;
+                        milestone.description = "";
+
+                        milestoneDal.Insert(milestone);
+                        // 新增日志
+                        OperLogBLL.OperLogAdd<ctt_contract_milestone>(milestone, milestone.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE, "新增合同里程碑信息");
+                    }
                     // 处理里程碑
                     if (dto.milestone != null && dto.milestone.Count > 0)
                     {
-                        ctt_contract_milestone_dal milestoneDal = new ctt_contract_milestone_dal();
                         foreach (var mil in dto.milestone)
                         {
                             ctt_contract_milestone milestone = new ctt_contract_milestone();
@@ -182,6 +222,8 @@ namespace EMT.DoneNOW.BLL
                             milestone.dollars = mil.dollars;
                             milestone.due_date = mil.due_date;
                             milestone.cost_code_id = mil.cost_code_id;
+                            milestone.description = mil.description;
+                            milestone.status_id = mil.status_id == 1 ? (int)DicEnum.MILESTONE_STATUS.READY_TO_BILL : (int)DicEnum.MILESTONE_STATUS.IN_PROGRESS;
 
                             milestone.id = milestoneDal.GetNextIdCom();
                             milestone.contract_id = dto.contract.id;
@@ -682,6 +724,35 @@ namespace EMT.DoneNOW.BLL
         public List<DictionaryEntryDto> GetMilestoneStatuDic()
         {
             return new GeneralBLL().GetDicValues(GeneralTableEnum.CONTRACT_MILESTONE);
+        }
+
+        /// <summary>
+        /// 获取里程碑物料代码
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Dictionary<string, object> GetCostCodes(long userId)
+        {
+            QueryParaDto queryPara = new QueryParaDto();
+            queryPara.query_params = new List<Para>();
+            queryPara.query_params.Add(new Para { id = 439, value = "1163" });
+            queryPara.query_type_id = 38;
+            queryPara.para_group_id = 46;
+            queryPara.page = 1;
+            queryPara.order_by = null;
+            queryPara.page_size = 0;
+            var queryResult = new QueryCommonBLL().GetResult(userId, queryPara);
+
+            Dictionary<string, object> rslt = new Dictionary<string, object>();
+            if (queryResult.count>0)
+            {
+                foreach (var i in queryResult.result)
+                {
+                    rslt.Add(i["物料代码id"].ToString(), i["物料名称"]);
+                }
+            }
+
+            return rslt;
         }
 
         /// <summary>

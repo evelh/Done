@@ -41,6 +41,29 @@ namespace EMT.DoneNOW.Web.Contract
 
                 if (!string.IsNullOrEmpty(Request.Form["needTimeSheet"]) && Request.Form["needTimeSheet"].Equals("on"))
                     dto.contract.timeentry_need_begin_end = 1;
+                else
+                    dto.contract.timeentry_need_begin_end = 0;
+
+                if (contractType == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+                {
+                    if (!string.IsNullOrEmpty(Request.Form["enableOverage"]) && Request.Form["enableOverage"].Equals("on"))
+                        dto.contract.enable_overage_billing_rate = 1;
+                }
+
+                if (contractType == (int)DicEnum.CONTRACT_TYPE.FIXED_PRICE)
+                {
+                    if (!string.IsNullOrEmpty(Request.Form["applyPayment"]) && Request.Form["applyPayment"].Equals("on"))
+                    {
+                        decimal price = 0;
+                        if (decimal.TryParse(Request.Form["alreadyReceived"], out price) && price > 0)
+                            dto.alreadyReceived = price;
+                        if (decimal.TryParse(Request.Form["toBeInvoiced"], out price) && price > 0)
+                            dto.toBeInvoiced = price;
+                        long code = 0;
+                        if (long.TryParse(Request.Form["defaultCostCode"], out code))
+                            dto.defaultCostCode = code;
+                    }
+                }
 
                 if (udfList != null && udfList.Count > 0)                      // 首先判断是否有自定义信息
                 {
@@ -100,9 +123,13 @@ namespace EMT.DoneNOW.Web.Contract
                         ctt_contract_milestone mil = new ctt_contract_milestone();
                         mil.name = Request.Form["MilName" + id];
                         mil.description = Request.Form["MilDetail" + id];
-                        mil.dollars = decimal.Parse(Request.Form["MilAmount" + id]);
+                        decimal dollar = 0;
+                        if (!decimal.TryParse(Request.Form["MilAmount" + id], out dollar))
+                            dollar = 0;
+                        mil.dollars = dollar;
                         mil.due_date = DateTime.Parse(Request.Form["MilDate" + id]);
                         mil.cost_code_id = long.Parse(Request.Form["MilCode" + id]);
+                        mil.status_id = int.Parse(Request.Form["isBill" + id]);
                         dto.milestone.Add(mil);
                     }
                 }

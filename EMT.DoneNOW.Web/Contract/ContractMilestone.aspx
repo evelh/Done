@@ -8,6 +8,7 @@
   <title><%if (milestoneId > 0) { %>编辑<%} else { %>新增<%} %>里程碑</title>
   <link rel="stylesheet" href="../Content/reset.css" />
   <link rel="stylesheet" href="../Content/Roles.css" />
+  <link rel="stylesheet" href="../Content/LostOpp.css" />
 </head>
 <body>
   <form id="form1" runat="server">
@@ -65,7 +66,7 @@
                 <div>
                   <select name="status_id" style="width:216px;">
                     <%foreach (var sta in statuList) {
-                          if (statu != 0 && sta.val.Equals(statu))
+                          if (statu != 0 && sta.val.Equals(statu.ToString()))
                           { %>
                     <option selected="selected" value="<%=sta.val %>"><%=sta.show %></option>
                     <%}

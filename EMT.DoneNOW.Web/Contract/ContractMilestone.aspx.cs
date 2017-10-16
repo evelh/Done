@@ -59,6 +59,14 @@ namespace EMT.DoneNOW.Web.Contract
             dollars.Text = (entity.dollars == null ? "" : ((decimal)entity.dollars).ToString());
             duDate = entity.due_date.ToString("yyyy-MM-dd");
             billCode = entity.cost_code_id == null ? "" : ((long)entity.cost_code_id).ToString();
+            if (!string.IsNullOrEmpty(billCode))
+            {
+                var costs = bll.GetCostCodes(GetLoginUserId());
+                if (costs!=null && costs.Count>0)
+                {
+                    billCodeSelect.Text = costs[billCode].ToString();
+                }
+            }
             description.Text = entity.description;
             statu = entity.status_id;
         }

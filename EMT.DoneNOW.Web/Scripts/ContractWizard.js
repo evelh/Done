@@ -293,19 +293,23 @@ function AddServiceBundle() {
 function CalcService() {
     var ids = $("#AddServiceIds").val().split(",");
     var total = 0;
-    for (i = 0; i < ids.length; i++) {
-        var price = $("#price" + ids[i]).val() * $("#num" + ids[i]).val();
-        price = Math.floor(price * 10000) / 10000;
-        total += price;
-        $("#pricenum" + ids[i]).val(price);
+    if (ids.length >= 1 && ids[0] != "") {
+        for (i = 0; i < ids.length; i++) {
+            var price = $("#price" + ids[i]).val() * $("#num" + ids[i]).val();
+            price = Math.floor(price * 10000) / 10000;
+            total += price;
+            $("#pricenum" + ids[i]).val(price);
+        }
     }
 
     ids = $("#AddSerBunIds").val().split(",");
-    for (i = 0; i < ids.length; i++) {
-        var price = $("#price" + ids[i]).val() * $("#num" + ids[i]).val();
-        price = Math.floor(price * 10000) / 10000;
-        total += price;
-        $("#pricenum" + ids[i]).val(price);
+    if (ids.length >= 1 && ids[0] != "") {
+        for (i = 0; i < ids.length; i++) {
+            var price = $("#price" + ids[i]).val() * $("#num" + ids[i]).val();
+            price = Math.floor(price * 10000) / 10000;
+            total += price;
+            $("#pricenum" + ids[i]).val(price);
+        }
     }
     $("#ServicePrice").val(total);
 }
@@ -346,11 +350,21 @@ function AddMil() {
     $("#MilAdd").show();
     $("#milName").val("");
     $("#milAmout").val("");
-    $("#milAddCode").val("");
+
+    if ($("#defaultCostCodeHidden").val() != "") {
+        $("#milAddCode").val($("#defaultCostCode").val());
+        $("#milAddCodeHidden").val($("#defaultCostCodeHidden").val());
+    } else {
+        $("#milAddCode").val("");
+        $("#milAddCodeHidden").val("");
+    }
+    
     $("#milDate").val("");
     $("#milCheckbox").prop("checked", false);
     $("#milCheckbox").css("checked", "");
     $("#milDesc").val("");
+    $("#b0").hide();
+    $("#a0").hide();
 }
 
 var milCnt = 1;
@@ -359,20 +373,29 @@ function AddMilOk() {
         alert("请输入标题");
         return;
     }
+    if ($("#milAddCodeHidden").val() == "") {
+        alert("请选择物料代码");
+        return;
+    }
     if ($("#milDate").val() == "") {
         alert("请输入截止日期");
         return;
     }
+    var isBill = 0;
+    if ($("#milCheckbox").is(':checked'))
+        isBill = 1;
     var txt = "<tr id='milestone" + milCnt + "'>";
     txt += "<td style='white - space:nowrap; vertical-align:bottom;'><img src = '../Images/delete.png' onclick='RemoveMil(" + milCnt + ")' alt = '' /></ td > ";
     txt += "<td><input type='text'  readonly='readonly' name='MilName" + milCnt + "' value='" + $("#milName").val() + "' /><input type='hidden' value='" + $("#milDesc").val() +"' name='MilDetail" + milCnt + "' /></td > ";
     txt += "<td nowrap><input type='text' readonly='readonly' id='milAmount" + milCnt + "' name='MilAmount" + milCnt + "' value='" + $("#milAmout").val() +"' /></td>";
-    txt += "<td nowrap><input type='text'  readonly='readonly' name='MilDate" + milCnt + "' value='" + $("#milDate").val() +"' /></td>";
-    txt += "<td nowrap align='right'><input type='text'  readonly='readonly' value='" + $("#milAddCode").val() + "' /><input type='hidden' value='" + $("#milAddCodeHidden").val() +"' name='MilCode" + milCnt + "' /></td>";
+    txt += "<td nowrap><input type='text'  readonly='readonly' name='MilDate" + milCnt + "' value='" + $("#milDate").val() + "' /></td>";
+    txt += "<td nowrap align='right'><input type='text'  readonly='readonly' value='" + $("#milAddCode").val() + "' /><input type='hidden' value='" + isBill + "' name='isBill" + milCnt + "' /><input type='hidden' value='" + $("#milAddCodeHidden").val() + "' name='MilCode" + milCnt + "' /></td>";
     txt += "</tr>";
     $("#MilListBody").append(txt);
     $("#MilList").show();
     $("#MilAdd").hide();
+    $("#b0").show();
+    $("#a0").show();
 
     if ($("#milestoneAddList").val() == "") {
         $("#milestoneAddList").val(milCnt);
@@ -403,17 +426,21 @@ function RemoveMil(id) {
 function CalcMilAmount() {
     var ids = $("#milestoneAddList").val().split(",");
     var total = 0;
-    for (i = 0; i < ids.length; i++) {
-        var price = $("#milAmount" + ids[i]).val();
-        price = Math.floor(price * 100) / 100;
-        total += price;
+    if (ids.length >= 1 && ids[0] != "") {
+        for (i = 0; i < ids.length; i++) {
+            var price = $("#milAmount" + ids[i]).val();
+            price = Math.floor(price * 100) / 100;
+            total += price;
+        }
     }
-    $("#milAmountTotal").val("¥"+total);
+    $("#milAmountTotal").text("¥" + total);
 }
 
 function AddMilCancle() {
     $("#MilList").show();
     $("#MilAdd").hide();
+    $("#b0").show();
+    $("#a0").show();
 }
 
 function ShowResource() {
