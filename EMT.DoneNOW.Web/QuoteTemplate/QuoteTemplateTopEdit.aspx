@@ -155,59 +155,7 @@
         })--%>
         //情空内容
         $("#ResetButton").on("click", function () {
-            var Model =
-                '<table cellspacing="0" cellpadding="0" width="100%">' +
-                '<tbody>' +
-                '<tr>' +
-                '<td style="font-size: 11px;width: 50%;border:none;">[Miscellaneous: Quote Logo]</td>' +
-                '<td style="font-size: 11px;width: 50%;text-align: right;border:none;">' +
-                '<div style="font-weight: bold;margin: 0px;padding: 0px;font-size: x-large;">Quote</div>' +
-                '<div style="font-weight: bold;margin: 0px;padding: 0px;">Quote Number: [Quote: Quote Number]</div>' +
-                '<div style="margin:15px 0 0 0;padding: 0px;">[Quote: Tax Detail]</div><div style="margin:15px 0 0 0;padding: 0px;">Payment Terms: [Quote: Payment Terms]</div>' +
-                '<div style="margin: 0px;padding: 0px;">Expiration Date: [Quote: Expiration Date]</div>' +
-                '</td>' +
-                '</tr>' +
-                '</tbody>' +
-                '</table>' +
-                '<table cellspacing="0" cellpadding="0" width="100%" style="margin:20px 0 0 0;">' +
-                '<tbody>' +
-                '<tr>' +
-                '<td colspan="2" style="font-size: 11px;width:45%;font-weight: bold;border:none;padding: 0;">Quote Prepared For</td>' +
-                '<td style="width:40px;border:none;padding: 0;"></td>' +
-                '<td colspan="2" style="font-size: 11px;width:45%;font-weight: bold;border:none;padding: 0;">Quote Prepared By</td>' +
-                '</tr>' +
-                '<tr>' +
-                '<td style="border:none;padding:0;"></td>' +
-                '<td style="padding-left: 10px;vertical-align: top;border:none;">' +
-                '<div>' +
-                '<strong style="font-size:11px;">[Contact: Name]</strong><br>' +
-                '<strong style="font-size:11px;">[Account: Name]</strong>' +
-                '</div>' +
-                '<div style="font-size:11px;">[Contact: Address]' +
-                '<br>Phone:[Contact: Phone]' +
-                '<br>[Contact: Email Address]' +
-                '<br>' +
-                '</div>' +
-                '</td>' +
-                '<td style="border:none;padding:0;"></td>' +
-                '<td style="border:none;padding:0;"></td>' +
-                '<td style="padding-left: 10px;vertical-align: top;border:none;">' +
-                '<div>' +
-                '<strong style="font-size:11px;">[Opportunity: Owner]</strong><br>' +
-                '<strong style="font-size:11px;">[Your Company: Name]</strong>' +
-                '</div>' +
-                '<div style="font-size:11px;">[Opportunity: Owner Address]' +
-                '<br>Phone:[Opportunity: Owner Office Phone]' +
-                '<br>Fax:[Your Company: Fax]' +
-                '<br>' +
-                '</div>' +
-                '<div><a href="##" style="font-size:11px;">[Opportunity: Owner Email Address]</a></div>' +
-                '</td>' +
-                '</tr>' +
-                '</tbody>' +
-                '</table>';
-            ue.setContent("<table width='100%'><tbody><tr class='firstRow'><td style='font-size: 11px;width: 50%;border:none;'>[Miscellaneous: Quote Logo]</td><td style='font-size: 11px;width: 50%;text-align: right;border:none;'><div style='font-weight: bold;margin: 0px;padding: 0px;font-size: x-large;'>报价</div><div style='font-weight: bold;margin: 0px;padding: 0px;'>报价名称: [报价：名称]</div><div style='margin:15px 0 0 0;padding: 0px;'>报价税收：[Quote: Tax Detail]</div><div style='margin:15px 0 0 0;padding: 0px;'>付款期限: [报价：付款期限]</div><div style='margin: 0px;padding: 0px;'>预计日期: [报价：预计完成日期]</div></td></tr></tbody></table><table width='100%' style='margin:20px 0 0 0;'><tbody><tr class='firstRow'><td colspan='2' style='font-size: 11px;width:45%;font-weight: bold;border:none;padding: 0;'>Quote Prepared For</td><td style='width:40px;border:none;padding: 0;'><br/></td><td colspan='2' style='font-size: 11px;width:45%;font-weight: bold;border:none;padding: 0;'>Quote Prepared By</td></tr><tr><td style='border:none;padding:0;'><br/></td><td style='padding-left: 10px;vertical-align: top;border:none;'><div><strong style='font-size:11px;'>联系人名称：[联系人：姓名]</strong><br/><strong style='font-size:11px;'>客户名称：[客户：名称]</strong></div><div style='font-size:11px;'><p>联系地址：[联系人：地址]</p><p>手机:[联系人：移动电话]</p>邮箱:[Contact: Alternate Email1]</div></td><td style='border:none;padding:0;'><br/></td><td style='border:none;padding:0;'><br/></td><td style='padding-left: 10px;vertical-align: top;border:none;'><div><strong style='font-size:11px;'>关闭商机者姓名：[Opportunity: Name]</strong><br/><strong style='font-size:11px;'>公司名称：[公司名称：名称]</strong></div><p style='font-size:11px;'>关闭商机者地址：[Opportunity: Owner Address]</p><p style='font-size:11px;'>Phone:关闭商机者办公电话：[Opportunity: Owner Office Phone]</p><p style='font-size:11px;'>传真:[公司名称：传真]</p><div><a href='##' style='font-size:11px;'>[Opportunity: Owner Email Address]</a></div></td></tr></tbody></table>");
-            //ue.setContent("<p style='text-align: right;'>报价</p><p style='text-align: right;'>报价编号: [报价：报价编号]</p><p style='text-align: right;'>付款期限:&nbsp;[报价：付款期限]</p><p style='text-align: right;'>截止日期: [报价：过期日期]</p><p>[Miscellaneous: 报价 Logo]</p><p><br/></p><p><br/></p><p><br/></p><p><br/></p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</p><p>[联系人：姓名]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>[Opportunity: Owner]</strong></p><p>[Account: Name] &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>[Your Company: Name]</strong></p><p>[联系人：地址]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[Opportunity: Owner Address] &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Phone:[联系人：移动电话]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Phone:[联系人：备用电话]</p><p>[联系人：邮件地址]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[联系人：传真]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href='mailto:[Opportunity:%20Owner%20Email%20Address]'>[Opportunity: Owner Email Address]</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</p><p><br/></p>");
+            ue.setContent("<table width='100%'><tbody><tr class='firstRow'><td style='font-size: 11px;width: 50%;border:none;'>[Miscellaneous: Quote Logo]</td><td style='font-size: 11px;width: 50%;text-align: right;border:none;'><div style='font-weight: bold;margin: 0px;padding: 0px;font-size: x-large;'>报价</div><div style='font-weight: bold;margin: 0px;padding: 0px;'>报价名称: [报价：名称]</div><div style='margin:15px 0 0 0;padding: 0px;'>付款期限: [报价：付款期限]</div><div style='margin: 0px;padding: 0px;'>预计日期: [报价：预计完成日期]</div></td></tr></tbody></table><table width='100%' style='margin:20px 0 0 0;'><tbody><tr class='firstRow'><td colspan='2' style='font-size: 11px;width:45%;font-weight: bold;border:none;padding: 0;'>Quote Prepared For</td><td style='width:40px;border:none;padding: 0;'><br/></td><td colspan='2' style='font-size: 11px;width:45%;font-weight: bold;border:none;padding: 0;'>Quote Prepared By</td></tr><tr><td style='border:none;padding:0;'><br/></td><td style='padding-left: 10px;vertical-align: top;border:none;'><div><strong style='font-size:11px;'>联系人名称：[联系人：姓名]</strong><br/><strong style='font-size:11px;'>客户名称：[客户：名称]</strong></div><div style='font-size:11px;'><p>联系地址：[联系人：地址]</p><p>手机:[联系人：移动电话]</p>邮箱:[Contact: Alternate Email1]</div></td><td style='border:none;padding:0;'><br/></td><td style='border:none;padding:0;'><br/></td><td style='padding-left: 10px;vertical-align: top;border:none;'><div><strong style='font-size:11px;'>关闭商机者姓名：[Opportunity: Name]</strong><br/><strong style='font-size:11px;'>公司名称：[公司名称：名称]</strong></div><p style='font-size:11px;'>关闭商机者地址：[Opportunity: Owner Address]</p><p style='font-size:11px;'>关闭商机者办公电话：[Opportunity: Owner Office Phone]</p><p style='font-size:11px;'>传真:[公司名称：传真]</p><div><a href='##' style='font-size:11px;'>[Opportunity: Owner Email Address]</a></div></td></tr></tbody></table>");          
         })
     </script>
 </body>

@@ -15,7 +15,7 @@
 	<!--顶部 内容和帮助-->
 	<div class="TitleBar">
 		<div class="Title">
-			<span class="text1">报价模板</span>
+			<span class="text1">发票模板</span>
 			<span class="text2">--<%=tempinfo.name %></span>
 			<a href="###" class="help"></a>
 		</div>

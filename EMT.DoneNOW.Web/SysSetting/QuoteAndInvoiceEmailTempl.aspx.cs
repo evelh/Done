@@ -30,7 +30,7 @@ namespace EMT.DoneNOW.Web
             {
                 id = 0;
             }
-            type = 105;
+            type = 106;
             switch (type)
             {
                 case (int)QueryType.Quote_Email_Tmpl:

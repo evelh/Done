@@ -2071,13 +2071,13 @@ namespace EMT.DoneNOW.Web
                     }
                     else
                     {
-                        st = st.Replace(m.Groups[0].ToString(), "无数据");
+                        st = st.Replace(m.Groups[0].ToString(), "");
                         //Response.Write(Vartable.Rows[0]["[联系人：外部编号]"].ToString());
                     }
                 }
                 else
                 {
-                    st = st.Replace(m.Groups[0].ToString(), "无数据");
+                    st = st.Replace(m.Groups[0].ToString(), "");
                     //Response.Write(Vartable.Rows[0]["[联系人：外部编号]"].ToString());
                 }
             }
@@ -2142,12 +2142,12 @@ namespace EMT.DoneNOW.Web
                         }
                         else
                         {
-                            st = st.Replace(m.Groups[0].ToString(), "无数据");
+                            st = st.Replace(m.Groups[0].ToString(), "");
                         }
                     }
                     else
                     {
-                        st = st.Replace(m.Groups[0].ToString(), "无数据");
+                        st = st.Replace(m.Groups[0].ToString(), "");
                     }
                 }
             }
@@ -2163,6 +2163,7 @@ namespace EMT.DoneNOW.Web
             qddata.quote_tmpl_id = Convert.ToInt32(this.quoteTemplateDropDownList.SelectedValue.ToString());
             if (qd.UpdateQuoteTemp(qddata, GetLoginUserId())) {
                 //成功
+                Response.Write("<script>alert('保存成功！');</script>");
             }
         }
         /// <summary>
