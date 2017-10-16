@@ -1304,7 +1304,7 @@
                 }); 
                 //恢复默认
                 $("#resetreset").on("click", function () {
-                    ue.setContent("Task/Ticket: [Ticket: Title][Task: Task Title]<br>[Ticket: Number][Task: Task Number]");
+                    ue.setContent("[发票：号码/编号]<br/>[发票：税收详细信息]");
                 })
                 // 点击确定数据保存至后台  在展示页展示
                 $("#addadd").on("click", function () {

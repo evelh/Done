@@ -152,6 +152,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ClassificationIcons.css" />
+    <Content Include="Content\EmailTempl.css" />
     <Content Include="Content\index.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\LostOpp.css" />
@@ -302,6 +303,7 @@
     <Content Include="RichText\img\details.png" />
     <Content Include="RichText\img\Dialog.png" />
     <Content Include="RichText\img\dian.png" />
+    <Content Include="RichText\img\down.png" />
     <Content Include="RichText\img\edit.png" />
     <Content Include="RichText\img\help.png" />
     <Content Include="RichText\img\Loading.gif" />
@@ -649,6 +651,7 @@
     <Content Include="Scripts\Common\SearchFrame.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\ContractWizard.js" />
+    <Content Include="Scripts\EmailTempl.js" />
     <Content Include="Scripts\index.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

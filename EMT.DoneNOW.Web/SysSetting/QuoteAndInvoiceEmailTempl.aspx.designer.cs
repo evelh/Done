@@ -49,15 +49,6 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.TextBox Name;
         
         /// <summary>
-        /// Description 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Description;
-        
-        /// <summary>
         /// Active 控件。
         /// </summary>
         /// <remarks>
@@ -74,6 +65,15 @@ namespace EMT.DoneNOW.Web {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox AttachPdf;
+        
+        /// <summary>
+        /// Description 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Description;
         
         /// <summary>
         /// SendFromFirstName 控件。
@@ -139,31 +139,22 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.TextBox Email_Subject;
         
         /// <summary>
-        /// Html 控件。
+        /// EmailFormatHtml 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton Html;
+        protected global::System.Web.UI.WebControls.RadioButton EmailFormatHtml;
         
         /// <summary>
-        /// PlainText 控件。
+        /// EmailFormatPlaintext 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton PlainText;
-        
-        /// <summary>
-        /// ContentText 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ContentText;
+        protected global::System.Web.UI.WebControls.RadioButton EmailFormatPlaintext;
         
         /// <summary>
         /// ScriptManager1 控件。
@@ -200,5 +191,14 @@ namespace EMT.DoneNOW.Web {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal VariableList;
+        
+        /// <summary>
+        /// ContentText 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ContentText;
     }
 }

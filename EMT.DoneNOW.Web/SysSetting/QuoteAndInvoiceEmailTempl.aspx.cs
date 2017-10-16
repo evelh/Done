@@ -30,6 +30,7 @@ namespace EMT.DoneNOW.Web
             {
                 id = 0;
             }
+            type = 105;
             switch (type)
             {
                 case (int)QueryType.Quote_Email_Tmpl:
@@ -71,8 +72,8 @@ namespace EMT.DoneNOW.Web
                 }
                 //默认激活
                 this.Active.Checked = true;
-                //默认选择html
-                this.Html.Checked = true;
+                //默认选择EmailFormatHtml
+                this.EmailFormatHtml.Checked = true;
                 //修改
                 if (id > 0)
                 {
@@ -117,8 +118,8 @@ namespace EMT.DoneNOW.Web
                         this.Email_Subject.Text = emailtempl.subject;
                         if (emailtempl.is_html_format == 1)
                         {
-                            this.PlainText.Checked = false;
-                            this.Html.Checked = true;
+                            this.EmailFormatPlaintext.Checked = false;
+                            this.EmailFormatHtml.Checked = true;
                             if (!string.IsNullOrEmpty(emailtempl.html_body))
                             {
                                 BodyContent = HttpUtility.HtmlDecode(emailtempl.html_body).Replace("\"", "'");
@@ -126,8 +127,8 @@ namespace EMT.DoneNOW.Web
                         }
                         else if (emailtempl.is_html_format == 2)
                         {
-                            this.Html.Checked = false;
-                            this.PlainText.Checked = true;
+                            this.EmailFormatHtml.Checked = false;
+                            this.EmailFormatPlaintext.Checked = true;
                             if (!string.IsNullOrEmpty(emailtempl.text_body))
                             {
                                 BodyContent = HttpUtility.HtmlDecode(emailtempl.text_body).Replace("\"", "'");
@@ -214,12 +215,12 @@ namespace EMT.DoneNOW.Web
                 emailtempl.is_account_owner_bcc = 0;
             }
             emailtempl.subject = this.Email_Subject.Text.Trim();
-            if (this.Html.Checked)
+            if (this.EmailFormatHtml.Checked)
             {
                 emailtempl.is_html_format = 1;
                 emailtempl.html_body = bodydata;
             }
-            else if (this.PlainText.Checked)
+            else if (this.EmailFormatPlaintext.Checked)
             {
                 emailtempl.is_html_format = 2;
                 emailtempl.text_body = bodydata;

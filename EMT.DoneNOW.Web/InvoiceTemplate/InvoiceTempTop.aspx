@@ -36,9 +36,31 @@
                 </li>
                <%if (op == "top")
                    { %>
-                <li class="Button ButtonIcon Reset NormalState" id="ResetButton" tabindex="0">
+                <li class="Button ButtonIcon Reset NormalState" id="ResetButton" tabindex="0" style="margin-right: -5px;">
                     <span class="Icon Reset"></span>
                     <span class="Text">恢复默认内容</span>
+                </li>
+               <!--下拉框-->
+                <li class="Button ButtonIcon" id="DownButton" tabindex="0" style="padding: 0;">
+                    <span class="Icon Down"></span>
+                    <span class="Text" style="padding: 0;"></span>
+                </li>
+                <li class="DropDownButton" style="top:71px;left:137px;" id="Down">
+                    <div class="DropDownButtonDiv">
+                        <div class="Group">
+                            <div class="Content">
+                                <div class="Button1" id="FirstModel" tabindex="0">
+                                    <span class="Text">第一个模板（默认的）</span>
+                                </div>
+                                <div class="Button1" id="SecondModel" tabindex="0">
+                                    <span class="Text">第二个模板</span>
+                                </div>
+                                <div class="Button1" id="ThirdModel" tabindex="0">
+                                    <span class="Text">第三个模板</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </li>
                <%} %>
             </ul>
@@ -105,105 +127,20 @@
         $("#ResetButton").on("mouseout",function(){
             $("#ResetButton").css("background","#f0f0f0");
         })
-        var Model =
-            '<style type="text/css">' +
-            '#LogoBlock' +
-            '{' +
-            'width: 100%;' +
-            'padding-bottom: 30px;' +
-            '}' +
-            '#ServiceProviderBlock' +
-            '{' +
-            'padding-bottom: 30px;' +
-            '}' +
-            '#InvoiceInfoBlock' +
-            '{' +
-            'display: table;' +
-            'padding-left: 40px;' +
-            '}' +
-            '.boxHeader' +
-            '{' +
-            'border: 1px solid black;' +
-            'background-color: #f7f7f7;' +
-            'font-weight: bold;' +
-            'padding: 5px 5px 5px 5px;' +
-            '}' +
-            '.boxBody' +
-            '{' +
-            'border-right: 1px solid black;' +
-            'border-left: 1px solid black;' +
-            'border-bottom: 1px solid black;' +
-            'padding: 5px 5px 5px 5px;' +
-            '}' +
-            '.invoiceInfoRow' +
-            '{' +
-            '}' +
-            '.invoiceInfoNameCell' +
-            '{' +
-            '}' +
-            '.invoiceInfoValueCell' +
-            '{' +
-            '}' +
-            '</style>' +
-            '<table style="width:100%; border-collapse:collapse;font-size:12px;">' +
-            '<tbody><tr>' +
-            '<td width="100%" colspan="2">' +
-            '<div style="width:100%;padding-bottom: 30px;">[Miscellaneous: Primary Logo]</div>' +
-            '</td>' +
-            '</tr>' +
-            '<tr>' +
-            '<td width="50%">' +
-            '<div style="padding-bottom: 30px;">' +
-            '[Your Company: Name]<br>' +
-            '[Your Company: Address]' +
-            '<br>' +
-            '[Your Company: Phone]<br>' +
-            'Fax: [Your Company: Fax]' +
-            '<div>[Your Company: Tax ID, ACN, ABN, VAT, etc.]</div>' +
-            '</div>' +
-            '<div>' +
-            '<div style="width: 70%; text-align: left;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px 5px 5px 5px;">Bill To</div>' +
-            '<div style="width: 70%;border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px 5px 5px 5px;">' +
-            '[Account: Name] [Billing: Attention]<br>' +
-            '[Billing: Address]' +
-            '</div>' +
-            '</div>' +
-            '</td>' +
-            '<td width="50%" valign="bottom">' +
-            '<div style="float:right;display: table;padding-left: 40px;">' +
-            '<div style="display: table-row;height: 20px">' +
-            '<div style="font-weight: bold;text-align: right;display: table-cell"></div>' +
-            '<div style="text-align: left;display: table-cell;padding-left: 5px;">' +
-            '<div style="height: 70px;">' +
-            '<div style="width: 120px; text-align: center;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px 5px 5px 5px;">Date</div>' +
-            '<div style="width: 120px; text-align: center;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px 5px 5px 5px;border-right: 1px solid black;">[Invoice: Date]</div>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '<div style="display: table-row;height: 20px">' +
-            '<div style="font-weight: bold;text-align: right;display: table-cell">Invoice Number:</div>' +
-            '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Number/ID]</div>' +
-            '</div>' +
-            '<div style="display: table-row;height: 20px">' +
-            '<div style="font-weight: bold;text-align: right;display: table-cell">Invoice Date Range:</div>' +
-            '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Date Range From] to [Invoice: Date Range To]</div>' +
-            '</div>' +
-            '<div style="display: table-row;height: 20px">' +
-            '<div style="font-weight: bold;text-align: right;display: table-cell">Purchase Order Number:</div>' +
-            '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Purchase Order Number]</div>' +
-            '</div>' +
-            '<div style="display: table-row;height: 20px">' +
-            '<div style="font-weight: bold;text-align: right;display: table-cell">Payment Terms:</div>' +
-            '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Payment Terms]</div>' +
-            '</div>' +
-            '<div style="display: table-row;height: 20px">' +
-            '<div style="font-weight: bold;text-align: right;display: table-cell">Payment Due:</div>' +
-            '<div style="text-align: left;display: table-cell;padding-left: 5px;">[Invoice: Payment Due Date]</div>' +
-            '</div>' +
-            '</div>' +
-            '</td>' +
-            '</tr>' +
-            '</tbody></table>';
+        $("#DownButton").on("mousemove", function () {
+            $(this).css("background", "#fff");
+            $("#Down").show();
+        }).on("mouseout", function () {
+            $(this).css("background", "#f0f0f0");
+            $("#Down").hide();
+        });
+        $("#Down").on("mousemove", function () {
+            $(this).show();
+            $("#DownButton").css("background", "#fff");
+        }).on("mouseout", function () {
+            $(this).hide();
+            $("#DownButton").css("background", "#f0f0f0");
+        });
         //富文本编辑器
         var ue = UE.getEditor('containerHead',{
             toolbars: [
@@ -251,6 +188,19 @@
         $("#ResetButton").on("click",function(){
             ue.setContent("<table style='width:100%; border-collapse:collapse;font-size:12px;'><tbody><tr class='firstRow'><td width='100%' colspan='2' style='word-break: break-all;'><div style='width:100%;padding-bottom: 30px;'>[Miscellaneous: Primary Logo (Requires HTML)]</div></td></tr><tr><td width='50%' style='word-break: break-all;'><div style='padding-bottom: 30px;'><p>[客户：名称]</p><p>[客户：名称（链接）]</p><p>[客户：类型]</p><p>[客户：传真]</p><p>[客户：电话]</p><p>[客户：税编号、ACN、ABN、VAT等。]</p><p>[计费：尊称][计费：区县][计费：城市][计费：省]</p><p>[计费：邮政编码][计费：国家][计费：地址]</p><p>[计费：其它地址信息]</p></div><div><div style='width: 70%; text-align: left;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px 5px 5px 5px;'>Bill To</div><div style='width: 70%;border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px 5px 5px 5px;'>[客户：名称]&nbsp;[发票：编号]</div></div></td><td width='50%' valign='bottom' style='word-break: break-all;'><div style='float:right;display: table;padding-left: 40px;'><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'></div><div style='text-align: left;display: table-cell;padding-left: 5px;'><div style='height: 70px;'><div style='width: 120px; text-align: center;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px 5px 5px 5px;'>Date</div><div style='width: 120px; text-align: center;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px 5px 5px 5px;border-right: 1px solid black;'>[发票：日期]</div></div></div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>发票编号:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：号码/编号]</div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>发票日期范围:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：日期范围始于] to [发票：日期范围至]</div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>采购订单号:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：编号]</div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>付款期限:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：付款期限]</div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>付款截止日期:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：付款期限截止日期]</div></div></div></td></tr></tbody></table>");
         })
+       // ue.setContent(Model1);
+        $("#FirstModel").on("click", function () {
+            ue.setContent('');
+            ue.setContent("<table style='width:100%; border-collapse:collapse;font-size:12px;'><tbody><tr class='firstRow'><td width='100%' colspan='2' style='word-break: break-all;'><div style='width:100%;padding-bottom: 30px;'>[Miscellaneous: Primary Logo (Requires HTML)]</div></td></tr><tr><td width='50%' style='word-break: break-all;'><div style='padding-bottom: 30px;'><p>[客户：名称]</p><p>[客户：名称（链接）]</p><p>[客户：类型]</p><p>[客户：传真]</p><p>[客户：电话]</p><p>[客户：税编号、ACN、ABN、VAT等。]</p><p>[计费：尊称][计费：区县][计费：城市][计费：省]</p><p>[计费：邮政编码][计费：国家][计费：地址]</p><p>[计费：其它地址信息]</p></div><div><div style='width: 70%; text-align: left;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px 5px 5px 5px;'>Bill To</div><div style='width: 70%;border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px 5px 5px 5px;'>[客户：名称]&nbsp;[发票：编号]</div></div></td><td width='50%' valign='bottom' style='word-break: break-all;'><div style='float:right;display: table;padding-left: 40px;'><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'></div><div style='text-align: left;display: table-cell;padding-left: 5px;'><div style='height: 70px;'><div style='width: 120px; text-align: center;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px 5px 5px 5px;'>Date</div><div style='width: 120px; text-align: center;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px 5px 5px 5px;border-right: 1px solid black;'>[发票：日期]</div></div></div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>发票编号:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：号码/编号]</div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>发票日期范围:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：日期范围始于] to [发票：日期范围至]</div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>采购订单号:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：编号]</div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>付款期限:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：付款期限]</div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>付款截止日期:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：付款期限截止日期]</div></div></div></td></tr></tbody></table>");
+        });
+        $("#SecondModel").on("click", function () {
+            ue.setContent('');
+            ue.setContent("<table style='width:100%; border-collapse:collapse;font-size:12px;'><tbody><tr class='firstRow'><td width='100%' colspan='2' style='word-break: break-all;'><div style='width:100%;padding-bottom: 30px;'>[Miscellaneous: Primary Logo (Requires HTML)]</div></td></tr><tr><td width='50%' style='word-break: break-all;'><div style='padding-bottom: 30px;'><p>[客户：名称]</p><p>[客户：名称（链接）]</p><p>[客户：类型]</p><p>[客户：传真]</p><p>[客户：电话]</p><p>[客户：税编号、ACN、ABN、VAT等。]</p><p>[计费：尊称][计费：区县][计费：城市][计费：省]</p><p>[计费：邮政编码][计费：国家][计费：地址]</p><p>[计费：其它地址信息]</p></div><div><div style='width: 70%; text-align: left;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px 5px 5px 5px;'>Bill To</div><div style='width: 70%;border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px 5px 5px 5px;'>[客户：名称]&nbsp;[发票：编号]</div></div></td><td width='50%' valign='bottom' style='word-break: break-all;'><div style='float:right;display: table;padding-left: 40px;'><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'></div><div style='text-align: left;display: table-cell;padding-left: 5px;'><div style='height: 70px;'><div style='width: 120px; text-align: center;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px 5px 5px 5px;'>Date</div><div style='width: 120px; text-align: center;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px 5px 5px 5px;border-right: 1px solid black;'>[发票：日期]</div></div></div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>发票编号:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：号码/编号]</div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>发票日期范围:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：日期范围始于] to [发票：日期范围至]</div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>采购订单号:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：编号]</div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>付款期限:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：付款期限]</div></div><div style='display: table-row;height: 20px'><div style='font-weight: bold;text-align: right;display: table-cell'>付款截止日期:</div><div style='text-align: left;display: table-cell;padding-left: 5px;'>[发票：付款期限截止日期]</div></div></div></td></tr></tbody></table>");
+        });
+        $("#ThirdModel").on("click", function () {
+            ue.setContent('');
+            ue.setContent("<table style='margin: auto; border-collapse: collapse;' width='100%'><tbody><tr class='firstRow'><td valign='top' width='80%' style='border: none;padding:0;'><div style='height: 160px;overflow: hidden;padding-left: 25px;padding-top: 0px;font-size: 12px;'><p>[公司名称：名称]</p><p>[公司名称：地址]</p><br/><p>[公司名称：电话]</p><p>传真:&nbsp;[公司名称：传真]</p><div>[[客户：税编号、ACN、ABN、VAT等。]</div></div><div style='padding-left: 25px;'><div style='width: 90%; text-align: left;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px;font-size: 12px;'>Bill To</div><div style='width: 90%;font-size: 12px;border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px;height: 90px;'>[客户：名称]&nbsp;[计费：尊称][计费：地址]</div></div></td><td valign='bottom' width='20%' style='border: none;padding:0;'><div style='width: 100%;padding-bottom: 30px;font-size: 12px;'>[Miscellaneous: Primary Logo]</div><div style='display: table-row;'><div style='text-align: left;display: table-cell;padding:0 0 5px 5px;'><div style='width: 120px; text-align: center;border: 1px solid black;background-color: #f7f7f7;font-weight: bold;padding: 5px;font-size: 12px;'>日期</div><div style='width: 120px; text-align: center;border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;padding: 5px;font-size: 12px;'>[发票：日期]</div></div></div></td></tr><tr><td style='padding: 20px 0 0 0;border: none;' valign='top' colspan='2' align='right'><div style='display: table;width:100%;'><div style='display: table-row;'><div style='font-weight: bold;text-align: right;display: table-cell;width: 80%;padding-bottom: 5px;font-size: 12px;'>发票编号:</div><div style='text-align: left;display: table-cell;padding-left: 5px;padding-bottom: 5px;font-size: 12px;'>[发票：号码/编号]</div></div><div style='display: table-row;'><div style='font-weight: bold;text-align: right;display: table-cell;width: 80%;padding-bottom: 5px;font-size: 12px;'>发票日期范围:</div><div style='text-align: left;display: table-cell;padding-left: 5px;padding-bottom: 5px;font-size: 12px;'>[发票：日期范围始于]to [发票：日期范围至]</div></div><div style='display: table-row;'><div style='font-weight: bold;text-align: right;display: table-cell;width: 80%;padding-bottom: 5px;font-size: 12px;'>采购订单号:</div><div style='text-align: left;display: table-cell;padding-left: 5px;padding-bottom: 5px;font-size: 12px;'>[发票：订单号]</div></div><div style='display: table-row;'><div style='font-weight: bold;text-align: right;display: table-cell;width: 80%;padding-bottom: 5px;font-size: 12px;'>支付期限:</div><div style='text-align: left;display: table-cell;padding-left: 5px;padding-bottom: 5px;font-size: 12px;'>[发票：付款期限]</div></div><div style='display: table-row;'><div style='font-weight: bold;text-align: right;display: table-cell;width: 80%;padding-bottom: 5px;font-size: 12px;'>付款截止日期:</div><div style='text-align: left;display: table-cell;padding-left: 5px;padding-bottom: 5px;font-size: 12px;'>[发票：付款期限截止日期]</div></div></div></td></tr></tbody></table>");
+        });
     </script>
         </div>
     </form>
