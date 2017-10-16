@@ -98,29 +98,30 @@ namespace EMT.DoneNOW.BLL
             // 插入合同服务周期表ctt_contract_service_period
             DateTime dtStart = service.effective_date;
             ctt_contract_service_period_dal spDal = new ctt_contract_service_period_dal();
+            DateTime tmp1;  // 周期开始时间
+            DateTime tmp2;  // 周期结束时间
+            tmp1 = contract.start_date;
             if (dtStart != contract.start_date)     // 生效时间不是合同开始时间
             {
-                DateTime tmp1;  // 周期开始时间
-                DateTime tmp2;  // 周期结束时间
-                tmp1 = contract.start_date;
                 tmp2 = GetNextPeriodStart(contract.start_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
                 int periodDaysCnt = (tmp2 - tmp1).Days;
                 while (true)
                 {
-                    if (dtStart > tmp2)
+                    if (dtStart >= tmp2.AddDays(-1))
                         break;
                     if (tmp2 >= contract.end_date)
                         break;
                     tmp1 = tmp2;
                     tmp2 = GetNextPeriodStart(tmp2, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
                 }
-                dtStart = tmp1;
-                dtStart = GetNextPeriodStart(contract.start_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+                //dtStart = tmp1;
+                //dtStart = GetNextPeriodStart(contract.start_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+                tmp2 = tmp2.AddDays(-1);
 
                 // 计算调整后的首周期天数
-                if (tmp2 >= contract.end_date)
+                if (tmp2 > contract.end_date)
                     tmp2=contract.end_date;
-                int adjustDaysCnt = (tmp2 - dtStart).Days;
+                int adjustDaysCnt = (tmp2 - dtStart).Days + 1;
 
                 if (adjustDaysCnt != periodDaysCnt)     // 生效时间不是周期开始时间
                 {
@@ -136,8 +137,8 @@ namespace EMT.DoneNOW.BLL
                     sa.object_type = cs.object_type;
                     sa.quantity_change = cs.quantity;
                     sa.contract_service_id = cs.id;
-                    sa.effective_date = contract.start_date;
-                    sa.end_date = dtStart.AddDays(-1);
+                    sa.effective_date = dtStart;
+                    sa.end_date = tmp2;
                     if (sa.end_date > contract.end_date)
                         sa.end_date = contract.end_date;
                     sa.prorated_cost_change = (decimal)service.adjusted_price;
@@ -146,6 +147,8 @@ namespace EMT.DoneNOW.BLL
 
                     saDal.Insert(sa);
                     OperLogBLL.OperLogAdd<ctt_contract_service_adjust>(sa, sa.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "新增合同服务调整");
+
+                    dtStart = tmp2.AddDays(1);
                 }
             }
             while(true)
@@ -156,6 +159,8 @@ namespace EMT.DoneNOW.BLL
                 sp.id = spDal.GetNextIdCom();
                 sp.contract_id = contract.id;
                 sp.contract_service_id = cs.id;
+                sp.object_id = cs.object_id;
+                sp.object_type = cs.object_type;
                 sp.period_begin_date = dtStart;
                 dtStart = GetNextPeriodStart(dtStart, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
                 sp.period_end_date = dtStart.AddDays(-1);
@@ -229,29 +234,30 @@ namespace EMT.DoneNOW.BLL
             // 插入合同服务周期表ctt_contract_service_period
             DateTime dtStart = service.effective_date;
             ctt_contract_service_period_dal spDal = new ctt_contract_service_period_dal();
+            DateTime tmp1;  // 周期开始时间
+            DateTime tmp2;  // 周期结束时间
+            tmp1 = contract.start_date;
             if (dtStart != contract.start_date)     // 生效时间不是合同开始时间
             {
-                DateTime tmp1;  // 周期开始时间
-                DateTime tmp2;  // 周期结束时间
-                tmp1 = contract.start_date;
                 tmp2 = GetNextPeriodStart(contract.start_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
                 int periodDaysCnt = (tmp2 - tmp1).Days;
                 while (true)
                 {
-                    if (dtStart > tmp2)
+                    if (dtStart >= tmp2.AddDays(-1))
                         break;
                     if (tmp2 >= contract.end_date)
                         break;
                     tmp1 = tmp2;
                     tmp2 = GetNextPeriodStart(tmp2, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
                 }
-                dtStart = tmp1;
-                dtStart = GetNextPeriodStart(contract.start_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+                //dtStart = tmp1;
+                //dtStart = GetNextPeriodStart(contract.start_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+                tmp2 = tmp2.AddDays(-1);
 
                 // 计算调整后的首周期天数
                 if (tmp2 >= contract.end_date)
                     tmp2 = contract.end_date;
-                int adjustDaysCnt = (tmp2 - dtStart).Days;
+                int adjustDaysCnt = (tmp2 - dtStart).Days + 1;
 
                 if (adjustDaysCnt != periodDaysCnt)     // 生效时间不是周期开始时间
                 {
@@ -267,8 +273,8 @@ namespace EMT.DoneNOW.BLL
                     sa.object_type = cs.object_type;
                     sa.quantity_change = cs.quantity;
                     sa.contract_service_id = cs.id;
-                    sa.effective_date = contract.start_date;
-                    sa.end_date = dtStart.AddDays(-1);
+                    sa.effective_date = dtStart;
+                    sa.end_date = tmp2;
                     if (sa.end_date > contract.end_date)
                         sa.end_date = contract.end_date;
                     sa.prorated_cost_change = (decimal)service.adjusted_price;
@@ -277,6 +283,8 @@ namespace EMT.DoneNOW.BLL
 
                     saDal.Insert(sa);
                     OperLogBLL.OperLogAdd<ctt_contract_service_adjust>(sa, sa.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "新增合同服务包调整");
+
+                    dtStart = tmp2.AddDays(1);
 
                     // 插入服务调整表包含的服务ctt_contract_service_adjust_bundle_service
                     ctt_contract_service_adjust_bundle_service_dal sabsDal = new ctt_contract_service_adjust_bundle_service_dal();
@@ -302,6 +310,8 @@ namespace EMT.DoneNOW.BLL
                 sp.id = spDal.GetNextIdCom();
                 sp.contract_id = contract.id;
                 sp.contract_service_id = cs.id;
+                sp.object_id = cs.object_id;
+                sp.object_type = cs.object_type;
                 sp.period_begin_date = dtStart;
                 dtStart = GetNextPeriodStart(dtStart, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
                 sp.period_end_date = dtStart.AddDays(-1);

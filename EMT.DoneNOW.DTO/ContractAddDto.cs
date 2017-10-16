@@ -31,6 +31,7 @@ namespace EMT.DoneNOW.DTO
         public decimal price;
         public decimal number;
         public long serviceId;
+        public sbyte type;    // 1:服务；2：服务包
     }
 
     public class ContractRateDto

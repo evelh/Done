@@ -24,6 +24,8 @@ namespace EMT.DoneNOW.Web
         protected int tableWidth = 1200;
         protected long objId = 0;
 
+        protected DateTime searchTime = DateTime.Now;   // 合同服务查询的查询日期
+
         protected string isCheck = ""; //  用于控制是否显示checkBox
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -262,10 +264,12 @@ namespace EMT.DoneNOW.Web
                                 cd = cdas[1];
                             pa = new Para();
                             pa.id = cd.id;
-                            pa.value = Request.QueryString["time"];
-                            if (pa.value == null)
-                                pa.value = Request.Form["serviceTime"];
+                            pa.value = Request.QueryString["serviceTime"];
+                            if (string.IsNullOrEmpty(pa.value))
+                                pa.value = DateTime.Now.ToString("yyyy-MM-dd");
                             queryPara.query_params.Add(pa);
+                            if (!DateTime.TryParse(pa.value, out searchTime))
+                                searchTime = DateTime.Now;
                         }
                     }
                     #endregion

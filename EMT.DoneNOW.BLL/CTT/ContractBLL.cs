@@ -120,6 +120,27 @@ namespace EMT.DoneNOW.BLL
             #region 不同合同类型不同处理
             if (dto.contract.type_id == (int)DicEnum.CONTRACT_TYPE.SERVICE)
             {
+                ServiceBLL serBll = new ServiceBLL();
+                ContractServiceBLL csBll = new ContractServiceBLL();
+                // 添加服务/服务包
+                foreach (var ser in dto.serviceList)
+                {
+                    ctt_contract_service service = new ctt_contract_service();
+                    service.contract_id = dto.contract.id;
+                    service.object_id = ser.serviceId;
+                    service.object_type = ser.type;
+                    service.quantity = (int)ser.number;
+                    service.unit_price = ser.price;
+                    if (ser.type == 1)
+                        service.unit_cost = serBll.GetServiceById(ser.serviceId).unit_cost;
+                    else if (ser.type == 2)
+                        service.unit_cost = serBll.GetServiceBundleById(ser.serviceId).unit_cost;
+                    service.adjusted_price = 0;
+                    service.effective_date = dto.contract.start_date;
+
+                    csBll.AddServiceServiceBundle(service, userId);
+                }
+                /*
                 ctt_contract_service_dal serDal = new ctt_contract_service_dal();
                 ivt_service_dal ivtSerDal = new ivt_service_dal();
                 // 处理合同服务/服务包
@@ -144,6 +165,7 @@ namespace EMT.DoneNOW.BLL
 
                     OperLogBLL.OperLogAdd<ctt_contract_service>(service, service.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_SERVICE, "新增合同添加服务");
                 }
+                */
             }
             else
             {
