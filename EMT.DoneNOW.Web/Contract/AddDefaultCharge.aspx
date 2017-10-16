@@ -4,99 +4,94 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/Roles.css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1" runat="server">
-         <div class="TitleBar">
-        <div class="Title">
-            <span class="text1">新的默认成本</span>
-            <a href="###" class="help"></a>
+        <div class="TitleBar">
+            <div class="Title">
+                <span class="text1">新的默认成本</span>
+                <a href="###" class="help"></a>
+            </div>
         </div>
-    </div>
-    <!--按钮-->
-    <div class="ButtonContainer">
-        <ul id="btn">
-            <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
-                <span class="Icon SaveAndClone"></span>
-                <span class="Text">
-                    <asp:Button ID="save_close" runat="server" Text="保存并关闭" OnClick="save_close_Click" BorderStyle="None" /></span>
-            </li>
-            <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
-                <span class="Icon Cancel"></span>
-                <span class="Text">取消</span>
-            </li>
-        </ul>
-    </div>
-    <div class="DivSection" style="border:none;padding-left:0;">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tbody>
-                <tr>
-                    <td width="30%" class="FieldLabels">
-                        物料代码 
+        <!--按钮-->
+        <div class="ButtonContainer">
+            <ul id="btn">
+                <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
+                    <span class="Icon SaveAndClone"></span>
+                    <span class="Text">
+                        <asp:Button ID="save_close" runat="server" Text="保存并关闭" OnClick="save_close_Click" BorderStyle="None" /></span>
+                </li>
+                <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
+                    <span class="Icon Cancel"></span>
+                    <span class="Text">取消</span>
+                </li>
+            </ul>
+        </div>
+        <div class="DivSection" style="border: none; padding-left: 0;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                    <tr>
+                        <td width="30%" class="FieldLabels">物料代码 
                         <span class="errorSmall">*</span>
-                        <div>
-                               <%
-                                                            EMT.DoneNOW.Core.d_cost_code costCode = null;
-                                                            if (!isAdd)
-                                                            {
-                                                                costCode = new EMT.DoneNOW.DAL.d_cost_code_dal().FindNoDeleteById(conDefCost.cost_code_id);
-                                                            }
-                                                            %>
-                            <input type="text" name="" id="cost_code_id" style="width:200px;" value="<%=costCode!=null?costCode.name:"" %>"/>
-                            <input type="hidden" name="cost_code_id" id="cost_code_idHidden" style="width:200px;" value="<%=costCode!=null?costCode.id.ToString():"" %>"  />
-                             <img src="../Images/data-selector.png" style="vertical-align: middle;" id="" onclick="CostCodeBack()" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="30%" class="FieldLabels">
-                        单位成本
+                            <div>
+                                <%
+                                    EMT.DoneNOW.Core.d_cost_code costCode = null;
+                                    if (!isAdd)
+                                    {
+                                        costCode = new EMT.DoneNOW.DAL.d_cost_code_dal().FindNoDeleteById(conDefCost.cost_code_id);
+                                    }
+                                %>
+                                <input type="text" name="" id="cost_code_id" style="width: 200px;" value="<%=costCode!=null?costCode.name:"" %>" />
+                                <input type="hidden" name="cost_code_id" id="cost_code_idHidden" style="width: 200px;" value="<%=costCode!=null?costCode.id.ToString():"" %>" />
+                                <img src="../Images/data-selector.png" style="vertical-align: middle;" id="" onclick="CostCodeBack()" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%" class="FieldLabels">单位成本
                         <div>
                             <%--<input type="text" style="width:200px;text-align: right;">--%>
-                            <label  id="cost_unit_cost"></label>
+                            <label id="cost_unit_cost"></label>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="30%" class="FieldLabels">
-                          合同单位成本
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%" class="FieldLabels">合同单位成本
                         <div>
-                            <input type="text" class="return2" name="unit_cost" id="unit_cost" style="width:200px;text-align: right;"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=(!isAdd)&&conDefCost.unit_cost!=null?((decimal)conDefCost.unit_cost).ToString("#0.00"):"" %>" />
+                            <input type="text" class="return2" name="unit_cost" id="unit_cost" style="width: 200px; text-align: right;" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=(!isAdd)&&conDefCost.unit_cost!=null?((decimal)conDefCost.unit_cost).ToString("#0.00"):"" %>" />
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="30%" class="FieldLabels">
-                        单价 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%" class="FieldLabels">单价 
                         <div>
                             <%--<input type="text" id="" style="width:200px;text-align: right;" />--%>
-                            <label  id="cost_unit_price"></label>
+                            <label id="cost_unit_price"></label>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="30%" class="FieldLabels">
-                        合同单价  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%" class="FieldLabels">合同单价  
                         <div>
-                            <input type="text" class="return2" name="unit_price" id="unit_price" style="width:200px;text-align: right;" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=(!isAdd)&&conDefCost.unit_price!=null?((decimal)conDefCost.unit_price).ToString("#0.00"):"" %>" />
+                            <input type="text" class="return2" name="unit_price" id="unit_price" style="width: 200px; text-align: right;" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=(!isAdd)&&conDefCost.unit_price!=null?((decimal)conDefCost.unit_price).ToString("#0.00"):"" %>" />
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="30%" class="FieldLabels">
-                        <div>
-                            <asp:CheckBox ID="isbillable" runat="server" />
-                            计费的
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%" class="FieldLabels">
+                            <div>
+                                <asp:CheckBox ID="isbillable" runat="server" />
+                                计费的
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </form>
 </body>
 </html>
@@ -106,7 +101,7 @@
 
     $(function () {
         <% if (!isAdd)
-        { %>
+    { %>
         GetDataByCostCode();
         <%}%>
     })
@@ -146,30 +141,56 @@
     })
     function CostCodeBack() {
         //MATERIALCODE_CALLBACK\ 
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CHARGE_CALLBACK %>&field=cost_code_id&callBack=GetDataByCostCode", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CostCodeSelect %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MATERIAL_COST_CODE %>&field=cost_code_id&callBack=GetDataByCostCode", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CostCodeSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
     function GetDataByCostCode() {
         var cost_code_id = $("#cost_code_idHidden").val();
         if (cost_code_id != "") {
+            debugger;
+            var isAdd = "";
             $.ajax({
                 type: "GET",
                 async: false,
                 dataType: "json",
-                url: "../Tools/QuoteAjax.ashx?act=costCode&id=" + cost_code_id,
+                url: "../Tools/ContractAjax.ashx?act=ChecckCostCode&id=<%=contract.id %>&cost_code_id=" + cost_code_id,
                 success: function (data) {
+                    debugger;
                     if (data != "") {
-                        if (data.unit_price != undefined) {
-                            $("#cost_unit_price").text(data.unit_price); 
-                        }
-                        if (data.unit_cost != undefined) {
-                            $("#cost_unit_cost").text(data.unit_cost);
-                        }
+           
+                        alert("您已添加相关物料代码的默认成本");
+                        $("#cost_code_idHidden").val("");
+                        $("#cost_code_id").val("");
+                        $("#cost_unit_price").text("");
+                        $("#cost_unit_cost").text("");
+                        isAdd = "1";
+                    } else {
+                        isAdd = "";
                     }
                 },
             });
+            debugger;
+            if (isAdd == "") {
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    dataType: "json",
+                    url: "../Tools/QuoteAjax.ashx?act=costCode&id=" + cost_code_id,
+                    success: function (data) {
+                        debugger;
+                        if (data != "") {
+                            if (data.unit_price != undefined) {
+                                $("#cost_unit_price").text(data.unit_price); 
+                            }
+                            if (data.unit_cost != undefined) {
+                                $("#cost_unit_cost").text(data.unit_cost);
+                            }
+                        }
+                    },
+                });
+            }
         }
     }
 
-   
+
 </script>

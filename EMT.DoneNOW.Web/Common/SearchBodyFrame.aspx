@@ -2412,23 +2412,23 @@
         function Add() {
             debugger;
             var contract_id = '<%=Request.QueryString["id"] %>';
-            var isAdd = "";
-            if (contract_id != "" && (!isNaN(contract_id))) {
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/ContractAjax.ashx?act=GetDefaultCost&contract_id=" + contract_id,
-                    async: false,
-                    success: function (data) {
-                        if (data != "") {
-                            isAdd = "1";
-                        }
-                    }
-                })
-            }
-            if (isAdd != "") {
-                alert("该合同已经拥有默认成本，不可重复添加！");
-                return false;
-            }
+            //var isAdd = "";
+            //if (contract_id != "" && (!isNaN(contract_id))) {
+            //    $.ajax({
+            //        type: "GET",
+            //        url: "../Tools/ContractAjax.ashx?act=GetDefaultCost&contract_id=" + contract_id,
+            //        async: false,
+            //        success: function (data) {
+            //            if (data != "") {
+            //                isAdd = "1";
+            //            }
+            //        }
+            //    })
+            //}
+            //if (isAdd != "") {
+            //    alert("该合同已经拥有默认成本，不可重复添加！");
+            //    return false;
+            //}
 
             window.open('../Contract/AddDefaultCharge.aspx?contract_id=' + <%=Request.QueryString["id"] %>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConDefCostAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         }

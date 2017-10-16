@@ -52,6 +52,7 @@ namespace EMT.DoneNOW.DTO
         public long? sub_cate_id;
         public long? invoice_id;
         public long? invoice_line_item_no;
+        public string item_desc;
 
         public string isSub;  // 是否时子公司条目（子公司条目可见不可选）
         

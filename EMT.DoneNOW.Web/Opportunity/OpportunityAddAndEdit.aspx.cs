@@ -267,7 +267,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                         Response.Write("<script>debugger;window.opener." + callBackFiled + "('" + param.general.name + "','" + id + "');</script>");
 
                     }
-                    Response.Write("<script>alert('添加商机成功！');window.close();</script>");  //  
+                    Response.Write("<script>alert('添加商机成功！');window.close();self.opener.location.reload();</script>");  //  
                 }
             }
             else
@@ -285,7 +285,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 }
                 else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改商机成功！');window.close();</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改商机成功！');window.close();self.opener.location.reload();</script>");
                     //Response.Write("<script>alert('修改商机成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
                 }
             }
@@ -322,7 +322,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                         Response.Write("<script>debugger;window.opener." + callBackFiled + "('" + param.general.name + "','" + id + "');</script>");
 
                     }
-                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加商机成功！');window.close();window.open('../Quote/QuoteAddAndUpdate?quote_opportunity_id=" + id + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加商机成功！');self.opener.location.reload();window.close();window.open('../Quote/QuoteAddAndUpdate?quote_opportunity_id=" + id + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
                     //Response.Write("<script></script>");
                     //Response.Write("<script>alert('添加商机成功！');</script>");  //  
                     //Response.Redirect("../Quote/QuoteAddAndUpdate?opportunity_id="+id);
@@ -343,8 +343,8 @@ namespace EMT.DoneNOW.Web.Opportunity
                 }
                 else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改商机成功！');</script>");
-                    Response.Redirect("../Quote/QuoteAddAndUpdate?quote_opportunity_id=" + opportunity.id);
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改商机成功！');self.opener.location.reload();window.close();window.open('../Quote/QuoteAddAndUpdate?quote_opportunity_id=" + opportunity.id + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                    // Response.Redirect("../Quote/QuoteAddAndUpdate?quote_opportunity_id=" + opportunity.id);
                 }
             }
         }
@@ -379,7 +379,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                         Response.Write("<script>debugger;window.opener." + callBackFiled + "('" + param.general.name + "','" + id + "');</script>");
 
                     }
-                    Response.Write("<script>alert('添加商机成功！');</script>");  //  
+                    Response.Write("<script>alert('添加商机成功！');self.opener.location.reload();</script>");  //  
                     Response.Redirect("../Activity/AddActivity.aspx");
                 }
             }
@@ -398,7 +398,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 }
                 else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改商机成功！');</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改商机成功！');self.opener.location.reload();</script>");
                     Response.Redirect("../Activity/AddActivity.aspx");
                     //Response.Write("<script>alert('修改商机成功！');window.close();</script>");  //  关闭添加页面的同时，刷新父页面
                 }

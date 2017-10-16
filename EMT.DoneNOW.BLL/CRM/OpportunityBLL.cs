@@ -634,7 +634,7 @@ namespace EMT.DoneNOW.BLL
 
                                 if (i == period - 1)
                                 {
-                                    endDate = param.contract.end_date;
+                                    endDate = thisEndDate;
                                 }
 
                                 ctt_contract_service_period thisSerPri = new ctt_contract_service_period()

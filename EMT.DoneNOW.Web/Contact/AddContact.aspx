@@ -210,16 +210,16 @@
                     <td>
                         <div class="clear">
                             <label>电话<span class="red">*</span></label>
-                            <input type="text" name="phone" id="Phone" value="<%=dto.contact.phone %>" />
+                            <input type="text" name="phone" id="Phone" value="<%=dto.contact.id==0?account==null?"":account.phone:dto.contact.phone %>" />
                         </div>
                     </td>
                 </tr>
-
+                    
                 <tr>
                     <td>
                         <div class="clear">
                             <label>备用电话</label>
-                            <input type="text" name="alternate_phone" id="" value="<%=dto.contact.id==0?account==null?"":account.phone:dto.contact.alternate_phone %>" />
+                            <input type="text" name="alternate_phone" id="" value="<%=dto.contact.alternate_phone %>" />
                         </div>
                     </td>
                 </tr>
@@ -253,7 +253,8 @@
                         <div class="clear">
                             <label>微博地址</label>
                             <asp:TextBox ID="weibo_url" runat="server"></asp:TextBox>
-                            <input type="button" class="Jump" value="跳转" />
+                            <i onclick="JumpWeibo();" style="width: 20px; height: 20px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/open.png) no-repeat;"></i>
+                            <%--<input type="button" class="Jump" value="跳转" />--%>
 
                         </div>
                     </td>
@@ -351,11 +352,18 @@
     <script type="text/javascript" charset="utf-8" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
 
-        $(".Jump").click(function () {
-            $("a").attr("target", "_blank");
-            var url = $(this).prev().val();
-            window.open("http://" + url);
-        })
+        //$(".Jump").click(function () {
+        //    $("a").attr("target", "_blank");
+        //    var url = $(this).prev().val();
+        //    window.open("http://" + url);
+        //})
+        function JumpWeibo() {
+            var weibo_url = $("#weibo_url").val();
+            if (weibo_url != "") {
+                var url = "http://" + weibo_url;
+                window.open(url,"_blank");
+            }
+        }
 
         $(function () {
             $("input[type=text]").attr("autocomplete", "off");
@@ -488,7 +496,11 @@
             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=accCallBack&callBack=GetCompany", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactLocationSelect %>", 'left=200,top=200,width=600,height=800', false);
         }
         function OpenWindowLocation(fld) {
-            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ADDRESS_CALLBACK %>&field=" + fld, "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactLocationSelect %>", 'left=200,top=200,width=600,height=800', false);
+            var account_id = $("#accCallBackHidden").val();
+            if (account_id != "")
+            {
+                window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ADDRESS_CALLBACK %>&con313=" + account_id+"&field=" + fld, "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactLocationSelect %>", 'left=200,top=200,width=600,height=800', false);
+            }
         }
         function GetCompany() {
             if ($("#Phone").val() != "")

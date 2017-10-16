@@ -197,6 +197,7 @@
     <Content Include="Images\Recentindex.png" />
     <Content Include="Images\ServiceSelector.png" />
     <Content Include="Images\Loading.gif" />
+    <Content Include="Images\shenglian.gif" />
     <Content Include="Images\time.png" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempEdit.aspx" />

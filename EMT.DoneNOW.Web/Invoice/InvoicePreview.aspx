@@ -556,19 +556,19 @@
 
     // 页面参数改变更新页面
     function locationChange() {
+        debugger;
         var account_id = $("#accoultList").val();
         var invTempId = $("#invoice_temp_id").val();
-        var ids = '<%=Request.QueryString["account_ids"] %>';
-        if (invTempId != "" && invTempId != "0" && account_id != "" && account_id != "0" && ids != "") {
-            location.href = "InvoicePreview?account_ids=" + ids + "&account_id=" + account_id + "&invoice_temp_id=" + invTempId + "&stareDate=<%=itemStartDatePara %>&endDate=<%=itemEndDatePara %>&contract_type=<%=contractTypePara %>&contract_cate=<%=contractCatePara %>&itemDeal=<%=projectItemPara %>&purchaseNo=<%=purchaseNo %>&isInvoice=<%=isInvoice?"1":"" %>";
+       
+        if (invTempId != "" && invTempId != "0" && account_id != "" && account_id != "0" ) {
+            location.href = "InvoicePreview?account_ids=<%=Request.QueryString["account_ids"] %>&account_id=" + account_id + "&invoice_temp_id=" + invTempId + "&stareDate=<%=itemStartDatePara %>&endDate=<%=itemEndDatePara %>&contract_type=<%=contractTypePara %>&contract_cate=<%=contractCatePara %>&itemDeal=<%=projectItemPara %>&purchaseNo=<%=purchaseNo %>&isInvoice=<%=isInvoice?"1":"" %>&accDedIds=<%=Request.QueryString["accDedIds"] %>&inv_batch=<%=Request.QueryString["inv_batch"] %>&invoice_id=<%=Request.QueryString["invoice_id"] %>";
         }
     }
 
     function changeByAccount(account_id) {
         var invTempId = $("#invoice_temp_id").val();
-        var ids = '<%=Request.QueryString["account_ids"] %>';
-        if (invTempId != "" && invTempId != "0" && account_id != "" && account_id != "0" && ids != "") {
-            location.href = "InvoicePreview?account_ids=" + ids + "&account_id=" + account_id + "&invoice_temp_id=" + invTempId + "&stareDate=<%=itemStartDatePara %>&endDate=<%=itemEndDatePara %>&contract_type=<%=contractTypePara %>&contract_cate=<%=contractCatePara %>&itemDeal=<%=projectItemPara %>&purchaseNo=<%=purchaseNo %>&isInvoice=<%=isInvoice?"1":"" %>";
+        if (invTempId != "" && invTempId != "0" && account_id != "" && account_id != "0") {
+            location.href = "InvoicePreview?account_ids=<%=Request.QueryString["account_ids"] %>&account_id=" + account_id + "&invoice_temp_id=" + invTempId + "&stareDate=<%=itemStartDatePara %>&endDate=<%=itemEndDatePara %>&contract_type=<%=contractTypePara %>&contract_cate=<%=contractCatePara %>&itemDeal=<%=projectItemPara %>&purchaseNo=<%=purchaseNo %>&isInvoice=<%=isInvoice?"1":"" %>&accDedIds=<%=Request.QueryString["accDedIds"] %>&inv_batch=<%=Request.QueryString["inv_batch"] %>&invoice_id=<%=Request.QueryString["invoice_id"] %>";
         }
     }
 

@@ -166,6 +166,11 @@ namespace EMT.DoneNOW.Web
                     case "CalcServiceAdjustPercent":
                         CalcServiceAdjustPercent(context);
                         break;
+                    case "ChecckCostCode":   // 校验物料代码是否在默认成本出现过
+                        var ccccid = context.Request.QueryString["id"];
+                        var cost_code_id = context.Request.QueryString["cost_code_id"];
+                        ChecckCostCode(context,long.Parse(ccccid),long.Parse(cost_code_id));
+                        break;
                     default:
                         break;
                 }
@@ -681,6 +686,21 @@ namespace EMT.DoneNOW.Web
             DateTime date = DateTime.Parse(context.Request.QueryString["date"]);
             var result = new Tools.Serialize().SerializeJson(new ContractServiceBLL().CalcServiceAdjustDatePercent(contractId, date));
             context.Response.Write(result);
+        }
+
+        private void ChecckCostCode(HttpContext context,long cid,long cost_code_id)
+        {
+            var contract = new ctt_contract_dal().FindNoDeleteById(cid);
+            var result = false;
+            if (contract != null)
+            {
+                var def_cha = new ctt_contract_cost_default_dal().GetSinCostDef(cid,cost_code_id);
+                if (def_cha != null)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(def_cha));
+                }
+            }
+            
         }
 
         public bool IsReusable

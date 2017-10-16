@@ -59,8 +59,8 @@ namespace EMT.DoneNOW.Web.SaleOrder
                         type = "附件";
                         break;
                     case "entry":
-                        type = "条目";
-                        viewSaleOrder_iframe.Src = "../QuoteItem/QuoteItemManage.aspx?quote_id=" + quote.id;
+                        type = "报价项";
+                        viewSaleOrder_iframe.Src = "../QuoteItem/QuoteItemManage.aspx?isShow=1&quote_id=" + quote.id;
                         break;
                     case "purchaseOrder":
                         type = "销售订单";
