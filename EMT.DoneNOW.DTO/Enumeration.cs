@@ -1035,5 +1035,6 @@ namespace EMT.DoneNOW.DTO
         GeneralJs=411,                                 //注册js语句
 
         QuoteBodyItem=420,                             //打开报价模板编辑
+        EmailTemp=421,                                 //邮件模板
     }
 }

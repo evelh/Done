@@ -18,15 +18,15 @@ namespace EMT.DoneNOW.Web
         {
             if (!long.TryParse(Request.QueryString["type"], out type))
             {
-               // Response.Write("<script>alert('获取相关信息失败，返回上一页');window.close();</script>");
+                Response.Write("<script>alert('获取相关信息失败，返回上一页');window.close();</script>");
             }
             if (!long.TryParse(Request.QueryString["id"], out id))
             {
                 id = 0;
             }
             //测试业务范围
-            type = 99;
-            id = 1102;
+            //type = 99;
+            //id = 1102;
             //测试项目状态
             //type = 100;
             //id = 1345;
@@ -42,7 +42,6 @@ namespace EMT.DoneNOW.Web
             //配送类型
             //type = 104;
             //id = 493;
-
             switch (type)
             {
                 case (long)QueryType.Line_Of_Business:

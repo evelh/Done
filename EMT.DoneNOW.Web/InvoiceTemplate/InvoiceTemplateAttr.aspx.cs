@@ -126,7 +126,7 @@ namespace EMT.DoneNOW.Web
                 }
                 else
                 {
-                    Response.Write("<script>alert('发票模板属性修改成功');</script>");
+                    Response.Write("<script>alert('发票模板属性修改失败！');</script>");
                 }
             } else {
                 var result = temp.Add(data, GetLoginUserId(), out id);

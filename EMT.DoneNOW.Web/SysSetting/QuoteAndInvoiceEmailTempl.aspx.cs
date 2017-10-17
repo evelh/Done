@@ -30,7 +30,9 @@ namespace EMT.DoneNOW.Web
             {
                 id = 0;
             }
-            type = 106;
+            //测试数据
+            type = 105;
+            //id = 1;
             switch (type)
             {
                 case (int)QueryType.Quote_Email_Tmpl:
@@ -71,9 +73,7 @@ namespace EMT.DoneNOW.Web
 
                 }
                 //默认激活
-                this.Active.Checked = true;
-                //默认选择EmailFormatHtml
-                this.EmailFormatHtml.Checked = true;
+                this.Active.Checked = true;               
                 //修改
                 if (id > 0)
                 {
@@ -117,9 +117,7 @@ namespace EMT.DoneNOW.Web
                         }
                         this.Email_Subject.Text = emailtempl.subject;
                         if (emailtempl.is_html_format == 1)
-                        {
-                            this.EmailFormatPlaintext.Checked = false;
-                            this.EmailFormatHtml.Checked = true;
+                        {                            
                             if (!string.IsNullOrEmpty(emailtempl.html_body))
                             {
                                 BodyContent = HttpUtility.HtmlDecode(emailtempl.html_body).Replace("\"", "'");
@@ -127,11 +125,9 @@ namespace EMT.DoneNOW.Web
                         }
                         else if (emailtempl.is_html_format == 2)
                         {
-                            this.EmailFormatHtml.Checked = false;
-                            this.EmailFormatPlaintext.Checked = true;
                             if (!string.IsNullOrEmpty(emailtempl.text_body))
                             {
-                                BodyContent = HttpUtility.HtmlDecode(emailtempl.text_body).Replace("\"", "'");
+                                BodyContent = emailtempl.text_body;
                             }
                         }
 
@@ -146,7 +142,9 @@ namespace EMT.DoneNOW.Web
                 {
 
                 }
-
+            }
+            else {
+                emailtempl.is_html_format =Convert.ToSByte(Request.Form["htmlformat"]);
             }
         }
         protected void AlertVariableFilter_SelectedIndexChanged(object sender, EventArgs e)
@@ -182,7 +180,8 @@ namespace EMT.DoneNOW.Web
                 emailtempl = qibll.GetEmailTemp(id);
             }
             //收集数据
-            string bodydata = Request.Form["data"].Trim().ToString().Replace("\"", "'");
+            string bodydata = Request.Form["bodydata"].Trim().ToString().Replace("\"", "'");
+            SByte k= Convert.ToSByte(Request.Form["htmlformat"]);
             emailtempl.name = this.Name.Text.Trim().ToString();
             emailtempl.description = this.Description.Text.Trim();
             if (this.Active.Checked)
@@ -215,15 +214,17 @@ namespace EMT.DoneNOW.Web
                 emailtempl.is_account_owner_bcc = 0;
             }
             emailtempl.subject = this.Email_Subject.Text.Trim();
-            if (this.EmailFormatHtml.Checked)
+            if (k==1)
             {
                 emailtempl.is_html_format = 1;
                 emailtempl.html_body = bodydata;
+                emailtempl.text_body = "不知道填什么";
             }
-            else if (this.EmailFormatPlaintext.Checked)
+            else if (k==2)
             {
                 emailtempl.is_html_format = 2;
                 emailtempl.text_body = bodydata;
+                emailtempl.html_body= "不知道填什么";
             }
             switch (type)
             {
@@ -237,17 +238,35 @@ namespace EMT.DoneNOW.Web
             if (id > 0)//修改
             {
                 var result = qibll.Update(emailtempl, GetLoginUserId());
-
+                if (result == ERROR_CODE.SUCCESS)
+                {
+                    Response.Write("<script>alert('修改成功！');window.close();self.opener.location.reload();</script>");
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("Login.aspx");
+                }
+                else
+                {
+                    Response.Write("<script>alert('修改失败！');</script>");
+                }
 
 
             }
             else//新增
             {
                 var result = qibll.Insert(emailtempl, GetLoginUserId());
-
-
+                if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+                {
+                    Response.Write("<script>alert('添加成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("Login.aspx");
+                }
             }
-
         }
     }
 }

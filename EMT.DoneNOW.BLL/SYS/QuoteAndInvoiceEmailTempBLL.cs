@@ -67,6 +67,31 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <returns></returns>
         public ERROR_CODE Insert(sys_quote_email_tmpl tmpl,long user_id) {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {
+                // 查询不到用户，用户丢失
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+            tmpl.id = _dal.GetNextIdCom();
+            tmpl.create_time = tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmpl.create_user_id = tmpl.update_user_id = user.id;
+            _dal.Insert(tmpl);
+            //日志
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = user.id,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
+                oper_object_id = tmpl.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                oper_description = _dal.AddValue(tmpl),
+                remark = "添加邮件模板"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -75,6 +100,33 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ERROR_CODE Update(sys_quote_email_tmpl tmpl, long user_id)
         {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (user == null)
+            {
+                // 查询不到用户，用户丢失
+                return ERROR_CODE.PARAMS_ERROR;
+            }
+            tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmpl.update_user_id = user.id;
+            if (_dal.Update(tmpl)) {
+                return ERROR_CODE.ERROR;
+            }
+            //日志
+            var add_log = new sys_oper_log()
+            {
+                user_cate = "用户",
+                user_id = user.id,
+                name = user.name,
+                phone = user.mobile == null ? "" : user.mobile,
+                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
+                oper_object_id = tmpl.id,// 操作对象id
+                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                oper_description = _dal.CompareValue(_dal.FindNoDeleteById(tmpl.id), tmpl),
+                remark = "修改邮件模板"
+            };          // 创建日志
+            new sys_oper_log_dal().Insert(add_log);       // 插入日志
+
             return ERROR_CODE.SUCCESS;
         }
     }
