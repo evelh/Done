@@ -242,7 +242,7 @@ namespace EMT.DoneNOW.BLL
             {
                 return ERROR_CODE.DEFAULT;
             }
-            sys_quote_tmpl sqt = _dal.FindSignleBySql<sys_quote_tmpl>("select * from sys_quote_tmpl where is_default=1");
+            sys_quote_tmpl sqt = _dal.FindSignleBySql<sys_quote_tmpl>($"select * from sys_quote_tmpl where is_default=1 and cate_id='{sq.cate_id}'");
             if (sqt != null) {
                 sqt.is_default = 0;
                 sqt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
