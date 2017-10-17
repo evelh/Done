@@ -224,7 +224,7 @@
                                               <div style="padding:0;">
                                                   <input type="hidden" id="defaultCostCodeHidden" name="defaultCostCode" />
                                                   <input type="text" id="defaultCostCode" disabled="disabled" style="margin: 2px 0px; width:224px;" />
-                                                  <img src="../Images/data-selector.png" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=defaultCostCode&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MILESTONE_CODE %>', 'left=200,top=200,width=600,height=800', false)" style="vertical-align: middle;cursor: pointer;" />
+                                                  <img src="../Images/data-selector.png" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=defaultCostCode&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MILESTONE_CODE %>', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.BillCodeCallback %>', 'left=200,top=200,width=600,height=800', false)" style="vertical-align: middle;cursor: pointer;" />
                                               </div>
                                           </td>
                                         <%} %>
@@ -768,7 +768,7 @@
                                         <div>
                                             <input type="hidden" id="milAddCodeHidden" />
                                             <input type="text" id="milAddCode" style="width:200px;" disabled="disabled" />
-                                            <a class="DataSelectorLinkIcon" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=milAddCode&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MILESTONE_CODE %>', '_blank', 'left=200,top=200,width=600,height=800', false);">
+                                            <a class="DataSelectorLinkIcon" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=milAddCode&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MILESTONE_CODE %>', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.BillCodeCallback %>', 'left=200,top=200,width=600,height=800', false);">
                                                 <img src="../Images/data-selector.png" style="vertical-align: middle;"/>
                                             </a>
                                         </div>

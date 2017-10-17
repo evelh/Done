@@ -44,13 +44,13 @@ namespace EMT.DoneNOW.Web.Contract
                 else
                     dto.contract.timeentry_need_begin_end = 0;
 
-                if (contractType == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+                if (dto.contract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
                 {
                     if (!string.IsNullOrEmpty(Request.Form["enableOverage"]) && Request.Form["enableOverage"].Equals("on"))
                         dto.contract.enable_overage_billing_rate = 1;
                 }
 
-                if (contractType == (int)DicEnum.CONTRACT_TYPE.FIXED_PRICE)
+                if (dto.contract.type_id == (int)DicEnum.CONTRACT_TYPE.FIXED_PRICE)
                 {
                     if (!string.IsNullOrEmpty(Request.Form["applyPayment"]) && Request.Form["applyPayment"].Equals("on"))
                     {

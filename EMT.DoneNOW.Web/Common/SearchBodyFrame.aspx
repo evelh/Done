@@ -221,9 +221,10 @@
                     <li><i style="background-image: url(../Images/export.png);"></i></li>
                 </ul>
 
-              <div class="fl" style="line-height:47px;">
+              <div class="fl" style="line-height:47px;margin-right:30px;">
               <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
-                <span>显示数据</span><input type="text" name="serviceTime" style="margin-left:16px;margin-right:30px;" onchange="editTime()" value="<%=searchTime.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
+                <span>显示数据</span><input type="text" name="serviceTime" style="margin-left:8px;" value="<%=searchTime.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
+                <a onclick="editTime()" style="width:16px;height:16px;"><img src="../Images/search.png" /></a>
               <%} %>
               </div>
 
