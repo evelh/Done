@@ -361,7 +361,7 @@
             var weibo_url = $("#weibo_url").val();
             if (weibo_url != "") {
                 var url = "http://" + weibo_url;
-                window.open(url,"_blank");
+                window.open(url, "<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECTCALLBACK %>", "left=200,top=200,width=960,height=800", false);
             }
         }
 
