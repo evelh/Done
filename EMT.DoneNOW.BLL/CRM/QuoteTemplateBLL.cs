@@ -417,8 +417,10 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.ERROR;
             }
             sq.is_default = 0;
+            sq.is_system = 0;
+            sq.oid =0;
             id=sq.id= (int)(_dal.GetNextIdCom());
-            sq.name = "(copy)" + sq.name;
+            sq.name = "(copy of)" + sq.name + Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             sq.create_time = sq.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             sq.create_user_id =sq.update_user_id=user_id;
             _dal.Insert(sq);
