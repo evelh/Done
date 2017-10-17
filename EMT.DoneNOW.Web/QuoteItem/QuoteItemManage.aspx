@@ -1199,7 +1199,7 @@
                                 decimal totalAllTaxPrice = 0;  // 该类型下的所有税汇总
                             %>
                             <tr>
-                                <td colspan="12" style="text-align: right;">配送汇总:</td>
+                                <td colspan="12" style="text-align: right;">不分组汇总:</td>
                                 <td><%=((decimal)(totalPrice==null?0:totalPrice)).ToString("#0.00") %></td>
                             </tr>
                             <% if (quote_item_tax_cate != null && quote_item_tax_cate.Count > 0)

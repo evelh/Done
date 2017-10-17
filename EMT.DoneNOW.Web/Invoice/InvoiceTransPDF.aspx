@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="InvoicePreview.aspx.cs" Inherits="EMT.DoneNOW.Web.Invoice.InvoicePreview" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="InvoiceTransPDF.aspx.cs" Inherits="EMT.DoneNOW.Web.Invoice.InvoiceTransPDF" %>
 
 <!DOCTYPE html>
 
@@ -438,8 +438,8 @@
                             </tr>
                             <tr class="DropDownMenuItem">
                                 <td class="DropDownMenuItemHeaderText">
-                                    <asp:Button ID="ConToPdf" runat="server" Text="转化为PDF格式" OnClick="ConToPdf_Click" />
-                                    <%--<span class="DropDownMenuSectionHeaderText">转化为PDF格式</span>--%>
+                                    <asp:Button ID="ConToPdf" runat="server" Text="转化为PDF格式" />
+                                    <span class="DropDownMenuSectionHeaderText">转化为PDF格式</span>
                                     <span class="FieldLevelInstructions">(view, print, or save)</span>
                                 </td>
                             </tr>
@@ -500,8 +500,8 @@
                 <ContentTemplate>
                    
                     </ContentTemplate>
-            </asp:UpdatePanel>--%>
-            <asp:Literal ID="table" runat="server"></asp:Literal>
+            </asp:UpdatePanel>--%><asp:Literal ID="table" runat="server"></asp:Literal>
+            
         </div>
         <input type="hidden" id="thisAccDedIds" runat="server"/>
     </form>
