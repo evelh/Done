@@ -220,6 +220,11 @@ namespace EMT.DoneNOW.BLL
                 var ccdDal = new ctt_contract_cost_default_dal();
                 if (conDefCost.id == 0)
                 {
+                    var def_cha = new ctt_contract_cost_default_dal().GetSinCostDef(conDefCost.contract_id, conDefCost.cost_code_id);
+                    if (def_cha != null)
+                    {
+                        return false;
+                    }
                     conDefCost.id = ccdDal.GetNextIdCom();
                     conDefCost.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     conDefCost.create_user_id = user.id;
@@ -245,23 +250,33 @@ namespace EMT.DoneNOW.BLL
                     var oldCost = ccdDal.FindNoDeleteById(conDefCost.id);
                     if (oldCost != null && user != null)
                     {
-                        conDefCost.oid = oldCost.oid;
-                        conDefCost.update_user_id = user.id;
-                        conDefCost.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                        ccdDal.Update(conDefCost);
-                        new sys_oper_log_dal().Insert(new sys_oper_log()
+                        var def_cha = new ctt_contract_cost_default_dal().GetSinCostDef(conDefCost.contract_id, conDefCost.cost_code_id);
+                        if(def_cha!=null&& def_cha.id!= conDefCost.id)
                         {
-                            user_cate = "用户",
-                            user_id = user.id,
-                            name = user.name,
-                            phone = user.mobile == null ? "" : user.mobile,
-                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_DEFAULT_COST,
-                            oper_object_id = conDefCost.id,// 操作对象id
-                            oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
-                            oper_description = ccdDal.CompareValue(oldCost, conDefCost),
-                            remark = "修改合同默认成本"
-                        });
+                            return false;
+                        }
+                        else
+                        {
+                            conDefCost.oid = oldCost.oid;
+                            conDefCost.update_user_id = user.id;
+                            conDefCost.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                            ccdDal.Update(conDefCost);
+                            new sys_oper_log_dal().Insert(new sys_oper_log()
+                            {
+                                user_cate = "用户",
+                                user_id = user.id,
+                                name = user.name,
+                                phone = user.mobile == null ? "" : user.mobile,
+                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_DEFAULT_COST,
+                                oper_object_id = conDefCost.id,// 操作对象id
+                                oper_type_id = (int)DicEnum.OPER_LOG_TYPE.UPDATE,
+                                oper_description = ccdDal.CompareValue(oldCost, conDefCost),
+                                remark = "修改合同默认成本"
+                            });
+                        }
+
+                        
                     }
                     else
                     {

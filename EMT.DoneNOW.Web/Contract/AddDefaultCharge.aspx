@@ -149,6 +149,7 @@
         if (cost_code_id != "") {
             debugger;
             var isAdd = "";
+            var def_cha_id = "<%=conDefCost==null?"":conDefCost.id.ToString() %>";
             $.ajax({
                 type: "GET",
                 async: false,
@@ -157,13 +158,18 @@
                 success: function (data) {
                     debugger;
                     if (data != "") {
-           
-                        alert("您已添加相关物料代码的默认成本");
-                        $("#cost_code_idHidden").val("");
-                        $("#cost_code_id").val("");
-                        $("#cost_unit_price").text("");
-                        $("#cost_unit_cost").text("");
-                        isAdd = "1";
+                        if (data.id == def_cha_id) {
+
+                        }
+                        else {
+                            alert("您已添加相关物料代码的默认成本");
+                            $("#cost_code_idHidden").val("");
+                            $("#cost_code_id").val("");
+                            $("#cost_unit_price").text("");
+                            $("#cost_unit_cost").text("");
+                            isAdd = "1";
+                        }
+                        
                     } else {
                         isAdd = "";
                     }
