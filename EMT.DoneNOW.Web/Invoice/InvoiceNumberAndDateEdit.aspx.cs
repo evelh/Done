@@ -24,7 +24,7 @@ namespace EMT.DoneNOW.Web
             number = invoice.invoice_no;
             account = new crm_account_dal().FindNoDeleteById(invoice.account_id).name;
             if (invoice.paid_date != null)
-                date = invoice.paid_date.ToString().Substring(0, 9).Insert(5,"0").Replace("/","-");
+                date = invoice.paid_date.Value.ToString("yyyy-MM-dd");
         }
 
         protected void Save_Close_Click(object sender, EventArgs e)

@@ -433,6 +433,16 @@
                                                                  <asp:RadioButton ID="EmailFormatPlaintext" runat="server" name="EmailFormat" style="vertical-align: middle;"/>
                                                                 <label for="EmailFormatPlaintext" style="cursor: pointer;">Plain Text</label>
                                                             </div>
+
+                                                              Email Format
+                                                    <div style="padding-bottom: 3px;">
+                                                        <input type="radio" name="EmailFormat" id="EmailFormatHtml2" style="vertical-align: middle;" checked="checked">
+                                                        <label for="EmailFormatHtml" style="cursor: pointer;">html</label>
+                                                    </div>
+                                                    <div>
+                                                        <input type="radio" name="EmailFormat" id="EmailFormatPlaintext2" style="vertical-align: middle;">
+                                                        <label for="EmailFormatPlaintext" style="cursor: pointer;">Plain Text</label>
+                                                    </div>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -456,7 +466,7 @@
                                                     <tr>
                                                         <td>
                                                             <div>
-                                                                button
+                                                                <asp:Button ID="TestSend" runat="server" Text="发送测试" />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -526,10 +536,10 @@
                 </div>
             </div>           
              <%-- Body部分的内容--%>
-            <asp:TextBox ID="ContentText" runat="server" Visible="False"></asp:TextBox>
+          <input type="hidden" id="bodydata" name="bodydata" />
         </div>
              <!--黑色幕布-->
-            <div id="BackgroundOverLay"></div>
+           <%-- <div id="BackgroundOverLay"></div>--%>
             </div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
@@ -576,7 +586,9 @@
                 autoHeightEnabled: false  //设置滚动条
             });
             ue.ready(function () {
-                //获取html内容  返回：<p>内容</p>
+                //初始化内容
+                ue.setContent("<%=BodyContent%>");
+                //获取html内容  返回：<p>内容</p>               
                 var html = ue.getContent();
                 //获取纯文本内容  返回：内容
                 var txt = ue.getContentTxt();
@@ -599,7 +611,19 @@
                     $(".AlertBox").hide();
                 })
             });
-
+            //点击确定数据保存至后台  在展示页展示
+            $("#Save_Close").on("click", function () {
+                if ($("#EmailFormatPlaintext2").is(':checked')) {
+                    //获取纯文本内容  返回：内容
+                    var txt = ue.getContentTxt();
+                    $("#bodydata").val($('<div/>').text(Text).html());
+                }
+                if ($("#EmailFormatHtml2").is(':checked')) {
+                    //获取html内容  返回：<p>内容</p>               
+                    var html = ue.getContent();
+                    $("#bodydata").val($('<div/>').text(html).html());
+                }
+            });
             $("input[name='EmailFormat']").change(function () {
                 var _this = $(this);
                 $("#BackgroundOverLay").show();
@@ -612,28 +636,27 @@
                 $("#no").on("click", function () {
                     $("#BackgroundOverLay").hide();
                     $(".AlertMessage").hide();
-                    if (_this[0].id == 'EmailFormatPlaintext') {
-                        $("#EmailFormatHtml").prop("checked", true);
-                        $("#EmailFormatPlaintext").prop("checked", false);
-                    } else if (_this[0].id == 'EmailFormatHtml') {
-                        $("#EmailFormatPlaintext").prop("checked", true);
-                        $("#EmailFormatHtml").prop("checked", false);
+                    if (_this[0].id == 'EmailFormatPlaintext2') {
+                        $("#EmailFormatHtml2").prop("checked", true);
+                        $("#EmailFormatPlaintext2").prop("checked", false);
+                    } else if (_this[0].id == 'EmailFormatHtml2') {
+                        $("#EmailFormatPlaintext2").prop("checked", true);
+                        $("#EmailFormatHtml2").prop("checked", false);
                     }
                 });
                 $("#CancelMessage").on("click", function () {
                     $("#BackgroundOverLay").hide();
                     $(".AlertMessage").hide();
-                    if (_this[0].id == 'EmailFormatPlaintext') {
-                        $("#EmailFormatHtml").prop("checked", true);
-                        $("#EmailFormatPlaintext").prop("checked", false);
-                    } else if (_this[0].id == 'EmailFormatHtml') {
-                        $("#EmailFormatPlaintext").prop("checked", true);
-                        $("#EmailFormatHtml").prop("checked", false);
+                    if (_this[0].id == 'EmailFormatPlaintext2') {
+                        $("#EmailFormatHtml2").prop("checked", true);
+                        $("#EmailFormatPlaintext2").prop("checked", false);
+                    } else if (_this[0].id == 'EmailFormatHtml2') {
+                        $("#EmailFormatPlaintex2t").prop("checked", true);
+                        $("#EmailFormatHtml2").prop("checked", false);
                     }
                 });
             });
         </script>
-
     </form>
 </body>
 </html>

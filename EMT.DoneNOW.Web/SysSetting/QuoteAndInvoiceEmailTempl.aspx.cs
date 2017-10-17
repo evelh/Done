@@ -131,7 +131,7 @@ namespace EMT.DoneNOW.Web
                             this.EmailFormatPlaintext.Checked = true;
                             if (!string.IsNullOrEmpty(emailtempl.text_body))
                             {
-                                BodyContent = HttpUtility.HtmlDecode(emailtempl.text_body).Replace("\"", "'");
+                                BodyContent = emailtempl.text_body;
                             }
                         }
 
@@ -182,7 +182,7 @@ namespace EMT.DoneNOW.Web
                 emailtempl = qibll.GetEmailTemp(id);
             }
             //收集数据
-            string bodydata = Request.Form["data"].Trim().ToString().Replace("\"", "'");
+            string bodydata = Request.Form["bodydata"].Trim().ToString().Replace("\"", "'");
             emailtempl.name = this.Name.Text.Trim().ToString();
             emailtempl.description = this.Description.Text.Trim();
             if (this.Active.Checked)
@@ -237,17 +237,35 @@ namespace EMT.DoneNOW.Web
             if (id > 0)//修改
             {
                 var result = qibll.Update(emailtempl, GetLoginUserId());
-
+                if (result == ERROR_CODE.SUCCESS)
+                {
+                    Response.Write("<script>alert('修改成功！');window.close();self.opener.location.reload();</script>");
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("Login.aspx");
+                }
+                else
+                {
+                    Response.Write("<script>alert('修改失败！');</script>");
+                }
 
 
             }
             else//新增
             {
                 var result = qibll.Insert(emailtempl, GetLoginUserId());
-
-
+                if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
+                {
+                    Response.Write("<script>alert('添加成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                }
+                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+                {
+                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                    Response.Redirect("Login.aspx");
+                }
             }
-
         }
     }
 }
