@@ -73,6 +73,7 @@ namespace EMT.DoneNOW.BLL
                 // 查询不到用户，用户丢失
                 return ERROR_CODE.PARAMS_ERROR;
             }
+            tmpl.id = _dal.GetNextIdCom();
             tmpl.create_time = tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             tmpl.create_user_id = tmpl.update_user_id = user.id;
             _dal.Insert(tmpl);

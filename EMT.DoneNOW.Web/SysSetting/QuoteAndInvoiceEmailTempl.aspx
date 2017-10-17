@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="QuoteAndInvoiceEmailTempl.aspx.cs" Inherits="EMT.DoneNOW.Web.QuoteAndInvoiceEmailTempl" %>
 
-<%--发票和报价的邮件模板--%>
+<%--发票和报价的邮件模板(未完成变量替换)--%>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -130,7 +130,7 @@
             }
 
         .CancelDialogButton {
-            background-image: url(img/cancel1.png);
+            background-image: url(../Images/cancel1.png);
             background-position: 0 -32px;
             border-radius: 50%;
             cursor: pointer;
@@ -285,7 +285,7 @@
     <title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" method="post">
         <div>
             <!--顶部-->
             <div class="TitleBar">
@@ -426,21 +426,17 @@
                                                     <tr>
                                                         <td class="FieldLabel">Email Format
                                                     <div style="padding-bottom: 3px;">
-                                                        <asp:RadioButton ID="EmailFormatHtml" runat="server" name="EmailFormat" style="vertical-align: middle;"/>
-                                                        <label for="EmailFormatHtml" style="cursor: pointer;">html</label>
-                                                    </div>
-                                                            <div>
-                                                                 <asp:RadioButton ID="EmailFormatPlaintext" runat="server" name="EmailFormat" style="vertical-align: middle;"/>
-                                                                <label for="EmailFormatPlaintext" style="cursor: pointer;">Plain Text</label>
-                                                            </div>
-
-                                                              Email Format
-                                                    <div style="padding-bottom: 3px;">
-                                                        <input type="radio" name="EmailFormat" id="EmailFormatHtml2" style="vertical-align: middle;" checked="checked">
+                                                        <input type="radio" name="EmailFormat" id="EmailFormatHtml2" style="vertical-align: middle;"<%if (emailtempl.is_html_format != 2)
+                                                            { %>
+                                                            checked="checked"
+                                                            <%} %> />
                                                         <label for="EmailFormatHtml" style="cursor: pointer;">html</label>
                                                     </div>
                                                     <div>
-                                                        <input type="radio" name="EmailFormat" id="EmailFormatPlaintext2" style="vertical-align: middle;">
+                                                        <input type="radio" name="EmailFormat" id="EmailFormatPlaintext2" style="vertical-align: middle;" <%if (emailtempl.is_html_format == 2)
+                                                            { %>
+                                                            checked="checked"
+                                                            <%} %> />
                                                         <label for="EmailFormatPlaintext" style="cursor: pointer;">Plain Text</label>
                                                     </div>
                                                         </td>
@@ -536,7 +532,8 @@
                 </div>
             </div>           
              <%-- Body部分的内容--%>
-          <input type="hidden" id="bodydata" name="bodydata" />
+          <input type="hidden" id="bodydata" name="bodydata"/>
+          <input type="hidden" id="htmlformat" name="htmlformat" value="<%=emailtempl.is_html_format %>"/>
         </div>
              <!--黑色幕布-->
            <%-- <div id="BackgroundOverLay"></div>--%>
@@ -585,6 +582,13 @@
                 elementPathEnabled : false,
                 autoHeightEnabled: false  //设置滚动条
             });
+            var _this;
+            $("#AddButton").on("click", function () {
+                _this = $(this).previousSbiling;
+                $("#BackgroundOverLay").show();
+                $(".AlertBox").show();
+                return _this;
+            });
             ue.ready(function () {
                 //初始化内容
                 ue.setContent("<%=BodyContent%>");
@@ -600,30 +604,47 @@
                     $("#BackgroundOverLay").hide();
                     $(".AlertBox").hide();
                 });
-                $("#AddButton").on("click", function () {
-                    $("#BackgroundOverLay").show();
-                    $(".AlertBox").show();
-                });
-                $(".val").on("dblclick", function () {
-                    UE.getEditor('containerHead').focus();
-                    UE.getEditor('containerHead').execCommand('inserthtml', $(this).html());
+            });
+            //双击选中事件
+            function dbclick(val) {
+                if (_this.id == 'Email_Subject') {
+                    _this.focus();  
+                    _this.val(_this.val()+$(val).html());
                     $("#BackgroundOverLay").hide();
                     $(".AlertBox").hide();
-                })
-            });
+                } else {
+                    UE.getEditor('containerHead').focus();
+                    UE.getEditor('containerHead').execCommand('inserthtml', $(val).html());
+                    $("#BackgroundOverLay").hide();
+                    $(".AlertBox").hide();
+                }               
+            }
             //点击确定数据保存至后台  在展示页展示
-            $("#Save_Close").on("click", function () {
+            function save_deal() {
                 if ($("#EmailFormatPlaintext2").is(':checked')) {
                     //获取纯文本内容  返回：内容
                     var txt = ue.getContentTxt();
-                    $("#bodydata").val($('<div/>').text(Text).html());
+                    $("#bodydata").val(txt);
+                    $("#htmlformat").val("2");
                 }
                 if ($("#EmailFormatHtml2").is(':checked')) {
                     //获取html内容  返回：<p>内容</p>               
                     var html = ue.getContent();
                     $("#bodydata").val($('<div/>').text(html).html());
+                    $("#htmlformat").val("1");
                 }
-            });
+                if ($("#Name").val() == null || $("#Name").val == '') {
+                    alert("请填写名称！");
+                    $("#Name").focus();
+                    return false;
+                }
+                if ($("#Email_Subject").val() == null || $("#Email_Subject").val == '') {
+                    alert("请填写邮件模板主体！");
+                    $("#Email_Subject").focus();
+                    return false;
+                }
+                return true;
+            }
             $("input[name='EmailFormat']").change(function () {
                 var _this = $(this);
                 $("#BackgroundOverLay").show();

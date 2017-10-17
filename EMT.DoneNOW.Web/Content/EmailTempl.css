@@ -24,7 +24,7 @@ body{
     width: 97%;
 }
 .collection{
-    background-image: url(../img/collection.png);
+    background-image: url(../Images/collection.png);
     cursor: pointer;
     display: inline-block;
     height: 16px;
@@ -37,7 +37,7 @@ body{
     margin-left: 5px;
 }
 .help{
-    background-image: url(../img/help.png);
+    background-image: url(../Images/help.png);
     cursor: pointer;
     display: inline-block;
     height: 16px;
@@ -83,19 +83,19 @@ li.Button{
     width: 16px;
 }
 .Save,.SaveAndClone,.SaveAndNew{
-    background-image: url("../img/save.png");
+    background-image: url("../Images/save.png");
 }
 .Cancel{
-    background-image: url("../img/cancel.png");
+    background-image: url("../Images/cancel.png");
 }
 .Tools{
-    background-image: url("../img/dropdown.png");
+    background-image: url("../Images/dropdown.png");
 }
 .Add{
-    background-image: url("../img/add.png");
+    background-image: url("../Images/add.png");
 }
 .Print{
-    background-image: url("../img/print.png");
+    background-image: url("../Images/print.png");
 }
 .Button>.Text{
     flex: 0 1 auto;
