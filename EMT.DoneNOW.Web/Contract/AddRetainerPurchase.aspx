@@ -335,6 +335,7 @@
                 alert("请输入数字!");
             }
         });
+      <%if (contract.type_id != (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER) { %>
       <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS) { %>
         $("#Text3").change(function () {
             var k1 = $("#Text3").val();
@@ -357,6 +358,23 @@
 			$("#Text3").val(s);
             $("#Text5").val(k2*k1);
         });
+      <%} %>
+      <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
+        $("#Text3").change(function () {
+          var k1 = $("#Text3").val();
+          var k2 = $("#Text4").val();
+          if (!checkNumInt(k1)) {
+            alert('请输入大于0的整数数字');
+            $("#Text3").val('').focus();
+            return false;
+          }
+          $("#Text5").val(k2 * k1);
+        });
+        function checkNumInt(num) {
+          var r = /^\+?[1-9][0-9]*$/;
+          return r.test(num);
+        }
+      <%} %>
         $("#Text4").change(function () {
             var k1 = $("#Text3").val();
             var k2 = $("#Text4").val();

@@ -85,6 +85,19 @@
                           <span class="FieldLevelInstructions">（每个预付<%=blocktypeName %>）</span>
                         </td>
                         <%} %>
+                        <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET)
+                            { %>
+                        <td class="FieldLabels" colspan="2" nowrap>数量（购买）
+                          <span class="FieldLevelInstructions">（每个预付<%=blocktypeName %>）</span>
+                          <span class="errorSmall">*</span>
+                        </td>
+                        <td class="FieldLabels" colspan="2" nowrap>费率
+                          <span class="errorSmall">*</span>
+                        </td>
+                        <td class="FieldLabels" nowrap>总价
+                          <span class="FieldLevelInstructions">（每个预付<%=blocktypeName %>）</span>
+                        </td>
+                        <%} %>
                         <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER)
                             { %>
                         <td class="FieldLabels" colspan="2" nowrap>总额
@@ -94,11 +107,11 @@
                         <%} %>
                       </tr>
                       <tr>
-                        <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+                        <%if (contract.type_id != (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER)
                             { %>
                         <td class="FieldLabels">
                           <div style="padding-bottom: 0;">
-                            <input type="text" name="hours" value="<%=block.quantity %>" style="width: 90px; text-align: right;" id="Text3" />
+                            <input type="text" name="hours" value="<%=(contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET?(int)block.quantity:block.quantity) %>" <%if (block.is_billed != null && block.is_billed == 1) { %> readonly="readonly" <%} %> style="width: 90px; text-align: right;" id="Text3" />
                           </div>
                         </td>
                         <td class="FieldLabels">
@@ -106,7 +119,7 @@
                         </td>
                         <td class="FieldLabels">
                           <div style="padding-bottom: 0;">
-                            <input type="text" name="hourlyRate" value="<%=block.rate %>" style="width: 70px; text-align: right;" id="Text4" />
+                            <input type="text" name="hourlyRate" value="<%=decimal.Round(block.rate, 2) %>" <%if (block.is_billed != null && block.is_billed == 1) { %> readonly="readonly" <%} %> style="width: 70px; text-align: right;" id="Text4" />
                           </div>
                         </td>
                         <td class="FieldLabels">
@@ -114,7 +127,7 @@
                         </td>
                         <td class="FieldLabels">
                           <div style="padding-bottom: 0;">
-                            <input type="text" style="width: 80px; text-align: right;" value="<%=(block.quantity*block.rate) %>" disabled="disabled" id="Text5" />
+                            <input type="text" style="width: 80px; text-align: right;" value="<%=decimal.Round(block.quantity*block.rate, 4) %>" disabled="disabled" id="Text5" />
                           </div>
                         </td>
                         <%} %>
@@ -122,7 +135,7 @@
                             { %>
                         <td class="FieldLabels">
                           <div style="padding-bottom: 0;">
-                            <input type="text" name="amount" value="<%=block.rate %>" style="width: 90px; text-align: right;" id="Text3" />
+                            <input type="text" name="amount" <%if (block.is_billed != null && block.is_billed == 1) { %> readonly="readonly" <%} %> value="<%=decimal.Round(block.rate, 2) %>" style="width: 90px; text-align: right;" id="Text3" />
                           </div>
                         </td>
                         <%} %>
@@ -135,7 +148,7 @@
             <tr>
               <td class="FieldLabels">
                 <div>
-                  <input type="checkbox" disabled="disabled" />
+                  <input type="checkbox" <%if (block.is_billed != null && block.is_billed == 1) { %> checked="checked" <%} %> disabled="disabled" />
                   已收费的
                 </div>
               </td>
@@ -195,6 +208,7 @@
     <script type="text/javascript" src="../Scripts/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
+      <%if (contract.type_id != (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER) { %>
       <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS) { %>
       $("#Text3").change(function () {
         var k1 = $("#Text3").val();
@@ -217,6 +231,23 @@
         $("#Text3").val(s);
         $("#Text5").val(k2 * k1);
       });
+      <%} %>
+      <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
+      $("#Text3").change(function () {
+        var k1 = $("#Text3").val();
+        var k2 = $("#Text4").val();
+        if (!checkNumInt(k1)) {
+          alert('请输入大于0的整数数字');
+          $("#Text3").val('').focus();
+          return false;
+        }
+        $("#Text5").val(k2 * k1);
+      });
+      function checkNumInt(num) {
+        var r = /^\+?[1-9][0-9]*$/;
+        return r.test(num);
+      }
+      <%} %>
       $("#Text4").change(function () {
         var k1 = $("#Text3").val();
         var k2 = $("#Text4").val();
