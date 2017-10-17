@@ -171,6 +171,12 @@ namespace EMT.DoneNOW.Web
                         var cost_code_id = context.Request.QueryString["cost_code_id"];
                         ChecckCostCode(context,long.Parse(ccccid),long.Parse(cost_code_id));
                         break;
+                    case "CheckResRole":
+                        var crrcid = context.Request.QueryString["contract_id"];  // 合同Id
+                        var crrrid = context.Request.QueryString["resource_id"];  // 员工Id
+                        var crrRoleId = context.Request.QueryString["role_id"];   // 角色Id
+                        CheckResRole(context,long.Parse(crrcid), long.Parse(crrrid), long.Parse(crrRoleId));
+                        break;
                     default:
                         break;
                 }
@@ -701,6 +707,22 @@ namespace EMT.DoneNOW.Web
                 }
             }
             
+        }
+        /// <summary>
+        /// 用于添加内部成本时校验 合同-员工-角色 唯一性校验
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="cid">合同ID</param>
+        /// <param name="rid">员工ID</param>
+        /// <param name="role_id">角色ID</param>
+        private void CheckResRole(HttpContext context,long cid,long rid,long role_id)
+        {
+            var int_cost = new ctt_contract_internal_cost_dal().GetCheckkSinIntCost(cid,rid,role_id);
+            if (int_cost != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(int_cost));
+            }
+
         }
 
         public bool IsReusable
