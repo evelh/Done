@@ -125,9 +125,6 @@ namespace EMT.DoneNOW.Web.Invoice
 
                                     }
                                 }
-
-
-
                             }
                         }
                     }
@@ -294,10 +291,19 @@ namespace EMT.DoneNOW.Web.Invoice
                         }
                     }
                 }
+                if (account != null)
+                {
+                    var thisAccRef = new crm_account_reference_dal().GetAccountRef(account.id);
+                    if (thisAccRef != null && thisAccRef.invoice_tmpl_id != null)
+                    {
+                        var thisTemp = new sys_quote_tmpl_dal().FindNoDeleteById((long)thisAccRef.invoice_tmpl_id);
+                        if (thisTemp != null)
+                        {
+                            invoice_temp = thisTemp;
+                        }
+                    }
 
-
-
-
+                }
 
                 if (paramList != null && paramList.Count > 0)
                 {
@@ -473,18 +479,22 @@ namespace EMT.DoneNOW.Web.Invoice
                                 continue;
                             thisIds.Append(accDedItem.id + ",");
                             var billable_hours = param_item.billable_hours == null ? "" : ((decimal)param_item.billable_hours).ToString();
-                            if (param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.SERVICE || param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.FIXED_PRICE)
+                            if(param_item.item_type== (int)DicEnum.ACCOUNT_DEDUCTION_TYPE.LABOUR)
                             {
-                                billable_hours = "合同已包";
-                            }
-                            else if (param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.BLOCK_HOURS || param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.RETAINER)
-                            {
-                                if (!string.IsNullOrEmpty(param_item.billable))
+                                if (param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.SERVICE || param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.FIXED_PRICE)
                                 {
-                                    billable_hours = "预支付";
+                                    billable_hours = "合同已包";
                                 }
+                                else if (param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.BLOCK_HOURS || param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.RETAINER)
+                                {
+                                    if (!string.IsNullOrEmpty(param_item.billable))
+                                    {
+                                        billable_hours = "预支付";
+                                    }
 
+                                }
                             }
+                           
                             thisHtmlText.Append("<tr>");
                             foreach (var column_item in quote_body.GRID_COLUMN)
                             {
