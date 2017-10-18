@@ -358,7 +358,7 @@
                     <p class="clear"><a href="javaScript:">谁可以看到</a></p>
                 </div>
             </div>
-
+            <input type="hidden" id="isAddQuote" value="" runat="server"/> 
             <div id="ShowOpportunity_Right" style="float: left; margin-left: 0px;width:100%;" class="activityTitleright f1">
                 <iframe runat="server" id="viewOpportunity_iframe" width="100%;" height="100%" frameborder="0" marginheight="0" marginwidth="0"></iframe>
             </div>
@@ -382,7 +382,12 @@
             $("#showGeneralInformation").hide();
         }
         $("#viewOpportunity_iframe").attr("onLoad", iFrameHeight());
-
+        var isAddQuote = $("#isAddQuote").val();
+        if (isAddQuote == "1") {
+            if (confirm('商机尚未创建报价，需要现在创建吗?')) {
+                window.open('../Quote/QuoteAddAndUpdate.aspx?quote_opportunity_id=<%=opportunity.id %>', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>', 'left=200,top=200,width=960,height=750', false);
+            }
+        }
 
     })
 
