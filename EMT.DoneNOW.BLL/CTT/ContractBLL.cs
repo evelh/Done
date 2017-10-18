@@ -600,7 +600,9 @@ namespace EMT.DoneNOW.BLL
             actDal.Insert(act);
             OperLogBLL.OperLogAdd<com_activity>(act, act.id, user.id, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
         }
-     
+
+
+        #region 合同内部成本
         /// <summary>
         /// 新增/修改 合同内部成本
         /// </summary>
@@ -709,12 +711,14 @@ namespace EMT.DoneNOW.BLL
                     oper_description = dal.AddValue(oldIntCost),
                     remark = "删除合同内部成本"
                 });
+                return true;
 
             }
 
 
             return false;
         }
+        #endregion
 
         #region 里程碑
         /// <summary>

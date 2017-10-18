@@ -773,7 +773,10 @@ namespace EMT.DoneNOW.DTO
         /// 审批并提交操作类型 -121
         /// </summary>
         public enum ACCOUNT_DEDUCTION_TYPE {
-            CHARGE=1321,                //成本
+            LABOUR = 1318,               // 工时
+            LABOUR_AJUST=1319,           // 工时调整
+            PREPAID_TIME_SELF_BILLING=1320, //预付时间自身计费
+            CHARGE =1321,                //成本
             MILESTONES=1323,            //里程碑
             SUBSCRIPTIONS=1324,         //订阅
             SERVICE =1325,              //服务

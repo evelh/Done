@@ -33,9 +33,7 @@ namespace EMT.DoneNOW.Web
                 {
                     if (qtb.invoice_used(id) == DTO.ERROR_CODE.ERROR)//判断报价模板是否被引用
                     {
-                        Response.Write("<script>if(confirm('模板被发票引用，如果修改会影响到这些发票。你如果你不想影响这些发票，可以复制一个新的模板，然后对新模板进行修改。是否继续?')==true){}else{window.close();}</script>");
-                        //复制一个报价模板
-                        Session["copy"] = "(copy)";
+                        Response.Write("<script>if(confirm('模板被发票引用，如果修改会影响到这些发票。你如果你不想影响这些发票，可以复制一个新的模板，然后对新模板进行修改。是否继续?')==true){}else{window.close();}</script>");                    
                     }
                 }
                 //填充数据
@@ -202,25 +200,6 @@ namespace EMT.DoneNOW.Web
                 //底部备注
                 sqt.quote_footer_notes=tempinfo.foot_note;
             }
-            if (Session["copy"] != null)
-            {
-                string name = Session["copy"].ToString();
-                Session.Remove("copy");
-                sqt.name = name + sqt.name + Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                var result = qtbll.Add(sqt, GetLoginUserId(), out id);
-                if (result == ERROR_CODE.SUCCESS)        
-                {
-                    //id  获取副本插入时的id
-                    Response.Write("<script>alert('发票模板副本成功添加成功！');window.location.href =QuoteTemplateEdit.aspx?id=" + id + ";</script>");  //  刷新页面
-                }
-                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
-                {
-                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
-                    Response.Redirect("Login.aspx");
-                }
-            }
-            else
-            {
                 //更新保存
                 var result = qtbll.update(sqt, GetLoginUserId());
                 if (result == ERROR_CODE.SUCCESS)                    // 更新用户成功，刷新前一个页面
@@ -232,7 +211,6 @@ namespace EMT.DoneNOW.Web
                     Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
                     Response.Redirect("Login.aspx");
                 }
-            }
         }
     }
 }

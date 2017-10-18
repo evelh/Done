@@ -214,6 +214,7 @@
     <Content Include="Invoice\InvocieSearch.aspx" />
     <Content Include="Invoice\InvoicePreview.aspx" />
     <Content Include="Invoice\InvoiceSearchResult.aspx" />
+    <Content Include="Invoice\InvoiceTransPDF.aspx" />
     <Content Include="Invoice\InvoiceWizard.aspx" />
     <Content Include="Invoice\InvoiceNumberAndDateEdit.aspx" />
     <Content Include="Invoice\PreferencesInvoice.aspx" />
@@ -1102,6 +1103,13 @@
     </Compile>
     <Compile Include="Invoice\InvoiceSearchResult.aspx.designer.cs">
       <DependentUpon>InvoiceSearchResult.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Invoice\InvoiceTransPDF.aspx.cs">
+      <DependentUpon>InvoiceTransPDF.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Invoice\InvoiceTransPDF.aspx.designer.cs">
+      <DependentUpon>InvoiceTransPDF.aspx</DependentUpon>
     </Compile>
     <Compile Include="Invoice\InvoiceWizard.aspx.cs">
       <DependentUpon>InvoiceWizard.aspx</DependentUpon>
