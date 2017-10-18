@@ -458,7 +458,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "查看合同", click_function = "ViewContract()" });
                     contextMenu.Add(new PageContextMenuDto { text = "在新窗口中查看合同", click_function = "ViewNewWindow()" });
                     contextMenu.Add(new PageContextMenuDto { text = "续约", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "复制合同", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制合同", click_function = "CopyContract()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除合同", click_function = "DeleteContract()" });
                     break;
                 case (long)QueryType.ProuductInventory:
@@ -632,7 +632,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.ContractService:
                     contextMenu.Add(new PageContextMenuDto { text = "调整服务/服务包", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "编辑发票描述", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑发票描述", click_function = "EditDescription()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:

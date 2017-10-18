@@ -982,6 +982,7 @@ namespace EMT.DoneNOW.DTO
         ConMilestoneAdd = 318,                  // 合同新增里程碑
         ConMilestoneEdit = 319,                 // 合同编辑里程碑
         ConServiceAdd,                          // 合同新增服务/服务包
+        ConServiceEditInvoiceDesc,              // 合同服务编辑发票描述
         BillCodeCallback,                       // 计费代码查找带回
 
 

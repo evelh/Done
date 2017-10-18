@@ -188,6 +188,7 @@
     <Content Include="Contract\ApproveChargeSelect.aspx" />
     <Content Include="Contract\ChargeDetails.aspx" />
     <Content Include="Contract\ContractAdd.aspx" />
+    <Content Include="Contract\ContractCopy.aspx" />
     <Content Include="Contract\ContractMilestone.aspx" />
     <Content Include="Contract\ContractSummary.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
@@ -196,6 +197,7 @@
     <Content Include="Contract\ContractUdf.aspx" />
     <Content Include="Contract\ContractView.aspx" />
     <Content Include="Contract\EditRetainerPurchase.aspx" />
+    <Content Include="Contract\EditServiceInvoiceDesc.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Images\cancel1.png" />
     <Content Include="Images\forward_arrow.png" />
@@ -975,6 +977,13 @@
     <Compile Include="Contract\ContractAdd.aspx.designer.cs">
       <DependentUpon>ContractAdd.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\ContractCopy.aspx.cs">
+      <DependentUpon>ContractCopy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractCopy.aspx.designer.cs">
+      <DependentUpon>ContractCopy.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contract\ContractMilestone.aspx.cs">
       <DependentUpon>ContractMilestone.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1030,6 +1039,13 @@
     </Compile>
     <Compile Include="Contract\EditRetainerPurchase.aspx.designer.cs">
       <DependentUpon>EditRetainerPurchase.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\EditServiceInvoiceDesc.aspx.cs">
+      <DependentUpon>EditServiceInvoiceDesc.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\EditServiceInvoiceDesc.aspx.designer.cs">
+      <DependentUpon>EditServiceInvoiceDesc.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
@@ -1719,6 +1735,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\Search\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

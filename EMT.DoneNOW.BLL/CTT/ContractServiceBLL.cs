@@ -399,6 +399,28 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 编辑合同服务发票描述
+        /// </summary>
+        /// <param name="ser"></param>
+        /// <param name="userId"></param>
+        public void EditServiceInvoiceDescription(ctt_contract_service ser, long userId)
+        {
+            var dal = new ctt_contract_service_dal();
+            var service = dal.FindById(ser.id);
+            var serviceOld = dal.FindById(ser.id);
+
+            service.internal_description = ser.internal_description;
+            service.is_invoice_description_customized = ser.is_invoice_description_customized;
+            if (ser.is_invoice_description_customized == 0)
+                service.invoice_description = ser.invoice_description;
+            service.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            service.update_user_id = userId;
+
+            dal.Update(service);
+            OperLogBLL.OperLogUpdate<ctt_contract_service>(service, serviceOld, service.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE, "修改合同服务发票描述");
+        }
+
+        /// <summary>
         /// 根据生效时间计算生效时间开始的首周期所占整周期的天数百分比(保留4位小数)
         /// </summary>
         /// <param name="contractId"></param>

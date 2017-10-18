@@ -1216,6 +1216,9 @@
         function ViewNewWindow() {
           window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank');
         }
+        function CopyContract() {
+          window.open("../Contract/ContractCopy.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
         function DeleteContract() {
             if (confirm('删除合同，是否继续?')) {
                 $.ajax({
@@ -3394,6 +3397,9 @@
            }
          function ApplyDiscount() {
          }
+         function EditDescription() {
+           window.open('../Contract/EditServiceInvoiceDesc.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceEditInvoiceDesc %>', 'left=0,top=0,location=no,status=no,width=710,height=524', false);
+         }
          function editTime() {
            $("#form1").submit();
          }
@@ -3520,5 +3526,6 @@
         }
     </script>
   <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
+  <script type="text/javascript" src="../Scripts/Search/<%=(EMT.DoneNOW.DTO.QueryType)queryTypeId %>.js"></script>
 </body>
 </html>
