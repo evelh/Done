@@ -17,6 +17,8 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]
+        public Int64 oid { get; set; }
+        [DataMember]
         public Int32 cate_id { get; set; }
         [DataMember]
         public Int32 event_id { get; set; }
@@ -38,6 +40,10 @@ namespace EMT.DoneNOW.Core
         public SByte? is_success { get; set; }
         [DataMember]
         public SByte is_html_format { get; set; }
+        [DataMember]
+        public String cc_email { get; set; }
+        [DataMember]
+        public String bcc_email { get; set; }
 
 
     }
