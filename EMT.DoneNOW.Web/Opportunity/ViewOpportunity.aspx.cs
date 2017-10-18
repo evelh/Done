@@ -61,10 +61,12 @@ namespace EMT.DoneNOW.Web.Opportunity
                             if (oppoQuoteList != null && oppoQuoteList.Count > 0)
                             {
                                 viewOpportunity_iframe.Src = "../QuoteItem/QuoteItemManage?isShow=show&opportunity_id=" + opportunity.id;  // 报价项
+                                isAddQuote.Value = "0";
                             }
                             else
                             {
-                                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>if(confirm('商机尚未创建报价，需要现在创建吗?')){window.open('../Quote/QuoteAddAndUpdate.aspx?quote_opportunity_id=" + opportunity.id + "', '" + (int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd + "', 'left=200,top=200,width=960,height=750', false);}</script>");
+                                isAddQuote.Value = "1";
+                                //ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>if(confirm('商机尚未创建报价，需要现在创建吗?')){window.open('../Quote/QuoteAddAndUpdate.aspx?quote_opportunity_id=" + opportunity.id + "', '" + (int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd + "', 'left=200,top=200,width=960,height=750', false);}</script>");
                                 //Response.Write("<script>debugger;</script>");
                             }
 

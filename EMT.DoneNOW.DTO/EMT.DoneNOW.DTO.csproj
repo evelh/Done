@@ -73,6 +73,7 @@
     <Compile Include="PageQueryConditionNameDto.cs" />
     <Compile Include="PreferencesInvoiceDto.cs" />
     <Compile Include="ProcessInvoiceDto.cs" />
+    <Compile Include="ProjectDto.cs" />
     <Compile Include="VendorDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryConditionParaDto.cs" />

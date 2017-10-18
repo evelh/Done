@@ -1030,7 +1030,9 @@
         if (sortOrder == '3') {
             account_id = account_id + '_' + '<%=Request.QueryString["thisProject"] %>';
         } else if (sortOrder == '4') {
-            account_id = account_id + '_' + '<%=Request.QueryString["thisPurOrder"] %>';
+            <% var thisPurOrder = Request.QueryString["thisPurOrder"];
+            thisPurOrder = thisPurOrder.Substring(5, thisPurOrder.Length - 5); %>
+            account_id = account_id + '_' + '<%=thisPurOrder %>';
         }
         window.open("InvoicePreview.aspx?accDedIds=" + ids + "&stareDate=" + stareDate + "&endDate=" + endDate + "&item_type=" + item_type + "&contract_type=" + contract_type + "&contract_cate=" + contract_cate + "&itemDeal=" + itemDeal + "&account_id=" + account_id + "&invoiceDate=" + invoice_date + "&notes=" + notes + "&pay_term=" + payment_term_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREVIEW %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
 

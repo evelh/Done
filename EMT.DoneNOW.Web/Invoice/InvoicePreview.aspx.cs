@@ -310,7 +310,7 @@ namespace EMT.DoneNOW.Web.Invoice
                     paramList = paramList.OrderBy(_ => _.invoice_line_item_no).ToList();
                     StringBuilder ids = new StringBuilder();
                     foreach (var item in paramList)
-                    {
+                    {  
                         ids.Append(item.id + ",");
                     }
                     strThisIds = ids.ToString();

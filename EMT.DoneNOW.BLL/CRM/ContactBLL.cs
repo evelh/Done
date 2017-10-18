@@ -419,25 +419,5 @@ namespace EMT.DoneNOW.BLL
 
             return true;
         }
-
-
-
-
-        #region 联系人群组管理
-        public void test()
-        {
-            string sql2 = @"SELECT g.`name` from crm_account acc,crm_contact con,crm_contact_group g ,crm_contact_group_contact cgc
-  where con.account_id = acc.id AND  cgc.contact_id = con.id and cgc.contact_group_id = g.id  and acc.id = 13 ;  -- 查询出这个客户的联系人加入的组";
-
-
-            string sql3 = @"SELECT g.`name` as '群组名称',count(0) as '客户的联系人在这个群组的人数' ,g.is_active as '是否激活' from crm_account acc,crm_contact con,crm_contact_group g ,crm_contact_group_contact cgc
-  where con.account_id = acc.id AND  cgc.contact_id = con.id and cgc.contact_group_id = g.id  and acc.id = 13 
-GROUP BY g.id;  -- 查询出这个客户的联系人加入的群组以及客户联系人在这个群组的人数";
-
-            string sql4 = @"SELECT g.id as '群组ID',g.`name` as '群组名称', count(0) as '群组总人数',g.is_active as '是否激活'  from crm_contact con,crm_contact_group g ,crm_contact_group_contact cgc
-  where   cgc.contact_id = con.id and cgc.contact_group_id = g.id   
-GROUP BY g.id; -- 查询各个群组的人数";
-        }
-        #endregion
     }
 }

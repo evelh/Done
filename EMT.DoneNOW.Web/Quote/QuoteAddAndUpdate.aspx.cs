@@ -131,7 +131,7 @@ namespace EMT.DoneNOW.Web.Quote
                 switch (result)
                 {
                     case ERROR_CODE.SUCCESS:
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价成功！');window.close();</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价成功！');window.close();self.opener.location.reload();</script>");
                         break;
                     case ERROR_CODE.ERROR:
                         break;
@@ -217,7 +217,7 @@ namespace EMT.DoneNOW.Web.Quote
                     case ERROR_CODE.SUCCESS:
                         //ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改报价成功！');window.close();</script>");
                         //ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改报价成功！');window.open('../QuoteItem/QuoteItemManage.aspx?quote_id=" + quote.id.ToString() + "');</script>");
-                        Response.Write("<script>alert('修改报价成功！');");
+                        Response.Write("<script>alert('修改报价成功！');self.opener.location.reload();</script>");
                         Response.Redirect("../QuoteItem/QuoteItemManage.aspx?quote_id=" + quote.id);
                         break;
                     case ERROR_CODE.ERROR:

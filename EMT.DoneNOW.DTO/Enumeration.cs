@@ -63,8 +63,10 @@ namespace EMT.DoneNOW.DTO
         CONTRACT_MILESTONE=117,                  //合同里程碑
         BILL_POST_TYPE = 118,                   // 合同：工时计费设置
         ACCOUNT_DEDUCTION_TYPE=121,              //审批并提交操作类型
-        PROJECT_STATUS=124,                       //项目：项目状态
-        TASK_TYPE=130,                            //任务类型
+        PROJECT_TYPE = 123,                       // 项目类型
+        PROJECT_STATUS =124,                       // 项目：项目状态
+        PROJECT_LINE_OF_BUSINESS=125,             // 项目业务范围
+        TASK_TYPE =130,                            //任务类型
         INVOICE_TEMPLATE_BODY_GROUP_BY =141,      //发票模板主体-分组条件
         INVOICE_TEMPLATE_BODY_ITEMIZE =142,      //发票模板主体-逐项列出
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
@@ -219,24 +221,24 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum NOTIFY_EVENT
         {
-            OPPORTUNITY_CREATEDOREDITED,                          // 商机-创建或编辑
-            OPPORTUNITY_CLOSED,                                   // 商机-达成
-            OPPORTUNITY_RE_ASSIGNED,                              // 商机-再分配
-            OPPORTUNITY_LOST,                                     // 商机-丢失
-            //OPPORTUNITY ATTACHMENT - ADDED,                     // 
-            //QUOTE - CREATED OR EDITED,                          // 
-            //SALES ORDER - CREATED OR EDITED,                    // 
-            //SALES ORDER ATTACHMENT - ADDED,                     // 
-            //TO-DO - CREATED OR EDITED,                          // 
-            //NOTE - CREATED OR EDITED,                           // 
-            //ACCOUNT - CANCELED,                                 // 
-            //ACCOUNT ATTACHMENT - ADDED,                         // 
-            //CONFIGURATION ITEM - CREATED,                       // 
-            //CONFIGURATION ITEM ATTACHMENT - ADDED,              // 
-            //PROJECT - CREATED,                                  // 
-            //PROJECT - COMPLETED,                                // 
-            //PROJECT ATTACHMENT - ADDED,                         // 
-            //PROJECT NOTE - CREATED OR EDITED,                   // 
+            OPPORTUNITY_CREATEDOREDITED=107,                          // 商机-创建或编辑
+            OPPORTUNITY_CLOSED=108,                                   // 商机-达成
+            OPPORTUNITY_RE_ASSIGNED=109,                              // 商机-再分配
+            OPPORTUNITY_LOST=110,                                     // 商机-丢失
+            OPPORTUNITY_ATTACHMENT_ADDED=111,                         // 商机附件-创建
+            QUOTE_CREATED_OR_EDITED =112,                              // 报价-创建或编辑
+            SALES_ORDER_CREATED_OR_EDITED =113,                        // 销售订单 - 创建或编辑
+            SALES_ORDER_ATTACHMENT_ADDED =114,                         // 销售订单附件-创建
+            TO_DO_CREATED_OR_EDITED = 115,                             // 待办事项-创建或编辑
+            NOTE_CREATED_OR_EDITED = 116,                              // 记录-创建或编辑
+            ACCOUNT_CANCELED = 117,                                    // 客户-取消
+            ACCOUNT_ATTACHMENT_ADDED = 118,                            // 客户附件-创建
+            CONFIGURATION_ITEM_CREATED = 119,                          // 配置项-创建
+            CONFIGURATION_ITEM_ATTACHMENT_ADDED = 120,                 // 配置项附件-创建
+            PROJECT_CREATED = 121,                                     // 项目-创建
+            PROJECT_COMPLETED = 122,                                   // 项目-完成
+            PROJECT_ATTACHMENT_ADDED = 123,                            // 项目附件-创建
+            PROJECT_NOTE_CREATED_OR_EDITED =124,                       // 项目记录-创建或编辑
             //TASK - CREATED OR EDITED,                           // 
             //TASK - COPIED,                                      // 
             //TASK ATTACHMENT - ADDED,                            // 
@@ -574,7 +576,9 @@ namespace EMT.DoneNOW.DTO
             REFERENCE = 1374,                              // 客户发票/报价设置
             INVOCIE =1375,                                // 发票
             INVOCIE_DETAIL=1376,                         // 发票详情
-            
+            PROJECT_EXTENSION_INFORMATION=1377,         // 项目扩展信息
+            PROJECT_ITEM=1378,                          // 项目团队
+            PROJECT_ITEM_ROLE=1379,                     // 项目团队角色
         }
 
         /// <summary>
@@ -792,6 +796,20 @@ namespace EMT.DoneNOW.DTO
             ACCOUNT_PROJECT = 1338,
             IN_PROJECT = 1339,
             PROJECT_DAY = 1340,
+        }
+        /// <summary>
+        /// 项目状态 - 124
+        /// </summary>
+        public enum PROJECT_STATUS
+        {
+            DISABLE = 1345,                     // 停用
+            NEW = 1346,                         // 新建
+            HAVE_IN_HAND = 1347,                // 进行中
+            DELAY = 1348,                       // 推迟
+            CHANGE = 1349,                      // 变更
+            WAITING_ACCESSORIES = 1350,         // 等待配件
+            WAITING_CUSTOMERS = 1351,          // 等待客户
+            DONE = 1352,                        // 等待客户
         }
         /// <summary>
         /// 客户报价发票设置 - 127

@@ -34,5 +34,8 @@ namespace EMT.DoneNOW.DTO
         public long account_id;    // 跳转预览界面使用--待定
 
         public long invoice_batch;  // 这一批次生成的发票的批次ID
+        public string invoiceNo;    //  存储发票信息使用
+
+        public string thisIds;
     }
 }

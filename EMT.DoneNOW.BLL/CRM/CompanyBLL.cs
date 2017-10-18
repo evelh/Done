@@ -282,42 +282,17 @@ namespace EMT.DoneNOW.BLL
             var udf_account_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);  // 获取到所有关于客户的自定义字段
             var udf_general_list = param.general.udf;
             new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.COMPANY, user.id, _account.id, udf_account_list, udf_general_list, OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION); // 保存自定义字段，保存成功，插入日志
-            //{
-            //    var add_accout_udf_log = new sys_oper_log()
-            //    {
-            //        user_cate = "用户",
-            //        user_id = user.id,
-            //        name = "",
-            //        phone = user.mobile == null ? "" : user.mobile,
-            //        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-            //        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION,
-            //        oper_object_id = _account.id,// 操作对象id
-            //        oper_type_id = (int)OPER_LOG_TYPE.ADD,
-            //        oper_description = new Tools.Serialize().SerializeJson(udf_general_list),
-            //        remark = "保存客户扩展信息"
 
-            //    };          // 创建日志
-            //    new sys_oper_log_dal().Insert(add_accout_udf_log);       // 插入日志
-            //}
             #endregion
 
             #region 4.保存联系人扩展信息  
-            //if (!string.IsNullOrEmpty(param.contact.first_name))  // 判断
-            //{
-            //    //var udf_contact_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT); // 联系人的自定义字段
-            //    //var udf_con_list = param.contact.udf;     // 传过来的联系人的自定义参数
-            //    //new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTACT, user.id, _contact.id, udf_contact_list, udf_con_list, OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION);
-
-            //}
+            // 新增联系人已保存
             #endregion
 
             #region 5.保存客户站点的扩展信息
             var udf_site_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.SITE);
             var udf_site = param.site.udf;
             new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.SITE, user.id, _account.id, udf_site_list, udf_site, OPER_LOG_OBJ_CATE.CUSTOMER_SITE);
-
-
-
             #endregion
 
 
@@ -407,7 +382,6 @@ namespace EMT.DoneNOW.BLL
                 }
 
             }
-
             #endregion
 
             #region 8.保存待办信息
