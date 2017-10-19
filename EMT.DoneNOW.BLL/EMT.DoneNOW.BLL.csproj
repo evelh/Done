@@ -75,6 +75,7 @@
     <Compile Include="IVT\ProductBLL.cs" />
     <Compile Include="IVT\ServiceBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PRO\ProjectBLL.cs" />
     <Compile Include="SYS\AccountClassBLL.cs" />
     <Compile Include="SYS\ConfigTypeBLL.cs" />
     <Compile Include="SYS\DistrictBLL.cs" />

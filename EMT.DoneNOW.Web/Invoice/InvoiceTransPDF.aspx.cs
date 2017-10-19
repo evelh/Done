@@ -163,8 +163,13 @@ namespace EMT.DoneNOW.Web.Invoice
                             else
                             {
                                 var thisisid = account_id.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
-                                thisInvoice = invoiceList.FirstOrDefault(_ => _.account_id == long.Parse(thisisid[0]));
+                                string purcha_no = account_id.Substring(thisisid[0].Length + 1, account_id.Length - thisisid[0].Length - 1);
+                                thisInvoice = invoiceList.FirstOrDefault(_ => _.account_id == long.Parse(thisisid[0]) && _.purchase_order_no == purcha_no);
                             }
+                        }
+                        if (thisInvoice != null)
+                        {
+                            table.Text = thisInvoice.page_header_html + thisInvoice.invoice_header_html + thisInvoice.invoice_body_html + thisInvoice.invoice_footer_html + thisInvoice.page_footer_html;
                         }
                         List<InvoiceDeductionDto> thisList = new List<InvoiceDeductionDto>();
                         foreach (var invoice in invoiceList)
@@ -187,12 +192,17 @@ namespace EMT.DoneNOW.Web.Invoice
                     if (Regex.IsMatch(Request.QueryString["invoice_id"], @"^[+-]?\d*$"))
                     {
                         thisInvoice = new ctt_invoice_dal().FindNoDeleteById(long.Parse(this_invoice_id));
-
-                        var thisInvAccDed = accDal.GetInvDedDtoList($" and invoice_id ={Request.QueryString["invoice_id"]}");
-                        if (thisInvAccDed != null && thisInvAccDed.Count > 0)
+                        if (thisInvoice != null)
                         {
-                            GetDateByDto(thisInvAccDed);
+                            table.Text = thisInvoice.page_header_html + thisInvoice.invoice_header_html + thisInvoice.invoice_body_html + thisInvoice.invoice_footer_html + thisInvoice.page_footer_html;
+                            var thisInvAccDed = accDal.GetInvDedDtoList($" and invoice_id ={Request.QueryString["invoice_id"]}");
+                            if (thisInvAccDed != null && thisInvAccDed.Count > 0)
+                            {
+                                GetDateByDto(thisInvAccDed);
+                            }
+
                         }
+
                     }
 
                 }    // 多个发票号
@@ -277,17 +287,26 @@ namespace EMT.DoneNOW.Web.Invoice
                             else
                             {
                                 paramList = cadDal.GetInvDedDtoList($" and account_id={thisAccount_id[0]} and purchase_order_no ='{purcha_no}' and invoice_id is null");
-                                billTOThisParamList = cadDal.GetInvDedDtoList($" and bill_account_id={thisAccount_id[0]} and account_id <> {thisAccount_id[0]} and purchase_order_no ='{purcha_no}' and invoice_id ={thisInvoice.id} ");
+                                billTOThisParamList = cadDal.GetInvDedDtoList($" and bill_account_id={thisAccount_id[0]} and account_id <> {thisAccount_id[0]} and purchase_order_no ='{purcha_no}' and invoice_id is null ");
                             }
 
 
                         }
                     }
                 }
+                if (account != null)
+                {
+                    var thisAccRef = new crm_account_reference_dal().GetAccountRef(account.id);
+                    if (thisAccRef != null && thisAccRef.invoice_tmpl_id != null)
+                    {
+                        var thisTemp = new sys_quote_tmpl_dal().FindNoDeleteById((long)thisAccRef.invoice_tmpl_id);
+                        if (thisTemp != null)
+                        {
+                            invoice_temp = thisTemp;
+                        }
+                    }
 
-
-
-
+                }
 
                 if (paramList != null && paramList.Count > 0)
                 {
@@ -312,37 +331,36 @@ namespace EMT.DoneNOW.Web.Invoice
                     PageDataBind();
                 }
 
+                if (!isInvoice)
+                {
+                    #region 拼接页眉
+                    thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
+                    thisHtmlText.Append(HttpUtility.HtmlDecode(GetHtmlHead(invoice_temp)).Replace("\"", "'"));
+                    thisHtmlText.Append("</tr></tbody></table></div>");
 
-                #region 拼接页眉
-                thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
-                thisHtmlText.Append(HttpUtility.HtmlDecode(GetHtmlHead(invoice_temp)).Replace("\"", "'"));
-                thisHtmlText.Append("</tr></tbody></table></div>");
+                    thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
+                    thisHtmlText.Append(HttpUtility.HtmlDecode(GetQuoteHead(invoice_temp)).Replace("\"", "'"));
+                    thisHtmlText.Append("</tr></tbody></table></div>");
+                    #endregion
+                    #region 拼接页面Body
+                    thisHtmlText.Append($"<div class='ReadOnlyGrid_Container'><div class='ReadOnlyGrid_Account'>{account.name}</div><table class='ReadOnlyGrid_Table' style='border-color: #ccc;'>");
+                    GetHtmlBody(invoice_temp);
 
-                thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
-                thisHtmlText.Append(HttpUtility.HtmlDecode(GetQuoteHead(invoice_temp)).Replace("\"", "'"));
-                thisHtmlText.Append("</tr></tbody></table></div>");
-                #endregion
-                #region 拼接页面Body
-                thisHtmlText.Append($"<div class='ReadOnlyGrid_Container'><div class='ReadOnlyGrid_Account'>{account.name}</div><table class='ReadOnlyGrid_Table' style='border-color: #ccc;'>");
-                GetHtmlBody(invoice_temp);
+                    // thisHtmlText.Append("</table></div>");
+                    #endregion
+                    #region 拼接页脚
+                    thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
+                    thisHtmlText.Append(HttpUtility.HtmlDecode(GetQuoteFoot(invoice_temp)).Replace("\"", "'"));
+                    thisHtmlText.Append("</tr></tbody></table></div>");
 
-                // thisHtmlText.Append("</table></div>");
-                #endregion
-                #region 拼接页脚
-                thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
-                thisHtmlText.Append(HttpUtility.HtmlDecode(GetQuoteFoot(invoice_temp)).Replace("\"", "'"));
-                thisHtmlText.Append("</tr></tbody></table></div>");
+                    thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
+                    thisHtmlText.Append(HttpUtility.HtmlDecode(GetHtmlFoot(invoice_temp)).Replace("\"", "'"));
+                    thisHtmlText.Append("</tr></tbody></table></div>");
+                    #endregion
+                    // todo 通过模板  设定某些税相关不显示  暂时都显示
+                    table.Text = thisHtmlText.ToString();
+                }
 
-                thisHtmlText.Append("<div><table style='width: 100 %; border - collapse:collapse;'><tbody><tr>");
-                thisHtmlText.Append(HttpUtility.HtmlDecode(GetHtmlFoot(invoice_temp)).Replace("\"", "'"));
-                thisHtmlText.Append("</tr></tbody></table></div>");
-                #endregion
-
-
-                // todo 通过模板  设定某些税相关不显示  暂时都显示
-
-                
-                table.Text = thisHtmlText.ToString();
 
             }
             catch (Exception msg)
@@ -395,7 +413,7 @@ namespace EMT.DoneNOW.Web.Invoice
             invoice_temp_id.DataSource = dic.FirstOrDefault(_ => _.Key == "invoice_tmpl").Value;
             invoice_temp_id.DataBind();
             invoice_temp_id.SelectedValue = invoice_temp.id.ToString();
-            
+
             //accoultList.DataValueField = "id";
             //accoultList.DataTextField = "name";
             //accoultList.DataSource = accList;
@@ -464,18 +482,22 @@ namespace EMT.DoneNOW.Web.Invoice
                                 continue;
                             thisIds.Append(accDedItem.id + ",");
                             var billable_hours = param_item.billable_hours == null ? "" : ((decimal)param_item.billable_hours).ToString();
-                            if (param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.SERVICE || param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.FIXED_PRICE)
+                            if (param_item.item_type == (int)DicEnum.ACCOUNT_DEDUCTION_TYPE.LABOUR)
                             {
-                                billable_hours = "合同已包";
-                            }
-                            else if (param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.BLOCK_HOURS || param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.RETAINER)
-                            {
-                                if (!string.IsNullOrEmpty(param_item.billable))
+                                if (param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.SERVICE || param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.FIXED_PRICE)
                                 {
-                                    billable_hours = "预支付";
+                                    billable_hours = "合同已包";
                                 }
+                                else if (param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.BLOCK_HOURS || param_item.contract_type_id == (long)DicEnum.CONTRACT_TYPE.RETAINER)
+                                {
+                                    if (!string.IsNullOrEmpty(param_item.billable))
+                                    {
+                                        billable_hours = "预支付";
+                                    }
 
+                                }
                             }
+
                             thisHtmlText.Append("<tr>");
                             foreach (var column_item in quote_body.GRID_COLUMN)
                             {
@@ -659,7 +681,7 @@ namespace EMT.DoneNOW.Web.Invoice
                     if (!string.IsNullOrEmpty(stringThisIds))
                     {
                         stringThisIds = stringThisIds.Substring(0, stringThisIds.Length - 1);
-                        // thisAccDedIds.Value = stringThisIds;
+                        thisAccDedIds.Value = stringThisIds;
                     }
 
 

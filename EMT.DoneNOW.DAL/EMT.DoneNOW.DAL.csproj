@@ -111,6 +111,8 @@
     <Compile Include="IVT\ivt_warehouse_product_dal.cs" />
     <Compile Include="CTT\v_contract_summary_dal.cs" />
     <Compile Include="PRO\pro_project_dal.cs" />
+    <Compile Include="PRO\pro_project_team_dal.cs" />
+    <Compile Include="PRO\pro_project_team_role_dal.cs" />
     <Compile Include="SYS\sys_department_dal.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email_dal.cs" />
     <Compile Include="SYS\sys_organization_location_dal.cs" />

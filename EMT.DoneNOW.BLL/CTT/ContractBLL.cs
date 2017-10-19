@@ -803,6 +803,16 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 获取合同的里程碑列表
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <returns></returns>
+        public List<ContractMilestoneEntityDto> GetMilestoneList(long contractId)
+        {
+            return new ctt_contract_milestone_dal().FindListBySql<ContractMilestoneEntityDto>($"SELECT mil.*,d_cost_code.`name` as cost_code_name FROM (SELECT * FROM ctt_contract_milestone WHERE contract_id={contractId} AND delete_time=0) as mil JOIN d_cost_code ON mil.cost_code_id=d_cost_code.id;");
+        }
+
+        /// <summary>
         /// 删除合同里程碑
         /// </summary>
         /// <param name="milestoneId"></param>

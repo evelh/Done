@@ -69,20 +69,36 @@ namespace EMT.DoneNOW.BLL
                             var thisNoPurOrdList = thisAccDtoList.Where(_ => string.IsNullOrEmpty(_.purchase_order_no) && _.account_id == item.Key && _.bill_account_id == item.Key).ToList();
                             var billToThisNoPurOrdList = thisAccDtoList.Where(_ => string.IsNullOrEmpty(_.purchase_order_no) && _.account_id != item.Key && _.bill_account_id == item.Key).ToList();
                             var totalHtml = ReturnTotalHtml(thisNoPurOrdList, billToThisNoPurOrdList, account);
+                            StringBuilder thisIds = new StringBuilder();
+                            if(thisNoPurOrdList!=null&& thisNoPurOrdList.Count > 0)
+                            {
+                                thisNoPurOrdList.ForEach(_ => thisIds.Append(_.id.ToString() + ","));
+                            }
+                            if (billToThisNoPurOrdList != null && billToThisNoPurOrdList.Count > 0)
+                            {
+                                billToThisNoPurOrdList.ForEach(_ => thisIds.Append(_.id.ToString() + ","));
+                            }
+                            var stringIds = thisIds.ToString();
+                            if (!string.IsNullOrEmpty(stringIds))
+                            {
+                                stringIds = stringIds.Substring(0, stringIds.Length-1);
+                                param.thisIds = stringIds;
+                            }
                             #endregion
-
 
                             if (account.resource_id == null) // 客户的客户经理在发票中是必填项，没有客户经理暂时不创建发票
                             {
                                 continue;
                             }
+                            var invoiceNo= _dal.GetNextIdInvNo().ToString();
+                            param.invoiceNo = invoiceNo;
                             var invocie = new ctt_invoice()
                             {
                                 id = _dal.GetNextIdCom(),
                                 batch_id = invoiceBatch,
                                 account_id = account.id,
                                 owner_resource_id = (long)account.resource_id,
-                                invoice_no = _dal.GetNextIdInvNo().ToString(),
+                                invoice_no = invoiceNo,
                                 invoice_date = param.invoice_date,
                                 total = item.Value.Sum(_ => _.extended_price == null ? 0 : _.extended_price),
                                 tax_value = item.Value.Sum(_ => _.tax_dollars == null ? 0 : _.tax_dollars),
@@ -91,11 +107,11 @@ namespace EMT.DoneNOW.BLL
                                 payment_term_id = param.payment_term_id,
                                 purchase_order_no = "",
                                 invoice_template_id = param.invoice_template_id,
-                                page_header_html =  GetVarSub(temp.page_header_html, user, account),
-                                page_footer_html = GetVarSub(temp.page_footer_html, user, account),
-                                invoice_header_html = GetVarSub(temp.quote_header_html, user, account),
+                                page_header_html =  GetVarSub(temp.page_header_html, user, account, param),
+                                page_footer_html = GetVarSub(temp.page_footer_html, user, account, param),
+                                invoice_header_html = GetVarSub(temp.quote_header_html, user, account, param),
                                 invoice_body_html = RetuenBody(thisNoPurOrdList, billToThisNoPurOrdList, temp,account), 
-                                invoice_footer_html = totalHtml+GetVarSub(temp.quote_footer_html, user, account),
+                                invoice_footer_html = totalHtml+GetVarSub(temp.quote_footer_html, user, account, param),
                                 invoice_appendix_html = "", // 模板里面没有todo
                                 tax_region_name = account.tax_region_id == null ? "" : new GeneralBLL().GetGeneralName((int)account.tax_region_id),
                                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -198,14 +214,32 @@ namespace EMT.DoneNOW.BLL
                                 {
                                     var thisPurOrdList = thisAccDtoList.Where(_ => !string.IsNullOrEmpty(_.purchase_order_no) && _.account_id == item.Key && _.bill_account_id == item.Key).ToList();
                                     var billToThisPurOrdList = thisAccDtoList.Where(_ =>!string.IsNullOrEmpty(_.purchase_order_no) && _.account_id != item.Key && _.bill_account_id == item.Key).ToList();
+
                                     var totalHtml = ReturnTotalHtml(thisPurOrdList, billToThisPurOrdList, account);
+                                    StringBuilder thisIds = new StringBuilder();
+                                    if (thisPurOrdList != null && thisPurOrdList.Count > 0)
+                                    {
+                                        thisPurOrdList.ForEach(_ => thisIds.Append(_.id.ToString() + ","));
+                                    }
+                                    if (billToThisPurOrdList != null && billToThisPurOrdList.Count > 0)
+                                    {
+                                        billToThisPurOrdList.ForEach(_ => thisIds.Append(_.id.ToString() + ","));
+                                    }
+                                    var stringIds = thisIds.ToString();
+                                    if (!string.IsNullOrEmpty(stringIds))
+                                    {
+                                        stringIds = stringIds.Substring(0, stringIds.Length - 1);
+                                        param.thisIds = stringIds;
+                                    }
+                                    var invoiceNo = _dal.GetNextIdInvNo().ToString();
+                                    param.invoiceNo = invoiceNo;
                                     var invocie = new ctt_invoice()
                                     {
                                         id = _dal.GetNextIdCom(),
                                         batch_id = invoiceBatch,
                                         account_id = account.id,
                                         owner_resource_id = (long)account.resource_id,
-                                        invoice_no = _dal.GetNextIdInvNo().ToString(),
+                                        invoice_no = invoiceNo,
                                         invoice_date = param.invoice_date,
                                         total = item.Value.Sum(_ => _.extended_price == null ? 0 : _.extended_price),
                                         tax_value = item.Value.Sum(_ => _.tax_dollars == null ? 0 : _.tax_dollars),
@@ -214,11 +248,11 @@ namespace EMT.DoneNOW.BLL
                                         payment_term_id = param.payment_term_id,
                                         purchase_order_no = po.Key,
                                         invoice_template_id = param.invoice_template_id,
-                                        page_header_html = GetVarSub(temp.page_header_html, user, account),
-                                        page_footer_html = GetVarSub(temp.page_footer_html, user, account),
-                                        invoice_header_html = GetVarSub(temp.quote_header_html, user, account),
+                                        page_header_html = GetVarSub(temp.page_header_html, user, account,param),
+                                        page_footer_html = GetVarSub(temp.page_footer_html, user, account, param),
+                                        invoice_header_html = GetVarSub(temp.quote_header_html, user, account, param),
                                         invoice_body_html = RetuenBody(thisPurOrdList, billToThisPurOrdList, temp, account),
-                                        invoice_footer_html = totalHtml+ GetVarSub(temp.quote_footer_html, user, account),
+                                        invoice_footer_html = totalHtml+ GetVarSub(temp.quote_footer_html, user, account, param),
                                         invoice_appendix_html = "", // 模板里面没有todo
                                         tax_region_name = account.tax_region_id == null ? "" : new GeneralBLL().GetGeneralName((int)account.tax_region_id),
                                         create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -433,14 +467,15 @@ namespace EMT.DoneNOW.BLL
         }
 
         #region 发票模板中的变量替换--处理发票使用
-        private string GetVarSub(string thisText, UserInfoDto user,crm_account account)
+        private string GetVarSub(string thisText, UserInfoDto user,crm_account account, InvoiceDealDto param)
         {
             if (string.IsNullOrEmpty(thisText))
                 return "";
             thisText = thisText.Replace("&gt;", ">");
             thisText = thisText.Replace("&lt;", "<");
             thisText = thisText.Replace("&nbsp;", " ");
-            
+            thisText = thisText.Replace("&amp;", " ");
+
             var _dal = new ctt_invoice_dal();
             Regex reg = new Regex(@"\[(.+?)]");
             var account_param = "'{\"a:id\":\"" + account.id + "\"}'";
@@ -522,9 +557,61 @@ namespace EMT.DoneNOW.BLL
                     }
                 }
             }
+            if (!string.IsNullOrEmpty(param.thisIds))
+            {
+                var invoiceSql = new sys_query_type_user_dal().GetQuerySql(925, 925, user.id, "'{\"a:id\":\"" + param.thisIds + "\"}'", null);
+                if (!string.IsNullOrEmpty(invoiceSql))
+                {
+                    var varTable = _dal.ExecuteDataTable(invoiceSql.ToString());
+                    if (varTable.Rows.Count > 0)
+                    {
+                        foreach (Match m in reg.Matches(thisText))
+                        {
+                            string t = m.Groups[0].ToString();
 
+                            if (varTable.Columns.Contains(t))
+                            {
+                                switch (t)
+                                {
+                                    case "[发票：号码/编号]":
+                                    case "[发票：编号]":
+                                        thisText = thisText.Replace(t, param.invoiceNo);
+                                        break;
+                                    case "[发票：日期范围始于]":
+                                        thisText = thisText.Replace(t, param.date_range_from==null?"":((DateTime)param.date_range_from).ToString("yyyy-MM-dd"));
+                                        break;
+                                    case "[发票：日期范围至]":
+                                        thisText = thisText.Replace(t, param.date_range_to == null ? "" : ((DateTime)param.date_range_to).ToString("yyyy-MM-dd"));
+                                        break;
+                                    case "[发票：订单号]":
+                                        thisText = thisText.Replace(t, param.purchase_order_no);
+                                        break;
+                                    case "[发票：日期]":
+                                        thisText = thisText.Replace(t, param.invoice_date.ToString("yyyy-MM-dd"));
+                                        break;
+                                    case "[发票：发票记录]":
+                                        thisText = thisText.Replace(t, param.notes);
+                                        break;
+                                    default:
+                                        if (!string.IsNullOrEmpty(varTable.Rows[0][t].ToString()))
+                                        {
+                                            thisText = thisText.Replace(t, varTable.Rows[0][t].ToString());
+                                        }
+                                        else
+                                        {
+                                            thisText = thisText.Replace(t, "");
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                    }
 
-            var zaSql = new sys_query_type_user_dal().GetQuerySql(913, 913, user.id, "'{}'", null);
+                }
+            }
+          
+
+             var zaSql = new sys_query_type_user_dal().GetQuerySql(913, 913, user.id, "'{}'", null);
             if (!string.IsNullOrEmpty(zaSql))
             {
                 var varTable = _dal.ExecuteDataTable(zaSql.ToString());
