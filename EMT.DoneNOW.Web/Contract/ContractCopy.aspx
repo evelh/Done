@@ -129,7 +129,7 @@
                                             <td class="FieldLabels">
                                                 联系人
                                                 <div>
-                                                    <select id="contactSelect" name="contact_id" disabled="disabled" class="step2LeftSelectWidth" style="width:134px;">
+                                                    <select id="contactSelect" name="contact_id" class="step2LeftSelectWidth" style="width:134px;">
                                                         <option value=""></option>
                                                       <%if (contactList != null) {
                                                             foreach(var ct in contactList)
@@ -487,8 +487,6 @@
                                                 </span>
                                               <input type="hidden" id="ServiceName" />
                                               <input type="hidden" id="ServiceNameHidden" />
-                                              <input type="hidden" id="AddServiceIds" name="AddServiceIds" value="<%=serIds %>" />
-                                              <input type="hidden" id="AddSerBunIds" name="AddSerBunIds" value="<%=serBIds %>" />
                                             </td>
                                         </tr>
                                         <tr height="10px;"></tr>
@@ -530,15 +528,15 @@
                                                                           serBIds += "," + ser.object_id.ToString();
                                                                       }
                                                                           %>
-                                                                <tr id='service<%=ser.object_id %>'>";
-                                                                  <td style='white - space:nowrap; '><img src = '../Images/delete.png' onclick='RemoveService(<%=ser.object_id %>)' alt = '' /></ td > ";
-                                                                  <td><span><%=ser.name %></span></td>";
-                                                                  <td nowrap></td>";
-                                                                  <td nowrap><span><%=(new EMT.DoneNOW.BLL.GeneralBLL().GetGeneralName((int)ser.period_type_id)) %></span></td>";
-                                                                  <td nowrap align='right'><span><%=ser.unit_cost %></span></td>";
-                                                                  <td nowrap align='right'><input type = 'text' onblur='CalcService()' id='price<%=ser.object_id %>' name='price<%=ser.object_id %>' value = '<%=ser.unit_price %>' /></ td > ";
-                                                                  <td nowrap align='right'><input type = 'text' onblur='CalcService()' id='num<%=ser.object_id %>' name='num<%=ser.object_id %>' value = '<%=ser.quantity %>' /></ td > ";
-                                                                  <td nowrap align='right'>￥<input type = 'text' id='pricenum<%=ser.object_id %>' value = '<%=ser.adjusted_price %>' disabled="disabled" /></ td > ";
+                                                                <tr id='service<%=ser.object_id %>'>
+                                                                  <td style='white - space:nowrap; '><img src = '../Images/delete.png' onclick='RemoveService(<%=ser.object_id %>)' alt = '' /></ td >
+                                                                  <td><span><%=ser.name %></span></td>
+                                                                  <td nowrap></td>
+                                                                  <td nowrap><span><%=(new EMT.DoneNOW.BLL.GeneralBLL().GetGeneralName((int)ser.period_type_id)) %></span></td>
+                                                                  <td nowrap align='right'><span><%=ser.unit_cost %></span></td>
+                                                                  <td nowrap align='right'><input type = 'text' onblur='CalcService()' id='price<%=ser.object_id %>' name='price<%=ser.object_id %>' value = '<%=ser.unit_price %>' /></ td >
+                                                                  <td nowrap align='right'><input type = 'text' onblur='CalcService()' id='num<%=ser.object_id %>' name='num<%=ser.object_id %>' value = '<%=ser.quantity %>' /></ td >
+                                                                  <td nowrap align='right'>￥<input type = 'text' id='pricenum<%=ser.object_id %>' value = '<%=ser.adjusted_price %>' disabled="disabled" /></ td >
                                                                 </tr>
                                                               <%
                                                                     }
@@ -561,6 +559,8 @@
                             </td>
                             <td class="FieldLabels" width="10%" style="padding-right:15px;">
                                 <div style="width:130px;height: 24px; padding:0 0 0 10px;">
+                                    <input type="hidden" id="AddServiceIds" name="AddServiceIds" value="<%=serIds %>" />
+                                    <input type="hidden" id="AddSerBunIds" name="AddSerBunIds" value="<%=serBIds %>" />
                                     <input type="text" value="0.00" id="ServicePrice" style="text-align: right;"/>
                                 </div>
                             </td>
@@ -781,7 +781,7 @@
                                                       <td style='white - space:nowrap; vertical-align:bottom;'><img src = '../Images/delete.png' onclick='RemoveMil(<%=milIndex %>)' alt = '' /></ td >
                                                       <td><input type='text'  readonly='readonly' name='MilName<%=milIndex %>' value='<%=mil.name %>' /><input type='hidden' value='<%=mil.description %>' name='MilDetail<%=milIndex %>' /></td >
                                                       <td nowrap><input type='text' readonly='readonly' id='milAmount<%=milIndex %>' name='MilAmount<%=milIndex %>' value='<%=mil.dollars %>' /></td>
-                                                      <td nowrap><input type='text'  readonly='readonly' name='MilDate<%=milIndex %>' value='<%=mil.due_date %>' /></td>
+                                                      <td nowrap><input type='text'  readonly='readonly' name='MilDate<%=milIndex %>' value='<%=mil.due_date.ToString("yyyy-MM-dd") %>' /></td>
                                                       <td nowrap align='right'><input type='text' readonly='readonly' value='<%=mil.cost_code_name %>' /><input type='hidden' value='0' name='isBill<%=milIndex %>' /><input type='hidden' value='<%=mil.cost_code_id %>' name='MilCode<%=milIndex %>' /></td>
                                                     </tr>
                                                   <%
@@ -1023,6 +1023,7 @@
             </div>
         </div>
         <input type="hidden" name="type_id" id="contractType" value="<%=contractType %>" />
+        <input type="hidden" name="id" value="<%=contractCopy.id %>" />
         <input type="hidden" id="isFinish" value="<%=isFinish %>" />
         <input type="hidden" id="currentPage" value="" />
         <input type="hidden" id="serviceBd" name="serviceBd" />
@@ -1103,6 +1104,13 @@
           $("#milRevenue").text("¥" + $("#revenue").val());
         })
         milCnt = $("#MilListBody td").length + 1;
+      <%} %>
+      <%if (contractType == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) {
+          if (contractCopy.occurrences != null){%>
+        endType = 2;
+      <%
+          }%>
+        CalcService();
       <%} %>
     </script>
 </body>

@@ -266,6 +266,17 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 复制合同
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public long CopyContract(ContractAddDto dto, long userId)
+        {
+            return Insert(dto, userId);
+        }
+
+        /// <summary>
         /// 编辑合同
         /// </summary>
         /// <param name="ct"></param>
@@ -854,6 +865,16 @@ namespace EMT.DoneNOW.BLL
         public ctt_contract GetContract(long id)
         {
             return dal.FindById(id);
+        }
+
+        /// <summary>
+        /// 获取合同的续签合同
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ctt_contract GetRenewContract(long id)
+        {
+            return dal.FindSignleBySql<ctt_contract>($"SELECT * FROM ctt_contract WHERE renewed_contract_id={id} AND delete_time=0");
         }
     }
 }

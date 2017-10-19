@@ -190,6 +190,7 @@
     <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Contract\ContractCopy.aspx" />
     <Content Include="Contract\ContractMilestone.aspx" />
+    <Content Include="Contract\ContractRenew.aspx" />
     <Content Include="Contract\ContractSummary.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
     <Content Include="Contract\ContractMilestoneDetail.aspx" />
@@ -666,6 +667,15 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-3.1.0.min.js" />
+    <Content Include="Scripts\layer\layer.js" />
+    <Content Include="Scripts\layer\mobile\layer.js" />
+    <Content Include="Scripts\layer\mobile\need\layer.css" />
+    <Content Include="Scripts\layer\theme\default\icon-ext.png" />
+    <Content Include="Scripts\layer\theme\default\icon.png" />
+    <Content Include="Scripts\layer\theme\default\layer.css" />
+    <Content Include="Scripts\layer\theme\default\loading-0.gif" />
+    <Content Include="Scripts\layer\theme\default\loading-1.gif" />
+    <Content Include="Scripts\layer\theme\default\loading-2.gif" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\multiselect.min.js" />
     <Content Include="Scripts\My97DatePicker\calendar.js" />
@@ -697,6 +707,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Common\SearchBody.js" />
+    <Content Include="Scripts\Search\Contract.js" />
     <Content Include="Scripts\SysSettingRoles.js" />
     <Content Include="Scripts\sysset_users.js" />
     <Content Include="Scripts\SysUserSecurityLevel.js" />
@@ -992,6 +1003,13 @@
     </Compile>
     <Compile Include="Contract\ContractMilestone.aspx.designer.cs">
       <DependentUpon>ContractMilestone.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\ContractRenew.aspx.cs">
+      <DependentUpon>ContractRenew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractRenew.aspx.designer.cs">
+      <DependentUpon>ContractRenew.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\ContractSummary.aspx.cs">
       <DependentUpon>ContractSummary.aspx</DependentUpon>
@@ -1751,7 +1769,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\Search\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

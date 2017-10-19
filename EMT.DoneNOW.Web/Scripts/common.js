@@ -115,6 +115,52 @@ function toDecimal2(x) {
     return s;
 }
 
+document.write("<script src='../Scripts/layer/layer.js' type='text/javascript'></script>");
+// 加载弹层
+function LayerLoad() {
+    layer.msg("加载中", {
+        icon: 16
+        , shade: 0.6
+        , time: 0
+    });
+}
+// 关闭加载弹层
+function LayerLoadClose() {
+    layer.closeAll('dialog');
+}
+// 消息框
+function LayerMsg(msg) {
+    var index = layer.msg(msg, {
+        time: 2000
+    });
+    layer.style(index, {
+        width: 'auto',
+        height: 'auto'
+    });
+}
+// 弹层一个按钮
+function LayerAlert(msg, btn, btnFunc) {
+    layer.confirm(msg, {
+        btn: [btn]
+    },
+        function () {
+            btnFunc();
+        });
+}
+// 弹层两个按钮
+function LayerConfirm(msg, btn1, btn2, btn1Func, btn2Func) {
+    layer.confirm(msg, {
+        btn: [btn1, btn2]
+    },
+        function () {
+            btn1Func();
+        },
+        function () {
+            btn2Func();
+        });
+}
+
+
 //检测用户浏览器    不符合浏览器则跳转错误页面
 function myBrowser() {
     var  userAgent  =  navigator.userAgent; //取得浏览器的userAgent字符串  
@@ -164,4 +210,13 @@ function returnNumber(param) {
         return "0" + param
     }
     return param;
+}
+
+var windowObj = {
+    contract:'Contract',
+}
+var windowType = {
+    blank: '_blank',
+    add: 'add',
+    edit: 'edit',
 }
