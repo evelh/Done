@@ -608,6 +608,7 @@ namespace EMT.DoneNOW.DTO
             MUILT_CALLBACK = 814,   // 多选查找带回
             NUMBER_EQUAL = 816,     // 数值(做等于判断)
             TIMESPAN = 817,         // 日期-时间戳
+            UN_EQUAL = 818,         // 不等于
         }
         /// <summary>
         /// 系统权限：limit类型-76

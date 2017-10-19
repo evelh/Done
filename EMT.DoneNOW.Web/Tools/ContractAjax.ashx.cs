@@ -98,6 +98,10 @@ namespace EMT.DoneNOW.Web
                         var blockId = context.Request.QueryString["blockId"];
                         DeleteContractBlock(context, Convert.ToInt64(blockId));
                         break;
+                    case "CanRenewContract":
+                        contractId= context.Request.QueryString["id"];
+                        IsServiceContract(context, Convert.ToInt64(contractId));
+                        break;
                     case "AddService":
                         var serId = context.Request.QueryString["id"];
                         AddService(context, Convert.ToInt64(serId));
@@ -627,6 +631,28 @@ namespace EMT.DoneNOW.Web
             }
             context.Response.Write(result);
         }
+
+        /// <summary>
+        /// 判断合同是否可以续约
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="id"></param>
+        private void IsServiceContract(HttpContext context, long id)
+        {
+            ContractBLL bll = new ContractBLL();
+            var contract = bll.GetContract(id);
+            if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.SERVICE)
+            {
+                var ctRenew = bll.GetRenewContract(id);
+                if (ctRenew == null)
+                    context.Response.Write(new Tools.Serialize().SerializeJson(0));
+                else
+                    context.Response.Write(new Tools.Serialize().SerializeJson(1));
+            }
+            else
+                context.Response.Write(new Tools.Serialize().SerializeJson(2));
+        }
+
         /// <summary>
         /// 获取服务/服务包信息
         /// </summary>

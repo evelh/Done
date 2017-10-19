@@ -457,7 +457,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑合同", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看合同", click_function = "ViewContract()" });
                     contextMenu.Add(new PageContextMenuDto { text = "在新窗口中查看合同", click_function = "ViewNewWindow()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "续约", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "续约", click_function = "RenewContract()", id= "RenewContract" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制合同", click_function = "CopyContract()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除合同", click_function = "DeleteContract()" });
                     break;

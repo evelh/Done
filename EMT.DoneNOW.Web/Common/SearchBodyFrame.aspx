@@ -415,6 +415,7 @@
      <%--加载结束--%>
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../Scripts/common.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         <% if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Company)
         { %>
@@ -1198,72 +1199,6 @@
                 }
             })
         }
-        <%}
-        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Contract)
-        {%>
-        function Add(type) {
-            window.open("../Contract/ContractAdd.aspx?type=" + type, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        function Edit() {
-            window.open("../Contract/ContractEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=980', false);
-        }
-        function ViewContract() {
-          window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank', 'left=0,top=0,location=no,status=no,width=1350,height=950', false);
-        }
-        function View(id) {
-          window.open("../Contract/ContractView.aspx?id=" + id, '_blank', 'left=0,top=0,location=no,status=no,width=1350,height=950', false);
-        }
-        function ViewNewWindow() {
-          window.open("../Contract/ContractView.aspx?id=" + entityid, '_blank');
-        }
-        function CopyContract() {
-          window.open("../Contract/ContractCopy.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        function DeleteContract() {
-            if (confirm('删除合同，是否继续?')) {
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/ContractAjax.ashx?act=deleteContract&id=" + entityid,
-                    success: function (data) {
-                      if (data =="True"){
-                        alert("删除成功");
-                        window.location.reload();
-                      } else {
-                        alert("删除失败，合同关联以下对象时不能被删除：项目、工单、合同默认成本、配置项、合同成本、已计费条目、工时、taskfire。")
-                      }
-                    }
-                });
-            }
-        }
-        $("#ToolsButton").on("mouseover", function () {
-            $("#ToolsButton").css("background", "#fff");
-            $(this).css("border-bottom", "none");
-            $(".RightClickMenu").show();
-            var scrTop = $(document).scrollTop();
-            var Top = scrTop + 36;
-            $(".RightClickMenu").css("top",Top);
-        });
-        $("#ToolsButton").on("mouseout", function () {
-            $("#ToolsButton").css("background", "#f0f0f0");
-            $(this).css("border-bottom", "1px solid #BCBCBC");
-            $(".RightClickMenu").hide();
-        });
-        $(".RightClickMenu").on("mouseover", function () {
-            $("#ToolsButton").css("background", "#fff");
-            $("#ToolsButton").css("border-bottom", "none");
-            $(this).show();
-        });
-        $(".RightClickMenu").on("mouseout", function () {
-            $("#ToolsButton").css("background", "#f0f0f0");
-            $("#ToolsButton").css("border-bottom", "1px solid #BCBCBC");
-            $(this).hide();
-        });
-        $(".RightClickMenuItem").on("mouseover", function () {
-            $(this).css("background", "#E9F0F8");
-        });
-        $(".RightClickMenuItem").on("mouseout", function () {
-            $(this).css("background", "#FFF");
-        });
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ProuductInventory)
         {%>//产品库存管理

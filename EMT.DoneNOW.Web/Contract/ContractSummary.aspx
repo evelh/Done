@@ -27,7 +27,9 @@
     <div class="DropDownMenu" id="D1" style="top:25px;">
         <ul>
             <li><span class="DropDownMenuItemText" onclick="CopyContract(<%=contract.id %>)">编辑合同</span></li>
-            <li><span class="DropDownMenuItemText">续约</span></li>
+          <%if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) { %>
+            <li><span class="DropDownMenuItemText" onclick="RenewContract(<%=contract.id %>)">续约</span></li>
+          <%} %>
             <li><span class="DropDownMenuItemText" style="color: dimgrey">增加备注</span></li>
             <li><span class="DropDownMenuItemText" onclick="DeleteContract(<%=contract.id %>)">删除合同</span></li>
         </ul>
@@ -734,6 +736,9 @@
 
         function CopyContract(id) {
           window.open("ContractEdit.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractEdit %>', 'left=0,top=0,location=no,status=no,width=900,height=980', false);
+        }
+        function RenewContract(id) {
+          window.open("ContractRenew.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdd %>', 'left=0,top=0,location=no,status=no,width=900,height=980', false);
         }
 
         function DeleteContract(id) {

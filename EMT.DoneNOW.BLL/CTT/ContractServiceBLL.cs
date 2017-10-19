@@ -46,6 +46,24 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 获取合同的服务/服务包列表
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <returns></returns>
+        public List<ContractServiceEntityDto> GetServiceList(long contractId)
+        {
+            ctt_contract_service_dal dal = new ctt_contract_service_dal();
+            List<ContractServiceEntityDto> rslt = new List<ContractServiceEntityDto>();
+
+            var serviceList = dal.FindListBySql<ContractServiceEntityDto>($"SELECT service.*,ivt_service.`name`,ivt_service.`vendor_id`,ivt_service.`period_type_id` FROM (SELECT * FROM ctt_contract_service WHERE contract_id={contractId} AND object_type=1 AND delete_time=0) as service JOIN ivt_service ON service.object_id=ivt_service.id");
+            rslt.AddRange(serviceList);
+            serviceList = dal.FindListBySql<ContractServiceEntityDto>($"SELECT service.*,ivt_service_bundle.`name`,ivt_service_bundle.`vendor_id`,ivt_service_bundle.`period_type_id` FROM (SELECT * FROM ctt_contract_service WHERE contract_id={contractId} AND object_type=2 AND delete_time=0) as service JOIN ivt_service_bundle ON service.object_id=ivt_service_bundle.id");
+            rslt.AddRange(serviceList);
+
+            return rslt;
+        }
+
+        /// <summary>
         /// 新增合同服务/服务包
         /// </summary>
         /// <param name="service"></param>
