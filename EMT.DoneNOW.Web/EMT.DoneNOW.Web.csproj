@@ -281,7 +281,7 @@
     <Content Include="Opportunity\OpportunityWinReasons.aspx" />
     <Content Include="Opportunity\OppportunityAdvancedField.aspx" />
     <Content Include="Organization\LocationAddAndEdit.aspx" />
-    <Content Include="Peoject\ProjectAddOrEdit.aspx" />
+    <Content Include="Project\ProjectAddOrEdit.aspx" />
     <Content Include="Product\ProductAdd.aspx" />
     <Content Include="Product\ProductStock.aspx" />
     <Content Include="Product\TransferProductStock.aspx" />
@@ -1277,11 +1277,11 @@
     <Compile Include="Organization\LocationAddAndEdit.aspx.designer.cs">
       <DependentUpon>LocationAddAndEdit.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Peoject\ProjectAddOrEdit.aspx.cs">
+    <Compile Include="Project\ProjectAddOrEdit.aspx.cs">
       <DependentUpon>ProjectAddOrEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Peoject\ProjectAddOrEdit.aspx.designer.cs">
+    <Compile Include="Project\ProjectAddOrEdit.aspx.designer.cs">
       <DependentUpon>ProjectAddOrEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Product\ProductAdd.aspx.cs">

@@ -27,7 +27,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String external_id { get; set; }
         [DataMember]
-        public String pnumber { get; set; }
+        public String no { get; set; }
         [DataMember]
         public String description { get; set; }
         [DataMember]
@@ -63,7 +63,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal original_sgda { get; set; }
         [DataMember]
-        public Decimal original_estimate { get; set; }
+        public Decimal original_revenue { get; set; }
         [DataMember]
         public Decimal original_sales_cost { get; set; }
         [DataMember]
@@ -103,21 +103,21 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? edit_event_id { get; set; }
         [DataMember]
-        public SByte adjust_task_start_end_dates_for_holidays { get; set; }
+        public SByte exclude_holiday { get; set; }
         [DataMember]
-        public SByte adjust_task_start_end_dates_for_weekends { get; set; }
+        public SByte exclude_weekend { get; set; }
         [DataMember]
-        public SByte warn_primary_resource_approved_time_off { get; set; }
+        public SByte warn_time_off { get; set; }
         [DataMember]
         public Int64 organization_location_id { get; set; }
         [DataMember]
-        public Decimal resource_expected_daily_productivity { get; set; }
+        public Decimal resource_daily_hours { get; set; }
         [DataMember]
         public Int32? percent_complete { get; set; }
         [DataMember]
         public Int32 automatic_leveling_end_date_offset_days { get; set; }
         [DataMember]
-        public SByte use_resource_expected_daily_productivity_in_automatic_leveling { get; set; }
+        public SByte use_resource_daily_hours { get; set; }
         [DataMember]
         public Int64 contract_id { get; set; }
 

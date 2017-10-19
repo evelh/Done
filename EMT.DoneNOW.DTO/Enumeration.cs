@@ -448,6 +448,7 @@ namespace EMT.DoneNOW.DTO
 			CONFIGITEMTYPE=914,                   //配置项类型
             RELATION_CONFIGITEM=915,              // 关联到该合同的配置项
             NORELATION_CONFIGITEM = 916,          // 未关联到该合同的该合同的客户的配置项
+            CONTRACTMANAGE_CALLBACK=917,          // 合同管理-合同查找带回
             SECURITY_LEVEL=918,                   //安全等级
             CONTRACT_MILESTONE=919,               //里程碑状态
             CONTRACT_CHARGE=920,                  // 合同成本查询（无查询条件）

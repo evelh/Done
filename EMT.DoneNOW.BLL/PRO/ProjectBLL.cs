@@ -60,23 +60,24 @@ namespace EMT.DoneNOW.BLL
                 #region 3.项目团队处理
                 var pptDal = new pro_project_team_dal();
                 
-                if (!string.IsNullOrEmpty(param.resouIds))
+                if (!string.IsNullOrEmpty(param.resDepIds))
                 {
-                    var resouIdList = param.resouIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (resouIdList != null && resouIdList.Count() > 0)
+                    var resDepList = param.resDepIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (resDepList != null && resDepList.Count() > 0)
                     {
                         var srdDal = new sys_resource_department_dal();
                         var pptrDal = new pro_project_team_role_dal();
-                        foreach (var resouId in resouIdList)
+                        foreach (var resDepId in resDepList)
                         {
-                            var roleList = srdDal.GetRolesBySource(long.Parse(resouId), DEPARTMENT_CATE.DEPARTMENT);
-                            if (roleList != null && roleList.Count > 0)
+                            var roleDep = srdDal.FindNoDeleteById(long.Parse(resDepId));
+                            if (roleDep != null)
                             {
-                                var item = new pro_project_team() {
-                                    id= pptDal.GetNextIdCom(),
+                                var item = new pro_project_team()
+                                {
+                                    id = pptDal.GetNextIdCom(),
                                     project_id = thisProject.id,
-                                    resource_id = long.Parse(resouId),
-                                    resource_daily_hours = param.resource_daily_hours,
+                                    resource_id = roleDep.resource_id,
+                                    resource_daily_hours = param.project.resource_daily_hours,
                                     create_user_id = user.id,
                                     update_user_id = user.id,
                                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -84,20 +85,19 @@ namespace EMT.DoneNOW.BLL
                                 };
                                 pptDal.Insert(item);
                                 OperLogBLL.OperLogAdd<pro_project_team>(item, item.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM, "新增项目团队-添加员工");
-                                foreach (var role in roleList)
+
+                                var item_role = new pro_project_team_role()
                                 {
-                                    var item_role = new pro_project_team_role() {
-                                        id= pptrDal.GetNextIdCom(),
-                                        project_team_id = item.id,
-                                        role_id = role.id,
-                                        create_user_id = user.id,
-                                        update_user_id = user.id,
-                                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    };
-                                    pptrDal.Insert(item_role);
-                                    OperLogBLL.OperLogAdd<pro_project_team_role>(item_role, item_role.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "新增项目团队角色");
-                                }
+                                    id = pptrDal.GetNextIdCom(),
+                                    project_team_id = item.id,
+                                    role_id = roleDep.role_id,
+                                    create_user_id = user.id,
+                                    update_user_id = user.id,
+                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                };
+                                pptrDal.Insert(item_role);
+                                OperLogBLL.OperLogAdd<pro_project_team_role>(item_role, item_role.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "新增项目团队角色");
                             }
                         }
                     }
@@ -115,7 +115,7 @@ namespace EMT.DoneNOW.BLL
                                 id = pptDal.GetNextIdCom(),
                                 project_id = thisProject.id,
                                 contact_id = long.Parse(conId),
-                                resource_daily_hours = param.resource_daily_hours,
+                                resource_daily_hours = param.project.resource_daily_hours,
                                 create_user_id = user.id,
                                 update_user_id = user.id,
                                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -129,32 +129,36 @@ namespace EMT.DoneNOW.BLL
                 #endregion
 
                 #region 4.保存通知信息
-                var temp = new sys_notify_tmpl_email_dal().FindNoDeleteById(param.noti_temp_id);
+                var temp = new sys_notify_tmpl_dal().FindNoDeleteById((long)param.project.template_id);
                 if (temp != null)
                 {
-                    bool isSuccess = false; // todo 发送邮件
-                    var norify = new com_notify_email()
+                    var temp_email_List = new sys_notify_tmpl_email_dal().GetEmailByTempId(temp.id);
+                    if(temp_email_List!=null&& temp_email_List.Count > 0)
                     {
-                        id = _dal.GetNextIdCom(),
-                        cate_id = (int)NOTIFY_CATE.PROJECT,
-                        event_id = (int)DicEnum.NOTIFY_EVENT.PROJECT_CREATED,
-                        to_email = param.notify.to_email,
-                        cc_email = param.notify.cc_email,
-                        bcc_email = param.notify.bcc_email,
-                        notify_tmpl_id = temp.id,
-                        from_email = user.email,
-                        from_email_name = user.name,
-                        subject = param.notify.subject,
-                        body_text = temp.body_text,
-                        is_success = (sbyte)(isSuccess ? 1:0),
-                        is_html_format = 0,
-                        create_user_id = user.id,
-                        update_user_id = user.id,
-                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    };
-                    new com_notify_email_dal().Insert(norify);
-                    OperLogBLL.OperLogAdd<com_notify_email>(norify, norify.id, user.id, OPER_LOG_OBJ_CATE.NOTIFY, "新增项目-添加通知");
+                        bool isSuccess = false; // todo 发送邮件
+                        var norify = new com_notify_email()
+                        {
+                            id = _dal.GetNextIdCom(),
+                            cate_id = (int)NOTIFY_CATE.PROJECT,
+                            event_id = (int)DicEnum.NOTIFY_EVENT.PROJECT_CREATED,
+                            to_email = param.notify.to_email,
+                            cc_email = param.notify.cc_email,
+                            bcc_email = param.notify.bcc_email,
+                            notify_tmpl_id = temp.id,
+                            from_email = user.email,
+                            from_email_name = user.name,
+                            subject = param.notify.subject,
+                            body_text = temp_email_List[0].body_text,
+                            is_success = (sbyte)(isSuccess ? 1 : 0),
+                            is_html_format = 0,
+                            create_user_id = user.id,
+                            update_user_id = user.id,
+                            create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        };
+                        new com_notify_email_dal().Insert(norify);
+                        OperLogBLL.OperLogAdd<com_notify_email>(norify, norify.id, user.id, OPER_LOG_OBJ_CATE.NOTIFY, "新增项目-添加通知");
+                    }
                 }
                 
                 #endregion

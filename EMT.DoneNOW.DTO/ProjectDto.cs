@@ -12,9 +12,7 @@ namespace EMT.DoneNOW.DTO
         public pro_project project;                // 操作的项目
         public List<UserDefinedFieldValue> udf;    // 自定义字段
         public com_notify_email notify;            // 邮件发送相关--修改无此操作
-        public long resource_daily_hours;          // 每天工作小时数
-        public string resouIds;                    // 员工Ids
+        public string resDepIds;                    // 员工角色关系表IDs
         public string contactIds;                  // 联系人Ids
-        public long noti_temp_id;                  // 通知模板
     }
 }

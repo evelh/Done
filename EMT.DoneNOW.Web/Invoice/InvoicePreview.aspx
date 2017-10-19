@@ -461,9 +461,12 @@
                             <tr class="DropDownMenuItemSeparator">
                                 <td class="DropDownMenuItemTextSeparator"></td>
                             </tr>
+                            <%if (!isInvoice)
+                                { %>
                             <tr class="DropDownMenuItem">
                                 <td class="DropDownMenuItemText" onclick="UnPost()">&nbsp;&nbsp;撤销审批</td>
                             </tr>
+                            <%} %>
                         </tbody>
                     </table>
                 </div>
