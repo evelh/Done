@@ -73,6 +73,9 @@ namespace EMT.DoneNOW.BLL
             if (queryUser == null)
                 return result;
 
+            if (string.IsNullOrEmpty(queryUser.query_para_ids))
+                return result;
+
             // 获取查询条件列信息并按顺序填充
             List<d_query_para> list;
             if (visiable == 1)
