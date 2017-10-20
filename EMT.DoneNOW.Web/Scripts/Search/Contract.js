@@ -104,22 +104,21 @@ $(".dn_tr").bind("contextmenu", function (event) {
         menu.style.top = Top + "px";
     }
     
+    $("#RenewContract").removeAttr('onclick');
+    $("#RenewContract").unbind('click');
     requestData("../Tools/ContractAjax.ashx?act=CanRenewContract&id=" + entityid, null, function (data) {
         if (data==0) {
             $("#RenewContract").css("color", "");
-            $("#RenewContract").removeAttr('onclick');
             $("#RenewContract").click(function () { 
                 RenewContract();
             })
         } else if (data == 1) {
             $("#RenewContract").css("color", "");
-            $("#RenewContract").removeAttr('onclick');
             $("#RenewContract").click(function () {
                 LayerMsg("此合同已续约过，不可再续约");
             })
         } else {
             $("#RenewContract").css("color", "grey");
-            $("#RenewContract").removeAttr('onclick');
         }
     });
 

@@ -5,14 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>合同向导</title>
+    <title>复制合同</title>
     <link rel="stylesheet" href="../Content/reset.css"/>
     <link rel="stylesheet" href="../Content/LostOpp.css"/>
 </head>
 <body>
     <div class="TitleBar">
         <div class="Title">
-            <span class="text1">合同向导<%if (!string.IsNullOrEmpty(contractTypeName)) { %>(<%=contractTypeName %>)<%} %></span>
+            <span class="text1">复制合同<%if (!string.IsNullOrEmpty(contractTypeName)) { %>(<%=contractTypeName %>)<%} %></span>
         </div>
     </div>
     <form id="form1" runat="server">

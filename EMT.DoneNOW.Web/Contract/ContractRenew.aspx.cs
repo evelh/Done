@@ -33,8 +33,12 @@ namespace EMT.DoneNOW.Web.Contract
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
+            udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);
+            resourceList = new DAL.sys_resource_dal().GetSourceList();
+            roleList = new DAL.sys_role_dal().GetList();
+
+            //if (!IsPostBack)
+            //{
                 long id = 0;
                 if (string.IsNullOrEmpty(Request.QueryString["id"]) || !long.TryParse(Request.QueryString["id"], out id))
                 {
@@ -43,7 +47,30 @@ namespace EMT.DoneNOW.Web.Contract
                 }
 
                 contractCopy = bll.GetContract(id);
-            }
+                if (contractCopy.type_id!= (int)DicEnum.CONTRACT_TYPE.SERVICE)
+                {
+                    Response.Close();
+                    return;
+                }
+
+                contractCopy.name = "[Renewal of]" + contractCopy.name;
+                companyName = new CompanyBLL().GetCompany(contractCopy.account_id).name;
+                if (contractCopy.contact_id != null && contractCopy.contact_id > 0)
+                    contactList = new ContactBLL().GetContactByCompany(contractCopy.account_id);
+                udfValues = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.CONTRACTS, id, udfList);
+                serviceList = new ContractServiceBLL().GetServiceList(id);
+                contractType = contractCopy.type_id;
+                isFinish = 0;
+            //}
+
+            Dictionary<string, object> dics = bll.GetField();
+            contractCate = dics["cate"] as List<DictionaryEntryDto>;
+            periodType = dics["periodType"] as List<DictionaryEntryDto>;
+            periodType.Remove(periodType.Find(pt => pt.val.Equals(((int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToString())));
+            billPostType = dics["billPostType"] as List<DictionaryEntryDto>;
+            slaList = bll.GetSLAList();
+
+            contractTypeName = bll.GetContractTypeName(contractType);
         }
     }
 }
