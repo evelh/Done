@@ -1745,6 +1745,9 @@
     <Compile Include="Tools\ProductAjax.ashx.cs">
       <DependentUpon>ProductAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ProjectAjax.ashx.cs">
+      <DependentUpon>ProjectAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\QuoteAjax.ashx.cs">
       <DependentUpon>QuoteAjax.ashx</DependentUpon>
     </Compile>
@@ -1815,6 +1818,7 @@
     <Content Include="Tools\ReverseAjax.ashx" />
     <Content Include="Tools\ApproveAndPostAjax.ashx" />
     <Content Include="Tools\HistoryInvoiceAjax.ashx" />
+    <Content Include="Tools\ProjectAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

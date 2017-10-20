@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ProjectAddOrEdit.aspx.cs" Inherits="EMT.DoneNOW.Web.Project.ProjectAddOrEdit" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ProjectAddOrEdit.aspx.cs" Inherits="EMT.DoneNOW.Web.Project.ProjectAddOrEdit" EnableEventValidation="false" %>
 
 <!DOCTYPE html>
 
@@ -103,6 +103,7 @@
                                                         <span style="margin-left: 29px;">持续时间</span>
                                                         <div>
                                                             <span style="display: inline-block;">
+                                                                <input onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" />
                                                                 <input type="text" style="width: 72px;" onclick="WdatePicker()" class="Wdate" id="start_date" name="start_date" value="<%=isAdd?DateTime.Now.ToString("yyyy-MM-dd"):((DateTime)thisProject.start_date).ToString("yyyy-MM-dd") %>" />
                                                                 <input type="text" style="width: 72px;" onclick="WdatePicker()" class="Wdate" id="end_date" name="end_date" value="<%=isAdd?DateTime.Now.ToString("yyyy-MM-dd"):((DateTime)thisProject.end_date).ToString("yyyy-MM-dd") %>" />
                                                                 <input type="text" style="width: 70px;" id="duration" name="duration" value="<%=isAdd?"":((int)thisProject.duration).ToString() %>" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
@@ -142,8 +143,8 @@
             </div>
             <!--状态,新增里没有-->
             <% if (!isAdd)
-                     {
-                    %>
+                {
+            %>
             <div class="DivSectionWithHeader" style="max-width: 740px;">
                 <!--头部-->
                 <div class="HeaderRow">
@@ -173,7 +174,7 @@
                                                         <span>修改时间<span style="color: red;">*</span></span>
                                                         <div>
                                                             <span style="display: inline-block;">
-                                                                <input type="text" style="width: 72px;" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" class="Wdate" id="status_time" name="status_time" value="<%=isAdd ? "" : EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisProject.status_time).ToString("yyyy-MM-dd") %>" />
+                                                                <input type="text" style="width: 72px;" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" class="Wdate" id="status_time" name="status_time" value="<%=isAdd ? "" : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisProject.status_time).ToString("yyyy-MM-dd HH:mm:ss") %>" />
                                                             </span>
                                                         </div>
                                                     </td>
@@ -296,8 +297,10 @@
                                                     <div>
                                                         <span style="display: inline-block;">
                                                             <input type="text" style="width: 250px;" />
-                                                            <a class="DataSelectorLinkIcon">
+                                                            <a class="DataSelectorLinkIcon" onclick="ChooseResDep()">
                                                                 <img src="../Images/data-selector.png" /></a>
+                                                            <input type="hidden" id="resDepIds" />
+                                                            <input type="hidden" id="resDepIdsHidden" />
                                                         </span>
                                                     </div>
                                                         <div>
@@ -335,8 +338,10 @@
                                                     <div>
                                                         <span style="display: inline-block;">
                                                             <input type="text" style="width: 250px;" disabled value="请选择客户" />
-                                                            <a class="DataSelectorLinkIcon DisabledState">
+                                                            <a class="DataSelectorLinkIcon DisabledState" onclick="ChooseContact()">
                                                                 <img src="../Images/data-selector.png" /></a>
+                                                            <input type="hidden" id="contactID" />
+                                                            <input type="hidden" id="contactIDHidden" />
                                                         </span>
                                                     </div>
                                                         <div>
@@ -396,7 +401,7 @@
                                                     <td class="FieldLabel" width="50%">总时间<span style="color: red;">*</span>
                                                         <div>
                                                             <span style="display: inline-block;">
-                                                                <input type="text" style="width: 250px;" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" id="resource_daily_hours" name="resource_daily_hours" value="<%=isAdd?"":thisProject.resource_daily_hours.ToString("#0.00") %>" />
+                                                                <input type="text" style="width: 250px;" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" id="resource_daily_hours" name="resource_daily_hours" value="<%=isAdd?"":((decimal)thisProject.resource_daily_hours).ToString("#0.00") %>" />
                                                             </span>
                                                         </div>
                                                     </td>
@@ -507,76 +512,76 @@
                                     <div>
                                         <table cellpadding="0" cellspacing="0" style="width: 100%;">
                                             <tbody>
-                                                    <% if (project_udfList != null && project_udfList.Count > 0)
-                            {
-                                foreach (var udf in project_udfList)
-                                {
+                                                <% if (project_udfList != null && project_udfList.Count > 0)
+                                                    {
+                                                        foreach (var udf in project_udfList)
+                                                        {
 
-                                    if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
-                                    {%>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label><%=udf.name %></label>
-                                    <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=(!isAdd)&&project_udfValueList!=null&&project_udfValueList.Count>0?project_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
-                                </div>
+                                                            if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                                                            {%>
+                                                <tr>
+                                                    <td>
+                                                        <div class="clear">
+                                                            <label><%=udf.name %></label>
+                                                            <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=(!isAdd)&&project_udfValueList!=null&&project_udfValueList.Count>0?project_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
+                                                        </div>
 
-                            </td>
-                        </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
-                            {%>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label><%=udf.name %></label>
-                                    <textarea name="<%=udf.id %>" rows="2" cols="20"><%=project_udfValueList!=null&&project_udfValueList.Count>0?project_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %></textarea>
-                                </div>
+                                                    </td>
+                                                </tr>
+                                                <%}
+                                                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
+                                                    {%>
+                                                <tr>
+                                                    <td>
+                                                        <div class="clear">
+                                                            <label><%=udf.name %></label>
+                                                            <textarea name="<%=udf.id %>" rows="2" cols="20"><%=project_udfValueList!=null&&project_udfValueList.Count>0?project_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %></textarea>
+                                                        </div>
 
-                            </td>
-                        </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
-                            {%><tr>
-                            <td>
-                                <div class="clear">
-                                    <label><%=udf.name %></label>
+                                                    </td>
+                                                </tr>
+                                                <%}
+                                                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
+                                                    {%><tr>
+                                                        <td>
+                                                            <div class="clear">
+                                                                <label><%=udf.name %></label>
 
-                                    <%
+                                                                <%
 
-                                        string val = "";
-                                        if (!isAdd)
-                                        {
-                                            object value = project_udfValueList.FirstOrDefault(_ => _.id == udf.id).value;
-                                            if (value != null && (!string.IsNullOrEmpty(value.ToString())))
-                                            {
-                                                val = DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd");
-                                            }
-                                        }
-                                         %>
-                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=val %>" />
-                                </div>
+                                                                    string val = "";
+                                                                    if (!isAdd)
+                                                                    {
+                                                                        object value = project_udfValueList.FirstOrDefault(_ => _.id == udf.id).value;
+                                                                        if (value != null && (!string.IsNullOrEmpty(value.ToString())))
+                                                                        {
+                                                                            val = DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd");
+                                                                        }
+                                                                    }
+                                                                %>
+                                                                <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=val %>" />
+                                                            </div>
 
-                            </td>
-                        </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
-                            {%>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label><%=udf.name %></label>
-                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=project_udfValueList!=null&&project_udfValueList.Count>0?project_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
-                                </div>
-                            </td>
-                        </tr>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
-                            {%>
+                                                        </td>
+                                                    </tr>
+                                                <%}
+                                                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
+                                                    {%>
+                                                <tr>
+                                                    <td>
+                                                        <div class="clear">
+                                                            <label><%=udf.name %></label>
+                                                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=project_udfValueList!=null&&project_udfValueList.Count>0?project_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <%}
+                                                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                                                    {%>
 
-                        <%}
-                                }
-                            } %>
+                                                <%}
+                                                        }
+                                                    } %>
                                             </tbody>
                                         </table>
                                     </div>
@@ -627,10 +632,10 @@
                                                         <div>工时</div>
                                                     </td>
                                                     <td class="NewEditProject_Content NewEditProject_Right">
-                                                        <input type="text" class="NewEditProject_NumberField" id="labor_revenue" name="labor_revenue"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":thisProject.labor_revenue.ToString("#0.00") %>" />
+                                                        <input type="text" class="NewEditProject_NumberField" id="labor_revenue" name="labor_revenue" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":((decimal)thisProject.labor_revenue).ToString("#0.00") %>" />
                                                     </td>
                                                     <td class="NewEditProject_Content NewEditProject_Right">
-                                                        <input type="text" class="NewEditProject_NumberField" id="labor_budget" name="labor_budget"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":thisProject.labor_budget.ToString("#0.00") %>" />
+                                                        <input type="text" class="NewEditProject_NumberField" id="labor_budget" name="labor_budget" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":((decimal)thisProject.labor_budget).ToString("#0.00") %>" />
                                                     </td>
                                                     <td>
                                                         <div>=</div>
@@ -647,19 +652,19 @@
                                                         <div>项目成本</div>
                                                     </td>
                                                     <td class="NewEditProject_Content NewEditProject_Right NewEditProject_ColumnTotal ">
-                                                        <input type="text" class="NewEditProject_NumberField" id="cost_revenue" name="cost_revenue"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":thisProject.cost_revenue.ToString("#0.00") %>" />
+                                                        <input type="text" class="NewEditProject_NumberField" id="cost_revenue" name="cost_revenue" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":((decimal)thisProject.cost_revenue).ToString("#0.00") %>" />
                                                     </td>
                                                     <td class="NewEditProject_Content NewEditProject_Right NewEditProject_ColumnTotal">
-                                                        <input type="text" class="NewEditProject_NumberField"  id="cost_budget" name="cost_budget"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":thisProject.cost_budget.ToString("#0.00") %>" />
+                                                        <input type="text" class="NewEditProject_NumberField" id="cost_budget" name="cost_budget" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":((decimal)thisProject.cost_budget).ToString("#0.00") %>" />
                                                     </td>
                                                     <td>
                                                         <div>=</div>
                                                     </td>
                                                     <td class="NewEditProject_Content NewEditProject_ColumnTotal">
-                                                        <div class="NewEditProject_NumberField"  id="cost_profit">0.00</div>
+                                                        <div class="NewEditProject_NumberField" id="cost_profit">0.00</div>
                                                     </td>
                                                     <td class="NewEditProject_Content NewEditProject_ColumnTotal">
-                                                        <div class="NewEditProject_NumberField"  id="cost_margin">0.00</div>
+                                                        <div class="NewEditProject_NumberField" id="cost_margin">0.00</div>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -722,16 +727,16 @@
                                     <td>最初估计
                                     </td>
                                     <td class="NewEditProject_Right">
-                                        <input type="text" class="NewEditProject_Right NewEditProject_PaddingRight" id="original_revenue" name="original_revenue"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":thisProject.original_revenue.ToString("#0.00") %>" />
+                                        <input type="text" class="NewEditProject_Right NewEditProject_PaddingRight" id="original_revenue" name="original_revenue" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":((decimal)thisProject.original_revenue).ToString("#0.00") %>" />
                                     </td>
                                     <td class="NewEditProject_Right">
-                                        <input type="text" class="NewEditProject_Right NewEditProject_PaddingRight" id="original_sales_cost" name="original_sales_cost"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":thisProject.original_sales_cost.ToString("#0.00") %>" />
+                                        <input type="text" class="NewEditProject_Right NewEditProject_PaddingRight" id="original_sales_cost" name="original_sales_cost" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":((decimal)thisProject.original_sales_cost).ToString("#0.00") %>" />
                                     </td>
                                     <td>
                                         <span>|</span>
                                     </td>
                                     <td class="NewEditProject_Right">
-                                        <input type="text" class="NewEditProject_Right NewEditProject_PaddingRight" id="original_sgda" name="original_sgda"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":thisProject.original_sgda.ToString("#0.00") %>" />
+                                        <input type="text" class="NewEditProject_Right NewEditProject_PaddingRight" id="original_sgda" name="original_sgda" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=isAdd?"0.00":((decimal)thisProject.original_sgda).ToString("#0.00") %>" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -777,11 +782,11 @@
                                                     <%
                                                         var user_id = GetLoginUserId();
                                                         var user = EMT.DoneNOW.BLL.UserInfoBLL.GetUserInfo(user_id);
-                                                        %>
+                                                    %>
                                                     <td class="FieldLabel" width="50%">发件人:
                                                     <span style="font-weight: normal; color: #4f4f4f;"><%=user!=null?user.email:"" %></span>
                                                         <div style="padding-bottom: 0;">
-                                                            <span><a >收件人:</a></span>
+                                                            <span><a>收件人:</a></span>
                                                             <span>
                                                                 <a id="to_me">自己</a>
                                                                 <a id="teamMember" style="margin-left: 5px;">团队成员</a>
@@ -810,7 +815,7 @@
                                                     <td class="FieldLabel" width="50%">
                                                         <div style="padding-bottom: 0;">
                                                             <span><a href="#">密送:</a></span>
-                                                          
+
                                                         </div>
                                                         <div>
                                                             <span class="Value">No Record</span>
@@ -846,6 +851,784 @@
             </div>
             <%} %>
         </div>
+        <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100;" id="Nav2">
+            <div>
+                <div class="DialogContentContainer">
+                    <div class="CancelDialogButton"></div>
+                    <div class="TitleBar">
+                        <div class="Title">
+                            <span class="text">从模板导入</span>
+                        </div>
+                    </div>
+                    <div class="ScrollingContentContainer">
+                        <div class="ScrollingContainer" style="height: 394px;" id="FirstStep2">
+                     
+                                <div class="WizardProgressBar">
+                                    <div style="width: 25%;" class="Item Current">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">选择模板</div>
+                                    </div>
+                                    <div style="width: 25%;" class="Item">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">常规信息</div>
+                                    </div>
+                                    <div style="width: 25%;" class="Item">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">选择日程表条目</div>
+                                    </div>
+                                    <div style="width: 25%;" class="Item">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">选择附加条目</div>
+                                    </div>
+                                </div>
+                                <div class="DivSectionWithHeader">
+                                    <div class="HeaderRow">
+                                        <span class="lblNormalClass">选择模板</span>
+                                    </div>
+                                    <div class="Content">
+                                        <div class="DescriptionText">选择要从其导入日程表条目的模板 </div>
+                                        <table class="Neweditsubsection" style="width: 770px;" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div>
+                                                            <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="FieldLabel" width="50%">项目模板
+                                                                <div>
+                                                                    <span style="display: inline-block;">
+                                                                        <asp:DropDownList ID="project_temp" runat="server" Width="320px"></asp:DropDownList>
+                                                                    </span>
+                                                                </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                          
+                            <div class="ButtonContainer Footer Wizard">
+                                <ul>
+                                    <li class="Button ButtonIcon MoveRight PushRight" id="down1_2">
+                                        <span class="Icon Next"></span>
+                                        <span class="Text">下一步</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--通过模板新增-->
+                        <div class="ScrollingContainer" style="height: 394px; display: none;" id="AddStep2">
+                      
+                                <div class="WizardProgressBar">
+                                    <div style="width: 25%;" class="Item Previous">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">选择模板</div>
+                                    </div>
+                                    <div style="width: 25%;" class="Item Current">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">常规信息</div>
+                                    </div>
+                                    <div style="width: 25%;" class="Item">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">选择日程表条目</div>
+                                    </div>
+                                    <div style="width: 25%;" class="Item">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">选择附加条目</div>
+                                    </div>
+                                </div>
+                                <div class="DivSectionWithHeader">
+                                    <div class="HeaderRow">
+                                        <span class="lblNormalClass">常规信息</span>
+                                    </div>
+                                    <div class="Content">
+                                        <div class="DescriptionText">此页面上值为选定模板的值，您可以修改。</div>
+                                        <table class="Neweditsubsection" style="width: 770px;" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div style="width: 180px; overflow-y: auto;">
+                                                            <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="FieldLabel" width="50%">客户<span style="color: Red;">*</span>
+                                                                            <div>
+                                                                                <span style="display: inline-block;">
+                                                                                    <input type="text" style="width: 250px;" id="temp_account_id" /></span>
+                                                                                <input type="hidden" id="temp_account_idHidden" />
+                                                                                <a class="DataSelectorLinkIcon" onclick="TempChooseAccount()">
+                                                                                    <img src="../Images/data-selector.png" /></a>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="FieldLabel">类型<span style="color: red;">*</span>
+                                                                            <div>
+                                                                                <asp:DropDownList ID="temp_type_id" runat="server" Width="264px"></asp:DropDownList>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="FieldLabel" width="50%">标题<span style="color: Red;">*</span>
+                                                                            <div>
+                                                                                <span style="display: inline-block;">
+                                                                                    <input type="text" style="width: 250px;" id="temp_name" /></span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="FieldLabel">业务范围
+                                                                        <div>
+                                                                            <span style="display: inline-block;">
+                                                                                <asp:DropDownList ID="temp_line_of_business_id" runat="server" CssClass="txtBlack8Class" Width="264px"></asp:DropDownList>
+                                                                            </span>
+                                                                        </div>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td class="FieldLabel" width="50%">
+                                                                            <span>开始日期<span style="color: Red;">*</span></span>
+                                                                            <span style="margin-left: 31px;">结束日期<span style="color: Red;">*</span></span>
+                                                                            <span style="margin-left: 29px;">持续时间</span>
+                                                                            <div>
+                                                                                <span style="display: inline-block;">
+                                                                                    <input type="text" style="width: 72px;" onclick="WdatePicker()" class="Wdate" id="temp_start_date" />
+                                                                                    <input type="text" style="width: 72px;" onclick="WdatePicker()" class="Wdate" id="temp_end_date" />
+                                                                                    <input type="text" style="width: 70px;" id="temp_duration" />
+
+                                                                                </span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="FieldLabel" width="50%">部门
+                                                    <div>
+                                                        <span style="display: inline-block;">
+                                                            <asp:DropDownList ID="temp_department_id" runat="server" Width="264px"></asp:DropDownList>
+                                                        </span>
+                                                    </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="FieldLabel"  width="50%">项目主管
+                                                                            <div>
+                                                                                 <span style="display: inline-block;">
+                                                                                       <input type="text" style="width: 250px;" id="temp_owner_resource_id" />
+                                                            <input type="hidden" name="owner_resource_id" id="temp_owner_resource_idHidden"  />
+                                                            <a class="DataSelectorLinkIcon" onclick="chooseResource()">
+                                                                <img src="../Images/data-selector.png" /></a>
+                                                                                        </span>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="4" class="FieldLabel">描述
+                                                                        <div>
+                                                                            <textarea style="min-height: 100px; width: 625px;" id="temp_description"></textarea>
+                                                                        </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                         
+                            <div class="ButtonContainer Footer Wizard">
+                                <ul>
+                                    <li class="Button ButtonIcon MoveRight PushLeft" id="prev2_2">
+                                        <span class="Icon Prev"></span>
+                                        <span class="Text">上一步</span>
+                                    </li>
+                                    <li class="Button ButtonIcon MoveRight PushRight" id="down2_2">
+                                        <span class="Icon Next"></span>
+                                        <span class="Text">下一步</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="ScrollingContainer" style="height: 394px; display: none;" id="SecondStep2">
+                         
+                                <div class="WizardProgressBar">
+                                    <div style="width: 25%;" class="Item Previous">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">选择模板</div>
+                                    </div>
+                                    <div style="width: 25%;" class="Item Previous">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">常规信息</div>
+                                    </div>
+                                    <div style="width: 25%;" class="Item Current">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">选择日程表条目</div>
+                                    </div>
+                                    <div style="width: 25%;" class="Item">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">选择附加条目</div>
+                                    </div>
+                                </div>
+                                <div class="DivSectionWithHeader">
+                                    <div class="HeaderRow">
+                                        <span class="lblNormalClass">选择日程表条目</span>
+                                    </div>
+                                    <div class="Content" style="padding-bottom: 12px;">
+                                        <div class="DescriptionText">选择您要添加到此项目的任务/阶段</div>
+                                        <table class="Neweditsubsection" style="width: 770px;" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="HeaderContainer" style="padding-bottom: 0;">
+                                                            <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                                                                <colgroup>
+                                                                    <col class="Interaction">
+                                                                    <col class="Nesting">
+                                                                    <col class="Text">
+                                                                </colgroup>
+                                                                <tbody>
+                                                                    <tr class="HeadingRow">
+                                                                        <td class="Interaction">
+                                                                            <input type="checkbox" style="vertical-align: middle;" id="CheckAll_2">
+                                                                        </td>
+                                                                        <td class="Nesting">
+                                                                            <span>任务/阶段/问题</span>
+                                                                        </td>
+                                                                        <td class="Text">
+                                                                            <span>前置条件</span>
+                                                                        </td>
+                                                                        <td style="width: 7px; border-right: none;"></td>
+                                                                    </tr>
+                                                                </tbody>
+
+                                                            </table>
+                                                        </div>
+                                                        <div class="RowContainer" style="padding-bottom: 0;">
+                                                            <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                                                                <colgroup>
+                                                                    <col class="Interaction">
+                                                                    <col class="Nesting">
+                                                                    <col class="Text">
+                                                                </colgroup>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="Interaction Prevent">
+                                                                            <span class="Text"></span>
+                                                                        </td>
+                                                                        <td class="Nesting">
+                                                                            <div data-depth="0">
+                                                                                <div class="Spacer" style="width: 0px; min-width: 0px"></div>
+                                                                                <div class="IconContainer"></div>
+                                                                                <div class="Value">Office 365 deployment</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="Text"></td>
+                                                                    </tr>
+                                                                    <tr class="HighImportance">
+                                                                        <td class="Interaction">
+                                                                            <span class="Text">1</span>
+                                                                        </td>
+                                                                        <td class="Nesting">
+                                                                            <div data-depth="0" class="DataDepth">
+                                                                                <div class="Spacer"></div>
+                                                                                <div class="IconContainer">
+                                                                                    <div class="Toggle Collapse">
+                                                                                        <div class="Vertical"></div>
+                                                                                        <div class="Horizontal"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="Value">Pre-Project Planning</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="Text"></td>
+                                                                    </tr>
+                                                                    <tr class="HighImportance">
+                                                                        <td class="Interaction">
+                                                                            <span class="Text">1.1</span>
+                                                                        </td>
+                                                                        <td class="Nesting">
+                                                                            <div data-depth="1" class="DataDepth">
+                                                                                <div class="Spacer"></div>
+                                                                                <div class="IconContainer"></div>
+                                                                                <div class="Value">Customer Meeting</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="Text"></td>
+                                                                    </tr>
+                                                                    <tr class="HighImportance">
+                                                                        <td class="Interaction">
+                                                                            <span class="Text">1.2</span>
+                                                                        </td>
+                                                                        <td class="Nesting">
+                                                                            <div data-depth="1" class="DataDepth">
+                                                                                <div class="Spacer"></div>
+                                                                                <div class="IconContainer"></div>
+                                                                                <div class="Value">Planning</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="Text"></td>
+                                                                    </tr>
+                                                                    <tr class="HighImportance">
+                                                                        <td class="Interaction">
+                                                                            <span class="Text">2</span>
+                                                                        </td>
+                                                                        <td class="Nesting">
+                                                                            <div data-depth="0" class="DataDepth">
+                                                                                <div class="Spacer"></div>
+                                                                                <div class="IconContainer">
+                                                                                </div>
+                                                                                <div class="Value">Pre-Project Planning</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="Text"></td>
+                                                                    </tr>
+                                                                    <tr class="HighImportance">
+                                                                        <td class="Interaction">
+                                                                            <span class="Text">3</span>
+                                                                        </td>
+                                                                        <td class="Nesting">
+                                                                            <div data-depth="0" class="DataDepth">
+                                                                                <div class="Spacer"></div>
+                                                                                <div class="IconContainer">
+                                                                                    <div class="Toggle Collapse">
+                                                                                        <div class="Vertical"></div>
+                                                                                        <div class="Horizontal"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="Value">Pre-Project Planning</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="Text"></td>
+                                                                    </tr>
+                                                                    <tr class="HighImportance">
+                                                                        <td class="Interaction">
+                                                                            <span class="Text">3.1</span>
+                                                                        </td>
+                                                                        <td class="Nesting">
+                                                                            <div data-depth="1" class="DataDepth">
+                                                                                <div class="Spacer"></div>
+                                                                                <div class="IconContainer">
+                                                                                    <div class="Toggle Collapse">
+                                                                                        <div class="Vertical"></div>
+                                                                                        <div class="Horizontal"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="Value">Customer Meeting</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="Text"></td>
+                                                                    </tr>
+                                                                    <tr class="HighImportance">
+                                                                        <td class="Interaction">
+                                                                            <span class="Text">3.1.1</span>
+                                                                        </td>
+                                                                        <td class="Nesting">
+                                                                            <div data-depth="2" class="DataDepth">
+                                                                                <div class="Spacer"></div>
+                                                                                <div class="IconContainer">
+                                                                                    <div class="Toggle Collapse">
+                                                                                        <div class="Vertical"></div>
+                                                                                        <div class="Horizontal"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="Value">Customer Meeting</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="Text"></td>
+                                                                    </tr>
+                                                                    <tr class="HighImportance">
+                                                                        <td class="Interaction">
+                                                                            <span class="Text">3.1.1.1</span>
+                                                                        </td>
+                                                                        <td class="Nesting">
+                                                                            <div data-depth="3" class="DataDepth">
+                                                                                <div class="Spacer"></div>
+                                                                                <div class="IconContainer"></div>
+                                                                                <div class="Value">Customer Meeting</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="Text"></td>
+                                                                    </tr>
+                                                                    <tr class="HighImportance">
+                                                                        <td class="Interaction">
+                                                                            <span class="Text">3.2</span>
+                                                                        </td>
+                                                                        <td class="Nesting">
+                                                                            <div data-depth="1" class="DataDepth">
+                                                                                <div class="Spacer"></div>
+                                                                                <div class="IconContainer"></div>
+                                                                                <div class="Value">Customer Meeting</div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="Text"></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                   
+                            <div class="ButtonContainer Footer Wizard">
+                                <ul>
+                                    <li class="Button ButtonIcon MoveRight PushLeft" id="prev3_2">
+                                        <span class="Icon Prev"></span>
+                                        <span class="Text">上一步</span>
+                                    </li>
+                                    <li class="Button ButtonIcon MoveRight PushRight" id="down3_2">
+                                        <span class="Icon Next"></span>
+                                        <span class="Text">下一步</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="ScrollingContainer" style="height: 394px; display: none;" id="ThirdStep2">
+                
+                                <div class="WizardProgressBar">
+                                    <div style="width: 25%;" class="Item Previous">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">选择模板</div>
+                                    </div>
+                                    <div style="width: 25%;" class="Item Previous">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">常规信息</div>
+                                    </div>
+                                    <div style="width: 25%;" class="Item Previous">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">选择日程表条目</div>
+                                    </div>
+                                    <div style="width: 25%;" class="Item Current">
+                                        <div class="Full">
+                                            <div class="Left">
+                                                <div class="ConnectorContainer">
+                                                    <div class="Connector"></div>
+                                                </div>
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                            <div class="Right">
+                                                <div class="Indicator">
+                                                    <div class="IndicatorCore"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Label">选择附加条目</div>
+                                    </div>
+                                </div>
+                                <div class="DivSectionWithHeader">
+                                    <div class="HeaderRow">
+                                        <span class="lblNormalClass">选择日程表条目</span>
+                                    </div>
+                                    <div class="Content">
+                                        <div class="DescriptionText">您可以复制日历条目、项目成本、项目成员和项目设置信息。团队成员仅在项目与模板客户相同的情况下，才会被复制。</div>
+                                        <table class="Neweditsubsection" style="width: 770px;" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div>
+                                                            <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="FieldLabel" width="50%">从项目模板复制:
+                                                                <div>
+                                                                    <span style="display: inline-block;">
+                                                                        <input type="checkbox" style="vertical-align: middle;" id="temp_CalendarItems">
+                                                                        <label for="CalendarItems">日历条目</label>
+                                                                    </span>
+                                                                </div>
+                                                                            <div>
+                                                                                <span style="display: inline-block;">
+                                                                                    <input type="checkbox" style="vertical-align: middle;" id="temp_ProjectCharges">
+                                                                                    <label for="ProjectCharges">项目成本</label>
+                                                                                </span>
+                                                                            </div>
+                                                                            <div>
+                                                                                <span style="display: inline-block;">
+                                                                                    <input type="checkbox" style="vertical-align: middle;" id="temp_TeamMembers">
+                                                                                    <label for="TeamMembers">项目成员</label>
+                                                                                </span>
+                                                                            </div>
+                                                                            <%if (string.IsNullOrEmpty(isFromTemp))
+                                                                                { %>
+                                                                                  <div>
+                                                                                <span style="display: inline-block;">
+                                                                                    <input type="checkbox" style="vertical-align: middle;" id="temp_projectSet" />
+                                                                                    <label for="TeamMembers">项目设置</label>
+                                                                                </span>
+                                                                            </div>
+                                                                            <%} %>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                        
+                            <div class="ButtonContainer Footer Wizard">
+                                <ul>
+                                    <li class="Button ButtonIcon MoveRight PushLeft" id="prev4_2">
+                                        <span class="Icon Prev"></span>
+                                        <span class="Text">上一步</span>
+                                    </li>
+                                    <li class="Button ButtonIcon MoveRight PushRight" id="Finish_2">
+                                        <span class="Icon" style="width: 0; margin: 0;"></span>
+                                        <span class="Text">完成</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--黑色幕布-->
+        <div id="BackgroundOverLay"></div>
     </form>
 </body>
 </html>
@@ -908,19 +1691,169 @@
         $(this).parent().parent().css("background", colors[index9 % 2]);
         index9++;
     });
+    $("#ImportFromTemplateButton").on("click", function () {
+        $("#Nav1").show();
+        $("#BackgroundOverLay").show();
+    });
+    $(".CancelDialogButton").on("click", function () {
+        $("#Nav1").hide();
+        $("#Nav2").hide();
+        $("#BackgroundOverLay").hide();
+        $("#FirstStep").show();
+        $("#SecondStep").hide();
+        $("#ThirdStep").hide();
+    });
+    $("#down1").on("click", function () {
+        $("#FirstStep").hide();
+        $("#SecondStep").show();
+    });
+    $("#prev2").on("click", function () {
+        $("#FirstStep").show();
+        $("#SecondStep").hide();
+    });
+    $("#down2").on("click", function () {
+        $("#SecondStep").hide();
+        $("#ThirdStep").show();
+    });
+    $("#prev3").on("click", function () {
+        $("#SecondStep").show();
+        $("#ThirdStep").hide();
+    });
+
+    //缩进
+    function Style() {
+        for (i in $(".Spacer")) {
+            var Width = $(".Spacer").eq(i).parent().attr('data-depth') * 22 + 'px';
+            $(".Spacer").eq(i).width(Width).css('min-width', Width);
+        }
+    }
+    Style();
+    //选中及其子集
+    $(".RowContainer .HighImportance>.Interaction").on("mousedown", function (e) {
+        var ev = window.event || e;
+        var _this = $(this).parent();
+        if (event.shiftKey == 1) {
+        } else {
+            _this.siblings().removeClass('Selected');
+        }
+        _this.addClass('Selected');
+        var str = _this.find('.DataDepth').attr('data-depth');
+        for (i in _this.nextAll()) {
+            if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth')) {
+                _this.addClass('Selected');
+                _this.nextAll().eq(i).addClass('Selected');
+
+            } else {
+                return false;
+            }
+        }
+
+    });
+    //缩小展开
+    $(".IconContainer").on('click', function () {
+        $(this).find('.Vertical').toggle();
+        var _this = $(this).parent().parent().parent();
+        var str = _this.find('.DataDepth').attr('data-depth');
+        console.log(str);
+        for (i in _this.nextAll()) {
+            if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth') && $(this).find('.Vertical').css('display') == 'block') {
+                _this.nextAll().eq(i).hide();
+                _this.nextAll().eq(i).find('.Vertical').show();
+            } else if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth') && $(this).find('.Vertical').css('display') == 'none') {
+                _this.nextAll().eq(i).show();
+                _this.nextAll().eq(i).find('.Vertical').hide();
+            } else if (str >= _this.nextAll().eq(i).find('.DataDepth').attr('data-depth')) {
+                return false;
+            }
+        }
+    });
+
+    $("#CheckAll").on("click", function () {
+        var _this = $(this);
+        if (_this.is(":checked")) {
+            $(".HighImportance").addClass('Selected');
+        } else {
+            $(".HighImportance").removeClass('Selected');
+        }
+    });
+
+
+    $("#down1_2").on("click", function () {
+        $("#FirstStep2").hide();
+        <%if (!string.IsNullOrEmpty(isFromTemp))
+        { %>
+        $("#AddStep2").show();
+
+        <%}
+        else
+        {%>
+        $("#AddStep2").show();
+
+        <%}%>
+    });
+    $("#prev2_2").on("click", function () {
+        $("#FirstStep2").show();
+        $("#AddStep2").hide();
+    });
+    $("#down2_2").on("click", function () {
+        $("#AddStep2").hide();
+        $("#SecondStep2").show();
+    });
+    $("#prev3_2").on("click", function () {
+          <%if (!string.IsNullOrEmpty(isFromTemp))
+        { %>
+        $("#AddStep2").show();
+
+        <%}
+        else
+        {%>
+        $("#FirstStep2").show();
+
+        <%}%>
+        $("#SecondStep2").hide();
+    });
+    $("#down3_2").on("click", function () {
+        $("#SecondStep2").hide();
+        $("#ThirdStep2").show();
+    });
+    $("#prev4_2").on("click", function () {
+        $("#SecondStep2").show();
+        $("#ThirdStep2").hide();
+    });
+
+
 </script>
 
 <script>
+    // ------finish 点击之后 禁用从模板获取
     $(function () {
+        // display: block;
+        var isFromTemp = '<%=isFromTemp %>';
+        if (isFromTemp != "") {  // 从模板获取
 
+        }
     })
 
     $("#CancelButton").click(function () {
         window.close();
     })
+    $("#Finish_2").click(function () {
+        $("#Nav2").hide();
+        $("#ImportFromTemplateButton").hide();  // 完成之后隐藏从模板导入功能
+        // ImportFromTemplateButton
+    })
+    // 从模板导入
+    function ShowTemp(isFromTemp) {
+        if (isFromTemp == "1") { // 页面开始就根据模板进行添加--四个页面
+
+        }
+        else {  // 页面加载后根据模板进行添加 -- 三个页面
+
+        }
+    }
 
     function ChooseAccount() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=account_id&callBack=GetDataByAccount", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactLocationSelect %>", 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=account_id&callBack=GetDataByAccount", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
     }
     function GetDataByAccount() {
         // 获取商机信息，联系人信息为页面下拉框赋值  DisabledState
@@ -933,12 +1866,16 @@
 
     }
 
+    function TempChooseAccount() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=temp_account_id", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
+    }
 
+    // 选择合同
     function ChooseContract() {
-         // 本公司或者父公司的合同
+        // 本公司或者父公司的合同
         var account_idHidden = $("#account_idHidden").val();
         if (account_idHidden != "") {
-            
+
 
         } else {
             alert("请先选择客户");
@@ -956,6 +1893,90 @@
         } else {
             alert("请先选择客户");
         }
+    }
+    // 查找
+    function ChooseResDep() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RES_ROLE_DEP_CALLBACK %>&field=resDepIds&muilt=1&callBack=GetResDep", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+
+    function GetResDep() {
+        debugger;
+        var resDepIds = $("#resDepIdsHidden").val();
+        if (resDepIds != "") {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/RoleAjax.ashx?act=GetResDepList&resDepIds=" + resDepIds,
+                async: false,
+                //dataType:"json",
+                success: function (data) {
+                    debugger;
+                    if (data != "") {
+                        $("#resDepList").html(data);
+                        $("#resDepList option").dblclick(function () {
+                            RemoveResDep(this);
+                        })
+                    }
+                }
+
+            })
+        }
+    }
+
+    function RemoveResDep(val) {
+        $(val).remove();
+        var ids = "";
+        $("#resDepList option").each(function () {
+            ids += $(this).val() + ',';
+        })
+        if (ids != "") {
+            ids = ids.substr(0, ids.length - 1);
+        }
+        $("#resDepIdsHidden").val(ids);
+    }
+
+    // 选择联系人
+    function ChooseContact() {
+        var account_idHidden = $("#account_idHidden").val();
+        if (account_idHidden != "") {
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_CALLBACK %>&field=contactID&muilt=1&callBack=GetResDep", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactCallBack %>', 'left=200,top=200,width=600,height=800', false);
+
+        } else {
+            alert("请先选择客户");
+        }
+    }
+
+    function GetContact() {
+        var contactIDHidden = $("#contactIDHidden").val();
+        if (contactIDHidden != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + contactIDHidden,
+                success: function (data) {
+                    if (data != "") {
+                        $("#conIds").html(data);
+                        $("#conIds option").dblclick(function () {
+                            RemoveCon(this);
+                        })
+
+                    } else {
+                        $("#conIds").html("");
+                    }
+                },
+            });
+        }
+    }
+
+    function RemoveCon(val) {
+        $(val).remove();
+        var ids = "";
+        $("#conIds option").each(function () {
+            ids += $(this).val() + ',';
+        })
+        if (ids != "") {
+            ids = ids.substr(0, ids.length - 1);
+        }
+        $("#contactIDHidden").val(ids);
     }
 
     function SubmitCheck() {
@@ -989,14 +2010,14 @@
             return false;
         }
         <% if (!isAdd)
-        {%> // status_id
+    {%> // status_id
         var status_id = $("#status_id").val();
         if (status_id == "" || type_id == "0") {
             alert("请选择状态！");
             return false;
         }
         var status_time = $("#status_time").val();
-        if (status_time == "" ) {
+        if (status_time == "") {
             alert("请填写修改时间！");
             return false;
         }
@@ -1005,7 +2026,7 @@
             if (status_detail == "") {
                 alert("请填写修改说明！");
                 return false;
-            } 
+            }
         }
         <%}%>
         var resource_daily_hours = $("#resource_daily_hours").val();
@@ -1019,7 +2040,7 @@
             return false;
         }
         <% if (isAdd)
-        {%>
+    {%>
         var template_id = $("#template_id").val();
         if (template_id == "") {
             alert("请选择模板！");

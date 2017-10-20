@@ -99,6 +99,7 @@
     <Compile Include="PRO\pro_project.cs" />
     <Compile Include="PRO\pro_project_team.cs" />
     <Compile Include="PRO\pro_project_team_role.cs" />
+    <Compile Include="SDK\sdk_task.cs" />
     <Compile Include="SYS\sys_department.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email.cs" />
     <Compile Include="SYS\sys_organization_location.cs" />

@@ -991,7 +991,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     id = _dal.GetNextIdCom(),
                     cate_id = isProject ? (int)ACTIVITY_CATE.PROJECT_NOTE : (int)ACTIVITY_CATE.CONTRACT_NOTE,
-                    action_type_id = (int)ACTIVITY_TYPE.CONTRACT_NOTE,// 根据项目/合同 去设置
+                    action_type_id = isProject ? (int)ACTIVITY_TYPE.PROJECT_NOTE : (int)ACTIVITY_TYPE.CONTRACT_NOTE,// 根据项目/合同 去设置
                     parent_id = null,
                     object_id = param.opportunity.id,
                     object_type_id = isProject ? (int)OBJECT_TYPE.PROJECT : (int)OBJECT_TYPE.CONTRACT,
@@ -1000,6 +1000,7 @@ namespace EMT.DoneNOW.BLL
                     resource_id = param.opportunity.resource_id,
                     contract_id = null,// todo - 如果转为合同成本，则为“合同ID”；否则为空
                     opportunity_id = param.opportunity.id,
+                    name= "项目的产品/运输/成本/一次性折扣被转换为"+(isProject?"项目":"合同")+"成本",
                     ticket_id = null,
                     start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),  // todo 从页面获取时间，去页面时间的12：00：00
                     end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),

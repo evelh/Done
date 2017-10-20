@@ -66,19 +66,7 @@ namespace EMT.DoneNOW.Web.Invoice
                     invoiceDate = DateTime.Now.ToString("yyyy-MM-dd");
                 }
 
-                var invoice_temp_id = Request.QueryString["invoice_temp_id"];
-                if (invTempList != null && invTempList.Count > 0)
-                {
-                    if (!string.IsNullOrEmpty(invoice_temp_id))
-                    {
-                        invoice_temp = new sys_quote_tmpl_dal().FindNoDeleteById(long.Parse(invoice_temp_id));
-                    }
-                    else
-                    {
-                        invoice_temp = invTempList[0];
-                        // invoice_temp为客户默认发票
-                    }
-                }
+               
                 // 发票预览可能遇到的情况
                 // 1.传进多个客户ID （后台分类进行查看，默认选择第一个）
                 // 2.传进多个条目ID （获取全部进行分类）
@@ -303,6 +291,23 @@ namespace EMT.DoneNOW.Web.Invoice
                         }
                     }
 
+                }
+                var invoice_temp_id = Request.QueryString["invoice_temp_id"];
+                if (invTempList != null && invTempList.Count > 0)
+                {
+                    if (!string.IsNullOrEmpty(invoice_temp_id))
+                    {
+                        invoice_temp = new sys_quote_tmpl_dal().FindNoDeleteById(long.Parse(invoice_temp_id));
+                    }
+                    else
+                    {
+                        if (invoice_temp == null)
+                        {
+                            invoice_temp = invTempList[0];
+                        }
+                        
+                        // invoice_temp为客户默认发票
+                    }
                 }
 
                 if (paramList != null && paramList.Count > 0)
@@ -673,7 +678,8 @@ namespace EMT.DoneNOW.Web.Invoice
                     var noBillHours = GetBillHours(paramList, false) + GetBillHours(billTOThisParamList, false);// 不计费
                     var billHours = GetBillHours(paramList, true) + GetBillHours(billTOThisParamList, true); // 计费
                     var prepaidHours = GetPrepaidHours(paramList) + GetPrepaidHours(billTOThisParamList);     // 预付费
-                    var taxCate = GetTaxCateHtml();  // 分税信息的展示
+                    //var taxCate = GetTaxCateHtml();  // 分税信息的展示
+                    var taxCate = "";
                     var stringThisIds = thisIds.ToString();
                     if (!string.IsNullOrEmpty(stringThisIds))
                     {
@@ -844,6 +850,11 @@ namespace EMT.DoneNOW.Web.Invoice
                                         break;
                                     case "[发票：日期]":
                                         thisText = thisText.Replace(t, invoiceDate);
+                                        break;
+                                    case "[发票：税收详细信息]":
+                                        var thiInfo = varTable.Rows[0][t].ToString();
+                                        thiInfo = thiInfo.Replace(" ","&nbsp;");
+                                        thisText = thisText.Replace(t, thiInfo);
                                         break;
                                     default:
                                         if (!string.IsNullOrEmpty(varTable.Rows[0][t].ToString()))

@@ -42,6 +42,10 @@ namespace EMT.DoneNOW.Web
                 case "No_Active":
                     var noactive_id = context.Request.QueryString["id"];
                     No_Active(context, Convert.ToInt64(noactive_id)); break;
+                case "GetResDepList":
+                    var resDepIds = context.Request.QueryString["resDepIds"];
+                    GetResDepList(context,resDepIds);
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;
@@ -172,6 +176,23 @@ namespace EMT.DoneNOW.Web
             }
 
         }
+
+        public void GetResDepList(HttpContext context,string ids)
+        {
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var thisList = new sys_resource_department_dal().FindListBySql<ResDep>($"SELECT srd.id,sr.`name` as roleName,res.`name` as resName,sd.`name` as depName from sys_resource_department  srd LEFT JOIN sys_role sr on srd.role_id = sr.id LEFT JOIN sys_resource res on srd.resource_id = res.id LEFT JOIN sys_department sd on srd.department_id = sd.id where srd.id in({ids})");
+                if (thisList != null && thisList.Count > 0)
+                {
+                    StringBuilder resDepString = new StringBuilder();
+                    foreach (var item in thisList)
+                    {
+                        resDepString.Append($"<option value='{item.id}'>{item.resName}({item.roleName})</option>");
+                    }
+                    context.Response.Write(resDepString.ToString());
+                }
+            }
+        }
         public bool IsReusable
         {
             get
@@ -179,5 +200,15 @@ namespace EMT.DoneNOW.Web
                 return false;
             }
         }
+    }
+    /// <summary>
+    /// 用于显示角色和员工相关信息
+    /// </summary>
+    class ResDep
+    {
+       public long id;
+       public string roleName;
+       public string resName;
+       public string depName;
     }
 }

@@ -26,7 +26,7 @@ body {
     }
 
 .collection {
-    background-image: url(../img/collection.png);
+    background-image: url(../Images/collection.png);
     cursor: pointer;
     display: inline-block;
     height: 16px;
@@ -41,7 +41,7 @@ body {
 }
 
 .help {
-    background-image: url(../img/help.png);
+    background-image: url(../Images/help.png);
     cursor: pointer;
     display: inline-block;
     height: 16px;
@@ -95,23 +95,23 @@ li.Button {
 }
 
 .Save, .SaveAndClone, .SaveAndNew {
-    background-image: url("../img/save.png");
+    background-image: url("../Images/save.png");
 }
 
 .Cancel {
-    background-image: url("../img/cancel.png");
+    background-image: url("../Images/cancel.png");
 }
 
 .Tools {
-    background-image: url("../img/dropdown.png");
+    background-image: url("../Images/dropdown.png");
 }
 
 .Add {
-    background-image: url("../img/add.png");
+    background-image: url("../Images/add.png");
 }
 
 .Print {
-    background-image: url("../img/print.png");
+    background-image: url("../Images/print.png");
 }
 
 .Button > .Text {
@@ -597,3 +597,371 @@ label {
 .NewEditProject_ColorGray {
     color: #8E8E8E;
 }
+/*黑色幕布*/
+#BackgroundOverLay {
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0.6;
+    z-index: 25;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+/*弹框*/
+.Dialog.Large {
+    width: 876px;
+    height: 450px;
+    left: 50%;
+    position: fixed;
+    top: 50%;
+    background-color: #b9b9b9;
+    border: solid 4px #b9b9b9;
+    display: none;
+}
+
+.Dialog > div {
+    background-color: #fff;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.CancelDialogButton {
+    background-image: url(../Images/cancel1.png);
+    background-position: 0 -32px;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 32px;
+    position: absolute;
+    right: -14px;
+    top: -14px;
+    width: 32px;
+}
+
+.Dialog > div > .DialogContentContainer > .ScrollingContentContainer {
+    flex: 1 1 auto;
+    position: relative;
+}
+
+    .Dialog > div > .DialogContentContainer > .ScrollingContentContainer > .ScrollingContainer {
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        overflow-x: auto;
+        overflow-y: auto;
+        padding: 0 10px 0 10px;
+    }
+
+.WizardProgressBar {
+    display: table;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 790px;
+}
+
+    .WizardProgressBar > .Item {
+        display: table-cell;
+    }
+
+.Item {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    height: 18px;
+    padding: 2px 6px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.WizardProgressBar > .Item > .Full {
+    display: table;
+    width: 100%;
+}
+
+.Item > div {
+    flex: 0 0 auto;
+}
+
+.WizardProgressBar > .Item > .Full > .Left, .WizardProgressBar > .Item > .Full > .Right {
+    display: table-cell;
+}
+
+.WizardProgressBar > .Item > .Full > .Left {
+    text-align: right;
+}
+
+    .WizardProgressBar > .Item > .Full > .Left > .Indicator, .WizardProgressBar > .Item > .Full > .Left > .Indicator > .IndicatorCore {
+        border-radius: 20px 0 0 20px;
+        border-right: none;
+    }
+
+.WizardProgressBar > .Item .Indicator {
+    background-color: #fff;
+    border: 1px solid #cacaca;
+    display: inline-block;
+    height: 14px;
+    padding: 2px 0;
+    position: relative;
+    width: 9px;
+}
+
+.WizardProgressBar > .Item > .Full > .Left > .Indicator > .IndicatorCore {
+    border-radius: 14px 0 0 14px;
+}
+
+.WizardProgressBar > .Item .Indicator > .IndicatorCore {
+    background-color: transparent;
+    display: inline-block;
+    height: 14px;
+    width: 7px;
+}
+
+.WizardProgressBar > .Item > .Full > .Right {
+    text-align: left;
+}
+
+.WizardProgressBar > .Item > .Full .ConnectorContainer {
+    position: relative;
+    width: 100%;
+}
+
+    .WizardProgressBar > .Item > .Full .ConnectorContainer > .Connector {
+        border: 1px solid #cacaca;
+        position: absolute;
+        top: 10px;
+        width: 100%;
+    }
+
+.WizardProgressBar > .Item > .Full > .Right > .Indicator, .WizardProgressBar > .Item > .Full > .Right > .Indicator > .IndicatorCore {
+    border-radius: 0 20px 20px 0;
+    border-left: none;
+}
+
+    .WizardProgressBar > .Item > .Full > .Right > .Indicator > .IndicatorCore {
+        border-radius: 0 14px 14px 0;
+    }
+/*球下的文字*/
+.WizardProgressBar > .Item > .Label {
+    color: #cacaca;
+    font-size: 12px;
+    padding-top: 2px;
+    text-align: center;
+}
+/*正在完成的进度*/
+.WizardProgressBar > .Item.Current .Indicator > .IndicatorCore {
+    background-color: #618fcc;
+}
+
+.WizardProgressBar > .Item.Current > .Label {
+    color: #4f4f4f;
+    font-weight: 700;
+}
+/*已经完成的进度*/
+.WizardProgressBar > .Item.Previous > .Label {
+    color: #618fcc;
+    font-weight: 700;
+}
+
+.WizardProgressBar > .Item.Previous .Indicator {
+    background-color: #618fcc;
+    border-color: #618fcc;
+}
+
+.WizardProgressBar > .Item.Previous > .Full .ConnectorContainer > .Connector, .WizardProgressBar > .Item.Current > .Full > .Left .ConnectorContainer > .Connector {
+    border-color: #618fcc;
+}
+/*最下方按钮*/
+.ButtonContainer.Wizard.Footer {
+    bottom: 0;
+    font-size: 0;
+    left: 0;
+    padding: 10px 15px 10px 15px;
+    position: absolute;
+    right: 0;
+    width: auto;
+    height: 26px;
+}
+
+li.Button.PushRight {
+    float: right;
+    margin-right: 0;
+}
+
+li.Button.PushLeft {
+    float: left;
+    margin-right: 0;
+}
+
+.Next {
+    background-image: url("../Images/move-right.png");
+}
+
+.Prev {
+    background-image: url("../Images/move-left.png");
+}
+
+col.Interaction {
+    width: 68px;
+}
+
+col.Nesting {
+    width: auto;
+}
+
+col.Text {
+    width: 100px;
+}
+
+.HeaderContainer {
+    background-color: #cbd9e4;
+    border-left-color: #98b4ca;
+    border-right-color: #98b4ca;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    overflow: hidden;
+    flex: 0 0 auto;
+}
+
+    .HeaderContainer .HeadingRow td {
+        border-top: 1px solid #98b4ca;
+        border-bottom-color: #98b4ca;
+        border-right-color: #98b4ca;
+        color: #64727a;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-right-style: solid;
+        border-right-width: 1px;
+        font-size: 12px;
+        font-weight: bold;
+        height: 15px;
+        padding: 3px 5px 3px 5px;
+        vertical-align: top;
+        word-wrap: break-word;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+.RowContainer {
+    border-left: 1px solid #d7d7d7;
+    border-right: 1px solid #d7d7d7;
+    border-bottom: 1px solid #d7d7d7;
+    height: 160px;
+    overflow-y: scroll
+}
+
+    .RowContainer .Interaction.Prevent {
+        cursor: default;
+    }
+
+    .RowContainer tr:first-child td {
+        border-top: none;
+    }
+
+    .RowContainer td.Interaction, .RowContainer tr.HighImportance td.Interaction {
+        background-color: #ebebeb;
+        border-bottom-color: #ccc;
+        border-left-color: #ebebeb;
+        border-right-color: #ccc;
+        border-top-color: #ccc;
+        cursor: pointer;
+    }
+
+    .RowContainer div {
+        padding-bottom: 0 !important;
+    }
+
+    .RowContainer td {
+        border: solid 1px #e8e8e8;
+        border-left-color: #f8f8f8;
+        border-right-color: #f8f8f8;
+        padding: 4px 4px 4px 4px;
+        vertical-align: top;
+        word-wrap: break-word;
+    }
+
+    .RowContainer .Nesting > div {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+    }
+
+        .RowContainer .Nesting > div > div {
+            display: table-cell;
+        }
+
+    .RowContainer .Nesting .IconContainer {
+        padding: 0 5px;
+        width: 16px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        .RowContainer .Nesting .IconContainer > .Toggle {
+            background: #d7d7d7;
+            background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+            background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+            background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+            background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+            border: 1px solid #c6c6c6;
+            cursor: pointer;
+            display: inline-block;
+            height: 14px;
+            position: relative;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            width: 14px;
+            vertical-align: top;
+        }
+
+            .RowContainer .Nesting .IconContainer > .Toggle.Collapse > .Vertical {
+                display: none;
+            }
+
+            .RowContainer .Nesting .IconContainer > .Toggle > .Vertical {
+                background-color: #888;
+                height: 8px;
+                left: 6px;
+                position: absolute;
+                top: 3px;
+                width: 2px;
+            }
+
+            .RowContainer .Nesting .IconContainer > .Toggle > .Horizontal {
+                background-color: #888;
+                height: 2px;
+                left: 3px;
+                position: absolute;
+                top: 6px;
+                width: 8px;
+            }
+
+    .RowContainer .Nesting > div > div.Value {
+        vertical-align: top;
+    }
+
+    .RowContainer tr.Selected td.Interaction {
+        background-color: #c7d0e0;
+        border-right-color: #ccc;
+    }
+
+    .RowContainer tr.Selected td {
+        background-color: #e9f0f8;
+        border-left-color: #e9f0f8;
+        border-right-color: #e9f0f8;
+    }
