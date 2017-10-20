@@ -184,15 +184,15 @@
                                                                 <td class="FieldLabels">
                                                                     初始费用
                                                                     <div style="width: 88px;padding:0;">
-                                                                        <input type="text" name="setup_fee" value="<%=contractCopy.setup_fee %>" style="width: 88px;padding:0;text-align: right;" />
+                                                                        <input type="text" id="setup_fee" name="setup_fee" value="<%=contractCopy.setup_fee %>" style="width: 88px;padding:0;text-align: right;" />
                                                                     </div>
                                                                 </td>
                                                                 <td class="FieldLabels" style="padding-left :16px">
                                                                     初始费用计费代码
                                                                     <div style="padding:0;">
                                                                         <input type="hidden" id="SetupCodeHidden" name="setup_fee_cost_code_id" />
-                                                                        <input type="text" id="SetupCode" disabled="disabled" style="margin: 2px 0px; width:224px;" />
-                                                                        <img src="../Images/add.png" style="vertical-align: middle;cursor: pointer;" />
+                                                                        <input type="text" id="SetupCode" readonly="readonly" disabled="disabled" style="margin: 2px 0px; width:224px;" />
+                                                                        <img src="../Images/data-selector.png" id="CodeSelectImg" style="vertical-align: middle;cursor: pointer;" />
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -1111,6 +1111,19 @@
       <%
           }%>
         CalcService();
+
+        $("#setup_fee").change(function () {
+          var fee = parseFloat($("#setup_fee").val());
+          if (isNaN($("#setup_fee").val()) || fee <= 0) {
+            $("#CodeSelectImg").unbind('click');
+            $("#SetupCode").attr("disabled", true);
+          } else {
+            $("#SetupCode").attr("disabled", false);
+            $("#CodeSelectImg").click(function () {
+              window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=SetupCode&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.RECURRING_CONTRACT_SERVICE_CODE %>', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.BillCodeCallback %>', 'left=200,top=200,width=600,height=800', false)
+            })
+          }
+      })
       <%} %>
     </script>
 </body>

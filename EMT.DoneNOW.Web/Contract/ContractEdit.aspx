@@ -234,7 +234,7 @@
                             <td class="FieldLabel">初始费用
                               <div>
                                 <span style="display: inline-block;">
-                                  <input type="text" name="setup_fee" value="<%=contract.contract.setup_fee %>" />
+                                  <input type="text" id="setup_fee" name="setup_fee" value="<%=contract.contract.setup_fee %>" />
                                 </span>
                               </div>
                             </td>
@@ -248,9 +248,10 @@
                             <td class="FieldLabel">初始费用计费代码
                               <div>
                                 <input type="hidden" id="SetupCodeHidden" value="<%=contract.contract.setup_fee_cost_code_id %>" name="setup_fee_cost_code_id" />
-                                <input type="text" id="SetupCode" disabled="disabled" style="width: 265px;" value="<%=contract.costCode %>" />
+                                <input type="text" id="SetupCode" readonly="readonly" disabled="disabled" value="<%=contract.costCode %>" style="width:265px;" />
                                 <span style="display: inline-block">
-                                  <img src="../Images/data-selector.png" style="cursor: pointer; vertical-align: middle;" /></span>
+                                  <img src="../Images/data-selector.png" id="CodeSelectImg" style="cursor: pointer; vertical-align: middle;" />
+                                </span>
                               </div>
                             </td>
                           </tr>
@@ -541,6 +542,21 @@
         },
       });
     }
+
+    <% if (contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) { %>
+    $("#setup_fee").change(function () {
+      var fee = parseFloat($("#setup_fee").val());
+      if (isNaN($("#setup_fee").val()) || fee <= 0) {
+        $("#CodeSelectImg").unbind('click');
+        $("#SetupCode").attr("disabled", true);
+      } else {
+        $("#SetupCode").attr("disabled", false);
+        $("#CodeSelectImg").click(function () {
+          window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=SetupCode&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.RECURRING_CONTRACT_SERVICE_CODE %>', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.BillCodeCallback %>', 'left=200,top=200,width=600,height=800', false)
+            })
+          }
+    })
+    <%}%>
   </script>
 </body>
 </html>
