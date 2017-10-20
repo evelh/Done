@@ -991,7 +991,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     id = _dal.GetNextIdCom(),
                     cate_id = isProject ? (int)ACTIVITY_CATE.PROJECT_NOTE : (int)ACTIVITY_CATE.CONTRACT_NOTE,
-                    action_type_id = (int)ACTIVITY_TYPE.PROJECT_NOTE,// 根据项目/合同 去设置
+                    action_type_id = (int)ACTIVITY_TYPE.CONTRACT_NOTE,// 根据项目/合同 去设置
                     parent_id = null,
                     object_id = param.opportunity.id,
                     object_type_id = isProject ? (int)OBJECT_TYPE.PROJECT : (int)OBJECT_TYPE.CONTRACT,
