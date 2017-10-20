@@ -23,5 +23,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<pro_project>($"select * from pro_project where  delete_time = 0 and account_id = {account_id}");
         }
+        /// <summary>
+        /// 获取到项目模板
+        /// </summary>\
+        public List<pro_project> GetTempList()
+        {
+            return FindListBySql<pro_project>($"select * from pro_project where  delete_time = 0 and type_id = {(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.TEMP}");
+        }
     }
 }

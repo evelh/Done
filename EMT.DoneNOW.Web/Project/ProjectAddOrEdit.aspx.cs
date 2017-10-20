@@ -20,14 +20,20 @@ namespace EMT.DoneNOW.Web.Project
         protected Dictionary<string, object> dic = new ProjectBLL().GetField();
         protected List<UserDefinedFieldDto> project_udfList = null;
         protected List<UserDefinedFieldValue> project_udfValueList = null;
+        protected string thisType=""; // 项目的类型--type_id
+        protected string isFromTemp = ""; // 入口是否从模板添加
+        protected string isTemp = "";     // 是否添加模板-- 模板
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                isFromTemp = Request.QueryString["isFromTemp"];
+                isTemp = Request.QueryString["isTemp"];
                 if (!IsPostBack)
                 {
                     PageDataBind();
                 }
+                
                 var id = Request.QueryString["id"];
                 project_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PROJECTS);
                 if (!string.IsNullOrEmpty(id))
@@ -55,7 +61,7 @@ namespace EMT.DoneNOW.Web.Project
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception msg)
             {
                 Response.End();
             }
@@ -73,12 +79,35 @@ namespace EMT.DoneNOW.Web.Project
 
             type_id.DataTextField = "show";
             type_id.DataValueField = "val";
-            type_id.DataSource = dic.FirstOrDefault(_ => _.Key == "project_type").Value;
-            type_id.DataBind();
-            var thisTypeId = Request.QueryString["type"];
-            if (!string.IsNullOrEmpty(thisTypeId))
+            var thisTypeList = dic.FirstOrDefault(_ => _.Key == "project_type").Value as List<DictionaryEntryDto>;
+            if (!string.IsNullOrEmpty(isTemp))  // 是否是模板
             {
-                type_id.SelectedValue = thisTypeId;
+                var temp = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.TEMP).ToString());
+                if (temp != null)
+                {
+                    thisTypeList = new List<DictionaryEntryDto>() { temp};
+                }
+            }
+            else
+            {
+                var temp = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.TEMP).ToString());
+                if (temp != null)
+                {
+                    thisTypeList.Remove(temp);
+                }
+                var benchmark = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.BENCHMARK).ToString());
+                if (benchmark != null)
+                {
+                    thisTypeList.Remove(benchmark);
+                }
+            }
+          
+            type_id.DataSource = thisTypeList;
+            type_id.DataBind();
+            thisType = Request.QueryString["type"];
+            if (!string.IsNullOrEmpty(thisType))
+            {
+                type_id.SelectedValue = thisType;
             }
 
             status_id.DataTextField = "show";
@@ -92,8 +121,8 @@ namespace EMT.DoneNOW.Web.Project
             department_id.DataBind();
             department_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
 
-            organization_location_id.DataTextField = "show";
-            organization_location_id.DataValueField = "val";
+            organization_location_id.DataTextField = "name";
+            organization_location_id.DataValueField = "id";
             organization_location_id.DataSource = dic.FirstOrDefault(_ => _.Key == "org_location").Value;
             organization_location_id.DataBind();
 
@@ -101,6 +130,20 @@ namespace EMT.DoneNOW.Web.Project
             template_id.DataValueField = "id";
             template_id.DataSource = new sys_notify_tmpl_dal().GetTempByEvent(DicEnum.NOTIFY_EVENT.PROJECT_CREATED);
             template_id.DataBind();
+
+            if (string.IsNullOrEmpty(isTemp))
+            {
+                var tempList= new pro_project_dal().GetTempList();
+                // 项目模板  --project_temp
+                if (tempList != null && tempList.Count > 0)
+                {
+                    template_id.DataTextField = "name";
+                    template_id.DataValueField = "id";
+                    template_id.DataSource = tempList;
+                    template_id.DataBind();
+                }
+                
+            }
         }
 
         /// <summary>

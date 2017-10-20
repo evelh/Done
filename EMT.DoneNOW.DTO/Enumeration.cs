@@ -105,8 +105,9 @@ namespace EMT.DoneNOW.DTO
             IN_CHARGE = 27,                  // 计费中
             SALES = 28,                      // 销售
             CANCELLATION = 29,               // 注销
-            PROJECT_NOTE = 1492,             // 项目备注
+            CONTRACT_NOTE = 1492,             // 合同备注
             CONTRACT_UDF_EDIT = 1493,        // 合同自定义信息更新
+            PROJECT_NOTE=1494,                // 项目备注
         }
 
 
@@ -420,6 +421,7 @@ namespace EMT.DoneNOW.DTO
             SUBCOMPANY_COMPANY_VIEW = 872,      // 客户管理-详情-子客户查询
             OPPORTUNITY_CONTACT_VIEW = 873,     // 联系人管理-详情-商机查询
             SUB_COMPANY_CALLBACK = 877,         // 独立客户查找带回（没有父客户和子客户）
+            CONTACT_CALLBACK = 879,             // 联系人查找带回-可以传客户ID进行筛选
             PRODUCT_CALLBACK = 882,             // 产品查找带回
             MANY_PRODUCT_CALLBACK = 885,          // 产品多选查找带回
             SERVICE_CALLBACK = 883,               // 服务查找带回
@@ -485,7 +487,8 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_BLOCK_TICKET = 1522,           // 合同管理-事件查询
             CONFIGSUBSCRIPTION =1523,              // 配置项中的订阅管理 
             PROJECTCALLBACK=1524,                  // 项目的查找带回
-
+            RES_ROLE_DEP_CALLBACK=1529,            // 员工部门角色查找带回
+            PROJECT_SEARCH= 1530,                   // 项目查询
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
@@ -794,9 +797,11 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum PROJECT_TYPE
         {
-            ACCOUNT_PROJECT = 1338,
-            IN_PROJECT = 1339,
-            PROJECT_DAY = 1340,
+            ACCOUNT_PROJECT = 1338,        // 客户项目
+            IN_PROJECT = 1339,             // 内部项目
+            PROJECT_DAY = 1340,            // 项目提案
+            TEMP = 1341,                   // 模板
+            BENCHMARK = 1342,              // 基准
         }
         /// <summary>
         /// 项目状态 - 124
@@ -934,8 +939,9 @@ namespace EMT.DoneNOW.DTO
 
         ContactAdd = 111,                            //
         ContactEdit = 112,                            //
-        ContactView = 114,                            // 查看联系人
         ContactLocationSelect = 113,                  // 联系人页面地址的查找带回
+        ContactView = 114,                            // 查看联系人
+        ContactCallBack = 115,                        // 联系人查找带回
 
         OpportunityAdd = 121,                       // 添加商机
         OpportunityEdit = 122,                      // 修改商机

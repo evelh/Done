@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
@@ -37,45 +38,45 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32? duration { get; set; }
         [DataMember]
-        public Decimal actual_project_time { get; set; }
+        public Decimal? actual_project_time { get; set; }
         [DataMember]
-        public Decimal actual_project_billed_time { get; set; }
+        public Decimal? actual_project_billed_time { get; set; }
         [DataMember]
-        public Decimal est_project_time { get; set; }
+        public Decimal? est_project_time { get; set; }
         [DataMember]
-        public Decimal actual_revenue { get; set; }
+        public Decimal? actual_revenue { get; set; }
         [DataMember]
-        public Decimal labor_revenue { get; set; }
+        public Decimal? labor_revenue { get; set; }
         [DataMember]
-        public Decimal labor_budget { get; set; }
+        public Decimal? labor_budget { get; set; }
         [DataMember]
-        public Decimal labor_margin { get; set; }
+        public Decimal? labor_margin { get; set; }
         [DataMember]
-        public Decimal cost_revenue { get; set; }
+        public Decimal? cost_revenue { get; set; }
         [DataMember]
-        public Decimal cost_budget { get; set; }
+        public Decimal? cost_budget { get; set; }
         [DataMember]
-        public Decimal cost_margin { get; set; }
+        public Decimal? cost_margin { get; set; }
         [DataMember]
         public Decimal? change_orders_revenue { get; set; }
         [DataMember]
         public Decimal? change_orders_budget { get; set; }
         [DataMember]
-        public Decimal original_sgda { get; set; }
+        public Decimal? original_sgda { get; set; }
         [DataMember]
-        public Decimal original_revenue { get; set; }
+        public Decimal? original_revenue { get; set; }
         [DataMember]
-        public Decimal original_sales_cost { get; set; }
+        public Decimal? original_sales_cost { get; set; }
         [DataMember]
-        public Int32 probability { get; set; }
+        public Int32? probability { get; set; }
         [DataMember]
-        public Decimal project_costs { get; set; }
+        public Decimal? project_costs { get; set; }
         [DataMember]
         public Int32 status_id { get; set; }
         [DataMember]
         public String status_detail { get; set; }
         [DataMember]
-        public Int64 status_time { get; set; }
+        public Int64? status_time { get; set; }
         [DataMember]
         public Int32? importance_id { get; set; }
         [DataMember]
@@ -85,11 +86,11 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? sales_id { get; set; }
         [DataMember]
-        public Int32 completed_percentage { get; set; }
+        public Int32? completed_percentage { get; set; }
         [DataMember]
         public Int64? completed_time { get; set; }
         [DataMember]
-        public Decimal cash_collected { get; set; }
+        public Decimal? cash_collected { get; set; }
         [DataMember]
         public Int64? baseline_id { get; set; }
         [DataMember]
@@ -109,17 +110,17 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte warn_time_off { get; set; }
         [DataMember]
-        public Int64 organization_location_id { get; set; }
+        public Int64? organization_location_id { get; set; }
         [DataMember]
-        public Decimal resource_daily_hours { get; set; }
+        public Decimal? resource_daily_hours { get; set; }
         [DataMember]
         public Int32? percent_complete { get; set; }
         [DataMember]
-        public Int32 automatic_leveling_end_date_offset_days { get; set; }
+        public Int32? automatic_leveling_end_date_offset_days { get; set; }
         [DataMember]
         public SByte use_resource_daily_hours { get; set; }
         [DataMember]
-        public Int64 contract_id { get; set; }
+        public Int64? contract_id { get; set; }
 
 
     }

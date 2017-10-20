@@ -99,7 +99,7 @@
 			</tr>
         <% } %>
 		</table>
-        <asp:Button ID="Search" runat="server" Text="搜索" OnClick="Search_Click" style="width: 56px;height: 30px;position:absolute;left:460px;top:98px;"/>
+        <asp:Button ID="Search" runat="server" Text="搜索" OnClick="Search_Click" style="width: 56px;height: 30px;position:absolute;left:516px;top:50px;"/>
         <div id="search_list">
             <input type="hidden" id="page_num" name="page_num" <%if (queryResult != null) {%>value="<%=queryResult.page %>"<%} %> />
             <input type="hidden" id="page_size" name="page_size" <%if (queryResult != null) {%>value="<%=queryResult.page_size %>"<%} %> />
