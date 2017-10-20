@@ -450,7 +450,7 @@ namespace EMT.DoneNOW.BLL
             if (cc != null && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {
                 //统计预付表中的预付剩余
-                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0");
+                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id and and b.status_id=1 AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1");
                 decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                 //如果成本表总额为null,或是小于预付表总计的总价，则正常处理
                 if (ccc.extended_price == null || ccc.extended_price < extended_price)
@@ -468,7 +468,7 @@ namespace EMT.DoneNOW.BLL
                         if (ccnr != null && ccnr.rate != null && ccnr.rate > 0)
                         {
                             //自动生成预付费
-                            var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0 ORDER BY b.start_date");
+                            var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1 ORDER BY b.start_date");
                             foreach (DataRow i in block_hours.Rows)
                             {
                                 if (i[1]!= null && Convert.ToDecimal(i[1]) > 0)
@@ -508,7 +508,6 @@ namespace EMT.DoneNOW.BLL
                                     new sys_oper_log_dal().Insert(add_log);       // 插入日志
                                     var ccb = ccb_dal.FindNoDeleteById(i.Key);
                                     var oldccb = ccb;
-                                    ccb.is_billed = 1;
                                     ccb.status_id = 0;
                                     ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                     ccb.update_user_id = user.id;
@@ -544,8 +543,7 @@ namespace EMT.DoneNOW.BLL
                                     ccb1.start_date = cc.start_date;
                                     ccb1.end_date = cc.end_date;
                                     ccb1.quantity = 1;
-                                    ccb1.is_billed = 0;
-                                    ccb1.status_id = 1;
+                                    ccb1.status_id = 0;
                                     ccb1.date_purchased = DateTime.Now.Date;//购买日期
                                     ccb1.create_time = ccb1.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                     ccb1.create_user_id = ccb1.update_user_id = user.id;
@@ -600,7 +598,6 @@ namespace EMT.DoneNOW.BLL
                                     ccb2.start_date = cc.start_date;
                                     ccb2.end_date = cc.end_date;
                                     ccb2.quantity = 1;
-                                    ccb2.is_billed = 0;
                                     ccb2.status_id = 1;
                                     ccb2.date_purchased = DateTime.Now.Date;//购买日期
                                     ccb2.create_time = ccb2.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -656,7 +653,7 @@ namespace EMT.DoneNOW.BLL
             else if (cc != null && cc.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
             {
                 //统计预付表中的预付事件剩余
-                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0");
+                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id and b.status_id=1 AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1");
                 decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                 //如果成本表总额为null,或是小于预付表总计的总价，则正常处理
                 if (ccc.extended_price == null || ccc.extended_price < extended_price)
@@ -674,7 +671,7 @@ namespace EMT.DoneNOW.BLL
                         if (ccnr != null && ccnr.rate != null && ccnr.rate > 0 && ccnr.quantity != null && ccnr.quantity > 0)
                         {
                             //自动生成预付费
-                            var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0 ORDER BY b.start_date");
+                            var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1 ORDER BY b.start_date");
                             foreach (DataRow i in block_hours.Rows)
                             {
                                 if (i[1] != null && Convert.ToDecimal(i[1]) > 0)
@@ -714,7 +711,6 @@ namespace EMT.DoneNOW.BLL
                                     new sys_oper_log_dal().Insert(add_log);       // 插入日志
                                     var ccb = ccb_dal.FindNoDeleteById(i.Key);
                                     var oldccb = ccb;
-                                    ccb.is_billed = 1;
                                     ccb.status_id = 0;
                                     ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                     ccb.update_user_id = user.id;
@@ -753,8 +749,7 @@ namespace EMT.DoneNOW.BLL
                                         ccb1.quantity = Convert.ToDecimal(ccnr.quantity);
                                     else
                                         ccb1.quantity = 1;
-                                    ccb1.is_billed = 0;
-                                    ccb1.status_id = 1;
+                                    ccb1.status_id = 0;
                                     ccb1.date_purchased = DateTime.Now.Date;//购买日期
                                     ccb1.create_time = ccb1.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                     ccb1.create_user_id = ccb1.update_user_id = user.id;
@@ -812,7 +807,6 @@ namespace EMT.DoneNOW.BLL
                                         ccb2.quantity = Convert.ToDecimal(ccnr.quantity);
                                     else
                                         ccb2.quantity = 1;
-                                    ccb2.is_billed = 0;
                                     ccb2.status_id = 1;
                                     ccb2.date_purchased = DateTime.Now.Date;//购买日期
                                     ccb2.create_time = ccb2.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -898,6 +892,13 @@ namespace EMT.DoneNOW.BLL
                 //可以直接审核成本表
                 return Post_Charges(id, date, user);
             }
+            if (ccc.contract_block_id != null) {
+                var blockk = ccb_dal.FindNoDeleteById((long)ccc.contract_block_id);
+                if (blockk != null) {
+                    blockk.is_billed = 1;
+                    ccb_dal.Update(blockk);
+                }
+            }
             var olaccc = ccc;
             ccc.bill_status = 1;//已计费
             ccc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -978,7 +979,7 @@ namespace EMT.DoneNOW.BLL
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
 
-            var ccbList = ccb_dal.FindListBySql<ctt_contract_block>($"select * from ctt_contract_block where contract_id={ccc.contract_id} and is_billed=0 and status_id=1");
+            var ccbList = ccb_dal.FindListBySql<ctt_contract_block>($"select * from ctt_contract_block where contract_id={ccc.contract_id}  and status_id=1");
             decimal extend = 0;
             foreach (var ccb in ccbList)
             {
@@ -1012,7 +1013,6 @@ namespace EMT.DoneNOW.BLL
                         };          // 创建日志
                         new sys_oper_log_dal().Insert(add_log);       // 插入日志
                         var oldccb = ccb;
-                        ccb.is_billed = 1;
                         ccb.status_id = 0;
                         ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         ccb.update_user_id = user.id;
@@ -1047,7 +1047,6 @@ namespace EMT.DoneNOW.BLL
                 ccb1.start_date = cc.start_date;
                 ccb1.end_date = cc.end_date;
                 ccb1.quantity = 1;
-                ccb1.is_billed = 0;
                 ccb1.status_id = 1;
                 ccb1.date_purchased = DateTime.Now.Date;//购买日期
                 ccb1.create_time = ccb1.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -1107,7 +1106,6 @@ namespace EMT.DoneNOW.BLL
                 ccb2.start_date = cc.start_date;
                 ccb2.end_date = cc.end_date;
                 ccb2.quantity = 1 - m;
-                ccb2.is_billed = 0;
                 ccb2.status_id = 1;
                 ccb2.date_purchased = DateTime.Now.Date;//购买日期
                 ccb2.create_time = ccb2.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -1251,7 +1249,7 @@ namespace EMT.DoneNOW.BLL
             if (cc != null && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {
                 //统计预付表中的预付剩余
-                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0");
+                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1 ");
                 decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                 //如果成本表总额为null,或是小于预付表总计的总价，则正常处理
                 if (ccc.extended_price == null || ccc.extended_price < extended_price)
@@ -1269,7 +1267,7 @@ namespace EMT.DoneNOW.BLL
                         if (!(ccnr != null && ccnr.rate != null && ccnr.rate > 0))
                         {
                             //强制生成
-                            var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0 ORDER BY b.start_date");
+                            var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1 ORDER BY b.start_date");
                             foreach (DataRow i in block_hours.Rows)
                             {
                                 if (i[1] != null && Convert.ToDecimal(i[1]) > 0)
@@ -1309,7 +1307,6 @@ namespace EMT.DoneNOW.BLL
                                     new sys_oper_log_dal().Insert(add_log);       // 插入日志
                                     var ccb = ccb_dal.FindNoDeleteById(i.Key);
                                     var oldccb = ccb;
-                                    ccb.is_billed = 1;
                                     ccb.status_id = 0;
                                     ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                     ccb.update_user_id = user.id;
@@ -1365,7 +1362,7 @@ namespace EMT.DoneNOW.BLL
             else if (cc != null && cc.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
             {
                 //统计预付表中的预付事件剩余
-                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0");
+                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1 ");
                 decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                 //如果成本表总额为null,或是小于预付表总计的总价，则正常处理
                 if (ccc.extended_price == null || ccc.extended_price < extended_price)
@@ -1383,7 +1380,7 @@ namespace EMT.DoneNOW.BLL
                         if (!(ccnr != null && ccnr.rate != null && ccnr.rate > 0 && ccnr.quantity != null && ccnr.quantity > 0))
                         {
                             //强制生成
-                            var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate*b.quantity- ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0 ORDER BY b.start_date");
+                            var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate*b.quantity- ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id}  and b.status_id=1 ORDER BY b.start_date");
                             foreach (DataRow i in block_hours.Rows)
                             {
                                 if (i[1] != null && Convert.ToDecimal(i[1]) > 0)
@@ -1423,7 +1420,6 @@ namespace EMT.DoneNOW.BLL
                                     new sys_oper_log_dal().Insert(add_log);       // 插入日志
                                     var ccb = ccb_dal.FindNoDeleteById(i.Key);
                                     var oldccb = ccb;
-                                    ccb.is_billed = 1;
                                     ccb.status_id = 0;
                                     ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                     ccb.update_user_id = user.id;
@@ -1509,6 +1505,16 @@ namespace EMT.DoneNOW.BLL
                 return Post_Charges(id, date, user);
 
             }
+            if (ccc.contract_block_id != null)
+            {
+                var blockk = ccb_dal.FindNoDeleteById((long)ccc.contract_block_id);
+                if (blockk != null)
+                {
+                    blockk.is_billed = 1;
+                    ccb_dal.Update(blockk);
+                }
+            }
+
             var olaccc = ccc;
             ccc.bill_status = 1;//已计费
             ccc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -1590,13 +1596,13 @@ namespace EMT.DoneNOW.BLL
             if (cc != null && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {
                 //统计预付表中的预付剩余
-                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0");
+                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0 ),0),2)) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1");
                 decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                 //如果成本表总额为null,或是小于预付表总计的总价，则正常处理
                 if (ccc.extended_price != null || ccc.extended_price < extended_price)
                 {
                     //正常处理
-                    var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0 ORDER BY b.start_date");
+                    var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status=1 ORDER BY b.start_date");
                     foreach (DataRow i in block_hours.Rows)
                     {
                         if (i[1] != null && Convert.ToDecimal(i[1]) > 0)
@@ -1610,7 +1616,6 @@ namespace EMT.DoneNOW.BLL
                         foreach (var i in block)
                         {
                             extend += i.Value;
-
                             cad.id = (int)(cad_dal.GetNextIdCom());//序列号
                             cad.contract_block_id = i.Key;
                             if (extend <= ccc.extended_price)
@@ -1639,7 +1644,6 @@ namespace EMT.DoneNOW.BLL
                                 new sys_oper_log_dal().Insert(add3_log);       // 插入日志
                                 var ccb = ccb_dal.FindNoDeleteById(i.Key);//获取当前的预付信息
                                 var oldccb = ccb;
-                                ccb.is_billed = 1;
                                 ccb.status_id = 0;
                                 ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                 ccb.update_user_id = user.id;
@@ -1718,13 +1722,13 @@ namespace EMT.DoneNOW.BLL
             else if (cc != null && cc.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
             {
                 //统计预付表中的预付事件剩余
-                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0");
+                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1");
                 decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                 //如果成本表总额为null,或是小于预付表总计的总价，则正常处理
                 if (ccc.extended_price == null || ccc.extended_price < extended_price)
                 {
                     //正常处理
-                    var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0 ORDER BY b.start_date");
+                    var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1 ORDER BY b.start_date");
                     foreach (DataRow i in block_hours.Rows)
                     {
                         if (i[1] != null && Convert.ToDecimal(i[1]) > 0)
@@ -1766,7 +1770,6 @@ namespace EMT.DoneNOW.BLL
                                 };          // 创建日志
                                 new sys_oper_log_dal().Insert(add3_log);       // 插入日志                               
                                 var oldccb = ccb;
-                                ccb.is_billed = 1;
                                 ccb.status_id = 0;
                                 ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                 ccb.update_user_id = user.id;
@@ -1896,6 +1899,14 @@ namespace EMT.DoneNOW.BLL
                 };          // 创建日志
                 new sys_oper_log_dal().Insert(add_log);       // 插入日志
             }
+              if (ccc.contract_block_id != null) {
+                var blockk = ccb_dal.FindNoDeleteById((long)ccc.contract_block_id);
+                if (blockk != null) {
+                    blockk.is_billed = 1;
+                    ccb_dal.Update(blockk);
+                }
+            }
+
             var olaccc = ccc;
             ccc.bill_status = 1;//已计费
             ccc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -2449,7 +2460,7 @@ namespace EMT.DoneNOW.BLL
             if (cc != null && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {
                 //统计预付表中的预付剩余
-                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0");
+                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1");
                 decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                 //如果成本表总额为null,或是小于预付表总计的总价，则正常处理
                 if (ccc.extended_price == null || ccc.extended_price < extended_price)
@@ -2478,7 +2489,7 @@ namespace EMT.DoneNOW.BLL
             else if (cc != null && cc.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
             {
                 //统计预付表中的预付事件剩余
-                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.is_billed=0");
+                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1");
                 decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                 //如果成本表总额为null,或是小于预付表总计的总价，则正常处理
                 if (ccc.extended_price == null || ccc.extended_price < extended_price)
