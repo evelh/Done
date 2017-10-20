@@ -96,18 +96,20 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum ACTIVITY_TYPE
         {
-            OPPORTUNITYUPDATE = 21,          // 商机更新
-            PHONE = 22,                    // 电话
-            MEETING = 23,                  // 会议
-            OUTLINE = 24,                    // 概要
-            GRAFFITI_RECORD = 25,            // 涂鸦记录
-            EMAIL = 26,                      // 邮件
-            IN_CHARGE = 27,                  // 计费中
-            SALES = 28,                      // 销售
-            CANCELLATION = 29,               // 注销
-            CONTRACT_NOTE = 1492,             // 合同备注
-            CONTRACT_UDF_EDIT = 1493,        // 合同自定义信息更新
-            PROJECT_NOTE=1494,                // 项目备注
+
+            OPPORTUNITYUPDATE = 21,         // 商机更新
+            PHONE = 22,                     // 电话
+            MEETING = 23,                   // 会议
+            OUTLINE = 24,                   // 概要
+            GRAFFITI_RECORD = 25,           // 涂鸦记录
+            EMAIL = 26,                     // 邮件
+            IN_CHARGE = 27,                 // 计费中
+            SALES = 28,                     // 销售
+            CANCELLATION = 29,              // 注销
+            CONTRACT_NOTE = 1492,           // 合同备注
+            PROJECT_EMAIL = 1493,           // 项目Email
+            PROJECT_NOTE = 1494,            // 项目备注
+            PROJECT_STATUS = 1495,          // 项目状态
         }
 
 

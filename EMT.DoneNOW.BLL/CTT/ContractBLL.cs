@@ -590,7 +590,7 @@ namespace EMT.DoneNOW.BLL
             {
                 id = actDal.GetNextIdCom(),
                 cate_id = (int)ACTIVITY_CATE.CONTRACT_NOTE,
-                action_type_id = (int)ACTIVITY_TYPE.CONTRACT_UDF_EDIT,
+                action_type_id = (int)ACTIVITY_TYPE.CONTRACT_NOTE,
                 parent_id = null,
                 object_id = contractId,
                 object_type_id = (int)OBJECT_TYPE.CONTRACT,
