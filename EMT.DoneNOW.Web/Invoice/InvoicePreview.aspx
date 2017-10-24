@@ -130,7 +130,7 @@
             cursor: pointer;
             box-shadow: 1px 1px 4px rgba(0,0,0,0.33);
             position: fixed;
-            top: 70px;
+            top: 69px;
             left: 220px;
             z-index: 40;
             display: none;
@@ -170,6 +170,17 @@
         }
 
             .DropDownMenuItemText:hover {
+                background-color: #E9F0F8;
+            }
+            .PDFbtn{
+                    color:#4F4F4F;
+                    border: none;
+                    background: transparent;
+                    cursor:pointer;
+                    padding:3px 2px 3px 13px;
+                    outline:none;
+            }
+            .PDFbtn:hover {
                 background-color: #E9F0F8;
             }
         /*主体表格部分*/
@@ -433,15 +444,17 @@
                             <tr class="DropDownMenuItem" onclick="Print()">
                                 <td class="DropDownMenuItemText">&nbsp;&nbsp;This Invoice</td>
                             </tr>
-                            <tr style="height: 8px;">
+                            <tr style="height: 2px;">
                                 <td class="DropDownMenuItemSectionSeparator"></td>
                             </tr>
                             <tr class="DropDownMenuItem">
-                                <td class="DropDownMenuItemHeaderText">
-                                    <asp:Button ID="ConToPdf" runat="server" Text="转化为PDF格式" OnClick="ConToPdf_Click" />
+                                <td>
+                                    <asp:Button ID="ConToPdf" runat="server" Text="转化为PDF格式(view, print, or save)" OnClick="ConToPdf_Click" class="PDFbtn"/>
                                     <%--<span class="DropDownMenuSectionHeaderText">转化为PDF格式</span>--%>
-                                    <span class="FieldLevelInstructions">(view, print, or save)</span>
                                 </td>
+                            </tr>
+                            <tr style="height: 8px;">
+                                <td class="DropDownMenuItemSectionSeparator"></td>
                             </tr>
                             <tr class="DropDownMenuItemSeparator">
                                 <td class="DropDownMenuItemTextSeparator"></td>
@@ -548,6 +561,7 @@
         $("#invoice_temp_id").css("display", "none"); // ProcessBar
         $("#ProcessBar").css("display", "none");
         $(".PreviewInvoice_TextOverlay").hide();
+        $(".DropDownMenu").css("left", '15px');
         <%} %>
 
         <%if (!string.IsNullOrEmpty(isPrint)){ %>
