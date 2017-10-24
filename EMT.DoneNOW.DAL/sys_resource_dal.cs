@@ -9,10 +9,10 @@ namespace EMT.DoneNOW.DAL
 {
     public class sys_resource_dal : BaseDAL<sys_resource>
     {
-        public List<DictionaryEntryDto> GetDictionary(bool isActive=false)
+        public List<DictionaryEntryDto> GetDictionary(bool isOnlyActive=false)
         {
             var all = this.FindAll().OrderBy(_ => _.id).ToList();
-            if (isActive)
+            if (isOnlyActive)
             {
                 all = all.Where(_ => _.is_active == 1).ToList();
             }

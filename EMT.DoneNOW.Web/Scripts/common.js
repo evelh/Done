@@ -213,7 +213,9 @@ function returnNumber(param) {
 }
 
 var windowObj = {
-    contract:'Contract',
+    contract: 'contract',
+    notes: 'notes',
+    todos: 'todos',
 }
 var windowType = {
     blank: '_blank',

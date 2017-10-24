@@ -441,7 +441,7 @@ namespace EMT.DoneNOW.DTO
             RESOURCE=881,                         //系统管理-员工查询
             SYS_ROLE = 898,                     // 系统管理-角色查询
             SYS_DEPARTMENT = 899,               // 系统管理-部门查询
-            CONTRACT_CALLBACK = 902,            // 合同查找带回
+            //CONTRACT_CALLBACK = 902,            // 合同查找带回------废弃，使用917
             MARKET=906,                          //市场
             TERRITORY=907,                          //地域
             PRODUCTINVENTORY = 909,               // 库存
@@ -491,6 +491,8 @@ namespace EMT.DoneNOW.DTO
             PROJECTCALLBACK=1524,                  // 项目的查找带回
             RES_ROLE_DEP_CALLBACK=1529,            // 员工部门角色查找带回
             PROJECT_SEARCH= 1530,                   // 项目查询
+            CRM_NOTE_SEARCH = 1531,                 // 客户备注查询
+            TODOS = 1532,                           // 客户代办查询
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
@@ -615,6 +617,16 @@ namespace EMT.DoneNOW.DTO
             TIMESPAN = 817,         // 日期-时间戳
             UN_EQUAL = 818,         // 不等于
         }
+
+        /// <summary>
+        /// 活动状态-72
+        /// </summary>
+        public enum ACTIVITY_STATUS
+        {
+            NOT_COMPLETED = 827,    // 未完成
+            COMPLETED = 828,        // 已完成
+        }
+
         /// <summary>
         /// 系统权限：limit类型-76
         /// </summary>
@@ -908,6 +920,8 @@ namespace EMT.DoneNOW.DTO
         ContractBlock = 91,                 // 合同管理-预付费用
         ContractBlockTicket = 92,           // 合同管理-事件查询
         CONFIGSUBSCRIPTION = 93,           // 配置项界面订阅管理
+        CRMNote = 101,                  // 客户备注查询
+        Todos = 102,                    // 客户代办查询
 
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批

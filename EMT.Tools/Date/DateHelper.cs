@@ -22,6 +22,36 @@ namespace EMT.Tools.Date
         }
 
         /// <summary>
+        /// 当前时间转换为标准时间的毫秒时间戳
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static long ToUniversalTimeStamp()
+        {
+            return (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000;
+        }
+
+        /// <summary>
+        /// 毫秒时间戳转换为本地时间
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static DateTime TimeStampToDateTime(long time)
+        {
+            return new DateTime(time * 10000 + 621355968000000000).ToLocalTime();
+        }
+
+        /// <summary>
+        /// 毫秒时间戳转换为标准时间
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static DateTime TimeStampToUniversalDateTime(long time)
+        {
+            return new DateTime(time * 10000 + 621355968000000000).ToLocalTime();
+        }
+
+        /// <summary>
         /// 判断字符串是否指定的时间格式
         /// </summary>
         /// <param name="datetime"></param>

@@ -23,7 +23,11 @@ namespace EMT.DoneNOW.Web.Company
                 var type = Request.QueryString["type"];
                 if (id != null)
                 {
-                    crm_account = new CompanyBLL().GetCompanyByOtherId(Convert.ToInt64(id));
+                    var src = Request.QueryString["src"];
+                    if (!string.IsNullOrEmpty(src))
+                        crm_account = companyBll.GetCompanyByOtherId(Convert.ToInt64(id), src);
+                    else
+                        crm_account = companyBll.GetCompanyByOtherId(Convert.ToInt64(id));
                     if (crm_account != null)
                     {
                        

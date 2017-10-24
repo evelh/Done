@@ -148,6 +148,12 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.GENERATE_INVOICE:
                     currentQuery.page_name = "待生成发票的条目查询";
                     break;
+                case (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH:
+                    currentQuery.page_name = "备注查询";
+                    break;
+                case (int)DicEnum.QUERY_CATE.TODOS:
+                    currentQuery.page_name = "待办查询";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

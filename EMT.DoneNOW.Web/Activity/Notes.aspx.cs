@@ -12,12 +12,56 @@ namespace EMT.DoneNOW.Web.Activity
 {
     public partial class Notes : BasePage
     {
-        protected string action = "add";        // add/edit
         protected com_activity note = null;
+        protected List<crm_contact> contactList = null;             // 可选联系人列表
+        protected List<crm_opportunity> opportunityList = null;     // 可选商机列表
+        protected List<d_general> actionTypeList;                   // 活动类型列表
+        protected List<DictionaryEntryDto> resourceList;            // 负责人列表
+        private ActivityBLL bll = new ActivityBLL();
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            actionTypeList = bll.GetCRMActionType();
+            resourceList = new UserResourceBLL().GetResourceList();
 
+            if (!IsPostBack)
+            {
+                long noteid;
+                if (!string.IsNullOrEmpty(Request.QueryString["id"]) && long.TryParse(Request.QueryString["id"], out noteid))
+                {
+                    note = bll.GetActivity(noteid);
+                }
+            }
+            else
+            {
+                com_activity activity = AssembleModel<com_activity>();
+                if (activity.contact_id == 0)
+                    activity.contact_id = null;
+                activity.start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(Request.Form["start_date2"]));
+                activity.end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(Request.Form["end_date2"]));
+
+                com_activity todo = null;
+                if (!string.IsNullOrEmpty(Request.Form["action_type_id1"]))
+                {
+                    todo = new com_activity();
+                    todo.action_type_id = int.Parse(Request.Form["action_type_id1"]);
+                    todo.start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(Request.Form["start_date1"]));
+                    todo.end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(Request.Form["end_date1"]));
+                    todo.description = Request.Form["description1"];
+                    if (!string.IsNullOrEmpty(Request.Form["resource_id1"]))
+                        todo.resource_id = long.Parse(Request.Form["resource_id1"]);
+                }
+
+                if (string.IsNullOrEmpty(Request.Form["id"]))
+                    bll.AddCRMNote(activity, todo, GetLoginUserId());
+                else
+                    bll.EditCRMNote(activity, todo, GetLoginUserId());
+
+                if (Request.Form["action"] != null && Request.Form["action"].Equals("SaveNew"))
+                    Response.Write("<script>alert('保存备注成功');window.location.href='Notes.aspx';self.opener.location.reload();</script>");
+                else
+                    Response.Write("<script>alert('保存备注成功');window.close();self.opener.location.reload();</script>");
+            }
         }
     }
 }

@@ -200,6 +200,12 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.CONTRACT_RATE:
                     addBtn = "新增费率";
                     break;
+                case (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH:
+                    addBtn = "新增备注";
+                    break;
+                case (int)DicEnum.QUERY_CATE.TODOS:
+                    addBtn = "新增待办";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -452,6 +458,15 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "NewNote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "新增待办", click_function = "NewTodo()" });
                     contextMenu.Add(new PageContextMenuDto { text = "取消销售订单", click_function = "CancelSaleOrder()" });
+                    break;
+                case (long)QueryType.CRMNote:
+                    contextMenu.Add(new PageContextMenuDto { text = "修改备注", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "set scheduled", click_function = "SetScheduled()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除备注", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    break;
+                case (long)QueryType.Todos:
+                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
                     break;
                 case (long)QueryType.Contract:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑合同", click_function = "Edit()" });
