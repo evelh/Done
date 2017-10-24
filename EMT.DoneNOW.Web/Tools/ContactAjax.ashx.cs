@@ -6,6 +6,8 @@ using EMT.DoneNOW.BLL;
 
 using System.Web.SessionState;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DAL;
+using System.Text;
 
 namespace EMT.DoneNOW.Web
 {
@@ -25,6 +27,14 @@ namespace EMT.DoneNOW.Web
                     case "delete":
                         var contact_id = context.Request.QueryString["id"];
                         DeleteContact(context,Convert.ToInt64(contact_id));
+                        break;
+                    case "GetConList":
+                        var conIds = context.Request.QueryString["ids"];
+                        GetConList(context,conIds);
+                        break;
+                    case "GetConName":
+                        var conNameIds = context.Request.QueryString["ids"];
+                        GetConName(context,conNameIds);
                         break;
                     default:
                         break;
@@ -63,7 +73,34 @@ namespace EMT.DoneNOW.Web
           
         }
 
+        private void GetConList(HttpContext context, string ids)
+        {
+            StringBuilder con = new StringBuilder();
+            con.Append("<option value='0'>  </option>");
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var conList = new crm_contact_dal().GetContactByIds(ids);
+                if (conList != null && conList.Count > 0)
+                {
+                    conList.ForEach(_ => con.Append($"<option value='{_.id}'>{_.name}</option>"));
+                }
+            }
+            context.Response.Write(con.ToString());
+        }
 
+        private void GetConName(HttpContext context, string ids)
+        {
+            StringBuilder con = new StringBuilder();
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var conList = new crm_contact_dal().GetContactByIds(ids);
+                if (conList != null && conList.Count > 0)
+                {
+                    conList.ForEach(_ => con.Append($";{_.name}"));
+                }
+            }
+            context.Response.Write(con.ToString());
+        }
 
         public bool IsReusable
         {

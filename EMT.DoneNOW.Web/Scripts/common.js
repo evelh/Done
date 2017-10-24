@@ -152,11 +152,13 @@ function LayerConfirm(msg, btn1, btn2, btn1Func, btn2Func) {
     layer.confirm(msg, {
         btn: [btn1, btn2]
     },
-        function () {
+        function (index) {
             btn1Func();
+            layer.close(index);
         },
-        function () {
+        function (index) {
             btn2Func();
+            layer.close(index);
         });
 }
 

@@ -287,6 +287,7 @@
     <Content Include="Product\ProductStock.aspx" />
     <Content Include="Product\TransferProductStock.aspx" />
     <Content Include="Product\VendorAdd.aspx" />
+    <Content Include="Project\RecipientSelector.aspx" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
     <Content Include="Images\export.png" />
@@ -1329,6 +1330,13 @@
     </Compile>
     <Compile Include="Product\VendorAdd.aspx.designer.cs">
       <DependentUpon>VendorAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\RecipientSelector.aspx.cs">
+      <DependentUpon>RecipientSelector.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\RecipientSelector.aspx.designer.cs">
+      <DependentUpon>RecipientSelector.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\SearchConditionFrame.aspx.cs">

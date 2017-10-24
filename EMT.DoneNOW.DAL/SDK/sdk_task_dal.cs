@@ -9,7 +9,12 @@ namespace EMT.DoneNOW.DAL
     {
         public List<sdk_task> GetProTask(long project_id)
         {
-            return FindListBySql<sdk_task>($"select * from sdk_task where delete_time = 0 and project_id = {project_id}"); ;
+            return FindListBySql<sdk_task>($"select * from sdk_task where delete_time = 0 and project_id = {project_id}"); 
+        }
+
+        public List<sdk_task> GetTaskByIds(string ids)
+        {
+            return FindListBySql<sdk_task>($"select * from sdk_task where delete_time = 0 and id in ({ids})");
         }
     }
 }

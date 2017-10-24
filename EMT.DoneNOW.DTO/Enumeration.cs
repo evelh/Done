@@ -585,6 +585,9 @@ namespace EMT.DoneNOW.DTO
             PROJECT_EXTENSION_INFORMATION=1377,         // 项目扩展信息
             PROJECT_ITEM=1378,                          // 项目团队
             PROJECT_ITEM_ROLE=1379,                     // 项目团队角色
+            PROJECT_TASK=1380,                          // 任务
+            PROJECT_CALENDAR=1381,                      // 项目日历条目
+            PROJECT_TASK_RESOURCE = 1382,               // 任务分配对象
         }
 
         /// <summary>
@@ -803,7 +806,7 @@ namespace EMT.DoneNOW.DTO
             IN_PROJECT = 1339,             // 内部项目
             PROJECT_DAY = 1340,            // 项目提案
             TEMP = 1341,                   // 模板
-            BENCHMARK = 1342,              // 基准
+            BENCHMARK = 1342,              // 基准(快照)
         }
         /// <summary>
         /// 项目状态 - 124
@@ -828,6 +831,17 @@ namespace EMT.DoneNOW.DTO
             USE_PARENT_ACC_ADD =1487,           // 使用父客户地址
             USE_PARENT_INVOIVE_ADD =1488,       // 使用父客户发票地址
             USE_INSERT =1489,                   // 手工输入地址
+        }
+
+        public enum NOTE_PUBLISH_TYPE
+        {
+            CONTRACT_ALL_USER=2117,              // 合同-全部用户
+            CONTRACT_INTERNA_USER = 2118,        // 合同-内部用户
+            TASK_ALL_USER = 2119,            // 
+            TASK_INTERNA_USER = 2120,            // 
+            PROJECT_ALL_USER = 2121,            // 
+            PROJECT_INTERNA_USER = 2122,            // 
+            PROJECT_TEAM = 2123,            // 
         }
     }
     /// <summary>
@@ -1068,5 +1082,7 @@ namespace EMT.DoneNOW.DTO
 
         QuoteBodyItem=420,                             //打开报价模板编辑
         EmailTemp=421,                                 //邮件模板
+
+        PROJECT_RECIPIENTSELECTOR=430,              // 通知邮件配置
     }
 }

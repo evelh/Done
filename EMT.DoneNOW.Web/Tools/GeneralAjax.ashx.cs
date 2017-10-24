@@ -23,12 +23,16 @@ namespace EMT.DoneNOW.Web
                 {
                     case "general":
                         var general_id = context.Request.QueryString["id"];
-                        GetGeneralInfo(context,long.Parse(general_id));
+                        GetGeneralInfo(context, long.Parse(general_id));
                         break;
                     case "GetTaxSum":
                         var accDedIds = context.Request.QueryString["ids"];
                         var tax_id = context.Request.QueryString["taxId"];
-                        GetTaxSum(context,long.Parse(tax_id),accDedIds);
+                        GetTaxSum(context, long.Parse(tax_id), accDedIds);
+                        break;
+                    case "GetNotiTempEmail":
+                        var notiTempId = context.Request.QueryString["temp_id"];
+                        GetNotiTempEmail(context,long.Parse(notiTempId));
                         break;
                     default:
                         break;
@@ -44,36 +48,36 @@ namespace EMT.DoneNOW.Web
 
 
 
-        private void GetGeneralInfo(HttpContext context,long id)
+        private void GetGeneralInfo(HttpContext context, long id)
         {
             var general = new d_general_dal().GetGeneralById(id);
             if (general != null)
             {
-                context.Response.Write(new EMT.Tools.Serialize().SerializeJson(general)); 
+                context.Response.Write(new EMT.Tools.Serialize().SerializeJson(general));
             }
         }
         /// <summary>
         ///  根据税区和条目税种计算税额
         /// </summary>
-        private void GetTaxSum(HttpContext context, long tax_id,string accDedIds)
+        private void GetTaxSum(HttpContext context, long tax_id, string accDedIds)
         {
             if (tax_id == 0 || string.IsNullOrEmpty(accDedIds))
             {
                 context.Response.Write("0.00");
                 return;
             }
-                
+
             decimal totalMoney = 0;
             // 所有需要计算的条目的Id的集合
-            var accDedIdList = accDedIds.Split(new char[] { ','},StringSplitOptions.RemoveEmptyEntries);
-            if(accDedIdList != null&& accDedIdList.Count() > 0)
+            var accDedIdList = accDedIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            if (accDedIdList != null && accDedIdList.Count() > 0)
             {
                 var adDal = new crm_account_deduction_dal();
                 foreach (var accDedId in accDedIdList)
                 {
                     var accDedList = adDal.GetInvDedDtoList($" and id={accDedId}");
                     var thisAccDed = adDal.FindNoDeleteById(long.Parse(accDedId));
-                    if (accDedList != null&& accDedList.Count > 0)
+                    if (accDedList != null && accDedList.Count > 0)
                     {
                         var accDed = accDedList.FirstOrDefault(_ => _.id.ToString() == accDedId);
                         if (accDed.tax_category_id != null)
@@ -88,6 +92,20 @@ namespace EMT.DoneNOW.Web
                 }
             }
             context.Response.Write(totalMoney.ToString("#0.00"));
+
+        }
+        /// <summary>
+        /// 根据通知模板获取相关模板邮件信息
+        /// </summary>
+        private void GetNotiTempEmail(HttpContext context, long temp_id)
+        {
+
+            var tempEmailList = new sys_notify_tmpl_email_dal().GetEmailByTempId(temp_id);
+            if (tempEmailList != null&& tempEmailList.Count>0)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(tempEmailList[0]));
+            }
+
 
         }
 

@@ -20,6 +20,12 @@ namespace EMT.DoneNOW.DAL
                 return new List<ctt_contract_cost>();
             return list;
         }
+
+        /// 根据项目Id 获取cost 
+        public List<ctt_contract_cost> GetCostByProId(long project_id)
+        {
+            return FindListBySql<ctt_contract_cost>($"SELECT * FROM ctt_contract_cost where project_id = {project_id} and delete_time = 0");
+        }
     }
 
 }

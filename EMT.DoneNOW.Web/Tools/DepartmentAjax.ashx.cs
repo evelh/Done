@@ -1,8 +1,10 @@
 ﻿using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.SessionState;
 
@@ -20,7 +22,10 @@ namespace EMT.DoneNOW.Web
             {
                 case "delete": var departmen_id = context.Request.QueryString["id"];
                     Delete(context, Convert.ToInt64(departmen_id));break;
-
+                case "GetNameByIds":
+                    var dIds = context.Request.QueryString["ids"];
+                    GetNameByIds(context,dIds);
+                    break;
                 default: break;
 
             }
@@ -47,6 +52,25 @@ namespace EMT.DoneNOW.Web
             }
 
         }
+
+        private void GetNameByIds(HttpContext context,string ids)
+        {
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var depList = new sys_department_dal().GetDepartment($" and id in ({ids})");
+                if (depList != null && depList.Count > 0)
+                {
+                    StringBuilder depStringBuilder = new StringBuilder();
+                    depList.ForEach(_ => depStringBuilder.Append(_.name + ";"));
+                    var depString = depStringBuilder.ToString();
+                    if (!string.IsNullOrEmpty(depString))
+                    {
+                        context.Response.Write(depString);
+                    }
+                }
+            }
+          
+        } 
         public bool IsReusable
         {
             get

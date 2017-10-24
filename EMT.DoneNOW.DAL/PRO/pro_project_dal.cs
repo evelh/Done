@@ -28,7 +28,7 @@ namespace EMT.DoneNOW.DAL
         /// </summary>\
         public List<pro_project> GetTempList()
         {
-            return FindListBySql<pro_project>($"select * from pro_project where  delete_time = 0 and type_id = {(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.TEMP}");
+            return FindListBySql<pro_project>($"select * from pro_project where  delete_time = 0 and type_id = {(int)DTO.DicEnum.PROJECT_TYPE.TEMP} and status_id <> {(int)DTO.DicEnum.PROJECT_STATUS.DISABLE} ");
         }
     }
 }

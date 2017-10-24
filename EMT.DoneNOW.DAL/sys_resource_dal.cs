@@ -39,5 +39,24 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sys_resource>("select * from sys_resource where is_active = 1 and delete_time = 0");
         }
+
+        public List<sys_resource> GetListByIds(string ids)
+        {
+            return FindListBySql<sys_resource>($"select * from sys_resource where is_active = 1 and delete_time = 0 and id in ({ids})");
+        }
+
+        /// 根据关系表ID 获取员工相关信息 
+        public List<sys_resource> GetListByDepIds(string ids)
+        {
+            return FindListBySql<sys_resource>($"SELECT * from sys_resource where id in ( SELECT resource_id from sys_resource_department where id in ({ids})) and delete_time = 0 ");
+        }
+        /// <summary>
+        /// 根据部门获取相应的员工ID
+        /// </summary>
+        public List<sys_resource> GetListByDepId(string ids)
+        {
+            return FindListBySql<sys_resource>($"SELECT * from sys_resource where id in ( SELECT resource_id from sys_resource_department where department_id in ({ids}) and delete_time = 0)");
+        }
+
     }
 }
