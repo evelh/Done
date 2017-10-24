@@ -97,9 +97,11 @@
     <Compile Include="IVT\ivt_warehouse.cs" />
     <Compile Include="IVT\ivt_warehouse_product.cs" />
     <Compile Include="PRO\pro_project.cs" />
+    <Compile Include="PRO\pro_project_calendar.cs" />
     <Compile Include="PRO\pro_project_team.cs" />
     <Compile Include="PRO\pro_project_team_role.cs" />
     <Compile Include="SDK\sdk_task.cs" />
+    <Compile Include="SDK\sdk_task_resource.cs" />
     <Compile Include="SYS\sys_department.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email.cs" />
     <Compile Include="SYS\sys_organization_location.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="SYS\sys_udf_field.cs" />
     <Compile Include="SYS\sys_udf_group_field.cs" />
     <Compile Include="SYS\sys_udf_list.cs" />
+    <Compile Include="SYS\sys_workgroup.cs" />
     <Compile Include="sys_resource.cs" />
   </ItemGroup>
   <ItemGroup />

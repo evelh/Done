@@ -67,6 +67,12 @@ namespace EMT.DoneNOW.Core
         public Int64? sales_order_id { get; set; }
         [DataMember]
         public Int64? task_id { get; set; }
+        [DataMember]
+        public Int32? task_status_id { get; set; }
+        [DataMember]
+        public Int32? publish_type_id { get; set; }
+        [DataMember]
+        public SByte? announce { get; set; }
 
 
     }

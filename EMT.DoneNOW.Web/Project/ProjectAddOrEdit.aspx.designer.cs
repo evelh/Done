@@ -49,6 +49,15 @@ namespace EMT.DoneNOW.Web.Project {
         protected global::System.Web.UI.WebControls.DropDownList type_id;
         
         /// <summary>
+        /// is_active 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox is_active;
+        
+        /// <summary>
         /// status_id 控件。
         /// </summary>
         /// <remarks>
@@ -65,6 +74,15 @@ namespace EMT.DoneNOW.Web.Project {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList department_id;
+        
+        /// <summary>
+        /// owner_resource_id 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList owner_resource_id;
         
         /// <summary>
         /// useResource_daily_hours 控件。
@@ -155,5 +173,14 @@ namespace EMT.DoneNOW.Web.Project {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList temp_department_id;
+        
+        /// <summary>
+        /// temp_owner_resource_id 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList temp_owner_resource_id;
     }
 }

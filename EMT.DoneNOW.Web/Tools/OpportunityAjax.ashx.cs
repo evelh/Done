@@ -6,6 +6,7 @@ using System.Web.SessionState;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.DAL;
+using System.Text;
 
 namespace EMT.DoneNOW.Web
 {
@@ -38,6 +39,10 @@ namespace EMT.DoneNOW.Web
                     case "returnMoney":
                         var oid = context.Request.QueryString["id"];
                         GetQuoteItemMoney(context,long.Parse(oid));
+                        break;
+                    case "GetAccOpp":
+                        var oppAcccountId = context.Request.QueryString["account_id"];
+                        GetAccOpp(context,long.Parse(oppAcccountId));
                         break;
                     default:
                         break;
@@ -197,6 +202,18 @@ namespace EMT.DoneNOW.Web
                
 
             // quoteItemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional != 1&&_.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT).ToList();
+        }
+
+        public void GetAccOpp(HttpContext context, long account_id)
+        {
+            var oppList = new crm_opportunity_dal().FindOpHistoryByAccountId(account_id);
+            if (oppList != null && oppList.Count > 0)
+            {
+                StringBuilder op = new StringBuilder();
+                op.Append("<option value='0'>   </option>");
+                oppList.ForEach(_ => op.Append($"<option value='{_.id}'>{_.name}</option>"));
+                context.Response.Write(op.ToString());
+            }
         }
         public bool IsReusable
         {

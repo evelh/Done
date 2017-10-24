@@ -92,7 +92,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? cash_collected { get; set; }
         [DataMember]
-        public Int64? baseline_id { get; set; }
+        public Int64? baseline_project_id { get; set; }
         [DataMember]
         public Int64? opportunity_id { get; set; }
         [DataMember]

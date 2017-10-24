@@ -18,7 +18,7 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql<sys_resource_department>($"select srd.* from sys_resource_department srd, sys_department sd WHERE srd.department_id = sd.id and sd.cate_id = {(int)cate} and srd.resource_id = {resource_id} ");
         }
 
-       
-        // select * from sys_resource_department srd, sys_department sd WHERE srd.department_id =sd.id and sd.cate_id = 724
+ 
+        
     }
 }

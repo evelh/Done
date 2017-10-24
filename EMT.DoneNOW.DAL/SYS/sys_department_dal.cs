@@ -11,10 +11,12 @@ namespace EMT.DoneNOW.DAL
         /// 查询出所有可用的部门
         /// </summary>
         /// <returns></returns>
-        public List<sys_department> GetDepartment()
+        public List<sys_department> GetDepartment(string where ="")
         {
-            return FindListBySql<sys_department>("select * from sys_department where is_active =1 and delete_time = 0");
+            return FindListBySql<sys_department>("select * from sys_department where is_active =1 and delete_time = 0"+where );
         }
+
+        
     }
 
 }

@@ -1012,6 +1012,7 @@ namespace EMT.DoneNOW.BLL
                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     update_user_id = user.id,
                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    publish_type_id = isProject ? (int)NOTE_PUBLISH_TYPE.PROJECT_INTERNA_USER : (int)NOTE_PUBLISH_TYPE.CONTRACT_INTERNA_USER,
 
                 };
                 new com_activity_dal().Insert(addActivity);
@@ -1399,7 +1400,7 @@ namespace EMT.DoneNOW.BLL
                 end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),
                 description = "",// todo 通知暂时不做，做通知时，将内容补上
                                  // description = $"关闭时间：{DateTime.Now.ToString("dd/MM/yyyy")} /r  通知对象:{notifyEmail.to_email} /r 主题：{notifyEmail.subject} /r 内容 ：{notifyEmail.body_text}",     // todo 内容描述拼接
-                status_id = (int)OPPORTUNITY_STATUS.LOST,
+                // status_id = (int)OPPORTUNITY_STATUS.LOST,
                 complete_description = null,
                 complete_time = null,
                 create_user_id = user.id,

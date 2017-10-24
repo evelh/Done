@@ -41,6 +41,7 @@ namespace EMT.DoneNOW.Web.Project
                     thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(id));
                     if (thisProject != null)
                     {
+                        account = new crm_account_dal().FindNoDeleteById(thisProject.account_id);
                         project_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.PROJECTS,thisProject.id, project_udfList);
                         isAdd = false;
                         #region 根据项目信息为页面数据赋值
@@ -56,8 +57,22 @@ namespace EMT.DoneNOW.Web.Project
                             excludeWeekend.Checked = thisProject.exclude_weekend == 1;
                             excludeHoliday.Checked = thisProject.exclude_holiday == 1;
                             warnTime_off.Checked = thisProject.warn_time_off == 1;
+                            if (!string.IsNullOrEmpty(isTemp))
+                            {
+                                is_active.Checked = thisProject.status_id == (int)DicEnum.PROJECT_STATUS.NEW;
+                            }
                         }
                         #endregion
+                    }
+                }
+                else
+                {
+                    if (!IsPostBack)
+                    {
+                        is_active.Checked = true;
+                        excludeWeekend.Checked = true;
+                        excludeHoliday.Checked = true;
+                        warnTime_off.Checked = true;
                     }
                 }
             }
@@ -76,6 +91,13 @@ namespace EMT.DoneNOW.Web.Project
             line_of_business_id.DataSource = dic.FirstOrDefault(_ => _.Key == "project_line_of_business").Value;
             line_of_business_id.DataBind();
             line_of_business_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            temp_line_of_business_id.DataTextField = "show";
+            temp_line_of_business_id.DataValueField = "val";
+            temp_line_of_business_id.DataSource = dic.FirstOrDefault(_ => _.Key == "project_line_of_business").Value;
+            temp_line_of_business_id.DataBind();
+            temp_line_of_business_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+
 
             type_id.DataTextField = "show";
             type_id.DataValueField = "val";
@@ -110,16 +132,41 @@ namespace EMT.DoneNOW.Web.Project
                 type_id.SelectedValue = thisType;
             }
 
+            temp_type_id.DataTextField = "show";
+            temp_type_id.DataValueField = "val";
+            temp_type_id.DataSource = thisTypeList;
+            temp_type_id.DataBind();
+
             status_id.DataTextField = "show";
             status_id.DataValueField = "val";
             status_id.DataSource = dic.FirstOrDefault(_ => _.Key == "project_status").Value;
             status_id.DataBind();
 
-            department_id.DataTextField = "show";
-            department_id.DataValueField = "val";
+            owner_resource_id.DataTextField = "show";
+            owner_resource_id.DataValueField = "val";
+            owner_resource_id.DataSource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value;
+            owner_resource_id.DataBind();
+            owner_resource_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+            // temp_owner_resource_id
+            temp_owner_resource_id.DataTextField = "show";
+            temp_owner_resource_id.DataValueField = "val";
+            temp_owner_resource_id.DataSource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value;
+            temp_owner_resource_id.DataBind();
+            temp_owner_resource_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+            department_id.DataTextField = "name";
+            department_id.DataValueField = "id";
             department_id.DataSource = dic.FirstOrDefault(_ => _.Key == "department").Value;
             department_id.DataBind();
             department_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+            temp_department_id.DataTextField = "name";
+            temp_department_id.DataValueField = "id";
+            temp_department_id.DataSource = dic.FirstOrDefault(_ => _.Key == "department").Value;
+            temp_department_id.DataBind();
+            temp_department_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
 
             organization_location_id.DataTextField = "name";
             organization_location_id.DataValueField = "id";
@@ -137,13 +184,14 @@ namespace EMT.DoneNOW.Web.Project
                 // 项目模板  --project_temp
                 if (tempList != null && tempList.Count > 0)
                 {
-                    template_id.DataTextField = "name";
-                    template_id.DataValueField = "id";
-                    template_id.DataSource = tempList;
-                    template_id.DataBind();
+                    project_temp.DataTextField = "name";
+                    project_temp.DataValueField = "id";
+                    project_temp.DataSource = tempList;
+                    project_temp.DataBind();
                 }
                 
             }
+             
         }
 
         /// <summary>
@@ -151,12 +199,43 @@ namespace EMT.DoneNOW.Web.Project
         /// </summary>
         private ProjectDto GetParam()
         {
-            ProjectDto param = new ProjectDto();
+            ProjectDto param = AssembleModel<ProjectDto>();
             param.project = AssembleModel<pro_project>();
+            var test = Request.Form["fromTempId"];
             param.project.use_resource_daily_hours = (sbyte)(useResource_daily_hours.Checked ? 1 : 0);
             param.project.exclude_weekend = (sbyte)(excludeWeekend.Checked ? 1 : 0);
             param.project.exclude_holiday = (sbyte)(excludeHoliday.Checked ? 1 : 0);
             param.project.warn_time_off = (sbyte)(warnTime_off.Checked ? 1 : 0);
+            if (!string.IsNullOrEmpty(isTemp))
+            {
+                param.project.status_id = is_active.Checked ? (int)DicEnum.PROJECT_STATUS.NEW : (int)DicEnum.PROJECT_STATUS.DISABLE;
+            }
+            #region 结束时间和持续时间天数
+           
+
+            
+                if (!isAdd)
+                {
+                    if (param.project.duration != thisProject.duration)
+                    {
+                        param.project.end_date = ((DateTime)param.project.start_date).AddDays((double)param.project.duration);
+                    }
+                    else
+                    {
+                        TimeSpan ts1 = new TimeSpan(((DateTime)param.project.start_date).Ticks);
+                        TimeSpan ts2 = new TimeSpan(((DateTime)param.project.end_date).Ticks);
+                        TimeSpan ts = ts1.Subtract(ts2).Duration();
+                        param.project.duration = ts.Days;
+                    }
+                }
+                else
+                {
+                    param.project.end_date = ((DateTime)param.project.start_date).AddDays(((double)param.project.duration)-1);
+                }
+           
+
+            #endregion
+
             param.notify = AssembleModel<com_notify_email>();
             if(project_udfList!=null&& project_udfList.Count > 0)
             {
@@ -177,6 +256,7 @@ namespace EMT.DoneNOW.Web.Project
             {
                 param.resDepIds = Request.Form["resDepList"];
                 param.contactIds = Request.Form["conIds"];
+                param.project.status_id = (int)DicEnum.PROJECT_STATUS.NEW;
             }
             else
             {
@@ -195,7 +275,7 @@ namespace EMT.DoneNOW.Web.Project
                 param.project.completed_percentage = thisProject.completed_percentage;
                 param.project.completed_time = thisProject.completed_time;
                 param.project.cash_collected = thisProject.cash_collected;
-                param.project.baseline_id = thisProject.baseline_id;
+                param.project.baseline_project_id = thisProject.baseline_project_id;
                 param.project.edit_event_id = thisProject.edit_event_id;
                 param.project.percent_complete = thisProject.percent_complete;
                 param.project.automatic_leveling_end_date_offset_days = thisProject.automatic_leveling_end_date_offset_days;
@@ -228,11 +308,11 @@ namespace EMT.DoneNOW.Web.Project
             var result = Save();
             if (result)
             {
-
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存项目成功！');window.close();self.opener.location.reload();</script>");
             }
             else
             {
-
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存项目失败！');window.close();self.opener.location.reload();</script>");
             }
         }
     }
