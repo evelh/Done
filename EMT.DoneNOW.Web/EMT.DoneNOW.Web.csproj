@@ -130,6 +130,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Activity\Notes.aspx" />
+    <Content Include="Activity\Todos.aspx" />
     <Content Include="Common\ColumnSelector.aspx" />
     <Content Include="Activity\AddActivity.aspx" />
     <Content Include="Company\CompanyNameSimilar.aspx" />
@@ -769,6 +771,20 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\Notes.aspx.cs">
+      <DependentUpon>Notes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Activity\Notes.aspx.designer.cs">
+      <DependentUpon>Notes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Activity\Todos.aspx.cs">
+      <DependentUpon>Todos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Activity\Todos.aspx.designer.cs">
+      <DependentUpon>Todos.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Common\ColumnSelector.aspx.cs">
       <DependentUpon>ColumnSelector.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

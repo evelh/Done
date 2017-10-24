@@ -1012,6 +1012,7 @@ namespace EMT.DoneNOW.BLL
         public ERROR_CODE InvoiceNumberAndDate(int id, string date, string number, long user_id)
         {
             var ci = _dal.FindNoDeleteById(id);
+            var old = _dal.FindNoDeleteById(id);
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (ci != null && user != null)
             {
@@ -1023,14 +1024,13 @@ namespace EMT.DoneNOW.BLL
                     }                    
                 }
                 ci.invoice_no = number;
-                var old = ci;
                 if (!string.IsNullOrEmpty(date))
                 {
                     ci.paid_date = DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式
                 }
                 else {
                     ci.paid_date = null;
-                }               
+                }
                 ci.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 ci.update_user_id = user.id;
                 if (_dal.Update(ci))

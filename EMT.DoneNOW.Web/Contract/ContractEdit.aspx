@@ -234,7 +234,7 @@
                             <td class="FieldLabel">初始费用
                               <div>
                                 <span style="display: inline-block;">
-                                  <input type="text" id="setup_fee" name="setup_fee" value="<%=contract.contract.setup_fee %>" />
+                                  <input type="text" id="setup_fee" name="setup_fee" value="<%=contract.contract.setup_fee==null?"":decimal.Round((decimal)contract.contract.setup_fee,2).ToString() %>" />
                                 </span>
                               </div>
                             </td>
@@ -248,7 +248,7 @@
                             <td class="FieldLabel">初始费用计费代码
                               <div>
                                 <input type="hidden" id="SetupCodeHidden" value="<%=contract.contract.setup_fee_cost_code_id %>" name="setup_fee_cost_code_id" />
-                                <input type="text" id="SetupCode" readonly="readonly" disabled="disabled" value="<%=contract.costCode %>" style="width:265px;" />
+                                <input type="text" id="SetupCode" readonly="readonly" <%if (contract.contract.setup_fee == null || contract.contract.setup_fee <= 0) { %> disabled="disabled" <%} %> value="<%=contract.costCode %>" style="width:265px;" />
                                 <span style="display: inline-block">
                                   <img src="../Images/data-selector.png" id="CodeSelectImg" style="cursor: pointer; vertical-align: middle;" />
                                 </span>
@@ -420,7 +420,7 @@
     </div>
     <div class="TabContainer" style="display: none;">
         <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:120px;">
-            <div class="DivScrollingContainer Tab">
+            <div class="DivScrollingContainer Tab" style="position:initial;">
         <div class="DivSectionWithHeader">
           <!--头部-->
           <div class="HeaderRow">
@@ -544,6 +544,14 @@
     }
 
     <% if (contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) { %>
+    window.onload = function () {
+      var fee = parseFloat($("#setup_fee").val());
+      if (!(isNaN($("#setup_fee").val()) || fee <= 0)) {
+        $("#CodeSelectImg").click(function () {
+          window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&field=SetupCode&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.RECURRING_CONTRACT_SERVICE_CODE %>', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.BillCodeCallback %>', 'left=200,top=200,width=600,height=800', false)
+        })
+      }
+    }
     $("#setup_fee").change(function () {
       var fee = parseFloat($("#setup_fee").val());
       if (isNaN($("#setup_fee").val()) || fee <= 0) {
