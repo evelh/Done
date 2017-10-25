@@ -94,6 +94,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     id = id,
                     data_type = col.data_type_id,
+                    defaultValue = col.default_value,
                     description = col.col_comment,
                     ref_url = col.ref_url,
                 };
