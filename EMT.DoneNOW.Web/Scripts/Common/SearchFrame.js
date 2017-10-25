@@ -10,7 +10,7 @@
     for (var i = 0; i < vals.length; ++i) {
         if (vals[i].value == "")
             continue;
-        inner += '<input type="hidden" name="' + vals[i].name + '" value="' + vals[i].value + '" />';
+        inner += '<input type="hidden" name="con' + vals[i].name + '" value="' + vals[i].value + '" />';
     }
     formbody.getElementById("conditions").innerHTML = inner;
     formbody.getElementById("search_id").value = "";
