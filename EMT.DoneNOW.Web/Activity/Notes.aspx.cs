@@ -30,6 +30,8 @@ namespace EMT.DoneNOW.Web.Activity
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]) && long.TryParse(Request.QueryString["id"], out noteid))
                 {
                     note = bll.GetActivity(noteid);
+                    contactList = new ContactBLL().GetContactByCompany((long)note.account_id);
+                    opportunityList = new OpportunityBLL().GetOpportunityByCompany((long)note.account_id);
                 }
             }
             else

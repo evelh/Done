@@ -10,6 +10,9 @@
   <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
   <link rel="stylesheet" href="../Content/index.css" />
   <link rel="stylesheet" href="../Content/style.css" />
+  <style>
+    .content label{width:120px;}
+  </style>
 </head>
 <body>
   <form id="form1" runat="server">
@@ -17,22 +20,22 @@
     <div class="header-title">
       <ul>
         <li id="SaveClose">
-          <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+          <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
           <input type="button" value="保存并关闭" />
         </li>
         <%if (note == null) { %>
         <li id="SaveNew">
-          <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
+          <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
           <input type="button" value="保存并新建" />
         </li>
         <%} else { %>
         <li id="DeleteClose">
-          <i style="background: url(../Images/delete.png);"></i>
+          <i style="background: url(../Images/delete.png);" class="icon-1"></i>
           <input type="button" value="删除" />
         </li>
         <%} %>
         <li id="Close">
-          <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
+          <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
           <input type="button" value="关闭" />
         </li>
       </ul>
@@ -48,7 +51,7 @@
         <div class="information clear">
           <p class="informationTitle"><i></i>常规信息</p>
           <div>
-            <table border="none" cellspacing="" cellpadding="" style="width: 871px;">
+            <table border="none" cellspacing="" cellpadding="" style="width: 690px;">
               <tr>
                 <td>
                   <div class="clear">
@@ -144,13 +147,13 @@
                 <td>
                   <div class="clear">
                     <label>开始时间<span class="red">*</span></label>
-                    <input <%if (note != null) { %> value="<%=EMT.Tools.Date.DateHelper.TimeStampToDateTime(note.start_date).ToString("yyyy-MM-dd HH:mm") %>" <%} else { %> value="<%=DateTime.Now.ToString("yyyy-MM-dd HH:mm") %>" <%} %> onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt" name="start_date2" id="start_date" />
+                    <input <%if (note != null) { %> value="<%=EMT.Tools.Date.DateHelper.TimeStampToDateTime(note.start_date).ToString("yyyy-MM-dd HH:mm") %>" <%} else { %> value="<%=DateTime.Now.ToString("yyyy-MM-dd HH:mm") %>" <%} %> onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt Wdate" name="start_date2" id="start_date" />
                   </div>
                 </td>
                 <td>
                   <div class="clear">
                     <label>结束时间<span class="red">*</span></label>
-                    <input <%if (note != null) { %> value="<%=EMT.Tools.Date.DateHelper.TimeStampToDateTime(note.end_date).ToString("yyyy-MM-dd HH:mm") %>" <%} else { %> value="<%=DateTime.Now.AddMinutes(15).ToString("yyyy-MM-dd HH:mm") %>" <%} %> onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt" name="end_date2" id="end_date" />
+                    <input <%if (note != null) { %> value="<%=EMT.Tools.Date.DateHelper.TimeStampToDateTime(note.end_date).ToString("yyyy-MM-dd HH:mm") %>" <%} else { %> value="<%=DateTime.Now.AddMinutes(15).ToString("yyyy-MM-dd HH:mm") %>" <%} %> onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt Wdate" name="end_date2" id="end_date" />
                   </div>
                 </td>
               </tr>
@@ -165,7 +168,7 @@
         <div class="information clear">
           <p class="informationTitle"><i></i>跟进待办</p>
           <div>
-            <table border="none" cellspacing="" cellpadding="" style="width: 828px;">
+            <table border="none" cellspacing="" cellpadding="" style="width: 690px;">
               <tr>
                 <td>
                   <label>创建跟进待办，必须输入开始时间、结束时间和活动类型</label>
@@ -175,13 +178,13 @@
                 <td>
                   <div class="clear">
                     <label>开始时间</label>
-                    <input onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt" name="start_date1" id="start_date1" />
+                    <input onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt Wdate" name="start_date1" id="start_date1" />
                   </div>
                 </td>
                 <td>
                   <div class="clear">
                     <label>结束时间</label>
-                    <input onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt" name="end_date1" id="end_date1" />
+                    <input onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt Wdate" name="end_date1" id="end_date1" />
                   </div>
                 </td>
               </tr>

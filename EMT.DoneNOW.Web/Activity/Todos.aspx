@@ -10,6 +10,9 @@
   <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
   <link rel="stylesheet" href="../Content/index.css" />
   <link rel="stylesheet" href="../Content/style.css" />
+  <style>
+    .content label{width:120px;}
+  </style>
 </head>
 <body>
   <form id="form1" runat="server">
@@ -17,21 +20,21 @@
     <div class="header-title">
       <ul>
         <li id="SaveClose">
-          <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+          <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
           <input type="button" value="保存并关闭" />
         </li>
         <li id="SaveNew">
-          <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;"></i>
+          <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
           <input type="button" value="保存并新建" />
         </li>
         <%if (note != null) { %>
         <li id="DeleteClose">
-          <i style="background: url(../Images/delete.png);"></i>
+          <i style="background: url(../Images/delete.png);" class="icon-1"></i>
           <input type="button" value="删除" />
         </li>
         <%} %>
         <li id="Close">
-          <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
+          <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
           <input type="button" value="关闭" />
         </li>
       </ul>
@@ -46,7 +49,7 @@
       <div class="content clear">
         <div class="information clear">
           <div>
-            <table border="none" cellspacing="" cellpadding="" style="width: 871px;">
+            <table border="none" cellspacing="" cellpadding="" style="width: 690px;">
               <tr>
                 <td>
                   <div class="clear">
@@ -166,13 +169,13 @@
                 <td>
                   <div class="clear">
                     <label>开始时间<span class="red">*</span></label>
-                    <input <%if (note != null) { %> value="<%=EMT.Tools.Date.DateHelper.TimeStampToDateTime(note.start_date).ToString("yyyy-MM-dd HH:mm") %>" <%} else { %> value="<%=DateTime.Now.ToString("yyyy-MM-dd HH:mm") %>" <%} %> onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt" name="start_date2" id="start_date" />
+                    <input <%if (note != null) { %> value="<%=EMT.Tools.Date.DateHelper.TimeStampToDateTime(note.start_date).ToString("yyyy-MM-dd HH:mm") %>" <%} else { %> value="<%=DateTime.Now.ToString("yyyy-MM-dd HH:mm") %>" <%} %> onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt Wdate" name="start_date2" id="start_date" />
                   </div>
                 </td>
                 <td>
                   <div class="clear">
                     <label>结束时间<span class="red">*</span></label>
-                    <input <%if (note != null) { %> value="<%=EMT.Tools.Date.DateHelper.TimeStampToDateTime(note.end_date).ToString("yyyy-MM-dd HH:mm") %>" <%} else { %> value="<%=DateTime.Now.AddMinutes(15).ToString("yyyy-MM-dd HH:mm") %>" <%} %> onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt" name="end_date2" id="end_date" />
+                    <input <%if (note != null) { %> value="<%=EMT.Tools.Date.DateHelper.TimeStampToDateTime(note.end_date).ToString("yyyy-MM-dd HH:mm") %>" <%} else { %> value="<%=DateTime.Now.AddMinutes(15).ToString("yyyy-MM-dd HH:mm") %>" <%} %> onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt Wdate" name="end_date2" id="end_date" />
                   </div>
                 </td>
               </tr>
@@ -186,7 +189,7 @@
         </div>
         <div class="information clear">
           <div>
-            <table border="none" cellspacing="" cellpadding="" style="width: 828px;">
+            <table border="none" cellspacing="" cellpadding="" style="width: 690px;">
               <tr>
                 <td>
                   <div class="clear">
@@ -200,7 +203,7 @@
                 <td>
                   <div class="clear">
                     <label>完成时间</label>
-                    <input onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt" name="complete_time1" id="complete_time1" <%if (note != null && note.status_id == (int)EMT.DoneNOW.DTO.DicEnum.ACTIVITY_STATUS.COMPLETED)
+                    <input onclick="WdatePicker({ el: this, dateFmt: 'yyyy-MM-dd HH:mm' })" type="text" class="sl_cdt Wdate" name="complete_time1" id="complete_time1" <%if (note != null && note.status_id == (int)EMT.DoneNOW.DTO.DicEnum.ACTIVITY_STATUS.COMPLETED)
                         { %> value="<%=EMT.Tools.Date.DateHelper.TimeStampToDateTime((long)note.complete_time).ToString("yyyy-MM-dd HH:mm") %>" <%}
                         else
                         { %> disabled="disabled" <%} %> />

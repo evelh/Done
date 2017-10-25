@@ -41,7 +41,7 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
 
-        #region CRM备注
+        #region CRM备注/待办
         /// <summary>
         /// CRM备注/待办的活动类型
         /// </summary>
@@ -156,7 +156,6 @@ namespace EMT.DoneNOW.BLL
             editNote.start_date = note.start_date;
             editNote.end_date = note.end_date;
             editNote.description = note.description == null ? "" : note.description;
-            editNote.status_id = null;
             editNote.complete_time = null;
             editNote.complete_description = null;
 
@@ -207,6 +206,29 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 备注转为待办
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <param name="userId"></param>
+        public void NoteSetScheduled(long noteId, long userId)
+        {
+            var act = dal.FindById(noteId);
+            var oldAct = dal.FindById(noteId);
+
+            /* 类型改成待办，状态设置未完成 */
+            act.cate_id = (int)DicEnum.ACTIVITY_CATE.TODO;
+            act.status_id = (int)DicEnum.ACTIVITY_STATUS.NOT_COMPLETED;
+            act.complete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            act.complete_description = "";
+
+            act.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            act.update_user_id = userId;
+
+            dal.Update(act);
+            OperLogBLL.OperLogUpdate<com_activity>(act, oldAct, act.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "修改备注SetScheduled");
+        }
+
+        /// <summary>
         /// 新增待办
         /// </summary>
         /// <param name="todo"></param>
@@ -222,7 +244,10 @@ namespace EMT.DoneNOW.BLL
             addTodo.create_user_id = userId;
             addTodo.update_time = addTodo.create_time;
             addTodo.update_user_id = userId;
-            addTodo.cate_id = (int)DicEnum.ACTIVITY_CATE.TODO;
+            if (todo.status_id == (int)DicEnum.ACTIVITY_STATUS.COMPLETED)
+                addTodo.cate_id = (int)DicEnum.ACTIVITY_CATE.NOTE;
+            else
+                addTodo.cate_id = (int)DicEnum.ACTIVITY_CATE.TODO;
             addTodo.action_type_id = todo.action_type_id;
             addTodo.parent_id = null;
             addTodo.object_id = (long)todo.account_id;
@@ -237,7 +262,7 @@ namespace EMT.DoneNOW.BLL
             addTodo.end_date = todo.end_date;
             addTodo.description = todo.description == null ? "" : todo.description;
             addTodo.status_id = todo.status_id;
-            if (addTodo.status_id==(int)DicEnum.ACTIVITY_STATUS.COMPLETED)
+            if (addTodo.status_id == (int)DicEnum.ACTIVITY_STATUS.COMPLETED)
             {
                 addTodo.complete_time = todo.complete_time;
                 addTodo.complete_description = todo.complete_description;
@@ -286,6 +311,27 @@ namespace EMT.DoneNOW.BLL
             OperLogBLL.OperLogUpdate<com_activity>(editTodo, oldTodo, editTodo.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "编辑待办");
 
             return true;
+        }
+
+        /// <summary>
+        /// 设置待办完成
+        /// </summary>
+        /// <param name="todoId"></param>
+        /// <param name="userId"></param>
+        public void TodoSetCompleted(long todoId,long userId)
+        {
+            var act = dal.FindById(todoId);
+            var oldAct = dal.FindById(todoId);
+
+            /* 类型改成备注，状态设置已完成 */
+            act.cate_id = (int)DicEnum.ACTIVITY_CATE.NOTE;
+            act.status_id = (int)DicEnum.ACTIVITY_STATUS.COMPLETED;
+
+            act.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            act.update_user_id = userId;
+
+            dal.Update(act);
+            OperLogBLL.OperLogUpdate<com_activity>(act, oldAct, act.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "修改待办状态完成");
         }
 
         /// <summary>

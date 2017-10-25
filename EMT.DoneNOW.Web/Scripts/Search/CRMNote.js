@@ -1,13 +1,15 @@
 ﻿function Add() {
-    window.open("../Activity/Notes.aspx", windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+    window.open("../Activity/Notes.aspx", windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
 }
 
 function Edit() {
-    window.open("../Activity/Notes.aspx?id=" + entityid, windowObj.notes + windowType.edit, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+    window.open("../Activity/Notes.aspx?id=" + entityid, windowObj.notes + windowType.edit, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
 }
 
 function SetScheduled() {
-
+    requestData("../Tools/ActivityAjax.ashx?act=NoteSetScheduled&id=" + entityid, null, function (data) {
+        window.location.reload();
+    })
 }
 
 function Delete() {
