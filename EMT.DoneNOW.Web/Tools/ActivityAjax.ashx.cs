@@ -38,6 +38,12 @@ namespace EMT.DoneNOW.Web
                         id = context.Request.QueryString["id"];
                         NoteSetScheduled(context, long.Parse(id));
                         break;
+                    case "AddNote":
+                        AddNote(context);
+                        break;
+                    case "GetActivities":
+                        GetActivities(context);
+                        break;
                     default:
                         break;
                 }
@@ -46,6 +52,55 @@ namespace EMT.DoneNOW.Web
             {
                 context.Response.Write("{\"code\": 'error', \"msg\": \"参数错误！\"}");
             }
+        }
+
+        /// <summary>
+        /// 快捷新增备注
+        /// </summary>
+        /// <param name="context"></param>
+        private void AddNote(HttpContext context)
+        {
+            List<string> rtn = new List<string>();
+            string account_id = context.Request.QueryString["account_id"];
+            string desc = context.Request.QueryString["desc"];
+            string type = context.Request.QueryString["type"];
+            if (string.IsNullOrEmpty(account_id) || string.IsNullOrEmpty(desc) || string.IsNullOrEmpty(type))
+            {
+                rtn.Add("0");
+                context.Response.Write(new Tools.Serialize().SerializeJson(rtn));
+                return;
+            }
+            bll.FastAddNote(long.Parse(account_id), 0, 0, int.Parse(type), desc, (context.Session["dn_session_user_info"] as sys_user).id);
+            rtn.Add("1");
+            context.Response.Write(new Tools.Serialize().SerializeJson(rtn));
+        }
+
+        /// <summary>
+        /// 查看客户/联系人等获取活动列表
+        /// </summary>
+        /// <param name="context"></param>
+        private void GetActivities(HttpContext context)
+        {
+            var queryStr = context.Request.QueryString;
+            string account_id = queryStr["account_id"];
+            string order = queryStr["order"];
+            List<string> actTypeList = new List<string>();
+            if (!string.IsNullOrEmpty(queryStr["todo"]) && queryStr["todo"].Equals("1"))
+                actTypeList.Add("todo");
+            if (!string.IsNullOrEmpty(queryStr["crmnote"]) && queryStr["crmnote"].Equals("1"))
+                actTypeList.Add("crmnote");
+            if (!string.IsNullOrEmpty(queryStr["opportunity"]) && queryStr["opportunity"].Equals("1"))
+                actTypeList.Add("opportunity");
+            if (!string.IsNullOrEmpty(queryStr["sale"]) && queryStr["sale"].Equals("1"))
+                actTypeList.Add("sale");
+            if (!string.IsNullOrEmpty(queryStr["ticket"]) && queryStr["ticket"].Equals("1"))
+                actTypeList.Add("ticket");
+            if (!string.IsNullOrEmpty(queryStr["contact"]) && queryStr["contact"].Equals("1"))
+                actTypeList.Add("contact");
+            if (!string.IsNullOrEmpty(queryStr["project"]) && queryStr["project"].Equals("1"))
+                actTypeList.Add("project");
+
+            context.Response.Write(new Tools.Serialize().SerializeJson(bll.GetActivities(actTypeList, long.Parse(account_id), order, (context.Session["dn_session_user_info"] as sys_user).id)));
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace EMT.DoneNOW.Web.SysSetting
 {
     public partial class SysUserAdd : BasePage
     {
-        protected string avatarPath = "../Images/pop.jpg";
+        protected string avatarPath = "/Images/pop.jpg";
         private long id = 0;
         private SysUserAddDto param = new SysUserAddDto();
         private SysUserAddDto paramcopy = new SysUserAddDto();

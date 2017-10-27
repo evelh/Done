@@ -19,7 +19,7 @@ namespace EMT.DoneNOW.Web
 
         protected ContactAddAndUpdateDto dto = new ContactAddAndUpdateDto();
         protected long id = 0;
-        protected string avatarPath = "../Images/pop.jpg";
+        protected string avatarPath = "/Images/pop.jpg";
         protected crm_account account = null;
         protected string callBackFiled = "";
         protected void Page_Load(object sender, EventArgs e)

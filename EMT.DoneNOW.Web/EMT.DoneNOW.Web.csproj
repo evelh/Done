@@ -204,12 +204,14 @@
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Images\cancel1.png" />
     <Content Include="Images\forward_arrow.png" />
+    <Content Include="Images\note.png" />
     <Content Include="Images\open.png" />
     <Content Include="Images\Recentindex.png" />
     <Content Include="Images\ServiceSelector.png" />
     <Content Include="Images\Loading.gif" />
     <Content Include="Images\shenglian.gif" />
     <Content Include="Images\time.png" />
+    <Content Include="Images\todos.png" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempEdit.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempTop.aspx" />
@@ -716,6 +718,7 @@
     <Content Include="Scripts\SysSettingRoles.js" />
     <Content Include="Scripts\sysset_users.js" />
     <Content Include="Scripts\SysUserSecurityLevel.js" />
+    <Content Include="Scripts\ViewActivity.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />

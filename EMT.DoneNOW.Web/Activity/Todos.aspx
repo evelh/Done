@@ -152,7 +152,6 @@
                   <div class="clear">
                     <label>负责人</label>
                     <select name="resource_id">
-                      <option value=""></option>
                       <%
                           foreach (var resource in resourceList)
                           {
