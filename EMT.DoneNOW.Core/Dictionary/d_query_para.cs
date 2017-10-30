@@ -36,6 +36,8 @@ namespace EMT.DoneNOW.Core
         public SByte is_visible { get; set; }
         [DataMember]
         public Int64 query_para_group_id { get; set; }
+        [DataMember]
+        public String default_value { get; set; }
 
 
     }

@@ -15,6 +15,16 @@ namespace EMT.DoneNOW.BLL
     {
         private readonly sys_resource_dal _dal = new sys_resource_dal();
         private readonly sys_user_dal _dal1 = new sys_user_dal();
+
+        /// <summary>
+        /// 获取激活的员工列表
+        /// </summary>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetResourceList()
+        {
+            return _dal.GetDictionary(true);
+        }
+
         //对页面SysManage.aaspx的数据填充
         public Dictionary<string, object> GetDownList()
         {

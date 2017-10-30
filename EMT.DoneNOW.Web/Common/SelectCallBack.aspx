@@ -40,7 +40,7 @@
         <% for (int i = 0; i < condition.Count; i++) {%> 
 			<tr>
 				<td>
-					<div style="margin:5px 0;" class=<%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %>"clear input-dh"<%}
+					<div style="margin:5px 0;" <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK) { %> class="clear input-dh" <%}
                         else { %>"clear"<%} %>>
 						<label><%=condition[i].description %></label>
                     <%if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
@@ -48,27 +48,49 @@
                         || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.NUMBER_EQUAL
                         || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.UN_EQUAL)
                         { %>
-						<input type="text" name="con<%=condition[i].id %>" class="sl_cdt" />
+						<input type="text" name="con<%=condition[i].id %>" <%if (!string.IsNullOrEmpty(condition[i].defaultValue)){ %> value="<%=condition[i].defaultValue %>" <%} %> class="sl_cdt" />
                     <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DROPDOWN) { %>
-                        <select name="con<%=condition[i].id %>" class="sl_cdt">
-                            <option value=""></option>
-                            <%foreach (var item in condition[i].values) { %>
-							<option value="<%=item.val %>"><%=item.show %></option>
-                            <%} %>
-						</select>
-                    <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.NUMBER) { %>
+                        <select name="<%=condition[i].id %>" class="sl_cdt">
+                                <option value=""></option>
+                                <%foreach (var item in condition[i].values) {
+                                      if (!string.IsNullOrEmpty(condition[i].defaultValue) && condition[i].defaultValue.Equals(item.val)) { %>
+                              <option value="<%=item.val %>" selected="selected"><%=item.show %></option>
+                              <%} else { 
+                                        %>
+								              <option value="<%=item.val %>"><%=item.show %></option>
+                                <%}} %>
+							</select>
+                    <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.NUMBER) { 
+                            string df1 = "", df2 = "";
+                            if(!string.IsNullOrEmpty(condition[i].defaultValue))
+                            {
+                              var vals = condition[i].defaultValue.Split(',');
+                              df1 = vals[0];
+                              if (vals.Length > 1)
+                                df2 = vals[1];
+                            }
+                              %>
                         <div class="inputTwo">
-							<input type="text" name="con<%=condition[i].id %>_l" class="sl_cdt" />
+							<input type="text" name="con<%=condition[i].id %>_l" value="<%=df1 %>" class="sl_cdt" />
 							<span>-</span>
-							<input type="text" name="con<%=condition[i].id %>_h" class="sl_cdt" />
+							<input type="text" name="con<%=condition[i].id %>_h" value="<%=df2 %>" class="sl_cdt" />
 						</div>
                     <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATE
                             || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATETIME
-                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.TIMESPAN) { %>
+                            || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.TIMESPAN) { 
+                            string df1 = "", df2 = "";
+                            if(!string.IsNullOrEmpty(condition[i].defaultValue))
+                            {
+                              var vals = condition[i].defaultValue.Split(',');
+                              df1 = vals[0];
+                              if (vals.Length > 1)
+                                df2 = vals[1];
+                            }
+                            %>
                         <div class="inputTwo">
-							<input type="text" name="con<%=condition[i].id %>_l" class="sl_cdt" onclick="WdatePicker()"/>
+							<input type="text" name="con<%=condition[i].id %>_l" value="<%=df1 %>" class="sl_cdt" onclick="WdatePicker()"/>
 							<span>-</span>
-							<input type="text" name="con<%=condition[i].id %>_h" class="sl_cdt" onclick="WdatePicker()"/>
+							<input type="text" name="con<%=condition[i].id %>_h" value="<%=df2 %>" class="sl_cdt" onclick="WdatePicker()"/>
 						</div>
                     <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.CALLBACK
                             || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.MUILT_CALLBACK) { %>

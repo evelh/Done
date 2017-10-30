@@ -60,6 +60,16 @@ namespace EMT.DoneNOW.BLL
             return _dal.FindSignleBySql<crm_account>($"SELECT a.* FROM crm_account a LEFT JOIN crm_opportunity o on a.id = o.account_id LEFT JOIN crm_quote q on a.id=q.account_id where(a.id = {id} ) or(o.id = {id} and o.delete_time = 0) or (q.id = {id} and q.delete_time = 0)");
         }
 
+        /// <summary>
+        /// 根据与客户相关联的各种类型的ID获取客户信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="src"></param>
+        /// <returns></returns>
+        public crm_account GetCompanyByOtherId(long id, string src)
+        {
+            return _dal.FindSignleBySql<crm_account>($"SELECT a.* FROM crm_account a LEFT JOIN {src} b on a.id = b.account_id where b.id={id} and a.delete_time=0");
+        }
 
         /// <summary>
         /// 获取客户列表

@@ -15,15 +15,21 @@ namespace EMT.DoneNOW.Web.Company
         protected crm_account crm_account = null;
         protected Dictionary<string, object> dic = null;
         protected CompanyBLL companyBll = new CompanyBLL();
+        protected string type;
+        protected string iframeSrc;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 var id = Request.QueryString["id"];
-                var type = Request.QueryString["type"];
+                type = Request.QueryString["type"];
                 if (id != null)
                 {
-                    crm_account = new CompanyBLL().GetCompanyByOtherId(Convert.ToInt64(id));
+                    var src = Request.QueryString["src"];
+                    if (!string.IsNullOrEmpty(src))
+                        crm_account = companyBll.GetCompanyByOtherId(Convert.ToInt64(id), src);
+                    else
+                        crm_account = companyBll.GetCompanyByOtherId(Convert.ToInt64(id));
                     if (crm_account != null)
                     {
                        
@@ -41,26 +47,38 @@ namespace EMT.DoneNOW.Web.Company
                         switch (type)    // 根据传过来的不同的类型，为页面中的iframe控件选择不同的src
                         {
                             case "activity":
-                                //viewCompany_iframe.Src = "../Activity/ViewActivity.aspx?id=" + crm_account.id.ToString();  // 活动
+                                var typeList = new ActivityBLL().GetCRMActionType();
+                                noteType.DataSource = typeList;
+                                noteType.DataTextField = "name";
+                                noteType.DataValueField = "id";
+                                noteType.DataBind();
                                 break;
-                            case "todo":
-                                viewCompany_iframe.Src = "";  // 待办
+                            case "todo":            // 待办
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=112&con658=" + crm_account.id;
                                 break;
-                            case "note":
-                                viewCompany_iframe.Src = "";  // 备注
+                            case "note":            // 备注
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH + "&type=" + (int)QueryType.CRMNote + "&group=110&con645=" + crm_account.id;
                                 break;
                             case "opportunity":
-                                viewCompany_iframe.Src = "../Common/SearchBodyFrame.aspx?cat="+(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY_COMPANY_VIEW +"&type="+(int)EMT.DoneNOW.DTO.QueryType.OpportunityCompanyView +"&id="+id;  
-                                // 商机 ../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY_COMPANY_VIEW %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.OpportunityCompanyView %>&group=18
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.OPPORTUNITY_COMPANY_VIEW + "&type=" + (int)QueryType.OpportunityCompanyView + "&id=" + id;
                                 break;//
                             case "contact":
-                                viewCompany_iframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_COMPANY_VIEW + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.ContactCompanyView + "&id=" + id;  // 联系人
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTACT_COMPANY_VIEW + "&type=" + (int)QueryType.ContactCompanyView + "&id=" + id;  // 联系人
                                 break;//
                             case "Subsidiaries":
-                                viewCompany_iframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUBCOMPANY_COMPANY_VIEW + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.SubcompanyCompanyView + "&id=" + id;  // 子公司
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.SUBCOMPANY_COMPANY_VIEW + "&type=" + (int)QueryType.SubcompanyCompanyView + "&id=" + id;  // 子公司
                                 break;//Subsidiaries
+                            case "saleOrder":               // 销售订单
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.SALEORDER + "&type=" + (int)QueryType.SaleOrder + "&group=42&con385=" + id;
+                                break;
+                            case "contract":        // 合同
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT + "&type=" + (int)QueryType.Contract + "&con420=" + id;
+                                break;
+                            case "confirgItem":
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.INSTALLEDPRODUCT + "&type=" + (int)QueryType.InstalledProductView + "&con358=" + id;
+                                break;
                             default:
-                                viewCompany_iframe.Src = "";  // 默认
+                                iframeSrc = "";  // 默认
                                 break;
                         }
                         //viewCompany_iframe.Src = "";  // 

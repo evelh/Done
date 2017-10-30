@@ -207,6 +207,7 @@
     <Content Include="Images\forward_arrow.png" />
     <Content Include="Images\list-view.png" />
     <Content Include="Images\monthlyGridContainer.png" />
+    <Content Include="Images\note.png" />
     <Content Include="Images\open.png" />
     <Content Include="Images\Recentindex.png" />
     <Content Include="Images\ServiceSelector.png" />
@@ -214,6 +215,7 @@
     <Content Include="Images\shenglian.gif" />
     <Content Include="Images\time.png" />
     <Content Include="Images\weeklyGridContainer.png" />
+    <Content Include="Images\todos.png" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempEdit.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempTop.aspx" />
@@ -722,9 +724,12 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Common\SearchBody.js" />
     <Content Include="Scripts\Search\Contract.js" />
+    <Content Include="Scripts\Search\CRMNote.js" />
+    <Content Include="Scripts\Search\Todos.js" />
     <Content Include="Scripts\SysSettingRoles.js" />
     <Content Include="Scripts\sysset_users.js" />
     <Content Include="Scripts\SysUserSecurityLevel.js" />
+    <Content Include="Scripts\ViewActivity.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />
@@ -1771,6 +1776,9 @@
     <Compile Include="Tools\AccountClassAjax.ashx.cs">
       <DependentUpon>AccountClassAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ActivityAjax.ashx.cs">
+      <DependentUpon>ActivityAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\AddressAjax.ashx.cs">
       <DependentUpon>AddressAjax.ashx</DependentUpon>
     </Compile>
@@ -1887,6 +1895,7 @@
     <Content Include="Tools\ApproveAndPostAjax.ashx" />
     <Content Include="Tools\HistoryInvoiceAjax.ashx" />
     <Content Include="Tools\ProjectAjax.ashx" />
+    <Content Include="Tools\ActivityAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

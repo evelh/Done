@@ -47,6 +47,10 @@ namespace EMT.DoneNOW.Web
                     var opportunity_account_id = context.Request.QueryString["account_id"];
                     GetOpportunity(context, opportunity_account_id);
                     break;
+                case "OpportunityList":
+                    account_id = context.Request.QueryString["account_id"];
+                    GetOpportunityList(context, account_id);
+                    break;
                 case "property":
                     var property_account_id = context.Request.QueryString["account_id"];
                     var propertyName = context.Request.QueryString["property"];
@@ -231,6 +235,33 @@ namespace EMT.DoneNOW.Web
             {
 
                 context.Response.End();
+            }
+        }
+
+        /// <summary>
+        /// 得到客户下的所有商机
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="account_id"></param>
+        private void GetOpportunityList(HttpContext context, string account_id)
+        {
+            try
+            {
+                StringBuilder opportunitys = new StringBuilder();
+                opportunitys.Append("<option value=''></option>");
+                var opportinotyList = new crm_opportunity_dal().FindByAccountId(Convert.ToInt64(account_id));
+                if (opportinotyList != null)
+                {
+                    foreach (var opportunity in opportinotyList)
+                    {
+                        opportunitys.Append("<option value='" + opportunity.id + "'>" + opportunity.name + "</option>");
+                    }
+                }
+                context.Response.Write(opportunitys);
+            }
+            catch (Exception)
+            {
+                context.Response.Write("");
             }
         }
 

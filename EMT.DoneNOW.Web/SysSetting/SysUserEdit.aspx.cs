@@ -14,7 +14,7 @@ namespace EMT.DoneNOW.Web
 {
     public partial class SysUserEdit : BasePage
     {
-        protected string avatarPath = "../Images/pop.jpg";
+        protected string avatarPath = "/Images/pop.jpg";
         protected long id = 0;
         protected string op = string.Empty;
         private SysUserAddDto param=new SysUserAddDto();

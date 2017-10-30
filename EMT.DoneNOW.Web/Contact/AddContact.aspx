@@ -181,7 +181,7 @@
             <table border="none" cellspacing="" cellpadding="" style="width:400px;">
                 <tr>
                     <td>
-                        <img id="imgshow" src="<%=avatarPath %>" />
+                        <img id="imgshow" src="..<%=avatarPath %>" />
                         <a href="#" style="display: inline-block; width: 100px; height: 24px; position: relative; overflow: hidden;">点击修改头像
                             <input type="file" value="浏览" id="browsefile" name="browsefile" style="position: absolute; right: 0; top: 0; opacity: 0; filter: alpha(opacity=0);" />
                         </a>

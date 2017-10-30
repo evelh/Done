@@ -67,90 +67,7 @@
                                 <div class="ModuleContainer">
                                     <!--第一个-->
                                     <div class="Module Active">
-                                        <div class="Normal ContextOverlayColumn">
-                                            <div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">视图</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Executive Dashboard</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Team Walls</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">News Feed</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">LiveLinks Designer</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">搜索</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">Search</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                     <!--第二个-->
                                     <div class="Module">
@@ -159,11 +76,6 @@
                                                 <div class="Group">
                                                     <div class="Heading">
                                                         <div class="Text">视图</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">LiveLinks Designer</span>
-                                                        </a>
                                                     </div>
                                                 </div>
                                                 <div class="Group">
@@ -181,8 +93,23 @@
                                                         </a>
                                                     </div>
                                                     <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSTALLEDPRODUCT %>" target="PageFrame">
+                                                            <span class="Text">配置项管理</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CRM_NOTE_SEARCH %>" target="PageFrame">
+                                                            <span class="Text">备注管理</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY %>" target="PageFrame">
                                                             <span class="Text">商机管理</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SALEORDER %>" target="PageFrame">
+                                                            <span class="Text">销售订单管理</span>
                                                         </a>
                                                     </div>
                                                     <div class="Content">
@@ -191,23 +118,13 @@
                                                         </a>
                                                     </div>
                                                     <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE_TEMPLATE %>" target="PageFrame">
-                                                            <span class="Text">报价模板管理</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSTALLEDPRODUCT %>" target="PageFrame">
-                                                            <span class="Text">配置项管理</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUBSCRIPTION %>" target="PageFrame">
                                                             <span class="Text">订阅管理</span>
                                                         </a>
                                                     </div>
                                                     <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SALEORDER %>" target="PageFrame">
-                                                            <span class="Text">销售订单管理</span>
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS %>" target="PageFrame">
+                                                            <span class="Text">待办管理</span>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -216,13 +133,8 @@
                                                         <div class="Text">工具</div>
                                                     </div>
                                                     <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE_TEMPLATE %>" target="PageFrame">
+                                                            <span class="Text">报价模板管理</span>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -231,60 +143,7 @@
                                     </div>
                                     <!--第三个-->
                                     <div class="Module">
-                                        <div class="Normal ContextOverlayColumn">
-                                            <div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">视图3</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Team Walls</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">News Feed</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">LiveLinks Designer</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">搜索</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">工具</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                     <!--第四个-->
                                     <div class="Module">
@@ -292,12 +151,7 @@
                                             <div>
                                                 <div class="Group">
                                                     <div class="Heading">
-                                                        <div class="Text">视图4</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">LiveLinks Designer</span>
-                                                        </a>
+                                                        <div class="Text">视图</div>
                                                     </div>
                                                 </div>
                                                 <div class="Group">
@@ -309,20 +163,12 @@
                                                             <span class="Text">合同</span>
                                                         </a>
                                                     </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
                                                 </div>
                                                 <div class="Group">
                                                     <div class="Heading">
                                                         <div class="Text">审批并提交</div>
                                                     </div>
                                                     <div class="Content">
-                                                       <%-- <a class="Button ButtonIcon NormalState" href="Contract/ApproveAndPost.aspx" target="PageFrame"> 
-                                                            <span class="Text">审批并提交</span>
-                                                        </a>--%>
                                                          <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>" target="PageFrame"> 
                                                             <span class="Text">审批并提交</span>
                                                         </a>
@@ -333,14 +179,14 @@
                                                         <div class="Text">发票和工时调整</div>
                                                     </div>
                                                     <div class="Content">
-                               <a class="Button ButtonIcon NormalState" href="Invoice/InvocieSearch.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.GENERATE_INVOICE %>" target="PageFrame"> 
+                                                        <a class="Button ButtonIcon NormalState" href="Invoice/InvocieSearch.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.GENERATE_INVOICE %>" target="PageFrame"> 
                                                             <span class="Text">生成发票</span>
                                                         </a>
                                                     </div>
                                                 </div>
                                                  <div class="Group">
                                                     <div class="Heading">
-                                                        <div class="Text">Tools</div>
+                                                        <div class="Text">工具</div>
                                                     </div>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_HISTORY %>" target="PageFrame"> 
@@ -397,216 +243,27 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                     <!--第六个-->
                                     <div class="Module">
-                                        <div class="Normal ContextOverlayColumn">
-                                            <div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">视图6</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">LiveLinks Designer</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">搜索</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">工具</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                     <!--第七个-->
                                     <div class="Module">
-                                        <div class="Normal ContextOverlayColumn">
-                                            <div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">视图7</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">LiveLinks Designer</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">搜索</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">工具</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                     <!--第八个-->
                                     <div class="Module">
-                                        <div class="Normal ContextOverlayColumn">
-                                            <div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">视图8</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">LiveLinks Designer</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">搜索</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">工具</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                     <!--第九个-->
                                     <div class="Module">
-                                        <div class="Normal ContextOverlayColumn">
-                                            <div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">视图9</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">LiveLinks Designer</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">搜索</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">工具</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                     <!--第10个-->
                                     <div class="Module">
-                                        <div class="Normal ContextOverlayColumn">
-                                            <div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">视图10</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">LiveLinks Designer</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">搜索</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
-                                                        </a>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="Group">
-                                                    <div class="Heading">
-                                                        <div class="Text">工具</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                     <!--第11个-->
                                     <div class="Module">
