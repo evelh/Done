@@ -11,7 +11,8 @@ namespace EMT.DoneNOW.DTO
     {
         public pro_project project;                 // 操作的项目
         public List<UserDefinedFieldValue> udf;     // 自定义字段
-        public com_notify_email notify;             // 邮件发送相关--修改无此操作
+        public string subject="";             // 邮件发送相关--修改无此操作
+        public string otherEmail;             // 邮件发送相关--修改无此操作
         public string resDepIds;                    // 员工角色关系表IDs
         public string contactIds;                   // 联系人Ids
         public string fromTempId;                   // 从模板导入的ID

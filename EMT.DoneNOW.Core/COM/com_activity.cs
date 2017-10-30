@@ -73,6 +73,8 @@ namespace EMT.DoneNOW.Core
         public Int32? publish_type_id { get; set; }
         [DataMember]
         public SByte? announce { get; set; }
+        [DataMember]
+        public SByte? is_system_generate { get; set; }
 
 
     }

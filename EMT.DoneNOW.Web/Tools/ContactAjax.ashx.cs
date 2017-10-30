@@ -76,7 +76,6 @@ namespace EMT.DoneNOW.Web
         private void GetConList(HttpContext context, string ids)
         {
             StringBuilder con = new StringBuilder();
-            con.Append("<option value='0'>  </option>");
             if (!string.IsNullOrEmpty(ids))
             {
                 var conList = new crm_contact_dal().GetContactByIds(ids);

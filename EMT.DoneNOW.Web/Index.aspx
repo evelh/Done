@@ -379,9 +379,9 @@
                                                             <span class="Text">My Home Page</span>
                                                         </a>
                                                     </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
+                                                     <div class="Content">
+                               <a class="Button ButtonIcon NormalState" href="Project/ProjectSearch.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_SEARCH %>" target="PageFrame"> 
+                                                            <span class="Text">项目查询</span>
                                                         </a>
                                                     </div>
                                                 </div>

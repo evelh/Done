@@ -110,7 +110,7 @@
                                                         <div>
                                                             <span style="display: inline-block;">
                                                                 <input type="text" style="width: 72px;" onclick="WdatePicker()" class="Wdate" id="start_date" name="start_date" value="<%=isAdd?DateTime.Now.ToString("yyyy-MM-dd"):((DateTime)thisProject.start_date).ToString("yyyy-MM-dd") %>" />
-                                                                <input type="text" style="width: 72px;" onclick="WdatePicker()" class="Wdate" id="end_date" name="end_date" value="<%=isAdd?DateTime.Now.ToString("yyyy-MM-dd"):((DateTime)thisProject.end_date).ToString("yyyy-MM-dd") %>" />
+                                                                <input type="text" style="width: 72px;" onclick="WdatePicker()" class="Wdate" id="end_date" name="end_date" value="<%=isAdd?DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"):((DateTime)thisProject.end_date).ToString("yyyy-MM-dd") %>" />
                                                                 <input type="text" style="width: 70px;" id="duration" name="duration" value="<%=isAdd?"":((int)thisProject.duration).ToString() %>" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
                                                                 <span>天</span>
                                                             </span>
@@ -193,7 +193,7 @@
                                                         <span>修改时间<span style="color: red;">*</span></span>
                                                         <div>
                                                             <span style="display: inline-block;">
-                                                                <input type="text" style="width: 72px;" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" class="Wdate" id="status_time" name="status_time" value="<%=isAdd ? "" : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisProject.status_time).ToString("yyyy-MM-dd HH:mm:ss") %>" />
+                                                                <input type="text" style="width: 126px;" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" class="Wdate" id="status_time" name="statustime" value="<%=isAdd ? "" : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisProject.status_time).ToString("yyyy-MM-dd HH:mm:ss") %>" />
                                                             </span>
                                                         </div>
                                                     </td>
@@ -320,8 +320,8 @@
                                                     <td class="FieldLabel" width="50%">项目成员和计费角色
                                                     <div>
                                                         <span style="display: inline-block;">
-                                                            <input type="text" style="width: 250px;" />
-                                                            <a class="DataSelectorLinkIcon" onclick="ChooseResDep()">
+                                                            <input type="text" style="width: 250px;" id="inChosREsdep"/>
+                                                            <a class="DataSelectorLinkIcon" onclick="ChooseResDep()" id="AchoResDep">
                                                                 <img src="../Images/data-selector.png" /></a>
                                                             <input type="hidden" id="resDepIds" />
                                                             <input type="hidden" id="resDepIdsHidden" name="resDepList" />
@@ -340,7 +340,7 @@
 
                                                                             foreach (var resou in resouList)
                                                                             {
-                                                                                var teamRole = pptrDal.FindNoDeleteById(resou.id);
+                                                                                var teamRole = pptrDal.GetSinTeamRole(resou.id);
                                                                                 if (teamRole != null)
                                                                                 {
                                                                                     var thisResou = syDal.FindNoDeleteById((long)resou.resource_id);
@@ -826,7 +826,7 @@
                                                         <div style="padding-bottom: 0;">
                                                             <span><a  onclick="OpenSelectPage('Cc')">抄送:</a></span>
                                                             <span>
-                                                                <a id="cc_me">自己</a>
+                                                                <a id="cc_me" onclick="CcToMe()">自己</a>
                                                             </span>
                                                         </div>
                                                         <div>
@@ -858,7 +858,7 @@
                                                     <td class="FieldLabel" width="100%">其他邮件文本
                                                     <div>
                                                         <span style="display: inline-block;">
-                                                            <textarea style="min-height: 100px; width: 610px;"></textarea>
+                                                            <textarea style="min-height: 100px; width: 610px;" id="otherEmail" name="otherEmail"></textarea>
                                                         </span>
                                                     </div>
                                                         <input type="hidden" name="NoToMe" id="NoToMe" />
@@ -1224,7 +1224,12 @@
                                     </table>
                                 </div>
                             </div>
-
+                            <input type="hidden" id="temp_resource_daily_hours"/>
+                            <input type="hidden" id="temp_useResource_daily_hours"/>
+                            <input type="hidden" id="temp_excludeWeekend"/>
+                            <input type="hidden" id="temp_excludeHoliday"/>
+                            <input type="hidden" id="temp_organization_location_id"/>
+                            <input type="hidden" id="temp_warnTime_off"/>
                             <div class="ButtonContainer Footer Wizard">
                                 <ul>
                                     <li class="Button ButtonIcon MoveRight PushLeft" id="prev2_2">
@@ -1726,6 +1731,13 @@
                         $("#temp_owner_resource_id").val(data.owner_resource_id);
                         $("#temp_description").text(data.description);
                         $("#tempTextNum").text(data.description.length);
+                        $("#temp_resource_daily_hours").val(data.resource_daily_hours);
+                        $("#temp_useResource_daily_hours").val(data.use_resource_daily_hours);
+                        $("#temp_excludeWeekend").val(data.exclude_weekend);
+                        $("#temp_excludeHoliday").val(data.exclude_holiday);
+                        $("#temp_organization_location_id").val(data.organization_location_id);
+                        $("#temp_warnTime_off").val(data.warn_time_off);
+
                     }
                 },
             });
@@ -1866,6 +1878,11 @@
 
         <%if (!isAdd)
     { %>
+        <%if (taskList != null && taskList.Count > 0)
+         {%>
+            $("#start_date").prop("disabled", true);
+             <%}%>
+
         $("#account_id").prop("disabled", true);
         $("#AChoAcc").removeAttr("onclick");
         $("#AChoAcc").removeClass("DisabledState");
@@ -1879,14 +1896,26 @@
         $("#AChoC").css("display", "none");
         $("#AChoC").removeAttr("onclick");
         jiSuan();
+        $("#AchoResDep").css("display", "none");
+        $("#inChosREsdep").prop("disabled", true);
+        $("#resDepList").prop("disabled", true);
+        $("#conIds").prop("disabled", true);
+        $("#textChoosAccount").val("");
+        $("#opportunity_id").prop("disabled", false);
+        $("#contract_id").prop("disabled",false);
+        GetOppByAccount();
+        var oppid = "<%=(!isAdd)&&thisProject.opportunity_id!=null?thisProject.opportunity_id.ToString():"" %>";
+        if (oppid != "") {
+            $("#opportunity_id").val(oppid);
+        }
         <% }%>
     })
 
     $("#CancelButton").click(function () {
         window.close();
     })
-    $("#save_Click").click(function () {
-        if (!submitCheck()) {
+    $("#save").click(function () {
+        if (!SubmitCheck()) {
             return false;
         }
         return true;
@@ -1936,6 +1965,43 @@
         }
         if ($("#temp_projectSet").is(":checked")) {
             $("#IsCopyProjectSet").val("1");
+            // 员工设置--日程表和项目成员工作量相关
+            $("#resource_daily_hours").val(toDecimal2($("#temp_resource_daily_hours").val()));
+            var dayHour = $("#temp_useResource_daily_hours").val();
+            if (dayHour == "1") {
+                $("#useResource_daily_hours").prop("checked", true);
+            }
+            else if (dayHour == "0") {
+                $("#useResource_daily_hours").prop("checked", false);
+            }
+            var exWeek = $("#temp_excludeWeekend").val();
+            if (exWeek == "1") {
+                $("#excludeWeekend").prop("checked", true);
+            }
+            else if (exWeek == "0") {
+                $("#excludeWeekend").prop("checked", false);
+            }
+
+            var exHol = $("#temp_excludeHoliday").val();
+            if (exHol == "1") {
+                $("#excludeHoliday").prop("checked", true);
+            }
+            else if (exHol == "0") {
+                $("#excludeHoliday").prop("checked", false);
+            }
+            var loca_id = $("#temp_organization_location_id").val();
+            if (loca_id != undefined && loca_id != "" && loca_id != "0") {
+                $("#organization_location_id").val(loca_id);
+            }
+            var waOff = $("#temp_warnTime_off").val();
+            if (waOff == "1") {
+                $("#warnTime_off").prop("checked", true);
+            }
+            else if (waOff == "0") {
+                $("#warnTime_off").prop("checked", false);
+            }
+
+
         }
         <% }%>
         if ($("#temp_CalendarItems").is(":checked")) {
@@ -1945,8 +2011,24 @@
             $("#IsCopyProjectCharge").val("1"); 
         }
         if ($("#temp_TeamMembers").is(":checked")) {
-            // todo 将项目成员角色信息在页面展示出来（如果页面上已经展示则不展示）
             $("#IsCopyTeamMember").val("1");
+            <%if (isAdd)
+             { %>
+            var resDepIdsHidden = $("#resDepIdsHidden").val();
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ProjectAjax.ashx?act=GetProResDepIds&project_id=" + $("#project_temp").val() + "&ids=" + resDepIdsHidden,
+                success: function (data) {
+                    if (data != "") {
+                        $("#resDepIdsHidden").val(data);
+                        GetResDep();
+                    }
+                },
+            });
+            <%} %>
+            //GetResDep();
+        
         }
         $("#fromTempId").val($("#project_temp").val());
         $("#tempChoTaskIds").val($("#TempChooseTaskids").val());
@@ -2084,18 +2166,8 @@
             $("#conIds").prop("disabled", false);
             $("#textChoosAccount").prop("disabled", false);
             $("#textChoosAccount").val("");
-            $.ajax({
-                type: "GET",
-                url: "../Tools/OpportunityAjax.ashx?act=GetAccOpp&account_id=" + account_idHidden,
-                async: false,
-                //dataType:"json",
-                success: function (data) {
-                    debugger;
-                    if (data != "") {
-                        $("#opportunity_id").html(data);
-                    }
-                }
-            })
+            $("#opportunity_id").prop("disabled", false);
+            GetOppByAccount();
 
             ToTeamMember();
             ToTeamMemberSum = 0;
@@ -2111,6 +2183,26 @@
 
     }
 
+
+    function GetOppByAccount() {
+        debugger;
+        var account_idHidden = $("#account_idHidden").val();
+        if (account_idHidden != "") {
+            $("#opportunity_id").html("");
+            $.ajax({
+                type: "GET",
+                url: "../Tools/OpportunityAjax.ashx?act=GetAccOpp&account_id=" + account_idHidden,
+                async: false,
+                //dataType:"json",
+                success: function (data) {
+                    debugger;
+                    if (data != "") {
+                        $("#opportunity_id").html(data);
+                    }
+                }
+            })
+        }
+    }
     function TempChooseAccount() {
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=temp_account_id", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
     }
@@ -2120,6 +2212,21 @@
         // 本公司或者父公司的合同
         var account_idHidden = $("#account_idHidden").val();
         if (account_idHidden != "") {
+            // 1。获取父客户ID
+            
+            $.ajax({
+                type: "GET",
+                url: "../Tools/CompanyAjax.ashx?act=property&property=parent_id&account_id=" + account_idHidden,
+                async: false,
+                //dataType:"json",
+                success: function (data) {
+                    debugger;
+                    if (data != undefined && data != "" && data != null) {
+                        account_idHidden += "," + data;
+                    }
+                }
+            })
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&field=contract_id&con627=" + account_idHidden, "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>", 'left=200,top=200,width=600,height=800', false);
 
 
         } else {
@@ -2212,7 +2319,7 @@
 
     var ToMeSum = 0;
     function ToMe() {
-        userEmail = GetMeEmail();
+        var userEmail = GetMeEmail();
         if (userEmail != "") {
 
             if (ToMeSum == 0) {
@@ -2363,6 +2470,22 @@
         }
     }
 
+    var CcMeSum = 0;
+    function CcToMe() {
+        var userEmail = GetMeEmail();
+        if (userEmail != "") {
+            if (CcMeSum == 0) {
+                CcMeSum += 1;
+                $("#NoCcMe").val("1");
+                var Cc_Email = $("#Cc_Email").html();
+                if (Cc_Email != "") {
+                    $("#Cc_Email").html(Cc_Email + ';' + userEmail);
+                } else {
+                    $("#Cc_Email").html(userEmail);
+                }
+            }
+        }
+    }
     function GetContact() {
         debugger;
         var contactIDHidden = $("#contactIDHidden").val();
@@ -2468,6 +2591,7 @@
         }
         <% }%>
 
+        $("#start_date").prop("disabled", false);
         return true;
     }
 
@@ -2501,6 +2625,7 @@
     }
 
     function GetDataBySelectPage(val) {
+        debugger;
         var thisEmailText = "";
         var NoContactIds = $("#No" + val + "ContactIds").val();
         var NoResIds = $("#No" + val + "ResIds").val();

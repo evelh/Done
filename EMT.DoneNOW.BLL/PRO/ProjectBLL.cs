@@ -8,6 +8,8 @@ using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
+using System.Net.Mail;
+using System.Net;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -21,14 +23,16 @@ namespace EMT.DoneNOW.BLL
             dic.Add("project_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.PROJECT_TYPE)));              // 项目类型
             dic.Add("project_status", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.PROJECT_STATUS)));              // 项目状态
             dic.Add("project_line_of_business", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.PROJECT_LINE_OF_BUSINESS)));              // 项目业务范围
-            dic.Add("department" ,new sys_department_dal().GetDepartment());  // 部门
+            dic.Add("department", new sys_department_dal().GetDepartment());  // 部门
 
             dic.Add("org_location", new sys_organization_location_dal().GetLocList());  // 区域地址
             dic.Add("sys_resource", new sys_resource_dal().GetDictionary(true));  // 项目经理
             return dic;
         }
-
-        public bool AddPro(ProjectDto param,long user_id)
+        /// <summary>
+        /// 新增项目
+        /// </summary>
+        public bool AddPro(ProjectDto param, long user_id)
         {
             try
             {
@@ -37,10 +41,15 @@ namespace EMT.DoneNOW.BLL
                     return false;
                 #region 1.项目基本信息
                 var thisProject = param.project;
+                
+
+
                 thisProject.id = _dal.GetNextIdCom();
-               // thisProject.status_id = (int)PROJECT_STATUS.NEW;
+                // thisProject.status_id = (int)PROJECT_STATUS.NEW;
+                thisProject.opportunity_id = thisProject.opportunity_id == 0 ? null : thisProject.opportunity_id;
                 thisProject.status_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 thisProject.status_detail = "";
+                thisProject.no = ReturnProjectNo();
                 thisProject.create_user_id = user.id;
                 thisProject.update_user_id = user.id;
                 thisProject.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -48,8 +57,9 @@ namespace EMT.DoneNOW.BLL
                 // department_id organization_location_id
                 thisProject.line_of_business_id = thisProject.line_of_business_id == 0 ? null : thisProject.line_of_business_id;
                 thisProject.department_id = thisProject.department_id == 0 ? null : thisProject.department_id;
+                thisProject.owner_resource_id = thisProject.owner_resource_id == 0 ? null : thisProject.owner_resource_id;
                 _dal.Insert(thisProject);
-                OperLogBLL.OperLogAdd<pro_project>(thisProject,thisProject.id,user.id, OPER_LOG_OBJ_CATE.PROJECT,"新增项目");
+                OperLogBLL.OperLogAdd<pro_project>(thisProject, thisProject.id, user.id, OPER_LOG_OBJ_CATE.PROJECT, "新增项目");
                 #endregion
 
                 #region 2.自定义信息
@@ -70,7 +80,7 @@ namespace EMT.DoneNOW.BLL
                         {
                             var stDal = new sdk_task_dal();
                             var temTaskList = stDal.GetTaskByIds(param.tempChoTaskIds);
-                            if(temTaskList!=null&& temTaskList.Count > 0)
+                            if (temTaskList != null && temTaskList.Count > 0)
                             {
                                 bool isCopyRes = false;  // 用户是否选择导入项目成员--
                                 if (!string.IsNullOrEmpty(param.IsCopyTeamMember))
@@ -80,7 +90,8 @@ namespace EMT.DoneNOW.BLL
                                 var createTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                 var updateTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                 var strDal = new sdk_task_resource_dal();
-                                temTaskList.ForEach(_ => {
+                                temTaskList.ForEach(_ =>
+                                {
                                     var taskResList = strDal.GetTaskResByTaskId(_.id);
 
                                     _.id = stDal.GetNextIdCom();
@@ -93,7 +104,7 @@ namespace EMT.DoneNOW.BLL
                                     _.update_time = updateTime;
                                     stDal.Insert(_);
                                     OperLogBLL.OperLogAdd<sdk_task>(_, _.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "从模板导入项目Task");
-                                    if(isCopyRes&&taskResList != null&& taskResList.Count > 0)
+                                    if (isCopyRes && taskResList != null && taskResList.Count > 0)
                                     {
                                         taskResList.ForEach(tr =>
                                         {
@@ -122,7 +133,8 @@ namespace EMT.DoneNOW.BLL
                             {
                                 var createTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                 var updateTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                                camList.ForEach(_ => {
+                                camList.ForEach(_ =>
+                                {
                                     _.id = ppcDal.GetNextIdCom();
                                     _.oid = 0;
                                     _.project_id = thisProject.id;
@@ -140,11 +152,12 @@ namespace EMT.DoneNOW.BLL
                         {
                             var cccDal = new ctt_contract_cost_dal();
                             var costList = cccDal.GetCostByProId(tempPro.id);
-                            if(costList!=null&& costList.Count > 0)
+                            if (costList != null && costList.Count > 0)
                             {
                                 var createTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                 var updateTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                                costList.ForEach(_=> {
+                                costList.ForEach(_ =>
+                                {
                                     _.create_time = createTime;
                                     _.create_user_id = user.id;
                                     _.update_user_id = user.id;
@@ -175,7 +188,7 @@ namespace EMT.DoneNOW.BLL
                         {
                         }
                     }
-                  
+
                 }
                 #endregion
 
@@ -183,7 +196,7 @@ namespace EMT.DoneNOW.BLL
 
                 #region 3.项目团队处理
                 var pptDal = new pro_project_team_dal();
-                
+
                 if (!string.IsNullOrEmpty(param.resDepIds))
                 {
                     var resDepList = param.resDepIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -257,15 +270,15 @@ namespace EMT.DoneNOW.BLL
                 if (temp != null)
                 {
                     var temp_email_List = new sys_notify_tmpl_email_dal().GetEmailByTempId(temp.id);
-                    if(temp_email_List!=null&& temp_email_List.Count > 0)
+                    if (temp_email_List != null && temp_email_List.Count > 0)
                     {
 
-                        StringBuilder toEmail = new StringBuilder(); 
+                        StringBuilder toEmail = new StringBuilder();
                         #region 接受邮件的人的邮箱地址
-                        
+
                         if (!string.IsNullOrEmpty(param.NoToMe))
                         {
-                            toEmail.Append(user.email+";"); 
+                            toEmail.Append(user.email + ";");
                         }
                         if (!string.IsNullOrEmpty(param.NoToProlead) && thisProject.owner_resource_id != null)
                         {
@@ -296,7 +309,7 @@ namespace EMT.DoneNOW.BLL
                         if (!string.IsNullOrEmpty(param.NoToDepIds))
                         {
                             var depSouList = new sys_resource_dal().GetListByDepId(param.NoToDepIds);
-                            if(depSouList!=null&& depSouList.Count > 0)
+                            if (depSouList != null && depSouList.Count > 0)
                             {
                                 toResList.AddRange(depSouList);
                             }
@@ -309,19 +322,19 @@ namespace EMT.DoneNOW.BLL
                                 toResList.AddRange(workresList);
                             }
                         }
-                        if(toResList!=null&& toResList.Count > 0)
+                        if (toResList != null && toResList.Count > 0)
                         {
                             toResList = toResList.Distinct().ToList();
                             toResList.ForEach(_ => { if (!string.IsNullOrEmpty(_.email)) { toEmail.Append(_.email + ";"); } });
                         }
                         if (!string.IsNullOrEmpty(param.NoToOtherMail))
                         {
-                            toEmail.Append(param.NoToOtherMail+';');
+                            toEmail.Append(param.NoToOtherMail + ';');
                         }
                         var toEmialString = toEmail.ToString();
                         if (!string.IsNullOrEmpty(toEmialString))
                         {
-                            toEmialString = toEmialString.Substring(0, toEmialString.Length-1);
+                            toEmialString = toEmialString.Substring(0, toEmialString.Length - 1);
                         }
                         #endregion
                         StringBuilder ccEmail = new StringBuilder();
@@ -376,7 +389,7 @@ namespace EMT.DoneNOW.BLL
                         var ccEmialString = ccEmail.ToString();
                         if (!string.IsNullOrEmpty(ccEmialString))
                         {
-                            ccEmialString = ccEmialString.Substring(0, toEmialString.Length - 1);
+                            ccEmialString = ccEmialString.Substring(0, ccEmialString.Length - 1);
                         }
                         #endregion
                         StringBuilder bccEmail = new StringBuilder();
@@ -431,38 +444,539 @@ namespace EMT.DoneNOW.BLL
                         }
 
                         #endregion
-                        bool isSuccess = false; 
-                        var norify = new com_notify_email()
+                        bool isSuccess = false;
+                        var notify = new com_notify_email()
                         {
                             id = _dal.GetNextIdCom(),
                             cate_id = (int)NOTIFY_CATE.PROJECT,
                             event_id = (int)DicEnum.NOTIFY_EVENT.PROJECT_CREATED,
-                            to_email = (string.IsNullOrEmpty(param.notify.to_email)?"": param.notify.to_email)+toEmialString,
-                            cc_email = (string.IsNullOrEmpty(param.notify.cc_email) ? "" : param.notify.cc_email) +ccEmialString,
-                            bcc_email = (string.IsNullOrEmpty(param.notify.bcc_email) ? "" : param.notify.bcc_email) + bccEmialString,
+                            to_email = toEmialString,
+                            cc_email = ccEmialString,
+                            bcc_email = bccEmialString,
                             notify_tmpl_id = temp.id,
                             from_email = user.email,
                             from_email_name = user.name,
-                            subject = string.IsNullOrEmpty(param.notify.subject) ? "" : param.notify.subject,
-                            body_text = temp_email_List[0].body_text,
-                            is_success = (sbyte)(isSuccess ? 1 : 0),
+                            subject = param.subject,
+                            body_text = temp_email_List[0].body_text + param.otherEmail,
+                            // is_success = (sbyte)(isSuccess ? 1 : 0),
                             is_html_format = 0,
                             create_user_id = user.id,
                             update_user_id = user.id,
                             create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                             update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         };
-                        new com_notify_email_dal().Insert(norify);
-                        OperLogBLL.OperLogAdd<com_notify_email>(norify, norify.id, user.id, OPER_LOG_OBJ_CATE.NOTIFY, "新增项目-添加通知");
+                        isSuccess = SendEmail(notify);
+                        notify.is_success = (sbyte)(isSuccess ? 1 : 0);
+                        new com_notify_email_dal().Insert(notify);
+                        OperLogBLL.OperLogAdd<com_notify_email>(notify, notify.id, user.id, OPER_LOG_OBJ_CATE.NOTIFY, "新增项目-添加通知");
                     }
                 }
-                
+
                 #endregion
             }
             catch (Exception msg)
             {
                 return false;
             }
+            return true;
+        }
+        /// <summary>
+        /// 修改项目
+        /// </summary>
+        public bool EditProject(ProjectDto param, long user_id)
+        {
+            try
+            {
+                var user = UserInfoBLL.GetUserInfo(user_id);
+                if (user == null)
+                    return false;
+                var oldPro = _dal.FindNoDeleteById(param.project.id);
+                if (oldPro != null)
+                {
+                    #region 修改项目相关
+                    param.project.oid = oldPro.oid;
+                    param.project.update_user_id = user.id;
+                    param.project.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    param.project.create_user_id = oldPro.create_user_id;
+                    param.project.create_time = oldPro.create_time;
+                    param.project.template_id = oldPro.template_id;
+                    param.project.line_of_business_id = param.project.line_of_business_id == 0 ? null : param.project.line_of_business_id;
+                    param.project.department_id = param.project.department_id == 0 ? null : param.project.department_id;
+                    param.project.opportunity_id= param.project.opportunity_id == 0 ? null : param.project.opportunity_id;
+                    param.project.owner_resource_id = param.project.owner_resource_id == 0 ? null : param.project.owner_resource_id;
+                    _dal.Update(param.project);
+                    OperLogBLL.OperLogUpdate<pro_project>(param.project, oldPro, param.project.id, user.id, OPER_LOG_OBJ_CATE.PROJECT, "修改项目");
+                    #endregion
+                    #region 修改项目自定义
+                    var udf_project_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PROJECTS);
+                    new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.PROJECTS, udf_project_list, param.project.id, param.udf, user, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_EXTENSION_INFORMATION);
+                    #endregion
+
+                    #region 项目状态更改时添加备注信息
+
+                    if (oldPro.status_id != param.project.status_id)
+                    {
+                        var oldStatus = new d_general_dal().FindNoDeleteById(oldPro.status_id);
+                        var oldStatusName = oldStatus == null ? "" : oldStatus.name;
+                        var newStatus = new d_general_dal().FindNoDeleteById(param.project.status_id);
+                        var newStatusName = newStatus == null ? "" : newStatus.name;
+                        var activity = new com_activity()
+                        {
+                            id = _dal.GetNextIdCom(),
+                            cate_id = (int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE,
+                            action_type_id = (int)ACTIVITY_TYPE.PROJECT_NOTE,
+                            object_id = param.project.id,
+                            object_type_id = (int)OBJECT_TYPE.PROJECT,
+                            account_id = param.project.account_id,
+                            name = "状态变更、状态描述变更",
+                            description = $"状态从{oldStatusName}变为{newStatusName}；状态描述从{oldPro.status_detail}到{param.project.status_detail}",
+                            publish_type_id = (int)NOTE_PUBLISH_TYPE.PROJECT_ALL_USER,
+                            create_user_id = user.id,
+                            update_user_id = user.id,
+                            create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            is_system_generate = 1,
+                        };
+
+                        new com_activity_dal().Insert(activity);
+                        OperLogBLL.OperLogAdd<com_activity>(activity, activity.id, user.id, OPER_LOG_OBJ_CATE.NOTIFY, "修改项目状态-添加通知");
+                    }
+
+
+
+                    #endregion
+                }
+            }
+            catch (Exception msg)
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 完成项目
+        /// </summary>
+        public bool CompleteProject(CompleteProjectDto param, long user_id)
+        {
+            try
+            {
+                var user = UserInfoBLL.GetUserInfo(user_id);
+                if (user == null)
+                    return false;
+                if (param.project != null)
+                {
+                    var oldProject = _dal.FindNoDeleteById(param.project.id);
+                    #region 1.修改项目相关
+                    param.project.status_id = (int)PROJECT_STATUS.DONE;
+                    param.project.start_date = DateTime.Now;
+                    param.project.status_detail += "  项目被设置为完成状态";
+                    param.project.update_user_id = user.id;
+                    param.project.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    _dal.Update(param.project);
+                    OperLogBLL.OperLogUpdate<pro_project>(param.project, oldProject, param.project.id, user.id, OPER_LOG_OBJ_CATE.PROJECT, "修改项目");
+                    #endregion
+
+                    #region 2.修改任务状态
+                    if (param.taskList != null && param.taskList.Count > 0)
+                    {
+                        var tDal = new sdk_task_dal();
+                        foreach (var task in param.taskList)
+                        {
+                            var oldTask = tDal.FindNoDeleteById(task.id);
+                            if (oldTask != null)
+                            {
+                                task.status_id = (int)TICKET_STATUS.DONE;
+                                task.estimated_end_date = DateTime.Now;
+                                task.update_user_id = user.id;
+                                task.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                                tDal.Update(task);
+                                OperLogBLL.OperLogUpdate<sdk_task>(task, oldTask, task.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "任务状态变更");
+                            }
+
+                        }
+                    }
+                    #endregion
+
+                    #region 3.更新商机信息
+                    if (param.project.opportunity_id != null)
+                    {
+                        var oDal = new crm_opportunity_dal();
+                        var oldOpp = oDal.FindNoDeleteById((long)param.project.opportunity_id);
+                        if (oldOpp != null)
+                        {
+                            if (param.isUpdateOppDate)
+                            {
+                                oldOpp.start_date = param.ProStartDate;
+                            }
+                            if (param.isUpdateOppStatus)
+                            {
+                                oldOpp.status_id = (int)OPPORTUNITY_STATUS.IMPLEMENTED;
+                            }
+
+                            if (param.isUpdateOppDate || param.isUpdateOppStatus)
+                            {
+                                OperLogBLL.OperLogUpdate<crm_opportunity>(oldOpp, oDal.FindNoDeleteById((long)param.project.opportunity_id), oldOpp.id, user.id, OPER_LOG_OBJ_CATE.OPPORTUNITY, "修改商机");
+                                new crm_opportunity_dal().Update(oldOpp);
+                            }
+
+                        }
+
+                    }
+
+                    #endregion
+
+                    #region 4.新增备注
+                    var activity = new com_activity()
+                    {
+                        id = _dal.GetNextIdCom(),
+                        cate_id = (int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE,
+                        action_type_id = (int)ACTIVITY_TYPE.PROJECT_NOTE,
+                        object_id = param.project.id,
+                        object_type_id = (int)OBJECT_TYPE.PROJECT,
+                        account_id = param.project.account_id,
+                        resource_id = param.project.owner_resource_id,
+                        opportunity_id = param.project.opportunity_id,
+                        name = "状态改变",
+                        description = "项目被设置为完成状态",
+                        publish_type_id = (int)NOTE_PUBLISH_TYPE.PROJECT_ALL_USER,
+                        create_user_id = user.id,
+                        update_user_id = user.id,
+                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        is_system_generate = 1,
+                    };
+                    new com_activity_dal().Insert(activity);
+                    OperLogBLL.OperLogAdd<com_activity>(activity, activity.id, user.id, OPER_LOG_OBJ_CATE.NOTIFY, "修改项目状态-添加通知");
+                    #endregion
+
+                    #region 5.保存配置项信息
+                    if (param.insProList != null && param.insProList.Count > 0)
+                    {
+                        var ipDal = new ivt_product_dal();
+                        var cipDal = new crm_installed_product_dal();
+                        var cccDal = new ctt_contract_cost_dal();
+                        foreach (var inspro in param.insProList)
+                        {
+                            // 新增配置项
+                            var product = ipDal.FindNoDeleteById(inspro.product_id);
+                            var cost = cccDal.FindNoDeleteById(inspro.id);
+                            if (product == null || cost == null)
+                            {
+                                continue;
+                            }
+                            var thisInsPro = new crm_installed_product()
+                            {
+                                id = _dal.GetNextIdCom(),
+                                product_id = inspro.product_id,
+                                cate_id = product.installed_product_cate_id,
+                                installed_resource_id = user.id,
+                                start_date = inspro.installOn,
+                                through_date = inspro.warExpiration,
+                                serial_number = inspro.serial_number,
+                                is_active = 1,
+                                account_id = param.project.account_id,
+                                create_user_id = user.id,
+                                update_user_id = user.id,
+                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            };
+                            cipDal.Insert(thisInsPro);
+                            OperLogBLL.OperLogAdd<crm_installed_product>(thisInsPro, thisInsPro.id, user.id, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "保存配置项");
+                            // 修改成本为已创建配置项
+                            var oldCost = cccDal.FindNoDeleteById(inspro.id);
+                            cost.create_ci = 1;
+                            cost.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                            cost.update_user_id = user.id;
+                            cccDal.Update(cost);
+                            OperLogBLL.OperLogUpdate<ctt_contract_cost>(cost, oldCost, cost.id, user.id, OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改项目成本");
+
+                        }
+                    }
+                    #endregion
+
+                    #region 6.保存通知信息
+                    if (param.noTempId != 0)
+                    {
+                        var temp = new sys_notify_tmpl_dal().FindNoDeleteById(param.noTempId);
+                        if (temp != null)
+                        {
+                            var temp_email_List = new sys_notify_tmpl_email_dal().GetEmailByTempId(temp.id);
+                            if (temp_email_List != null && temp_email_List.Count > 0)
+                            {
+                                string toEmail = "";
+                                if (!string.IsNullOrEmpty(param.noResIds))
+                                {
+                                    var resList = new sys_resource_dal().GetListByIds(param.noResIds);
+                                    if (resList != null && resList.Count > 0)
+                                    {
+                                        resList.ForEach(_ =>
+                                        {
+                                            if (!string.IsNullOrEmpty(_.email))
+                                            {
+                                                toEmail += _.email + ',';
+                                            }
+                                        });
+                                    }
+                                }
+                                toEmail += param.otherMail;
+                                bool isSuccess = false;
+                                var notify = new com_notify_email()
+                                {
+                                    id = _dal.GetNextIdCom(),
+                                    cate_id = (int)NOTIFY_CATE.PROJECT,
+                                    event_id = (int)DicEnum.NOTIFY_EVENT.PROJECT_COMPLETED,
+                                    to_email = toEmail,
+                                    notify_tmpl_id = temp.id,
+                                    from_email = user.email,
+                                    from_email_name = user.name,
+                                    subject = param.subject,
+                                    body_text = temp_email_List[0].body_text + param.appendText,
+                                    is_html_format = 0,
+                                    create_user_id = user.id,
+                                    update_user_id = user.id,
+                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                };
+                                // isSuccess = SendEmail(notify);
+                                notify.is_success = (sbyte)(isSuccess ? 1 : 0);
+                                new com_notify_email_dal().Insert(notify);
+                                OperLogBLL.OperLogAdd<com_notify_email>(notify, notify.id, user.id, OPER_LOG_OBJ_CATE.NOTIFY, "完成项目-添加通知");
+                            }
+                        }
+                    }
+
+
+                    #endregion
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception msg)
+            {
+
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 停用项目
+        /// </summary>
+        public bool DisProject(long id, long user_id)
+        {
+            var thisPro = _dal.FindNoDeleteById(id);
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (thisPro == null || user == null)
+            {
+                return false;
+            }
+            thisPro.status_id = (int)DicEnum.PROJECT_STATUS.DISABLE;
+            thisPro.update_user_id = user.id;
+            thisPro.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var oldPro = _dal.FindNoDeleteById(id);
+            var result = _dal.Update(thisPro);
+            if (result)
+            {
+                OperLogBLL.OperLogUpdate<pro_project>(thisPro, oldPro, thisPro.id, user.id, OPER_LOG_OBJ_CATE.PROJECT, "停用项目");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        #region 项目相关数据获取方法
+        /// <summary>
+        /// 获取项目的任务完成百分比
+        /// </summary>
+        public decimal CompleteTaskPercent(long project_id)
+        {
+            decimal percent = 0;
+            var taskList = new sdk_task_dal().GetProTask(project_id, $" and type_id in({(int)TASK_TYPE.PROJECT_TASK},{(int)TASK_TYPE.PROJECT_ISSUE})");
+            if (taskList != null && taskList.Count > 0)
+            {
+                var comTask = taskList.Where(_ => _.status_id == (int)TICKET_STATUS.DONE).ToList();
+                if (comTask != null && comTask.Count > 0)
+                {
+                    percent = comTask.Count / taskList.Count;
+                }
+            }
+
+            return percent;
+        }
+        /// <summary>
+        /// 获取项目的估算时间
+        /// </summary>
+        public decimal ESTIMATED_HOURS(long project_id)
+        {
+            decimal hours = 0;
+            var taskList = new sdk_task_dal().GetProjectTask(project_id);
+            if (taskList != null && taskList.Count > 0)
+            {
+                hours = taskList.Sum(_ => _.estimated_hours);
+            }
+            return hours;
+        }
+        /// <summary>
+        /// 获取项目的变更单时间
+        /// </summary>
+        public decimal ProChaHours(long project_id)
+        {
+            decimal hours = 0;
+            var costList = new ctt_contract_cost_dal().GetCostByProId(project_id);
+            if (costList != null && costList.Count > 0)
+            {
+                hours = costList.Sum(_ => _.change_order_hours == null ? 0 : (decimal)_.change_order_hours);
+            }
+            return hours;
+        }
+        /// <summary>
+        /// 获取项目的实际时间
+        /// </summary>
+        public decimal ProWorkHours(long project_id)
+        {
+            decimal hours = 0;
+            var taskList = new sdk_task_dal().GetProjectTask(project_id);
+            if (taskList != null && taskList.Count > 0)
+            {
+                hours = taskList.Sum(_ => RetTaskActHours(_.id));
+            }
+            return hours;
+        }
+        /// <summary>
+        /// 获取项目的估算差异
+        /// </summary>
+        public decimal Provariance(long project_id)
+        {
+            decimal hours = 0;
+            var taskList = new sdk_task_dal().GetProjectTask(project_id);
+            if (taskList != null && taskList.Count > 0)
+            {
+                hours = taskList.Sum(_ => _.projected_variance);
+            }
+            return hours;
+        }
+
+        #endregion
+        /// <summary>
+        /// 获取项目编号
+        /// </summary>
+        public string ReturnProjectNo()
+        {
+            string no = "P" + DateTime.Now.ToString("yyyyMMdd");
+            var prolist = _dal.GetProByNo(no);
+            if (prolist != null && prolist.Count > 0)
+            {
+                int maxNo = 0;
+                prolist.ForEach(_ =>
+                {
+                    try
+                    {
+                        var noList = _.no.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (noList.Count() >= 2)
+                        {
+                            var thisNo = int.Parse(noList[1]);
+                            if (maxNo < thisNo)
+                            {
+                                maxNo = thisNo;
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {}
+                });
+                maxNo += 1;
+                return no + '.' + maxNo.ToString("0000");
+            }
+            else
+            {
+                return no + ".0001";
+            }
+        }
+
+        /// <summary>
+        /// 获取任务的实际工作时间
+        /// </summary>
+        public decimal RetTaskActHours(long task_id)
+        {
+            decimal hourSum = 0;
+            var workEntList = new sdk_work_entry_dal().GetByTaskId(task_id);
+            if (workEntList != null && workEntList.Count > 0)
+            {
+                hourSum = workEntList.Sum(_ => _.hours_worked == null ? 0 : (decimal)_.hours_worked);
+            }
+            return hourSum;
+        }
+
+        /// <summary>
+        /// 发送邮件，返回是否发送成功
+        /// </summary>
+        public bool SendEmail(com_notify_email email)
+        {
+            try
+            {
+
+                MailMessage message = new MailMessage();
+
+                MailAddress fromAddr = new MailAddress(email.from_email);
+                message.From = fromAddr;
+                // message.From = ;
+                // 设置收件人
+                var toEmailList = email.to_email.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var toEmail in toEmailList)
+                {
+                    message.To.Add(toEmail);
+                }
+
+
+                // 设置抄送人
+                var ccEmailList = email.cc_email.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var ccEmail in ccEmailList)
+                {
+                    message.CC.Add(ccEmail);
+                }
+
+                message.To.Add("zhufei_dsjt@shdsjt.cn");
+
+                // 密送地址
+                var bccEmailList = email.bcc_email.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var bccEmail in bccEmailList)
+                {
+                    message.Bcc.Add(bccEmail);
+                }
+
+
+                // 设置邮件标题
+                message.Subject = email.subject;
+                // 设置邮件内容
+                message.Body = email.body_text;
+                message.BodyEncoding = Encoding.GetEncoding("gb2312");
+
+                SmtpClient client = new SmtpClient();
+                #region 需要授权码或者密码进行发送邮件(测试通过--)
+                //client.Host = "smtp.163.com";
+                ////设置发送人的邮箱账号和密码 --是否使用授权码登陆发送
+                //client.UseDefaultCredentials = true;
+                //client.Credentials = new NetworkCredential("15738813663@163.com", "tt123456");
+                ////启用ssl,也就是安全发送
+                //client.EnableSsl = true;
+                #endregion
+
+                client.Host = "localhost";
+                // client.Send(message);
+
+                //发送邮件
+                client.Send(message);
+            }
+            catch (Exception msg)
+            {
+
+                return false;
+            }
+
             return true;
         }
     }

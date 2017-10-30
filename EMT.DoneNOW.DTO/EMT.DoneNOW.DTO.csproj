@@ -51,6 +51,7 @@
     <Compile Include="CompanyConditionDto.cs" />
     <Compile Include="CompanyReportDto.cs" />
     <Compile Include="CompanyUpdateDto.cs" />
+    <Compile Include="CompleteProjectDto.cs" />
     <Compile Include="ConfigurationItemAddDto.cs" />
     <Compile Include="ContactAddDto.cs" />
     <Compile Include="ContactConditionDto.cs" />

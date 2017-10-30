@@ -22,10 +22,12 @@ namespace EMT.DoneNOW.DAL
         }
 
         /// 根据项目Id 获取cost 
-        public List<ctt_contract_cost> GetCostByProId(long project_id)
+        public List<ctt_contract_cost> GetCostByProId(long project_id,string where ="")
         {
-            return FindListBySql<ctt_contract_cost>($"SELECT * FROM ctt_contract_cost where project_id = {project_id} and delete_time = 0");
+            return FindListBySql<ctt_contract_cost>($"SELECT * FROM ctt_contract_cost where project_id = {project_id} and delete_time = 0 "+where);
         }
+
+       
     }
 
 }

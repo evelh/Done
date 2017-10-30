@@ -8,13 +8,14 @@ using EMT.Tools;
 using EMT.DoneNOW.DAL;
 using System.Text;
 using EMT.DoneNOW.Core;
+using System.Web.SessionState;
 
 namespace EMT.DoneNOW.Web
 {
     /// <summary>
     /// ProjectAjax 的摘要说明
     /// </summary>
-    public class ProjectAjax : IHttpHandler
+    public class ProjectAjax : IHttpHandler, IRequiresSessionState
     {
 
         public void ProcessRequest(HttpContext context)
@@ -31,6 +32,15 @@ namespace EMT.DoneNOW.Web
                     case "GetSinProject":
                         var sin_project_id = context.Request.QueryString["project_id"];
                         GetSinProject(context,long.Parse(sin_project_id));
+                        break;
+                    case "GetProResDepIds":
+                        var pro_id = context.Request.QueryString["project_id"];
+                        var ids = context.Request.QueryString["ids"];
+                        GetProResDepIds(context,long.Parse(pro_id),ids);
+                        break;
+                    case "DisProject":
+                        var disProId = context.Request.QueryString["project_id"];
+                        DisProject(context,long.Parse(disProId));
                         break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -99,6 +109,70 @@ namespace EMT.DoneNOW.Web
             if (project != null)
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson(project));
+            }
+        }
+        /// <summary>
+        /// 根据项目ID，获取到相对应的员工角色关系表ID
+        /// </summary>
+        private void GetProResDepIds(HttpContext context,long project_id,string resdepIDs)
+        {
+            var pptDal = new pro_project_team_dal();
+            var pptrDal = new pro_project_team_role_dal();
+            var srdDal = new sys_resource_department_dal();
+            var thisProject = new pro_project_dal().FindNoDeleteById(project_id);
+            if (thisProject != null)
+            {
+                var proTeamList = pptDal.GetResListBuProId(thisProject.id);
+                if (proTeamList != null && proTeamList.Count > 0)
+                {
+                    List<string> idsList = new List<string>();
+                    if (!string.IsNullOrEmpty(resdepIDs))
+                    {
+                        var resdepArr = resdepIDs.Split(new char[] {',' },StringSplitOptions.RemoveEmptyEntries);
+                        idsList = resdepArr.ToList();
+                    }
+                    proTeamList.ForEach(_ => {
+                        var teamRole = pptrDal.GetSinTeamRole(_.id);
+                        if (teamRole != null&&teamRole.role_id!=null)
+                        {
+                            var resDepList = srdDal.GetResDepByResAndRole((long)_.resource_id,(long)teamRole.role_id);
+                            foreach (var resdep in resDepList)
+                            {
+                                if (!idsList.Contains(resdep.id.ToString()))
+                                {
+                                    idsList.Add(resdep.id.ToString());
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                    if (idsList != null && idsList.Count > 0)
+                    {
+                        string ids = "";
+                        idsList = idsList.Distinct().ToList();
+                        idsList.ForEach(_ => { ids += _ + ','; });
+                        if (!string.IsNullOrEmpty(ids))
+                        {
+                            ids = ids.Substring(0,ids.Length-1);
+                            context.Response.Write(ids);
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// 停用项目
+        /// </summary>
+        private void DisProject(HttpContext context, long project_id)
+        {
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            if (res != null)
+            {
+                var result = new ProjectBLL().DisProject(project_id,res.id);
+                context.Response.Write(result);
             }
         }
         public bool IsReusable

@@ -79,8 +79,10 @@
                         <td width="30%" class="FieldLabels">联系人
                         <div style="padding-bottom: 6px;">
                             <input type="text" style="width: 300px;" />
+                            <input type="hidden" id="contactID"/>
+                            <input type="hidden" id="contactIDHidden"/>
                             <a>
-                                <img src="../Images/data-selector.png" onclick="ChooseContact()">
+                                <img src="../Images/data-selector.png" onclick="ChooseContact()" />
                             </a>
                         </div>
                             <div>

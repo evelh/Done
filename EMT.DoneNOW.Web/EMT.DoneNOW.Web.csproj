@@ -203,13 +203,17 @@
     <Content Include="Contract\EditServiceInvoiceDesc.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Images\cancel1.png" />
+    <Content Include="Images\dailyGridContainer.png" />
     <Content Include="Images\forward_arrow.png" />
+    <Content Include="Images\list-view.png" />
+    <Content Include="Images\monthlyGridContainer.png" />
     <Content Include="Images\open.png" />
     <Content Include="Images\Recentindex.png" />
     <Content Include="Images\ServiceSelector.png" />
     <Content Include="Images\Loading.gif" />
     <Content Include="Images\shenglian.gif" />
     <Content Include="Images\time.png" />
+    <Content Include="Images\weeklyGridContainer.png" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempEdit.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempTop.aspx" />
@@ -289,6 +293,13 @@
     <Content Include="Product\ProductStock.aspx" />
     <Content Include="Product\TransferProductStock.aspx" />
     <Content Include="Product\VendorAdd.aspx" />
+    <Content Include="Project\ProjectCompleteWizard.aspx" />
+    <Content Include="Project\ProjectSearch.aspx" />
+    <Content Include="Project\ProjectSearchImg.aspx" />
+    <Content Include="Project\ProjectSearchResult.aspx" />
+    <Content Include="Project\ProjectSearchTable.aspx" />
+    <Content Include="Project\ProjectSummary.aspx" />
+    <Content Include="Project\ProjectView.aspx" />
     <Content Include="Project\RecipientSelector.aspx" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
@@ -1346,6 +1357,55 @@
     </Compile>
     <Compile Include="Product\VendorAdd.aspx.designer.cs">
       <DependentUpon>VendorAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectCompleteWizard.aspx.cs">
+      <DependentUpon>ProjectCompleteWizard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectCompleteWizard.aspx.designer.cs">
+      <DependentUpon>ProjectCompleteWizard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectSearch.aspx.cs">
+      <DependentUpon>ProjectSearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectSearch.aspx.designer.cs">
+      <DependentUpon>ProjectSearch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectSearchImg.aspx.cs">
+      <DependentUpon>ProjectSearchImg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectSearchImg.aspx.designer.cs">
+      <DependentUpon>ProjectSearchImg.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectSearchResult.aspx.cs">
+      <DependentUpon>ProjectSearchResult.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectSearchResult.aspx.designer.cs">
+      <DependentUpon>ProjectSearchResult.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectSearchTable.aspx.cs">
+      <DependentUpon>ProjectSearchTable.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectSearchTable.aspx.designer.cs">
+      <DependentUpon>ProjectSearchTable.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectSummary.aspx.cs">
+      <DependentUpon>ProjectSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectSummary.aspx.designer.cs">
+      <DependentUpon>ProjectSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectView.aspx.cs">
+      <DependentUpon>ProjectView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectView.aspx.designer.cs">
+      <DependentUpon>ProjectView.aspx</DependentUpon>
     </Compile>
     <Compile Include="Project\RecipientSelector.aspx.cs">
       <DependentUpon>RecipientSelector.aspx</DependentUpon>
