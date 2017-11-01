@@ -436,6 +436,7 @@
                                         var oneTotalPrice = oneTimeList != null && oneTimeList.Count > 0 ? (oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)) : 0;
                                         discount.discount_percent = (discount.unit_discount / (oneTotalPrice == 0 ? 1 : oneTotalPrice));
                                     }
+                                    if (quote_item_tax_cate != null && quote_item_tax_cate.Count >0) { 
                                     quote_item_tax_cate.ForEach(_ =>
                                     {
                                         var list = oneTimeList.Where(dis => (dis.tax_cate_id == null ? 0 : dis.tax_cate_id) == _.tax_cate_id).ToList();
@@ -446,7 +447,7 @@
                                         }
 
                                     });
-
+                                        }
                                 });  // 在这里首先计算出要一次性折扣的所有的税
                             %>
                             <tr>
@@ -960,6 +961,10 @@
                                         var oneTotalPrice = oneTimeList != null && oneTimeList.Count > 0 ? (oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)) : 0;
                                         discount.discount_percent = (discount.unit_discount / (oneTotalPrice == 0 ? 1 : oneTotalPrice));
                                     }
+                                    if (quote_item_tax_cate != null && quote_item_tax_cate.Count > 0)
+                                    {
+
+                                  
                                     quote_item_tax_cate.ForEach(_ =>
                                     {
                                         var list = oneTimeList.Where(dis => (dis.tax_cate_id == null ? 0 : dis.tax_cate_id) == _.tax_cate_id).ToList();
@@ -970,7 +975,7 @@
                                         }
 
                                     });
-
+  }
                                 });  // 在这里首先计算出要一次性折扣的所有的税
                             %>
                             <tr>
@@ -1414,7 +1419,9 @@
                                         var oneTotalPrice = oneTimeList != null && oneTimeList.Count > 0 ? (oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)) : 0;
                                         discount.discount_percent = (discount.unit_discount / (oneTotalPrice == 0 ? 1 : oneTotalPrice));
                                     }
-                                    quote_item_tax_cate.ForEach(_ =>
+                                    if (quote_item_tax_cate != null && quote_item_tax_cate.Count > 0)
+                                    {
+  quote_item_tax_cate.ForEach(_ =>
                                     {
                                         var list = oneTimeList.Where(dis => (dis.tax_cate_id == null ? 0 : dis.tax_cate_id) == _.tax_cate_id).ToList();
                                         if (list != null && list.Count > 0)
@@ -1424,6 +1431,8 @@
                                         }
 
                                     });
+                                    }
+                                  
 
 
                                 });  // 在这里首先计算出要一次性折扣的所有的税

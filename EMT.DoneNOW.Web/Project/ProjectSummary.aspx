@@ -26,8 +26,8 @@
     <div class="DropDownMenu" id="D1" style="top: 25px;">
         <ul>
             <li><span class="DropDownMenuItemText" onclick="EditProject('<%=thisProject.id %>')">编辑项目</span></li>
-            <li><span class="DropDownMenuItemText">添加项目日历</span></li>
-            <li><span class="DropDownMenuItemText">添加项目备注</span></li>
+            <li><span class="DropDownMenuItemText">添加项目<%=isTemp?"模板":"" %>日历</span></li>
+            <li><span class="DropDownMenuItemText">添加项目<%=isTemp?"模板":"" %>备注</span></li>
             <% if (thisProject.status_id != (int)EMT.DoneNOW.DTO.DicEnum.PROJECT_STATUS.DONE)
                 { %>
             <li><span class="DropDownMenuItemText">完成项目</span></li>
@@ -36,11 +36,14 @@
             <%// DISABLE 
                 if (thisProject.status_id != (int)EMT.DoneNOW.DTO.DicEnum.PROJECT_STATUS.DISABLE)
                 {%>
-            <li onclick="DisProject('<%=thisProject.id %>')"><span class="DropDownMenuItemText">停用项目</span></li>
+            <li onclick="DisProject('<%=thisProject.id %>')"><span class="DropDownMenuItemText">停用项目<%=isTemp?"模板":"" %></span></li>
             <%} %>
             <li><span class="DropDownMenuItemText">激活项目</span></li>
-            <li><span class="DropDownMenuItemText">保存项目模板</span></li>
-            <li><span class="DropDownMenuItemText">删除项目</span></li>
+            <%if (!isTemp)
+                { %>
+            <li><span class="DropDownMenuItemText" onclick="SaveAsTemp()">保存项目模板</span></li>
+            <%} %>
+            <li><span class="DropDownMenuItemText" onclick="DeletePro()">删除项目<%=isTemp?"模板":"" %></span></li>
         </ul>
     </div>
     <div class="DivScrollingContainer General" style="top: 34px;">
@@ -532,6 +535,11 @@
 
 
     </div>
+
+
+      
+
+
 </body>
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
@@ -572,7 +580,9 @@
 
 </script>
 <script>
-
+    $(function () {
+        $("#Nav2").hide();
+    })
     function EditProject(project_id) {
         window.open("ProjectAddOrEdit.aspx?id=" + project_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECT_EDIT %>', 'left=200,top=200,width=600,height=800', false);
     }
@@ -597,4 +607,26 @@
         }
     }
 
+    function SaveAsTemp() {
+        window.parent.location.href = "ProjectView?type=ScheduleTemp&id=<%=thisProject.id %>";
+    }
+    function DeletePro() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ProjectAjax.ashx?act=DeletePro&project_id=<%=thisProject.id %>",
+            dataType:"json",
+            success: function (data) {
+                if (data != "") {
+                    if (data.result == "True") {
+                        LayerMsg("删除项目成功！");
+                    } else if (data.result == "False") {
+                        LayerMsg("该项目不能被删除，因为有一个或多个时间条目，费用，费用，服务预定，备注，附件，里程碑！");
+                    }
+                }
+                window.close();
+                self.parent.location.reload();
+            },
+        });
+    }
 </script>

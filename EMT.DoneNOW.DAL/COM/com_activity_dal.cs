@@ -11,5 +11,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<com_activity>($"SELECT * from com_activity where delete_time = 0 "+where);
         }
+        /// <summary>
+        /// 根据对象Id 获取对象相关备注
+        /// </summary>
+        public List<com_activity> GetActiListByOID(long oid)
+        {
+            return FindListBySql<com_activity>($"SELECT * from com_activity where delete_time = 0 and object_id = {oid} " );
+        }
     }
 }

@@ -52,6 +52,7 @@
     <Compile Include="AUTH\sys_token.cs" />
     <Compile Include="AUTH\sys_user.cs" />
     <Compile Include="COM\com_activity.cs" />
+    <Compile Include="COM\com_attachment.cs" />
     <Compile Include="COM\com_notify_email.cs" />
     <Compile Include="CRM\crm_account.cs" />
     <Compile Include="CRM\crm_account_alert.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="PRO\pro_project_calendar.cs" />
     <Compile Include="PRO\pro_project_team.cs" />
     <Compile Include="PRO\pro_project_team_role.cs" />
+    <Compile Include="SDK\sdk_expense.cs" />
     <Compile Include="SDK\sdk_task.cs" />
     <Compile Include="SDK\sdk_task_resource.cs" />
     <Compile Include="SDK\sdk_work_entry.cs" />

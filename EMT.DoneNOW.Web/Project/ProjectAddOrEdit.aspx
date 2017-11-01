@@ -331,7 +331,7 @@
                                                             <select multiple="multiple" style="width: 264px; min-height: 80px;" id="resDepList">
                                                                 <% if (!isAdd)
                                                                     {
-                                                                        var resouList = new EMT.DoneNOW.DAL.pro_project_team_dal().GetResListBuProId(thisProject.id);
+                                                                        var resouList = new EMT.DoneNOW.DAL.pro_project_team_dal().GetResListByProId(thisProject.id);
                                                                         if (resouList != null && resouList.Count > 0)
                                                                         {
                                                                             var pptrDal = new EMT.DoneNOW.DAL.pro_project_team_role_dal();
@@ -374,7 +374,7 @@
                                                                     if (!isAdd)
                                                                     {
 
-                                                                        var conList = new EMT.DoneNOW.DAL.pro_project_team_dal().GetConListBuProId(thisProject.id);
+                                                                        var conList = new EMT.DoneNOW.DAL.pro_project_team_dal().GetConListByProId(thisProject.id);
                                                                         if (conList != null && conList.Count > 0)
                                                                         {
                                                                             var cDal = new EMT.DoneNOW.DAL.crm_contact_dal();

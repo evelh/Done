@@ -11,12 +11,12 @@ using EMT.DoneNOW.BLL;
 
 namespace EMT.DoneNOW.Web.Project
 {
-    public partial class ProjectSummary : BasePage
+    public partial class ProjectSchedule : BasePage
     {
         protected pro_project thisProject = null;
         protected List<sdk_task> taskList = null;
-        protected ProjectBLL proBLL = new ProjectBLL();
-        protected bool isTemp = false;      // 判断项目是否时项目模板
+        protected bool isTransTemp = false;         // 判断是否进入转换模板页面
+        protected Dictionary<string, object> dic = new ProjectBLL().GetField();
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -26,9 +26,10 @@ namespace EMT.DoneNOW.Web.Project
                 if (thisProject != null)
                 {
                     taskList = new sdk_task_dal().GetProjectTask(thisProject.id);
-                    if (thisProject.type_id == (int)DicEnum.PROJECT_TYPE.TEMP)
+                    var isTran = Request.QueryString["isTranTemp"];
+                    if (thisProject.type_id != (int)DicEnum.PROJECT_TYPE.TEMP && (!string.IsNullOrEmpty(isTran)))
                     {
-                        isTemp = true;
+                        isTransTemp = true;
                     }
                 }
                 else

@@ -310,7 +310,19 @@
                                                 <span class="CheckBoxLabels">项目提案工时</span>
                                                 <div>
                                                     <% EMT.DoneNOW.Core.pro_project project = null;
-                                                        var thisQuote = new EMT.DoneNOW.DAL.crm_quote_dal().FindNoDeleteById(long.Parse(Request.QueryString["quote_id"]));
+                                                        EMT.DoneNOW.Core.crm_quote thisQuote = null;
+                                                        if (!string.IsNullOrEmpty(Request.QueryString["quote_id"]))
+                                                        {
+                                                            thisQuote = new EMT.DoneNOW.DAL.crm_quote_dal().FindNoDeleteById(long.Parse(Request.QueryString["quote_id"]));
+                                                        }
+                                                        else
+                                                        {
+                                                            if (quote_item != null&&quote_item.quote_id!=null)
+                                                            {
+                                                                   thisQuote = new EMT.DoneNOW.DAL.crm_quote_dal().FindNoDeleteById((long)quote_item.quote_id);
+                                                            }
+                                                        }
+
                                                         if (thisQuote != null && thisQuote.project_id != null)
                                                         {
                                                             project = new EMT.DoneNOW.DAL.pro_project_dal().FindNoDeleteById((long)thisQuote.project_id);

@@ -66,6 +66,7 @@
     <Compile Include="BaseDAL.cs" />
     <Compile Include="Column2PropertyMapping.cs" />
     <Compile Include="COM\com_activity_dal.cs" />
+    <Compile Include="COM\com_attachment_dal.cs" />
     <Compile Include="COM\com_notify_email_dal.cs" />
     <Compile Include="CRM\crm_account_alert_dal.cs" />
     <Compile Include="CRM\crm_account_dal.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="PRO\pro_project_dal.cs" />
     <Compile Include="PRO\pro_project_team_dal.cs" />
     <Compile Include="PRO\pro_project_team_role_dal.cs" />
+    <Compile Include="SDK\sdk_expense_dal.cs" />
     <Compile Include="SDK\sdk_task_dal.cs" />
     <Compile Include="SDK\sdk_task_resource_dal.cs" />
     <Compile Include="SDK\sdk_work_entry_dal.cs" />

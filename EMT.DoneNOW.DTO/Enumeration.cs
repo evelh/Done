@@ -67,7 +67,7 @@ namespace EMT.DoneNOW.DTO
         PROJECT_STATUS =124,                       // 项目：项目状态
         PROJECT_LINE_OF_BUSINESS=125,             // 项目业务范围
         TASK_TYPE =130,                            //任务类型
-        TICKET_SATUS=135,                          // 工单状态
+        TICKET_STATUS=135,                          // 工单状态
         INVOICE_TEMPLATE_BODY_GROUP_BY =141,      //发票模板主体-分组条件
         INVOICE_TEMPLATE_BODY_ITEMIZE =142,      //发票模板主体-逐项列出
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
@@ -871,6 +871,15 @@ namespace EMT.DoneNOW.DTO
             UPGRADE = 1892,                             // 升级
             WAITING_FOR_CUSTOMERS =1893,                 // 等待客户
             DONE = 1894,                                // 已完成
+        }
+        /// <summary>
+        /// 工时方法 - 136
+        /// </summary>
+        public enum TIME_ENTRY_METHOD_TYPE
+        {
+            NONE = 1900,                        // 无
+            FIXWORK = 1901,                     // 固定工作
+            FIXDURATION = 1902,                 // 固定时间
         }
 
         /// <summary>

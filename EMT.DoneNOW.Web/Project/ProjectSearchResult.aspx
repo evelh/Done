@@ -152,7 +152,7 @@
             </div>
             <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;">
                 <ul class="clear fl">
-                    <li id="AddProject"><i style="background-image: url(../Images/new.png);"></i><span style="margin-right: 5px; margin-left: 5px;">新增</span><img src="../Images/dropdown.png" /></li>
+                    <li id="AddProject"  class="f1"><i style="background-image: url(../Images/new.png);"></i><span style="margin-right: 5px; margin-left: 5px; ">新增</span><img src="../Images/dropdown.png" /></li>
                     <li id="coluSelect" onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
                     <li id="Print"><i style="background-image: url(../Images/print.png);"></i></li>
 
@@ -203,7 +203,7 @@
                 <%} %>
             </div>
         </div>
-        <div class="RightClickMenu" style="left: 10px; top: 36px; display: none;">
+        <div class="RightClickMenu" style="left: 10px; top: 36px; display: none;" id="D1">
             <div class="RightClickMenuItem">
                 <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
                     <tbody>
@@ -293,7 +293,7 @@
             <%
                 project_ids += id + ",";
             %>
-            <tr onclick="View(<%=id %>)" title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
+            <tr onclick="View('<%=id %>')" title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
 
                 <%if (!string.IsNullOrEmpty(isCheck))
                     { %>
@@ -409,6 +409,40 @@
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script src="../Scripts/Common/SearchBody.js"></script>
 <script>
+             $(".f1").on("mouseover", function () {
+                 $(this).css("background", "white");
+                 $(this).css("border-bottom", "none");
+                 $("#D1").show();
+             });
+             $(".f1").on("mouseout", function () {
+                 $("#D1").hide();
+                 $(this).css("background", "linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+                 $(this).css("background", "-ms-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+                 $(this).css("background", "-webkit-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+                 $(this).css("background", "-moz-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+                 $(this).css("border-bottom", "1px solid #BCBCBC");
+             });
+             $("#D1").on("mouseover", function () {
+                 $(this).show();
+                 $(".f1").css("background", "white");
+                 $(".f1").css("border-bottom", "none");
+             });
+             $("#D1").on("mouseout", function () {
+                 $(this).hide();
+                 $(".f1").css("background", "linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+                 $(".f1").css("background", "-ms-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+                 $(".f1").css("background", "-webkit-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+                 $(".f1").css("background", "-moz-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+                 $(".f1").css("border-bottom", "1px solid #BCBCBC");
+             });
+             $(".lblNormalClass").on("mouseover", function () {
+                 $(this).parent().css("background", "#E9F0F8");
+             });
+             $(".lblNormalClass").on("mouseout", function () {
+                 $(this).parent().css("background", "#FFF");
+             });
+</script>
+<script>
     $(function () {
 
     })
@@ -427,18 +461,18 @@
         Hiden('month');
     })
 
-    $("#AddProject").mouseover(function () {
-        $(".RightClickMenu").show();
-    })
-    $("#AddProject").mouseout(function () {
-        setTimeout(function () { $(".RightClickMenu").hide(); }, 1000);
-    })
-    $(".RightClickMenu").mouseover(function () {
-        $(".RightClickMenu").show();
-    })
-    $(".RightClickMenu").mouseout(function () {
-        setTimeout(function () { $(".RightClickMenu").hide(); }, 1000);
-    })
+    //$("#AddProject").mouseover(function () {
+    //    $(".RightClickMenu").show();
+    //})
+    //$("#AddProject").mouseout(function () {
+    //    setTimeout(function () { $(".RightClickMenu").hide(); }, 1000);
+    //})
+    //$(".RightClickMenu").mouseover(function () {
+    //    $(".RightClickMenu").show();
+    //})
+    //$(".RightClickMenu").mouseout(function () {
+    //    setTimeout(function () { $(".RightClickMenu").hide(); }, 1000);
+    //})
 
     // 添加的类型，是否从模板新增
     function Add(type_id, isFromTemp) {
@@ -479,9 +513,9 @@
 
     function Edit() {
         // entityid
-        window.open("ProjectAddOrEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECT_EDIT %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("ProjectAddOrEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECT_EDIT %>', 'left=200,top=200,width=900,height=800', false);
     }
-    function View() {
-        window.open("ProjectView.aspx?id=" + entityid, '_blank', 'left=200,top=200,width=600,height=800', false);
+    function View(id) {
+        window.open("ProjectView.aspx?id=" + id, '_blank', 'left=200,top=200,width=900,height=800', false);
     }
 </script>

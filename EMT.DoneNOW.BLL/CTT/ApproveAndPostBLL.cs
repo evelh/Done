@@ -325,7 +325,7 @@ namespace EMT.DoneNOW.BLL
             if (ca.tax_region_id != null)
                 tax_region_name = gbll.GetGeneralName((int)ca.tax_region_id);
             if (dcc.tax_category_id != null && ca.tax_region_id != null)
-                tax_rate = new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>($"select * from d_tax_region_cate where tax_region_id='ca.tax_region_id' and tax_cate_id='dcc.tax_category_id' ").total_effective_tax_rate;
+                tax_rate = new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>($"select * from d_tax_region_cate where tax_region_id='{ca.tax_region_id}' and tax_cate_id='{dcc.tax_category_id}' ").total_effective_tax_rate;
             cad.id = (int)(cad_dal.GetNextIdCom());
             cad.type_id = (int)ACCOUNT_DEDUCTION_TYPE.SUBSCRIPTIONS;
             cad.object_id = id;

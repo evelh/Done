@@ -10,7 +10,7 @@
 namespace EMT.DoneNOW.Web.Project {
     
     
-    public partial class ProjectView {
+    public partial class ProjectClosingReport {
         
         /// <summary>
         /// form1 控件。
@@ -22,30 +22,21 @@ namespace EMT.DoneNOW.Web.Project {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// ShowTitle 控件。
+        /// calendar 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ShowTitle;
+        protected global::System.Web.UI.WebControls.Literal calendar;
         
         /// <summary>
-        /// viewProjectIframe 控件。
+        /// TaskIframe 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe viewProjectIframe;
-        
-        /// <summary>
-        /// second 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlIframe second;
+        protected global::System.Web.UI.HtmlControls.HtmlIframe TaskIframe;
     }
 }

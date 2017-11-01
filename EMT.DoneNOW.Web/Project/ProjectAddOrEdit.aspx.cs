@@ -133,7 +133,7 @@ namespace EMT.DoneNOW.Web.Project
 
             type_id.DataSource = thisTypeList;
             type_id.DataBind();
-            thisType = Request.QueryString["type"];
+            thisType = Request.QueryString["type_id"];
             if (!string.IsNullOrEmpty(thisType))
             {
                 type_id.SelectedValue = thisType;
