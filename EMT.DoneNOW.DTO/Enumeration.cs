@@ -67,6 +67,7 @@ namespace EMT.DoneNOW.DTO
         PROJECT_STATUS =124,                       // 项目：项目状态
         PROJECT_LINE_OF_BUSINESS=125,             // 项目业务范围
         TASK_TYPE =130,                            //任务类型
+        TICKET_SATUS=135,                          // 工单状态
         INVOICE_TEMPLATE_BODY_GROUP_BY =141,      //发票模板主体-分组条件
         INVOICE_TEMPLATE_BODY_ITEMIZE =142,      //发票模板主体-逐项列出
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
@@ -862,16 +863,46 @@ namespace EMT.DoneNOW.DTO
             USE_PARENT_INVOIVE_ADD =1488,       // 使用父客户发票地址
             USE_INSERT =1489,                   // 手工输入地址
         }
+        /// <summary>
+        ///  任务类型 - 130
+        /// </summary>
+        public enum TASK_TYPE
+        {
+            PROJECT_TASK=1807,                 // 项目任务
+            PROJECT_ISSUE=1808,                // 项目问题
+            SERVICE_DESK_TICKET = 1809,        // IT服务请求
+            COMPANY_TASK = 1810,               // 公司任务
+            TRAVEL_TIME = 1811,                // 出差时间
+            PROJECT_PHASE = 1812,              // 项目类别
+            CLIENT_TASK = 1813,                // 客户任务
+            PERSONAL_TIME = 1814,              // 私人时间
+            VACATION_TIME = 1815,              // 假期
+        }
+        /// <summary>
+        /// 工单状态 - 135
+        /// </summary>
+        public enum TICKET_STATUS
+        {
+            NEW = 1889,                                 // 新建
+            ALREADY_ALLOCATED =1890,                     // 已分配
+            HAVE_IN_HAND =1891,                          // 进行中
+            UPGRADE = 1892,                             // 升级
+            WAITING_FOR_CUSTOMERS =1893,                 // 等待客户
+            DONE = 1894,                                // 已完成
+        }
 
+        /// <summary>
+        /// 发布类型 -- 146
+        /// </summary>
         public enum NOTE_PUBLISH_TYPE
         {
             CONTRACT_ALL_USER=2117,              // 合同-全部用户
             CONTRACT_INTERNA_USER = 2118,        // 合同-内部用户
             TASK_ALL_USER = 2119,            // 
             TASK_INTERNA_USER = 2120,            // 
-            PROJECT_ALL_USER = 2121,            // 
-            PROJECT_INTERNA_USER = 2122,            // 
-            PROJECT_TEAM = 2123,            // 
+            PROJECT_ALL_USER = 2121,            //  项目-全部用户
+            PROJECT_INTERNA_USER = 2122,            // 项目-团队中员工
+            PROJECT_TEAM = 2123,            //  项目-团队全部成员
         }
     }
     /// <summary>
@@ -952,6 +983,7 @@ namespace EMT.DoneNOW.DTO
         ContractBlock = 91,                 // 合同管理-预付费用
         ContractBlockTicket = 92,           // 合同管理-事件查询
         CONFIGSUBSCRIPTION = 93,           // 配置项界面订阅管理
+        PROJECT_SEARCH=100,                  // 项目查询
         CRMNote = 101,                  // 客户备注查询
         Todos = 102,                    // 客户代办查询
 
@@ -1116,5 +1148,9 @@ namespace EMT.DoneNOW.DTO
         EmailTemp=421,                                 //邮件模板
 
         PROJECT_RECIPIENTSELECTOR=430,              // 通知邮件配置
+
+        PROJECT_ADD = 440,                          // 项目新增
+        PROJECT_EDIT = 441,                         // 项目编辑
+        PROJECT_VIEW = 442,                         // 项目查看
     }
 }

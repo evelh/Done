@@ -7,6 +7,7 @@ namespace EMT.DoneNOW.DAL
 {
     public class pro_project_dal : BaseDAL<pro_project>
     {
+        
         public pro_project GetProjectById(long id)
         {
             return FindSignleBySql<pro_project>($"select * from pro_project where id = {id} and delete_time = 0");
@@ -30,5 +31,17 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<pro_project>($"select * from pro_project where  delete_time = 0 and type_id = {(int)DTO.DicEnum.PROJECT_TYPE.TEMP} and status_id <> {(int)DTO.DicEnum.PROJECT_STATUS.DISABLE} ");
         }
+        /// <summary>
+        /// 根据ids去获取对应的项目的集合
+        /// </summary>
+        public List<pro_project> GetProListByIds(string ids)
+        {
+            return FindListBySql<pro_project>($"SELECT * from pro_project where delete_time = 0 and id in ({ids})");
+        }
+        public List<pro_project> GetProByNo(string no)
+        {
+            return FindListBySql<pro_project>($"SELECT * from pro_project where delete_time = 0 and no like '%{no}%'");
+        }
+
     }
 }

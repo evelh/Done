@@ -204,7 +204,46 @@
                                     </div>
                                     <!--第五个-->
                                     <div class="Module">
-                                        
+                                        <div class="Normal ContextOverlayColumn">
+                                            <div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">视图5</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">LiveLinks Designer</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">搜索</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">My Home Page</span>
+                                                        </a>
+                                                    </div>
+                                                     <div class="Content">
+                               <a class="Button ButtonIcon NormalState" href="Project/ProjectSearch.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_SEARCH %>" target="PageFrame"> 
+                                                            <span class="Text">项目查询</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">工具</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState">
+                                                            <span class="Text">Co-Workers</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <!--第六个-->
                                     <div class="Module">

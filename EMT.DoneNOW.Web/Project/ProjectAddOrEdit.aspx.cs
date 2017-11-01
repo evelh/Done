@@ -17,10 +17,11 @@ namespace EMT.DoneNOW.Web.Project
         protected pro_project thisProject = null;
         protected crm_account account = null;
         protected ctt_contract contract = null;
+        protected List<sdk_task> taskList = null;
         protected Dictionary<string, object> dic = new ProjectBLL().GetField();
         protected List<UserDefinedFieldDto> project_udfList = null;
         protected List<UserDefinedFieldValue> project_udfValueList = null;
-        protected string thisType=""; // 项目的类型--type_id
+        protected string thisType = ""; // 项目的类型--type_id
         protected string isFromTemp = ""; // 入口是否从模板添加
         protected string isTemp = "";     // 是否添加模板-- 模板
         protected void Page_Load(object sender, EventArgs e)
@@ -33,7 +34,7 @@ namespace EMT.DoneNOW.Web.Project
                 {
                     PageDataBind();
                 }
-                
+
                 var id = Request.QueryString["id"];
                 project_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PROJECTS);
                 if (!string.IsNullOrEmpty(id))
@@ -41,19 +42,25 @@ namespace EMT.DoneNOW.Web.Project
                     thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(id));
                     if (thisProject != null)
                     {
+                        if (thisProject.contract_id != null)
+                        {
+                            contract = new ctt_contract_dal().FindNoDeleteById((long)thisProject.contract_id);
+                        }
+                        taskList = new sdk_task_dal().GetProTask(thisProject.id);
                         account = new crm_account_dal().FindNoDeleteById(thisProject.account_id);
-                        project_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.PROJECTS,thisProject.id, project_udfList);
+                        project_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.PROJECTS, thisProject.id, project_udfList);
                         isAdd = false;
                         #region 根据项目信息为页面数据赋值
                         if (!IsPostBack)
                         {
                             line_of_business_id.SelectedValue = thisProject.line_of_business_id == null ? "0" : thisProject.line_of_business_id.ToString();
                             type_id.SelectedValue = thisProject.type_id == null ? "0" : thisProject.type_id.ToString();
-                            status_id.SelectedValue =  thisProject.status_id.ToString();
+                            status_id.SelectedValue = thisProject.status_id.ToString();
                             department_id.SelectedValue = thisProject.department_id == null ? "0" : thisProject.department_id.ToString();
                             organization_location_id.SelectedValue = thisProject.organization_location_id.ToString();
                             template_id.SelectedValue = thisProject.template_id == null ? "0" : thisProject.template_id.ToString();
                             useResource_daily_hours.Checked = thisProject.use_resource_daily_hours == 1;
+                            owner_resource_id.SelectedValue = thisProject.owner_resource_id == null ? "0" : thisProject.owner_resource_id.ToString();
                             excludeWeekend.Checked = thisProject.exclude_weekend == 1;
                             excludeHoliday.Checked = thisProject.exclude_holiday == 1;
                             warnTime_off.Checked = thisProject.warn_time_off == 1;
@@ -107,7 +114,7 @@ namespace EMT.DoneNOW.Web.Project
                 var temp = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.TEMP).ToString());
                 if (temp != null)
                 {
-                    thisTypeList = new List<DictionaryEntryDto>() { temp};
+                    thisTypeList = new List<DictionaryEntryDto>() { temp };
                 }
             }
             else
@@ -123,7 +130,7 @@ namespace EMT.DoneNOW.Web.Project
                     thisTypeList.Remove(benchmark);
                 }
             }
-          
+
             type_id.DataSource = thisTypeList;
             type_id.DataBind();
             thisType = Request.QueryString["type"];
@@ -180,7 +187,7 @@ namespace EMT.DoneNOW.Web.Project
 
             if (string.IsNullOrEmpty(isTemp))
             {
-                var tempList= new pro_project_dal().GetTempList();
+                var tempList = new pro_project_dal().GetTempList();
                 // 项目模板  --project_temp
                 if (tempList != null && tempList.Count > 0)
                 {
@@ -189,9 +196,9 @@ namespace EMT.DoneNOW.Web.Project
                     project_temp.DataSource = tempList;
                     project_temp.DataBind();
                 }
-                
+
             }
-             
+
         }
 
         /// <summary>
@@ -201,43 +208,92 @@ namespace EMT.DoneNOW.Web.Project
         {
             ProjectDto param = AssembleModel<ProjectDto>();
             param.project = AssembleModel<pro_project>();
-            var test = Request.Form["fromTempId"];
+            // var test = Request.Form["fromTempId"];
             param.project.use_resource_daily_hours = (sbyte)(useResource_daily_hours.Checked ? 1 : 0);
             param.project.exclude_weekend = (sbyte)(excludeWeekend.Checked ? 1 : 0);
             param.project.exclude_holiday = (sbyte)(excludeHoliday.Checked ? 1 : 0);
             param.project.warn_time_off = (sbyte)(warnTime_off.Checked ? 1 : 0);
-            if (!string.IsNullOrEmpty(isTemp))
+            if ( !string.IsNullOrEmpty(isTemp))
             {
-                param.project.status_id = is_active.Checked ? (int)DicEnum.PROJECT_STATUS.NEW : (int)DicEnum.PROJECT_STATUS.DISABLE;
+                if (isAdd)
+                {
+                    param.project.status_id = is_active.Checked ? (int)DicEnum.PROJECT_STATUS.NEW : (int)DicEnum.PROJECT_STATUS.DISABLE;
+                }
+                else
+                {
+                    param.project.status_id = thisProject.status_id;
+                    param.project.status_detail = thisProject.status_detail;
+                    param.project.status_time = thisProject.status_time;
+                }
+               
             }
             #region 结束时间和持续时间天数
-           
 
-            
-                if (!isAdd)
+
+
+            if (!isAdd)
+            {
+                if (param.project.duration != thisProject.duration)
                 {
-                    if (param.project.duration != thisProject.duration)
-                    {
-                        param.project.end_date = ((DateTime)param.project.start_date).AddDays((double)param.project.duration);
-                    }
-                    else
+                    param.project.end_date = ((DateTime)param.project.start_date).AddDays((double)param.project.duration-1);
+                }
+                else
+                {
+                    if(param.project.end_date!= thisProject.end_date)
                     {
                         TimeSpan ts1 = new TimeSpan(((DateTime)param.project.start_date).Ticks);
                         TimeSpan ts2 = new TimeSpan(((DateTime)param.project.end_date).Ticks);
                         TimeSpan ts = ts1.Subtract(ts2).Duration();
-                        param.project.duration = ts.Days;
+                        param.project.duration = ts.Days+1;
+                     
                     }
+                    else
+                    {
+                        param.project.end_date = ((DateTime)param.project.start_date).AddDays((double)param.project.duration-1);
+                    }
+               
+                }
+
+                if (taskList != null && taskList.Count > 0)
+                {
+                    var lastDate = taskList.Max(_ => _.estimated_end_date);
+                    if(lastDate> param.project.end_date)
+                    {
+                        param.project.end_date = lastDate;
+                        TimeSpan ts1 = new TimeSpan(((DateTime)param.project.start_date).Ticks);
+                        TimeSpan ts2 = new TimeSpan(((DateTime)param.project.end_date).Ticks);
+                        TimeSpan ts = ts1.Subtract(ts2).Duration();
+                        param.project.duration = ts.Days+1;
+                    }
+                }
+
+
+                var statusTime = Request.Form["statustime"];
+                if (!string.IsNullOrEmpty(statusTime))
+                {
+                    param.project.status_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(statusTime));
+                }
+
+            }
+            else
+            {
+              
+                if (param.project.duration != null)
+                {
+                    param.project.end_date = ((DateTime)param.project.start_date).AddDays(((double)param.project.duration) - 1);
                 }
                 else
                 {
-                    param.project.end_date = ((DateTime)param.project.start_date).AddDays(((double)param.project.duration)-1);
+                    TimeSpan ts1 = new TimeSpan(((DateTime)param.project.start_date).Ticks);
+                    TimeSpan ts2 = new TimeSpan(((DateTime)param.project.end_date).Ticks);
+                    TimeSpan ts = ts1.Subtract(ts2).Duration();
+                    param.project.duration = ts.Days;
                 }
-           
 
+                
+            }
             #endregion
-
-            param.notify = AssembleModel<com_notify_email>();
-            if(project_udfList!=null&& project_udfList.Count > 0)
+            if (project_udfList != null && project_udfList.Count > 0)
             {
                 var list = new List<UserDefinedFieldValue>();
                 foreach (var udf in project_udfList)                            // 循环添加
@@ -256,7 +312,11 @@ namespace EMT.DoneNOW.Web.Project
             {
                 param.resDepIds = Request.Form["resDepList"];
                 param.contactIds = Request.Form["conIds"];
-                param.project.status_id = (int)DicEnum.PROJECT_STATUS.NEW;
+                if (string.IsNullOrEmpty(isTemp))
+                {
+                    param.project.status_id = (int)DicEnum.PROJECT_STATUS.NEW;
+                }
+
             }
             else
             {
@@ -294,11 +354,11 @@ namespace EMT.DoneNOW.Web.Project
             bool result = false;
             if (param.project.id == 0)
             {
-                result = new ProjectBLL().AddPro(param,GetLoginUserId());
+                result = new ProjectBLL().AddPro(param, GetLoginUserId());
             }
             else
             {
-
+                result = new ProjectBLL().EditProject(param, GetLoginUserId());
             }
             return result;
         }

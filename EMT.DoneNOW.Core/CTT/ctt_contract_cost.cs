@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
@@ -75,7 +76,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public DateTime? dateadded { get; set; }
         [DataMember]
-        public Decimal? estimatecost { get; set; }
+        public Decimal? estimated_cost { get; set; }
         [DataMember]
         public Int32? paymenttype { get; set; }
         [DataMember]

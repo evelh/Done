@@ -632,7 +632,7 @@ namespace EMT.DoneNOW.BLL
                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     update_user_id = user.id,
                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-
+                    is_system_generate = 1,
                 };
                 new com_activity_dal().Insert(addActivity);
                 new sys_oper_log_dal().Insert(new sys_oper_log()
@@ -680,7 +680,7 @@ namespace EMT.DoneNOW.BLL
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 update_user_id = user.id,
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-
+                is_system_generate =1,
             };
 
             new com_activity_dal().Insert(closeOppoActivity);

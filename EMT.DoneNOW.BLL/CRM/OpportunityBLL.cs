@@ -182,6 +182,7 @@ namespace EMT.DoneNOW.BLL
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 update_user_id = user.id,
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                is_system_generate = 1,
 
             };
 
@@ -1013,6 +1014,7 @@ namespace EMT.DoneNOW.BLL
                     update_user_id = user.id,
                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     publish_type_id = isProject ? (int)NOTE_PUBLISH_TYPE.PROJECT_INTERNA_USER : (int)NOTE_PUBLISH_TYPE.CONTRACT_INTERNA_USER,
+                    is_system_generate = 1,
 
                 };
                 new com_activity_dal().Insert(addActivity);
@@ -1062,6 +1064,7 @@ namespace EMT.DoneNOW.BLL
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 update_user_id = user.id,
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                is_system_generate = 1,
 
             };
             new com_activity_dal().Insert(closeOppoActivity);
@@ -1407,6 +1410,7 @@ namespace EMT.DoneNOW.BLL
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 update_user_id = user.id,
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                is_system_generate = 1,
 
             };
 
@@ -1453,7 +1457,7 @@ namespace EMT.DoneNOW.BLL
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 update_user_id = user.id,
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-
+                is_system_generate = 1,
             };
 
             new com_activity_dal().Insert(cancelSaleOrderActivity);

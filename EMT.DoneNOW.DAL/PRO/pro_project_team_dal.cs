@@ -22,5 +22,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<pro_project_team>($"SELECT * from pro_project_team where project_id = {project_id} and contact_id is not NULL and resource_id IS null and delete_time = 0;");
         }
+        /// <summary>
+        /// 返回费率数量
+        /// </summary>
+        public List<pro_project_team> GetRateNum(long project_id)
+        {
+            return FindListBySql<pro_project_team>($"select x.* from pro_project_team_role x,pro_project_team y where x.delete_time=0 and y.delete_time=0 and x.project_team_id=y.id and y.project_id={project_id}");
+        }
     }
 }

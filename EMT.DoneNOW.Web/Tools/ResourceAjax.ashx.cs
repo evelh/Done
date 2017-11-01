@@ -35,6 +35,9 @@ namespace EMT.DoneNOW.Web
                         var wIds = context.Request.QueryString["ids"];
                         GetWorkName(context,wIds);
                         break;
+                    case "GetActiveRes":
+                        GetActiveRes(context);
+                        break;
                     default:
                         break;
                 }
@@ -98,6 +101,17 @@ namespace EMT.DoneNOW.Web
                 {
                     context.Response.Write(workString);
                 }
+            }
+        }
+        /// <summary>
+        /// 获取所有可用的员工信息
+        /// </summary>
+        private void GetActiveRes(HttpContext context)
+        {
+            var resList = new sys_resource_dal().GetSourceList();
+            if (resList != null && resList.Count > 0)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(resList));
             }
         }
 
