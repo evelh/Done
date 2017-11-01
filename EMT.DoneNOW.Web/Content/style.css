@@ -101,16 +101,16 @@ margin-top: 5px;margin-right:10px;cursor: pointer;}
 .noteText span a{margin: 0 5px;}
 .noteText .spanA a{color: gray;font-size: 12px;}
 .EntityFeedLevebottom2{margin-left: 100px;}
-.EntityFeedLevel1{min-height:45px;margin-bottom:3px;font-size:12px;}
+.EntityFeedLevel1{overflow:hidden;margin-bottom:3px;margin-top:5px;font-size:12px;}
 /*.EntityFeedLevel1Todos{min-height:45px;margin-bottom:3px;font-size:12px;word-wrap:break-word;}
 .EntityFeedLevel1Highlighted{min-height:45px;margin-bottom:3px;padding:3px;font-size:12px;background-color:#F0F5FB;}*/
-.EntityFeedLevel2{min-height:35px;margin-bottom:10px;padding:10px 0 3px 10px;background-color:#F2F2F2;margin-left:60px;border:1px solid #E4E4E4;margin-right:10px;font-size:12px;}
-.EntityFeedLevel3{min-height:35px;margin-bottom:10px;padding:10px 0 3px 10px;background-color:#F2F2F2;margin-left:115px;border:1px solid #E4E4E4;margin-right:10px;font-size:12px;}
+.EntityFeedLevel2{overflow:hidden;margin-bottom:10px;padding:10px 0 3px 10px;background-color:#F2F2F2;margin-left:60px;border:1px solid #E4E4E4;margin-right:10px;font-size:12px;}
+.EntityFeedLevel3{overflow:hidden;margin-bottom:10px;padding:10px 0 3px 10px;background-color:#F2F2F2;margin-left:115px;border:1px solid #E4E4E4;margin-right:10px;font-size:12px;}
 .EntityFeedLevel1 img{margin-right:10px;margin-bottom:6px;float:left;width:50px;height:50px;border:0px;vertical-align:middle;}
 .EntityFeedLevel2 img, .EntityFeedLevel3 img{margin-right:10px;margin-bottom:6px;height:32px;width:32px;border:0px;vertical-align:middle;}
-.PostContent{display: table-cell;   vertical-align: top;}
+.PostContent{display: table-cell; width:430px; float:left; vertical-align: top;}
 .PostContent a{color: #376597;font-size: 12px;margin-right: 5px;}
-.PostContent img{width:16px;height:16px;margin-left:5px;margin-right:5px;border-width:0px;float:inherit;}
+.PostContent img{width:16px;height:16px;margin-left:5px;margin-right:5px;border-width:0px;float:initial;}
 .PostContentName{font-weight:bold;}
 .EntityDateTimeLinks{padding-top:5px;}
 .CommentLink{margin-right:10px;}

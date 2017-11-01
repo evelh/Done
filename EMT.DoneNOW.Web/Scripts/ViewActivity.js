@@ -46,8 +46,8 @@ function RequestActivity() {
         type += "sale=1&";
     if ($("#Tickets").is(':checked'))
         type += "ticket=1&";
-    if ($("#Contacts").is(':checked'))
-        type += "contact=1&";
+    if ($("#Contracts").is(':checked'))
+        type += "contract=1&";
     if ($("#Projects").is(':checked'))
         type += "project=1&";
     if (type == "") {
@@ -65,4 +65,41 @@ function RequestActivity() {
             LayerLoadClose();
         }, 500);
     })
+}
+function ActDelete(id) {
+    LayerConfirm("删除后无法恢复，是否继续", "确定", "取消", function () {
+        requestData("../Tools/ActivityAjax.ashx?act=Delete&id=" + id, null, function (data) {
+            if (data == true) {
+                LayerAlert("删除成功", "确定", function () {
+                    RequestActivity();
+                })
+            }
+            else {
+                LayerMsg("删除失败");
+            }
+        })
+    }, function () { })
+}
+
+function TodoComplete(id) {
+    requestData("../Tools/ActivityAjax.ashx?act=TodoComplete&id=" + id, null, function (data) {
+        RequestActivity();
+    })
+}
+function TodoEdit(id) {
+    window.open("../Activity/Todos.aspx?id=" + id, windowObj.todos + windowType.edit, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
+
+function NoteAddNote(cate, level, objType, objId) {
+    window.open("../Activity/QuickAddNote.aspx?cate=" + cate + "&level=" + level + "&type=" + objType + "&objectId=" + objId, windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
+function NoteAddAttach(id) {
+
+}
+function NoteEdit(id) {
+    window.open("../Activity/Notes.aspx?id=" + id, windowObj.notes + windowType.edit, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
+
+function AttDelete(id) {
+
 }

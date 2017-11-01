@@ -363,7 +363,7 @@
             <label>工单</label>
           </div>
           <div class="clear">
-            <asp:CheckBox ID="Contacts" runat="server" />
+            <asp:CheckBox ID="Contracts" runat="server" />
             <label>合同</label>
           </div>
           <div class="clear">
@@ -384,6 +384,70 @@
         <hr class="activityTitlerighthr" />
 
       <div id='activityContent' style='margin-bottom:10px;'>
+        <div class='EntityFeedLevel1' style="display:none;">
+          <a href='#'>
+            <img src='../Images/Avatar/default.jpg' />
+          </a>
+          <div class='PostContent'>
+            <a href='#' class='PostContentName'>商机名称</a>
+            <div>
+              <span>Meeting: todo todo descriptionMeeting: todo todo descriptionMeeting: todo todo descriptionMeeting: todo todo description</span>
+            </div>
+            <div class='EntityDateTimeLinks'>
+              <span class='MostRecentPostedTime'>
+                <span>17/08/2017 05:50 PM</span>
+                <a href='#' class='CommentLink'>新增备注</a>
+              </span>
+            </div>
+          </div>
+        </div>
+        <hr class="activityTitlerighthr" style="display:none;" />
+        <div class='EntityFeedLevel1' style="display:none;">
+          <a href='#'>
+            <img src='../Images/Avatar/default.jpg' />
+          </a>
+          <div class='PostContent' style='width:auto;padding-right:10px;'>
+            <a href='#' class='PostContentName'>Hong Li</a>
+            <a href='mailto:hong.li@itcat.net.cn' class='smallLink'>send email</a>
+            <a title='1234'>
+              <img src='../Images/todos.png' />
+              <span style="cursor:pointer;">1234</span>
+            </a>
+            <div class='EntityDateTimeLinks'>
+              <span class='MostRecentPostedTime'>
+                <span>17/08/2017 05:50 PM</span>
+                <a href='#' class='CommentLink'>新增备注</a>
+                <a href='#' class='CommentLink'>新增附件</a>
+                <a href='#' class='CommentLink'>删除</a>
+              </span>
+            </div>
+          </div>
+          <a>
+            <img src='../Images/todos.png' />
+          </a>
+        </div>
+        <div class='EntityFeedLevel2' style="display:none;">
+          <a href='#'>
+            <img src='../Images/Avatar/default.jpg' style='float:left;' />
+          </a>
+          <div class='PostContent' style='padding-right:10px;'>
+            <a href='#' class='PostContentName'>Hong Li</a>
+            <a href='mailto:hong.li@itcat.net.cn' class='smallLink'>send email</a>
+            <a title='1234'>
+              <img src='../Images/todos.png' />
+              <span style="cursor:pointer;">1234</span>
+            </a>
+            <div class='EntityDateTimeLinks'>
+              <span class='MostRecentPostedTime'>
+                <span>17/08/2017 05:50 PM</span>
+                <a href='#' class='CommentLink'>新增备注</a>
+                <a href='#' class='CommentLink'>新增附件</a>
+                <a href='#' class='CommentLink'>删除</a>
+              </span>
+            </div>
+          </div>
+        </div>
+        <hr class="activityTitlerighthr" style="display:none;" />
         <div class='EntityFeedLevel1' style="display:none;">
           <a href='#'>
             <img src='../Images/Avatar/default.jpg' />
@@ -433,7 +497,7 @@
               )
             </span>
             <div>
-              <span>Meeting: todo todo description</span>
+              <span>Meeting: todo todo descriptionMeeting: todo todo descriptionMeeting: todo todo descriptionMeeting: todo todo description</span>
             </div>
             <div>
               <span style="color:gray;">Created/Modified by&nbsp</span>
@@ -451,7 +515,7 @@
             </div>
           </div>
         </div>
-        <div class='EntityFeedLevel2' style="display:none;">
+        <div class='EntityFeedLevel2' style="display:none;" >
           <a href="#" style="float:left;">
             <img src="../Images/Avatar/default.jpg" />
           </a>

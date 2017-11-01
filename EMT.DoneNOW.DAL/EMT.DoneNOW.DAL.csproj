@@ -66,7 +66,9 @@
     <Compile Include="BaseDAL.cs" />
     <Compile Include="Column2PropertyMapping.cs" />
     <Compile Include="COM\com_activity_dal.cs" />
+    <Compile Include="COM\com_attachment_dal.cs" />
     <Compile Include="COM\com_notify_email_dal.cs" />
+    <Compile Include="COM\v_activity_dal.cs" />
     <Compile Include="CRM\crm_account_alert_dal.cs" />
     <Compile Include="CRM\crm_account_dal.cs" />
     <Compile Include="CRM\crm_account_deduction_dal.cs" />

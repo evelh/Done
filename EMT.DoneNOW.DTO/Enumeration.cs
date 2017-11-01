@@ -397,6 +397,20 @@ namespace EMT.DoneNOW.DTO
             FREEZE = 617,     // 冻结
             EXPIRED = 618,    // 过期
         }
+
+        /// <summary>
+        /// 附件对象类型-63
+        /// </summary>
+        public enum ATTACHMENT_OBJECT_TYPE
+        {
+            RESOURCE = 708,         // 员工
+            CONTRACT = 709,         // 合同
+            OPPORTUNITY = 710,      // 商机
+            NOTES = 711,            // 备注
+            SALES_ORDER = 712,      // 销售订单
+            ATTACHMENT = 715,       // 附件
+        }
+
         /// <summary>
         /// 部门：类型 -64
         /// </summary>
@@ -531,6 +545,10 @@ namespace EMT.DoneNOW.DTO
             QUOTE = 738,        // 报价
             CONTRACT = 739,     // 合同
             PROJECT = 740,      // 项目
+            SALEORDER = 741,    // 销售订单
+            TICKETS = 742,      // 工单
+            NOTES = 743,        // 备注
+            ATTACHMENT = 744,   // 附件
         }
 
         /// <summary>

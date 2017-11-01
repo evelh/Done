@@ -66,8 +66,267 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public string GetActivities(List<string> actTypeList, long accountId, string order, long userId)
         {
+            if (actTypeList == null || accountId == 0 || userId == 0)
+                return "";
+
             StringBuilder html = new StringBuilder();
-            html.Append(GetTodosHtml(accountId, order, userId));
+
+            // 先加入最多3个待办
+            if (actTypeList.Exists(_=> "todo".Equals(_)))
+                html.Append(GetTodosHtml(accountId, order, userId));
+
+            string cate = "";
+            if (actTypeList.Exists(_ => "crmnote".Equals(_)))
+                cate += "2,";
+            if (actTypeList.Exists(_ => "opportunity".Equals(_)))
+                cate += "3,";
+            if (actTypeList.Exists(_ => "sale".Equals(_)))
+                cate += "4,";
+            if (actTypeList.Exists(_ => "ticket".Equals(_)))
+                cate += "5,";
+            if (actTypeList.Exists(_ => "contract".Equals(_)))
+                cate += "6,";
+            if (actTypeList.Exists(_ => "project".Equals(_)))
+                cate += "7,";
+            if (cate.Equals(""))
+                return html.ToString();
+            cate = cate.Remove(cate.Length - 1, 1);    // 移除最后的,
+
+            bool isAsc = false;
+            if (!string.IsNullOrEmpty(order) && order.Equals("1"))
+                isAsc = true;
+            var actList = new v_activity_dal().GetActivitiesFirstLevel(accountId, cate, isAsc);
+            foreach(var act in actList)
+            {
+                if (act.cate == 2)    // 备注和附件
+                {
+                    if (act.act_cate != null && act.act_cate.Equals("act"))
+                        html.Append(GetCRMNoteHtml(act.cate, userId, 1, act.id));
+                    else if (act.act_cate != null && act.act_cate.Equals("att"))
+                        html.Append(GetAttachmentHtml(act.cate, userId, 1, act.id));
+                    else    // 错误
+                        return "";
+                }
+                else
+                {
+                    html.Append(GetObjectHtml(act.cate, userId, act.id, isAsc));
+                }
+            }
+
+            return html.ToString();
+
+            ///****** 此函数负责查找一级节点，并调用其他方法添加对应类型的一级节点及其下的二级及三级节点 *****/
+
+            //List<long> addedObjIdList = new List<long>();   // 已添加的备注/商机/合同等实体id列表
+
+            //// TODO:根据不同类型按时间顺序查找com_activity表的object_type_id
+            //string objTypeIds = "";
+            //if (actTypeList.Exists(_ => "crmnote".Equals(_)))
+            //    objTypeIds += $"{(int)DicEnum.OBJECT_TYPE.CUSTOMER},{(int)DicEnum.OBJECT_TYPE.CONTACT},";
+
+            //if (objTypeIds.Equals(""))
+            //    return html.ToString();
+            //objTypeIds = objTypeIds.Remove(objTypeIds.Length - 1, 1);    // 移除最后的,
+
+            //// 按时间顺序加入其他类型
+            //string orderBy = " ORDER BY update_time DESC ";
+            //if ("1".Equals(order))
+            //    orderBy = " ORDER BY update_time ASC ";
+            //string sql = $"SELECT id,cate_id,object_id,object_type_id,parent_id FROM com_activity WHERE account_id={accountId} AND cate_id={(int)DicEnum.ACTIVITY_CATE.NOTE} AND object_type_id IN ({objTypeIds}) AND delete_time=0 {orderBy}";
+            //var list = dal.FindListBySql(sql);
+            //foreach(var note in list)
+            //{
+            //    if (note.object_type_id == (int)DicEnum.OBJECT_TYPE.CUSTOMER || note.object_type_id == (int)DicEnum.OBJECT_TYPE.CONTACT)      // 备注类型
+            //    {
+            //        long level1Id = note.id;        // 一级备注id
+            //        if (note.parent_id != null)     // 二级备注
+            //        {
+            //            level1Id = (long)note.parent_id;
+            //        }
+
+            //        if (!addedObjIdList.Exists(_ => _ == level1Id))   // 父备注未添加
+            //        {
+            //            html.Append(GetCRMNoteHtml(level1Id, userId, 1));
+            //            addedObjIdList.Add(level1Id);
+            //        }
+            //    }
+
+            //    // TODO: 添加其他类型活动
+            //}
+
+            //return html.ToString();
+        }
+
+        /// <summary>
+        /// 生成一个备注及其下级的备注和附件的html
+        /// </summary>
+        /// <param name="cate"></param>
+        /// <param name="userId"></param>
+        /// <param name="level"></param>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        private string GetCRMNoteHtml(long cate, long userId, int level, long noteId)
+        {
+            var note = new v_activity_dal().FindById(noteId);
+
+            StringBuilder html = new StringBuilder();
+            html.Append($"<div class='EntityFeedLevel{level}'><a href='#' style='float:left;'><img src='..{note.resource_avatar}' /></a> ");
+            html.Append($"<div class='PostContent'><a href='#' class='PostContentName'>{note.resource_name}</a>");
+            if (note.resource_id!=userId&& !string.IsNullOrEmpty(note.resource_email))
+                html.Append($"<a href='mailto:{note.resource_email}' class='SmallLink'>发送邮件</a>");
+            html.Append($"<img src='../Images/note.png' />");
+            if (note.contact_id != null)
+            {
+                html.Append($"<span>(联系人:<a href='#' class='PostContentName'>{note.contact_name}</a>");
+                if (!string.IsNullOrEmpty(note.contact_email))
+                    html.Append($"<a href='mailto:{note.contact_email}' class='SmallLink'>发送邮件</a>");
+                html.Append($")</span>");
+            }
+            html.Append($"<div><span>{note.act_desc}</span></div>");
+
+            if (cate == 2 || cate == 3 || cate == 4)
+            {
+                html.Append($"<div><span style='color:gray;'>创建/修改人:&nbsp</span><a style='color:gray;' href='#'>{note.update_user_name}</a>");
+                if (note.update_user_id != userId && !string.IsNullOrEmpty(note.update_user_email))
+                    html.Append($"<a href='mailto:{note.update_user_email}' class='SmallLink'>发送邮件</a>");
+                html.Append("</div>");
+            }
+
+            html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
+            html.Append($"{note.act_date}</span>");
+            html.Append($"<a href='#' onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.NOTES},{note.id})' class='CommentLink'>添加备注</a><a href='#' onclick='NoteAddAttach({note.id})' class='CommentLink'>添加附件</a><a href='#' onclick='NoteEdit({note.id})' class='CommentLink'>编辑</a><a href='#' onclick='ActDelete({note.id})' class='CommentLink'>删除</a>");
+            html.Append("</div></div></div>");
+
+            if (level == 3)
+                return html.ToString();
+            if (cate == 2 && level == 2)
+                return html.ToString();
+
+            var actList = new v_activity_dal().GetActivities(note.id, level + 1, null);
+            foreach (var act in actList)
+            {
+                if (act.act_cate != null && act.act_cate.Equals("act"))
+                    html.Append(GetCRMNoteHtml(cate, userId, level + 1, act.id));
+                else if (act.act_cate != null && act.act_cate.Equals("att"))
+                    html.Append(GetAttachmentHtml(cate, userId, level + 1, act.id));
+            }
+
+            if (level == 1)
+                html.Append("<hr class='activityTitlerighthr' />");
+
+            return html.ToString();
+        }
+
+        /// <summary>
+        /// 生成一个附件及其下级的备注和附件的html
+        /// </summary>
+        /// <param name="cate"></param>
+        /// <param name="userId"></param>
+        /// <param name="level"></param>
+        /// <param name="attId"></param>
+        /// <returns></returns>
+        private string GetAttachmentHtml(long cate, long userId, int level, long attId)
+        {
+            var att = new v_activity_dal().FindById(attId);
+
+            StringBuilder html = new StringBuilder();
+            html.Append($"<div class='EntityFeedLevel{level}'><a href='#' style='float:left;'><img src='..{att.resource_avatar}' /></a> ");
+            html.Append($"<div class='PostContent' style='width:auto;padding-right:10px;'><a href='#' class='PostContentName'>{att.resource_name}</a>");
+            if (att.resource_id != userId && !string.IsNullOrEmpty(att.resource_email))
+                html.Append($"<a href='mailto:{att.resource_email}' class='SmallLink'>发送邮件</a>");
+            html.Append($"<a title='{att.att_href}'><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{att.act_name}</span></a>");
+            
+
+
+            html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
+            html.Append($"{att.act_date}</span>");
+            html.Append($"<a href='#' onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.ATTACHMENT},{att.id})' class='CommentLink'>添加备注</a><a href='#' onclick='NoteAddAttach({att.id})' class='CommentLink'>添加附件</a><a href='#' onclick='AttDelete({att.id})' class='CommentLink'>删除</a>");
+            html.Append("</div></div></div>");
+
+            if (level == 3)
+                return html.ToString();
+            if (cate == 2 && level == 2)
+                return html.ToString();
+
+            var actList = new v_activity_dal().GetActivities(att.id, level + 1, null);
+            foreach (var act in actList)
+            {
+                if (act.act_cate != null && act.act_cate.Equals("act"))
+                    html.Append(GetCRMNoteHtml(cate, userId, level + 1, act.id));
+                else if (act.act_cate != null && act.act_cate.Equals("att"))
+                    html.Append(GetAttachmentHtml(cate, userId, level + 1, act.id));
+            }
+
+            if (level == 1)
+                html.Append("<hr class='activityTitlerighthr' />");
+
+            return html.ToString();
+        }
+
+        /// <summary>
+        /// 生成第一级的商机/合同等活动信息及其下级的备注/附件等
+        /// </summary>
+        /// <param name="cate"></param>
+        /// <param name="userId"></param>
+        /// <param name="objId"></param>
+        /// <param name="isAsc"></param>
+        /// <returns></returns>
+        private string GetObjectHtml(long cate, long userId, long objId, bool isAsc)
+        {
+            int objType;
+            string logo;
+            if (cate == 3)
+            {
+                objType = (int)DicEnum.OBJECT_TYPE.OPPORTUNITY;
+                logo = "contract.png";
+            }
+            else if (cate == 4)
+            {
+                objType = (int)DicEnum.OBJECT_TYPE.SALEORDER;
+                logo = "salesorder.png";
+            }
+            else if (cate == 6)
+            {
+                objType = (int)DicEnum.OBJECT_TYPE.CONTRACT;
+                logo = "contract.png";
+            }
+            else if (cate == 7)
+            {
+                objType = (int)DicEnum.OBJECT_TYPE.PROJECT;
+                logo = "project.png";
+            }
+            else
+                return "";
+
+            var obj = new v_activity_dal().FindById(objId);
+
+            StringBuilder html = new StringBuilder();
+            html.Append($"<div class='EntityFeedLevel1'><a href='#' style='float:left;'><img src='../Images/{logo}' /></a> ");
+            html.Append($"<div class='PostContent'><a href='#' class='PostContentName'>{obj.pname}</a>");
+            html.Append($"<div><span>{obj.act_desc}</span></div>");
+            html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
+            html.Append($"{obj.act_date}</span>");
+            if (cate==4 || cate== 7)
+            {
+                html.Append($"<a href='#' onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a><a href='#' onclick='NoteAddAttach({obj.id})' class='CommentLink'>添加附件</a>");
+            }
+            if (cate==6)
+            {
+                html.Append($"<a href='#' onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a>");
+            }
+            html.Append("</div></div></div>");
+            
+            var actList = new v_activity_dal().GetActivities(obj.id, 2, isAsc);
+            foreach (var act in actList)
+            {
+                if (act.act_cate != null && act.act_cate.Equals("act"))
+                    html.Append(GetCRMNoteHtml(cate, userId, 2, act.id));
+                else if (act.act_cate != null && act.act_cate.Equals("att"))
+                    html.Append(GetAttachmentHtml(cate, userId, 2, act.id));
+            }
+
+            html.Append("<hr class='activityTitlerighthr' />");
+
             return html.ToString();
         }
 
@@ -78,7 +337,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="order"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public string GetTodosHtml(long accountId, string order, long userId)
+        private string GetTodosHtml(long accountId, string order, long userId)
         {
             string sql = $"SELECT * FROM com_activity WHERE account_id={accountId} AND cate_id={(int)DicEnum.ACTIVITY_CATE.TODO} AND delete_time=0 ";
             if (order != null && order.Equals("1"))
@@ -120,7 +379,7 @@ namespace EMT.DoneNOW.BLL
                     todoHtml.Append($"修改时间:&nbsp今天 {updateTime.ToString("hh:mm")}</span>");
                 else
                     todoHtml.Append($"修改时间:&nbsp{updateTime.ToString("yyyy-MM-dd hh:mm")}</span>");
-                todoHtml.Append($"<a href='#' class='CommentLink'>完成</a><a href='#' class='CommentLink'>编辑</a><a href='#' class='CommentLink'>删除</a>");
+                todoHtml.Append($"<a href='#' onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a><a href='#' onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a><a href='#' onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
                 todoHtml.Append("</div></div></div>");
 
                 todoHtml.Append("<hr class='activityTitlerighthr' />");
@@ -135,63 +394,237 @@ namespace EMT.DoneNOW.BLL
         /// <param name="noteId"></param>
         /// <param name="userId"></param>
         /// <param name="level"></param>
-        /// <param name="order"></param>
         /// <returns></returns>
-        private string GetCRMNoteHtml(long noteId, long userId, int level, int order)
+        //private string GetCRMNoteHtml(long noteId, long userId, int level)
+        //{
+        //    var note = dal.FindById(noteId);
+        //    var resource = new sys_resource_dal().FindById((long)note.resource_id);
+        //    string html = "";
+        //    html += $"<div class='EntityFeedLevel{level}'><a href='#' style='float:left;'><img src='..{resource.avatar}' /></a> ";
+        //    html += $"<div class='PostContent'><a href='#' class='PostContentName'>{resource.name}</a>";
+        //    if (resource.id != userId)
+        //        html += $"<a href='mailto:{resource.email}' class='SmallLink'>发送邮件</a>";
+        //    html += $"<img src='../Images/note.png' />";
+        //    if (note.contact_id!=null)
+        //    {
+        //        var contact = new crm_contact_dal().FindById((long)note.contact_id);
+        //        html += $"<span>(联系人:<a href='#' class='PostContentName'>{contact.name}</a>";
+        //        if (!string.IsNullOrEmpty(contact.email))
+        //            html += $"<a href='mailto:{contact.email}' class='SmallLink'>发送邮件</a>";
+        //        html += $")</span>";
+        //    }
+        //    html += $"<div><span>{new GeneralBLL().GetGeneralName(note.action_type_id)}: {note.description}</span></div>";
+
+        //    var creator = new sys_resource_dal().FindById((long)note.create_user_id);
+        //    html += $"<div><span style='color:gray;'>创建人:&nbsp</span><a style='color:gray;' href='#'>{creator.name}</a>";
+        //    if (note.create_user_id != userId)
+        //        html += $"<a href='mailto:{creator.email}' class='SmallLink'>发送邮件</a>";
+        //    html += "</div>";
+
+        //    html += $"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>";
+        //    var updateTime = Tools.Date.DateHelper.TimeStampToDateTime(note.update_time);
+        //    if (DateTime.Today.Year == updateTime.Year && DateTime.Today.Month == updateTime.Month && DateTime.Today.Day == updateTime.Day)
+        //        html += $"修改时间:&nbsp今天 {updateTime.ToString("hh:mm")}</span>";
+        //    else
+        //        html += $"修改时间:&nbsp{updateTime.ToString("yyyy-MM-dd hh:mm")}</span>";
+        //    html += $"<a href='#' onclick='NoteAddNote({note.id})' class='CommentLink'>添加备注</a><a href='#' onclick='NoteAddAttach({note.id})' class='CommentLink'>添加附件</a><a href='#' onclick='NoteEdit({note.id})' class='CommentLink'>编辑</a><a href='#' onclick='ActDelete({note.id})' class='CommentLink'>删除</a>";
+        //    html += "</div></div></div>";
+
+        //    if (level == 3)     // 最多3级
+        //        return html;
+
+        //    // 添加子备注和附件 TODO: 附件
+        //    string orderBy = " ORDER BY update_time ASC ";
+        //    var childIds = GetChildrenNote(note.id, orderBy);
+        //    foreach(var child in childIds)
+        //    {
+        //        html += GetCRMNoteHtml(child, userId, level + 1);
+        //    }
+
+        //    if (level == 1)
+        //        html += "<hr class='activityTitlerighthr' />";
+
+        //    return html;
+        //}
+
+        /// <summary>
+        /// 活动列表中快速添加备注
+        /// </summary>
+        /// <param name="objectTypeId">对象类型id</param>
+        /// <param name="objectId">对象id</param>
+        /// <param name="cate">对应v_activity视图cate</param>
+        /// <param name="level">层级(最多三级，一级为备注或附件时最多两级)</param>
+        /// <param name="desc"></param>
+        /// <param name="isNotify"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool FastAddNote(int objectTypeId, long objectId, long cate,int level, string desc, bool isNotify, long userId)
         {
-            var note = dal.FindById(noteId);
-            var resource = new sys_resource_dal().FindById((long)note.resource_id);
-            string html = "";
-            html += $"<div class='EntityFeedLevel{level}'><a href='#' style='float:left;'><img src='..{resource.avatar}' /></a> ";
-            html += $"<div class='PostContent'><a href='#' class='PostContentName'>{resource.name}</a>";
-            if (resource.id != userId)
-                html += $"<a href='mailto:{resource.email}' class='SmallLink'>发送邮件</a>";
-            html += $"<img src='../Images/note.png' />";
-            if (note.contact_id!=null)
+            var note = new com_activity();
+            long parentId;
+            int parentType;
+
+            // 先获取新增备注的上级对象和对象类型
+            if (level == 3 || (level == 2 && cate == 2))      // 已到最大级，实际上级为上级的上级
             {
-                var contact = new crm_contact_dal().FindById((long)note.contact_id);
-                html += $"<span>(联系人:<a href='#' class='PostContentName'>{contact.name}</a>";
-                if (!string.IsNullOrEmpty(contact.email))
-                    html += $"<a href='mailto:{contact.email}' class='SmallLink'>发送邮件</a>";
-                html += $")</span>";
+                if (objectTypeId == (int)DicEnum.OBJECT_TYPE.NOTES)
+                {
+                    var curt = dal.FindById(objectId);
+                    parentType = curt.object_type_id;
+                    parentId = curt.object_id;
+                }
+                else if (objectTypeId == (int)DicEnum.OBJECT_TYPE.ATTACHMENT)
+                {
+                    var curt = new com_attachment_dal().FindById(objectId);
+                    parentType = curt.object_type_id;
+                    parentId = curt.object_id;
+
+                    // 为附件时转换对象类型
+                    if (parentType == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.ATTACHMENT)
+                        parentType = (int)DicEnum.OBJECT_TYPE.ATTACHMENT;
+                    else if (parentType == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.CONTRACT)
+                        parentType = (int)DicEnum.OBJECT_TYPE.CONTRACT;
+                    else if (parentType == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.NOTES)
+                        parentType = (int)DicEnum.OBJECT_TYPE.NOTES;
+                    else if (parentType == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.OPPORTUNITY)
+                        parentType = (int)DicEnum.OBJECT_TYPE.OPPORTUNITY;
+                    else if (parentType == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.SALES_ORDER)
+                        parentType = (int)DicEnum.OBJECT_TYPE.SALEORDER;
+                    else
+                        return false;
+                }
+                else
+                    return false;
             }
-            html += $"<div><span>{new GeneralBLL().GetGeneralName(note.action_type_id)}: {note.description}</span></div>";
+            else    // 未达到最大级，上级即为上级
+            {
+                parentType = objectTypeId;
+                parentId = objectId;
+            }
 
-            var creator = new sys_resource_dal().FindById((long)note.create_user_id);
-            html += $"<div><span style='color:gray;'>创建人:&nbsp</span><a style='color:gray;' href='#'>{creator.name}</a>";
-            if (note.create_user_id != userId)
-                html += $"<a href='mailto:{creator.email}' class='SmallLink'>发送邮件</a>";
-            html += "</div>";
 
-            html += $"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>";
-            var updateTime = Tools.Date.DateHelper.TimeStampToDateTime(note.update_time);
-            if (DateTime.Today.Year == updateTime.Year && DateTime.Today.Month == updateTime.Month && DateTime.Today.Day == updateTime.Day)
-                html += $"修改时间:&nbsp今天 {updateTime.ToString("hh:mm")}</span>";
+            // 根据不同对象类型填充不同数据
+            note.object_id = parentId;
+            note.object_type_id = parentType;
+            if (parentType==(int)DicEnum.OBJECT_TYPE.NOTES)     // 上级为备注
+            {
+                var parentNote = dal.FindById(parentId);
+                if (parentNote == null || parentNote.delete_time > 0)
+                    return false;
+
+                note.cate_id = parentNote.cate_id;
+                note.account_id = parentNote.account_id;
+                note.contact_id = parentNote.contact_id;
+                note.parent_id = parentNote.id;
+                note.action_type_id = (int)DicEnum.ACTIVITY_TYPE.GRAFFITI_RECORD;
+                note.opportunity_id = parentNote.opportunity_id;
+                note.ticket_id = parentNote.ticket_id;
+                note.contract_id = parentNote.contract_id;
+                note.resource_id = parentNote.resource_id;
+            }
             else
-                html += $"修改时间:&nbsp{updateTime.ToString("yyyy-MM-dd hh:mm")}</span>";
-            html += $"<a href='#' class='CommentLink'>添加备注</a><a href='#' class='CommentLink'>添加附件</a><a href='#' class='CommentLink'>编辑</a><a href='#' class='CommentLink'>删除</a>";
-            html += "</div></div></div>";
-
-            if (level == 3)     // 最多3级
-                return html;
-
-            // 添加子备注和附件 TODO: 附件
-            string orderBy = " ORDER BY update_time DESC ";
-            if ("1".Equals(order))
-                orderBy = " ORDER BY update_time ASC ";
-            var childIds = GetChildrenNote(note.id, orderBy);
-            foreach(var child in childIds)
             {
-                html += GetCRMNoteHtml(child, userId, level + 1, order);
+                note.parent_id = null;
+                note.cate_id = (int)DicEnum.ACTIVITY_CATE.NOTE;
+                note.action_type_id = (int)DicEnum.ACTIVITY_TYPE.GRAFFITI_RECORD;
+                if (parentType == (int)DicEnum.OBJECT_TYPE.CUSTOMER)
+                {
+                    note.account_id = parentId;
+                }
+                else if (parentType == (int)DicEnum.OBJECT_TYPE.CONTACT)
+                {
+                    note.contact_id = parentId;
+                    note.account_id = new ContactBLL().GetContact(parentId).account_id;
+                }
+                else if (parentType == (int)DicEnum.OBJECT_TYPE.OPPORTUNITY)
+                {
+                    note.opportunity_id = parentId;
+                    var opp = new crm_opportunity_dal().FindById(parentId);
+                    note.account_id = opp.account_id;
+                    note.contact_id = opp.contact_id;
+                }
+                else if (parentType == (int)DicEnum.OBJECT_TYPE.SALEORDER)
+                {
+                    note.sales_order_id = parentId;
+                    var opp = new crm_opportunity_dal().FindById(new crm_sales_order_dal().FindById(parentId).opportunity_id);
+                    note.opportunity_id = opp.id;
+                    note.account_id = opp.account_id;
+                    note.contact_id = opp.contact_id;
+                }
+                else if (parentType == (int)DicEnum.OBJECT_TYPE.CONTRACT)
+                {
+                    note.cate_id = (int)DicEnum.ACTIVITY_CATE.CONTRACT_NOTE;
+                    note.action_type_id = (int)DicEnum.ACTIVITY_TYPE.CONTRACT_NOTE;
+                    var contract = new ContractBLL().GetContract(parentId);
+                    note.contract_id = parentId;
+                    if (contract.opportunity_id == null)
+                    {
+                        note.account_id = contract.account_id;
+                    }
+                    else
+                    {
+                        var opp = new crm_opportunity_dal().FindById((long)contract.opportunity_id);
+                        note.account_id = opp.account_id;
+                        note.contact_id = opp.contact_id;
+                        note.opportunity_id = opp.id;
+                    }
+                }
+                else if (parentType == (int)DicEnum.OBJECT_TYPE.PROJECT)
+                {
+                }
+                else if (parentType == (int)DicEnum.OBJECT_TYPE.ATTACHMENT)     // 附件
+                {
+                    var att = new com_attachment_dal().FindById(parentId);
+                    if (att.account_id == null)
+                        return false;
+                    note.account_id = att.account_id;
+
+                    // 根据附件的对象类型获取到商机/合同等信息
+                    if(att.object_type_id==(int)DicEnum.ATTACHMENT_OBJECT_TYPE.CONTRACT)
+                    {
+                        var contract = new ContractBLL().GetContract(att.object_id);
+                        note.contract_id = att.object_id;
+                        if (contract.opportunity_id != null)
+                        {
+                            var opp = new crm_opportunity_dal().FindById((long)contract.opportunity_id);
+                            note.contact_id = opp.contact_id;
+                            note.opportunity_id = opp.id;
+                        }
+                    }
+                    else if (att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.OPPORTUNITY)
+                    {
+                        var opp = new crm_opportunity_dal().FindById(att.object_id);
+                        note.contact_id = opp.contact_id;
+                        note.opportunity_id = opp.id;
+                    }
+                    else if (att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.SALES_ORDER)
+                    {
+                        note.sales_order_id = att.object_id;
+                        var opp = new crm_opportunity_dal().FindById(new crm_sales_order_dal().FindById(att.object_id).opportunity_id);
+                        note.opportunity_id = opp.id;
+                        note.contact_id = opp.contact_id;
+                    }
+                }
+                else
+                    return false;
             }
+            
 
-            if (level == 1)
-                html += "<hr class='activityTitlerighthr' />";
+            note.description = desc;
+            note.status_id = null;
+            note.start_date = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            note.end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now.AddMinutes(15));
 
-            return html;
+            note.id = dal.GetNextIdCom();
+            note.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            note.update_time = note.create_time;
+            note.create_user_id = userId;
+            note.update_user_id = userId;
+
+            dal.Insert(note);
+            OperLogBLL.OperLogAdd<com_activity>(note, note.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+            return true;
         }
-
-
         #endregion
 
         #region CRM备注/待办
@@ -230,6 +663,7 @@ namespace EMT.DoneNOW.BLL
             note.action_type_id = typeId;
             note.resource_id = userId;
             note.description = desc;
+            note.status_id = null;
 
             if (accountId != 0)
             {
