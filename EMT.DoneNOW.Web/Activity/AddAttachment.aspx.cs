@@ -12,10 +12,10 @@ namespace EMT.DoneNOW.Web.Activity
 {
     public partial class AddAttachment : BasePage
     {
-
+        protected List<DictionaryEntryDto> attTypeList = null;    // 附件类型
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            attTypeList = new GeneralBLL().GetDicValues(GeneralTableEnum.ATTACHMENT_TYPE);
         }
     }
 }

@@ -47,6 +47,7 @@ namespace EMT.DoneNOW.DTO
         SEX = 49,
         EMAILTYPE = 50,
         OUTSOURCE_SECURITY = 51,                  //外包权限
+        ATTACHMENT_TYPE = 62,                   // 附件类型
         DEPARTMENT_CATE = 64,                     //部门：类型
         LIMIT_TYPE = 76,                         //系统权限：类型 取值 有无、全部部分 等
         LIMIT_TYPE_VALUE = 77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
@@ -397,6 +398,17 @@ namespace EMT.DoneNOW.DTO
             NORMAL = 616,     // 正常
             FREEZE = 617,     // 冻结
             EXPIRED = 618,    // 过期
+        }
+
+        /// <summary>
+        /// 附件类型-62
+        /// </summary>
+        public enum ATTACHMENT_TYPE
+        {
+            ATTACHMENT = 704,   // 附件
+            URL = 705,          // url
+            FILE_LINK = 706,    // 文件目录
+            FOLDER_LINK = 707,  // 文件夹目录
         }
 
         /// <summary>
