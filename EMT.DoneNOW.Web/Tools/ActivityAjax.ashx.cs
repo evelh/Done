@@ -95,8 +95,8 @@ namespace EMT.DoneNOW.Web
                 actTypeList.Add("sale");
             if (!string.IsNullOrEmpty(queryStr["ticket"]) && queryStr["ticket"].Equals("1"))
                 actTypeList.Add("ticket");
-            if (!string.IsNullOrEmpty(queryStr["contact"]) && queryStr["contact"].Equals("1"))
-                actTypeList.Add("contact");
+            if (!string.IsNullOrEmpty(queryStr["contract"]) && queryStr["contract"].Equals("1"))
+                actTypeList.Add("contract");
             if (!string.IsNullOrEmpty(queryStr["project"]) && queryStr["project"].Equals("1"))
                 actTypeList.Add("project");
 

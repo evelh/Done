@@ -20,7 +20,7 @@
       <ul>
         <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
           <span class="Icon SaveAndClone"></span>
-          <span class="Text">保存 & 关闭</span>
+          <span class="Text">保存并关闭</span>
         </li>
         <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
           <span class="Icon Cancel"></span>

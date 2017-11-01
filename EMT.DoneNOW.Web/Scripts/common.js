@@ -12,7 +12,7 @@ function requestData(url, data, calBackFunction) {
         url: url,
         data: data,
         dataType: "JSON",
-        timeout: 20000,
+        timeout: 300000,
         async: true,
         beforeSend : function(){
             //$("body").append(loadDialog);

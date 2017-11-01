@@ -15,4 +15,5 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql<com_attachment>($"SELECT * from com_attachment where delete_time = 0 and object_id ={oid}");
         }
     }
+
 }

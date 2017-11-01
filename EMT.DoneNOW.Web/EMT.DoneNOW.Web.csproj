@@ -130,7 +130,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Activity\AddAttachment.aspx" />
     <Content Include="Activity\Notes.aspx" />
+    <Content Include="Activity\QuickAddNote.aspx" />
     <Content Include="Activity\Todos.aspx" />
     <Content Include="Common\ColumnSelector.aspx" />
     <Content Include="Activity\AddActivity.aspx" />
@@ -204,6 +206,7 @@
     <Content Include="Contract\EditServiceInvoiceDesc.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Images\cancel1.png" />
+    <Content Include="Images\contract.png" />
     <Content Include="Images\dailyGridContainer.png" />
     <Content Include="Images\forward_arrow.png" />
     <Content Include="Images\left2.png" />
@@ -212,6 +215,7 @@
     <Content Include="Images\note.png" />
     <Content Include="Images\open.png" />
     <Content Include="Images\phase.png" />
+    <Content Include="Images\project.png" />
     <Content Include="Images\Recentindex.png" />
     <Content Include="Images\right2.png" />
     <Content Include="Images\ServiceSelector.png" />
@@ -796,12 +800,26 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\AddAttachment.aspx.cs">
+      <DependentUpon>AddAttachment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Activity\AddAttachment.aspx.designer.cs">
+      <DependentUpon>AddAttachment.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Activity\Notes.aspx.cs">
       <DependentUpon>Notes.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Activity\Notes.aspx.designer.cs">
       <DependentUpon>Notes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Activity\QuickAddNote.aspx.cs">
+      <DependentUpon>QuickAddNote.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Activity\QuickAddNote.aspx.designer.cs">
+      <DependentUpon>QuickAddNote.aspx</DependentUpon>
     </Compile>
     <Compile Include="Activity\Todos.aspx.cs">
       <DependentUpon>Todos.aspx</DependentUpon>
