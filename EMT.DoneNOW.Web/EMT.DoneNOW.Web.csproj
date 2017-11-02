@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Activity\AddAttachment.aspx" />
+    <Content Include="Activity\OpenAttachment.aspx" />
     <Content Include="Activity\Notes.aspx" />
     <Content Include="Activity\QuickAddNote.aspx" />
     <Content Include="Activity\Todos.aspx" />
@@ -806,6 +807,13 @@
     </Compile>
     <Compile Include="Activity\AddAttachment.aspx.designer.cs">
       <DependentUpon>AddAttachment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Activity\OpenAttachment.aspx.cs">
+      <DependentUpon>OpenAttachment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Activity\OpenAttachment.aspx.designer.cs">
+      <DependentUpon>OpenAttachment.aspx</DependentUpon>
     </Compile>
     <Compile Include="Activity\Notes.aspx.cs">
       <DependentUpon>Notes.aspx</DependentUpon>
@@ -1840,6 +1848,9 @@
     <Compile Include="Tools\ApproveAndPostAjax.ashx.cs">
       <DependentUpon>ApproveAndPostAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\AttachmentAjax.ashx.cs">
+      <DependentUpon>AttachmentAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\CompanyAjax.ashx.cs">
       <DependentUpon>CompanyAjax.ashx</DependentUpon>
     </Compile>
@@ -1951,6 +1962,7 @@
     <Content Include="Tools\HistoryInvoiceAjax.ashx" />
     <Content Include="Tools\ProjectAjax.ashx" />
     <Content Include="Tools\ActivityAjax.ashx" />
+    <Content Include="Tools\AttachmentAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

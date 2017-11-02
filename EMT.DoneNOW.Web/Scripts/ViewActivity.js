@@ -93,13 +93,20 @@ function TodoEdit(id) {
 function NoteAddNote(cate, level, objType, objId) {
     window.open("../Activity/QuickAddNote.aspx?cate=" + cate + "&level=" + level + "&type=" + objType + "&objectId=" + objId, windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
 }
-function NoteAddAttach(id) {
-
-}
 function NoteEdit(id) {
     window.open("../Activity/Notes.aspx?id=" + id, windowObj.notes + windowType.edit, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
 }
 
+function NoteAddAttach(objId, objType) {
+    window.open("../Activity/AddAttachment?objId=" + objId + "&objType=" + objType, windowObj.attachment + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
 function AttDelete(id) {
-
+    LayerConfirm("删除后无法恢复，是否继续", "确定", "取消", function () {
+        requestData("../Tools/AttachmentAjax.ashx?act=DeleteAttachment&id=" + id, null, function (data) {
+            RequestActivity();
+        })
+    }, function () { })
+}
+function OpenAttachment(id) {
+    window.open("../Activity/OpenAttachment.aspx?id=" + id, windowType.blank, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
 }

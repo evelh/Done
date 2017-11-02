@@ -421,7 +421,9 @@ namespace EMT.DoneNOW.DTO
             OPPORTUNITY = 710,      // 商机
             NOTES = 711,            // 备注
             SALES_ORDER = 712,      // 销售订单
+            PROJECT = 713,          // 项目
             ATTACHMENT = 715,       // 附件
+            COMPANY = 716,          // 客户
         }
 
         /// <summary>
@@ -621,6 +623,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TASK=1380,                          // 任务
             PROJECT_CALENDAR=1381,                      // 项目日历条目
             PROJECT_TASK_RESOURCE = 1382,               // 任务分配对象
+            ATTACHMENT = 1389,                          // 附件
         }
 
         /// <summary>

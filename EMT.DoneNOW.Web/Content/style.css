@@ -109,7 +109,7 @@ margin-top: 5px;margin-right:10px;cursor: pointer;}
 .EntityFeedLevel1 img{margin-right:10px;margin-bottom:6px;float:left;width:50px;height:50px;border:0px;vertical-align:middle;}
 .EntityFeedLevel2 img, .EntityFeedLevel3 img{margin-right:10px;margin-bottom:6px;height:32px;width:32px;border:0px;vertical-align:middle;}
 .PostContent{display: table-cell; width:430px; float:left; vertical-align: top;}
-.PostContent a{color: #376597;font-size: 12px;margin-right: 5px;}
+.PostContent a{color: #376597;font-size: 12px;margin-right:5px;cursor:pointer;}
 .PostContent img{width:16px;height:16px;margin-left:5px;margin-right:5px;border-width:0px;float:initial;}
 .PostContentName{font-weight:bold;}
 .EntityDateTimeLinks{padding-top:5px;}

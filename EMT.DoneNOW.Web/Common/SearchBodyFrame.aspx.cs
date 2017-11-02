@@ -461,7 +461,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.CRMNote:
                     contextMenu.Add(new PageContextMenuDto { text = "修改备注", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "set scheduled", click_function = "SetScheduled()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转为待办", click_function = "SetScheduled()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除备注", click_function = "Delete()" });
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
                     break;

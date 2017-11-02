@@ -82,7 +82,7 @@ $(".dn_tr").unbind('contextmenu').bind("contextmenu", function (event) {
         var txt = "<ul style='width:220px;'>";
         if (data[0] == "1") {
             txt += "<li onclick='EditNote()'><i class='menu-i1'></i>修改待办（备注）</li>";
-            txt += "<li onclick='SetScheduled()'><i class='menu-i1'></i>set scheduled</li>";
+            txt += "<li onclick='SetScheduled()'><i class='menu-i1'></i>转为待办</li>";
             txt += "<li onclick='Delete()'><i class='menu-i1'></i>删除待办（备注）</li>";
         } else {
             txt += "<li onclick='Edit()'><i class='menu-i1'></i>修改待办</li>";

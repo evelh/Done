@@ -70,7 +70,7 @@ namespace EMT.DoneNOW.BLL
                 return "";
 
             StringBuilder html = new StringBuilder();
-
+            DateTime t1 = DateTime.Now;
             // 先加入最多3个待办
             if (actTypeList.Exists(_=> "todo".Equals(_)))
                 html.Append(GetTodosHtml(accountId, order, userId));
@@ -101,83 +101,45 @@ namespace EMT.DoneNOW.BLL
                 if (act.cate == 2)    // 备注和附件
                 {
                     if (act.act_cate != null && act.act_cate.Equals("act"))
-                        html.Append(GetCRMNoteHtml(act.cate, userId, 1, act.id));
+                        html.Append(GetCRMNoteHtml(act, act.cate, userId, 1));
                     else if (act.act_cate != null && act.act_cate.Equals("att"))
-                        html.Append(GetAttachmentHtml(act.cate, userId, 1, act.id));
+                        html.Append(GetAttachmentHtml(act, act.cate, userId, 1));
                     else    // 错误
                         return "";
                 }
                 else
                 {
-                    html.Append(GetObjectHtml(act.cate, userId, act.id, isAsc));
+                    html.Append(GetObjectHtml(act, userId, isAsc));
                 }
             }
-
+            DateTime t2 = DateTime.Now;
+            Console.WriteLine(t1.ToString("yyyy-MM-dd"));
+            Console.WriteLine(t2.ToString("yyyy-MM-dd"));
             return html.ToString();
-
-            ///****** 此函数负责查找一级节点，并调用其他方法添加对应类型的一级节点及其下的二级及三级节点 *****/
-
-            //List<long> addedObjIdList = new List<long>();   // 已添加的备注/商机/合同等实体id列表
-
-            //// TODO:根据不同类型按时间顺序查找com_activity表的object_type_id
-            //string objTypeIds = "";
-            //if (actTypeList.Exists(_ => "crmnote".Equals(_)))
-            //    objTypeIds += $"{(int)DicEnum.OBJECT_TYPE.CUSTOMER},{(int)DicEnum.OBJECT_TYPE.CONTACT},";
-
-            //if (objTypeIds.Equals(""))
-            //    return html.ToString();
-            //objTypeIds = objTypeIds.Remove(objTypeIds.Length - 1, 1);    // 移除最后的,
-
-            //// 按时间顺序加入其他类型
-            //string orderBy = " ORDER BY update_time DESC ";
-            //if ("1".Equals(order))
-            //    orderBy = " ORDER BY update_time ASC ";
-            //string sql = $"SELECT id,cate_id,object_id,object_type_id,parent_id FROM com_activity WHERE account_id={accountId} AND cate_id={(int)DicEnum.ACTIVITY_CATE.NOTE} AND object_type_id IN ({objTypeIds}) AND delete_time=0 {orderBy}";
-            //var list = dal.FindListBySql(sql);
-            //foreach(var note in list)
-            //{
-            //    if (note.object_type_id == (int)DicEnum.OBJECT_TYPE.CUSTOMER || note.object_type_id == (int)DicEnum.OBJECT_TYPE.CONTACT)      // 备注类型
-            //    {
-            //        long level1Id = note.id;        // 一级备注id
-            //        if (note.parent_id != null)     // 二级备注
-            //        {
-            //            level1Id = (long)note.parent_id;
-            //        }
-
-            //        if (!addedObjIdList.Exists(_ => _ == level1Id))   // 父备注未添加
-            //        {
-            //            html.Append(GetCRMNoteHtml(level1Id, userId, 1));
-            //            addedObjIdList.Add(level1Id);
-            //        }
-            //    }
-
-            //    // TODO: 添加其他类型活动
-            //}
-
-            //return html.ToString();
+            
         }
 
         /// <summary>
         /// 生成一个备注及其下级的备注和附件的html
         /// </summary>
+        /// <param name="note"></param>
         /// <param name="cate"></param>
         /// <param name="userId"></param>
         /// <param name="level"></param>
-        /// <param name="noteId"></param>
         /// <returns></returns>
-        private string GetCRMNoteHtml(long cate, long userId, int level, long noteId)
+        private string GetCRMNoteHtml(v_activity note,long cate, long userId, int level)
         {
-            var note = new v_activity_dal().FindById(noteId);
+            //var note = new v_activity_dal().FindById(noteId);
 
             StringBuilder html = new StringBuilder();
-            html.Append($"<div class='EntityFeedLevel{level}'><a href='#' style='float:left;'><img src='..{note.resource_avatar}' /></a> ");
-            html.Append($"<div class='PostContent'><a href='#' class='PostContentName'>{note.resource_name}</a>");
+            html.Append($"<div class='EntityFeedLevel{level}'><a style='float:left;cursor:pointer;'><img src='..{note.resource_avatar}' /></a> ");
+            html.Append($"<div class='PostContent'><a class='PostContentName'>{note.resource_name}</a>");
             if (note.resource_id!=userId&& !string.IsNullOrEmpty(note.resource_email))
                 html.Append($"<a href='mailto:{note.resource_email}' class='SmallLink'>发送邮件</a>");
             html.Append($"<img src='../Images/note.png' />");
             if (note.contact_id != null)
             {
-                html.Append($"<span>(联系人:<a href='#' class='PostContentName'>{note.contact_name}</a>");
+                html.Append($"<span>(联系人:<a class='PostContentName'>{note.contact_name}</a>");
                 if (!string.IsNullOrEmpty(note.contact_email))
                     html.Append($"<a href='mailto:{note.contact_email}' class='SmallLink'>发送邮件</a>");
                 html.Append($")</span>");
@@ -186,7 +148,7 @@ namespace EMT.DoneNOW.BLL
 
             if (cate == 2 || cate == 3 || cate == 4)
             {
-                html.Append($"<div><span style='color:gray;'>创建/修改人:&nbsp</span><a style='color:gray;' href='#'>{note.update_user_name}</a>");
+                html.Append($"<div><span style='color:gray;'>创建/修改人:&nbsp</span><a style='color:gray;'>{note.update_user_name}</a>");
                 if (note.update_user_id != userId && !string.IsNullOrEmpty(note.update_user_email))
                     html.Append($"<a href='mailto:{note.update_user_email}' class='SmallLink'>发送邮件</a>");
                 html.Append("</div>");
@@ -194,7 +156,7 @@ namespace EMT.DoneNOW.BLL
 
             html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
             html.Append($"{note.act_date}</span>");
-            html.Append($"<a href='#' onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.NOTES},{note.id})' class='CommentLink'>添加备注</a><a href='#' onclick='NoteAddAttach({note.id})' class='CommentLink'>添加附件</a><a href='#' onclick='NoteEdit({note.id})' class='CommentLink'>编辑</a><a href='#' onclick='ActDelete({note.id})' class='CommentLink'>删除</a>");
+            html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.NOTES},{note.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({note.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.NOTES})' class='CommentLink'>添加附件</a><a onclick='NoteEdit({note.id})' class='CommentLink'>编辑</a><a onclick='ActDelete({note.id})' class='CommentLink'>删除</a>");
             html.Append("</div></div></div>");
 
             if (level == 3)
@@ -206,9 +168,9 @@ namespace EMT.DoneNOW.BLL
             foreach (var act in actList)
             {
                 if (act.act_cate != null && act.act_cate.Equals("act"))
-                    html.Append(GetCRMNoteHtml(cate, userId, level + 1, act.id));
+                    html.Append(GetCRMNoteHtml(act, cate, userId, level + 1));
                 else if (act.act_cate != null && act.act_cate.Equals("att"))
-                    html.Append(GetAttachmentHtml(cate, userId, level + 1, act.id));
+                    html.Append(GetAttachmentHtml(act, cate, userId, level + 1));
             }
 
             if (level == 1)
@@ -220,28 +182,35 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 生成一个附件及其下级的备注和附件的html
         /// </summary>
+        /// <param name="att"></param>
         /// <param name="cate"></param>
         /// <param name="userId"></param>
         /// <param name="level"></param>
-        /// <param name="attId"></param>
         /// <returns></returns>
-        private string GetAttachmentHtml(long cate, long userId, int level, long attId)
+        private string GetAttachmentHtml(v_activity att, long cate, long userId, int level)
         {
-            var att = new v_activity_dal().FindById(attId);
+            //var att = new v_activity_dal().FindById(attId);
 
             StringBuilder html = new StringBuilder();
-            html.Append($"<div class='EntityFeedLevel{level}'><a href='#' style='float:left;'><img src='..{att.resource_avatar}' /></a> ");
-            html.Append($"<div class='PostContent' style='width:auto;padding-right:10px;'><a href='#' class='PostContentName'>{att.resource_name}</a>");
+            html.Append($"<div class='EntityFeedLevel{level}'><a style='float:left;cursor:pointer;'><img src='..{att.resource_avatar}' /></a> ");
+            html.Append($"<div class='PostContent' style='width:auto;padding-right:10px;'><a class='PostContentName'>{att.resource_name}</a>");
             if (att.resource_id != userId && !string.IsNullOrEmpty(att.resource_email))
                 html.Append($"<a href='mailto:{att.resource_email}' class='SmallLink'>发送邮件</a>");
-            html.Append($"<a title='{att.att_href}'><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{att.act_name}</span></a>");
+            html.Append($"<a title='{att.att_filename}' onclick='OpenAttachment({att.id})' ><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{att.act_name}</span></a>");
             
-
-
             html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
             html.Append($"{att.act_date}</span>");
-            html.Append($"<a href='#' onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.ATTACHMENT},{att.id})' class='CommentLink'>添加备注</a><a href='#' onclick='NoteAddAttach({att.id})' class='CommentLink'>添加附件</a><a href='#' onclick='AttDelete({att.id})' class='CommentLink'>删除</a>");
-            html.Append("</div></div></div>");
+            html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.ATTACHMENT},{att.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({att.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.ATTACHMENT})' class='CommentLink'>添加附件</a><a onclick='AttDelete({att.id})' class='CommentLink'>删除</a>");
+            html.Append("</div></div>");
+            if (att.att_type_id==(int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
+            {
+                var file = new AttachmentBLL().GetAttachment(att.id);
+                if (file.content_type!=null&&file.content_type.ToLower().IndexOf("image") == 0)
+                {
+                    html.Append($"<a><img src='..{file.href}' /></a>");
+                }
+            }
+            html.Append("</div>");
 
             if (level == 3)
                 return html.ToString();
@@ -252,9 +221,9 @@ namespace EMT.DoneNOW.BLL
             foreach (var act in actList)
             {
                 if (act.act_cate != null && act.act_cate.Equals("act"))
-                    html.Append(GetCRMNoteHtml(cate, userId, level + 1, act.id));
+                    html.Append(GetCRMNoteHtml(act, cate, userId, level + 1));
                 else if (act.act_cate != null && act.act_cate.Equals("att"))
-                    html.Append(GetAttachmentHtml(cate, userId, level + 1, act.id));
+                    html.Append(GetAttachmentHtml(act, cate, userId, level + 1));
             }
 
             if (level == 1)
@@ -266,14 +235,15 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 生成第一级的商机/合同等活动信息及其下级的备注/附件等
         /// </summary>
-        /// <param name="cate"></param>
+        /// <param name="obj"></param>
         /// <param name="userId"></param>
-        /// <param name="objId"></param>
         /// <param name="isAsc"></param>
         /// <returns></returns>
-        private string GetObjectHtml(long cate, long userId, long objId, bool isAsc)
+        private string GetObjectHtml(v_activity obj, long userId, bool isAsc)
         {
+            long cate = obj.cate;
             int objType;
+            int attObjType = 0;
             string logo;
             if (cate == 3)
             {
@@ -283,6 +253,7 @@ namespace EMT.DoneNOW.BLL
             else if (cate == 4)
             {
                 objType = (int)DicEnum.OBJECT_TYPE.SALEORDER;
+                attObjType = (int)DicEnum.ATTACHMENT_OBJECT_TYPE.SALES_ORDER;
                 logo = "salesorder.png";
             }
             else if (cate == 6)
@@ -293,26 +264,27 @@ namespace EMT.DoneNOW.BLL
             else if (cate == 7)
             {
                 objType = (int)DicEnum.OBJECT_TYPE.PROJECT;
+                attObjType = (int)DicEnum.ATTACHMENT_OBJECT_TYPE.PROJECT;
                 logo = "project.png";
             }
             else
                 return "";
 
-            var obj = new v_activity_dal().FindById(objId);
+            //var obj = new v_activity_dal().FindById(objId);
 
             StringBuilder html = new StringBuilder();
-            html.Append($"<div class='EntityFeedLevel1'><a href='#' style='float:left;'><img src='../Images/{logo}' /></a> ");
-            html.Append($"<div class='PostContent'><a href='#' class='PostContentName'>{obj.pname}</a>");
+            html.Append($"<div class='EntityFeedLevel1'><a style='float:left;cursor:pointer;'><img src='../Images/{logo}' /></a> ");
+            html.Append($"<div class='PostContent'><a class='PostContentName'>{obj.pname}</a>");
             html.Append($"<div><span>{obj.act_desc}</span></div>");
             html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
             html.Append($"{obj.act_date}</span>");
             if (cate==4 || cate== 7)
             {
-                html.Append($"<a href='#' onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a><a href='#' onclick='NoteAddAttach({obj.id})' class='CommentLink'>添加附件</a>");
+                html.Append($"<a onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({obj.id},{attObjType})' class='CommentLink'>添加附件</a>");
             }
             if (cate==6)
             {
-                html.Append($"<a href='#' onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a>");
+                html.Append($"<a onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a>");
             }
             html.Append("</div></div></div>");
             
@@ -320,9 +292,9 @@ namespace EMT.DoneNOW.BLL
             foreach (var act in actList)
             {
                 if (act.act_cate != null && act.act_cate.Equals("act"))
-                    html.Append(GetCRMNoteHtml(cate, userId, 2, act.id));
+                    html.Append(GetCRMNoteHtml(act, cate, userId, 2));
                 else if (act.act_cate != null && act.act_cate.Equals("att"))
-                    html.Append(GetAttachmentHtml(cate, userId, 2, act.id));
+                    html.Append(GetAttachmentHtml(act, cate, userId, 2));
             }
 
             html.Append("<hr class='activityTitlerighthr' />");
@@ -350,8 +322,8 @@ namespace EMT.DoneNOW.BLL
             foreach(var todo in todoList)
             {
                 var resource = new sys_resource_dal().FindById((long)todo.resource_id);
-                todoHtml.Append($"<div class='EntityFeedLevel1'><a href='#'><img src='..{resource.avatar}' /></a>");
-                todoHtml.Append($"<div class='PostContent'><a href='#' class='PostContentName'>{resource.name}</a>");
+                todoHtml.Append($"<div class='EntityFeedLevel1'><a style='cursor:pointer;'><img src='..{resource.avatar}' /></a>");
+                todoHtml.Append($"<div class='PostContent'><a class='PostContentName'>{resource.name}</a>");
                 if (resource.id != userId)
                     todoHtml.Append($"<a href='mailto:{resource.email}' class='SmallLink'>发送邮件</a>");
                 todoHtml.Append($"<img src='../Images/todos.png' />");
@@ -359,7 +331,7 @@ namespace EMT.DoneNOW.BLL
                 if (todo.contact_id != null)
                 {
                     var contact = new crm_contact_dal().FindById((long)todo.contact_id);
-                    todoHtml.Append($"<span>(联系人:<a href='#' class='PostContentName'>{contact.name}</a>");
+                    todoHtml.Append($"<span>(联系人:<a class='PostContentName'>{contact.name}</a>");
                     if (!string.IsNullOrEmpty(contact.email))
                         todoHtml.Append($"<a href='mailto:{contact.email}' class='SmallLink'>发送邮件</a>");
                     todoHtml.Append($")</span>");
@@ -379,7 +351,7 @@ namespace EMT.DoneNOW.BLL
                     todoHtml.Append($"修改时间:&nbsp今天 {updateTime.ToString("hh:mm")}</span>");
                 else
                     todoHtml.Append($"修改时间:&nbsp{updateTime.ToString("yyyy-MM-dd hh:mm")}</span>");
-                todoHtml.Append($"<a href='#' onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a><a href='#' onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a><a href='#' onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
+                todoHtml.Append($"<a onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a><a onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a><a onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
                 todoHtml.Append("</div></div></div>");
 
                 todoHtml.Append("<hr class='activityTitlerighthr' />");
