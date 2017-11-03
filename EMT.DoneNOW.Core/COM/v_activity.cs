@@ -63,6 +63,8 @@ namespace EMT.DoneNOW.Core
         public Int32? att_type_id { get; set; }
         [DataMember]
         public String att_href { get; set; }
+        [DataMember]
+        public String att_filename { get; set; }
 
 
     }

@@ -18,7 +18,7 @@
   </div>
   <div class="ButtonContainer">
     <ul>
-      <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton">
+      <li class="Button ButtonIcon NormalState" id="SaveAndCloseButton">
         <span class="Icon SaveAndClone"></span>
         <span class="Text">保存并关闭</span>
       </li>
@@ -26,13 +26,13 @@
         <span class="Icon SaveAndNew"></span>
         <span class="Text">保存并新建</span>
       </li>
-      <li class="Button ButtonIcon NormalState" id="CancelButton">
+      <li class="Button ButtonIcon NormalState" onclick="javascript:window.close();">
         <span class="Icon Cancel"></span>
         <span class="Text">取消</span>
       </li>
     </ul>
   </div>
-  <form id="form1" runat="server">
+  <form id="form1" enctype="multipart/form-data" runat="server">
     <div class="DivScrollingContainer" style="left: 0; overflow-x: auto; overflow-y: auto; position: fixed; right: 0; bottom: 0; top: 90px;">
       <div class="DivSectionWithHeader" style="max-width: 740px;">
         <!--头部-->
@@ -66,15 +66,15 @@
                           <td class="FieldLabel">附件名称<span style="color: Red;">*</span>
                             <div>
                               <span style="display: inline-block;">
-                                <input type="text" name="attName" style="width: 250px;" />
+                                <input type='text' id="attName" name='attName' style='width: 250px;' />
                               </span>
                             </div>
                           </td>
                         </tr>
                         <tr id="attTypeTr">
-                          <td class="FieldLabel" width="50%">附件<span style="color: Red;">*</span>
+                          <td class='FieldLabel' width='50%'>附件<span style='color: Red;'>*</span>
                             <div>
-                              <input type="file" style="width:260px;" />
+                              <input type='file' id='att' name='attFile' style='width:260px;' />
                             </div>
                           </td>
                         </tr>
@@ -101,10 +101,13 @@
           
         </div>
       </div>
+      <input type="hidden" id="action" name="action" />
+      <input type="hidden" name="objId" value="<%=objId %>" />
+      <input type="hidden" name="objType" value="<%=objType %>" />
     </div>
   </form>
   <script src="../Scripts/jquery-3.1.0.min.js"></script>
-  <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
+  <script src="../Scripts/common.js"></script>
   <script>
     var colors = ["#efefef", "white"];
     var index1 = 0; var index2 = 0;
@@ -123,15 +126,42 @@
 
     $("#actType").change(function () {
       if ($("#actType").val() ==<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_TYPE.ATTACHMENT %>){
-
+        $("#attTypeTr").html("<td class='FieldLabel' width='50%'>附件<span style='color: Red;'>*</span><div><input type='file' id='att' name='attFile' style='width:260px;' /></div></td>");
       } else if ($("#actType").val() ==<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_TYPE.FILE_LINK %>){
-
+        $("#attTypeTr").html("<td class='FieldLabel' width='50%'>文件/文件夹路径<span style='color: Red;'>*</span><div><input type='text' id='att' name='attLink' style='width:250px;' /></div></td>");
       } else if ($("#actType").val() ==<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_TYPE.FOLDER_LINK %>){
-
+        $("#attTypeTr").html("<td class='FieldLabel' width='50%'>文件/文件夹路径<span style='color: Red;'>*</span><div><input type='text' id='att' name='attLink' style='width:250px;' /></div></td>");
       } else if ($("#actType").val() ==<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_TYPE.URL %>){
-
+        $("#attTypeTr").html("<td class='FieldLabel' width='50%'>URL<span style='color: Red;'>*</span><div><input type='text' id='att' name='attLink' style='width:250px;' /></div></td>");
       }
     })
+
+    $("#SaveAndCloseButton").click(function () {
+      subCheck("saveClose");
+    })
+    $("#SaveAndNewButton").click(function () {
+      subCheck("saveNew");
+    })
+    function subCheck(act) {
+      if ($("#attName").val() == "") {
+        LayerMsg("请输入附件名称");
+        return;
+      }
+      if ($("#att").val() == "") {
+        if ($("#actType").val() ==<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_TYPE.ATTACHMENT %>){
+          LayerMsg("请选择附件");
+        } else if ($("#actType").val() ==<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_TYPE.FILE_LINK %>){
+          LayerMsg("请输入文件/文件夹路径");
+        } else if ($("#actType").val() ==<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_TYPE.FOLDER_LINK %>){
+          LayerMsg("请输入文件/文件夹路径");
+        } else if ($("#actType").val() ==<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_TYPE.URL %>){
+          LayerMsg("请输入URL");
+        }
+        return;
+      }
+      $("#action").val(act);
+      $("#form1").submit();
+    }
   </script>
 </body>
 </html>

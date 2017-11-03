@@ -218,6 +218,7 @@ var windowObj = {
     contract: 'contract',
     notes: 'notes',
     todos: 'todos',
+    attachment: 'attachment',
 }
 var windowType = {
     blank: '_blank',
