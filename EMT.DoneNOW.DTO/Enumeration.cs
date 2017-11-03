@@ -108,6 +108,7 @@ namespace EMT.DoneNOW.DTO
             IN_CHARGE = 27,                 // 计费中
             SALES = 28,                     // 销售
             CANCELLATION = 29,              // 注销
+            TASK_NOTE = 1491,               // 任务备注
             CONTRACT_NOTE = 1492,           // 合同备注
             PROJECT_EMAIL = 1493,           // 项目Email
             PROJECT_NOTE = 1494,            // 项目备注
@@ -124,6 +125,7 @@ namespace EMT.DoneNOW.DTO
             NOTE = 31,
             PROJECT_NOTE = 1497,                  // 项目备注
             CONTRACT_NOTE = 1498,                 // 合同备注
+            TASK_NOTE = 1499,                       // 任务备注
             
         }
 
@@ -562,6 +564,7 @@ namespace EMT.DoneNOW.DTO
             TICKETS = 742,      // 工单
             NOTES = 743,        // 备注
             ATTACHMENT = 744,   // 附件
+            TASK=745,           // task
         }
 
         /// <summary>
@@ -621,6 +624,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TASK=1380,                          // 任务
             PROJECT_CALENDAR=1381,                      // 项目日历条目
             PROJECT_TASK_RESOURCE = 1382,               // 任务分配对象
+            PROJECT_TASK_PREDECESSOR=1383,             // 任务的前驱任务
         }
 
         /// <summary>
@@ -735,7 +739,7 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum COST_CODE_CATE
         {
-            GENERAL_ALLOCATION_CODE = 1158,        //  一般成本
+            GENERAL_ALLOCATION_CODE = 1158,        //  一般成本  //工作类型
             EXPENSE_CATEGORY = 1159,               // 费用
             INTERNAL_ALLOCATION_CODE = 1160,       // 内部成本
             MATERIAL_COST_CODE = 1161,             // 物料成本

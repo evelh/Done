@@ -22,5 +22,13 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql<d_cost_code>($"SELECT * from d_cost_code where cate_id = {cate_id} and delete_time = 0");
            
         }
+        /// <summary>
+        /// 根据条件获取相应的costCode
+        /// </summary>
+        public List<d_cost_code> GetCostCodeByWhere(int cate_id, string where = "")
+        {
+            return FindListBySql<d_cost_code>($"SELECT * from d_cost_code where cate_id = {cate_id} and delete_time = 0 "+where);
+
+        }
     }
 }

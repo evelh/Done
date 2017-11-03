@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.SessionState;
+using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.Web
 {
@@ -25,6 +26,10 @@ namespace EMT.DoneNOW.Web
                 case "GetNameByIds":
                     var dIds = context.Request.QueryString["ids"];
                     GetNameByIds(context,dIds);
+                    break;
+                case "GetWorkType":   //
+                    var dId = context.Request.QueryString["department_id"];
+                    GetWorkType(context,long.Parse(dId));
                     break;
                 default: break;
 
@@ -71,6 +76,37 @@ namespace EMT.DoneNOW.Web
             }
           
         } 
+        /// <summary>
+        /// 根据部门获取相对应的工作类型
+        /// </summary>
+        private void GetWorkType(HttpContext context,long department_id)
+        {
+            var dccDal = new d_cost_code_dal();
+            var workTypeList = dccDal.GetCostCodeByWhere((int)DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE, " and department_id ="+department_id);
+            StringBuilder workTypeString = new StringBuilder();
+            workTypeString.Append("<option value='0'>   </option>");
+            if(workTypeList!=null&& workTypeList.Count > 0)
+            {
+                foreach (var workType in workTypeList)
+                {
+                    workTypeString.Append($"<option value='{workType.id}'>{workType.name}</option>");
+                }
+            }
+            var thisSet = new SysSettingBLL().GetSetById(SysSettingEnum.ALL_USER_ASSIGN_NODE_TOTAASL);
+            if (thisSet != null && thisSet.setting_value == "1")
+            {
+                var noDepWorkTypeList = dccDal.GetCostCodeByWhere((int)DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE, " and department_id is null");
+                if(noDepWorkTypeList!=null&& noDepWorkTypeList.Count > 0)
+                {
+                    workTypeString.Append("<option value='0'>--------</option>");
+                    foreach (var workType in noDepWorkTypeList)
+                    {
+                        workTypeString.Append($"<option value='{workType.id}'>{workType.name}</option>");
+                    }
+                }
+            }
+            context.Response.Write(workTypeString.ToString());
+        }
         public bool IsReusable
         {
             get

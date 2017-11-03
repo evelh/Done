@@ -17,6 +17,18 @@
             vertical-align: middle;
             cursor: pointer;
         }
+
+        #save {
+            border-style: None;
+            background-color: whitesmoke;
+            flex: 0 1 auto;
+            font-size: 12px;
+            font-weight: bold;
+            overflow: hidden;
+            padding: 0 3px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -320,7 +332,7 @@
                                                     <td class="FieldLabel" width="50%">项目成员和计费角色
                                                     <div>
                                                         <span style="display: inline-block;">
-                                                            <input type="text" style="width: 250px;" id="inChosREsdep"/>
+                                                            <input type="text" style="width: 250px;" id="inChosREsdep" />
                                                             <a class="DataSelectorLinkIcon" onclick="ChooseResDep()" id="AchoResDep">
                                                                 <img src="../Images/data-selector.png" /></a>
                                                             <input type="hidden" id="resDepIds" />
@@ -824,7 +836,7 @@
                                                 <tr>
                                                     <td class="FieldLabel" width="50%">
                                                         <div style="padding-bottom: 0;">
-                                                            <span><a  onclick="OpenSelectPage('Cc')">抄送:</a></span>
+                                                            <span><a onclick="OpenSelectPage('Cc')">抄送:</a></span>
                                                             <span>
                                                                 <a id="cc_me" onclick="CcToMe()">自己</a>
                                                             </span>
@@ -883,14 +895,14 @@
                                                         <input type="hidden" name="NoBccDepIds" id="NoBccDepIds" />
                                                         <input type="hidden" name="NoBccWorkIds" id="NoBccWorkIds" />
                                                         <input type="hidden" name="NoBccOtherMail" id="NoBccOtherMail" />
-                                                    
 
 
-                                                        <input type="hidden" name="IsCopyProjectSet" id="IsCopyProjectSet"/>
-                                                        <input type="hidden" name="IsCopyCalendarItem" id="IsCopyCalendarItem"/>
-                                                        <input type="hidden" name="IsCopyProjectCharge" id="IsCopyProjectCharge"/>
-                                                        <input type="hidden" name="IsCopyTeamMember" id="IsCopyTeamMember"/>
-                                                        <input type="hidden" name="fromTempId" id="fromTempId"/>
+
+                                                        <input type="hidden" name="IsCopyProjectSet" id="IsCopyProjectSet" />
+                                                        <input type="hidden" name="IsCopyCalendarItem" id="IsCopyCalendarItem" />
+                                                        <input type="hidden" name="IsCopyProjectCharge" id="IsCopyProjectCharge" />
+                                                        <input type="hidden" name="IsCopyTeamMember" id="IsCopyTeamMember" />
+                                                        <input type="hidden" name="fromTempId" id="fromTempId" />
 
                                                         <input type="hidden" name="tempChoTaskIds" id="tempChoTaskIds" />
                                                     </td>
@@ -905,7 +917,6 @@
                 </div>
             </div>
             <%} %>
-
         </div>
         <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100;" id="Nav2">
             <div>
@@ -1224,12 +1235,12 @@
                                     </table>
                                 </div>
                             </div>
-                            <input type="hidden" id="temp_resource_daily_hours"/>
-                            <input type="hidden" id="temp_useResource_daily_hours"/>
-                            <input type="hidden" id="temp_excludeWeekend"/>
-                            <input type="hidden" id="temp_excludeHoliday"/>
-                            <input type="hidden" id="temp_organization_location_id"/>
-                            <input type="hidden" id="temp_warnTime_off"/>
+                            <input type="hidden" id="temp_resource_daily_hours" />
+                            <input type="hidden" id="temp_useResource_daily_hours" />
+                            <input type="hidden" id="temp_excludeWeekend" />
+                            <input type="hidden" id="temp_excludeHoliday" />
+                            <input type="hidden" id="temp_organization_location_id" />
+                            <input type="hidden" id="temp_warnTime_off" />
                             <div class="ButtonContainer Footer Wizard">
                                 <ul>
                                     <li class="Button ButtonIcon MoveRight PushLeft" id="prev2_2">
@@ -1392,7 +1403,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <input type="hidden" id="TempChooseTaskids"/>
+                        <input type="hidden" id="TempChooseTaskids" />
                         <div class="ScrollingContainer" style="height: 394px; display: none;" id="ThirdStep2">
 
                             <div class="WizardProgressBar">
@@ -1651,13 +1662,32 @@
     }
     Style();
     //选中及其子集
-    $(".RowContainer .HighImportance>.Interaction").on("mousedown", function (e) {
-        var ev = window.event || e;
+    //$(".RowContainer .HighImportance>.Interaction").on("mousedown", function (e) {
+    //    debugger;
+    //    var ev = window.event || e;
+    //    var _this = $(this).parent();
+    //    if (event.shiftKey == 1) {
+    //    } else {
+    //        _this.siblings().removeClass('Selected');
+    //    }
+    //    _this.addClass('Selected');
+    //    var str = _this.find('.DataDepth').attr('data-depth');
+    //    for (i in _this.nextAll()) {
+    //        if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth')) {
+    //            _this.addClass('Selected');
+    //            _this.nextAll().eq(i).addClass('Selected');
+
+    //        } else {
+    //            return false;
+    //        }
+    //    }
+
+    //});
+
+    $(".RowContainer .HighImportance>.Interaction").on("click", function () {
+        debugger;
         var _this = $(this).parent();
-        if (event.shiftKey == 1) {
-        } else {
-            _this.siblings().removeClass('Selected');
-        }
+        _this.siblings().removeClass('Selected');
         _this.addClass('Selected');
         var str = _this.find('.DataDepth').attr('data-depth');
         for (i in _this.nextAll()) {
@@ -1669,7 +1699,6 @@
                 return false;
             }
         }
-
     });
     //缩小展开
     $(".IconContainer").on('click', function () {
@@ -1720,7 +1749,7 @@
                         var tempStartDate = new Date(data.start_date);
                         var startDate = tempStartDate.getFullYear() + '-' + Number(tempStartDate.getMonth() + 1) + '-' + tempStartDate.getDate();
                         $("#temp_start_date").val(startDate);
-                        
+
                         var tempEndDate = new Date(data.end_date);
                         var endDate = tempEndDate.getFullYear() + '-' + Number(tempEndDate.getMonth() + 1) + '-' + tempEndDate.getDate();
                         $("#temp_end_date").val(endDate);
@@ -1745,7 +1774,7 @@
             $.ajax({
                 type: "GET",
                 async: false,
-                url: "../Tools/ProjectAjax.ashx?act=GetTaskList&project_id=" + project_temp,
+                url: "../Tools/ProjectAjax.ashx?act=GetTaskList&showType=Precondition&project_id=" + project_temp,
                 success: function (data) {
                     if (data != "") {
                         $("#choProTaskList").html(data);
@@ -1791,7 +1820,7 @@
         if (temp_end_date == "") {
             LayerMsg("请填写结束时间！");
             return false;
-        } 
+        }
         var temp_duration = $("#temp_duration").val();
         if (temp_duration == "") {
             LayerMsg("请填写持续时间！");
@@ -1825,13 +1854,13 @@
         if (ids == "") {
             LayerConfirm("未选择任何条目，是否继续", "确认", "取消", function () {
                 debugger;
-                
+
                 $("#SecondStep2").hide();
                 $("#ThirdStep2").show();
                 $("#TempChooseTaskids").val("");
-            }, function () {});
+            }, function () { });
         } else {
-            ids = ids.substring(0, ids.length-1);
+            ids = ids.substring(0, ids.length - 1);
             $("#SecondStep2").hide();
             $("#ThirdStep2").show();
             $("#TempChooseTaskids").val(ids);
@@ -1872,39 +1901,39 @@
             //    } else {
             //        $("#tempTextNum").text(this.value.length+1);
             //    }
-                    
+
             //} 
         }
 
         <%if (!isAdd)
     { %>
         <%if (taskList != null && taskList.Count > 0)
-         {%>
-            $("#start_date").prop("disabled", true);
+    {%>
+        $("#start_date").prop("disabled", true);
              <%}%>
 
-        $("#account_id").prop("disabled", true);
-        $("#AChoAcc").removeAttr("onclick");
-        $("#AChoAcc").removeClass("DisabledState");
-        $("#AChoossCon").removeAttr("onclick");
-        $("#AAddCon").removeAttr("onclick");// contract_id
-        $("#contract_id").prop("disabled", true);
-        $("#AChoossCon").addClass("DisabledState");
-        $("#AAddCon").addClass("DisabledState");
-        $("#AChoossCon").css("display", "none");
-        $("#AAddCon").css("display", "none");
-        $("#AChoC").css("display", "none");
-        $("#AChoC").removeAttr("onclick");
-        jiSuan();
-        $("#AchoResDep").css("display", "none");
-        $("#inChosREsdep").prop("disabled", true);
-        $("#resDepList").prop("disabled", true);
-        $("#conIds").prop("disabled", true);
-        $("#textChoosAccount").val("");
-        $("#opportunity_id").prop("disabled", false);
-        $("#contract_id").prop("disabled",false);
-        GetOppByAccount();
-        var oppid = "<%=(!isAdd)&&thisProject.opportunity_id!=null?thisProject.opportunity_id.ToString():"" %>";
+            $("#account_id").prop("disabled", true);
+            $("#AChoAcc").removeAttr("onclick");
+            $("#AChoAcc").removeClass("DisabledState");
+            $("#AChoossCon").removeAttr("onclick");
+            $("#AAddCon").removeAttr("onclick");// contract_id
+            $("#contract_id").prop("disabled", true);
+            $("#AChoossCon").addClass("DisabledState");
+            $("#AAddCon").addClass("DisabledState");
+            $("#AChoossCon").css("display", "none");
+            $("#AAddCon").css("display", "none");
+            $("#AChoC").css("display", "none");
+            $("#AChoC").removeAttr("onclick");
+            jiSuan();
+            $("#AchoResDep").css("display", "none");
+            $("#inChosREsdep").prop("disabled", true);
+            $("#resDepList").prop("disabled", true);
+            $("#conIds").prop("disabled", true);
+            $("#textChoosAccount").val("");
+            $("#opportunity_id").prop("disabled", false);
+            $("#contract_id").prop("disabled", false);
+            GetOppByAccount();
+            var oppid = "<%=(!isAdd)&&thisProject.opportunity_id!=null?thisProject.opportunity_id.ToString():"" %>";
         if (oppid != "") {
             $("#opportunity_id").val(oppid);
         }
@@ -1927,7 +1956,7 @@
         $("#ImportFromTemplateButton").hide();  // 完成之后隐藏从模板导入功能
 
         <%if (!string.IsNullOrEmpty(isFromTemp))
-        { %> // 客户基本信息相关
+    { %> // 客户基本信息相关
         var temp_account_id = $("#temp_account_idHidden").val();
         if (temp_account_id != "") {
             $("#account_idHidden").val(temp_account_id);
@@ -2008,12 +2037,12 @@
             $("#IsCopyCalendarItem").val("1");
         }
         if ($("#temp_ProjectCharges").is(":checked")) {
-            $("#IsCopyProjectCharge").val("1"); 
+            $("#IsCopyProjectCharge").val("1");
         }
         if ($("#temp_TeamMembers").is(":checked")) {
             $("#IsCopyTeamMember").val("1");
             <%if (isAdd)
-             { %>
+    { %>
             var resDepIdsHidden = $("#resDepIdsHidden").val();
             $.ajax({
                 type: "GET",
@@ -2028,7 +2057,7 @@
             });
             <%} %>
             //GetResDep();
-        
+
         }
         $("#fromTempId").val($("#project_temp").val());
         $("#tempChoTaskIds").val($("#TempChooseTaskids").val());
@@ -2213,7 +2242,7 @@
         var account_idHidden = $("#account_idHidden").val();
         if (account_idHidden != "") {
             // 1。获取父客户ID
-            
+
             $.ajax({
                 type: "GET",
                 url: "../Tools/CompanyAjax.ashx?act=property&property=parent_id&account_id=" + account_idHidden,
@@ -2387,7 +2416,7 @@
                 menEmails = menEmails.substring(0, menEmails.length - 1);
                 var To_Email = $("#To_Email").html();
                 if (To_Email != "") {
-                  
+
                     if (ToMeSum != 0) {
                         menEmails += ";" + GetMeEmail();
                     }
@@ -2425,8 +2454,8 @@
                 }
             })
         }
-        
-       // alert(conText);
+
+        // alert(conText);
     }
     var ToProjectLeadSum = 0;
     function ToProjectLead() {
@@ -2597,7 +2626,7 @@
 
     function OpenSelectPage(val) {
         var account_id = $("#account_idHidden").val();
-        var url = "RecipientSelector?account_id=" + account_id;
+        var url = "RecipientSelector?account_id=" + account_id + "&thisType=" + val;
 
         var NoContactIds = $("#No" + val + "ContactIds").val();
         if (NoContactIds != "") {
@@ -2619,8 +2648,8 @@
         if (NoOtherMail != "") {
             url += "&otherEmail" + NoOtherMail;
         }
-          
-     
+
+
         window.open(url, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECT_RECIPIENTSELECTOR %>', 'left=200,top=200,width=750,height=800', false);
     }
 

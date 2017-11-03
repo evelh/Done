@@ -86,6 +86,7 @@
     <Compile Include="CTT\ctt_invoice.cs" />
     <Compile Include="CTT\ctt_invoice_detail.cs" />
     <Compile Include="CTT\v_contract_summary.cs" />
+    <Compile Include="Dictionary\d_holiday.cs" />
     <Compile Include="Dictionary\d_sla.cs" />
     <Compile Include="Dictionary\d_cost_code.cs" />
     <Compile Include="Dictionary\d_tax_region_cate.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="PRO\pro_project_team_role.cs" />
     <Compile Include="SDK\sdk_expense.cs" />
     <Compile Include="SDK\sdk_task.cs" />
+    <Compile Include="SDK\sdk_task_predecessor.cs" />
     <Compile Include="SDK\sdk_task_resource.cs" />
     <Compile Include="SDK\sdk_work_entry.cs" />
     <Compile Include="SYS\sys_department.cs" />

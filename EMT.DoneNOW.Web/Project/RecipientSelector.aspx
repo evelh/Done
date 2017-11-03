@@ -211,4 +211,37 @@
             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_CALLBACK %>&field=contactID&muilt=1&callBack=GetContact", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactCallBack %>', 'left=200,top=200,width=600,height=800', false);
         }
     }
+    function GetContact() {
+        var contactIDHidden = $("#contactIDHidden").val();
+        if (contactIDHidden != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ContactAjax.ashx?act=GetConList&ids=" + contactIDHidden,
+                success: function (data) {
+                    if (data != "") {
+                        $("#conIds").html(data);
+                        $("#conIds option").dblclick(function () {
+                            RemoveCon(this);
+                        })
+
+                    } else {
+                        $("#conIds").html("");
+                    }
+                },
+            });
+        }
+    }
+    function RemoveCon(val) {
+        $(val).remove();
+        var ids = "";
+        $("#conIds option").each(function () {
+            ids += $(this).val() + ',';
+        })
+        if (ids != "") {
+            ids = ids.substr(0, ids.length - 1);
+        }
+        $("#contactIDHidden").val(ids);
+    }
+
 </script>

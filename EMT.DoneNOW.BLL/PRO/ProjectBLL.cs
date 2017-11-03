@@ -16,8 +16,6 @@ namespace EMT.DoneNOW.BLL
     public class ProjectBLL
     {
         private pro_project_dal _dal = new pro_project_dal();
-
-        private DateTime testDate = DateTime.Now;
         public Dictionary<string, object> GetField()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
@@ -217,32 +215,37 @@ namespace EMT.DoneNOW.BLL
                             var roleDep = srdDal.FindById(long.Parse(resDepId));
                             if (roleDep != null)
                             {
-                                var item = new pro_project_team()
+                                var isHas = pptDal.GetSinProByIdResRol(thisProject.id, roleDep.resource_id, roleDep.role_id);
+                                if (isHas == null)
                                 {
-                                    id = pptDal.GetNextIdCom(),
-                                    project_id = thisProject.id,
-                                    resource_id = roleDep.resource_id,
-                                    resource_daily_hours = (decimal)param.project.resource_daily_hours,
-                                    create_user_id = user.id,
-                                    update_user_id = user.id,
-                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                };
-                                pptDal.Insert(item);
-                                OperLogBLL.OperLogAdd<pro_project_team>(item, item.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM, "新增项目团队-添加员工");
+                                    var item = new pro_project_team()
+                                    {
+                                        id = pptDal.GetNextIdCom(),
+                                        project_id = thisProject.id,
+                                        resource_id = roleDep.resource_id,
+                                        resource_daily_hours = (decimal)param.project.resource_daily_hours,
+                                        create_user_id = user.id,
+                                        update_user_id = user.id,
+                                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    };
+                                    pptDal.Insert(item);
+                                    OperLogBLL.OperLogAdd<pro_project_team>(item, item.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM, "新增项目团队-添加员工");
 
-                                var item_role = new pro_project_team_role()
-                                {
-                                    id = pptrDal.GetNextIdCom(),
-                                    project_team_id = item.id,
-                                    role_id = roleDep.role_id,
-                                    create_user_id = user.id,
-                                    update_user_id = user.id,
-                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                };
-                                pptrDal.Insert(item_role);
-                                OperLogBLL.OperLogAdd<pro_project_team_role>(item_role, item_role.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "新增项目团队角色");
+                                    var item_role = new pro_project_team_role()
+                                    {
+                                        id = pptrDal.GetNextIdCom(),
+                                        project_team_id = item.id,
+                                        role_id = roleDep.role_id,
+                                        create_user_id = user.id,
+                                        update_user_id = user.id,
+                                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    };
+                                    pptrDal.Insert(item_role);
+                                    OperLogBLL.OperLogAdd<pro_project_team_role>(item_role, item_role.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "新增项目团队角色");
+                                }
+       
                             }
                         }
                     }
@@ -880,8 +883,7 @@ namespace EMT.DoneNOW.BLL
                 #endregion
 
                 #region 删除项目处理逻辑
-                var date = testDate;
-                var now = DateTime.Now;
+          
 
                 var deleteTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
 

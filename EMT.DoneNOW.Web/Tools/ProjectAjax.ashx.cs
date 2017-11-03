@@ -9,6 +9,7 @@ using EMT.DoneNOW.DAL;
 using System.Text;
 using EMT.DoneNOW.Core;
 using System.Web.SessionState;
+using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.Web
 {
@@ -25,10 +26,12 @@ namespace EMT.DoneNOW.Web
                 var action = context.Request.QueryString["act"];
                 switch (action)
                 {
-                    case "GetTaskList":
+                    case "GetTaskList":         // 获取到前置条件
                         var project_id = context.Request.QueryString["project_id"];
-                        GetTask(context, long.Parse(project_id));
+                        var showType = context.Request.QueryString["showType"];
+                        GetTask(context, long.Parse(project_id), showType);
                         break;
+                 
                     case "GetSinProject":
                         var sin_project_id = context.Request.QueryString["project_id"];
                         GetSinProject(context, long.Parse(sin_project_id));
@@ -49,6 +52,10 @@ namespace EMT.DoneNOW.Web
                         var dProId = context.Request.QueryString["project_id"];
                         DeletePro(context,long.Parse(dProId));
                         break;
+                    case "GetSinTask":
+                        var tid = context.Request.QueryString["task_id"];
+                        GetSinTask(context,long.Parse(tid));
+                        break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                         break;
@@ -62,19 +69,33 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 根据项目获取到该项目下的所有任务
         /// </summary>
-        private void GetTask(HttpContext context, long project_id)
+        private void GetTask(HttpContext context, long project_id,string showType)
         {
             var project = new pro_project_dal().FindNoDeleteById(project_id);
             if (project != null)
             {
-                taskString.Append($"<tr class='HighImportance'><td class='Interaction'><span class='Text'></span></td><td class='Nesting'><div data-depth='0' class='DataDepth'><div class='Spacer'></div>< div class='IconContainer'></div><div class='Value'>{project.name}</div></div></td><td class='Text'></td></tr>");
+                taskString.Append($"<tr class='HighImportance'><td class='Interaction'><span class='Text'></span></td><td class='Nesting'><div data-depth='0' class='DataDepth'><div class='Spacer' style='width:0px;min-width:0px;'></div><div class='IconContainer'></div><div class='Value'>{project.name}</div></div></td>");
+                switch (showType)
+                {
+                    case "showTime":
+                        taskString.Append("<td class='Date'></td><td class='Date'></td>");
+                        break;
+                    case "Precondition":
+                        taskString.Append("<td class='Text'></td>");
+                        break;
+                    default:
+                       
+                        break;
+                }
+                taskString.Append("</tr>");
+                // ");
                 var stDal = new sdk_task_dal();
-                var stList = stDal.GetProTask(project.id);
+                var stList = stDal.GetAllProTask(project.id);  // 获取阶段，问题类型的task
                 if (stList != null && stList.Count > 0)
                 {
                     int data_depth = 0;
                     string interaction = "";
-                    AddSubTask(null, stList, data_depth, interaction);
+                    AddSubTask(null, stList, data_depth, interaction, showType);
                     context.Response.Write(taskString.ToString());
                 }
             }
@@ -83,30 +104,61 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 获取到这个任务的子集
         /// </summary>
-        private void AddSubTask(long? tid, List<sdk_task> sdkList, int data_depth, string interaction)
+        /// <param name="tid">父taskId 为空代表第一节点</param>
+        /// <param name="sdkList">该节点下的子节点</param>
+        /// <param name="data_depth">深度（样式调整，距离左边的距离）</param>
+        /// <param name="interaction">序号</param>
+        /// <param name="showType">显示类型（控制显示的数据）</param>
+        private void AddSubTask(long? tid, List<sdk_task> sdkList, int data_depth, string interaction,string showType)
         {
-            var subList = sdkList.Where(_ => _.parent_id == tid).ToList();
+            var subList = sdkList.Where(_ => _.parent_id == tid&&(_.type_id==(int)TASK_TYPE.PROJECT_TASK|| _.type_id == (int)TASK_TYPE.PROJECT_ISSUE || _.type_id == (int)TASK_TYPE.PROJECT_PHASE)).ToList();
             if (subList != null && subList.Count > 0)
             {
-                data_depth += 1;
-
+                // data_depth += 1;  
+                subList = subList.OrderBy(_ => _.sort_order).ToList();
                 foreach (var sub in subList)
                 {
                     if (string.IsNullOrEmpty(interaction))
                     {
-                        interaction = sub.sort_order.ToString();
+                        interaction = (subList.IndexOf(sub)+1).ToString();
                     }
                     else
                     {
-                        interaction += "." + sub.sort_order.ToString();
+                        interaction += "." + (subList.IndexOf(sub) + 1).ToString();
                     }
-                    taskString.Append($"<tr class='HighImportance' id='{sub.id}'><td class='Interaction'><span class='Text'>{interaction}</span></td><td class='Nesting'><div data-depth='{data_depth}' class='DataDepth'><div class='Spacer'></div>< div class='IconContainer'></div><div class='Value'>{sub.title}</div></div></td><td class='Text'></td></tr>");
-                    AddSubTask(sub.id, sdkList, data_depth, interaction);
+                    taskString.Append($"<tr class='HighImportance' id='{sub.id}' value='{sub.id}' data-val='{sub.id}'><td class='Interaction'><span class='Text'>{interaction}</span></td><td class='Nesting'><div data-depth='{data_depth}' class='DataDepth'><div class='Spacer' style='width:{data_depth*11}px;min-width:{data_depth  * 11}px;'></div><div class='IconContainer'></div><div class='Value'>{sub.title}</div></div></td>");
+                    switch (showType)
+                    {
+                        case "showTime":
+                            taskString.Append($"<td class='Date'>{Tools.Date.DateHelper.ConvertStringToDateTime((long)sub.estimated_begin_time).ToString("yyyy-MM-dd")}</td><td class='Date'>{((DateTime)sub.estimated_end_date).ToString("yyyy-MM-dd")}</td>");
+                            break;
+                        case "Precondition":
+                            taskString.Append("<td class='Text'></td>");
+                            break;
+                        default:
+
+                            break;
+                    }
+                    taskString.Append("</tr>");
+                    AddSubTask(sub.id, sdkList, data_depth+1, interaction, showType);
                 }
+                // data_depth += 1;     预留 以后task多之后判断使用
             }
             else
             {
                 return;
+            }
+        }
+
+        /// <summary>
+        /// 获取项目的task相关
+        /// </summary>
+        private void GetSinTask(HttpContext context, long task_id)
+        {
+            var task = new sdk_task_dal().FindNoDeleteById(task_id);
+            if (task != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(task));
             }
         }
 
