@@ -25,6 +25,7 @@ namespace EMT.DoneNOW.Web.Project
         protected sdk_task parTask = null;                // 通过taskId进行新增
         protected List<UserDefinedFieldDto> task_udfList = null;     // task 自定义
         protected List<UserDefinedFieldValue> task_udfValueList = null;
+        protected List<ctt_contract_rate> rateList = null;         // 合同角色费率  todo
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -49,7 +50,7 @@ namespace EMT.DoneNOW.Web.Project
                         {
                             thisProject = ppdal.FindNoDeleteById((long)parTask.project_id);
                         }
-                        
+
                     }
                 }
 
@@ -71,7 +72,7 @@ namespace EMT.DoneNOW.Web.Project
                                 break;
                         }
                     }
-                   
+
                 }
                 var id = Request.QueryString["id"];
                 if (!string.IsNullOrEmpty(id))
@@ -114,11 +115,11 @@ namespace EMT.DoneNOW.Web.Project
                                 isProject_issue.Checked = false;
                             }
 
-                            if(thisTask.estimated_type_id == (int)DicEnum.TIME_ENTRY_METHOD_TYPE.FIXWORK)
+                            if (thisTask.estimated_type_id == (int)DicEnum.TIME_ENTRY_METHOD_TYPE.FIXWORK)
                             {
                                 TaskTypeFixedWork.Checked = true;
                             }
-                            else if(thisTask.estimated_type_id == (int)DicEnum.TIME_ENTRY_METHOD_TYPE.FIXDURATION)
+                            else if (thisTask.estimated_type_id == (int)DicEnum.TIME_ENTRY_METHOD_TYPE.FIXDURATION)
                             {
                                 TaskTypeFixedDuration.Checked = true;
                             }
@@ -135,6 +136,13 @@ namespace EMT.DoneNOW.Web.Project
                 if (thisProject == null)
                 {
                     Response.End();
+                }
+                else
+                {
+                    if (thisProject.contract_id != null)
+                    {
+                        rateList = new ctt_contract_rate_dal().GetRateByConId((long)thisProject.contract_id);
+                    }
                 }
 
 
@@ -159,6 +167,11 @@ namespace EMT.DoneNOW.Web.Project
             department_id.DataSource = dic.FirstOrDefault(_ => _.Key == "department").Value;
             department_id.DataBind();
             department_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+            template_id.DataTextField = "name";
+            template_id.DataValueField = "id";
+            template_id.DataSource = new sys_notify_tmpl_dal().GetTempByEvent(DicEnum.NOTIFY_EVENT.TASK_CREATED_OR_EDITED);
+            template_id.DataBind();
 
             DisplayInCapYesNoComplete.Checked = true;
             TaskTypeFixedWork.Checked = true;
@@ -199,7 +212,7 @@ namespace EMT.DoneNOW.Web.Project
             var param = GetParam();
             if (isAdd)
             {
-                result = new TaskBLL().AddTask(param,GetLoginUserId());
+                result = new TaskBLL().AddTask(param, GetLoginUserId());
             }
 
             return false;
@@ -215,45 +228,67 @@ namespace EMT.DoneNOW.Web.Project
             var preTaskIds = Request.Form["preIds"];    // 前驱任务IDs
             if (!string.IsNullOrEmpty(preTaskIds))
             {
-                var preTasArr = preTaskIds.Split(new char[] { ','},StringSplitOptions.RemoveEmptyEntries);
+                var preTasArr = preTaskIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 Dictionary<long, int> predic = new Dictionary<long, int>();
                 foreach (var preTasId in preTasArr)
                 {
                     var layDays = Request.Form[preTasId + "_lagDays"];
-                    if((!string.IsNullOrEmpty(layDays))&& (!string.IsNullOrWhiteSpace(layDays)))
+                    if ((!string.IsNullOrEmpty(layDays)) && (!string.IsNullOrWhiteSpace(layDays)))
                     {
-                        predic.Add(long.Parse(preTasId),int.Parse(layDays));
+                        predic.Add(long.Parse(preTasId), int.Parse(layDays));
                     }
                 }
                 param.predic = predic;
             }
             var pageTask = AssembleModel<sdk_task>();
-            pageTask.is_visible_in_client_portal = (sbyte)(DisplayInCapNone.Checked ? 1 : 0);
-            pageTask.can_client_portal_user_complete_task = (sbyte)(DisplayInCapYes.Checked ? 1 : 0);
-            if (TaskTypeFixedWork.Checked)
+            if (type_id != (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
             {
-                pageTask.estimated_type_id = (int)DicEnum.TIME_ENTRY_METHOD_TYPE.FIXWORK;
+                pageTask.is_visible_in_client_portal = (sbyte)(DisplayInCapNone.Checked ? 1 : 0);
+                pageTask.can_client_portal_user_complete_task = (sbyte)(DisplayInCapYes.Checked ? 1 : 0);
+                if (TaskTypeFixedWork.Checked)
+                {
+                    pageTask.estimated_type_id = (int)DicEnum.TIME_ENTRY_METHOD_TYPE.FIXWORK;
+                }
+                else if (TaskTypeFixedDuration.Checked)
+                {
+                    pageTask.estimated_type_id = (int)DicEnum.TIME_ENTRY_METHOD_TYPE.FIXDURATION;
+                }
             }
-            else if (TaskTypeFixedDuration.Checked)
+            else
             {
-                pageTask.estimated_type_id = (int)DicEnum.TIME_ENTRY_METHOD_TYPE.FIXDURATION;
+                if (rateList != null && rateList.Count > 0)
+                {
+                    Dictionary<long, decimal> rateDic = null;
+                    foreach (var rate in rateList)
+                    {
+                        var hours = Request.Form[rate.id+ "_esHours"];
+                        if (!string.IsNullOrEmpty(hours) && !string.IsNullOrWhiteSpace(hours))
+                        {
+                            rateDic.Add(rate.id,decimal.Parse(hours));
+                        }
+                    }
+                    param.rateDic = rateDic;
+                }
+                pageTask.status_id = (int)DicEnum.TICKET_STATUS.NEW;
             }
 
             var startString = Request.Form["estimated_beginTime"];
             if (!string.IsNullOrEmpty(startString))
             {
                 pageTask.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(startString));
+               // if (type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE) // d
+                //{
+                    TimeSpan ts1 = new TimeSpan((DateTime.Parse(startString)).Ticks);
+                    TimeSpan ts2 = new TimeSpan(((DateTime)pageTask.estimated_end_date).Ticks);
+                    TimeSpan ts = ts1.Subtract(ts2).Duration();
+                    pageTask.estimated_duration = ts.Days + 1;
+               // }
             }
             if (isAdd)
             {
                 param.task = pageTask;
                 param.task.type_id = type_id;
                 param.task.project_id = thisProject.id;
-                if(parTask != null)
-                {
-                    param.task.parent_id = parTask.id;
-                }
-                
             }
             else
             {

@@ -305,6 +305,7 @@
     <Content Include="Product\ProductStock.aspx" />
     <Content Include="Product\TransferProductStock.aspx" />
     <Content Include="Product\VendorAdd.aspx" />
+    <Content Include="Project\ProjectChart.aspx" />
     <Content Include="Project\ProjectClosingReport.aspx" />
     <Content Include="Project\ProjectCompleteWizard.aspx" />
     <Content Include="Project\ProjectReportDetail.aspx" />
@@ -1397,6 +1398,13 @@
     </Compile>
     <Compile Include="Product\VendorAdd.aspx.designer.cs">
       <DependentUpon>VendorAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectChart.aspx.cs">
+      <DependentUpon>ProjectChart.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectChart.aspx.designer.cs">
+      <DependentUpon>ProjectChart.aspx</DependentUpon>
     </Compile>
     <Compile Include="Project\ProjectClosingReport.aspx.cs">
       <DependentUpon>ProjectClosingReport.aspx</DependentUpon>

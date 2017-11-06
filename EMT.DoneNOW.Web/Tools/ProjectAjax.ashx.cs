@@ -118,15 +118,17 @@ namespace EMT.DoneNOW.Web
                 subList = subList.OrderBy(_ => _.sort_order).ToList();
                 foreach (var sub in subList)
                 {
+                    var showNo = "";
                     if (string.IsNullOrEmpty(interaction))
                     {
-                        interaction = (subList.IndexOf(sub)+1).ToString();
+                        showNo = (subList.IndexOf(sub)+1).ToString();
                     }
                     else
                     {
                         interaction += "." + (subList.IndexOf(sub) + 1).ToString();
+                        showNo = interaction;
                     }
-                    taskString.Append($"<tr class='HighImportance' id='{sub.id}' value='{sub.id}' data-val='{sub.id}'><td class='Interaction'><span class='Text'>{interaction}</span></td><td class='Nesting'><div data-depth='{data_depth}' class='DataDepth'><div class='Spacer' style='width:{data_depth*11}px;min-width:{data_depth  * 11}px;'></div><div class='IconContainer'></div><div class='Value'>{sub.title}</div></div></td>");
+                    taskString.Append($"<tr class='HighImportance' id='{sub.id}' value='{sub.id}' data-val='{sub.id}'><td class='Interaction'><span class='Text'>{showNo}</span></td><td class='Nesting'><div data-depth='{data_depth}' class='DataDepth'><div class='Spacer' style='width:{data_depth*11}px;min-width:{data_depth  * 11}px;'></div><div class='IconContainer'></div><div class='Value'>{sub.title}</div></div></td>");
                     switch (showType)
                     {
                         case "showTime":
@@ -140,6 +142,7 @@ namespace EMT.DoneNOW.Web
                             break;
                     }
                     taskString.Append("</tr>");
+                    var thisSubList = sdkList.Where(_ => _.parent_id == tid && (_.type_id == (int)TASK_TYPE.PROJECT_TASK || _.type_id == (int)TASK_TYPE.PROJECT_ISSUE || _.type_id == (int)TASK_TYPE.PROJECT_PHASE)).ToList();
                     AddSubTask(sub.id, sdkList, data_depth+1, interaction, showType);
                 }
                 // data_depth += 1;     预留 以后task多之后判断使用
@@ -364,6 +367,29 @@ namespace EMT.DoneNOW.Web
                 result = new ProjectBLL().DeletePro(project_id,res.id,out reson);
             }
             context.Response.Write(new { result=result,reason=reson});
+        }
+        
+        /// <summary>
+        /// 任务父阶段的修改 （修改后刷新页面排序方式改变）
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="project_id">项目Id</param>
+        /// <param name="parent_id">父阶段ID</param>
+        /// <param name="task_id">选择的task</param>
+        private void ChangeTaskParent(HttpContext context,long project_id,long? parent_id,long task_id)
+        {
+            // ReturnSortOrder
+            var stDal = new sdk_task_dal();
+            var thisTask = stDal.FindNoDeleteById(task_id);
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            bool result = false;
+            if (thisTask != null&&res!=null)
+            {
+                thisTask.sort_order = new TaskBLL().ReturnSortOrder(project_id,parent_id);
+                OperLogBLL.OperLogUpdate<sdk_task>(thisTask, stDal.FindNoDeleteById(thisTask.id), thisTask.id, res.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                result = new sdk_task_dal().Update(thisTask);
+            }
+            context.Response.Write(result);
         }
 
         public bool IsReusable

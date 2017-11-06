@@ -31,6 +31,11 @@ namespace EMT.DoneNOW.Web
                     var dId = context.Request.QueryString["department_id"];
                     GetWorkType(context,long.Parse(dId));
                     break;
+                case "IsHasRes":
+                    var depId = context.Request.QueryString["department_id"];
+                    var rId = context.Request.QueryString["resource_id"];
+                    IsHasRes(context,long.Parse(depId),long.Parse(rId));
+                    break;
                 default: break;
 
             }
@@ -106,6 +111,15 @@ namespace EMT.DoneNOW.Web
                 }
             }
             context.Response.Write(workTypeString.ToString());
+        }
+        /// <summary>
+        /// 判断角色是否在部门中
+        /// </summary>
+        private void IsHasRes(HttpContext context,long department_id,long res_id)
+        {
+            // SELECT * from sys_resource_department where department_id = 876 and resource_id = 840 and is_active = 1
+            var resource = new sys_resource_department_dal().GetSinByDepIdResId(department_id,res_id);
+            context.Response.Write(resource == null);
         }
         public bool IsReusable
         {

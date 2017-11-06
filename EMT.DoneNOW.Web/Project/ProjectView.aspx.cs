@@ -27,10 +27,10 @@ namespace EMT.DoneNOW.Web.Project
                     switch (type)
                     {
                         case "Schedule":
-                            viewProjectIframe.Src = "ProjectSchedule?id=" + thisProject.id;
+                            viewProjectIframe.Src = "ProjectSchedule?project_id=" + thisProject.id;
                             break;
                         case "ScheduleTemp":
-                            viewProjectIframe.Src = "ProjectSchedule?id=" + thisProject.id+ "&isTranTemp=1";
+                            viewProjectIframe.Src = "ProjectSchedule?project_id=" + thisProject.id+ "&isTranTemp=1";
                             break;
                         default:
                             viewProjectIframe.Src = "ProjectSummary?id=" + thisProject.id;

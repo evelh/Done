@@ -150,7 +150,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32 reopened_count { get; set; }
         [DataMember]
-        public Int32 sort_order { get; set; }
+        public string sort_order { get; set; }
         [DataMember]
         public DateTime? start_no_earlier_than_date { get; set; }
         [DataMember]

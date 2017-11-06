@@ -105,6 +105,7 @@
     <Compile Include="PRO\pro_project_team_role.cs" />
     <Compile Include="SDK\sdk_expense.cs" />
     <Compile Include="SDK\sdk_task.cs" />
+    <Compile Include="SDK\sdk_task_budget.cs" />
     <Compile Include="SDK\sdk_task_predecessor.cs" />
     <Compile Include="SDK\sdk_task_resource.cs" />
     <Compile Include="SDK\sdk_work_entry.cs" />

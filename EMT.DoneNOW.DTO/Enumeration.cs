@@ -246,7 +246,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT_COMPLETED = 122,                                   // 项目-完成
             PROJECT_ATTACHMENT_ADDED = 123,                            // 项目附件-创建
             PROJECT_NOTE_CREATED_OR_EDITED =124,                       // 项目记录-创建或编辑
-            //TASK - CREATED OR EDITED,                           // 
+            TASK_CREATED_OR_EDITED=125,                                // task新建修改编辑 
             //TASK - COPIED,                                      // 
             //TASK ATTACHMENT - ADDED,                            // 
             //TASK TIME ENTRY - CREATED OR EDITED,                // 
@@ -524,6 +524,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT_SEARCH= 1530,                   // 项目查询
             CRM_NOTE_SEARCH = 1531,                 // 客户备注查询
             TODOS = 1532,                           // 客户代办查询
+            TASK_PHASE = 1538,                      // 任务父阶段的查找带回
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
@@ -566,7 +567,7 @@ namespace EMT.DoneNOW.DTO
             TICKETS = 742,      // 工单
             NOTES = 743,        // 备注
             ATTACHMENT = 744,   // 附件
-            TASK=745,           // task
+            TASK=745,           // TASK
         }
 
         /// <summary>
@@ -626,8 +627,9 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TASK=1380,                          // 任务
             PROJECT_CALENDAR=1381,                      // 项目日历条目
             PROJECT_TASK_RESOURCE = 1382,               // 任务分配对象
-            PROJECT_TASK_PREDECESSOR=1383,             // 任务的前驱任务
             ATTACHMENT = 1389,                          // 附件
+            PROJECT_TASK_PREDECESSOR = 1393,            // 任务的前驱任务
+            PROJECT_PHASE_WORK_HOURS = 1398,            // 项目阶段预估工时
         }
 
         /// <summary>
@@ -1180,5 +1182,9 @@ namespace EMT.DoneNOW.DTO
         PROJECT_ADD = 440,                          // 项目新增
         PROJECT_EDIT = 441,                         // 项目编辑
         PROJECT_VIEW = 442,                         // 项目查看
+
+        TASKPHASE_CALLBACK=450,       // task阶段的查找带回
+        TaskAdd=451,                 // task新增
+        taskEdit = 452,              // task修改
     }
 }

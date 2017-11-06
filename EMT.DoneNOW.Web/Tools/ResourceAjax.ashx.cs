@@ -61,6 +61,17 @@ namespace EMT.DoneNOW.Web
             }
         }
         /// <summary>
+        /// 根据关系表获取员工信息
+        /// </summary>
+        private void GetInfoByDepId(HttpContext context, long depId)
+        {
+            var thisDepRes = new sys_resource_department_dal().FindNoDeleteById(depId);
+            if (thisDepRes != null)
+            {
+                GetResouInfo(context,thisDepRes.resource_id);
+            }
+        }
+        /// <summary>
         /// 返回员工相关邮箱(根据 员工，角色关系表)
         /// </summary>
         private void GetResousByResDepIds(HttpContext context, string ids,bool isResoIds)

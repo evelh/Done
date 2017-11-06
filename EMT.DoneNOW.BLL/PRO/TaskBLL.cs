@@ -31,16 +31,28 @@ namespace EMT.DoneNOW.BLL
                 thisTask.department_id = thisTask.department_id == 0 ? null : thisTask.department_id;
                 thisTask.no = ReturnTaskNo();
                 thisTask.create_user_id = user.id;
+                thisTask.sort_order = ReturnSortOrder((long)thisTask.project_id,thisTask.parent_id);
                 thisTask.update_user_id = user.id;
                 thisTask.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
 
+                #region 1.保存Task信息
+                _dal.Insert(thisTask);
+                OperLogBLL.OperLogAdd<sdk_task>(thisTask, thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "新增task");
+                #endregion
+
+                #region task 相关扩展字段
+                var udf_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TASK);  // 获取合同的自定义字段信息
+                new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.TASK, user.id,
+                    thisTask.id, udf_list, param.udf, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_TASK);
+                #endregion
                 #region  保存前驱任务相关 根据延迟时间计算task开始结束相关信息
                 var thisDic = param.predic;
                 var startDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)param.task.estimated_begin_time);
+                var stpDal = new sdk_task_predecessor_dal();
+                
                 if (thisDic != null && thisDic.Count > 0)
                 {
-                    var stpDal = new sdk_task_predecessor_dal();
                     var nowTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     foreach (var dic in thisDic)
                     {
@@ -48,7 +60,7 @@ namespace EMT.DoneNOW.BLL
                         if (thisPreTask != null)
                         {
                             var thisSDate = (DateTime)thisPreTask.estimated_end_date;
-                            thisSDate = RetrunMaxTime((long)param.task.parent_id, thisSDate, dic.Value);
+                            thisSDate = RetrunMaxTime((long)param.task.project_id, thisSDate, dic.Value);
                             if (startDate < thisSDate)
                             {
                                 startDate = thisSDate;
@@ -69,7 +81,15 @@ namespace EMT.DoneNOW.BLL
                         }
                     }
                 }
-                param.task.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(startDate);
+                if (param.task.start_no_earlier_than_date != null)
+                {
+                    startDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)param.task.estimated_begin_time);
+                }
+                else
+                {
+                    param.task.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(startDate);
+                }
+                
                 #endregion
 
          
@@ -77,6 +97,12 @@ namespace EMT.DoneNOW.BLL
 
                 //  根据开始时间和结束时间计算最终时间
                 param.task.estimated_end_date = RetrunMaxTime((long)param.task.project_id,startDate,(int)param.task.estimated_duration);
+
+                // 修改task的开始结束时间相关
+                OperLogBLL.OperLogUpdate<sdk_task>(thisTask,_dal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                _dal.Update(thisTask);
+
+
                 // 递归修改父阶段相关数据
                 UpdateParDate(param.task.parent_id,(long)param.task.estimated_begin_time,(DateTime)param.task.estimated_end_date,user.id);
                 // 修改项目相关
@@ -97,16 +123,7 @@ namespace EMT.DoneNOW.BLL
                     ppDal.Update(thisProject);
                 }
 
-                #region 1.保存Task信息
-                _dal.Insert(thisTask);
-                OperLogBLL.OperLogAdd<sdk_task>(thisTask, thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "新增task");
-                #endregion
-
-                #region task 相关扩展字段
-                var udf_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TASK);  // 获取合同的自定义字段信息
-                new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.TASK, user.id,
-                    thisTask.id, udf_list, param.udf, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_TASK);
-                #endregion
+  
 
                 #region 保存任务负责人，联系人相关字段
                 var strd = new sdk_task_resource_dal();
@@ -201,6 +218,34 @@ namespace EMT.DoneNOW.BLL
 
                 #endregion
 
+                #region 如果是阶段，保存角色费率相关信息
+                if (thisTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
+                {
+                    if (param.rateDic != null && param.rateDic.Count > 0)
+                    {
+                        var stbDal = new sdk_task_budget_dal();
+                        var nowTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        foreach (var rate in param.rateDic)
+                        {
+                            var stb = new sdk_task_budget() {
+                                id= stbDal.GetNextIdCom(),
+                                create_time = nowTime,
+                                update_time = nowTime,
+                                create_user_id = user.id,
+                                update_user_id = user.id,
+                                task_id = thisTask.id,
+                                contract_rate_id = rate.Key,
+                                estimated_hours = rate.Value,
+                            };
+                            stbDal.Insert(stb);
+                            OperLogBLL.OperLogAdd<sdk_task_budget>(stb, stb.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK_PREDECESSOR, "新增项目阶段预估工时");
+                        }
+                    }
+                }
+                #endregion
+
+
+
                 #region 备注相关
                 if(param.task.status_id == (int)DicEnum.TICKET_STATUS.DONE)
                 {
@@ -210,7 +255,7 @@ namespace EMT.DoneNOW.BLL
                         cate_id = (int)DicEnum.ACTIVITY_CATE.TASK_NOTE,
                         action_type_id = (int)ACTIVITY_TYPE.TASK_NOTE,
                         object_id = param.task.id,
-                        object_type_id = (int)OBJECT_TYPE.TICKETS,
+                        object_type_id = (int)OBJECT_TYPE.TASK,
                         resource_id = param.task.owner_resource_id,
                         name = "完成原因",
                         description = $"任务被{user.name}取消，时间为{DateTime.Now.ToString("yyyy-MM-dd")}",
@@ -422,7 +467,7 @@ namespace EMT.DoneNOW.BLL
                                 notify_tmpl_id = temp.id,
                                 from_email = user.email,
                                 from_email_name = user.name,
-                                subject = param.subject,
+                                subject = param.subject==null?"": param.subject,
                                 body_text = temp_email_List[0].body_text + param.otherEmail,
                                 // is_success = (sbyte)(isSuccess ? 1 : 0),
                                 is_html_format = 0,
@@ -431,7 +476,7 @@ namespace EMT.DoneNOW.BLL
                                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                             };
-                            isSuccess =new ProjectBLL().SendEmail(notify);
+                            // isSuccess =new ProjectBLL().SendEmail(notify);
                             notify.is_success = (sbyte)(isSuccess ? 1 : 0);
                             new com_notify_email_dal().Insert(notify);
                             OperLogBLL.OperLogAdd<com_notify_email>(notify, notify.id, user.id, OPER_LOG_OBJ_CATE.NOTIFY, "新增项目-添加通知");
@@ -625,6 +670,61 @@ namespace EMT.DoneNOW.BLL
             {
                 return no + ".0001";
             }
+        }
+
+        /// <summary>
+        /// 返回新增的task的排序号
+        /// </summary>
+        public string ReturnSortOrder(long project_id,long? parTask_id)
+        {
+            string sorNo = "";
+            var taskList = _dal.GetProTask(project_id);
+            if (taskList != null && taskList.Count > 0)
+            {
+                if (parTask_id == null)
+                {
+                    var noParTaskList = taskList.Where(_ => _.parent_id == null).ToList();
+                    if(noParTaskList!=null&& noParTaskList.Count > 0)
+                    {
+                        sorNo = (int.Parse(noParTaskList.Max(_ => _.sort_order))+1).ToString("#00");
+                    }
+                    else
+                    {
+                        sorNo = "01";
+                    }
+                }
+                else
+                {
+                    var parTask = _dal.FindNoDeleteById((long)parTask_id);
+                    var parTaskList = taskList.Where(_ => _.parent_id == parTask_id).ToList();
+                    if(parTaskList!=null&& parTaskList.Count > 0)
+                    {
+                        var maxSortNo = parTaskList.Max(_ => _.sort_order);
+                        var maxSortNoArr = maxSortNo.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                        var maxNo = (int.Parse(maxSortNoArr[maxSortNoArr.Length - 1]) + 1).ToString("#00");
+                        var thisMaxNo = "";
+                        for (int i = 0; i < maxSortNoArr.Length; i++)
+                        {
+                            thisMaxNo += maxSortNoArr[i]+".";
+                            if(i == maxSortNoArr.Length - 1)
+                            {
+                                thisMaxNo += maxNo;
+                            }
+                        }
+                        sorNo = thisMaxNo;
+                    }
+                    else
+                    {
+                        sorNo = parTask.sort_order + ".01";
+                    }
+                }
+            }
+            else
+            {
+                sorNo = "01";
+            }
+           
+            return sorNo;
         }
     }
 }

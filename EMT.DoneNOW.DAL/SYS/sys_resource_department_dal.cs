@@ -24,8 +24,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sys_resource_department>($"SELECT * FROM sys_resource_department WHERE resource_id = {resid} and role_id = {role_id} and is_active = 1");
         }
-
- 
-        
+        /// <summary>
+        /// 根据部门id和员工id获取相应关系
+        /// </summary>
+        public sys_resource_department GetSinByDepIdResId(long department_id,long res_id)
+        {
+            return FindSignleBySql<sys_resource_department>($"SELECT * from sys_resource_department where department_id = {department_id} and resource_id = {res_id} and is_active = 1");
+        }
     }
 }

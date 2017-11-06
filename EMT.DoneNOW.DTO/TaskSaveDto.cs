@@ -16,6 +16,8 @@ namespace EMT.DoneNOW.DTO
         public string resDepIds;                    // 员工角色关系表IDs
         public string contactIds;                   // 联系人Ids
         public Dictionary<long, int> predic = null; // 前驱任务相关信息
+        public Dictionary<long, decimal> rateDic = null; // 合同的角色费率相关信息
+
 
         public string NoToMe;
         public string NoToProlead;

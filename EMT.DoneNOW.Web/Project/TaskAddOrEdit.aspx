@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TaskAddOrEdit.aspx.cs" Inherits="EMT.DoneNOW.Web.Project.TaskAddOrEdit" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TaskAddOrEdit.aspx.cs" Inherits="EMT.DoneNOW.Web.Project.TaskAddOrEdit" EnableEventValidation="false" %>
 
 <!DOCTYPE html>
 
@@ -367,7 +367,7 @@
                                         %>
                                         <input id="PhaseName" type="text" value="<%=parPhase==null?"":parPhase.title %>" name="PhaseName" disabled="disabled" />
                                         <input type="hidden" name="parent_id" id="PhaseNameHidden" value="<%=parPhase == null ? "" : parPhase.id.ToString() %>" />
-                                        <span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PhaseSelectorButton" tabindex="0" title="选择阶段" onclick="ChoosePhase()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><a class="NormalState Button ButtonIcon IconOnly Delete" id="PhaseDeleteButton" tabindex="0" title="Clear the selected phase"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -64px 0px;"></span><span class="Text"></span></a>
+                                        <span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PhaseSelectorButton" tabindex="0" title="选择阶段" onclick="ChoosePhase()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><a class="NormalState Button ButtonIcon IconOnly Delete" id="PhaseDeleteButton" tabindex="0" title="Clear the selected phase" onclick="CancelPhase()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -64px 0px;"></span><span class="Text"></span></a>
                                             <input id="PhaseId" name="PhaseId" type="hidden" value="" /></span>
                                     </div>
                                 </div>
@@ -430,6 +430,8 @@
                                     </div>
                                 </div>
                             </div>
+                            <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
+                                { %>
                             <div class="Normal Column">
                                 <div class="EditorLabelContainer">
                                     <div class="Label">
@@ -450,7 +452,7 @@
                                     </div>
                                     <div class="Editor IntegerBox" data-editor-id="Priority" data-rdp="Priority">
                                         <div class="InputField">
-                                            <input id="priority" type="text" value="<%=isAdd?"":thisTask.priority.ToString() %>" name="priority" maxlength="5" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+                                            <input id="priority" type="text" value="<%=isAdd ? "" : thisTask.priority.ToString() %>" name="priority" maxlength="5" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
                                         </div>
                                     </div>
                                 </div>
@@ -462,7 +464,7 @@
                                     </div>
                                     <div class="Editor TextBox" data-editor-id="PurchaseOrderNumber" data-rdp="PurchaseOrderNumber">
                                         <div class="InputField">
-                                            <input id="purchase_order_no" type="text" value="<%=isAdd?"":thisTask.purchase_order_no %>" name="purchase_order_no" maxlength="50" />
+                                            <input id="purchase_order_no" type="text" value="<%=isAdd ? "" : thisTask.purchase_order_no %>" name="purchase_order_no" maxlength="50" />
                                         </div>
                                     </div>
                                 </div>
@@ -528,7 +530,7 @@
                                 </div>
                                 <div class="Editor DataSelector" data-editor-id="IssueReportedBy" data-rdp="IssueReportedBy">
                                     <div class="InputField">
-                                        <input id="IssueReportedBy_DisplayTextBox" type="text" value="" autocomplete="off" /><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="issue_report_contact_id" tabindex="0"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="issue_report_contact_idHidden" name="issue_report_contact_id" type="hidden" value="" /><div class="ContextOverlayContainer" id="IssueReportedBy_ContextOverlay">
+                                        <input id="issue_report_contact_id" type="text" value="" autocomplete="off" /><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="ChooseRc" tabindex="0"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="issue_report_contact_idHidden" name="issue_report_contact_id" type="hidden" value="" /><div class="ContextOverlayContainer" id="IssueReportedBy_ContextOverlay">
                                             <div class="AutoComplete ContextOverlay">
                                                 <div class="Active LoadingIndicator"></div>
                                                 <div class="Content"></div>
@@ -553,9 +555,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <%} %>
                         </div>
                     </div>
-
+                    <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
+                        { %>
                     <div class="Normal Section">
                         <div class="Heading">
                             <div class="Left"><span class="Text">日程表</span><span class="SecondaryText"></span></div>
@@ -602,7 +606,7 @@
                                 </div>
                                 <div class="Editor DecimalBox">
                                     <div class="InputField">
-                                        <input id="estimated_hours" type="text" value="<%=isAdd?"0.00":thisTask.estimated_hours.ToString("#0.00") %>" name="estimated_hours" maxlength="10" class="To2Input" />
+                                        <input id="estimated_hours" type="text" value="<%=isAdd ? "0.00" : thisTask.estimated_hours.ToString("#0.00") %>" name="estimated_hours" maxlength="10" class="To2Input" />
                                     </div>
                                 </div>
                                 <div class="EditorLabelContainer">
@@ -612,7 +616,7 @@
                                 </div>
                                 <div class="Editor IntegerBox" data-editor-id="Duration" data-rdp="Duration">
                                     <div class="InputField">
-                                        <input id="estimated_duration" type="text" value="<%=isAdd?1:thisTask.estimated_duration %>" name="estimated_duration" maxlength="5" />
+                                        <input id="estimated_duration" type="text" value="<%=isAdd ? 1 : thisTask.estimated_duration %>" name="estimated_duration" maxlength="5" />
                                     </div>
                                 </div>
                                 <div class="EditorLabelContainer">
@@ -622,7 +626,7 @@
                                 </div>
                                 <div class="Editor DecimalBox" data-editor-id="HoursPerResource" data-rdp="HoursPerResource">
                                     <div class="InputField">
-                                        <input id="hours_per_resource" type="text" value="<%=isAdd?"0.00":thisTask.hours_per_resource.ToString("#0.00") %>" name="hours_per_resource" maxlength="12" class="To2Input" />
+                                        <input id="hours_per_resource" type="text" value="<%=isAdd ? "0.00" : thisTask.hours_per_resource.ToString("#0.00") %>" name="hours_per_resource" maxlength="12" class="To2Input" />
                                     </div>
                                 </div>
                             </div>
@@ -642,7 +646,7 @@
                                                         startDate = EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)parTask.estimated_begin_time);
                                                     }
                                                 %>
-                                                <input id="estimated_beginTime" type="text" value="<%=isAdd?startDate.ToString("yyyy-MM-dd HH:mm:ss"):EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("yyyy-MM-dd HH:mm:ss") %>" name="estimated_beginTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 150px" />
+                                                <input id="estimated_beginTime" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd HH:mm:ss") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("yyyy-MM-dd HH:mm:ss") %>" name="estimated_beginTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 150px" />
                                             </div>
                                         </div>
                                     </div>
@@ -657,7 +661,7 @@
                                     <div class="Editor DateBox" data-editor-id="EndDate" data-rdp="EndDate">
                                         <div class="InputField">
                                             <div class="Container">
-                                                <input id="estimated_end_date" type="text" value="<%=isAdd?startDate.ToString("yyyy-MM-dd"):((DateTime)thisTask.estimated_end_date).ToString("yyyy-MM-dd") %>" name="estimated_end_date" onclick="WdatePicker()" style="width: 100px;" />
+                                                <input id="estimated_end_date" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd") : ((DateTime)thisTask.estimated_end_date).ToString("yyyy-MM-dd") %>" name="estimated_end_date" onclick="WdatePicker()" style="width: 100px;" />
                                             </div>
                                         </div>
                                     </div>
@@ -672,7 +676,7 @@
                                 <div class="Editor DateBox" data-editor-id="StartNoEarlierThanDate" data-rdp="StartNoEarlierThanDate">
                                     <div class="InputField">
                                         <div class="Container">
-                                            <input id="start_no_earlier_than_date" type="text" value="<%=thisTask!=null&&thisTask.start_no_earlier_than_date!=null?((DateTime)thisTask.start_no_earlier_than_date).ToString("yyyy-MM-dd"):"" %>" name="start_no_earlier_than_date" onclick="WdatePicker()" />
+                                            <input id="start_no_earlier_than_date" type="text" value="<%=thisTask != null && thisTask.start_no_earlier_than_date != null ? ((DateTime)thisTask.start_no_earlier_than_date).ToString("yyyy-MM-dd") : "" %>" name="start_no_earlier_than_date" onclick="WdatePicker()" />
                                         </div>
                                     </div>
                                 </div>
@@ -813,7 +817,7 @@
                                 </div>
                                 <div class="Editor DataSelector" data-editor-id="Contacts" data-rdp="Contacts">
                                     <div class="InputField">
-                                        <input id="Contacts_DisplayTextBox" type="text" value="" autocomplete="off" style="width: 250px;" /><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="Contacts_Button" tabindex="0"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="Contacts" name="Contacts" type="hidden" value="" /><div class="ContextOverlayContainer" id="Contacts_ContextOverlay">
+                                        <input id="Contacts_DisplayTextBox" type="text" value="" autocomplete="off" style="width: 250px;" /><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="Contacts_Button" tabindex="0" onclick="ChooseContact()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="Contacts" name="Contacts" type="hidden" value="" /><div class="ContextOverlayContainer" id="Contacts_ContextOverlay">
                                             <div class="AutoComplete ContextOverlay">
                                                 <div class="Active LoadingIndicator"></div>
                                                 <div class="Content"></div>
@@ -1007,7 +1011,7 @@
                                     </div>
                                 </div>
                                 <div class="Editor TextBox LabeledValue" data-editor-id="Notifications_ToEmailDisplay">
-                                    <span class="Value" id="To_Email"></span>
+                                    <span class="Value" id="To_Email" style="font-size: 9pt;"></span>
                                 </div>
 
                             </div>
@@ -1026,7 +1030,7 @@
                                     </div>
                                 </div>
                                 <div class="Editor TextBox LabeledValue" data-editor-id="Notifications_CCEmailDisplay">
-                                    <span class="Value" id="Cc_Email"></span>
+                                    <span class="Value" id="Cc_Email" style="font-size: 9pt;"></span>
                                 </div>
                             </div>
                             <div class="Large Column">
@@ -1043,7 +1047,7 @@
                                     </div>
                                 </div>
                                 <div class="Editor TextBox LabeledValue" data-editor-id="Notifications_BccEmailDisplay">
-                                    <span class="Value" id="Bcc_Email"></span>
+                                    <span class="Value" id="Bcc_Email" style="font-size: 9pt;"></span>
                                 </div>
                                 <div class="EditorLabelContainer">
                                     <div class="Label">
@@ -1098,7 +1102,249 @@
                             </div>
                         </div>
                     </div>
+                    <%}
+                        else
+                        { %>
+                    <div class="Normal Section">
+                        <div class="Heading">
+                            <div class="Left"><span class="Text">日程表</span><span class="SecondaryText"></span></div>
+                            <div class="Spacer"></div>
+                        </div>
+                        <div class="Content">
+                            <div class="Large Column">
+                                <div class="Small Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="StartDate">开始时间</label><span class="Required">*</span>
+                                        </div>
+                                    </div>
+                                    <div class="Editor DateBox" data-editor-id="StartDate" data-rdp="StartDate">
+                                        <div class="InputField">
+                                            <div class="Container">
+                                                <% var startDate = (DateTime)thisProject.start_date;
+                                                    if (parTask != null)
+                                                    {
+                                                        startDate = EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)parTask.estimated_begin_time);
+                                                    }
+                                                %>
+                                                <input id="estimated_beginTime" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd HH:mm:ss") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("yyyy-MM-dd HH:mm:ss") %>" name="estimated_beginTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 150px" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Small Column" style="margin-left: 50px;">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="EndDate">结束时间</label><span class="Required">*</span>
+                                        </div>
+                                    </div>
+                                    <div class="Editor DateBox" data-editor-id="EndDate" data-rdp="EndDate">
+                                        <div class="InputField">
+                                            <div class="Container">
+                                                <input id="estimated_end_date" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd") : ((DateTime)thisTask.estimated_end_date).ToString("yyyy-MM-dd") %>" name="estimated_end_date" onclick="WdatePicker()" style="width: 100px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Small Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="EstimatedHours">预估时间</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor TextBox LabeledValue" data-editor-id="EstimatedHours">
+                                        <div class="InputField"><span class="Value"></span></div>
+                                        <input id="EstimatedHours" name="EstimatedHours" type="hidden" value="">
+                                    </div>
+                                </div>
+                                <div class="Small Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="Duration">持续时间</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor TextBox LabeledValue" data-editor-id="Duration">
+                                        <div class="InputField">
+                                            <span class="Value">1</span><span class="CustomHtml"><div class="StandardText">days</div>
+                                            </span>
+                                        </div>
+                                        <input id="Duration" name="Duration" type="hidden" value="1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="Normal Section" id="BudgetSectionHeader">
+                        <div class="Heading" data-toggle-enabled="true">
+                            <div class="Toggle Collapse">
+                                <div class="Vertical"></div>
+                                <div class="Horizontal"></div>
+                            </div>
+                            <div class="Left"><span class="Text">预算</span><span class="SecondaryText"></span></div>
+                            <div class="Spacer"></div>
+                        </div>
+                        <div class="DescriptionText">与此项目关联的合同将决定这个项目可用的角色。</div>
+                        <div class="Content">
+                            <div class="Large Column">
+                                <div class="CustomLayoutContainer">
+                                    <table class="PhaseEditor_BudgetTable">
+                                        <colgroup>
+                                            <col class="PhaseEditor_col1">
+                                            <col class="PhaseEditor_col2">
+                                            <col class="PhaseEditor_col3">
+                                            <col class="PhaseEditor_col4">
+                                            <col class="PhaseEditor_col5">
+                                        </colgroup>
+                                        <tbody>
+                                            <tr class="PhaseEditor_head">
+                                                <td>
+                                                    <span class="PhaseEditor_HeadingText">角色</span>
+                                                </td>
+                                                <td>
+                                                    <span class="PhaseEditor_HeadingText">合同计费角色</span><br>
+                                                    <span class="PhaseEditor_smallHeadingText">（每小时）</span>
+                                                </td>
+                                                <td>
+                                                    <span class="PhaseEditor_HeadingText">预估时间</span>
+                                                </td>
+                                                <td>
+                                                    <span class="PhaseEditor_HeadingText">预算时间</span><br>
+                                                    <span class="PhaseEditor_smallHeadingText">（总数/剩余）</span>
+                                                </td>
+                                                <td>
+                                                    <span class="PhaseEditor_HeadingText">实际时间</span>
+                                                </td>
+                                            </tr>
+                                            <%if (rateList != null && rateList.Count > 0)
+                                                {
+                                                    var roleDal = new EMT.DoneNOW.DAL.sys_role_dal();
+                                                    var stbDal = new EMT.DoneNOW.DAL.sdk_task_budget_dal();
+                                                    var proBLL = new EMT.DoneNOW.BLL.ProjectBLL();
+                                                    var yuguTime = proBLL.ESTIMATED_HOURS(thisProject.id);
+                                                    var shijiTime = proBLL.ProWorkHours(thisProject.id);
+                                                    foreach (var rate in rateList)
+                                                    {
+                                                        EMT.DoneNOW.Core.sdk_task_budget stb = null;
+                                                        var thisrole = roleDal.FindNoDeleteById(rate.role_id);
+                                                        if (!isAdd && thisTask != null)
+                                                        {
+                                                            stb = stbDal.GetSinByTIdRid(thisTask.id,rate.id);
+                                                        }
+                                                        %>
+                                               <tr>
+                                                <td>
+                                                    <span class="PhaseEditor_Text"><%=thisrole==null?"":thisrole.name %></span>
+                                                    <input type="hidden" id="BudgetLineItems_0__RoleName" name="BudgetLineItems[0].RoleName" value="Administration">
+                                                </td>
+                                                <td class="PhaseEditor_numericInput">
+                                                    <span class="PhaseEditor_Text">¥<%=rate.rate!=null?((decimal)rate.rate).ToString("#0.00"):"" %>span>
+                                                </td>
+                                                <td class="PhaseEditor_numericInput">
+                                                    <span class="PhaseEditor_Text"><%=yuguTime.ToString("#0.00") %></span>
+                                                    <input type="hidden" id="BudgetLineItems_0__EstimatedHours" name="BudgetLineItems[0].EstimatedHours" value="0">
+                                                </td>
+                                                <td class="col4 PhaseEditor_numericInput">
+                                                    <input class="PhaseEditor_inputText" type="text" id="<%=rate.id %>_esHours" name="<%=rate.id %>_esHours"  value="<%=stb==null?"":stb.estimated_hours.ToString("#0") %>" />
+                                                    <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;<%=stb==null?"":stb.estimated_hours.ToString("#0") %></div>
+                                                </td>
+                                                <td class="PhaseEditor_numericInput">
+                                                    <span class="PhaseEditor_Text"><%=shijiTime.ToString("#0.00") %></span>
+                                                    <input type="hidden" id="BudgetLineItems_0__ActualHours" name="BudgetLineItems[0].ActualHours" value="0">
+                                                </td>
+                                            </tr>
+                                                    <%}
+                                            }
+    else
+    { %>
+
+                                            <%} %>
+                                         
+                                            <tr>
+                                                <td>
+                                                    <span class="PhaseEditor_Text">Emergency Technician</span>
+                                                    <input type="hidden" id="BudgetLineItems_1__RoleName" name="BudgetLineItems[1].RoleName" value="Emergency Technician">
+                                                </td>
+                                                <td class="PhaseEditor_numericInput">
+                                                    <span class="PhaseEditor_Text">¥1,225.00</span>
+                                                    <input type="hidden" id="BudgetLineItems_1__BillingRate" name="BudgetLineItems[1].BillingRate" value="¥1,225.00">
+                                                </td>
+                                                <td class="PhaseEditor_numericInput">
+                                                    <span class="PhaseEditor_Text">0</span>
+                                                    <input type="hidden" id="BudgetLineItems_1__EstimatedHours" name="BudgetLineItems[1].EstimatedHours" value="0">
+                                                </td>
+                                                <td class="col4 PhaseEditor_numericInput">
+                                                    <!-- For the input, the name has to be done this way so that the item value is sent back with the post.  -->
+                                                    <input type="hidden" id="BudgetLineItems_1__RateId" name="BudgetLineItems[1].RateId" value="22">
+                                                    <input class="PhaseEditor_inputText" type="text" id="BudgetLineItems_1__BudgetedHours" name="BudgetLineItems[1].BudgetedHours" onchange="phaseEditor.budgetChanged(this)" value="0">
+                                                    <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;0</div>
+                                                </td>
+                                                <td class="PhaseEditor_numericInput">
+                                                    <span class="PhaseEditor_Text">0</span>
+                                                    <input type="hidden" id="BudgetLineItems_1__ActualHours" name="BudgetLineItems[1].ActualHours" value="0">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="PhaseEditor_Text">Engineer</span>
+                                                    <input type="hidden" id="BudgetLineItems_2__RoleName" name="BudgetLineItems[2].RoleName" value="Engineer">
+                                                </td>
+                                                <td class="PhaseEditor_numericInput">
+                                                    <span class="PhaseEditor_Text">¥1,150.00</span>
+                                                    <input type="hidden" id="BudgetLineItems_2__BillingRate" name="BudgetLineItems[2].BillingRate" value="¥1,150.00">
+                                                </td>
+                                                <td class="PhaseEditor_numericInput">
+                                                    <span class="PhaseEditor_Text">0</span>
+                                                    <input type="hidden" id="BudgetLineItems_2__EstimatedHours" name="BudgetLineItems[2].EstimatedHours" value="0">
+                                                </td>
+                                                <td class="col4 PhaseEditor_numericInput">
+                                                    <!-- For the input, the name has to be done this way so that the item value is sent back with the post.  -->
+                                                    <input type="hidden" id="BudgetLineItems_2__RateId" name="BudgetLineItems[2].RateId" value="23">
+                                                    <input class="PhaseEditor_inputText" type="text" id="BudgetLineItems_2__BudgetedHours" name="BudgetLineItems[2].BudgetedHours" onchange="phaseEditor.budgetChanged(this)" value="0">
+                                                    <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;0</div>
+                                                </td>
+                                                <td class="PhaseEditor_numericInput">
+                                                    <span class="PhaseEditor_Text">0</span>
+                                                    <input type="hidden" id="BudgetLineItems_2__ActualHours" name="BudgetLineItems[2].ActualHours" value="0">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="PhaseEditor_Text">Help Desk</span>
+                                                    <input type="hidden" id="BudgetLineItems_3__RoleName" name="BudgetLineItems[3].RoleName" value="Help Desk">
+                                                </td>
+                                                <td class="PhaseEditor_numericInput">
+                                                    <span class="PhaseEditor_Text">¥0.00</span>
+                                                    <input type="hidden" id="BudgetLineItems_3__BillingRate" name="BudgetLineItems[3].BillingRate" value="¥0.00">
+                                                </td>
+                                                <td class="PhaseEditor_numericInput">
+                                                    <span class="PhaseEditor_Text">0</span>
+                                                    <input type="hidden" id="BudgetLineItems_3__EstimatedHours" name="BudgetLineItems[3].EstimatedHours" value="0">
+                                                </td>
+                                                <td class="col4 PhaseEditor_numericInput">
+                                                    <!-- For the input, the name has to be done this way so that the item value is sent back with the post.  -->
+                                                    <input type="hidden" id="BudgetLineItems_3__RateId" name="BudgetLineItems[3].RateId" value="24">
+                                                    <input class="PhaseEditor_inputText" type="text" id="BudgetLineItems_3__BudgetedHours" name="BudgetLineItems[3].BudgetedHours" onchange="phaseEditor.budgetChanged(this)" value="0">
+                                                    <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;0</div>
+                                                </td>
+                                                <td class="PhaseEditor_numericInput">
+                                                    <span class="PhaseEditor_Text">0</span>
+                                                    <input type="hidden" id="BudgetLineItems_3__ActualHours" name="BudgetLineItems[3].ActualHours" value="0">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5" class="PhaseEditor_noBorder">&nbsp;</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="Normal Column">
+                                <div class="Medium Column"><a class="Button ButtonIcon NormalState" id="RecalculateBudgetButton" tabindex="0"><span class="Icon"></span><span class="Text">Recalculate</span></a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <%} %>
                 </div>
             </div>
         </div>
@@ -1178,7 +1424,7 @@
                             <div class="Normal Section" style="height: 240px">
                                 <div class="Heading">
                                     <input type="hidden" name="tempPreIds" id="tempPreIds" />
-                                    <input type="hidden" name="prereIds" id="preIds" />
+                                    <input type="hidden" name="preIds" id="preIds" />
                                     <!--用户在页面上选择的前驱任务Ids -->
                                     <div class="Left"><span class="Text">前驱任务</span><span class="SecondaryText"></span></div>
                                     <div class="Spacer"></div>
@@ -1380,16 +1626,16 @@
 
         $("#Nav2").hide();
         $("#BackgroundOverLay").hide();
+           <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
+    { %>
         if ($("#isProject_issue").is(":checked")) {
             $("#issue_report_contact_id").prop("disabled", false);
-            $("#issue_report_contact_idHidden").click(function () { ChooseReportBy(); });
+            $("#ChooseRc").click(function () { ChooseReportBy(); });
         }
         else {
             $("#issue_report_contact_id").prop("disabled", true);
-            $("#issue_report_contact_idHidden").removeAttr("click");
+            $("#ChooseRc").removeAttr("click");
         }
-
-
         if ($("#TaskTypeFixedWork").is(":checked")) {
             $("#hours_per_resource").val("0.00");
             $("#hours_per_resource").prop("disabled", true);
@@ -1402,9 +1648,8 @@
         } else {
 
         }
-
-
         GetWorkTypeByDepId();
+        <%} %>
     })
     $("#CancelButton").click(function () {
         window.close();
@@ -1413,10 +1658,10 @@
     $("#isProject_issue").click(function () {
         if ($(this).is(":checked")) {
             $("#issue_report_contact_id").prop("disabled", false);
-            $("#issue_report_contact_idHidden").click(function () { ChooseReportBy(); });
+            $("#ChooseRc").click(function () { ChooseReportBy(); });
         } else {
             $("#issue_report_contact_id").prop("disabled", true);
-            $("#issue_report_contact_idHidden").removeAttr("click");
+            $("#ChooseRc").removeAttr("onclick");
         }
     })
     $("#TaskTypeFixedWork").click(function () {
@@ -1468,12 +1713,33 @@
         } else {
             $(this).val("");
         }
+        JiSuanTime();
     })
 
 
     $("#department_id").change(function () {
         GetWorkTypeByDepId(); // 过滤工作类型
-        // 判断主负责人是否在该部门中
+        // 判断主负责人是否在该部门中  todo
+        var res_id = $("#owner_resource_idHidden").val();
+        var dId = $(this).val();
+        if (res_id != "" && dId != "0") {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/DepartmentAjax.ashx?act=IsHasRes&department_id=" + dId + "&resource_id=" + res_id,
+                async: false,
+                // dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data == "True") {
+                        $("#owner_resource_idHidden").val("");
+                        $("#owner_resource_id").val("");
+                    }
+                }
+
+            })
+        }
+
+
 
 
         // 成员不用清除，查找带回需要添加部门过滤
@@ -1522,15 +1788,90 @@
         return true;
     })
 
-
+    // 
     $("#SaveAndCloseDialogButton").click(function () {  // 前驱任务的选择
         var tempPreIds = $("#tempPreIds").val();   // 选择的前驱任务的Id赋值到界面
         $("#preIds").val(tempPreIds);
+        $("#Nav2").hide();
+        $("#BackgroundOverLay").hide();
+
+        var appHtml = "";
+        if (tempPreIds != "") {
+            var tempPreIdArr = tempPreIds.split(',');
+            for (var i = 0; i < tempPreIdArr.length; i++) {
+                appHtml += "<option data-val='" + tempPreIdArr[i] + "' value='" + tempPreIdArr[i] + "'>" + $("#" + tempPreIdArr[i] + "_temp").children().first().next().next().text() + "(" + $("#" + tempPreIdArr[i] + "_temp").children().first().next().next().next().next().next().children().first().val() + ")</option>";
+            }
+            $("#Predecessors").html(appHtml);
+            $("#Predecessors option").dblclick(function () {
+                RemoveChoosePreOption(this);  // 双击清除选择的前驱任务
+            })
+
+        } else {
+            $("#Predecessors").html("");
+        }
+
+
+
     })
     $("#CloseStatusReson").click(function () {
         $("#CompletionReasonDialog").hide();
         $("#BackgroundOverLay").hide();
     })
+    // 双击删除选择的前驱任务，并更新相关id信息
+    function RemoveChoosePreOption(val) {
+        debugger;
+        var thisId = $("#Predecessors").val();
+        $(val).remove();
+
+        var ids = "";
+        $("#Predecessors option").each(function () {
+            ids += $(this).val() + ',';
+        })
+        if (ids != "") {
+            ids = ids.substr(0, ids.length - 1);
+        }
+        $("#preIds").val(ids);
+        RemoveThis(thisId);
+    }
+
+    function JiSuanTime() {
+        var estimated_hours = $("#estimated_hours").val();       // 预估时间
+        var hours_per_resource = $("#hours_per_resource").val(); // 每个员工小时
+
+        if (estimated_hours == "" || (isNaN(estimated_hours))) {
+            estimated_hours = 0;
+        }
+        if (hours_per_resource == "" || (isNaN(hours_per_resource))) {
+            hours_per_resource = 0;
+        }
+
+        // 获取团队人数，计算预估时间相关,团队成员不算联系人
+        var teamNum = 0;
+        var leader = $("#owner_resource_idHidden").val();
+        if (leader != "") {
+            teamNum = Number(teamNum) + Number(1);
+        }
+        var otherPer = $("#resDepIdsHidden").val();
+        if (otherPer != "") {
+            otherPerArr = otherPer.split(',');
+            teamNum = Number(teamNum) + Number(otherPerArr.length);
+        }
+        if (teamNum != 0) {
+            // 根据固定时间 和固定工作进行计算相关字段  
+            if ($("#TaskTypeFixedDuration").is(":checked")) {
+                estimated_hours = hours_per_resource * teamNum;
+                $("#estimated_hours").val(toDecimal2(estimated_hours));
+                $("#hours_per_resource").val(toDecimal2(hours_per_resource));
+            } else if ($("#TaskTypeFixedWork").is(":checked")) {
+                hours_per_resource = Number(estimated_hours) / Number(teamNum);
+                $("#estimated_hours").val(toDecimal2(estimated_hours));
+                $("#hours_per_resource").val(toDecimal2(hours_per_resource));
+            }
+
+        }
+
+    }
+
     function TranDate(date) {
         var y = date.getFullYear();
         var m = date.getMonth() + 1;
@@ -1543,6 +1884,24 @@
     function ChoosePhase() {
         // PhaseName
         // PhaseNameHidden
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TASK_PHASE %>&field=PhaseName&callBack=CheckChoosePhase&con963=<%=thisProject.id %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKPHASE_CALLBACK %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    // 校验查找带回的阶段是不是自己
+    function CheckChoosePhase() {
+        var choosePhaseId = $("#PhaseNameHidden").val();
+        if (choosePhaseId != "") {
+        <%if (isAdd)
+    {%>
+            var thisTaskId = '<%=thisTask==null?"":thisTask.id.ToString() %>';
+            if (choosePhaseId == thisTaskId) {
+                LayerMsg("所选阶段不能是自己哟！");
+                $("#PhaseName").val("");
+                $("#PhaseNameHidden").val("");
+            }
+        <%}%>
+        }
+
+
     }
     // 清除阶段的查找带回
     function CancelPhase() {
@@ -1552,9 +1911,10 @@
     // 问题提出人查找带回 // 从客户的联系人中选择
     function ChooseReportBy() {
         // issue_report_contact_id
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_CALLBACK %>&field=issue_report_contact_id&muilt=1&callBack=GetContact&con628=<%=thisProject.account_id %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactCallBack %>', 'left=200,top=200,width=600,height=800', false);
     }
 
-    // 前驱任务的选择 -- todo
+    // 前驱任务查找带回
     function ChoosePreTask() {
         $("#Nav2").show();
         $("#BackgroundOverLay").show();
@@ -1606,9 +1966,12 @@
                                             var StartDate = TranDate(thidStarDate);
                                             var EndDateArr = data.estimated_end_date.split("T");
                                             var endDa = EndDateArr[0];
-                                            var appHtml = "<tr id='" + data.id + "_temp'><td class='PredecessorItemsSelectDialog_OutlineId PredecessorItemsSelectDialog_Text'>" + thisNo + "</td><td class='PredecessorItemsSelectDialog_Context' style='width: 30px;'><a class='PredecessorItemsSelectDialog_Delete PredecessorItemsSelectDialog_Button' onclick='RemoveThis(" + data.id + ")'><div class='PredecessorItemsSelectDialog_Icon'><span class='Icon' style='background: url(../Images/ButtonBarIcons.png) no-repeat -66px -2px;'>&nbsp;&nbsp;&nbsp;&nbsp;</span></div></a></td><td class='PredecessorItemsSelectDialog_Title PredecessorItemsSelectDialog_Text'>" + data.title + "</td><td class='PredecessorItemsSelectDialog_Date'>" + StartDate + "</td><td class='PredecessorItemsSelectDialog_Date'>" + endDa + "</td><td class='PredecessorItemsSelectDialog_Text'><input class='LagInput' placeholder='Lag (days)' type='text' id='" + data.id + "_lagDays' value='0'></td><td class='PredecessorItemsSelectDialog_SizingSpacer' width='0'></td></tr>";
-                                            var thisHtml = $("#PredecessorItemsSelectedTable").html();
-                                            $("#PredecessorItemsSelectedTable").html(thisHtml + appHtml);
+                                            var appHtml = "<tr id='" + data.id + "_temp'><td class='PredecessorItemsSelectDialog_OutlineId PredecessorItemsSelectDialog_Text'>" + thisNo + "</td><td class='PredecessorItemsSelectDialog_Context' style='width: 30px;'><a class='PredecessorItemsSelectDialog_Delete PredecessorItemsSelectDialog_Button' onclick='RemoveThis(" + data.id + ")'><div class='PredecessorItemsSelectDialog_Icon'><span class='Icon' style='background: url(../Images/ButtonBarIcons.png) no-repeat -66px -2px;'>&nbsp;&nbsp;&nbsp;&nbsp;</span></div></a></td><td class='PredecessorItemsSelectDialog_Title PredecessorItemsSelectDialog_Text'>" + data.title + "</td><td class='PredecessorItemsSelectDialog_Date'>" + StartDate + "</td><td class='PredecessorItemsSelectDialog_Date'>" + endDa + "</td><td class='PredecessorItemsSelectDialog_Text'><input class='LagInput' placeholder='Lag (days)' type='text' id='" + data.id + "_lagDays' name='" + data.id + "_lagDays' value='0'></td><td class='PredecessorItemsSelectDialog_SizingSpacer' width='0'></td></tr>";
+
+                                            //document.getElementById("PredecessorItemsSelectedTable").innerHTML += appHtml;
+                                            $("#PredecessorItemsSelectedTable").append(appHtml);
+                                            //  var thisHtml = $("#PredecessorItemsSelectedTable").html();
+                                            //  $("#PredecessorItemsSelectedTable").html(thisHtml + appHtml);
                                         }
                                     },
                                 });
@@ -1684,8 +2047,8 @@
         }
         if ($("#FilterResByProBilRoles").is(":checked")) {                                   // 根据项目过滤
             url += "&con962=<%=thisProject.id %>";
-            }
-            window.open(url, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+        }
+        window.open(url, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 
     function GetResDep() {
@@ -1768,24 +2131,12 @@
     function GetInfoByTemp() {
         var template_id = $("#template_id").val();
         if (template_id != undefined && template_id != "" && template_id != "0") {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/GeneralAjax.ashx?act=GetNotiTempEmail&temp_id=" + template_id,
-                async: false,
-                dataType: "json",
-                success: function (data) {
-                    debugger;
-                    if (data != "") {
-                        $("#From_Email").html(data.from_other_email);
-                        $("#subject").val(data.subject);
-                    }
-                }
 
-            })
         }
     }
     var ToMeSum = 0;
     function ToMe() {
+        debugger;
         var userEmail = GetMeEmail();
         if (userEmail != "") {
 
@@ -1803,159 +2154,159 @@
     }
     function GetMeEmail() {
         <% var user = EMT.DoneNOW.BLL.UserInfoBLL.GetUserInfo(GetLoginUserId()); %>
-            var userEmail = "";
+        var userEmail = "";
         <% if (user != null)
     {%>
         userEmail = '<%=user.name %>';
         <%}%>
-        return userEmail;
-        }
-        function GetLeadEmail() {
-            var owner_resource_id = $("#owner_resource_id").val();
-            var leadEma = "";
-            if (owner_resource_id != "") {
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/ResourceAjax.ashx?act=GetInfo&id=" + owner_resource_id,
-                    async: false,
-                    dataType: "json",
-                    success: function (data) {
-                        debugger;
-                        if (data != "") {
-                            leadEma = data.name;
-                        }
-                    }
-                })
-            }
-            return leadEma;
-        }
-
-        var ToTeamMemberSum = 0;
-        function ToTeamMember() {
-            debugger;
-            var memIDs = $("#resDepIdsHidden").val();
-            if (memIDs != undefined && memIDs != "") {
-                var menEmails = "";
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/ResourceAjax.ashx?act=GetResouList&ids=" + memIDs,
-                    async: false,
-                    //dataType: "json",
-                    success: function (data) {
-                        debugger;
-                        if (data != "") {
-                            menEmails = data;
-                        }
-                    }
-                })
-                debugger;
-                if (menEmails != "") {
-
-                    menEmails = menEmails.substring(0, menEmails.length - 1);
-                    var To_Email = $("#To_Email").html();
-                    if (To_Email != "") {
-
-                        if (ToMeSum != 0) {
-                            menEmails += ";" + GetMeEmail();
-                        }
-                        if (ToProjectLeadSum != 0) {
-                            menEmails += ";" + GetLeadEmail();
-                        }
-                        $("#To_Email").html(menEmails);
-                    } else {
-                        $("#To_Email").html(menEmails);
+            return userEmail;
+    }
+    function GetLeadEmail() {
+        var owner_resource_id = $("#owner_resource_idHidden").val();
+        var leadEma = "";
+        if (owner_resource_id != "") {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ResourceAjax.ashx?act=GetInfoByDepId&DepId=" + owner_resource_id,
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data != "") {
+                        leadEma = data.name;
                     }
                 }
-
-                // todo 联系人姓名
-            }
-            debugger;
-            var conIds = $("#contactIDHidden").val();
-            if (conIds != "") {
-
-                $.ajax({
-                    type: "GET",
-                    url: "../Tools/ContactAjax.ashx?act=GetConName&ids=" + conIds,
-                    async: false,
-                    success: function (data) {
-                        debugger;
-                        if (data != "") {
-                            var To_Email = $("#To_Email").html();
-                            if (To_Email != "") {
-                                $("#To_Email").html(To_Email + data);
-                            } else {
-                                data = data.substring(1, data.length);
-                                $("#To_Email").html(data);
-                            }
-                            $("#NoToContactIds").val(conIds);
-                        }
-                    }
-                })
-            }
-
-            // alert(conText);
+            })
         }
-        var ToProjectLeadSum = 0;
-        function ToProjectLead() {
-            var owner_resource_id = $("#owner_resource_id").val();
-            if (owner_resource_id != "") {
-                var resouEmail = "";
-                resouEmail = GetLeadEmail();
-                if (resouEmail != "") {
-                    if (ToProjectLeadSum == 0) {
-                        ToProjectLeadSum += 1;
-                        var NoToProlead = $("#NoToProlead").val();
+        return leadEma;
+    }
+
+    var ToTeamMemberSum = 0;
+    function ToTeamMember() {
+        debugger;
+        var memIDs = $("#resDepIdsHidden").val();
+        if (memIDs != undefined && memIDs != "") {
+            var menEmails = "";
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ResourceAjax.ashx?act=GetResouList&ids=" + memIDs,
+                async: false,
+                //dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data != "") {
+                        menEmails = data;
+                    }
+                }
+            })
+            debugger;
+            if (menEmails != "") {
+
+                menEmails = menEmails.substring(0, menEmails.length - 1);
+                var To_Email = $("#To_Email").html();
+                if (To_Email != "") {
+
+                    if (ToMeSum != 0) {
+                        menEmails += ";" + GetMeEmail();
+                    }
+                    if (ToProjectLeadSum != 0) {
+                        menEmails += ";" + GetLeadEmail();
+                    }
+                    $("#To_Email").html(menEmails);
+                } else {
+                    $("#To_Email").html(menEmails);
+                }
+            }
+
+            // todo 联系人姓名
+        }
+        debugger;
+        var conIds = $("#contactIDHidden").val();
+        if (conIds != "") {
+
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ContactAjax.ashx?act=GetConName&ids=" + conIds,
+                async: false,
+                success: function (data) {
+                    debugger;
+                    if (data != "") {
                         var To_Email = $("#To_Email").html();
-                        if (NoToProlead != "") {
-                            var isadd = "";
-                            var NoToProleadArr = NoToProlead.split(',');
-                            for (i = 0; i < NoToProleadArr.length; i++) {
-                                if (NoToProleadArr[i] == owner_resource_id) {
-                                    isadd = "1";
-                                    break;
-                                }
-                            }
-                            if (isadd == "") {
-                                $("#NoToProlead").val(NoToProlead + ',' + owner_resource_id);
-                                if (To_Email != "") {
-                                    $("#To_Email").html(To_Email + ';' + resouEmail);
-                                } else {
-                                    $("#To_Email").html(resouEmail);
-                                }
-                            }
+                        if (To_Email != "") {
+                            $("#To_Email").html(To_Email + data);
                         } else {
-                            $("#NoToProlead").val(owner_resource_id);
+                            data = data.substring(1, data.length);
+                            $("#To_Email").html(data);
+                        }
+                        $("#NoToContactIds").val(conIds);
+                    }
+                }
+            })
+        }
+
+        // alert(conText);
+    }
+    var ToProjectLeadSum = 0;
+    function ToProjectLead() {
+        var owner_resource_id = $("#owner_resource_id").val();
+        if (owner_resource_id != "") {
+            var resouEmail = "";
+            resouEmail = GetLeadEmail();
+            if (resouEmail != "") {
+                if (ToProjectLeadSum == 0) {
+                    ToProjectLeadSum += 1;
+                    var NoToProlead = $("#NoToProlead").val();
+                    var To_Email = $("#To_Email").html();
+                    if (NoToProlead != "") {
+                        var isadd = "";
+                        var NoToProleadArr = NoToProlead.split(',');
+                        for (i = 0; i < NoToProleadArr.length; i++) {
+                            if (NoToProleadArr[i] == owner_resource_id) {
+                                isadd = "1";
+                                break;
+                            }
+                        }
+                        if (isadd == "") {
+                            $("#NoToProlead").val(NoToProlead + ',' + owner_resource_id);
                             if (To_Email != "") {
                                 $("#To_Email").html(To_Email + ';' + resouEmail);
-
                             } else {
                                 $("#To_Email").html(resouEmail);
                             }
                         }
-                    }
-                }
-            }
-        }
-
-        var CcMeSum = 0;
-        function CcToMe() {
-            var userEmail = GetMeEmail();
-            if (userEmail != "") {
-                if (CcMeSum == 0) {
-                    CcMeSum += 1;
-                    $("#NoCcMe").val("1");
-                    var Cc_Email = $("#Cc_Email").html();
-                    if (Cc_Email != "") {
-                        $("#Cc_Email").html(Cc_Email + ';' + userEmail);
                     } else {
-                        $("#Cc_Email").html(userEmail);
+                        $("#NoToProlead").val(owner_resource_id);
+                        if (To_Email != "") {
+                            $("#To_Email").html(To_Email + ';' + resouEmail);
+
+                        } else {
+                            $("#To_Email").html(resouEmail);
+                        }
                     }
                 }
             }
         }
-        function OpenSelectPage(val) {
-            // var account_id = $("#account_idHidden").val();
-            var url = "RecipientSelector?account_id=<%=thisProject.account_id %>&thisType=" + val;
+    }
+
+    var CcMeSum = 0;
+    function CcToMe() {
+        var userEmail = GetMeEmail();
+        if (userEmail != "") {
+            if (CcMeSum == 0) {
+                CcMeSum += 1;
+                $("#NoCcMe").val("1");
+                var Cc_Email = $("#Cc_Email").html();
+                if (Cc_Email != "") {
+                    $("#Cc_Email").html(Cc_Email + ';' + userEmail);
+                } else {
+                    $("#Cc_Email").html(userEmail);
+                }
+            }
+        }
+    }
+    function OpenSelectPage(val) {
+        // var account_id = $("#account_idHidden").val();
+        var url = "RecipientSelector?account_id=<%=thisProject.account_id %>&thisType=" + val;
 
         var NoContactIds = $("#No" + val + "ContactIds").val();
         if (NoContactIds != "") {
@@ -2068,59 +2419,58 @@
             LayerMsg("请填写任务标题！");
             return false;
         }
-        // status_id
-        var status_id = $("#status_id").val();
-        if (status_id == "" || status_id == "0" || status_id == undefined) {
-            LayerMsg("请选择状态！");
-            return false;
-        }
-        var DisplayInCapYes = $("#DisplayInCapYes").is(":checked");
-        var DisplayInCapYesNoComplete = $("#DisplayInCapYesNoComplete").is(":checked");
-        var DisplayInCapNone = $("#DisplayInCapNone").is(":checked");
-        if ((!DisplayInCapYes) && (!DisplayInCapYes) && (!DisplayInCapYes)) {
-            LayerMsg("请选择显示在客户端！");
-            return false;
-        }
-        // template_id
-        var TaskTypeFixedWork = $("#TaskTypeFixedWork").is(":checked");
-        var TaskTypeFixedDuration = $("#TaskTypeFixedDuration").is(":checked");
-
-        if ((!TaskTypeFixedWork) && (!TaskTypeFixedDuration)) {
-            LayerMsg("请选择任务类型！");
-            return false;
-        }
-        var template_id = $("#template_id").val();
-        if (template_id == undefined || template_id == "" || template_id == "0") {
-            LayerMsg("请选择通知模板！");
-            return false;
-        }
-        //  选择团队，工作类型必填
-        var WorkType = $("#WorkType").val();
-        if (WorkType == "" || WorkType == "0") {
-            var owner_resource_idHidden = $("#owner_resource_idHidden").val();
-            var resDepIdsHidden = $("#resDepIdsHidden").val();
-            if (owner_resource_idHidden != "" || resDepIdsHidden != "") {
-                LayerMsg("请选择工作类型！");
+            // status_id
+                 <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
+    { %>
+            var status_id = $("#status_id").val();
+            if (status_id == "" || status_id == "0" || status_id == undefined) {
+                LayerMsg("请选择状态！");
                 return false;
             }
-        }
+            var DisplayInCapYes = $("#DisplayInCapYes").is(":checked");
+            var DisplayInCapYesNoComplete = $("#DisplayInCapYesNoComplete").is(":checked");
+            var DisplayInCapNone = $("#DisplayInCapNone").is(":checked");
+            if ((!DisplayInCapYes) && (!DisplayInCapYesNoComplete) && (!DisplayInCapNone)) {
+                LayerMsg("请选择显示在客户端！");
+                return false;
+            }
+            // template_id
+            var TaskTypeFixedWork = $("#TaskTypeFixedWork").is(":checked");
+            var TaskTypeFixedDuration = $("#TaskTypeFixedDuration").is(":checked");
 
-        if (status_id == '<%=EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
+            if ((!TaskTypeFixedWork) && (!TaskTypeFixedDuration)) {
+                LayerMsg("请选择任务类型！");
+                return false;
+            }
+            var template_id = $("#template_id").val();
+            if (template_id == undefined || template_id == "" || template_id == "0") {
+                LayerMsg("请选择通知模板！");
+                return false;
+            }
+            //  选择团队，工作类型必填
+            var WorkType = $("#WorkType").val();
+            if (WorkType == "" || WorkType == "0") {
+                var owner_resource_idHidden = $("#owner_resource_idHidden").val();
+                var resDepIdsHidden = $("#resDepIdsHidden").val();
+                if (owner_resource_idHidden != "" || resDepIdsHidden != "") {
+                    LayerMsg("请选择工作类型！");
+                    return false;
+                }
+            }
+
+            if (status_id == '<%=EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
             // 系统设置
             <%var thisSet = new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.PRO_TASK_DONE_REASON);
     if (thisSet != null && thisSet.setting_value == "1")
     {%>
-            $("#CompletionReasonDialog").show();
-            $("#BackgroundOverLay").show();
+                $("#CompletionReasonDialog").show();
+                $("#BackgroundOverLay").show();
     <%}
     %>
 
             return false;
+            }
+                <%}%>
+            return true;
         }
-
-        // todo 状态是完成则弹窗填写理由
-
-        return true;
-    }
-
 </script>
