@@ -15,6 +15,8 @@ namespace EMT.DoneNOW.Core
 
         [Key]
         [DataMember]
+        public Int64 id { get; set; }
+        [DataMember]
         public Int64 account_id { get; set; }
         [DataMember]
         public Int32? quote_tmpl_id { get; set; }

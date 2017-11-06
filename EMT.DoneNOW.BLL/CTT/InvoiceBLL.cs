@@ -20,7 +20,7 @@ namespace EMT.DoneNOW.BLL
             Dictionary<string, object> dic = new Dictionary<string, object>();
             dic.Add("invoice_tmpl", new sys_quote_tmpl_dal().GetInvoiceTemp());  // 发票模板
             dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));
-            dic.Add("email_temp", new sys_quote_email_tmpl_dal().GetEmailTemlList());
+            dic.Add("email_temp", new sys_quote_email_tmpl_dal().GetInvoiceEmailTemlList());
             dic.Add("department", new sys_department_dal().GetDepartment());
             dic.Add("contract_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CONTRACT_TYPE)));
             dic.Add("contract_cate", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CONTRACT_CATE)));
@@ -395,9 +395,10 @@ namespace EMT.DoneNOW.BLL
 
             param.accRef.update_user_id = user.id;
             param.accRef.update_time = param.accRef.create_time;
-            var oldAccRef = new crm_account_reference_dal().GetAccountRef(param.accRef.account_id);
+            var oldAccRef = new crm_account_reference_dal().GetAccountInvoiceRef(param.accRef.account_id);
             if (oldAccRef == null)
             {
+                param.accRef.id = new crm_account_reference_dal().GetNextIdCom();
                 param.accRef.create_user_id = user.id;
                 param.accRef.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 new crm_account_reference_dal().Insert(param.accRef);

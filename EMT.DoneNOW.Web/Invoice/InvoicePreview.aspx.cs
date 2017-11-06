@@ -281,7 +281,7 @@ namespace EMT.DoneNOW.Web.Invoice
                 }
                 if (account != null)
                 {
-                    var thisAccRef = new crm_account_reference_dal().GetAccountRef(account.id);
+                    var thisAccRef = new crm_account_reference_dal().GetAccountInvoiceRef(account.id);
                     if (thisAccRef != null && thisAccRef.invoice_tmpl_id != null)
                     {
                         var thisTemp = new sys_quote_tmpl_dal().FindNoDeleteById((long)thisAccRef.invoice_tmpl_id);

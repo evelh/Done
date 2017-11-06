@@ -196,18 +196,22 @@ namespace EMT.DoneNOW.BLL
             html.Append($"<div class='PostContent' style='width:auto;padding-right:10px;'><a class='PostContentName'>{att.resource_name}</a>");
             if (att.resource_id != userId && !string.IsNullOrEmpty(att.resource_email))
                 html.Append($"<a href='mailto:{att.resource_email}' class='SmallLink'>发送邮件</a>");
-            html.Append($"<a title='{att.att_filename}' onclick='OpenAttachment({att.id})' ><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{att.act_name}</span></a>");
-            
+
+            if (att.att_type_id == (int)DicEnum.ATTACHMENT_TYPE.URL)
+                html.Append($"<a title='{att.att_filename}' onclick=\"OpenAttachment({att.id},1,'{att.att_filename}')\" ><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{att.act_name}</span></a>");
+            else
+                html.Append($"<a title='{att.att_filename}' onclick=\"OpenAttachment({att.id},0,'')\" ><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{att.act_name}</span></a>");
+
             html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
             html.Append($"{att.act_date}</span>");
             html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.ATTACHMENT},{att.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({att.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.ATTACHMENT})' class='CommentLink'>添加附件</a><a onclick='AttDelete({att.id})' class='CommentLink'>删除</a>");
             html.Append("</div></div>");
-            if (att.att_type_id==(int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
+            if (att.att_type_id == (int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
             {
                 var file = new AttachmentBLL().GetAttachment(att.id);
-                if (file.content_type!=null&&file.content_type.ToLower().IndexOf("image") == 0)
+                if (file.content_type != null && file.content_type.ToLower().IndexOf("image") == 0)
                 {
-                    html.Append($"<a><img src='..{file.href}' /></a>");
+                    html.Append($"<a><img src='..{file.href}' style='width:50px;height:50px;' /></a>");
                 }
             }
             html.Append("</div>");

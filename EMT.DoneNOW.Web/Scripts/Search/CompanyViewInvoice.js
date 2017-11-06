@@ -1,0 +1,1 @@
+﻿document.write("<script src='../Scripts/Search/Invoice_History.js' type='text/javascript'></script>");

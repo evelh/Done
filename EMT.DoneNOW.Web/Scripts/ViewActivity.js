@@ -107,6 +107,9 @@ function AttDelete(id) {
         })
     }, function () { })
 }
-function OpenAttachment(id) {
-    window.open("../Activity/OpenAttachment.aspx?id=" + id, windowType.blank, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+function OpenAttachment(id, isUrl, name) {
+    if (isUrl==1)
+        window.open(name, windowType.blank, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+    else
+        window.open("../Activity/OpenAttachment.aspx?id=" + id, windowType.blank, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
 }

@@ -405,7 +405,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.Quote:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑报价", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "报价参数设定", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "报价参数设定", click_function = "QuotePref()" });
                     contextMenu.Add(new PageContextMenuDto { text = "报价项管理", click_function = "QuoteManage()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看商机", click_function = "ViewOpp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
@@ -649,6 +649,19 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "调整服务/服务包", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑发票描述", click_function = "EditDescription()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.CompanyViewContract:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑合同", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看合同", click_function = "ViewContract()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "续约", click_function = "RenewContract()", id = "RenewContract" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制合同", click_function = "CopyContract()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除合同", click_function = "DeleteContract()" });
+                    break;
+                case (long)QueryType.CompanyViewInvoice:
+                    contextMenu.Add(new PageContextMenuDto { text = "查看发票", click_function = "InvoiceView()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "作废发票", click_function = "VoidInvoice()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "作废发票并取消审批", click_function = "VoidInvoiceAndUnPost()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "发票设置", click_function = "InvoiceEdit()" });
                     break;
                 default:
                     break;

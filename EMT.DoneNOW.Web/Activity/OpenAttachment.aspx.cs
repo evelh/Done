@@ -13,6 +13,7 @@ namespace EMT.DoneNOW.Web.Activity
 {
     public partial class OpenAttachment : BasePage
     {
+        protected string filePath = null;
         private AttachmentBLL bll = new AttachmentBLL();
 
         protected void Page_Load(object sender, EventArgs e)
@@ -32,6 +33,15 @@ namespace EMT.DoneNOW.Web.Activity
                 Response.BinaryWrite(bytes);
                 Response.Buffer = true;
                 Response.Flush();
+            }
+            else if (att.type_id == (int)DicEnum.ATTACHMENT_TYPE.URL)
+            {
+                Response.RedirectLocation = att.urlpath;
+            }
+            else if (att.type_id == (int)DicEnum.ATTACHMENT_TYPE.FILE_LINK
+                || att.type_id == (int)DicEnum.ATTACHMENT_TYPE.FOLDER_LINK)
+            {
+                filePath = att.filename;
             }
         }
     }

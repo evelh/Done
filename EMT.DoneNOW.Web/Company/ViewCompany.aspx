@@ -43,11 +43,10 @@
           <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=confirgItem">配置项</a></li>
           <li>财务</li>
           <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=contract">合同</a></li>
-          <li>发票</li>
+          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=invoice">发票</a></li>
           <li><a onclick="window.open('../Invoice/PreferencesInvoice.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREFERENCE %>','left=200,top=200,width=900,height=750', false);">发票参数设定</a></li>
-          <li>报价参数设定</li>
-
-          <li>附件</li>
+          <li><a onclick="window.open('../Quote/PreferencesQuote.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuotePreference %>','left=200,top=200,width=900,height=750', false);">报价参数设定</a></li>
+          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=attachment">附件</a></li>
           <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=Subsidiaries">子客户</a></li>
         </ul>
       </i>
@@ -65,8 +64,8 @@
           <ul>
             <li><a href="#" onclick="window.open('AddCompany.aspx?id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=960,height=750', false);">客户</a></li>
             <li>工单</li>
-            <li>待办</li>
-            <li>客户备注</li>
+            <li><a href="#" onclick="window.open('../Activity/Todos.aspx?accountId=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=730,height=750', false);">待办</a></li>
+            <li><a href="#" onclick="window.open('../Activity/Notes.aspx?accountId=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=730,height=750', false);">客户备注</a></li>
             <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
             <li><a href="#" onclick="window.open('../Contact/AddContact.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left=200,top=200,width=900,height=750', false);">联系人</a></li>
             <li><%if (account.parent_id == null)
@@ -78,7 +77,7 @@
                             <%} %>
             </li>
             <li><a href="#" onclick="window.open('../ConfigurationItem/AddOrEditConfigItem.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.AddInstalledProduct %>','left=200,top=200,width=900,height=750', false);">配置项</a></li>
-            <li>附件</li>
+            <li><a href="#" onclick="window.open('../Activity/AddAttachment?objId=<%=account.id %>&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.COMPANY %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.AttachmentAdd %>','left=200,top=200,width=730,height=750', false);">附件</a></li>
           </ul>
         </li>
 
@@ -106,11 +105,10 @@
         { %>
     <div class="text warn"><%=alert.alert_text %></div>
     <%} %>
-    <h1 style="margin-left: 10px; font-size: 15px; font-weight: bolder; color: #4F4F4F; margin-top: 10px;"><span id="acType">活动</span>-<%=account.name %></h1>
+    <h1 style="margin-left: 10px; font-size: 15px; font-weight: bolder; color: #4F4F4F; margin-top: 10px;"><%=actType %>-<%=account.name %></h1>
     <div <%if (type == "activity" || type == "note" || type == "todo") { %> style="margin-left:280px;margin-right:10px;" <%}else{ %> style="margin-left:10px;margin-right:10px;" <% } %>>
     <div class="activityTitleleft fl" id="showCompanyGeneral" style="margin-left: -270px;">
       <input type="hidden" id="isHide" runat="server" value="hide" />
-      <input type="hidden" id="activitytype" runat="server" value="" />
       <input type="hidden" id="account_id" value="<%=account.id %>" />
       <%-- 客户的基本信息 --%>
       <div class="address">
@@ -579,27 +577,7 @@
             $("#showCompanyGeneral").hide();
         }
         $("#viewCompany_iframe").attr("onLoad", iFrameHeight);
-        var type = $("#activitytype").val();
-        if (type == "activity") {
-            $("#acType").text("活动");
-        } else if (type == "note") {
-            $("#acType").text("备注");
-        } else if (type == "todo") {
-            $("#acType").text("待办");
-        } else if (type == "opportunity") {
-          $("#acType").text("商机");
-        } else if (type == "contact") {
-          $("#acType").text("联系人");
-        } else if (type == "saleOrder") {
-          $("#acType").text("销售订单");
-        } else if (type == "confirgItem") {
-          $("#acType").text("配置项");
-        } else if (type == "contract") {
-          $("#acType").text("合同");
-        } else if (type == "Subsidiaries") {
-          $("#acType").text("子客户");
-        }
-
+        
   })
 
       var Height = $(window).height() - 130 + "px";

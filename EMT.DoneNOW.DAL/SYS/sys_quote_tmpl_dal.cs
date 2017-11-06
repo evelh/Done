@@ -160,6 +160,11 @@ namespace EMT.DoneNOW.DAL
             return list;
         }
 
+        /// <summary>
+        /// 获取报价模板
+        /// </summary>
+        /// <param name="where"></param>
+        /// <returns></returns>
         public List<sys_quote_tmpl> GetQuoteTemp(string where = "")
         {
             if (where == "")

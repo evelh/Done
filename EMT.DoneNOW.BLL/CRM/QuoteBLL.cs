@@ -35,7 +35,7 @@ namespace EMT.DoneNOW.BLL
 
             dic.Add("taxRegion", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.TAX_REGION)));              // 税区
             dic.Add("quote_tmpl", new sys_quote_tmpl_dal().GetQuoteTemp());
-
+            dic.Add("email_tmpl", new sys_quote_email_tmpl_dal().GetQuoteEmailTemlList());
 
 
 
@@ -703,7 +703,61 @@ namespace EMT.DoneNOW.BLL
             return ERROR_CODE.SUCCESS;
         }
 
+        /// <summary>
+        /// 报价参数设置
+        /// </summary>
+        /// <param name="quoteRef"></param>
+        /// <param name="emailQuoteContact">是否通知报价联系人</param>
+        /// <param name="emailAccountResource">是否通知客户经理</param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool PreferencesQuote(crm_account_reference quoteRef, bool emailQuoteContact, bool emailAccountResource, long userId)
+        {
+            crm_account_reference_dal refDal = new crm_account_reference_dal();
+            var oldPref = refDal.GetAccountQuoteRef(quoteRef.account_id);
+            crm_account_reference newPref;
+            if (oldPref == null)
+                newPref = new crm_account_reference();
+            else
+                newPref = refDal.GetAccountQuoteRef(quoteRef.account_id);
 
+            newPref.account_id = quoteRef.account_id;
+            newPref.quote_tmpl_id = quoteRef.quote_tmpl_id;
+            newPref.quote_email_message_tmpl_id = quoteRef.quote_email_message_tmpl_id;
+            newPref.invoice_tmpl_id = null;
+            newPref.invoice_email_message_tmpl_id = null;
+            newPref.email_to_contacts = quoteRef.email_to_contacts;
+            newPref.email_to_others = quoteRef.email_to_others;
+            newPref.email_bcc_resources = quoteRef.email_bcc_resources;
+            if (emailAccountResource)
+            {
+                var account = new CompanyBLL().GetCompany(newPref.account_id);
+                if (account.resource_id != null)
+                    newPref.email_bcc_account_manager = account.resource_id.ToString();
+            }
+            newPref.email_notes = quoteRef.email_notes;
+
+            newPref.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            newPref.update_user_id = userId;
+            if (oldPref==null)
+            {
+                newPref.create_time = newPref.update_time;
+                newPref.create_user_id = userId;
+                newPref.id = refDal.GetNextIdCom();
+
+                refDal.Insert(newPref);
+
+                OperLogBLL.OperLogAdd<crm_account_reference>(newPref, newPref.id, userId, OPER_LOG_OBJ_CATE.REFERENCE, "添加客户报价参数");
+            }
+            else
+            {
+                refDal.Update(newPref);
+
+                OperLogBLL.OperLogUpdate<crm_account_reference>(oldPref, newPref, newPref.id, userId, OPER_LOG_OBJ_CATE.REFERENCE, "修改客户报价参数");
+            }
+
+            return true;
+        }
 
 
 
