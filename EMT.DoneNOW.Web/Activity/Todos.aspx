@@ -60,7 +60,7 @@
                     <input type="text" readonly="readonly" id="AccountName" <%if (note != null && note.account_id != null)
                         { %>
                       value="<%=new EMT.DoneNOW.BLL.CompanyBLL().GetCompany((long)note.account_id).name %>" <%} %> />
-                    <i onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=AccountName&callBack=GetCtcOppt', '<%=EMT.DoneNOW.DTO.OpenWindow.BillCodeCallback %>', 'left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
+                    <i id="AccountSelect" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=AccountName&callBack=GetCtcOppt', '<%=EMT.DoneNOW.DTO.OpenWindow.BillCodeCallback %>', 'left=200,top=200,width=600,height=800', false)" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
                     <i onclick="ViewCompany()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/view.png) no-repeat;"></i>
                   </div>
                 </td>
@@ -178,12 +178,8 @@
                   </div>
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <textarea name="description"><%=note == null ? "" : note.description %></textarea>
-                </td>
-              </tr>
             </table>
+            <textarea name="description" style="margin-left:135px;width:520px;"><%=note == null ? "" : note.description %></textarea>
           </div>
         </div>
         <div class="information clear">
@@ -227,8 +223,10 @@
       </div>
     </div>
     <input type="hidden" id="action" name="action" />
-    <input type="hidden" id="id" name="id" <%if (note != null)
-        { %> value="<%=note.id %>" <%} %> />
+    <input type="hidden" id="id" name="id" <%if (note != null) { %> value="<%=note.id %>" <%} %> />
+    <input type="hidden" id="accountId" value="<%=accountId %>" />
+    <input type="hidden" id="contactId" value="<%=contactId %>" />
+    <input type="hidden" id="opportunityId" value="<%=opportunityId %>" />
   </form>
   <script type="text/javascript" src="../Scripts/jquery-3.1.0.min.js"></script>
   <script type="text/javascript" src="../Scripts/common.js"></script>
@@ -288,27 +286,50 @@
         });
       }
     }
+    window.onload = function () {
+      if ($("#accountId").val() != "") {
+        $("#AccountSelect").hide();
+        $.ajax({
+          type: "GET",
+          async: false,
+          url: "../Tools/CompanyAjax.ashx?act=property&account_id=" + $("#accountId").val() + "&property=name",
+          success: function (data) {
+            if (data != "") {
+              $("#AccountNameHidden").val($("#accountId").val());
+              $("#AccountName").val(data);
+            }
+          },
+        });
+        GetCtcOppt();
+      }
+      if ($("#contactId").val() != "") {
+        $("#contact_id").val($("#contactId").val());
+      }
+      if ($("#opportunityId").val() != "") {
+        $("#opportunity_id").val($("#opportunityId").val());
+      }
+    }
     function ViewCompany() {
       var account_id = $("#AccountNameHidden").val();
-      if (account_id != "") {
+      if (account_id != "" && account_id != 0) {
         window.open('../Company/ViewCompany.aspx?id=' + account_id, '_blank', 'left=200,top=200,width=1200,height=1000', false);
       }
     }
     function ViewContact() {
       var contact_id = $("#contact_id").val();
-      if (contact_id != "") {
+      if (contact_id != "" && contact_id != 0) {
         window.open('../Contact/ViewContact.aspx?id=' + contact_id, '_blank', 'left=200,top=200,width=1200,height=1000', false);
       }
     }
     function ViewOpportunity() {
       var opportunity_id = $("#opportunity_id").val();
-      if (opportunity_id != "") {
+      if (opportunity_id != "" && opportunity_id != 0 && opportunity_id != null) {
         window.open('../Opportunity/ViewOpportunity.aspx?id=' + opportunity_id, '_blank', 'left=200,top=200,width=1200,height=1000', false);
       }
     }
     function ViewContract() {
       var contract_id = $("#ContractNameHidden").val();
-      if (contract_id != "") {
+      if (contract_id != "" && contract_id != 0) {
         window.open('../Contract/ContractView.aspx?id=' + contract_id, '_blank', 'left=200,top=200,width=1200,height=1000', false);
       }
     }

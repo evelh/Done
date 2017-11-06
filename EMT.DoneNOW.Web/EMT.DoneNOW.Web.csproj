@@ -326,6 +326,7 @@
     <Content Include="QuoteTemplate\QuoteTemplatePropertiesEdit.aspx" />
     <Content Include="Images\classfication.png" />
     <Content Include="QuoteTemplate\QuoteTemplateToPDF.aspx" />
+    <Content Include="Quote\PreferencesQuote.aspx" />
     <Content Include="Quote\QuoteAddAndUpdate.aspx" />
     <Content Include="Quote\QuoteClose.aspx" />
     <Content Include="Quote\QuoteLost.aspx" />
@@ -738,8 +739,11 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Common\SearchBody.js" />
+    <Content Include="Scripts\Search\CompanyViewContract.js" />
+    <Content Include="Scripts\Search\CompanyViewInvoice.js" />
     <Content Include="Scripts\Search\Contract.js" />
     <Content Include="Scripts\Search\CRMNote.js" />
+    <Content Include="Scripts\Search\Invoice_History.js" />
     <Content Include="Scripts\Search\Todos.js" />
     <Content Include="Scripts\SysSettingRoles.js" />
     <Content Include="Scripts\sysset_users.js" />
@@ -1602,6 +1606,13 @@
     </Compile>
     <Compile Include="QuoteItem\QuoteItemAddAndUpdate.aspx.designer.cs">
       <DependentUpon>QuoteItemAddAndUpdate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Quote\PreferencesQuote.aspx.cs">
+      <DependentUpon>PreferencesQuote.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Quote\PreferencesQuote.aspx.designer.cs">
+      <DependentUpon>PreferencesQuote.aspx</DependentUpon>
     </Compile>
     <Compile Include="Quote\QuoteAddAndUpdate.aspx.cs">
       <DependentUpon>QuoteAddAndUpdate.aspx</DependentUpon>

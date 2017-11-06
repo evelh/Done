@@ -321,7 +321,7 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void GetAccountReference(HttpContext context,long account_id)
         {
-            var accRef = new crm_account_reference_dal().GetAccountRef(account_id);
+            var accRef = new crm_account_reference_dal().GetAccountInvoiceRef(account_id);
             if (accRef != null)
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson(accRef));

@@ -219,6 +219,7 @@ var windowObj = {
     notes: 'notes',
     todos: 'todos',
     attachment: 'attachment',
+    invoice: 'invoice',
 }
 var windowType = {
     blank: '_blank',

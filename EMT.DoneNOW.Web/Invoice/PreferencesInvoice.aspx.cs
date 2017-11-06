@@ -53,7 +53,7 @@ namespace EMT.DoneNOW.Web.Invoice
 
                     account = new CompanyBLL().GetCompany(long.Parse(account_id));
                     contractList = new crm_contact_dal().GetContactByAccountId(account.id);
-                    accRef = new crm_account_reference_dal().GetAccountRef(account.id);
+                    accRef = new crm_account_reference_dal().GetAccountInvoiceRef(account.id);
                     if (accRef != null)
                     {
                         invoice_tmpl_id.SelectedValue = accRef.invoice_tmpl_id == null ? "0" : accRef.invoice_tmpl_id.ToString();

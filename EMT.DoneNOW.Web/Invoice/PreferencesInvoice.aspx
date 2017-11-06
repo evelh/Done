@@ -319,7 +319,6 @@
                 <input type="hidden" name="email_bcc_resources" id="email_bcc_resources" value="<%=accRef!=null?accRef.email_bcc_resources:"" %>"/>
                 <input type="hidden" name="email_bcc_account_manager" id="email_bcc_account_manager" value="<%=accRef!=null?accRef.email_bcc_account_manager:"" %>"/>
                 <input type="hidden" name="email_notes" id="email_notes" value="<%=accRef!=null?accRef.email_notes:"" %>"/>
-                <input type="hidden" name="" id="" value=""/>
             </div>
             <!--内容-->
             <div class="Content" style="display: none;">
@@ -406,19 +405,6 @@
                                                                     </td>
                                                                 </tr>
                                                                 <%} }%>
-                                                                <tr class="dataGridBody dataGridBodyHover" style="height:22px;">
-                                                                    <td align="center">
-                                                                            <span class="txtBlack8Class">
-                                                                                 <input type="checkbox" style="vertical-align: middle;">
-                                                                            </span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <span>Li, Hong</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <span>hong.li@itcat.net.cn</span>
-                                                                    </td>
-                                                                </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>

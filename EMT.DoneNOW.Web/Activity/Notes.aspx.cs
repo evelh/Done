@@ -17,6 +17,11 @@ namespace EMT.DoneNOW.Web.Activity
         protected List<crm_opportunity> opportunityList = null;     // 可选商机列表
         protected List<d_general> actionTypeList;                   // 活动类型列表
         protected List<DictionaryEntryDto> resourceList;            // 负责人列表
+
+        protected long accountId = 0;       // 初始客户id
+        protected long contactId = 0;       // 初始联系人id
+        protected long opportunityId = 0;   // 初始商机id
+
         private ActivityBLL bll = new ActivityBLL();
 
         protected void Page_Load(object sender, EventArgs e)
@@ -32,6 +37,20 @@ namespace EMT.DoneNOW.Web.Activity
                     note = bll.GetActivity(noteid);
                     contactList = new ContactBLL().GetContactByCompany((long)note.account_id);
                     opportunityList = new OpportunityBLL().GetOpportunityByCompany((long)note.account_id);
+                }
+
+                if (!long.TryParse(Request.QueryString["accountId"], out accountId))
+                    accountId = 0;
+                if (long.TryParse(Request.QueryString["contactId"], out contactId))
+                {
+                    accountId = new ContactBLL().GetContact(contactId).account_id;
+                }
+                if (long.TryParse(Request.QueryString["opportunityId"], out opportunityId))
+                {
+                    var opp = new OpportunityBLL().GetOpportunity(opportunityId).general;
+                    accountId = opp.account_id;
+                    if (opp.contact_id != null)
+                        contactId = (long)opp.contact_id;
                 }
             }
             else

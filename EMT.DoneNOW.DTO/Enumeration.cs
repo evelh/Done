@@ -524,7 +524,11 @@ namespace EMT.DoneNOW.DTO
             PROJECT_SEARCH= 1530,                   // 项目查询
             CRM_NOTE_SEARCH = 1531,                 // 客户备注查询
             TODOS = 1532,                           // 客户代办查询
-            TASK_PHASE = 1538,                      // 任务父阶段的查找带回
+            COMPANY_VIEW_CONTRACT = 1533,           // 客户详情-合同
+			TASK_PHASE = 1538,                      // 任务父阶段的查找带回
+            COMPANY_VIEW_INVOICE = 1534,            // 客户详情-发票查询
+            COMPANY_VIEW_ATTACHMENT = 1537,         // 客户详情-附件
+
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
@@ -1016,6 +1020,9 @@ namespace EMT.DoneNOW.DTO
         PROJECT_SEARCH=100,                  // 项目查询
         CRMNote = 101,                  // 客户备注查询
         Todos = 102,                    // 客户代办查询
+        CompanyViewContract = 103,      // 客户详情-合同
+        CompanyViewInvoice = 104,       // 客户详情-发票查询
+        CompanyViewAttachment = 107,    // 客户详情-附件
 
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
@@ -1069,6 +1076,7 @@ namespace EMT.DoneNOW.DTO
 
         TodoAdd = 150,                          // 新增活动
         NoteAdd = 151,                          // 备注新增
+        AttachmentAdd,                          // 附件新增
 
         RoleSelect = 160,                        // 角色查询
         ResourceSelect = 161,                    // 员工的查找带回
@@ -1125,21 +1133,21 @@ namespace EMT.DoneNOW.DTO
         BillCodeCallback,                       // 计费代码查找带回
 
 
-        VendorAdd = 320,                          //添加供应商
-        TerritorySource = 321,                   //地域带回员工
-        VendorSelect = 322,                    //查找供应商
-        TERRITORY=323,                             //添加地域
-        MARKET_SEGMENT=323,                        //添加市场
-        REGION=324,                                //添加区域
-        COMPETITOR=324,                            //添加竞争对手
-        ACTION_TYPE=325,                           //添加活动类型
-        OPPORTUNITY_STAGE=326,                     //添加商机阶段
-        OPPORTUNITY_SOURCE=327,                    //添加商机来源
-        NAME_SUFFIX=328,                           //添加姓名后缀
-        SysOPPORTUNITY_ADVANCED_FIELD = 329,        //添加商机扩展字段
+        VendorAdd,                          //添加供应商
+        TerritorySource,                   //地域带回员工
+        VendorSelect,                    //查找供应商
+        TERRITORY,                             //添加地域
+        MARKET_SEGMENT,                        //添加市场
+        REGION,                                //添加区域
+        COMPETITOR,                            //添加竞争对手
+        ACTION_TYPE,                           //添加活动类型
+        OPPORTUNITY_STAGE,                     //添加商机阶段
+        OPPORTUNITY_SOURCE,                    //添加商机来源
+        NAME_SUFFIX,                           //添加姓名后缀
+        SysOPPORTUNITY_ADVANCED_FIELD,        //添加商机扩展字段
 
-        Inventory =330,                             //产品库存编辑
-        InventoryTransfer=331,                     //移库
+        Inventory,                             //产品库存编辑
+        InventoryTransfer,                     //移库
 
         Resource=340,                              //员工信息展示
         ResourceCopy = 341,                        //复制员工信息
@@ -1174,17 +1182,21 @@ namespace EMT.DoneNOW.DTO
         GeneralAddAndEdit=410,                         //general表的新增和修改
         GeneralJs=411,                                 //注册js语句
 
+        QuotePreference,                        // 客户报价参数设置
+
         QuoteBodyItem=420,                             //打开报价模板编辑
         EmailTemp=421,                                 //邮件模板
 
         PROJECT_RECIPIENTSELECTOR=430,              // 通知邮件配置
 
-        PROJECT_ADD = 440,                          // 项目新增
-        PROJECT_EDIT = 441,                         // 项目编辑
-        PROJECT_VIEW = 442,                         // 项目查看
 
-        TASKPHASE_CALLBACK=450,       // task阶段的查找带回
-        TaskAdd=451,                 // task新增
-        taskEdit = 452,              // task修改
+        PROJECT_ADD ,                          // 项目新增
+        PROJECT_EDIT ,                         // 项目编辑
+        PROJECT_VIEW ,                         // 项目查看
+
+        TASKPHASE_CALLBACK,       // task阶段的查找带回
+        TaskAdd,                 // task新增
+        taskEdit ,              // task修改
+
     }
 }
