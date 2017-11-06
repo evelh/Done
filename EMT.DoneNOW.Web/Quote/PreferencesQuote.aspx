@@ -56,8 +56,8 @@
                               <asp:DropDownList ID="quote_tmpl_id" runat="server" Width="250px"></asp:DropDownList>
                               <img src="../Images/add.png" style="vertical-align: middle;" />
                               <input type="hidden" name="account_id" value="<%=accountId %>" />
-                              <input type="hidden" name="email_to_contacts" id="email_to_contacts" />
-                              <input type="hidden" name="email_bcc_resources" id="email_bcc_resources" />
+                              <input type="hidden" name="email_to_contacts" id="email_to_contacts" value="<%=(accRef==null?"":accRef.email_to_contacts) %>" />
+                              <input type="hidden" name="email_bcc_resources" id="email_bcc_resources" value="<%=(accRef==null?"":accRef.email_bcc_resources) %>" />
                             </div>
                           </td>
                         </tr>
@@ -93,7 +93,7 @@
                               报价联系人（发送）
                             </div>
                             <div>
-                              <input type="checkbox" id="chooseManage" name="chooseManage" style="vertical-align: middle;" />
+                              <input type="checkbox" id="chooseManage" name="chooseManage" <%if (accRef != null && !string.IsNullOrEmpty(accRef.email_bcc_account_manager)) { %> checked="checked" <%} %> style="vertical-align: middle;" />
                               客户经理（密送）
                             </div>
                           </td>
@@ -169,7 +169,7 @@
                           <td class="FieldLabel" colspan="2">员工（发送，多个用半角逗号分隔）
                             <span class="FieldLevelInstruction"></span>
                             <div>
-                              <input type="text" name="email_to_others" id="email_to_others" style="width: 636px;" value="" />
+                              <input type="text" name="email_to_others" id="email_to_others" style="width: 636px;" value="<%=(accRef==null?"":accRef.email_to_others) %>" />
                             </div>
                           </td>
                         </tr>
@@ -203,7 +203,7 @@
             <div>
               <label style="cursor:auto;font-weight:bold;color:#4F4F4F">邮件备注</label>
             </div>
-            <textarea style="width:636px;height:86px;" name="email_notes"></textarea>
+            <textarea style="width:636px;height:86px;" name="email_notes"><%=(accRef==null?"":accRef.email_notes) %></textarea>
           </div>
         </div>
       </div>
@@ -257,8 +257,24 @@
           sourceIds = sourceIds.substring(0, sourceIds.length - 1);
           $("#email_bcc_resources").val(sourceIds);
         }
-
     }
+
+    $(function () {
+      var contactIds = $("#email_to_contacts").val();
+      if (contactIds != "") {
+        var contactArr = contactIds.split(',');
+        for (var i = 0; i < contactArr.length; i++) {
+          $("#" + contactArr[i] + "_check").prop("checked", true);
+        }
+      }
+      var sourceIds = $("#email_bcc_resources").val();
+      if (sourceIds != "") {
+        var sourceArr = sourceIds.split(',');
+        for (var i = 0; i < sourceArr.length; i++) {
+          $("#" + sourceArr[i] + "_check").prop("checked", true);
+        }
+      }
+    })
   </script>
 </body>
 </html>

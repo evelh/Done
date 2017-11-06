@@ -759,7 +759,15 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
 
-
+        /// <summary>
+        /// 获取报价参数设置
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
+        public crm_account_reference GetQuoteRef(long accountId)
+        {
+            return new crm_account_reference_dal().GetAccountQuoteRef(accountId);
+        }
 
 
         public bool SetPrimaryQuote(long user_id, long quote_id)

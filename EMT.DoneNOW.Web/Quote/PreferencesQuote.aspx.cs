@@ -14,6 +14,7 @@ namespace EMT.DoneNOW.Web.Quote
     {
         protected List<crm_contact> contactList = null;
         protected List<sys_resource> resourceList = null;
+        protected crm_account_reference accRef = null;
         protected long accountId;
         private QuoteBLL bll = new QuoteBLL();
         protected void Page_Load(object sender, EventArgs e)
@@ -49,6 +50,13 @@ namespace EMT.DoneNOW.Web.Quote
                 quote_tmpl_id.DataTextField = "name";
                 quote_tmpl_id.DataSource = dic.FirstOrDefault(_ => _.Key == "quote_tmpl").Value;
                 quote_tmpl_id.DataBind();
+
+                accRef = bll.GetQuoteRef(accountId);
+                if (accRef != null)
+                {
+                    quote_tmpl_id.SelectedValue = accRef.quote_tmpl_id.ToString();
+                    quote_email_message_tmpl_id.SelectedValue = accRef.quote_email_message_tmpl_id.ToString();
+                }
             }
             else
             {
