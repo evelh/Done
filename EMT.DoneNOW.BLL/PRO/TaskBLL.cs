@@ -726,5 +726,241 @@ namespace EMT.DoneNOW.BLL
            
             return sorNo;
         }
+        /// <summary>
+        /// 返回阶段的预估时间
+        /// </summary>
+        public decimal ReturnPhaBugHours(long phase_id)
+        {
+            decimal hours = 0;
+            var thisPhase = _dal.FindNoDeleteById(phase_id);
+            if (thisPhase != null && thisPhase.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
+            {
+                var budList = new sdk_task_budget_dal().GetListByTaskId(thisPhase.id);
+                if(budList!=null&& budList.Count > 0)
+                {
+                    hours = budList.Sum(_ => _.estimated_hours);
+                }
+            }
+
+            return hours;
+        }
+
+        /// <summary>
+        /// 修改task的排序号(递归修改子节点排序号)
+        /// </summary>
+        public void ChangeTaskSortNo(string sortNo,long taskId, UserInfoDto user)
+        {
+            var thisTask = _dal.FindNoDeleteById(taskId);
+            if (thisTask != null)
+            {
+                var dateNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                var oldSortNo = thisTask.sort_order;  // oldSortNo会不会改变，待测试  todo-测试1539，110
+                thisTask.sort_order = sortNo;
+                OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                _dal.Update(thisTask);
+
+                var subTaskList = _dal.GetTaskByParentId(thisTask.id);
+                if (subTaskList != null && subTaskList.Count > 0)
+                {
+                    var parDepthNum = thisTask.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var thisSubTask in subTaskList)
+                    {
+                        var thisNoChaNo = thisSubTask.sort_order.Substring(oldSortNo.Length, thisSubTask.sort_order.Length-1);  // 获取到不会改变的部分 todo 临界值测试
+                        var newNo = thisTask.sort_order + thisNoChaNo;
+                        ChangeTaskSortNo(newNo,thisSubTask.id,user);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 通过父节点改变兄弟节点的排序号(补足空余排序号，同时修改本身的字节点的排序号) par_task_id为null 代表项目下的节点
+        /// </summary>
+        public void ChangBroTaskSortNoReduce(long project_id,long? par_task_id, UserInfoDto user)
+        {
+            var thisProject = new pro_project_dal().FindNoDeleteById(project_id);
+            
+            if (par_task_id == null)
+            {
+                var noParTaskList = _dal.GetNoParTaskByProId(project_id); // 为没有父节点的task排序
+                if(noParTaskList!=null&& noParTaskList.Count > 0)
+                {
+                    // 上一兄弟节点找不到，补到最小的可用的节点
+                    var nextNo = GetMinUserNoParSortNo(project_id);
+                   
+                    foreach (var noParTask in noParTaskList)
+                    {
+                        if (int.Parse(noParTask.sort_order) > int.Parse(nextNo))
+                        {
+                            ChangeTaskSortNo(nextNo,noParTask.id, user);
+                            //noParTask.sort_order = nextNo;
+                            //_dal.Update(noParTask);
+                            nextNo = GetMinUserNoParSortNo(project_id);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var parTask = _dal.FindNoDeleteById((long)par_task_id);
+                var thisparTaskMaxNo = GetMinUserSortNo((long)par_task_id);
+                var thisSubList = _dal.GetTaskByParentId((long)par_task_id);
+                if (thisSubList != null && thisSubList.Count > 0)
+                {
+                    var thisparTaskMaxNoArr = thisparTaskMaxNo.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                    var shoChaList = thisSubList.Where(_ =>
+                    {
+                        var result = false;
+                        var thisSortNoArr = _.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (int.Parse(thisSortNoArr[thisSortNoArr.Length - 1]) > int.Parse(thisparTaskMaxNoArr[thisparTaskMaxNoArr.Length - 1]))
+                        {
+                            result = true;
+                        }
+                        return result;
+                    }).ToList();
+
+                    if(shoChaList!=null&& shoChaList.Count > 0)
+                    {
+                        foreach (var thisSub in shoChaList)
+                        {
+                            ChangeTaskSortNo(thisparTaskMaxNo,thisSub.id,user);
+                            //thisSub.sort_order = thisparTaskMaxNo;
+                            //_dal.Update(thisSub);
+                            // 查日志
+                            thisparTaskMaxNo = GetMinUserSortNo(parTask.id);
+                            
+                        }
+                    }
+                    
+                }
+            }
+        }
+
+        public string GetMinUserNoParSortNo(long project_id)
+        {
+            var nextNo = "";
+            var noParTaskList = _dal.GetNoParTaskByProId(project_id); // 为没有父节点的task排序
+            if (noParTaskList != null && noParTaskList.Count > 0)
+            {
+                // 上一兄弟节点找不到，补到最小的可用的节点
+
+                foreach (var noParTask in noParTaskList)
+                {
+                    var thisNextNo = (int.Parse(noParTask.no) + 1).ToString("#00");
+                    if (!noParTaskList.Any(_ => _.sort_order == thisNextNo))
+                    {
+                        nextNo = thisNextNo;
+                    }
+                    if (nextNo != "")
+                    {
+                        break;
+                    }
+                }
+                if (nextNo == "")
+                {
+                    nextNo = ReturnSortOrder(project_id, null);
+                }
+            }
+            return nextNo;
+        }
+        /// <summary>
+        /// 获取到这个task下的最小的可用的排序号
+        /// </summary>
+        public string  GetMinUserSortNo(long task_id)
+        {
+            var sortNo = "";
+            var thisTask = _dal.FindNoDeleteById(task_id);
+            if (thisTask != null)
+            {
+                var thisSubTaskList = _dal.GetTaskByParentId(thisTask.id);
+                if (thisSubTaskList != null && thisSubTaskList.Count > 0)
+                {
+                    var nextNo = "";
+                    foreach (var thisSubTask in thisSubTaskList)
+                    {
+                        
+                        var thisNoArr = thisSubTask.no.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        var thisNextNo = thisTask.sort_order+"."+ (int.Parse(thisNoArr[thisNoArr.Length - 1])+1).ToString("#00");
+                        if (!thisSubTaskList.Any(_ => _.sort_order == thisNextNo))
+                        {
+                            nextNo = thisNextNo;
+                        }
+                        if (nextNo != "")
+                        {
+                            break;
+                        }
+                    }
+                    if (nextNo == "")
+                    {
+                        sortNo = ReturnSortOrder((long)thisTask.project_id,thisTask.id);
+                    }
+                    else
+                    {
+                        sortNo = nextNo;
+                    }
+                }
+                else
+                {
+                    sortNo = thisTask.no + ".01";
+                }
+            }
+            return sortNo;
+        }
+        /// <summary>
+        /// 新增兄弟节点，改变其他相关节点的位置
+        /// </summary>
+        /// <param name="taskId">要取代的task的id</param>
+        /// <param name="num"></param>
+        /// <param name="user"></param>
+        public void ChangeBroTaskSortNoAdd(long taskId,int num, UserInfoDto user)
+        {
+            // 1 获取到在这个task之后的task（包含它本身）
+            // 2 循环增加排序号（同时更新子节点相关排序号）
+
+            var thisTask = _dal.FindNoDeleteById(taskId);
+            if (thisTask != null)
+            {
+                List<sdk_task> subTaskList = new List<sdk_task>();
+                if (thisTask.parent_id == null)
+                {
+                    subTaskList = _dal.GetNoParTaskByProId((long)thisTask.project_id);
+                }
+                else
+                {
+                    subTaskList = _dal.GetTaskByParentId((long)thisTask.parent_id);
+                }
+
+                if (subTaskList != null && subTaskList.Count > 0)
+                {
+                    var thisNoArr = thisTask.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                    var thisNo = thisNoArr[thisNoArr.Length - 1];
+                    // 获取到需要改变的task
+                    var shoChaList = subTaskList.Where(_ =>
+                    {
+                        var result = false;
+                        var thisSortNoArr = _.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (int.Parse(thisSortNoArr[thisSortNoArr.Length - 1]) >= int.Parse(thisNo))
+                        {
+                            result = true;
+                        }
+                        return result;
+                    }).ToList();
+                    if(shoChaList!=null&& shoChaList.Count > 0)
+                    {
+                        shoChaList.Reverse();
+                        foreach (var shooChaTask in shoChaList)
+                        {
+                            var shooChaTaskNoArr = shooChaTask.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                            var lastshooChaTaskNo = shooChaTaskNoArr[shooChaTaskNoArr.Length - 1]; // 获取到末尾加一
+                            var thisNoChaNo = shooChaTask.sort_order.Substring(0, lastshooChaTaskNo.Length - 1);  // 获取到不会改变的部分 todo 临界值测试
+                            var newNo = thisNoChaNo + (int.Parse(lastshooChaTaskNo)+ num).ToString("#0.00");
+                            ChangeTaskSortNo(newNo, shooChaTask.id, user);
+                        }
+                    }
+
+                }
+            }
+
+        }
     }
 }

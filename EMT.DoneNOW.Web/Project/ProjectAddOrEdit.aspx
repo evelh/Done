@@ -1778,10 +1778,27 @@
                 success: function (data) {
                     if (data != "") {
                         $("#choProTaskList").html(data);
+                    } else {
+                        $("#choProTaskList").html("");
                     }
                 },
             });
+            $(".RowContainer .HighImportance>.Interaction").on("click", function () {
+                debugger;
+                var _this = $(this).parent();
+                _this.siblings().removeClass('Selected');
+                _this.addClass('Selected');
+                var str = _this.find('.DataDepth').attr('data-depth');
+                for (i in _this.nextAll()) {
+                    if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth')) {
+                        _this.addClass('Selected');
+                        _this.nextAll().eq(i).addClass('Selected');
 
+                    } else {
+                        return false;
+                    }
+                }
+            });
 
             $("#FirstStep2").hide();
           <%if (!string.IsNullOrEmpty(isFromTemp))

@@ -1,0 +1,523 @@
+body{
+    overflow: hidden;
+}
+/*顶部内容和帮助*/
+.TitleBar{
+    color: #fff;
+    background-color: #346a95;
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.TitleBar>.Title{
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 97%;
+}
+.text2{
+    margin-left: 5px;
+    font-weight: normal;
+}
+.help{
+    background-image: url(../Images/help.png);
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 16px;
+    border-radius: 50%;
+}
+/*按钮部分*/
+.ButtonContainer{
+    padding: 0 10px 10px 10px;
+    width: auto;
+    height: 26px;
+}
+.ButtonContainer ul li.Button{
+    margin-right: 5px;
+    vertical-align: top;
+    z-index: 21;
+}
+li.Button,a.Button{
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f0f0f0;
+    background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+    background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+    /*border: 1px solid #d7d7d7;*/
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: #4f4f4f;
+    cursor: pointer;
+    height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-decoration: none;
+}
+li.Button:hover{
+    background: transparent;
+}
+.Button>.Icon{
+    display: inline-block;
+    flex: 0 0 auto;
+    height: 16px;
+    margin: 0 3px;
+    width: 16px;
+}
+.Button>.Text{
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Table{
+    background: transparent url("../Images/table.png") no-repeat scroll;
+}
+.Add{
+    background: transparent url("../Images/add.png") no-repeat scroll;
+}
+.Down,.Right{
+    background: transparent url("../Images/down.png") no-repeat scroll;
+}
+.Export{
+    background: transparent url("../Images/export.png") no-repeat scroll;
+}
+.ColumnChooser{
+    background: transparent url("../Images/column-chooser.png") no-repeat scroll;
+}
+.Refresh{
+    background: transparent url("../Images/refresh.png") no-repeat scroll;
+}
+/*下拉菜单*/
+.DropDownButton {
+    background-color: #fff;
+    border: 1px solid #d7d7d7;
+    box-shadow: rgba(0,0,0,0.24) 2px 2px 3px 0;
+    display: none;
+    font-size: 12px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    z-index: 0;
+}
+.DropDownButtonDiv{
+    padding: 10px;
+    min-width: 140px;
+    max-width: 300px;
+}
+.DropDownButton .Group {
+    padding-bottom: 10px;
+}
+.DropDownButton .Group>.Heading {
+    border-bottom: 1px solid #d3d3d3;
+    margin-bottom: 2px;
+}
+.DropDownButton .Group>.Heading>.Text {
+    color: #333;
+    font-weight: bold;
+    display: inline;
+    font-size: 12px;
+    line-height: 20px;
+}
+.Button1,.Button2{
+    border: none;
+    display: flex;
+    margin: 0 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 3px 0;
+}
+.Button1:hover{
+    background: #e9f0f8;
+}
+.Button1>.Text,.Button2>.Text{
+    flex: 0 1 auto;
+    font-size: 12px;
+    font-weight: normal;
+    overflow: hidden;
+    padding: 0 3px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.Button2>.Text{
+    color: #c0c0c0;
+}
+/*表格部分*/
+/*表格头部*/
+.ScrollingContainer.ContainsGrid {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.Grid {
+    border-top: solid 1px #98b4ca;
+    font-size: 12px;
+}
+.Grid .HeaderContainer{
+    /*background-color: #cbd9e4;*/
+    border-left-color: #98b4ca;
+    border-right-color: #98b4ca;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    overflow: hidden;
+}
+.Grid .HeaderContainer td{
+    border-bottom-color: #98b4ca;
+    border-right-color: #98b4ca;
+    color: #64727a;
+}
+.Grid .HeaderContainer td {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    font-size: 12px;
+    font-weight: bold;
+    height: 15px;
+    padding: 3px 5px 3px 5px;
+    word-wrap: break-word;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.Grid .HeaderContainer td>.Standard {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+.Grid .HeaderContainer td>.Standard>div {
+    display: table-cell;
+}
+.DropDownButtonContainer {
+    height: 24px;
+    position: relative;
+}
+.Required {
+    color: #e51937;
+    padding-left: 2px;
+}
+.Grid .Dynamic {
+    width: auto;
+}
+.Grid td.Currency, .Grid td.Decimal, .Grid td.Integer, .Grid td.Percentage {
+    text-align: right;
+}
+.Grid td.Date, .Grid td.DateTime, .Grid td.Time, .Grid td.Boolean, .Grid td.Input, .Grid td.Image {
+    text-align: center;
+}
+.vm{
+    vertical-align: middle;
+    cursor: pointer
+}
+.DropDownButtonCss{
+    background: white url(../Images/down.png) no-repeat scroll;
+}
+/*表格主体*/
+.Grid .RowContainer {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    border-left: 1px solid #d7d7d7;
+    border-right: 1px solid #d7d7d7;
+    overflow-y: scroll;
+    overflow-x:scroll;
+}
+.Grid .RowContainer table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+.Grid table {
+    border-spacing: 0;
+}
+/*表格主体宽度*/
+.Grid col.Interaction {
+    width: 68px;
+}
+.Grid col.Context {
+    width: 33px;
+}
+.Grid col.Image {
+    width: 33px;
+}
+.Grid col.Nesting {
+    width: auto;
+}
+.Grid col.Currency, .Grid col.Decimal, .Grid col.Integer, .Grid col.LongInteger, .Grid col.Percentage, .Grid col.Time {
+    width: 100px;
+}
+.Grid colgroup.EditingEnabled>col.Date, .Grid colgroup.FilteringEnabled>col.Date {
+    width: 120px;
+}
+.Grid col.Large {
+    width: 150px;
+}
+.Grid col.DataSelector {
+    width: 120px;
+}
+.Grid col.Text {
+    width: 100px;
+}
+/*表格主体内容*/
+.Grid .RowContainer .Interaction.Prevent {
+    cursor: default;
+}
+.Grid .RowContainer tr.VeryHighImportance td, .Grid .RowContainer tr.VeryHighImportance td .Link {
+    font-weight: bold;
+}
+.Grid .RowContainer tr:first-child td {
+    border-top: none;
+}
+.Grid .RowContainer .Interaction>div>div {
+    /*display: table-cell;*/
+    word-wrap: break-word;
+}
+.Grid .RowContainer td.Interaction, .Grid .RowContainer tr.HighImportance td.Interaction {
+    background-color: #ebebeb;
+    border-bottom-color: #ccc;
+    border-left-color: #ebebeb;
+    border-right-color: #ccc;
+    border-top-color: #ccc;
+    cursor: pointer;
+}
+.Grid td.Actionable, .Grid td.Context, .Grid td.Icon {
+    padding-top: 0;
+    font-size: 0;
+}
+.Grid td.Actionable{
+    text-align: center;
+    cursor: pointer;
+}
+.Grid td.Actionable img{
+    vertical-align: middle;
+}
+.Grid .RowContainer td {
+    border: solid 1px #e8e8e8;
+    border-left-color: #f8f8f8;
+    border-right-color: #f8f8f8;
+    padding: 4px;
+    vertical-align: top;
+    word-wrap: break-word;
+}
+.Nav{
+    background: transparent url("../Images/nav.png") no-repeat scroll;
+}
+.Grid .RowContainer .Nesting>div {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+.Grid .RowContainer .Nesting>div>div {
+    display: table-cell;
+}
+.Grid .RowContainer .Nesting {
+    cursor: pointer;
+}
+.Grid .RowContainer .Nesting .IconContainer {
+    padding: 0 5px;
+    width: 16px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.Grid .RowContainer .Nesting>div>div.Value {
+    vertical-align: top;
+}
+.Grid .RowContainer .Nesting .IconContainer>.Toggle {
+    background: #d7d7d7;
+    background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #c6c6c6;
+    cursor: pointer;
+    display: inline-block;
+    height: 14px;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 14px;
+    vertical-align: top;
+}
+.Grid .RowContainer .Nesting .IconContainer>.Toggle.Collapse>.Vertical {
+    display: none;
+}
+.Grid .RowContainer .Nesting .IconContainer>.Toggle>.Vertical {
+    background-color: #888;
+    height: 8px;
+    left: 6px;
+    position: absolute;
+    top: 3px;
+    width: 2px;
+}
+.Grid .RowContainer .Nesting .IconContainer>.Toggle>.Horizontal {
+    background-color: #888;
+    height: 2px;
+    left: 3px;
+    position: absolute;
+    top: 6px;
+    width: 8px;
+}
+/*.Grid .RowContainer tr.HighImportance td, .Grid .RowContainer tr.HighImportance td .Link {
+    background-color: #f8f8f8;
+}*/
+.Grid .RowContainer tr.Selected td.Interaction {
+    background-color: #c7d0e0 !important;
+    border-right-color: #ccc;
+}
+.Grid .RowContainer tr.HighImportance.Selected td {
+    background-color: #e4eaf2;
+}
+.Grid .RowContainer tr.Selected td {
+    background-color: #e9f0f8;
+    border-left-color: #e9f0f8;
+    border-right-color: #e9f0f8;
+}
+.Decoration{
+    background: transparent url('../Images/dian.png') no-repeat;
+    width: 16px;
+    height: 16px;
+}
+
+
+
+/*日历弹框*/
+.AlertMessage>div {
+    background-color: #fff;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.AlertMessage{
+    height: 169px;
+    margin-left: -247px;
+    margin-top: -89px;
+    z-index: 10003;
+    width: 486px;
+    left: 50%;
+    position: fixed;
+    top: 50%;
+    background-color: #b9b9b9;
+    border: solid 4px #b9b9b9;
+    display: none;
+}
+.CancelDialogButton{
+    background-image: url(../Images/cancel1.png);
+    background-position: 0 -32px;
+    border-radius:50%;
+    cursor: pointer;
+    height: 32px;
+    position: absolute;
+    right: -14px;
+    top: -14px;
+    width: 32px;
+}
+.AlertTitleBar{
+    color: #fff;
+    background-color: #346a95;
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 38px;
+    margin: 0 0 10px 0;
+}
+.AlertTitle {
+    top: 0;
+    height: 36px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 80%;
+}
+.AlertContent{
+    top: 46px;
+    bottom: 0px;
+    left: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: absolute;
+    right: 0;
+    padding: 0 10px 0 10px;
+}
+.AlertContentTitle{
+    padding-bottom: 5px;
+    color: #666;
+    font-size: 12px;
+    overflow: hidden;
+}
+.ScrollingContainer {
+    left: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    padding: 0 10px 0 10px;
+    position: absolute;
+    right: 0;
+}
+.ScrollingContainer .Medium{
+    width: 446px;
+    padding: 12px 0 5px 0;
+    border: none;
+    margin: 0 0 12px 0;
+}
+.ScrollingContainer .Medium .Content{
+    padding-top: 0;
+    padding-left: 28px;
+    padding-right: 28px;
+}
+.StandardText {
+    font-size: 12px;
+    line-height: 16px;
+    padding-bottom: 7px;
+}
+.Confirmation{
+    padding: 20px 0 0 0;
+    width: auto;
+    height: 26px;
+}
+/*背景幕布*/
+#BackgroundOverLay{
+    width:100%;
+    height:100%;
+    background: black;
+    opacity: 0.6;
+    z-index: 25;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+

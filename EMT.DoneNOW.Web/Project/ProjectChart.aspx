@@ -11,7 +11,7 @@
         body {
             overflow: hidden;
         }
-        /*é¡¶éƒ¨å†…å®¹å’Œå¸®åŠ©*/
+
         .TitleBar {
             color: #fff;
             background-color: #346a95;
@@ -41,7 +41,7 @@
         }
 
         .help {
-            background-image: url(../img/help.png);
+            background-image: url(../Images/help.png);
             cursor: pointer;
             display: inline-block;
             height: 16px;
@@ -106,11 +106,11 @@
         }
 
         .Calendar {
-            background: transparent url("../img/calendar.png") no-repeat scroll;
+            background: transparent url("../Images/calendar.png") no-repeat scroll;
         }
 
         .Export {
-            background: transparent url("../img/export.png") no-repeat scroll;
+            background: transparent url("../Images/export.png") no-repeat scroll;
         }
 
         .ButtonContainer ul li.Button.SelectedState {
@@ -169,17 +169,6 @@
             text-align: center;
         }
 
-        .Gantt_divTableColumn {
-            display: table-cell;
-            overflow: hidden;
-            min-width: 32px;
-            max-width: 32px;
-            border-right: 1px solid #d7d7d7;
-            border-bottom: 1px solid #d7d7d7;
-            border-top: 1px solid #d7d7d7;
-            padding: 5px;
-        }
-
         #Gantt_headerTitle {
             height: 50px;
             width: 100%;
@@ -216,8 +205,8 @@
         .Gantt_divTableColumn {
             display: table-cell;
             overflow: hidden;
-            min-width: 32px;
-            max-width: 32px;
+            min-width: 15px;
+            max-width: 40px;
             border-right: 1px solid #d7d7d7;
             border-bottom: 1px solid #d7d7d7;
             border-top: 1px solid #d7d7d7;
@@ -378,8 +367,6 @@
             min-width: 32px;
             max-width: 32px;
             border: transparent;
-            border-right: 1px solid #d7d7d7;
-            border-bottom: 1px solid #d7d7d7;
             padding: 5px;
         }
         /*å³ä¸‹*/
@@ -421,7 +408,7 @@
             }
 
         .Gantt_leftCorner {
-            background: url(../img/ganttsprite.png);
+            background: url(../Images/ganttsprite.png);
             position: absolute;
             width: 9px;
             height: 16px;
@@ -430,7 +417,7 @@
         }
 
         .Gantt_rightCorner {
-            background: url(../img/ganttsprite.png);
+            background: url(../Images/ganttsprite.png);
             position: absolute;
             width: 9px;
             height: 16px;
@@ -524,6 +511,158 @@
             left: 0;
             bottom: 0;
         }
+
+        .Gantt_divTable {
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .Gantt_titleFont {
+            cursor: default;
+            font-size: 12px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #64727a;
+        }
+
+        .Gantt_dateMonthYear {
+            border-right: 1px solid #98b4ca;
+            vertical-align: middle;
+        }
+
+        .Gantt_monthHolder {
+            font-size: 13px;
+            padding-bottom: 5px;
+        }
+
+        .Gantt_divTableHeader, .Gantt_divWeekTableHeader {
+            display: table-cell;
+            overflow: hidden;
+            min-width: 17px;
+            width: 17px;
+            border-top: 1px solid #98b4ca;
+            text-align: center;
+            padding-top: 4px;
+        }
+
+        .Gantt_header {
+            cursor: default;
+            border-bottom-color: #98b4ca;
+        }
+
+        .Gantt_date {
+            text-transform: uppercase;
+            background-repeat: repeat-x;
+        }
+        /*周表格样式*/
+        .Gantt_weekDateBox {
+            height: 21px;
+            white-space: nowrap;
+            display: table-cell;
+            overflow: hidden;
+            min-width: 32px;
+            max-width: 32px;
+            border-right: 1px solid #98b4ca;
+            border-bottom: 1px solid #98b4ca;
+            border-top: 1px solid #98b4ca;
+            padding: 5px;
+        }
+        /*月表格样式*/
+        .Gantt_dateMonth {
+            padding-top: 3px;
+            text-transform: uppercase;
+            background-color: #cbd9e4;
+            max-width: 125px;
+            min-width: 100px;
+            border-bottom: 1px solid #98b4ca;
+        }
+
+        /*表格图形部分*/
+        #Gantt_gridBodyContainer {
+            overflow: scroll;
+            position: fixed;
+            top: 105px;
+            bottom: 0;
+            left: 210px;
+            right: 0;
+        }
+
+        .Gantt_divTableRow {
+            display: table-row;
+            overflow: hidden;
+            width: 50px;
+            height: 30px;
+            position: relative;
+        }
+        /*内部项目的颜色*/
+        .InternalProjects {
+            background-color: #cbd9e4;
+            position: absolute;
+            margin-top: 11px;
+        }
+
+            .InternalProjects div {
+                background-color: #cbd9e4;
+                height: 10px;
+            }
+        /*客户项目*/
+        .ClientProjects {
+            background-color: #336a95;
+            position: absolute;
+            margin-top: 11px;
+        }
+
+            .ClientProjects div {
+                background-color: #336a95;
+                height: 10px;
+            }
+        /*建议*/
+        .Proposals {
+            background-color: #fcf3e6;
+            position: absolute;
+            margin-top: 11px;
+        }
+
+            .Proposals div {
+                background-color: #fcf3e6;
+                height: 10px;
+            }
+
+
+
+        .TimelineSecondaryHeader {
+            font-size: 12px;
+        }
+
+        .grid thead tr td {
+            background-color: #ebebeb;
+            border-color: #98b4ca;
+            color: #64727a;
+        }
+
+        .TimelineGridHeader thead td {
+            padding: 10px 0 10px 0;
+        }
+
+        .grid thead td {
+            border-width: 1px;
+            border-style: solid;
+            font-size: 13px;
+            font-weight: bold;
+            height: 24px;
+            padding: 4px 4px 4px 4px;
+            word-wrap: break-word;
+            vertical-align: top;
+        }
+
+        .TextUppercase {
+            text-transform: uppercase;
+        }
+
+        .TimelineSecondaryHeader {
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -535,7 +674,7 @@
                     <span class="Icon Calendar" style="margin: 0;"></span>
                     <span class="Text" style="padding: 0;"></span>
                 </li>
-                <li class="Button ButtonIcon SelectedState" id="DailyButton" tabindex="0" title="按天显示">
+                <li class="Button ButtonIcon" id="DailyButton" tabindex="0" title="按天显示">
                     <span class="Icon" style="margin: 0; width: 0;"></span>
                     <span class="Text">天</span>
                 </li>
@@ -569,18 +708,23 @@
                 <!--上右-->
                 <div class="Gantt_divTable" id="Gantt_dateContainer">
                     <asp:Literal ID="liCalendar" runat="server"></asp:Literal>
+
                 </div>
                 <!--下右-->
                 <div class="Gantt_divTable" id="Gantt_taskContainer" style="height: 367px; min-height: 367px;">
                     <asp:Literal ID="liLeftTable" runat="server"></asp:Literal>
+                   <div class="Gantt_divTableRow" style="height: 17px;">
+                        <div class="Gantt_blankItem"></div>
+                        <div class="Gantt_blankItem"></div>
+                        <div class="Gantt_idFont Gantt_id Gantt_divTableColumnMonth"></div>
+                    </div>
                 </div>
                 <!--下右-->
                 <div class="Gantt_divTable" id="Gantt_gridBodyContainer" onscroll="Gantt_taskContainer.scrollTop = this.scrollTop;Gantt_dateContainer.scrollLeft = this.scrollLeft;" style="height: 367px; min-height: 367px;">
-                    <asp:Literal ID="liRightImg" runat="server"></asp:Literal>
+                    <div id="Gantt_gridContainer" style="background: url(../Images/dailyGridContainer.png) 86px 0%; width: 2967px;">
+                        <asp:Literal ID="liRightImg" runat="server"></asp:Literal>
+                    </div>
                 </div>
-
-
-
             </div>
         </div>
 
@@ -588,6 +732,7 @@
 </body>
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
+
 <script>
     function Style() {
         var Width1 = $("#Gantt_taskContainer").width();
@@ -595,7 +740,6 @@
         var WidthAll = 0;
         for (var i = 0; i < $('.Gantt_dateMonthYear').length; i++) {
             WidthAll += $('.Gantt_dateMonthYear').eq(i).outerWidth(true);
-            console.log(WidthAll);
             $("#Gantt_gridContainer").width(WidthAll);
         }
         var Height = $(window).height() - $("#Gantt_dateContainer").height() - 82;
@@ -619,37 +763,151 @@
             $("#Gantt_gridBodyContainer div.Gantt_divTableRow").eq(i + 1).attr('id', 'inner_' + NewTxt);
         });
     });
+    
     $(".Gantt_ToggleDiv").on('click', function () {
         $(this).find('.Vertical').toggle();
         var _this = $(this).parent().parent();
         var str = _this.find('.Gantt_idFont').html().split(".").length - 1;
+       // console.log(_this.find('.Gantt_idFont'))
         for (i in _this.nextAll()) {
+            //console.log(i)
             var IndexIdAll = '#inner_' + _this.nextAll().eq(i).attr('id');
+            //console.log(_this.nextAll().eq(i).find('.Gantt_idFont').html())
             if (str < _this.nextAll().eq(i).find('.Gantt_idFont').html().split(".").length - 1 && $(this).find('.Vertical').css('display') == 'block') {
+                //console.log(_this.nextAll().eq(i).find('.Gantt_idFont').html())
                 $(IndexIdAll).hide();
+                $(IndexIdAll).prev().children('.Gantt_phaseBar').children('.line').hide()
                 _this.nextAll().eq(i).hide();
                 _this.nextAll().eq(i).find('.Vertical').show();
                 Style();
+                lineShow()
+                if ($(IndexIdAll).prev().siblings('.Gantt_learnOver').css('display') == 'none') {
+                    $(IndexIdAll).prev().siblings().children('.Gantt_phaseBar').children('.line').hide()
+                }
             } else if (str < _this.nextAll().eq(i).find('.Gantt_idFont').html().split(".").length - 1 && $(this).find('.Vertical').css('display') == 'none') {
                 $(IndexIdAll).show();
+                $(IndexIdAll).prev().children('.Gantt_phaseBar').children('.line').show()
                 _this.nextAll().eq(i).show();
                 _this.nextAll().eq(i).find('.Vertical').hide();
+                if ($(IndexIdAll).prev().siblings('.Gantt_learnOver').css('display  ') != 'none') {
+                    $(IndexIdAll).prev().siblings().children('.Gantt_phaseBar').children('.line').show()
+                }
                 Style();
+                lineShow()
             } else if (str >= _this.nextAll().eq(i).find('.Gantt_idFont').html().split(".").length - 1) {
                 return false;
             }
         }
     });
-
-
-    //跳转
-    $("#DailyButton").on("click", function () {
-        window.location.href = "ProjectChart1.html";
-    });
-    $("#WeeklyButton").on("click", function () {
-        window.location.href = "ProjectChart2.html";
-    });
-    $("#MonthlyButton").on("click", function () {
-        window.location.href = "ProjectChart3.html";
-    });
 </script>
+
+
+
+<script>
+    $(function () {
+        <% if (type == "day")
+    {%>
+        $("#DailyButton").addClass("SelectedState");
+            <% }
+    else if (type == "week")
+    {%>
+        $("#WeeklyButton").addClass("SelectedState");
+        <% }
+    else if (type == "month")
+    {%>
+        $("#MonthlyButton").addClass("SelectedState");
+        <%}%>
+
+            Xian();
+
+    })
+
+    $("#CalendarButton").click(function () {
+        // 跳转到条目列表信息
+        location.href = "ProjectSchedule?project_id=<%=thisProject.id %>";
+    })
+    $("#DailyButton").click(function () {
+        location.href = "ProjectChart?project_id=<%=thisProject.id %>&dateType=day";
+    })
+    $("#WeeklyButton").click(function () {
+        location.href = "ProjectChart?project_id=<%=thisProject.id %>&dateType=week";
+    })
+    $("#MonthlyButton").click(function () {
+        location.href = "ProjectChart?project_id=<%=thisProject.id %>&dateType=month";
+    })
+
+
+    function Xian() {
+     <% if (pageTaskList != null && pageTaskList.Count > 0)
+    {
+        var stpDal = new EMT.DoneNOW.DAL.sdk_task_predecessor_dal();
+        foreach (var pageTask in pageTaskList)       // 按照顺序为页面上的task循环添加线
+        {
+            var thisTaskList = stpDal.GetTaskByPreId(pageTask.id);
+            if (thisTaskList != null && thisTaskList.Count > 0)
+            {
+                foreach (var thisTask in thisTaskList)
+                {
+                    var thisXianNum = thisTaskList.Count;  // 这个前驱任务可能指向多条线平均排开
+                    
+                    var topPx = (thisTaskList.IndexOf(thisTask)+1) / (double)(thisTaskList.Count + 1);  // 线的开始位置在div的位置
+                    // 分为两种线 ,前驱任务在任务之前，前驱任务在任务之后
+
+                    // 计算前驱任务的结束时间与相关task的开始时间
+                    var widthDiffDays = (double)GetDateDiffMonth((DateTime)pageTask.estimated_end_date,EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time),"day");
+                    widthDiffDays = (double)(widthDiffDays + (0.5)* thisTask.estimated_duration);
+                    var xianWidth = widthDiffDays * DayWidth;
+                    var heightDiff =pageTaskList.IndexOf(pageTaskList.FirstOrDefault(_=>_.id==thisTask.id))- pageTaskList.IndexOf(pageTask);
+                         %>
+
+        // 计算线距离前驱任务的divTop高度
+        var thisHeight = $("#<%=pageTask.id %>").height();
+        var thisTopPx = Number(thisHeight) * Number(<%=topPx %>);
+
+        // 计算线距离的宽度
+
+        var xianHeight = $("#<%=pageTask.id %>").parent().height();
+        var thisXianHeight = xianHeight * Number(<%=heightDiff %>);
+
+        // 计算线的高度
+
+
+        var xianHtml = "<span class='line'>";
+        // 计算宽和高
+        xianHtml += "<span class='Gantt_arrow' style='width: <%=xianWidth %>px; display: block;top:" + thisTopPx + "px;'><span class='Gantt_arrowDown' style= 'height:" + thisXianHeight+"px; display: block;'><img src='../Images/LeftArrow.png' class='Gantt_leftArrow'><img src='../Images/RightArrow.png' class='Gantt_rightArrow'></span></span>";
+        xianHtml += "</span>";
+        $("#<%=pageTask.id %>").append(xianHtml);
+                         <%
+                }
+            }
+
+        }
+    }%>
+
+    }
+    function lineShow() {
+        //console.log(true)
+        $.each($('#Gantt_gridBodyContainer .Gantt_divTableRow'), function (i) {
+        console.log(i)
+            //console.log($('#Gantt_gridBodyContainer .Gantt_divTableRow').eq(i).children('.Gantt_phaseBar').find('.line').length)
+        if ($('#Gantt_gridBodyContainer .Gantt_divTableRow').eq(i).children('.Gantt_General').find('.line').length != 0) {
+                var s1 = $('#Gantt_gridBodyContainer .Gantt_divTableRow').eq(i).offset().top
+                var s2 = $('.Gantt_Completed').eq(2).offset().top;
+              
+                var as = $('#Gantt_gridBodyContainer .Gantt_divTableRow').eq(i).children('.Gantt_General').children('.line').children('.Gantt_arrow').children('.Gantt_arrowDown');
+                console.log(as)
+
+                $('#Gantt_gridBodyContainer .Gantt_divTableRow').eq(i).children('.Gantt_General').children('.line').eq(0).children('.Gantt_arrow').children('.Gantt_arrowDown').height(s2 - s1 - 5)
+
+                var childrenDom = $('#Gantt_gridBodyContainer .Gantt_divTableRow').eq(i).children('.Gantt_General').children('.line').children('.Gantt_arrow').children('.Gantt_arrowDown')
+                if (childrenDom.find('span').length != 0) {
+                    //console.log(i)
+                    $('#Gantt_gridBodyContainer .Gantt_divTableRow').eq(i).children('.Gantt_General').children('.line').children('.Gantt_arrow').children('.Gantt_arrowDown').height(s2 - s1 - 30)
+                }
+
+            }
+        })
+    }
+    lineShow();
+</script>
+

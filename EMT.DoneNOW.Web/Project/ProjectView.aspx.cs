@@ -23,11 +23,14 @@ namespace EMT.DoneNOW.Web.Project
                 thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(id));
                 if (thisProject != null)
                 {
+                    var thisAccount = new CompanyBLL().GetCompany(thisProject.account_id);
+                    ShowTitle.Text = "项目-"+thisProject.no+thisProject.name+"("+ thisAccount.name + ")";
                     var type = Request.QueryString["type"];
                     switch (type)
                     {
                         case "Schedule":
                             viewProjectIframe.Src = "ProjectSchedule?project_id=" + thisProject.id;
+                          
                             break;
                         case "ScheduleTemp":
                             viewProjectIframe.Src = "ProjectSchedule?project_id=" + thisProject.id+ "&isTranTemp=1";
