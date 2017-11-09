@@ -564,14 +564,6 @@
 <script src="../Scripts/common.js"></script>
 <script>
     $(function () {
-
-        //var targetTimes = 0;
-        //// $("a").attr('target', '_blank' + targetTimes);
-        //$("a").click(function () {
-        //    $(this).attr('target', '_blank' + targetTimes);
-        //    targetTimes = Number(targetTimes) + 1;
-        //})
-
         var hide = $("#isHide").val();
         if (hide == "hide") {
             $("#showCompanyGeneral").hide();

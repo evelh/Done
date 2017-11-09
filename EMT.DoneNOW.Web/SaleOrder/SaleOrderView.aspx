@@ -6,6 +6,9 @@
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../Content/reset.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="../Content/base.css" />
+  <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <title>查看销售订单</title>
     <style>
     body{
@@ -482,53 +485,20 @@ a:hover {
     </div>
     <!--工具的下拉框-->
     <div class="RightClickMenu" style="left: 52px;top: 71px;display: none;">
-        <div class="RightClickMenuItem">
-            <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
-                <tbody>
-                    <tr>
-                        <td class="RightClickMenuItemText">
-                            <span class="lblNormalClass">待办</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="RightClickMenuItem" onclick="window.open('../Activity/Todos.aspx?saleorderId=<%=sale_order.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=730,height=750', false);">
+          <span class="lblNormalClass">待办</span>
+        </div>
+        <div class="RightClickMenuItem" onclick="window.open('../Activity/Notes.aspx?saleorderId=<%=sale_order.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=730,height=750', false);">
+          <span class="lblNormalClass">备注</span>
         </div>
         <div class="RightClickMenuItem">
-            <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
-                <tbody>
-                <tr>
-                    <td class="RightClickMenuItemText">
-                        <span class="lblNormalClass">备注</span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+          <span class="lblNormalClass">工单</span>
         </div>
-        <div class="RightClickMenuItem">
-            <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
-                <tbody>
-                <tr>
-                    <td class="RightClickMenuItemText">
-                        <span class="lblNormalClass">工单</span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="RightClickMenuItem">
-            <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
-                <tbody>
-                <tr>
-                    <td class="RightClickMenuItemText">
-                        <span class="lblNormalClass">附件</span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="RightClickMenuItem" onclick="window.open('../Activity/AddAttachment?objId=<%=opportunity.id %>&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.SALES_ORDER %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.AttachmentAdd %>','left=200,top=200,width=730,height=750', false);">
+          <span class="lblNormalClass">附件</span>
         </div>
     </div>
         <input type="hidden" id="isShowLeft" value="" runat="server"/>
-  <div id="leftDiv">
     <!--头部-->
       <%
             var country = dic.FirstOrDefault(_ => _.Key == "country").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;//district
@@ -540,11 +510,12 @@ a:hover {
           var oppo_stage = dic.FirstOrDefault(_ => _.Key == "opportunity_stage").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
           %>
     <div class="SubtitleDiv">
-        <span class="htmlLabel"><%=type %>  <%=opportunity.name %></span>
+        <span class="htmlLabel"><%=actType %>-<%=opportunity.name %></span>
         (<a onclick="window.open('../company/ViewCompany.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyView %>','left=200,top=200,width=900,height=750', false);" class="HyperLink"><%=account.name %></a>)
     </div>
     <!--切换项-->
-    <div class="TabContainer">
+  <div <%if (type == "activity" || type == "note" || type == "todo") { %> style="margin-left:280px;margin-right:10px;" <%}else{ %> style="margin-left:10px;margin-right:10px;" <% } %>>
+    <div id="leftDiv" class="TabContainer" style="margin-left: -270px;">
         <div class="DivScrollingContainer Tab" style="max-width: 300px;left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:120px;">
             <div class="DivSectionWithHeader">
                 <!--头部-->
@@ -910,17 +881,58 @@ a:hover {
                 </div>
             </div>
             <%} %>
-                  <a class="linkButton">可以查看这个销售订单的员工</a>
+                  <a class="linkButton" style="margin-left:10px;cursor:pointer;">可以查看这个销售订单的员工</a>
         </div>
   
     </div>
 
-      </div>
 
-       <div  style="float: left;width:750px;min-width:750px;height:500px;">
-            <iframe runat="server" id="viewSaleOrder_iframe" width="860" height="500" frameborder="0" marginheight="0" marginwidth="0" style="overflow:scroll;"></iframe>
+       <div id="ShowCompany_Right" class="activityTitleright f1">
+         <%if (type.Equals("activity")) { %>
+         <div class="FeedHeader">
+        <div class="NewRootNote">
+          <textarea placeholder="添加一个备注..." id="insert"></textarea>
+        </div>
+        <div class="add clear">
+          <span id="WordNumber">2000</span>
+          <input type="button" id="addNote" value="添加" style="height:24px;" />
+          <asp:DropDownList ID="noteType" runat="server" Width="100px" Height="24px">
+          </asp:DropDownList>
+        </div>
+        <div class="checkboxs clear">
+          <div class="clear">
+            <asp:CheckBox ID="Todos" runat="server" />
+            <label>待办</label>
+          </div>
+          <div class="clear">
+            <asp:CheckBox ID="Note" runat="server" />
+            <label>备注</label>
+          </div>
+          <div class="clear">
+            <asp:CheckBox ID="Tickets" runat="server" />
+            <label>工单</label>
+          </div>
+        </div>
+        <div class="addselect">
+          <div class="clear">
+            <label>排序方式：</label>
+            <asp:DropDownList ID="OrderBy" runat="server">
+              <asp:ListItem Value="2">时间从晚到早</asp:ListItem>
+              <asp:ListItem Value="1">时间从早到晚</asp:ListItem>
+            </asp:DropDownList>
+          </div>
+        </div>
+      </div>
+        <hr class="activityTitlerighthr" />
+         <div id='activityContent' style='margin-bottom:10px;'>
+
+         </div>
+         <%} else { %>
+            <iframe id="viewSaleOrder_iframe" src="<%=iframeSrc %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
+         <%}%>
        </div>
 
+      </div>
     </form>
 </body>
 </html>
@@ -1065,7 +1077,6 @@ a:hover {
 
 <script>
     $(function () {
-        debugger;
         var isShowLeft = $("#isShowLeft").val();   
         if (isShowLeft == "1") {
             $("#leftDiv").css("display","");
@@ -1084,12 +1095,20 @@ a:hover {
         $(".Toggle4").parent().parent().css("background", colors[index4 % 2]);
         index4++;
     })
-    var Height = $(window).height() - 80 + "px";
-    var Width = $(window).width() + "px";
-    $("#viewSaleOrder_iframe").css("height", Height).css("width", Width);
+    //var Height = $(window).height() - 80 + "px";
+    //var Width = $(window).width() + "px";
+    //$("#viewSaleOrder_iframe").css("height", Height).css("width", Width);
+    //$(window).resize(function () {
+    //    var Height = $(window).height() - 80 + "px";
+    //    var Width = $(window).width() + "px";
+    //    $("#viewSaleOrder_iframe").css("height", Height).css("width", Width);
+    //});
+
+    var Height = $(window).height() - 130 + "px";
+    $("#ShowCompany_Right").css("height", Height);
+
     $(window).resize(function () {
-        var Height = $(window).height() - 80 + "px";
-        var Width = $(window).width() + "px";
-        $("#viewSaleOrder_iframe").css("height", Height).css("width", Width);
-    });
+      var Height = $(window).height() - 130 + "px";
+      $("#ShowCompany_Right").css("height", Height);
+    })
 </script>

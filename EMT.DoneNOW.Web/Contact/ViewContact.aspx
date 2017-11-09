@@ -8,7 +8,7 @@
     <title>查看联系人</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />
+    <%--<link rel="stylesheet" type="text/css" href="../Content/NewContact.css" />--%>
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
 </head>
 <body>
@@ -36,8 +36,8 @@
                     <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=todo">待办</a></li>
                     <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=note">备注</a></li>
                     <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=opportunity">商机</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=contactGroup">联系人组</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=ticket">工单</a></li>
+                    <li>联系人组</li>
+                    <li>工单</li>
                     <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=configura">配置项</a></li>
                 </ul>
             </i>
@@ -46,7 +46,7 @@
 
         <div class="header-title">
             <ul>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <input type="button" id="Edit" value="修改" onclick="window.open('AddContact.aspx?id=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactEdit %>','left= 200, top = 200, width = 900, height = 750', false);" />
                     <%--  <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" />--%>
                 </li>
@@ -54,32 +54,19 @@
                     添加
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
-                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx?contact_id=<%=account.id %>&type=todo','<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=900,height=750', false);">待办</a></li>
-                        <li><a href="#" onclick="window.open('../Activity/AddActivity.aspx?contact_id=<%=account.id %>&type=note','<%=(int)EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=900,height=750', false);">客户备注</a></li>
+                        <li><a href="#" onclick="window.open('../Activity/Todos.aspx?contactId=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=730,height=750', false);">待办</a></li>
+                        <li><a href="#" onclick="window.open('../Activity/Notes.aspx?contactId=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=730,height=750', false);">备注</a></li>
                         <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_contact_id=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
                     </ul>
                 </li>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>友情链接</li>
+                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>友情链接</li>
             </ul>
         </div>
 
-
-        <div class="activityTitleleft fl" id="showGeneralInformation" style="margin-left: 20px;">
+      <h1 style="margin-left: 10px; font-size: 15px; font-weight: bolder; color: #4F4F4F; margin-top: 10px;"><%=actType %>-<%=contact.name %></h1>
+      <div <%if (type == "activity" || type == "note" || type == "todo") { %> style="margin-left:280px;margin-right:10px;" <%}else{ %> style="margin-left:10px;margin-right:10px;" <% } %>>
+        <div class="activityTitleleft fl" id="showGeneralInformation" style="margin-left: -270px;">
             <input type="hidden" id="isHide" runat="server" value="hide" />
-            <%switch (type)
-                {
-                    case "activity":%>
-            <h1>活动-<%=contact.name %><%=account==null?"":"("+account.name+")" %></h1>
-            <%break;
-                case "todo":%>
-            <h1>待办-<%=contact.name %><%=account==null?"":"("+account.name+")" %></h1>
-            <%break;
-                case "note":%>
-            <h1>备注-<%=contact.name %><%=account==null?"":"("+account.name+")" %></h1>
-            <%break;
-                    default:
-                        break;
-                } %>
 
             <div class="contact address">
                 <label><%=contact.name %></label>
@@ -218,8 +205,62 @@
         </div>
 
 
-        <div id="ShowContact_Right" style="float: left; margin-left: 35px;" class="activityTitleright f1">
-            <iframe runat="server" id="viewContact_iframe" width="800" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+        <div id="ShowContact_Right" class="activityTitleright f1">
+          <%if (type.Equals("activity")) { %>
+          <div class="FeedHeader">
+        <div class="NewRootNote">
+          <textarea placeholder="添加一个备注..." id="insert"></textarea>
+        </div>
+        <div class="add clear">
+          <span id="WordNumber">2000</span>
+          <input type="button" id="addNote" value="添加" style="height:24px;" />
+          <asp:DropDownList ID="noteType" runat="server" Width="100px" Height="24px">
+          </asp:DropDownList>
+        </div>
+        <div class="checkboxs clear">
+          <div class="clear">
+            <asp:CheckBox ID="Todos" runat="server" />
+            <label>待办</label>
+          </div>
+          <div class="clear">
+            <asp:CheckBox ID="Note" runat="server" />
+            <label>备注</label>
+          </div>
+          <div class="clear">
+            <asp:CheckBox ID="Opportunities" runat="server" />
+            <label>商机</label>
+          </div>
+          <div class="clear">
+            <asp:CheckBox ID="SalesOrders" runat="server" />
+            <label>销售单</label>
+          </div>
+          <div class="clear">
+            <asp:CheckBox ID="Tickets" runat="server" />
+            <label>工单</label>
+          </div>
+          <div class="clear">
+            <asp:CheckBox ID="Projects" runat="server" />
+            <label>项目</label>
+          </div>
+        </div>
+        <div class="addselect">
+          <div class="clear">
+            <label>排序方式：</label>
+            <asp:DropDownList ID="OrderBy" runat="server">
+              <asp:ListItem Value="2">时间从晚到早</asp:ListItem>
+              <asp:ListItem Value="1">时间从早到晚</asp:ListItem>
+            </asp:DropDownList>
+          </div>
+        </div>
+      </div>
+        <hr class="activityTitlerighthr" />
+          <div id='activityContent' style='margin-bottom:10px;'>
+
+          </div>
+          <%} else { %>
+            <iframe src="<%=iframeSrc %>" id="viewContact_iframe" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
+          <%} %>
+        </div>
         </div>
     </form>
 </body>
@@ -230,19 +271,19 @@
 <script src="../Scripts/common.js"></script>
 <script>
     $(function () {
-
-        //var targetTimes = 0;
-        //// $("a").attr('target', '_blank' + targetTimes);
-        //$("a").click(function () {
-        //    $(this).attr('target', '_blank' + targetTimes);
-        //    targetTimes = Number(targetTimes) + 1;
-        //})
-
         var hide = $("#isHide").val();
         if (hide == "hide") {
             $("#showGeneralInformation").hide();
         }
         $("#viewContact_iframe").attr("onLoad", iFrameHeight);
+  })
+
+    var Height = $(window).height() - 130 + "px";
+    $("#ShowContact_Right").css("height", Height);
+
+    $(window).resize(function () {
+      var Height = $(window).height() - 130 + "px";
+      $("#ShowContact_Right").css("height", Height);
     })
 
     // 这个方法可以使iframe适应源页面的大小
@@ -257,3 +298,6 @@
 
 
 </script>
+<% if (type.Equals("activity")) { %>
+    <script src="../Scripts/ViewActivity.js"></script>
+  <%} %>

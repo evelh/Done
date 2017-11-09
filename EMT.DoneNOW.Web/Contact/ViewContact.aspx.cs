@@ -20,7 +20,9 @@ namespace EMT.DoneNOW.Web
         protected ContactBLL contactBLL = new ContactBLL();
         protected LocationBLL locationBLL = new LocationBLL();
         protected Dictionary<string, object> dic = null;
+        protected string actType;
         protected string type = "";
+        protected string iframeSrc;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -44,18 +46,27 @@ namespace EMT.DoneNOW.Web
                 }
                 switch (type)    // 根据传过来的不同的类型，为页面中的iframe控件选择不同的src
                 {
-                   
+                    case "activity":
+                        actType = "活动";
+                        break;
                     case "todo":
-                        viewContact_iframe.Src = "";  // 待办
+                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=112&con659=" + contact_id;  // 待办
+                        actType = "待办";
                         break;
                     case "note":
-                        viewContact_iframe.Src = "";  // 备注
+                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH + "&type=" + (int)QueryType.CRMNote + "&group=110&con646=" + contact_id;  // 备注
+                        actType = "备注";
                         break;
                     case "opportunity":
-                        viewContact_iframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY_CONTACT_VIEW + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.OpportunityContactView + "&id=" + contact_id;  // 商机
-                        break;      
+                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.OPPORTUNITY_CONTACT_VIEW + "&type=" + (int)QueryType.OpportunityContactView + "&id=" + contact_id;  // 商机
+                        actType = "商机";
+                        break;
+                    case "configura":
+                        iframeSrc= "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.INSTALLEDPRODUCT + "&type=" + (int)QueryType.InstalledProductView + "&con966=" + contact_id;
+                        actType = "配置项";
+                        break;
                     default:
-                        viewContact_iframe.Src = "";  // 默认
+                        iframeSrc = "";  // 默认
                         break;
                 }
                 if (account!=null&&contact!=null)

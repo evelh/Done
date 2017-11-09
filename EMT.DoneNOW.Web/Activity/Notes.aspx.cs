@@ -21,6 +21,9 @@ namespace EMT.DoneNOW.Web.Activity
         protected long accountId = 0;       // 初始客户id
         protected long contactId = 0;       // 初始联系人id
         protected long opportunityId = 0;   // 初始商机id
+        protected long saleOrderId = 0;     // 初始销售订单id
+        protected int objType = 0;          // 对象类型
+        protected long objId = 0;           // 对象id
 
         private ActivityBLL bll = new ActivityBLL();
 
@@ -39,15 +42,32 @@ namespace EMT.DoneNOW.Web.Activity
                     opportunityList = new OpportunityBLL().GetOpportunityByCompany((long)note.account_id);
                 }
 
-                if (!long.TryParse(Request.QueryString["accountId"], out accountId))
-                    accountId = 0;
+                if (long.TryParse(Request.QueryString["accountId"], out accountId))
+                {
+                    objType = (int)DicEnum.OBJECT_TYPE.CUSTOMER;
+                    objId = accountId;
+                }
                 if (long.TryParse(Request.QueryString["contactId"], out contactId))
                 {
                     accountId = new ContactBLL().GetContact(contactId).account_id;
+                    objType = (int)DicEnum.OBJECT_TYPE.CONTACT;
+                    objId = contactId;
                 }
                 if (long.TryParse(Request.QueryString["opportunityId"], out opportunityId))
                 {
+                    objType = (int)DicEnum.OBJECT_TYPE.OPPORTUNITY;
+                    objId = opportunityId;
                     var opp = new OpportunityBLL().GetOpportunity(opportunityId).general;
+                    accountId = opp.account_id;
+                    if (opp.contact_id != null)
+                        contactId = (long)opp.contact_id;
+                }
+                if (long.TryParse(Request.QueryString["saleorderId"], out saleOrderId))
+                {
+                    objType = (int)DicEnum.OBJECT_TYPE.SALEORDER;
+                    objId = saleOrderId;
+                    var saleOrder = new SaleOrderBLL().GetSaleOrder(saleOrderId);
+                    var opp = new OpportunityBLL().GetOpportunity(saleOrder.opportunity_id).general;
                     accountId = opp.account_id;
                     if (opp.contact_id != null)
                         contactId = (long)opp.contact_id;

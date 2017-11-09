@@ -125,7 +125,15 @@ namespace EMT.DoneNOW.BLL
             return false;
         }
 
-
+        /// <summary>
+        /// 获取销售订单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public crm_sales_order GetSaleOrder(long id)
+        {
+            return _dal.FindById(id);
+        }
 
     }
 }

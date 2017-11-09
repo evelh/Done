@@ -670,8 +670,8 @@ namespace EMT.DoneNOW.BLL
             addNote.cate_id = (int)DicEnum.ACTIVITY_CATE.NOTE;
             addNote.action_type_id = note.action_type_id;
             addNote.parent_id = null;
-            addNote.object_id = (long)note.account_id;
-            addNote.object_type_id = (int)DicEnum.OBJECT_TYPE.CUSTOMER;
+            addNote.object_id = note.object_id;
+            addNote.object_type_id = note.object_type_id;
             addNote.account_id = note.account_id;
             addNote.contact_id = note.contact_id;
             addNote.resource_id = note.resource_id;
@@ -747,8 +747,6 @@ namespace EMT.DoneNOW.BLL
             editNote.cate_id = (int)DicEnum.ACTIVITY_CATE.NOTE;
             editNote.action_type_id = note.action_type_id;
             editNote.parent_id = null;
-            editNote.object_id = (long)note.account_id;
-            editNote.object_type_id = (int)DicEnum.OBJECT_TYPE.CUSTOMER;
             editNote.account_id = note.account_id;
             editNote.contact_id = note.contact_id;
             editNote.resource_id = note.resource_id;
@@ -852,8 +850,8 @@ namespace EMT.DoneNOW.BLL
                 addTodo.cate_id = (int)DicEnum.ACTIVITY_CATE.TODO;
             addTodo.action_type_id = todo.action_type_id;
             addTodo.parent_id = null;
-            addTodo.object_id = (long)todo.account_id;
-            addTodo.object_type_id = (int)DicEnum.OBJECT_TYPE.CUSTOMER;
+            addTodo.object_id = todo.object_id;
+            addTodo.object_type_id = todo.object_type_id;
             addTodo.account_id = todo.account_id;
             addTodo.contact_id = todo.contact_id;
             addTodo.resource_id = todo.resource_id;
@@ -892,8 +890,6 @@ namespace EMT.DoneNOW.BLL
             editTodo.cate_id = (int)DicEnum.ACTIVITY_CATE.TODO;
             editTodo.action_type_id = todo.action_type_id;
             editTodo.parent_id = null;
-            editTodo.object_id = (long)todo.account_id;
-            editTodo.object_type_id = (int)DicEnum.OBJECT_TYPE.CUSTOMER;
             editTodo.account_id = todo.account_id;
             editTodo.contact_id = todo.contact_id;
             editTodo.resource_id = todo.resource_id;

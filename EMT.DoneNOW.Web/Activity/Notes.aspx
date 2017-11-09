@@ -223,6 +223,8 @@
     <input type="hidden" id="accountId" value="<%=accountId %>" />
     <input type="hidden" id="contactId" value="<%=contactId %>" />
     <input type="hidden" id="opportunityId" value="<%=opportunityId %>" />
+    <input type="hidden" name="object_id" value="<%=objId %>" />
+    <input type="hidden" name="object_type_id" value="<%=objType %>" />
   </form>
   <script type="text/javascript" src="../Scripts/jquery-3.1.0.min.js"></script>
   <script src="../Scripts/index.js"></script>

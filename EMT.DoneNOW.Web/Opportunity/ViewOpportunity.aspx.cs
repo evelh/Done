@@ -21,6 +21,8 @@ namespace EMT.DoneNOW.Web.Opportunity
         protected LocationBLL locationBLL = new LocationBLL();
         protected CompanyBLL companyBll = new CompanyBLL();
         protected List<crm_quote> quoteList = null;
+        protected string actType;
+        protected string iframeSrc;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -47,20 +49,23 @@ namespace EMT.DoneNOW.Web.Opportunity
                     {
 
                         case "todo":
-                            viewOpportunity_iframe.Src = "";                              // 待办
+                            iframeSrc = "";                              // 待办
+                            actType = "待办";
                             break;                                                        
-                        case "note":                                                      
-                            viewOpportunity_iframe.Src = "";                              // 备注
+                        case "note":
+                            iframeSrc = "";                              // 备注
+                            actType = "备注";
                             break;                                                        
-                        case "activity":                                                  
-                            viewOpportunity_iframe.Src = "";                              // 活动
+                        case "activity":
+                            iframeSrc = "";                              // 活动
+                            actType = "活动";
                             break;
                         case "quoteItem":
                             var oppoQuoteList = new crm_quote_dal().GetQuoteByWhere($" and opportunity_id = {opportunity.id} ");
 
                             if (oppoQuoteList != null && oppoQuoteList.Count > 0)
                             {
-                                viewOpportunity_iframe.Src = "../QuoteItem/QuoteItemManage?isShow=show&opportunity_id=" + opportunity.id;  // 报价项
+                                iframeSrc = "../QuoteItem/QuoteItemManage?isShow=show&opportunity_id=" + opportunity.id;  // 报价项
                                 isAddQuote.Value = "0";
                             }
                             else
@@ -70,10 +75,11 @@ namespace EMT.DoneNOW.Web.Opportunity
                                 //Response.Write("<script>debugger;</script>");
                             }
 
-                           
+                            actType = "报价项";
                             break;
                         default:
-                            viewOpportunity_iframe.Src = "";  // 默认
+                            iframeSrc = "";  // 默认
+                            actType = "活动";
                             type = "activity";
                             break;
                     }
