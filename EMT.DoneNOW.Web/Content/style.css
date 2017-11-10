@@ -71,7 +71,7 @@ margin-top: 5px;margin-right:10px;cursor: pointer;}
 .activityTitleleft{width: 250px; margin-right:20px;}
 .address{    background-color: #F0F5FB;border: 1px solid #d3d3d3;margin: 0 10px 10px 0;padding: 10px 4px 4px 0;padding-left: 10px; }
     
-.address p{font-weight: bold;color: #4F4F4F;margin: 0;font-size: 12px;}
+.address p{font-weight: bold;color: #4F4F4F;margin: 0;font-size: 12px;padding-bottom:3px;}
 .address p img{padding-left: 5px;}
 .address p a{ color: #376597;    text-decoration: none;font-size: 12px;}   
 .viewleftTitle1{ margin: 0 10px 10px 0;padding: 10px 4px 4px 0;padding-left: 10px; font-size: 12px;}

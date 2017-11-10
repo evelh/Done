@@ -61,7 +61,8 @@ namespace EMT.DoneNOW.Web
         private void AddNote(HttpContext context)
         {
             List<string> rtn = new List<string>();
-            string account_id = context.Request.QueryString["account_id"];
+            string account_id = context.Request.QueryString["objId"];
+            string pageType = context.Request.QueryString["page"];
             string desc = context.Request.QueryString["desc"];
             string type = context.Request.QueryString["type"];
             if (string.IsNullOrEmpty(account_id) || string.IsNullOrEmpty(desc) || string.IsNullOrEmpty(type))
@@ -70,7 +71,7 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new Tools.Serialize().SerializeJson(rtn));
                 return;
             }
-            bll.FastAddNote(long.Parse(account_id), 0, 0, int.Parse(type), desc, (context.Session["dn_session_user_info"] as sys_user).id);
+            bll.FastAddNote(long.Parse(account_id), pageType, int.Parse(type), desc, (context.Session["dn_session_user_info"] as sys_user).id);
             rtn.Add("1");
             context.Response.Write(new Tools.Serialize().SerializeJson(rtn));
         }
@@ -82,7 +83,8 @@ namespace EMT.DoneNOW.Web
         private void GetActivities(HttpContext context)
         {
             var queryStr = context.Request.QueryString;
-            string account_id = queryStr["account_id"];
+            string id = queryStr["id"];
+            string type = queryStr["page"];
             string order = queryStr["order"];
             List<string> actTypeList = new List<string>();
             if (!string.IsNullOrEmpty(queryStr["todo"]) && queryStr["todo"].Equals("1"))
@@ -100,7 +102,7 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(queryStr["project"]) && queryStr["project"].Equals("1"))
                 actTypeList.Add("project");
 
-            context.Response.Write(new Tools.Serialize().SerializeJson(bll.GetActivities(actTypeList, long.Parse(account_id), order, (context.Session["dn_session_user_info"] as sys_user).id)));
+            context.Response.Write(new Tools.Serialize().SerializeJson(bll.GetActivitiesHtml(actTypeList, long.Parse(id), type, order, (context.Session["dn_session_user_info"] as sys_user).id)));
         }
 
         /// <summary>

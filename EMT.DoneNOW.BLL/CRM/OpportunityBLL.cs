@@ -74,6 +74,16 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 根据商机id查找
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public crm_opportunity GetOpportunityById(long id)
+        {
+            return _dal.FindById(id);
+        }
+
+        /// <summary>
         /// 新增商机
         /// </summary>
         /// <returns></returns>

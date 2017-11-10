@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title></title>
+  <title><%if (note == null) { %>新增备注<%} else { %>编辑备注<%} %></title>
   <link rel="stylesheet" type="text/css" href="../Content/base.css" />
   <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
   <link rel="stylesheet" href="../Content/index.css" />
@@ -286,7 +286,7 @@
       }
     }
     window.onload = function () {
-      if ($("#accountId").val() != "") {
+        if ($("#accountId").val() != "" && $("#accountId").val() != 0) {
         $("#AccountSelect").hide();
         $.ajax({
           type: "GET",
@@ -301,10 +301,10 @@
         });
         GetCtcOppt();
       }
-      if ($("#contactId").val() != "") {
+      if ($("#contactId").val() != "" && $("#contactId").val() != 0) {
         $("#contact_id").val($("#contactId").val());
       }
-      if ($("#opportunityId").val() != "") {
+      if ($("#opportunityId").val() != "" && $("#opportunityId").val() != 0) {
         $("#opportunity_id").val($("#opportunityId").val());
       }
     }

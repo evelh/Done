@@ -85,7 +85,7 @@
 
             <p>
               <%=((DateTime)opportunity.projected_close_date).Subtract(DateTime.Now).Days %><br />
-              (<%=((DateTime)opportunity.projected_close_date).ToString("dd/MM/yyyy") %>)
+              (<%=((DateTime)opportunity.projected_close_date).ToString("yyyy-MM-dd") %>)
             </p>
 
             <%} %>
@@ -112,7 +112,8 @@
                 var primaryQuote = quoteList.FirstOrDefault(_ => _.is_primary_quote == 1);
           %>
           <p class="clear">
-            主报价:<a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem"><%=primaryQuote.name %></a>
+              <span class="fl">主报价</span>
+              <span class="fr"><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem"><%=primaryQuote.name %></a><br /></span>
           </p>
           <%
               foreach (var quote in quoteList.Where(_ => _.is_primary_quote != 1))
@@ -369,6 +370,7 @@
           <input type="button" id="addNote" value="添加" style="height:24px;" />
           <asp:DropDownList ID="noteType" runat="server" Width="100px" Height="24px">
           </asp:DropDownList>
+            <input type="hidden" id="objectId" value="<%=opportunity.id %>" />
         </div>
         <div class="checkboxs clear">
           <div class="clear">
@@ -421,7 +423,7 @@
     if (hide == "hide") {
       $("#showGeneralInformation").hide();
     }
-    $("#viewOpportunity_iframe").attr("onLoad", iFrameHeight());
+    $("#viewOpportunity_iframe").attr("onLoad", iFrameHeight);
     var isAddQuote = $("#isAddQuote").val();
     if (isAddQuote == "1") {
       if (confirm('商机尚未创建报价，需要现在创建吗?')) {
@@ -452,4 +454,8 @@
   })
   var Height = $(window).height() - 130 + "px";
   $("#viewOpportunity_iframe").css("height", Height);
+    var pageType = "opportunity";
 </script>
+<% if (type.Equals("activity")) { %>
+    <script src="../Scripts/ViewActivity.js"></script>
+  <%} %>

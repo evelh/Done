@@ -68,6 +68,7 @@ namespace EMT.DoneNOW.Web.Activity
                     objId = saleOrderId;
                     var saleOrder = new SaleOrderBLL().GetSaleOrder(saleOrderId);
                     var opp = new OpportunityBLL().GetOpportunity(saleOrder.opportunity_id).general;
+                    opportunityId = opp.id;
                     accountId = opp.account_id;
                     if (opp.contact_id != null)
                         contactId = (long)opp.contact_id;

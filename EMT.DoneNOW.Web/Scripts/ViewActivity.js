@@ -18,7 +18,7 @@ $("#addNote").click(function () {
     if ($("#insert").val() == "") {
         return;
     }
-    requestData("../Tools/ActivityAjax.ashx?act=AddNote&account_id=" + $("#account_id").val() + "&desc=" + $("#insert").val() + "&type=" + $("#noteType").val(), null, function (data) {
+    requestData("../Tools/ActivityAjax.ashx?act=AddNote&objId=" + $("#objectId").val() + "&desc=" + $("#insert").val() + "&type=" + $("#noteType").val() + "&page=" + pageType, null, function (data) {
         if (data[0] == "1") {
             RequestActivity();
         }
@@ -57,13 +57,13 @@ function RequestActivity() {
         }, 500);
         return;
     }
-    var url = "../Tools/ActivityAjax.ashx?act=GetActivities&" + type + "account_id=" + $("#account_id").val() + "&order=" + $("#OrderBy").val();
+    var url = "../Tools/ActivityAjax.ashx?act=GetActivities&" + type + "id=" + $("#objectId").val() + "&order=" + $("#OrderBy").val() + "&page=" + pageType;
     requestData(url, null, function (data) {
 
         setTimeout(function () {
             $("#activityContent").html(data);
             LayerLoadClose();
-        }, 500);
+        }, 300);
     })
 }
 function ActDelete(id) {
@@ -112,4 +112,16 @@ function OpenAttachment(id, isUrl, name) {
         window.open(name, windowType.blank, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
     else
         window.open("../Activity/OpenAttachment.aspx?id=" + id, windowType.blank, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
+function ViewOpportunity(id) {
+    window.open('../Opportunity/ViewOpportunity.aspx?id=' + id, windowType.blank, 'left=200,top=200,width=900,height=750', false);
+}
+function ViewSalesOrder(id) {
+    window.open('../SaleOrder/SaleOrderView.aspx?id=' + id, windowType.blank, 'left=200,top=200,width=900,height=750', false);
+}
+function ViewContract(id) {
+    window.open('../Contract/ContractView.aspx?id=' + id, windowType.blank, 'left=200,top=200,width=900,height=750', false);
+}
+function ViewContact(id) {
+    window.open('../Contact/ViewContact.aspx?id=' + id, windowType.blank, 'left=200,top=200,width=900,height=750', false);
 }

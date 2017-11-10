@@ -216,6 +216,7 @@
           <input type="button" id="addNote" value="添加" style="height:24px;" />
           <asp:DropDownList ID="noteType" runat="server" Width="100px" Height="24px">
           </asp:DropDownList>
+            <input type="hidden" id="objectId" value="<%=contact.id %>" />
         </div>
         <div class="checkboxs clear">
           <div class="clear">
@@ -296,7 +297,7 @@
         }
     }
 
-
+    var pageType = "contact";
 </script>
 <% if (type.Equals("activity")) { %>
     <script src="../Scripts/ViewActivity.js"></script>

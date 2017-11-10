@@ -55,25 +55,49 @@ namespace EMT.DoneNOW.BLL
             return dal.FindListBySql<int>(sql);
         }
 
-        #region 查看客户/联系人等获取活动列表
+        #region 查看客户/联系人/商机/销售订单活动列表
         /// <summary>
-        /// 查看客户/联系人等获取活动列表
+        /// 查看客户/联系人/商机/销售订单活动列表
+        /// </summary>
+        /// <param name="actTypeList"></param>
+        /// <param name="objId"></param>
+        /// <param name="objType"></param>
+        /// <param name="order"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public string GetActivitiesHtml(List<string> actTypeList, long objId, string objType, string order, long userId)
+        {
+            if (objType == null)
+                return "";
+            if (objType.Equals("account"))
+                return GetAccountActivities(actTypeList, objId, order, userId);
+            if (objType.Equals("contact"))
+                return GetContactActivities(actTypeList, objId, order, userId);
+            if (objType.Equals("opportunity"))
+                return GetOppActivities(actTypeList, objId, order, userId);
+            if (objType.Equals("salesorder"))
+                return GetSaleorderActivities(actTypeList, objId, order, userId);
+
+            return "";
+        }
+        #region 查看客户获取活动列表
+        /// <summary>
+        /// 查看客户获取活动列表
         /// </summary>
         /// <param name="actTypeList">活动类型</param>
         /// <param name="accountId">客户id</param>
         /// <param name="order">排序（1:时间从早到晚;否则:时间从晚到早</param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public string GetActivities(List<string> actTypeList, long accountId, string order, long userId)
+        public string GetAccountActivities(List<string> actTypeList, long accountId, string order, long userId)
         {
             if (actTypeList == null || accountId == 0 || userId == 0)
                 return "";
 
             StringBuilder html = new StringBuilder();
-            DateTime t1 = DateTime.Now;
-            // 先加入最多3个待办
-            if (actTypeList.Exists(_=> "todo".Equals(_)))
-                html.Append(GetTodosHtml(accountId, order, userId));
+
+            if (actTypeList.Exists(_ => "todo".Equals(_)))
+                html.Append(GetAccountTodosHtml(accountId, order, userId));
 
             string cate = "";
             if (actTypeList.Exists(_ => "crmnote".Equals(_)))
@@ -95,217 +119,34 @@ namespace EMT.DoneNOW.BLL
             bool isAsc = false;
             if (!string.IsNullOrEmpty(order) && order.Equals("1"))
                 isAsc = true;
-            var actList = new v_activity_dal().GetActivitiesFirstLevel(accountId, cate, isAsc);
-            foreach(var act in actList)
+            var actList = new v_activity_dal().GetActivities(accountId, cate);
+            IOrderedEnumerable<v_activity> actList1;
+            if (isAsc)
+                actList1 = from a in actList where a.lv == 1 orderby a.act_date_1lv ascending select a;
+            else
+                actList1 = from a in actList where a.lv == 1 orderby a.act_date_1lv descending select a;
+
+            foreach (var act in actList1)
             {
                 if (act.cate == 2)    // 备注和附件
                 {
                     if (act.act_cate != null && act.act_cate.Equals("act"))
-                        html.Append(GetCRMNoteHtml(act, act.cate, userId, 1));
+                        html.Append(GetNoteHtml(actList, act, act.cate, userId, 1));
                     else if (act.act_cate != null && act.act_cate.Equals("att"))
-                        html.Append(GetAttachmentHtml(act, act.cate, userId, 1));
+                        html.Append(GetAttachmentHtml(actList, act, act.cate, userId, 1));
                     else    // 错误
                         return "";
                 }
                 else
                 {
-                    html.Append(GetObjectHtml(act, userId, isAsc));
+                    html.Append(GetObjectHtml(actList, act, userId, isAsc));
                 }
             }
-            DateTime t2 = DateTime.Now;
-            Console.WriteLine(t1.ToString("yyyy-MM-dd"));
-            Console.WriteLine(t2.ToString("yyyy-MM-dd"));
+
             return html.ToString();
             
         }
-
-        /// <summary>
-        /// 生成一个备注及其下级的备注和附件的html
-        /// </summary>
-        /// <param name="note"></param>
-        /// <param name="cate"></param>
-        /// <param name="userId"></param>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        private string GetCRMNoteHtml(v_activity note,long cate, long userId, int level)
-        {
-            //var note = new v_activity_dal().FindById(noteId);
-
-            StringBuilder html = new StringBuilder();
-            html.Append($"<div class='EntityFeedLevel{level}'><a style='float:left;cursor:pointer;'><img src='..{note.resource_avatar}' /></a> ");
-            html.Append($"<div class='PostContent'><a class='PostContentName'>{note.resource_name}</a>");
-            if (note.resource_id!=userId&& !string.IsNullOrEmpty(note.resource_email))
-                html.Append($"<a href='mailto:{note.resource_email}' class='SmallLink'>发送邮件</a>");
-            html.Append($"<img src='../Images/note.png' />");
-            if (note.contact_id != null)
-            {
-                html.Append($"<span>(联系人:<a class='PostContentName'>{note.contact_name}</a>");
-                if (!string.IsNullOrEmpty(note.contact_email))
-                    html.Append($"<a href='mailto:{note.contact_email}' class='SmallLink'>发送邮件</a>");
-                html.Append($")</span>");
-            }
-            html.Append($"<div><span>{note.act_desc}</span></div>");
-
-            if (cate == 2 || cate == 3 || cate == 4)
-            {
-                html.Append($"<div><span style='color:gray;'>创建/修改人:&nbsp</span><a style='color:gray;'>{note.update_user_name}</a>");
-                if (note.update_user_id != userId && !string.IsNullOrEmpty(note.update_user_email))
-                    html.Append($"<a href='mailto:{note.update_user_email}' class='SmallLink'>发送邮件</a>");
-                html.Append("</div>");
-            }
-
-            html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
-            html.Append($"{note.act_date}</span>");
-            html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.NOTES},{note.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({note.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.NOTES})' class='CommentLink'>添加附件</a><a onclick='NoteEdit({note.id})' class='CommentLink'>编辑</a><a onclick='ActDelete({note.id})' class='CommentLink'>删除</a>");
-            html.Append("</div></div></div>");
-
-            if (level == 3)
-                return html.ToString();
-            if (cate == 2 && level == 2)
-                return html.ToString();
-
-            var actList = new v_activity_dal().GetActivities(note.id, level + 1, null);
-            foreach (var act in actList)
-            {
-                if (act.act_cate != null && act.act_cate.Equals("act"))
-                    html.Append(GetCRMNoteHtml(act, cate, userId, level + 1));
-                else if (act.act_cate != null && act.act_cate.Equals("att"))
-                    html.Append(GetAttachmentHtml(act, cate, userId, level + 1));
-            }
-
-            if (level == 1)
-                html.Append("<hr class='activityTitlerighthr' />");
-
-            return html.ToString();
-        }
-
-        /// <summary>
-        /// 生成一个附件及其下级的备注和附件的html
-        /// </summary>
-        /// <param name="att"></param>
-        /// <param name="cate"></param>
-        /// <param name="userId"></param>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        private string GetAttachmentHtml(v_activity att, long cate, long userId, int level)
-        {
-            //var att = new v_activity_dal().FindById(attId);
-
-            StringBuilder html = new StringBuilder();
-            html.Append($"<div class='EntityFeedLevel{level}'><a style='float:left;cursor:pointer;'><img src='..{att.resource_avatar}' /></a> ");
-            html.Append($"<div class='PostContent' style='width:auto;padding-right:10px;'><a class='PostContentName'>{att.resource_name}</a>");
-            if (att.resource_id != userId && !string.IsNullOrEmpty(att.resource_email))
-                html.Append($"<a href='mailto:{att.resource_email}' class='SmallLink'>发送邮件</a>");
-
-            if (att.att_type_id == (int)DicEnum.ATTACHMENT_TYPE.URL)
-                html.Append($"<a title='{att.att_filename}' onclick=\"OpenAttachment({att.id},1,'{att.att_filename}')\" ><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{att.act_name}</span></a>");
-            else
-                html.Append($"<a title='{att.att_filename}' onclick=\"OpenAttachment({att.id},0,'')\" ><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{att.act_name}</span></a>");
-
-            html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
-            html.Append($"{att.act_date}</span>");
-            html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.ATTACHMENT},{att.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({att.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.ATTACHMENT})' class='CommentLink'>添加附件</a><a onclick='AttDelete({att.id})' class='CommentLink'>删除</a>");
-            html.Append("</div></div>");
-            if (att.att_type_id == (int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
-            {
-                var file = new AttachmentBLL().GetAttachment(att.id);
-                if (file.content_type != null && file.content_type.ToLower().IndexOf("image") == 0)
-                {
-                    html.Append($"<a><img src='..{file.href}' style='width:50px;height:50px;' /></a>");
-                }
-            }
-            html.Append("</div>");
-
-            if (level == 3)
-                return html.ToString();
-            if (cate == 2 && level == 2)
-                return html.ToString();
-
-            var actList = new v_activity_dal().GetActivities(att.id, level + 1, null);
-            foreach (var act in actList)
-            {
-                if (act.act_cate != null && act.act_cate.Equals("act"))
-                    html.Append(GetCRMNoteHtml(act, cate, userId, level + 1));
-                else if (act.act_cate != null && act.act_cate.Equals("att"))
-                    html.Append(GetAttachmentHtml(act, cate, userId, level + 1));
-            }
-
-            if (level == 1)
-                html.Append("<hr class='activityTitlerighthr' />");
-
-            return html.ToString();
-        }
-
-        /// <summary>
-        /// 生成第一级的商机/合同等活动信息及其下级的备注/附件等
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="userId"></param>
-        /// <param name="isAsc"></param>
-        /// <returns></returns>
-        private string GetObjectHtml(v_activity obj, long userId, bool isAsc)
-        {
-            long cate = obj.cate;
-            int objType;
-            int attObjType = 0;
-            string logo;
-            if (cate == 3)
-            {
-                objType = (int)DicEnum.OBJECT_TYPE.OPPORTUNITY;
-                logo = "contract.png";
-            }
-            else if (cate == 4)
-            {
-                objType = (int)DicEnum.OBJECT_TYPE.SALEORDER;
-                attObjType = (int)DicEnum.ATTACHMENT_OBJECT_TYPE.SALES_ORDER;
-                logo = "salesorder.png";
-            }
-            else if (cate == 6)
-            {
-                objType = (int)DicEnum.OBJECT_TYPE.CONTRACT;
-                logo = "contract.png";
-            }
-            else if (cate == 7)
-            {
-                objType = (int)DicEnum.OBJECT_TYPE.PROJECT;
-                attObjType = (int)DicEnum.ATTACHMENT_OBJECT_TYPE.PROJECT;
-                logo = "project.png";
-            }
-            else
-                return "";
-
-            //var obj = new v_activity_dal().FindById(objId);
-
-            StringBuilder html = new StringBuilder();
-            html.Append($"<div class='EntityFeedLevel1'><a style='float:left;cursor:pointer;'><img src='../Images/{logo}' /></a> ");
-            html.Append($"<div class='PostContent'><a class='PostContentName'>{obj.pname}</a>");
-            html.Append($"<div><span>{obj.act_desc}</span></div>");
-            html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
-            html.Append($"{obj.act_date}</span>");
-            if (cate==4 || cate== 7)
-            {
-                html.Append($"<a onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({obj.id},{attObjType})' class='CommentLink'>添加附件</a>");
-            }
-            if (cate==6)
-            {
-                html.Append($"<a onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a>");
-            }
-            html.Append("</div></div></div>");
-            
-            var actList = new v_activity_dal().GetActivities(obj.id, 2, isAsc);
-            foreach (var act in actList)
-            {
-                if (act.act_cate != null && act.act_cate.Equals("act"))
-                    html.Append(GetCRMNoteHtml(act, cate, userId, 2));
-                else if (act.act_cate != null && act.act_cate.Equals("att"))
-                    html.Append(GetAttachmentHtml(act, cate, userId, 2));
-            }
-
-            html.Append("<hr class='activityTitlerighthr' />");
-
-            return html.ToString();
-        }
-
+        
         /// <summary>
         /// 获取最多三个待办的html
         /// </summary>
@@ -313,7 +154,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="order"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        private string GetTodosHtml(long accountId, string order, long userId)
+        private string GetAccountTodosHtml(long accountId, string order, long userId)
         {
             string sql = $"SELECT * FROM com_activity WHERE account_id={accountId} AND cate_id={(int)DicEnum.ACTIVITY_CATE.TODO} AND delete_time=0 ";
             if (order != null && order.Equals("1"))
@@ -363,66 +204,671 @@ namespace EMT.DoneNOW.BLL
 
             return todoHtml.ToString();
         }
+        #endregion
+
+        #region 查看联系人获取活动列表
+        /// <summary>
+        /// 查看联系人获取活动列表
+        /// </summary>
+        /// <param name="actTypeList"></param>
+        /// <param name="contactId"></param>
+        /// <param name="order"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public string GetContactActivities(List<string> actTypeList, long contactId, string order, long userId)
+        {
+            if (actTypeList == null || contactId == 0 || userId == 0)
+                return "";
+
+            StringBuilder html = new StringBuilder();
+            DateTime t1 = DateTime.Now;
+            // 先加入最多3个待办
+            if (actTypeList.Exists(_ => "todo".Equals(_)))
+                html.Append(GetContactTodosHtml(contactId, order, userId));
+
+            string cate = "";
+            if (actTypeList.Exists(_ => "crmnote".Equals(_)))
+                cate += "2,";
+            if (actTypeList.Exists(_ => "opportunity".Equals(_)))
+                cate += "3,";
+            if (actTypeList.Exists(_ => "sale".Equals(_)))
+                cate += "4,";
+            if (actTypeList.Exists(_ => "ticket".Equals(_)))
+                cate += "5,";
+            if (actTypeList.Exists(_ => "contract".Equals(_)))
+                cate += "6,";
+            if (actTypeList.Exists(_ => "project".Equals(_)))
+                cate += "7,";
+            if (cate.Equals(""))
+                return html.ToString();
+            cate = cate.Remove(cate.Length - 1, 1);    // 移除最后的,
+
+            bool isAsc = false;
+            if (!string.IsNullOrEmpty(order) && order.Equals("1"))
+                isAsc = true;
+            var actList = new v_activity_contact_dal().GetActivities(contactId, cate);
+            IOrderedEnumerable<v_activity> actList1;
+            if (isAsc)
+                actList1 = from a in actList where a.lv == 1 orderby a.act_date_1lv ascending select a;
+            else
+                actList1 = from a in actList where a.lv == 1 orderby a.act_date_1lv descending select a;
+
+            foreach (var act in actList1)
+            {
+                if (act.cate == 2)    // 备注和附件
+                {
+                    if (act.act_cate != null && act.act_cate.Equals("act"))
+                        html.Append(GetNoteHtml(actList, act, act.cate, userId, 1));
+                    else if (act.act_cate != null && act.act_cate.Equals("att"))
+                        html.Append(GetAttachmentHtml(actList, act, act.cate, userId, 1));
+                    else    // 错误
+                        return "";
+                }
+                else
+                {
+                    html.Append(GetObjectHtml(actList, act, userId, isAsc));
+                }
+            }
+            return html.ToString();
+
+        }
+
+        /// <summary>
+        /// 获取联系人代办信息
+        /// </summary>
+        /// <param name="contactId"></param>
+        /// <param name="order"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        private string GetContactTodosHtml(long contactId, string order, long userId)
+        {
+            string sql = $"SELECT * FROM com_activity WHERE object_id={contactId} AND object_type_id={(int)DicEnum.OBJECT_TYPE.CONTACT} AND cate_id={(int)DicEnum.ACTIVITY_CATE.TODO} AND delete_time=0 ";
+            if (order != null && order.Equals("1"))
+                sql += " ORDER BY update_time ASC LIMIT 3";
+            else
+                sql += " ORDER BY update_time DESC LIMIT 3";
+            var todoList = dal.FindListBySql(sql);
+
+            StringBuilder todoHtml = new StringBuilder();
+            foreach (var todo in todoList)
+            {
+                var resource = new sys_resource_dal().FindById((long)todo.resource_id);
+                todoHtml.Append($"<div class='EntityFeedLevel1'><a style='cursor:pointer;'><img src='..{resource.avatar}' /></a>");
+                todoHtml.Append($"<div class='PostContent'><a class='PostContentName'>{resource.name}</a>");
+                if (resource.id != userId)
+                    todoHtml.Append($"<a href='mailto:{resource.email}' class='SmallLink'>发送邮件</a>");
+                todoHtml.Append($"<img src='../Images/todos.png' />");
+
+                if (todo.contact_id != null)
+                {
+                    var contact = new crm_contact_dal().FindById((long)todo.contact_id);
+                    todoHtml.Append($"<span>(联系人:<a class='PostContentName'>{contact.name}</a>");
+                    if (!string.IsNullOrEmpty(contact.email))
+                        todoHtml.Append($"<a href='mailto:{contact.email}' class='SmallLink'>发送邮件</a>");
+                    todoHtml.Append($")</span>");
+                }
+
+                todoHtml.Append($"<div><span>{new GeneralBLL().GetGeneralName(todo.action_type_id)}: {todo.description}</span></div>");
+
+                var creator = new sys_resource_dal().FindById((long)todo.create_user_id);
+                todoHtml.Append($"<div><span style='color:gray;'>创建人:&nbsp</span><a style='color:gray;' href='#'>{creator.name}</a>");
+                if (todo.create_user_id != userId)
+                    todoHtml.Append($"<a href='mailto:{creator.email}' class='SmallLink'>发送邮件</a>");
+                todoHtml.Append("</div>");
+
+                todoHtml.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
+                var updateTime = Tools.Date.DateHelper.TimeStampToDateTime(todo.update_time);
+                if (DateTime.Today.Year == updateTime.Year && DateTime.Today.Month == updateTime.Month && DateTime.Today.Day == updateTime.Day)
+                    todoHtml.Append($"修改时间:&nbsp今天 {updateTime.ToString("hh:mm")}</span>");
+                else
+                    todoHtml.Append($"修改时间:&nbsp{updateTime.ToString("yyyy-MM-dd hh:mm")}</span>");
+                todoHtml.Append($"<a onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a><a onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a><a onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
+                todoHtml.Append("</div></div></div>");
+
+                todoHtml.Append("<hr class='activityTitlerighthr' />");
+            }
+
+            return todoHtml.ToString();
+        }
+
+        #endregion
+
+        #region 查看商机获取活动列表
+        /// <summary>
+        /// 查看商机获取活动列表
+        /// </summary>
+        /// <param name="actTypeList">活动类型</param>
+        /// <param name="oppId">商机id</param>
+        /// <param name="order">排序（1:时间从早到晚;否则:时间从晚到早</param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public string GetOppActivities(List<string> actTypeList, long oppId, string order, long userId)
+        {
+            if (actTypeList == null || oppId == 0 || userId == 0)
+                return "";
+
+            StringBuilder html = new StringBuilder();
+
+            if (actTypeList.Exists(_ => "todo".Equals(_)))
+                html.Append(GetOppTodosHtml(oppId, order, userId));
+
+            string cate = "";
+            if (actTypeList.Exists(_ => "crmnote".Equals(_)))
+                cate += "2,";
+            if (actTypeList.Exists(_ => "opportunity".Equals(_)))
+                cate += "3,";
+            if (actTypeList.Exists(_ => "sale".Equals(_)))
+                cate += "4,";
+            if (actTypeList.Exists(_ => "ticket".Equals(_)))
+                cate += "5,";
+            if (actTypeList.Exists(_ => "contract".Equals(_)))
+                cate += "6,";
+            if (actTypeList.Exists(_ => "project".Equals(_)))
+                cate += "7,";
+            if (cate.Equals(""))
+                return html.ToString();
+            cate = cate.Remove(cate.Length - 1, 1);    // 移除最后的,
+
+            bool isAsc = false;
+            if (!string.IsNullOrEmpty(order) && order.Equals("1"))
+                isAsc = true;
+            var actList = new v_activity_opportunity_dal().GetActivities(oppId, cate);
+            IOrderedEnumerable<v_activity> actList1;
+            if (isAsc)
+                actList1 = from a in actList where a.lv == 1 orderby a.act_date_1lv ascending select a;
+            else
+                actList1 = from a in actList where a.lv == 1 orderby a.act_date_1lv descending select a;
+
+            // 商机和销售订单一级备注和二级备注会有重复，获取二级备注，判断一级备注是否显示。有重复不显示一级备注
+            var level2Ids = from a in actList where a.cate == 2 && a.lv == 2 select a.id;
+
+            foreach (var act in actList1)
+            {
+                if (level2Ids.Contains(act.id))
+                    continue;
+
+                if (act.cate == 2)    // 备注和附件
+                {
+                    if (act.act_cate != null && act.act_cate.Equals("act"))
+                        html.Append(GetNoteHtml(actList, act, act.cate, userId, 1));
+                    else if (act.act_cate != null && act.act_cate.Equals("att"))
+                        html.Append(GetAttachmentHtml(actList, act, act.cate, userId, 1));
+                    else    // 错误
+                        return "";
+                }
+                else
+                {
+                    html.Append(GetObjectHtml(actList, act, userId, isAsc));
+                }
+            }
+
+            return html.ToString();
+
+        }
+
+        /// <summary>
+        /// 获取最多三个待办的html
+        /// </summary>
+        /// <param name="oppId"></param>
+        /// <param name="order"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        private string GetOppTodosHtml(long oppId, string order, long userId)
+        {
+            string sql = $"SELECT * FROM com_activity WHERE opportunity_id={oppId} AND cate_id={(int)DicEnum.ACTIVITY_CATE.TODO} AND delete_time=0 ";
+            if (order != null && order.Equals("1"))
+                sql += " ORDER BY update_time ASC LIMIT 3";
+            else
+                sql += " ORDER BY update_time DESC LIMIT 3";
+            var todoList = dal.FindListBySql(sql);
+
+            StringBuilder todoHtml = new StringBuilder();
+            foreach (var todo in todoList)
+            {
+                var resource = new sys_resource_dal().FindById((long)todo.resource_id);
+                todoHtml.Append($"<div class='EntityFeedLevel1'><a style='cursor:pointer;'><img src='..{resource.avatar}' /></a>");
+                todoHtml.Append($"<div class='PostContent'><a class='PostContentName'>{resource.name}</a>");
+                if (resource.id != userId)
+                    todoHtml.Append($"<a href='mailto:{resource.email}' class='SmallLink'>发送邮件</a>");
+                todoHtml.Append($"<img src='../Images/todos.png' />");
+
+                if (todo.contact_id != null)
+                {
+                    var contact = new crm_contact_dal().FindById((long)todo.contact_id);
+                    todoHtml.Append($"<span>(联系人:<a class='PostContentName'>{contact.name}</a>");
+                    if (!string.IsNullOrEmpty(contact.email))
+                        todoHtml.Append($"<a href='mailto:{contact.email}' class='SmallLink'>发送邮件</a>");
+                    todoHtml.Append($")</span>");
+                }
+
+                todoHtml.Append($"<div><span>{new GeneralBLL().GetGeneralName(todo.action_type_id)}: {todo.description}</span></div>");
+
+                var creator = new sys_resource_dal().FindById((long)todo.create_user_id);
+                todoHtml.Append($"<div><span style='color:gray;'>创建人:&nbsp</span><a style='color:gray;' href='#'>{creator.name}</a>");
+                if (todo.create_user_id != userId)
+                    todoHtml.Append($"<a href='mailto:{creator.email}' class='SmallLink'>发送邮件</a>");
+                todoHtml.Append("</div>");
+
+                todoHtml.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
+                var updateTime = Tools.Date.DateHelper.TimeStampToDateTime(todo.update_time);
+                if (DateTime.Today.Year == updateTime.Year && DateTime.Today.Month == updateTime.Month && DateTime.Today.Day == updateTime.Day)
+                    todoHtml.Append($"修改时间:&nbsp今天 {updateTime.ToString("hh:mm")}</span>");
+                else
+                    todoHtml.Append($"修改时间:&nbsp{updateTime.ToString("yyyy-MM-dd hh:mm")}</span>");
+                todoHtml.Append($"<a onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a><a onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a><a onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
+                todoHtml.Append("</div></div></div>");
+
+                todoHtml.Append("<hr class='activityTitlerighthr' />");
+            }
+
+            return todoHtml.ToString();
+        }
+        #endregion
+
+        #region 查看销售订单获取活动列表
+        /// <summary>
+        /// 查看销售订单获取活动列表
+        /// </summary>
+        /// <param name="actTypeList">活动类型</param>
+        /// <param name="soId">销售订单id</param>
+        /// <param name="order">排序（1:时间从早到晚;否则:时间从晚到早</param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public string GetSaleorderActivities(List<string> actTypeList, long soId, string order, long userId)
+        {
+            if (actTypeList == null || soId == 0 || userId == 0)
+                return "";
+
+            StringBuilder html = new StringBuilder();
+
+            if (actTypeList.Exists(_ => "todo".Equals(_)))
+                html.Append(GetSalesOrderTodosHtml(soId, order, userId));
+
+            string cate = "";
+            if (actTypeList.Exists(_ => "crmnote".Equals(_)))
+                cate += "2,";
+            if (actTypeList.Exists(_ => "opportunity".Equals(_)))
+                cate += "3,";
+            if (actTypeList.Exists(_ => "sale".Equals(_)))
+                cate += "4,";
+            if (actTypeList.Exists(_ => "ticket".Equals(_)))
+                cate += "5,";
+            if (actTypeList.Exists(_ => "contract".Equals(_)))
+                cate += "6,";
+            if (actTypeList.Exists(_ => "project".Equals(_)))
+                cate += "7,";
+            if (cate.Equals(""))
+                return html.ToString();
+            cate = cate.Remove(cate.Length - 1, 1);    // 移除最后的,
+
+            bool isAsc = false;
+            if (!string.IsNullOrEmpty(order) && order.Equals("1"))
+                isAsc = true;
+            var actList = new v_activity_sales_order_dal().GetActivities(soId, cate);
+            IOrderedEnumerable<v_activity> actList1;
+            if (isAsc)
+                actList1 = from a in actList where a.lv == 1 orderby a.act_date_1lv ascending select a;
+            else
+                actList1 = from a in actList where a.lv == 1 orderby a.act_date_1lv descending select a;
+
+            // 商机和销售订单一级备注和二级备注会有重复，获取二级备注，判断一级备注是否显示。有重复不显示一级备注
+            var level2Ids = from a in actList where a.cate == 2 && a.lv == 2 select a.id;
+
+            foreach (var act in actList1)
+            {
+                if (level2Ids.Contains(act.id))
+                    continue;
+
+                if (act.cate == 2)    // 备注和附件
+                {
+                    if (act.act_cate != null && act.act_cate.Equals("act"))
+                        html.Append(GetNoteHtml(actList, act, act.cate, userId, 1));
+                    else if (act.act_cate != null && act.act_cate.Equals("att"))
+                        html.Append(GetAttachmentHtml(actList, act, act.cate, userId, 1));
+                    else    // 错误
+                        return "";
+                }
+                else
+                {
+                    html.Append(GetObjectHtml(actList, act, userId, isAsc));
+                }
+            }
+
+            return html.ToString();
+
+        }
+
+        /// <summary>
+        /// 获取最多三个待办的html
+        /// </summary>
+        /// <param name="soId"></param>
+        /// <param name="order"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        private string GetSalesOrderTodosHtml(long soId, string order, long userId)
+        {
+            string sql = $"SELECT * FROM com_activity WHERE object_id={soId} AND object_type_id={(int)DicEnum.OBJECT_TYPE.SALEORDER} AND cate_id={(int)DicEnum.ACTIVITY_CATE.TODO} AND delete_time=0 ";
+            if (order != null && order.Equals("1"))
+                sql += " ORDER BY update_time ASC LIMIT 3";
+            else
+                sql += " ORDER BY update_time DESC LIMIT 3";
+            var todoList = dal.FindListBySql(sql);
+
+            StringBuilder todoHtml = new StringBuilder();
+            foreach (var todo in todoList)
+            {
+                var resource = new sys_resource_dal().FindById((long)todo.resource_id);
+                todoHtml.Append($"<div class='EntityFeedLevel1'><a style='cursor:pointer;'><img src='..{resource.avatar}' /></a>");
+                todoHtml.Append($"<div class='PostContent'><a class='PostContentName'>{resource.name}</a>");
+                if (resource.id != userId)
+                    todoHtml.Append($"<a href='mailto:{resource.email}' class='SmallLink'>发送邮件</a>");
+                todoHtml.Append($"<img src='../Images/todos.png' />");
+
+                if (todo.contact_id != null)
+                {
+                    var contact = new crm_contact_dal().FindById((long)todo.contact_id);
+                    todoHtml.Append($"<span>(联系人:<a class='PostContentName'>{contact.name}</a>");
+                    if (!string.IsNullOrEmpty(contact.email))
+                        todoHtml.Append($"<a href='mailto:{contact.email}' class='SmallLink'>发送邮件</a>");
+                    todoHtml.Append($")</span>");
+                }
+
+                todoHtml.Append($"<div><span>{new GeneralBLL().GetGeneralName(todo.action_type_id)}: {todo.description}</span></div>");
+
+                var creator = new sys_resource_dal().FindById((long)todo.create_user_id);
+                todoHtml.Append($"<div><span style='color:gray;'>创建人:&nbsp</span><a style='color:gray;' href='#'>{creator.name}</a>");
+                if (todo.create_user_id != userId)
+                    todoHtml.Append($"<a href='mailto:{creator.email}' class='SmallLink'>发送邮件</a>");
+                todoHtml.Append("</div>");
+
+                todoHtml.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
+                var updateTime = Tools.Date.DateHelper.TimeStampToDateTime(todo.update_time);
+                if (DateTime.Today.Year == updateTime.Year && DateTime.Today.Month == updateTime.Month && DateTime.Today.Day == updateTime.Day)
+                    todoHtml.Append($"修改时间:&nbsp今天 {updateTime.ToString("hh:mm")}</span>");
+                else
+                    todoHtml.Append($"修改时间:&nbsp{updateTime.ToString("yyyy-MM-dd hh:mm")}</span>");
+                todoHtml.Append($"<a onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a><a onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a><a onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
+                todoHtml.Append("</div></div></div>");
+
+                todoHtml.Append("<hr class='activityTitlerighthr' />");
+            }
+
+            return todoHtml.ToString();
+        }
+        #endregion
+
+        /// <summary>
+        /// 活动商机、销售订单等信息及其下的备注和附件信息
+        /// </summary>
+        /// <param name="actList"></param>
+        /// <param name="obj"></param>
+        /// <param name="userId"></param>
+        /// <param name="isAsc"></param>
+        /// <returns></returns>
+        private string GetObjectHtml(List<v_activity> actList, v_activity obj, long userId, bool isAsc)
+        {
+            long cate = obj.cate;
+            int objType;
+            int attObjType = 0;
+            string logo;
+            if (cate == 3)
+            {
+                objType = (int)DicEnum.OBJECT_TYPE.OPPORTUNITY;
+                logo = "contract.png";
+            }
+            else if (cate == 4)
+            {
+                objType = (int)DicEnum.OBJECT_TYPE.SALEORDER;
+                attObjType = (int)DicEnum.ATTACHMENT_OBJECT_TYPE.SALES_ORDER;
+                logo = "salesorder.png";
+            }
+            else if (cate == 6)
+            {
+                objType = (int)DicEnum.OBJECT_TYPE.CONTRACT;
+                logo = "contract.png";
+            }
+            else if (cate == 7)
+            {
+                objType = (int)DicEnum.OBJECT_TYPE.PROJECT;
+                attObjType = (int)DicEnum.ATTACHMENT_OBJECT_TYPE.PROJECT;
+                logo = "project.png";
+            }
+            else
+                return "";
+
+            //var obj = new v_activity_dal().FindById(objId);
+
+            StringBuilder html = new StringBuilder();
+            html.Append($"<div class='EntityFeedLevel1'><a style='float:left;cursor:pointer;'><img src='../Images/{logo}' /></a> ");
+            if (cate == 3)
+                html.Append($"<div class='PostContent'><a class='PostContentName' onclick='ViewOpportunity({obj.id})'>{obj.pname}</a>");
+            else if (cate == 4)
+                html.Append($"<div class='PostContent'><a class='PostContentName' onclick='ViewSalesOrder({obj.id})'>{obj.pname}</a>");
+            else if (cate == 6)
+                html.Append($"<div class='PostContent'><a class='PostContentName' onclick='ViewContract({obj.id})'>{obj.pname}</a>");
+            else
+                html.Append($"<div class='PostContent'><a class='PostContentName'>{obj.pname}</a>");
+            html.Append($"<div><span>{obj.act_desc}</span></div>");
+            html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
+            html.Append($"{obj.act_date}</span>");
+            if (cate == 4 || cate == 7)
+            {
+                html.Append($"<a onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({obj.id},{attObjType})' class='CommentLink'>添加附件</a>");
+            }
+            if (cate == 6)
+            {
+                html.Append($"<a onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a>");
+            }
+            html.Append("</div></div></div>");
+
+            IOrderedEnumerable<v_activity> actList1;    // 下级备注和附件
+            actList1 = from act in actList where act.id_1lv == obj.id && act.lv == 2 orderby act.act_date_2lv ascending select act;
+
+            //var actList = new v_activity_dal().GetActivities(obj.id, 2, isAsc);
+            foreach (var act in actList1)
+            {
+                if (act.act_cate != null && act.act_cate.Equals("act"))
+                    html.Append(GetNoteHtml(actList, act, cate, userId, 2));
+                else if (act.act_cate != null && act.act_cate.Equals("att"))
+                    html.Append(GetAttachmentHtml(actList, act, cate, userId, 2));
+            }
+
+            html.Append("<hr class='activityTitlerighthr' />");
+
+            return html.ToString();
+        }
 
         /// <summary>
         /// 生成一个备注及其下级的备注和附件的html
         /// </summary>
-        /// <param name="noteId"></param>
+        /// <param name="actList"></param>
+        /// <param name="note"></param>
+        /// <param name="cate"></param>
         /// <param name="userId"></param>
         /// <param name="level"></param>
         /// <returns></returns>
-        //private string GetCRMNoteHtml(long noteId, long userId, int level)
-        //{
-        //    var note = dal.FindById(noteId);
-        //    var resource = new sys_resource_dal().FindById((long)note.resource_id);
-        //    string html = "";
-        //    html += $"<div class='EntityFeedLevel{level}'><a href='#' style='float:left;'><img src='..{resource.avatar}' /></a> ";
-        //    html += $"<div class='PostContent'><a href='#' class='PostContentName'>{resource.name}</a>";
-        //    if (resource.id != userId)
-        //        html += $"<a href='mailto:{resource.email}' class='SmallLink'>发送邮件</a>";
-        //    html += $"<img src='../Images/note.png' />";
-        //    if (note.contact_id!=null)
-        //    {
-        //        var contact = new crm_contact_dal().FindById((long)note.contact_id);
-        //        html += $"<span>(联系人:<a href='#' class='PostContentName'>{contact.name}</a>";
-        //        if (!string.IsNullOrEmpty(contact.email))
-        //            html += $"<a href='mailto:{contact.email}' class='SmallLink'>发送邮件</a>";
-        //        html += $")</span>";
-        //    }
-        //    html += $"<div><span>{new GeneralBLL().GetGeneralName(note.action_type_id)}: {note.description}</span></div>";
+        private string GetNoteHtml(List<v_activity> actList, v_activity note, long cate, long userId, int level)
+        {
+            StringBuilder html = new StringBuilder();
+            html.Append($"<div class='EntityFeedLevel{level}'><a style='float:left;cursor:pointer;'><img src='..{note.resource_avatar}' /></a> ");
+            html.Append($"<div class='PostContent'><a class='PostContentName'>{note.resource_name}</a>");
+            if (note.resource_id != userId && !string.IsNullOrEmpty(note.resource_email))
+                html.Append($"<a href='mailto:{note.resource_email}' class='SmallLink'>发送邮件</a>");
+            html.Append($"<img src='../Images/note.png' />");
+            if (note.contact_id != null)
+            {
+                html.Append($"<span>(联系人:<a class='PostContentName' onclick='ViewContact({note.contact_id})'>{note.contact_name}</a>");
+                if (!string.IsNullOrEmpty(note.contact_email))
+                    html.Append($"<a href='mailto:{note.contact_email}' class='SmallLink'>发送邮件</a>");
+                html.Append($")</span>");
+            }
+            html.Append($"<div><span>{note.act_desc}</span></div>");
 
-        //    var creator = new sys_resource_dal().FindById((long)note.create_user_id);
-        //    html += $"<div><span style='color:gray;'>创建人:&nbsp</span><a style='color:gray;' href='#'>{creator.name}</a>";
-        //    if (note.create_user_id != userId)
-        //        html += $"<a href='mailto:{creator.email}' class='SmallLink'>发送邮件</a>";
-        //    html += "</div>";
+            if (cate == 2 || cate == 3 || cate == 4)
+            {
+                html.Append($"<div><span style='color:gray;'>创建/修改人:&nbsp</span><a style='color:gray;'>{note.update_user_name}</a>");
+                if (note.update_user_id != userId && !string.IsNullOrEmpty(note.update_user_email))
+                    html.Append($"<a href='mailto:{note.update_user_email}' class='SmallLink'>发送邮件</a>");
+                html.Append("</div>");
+            }
 
-        //    html += $"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>";
-        //    var updateTime = Tools.Date.DateHelper.TimeStampToDateTime(note.update_time);
-        //    if (DateTime.Today.Year == updateTime.Year && DateTime.Today.Month == updateTime.Month && DateTime.Today.Day == updateTime.Day)
-        //        html += $"修改时间:&nbsp今天 {updateTime.ToString("hh:mm")}</span>";
-        //    else
-        //        html += $"修改时间:&nbsp{updateTime.ToString("yyyy-MM-dd hh:mm")}</span>";
-        //    html += $"<a href='#' onclick='NoteAddNote({note.id})' class='CommentLink'>添加备注</a><a href='#' onclick='NoteAddAttach({note.id})' class='CommentLink'>添加附件</a><a href='#' onclick='NoteEdit({note.id})' class='CommentLink'>编辑</a><a href='#' onclick='ActDelete({note.id})' class='CommentLink'>删除</a>";
-        //    html += "</div></div></div>";
+            html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
+            html.Append($"{note.act_date}</span>");
+            html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.NOTES},{note.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({note.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.NOTES})' class='CommentLink'>添加附件</a><a onclick='NoteEdit({note.id})' class='CommentLink'>编辑</a><a onclick='ActDelete({note.id})' class='CommentLink'>删除</a>");
+            html.Append("</div></div></div>");
 
-        //    if (level == 3)     // 最多3级
-        //        return html;
+            if (level == 3)
+                return html.ToString();
+            if (cate == 2 && level == 2)
+                return html.ToString();
 
-        //    // 添加子备注和附件 TODO: 附件
-        //    string orderBy = " ORDER BY update_time ASC ";
-        //    var childIds = GetChildrenNote(note.id, orderBy);
-        //    foreach(var child in childIds)
-        //    {
-        //        html += GetCRMNoteHtml(child, userId, level + 1);
-        //    }
+            IOrderedEnumerable<v_activity> actList1;    // 下级备注和附件
+            if (level == 1)
+                actList1 = from act in actList where act.id_1lv == note.id && act.lv == 2 orderby act.act_date_2lv ascending select act;
+            else
+                actList1 = from act in actList where note.id.ToString().Equals(act.id_2lv) && act.lv == 3 orderby act.act_date ascending select act;
+            
+            foreach (var act in actList1)
+            {
+                if (act.act_cate != null && act.act_cate.Equals("act"))
+                    html.Append(GetNoteHtml(actList, act, cate, userId, level + 1));
+                else if (act.act_cate != null && act.act_cate.Equals("att"))
+                    html.Append(GetAttachmentHtml(actList, act, cate, userId, level + 1));
+            }
 
-        //    if (level == 1)
-        //        html += "<hr class='activityTitlerighthr' />";
+            if (level == 1)
+                html.Append("<hr class='activityTitlerighthr' />");
 
-        //    return html;
-        //}
+            return html.ToString();
+        }
 
+        /// <summary>
+        /// 生成一个附件及其下级的备注和附件的html
+        /// </summary>
+        /// <param name="actList"></param>
+        /// <param name="att"></param>
+        /// <param name="cate"></param>
+        /// <param name="userId"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        private string GetAttachmentHtml(List<v_activity> actList, v_activity att, long cate, long userId, int level)
+        {
+            StringBuilder html = new StringBuilder();
+            html.Append($"<div class='EntityFeedLevel{level}'><a style='float:left;cursor:pointer;'><img src='..{att.resource_avatar}' /></a> ");
+            html.Append($"<div class='PostContent' style='width:auto;padding-right:10px;'><a class='PostContentName'>{att.resource_name}</a>");
+            if (att.resource_id != userId && !string.IsNullOrEmpty(att.resource_email))
+                html.Append($"<a href='mailto:{att.resource_email}' class='SmallLink'>发送邮件</a>");
+
+            if (att.att_type_id == (int)DicEnum.ATTACHMENT_TYPE.URL)
+                html.Append($"<a title='{att.att_filename}' onclick=\"OpenAttachment({att.id},1,'{att.att_filename}')\" ><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{att.act_name}</span></a>");
+            else
+                html.Append($"<a title='{att.att_filename}' onclick=\"OpenAttachment({att.id},0,'')\" ><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{att.act_name}</span></a>");
+
+            html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
+            html.Append($"{att.act_date}</span>");
+            html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.ATTACHMENT},{att.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({att.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.ATTACHMENT})' class='CommentLink'>添加附件</a><a onclick='AttDelete({att.id})' class='CommentLink'>删除</a>");
+            html.Append("</div></div>");
+            if (att.att_type_id == (int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
+            {
+                var file = new AttachmentBLL().GetAttachment(att.id);
+                if (file.content_type != null && file.content_type.ToLower().IndexOf("image") == 0)
+                {
+                    html.Append($"<a><img src='..{file.href}' style='width:50px;height:50px;' /></a>");
+                }
+            }
+            html.Append("</div>");
+
+            if (level == 3)
+                return html.ToString();
+            if (cate == 2 && level == 2)
+                return html.ToString();
+
+            IOrderedEnumerable<v_activity> actList1;    // 下级备注和附件
+            if (level == 1)
+                actList1 = from act in actList where act.id_1lv == att.id && act.lv == 2 orderby act.act_date_2lv ascending select act;
+            else
+                actList1 = from act in actList where att.id.ToString().Equals(act.id_2lv) && act.lv == 3 orderby act.act_date ascending select act;
+
+            //var actList = new v_activity_dal().GetActivities(att.id, level + 1, null);
+            foreach (var act in actList1)
+            {
+                if (act.act_cate != null && act.act_cate.Equals("act"))
+                    html.Append(GetNoteHtml(actList, act, cate, userId, level + 1));
+                else if (act.act_cate != null && act.act_cate.Equals("att"))
+                    html.Append(GetAttachmentHtml(actList, act, cate, userId, level + 1));
+            }
+
+            if (level == 1)
+                html.Append("<hr class='activityTitlerighthr' />");
+
+            return html.ToString();
+        }
+
+        /// <summary>
+        /// 活动页面快捷新增备注
+        /// </summary>
+        /// <param name="objId">客户id/联系人id/商机id/销售订单id</param>
+        /// <param name="objType">account/contact/opportunity/salesorder</param>
+        /// <param name="typeId"></param>
+        /// <param name="desc"></param>
+        /// <param name="userId"></param>
+        public void FastAddNote(long objId, string objType, int typeId, string desc, long userId)
+        {
+            if (objId <= 0 || objType == null)
+                return;
+
+            com_activity note = new com_activity();
+            note.id = dal.GetNextIdCom();
+            note.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            note.create_user_id = userId;
+            note.update_time = note.create_time;
+            note.update_user_id = userId;
+            note.cate_id = (int)DicEnum.ACTIVITY_CATE.NOTE;
+            note.start_date = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            note.end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now.AddMinutes(15));
+            note.action_type_id = typeId;
+            note.resource_id = userId;
+            note.description = desc;
+            note.status_id = null;
+
+            if (objType.Equals("account"))
+            {
+                note.object_id = objId;
+                note.object_type_id = (int)DicEnum.OBJECT_TYPE.CUSTOMER;
+                note.account_id = objId;
+            }
+            else if (objType.Equals("contact"))
+            {
+                note.object_id = objId;
+                note.object_type_id = (int)DicEnum.OBJECT_TYPE.CONTACT;
+                var accountId = new ContactBLL().GetContact(objId).account_id;
+                note.account_id = accountId;
+                note.contact_id = objId;
+            }
+            else if (objType.Equals("opportunity"))
+            {
+                note.object_id = objId;
+                note.object_type_id = (int)DicEnum.OBJECT_TYPE.OPPORTUNITY;
+                var opp = new OpportunityBLL().GetOpportunityById(objId);
+                note.account_id = opp.account_id;
+                note.contact_id = opp.contact_id;
+                note.opportunity_id = objId;
+            }
+            else if (objType.Equals("salesorder"))
+            {
+                note.object_id = objId;
+                note.object_type_id = (int)DicEnum.OBJECT_TYPE.SALEORDER;
+                note.sales_order_id = objId;
+                var opp = new OpportunityBLL().GetOpportunityById(new SaleOrderBLL().GetSaleOrder(objId).opportunity_id);
+                note.opportunity_id = opp.id;
+                note.account_id = opp.account_id;
+                note.contact_id = opp.contact_id;
+            }
+
+            dal.Insert(note);
+            OperLogBLL.OperLogAdd<com_activity>(note, note.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "快捷新增备注");
+        }
+        
         /// <summary>
         /// 活动列表中快速添加备注
         /// </summary>
@@ -602,7 +1048,6 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
         #endregion
-
         #region CRM备注/待办
         /// <summary>
         /// CRM备注/待办的活动类型
@@ -611,46 +1056,6 @@ namespace EMT.DoneNOW.BLL
         public List<d_general> GetCRMActionType()
         {
             return new d_general_dal().FindListBySql($"SELECT id,name FROM d_general WHERE general_table_id={(int)GeneralTableEnum.ACTION_TYPE} AND ext2 IS NULL AND delete_time=0");
-        }
-
-        /// <summary>
-        /// 快捷新增备注(客户id，联系人id，商机id填一个)
-        /// </summary>
-        /// <param name="accountId"></param>
-        /// <param name="contactId"></param>
-        /// <param name="opportunityId"></param>
-        /// <param name="typeId"></param>
-        /// <param name="desc"></param>
-        /// <param name="userId"></param>
-        public void FastAddNote(long accountId, long contactId, long opportunityId, int typeId, string desc, long userId)
-        {
-            if (accountId == 0 && contactId == 0 && opportunityId == 0)
-                return;
-
-            com_activity note = new com_activity();
-            note.id = dal.GetNextIdCom();
-            note.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
-            note.create_user_id = userId;
-            note.update_time = note.create_time;
-            note.update_user_id = userId;
-            note.cate_id = (int)DicEnum.ACTIVITY_CATE.NOTE;
-            note.start_date = Tools.Date.DateHelper.ToUniversalTimeStamp();
-            note.end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now.AddMinutes(15));
-            note.action_type_id = typeId;
-            note.resource_id = userId;
-            note.description = desc;
-            note.status_id = null;
-
-            if (accountId != 0)
-            {
-                note.object_id = accountId;
-                note.object_type_id = (int)DicEnum.OBJECT_TYPE.CUSTOMER;
-                note.account_id = accountId;
-            }
-            // TODO: 联系人和商机
-
-            dal.Insert(note);
-            OperLogBLL.OperLogAdd<com_activity>(note, note.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "快捷新增备注");
         }
 
         /// <summary>
@@ -867,6 +1272,8 @@ namespace EMT.DoneNOW.BLL
                 addTodo.complete_time = todo.complete_time;
                 addTodo.complete_description = todo.complete_description;
             }
+            if (addTodo.object_type_id == (int)DicEnum.OBJECT_TYPE.SALEORDER)
+                addTodo.sales_order_id = addTodo.object_id;
             dal.Insert(addTodo);
             OperLogBLL.OperLogAdd<com_activity>(addTodo, addTodo.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "新增待办");
 
@@ -905,6 +1312,8 @@ namespace EMT.DoneNOW.BLL
                 editTodo.complete_time = todo.complete_time;
                 editTodo.complete_description = todo.complete_description;
             }
+            if (editTodo.object_type_id == (int)DicEnum.OBJECT_TYPE.SALEORDER)
+                editTodo.sales_order_id = editTodo.object_id;
             dal.Update(editTodo);
             OperLogBLL.OperLogUpdate<com_activity>(editTodo, oldTodo, editTodo.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "编辑待办");
 

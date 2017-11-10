@@ -528,6 +528,8 @@ namespace EMT.DoneNOW.DTO
 			TASK_PHASE = 1538,                      // 任务父阶段的查找带回
             COMPANY_VIEW_INVOICE = 1534,            // 客户详情-发票查询
             COMPANY_VIEW_ATTACHMENT = 1537,         // 客户详情-附件
+            OPPORTUNITY_VIEW_ATTACHMENT = 1540,     // 商机详情-附件查询
+            SALES_ORDER_VIEW_ATTACHMENT = 1541,     // 销售订单详情-附件查询
 
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
@@ -1023,6 +1025,8 @@ namespace EMT.DoneNOW.DTO
         CompanyViewContract = 103,      // 客户详情-合同
         CompanyViewInvoice = 104,       // 客户详情-发票查询
         CompanyViewAttachment = 107,    // 客户详情-附件
+        OpportunityViewAttachment = 119,// 商机详情-附件查询
+        SalesOrderViewAttachment = 120, // 销售订单详情-附件查询
 
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批

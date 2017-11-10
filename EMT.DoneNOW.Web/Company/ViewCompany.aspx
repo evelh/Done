@@ -109,7 +109,7 @@
     <div <%if (type == "activity" || type == "note" || type == "todo") { %> style="margin-left:280px;margin-right:10px;" <%}else{ %> style="margin-left:10px;margin-right:10px;" <% } %>>
     <div class="activityTitleleft fl" id="showCompanyGeneral" style="margin-left: -270px;">
       <input type="hidden" id="isHide" runat="server" value="hide" />
-      <input type="hidden" id="account_id" value="<%=account.id %>" />
+      <input type="hidden" id="objectId" value="<%=account.id %>" />
       <%-- 客户的基本信息 --%>
       <div class="address">
         <label>
@@ -592,7 +592,7 @@
     function AddCompany() {
         // var checkResult = <% %>;
     }
-
+    var pageType = "account";
 </script>
 
   <% if (type.Equals("activity")) { %>

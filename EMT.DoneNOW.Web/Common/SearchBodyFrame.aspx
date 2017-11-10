@@ -182,7 +182,7 @@
                     </table>
                 </div>
             </div>
-            <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;">
+            <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;min-width:600px;">
                 <ul class="clear fl">
                     <%if (!string.IsNullOrEmpty(addBtn))
                         {
@@ -257,10 +257,10 @@
                            { %>&nbsp;100&nbsp;<%}
                                                   else
                                                   { %><a href="#" onclick="ChangePageSize(100)">100</a><%} %></span>
-                    <i onclick="ChangePage(1)"><<</i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page-1 %>)"><</i>
+                    <i style="padding:0px;" onclick="ChangePage(1)"><<</i>&nbsp;<i onclick="ChangePage(<%=queryResult.page-1 %>)"><</i>
                     <input type="text" style="width: 30px; text-align: center;height:30px;" value="<%=queryResult.page %>" />
-                    <span>&nbsp;/&nbsp;<%=queryResult.page_count %></span>
-                    <i onclick="ChangePage(<%=queryResult.page+1 %>)">></i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page_count %>)">>></i>
+                    <span style="margin-right:5px;">&nbsp;/&nbsp;<%=queryResult.page_count %></span>
+                    <i style="padding:0px;" onclick="ChangePage(<%=queryResult.page+1 %>)">></i>&nbsp;<i onclick="ChangePage(<%=queryResult.page_count %>)">>></i>
                 </div>
                 <%} %>
             </div>

@@ -48,10 +48,12 @@ namespace EMT.DoneNOW.Web.SaleOrder
                         break;
                     case "todo":
                         actType = "待办";
+                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=131&con676=" + sale_order.id;
                         isShowLeft.Value = "1";
                         break;
                     case "note":
                         actType = "备注";
+                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH + "&type=" + (int)QueryType.CRMNote + "&group=129&con675=" + sale_order.id;
                         isShowLeft.Value = "1";
                         break;
                     case "ticket":
@@ -59,19 +61,29 @@ namespace EMT.DoneNOW.Web.SaleOrder
                         break;
                     case "attachment":
                         actType = "附件";
+                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.SALES_ORDER_VIEW_ATTACHMENT + "&type=" + (int)QueryType.SalesOrderViewAttachment + "&con977=" + sale_order.id;
                         break;
                     case "entry":
                         actType = "报价项";
                         iframeSrc = "../QuoteItem/QuoteItemManage.aspx?isShow=1&quote_id=" + quote.id;
                         break;
                     case "purchaseOrder":
-                        actType = "销售订单";
+                        actType = "采购订单";
                         break;
                     default:
                         actType = "活动";
                         type = "activity";
                         isShowLeft.Value = "1";
                         break;
+                }
+
+                if (type.Equals("activity"))
+                {
+                    var typeList = new ActivityBLL().GetCRMActionType();
+                    noteType.DataSource = typeList;
+                    noteType.DataTextField = "name";
+                    noteType.DataValueField = "id";
+                    noteType.DataBind();
                 }
 
             }

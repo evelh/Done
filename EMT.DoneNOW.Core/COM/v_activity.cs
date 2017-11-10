@@ -65,6 +65,8 @@ namespace EMT.DoneNOW.Core
         public String att_href { get; set; }
         [DataMember]
         public String att_filename { get; set; }
+        [DataMember]
+        public Int64? update_time_int { get; set; }
 
 
     }

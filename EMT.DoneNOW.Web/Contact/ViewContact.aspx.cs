@@ -69,6 +69,14 @@ namespace EMT.DoneNOW.Web
                         iframeSrc = "";  // 默认
                         break;
                 }
+                if (type.Equals("activity"))
+                {
+                    var typeList = new ActivityBLL().GetCRMActionType();
+                    noteType.DataSource = typeList;
+                    noteType.DataTextField = "name";
+                    noteType.DataValueField = "id";
+                    noteType.DataBind();
+                }
                 if (account!=null&&contact!=null)
                 {
                     dic = new CompanyBLL().GetField();

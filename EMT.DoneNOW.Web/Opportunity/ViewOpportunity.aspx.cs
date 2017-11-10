@@ -49,11 +49,11 @@ namespace EMT.DoneNOW.Web.Opportunity
                     {
 
                         case "todo":
-                            iframeSrc = "";                              // 待办
+                            iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=112&con659=" + opportunity.id;                              // 待办
                             actType = "待办";
                             break;                                                        
                         case "note":
-                            iframeSrc = "";                              // 备注
+                            iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH + "&type=" + (int)QueryType.CRMNote + "&group=110&con647=" +opportunity.id;                              // 备注
                             actType = "备注";
                             break;                                                        
                         case "activity":
@@ -77,6 +77,10 @@ namespace EMT.DoneNOW.Web.Opportunity
 
                             actType = "报价项";
                             break;
+                        case "att":
+                            iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.OPPORTUNITY_VIEW_ATTACHMENT + "&type=" + (int)QueryType.OpportunityViewAttachment + "&con976=" + opportunity.id;
+                            actType = "附件";
+                            break;
                         default:
                             iframeSrc = "";  // 默认
                             actType = "活动";
@@ -86,6 +90,14 @@ namespace EMT.DoneNOW.Web.Opportunity
                     if (type == "activity" || type == "note" || type == "todo")
                     {
                         isHide.Value = "show";
+                    }
+                    if (type.Equals("activity"))
+                    {
+                        var typeList = new ActivityBLL().GetCRMActionType();
+                        noteType.DataSource = typeList;
+                        noteType.DataTextField = "name";
+                        noteType.DataValueField = "id";
+                        noteType.DataBind();
                     }
                 }
                 else
