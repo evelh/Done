@@ -21,19 +21,19 @@
             margin-bottom: 10px;
         }
 
-            .HeaderRow span {
-                color: #FFF;
-                top: 10px;
-                display: block;
-                width: 85%;
-                position: absolute;
-                text-transform: uppercase;
-                font-size: 15px;
-                font-weight: bold;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
+        .HeaderRow span {
+            color: #FFF;
+            top: 10px;
+            display: block;
+            width: 85%;
+            position: absolute;
+            text-transform: uppercase;
+            font-size: 15px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         .Left {
             width: 160px;

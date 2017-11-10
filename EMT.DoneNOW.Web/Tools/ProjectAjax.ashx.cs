@@ -48,6 +48,9 @@ namespace EMT.DoneNOW.Web
                     case "SaveTemp":
                         SaveAsTemp(context);
                         break;
+                    case "ImportFromTemp":
+                        ImportFromTemp(context);
+                        break;
                     case "DeletePro":
                         var dProId = context.Request.QueryString["project_id"];
                         DeletePro(context, long.Parse(dProId));
@@ -65,7 +68,7 @@ namespace EMT.DoneNOW.Web
                         break;
                 }
             }
-            catch (Exception)
+            catch (Exception msg)
             {
                 context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
             }
@@ -128,10 +131,19 @@ namespace EMT.DoneNOW.Web
                     }
                     else
                     {
-                        interaction += "." + (subList.IndexOf(sub) + 1).ToString();
-                        showNo = interaction;
+                        showNo = interaction+ "." + (subList.IndexOf(sub) + 1).ToString();
                     }
-                    taskString.Append($"<tr class='HighImportance' id='{sub.id}' value='{sub.id}' data-val='{sub.id}'><td class='Interaction'><span class='Text'>{showNo}</span></td><td class='Nesting'><div data-depth='{data_depth}' class='DataDepth'><div class='Spacer' style='width:{data_depth * 11}px;min-width:{data_depth * 11}px;'></div><div class='IconContainer'></div><div class='Value'>{sub.title}</div></div></td>");
+                    var isParent = "";
+                    var thisSubList = sdkList.Where(_ => _.parent_id == sub.id && (_.type_id == (int)TASK_TYPE.PROJECT_TASK || _.type_id == (int)TASK_TYPE.PROJECT_ISSUE || _.type_id == (int)TASK_TYPE.PROJECT_PHASE)).ToList();
+                    if (thisSubList != null && thisSubList.Count > 0)
+                    {
+                        isParent = "<div class='Toggle Collapse'><div class='Vertical' style='display: none;'></div><div class='Horizontal'></div></div>";
+                    }
+                    else
+                    {
+                    
+                    }
+                    taskString.Append($"<tr class='HighImportance' id='{sub.id}' value='{sub.id}' data-val='{sub.id}'><td class='Interaction'><span class='Text'>{showNo}</span></td><td class='Nesting'><div data-depth='{data_depth}' class='DataDepth'><div class='Spacer' style='width:{data_depth * 11}px;min-width:{data_depth * 11}px;'></div><div class='IconContainer'>{isParent}</div><div class='Value'>{sub.title}</div></div></td>");
                     switch (showType)
                     {
                         case "showTime":
@@ -145,8 +157,8 @@ namespace EMT.DoneNOW.Web
                             break;
                     }
                     taskString.Append("</tr>");
-                    var thisSubList = sdkList.Where(_ => _.parent_id == tid && (_.type_id == (int)TASK_TYPE.PROJECT_TASK || _.type_id == (int)TASK_TYPE.PROJECT_ISSUE || _.type_id == (int)TASK_TYPE.PROJECT_PHASE)).ToList();
-                    AddSubTask(sub.id, sdkList, data_depth + 1, interaction, showType);
+               
+                    AddSubTask(sub.id, sdkList, data_depth + 1, showNo, showType);
                 }
                 // data_depth += 1;     预留 以后task多之后判断使用
             }
@@ -358,6 +370,25 @@ namespace EMT.DoneNOW.Web
 
         }
         /// <summary>
+        ///  从模板导入
+        /// </summary>
+        private void ImportFromTemp(HttpContext context)
+        {
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            bool result = false;
+            if (res != null)
+            {
+                var tempId = context.Request.QueryString["project_temp_id"];
+                var copyCalItem = context.Request.QueryString["copyCalItem"];
+                var copyProCha = context.Request.QueryString["copyProCha"];
+                var copyProTeam = context.Request.QueryString["copyProTeam"];
+                var thisProjetcId = context.Request.QueryString["thisProjetcId"];
+                var choIds = context.Request.QueryString["choIds"];
+                new TaskBLL().ImportFromTemp(long.Parse(thisProjetcId), choIds,res.id,!string.IsNullOrEmpty(copyProTeam));
+            }
+            context.Response.Write(result);
+        }
+        /// <summary>
         /// 删除项目
         /// </summary>
         private void DeletePro(HttpContext context, long project_id)
@@ -372,6 +403,13 @@ namespace EMT.DoneNOW.Web
             context.Response.Write(new { result = result, reason = reson });
         }
 
+        /// <summary>
+        /// 保存为基准（新建type为基准的项目）
+        /// </summary>
+        private void SaveAsBaseline(HttpContext context,long project_id)
+        {
+
+        }
         /// <summary>
         /// 任务父阶段的修改 （修改后刷新页面排序方式改变）
         /// </summary>
@@ -409,6 +447,14 @@ namespace EMT.DoneNOW.Web
                         var thisTask = stDal.FindNoDeleteById(long.Parse(taskId));
                         if (thisTask != null)
                         {
+                            if (thisTask.parent_id != null)
+                            {
+                                if (taskArr.Contains(((long)thisTask.parent_id).ToString())) // 父节点已经处理，子节点不用处理
+                                {
+                                    continue;
+                                }
+                            }
+                            
                             thisTask.parent_id = parent_id;
                             stDal.Update(thisTask);
                             thisTaskNewSortNo = tBll.ReturnSortOrder(project_id, parent_id);

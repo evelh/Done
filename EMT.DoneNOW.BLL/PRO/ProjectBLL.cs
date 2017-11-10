@@ -83,51 +83,12 @@ namespace EMT.DoneNOW.BLL
                         // task相关
                         if (!string.IsNullOrEmpty(param.tempChoTaskIds))
                         {
-                            var stDal = new sdk_task_dal();
-                            var temTaskList = stDal.GetTaskByIds(param.tempChoTaskIds);
-                            if (temTaskList != null && temTaskList.Count > 0)
+                            bool isCopyRes = false;  // 用户是否选择导入项目成员--
+                            if (!string.IsNullOrEmpty(param.IsCopyTeamMember))
                             {
-                                bool isCopyRes = false;  // 用户是否选择导入项目成员--
-                                if (!string.IsNullOrEmpty(param.IsCopyTeamMember))
-                                {
-                                    isCopyRes = true;
-                                }
-                                var createTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                                var updateTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                                var strDal = new sdk_task_resource_dal();
-                                temTaskList.ForEach(_ =>
-                                {
-                                    var taskResList = strDal.GetTaskResByTaskId(_.id);
-
-                                    _.id = stDal.GetNextIdCom();
-                                    _.oid = 0;
-                                    _.project_id = thisProject.id;
-                                    _.owner_resource_id = isCopyRes ? _.owner_resource_id : null;
-                                    _.create_user_id = user.id;
-                                    _.update_user_id = user.id;
-                                    _.create_time = createTime;
-                                    _.update_time = updateTime;
-                                    stDal.Insert(_);
-                                    OperLogBLL.OperLogAdd<sdk_task>(_, _.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "从模板导入项目Task");
-                                    if (isCopyRes && taskResList != null && taskResList.Count > 0)
-                                    {
-                                        taskResList.ForEach(tr =>
-                                        {
-                                            tr.id = strDal.GetNextIdCom();
-                                            tr.oid = 0;
-                                            tr.create_user_id = user.id;
-                                            tr.create_time = createTime;
-                                            tr.update_time = updateTime;
-                                            tr.update_user_id = user.id;
-                                            tr.contact_id = null;
-                                            tr.task_id = _.id;
-                                            strDal.Insert(tr);
-                                            OperLogBLL.OperLogAdd<sdk_task_resource>(tr, tr.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK_RESOURCE, "从模板导入任务分配对象");
-                                        });
-                                    }
-
-                                });
+                                isCopyRes = true;
                             }
+                            new TaskBLL().ImportFromTemp(thisProject.id, param.tempChoTaskIds, user.id, isCopyRes);
                         }
                         // 日历条目
                         if (!string.IsNullOrEmpty(param.IsCopyCalendarItem))
@@ -245,7 +206,7 @@ namespace EMT.DoneNOW.BLL
                                     pptrDal.Insert(item_role);
                                     OperLogBLL.OperLogAdd<pro_project_team_role>(item_role, item_role.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "新增项目团队角色");
                                 }
-       
+
                             }
                         }
                     }
@@ -803,13 +764,13 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 删除项目(返回失败原因)
         /// </summary>
-        public bool DeletePro(long ProjectId,long user_id,out string reson)
+        public bool DeletePro(long ProjectId, long user_id, out string reson)
         {
             reson = "";
-            
+
             var thisProject = _dal.FindNoDeleteById(ProjectId);
             var user = UserInfoBLL.GetUserInfo(user_id);
-            if (thisProject != null&&user!=null)
+            if (thisProject != null && user != null)
             {
                 var taskDal = new sdk_task_dal();
                 var taskList = taskDal.GetProjectTask(thisProject.id);
@@ -837,9 +798,9 @@ namespace EMT.DoneNOW.BLL
                 // todo
                 #endregion
                 #region 备注校验（包括任务相关备注）
-                var caDal = new  com_activity_dal();
+                var caDal = new com_activity_dal();
                 var actList = caDal.GetActiListByOID(thisProject.id);
-                if(actList!=null && actList.Count > 0)  // 项目备注校验
+                if (actList != null && actList.Count > 0)  // 项目备注校验
                 {
                     reson = "proNote";
                     return false;
@@ -883,7 +844,7 @@ namespace EMT.DoneNOW.BLL
                 #endregion
 
                 #region 删除项目处理逻辑
-          
+
 
                 var deleteTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
 
@@ -901,7 +862,7 @@ namespace EMT.DoneNOW.BLL
                             teamRole.delete_time = deleteTime;
                             teamRole.delete_user_id = user.id;
                             pptrDal.Update(teamRole);
-                            OperLogBLL.OperLogDelete(teamRole,teamRole.id,user.id,OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE,"删除项目团队角色");
+                            OperLogBLL.OperLogDelete(teamRole, teamRole.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "删除项目团队角色");
                         }
 
                         _.delete_user_id = user.id;
@@ -913,7 +874,8 @@ namespace EMT.DoneNOW.BLL
                 var conList = pptDal.GetConListByProId(thisProject.id);
                 if (conList != null && conList.Count > 0)
                 {
-                    conList.ForEach(_ => {
+                    conList.ForEach(_ =>
+                    {
                         _.delete_time = deleteTime;
                         _.delete_user_id = user.id;
                         pptDal.Update(_);
@@ -927,7 +889,8 @@ namespace EMT.DoneNOW.BLL
                 var proCalList = ppcDal.GetCalByPro(thisProject.id);
                 if (proCalList != null && proCalList.Count > 0)
                 {
-                    proCalList.ForEach(_ => {
+                    proCalList.ForEach(_ =>
+                    {
                         _.delete_time = deleteTime;
                         _.delete_user_id = user.id;
                         ppcDal.Update(_);
@@ -937,12 +900,13 @@ namespace EMT.DoneNOW.BLL
                 #endregion
 
                 #region 删除项目任务 和删除项目 
-                if(taskList!=null&& taskList.Count > 0)
+                if (taskList != null && taskList.Count > 0)
                 {
                     var strDal = new sdk_task_resource_dal();
-                    taskList.ForEach(_ => {
+                    taskList.ForEach(_ =>
+                    {
                         var taskResList = strDal.GetTaskResByTaskId(_.id);
-                        if(taskResList!=null&& taskResList.Count > 0)
+                        if (taskResList != null && taskResList.Count > 0)
                         {
                             taskResList.ForEach(tr =>
                             {
@@ -961,7 +925,7 @@ namespace EMT.DoneNOW.BLL
                         OperLogBLL.OperLogDelete(_, _.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "删除项目Task");
                     });
 
-                
+
 
 
                 }
@@ -983,8 +947,86 @@ namespace EMT.DoneNOW.BLL
                 reson = "404";
                 return false;
             }
-         
+
             return true;
+        }
+
+        public bool SaveAsBaseline(long ProjectId, long user_id)
+        {
+            bool result = false;
+            try
+            {
+                var thisProject = _dal.FindNoDeleteById(ProjectId);
+                if (thisProject != null)
+                {
+                    var old_project_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PROJECTS);
+                    var old_project_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.PROJECTS, thisProject.id, old_project_udfList);
+
+                    var stDal = new sdk_task_dal();
+                    var oldTaskList = stDal.GetAllProTask(thisProject.id);
+                    var basId = _dal.GetNextIdCom();
+                    var oldId = thisProject.id;
+                    var user = UserInfoBLL.GetUserInfo(user_id);
+                    if (user == null)
+                        return false;
+                    thisProject.id = basId;
+                    thisProject.oid = 0;
+                    thisProject.type_id = (int)DicEnum.PROJECT_TYPE.BENCHMARK;
+                    thisProject.create_user_id = user.id;
+                    thisProject.update_user_id = user.id;
+                    thisProject.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisProject.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisProject.change_orders_budget = ProChaPrice(oldId);
+                    thisProject.change_orders_revenue = ProChaCost(oldId);
+                    if(oldTaskList!=null&& oldTaskList.Count > 0)
+                    {
+                        var nocomList = oldTaskList.Where(_ => _.status_id != (int)DicEnum.TICKET_STATUS.DONE).ToList();
+                        if(nocomList!=null&& nocomList.Count > 0)
+                        {
+                            thisProject.percent_complete = (int)((nocomList.Count*100) / ((decimal)oldTaskList.Count));
+                        }
+                        else
+                        {
+                            thisProject.percent_complete = 0;
+                        }
+
+                    }
+                    else
+                    {
+                        thisProject.percent_complete = 0;
+                    }
+                    _dal.Insert(thisProject);
+                    OperLogBLL.OperLogAdd<pro_project>(thisProject, thisProject.id, user.id, OPER_LOG_OBJ_CATE.PROJECT, "新增基准");
+                    new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.PROJECTS, user.id,
+                 thisProject.id, old_project_udfList, old_project_udfValueList, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_EXTENSION_INFORMATION);
+
+                    var oldProject = _dal.FindNoDeleteById(oldId);
+                    oldProject.baseline_project_id = basId;
+                    oldProject.create_user_id = user.id;
+                    oldProject.update_user_id = user.id;
+                    oldProject.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    oldProject.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    _dal.Update(oldProject);
+
+                    if(oldTaskList != null&& oldTaskList.Count > 0)
+                    {
+                        oldTaskList.ForEach(_ => {
+
+
+                        });
+                    }
+
+
+
+
+
+                }
+            }
+            catch (Exception msg)
+            {
+                result = false;
+            }
+            return result;
         }
 
 
@@ -1032,6 +1074,32 @@ namespace EMT.DoneNOW.BLL
                 hours = costList.Sum(_ => _.change_order_hours == null ? 0 : (decimal)_.change_order_hours);
             }
             return hours;
+        }
+        /// <summary>
+        /// 变更单收入
+        /// </summary>
+        public decimal ProChaPrice(long project_id)
+        {
+            decimal price = 0;
+            var costList = new ctt_contract_cost_dal().GetCostByProId(project_id);
+            if (costList != null && costList.Count > 0)
+            {
+                price = costList.Sum(_ => _.unit_price != null && _.quantity != null ? ((decimal)_.unit_price * (decimal)_.quantity) : 0);
+            }
+            return price;
+        }
+        /// <summary>
+        /// 变更单成本
+        /// </summary>
+        public decimal ProChaCost(long project_id)
+        {
+            decimal cost = 0;
+            var costList = new ctt_contract_cost_dal().GetCostByProId(project_id);
+            if (costList != null && costList.Count > 0)
+            {
+                cost = costList.Sum(_ => _.unit_cost != null && _.quantity != null ? ((decimal)_.unit_cost * (decimal)_.quantity) : 0);
+            }
+            return cost;
         }
         /// <summary>
         /// 获取项目的实际时间

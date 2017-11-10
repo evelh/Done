@@ -705,10 +705,14 @@ namespace EMT.DoneNOW.BLL
                         var thisMaxNo = "";
                         for (int i = 0; i < maxSortNoArr.Length; i++)
                         {
-                            thisMaxNo += maxSortNoArr[i]+".";
+                            
                             if(i == maxSortNoArr.Length - 1)
                             {
                                 thisMaxNo += maxNo;
+                            }
+                            else
+                            {
+                                thisMaxNo += maxSortNoArr[i] + ".";
                             }
                         }
                         sorNo = thisMaxNo;
@@ -723,7 +727,6 @@ namespace EMT.DoneNOW.BLL
             {
                 sorNo = "01";
             }
-           
             return sorNo;
         }
         /// <summary>
@@ -835,7 +838,9 @@ namespace EMT.DoneNOW.BLL
                 }
             }
         }
-
+        /// <summary>
+        /// 获取到最小的可用的排序号
+        /// </summary>
         public string GetMinUserNoParSortNo(long project_id)
         {
             var nextNo = "";
@@ -860,6 +865,10 @@ namespace EMT.DoneNOW.BLL
                 {
                     nextNo = ReturnSortOrder(project_id, null);
                 }
+            }
+            else
+            {
+                nextNo = "01";
             }
             return nextNo;
         }
@@ -961,6 +970,85 @@ namespace EMT.DoneNOW.BLL
                 }
             }
 
+        }
+
+        /// <summary>
+        /// 导入task，为task的sort重新排序，no重新获取
+        /// </summary>
+        public void ImportFromTemp(long project_id,string taskIds,long user_id,bool isCopyTeamber)
+        {
+            var thisProject = new pro_project_dal().FindNoDeleteById(project_id);
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            var nowDate = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            if (thisProject != null&& user!=null) 
+            {
+                if (!string.IsNullOrEmpty(taskIds))
+                {
+                    var taskIDArr = taskIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                    // 导入，无需排序
+                    // 创建字典，关联新老关系
+                    var strDal = new sdk_task_resource_dal();
+                    Dictionary<long, long> idDic = new Dictionary<long, long>();
+                    foreach (var thisTaskId in taskIDArr)
+                    {
+                        var thisTask = _dal.FindNoDeleteById(long.Parse(thisTaskId));
+                        if (thisTask != null)
+                        {
+                            var taskResList = strDal.GetTaskResByTaskId(thisTask.id);
+                            #region task相关
+                            var oldId = thisTask.id;
+                            if (thisTask.parent_id != null && taskIDArr.Contains(thisTask.parent_id.ToString()))
+                            {
+                                var newParId = idDic.FirstOrDefault(_ => _.Key == (long)thisTask.parent_id).Value;
+                                var newSortNo = ReturnSortOrder(project_id, newParId);
+                                thisTask.parent_id = newParId;
+                                thisTask.sort_order = newSortNo;
+                            }
+                            else
+                            {
+                                var newSortNo = ReturnSortOrder(project_id, null);
+                                thisTask.project_id = thisProject.id;
+                                thisTask.sort_order = newSortNo;
+                                thisTask.parent_id = null;
+                            }
+                            thisTask.oid = 0;
+                            thisTask.id = _dal.GetNextIdCom();
+                            thisTask.project_id = thisProject.id;
+                            thisTask.create_user_id = user.id;
+                            thisTask.update_user_id = user.id;
+                            thisTask.create_time = nowDate;
+                            thisTask.update_time = nowDate;
+                            thisTask.owner_resource_id = isCopyTeamber ? thisTask.owner_resource_id : null;
+                            _dal.Insert(thisTask);
+                            OperLogBLL.OperLogAdd<sdk_task>(thisTask, thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "新增task");
+                            idDic.Add(oldId, thisTask.id);
+                            #endregion
+
+                            #region task团队相关
+                            if(taskResList!=null&& taskResList.Count > 0)
+                            {
+                                taskResList.ForEach(tr =>
+                                {
+                                    tr.id = strDal.GetNextIdCom();
+                                    tr.oid = 0;
+                                    tr.create_user_id = user.id;
+                                    tr.create_time = nowDate;
+                                    tr.update_time = nowDate;
+                                    tr.update_user_id = user.id;
+                                    tr.contact_id = null;
+                                    tr.task_id = thisTask.id;
+                                    strDal.Insert(tr);
+                                    OperLogBLL.OperLogAdd<sdk_task_resource>(tr, tr.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK_RESOURCE, "从模板导入任务分配对象");
+                                });
+                            }
+
+                            #endregion
+
+                        }
+                        
+                    }
+                }
+            }
         }
     }
 }

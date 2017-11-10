@@ -43,11 +43,22 @@ namespace EMT.DoneNOW.Web.Project
                     pageShowType = Request.QueryString["pageShowType"];
                     taskList = new sdk_task_dal().GetProjectTask(thisProject.id);
                     var isTran = Request.QueryString["isTranTemp"];
-                    if (thisProject.type_id != (int)DicEnum.PROJECT_TYPE.TEMP && (!string.IsNullOrEmpty(isTran)))
+                    if ((!string.IsNullOrEmpty(isTran))) //thisProject.type_id != (int)DicEnum.PROJECT_TYPE.TEMP &&
                     {
                         isTransTemp = true;
                     }
-
+                    if (!IsPostBack)
+                    {
+                        var tempList = new pro_project_dal().GetTempList();
+                        // 项目模板  --project_temp
+                        if (tempList != null && tempList.Count > 0)
+                        {
+                            project_temp.DataTextField = "name";
+                            project_temp.DataValueField = "id";
+                            project_temp.DataSource = tempList;
+                            project_temp.DataBind();
+                        }
+                    }
 
                     //  if (!int.TryParse(Request.QueryString["cat"], out catId))
                     var catIdString = Request.QueryString["CatID"];
@@ -59,19 +70,20 @@ namespace EMT.DoneNOW.Web.Project
                     {
                         catId = int.Parse(catIdString);
                     }
-                    
+
                     // if (!long.TryParse(Request.QueryString["type"], out queryTypeId))
 
                     var queryTypeIdString = Request.QueryString["QeryTypeId"];
                     if (string.IsNullOrEmpty(queryTypeIdString))
                     {
-                         queryTypeId = (int)QueryType.PROJECT_TASK;
+                        queryTypeId = (int)QueryType.PROJECT_TASK;
                         //queryTypeId = (int)QueryType.PROJECT_PHASE;
                     }
                     else
                     {
                         queryTypeId = int.Parse(queryTypeIdString);
                     }
+
 
                     if (catId == 0 || queryTypeId == 0)
                     {
@@ -150,13 +162,12 @@ namespace EMT.DoneNOW.Web.Project
                 if (cdts.Count == 1)
                 {
                     QueryParaDto queryPara = new QueryParaDto();
-
                     queryPara.query_params = new List<Para>();
                     Para pa = new Para();
+                    // 975
                     pa.id = cdts[0].id;
                     pa.value = objId.ToString();
                     queryPara.query_params.Add(pa);
-
                     queryPara.query_type_id = queryTypeId;
                     queryPara.para_group_id = paraGroupId;
                     queryPara.page = page;
@@ -211,7 +222,15 @@ namespace EMT.DoneNOW.Web.Project
                         queryPara.query_params.Add(pa);
                     }
                 }
-
+                if (queryTypeId == (int)QueryType.PROJECT_BASELINE)
+                {
+                    if (thisProject.baseline_project_id != null)
+                    {
+                        Para pa = new Para();
+                        pa.id = 975;
+                        pa.value = thisProject.baseline_project_id.ToString();
+                    }
+                }
                 queryPara.query_type_id = queryTypeId;
                 queryPara.para_group_id = paraGroupId;
                 queryPara.page = page;
@@ -265,14 +284,14 @@ namespace EMT.DoneNOW.Web.Project
                         break;
                     case "TaskNoComplete": // 未完成的task
                         var taskNoComList = subList.Where(_ => _.status_id != (int)DicEnum.TICKET_STATUS.DONE).ToList();
-                        if(taskNoComList!=null&& taskNoComList.Count > 0)
+                        if (taskNoComList != null && taskNoComList.Count > 0)
                         {
                             result = true;
                         }
                         break;
                     case "ExpiredTask":  // 过期的任务和问题
                         var expTaskList = subList.Where(_ => (DateTime)_.estimated_end_date > DateTime.Now).ToList();
-                        if(expTaskList!=null&& expTaskList.Count > 0)
+                        if (expTaskList != null && expTaskList.Count > 0)
                         {
                             result = true;
                         }
@@ -280,7 +299,7 @@ namespace EMT.DoneNOW.Web.Project
                     // 不能按时完成
                     case "Issues":   // 只显示问题类型的task
                         var issTaskList = subList.Where(_ => _.type_id == (int)DicEnum.TASK_TYPE.PROJECT_ISSUE).ToList();
-                        if(issTaskList!=null&& issTaskList.Count > 0)
+                        if (issTaskList != null && issTaskList.Count > 0)
                         {
                             result = true;
                         }
@@ -303,7 +322,7 @@ namespace EMT.DoneNOW.Web.Project
                     result = true;
                 }
             }
-           
+
             return result;
             // todo  根据pageShowType进行过滤，只考虑阶段或者状态相关
         }
