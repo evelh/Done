@@ -528,6 +528,7 @@ namespace EMT.DoneNOW.DTO
 			TASK_PHASE = 1538,                      // 任务父阶段的查找带回
             COMPANY_VIEW_INVOICE = 1534,            // 客户详情-发票查询
             COMPANY_VIEW_ATTACHMENT = 1537,         // 客户详情-附件
+            PROJECT_TASK = 1539,                    // 项目详情，task列表
             OPPORTUNITY_VIEW_ATTACHMENT = 1540,     // 商机详情-附件查询
             SALES_ORDER_VIEW_ATTACHMENT = 1541,     // 销售订单详情-附件查询
 
@@ -1025,8 +1026,19 @@ namespace EMT.DoneNOW.DTO
         CompanyViewContract = 103,      // 客户详情-合同
         CompanyViewInvoice = 104,       // 客户详情-发票查询
         CompanyViewAttachment = 107,    // 客户详情-附件
+        PROJECT_TASK = 109,              // 项目详情-task列表
+        PROJECT_PHASE=110,               // 项目详情-TASK列表-阶段
+        PROJECT_PHASE_BUDGET = 111,      // 项目详情-TASK列表-阶段预算
+        PROJECT_TASK_OVERDUE = 112,      // 项目详情-TASK列表-过期task
+        PROJECT_TASK_COMPLETE = 113,      // 项目详情-TASK列表-完成
+        PROJECT_TASK_INCOMPLETE = 114,      // 项目详情-TASK列表-未完成
+        PROJECT_TASK_BLOCK = 115,      // 项目详情-TASK列表-影响后续任务完成
+        PROJECT_TASK_NOTNOTIME = 116,      // 项目详情-TASK列表-不能按时完成
+        PROJECT_ISSUE = 117,      // 项目详情-TASK列表-问题
+        PROJECT_BASELINE = 118,    // 项目详情-TASK列表-基准
         OpportunityViewAttachment = 119,// 商机详情-附件查询
         SalesOrderViewAttachment = 120, // 销售订单详情-附件查询
+
 
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
@@ -1199,8 +1211,8 @@ namespace EMT.DoneNOW.DTO
         PROJECT_VIEW ,                         // 项目查看
 
         TASKPHASE_CALLBACK,       // task阶段的查找带回
-        TaskAdd,                 // task新增
-        taskEdit ,              // task修改
+        TASKADD,                 // task新增
+        TASKEDIT ,              // task修改
 
     }
 }

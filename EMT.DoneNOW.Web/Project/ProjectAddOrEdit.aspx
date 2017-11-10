@@ -1701,23 +1701,7 @@
         }
     });
     //缩小展开
-    $(".IconContainer").on('click', function () {
-        $(this).find('.Vertical').toggle();
-        var _this = $(this).parent().parent().parent();
-        var str = _this.find('.DataDepth').attr('data-depth');
-        console.log(str);
-        for (i in _this.nextAll()) {
-            if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth') && $(this).find('.Vertical').css('display') == 'block') {
-                _this.nextAll().eq(i).hide();
-                _this.nextAll().eq(i).find('.Vertical').show();
-            } else if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth') && $(this).find('.Vertical').css('display') == 'none') {
-                _this.nextAll().eq(i).show();
-                _this.nextAll().eq(i).find('.Vertical').hide();
-            } else if (str >= _this.nextAll().eq(i).find('.DataDepth').attr('data-depth')) {
-                return false;
-            }
-        }
-    });
+ 
 
     $("#CheckAll").on("click", function () {
         var _this = $(this);
@@ -1778,10 +1762,44 @@
                 success: function (data) {
                     if (data != "") {
                         $("#choProTaskList").html(data);
+                    } else {
+                        $("#choProTaskList").html("");
                     }
                 },
             });
+            $(".RowContainer .HighImportance>.Interaction").on("click", function () {
+                debugger;
+                var _this = $(this).parent();
+                _this.siblings().removeClass('Selected');
+                _this.addClass('Selected');
+                var str = _this.find('.DataDepth').attr('data-depth');
+                for (i in _this.nextAll()) {
+                    if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth')) {
+                        _this.addClass('Selected');
+                        _this.nextAll().eq(i).addClass('Selected');
 
+                    } else {
+                        return false;
+                    }
+                }
+            });
+            $(".IconContainer").on('click', function () {
+                $(this).find('.Vertical').toggle();
+                var _this = $(this).parent().parent().parent();
+                var str = _this.find('.DataDepth').attr('data-depth');
+                console.log(str);
+                for (i in _this.nextAll()) {
+                    if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth') && $(this).find('.Vertical').css('display') == 'block') {
+                        _this.nextAll().eq(i).hide();
+                        _this.nextAll().eq(i).find('.Vertical').show();
+                    } else if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth') && $(this).find('.Vertical').css('display') == 'none') {
+                        _this.nextAll().eq(i).show();
+                        _this.nextAll().eq(i).find('.Vertical').hide();
+                    } else if (str >= _this.nextAll().eq(i).find('.DataDepth').attr('data-depth')) {
+                        return false;
+                    }
+                }
+            });
 
             $("#FirstStep2").hide();
           <%if (!string.IsNullOrEmpty(isFromTemp))

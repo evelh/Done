@@ -282,7 +282,28 @@ namespace EMT.DoneNOW.Web.Project
                     TimeSpan ts2 = new TimeSpan(((DateTime)pageTask.estimated_end_date).Ticks);
                     TimeSpan ts = ts1.Subtract(ts2).Duration();
                     pageTask.estimated_duration = ts.Days + 1;
-               // }
+                // }
+                // RetrunMaxTime 计算结束时间
+                if (thisProject.use_resource_daily_hours == 1)  // 用工作量为固定工作任务计算时间
+                {
+                    decimal teaNum = 0;
+                    var dayWorkHours = (decimal)thisProject.resource_daily_hours;
+                    if (!string.IsNullOrEmpty(param.resDepIds))
+                    {
+                        teaNum += param.resDepIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Count();
+                    }
+                    if (pageTask.owner_resource_id != null)
+                    {
+                        teaNum += 1;
+                    }
+                    teaNum = teaNum == 0 ? 1 : teaNum;
+                    var workHours = pageTask.estimated_hours;
+                    pageTask.estimated_duration = (int)Math.Ceiling(((workHours/teaNum)/ dayWorkHours));
+                    pageTask.estimated_end_date = new TaskBLL().RetrunMaxTime(thisProject.id, DateTime.Parse(startString), (int)pageTask.estimated_duration);
+
+                }
+            
+
             }
             if (isAdd)
             {
