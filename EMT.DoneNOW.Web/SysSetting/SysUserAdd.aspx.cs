@@ -266,10 +266,10 @@ namespace EMT.DoneNOW.Web.SysSetting
             }
             if (this.IsRequiredtosubmittimesheets.Checked)
             {
-                param.sys_res.is_required_to_submit_timesheets = 1;
+                param.sys_res.required_to_submit_timesheets = 1;
             }
             else {
-                param.sys_res.is_required_to_submit_timesheets = 0;
+                param.sys_res.required_to_submit_timesheets = 0;
             }
             param.sys_res.email_type_id=Convert.ToInt32(this.EmailType.SelectedValue.ToString());//保存邮件类型
             //param.sys_res.date_display_format_id = Convert.ToInt32(this.DateFormat.SelectedValue);

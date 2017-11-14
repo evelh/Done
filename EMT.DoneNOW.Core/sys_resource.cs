@@ -63,7 +63,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte? can_edit_skills { get; set; }
         [DataMember]
-        public SByte is_required_to_submit_timesheets { get; set; }
+        public SByte required_to_submit_timesheets { get; set; }
         [DataMember]
         public SByte allow_send_bulk_email { get; set; }
         [DataMember]

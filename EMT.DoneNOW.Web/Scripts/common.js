@@ -215,7 +215,13 @@ function returnNumber(param) {
 }
 
 var windowObj = {
+    company: 'company',
+    contact: 'contact',
+    saleOrder: 'saleOrder',
+    configurationItem: 'configurationItem',
+    subscription: 'subscription',
     contract: 'contract',
+    contractCharge: 'contractCharge',
     notes: 'notes',
     todos: 'todos',
     attachment: 'attachment',
