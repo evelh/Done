@@ -40,11 +40,13 @@ namespace EMT.DoneNOW.Web
 
             string ip = DNRequest.GetIP();
             string agent = HttpContext.Current.Request.UserAgent;
-            sys_user user;
-            var result = new AuthBLL().Login(userName, userPwd, ip, agent, out user);
+            UserInfoDto user;
+            var bll = new AuthBLL();
+            var result = bll.Login(userName, userPwd, ip, agent, out user);
             if (result== DTO.ERROR_CODE.SUCCESS)
             {
                 Session["dn_session_user_info"] = user;
+                Session["dn_session_user_permits"] = bll.GetUserPermit(user.id);
                 EMT.Tools.Common.WriteCookie("UserName", "DoneNOW", userName);
                 EMT.Tools.Common.WriteCookie("UserPwd", "DoneNOW", pwdMd5);
                 Response.Redirect("index.aspx");

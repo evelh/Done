@@ -17,6 +17,26 @@ namespace EMT.DoneNOW.BLL
         private readonly sys_user_dal _dal1 = new sys_user_dal();
 
         /// <summary>
+        /// 获取员工
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public sys_resource GetResourceById(long id)
+        {
+            return _dal.FindById(id);
+        }
+
+        /// <summary>
+        /// 获取用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public sys_user GetUserById(long id)
+        {
+            return _dal1.FindById(id);
+        }
+
+        /// <summary>
         /// 获取激活的员工列表
         /// </summary>
         /// <returns></returns>

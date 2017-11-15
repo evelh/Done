@@ -516,7 +516,7 @@
             <div class="Right">
                 <div class="User">
                     <div class="Name">
-                        <a class="Button ButtonIcon Link"><%=(Session["dn_session_user_info"] as EMT.DoneNOW.Core.sys_user).name %></a>
+                        <a class="Button ButtonIcon Link"><%=LoginUser.name %></a>
                     </div>
                     <div class="Separator">
                         <div class="VerticalBar"></div>

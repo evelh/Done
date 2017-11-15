@@ -55,9 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AUTH\sys_limit_dal.cs" />
+    <Compile Include="AUTH\sys_limit_permit_dal.cs" />
     <Compile Include="AUTH\sys_login_log_dal.cs" />
     <Compile Include="AUTH\sys_module_dal.cs" />
     <Compile Include="AUTH\sys_module_limit_dal.cs" />
+    <Compile Include="AUTH\sys_permit_dal.cs" />
     <Compile Include="AUTH\sys_security_level_dal.cs" />
     <Compile Include="AUTH\sys_security_level_limit_dal.cs" />
     <Compile Include="AUTH\sys_security_level_module_dal.cs" />

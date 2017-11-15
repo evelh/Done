@@ -7,27 +7,29 @@ using System.Runtime.Serialization;
 
 namespace EMT.DoneNOW.Core
 {
-    [Table("sys_limit")]
+    [Table("sys_permit")]
     [Serializable]
     [DataContract]
-    public partial class sys_limit
+    public partial class sys_permit
     {
 
         [Key]
         [DataMember]
         public Int32 id { get; set; }
         [DataMember]
-        public String name { get; set; }
-        [DataMember]
         public String description { get; set; }
         [DataMember]
-        public Int32 type_id { get; set; }
+        public String name { get; set; }
         [DataMember]
-        public String module { get; set; }
+        public Int32? priority { get; set; }
         [DataMember]
-        public Int32? cate_id { get; set; }
+        public String sn { get; set; }
         [DataMember]
-        public Int32? module_id { get; set; }
+        public String url { get; set; }
+        [DataMember]
+        public Int32? parent_id { get; set; }
+        [DataMember]
+        public Int32? sub_system { get; set; }
 
 
     }

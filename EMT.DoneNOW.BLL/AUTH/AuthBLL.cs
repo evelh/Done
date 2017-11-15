@@ -24,7 +24,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="agent"></param>
         /// <param name="userInfo"></param>
         /// <returns></returns>
-        public ERROR_CODE Login(string loginName, string password, string ip, string agent, out sys_user userInfo)
+        public ERROR_CODE Login(string loginName, string password, string ip, string agent, out UserInfoDto userInfo)
         {
             userInfo = null;
             StringBuilder where = new StringBuilder();
@@ -75,9 +75,270 @@ namespace EMT.DoneNOW.BLL
             }
             new sys_login_log_dal().Insert(login_log);
 
-            userInfo = user[0];
+            userInfo = new UserInfoDto
+            {
+                id = user[0].id,
+                name= user[0].name,
+                mobile= user[0].mobile_phone,
+                email= user[0].email,
+            };
+            var resource = new sys_resource_dal().FindById(user[0].id);
+            userInfo.security_Level_id = (int)resource.security_level_id;
 
             return ERROR_CODE.SUCCESS;
+        }
+        #endregion
+
+        #region 新的权限
+        private static List<AuthPermitDto> allPermitsDtoList;       // 所有的权限点信息集合
+        private static Dictionary<long, AuthSecurityLevelDto> secLevelPermitDic;    // 所有权限等级的权限点信息字典
+
+        /// <summary>
+        /// 初始化权限等级对应的权限点
+        /// </summary>
+        public static void InitSecLevelPermit()
+        {
+            secLevelPermitDic = new Dictionary<long, AuthSecurityLevelDto>();
+            allPermitsDtoList = new List<AuthPermitDto>();
+
+            // 配置的所有的权限点信息
+            var allPermits = new sys_permit_dal().FindAll();
+            foreach (var pmt in allPermits)
+            {
+                AuthPermitDto permit = new AuthPermitDto
+                {
+                    permit = pmt,
+                    url = GetAuthUrl(pmt.url),
+                };
+                allPermitsDtoList.Add(permit);
+            }
+
+            // 权限等级
+            var secLevelList = new sys_security_level_dal().GetSecLevelList();
+            var dal = new sys_limit_permit_dal();
+            foreach(var sec in secLevelList)
+            {
+                AuthSecurityLevelDto slDto = new AuthSecurityLevelDto();
+                var available = new List<AuthPermitDto>();
+                var unAvailable = new List<AuthPermitDto>();
+
+                // 查询sys_security_level对应的所有sys_permit的id
+                string sql = $"SELECT permit_id FROM sys_limit_permit WHERE limit_id IN (SELECT limit_id FROM sys_security_level_limit WHERE security_level_id={sec.id})";
+                var pmtIds = dal.FindListBySql<int>(sql);
+
+                foreach(var pmt in allPermitsDtoList)
+                {
+                    if (pmtIds.Exists(_ => _ == pmt.permit.id))
+                        available.Add(pmt);
+                    else
+                        unAvailable.Add(pmt);
+                }
+                slDto.availablePermitList = available;
+                slDto.unAvailablePermitList = unAvailable;
+                secLevelPermitDic.Add(sec.id, slDto);
+            }
+        }
+
+        /// <summary>
+        /// 获取权限点的url信息
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        private static AuthUrlDto GetAuthUrl(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+                return null;
+
+            AuthUrlDto dto = new AuthUrlDto();
+            int index = url.IndexOf('?');
+            if (index == -1)
+            {
+                dto.url = url;
+                dto.parms = null;
+            }
+            else
+            {
+                dto.url = url.Substring(0, index);
+                dto.parms = new List<UrlPara>();
+                var prms = url.Substring(index + 1).Split('&');
+                for (int i = 0; i <= prms.Length - 1; ++i)
+                {
+                    UrlPara prm = new UrlPara();
+                    prm.value = null;
+                    int valueIndex = prms[i].IndexOf('=');
+                    if (valueIndex == -1)
+                        prm.name = prms[i];
+                    else
+                    {
+                        prm.name = prms[i].Substring(0, valueIndex);
+                        if (valueIndex < prms[i].Length - 1)
+                            prm.value = prms[i].Substring(valueIndex + 1);
+                    }
+                    dto.parms.Add(prm);
+                }
+            }
+
+            return dto;
+        }
+
+
+
+        /// <summary>
+        /// 获取每个用户单独配置的权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<AuthPermitDto> GetUserPermit(long userId)
+        {
+            List<AuthPermitDto> permits = new List<AuthPermitDto>();
+            string sql = $"SELECT can_edit_skills,required_to_submit_timesheets,allow_send_bulk_email,can_manage_kb_articles,outsource_security_role_type_id,edit_protected_data,view_protected_data,edit_unprotected_data,view_unprotected_data FROM sys_resource WHERE id={userId} AND delete_time=0";
+            var user = new sys_resource_dal().FindSignleBySql<sys_resource>(sql);
+            if (user == null)
+                return permits;
+
+            string limitids = "";
+            if (user.can_edit_skills == 1)
+                limitids += "2001,";
+            if (user.required_to_submit_timesheets == 1)
+                limitids += "2002,";
+            if (user.allow_send_bulk_email == 1)
+                limitids += "2003,";
+            if (user.can_manage_kb_articles == 1)
+                limitids += "2004,";
+            if (user.outsource_security_role_type_id != (int)DicEnum.OUTSOURCE_SECURITY_ROLE_TYPE.NONE)
+                limitids += "2005,";
+            if (user.edit_protected_data == 1)
+                limitids += "2006,";
+            if (user.view_protected_data == 1)
+                limitids += "2007,";
+            if (user.edit_unprotected_data == 1)
+                limitids += "2008,";
+            if (user.view_unprotected_data == 1)
+                limitids += "2009,";
+
+            if (limitids.Equals(""))
+                return permits;
+
+            limitids = limitids.Remove(limitids.Length - 1, 1);
+
+            sql = $"SELECT * FROM sys_permit WHERE id IN (SELECT permit_id FROM sys_limit_permit WHERE limit_id IN ({limitids}))";
+            var userPermits = new sys_permit_dal().FindListBySql(sql);
+            foreach(var pmt in userPermits)
+            {
+                AuthPermitDto permit = new AuthPermitDto
+                {
+                    permit = pmt,
+                    url = GetAuthUrl(pmt.url),
+                };
+                permits.Add(permit);
+            }
+            return permits;
+        }
+
+        /// <summary>
+        /// 判断是否有对应权限
+        /// </summary>
+        /// <param name="levelId">用户的权限等级id</param>
+        /// <param name="userPermit">用户单独的权限信息</param>
+        /// <param name="sn">判断的权限点sn</param>
+        /// <returns></returns>
+        public static bool CheckAuth(long levelId, List<AuthPermitDto> userPermit, string sn)
+        {
+            AuthPermitDto permit = userPermit.Find(_ => _.permit.sn.Equals(sn));
+            if (permit != null)
+                return true;
+
+            var list = secLevelPermitDic[levelId];
+            permit = list.availablePermitList.Find(_ => _.permit.sn.Equals(sn));
+            if (permit != null)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// 判断是否有权限访问url
+        /// </summary>
+        /// <param name="levelId"></param>
+        /// <param name="userPermit"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static bool CheckUrlAuth(long levelId, List<AuthPermitDto> userPermit, string url)
+        {
+            /**** 权限等级中不可用权限点包含有userPermit权限点，验证顺序先验证userPermit，后验证权限等级中不可用权限点 ****/
+
+            // 判断是否有完全匹配
+            if (userPermit.Exists(_ => url.Equals(_.permit.url)))
+                return true;
+            AuthSecurityLevelDto secLevelPermit = secLevelPermitDic[levelId];
+            if (secLevelPermit.availablePermitList.Exists(_ => url.Equals(_.permit.url)))
+                return true;
+            if (secLevelPermit.unAvailablePermitList.Exists(_ => url.Equals(_.permit.url)))
+                return false;
+
+
+            // 没有完全匹配项，拆解url验证
+            AuthUrlDto requestUrl = GetAuthUrl(url);
+
+            if (requestUrl.parms == null)    // 没有参数，且没有完全匹配到，说明不在权限点列表中
+                return true;
+
+            // 查找url相同且有参数的
+            IEnumerable<AuthPermitDto> selUrl = from u in userPermit
+                                                where url.Equals(u.url.url) && u.url.parms != null
+                                                select u;
+            foreach(var sel in selUrl)  // 验证参数完全匹配
+            {
+                // 用户单独的权限点中匹配到，验证通过
+                if (CheckUrlSatifyPermit(requestUrl, sel.url))
+                    return true;
+            }
+
+            selUrl = from u in secLevelPermit.unAvailablePermitList
+                     where u.url != null && url.Equals(u.url.url) && u.url.parms != null
+                     select u;
+            foreach (var sel in selUrl)  // 验证参数完全匹配
+            {
+                // 权限等级的不可访问权限点中匹配到，验证不通过
+                if (CheckUrlSatifyPermit(requestUrl, sel.url))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 判断请求url是否符合条件url的设定
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="permit"></param>
+        /// <returns></returns>
+        private static bool CheckUrlSatifyPermit(AuthUrlDto requestUrl, AuthUrlDto conditionUrl)
+        {
+            if (!requestUrl.url.Equals(conditionUrl.url))    // url不相等
+                return false;
+
+            bool haveNotSatifyParam = false;    // 是否查找到有不满足设定的参数
+            foreach (var p in conditionUrl.parms)     // 验证url参数中是否包含条件url所有的参数
+            {
+                if (string.IsNullOrEmpty(p.value))
+                {
+                    if (!requestUrl.parms.Exists(_ => _.name.Equals(p.name)))
+                    {
+                        haveNotSatifyParam = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    if (!requestUrl.parms.Exists(_ => _.name.Equals(p.name) && p.value.Equals(_.value)))
+                    {
+                        haveNotSatifyParam = true;
+                        break;
+                    }
+                }
+            }
+            return !haveNotSatifyParam;
         }
         #endregion
 

@@ -136,7 +136,7 @@ namespace EMT.DoneNOW.Web
             sqt.description = this.Description.Text.Trim().ToString();
             sqt.paper_size_id = paper_size_id();
             sqt.page_number_location_id = page_number_location_id();
-            sqt.create_user_id = (Session["dn_session_user_info"] as sys_user).id;
+            sqt.create_user_id = LoginUserId;
             sqt.currency_negative_format_id=Convert.ToInt32(this.CurrencyNegativePattern.SelectedValue.Trim().ToString());
             sqt.currency_positive_format_id = Convert.ToInt32(this.CurrencyPositivePattern.SelectedValue.Trim().ToString());
             sqt.number_display_format_id = Convert.ToInt32(this.NumberFormat.SelectedValue.Trim().ToString());

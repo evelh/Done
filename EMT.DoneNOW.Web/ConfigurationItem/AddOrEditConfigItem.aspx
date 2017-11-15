@@ -543,8 +543,7 @@
                                                         <% EMT.DoneNOW.DTO.UserInfoDto user = null;
                                                             if (isAdd)
                                                             {
-                                                                var userdto = Session["dn_session_user_info"] as EMT.DoneNOW.Core.sys_user;
-                                                                user = EMT.DoneNOW.BLL.UserInfoBLL.GetUserInfo((long)(userdto.id));
+                                                                user = EMT.DoneNOW.BLL.UserInfoBLL.GetUserInfo(LoginUserId);
                                                             }
                                                             else
                                                             {

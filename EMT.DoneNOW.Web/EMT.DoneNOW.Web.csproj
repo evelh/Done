@@ -1886,6 +1886,9 @@
     <Compile Include="Tools\AttachmentAjax.ashx.cs">
       <DependentUpon>AttachmentAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\BaseAjax.ashx.cs">
+      <DependentUpon>BaseAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\CompanyAjax.ashx.cs">
       <DependentUpon>CompanyAjax.ashx</DependentUpon>
     </Compile>
@@ -1998,6 +2001,7 @@
     <Content Include="Tools\ProjectAjax.ashx" />
     <Content Include="Tools\ActivityAjax.ashx" />
     <Content Include="Tools\AttachmentAjax.ashx" />
+    <Content Include="Tools\BaseAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

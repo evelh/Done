@@ -403,6 +403,17 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
+        /// 员工：外包权限-51
+        /// </summary>
+        public enum OUTSOURCE_SECURITY_ROLE_TYPE
+        {
+            NONE = 644,                 // 无
+            ALLOW_OUTSOURCE = 645,      // 允许外包
+            ALLOW_PARTNER = 646,        // 允许合作伙伴管理
+            ALL = 647,                  // 全部（管理员）
+        }
+
+        /// <summary>
         /// 附件类型-62
         /// </summary>
         public enum ATTACHMENT_TYPE
