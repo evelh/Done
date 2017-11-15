@@ -328,6 +328,15 @@ namespace EMT.DoneNOW.BLL
             }
             return table;
         }
+        /// <summary>
+        /// 获取到这些ids当中和这个value不一样的数量
+        /// </summary>
+        public int GetSameValueCount(DicEnum.UDF_CATE cate,string ids,string fileName,string value)
+        {
+            var dal = new sys_udf_field_dal();
+            string sql = $"SELECT COUNT(1) from {GetTableName(cate)} where parent_id in ({ids}) and {fileName} = '{value}' ";
+            return int.Parse(dal.GetSingle(sql).ToString());
+        }
 
         /// <summary>
         /// 获取一个未使用的字段名

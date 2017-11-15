@@ -43,6 +43,13 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<crm_account_deduction>($"SELECT * from crm_account_deduction where id in ({ids}) and delete_time = 0");
         }
+        /// <summary>
+        /// 通过任务id获取相应条目信息
+        /// </summary>
+        public List<crm_account_deduction> GetDedListByTaskId(long taskId)
+        {
+            return FindListBySql<crm_account_deduction>($"SELECT * from crm_account_deduction where delete_time = 0 and task_id  = {taskId}");
+        }
     
     }
 

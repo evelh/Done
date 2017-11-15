@@ -241,6 +241,10 @@ namespace EMT.DoneNOW.Web.Project
                 param.predic = predic;
             }
             var pageTask = AssembleModel<sdk_task>();
+            if (parTask != null)
+            {
+                pageTask.parent_id = parTask.id;
+            }
             if (type_id != (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
             {
                 pageTask.is_visible_in_client_portal = (sbyte)(DisplayInCapNone.Checked ? 1 : 0);

@@ -14,5 +14,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sdk_task>($"SELECT * from sdk_task where id in( SELECT task_id from sdk_task_predecessor where predecessor_task_id = {preTaskId} and delete_time = 0)  and delete_time = 0");
         } 
+        /// <summary>
+        /// 查找相关前驱任务
+        /// </summary>
+        public List<sdk_task_predecessor> GetRelList(long taskId)
+        {
+            return FindListBySql<sdk_task_predecessor>($"SELECT * from sdk_task_predecessor where task_id = {taskId} AND delete_time = 0");
+        }
     }
 }

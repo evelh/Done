@@ -845,7 +845,8 @@ namespace EMT.DoneNOW.DTO
         /// <summary>
         /// 审批并提交操作类型 -121
         /// </summary>
-        public enum ACCOUNT_DEDUCTION_TYPE {
+        public enum ACCOUNT_DEDUCTION_TYPE
+        {
             LABOUR = 1318,               // 工时
             LABOUR_AJUST=1319,           // 工时调整
             PREPAID_TIME_SELF_BILLING=1320, //预付时间自身计费
@@ -855,6 +856,15 @@ namespace EMT.DoneNOW.DTO
             SERVICE =1325,              //服务
             SERVICE_ADJUST=1326,        //服务调整
             INITIAL_COST =1327,         //初始费用
+        }
+        /// <summary>
+        /// 成本表：是否计费/发票显示方式 - 122
+        /// </summary>
+        public enum SHOW_ON_INVOICE
+        {
+            NO_SHOW_ONINCOICE = 1333,   // 不在发票上显示
+            SHOW_DISBILLED = 1334,      // 在发票上显示”不收费“
+            BILLED = 1335,              // 计费
         }
         /// <summary>
         /// 项目类型 - 123
@@ -940,6 +950,17 @@ namespace EMT.DoneNOW.DTO
             PROJECT_ALL_USER = 2121,            //  项目-全部用户
             PROJECT_INTERNA_USER = 2122,            // 项目-团队中员工
             PROJECT_TEAM = 2123,            //  项目-团队全部成员
+        }
+        /// <summary>
+        /// 工作类型计费方法
+        /// </summary>
+        public enum WORKTYPE_BILLING_METHOD
+        {
+            USE_ROLE_RATE = 2166,           // 使用角色费率
+            FLOAT_ROLE_RATE = 2167,         // 在角色费率基础上浮动
+            RIDE_ROLE_RATE = 2168,          // 在角色费率基础上乘以系数
+            USE_UDF_ROLE_RATE = 2169,       // 使用自定义费率
+            BY_TIMES = 2170,                // 按次收费
         }
     }
     /// <summary>

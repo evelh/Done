@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
@@ -31,7 +32,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? department_id { get; set; }
         [DataMember]
-        public SByte? show_on_invoice { get; set; }
+        public Int32? show_on_invoice { get; set; }
         [DataMember]
         public Int32? creditobjectid { get; set; }
         [DataMember]
@@ -87,7 +88,9 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? mileage_reimbursement_rate { get; set; }
         [DataMember]
-        public Int32? allocation_code_expense_type_id { get; set; }
+        public Int32? expense_type_id { get; set; }
+        [DataMember]
+        public Int32? billing_method_id { get; set; }
 
 
     }

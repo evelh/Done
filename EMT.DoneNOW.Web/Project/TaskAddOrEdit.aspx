@@ -9,7 +9,7 @@
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/NewConfigurationItem.css" rel="stylesheet" />
     <link href="../Content/DynamicContent.css" rel="stylesheet" />
-    <title></title>
+    <title><%="新增" %></title>
     <style>
         .RightClickMenu, .LeftClickMenu {
             padding: 16px;
@@ -626,7 +626,7 @@
                                 </div>
                                 <div class="Editor DecimalBox" data-editor-id="HoursPerResource" data-rdp="HoursPerResource">
                                     <div class="InputField">
-                                        <input id="hours_per_resource" type="text" value="<%=isAdd ? "0.00" : thisTask.hours_per_resource.ToString("#0.00") %>" name="hours_per_resource" maxlength="12" class="To2Input" />
+                                        <input id="hours_per_resource" type="text" value="<%=(!isAdd)&&thisTask.hours_per_resource!=null?((decimal)thisTask.hours_per_resource).ToString("#0.00"):"0.00" %>" name="hours_per_resource" maxlength="12" class="To2Input" />
                                     </div>
                                 </div>
                             </div>
@@ -1738,10 +1738,6 @@
 
             })
         }
-
-
-
-
         // 成员不用清除，查找带回需要添加部门过滤
     });
     $("#template_id").change(function () {

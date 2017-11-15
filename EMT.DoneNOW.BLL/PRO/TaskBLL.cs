@@ -11,7 +11,6 @@ using static EMT.DoneNOW.DTO.DicEnum;
 
 namespace EMT.DoneNOW.BLL
 {
-
     public class TaskBLL
     {
         private sdk_task_dal _dal = new sdk_task_dal();
@@ -31,7 +30,7 @@ namespace EMT.DoneNOW.BLL
                 thisTask.department_id = thisTask.department_id == 0 ? null : thisTask.department_id;
                 thisTask.no = ReturnTaskNo();
                 thisTask.create_user_id = user.id;
-                thisTask.sort_order = ReturnSortOrder((long)thisTask.project_id,thisTask.parent_id);
+                thisTask.sort_order = ReturnSortOrder((long)thisTask.project_id, thisTask.parent_id);
                 thisTask.update_user_id = user.id;
                 thisTask.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -50,7 +49,7 @@ namespace EMT.DoneNOW.BLL
                 var thisDic = param.predic;
                 var startDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)param.task.estimated_begin_time);
                 var stpDal = new sdk_task_predecessor_dal();
-                
+
                 if (thisDic != null && thisDic.Count > 0)
                 {
                     var nowTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -89,22 +88,17 @@ namespace EMT.DoneNOW.BLL
                 {
                     param.task.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(startDate);
                 }
-                
                 #endregion
-
-         
-
-
                 //  根据开始时间和结束时间计算最终时间
-                param.task.estimated_end_date = RetrunMaxTime((long)param.task.project_id,startDate,(int)param.task.estimated_duration);
+                param.task.estimated_end_date = RetrunMaxTime((long)param.task.project_id, startDate, (int)param.task.estimated_duration);
 
                 // 修改task的开始结束时间相关
-                OperLogBLL.OperLogUpdate<sdk_task>(thisTask,_dal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
                 _dal.Update(thisTask);
 
 
                 // 递归修改父阶段相关数据
-                UpdateParDate(param.task.parent_id,(long)param.task.estimated_begin_time,(DateTime)param.task.estimated_end_date,user.id);
+                UpdateParDate(param.task.parent_id, (long)param.task.estimated_begin_time, (DateTime)param.task.estimated_end_date, user.id);
                 // 修改项目相关
                 var ppDal = new pro_project_dal();
                 var thisProject = ppDal.FindNoDeleteById((long)param.task.project_id);
@@ -123,7 +117,7 @@ namespace EMT.DoneNOW.BLL
                     ppDal.Update(thisProject);
                 }
 
-  
+
 
                 #region 保存任务负责人，联系人相关字段
                 var strd = new sdk_task_resource_dal();
@@ -140,7 +134,7 @@ namespace EMT.DoneNOW.BLL
                             var roleDep = srdDal.FindById(long.Parse(resDepId));
                             if (roleDep != null)
                             {
-                                var isHas = strd.GetSinByTasResRol(thisTask.id,roleDep.resource_id,roleDep.role_id);
+                                var isHas = strd.GetSinByTasResRol(thisTask.id, roleDep.resource_id, roleDep.role_id);
                                 if (isHas == null)  // 相同的员工角色如果已经存在则不重复添加
                                 {
                                     var item = new sdk_task_resource()
@@ -158,7 +152,7 @@ namespace EMT.DoneNOW.BLL
                                     OperLogBLL.OperLogAdd<sdk_task_resource>(item, item.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK_RESOURCE, "新增任务分配对象");
                                 }
 
-                               var isProHas =  pptDal.GetSinProByIdResRol(thisProject.id, roleDep.resource_id, roleDep.role_id);
+                                var isProHas = pptDal.GetSinProByIdResRol(thisProject.id, roleDep.resource_id, roleDep.role_id);
                                 if (isProHas == null)   // 项目中不存在则新增
                                 {
                                     var item = new pro_project_team()
@@ -227,8 +221,9 @@ namespace EMT.DoneNOW.BLL
                         var nowTime = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         foreach (var rate in param.rateDic)
                         {
-                            var stb = new sdk_task_budget() {
-                                id= stbDal.GetNextIdCom(),
+                            var stb = new sdk_task_budget()
+                            {
+                                id = stbDal.GetNextIdCom(),
                                 create_time = nowTime,
                                 update_time = nowTime,
                                 create_user_id = user.id,
@@ -247,7 +242,7 @@ namespace EMT.DoneNOW.BLL
 
 
                 #region 备注相关
-                if(param.task.status_id == (int)DicEnum.TICKET_STATUS.DONE)
+                if (param.task.status_id == (int)DicEnum.TICKET_STATUS.DONE)
                 {
                     var activity = new com_activity()
                     {
@@ -467,7 +462,7 @@ namespace EMT.DoneNOW.BLL
                                 notify_tmpl_id = temp.id,
                                 from_email = user.email,
                                 from_email_name = user.name,
-                                subject = param.subject==null?"": param.subject,
+                                subject = param.subject == null ? "" : param.subject,
                                 body_text = temp_email_List[0].body_text + param.otherEmail,
                                 // is_success = (sbyte)(isSuccess ? 1 : 0),
                                 is_html_format = 0,
@@ -497,9 +492,10 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 递归修改父Task 的时间
         /// </summary>
-        public void UpdateParDate(long? tid, long startDate, DateTime endDate,long user_id)
+        public void UpdateParDate(long? tid, long startDate, DateTime endDate, long user_id)
         {
-            if (tid != null)
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (tid != null&&user!=null)
             {
                 var parTask = _dal.FindNoDeleteById((long)tid);
                 if (parTask != null)
@@ -514,6 +510,8 @@ namespace EMT.DoneNOW.BLL
                         {
                             parTask.estimated_end_date = endDate;
                         }
+                        parTask.update_user_id = user.id;
+                        parTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         OperLogBLL.OperLogUpdate<sdk_task>(parTask, _dal.FindNoDeleteById(parTask.id), parTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
                         _dal.Update(parTask);
                         UpdateParDate(parTask.parent_id, (long)parTask.estimated_begin_time, (DateTime)parTask.estimated_end_date, user_id);
@@ -675,7 +673,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 返回新增的task的排序号
         /// </summary>
-        public string ReturnSortOrder(long project_id,long? parTask_id)
+        public string ReturnSortOrder(long project_id, long? parTask_id)
         {
             string sorNo = "";
             var taskList = _dal.GetProTask(project_id);
@@ -684,9 +682,9 @@ namespace EMT.DoneNOW.BLL
                 if (parTask_id == null)
                 {
                     var noParTaskList = taskList.Where(_ => _.parent_id == null).ToList();
-                    if(noParTaskList!=null&& noParTaskList.Count > 0)
+                    if (noParTaskList != null && noParTaskList.Count > 0)
                     {
-                        sorNo = (int.Parse(noParTaskList.Max(_ => _.sort_order))+1).ToString("#00");
+                        sorNo = (int.Parse(noParTaskList.Max(_ => _.sort_order)) + 1).ToString("#00");
                     }
                     else
                     {
@@ -697,7 +695,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     var parTask = _dal.FindNoDeleteById((long)parTask_id);
                     var parTaskList = taskList.Where(_ => _.parent_id == parTask_id).ToList();
-                    if(parTaskList!=null&& parTaskList.Count > 0)
+                    if (parTaskList != null && parTaskList.Count > 0)
                     {
                         var maxSortNo = parTaskList.Max(_ => _.sort_order);
                         var maxSortNoArr = maxSortNo.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
@@ -705,8 +703,8 @@ namespace EMT.DoneNOW.BLL
                         var thisMaxNo = "";
                         for (int i = 0; i < maxSortNoArr.Length; i++)
                         {
-                            
-                            if(i == maxSortNoArr.Length - 1)
+
+                            if (i == maxSortNoArr.Length - 1)
                             {
                                 thisMaxNo += maxNo;
                             }
@@ -739,7 +737,7 @@ namespace EMT.DoneNOW.BLL
             if (thisPhase != null && thisPhase.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
             {
                 var budList = new sdk_task_budget_dal().GetListByTaskId(thisPhase.id);
-                if(budList!=null&& budList.Count > 0)
+                if (budList != null && budList.Count > 0)
                 {
                     hours = budList.Sum(_ => _.estimated_hours);
                 }
@@ -751,15 +749,15 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 修改task的排序号(递归修改子节点排序号)
         /// </summary>
-        public void ChangeTaskSortNo(string sortNo,long taskId, UserInfoDto user)
+        public void ChangeTaskSortNo(string sortNo, long taskId, long user_id)
         {
             var thisTask = _dal.FindNoDeleteById(taskId);
             if (thisTask != null)
             {
                 var dateNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                var oldSortNo = thisTask.sort_order;  // oldSortNo会不会改变，待测试  todo-测试1539，110
+                var oldSortNo = thisTask.sort_order;  
                 thisTask.sort_order = sortNo;
-                OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
                 _dal.Update(thisTask);
 
                 var subTaskList = _dal.GetTaskByParentId(thisTask.id);
@@ -768,34 +766,35 @@ namespace EMT.DoneNOW.BLL
                     var parDepthNum = thisTask.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var thisSubTask in subTaskList)
                     {
-                        var thisNoChaNo = thisSubTask.sort_order.Substring(oldSortNo.Length, thisSubTask.sort_order.Length-1);  // 获取到不会改变的部分 todo 临界值测试
+                        var thisNoChaNo = thisSubTask.sort_order.Remove(0,oldSortNo.Length);  // 获取到不会改变的部分 todo 临界值测试
                         var newNo = thisTask.sort_order + thisNoChaNo;
-                        ChangeTaskSortNo(newNo,thisSubTask.id,user);
+                        ChangeTaskSortNo(newNo, thisSubTask.id, user_id);
                     }
                 }
             }
         }
 
+        #region task排序号相关改变事件
         /// <summary>
-        /// 通过父节点改变兄弟节点的排序号(补足空余排序号，同时修改本身的字节点的排序号) par_task_id为null 代表项目下的节点
+        /// 通过父节点改变兄弟节点的排序号(补足空余排序号，同时修改本身的字节点的排序号) parid为null代表项目下的节点
         /// </summary>
-        public void ChangBroTaskSortNoReduce(long project_id,long? par_task_id, UserInfoDto user)
+        public void ChangBroTaskSortNoReduce(long project_id, long? par_task_id, long user_id)
         {
             var thisProject = new pro_project_dal().FindNoDeleteById(project_id);
-            
+
             if (par_task_id == null)
             {
                 var noParTaskList = _dal.GetNoParTaskByProId(project_id); // 为没有父节点的task排序
-                if(noParTaskList!=null&& noParTaskList.Count > 0)
+                if (noParTaskList != null && noParTaskList.Count > 0)
                 {
                     // 上一兄弟节点找不到，补到最小的可用的节点
                     var nextNo = GetMinUserNoParSortNo(project_id);
-                   
+
                     foreach (var noParTask in noParTaskList)
                     {
                         if (int.Parse(noParTask.sort_order) > int.Parse(nextNo))
                         {
-                            ChangeTaskSortNo(nextNo,noParTask.id, user);
+                            ChangeTaskSortNo(nextNo, noParTask.id, user_id);
                             //noParTask.sort_order = nextNo;
                             //_dal.Update(noParTask);
                             nextNo = GetMinUserNoParSortNo(project_id);
@@ -822,19 +821,19 @@ namespace EMT.DoneNOW.BLL
                         return result;
                     }).ToList();
 
-                    if(shoChaList!=null&& shoChaList.Count > 0)
+                    if (shoChaList != null && shoChaList.Count > 0)
                     {
                         foreach (var thisSub in shoChaList)
                         {
-                            ChangeTaskSortNo(thisparTaskMaxNo,thisSub.id,user);
+                            ChangeTaskSortNo(thisparTaskMaxNo, thisSub.id, user_id);
                             //thisSub.sort_order = thisparTaskMaxNo;
                             //_dal.Update(thisSub);
                             // 查日志
                             thisparTaskMaxNo = GetMinUserSortNo(parTask.id);
-                            
+
                         }
                     }
-                    
+
                 }
             }
         }
@@ -851,7 +850,7 @@ namespace EMT.DoneNOW.BLL
 
                 foreach (var noParTask in noParTaskList)
                 {
-                    var thisNextNo = (int.Parse(noParTask.no) + 1).ToString("#00");
+                    var thisNextNo = (int.Parse(noParTask.sort_order) + 1).ToString("#00");
                     if (!noParTaskList.Any(_ => _.sort_order == thisNextNo))
                     {
                         nextNo = thisNextNo;
@@ -875,7 +874,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 获取到这个task下的最小的可用的排序号
         /// </summary>
-        public string  GetMinUserSortNo(long task_id)
+        public string GetMinUserSortNo(long task_id)
         {
             var sortNo = "";
             var thisTask = _dal.FindNoDeleteById(task_id);
@@ -887,9 +886,9 @@ namespace EMT.DoneNOW.BLL
                     var nextNo = "";
                     foreach (var thisSubTask in thisSubTaskList)
                     {
-                        
-                        var thisNoArr = thisSubTask.no.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                        var thisNextNo = thisTask.sort_order+"."+ (int.Parse(thisNoArr[thisNoArr.Length - 1])+1).ToString("#00");
+
+                        var thisNoArr = thisSubTask.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                        var thisNextNo = thisTask.sort_order + "." + (int.Parse(thisNoArr[thisNoArr.Length - 1]) + 1).ToString("#00");
                         if (!thisSubTaskList.Any(_ => _.sort_order == thisNextNo))
                         {
                             nextNo = thisNextNo;
@@ -901,7 +900,7 @@ namespace EMT.DoneNOW.BLL
                     }
                     if (nextNo == "")
                     {
-                        sortNo = ReturnSortOrder((long)thisTask.project_id,thisTask.id);
+                        sortNo = ReturnSortOrder((long)thisTask.project_id, thisTask.id);
                     }
                     else
                     {
@@ -910,7 +909,7 @@ namespace EMT.DoneNOW.BLL
                 }
                 else
                 {
-                    sortNo = thisTask.no + ".01";
+                    sortNo = thisTask.sort_order + ".01";
                 }
             }
             return sortNo;
@@ -921,7 +920,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="taskId">要取代的task的id</param>
         /// <param name="num"></param>
         /// <param name="user"></param>
-        public void ChangeBroTaskSortNoAdd(long taskId,int num, UserInfoDto user)
+        public void ChangeBroTaskSortNoAdd(long taskId, int num, long user_id)
         {
             // 1 获取到在这个task之后的task（包含它本身）
             // 2 循环增加排序号（同时更新子节点相关排序号）
@@ -954,7 +953,7 @@ namespace EMT.DoneNOW.BLL
                         }
                         return result;
                     }).ToList();
-                    if(shoChaList!=null&& shoChaList.Count > 0)
+                    if (shoChaList != null && shoChaList.Count > 0)
                     {
                         shoChaList.Reverse();
                         foreach (var shooChaTask in shoChaList)
@@ -962,8 +961,8 @@ namespace EMT.DoneNOW.BLL
                             var shooChaTaskNoArr = shooChaTask.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
                             var lastshooChaTaskNo = shooChaTaskNoArr[shooChaTaskNoArr.Length - 1]; // 获取到末尾加一
                             var thisNoChaNo = shooChaTask.sort_order.Substring(0, lastshooChaTaskNo.Length - 1);  // 获取到不会改变的部分 todo 临界值测试
-                            var newNo = thisNoChaNo + (int.Parse(lastshooChaTaskNo)+ num).ToString("#0.00");
-                            ChangeTaskSortNo(newNo, shooChaTask.id, user);
+                            var newNo = thisNoChaNo + (int.Parse(lastshooChaTaskNo) + num).ToString("#0.00");
+                            ChangeTaskSortNo(newNo, shooChaTask.id, user_id);
                         }
                     }
 
@@ -971,20 +970,70 @@ namespace EMT.DoneNOW.BLL
             }
 
         }
+        /// <summary>
+        /// 当插入节点不是阶段时，新增阶段并将原节点转移到阶段下，返回阶段ID
+        /// </summary>
+        public long? InsertPhase(long task_id,long user_id)
+        {
+            long? id = null;
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            var oriTask = _dal.FindNoDeleteById(task_id);  // Original获取到原本的taskid，不是阶段时进行操作
+            if (user != null && oriTask != null && oriTask.type_id != (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
+            {
+                #region 创建新阶段
+                var newPhase = new sdk_task()
+                {
+                    id=_dal.GetNextIdCom(),
+                    project_id = oriTask.project_id,
+                    type_id = (int)DicEnum.TASK_TYPE.PROJECT_PHASE,
+                    title = oriTask.title,
+                    estimated_begin_time = oriTask.estimated_begin_time,
+                    estimated_end_date = oriTask.estimated_end_date,
+                    estimated_duration = oriTask.estimated_duration,
+                    no = ReturnTaskNo(),
+                    create_user_id = user.id,
+                    update_user_id = user.id,
+                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    sort_order = oriTask.sort_order,
+                };
+                _dal.Insert(newPhase);
+                OperLogBLL.OperLogAdd<sdk_task>(newPhase, newPhase.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "新增阶段");
+                id = newPhase.id;
+                var old_task_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TASK);
+                //var old_task_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.TASK, oriTask.id, old_task_udfList);
+                new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.TASK, user.id,
+                newPhase.id, old_task_udfList, null, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_TASK);
+                #endregion
+
+                #region 更改原来的task的相关信息
+                oriTask.sort_order = ReturnSortOrder((long)oriTask.project_id, newPhase.id);
+                oriTask.parent_id = newPhase.id;
+                oriTask.update_user_id = user.id;
+                oriTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                OperLogBLL.OperLogUpdate<sdk_task>(oriTask, _dal.FindNoDeleteById(oriTask.id), oriTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                _dal.Update(oriTask);
+                #endregion
+
+            }
+            return id;
+        }
+
+        #endregion
 
         /// <summary>
         /// 导入task，为task的sort重新排序，no重新获取
         /// </summary>
-        public void ImportFromTemp(long project_id,string taskIds,long user_id,bool isCopyTeamber)
+        public void ImportFromTemp(long project_id, string taskIds, long user_id, bool isCopyTeamber)
         {
             var thisProject = new pro_project_dal().FindNoDeleteById(project_id);
             var user = UserInfoBLL.GetUserInfo(user_id);
             var nowDate = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            if (thisProject != null&& user!=null) 
+            if (thisProject != null && user != null)
             {
                 if (!string.IsNullOrEmpty(taskIds))
                 {
-                    var taskIDArr = taskIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                    var taskIDArr = taskIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     // 导入，无需排序
                     // 创建字典，关联新老关系
                     var strDal = new sdk_task_resource_dal();
@@ -1025,7 +1074,7 @@ namespace EMT.DoneNOW.BLL
                             #endregion
 
                             #region task团队相关
-                            if(taskResList!=null&& taskResList.Count > 0)
+                            if (taskResList != null && taskResList.Count > 0)
                             {
                                 taskResList.ForEach(tr =>
                                 {
@@ -1045,10 +1094,352 @@ namespace EMT.DoneNOW.BLL
                             #endregion
 
                         }
-                        
+
                     }
                 }
             }
         }
+
+        /// <summary>
+        /// 获取task已计费金额
+        /// </summary>
+        public decimal GetTaskBilledDollar(long task_id)
+        {
+            decimal totalMoney = 0;
+            var sweList = new sdk_work_entry_dal().GetByTaskId(task_id);
+            var dccDal = new d_cost_code_dal();
+            var srDal = new sys_role_dal();
+            if (sweList != null && sweList.Count > 0)
+            {
+                foreach (var swe in sweList)
+                {
+                    if (swe.is_billable == 0 || swe.hours_billed == null)
+                    {
+                        continue;
+                    }
+                    if (swe.cost_code_id != null && swe.role_id != null)
+                    {
+                        var thisCostCode = dccDal.FindNoDeleteById((long)swe.cost_code_id);
+                        var thisRole = srDal.FindNoDeleteById((long)swe.role_id);
+                        if (thisCostCode != null && thisRole != null)
+                        {
+                            if (thisCostCode.show_on_invoice != (int)DicEnum.SHOW_ON_INVOICE.BILLED)
+                            {
+                                continue;
+                            }
+                            var billHours = (decimal)swe.hours_billed;
+                            if (thisCostCode.min_hours != null && billHours < thisCostCode.min_hours)
+                            {
+                                billHours = (decimal)thisCostCode.min_hours;
+                            }
+                            if (thisCostCode.max_hours != null && billHours > thisCostCode.max_hours)
+                            {
+                                billHours = (decimal)thisCostCode.max_hours;
+                            }
+
+                            switch (thisCostCode.billing_method_id)
+                            {
+                                case (int)DicEnum.WORKTYPE_BILLING_METHOD.USE_ROLE_RATE:
+                                    totalMoney += (billHours * thisRole.hourly_rate);
+                                    break;
+                                case (int)DicEnum.WORKTYPE_BILLING_METHOD.FLOAT_ROLE_RATE:
+                                    if (thisCostCode.rate_adjustment != null)
+                                    {
+                                        totalMoney += (billHours * (thisRole.hourly_rate + (decimal)thisCostCode.rate_adjustment));
+                                    }
+                                    break;
+                                case (int)DicEnum.WORKTYPE_BILLING_METHOD.RIDE_ROLE_RATE:
+                                    if (thisCostCode.rate_multiplier != null)
+                                    {
+                                        totalMoney += (billHours * (thisRole.hourly_rate * (decimal)thisCostCode.rate_multiplier));
+                                    }
+                                    break;
+                                case (int)DicEnum.WORKTYPE_BILLING_METHOD.USE_UDF_ROLE_RATE:
+                                    if (thisCostCode.custom_rate != null)
+                                    {
+                                        totalMoney += (billHours * (decimal)thisCostCode.custom_rate);
+                                    }
+                                    break;
+                                case (int)DicEnum.WORKTYPE_BILLING_METHOD.BY_TIMES:
+                                    if (thisCostCode.flat_rate != null)
+                                    {
+                                        totalMoney += (decimal)thisCostCode.flat_rate;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+            return totalMoney;
+        }
+        /// <summary>
+        /// 获取到task的变更单变更金额
+        /// </summary>
+        public decimal GetTaskChangeDollar(long task_id)
+        {
+            decimal totalMoney = 0;
+            var cadDal = new crm_account_deduction_dal();
+            var thisTaskDedList = cadDal.GetDedListByTaskId(task_id);
+            if (thisTaskDedList != null && thisTaskDedList.Count > 0)
+            {
+                foreach (var thisTaskDed in thisTaskDedList)
+                {
+                    if (thisTaskDed.extended_price != null)
+                    {
+                        totalMoney += (decimal)thisTaskDed.extended_price;
+                    }
+                }
+            }
+            return totalMoney;
+        }
+
+
+        /// <summary>
+        ///  获取到前驱任务中的最晚时间 （没有返回任务的开始时间）
+        /// </summary>
+        public DateTime GetPreMaxTime(long taskId)
+        {
+            var stpDal = new sdk_task_predecessor_dal();
+            var thisTask = _dal.FindNoDeleteById(taskId);
+            var maxDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time); 
+            if (thisTask != null)
+            {
+                var preList = stpDal.GetRelList(thisTask.id);
+                if(preList!=null&& preList.Count > 0)
+                {
+                    preList.ForEach(_ => {
+                        var thisPreTask = _dal.FindNoDeleteById(_.predecessor_task_id);
+                        if (thisPreTask != null)
+                        {
+                            var thisDate = ((DateTime)thisPreTask.estimated_end_date).AddDays(_.dependant_lag);
+                            if(thisDate> maxDate)
+                            {
+                                maxDate = thisDate;
+                            }
+                        }
+                    });
+                }
+            }
+            return maxDate;
+
+        }
+
+        /// <summary>
+        /// 将选中task的开始时间，结束时间平移相应天数
+        /// </summary>
+        public bool ChangeTaskTime(string ids,int days,long user_id)
+        {
+            bool result = false;
+            try
+            {
+                var user = UserInfoBLL.GetUserInfo(user_id);
+                if (!string.IsNullOrEmpty(ids)&&user!=null)
+                {
+                    var idArr = ids.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var taskId in idArr)
+                    {
+                        var thisTask = _dal.FindNoDeleteById(long.Parse(taskId));
+                        if (thisTask != null)
+                        {
+                            var startDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time);
+                            var newStartDate = RetrunMaxTime((long)thisTask.project_id,startDate,days);
+                            thisTask.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(newStartDate);
+
+                            var newEndDate = RetrunMaxTime((long)thisTask.project_id, (DateTime)thisTask.estimated_end_date, days);
+                            thisTask.estimated_end_date = newEndDate;
+                            thisTask.update_user_id = user.id;
+                            thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                            OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                            _dal.Update(thisTask);
+
+                            UpdateParDate(thisTask.parent_id, (long)thisTask.estimated_begin_time,(DateTime)thisTask.estimated_end_date,user_id);
+                        }
+                    }
+                }
+                
+
+                result = true;
+            }
+            catch (Exception msg)
+            {
+                result = false;
+            }
+            return result;
+        }
+        /// <summary>
+        /// 完成task
+        /// </summary>
+        public bool CompleteTask(long task_id,string reason,long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            var vtDal = new v_task_all_dal();
+            var thisTask = _dal.FindNoDeleteById(task_id);
+            var v_task = vtDal.FindById(task_id);
+            if (user != null && thisTask != null&&thisTask.type_id!=(int)TASK_TYPE.PROJECT_PHASE&&v_task!=null) 
+            {
+                thisTask.status_id = (int)TICKET_STATUS.DONE;
+                thisTask.reason = reason;
+                thisTask.date_completed = DateTime.Now;
+                thisTask.projected_variance -= (thisTask.estimated_hours-(v_task.worked_hours!=null?(decimal)v_task.worked_hours:0));
+                thisTask.update_user_id = user.id;
+                thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "完成任务");
+                _dal.Update(thisTask);
+                return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// 获取到节点的上一兄弟节点
+        /// </summary>
+        public sdk_task GetLastBroTask(long task_id)
+        {
+            var thisTask = _dal.FindNoDeleteById(task_id);
+            if (thisTask != null)
+            {
+                var thisSortNoArr = thisTask.sort_order.Split(new char[] {'.'},StringSplitOptions.RemoveEmptyEntries);
+                var lastNo = (int.Parse(thisSortNoArr[thisSortNoArr.Count() - 1]) - 1).ToString("#00");
+                var nextNo = thisTask.sort_order.Substring(0, thisTask.sort_order.Length - 2) + lastNo;
+                var nextTask = _dal.GetSinTaskBySortNo((long)thisTask.project_id,nextNo);
+                return nextTask;
+
+            }
+            return null;
+        }
+        /// <summary>
+        /// 删除任务
+        /// </summary>
+        public bool DeleteTasks(long task_id,bool isDelSub,long user_id)
+        {
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            var thisTask = _dal.FindNoDeleteById(task_id);
+            if (thisTask != null)
+            {
+                DeleteProTask(thisTask.id,user_id);
+                DeleteTaskRes(thisTask.id,user_id);
+                var thisSubList = _dal.GetTaskByParentId(thisTask.id);  // 获取到这个任务的所有子节点
+                // var nextTask = GetNextBroTask(thisTask.id);             // 获取到这个节点的下一兄弟节点
+                _dal.SoftDelete(thisTask,user_id);
+                OperLogBLL.OperLogDelete<sdk_task>(thisTask, thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "删除任务");
+                ChangBroTaskSortNoReduce((long)thisTask.project_id,thisTask.parent_id, user_id);
+
+                if (thisSubList != null && thisSubList.Count > 0)
+                {
+                    if (isDelSub)  // 删除子节点，递归删除所有节点
+                    {
+                        foreach (var thisSubTask in thisSubList)
+                        {
+                            DeleteTasks(thisSubTask.id,isDelSub,user_id);
+                        }
+                    }
+                    else
+                    {
+                        var nextTask = _dal.GetSinTaskBySortNo((long)thisTask.project_id, thisTask.sort_order);
+                        if (nextTask != null)  // 代表后面有兄弟节点
+                        {
+                            ChangeBroTaskSortNoAdd(nextTask.id, thisSubList.Count,user_id);
+                        }
+                        else                    // 代表后面没有兄弟节点
+                        {
+
+                        }
+                        foreach (var thisSubTask in thisSubList)
+                        {
+                            string newSortNo = "";
+                            if (thisTask.parent_id == null)
+                            {
+                                newSortNo = GetMinUserNoParSortNo((long)thisTask.project_id);
+                            }
+                            else
+                            {
+                                newSortNo = GetMinUserSortNo((long)thisTask.parent_id);
+                            }
+                            thisSubTask.parent_id = thisTask.parent_id;
+                            OperLogBLL.OperLogUpdate<sdk_task>(thisSubTask, _dal.FindNoDeleteById(thisSubTask.id), thisSubTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                            _dal.Update(thisSubTask);
+                            ChangeTaskSortNo(newSortNo, thisSubTask.id,user_id);
+                        }
+                    }
+                }
+                
+            }
+
+
+            return true;
+        }
+        /// <summary>
+        ///  删除这个任务的所有前驱任务
+        /// </summary>
+        public bool DeleteProTask(long task_id,long user_id)
+        {
+            var sdpDal = new sdk_task_predecessor_dal();
+            var thiPreList = sdpDal.GetRelList(task_id);
+            if(thiPreList!=null&& thiPreList.Count > 0)
+            {
+                foreach (var thisPre in thiPreList)
+                {
+                    sdpDal.SoftDelete(thisPre, user_id);
+                    OperLogBLL.OperLogDelete<sdk_task_predecessor>(thisPre, thisPre.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK_PREDECESSOR, "删除前驱任务");
+                }
+                return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// 删除任务的团队成员
+        /// </summary>
+        public bool DeleteTaskRes(long task_id,long user_id)
+        {
+            var strDal = new sdk_task_resource_dal();
+            var strList = strDal.GetTaskResByTaskId(task_id);
+            if(strList!=null&& strList.Count > 0)
+            {
+                foreach (var str in strList)
+                {
+                    strDal.SoftDelete(str,user_id);
+                    OperLogBLL.OperLogDelete<sdk_task_resource>(str, str.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK_RESOURCE, "删除任务团队成员");
+                }
+
+                return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// 调整任务的开始结束时间（根据子节点的开始结束时间进行调整）
+        /// </summary>
+        public void AdjustmentDate(long task_id,long user_id)
+        {
+            var thisTask = _dal.FindNoDeleteById(task_id);
+            var thisSubTask = _dal.GetTaskByParentId(task_id);
+            if (thisTask!=null&&thisSubTask != null && thisSubTask.Count > 0)
+            {
+                var minStartDate = thisSubTask.Min(_ => (long)_.estimated_begin_time);
+                var maxEndDate = thisSubTask.Max(_ => (DateTime)_.estimated_end_date);
+
+                if (((long)thisTask.estimated_begin_time > minStartDate) || ((DateTime)thisTask.estimated_end_date < maxEndDate))
+                {
+                    if ((long)thisTask.estimated_begin_time > minStartDate)
+                    {
+                        thisTask.estimated_begin_time = minStartDate;
+                    }
+                    if ((DateTime)thisTask.estimated_end_date < maxEndDate)
+                    {
+                        thisTask.estimated_end_date = maxEndDate;
+                    }
+                    thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisTask.update_user_id = user_id;
+                    OperLogBLL.OperLogUpdate<sdk_task>(thisTask,_dal.FindNoDeleteById(thisTask.id), thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "更改task时间");
+
+                    if (thisTask.parent_id != null)
+                    {
+                        AdjustmentDate((long)thisTask.parent_id,user_id);
+                    }
+                }
+            }
+        }
+
     }
 }

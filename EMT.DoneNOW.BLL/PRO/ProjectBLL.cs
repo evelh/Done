@@ -950,7 +950,9 @@ namespace EMT.DoneNOW.BLL
 
             return true;
         }
-
+        /// <summary>
+        /// 保存为基准
+        /// </summary>
         public bool SaveAsBaseline(long ProjectId, long user_id)
         {
             bool result = false;
@@ -978,12 +980,12 @@ namespace EMT.DoneNOW.BLL
                     thisProject.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     thisProject.change_orders_budget = ProChaPrice(oldId);
                     thisProject.change_orders_revenue = ProChaCost(oldId);
-                    if(oldTaskList!=null&& oldTaskList.Count > 0)
+                    if (oldTaskList != null && oldTaskList.Count > 0)
                     {
                         var nocomList = oldTaskList.Where(_ => _.status_id != (int)DicEnum.TICKET_STATUS.DONE).ToList();
-                        if(nocomList!=null&& nocomList.Count > 0)
+                        if (nocomList != null && nocomList.Count > 0)
                         {
-                            thisProject.percent_complete = (int)((nocomList.Count*100) / ((decimal)oldTaskList.Count));
+                            thisProject.percent_complete = (int)((nocomList.Count * 100) / ((decimal)oldTaskList.Count));
                         }
                         else
                         {
@@ -1008,18 +1010,136 @@ namespace EMT.DoneNOW.BLL
                     oldProject.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     _dal.Update(oldProject);
 
-                    if(oldTaskList != null&& oldTaskList.Count > 0)
+                    if (oldTaskList != null && oldTaskList.Count > 0)
                     {
-                        oldTaskList.ForEach(_ => {
-
-
+                        var old_task_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TASK);
+                        // var stDal = new sdk_task_dal();
+                        var vstDal = new v_task_all_dal();
+                        var sweDal = new sdk_work_entry_dal();
+                        var strDal = new sdk_task_resource_dal();
+                        var stpDal = new sdk_task_predecessor_dal();
+                        var tBll = new TaskBLL();
+                        Dictionary<long, long> oldAndNewIdDic = new Dictionary<long, long>();
+                        oldTaskList.ForEach(_ =>
+                        {
+                            var v_task = vstDal.FindById(_.id);
+                            if (v_task != null)
+                            {
+                                var oldTaskResList = strDal.GetTaskResByTaskId(_.id);
+                                #region 复制task本身相关
+                                var old_task_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.TASK, _.id, old_task_udfList);
+                                var entryList = sweDal.GetByTaskId(_.id);
+                                int? entries = null;
+                                long? entryDate = null;
+                                decimal? workHours = null;
+                                decimal? billHours = null;
+                                sbyte? ser = null;
+                                if (!string.IsNullOrEmpty(v_task.service_Call_Scheduled))
+                                {
+                                    if (v_task.service_Call_Scheduled == "1")
+                                    {
+                                        ser = 1;
+                                    }
+                                    else if (v_task.service_Call_Scheduled == "0")
+                                    {
+                                        ser = 0;
+                                    }
+                                }
+                                if (entryList != null && entryList.Count > 0)
+                                {
+                                    entries = entryList.Count;
+                                    entryDate = entryList.Max(e => e.end_time);
+                                    workHours = entryList.Sum(e => e.hours_worked);
+                                    var billList = entryList.Where(e => e.is_billable == 1).ToList();
+                                    if (billList != null && billList.Count > 0)
+                                    {
+                                        billHours = billList.Sum(e => e.hours_billed);
+                                    }
+                                }
+                                var newTask = new sdk_task()
+                                {
+                                    id = _dal.GetNextIdCom(),
+                                    project_id = thisProject.id,
+                                    no= tBll.ReturnTaskNo(),
+                                    create_user_id = user.id,
+                                    update_user_id = user.id,
+                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    entries = entries,
+                                    entrydate = entryDate,
+                                    total_worked_hours = workHours,
+                                    total_billed_hours = billHours,
+                                    total_billed_dollars = tBll.GetTaskBilledDollar(_.id),
+                                    change_order_hours = v_task.change_Order_Hours,
+                                    change_order_dollars = tBll.GetTaskChangeDollar(_.id),
+                                    hours_to_be_scheduled = v_task.hours_to_be_Scheduled,
+                                    total_billable_hours = v_task.billable_hours,
+                                    total_non_billable_hours = v_task.non_Billable_hours,
+                                    service_call_scheduled = ser,
+                                    budgeted_hours = v_task.budgeted_Hours,
+                                    title = _.title,
+                                    type_id = _.type_id,
+                                };
+                                stDal.Insert(newTask);
+                                OperLogBLL.OperLogAdd<sdk_task>(newTask, newTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "复制task");
+                                new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.TASK, user.id,
+                newTask.id, old_project_udfList, old_project_udfValueList, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_TASK);
+                                oldAndNewIdDic.Add(_.id, newTask.id);
+                                #endregion
+                                #region 复制任务员工
+                                if (oldTaskResList != null && oldTaskResList.Count > 0)
+                                {
+                                    foreach (var oldTaskRes in oldTaskResList)
+                                    {
+                                        var newTaskRes = new sdk_task_resource()
+                                        {
+                                            id = strDal.GetNextIdCom(),
+                                            create_user_id = user.id,
+                                            update_user_id = user.id,
+                                            create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                            update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                            resource_id = oldTaskRes.resource_id,
+                                            contact_id = oldTaskRes.contact_id,
+                                            role_id = oldTaskRes.role_id,
+                                            task_id = newTask.id,
+                                            department_id = oldTaskRes.department_id,
+                                            status_id = oldTaskRes.status_id,
+                                        };
+                                        strDal.Insert(newTaskRes);
+                                        OperLogBLL.OperLogAdd<sdk_task_resource>(newTaskRes, newTaskRes.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK_RESOURCE, "复制任务分配对象");
+                                    }
+                                }
+                                #endregion
+                            }
                         });
+                        if (oldAndNewIdDic.Count > 0)
+                        {
+                            #region 复制前驱任务
+                            foreach (var oldAndNew in oldAndNewIdDic)
+                            {
+                                var oldPreList = stpDal.GetRelList(oldAndNew.Key);
+                                if (oldPreList != null && oldPreList.Count > 0)
+                                {
+                                    oldPreList.ForEach(_ => {
+                                        var newSTP = new sdk_task_predecessor() {
+                                            id = stpDal.GetNextIdCom(),
+                                            create_user_id = user.id,
+                                            update_user_id = user.id,
+                                            create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                            update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                            task_id = oldAndNew.Value,
+                                            predecessor_task_id = oldAndNewIdDic.FirstOrDefault(o => o.Key == _.predecessor_task_id).Value,
+                                            dependant_lag = _.dependant_lag,
+                                            dependant_type = _.dependant_type,
+                                        };
+                                        stpDal.Insert(newSTP);
+                                        OperLogBLL.OperLogAdd<sdk_task_predecessor>(newSTP, newSTP.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK_PREDECESSOR, "复制前驱任务");
+                                    });
+                                }
+                            }
+                            #endregion
+                        }
                     }
-
-
-
-
-
                 }
             }
             catch (Exception msg)
@@ -1028,7 +1148,87 @@ namespace EMT.DoneNOW.BLL
             }
             return result;
         }
+        /// <summary>
+        /// 将项目设为完成
+        /// </summary>
+        public bool CompleteProject(long project_id,string reason,long user_id)
+        {
+            bool result = false;
+            try
+            {
+                var thisProejct = _dal.FindNoDeleteById(project_id);
+                var user = UserInfoBLL.GetUserInfo(user_id);
+                if (thisProejct != null && user != null)
+                {
+                    #region 项目相关修改
+                    thisProejct.status_id = (int)DicEnum.PROJECT_STATUS.DONE;
+                    thisProejct.status_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisProejct.status_detail += "项目被设置为完成状态";
+                    thisProejct.update_user_id = user.id;
+                    thisProejct.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    OperLogBLL.OperLogUpdate<pro_project>(thisProejct, _dal.FindNoDeleteById(project_id), thisProejct.id, user.id, OPER_LOG_OBJ_CATE.PROJECT, "完成项目");
+                    _dal.Update(thisProejct);
+                    #endregion
 
+                    #region 任务相关修改
+                    var stDal = new sdk_task_dal();
+                    // var vtDal = new v_task_all_dal();
+                    var thisTaskList = stDal.GetAllProTask(thisProejct.id);
+                    if(thisTaskList!=null&& thisTaskList.Count > 0)
+                    {
+                        foreach (var thisTask in thisTaskList)
+                        {
+                            // var v_task = vtDal.FindById(thisTask.id);
+                            decimal workHours = RetTaskActHours(thisTask.id);
+                            thisTask.status_id = (int)DicEnum.TICKET_STATUS.DONE;
+                            thisTask.reason = reason;
+                            thisTask.date_completed = DateTime.Now;
+                            thisTask.projected_variance -= (thisTask.estimated_hours - workHours);
+                            thisTask.update_user_id = user.id;
+                            thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                            OperLogBLL.OperLogUpdate<sdk_task>(thisTask, stDal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "完成任务");
+                            stDal.Update(thisTask);
+
+                        }
+                    }
+                    #endregion
+
+                    #region 新增备注
+                    var activity = new com_activity()
+                    {
+                        id = _dal.GetNextIdCom(),
+                        cate_id = (int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE,
+                        action_type_id = (int)ACTIVITY_TYPE.PROJECT_NOTE,
+                        object_id = thisProejct.id,
+                        object_type_id = (int)OBJECT_TYPE.PROJECT,
+                        account_id = thisProejct.account_id,
+                        resource_id = thisProejct.owner_resource_id,
+                        opportunity_id = thisProejct.opportunity_id,
+                        name = "状态改变",
+                        description = "项目被设置为完成状态，所有任务状态变为完成",
+                        publish_type_id = (int)NOTE_PUBLISH_TYPE.PROJECT_ALL_USER,
+                        create_user_id = user.id,
+                        update_user_id = user.id,
+                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        is_system_generate = 1,
+                    };
+                    new com_activity_dal().Insert(activity);
+                    OperLogBLL.OperLogAdd<com_activity>(activity, activity.id, user.id, OPER_LOG_OBJ_CATE.NOTIFY, "完成项目-添加通知");
+                    #endregion
+
+
+                }
+
+
+                result = true;
+            }
+            catch (Exception msg)
+            {
+                result = false;
+            }
+            return result;
+        }
 
         #region 项目相关数据获取方法
         /// <summary>
@@ -1246,6 +1446,46 @@ namespace EMT.DoneNOW.BLL
             }
 
             return true;
+        }
+        /// <summary>
+        /// 重新计算项目日程
+        /// </summary>
+        public bool RecalculateProject(long projetc_id,long user_id)
+        {
+            var result = true;
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            var tBll = new TaskBLL();
+            var stDal = new sdk_task_dal();
+            var taskList = stDal.GetAllProTask(projetc_id);
+            if (user!=null&&taskList != null && taskList.Count > 0)
+            {
+                try
+                {
+                    taskList.ForEach(_ => {
+                        if (_.status_id != (int)DicEnum.TICKET_STATUS.DONE)
+                        {
+                            var preDate = tBll.GetPreMaxTime(_.id);
+                            var thisStartDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)_.estimated_begin_time);
+                            if (preDate > thisStartDate)
+                            {
+                                _.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(preDate); // 更改开始时间
+                                _.estimated_end_date = tBll.RetrunMaxTime(projetc_id, preDate, (int)_.estimated_duration);
+                                _.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                                _.update_user_id = user.id;
+                                OperLogBLL.OperLogUpdate<sdk_task>(_, stDal.FindNoDeleteById(_.id), _.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                                stDal.Update(_);
+                            }
+                        }
+                    });
+                    // 开始时间根据前驱任务进行改变
+                    // 结束时间根据开始时间，持续时间和节假日进行更改
+                }
+                catch (Exception msg)
+                {
+                    result = false;
+                }
+            }
+            return result;
         }
     }
 }

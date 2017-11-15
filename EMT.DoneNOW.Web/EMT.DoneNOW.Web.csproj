@@ -311,6 +311,7 @@
     <Content Include="Product\ProductStock.aspx" />
     <Content Include="Product\TransferProductStock.aspx" />
     <Content Include="Product\VendorAdd.aspx" />
+    <Content Include="Project\ProjectBaseLine.aspx" />
     <Content Include="Project\ProjectChart.aspx" />
     <Content Include="Project\ProjectClosingReport.aspx" />
     <Content Include="Project\ProjectCompleteWizard.aspx" />
@@ -324,6 +325,7 @@
     <Content Include="Project\ProjectView.aspx" />
     <Content Include="Project\RecipientSelector.aspx" />
     <Content Include="Project\TaskAddOrEdit.aspx" />
+    <Content Include="Project\TaskModify.aspx" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
     <Content Include="Images\export.png" />
@@ -1409,6 +1411,13 @@
     <Compile Include="Product\VendorAdd.aspx.designer.cs">
       <DependentUpon>VendorAdd.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Project\ProjectBaseLine.aspx.cs">
+      <DependentUpon>ProjectBaseLine.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectBaseLine.aspx.designer.cs">
+      <DependentUpon>ProjectBaseLine.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Project\ProjectChart.aspx.cs">
       <DependentUpon>ProjectChart.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1499,6 +1508,13 @@
     </Compile>
     <Compile Include="Project\TaskAddOrEdit.aspx.designer.cs">
       <DependentUpon>TaskAddOrEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\TaskModify.aspx.cs">
+      <DependentUpon>TaskModify.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\TaskModify.aspx.designer.cs">
+      <DependentUpon>TaskModify.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\SearchConditionFrame.aspx.cs">

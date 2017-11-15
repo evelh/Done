@@ -17,9 +17,9 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql<sdk_task>($"select * from sdk_task where delete_time = 0 and project_id = {project_id} "+where); 
         }
 
-        public List<sdk_task> GetTaskByIds(string ids)
+        public List<sdk_task> GetTaskByIds(string ids,string where ="")
         {
-            return FindListBySql<sdk_task>($"select * from sdk_task where delete_time = 0 and id in ({ids})");
+            return FindListBySql<sdk_task>($"select * from sdk_task where delete_time = 0 and id in ({ids})"+where);
         }
         /// <summary>
         /// 获取项目tsak  为任务，问题
@@ -69,7 +69,7 @@ namespace EMT.DoneNOW.DAL
         /// </summary>
         public sdk_task GetSinTaskBySortNo(long project_id,string sortNo)
         {
-            return FindSignleBySql<sdk_task>($"SELECT sort_order from sdk_task where delete_time = 0 and project_id = {project_id} and sort_order = '{sortNo}'");
+            return FindSignleBySql<sdk_task>($"SELECT * from sdk_task where delete_time = 0 and project_id = {project_id} and sort_order = '{sortNo}'");
         }
     }
 }

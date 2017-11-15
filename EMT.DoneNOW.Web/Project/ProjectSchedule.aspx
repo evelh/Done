@@ -130,14 +130,18 @@
         .phaseTr td {
             background-color: #f8f8f8;
         }
+
+        .Section {
+            border: 1px solid #d3d3d3;
+            margin: 0 0 12px 0;
+            padding: 4px 0 4px 0;
+            width: 836px;
+        }
     </style>
     <title></title>
 </head>
 <body>
     <form runat="server">
-
-
-
         <div class="ButtonContainer">
             <ul>
                 <!--报表切换按钮-->
@@ -208,7 +212,7 @@
                                 <div class="Button1" id="PhaseBudgetsButton" tabindex="0" onclick="ChangeShowPage('<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_PHASE_BUDGET %>','phaseBudHours')">
                                     <span class="Text">阶段预算</span>
                                 </div>
-                                <div class="Button1" id="BaselineButton" tabindex="0" onclick="ChangeShowPage('<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_BASELINE %>','phaseBudHours')">
+                                <div class="Button1" id="BaselineButton" tabindex="0" onclick="ShowBusLine()">
                                     <span class="Text">基准</span>
                                 </div>
                             </div>
@@ -276,7 +280,7 @@
                                 <div class="Text">将项目保存为……</div>
                             </div>
                             <div class="Content">
-                                <div class="Button1" id="SaveAsBaselineButton" tabindex="0">
+                                <div class="Button1" id="SaveAsBaselineButton" tabindex="0" onclick="SaveAsBusiLine()">
                                     <span class="Text">保存为基准</span>
                                 </div>
                                 <div class="Button1" id="SaveAsTemplateButton" tabindex="0" onclick="SaveAsTemp()">
@@ -289,16 +293,16 @@
                                 <div class="Text">其他</div>
                             </div>
                             <div class="Content">
-                                <div class="Button1" id="CompleteProjectButton" tabindex="0">
+                                <div class="Button1" id="CompleteProjectButton" tabindex="0" onclick="CompleteProject()">
                                     <span class="Text">项目标记为完成</span>
                                 </div>
                                 <div class="Button1" id="WorkloadReport" tabindex="0">
                                     <span class="Text">查看工作报告</span>
                                 </div>
-                                <div class="Button1" id="RecalculateProjectScheduleButton" tabindex="0">
+                                <div class="Button1" id="RecalculateProjectScheduleButton" tabindex="0" onclick="RecalculateProject()">
                                     <span class="Text">重新计算项目进度</span>
                                 </div>
-                                <div class="Button1" id="ScheduleSettingsButton" tabindex="0">
+                                <div class="Button1" id="ScheduleSettingsButton" tabindex="0" onclick="ProjectSet()">
                                     <span class="Text">编辑项目设置</span>
                                 </div>
                             </div>
@@ -328,12 +332,12 @@
                     <span class="Icon Export"></span>
                     <span class="Text" style="padding: 0;"></span>
                 </li>
-                <li class="Button ButtonIcon" id="UseResourceCapacityForLevelingButton" tabindex="0">
+                <%--      <li class="Button ButtonIcon" id="UseResourceCapacityForLevelingButton" tabindex="0">
                     <span class="Icon" style="margin: 0 0 3px 0; width: 12px;">
                         <input type="checkbox" style="vertical-align: middle;">
                     </span>
                     <span class="Text">使用容量来计算持续时间</span>
-                </li>
+                </li>--%>
                 <!--控制表头按钮-->
                 <li class="Button ButtonIcon" id="ColumnChooserButton" tabindex="0" title="列选择器" onclick="javascript:window.open('../Common/ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);">
                     <span class="Icon ColumnChooser"></span>
@@ -386,25 +390,25 @@
                                                 <div class="DropDownButtonDiv">
                                                     <div class="Group">
                                                         <div class="Content">
-                                                            <div class="Button1" id="OutdentButton" tabindex="0">
+                                                            <div class="Button1" id="OutdentButton" tabindex="0" onclick="Outdent()">
                                                                 <span class="Text">减少缩进</span>
                                                             </div>
-                                                            <div class="Button1" id="IndentButton" tabindex="0">
+                                                            <div class="Button1" id="IndentButton" tabindex="0" onclick="Indent()">
                                                                 <span class="Text">增加缩进</span>
                                                             </div>
                                                             <div class="Button1" id="ForwardModifyButton" tabindex="0">
-                                                                <span class="Text">提出修改</span>
+                                                                <span class="Text">前进/修改</span>
                                                             </div>
-                                                            <div class="Button1" id="AddToMyWorkListButton" tabindex="0">
+                                                            <%--  <div class="Button1" id="AddToMyWorkListButton" tabindex="0">
                                                                 <span class="Text">添加到我的工作列表中</span>
+                                                            </div>--%>
+                                                            <div class="Button1" id="SlideButton" tabindex="0" onclick="Slide()">
+                                                                <span class="Text">滑动</span>
                                                             </div>
-                                                            <div class="Button1" id="SlideButton" tabindex="0">
-                                                                <span class="Text">幻灯片</span>
-                                                            </div>
-                                                            <div class="Button1" id="TableCompleteButton" tabindex="0">
+                                                            <div class="Button1" id="TableCompleteButton" tabindex="0" onclick="ShowReason()">
                                                                 <span class="Text">完成</span>
                                                             </div>
-                                                            <div class="Button1" id="TableDeleteButton" tabindex="0">
+                                                            <div class="Button1" id="TableDeleteButton" tabindex="0" onclick="DeieteTask()">
                                                                 <span class="Text">删除</span>
                                                             </div>
                                                         </div>
@@ -606,6 +610,13 @@
                                     {%>
                                 <td>替换图标</td>
                                 <%}
+                                    else if (para.name == "里程碑数")
+                                    {
+                                        var thisArr = rslt["里程碑数"] as byte[];
+                                %>
+                                <td><%=thisArr==null?"":thisArr.Count().ToString() %></td>
+                                <%
+                                    }
                                     else if (para.name == "标题")
                                     {
                                         var thisDepth = 0;
@@ -679,7 +690,7 @@
             <div>
                 <input type="hidden" id="DivChooseTaskIds" />
                 <div class="DialogContentContainer">
-                    <div class="CancelDialogButton"></div>
+                    <div class="CancelDialogButton" id="CloseNav2"></div>
                     <div class="TitleBar">
                         <div class="Title">
                             <span class="text">保存为模板</span>
@@ -1333,6 +1344,289 @@
         </div>
         <!--黑色幕布-->
         <div id="BackgroundOverLay"></div>
+        <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; display: none;" id="ShowReason">
+            <div>
+                <div class="DialogContentContainer">
+                    <div class="CancelDialogButton" id="CloseReason()"></div>
+                    <div class="Active ThemePrimaryColor TitleBar">
+                        <div class="Title">
+                            <span class="text">完成任务原因</span>
+                        </div>
+                    </div>
+                    <div class="DialogHeadingContainer">
+                        <div class="ValidationSummary" id="z5491229e838c41c9ae2302dc9c39f757">
+                            <div class="CustomValidation Valid"></div>
+                            <div class="FormValidation Valid">
+                                <div class="ErrorContent">
+                                    <div class="TransitionContainer">
+                                        <div class="IconContainer">
+                                            <div class="Icon"></div>
+                                        </div>
+                                        <div class="TextContainer"><span class="Count"></span><span class="Count Spacer"></span><span class="Message"></span></div>
+                                    </div>
+                                </div>
+                                <div class="ChevronContainer">
+                                    <div class="Up"></div>
+                                    <div class="Down"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ButtonContainer"><a class="Button ButtonIcon Save NormalState" id="SaveAndCloseButton" tabindex="0"><span class="Icon"></span><span class="Text">保存并关闭</span></a></div>
+                    </div>
+                    <div class="ScrollingContentContainer" style="position: unset">
+                        <div class="ScrollingContainer" id="" style="top: 80px;">
+                            <div class="Medium NoHeading Section">
+                                <div class="Content">
+                                    <div class="Normal Column">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="ajax303a00d30ad844dcb3e55c4b5a88de3c_0_Reason">原因</label><span class="Required">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="Editor TextArea" data-editor-id="" data-rdp="" style="top: 80px;">
+                                            <div class="InputField">
+                                                <textarea class="Medium" id="taskReason" name="" placeholder="" data-val-required="Required" data-val-editor-id="" data-val-position="0" style="border: solid 1px #D7D7D7; padding: 0px 0 5px 0;"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="Dialog Large" style="margin-left: -442px; margin-top: -290px; z-index: 100; display: none; height: 500px;" id="ProjectSetting">
+            <div>
+                <div class="DialogContentContainer">
+                    <div class="CancelDialogButton" id="CloseSet"></div>
+                    <div class="Active ThemePrimaryColor TitleBar">
+                        <div class="Title"><span class="Text">项目设置</span><span class="SecondaryText"></span></div>
+                    </div>
+                    <div class="ButtonContainer"><a class="Button ButtonIcon Save NormalState" id="SaveButton" tabindex="0"><span class="Icon"></span><span class="Text">保存</span></a></div>
+                    <div class="ScrollingContentContainer" style="position: unset;">
+                        <div class="ScrollingContainer" id="zb3a4c9a6d38b4a6d81d1b7fd82d088c2" style="top: 85px;">
+                            <div class="Instructions">
+                                <div class="InstructionItem">对这些设置的任何更改将立即应用到项目进度表上。</div>
+                            </div>
+                            <div class="Normal Section">
+                                <div class="Heading">
+                                    <div class="Left"><span class="Text">日程表设置</span><span class="SecondaryText"></span></div>
+                                    <div class="Spacer"></div>
+                                </div>
+                                <div class="DescriptionText" style="margin-left: 15px;">启用“非工作日/节假日”可能会改变任务/问题的开始/结束日期。当“非工作日/节假日”启用时，任务/问题只会被安排在工作日。对于没有主负责人的任务/问题，非工作日和节假日将取决于已选区域，一旦为任务/问题分配了主负责人，非工作日和节假日将取决于主负责人所在区域。</div>
+                                <div class="Content" style="margin-left: 20px">
+                                    <div class="Large Column">
+                                        <div class="CheckBoxGroupContainer">
+                                            <div class="CheckBoxGroupLabel">
+                                                <div><span class="Label">当调整任务/问题时不包括：</span></div>
+                                                <div>
+                                                    <span style="display: inline-block;">
+                                                        <asp:CheckBox ID="excludeWeekend" runat="server" />
+
+                                                        <label for="excludeWeekend">非工作日</label>
+                                                        <span>(星期六和星期天)</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="Editor CheckBox" data-editor-id="" data-rdp="">
+                                                <div>
+                                                    <span style="display: inline-block;">
+                                                        <asp:CheckBox ID="excludeHoliday" runat="server" />
+
+                                                        <label for="excludeHoliday">节假日</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="">区域<span class="SecondaryText">(决定节假日和非工作日)</span></label><span class="Required">*</span>
+                                        </div>
+                                    </div>
+                                    <div class="Editor SingleSelect" data-editor-id="" data-rdp="">
+                                        <div class="InputField">
+                                            <asp:DropDownList ID="organization_location_id" runat="server" Width="264px"></asp:DropDownList>
+
+                                        </div>
+                                    </div>
+                                    <div class="Editor CheckBox" data-editor-id="" data-rdp="">
+                                        <div class="InputField">
+                                            <div>
+                                                <asp:CheckBox ID="warnTime_off" runat="server" />
+                                                <label for="warnTime_off">当用户试图分配一个任务/问题时，如果主负责人已经审批的休假请求会影响工作按时完成，则显示一个警告</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Normal Section">
+                                <div class="Heading">
+                                    <div class="Left"><span class="Text">项目成员日工作量</span><span class="SecondaryText"></span></div>
+                                    <div class="Spacer"></div>
+                                </div>
+                                <div class="DescriptionText" style="margin-left: 15px;">设置项目成员期望每天工作的小时数，他可以根据团队成员进行调整。如果此任务没有主负责人，该值用于计算任务截止日期/时间.</div>
+                                <div class="Content" style="margin-left: 20px;">
+                                    <div class="Medium Column">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="">总时间</label><span class="Required">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="Editor DecimalBox" data-editor-id="" data-rdp="">
+                                            <div class="InputField">
+                                                <input type="text" style="width: 250px;" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" id="resource_daily_hours" name="resource_daily_hours" value="<%=((decimal)thisProject.resource_daily_hours).ToString("#0.00") %>" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="Medium Column"></div>
+                                    <div class="Normal Column">
+                                        <div class="Editor CheckBox" data-editor-id="" data-rdp="">
+                                            <div class="InputField">
+                                                <div style="width: 310px;">
+                                                    <asp:CheckBox ID="useResource_daily_hours" runat="server" />
+
+                                                    <label for="CapacityCalculation">
+                                                        用工作量为固定工作任务计算时间
+                                                            <span style="color: #666;">（当不启用此设置时，您能够手动调整固定工作任务的持续时间，持续时间不会自动计算）
+                                                            </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; display: none;" id="SildeDays">
+            <div>
+                <div class="DialogContentContainer">
+                    <div class="CancelDialogButton" onclick="CloseSileDay()"></div>
+                    <div class="Active ThemePrimaryColor TitleBar">
+                        <div class="Title">
+                            <span class="text">滑动条目</span>
+                        </div>
+                    </div>
+                    <div class="DialogHeadingContainer">
+                        <div class="ValidationSummary" id="">
+                            <div class="CustomValidation Valid"></div>
+                            <div class="FormValidation Valid">
+                                <div class="ErrorContent">
+                                    <div class="TransitionContainer">
+                                        <div class="IconContainer">
+                                            <div class="Icon"></div>
+                                        </div>
+                                        <div class="TextContainer"><span class="Count"></span><span class="Count Spacer"></span><span class="Message"></span></div>
+                                    </div>
+                                </div>
+                                <div class="ChevronContainer">
+                                    <div class="Up"></div>
+                                    <div class="Down"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ButtonContainer"><a class="Button ButtonIcon Save NormalState" id="SaveSildeDays" tabindex="0"><span class="Icon"></span><span class="Text">保存</span></a></div>
+                        <div class="Instructions" style="margin-left: 35px;">
+                            <div class="InstructionItem">选中条目的开始和结束日期将前平移（负整数）或后平移（正整数）若干天。 请参照您的项目<a class="Button ButtonIcon Link NormalState" id="z62ce5bfd687c4d1281624df07fb2f3ff" tabindex="0" onclick="ShowSetting()">条目设置</a>.</div>
+                        </div>
+                    </div>
+                    <div class="ScrollingContentContainer" style="position: unset">
+                        <div class="ScrollingContainer" id="" style="top: 80px;">
+                            <div class="Medium NoHeading Section">
+                                <div class="Content">
+                                    <div class="Normal Column" style="margin-top: 25px;">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="ajax303a00d30ad844dcb3e55c4b5a88de3c_0_Reason">滑动</label><span class="Required">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="Editor IntegerBox" data-editor-id="" data-rdp="" style="top: 80px;">
+                                            <div class="InputField">
+                                                <input type="text" id="SildeDaysNum" value="0" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /><span class="CustomHtml">天</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; display: none;" id="deleteTask">
+            <div>
+                <div class="DialogContentContainer">
+                    <div class="CancelDialogButton" onclick="CloseDeleteTask()"></div>
+                    <div class="Active ThemePrimaryColor TitleBar">
+                        <div class="Title">
+                            <span class="text">删除阶段告警</span>
+                        </div>
+                    </div>
+                    <div class="DialogHeadingContainer">
+                        <div class="ValidationSummary" id="">
+                            <div class="CustomValidation Valid"></div>
+                            <div class="FormValidation Valid">
+                                <div class="ErrorContent">
+                                    <div class="TransitionContainer">
+                                        <div class="IconContainer">
+                                            <div class="Icon"></div>
+                                        </div>
+                                        <div class="TextContainer"><span class="Count"></span><span class="Count Spacer"></span><span class="Message"></span></div>
+                                    </div>
+                                </div>
+                                <div class="ChevronContainer">
+                                    <div class="Up"></div>
+                                    <div class="Down"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="Instructions" style="margin-left: 35px;">
+                            <div class="InstructionItem">您将删除选定的阶段及其所有子阶段和任务。如果您希望保留除阶段之外的所有内容，请选择下面的复选框。</div>
+                        </div>
+                    </div>
+                    <div class="ScrollingContentContainer" style="position: unset">
+                        <div class="ScrollingContainer" id="" style="top: 80px;">
+                            <div class="Medium NoHeading Section">
+                                <div class="Content">
+                                    <div class="Normal Column" style="margin-top: 25px;">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="ajax303a00d30ad844dcb3e55c4b5a88de3c_0_Reason">确定要删除这些阶段吗</label>
+                                            </div>
+                                        </div>
+                                        <div class="Editor IntegerBox" data-editor-id="" data-rdp="" style="top: 80px;">
+                                            <div class="InputField">
+                                                <div>
+                                                    <input type="checkbox" id="ckIsCheck" />
+                                                </div>
+                                                <div class="EditorLabelContainer">
+                                                    <div class="Label">
+                                                        <label for="">保留所有任务和子阶段</label></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Confirmation ButtonContainer">
+                                            <a class="Button ButtonIcon NormalState" id="YesButton" tabindex="0" ><span class="Icon"></span><span class="Text">是</span></a><a class="Button ButtonIcon NormalState" id="NoButton" tabindex="0"><span class="Icon"></span><span class="Text">否</span></a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 </body>
 </html>
@@ -1355,7 +1649,7 @@
 
     })
 
-    $(".CancelDialogButton").on("click", function () {
+    $("#CloseNav2").on("click", function () {
         $("#Nav2").hide();
         $("#BackgroundOverLay").hide();
         $("#AddStep2").show();
@@ -1368,19 +1662,6 @@
         // 跳转到图形列表
         location.href = "ProjectChart?project_id=<%=thisProject.id %>";
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     // 时间够的情况下可以尝试快速新增修改操作，暂不处理
@@ -1698,8 +1979,9 @@
 
     // 获取到但前页面中选中的task
     function GetChooseTaskId() {
+        debugger;
         var ids = "";
-        $("#HighImportance").each(function () {
+        $(".HighImportance").each(function () {
             if ($(this).hasClass("Selected")) {
                 ids += $(this).data("val") + ",";
             }
@@ -1731,7 +2013,7 @@
 
 
     // 根据选择的条件过滤页面上的数据
-    function ChangeShowPage(queryType,showType) {
+    function ChangeShowPage(queryType, showType) {
         location.href = "ProjectSchedule?project_id=<%=thisProject.id %>&pageShowType=" + showType + "&QeryTypeId=" + queryType;
     }
 
@@ -1857,7 +2139,7 @@
             $("#AddStep2").show();
             $("#SecondStep2").hide();
         });
-   
+
         $("#prev4_2").on("click", function () {
             $("#SecondStep2").show();
             $("#ThirdStep2").hide();
@@ -2024,7 +2306,7 @@
             $("#FirstStep2").show();
             $("#SecondStep2").hide();
         });
-      
+
         $("#prev4_2").on("click", function () {
             $("#SecondStep2").show();
             $("#ThirdStep2").hide();
@@ -2074,11 +2356,306 @@
         if (jiZhunID == null || jiZhunID == "") {
             isAdd = "1";
         } else {
-            LayerConfirm("项目基准已经存在，是否重新创建", "确定", "取消", function () { isAdd = "1"; }, function () { });
+            LayerConfirm("项目基准已经存在，是否重新创建", "确定", "取消", function () {
+                isAdd = "0"; $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: "../Tools/ProjectAjax.ashx?act=SaveAsBaseline&project_id=<%=thisProject.id %>",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != "") {
+
+                        }
+                        history.go(0);
+                    },
+                });
+            }, function () { });
         }
+        debugger;
         if (isAdd == "1") {
             // 新增基准
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ProjectAjax.ashx?act=SaveAsBaseline&project_id=<%=thisProject.id %>",
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+
+                    }
+                    history.go(0);
+                },
+            });
         }
     }
+    // 将项目设为完成
+    function CompleteProject() {
+        // 提示1 是否有未完成的task
+        // 提示2 根据系统设置是否显示必填原因
+        var isHas = "";
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ProjectAjax.ashx?act=IsHasNoDoneTask&project_id=<%=thisProject.id %>",
+            success: function (data) {
+                if (data == "True") {
+                    isHas = "1";
+                }
+            },
+        });
+        if (isHas != "") {
+            LayerConfirm("该项目包含未完成的任务/问题。单击“是”将所有任务和问题标记为完成。点击“否”保持当前状态，停止操作", "是", "否", function () {
+        <% var isDoneSet = new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.PRO_TASK_DONE_REASON);
+    if (isDoneSet != null && isDoneSet.setting_value == "1")   // 代表设置为填写原因
+    {%>
+                $("#ShowReason").show();
+                $("#BackgroundOverLay").show();
+                $("#SaveAndCloseButton").click(function () {
+                    var reason = $("#taskReason").val();
+                    if (reason == "") {
+                        LayerMsg("请填写任务完成原因");
+                    } else {
+                        ComPro(reason);
+                    }
+                })
+    <%}
+    else
+    {%>
+                ComPro('');
+    <%}
+    %>
+            }, function () { });
+        }
 
+
+    }
+    $("#CloseReason").click(function () {
+        $("#ShowReason").hide();
+        $("#BackgroundOverLay").hide();
+    })
+
+    // 完成项目
+    function ComPro(reason) {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ProjectAjax.ashx?act=CompleteProject&project_id=<%=thisProject.id %>&reason=" + reason,
+            success: function (data) {
+                if (data == "True") {
+
+                }
+                history.go(0);
+            },
+        });
+    }
+
+    function ProjectSet() {
+        $("#ProjectSetting").show();
+        $("#BackgroundOverLay").show();
+    }
+    $("#CloseSet").click(function () {
+        $("#ProjectSetting").hide();
+        $("#BackgroundOverLay").hide();
+    })
+
+    $("#SaveButton").click(function () {
+        var resource_daily_hours = $("#resource_daily_hours").val();
+        if (resource_daily_hours == "") {
+            LayerMsg("请填写总时间");
+            return false;
+        }
+        var useResource_daily_hours = $("#useResource_daily_hours").is(":checked");
+        var excludeWeekend = $("#excludeWeekend").is(":checked");
+        var excludeHoliday = $("#excludeHoliday").is(":checked");
+        var organization_location_id = $("#organization_location_id").val();
+        if (organization_location_id == "" || organization_location_id == "0") {
+            LayerMsg("请选择区域！");
+            return false;
+        }
+        var warnTime_off = $("#warnTime_off").is(":checked");
+
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ProjectAjax.ashx?act=UpdateProSet&project_id=<%=thisProject.id %>&resource_daily_hours=" + resource_daily_hours + "&useResource_daily_hours=" + useResource_daily_hours + "&excludeWeekend=" + excludeWeekend + "&excludeHoliday=" + excludeHoliday + "&organization_location_id=" + organization_location_id + "&warnTime_off=" + warnTime_off,
+            success: function (data) {
+                if (data == "True") {
+
+                }
+                history.go(0);
+            },
+        });
+    })
+
+    function RecalculateProject() {
+        LayerConfirm("重新计算项目日程可能会改变任务、阶段、问题的开始日期/结束日期。 如果您在项目设置中,指定在日程安排中排除非工作日和节假日，则在重新计算日程时，将会遵守这些设置。你确定要这样做吗？", "是", "否", function () {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ProjectAjax.ashx?act=RecalculateProject&project_id=<%=thisProject.id %>",
+                success: function (data) {
+                    history.go(0);
+                },
+            });
+
+        }, function () { });
+    }
+    // 跳转到基准相关界面
+    function ShowBusLine() {
+        location.href = "ProjectBaseLine?project_id=<%=thisProject.id %>&pageShowType=1&QeryTypeId=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_BASELINE %>";
+    }
+    // 滑动操作--批量更改开始时间和结束时间
+    function Slide() {
+        $("#SildeDays").show();
+        $("#BackgroundOverLay").show();
+    }
+    function CloseSileDay() {
+        $("#SildeDays").hide();
+        $("#BackgroundOverLay").hide();
+    }
+    $("#SaveSildeDays").click(function () {
+        var ids = GetChooseTaskId(); // SildeDaysNum
+        var sildays = $("#SildeDaysNum").val();
+
+        if (ids == "") {
+            LayerMsg("前选择任务");
+            return false;
+        }
+        if (sildays == "" || isNaN(sildays)) {
+            LayerMsg("请填写滑动天数");
+            return false;
+        }
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ProjectAjax.ashx?act=ChangeTaskTime&ids=" + ids + "&days=" + sildays,
+            success: function (data) {
+                $("#SildeDays").hide();
+                $("#BackgroundOverLay").hide();
+                history.go(0);
+            },
+        });
+    })
+    function ShowSetting() {
+        $("#SildeDays").hide();
+        ProjectSet();
+    }
+    function ShowReason() {
+        $("#ShowReason").show();
+        $("#BackgroundOverLay").show();
+        $("#SaveAndCloseButton").click(function () {
+            var ids = GetChooseTaskId();
+            if (ids == "") {
+                LayerMsg("前选择任务");
+                return false;
+            }
+            var reason = $("#taskReason").val();
+            if (reason == "") {
+                LayerMsg("请填写任务完成原因");
+                return false;
+            }
+
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ProjectAjax.ashx?act=CompleteTask&ids=" + ids + "&reason=" + reason,
+                success: function (data) {
+                    if (data == "True") {
+
+                    }
+                    history.go(0);
+                },
+            });
+
+        })
+    }
+
+    function DeieteTask() {
+        var phaseId = GetLastChoosePhaseTask();   // 判断有无阶段
+        var ids = GetChooseTaskId();
+        if (phaseId == "") {
+            LayerConfirm("删除不能恢复，是否继续？", "是", "否", function () {
+
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: "../Tools/ProjectAjax.ashx?act=DeleteTasks&taskIds=" + ids,
+                    success: function (data) {
+                        if (data == "True") {
+
+                        }
+                        history.go(0);
+                    },
+                });
+            }, function () { });
+        } else {
+            // todo 展示确认信息
+            $("#deleteTask").show();
+            $("#BackgroundOverLay").show();
+        }
+    }
+    $("#YesButton").click(function () {
+        var ids = GetChooseTaskId();
+        if (ids == "") {
+            LayerMsg("请选择任务");
+            return false;
+        }
+        var thisUrl = "../Tools/ProjectAjax.ashx?act=DeleteTasks&taskIds=" + ids;
+        if ($("#ckIsCheck").is(":checked")) {
+            thisUrl += "&delSub=1";
+        }
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: thisUrl,
+            success: function (data) {
+                if (data == "True") {
+
+                }
+                history.go(0);
+            },
+        });
+    })
+
+    $("#NoButton").click(function () {
+        $("#deleteTask").hide();
+        $("#BackgroundOverLay").hide();
+    })
+    // 减少缩进
+    function Outdent() {
+
+    }
+    // 增加缩进
+    function Indent() {
+        // 判断第一个选中是否满足增加缩进条件（末位不等于1 ）
+        debugger;
+        var ids = GetChooseTaskId(); 
+        if (ids != "") {
+            var idsArr = ids.split(',');
+            var firstSortNum = "";
+            $(".HighImportance.Selected").each(function () {
+                alert(1);
+                console.log(1);
+                firstSortNum = $(this).children().first().children().first().children().first().next().html();
+            })
+            if (firstSortNum != "") {
+                var firArr = firstSortNum.split('.');
+                if (Number(firArr[0]) > 1)  
+                {
+                    $.ajax({
+                        type: "GET",
+                        async: false,
+                        url: "../Tools/ProjectAjax.ashx?act=Indend&taskId=" + idsArr[0],
+                        success: function (data) {
+                            if (data == "True") {
+
+                            }
+                            history.go(0);
+                        },
+                    });
+                }
+            }
+         
+        }
+    }
 </script>

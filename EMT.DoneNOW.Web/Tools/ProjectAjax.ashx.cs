@@ -31,8 +31,7 @@ namespace EMT.DoneNOW.Web
                         var showType = context.Request.QueryString["showType"];
                         GetTask(context, long.Parse(project_id), showType);
                         break;
-
-                    case "GetSinProject":
+                    case "GetSinProject":     // 获取单个项目信息
                         var sin_project_id = context.Request.QueryString["project_id"];
                         GetSinProject(context, long.Parse(sin_project_id));
                         break;
@@ -62,6 +61,49 @@ namespace EMT.DoneNOW.Web
                     case "GetLastPhaseId":
                         var cIds = context.Request.QueryString["ids"];
                         GetLastPhaseId(context, cIds);
+                        break;
+                    case "IsHasNoDoneTask":
+                        var pId = context.Request.QueryString["project_id"];
+                        IsHasNoDoneTask(context,long.Parse(pId));
+                        break;
+                    case "CompleteProject":
+                        var cpId = context.Request.QueryString["project_id"];
+                        var reason = context.Request.QueryString["reason"];
+                        CompleteProject(context,long.Parse(cpId),reason);
+                        break;
+                    case "UpdateProSet":  // 更改项目设置
+                        UpdateProSet(context);
+                        break;
+                    case "RecalculateProject":
+                        var rPid = context.Request.QueryString["project_id"];
+                        RecalculateProject(context,long.Parse(rPid));
+                        break;
+                    case "SaveAsBaseline":
+                        var spId = context.Request.QueryString["project_id"];
+                        SaveAsBaseline(context,long.Parse(spId));
+                        break;
+                    case "ChangeTaskTime":
+                        var taskIds = context.Request.QueryString["ids"];
+                        var sDays = context.Request.QueryString["days"];
+                        ChangeTaskTime(context,taskIds,int.Parse(sDays));
+                        break;
+                    case "CompleteTask":
+                        var comTaskIds = context.Request.QueryString["ids"];
+                        var comReason = context.Request.QueryString["reason"];
+                        CompleteTask(context,comTaskIds,comReason);
+                        break;
+                    case "DeleteTasks":
+                        var dTaskIds = context.Request.QueryString["taskIds"];
+                        var isDelSub = context.Request.QueryString["delSub"];
+                        DeleteTasks(context,dTaskIds,string.IsNullOrEmpty(isDelSub));
+                        break;
+                    case "Indend":
+                        var iTaskId = context.Request.QueryString["taskId"];
+                        Indend(context,long.Parse(iTaskId));
+                        break;
+                    case "Outdend":
+                        var oTaskId = context.Request.QueryString["taskId"];
+                        Outdent(context,long.Parse(oTaskId));
                         break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -408,7 +450,13 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void SaveAsBaseline(HttpContext context,long project_id)
         {
-
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            bool result = false;
+            if (res != null)
+            {
+                result = new ProjectBLL().SaveAsBaseline(project_id, res.id);
+            }
+            context.Response.Write(result);
         }
         /// <summary>
         /// 任务父阶段的修改 （修改后刷新页面排序方式改变）
@@ -426,7 +474,7 @@ namespace EMT.DoneNOW.Web
             // todo
             var stDal = new sdk_task_dal();
             var tBll = new TaskBLL();
-            var parentTask = stDal.FindNoDeleteById((long)parent_id);
+       
             var res = context.Session["dn_session_user_info"] as sys_user;
             var user = UserInfoBLL.GetUserInfo(res.id);
             // 1.获取到要插入的位置，获取相关序号
@@ -441,6 +489,18 @@ namespace EMT.DoneNOW.Web
 
                 if (location == "in") // 插入节点里面成为子节点
                 {
+                    // todo 放到里面的时候如果不是阶段，则需要新增阶段，并将原来的task转移到这个阶段下
+                    // 此时需要创建新阶段并将新阶段ID作为parentID
+                    var parentTask = stDal.FindNoDeleteById((long)parent_id);
+                    if (parentTask.type_id != (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
+                    {
+                        var returnID = tBll.InsertPhase((long)parent_id, user.id);
+                        if (returnID != null)
+                        {
+                            parent_id = returnID;
+                        }
+                    }
+                    
                     foreach (var taskId in taskArr)
                     {
                         var thisTaskNewSortNo = "";
@@ -458,7 +518,7 @@ namespace EMT.DoneNOW.Web
                             thisTask.parent_id = parent_id;
                             stDal.Update(thisTask);
                             thisTaskNewSortNo = tBll.ReturnSortOrder(project_id, parent_id);
-                            tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, user);
+                            tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, res.id);
                         }
                     }
                 }
@@ -477,10 +537,10 @@ namespace EMT.DoneNOW.Web
                         var thisTask = stDal.FindNoDeleteById(long.Parse(taskId));
                         if (thisTask != null)
                         {
-                            tBll.ChangBroTaskSortNoReduce(project_id,thisTask.parent_id,user);
+                            tBll.ChangBroTaskSortNoReduce(project_id,thisTask.parent_id, res.id);
                         }
                     }
-                    tBll.ChangeBroTaskSortNoAdd((long)parent_id, taskArr.Count(),user);
+                    tBll.ChangeBroTaskSortNoAdd((long)parent_id, taskArr.Count(), res.id);
                     long? reaParentId = null;  // 真正的父节点的id 
                 
                     if (parent_id != null)
@@ -500,7 +560,7 @@ namespace EMT.DoneNOW.Web
                             
                             stDal.Update(thisTask);
                             var thisTaskNewSortNo = tBll.ReturnSortOrder(project_id, reaParentId);
-                            tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, user);
+                            tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, res.id);
                         }
                     }
                 }
@@ -536,6 +596,290 @@ namespace EMT.DoneNOW.Web
                 }
             }
             context.Response.Write(phaseId);
+        }
+        /// <summary>
+        /// 判断项目下是否有未完成的任务
+        /// </summary>
+        private void IsHasNoDoneTask(HttpContext context, long project_id)
+        {
+            bool isHas = false;
+            var taskList = new sdk_task_dal().GetProjectTask(project_id);
+            if (taskList != null && taskList.Count > 0)
+            {
+                var noDoneList = taskList.Where(_ => _.status_id != (int)DicEnum.TICKET_STATUS.DONE).ToList();
+                if(noDoneList!=null&& noDoneList.Count > 0)
+                {
+                    isHas = true;
+                }
+            }
+
+            context.Response.Write(isHas);
+        }
+        private void CompleteProject(HttpContext context, long project_id,string reason)
+        {
+            bool result = false;
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            result = new ProjectBLL().CompleteProject(project_id,reason,res.id);
+            context.Response.Write(result);
+        }
+
+        private void UpdateProSet(HttpContext context)
+        {
+            bool result = false;
+            var pid = context.Request.QueryString["project_id"];
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            var thisPro = new pro_project_dal().FindNoDeleteById(long.Parse(pid));
+            if (thisPro != null&&res!=null)
+            {
+
+                var resource_daily_hours = context.Request.QueryString["resource_daily_hours"];
+                var useResource_daily_hours = context.Request.QueryString["useResource_daily_hours"];
+                var excludeWeekend = context.Request.QueryString["excludeWeekend"];
+                var excludeHoliday = context.Request.QueryString["excludeHoliday"];
+                var organization_location_id = context.Request.QueryString["organization_location_id"];
+                var warnTime_off = context.Request.QueryString["warnTime_off"];
+                if (!string.IsNullOrEmpty(resource_daily_hours))
+                {
+                    thisPro.resource_daily_hours = decimal.Parse(resource_daily_hours);
+                }
+                if (!string.IsNullOrEmpty(useResource_daily_hours)&& useResource_daily_hours=="true")
+                {
+                    thisPro.use_resource_daily_hours = 1;
+                }
+                else
+                {
+                    thisPro.use_resource_daily_hours = 0;
+                }
+                if (!string.IsNullOrEmpty(excludeWeekend) && excludeWeekend == "true")
+                {
+                    thisPro.exclude_weekend = 1;
+                }
+                else
+                {
+                    thisPro.exclude_weekend = 0;
+                }
+                if (!string.IsNullOrEmpty(excludeHoliday) && excludeHoliday == "true")
+                {
+                    thisPro.exclude_holiday = 1;
+                }
+                else
+                {
+                    thisPro.exclude_holiday = 0;
+                }
+                if (!string.IsNullOrEmpty(organization_location_id))
+                {
+                    thisPro.organization_location_id = long.Parse(organization_location_id);
+                }
+                if (!string.IsNullOrEmpty(warnTime_off) && warnTime_off == "true")
+                {
+                    thisPro.warn_time_off = 1;
+                }
+                else
+                {
+                    thisPro.warn_time_off = 0;
+                }
+                var old_project_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PROJECTS);
+                var old_project_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.PROJECTS, thisPro.id, old_project_udfList);
+                ProjectDto param = new ProjectDto() {
+                    udf = old_project_udfValueList,
+                    project = thisPro,
+                };
+                result = new ProjectBLL().EditProject(param,res.id);
+
+            }
+          
+            
+
+
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 重新计算项目进度
+        /// </summary>
+        private void RecalculateProject(HttpContext context,long project_id)
+        {
+            var result = false;
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            if (res != null)
+            {
+                result = new ProjectBLL().RecalculateProject(project_id,res.id);
+            }
+            context.Response.Write(result);
+        }
+
+        private void ChangeTaskTime(HttpContext context,string ids,int days)
+        {
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            bool result = false;
+            if (res != null)
+            {
+                result = new TaskBLL().ChangeTaskTime(ids,days,res.id);
+            }
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 批量完成task
+        /// </summary>
+        private void CompleteTask(HttpContext context, string ids, string reason)
+        {
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            bool result = false;
+            if (res != null)
+            {
+                var tBll = new TaskBLL();
+                if (!string.IsNullOrEmpty(ids))
+                {
+                    var idArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    int wrongNum = 0;
+                    foreach (var taskId in idArr)
+                    {
+                     var thisResult =  tBll.CompleteTask(long.Parse(taskId),reason,res.id);
+                        if (!thisResult)
+                        {
+                            wrongNum++;
+                        }
+                    }
+                    if (wrongNum == 0)
+                    {
+                        result = true;
+                    }
+                }
+            }
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 删除任务
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="taskIds">需要删除的任务id集合</param>
+        /// <param name="isDelSub">是否删除子task</param>
+        private void DeleteTasks(HttpContext context, string taskIds,bool isDelSub)
+        {
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            bool result = false;
+            if (res != null&&!string.IsNullOrEmpty(taskIds))
+            {
+                var stDal = new sdk_task_dal();
+                var tBll = new TaskBLL();
+                var tasArr = taskIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var chooseTaskList = stDal.GetTaskByIds(taskIds);
+                if(chooseTaskList!=null&& chooseTaskList.Count > 0)
+                {
+                    foreach (var taskId in tasArr)
+                    {
+                        var thisTask = chooseTaskList.FirstOrDefault(_=>_.id.ToString()==taskId);
+                        if (thisTask != null)
+                        {
+                            if (thisTask.parent_id != null)
+                            {
+                                if (tasArr.Any(_ => _ == thisTask.parent_id.ToString()))
+                                {
+                                    continue;
+                                }
+                            }
+                            tBll.DeleteTasks(thisTask.id, isDelSub, res.id);
+                        }
+                    }
+                }
+             
+            }
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 减少缩进
+        /// </summary>
+        private void Outdent(HttpContext context,long taskId)
+        {
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            bool result = false;
+            if (res != null)
+            {
+                var stDal = new sdk_task_dal();
+                var tBll = new TaskBLL();
+                var thisTask = stDal.FindNoDeleteById(taskId);
+                if (thisTask != null && thisTask.parent_id != null)
+                {
+                    var parTask = stDal.FindNoDeleteById((long)thisTask.parent_id);
+                    if (parTask != null)
+                    {
+                        // 减少缩进步骤
+                        // 1.改变原来的兄弟节点的位置
+                        // 2.获取到新的节点的位置，插入节点
+                        // 3.计算原来的，和新的父节点的开始时间和结束时间是否调整 // todo
+
+                        tBll.ChangBroTaskSortNoReduce((long)thisTask.project_id, thisTask.parent_id, res.id); // 1.
+                        string newNo = "";
+                        if (parTask.parent_id != null)
+                        {
+                            newNo = tBll.GetMinUserNoParSortNo((long)thisTask.project_id);
+                        }
+                        else
+                        {
+                            newNo = tBll.GetMinUserSortNo((long)parTask.parent_id);
+                        }
+                        tBll.ChangeTaskSortNo(newNo, thisTask.id, res.id);
+                        tBll.AdjustmentDate((long)thisTask.parent_id,res.id);
+                    }
+                }
+            }
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 增加缩进
+        /// </summary>
+        private void Indend(HttpContext context, long taskId)
+        {
+            var res = context.Session["dn_session_user_info"] as sys_user;
+            bool result = false;
+            if (res != null)
+            {
+                var user = UserInfoBLL.GetUserInfo(res.id);
+                var stDal = new sdk_task_dal();
+                var tBll = new TaskBLL();
+                var lastTask = tBll.GetLastBroTask(taskId);
+                if (lastTask != null)
+                {
+                    // 补充原有位置
+                
+                  
+
+                    if (lastTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)  // 是阶段
+                    {
+                        var newNo = tBll.GetMinUserSortNo(lastTask.id);
+                        tBll.ChangeTaskSortNo(newNo,taskId, res.id);
+                    }
+                    else
+                    {
+                        var returnID = tBll.InsertPhase(lastTask.id, user.id);
+                        if (returnID != null)
+                        {
+                            var newNo = tBll.GetMinUserSortNo((long)returnID);
+                            var thisTask = stDal.FindNoDeleteById(taskId);
+                            thisTask.parent_id = returnID;
+                            OperLogBLL.OperLogUpdate<sdk_task>(thisTask, stDal.FindNoDeleteById(thisTask.id), thisTask.id, res.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                            stDal.Update(thisTask);
+                            tBll.ChangeTaskSortNo(newNo, taskId, res.id);
+                        }
+                    }
+                    tBll.ChangBroTaskSortNoReduce((long)lastTask.project_id, lastTask.parent_id, res.id);
+                    if (lastTask.parent_id != null)
+                    {
+                        tBll.AdjustmentDate((long)lastTask.parent_id, res.id);
+                    }
+                }
+
+
+            }
+            context.Response.Write(result);
+            // 执行顺序
+            // 原有兄弟节点改变
+            // 上一节点是否是阶段
+            // 是阶段，转到阶段下
+            // 不是阶段，创建阶段，转到阶段下
+
+
+
+
         }
         public bool IsReusable
         {

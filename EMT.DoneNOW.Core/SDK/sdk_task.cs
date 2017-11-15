@@ -181,8 +181,9 @@ namespace EMT.DoneNOW.Core
         public Int32? entries { get; set; }
         [DataMember]
         public Int64? entrydate { get; set; }
+        [DataMember]
+        public Decimal? budgeted_hours { get; set; }
 
 
     }
 }
-    

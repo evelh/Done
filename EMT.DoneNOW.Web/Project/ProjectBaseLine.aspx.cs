@@ -11,12 +11,9 @@ using EMT.DoneNOW.BLL;
 
 namespace EMT.DoneNOW.Web.Project
 {
-    public partial class ProjectSchedule : BasePage
+    public partial class ProjectBaseLine : BasePage
     {
         protected pro_project thisProject = null;
-        protected List<sdk_task> taskList = null;
-        protected bool isTransTemp = false;         // 判断是否进入转换模板页面
-        protected Dictionary<string, object> dic = new ProjectBLL().GetField();
         private QueryCommonBLL bll = new QueryCommonBLL();
         protected int catId = 0;
         //protected string queryPage;     // 查询页名称
@@ -30,8 +27,6 @@ namespace EMT.DoneNOW.Web.Project
         protected int tableWidth = 1200;
         protected long objId = 0;
         protected sdk_task_dal stDal = new sdk_task_dal();
-        protected TaskBLL tBll = new TaskBLL();
-        protected string pageShowType = "";     // 页面过滤数据类型 --默认展示全部的数据（过滤阶段，完成等信息）
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -40,36 +35,6 @@ namespace EMT.DoneNOW.Web.Project
                 thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(id));
                 if (thisProject != null)
                 {
-                    pageShowType = Request.QueryString["pageShowType"];
-                    taskList = new sdk_task_dal().GetProjectTask(thisProject.id);
-                    var isTran = Request.QueryString["isTranTemp"];
-                    if ((!string.IsNullOrEmpty(isTran))) //thisProject.type_id != (int)DicEnum.PROJECT_TYPE.TEMP &&
-                    {
-                        isTransTemp = true;
-                    }
-                    if (!IsPostBack)
-                    {
-                        var tempList = new pro_project_dal().GetTempList();
-                        // 项目模板  --project_temp
-                        if (tempList != null && tempList.Count > 0)
-                        {
-                            project_temp.DataTextField = "name";
-                            project_temp.DataValueField = "id";
-                            project_temp.DataSource = tempList;
-                            project_temp.DataBind();
-                        }
-
-                        organization_location_id.DataTextField = "name";
-                        organization_location_id.DataValueField = "id";
-                        organization_location_id.DataSource = dic.FirstOrDefault(_ => _.Key == "org_location").Value;
-                        organization_location_id.DataBind();
-
-                        useResource_daily_hours.Checked = thisProject.use_resource_daily_hours == 1;
-                        excludeWeekend.Checked = thisProject.exclude_weekend == 1;
-                        excludeHoliday.Checked = thisProject.exclude_holiday == 1;
-                        warnTime_off.Checked = thisProject.warn_time_off == 1;
-                    }
-
                     //  if (!int.TryParse(Request.QueryString["cat"], out catId))
                     var catIdString = Request.QueryString["CatID"];
                     if (string.IsNullOrEmpty(catIdString))
@@ -118,7 +83,11 @@ namespace EMT.DoneNOW.Web.Project
                         }
                     }
                     // if (!long.TryParse(Request.QueryString["id"], out objId))
-                    objId = thisProject.id;
+                    if (thisProject.baseline_project_id != null)
+                    {
+                        objId = (long)thisProject.baseline_project_id;
+                    }
+                    
                     QueryData();
                     CalcTableWidth();
 
@@ -134,7 +103,6 @@ namespace EMT.DoneNOW.Web.Project
                 Response.End();
             }
         }
-
         private void QueryData()
         {
             queryParaValue.Clear();
@@ -267,6 +235,7 @@ namespace EMT.DoneNOW.Web.Project
             }
             tableWidth = charCnt * 16;
         }
+
         /// <summary>
         /// 判断是否有子task 决定页面上是否可折叠
         /// </summary>
@@ -276,65 +245,10 @@ namespace EMT.DoneNOW.Web.Project
             var subList = stDal.GetTaskByParentId(taskId);
             if (subList != null && subList.Count > 0)
             {
-                switch (pageShowType)
-                {
-                    case "phase":  // 只显示阶段
-                        var phaseList = subList.Where(_ => _.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE).ToList();
-                        if (phaseList != null && phaseList.Count > 0)
-                        {
-                            result = true;
-                        }
-                        break;
-                    case "TaskComplete": // w完成的task
-                        var taskComList = subList.Where(_ => _.status_id == (int)DicEnum.TICKET_STATUS.DONE).ToList();
-                        if (taskComList != null && taskComList.Count > 0)
-                        {
-                            result = true;
-                        }
-                        break;
-                    case "TaskNoComplete": // 未完成的task
-                        var taskNoComList = subList.Where(_ => _.status_id != (int)DicEnum.TICKET_STATUS.DONE).ToList();
-                        if (taskNoComList != null && taskNoComList.Count > 0)
-                        {
-                            result = true;
-                        }
-                        break;
-                    case "ExpiredTask":  // 过期的任务和问题
-                        var expTaskList = subList.Where(_ => (DateTime)_.estimated_end_date > DateTime.Now).ToList();
-                        if (expTaskList != null && expTaskList.Count > 0)
-                        {
-                            result = true;
-                        }
-                        break;
-                    // 不能按时完成
-                    case "Issues":   // 只显示问题类型的task
-                        var issTaskList = subList.Where(_ => _.type_id == (int)DicEnum.TASK_TYPE.PROJECT_ISSUE).ToList();
-                        if (issTaskList != null && issTaskList.Count > 0)
-                        {
-                            result = true;
-                        }
-                        break;
-                    case "phaseBudHours":
-                        var phaseBudList = subList.Where(_ => _.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE).ToList();
-                        if (phaseBudList != null && phaseBudList.Count > 0)
-                        {
-                            result = true;
-                        }
-                        break;
-                    default:
-                        result = true;
-                        break;
-                }
-
-                var purchaseList = subList.Where(_ => _.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE).ToList();
-                if (purchaseList != null && purchaseList.Count > 0)
-                {
-                    result = true;
-                }
+                result = true;
             }
 
             return result;
-            // todo  根据pageShowType进行过滤，只考虑阶段或者状态相关
         }
     }
 }

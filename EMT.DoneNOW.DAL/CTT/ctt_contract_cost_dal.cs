@@ -24,7 +24,7 @@ namespace EMT.DoneNOW.DAL
         /// 根据项目Id 获取cost   36 代表时变更单
         public List<ctt_contract_cost> GetCostByProId(long project_id,string where ="")
         {
-            return FindListBySql<ctt_contract_cost>($"SELECT * FROM ctt_contract_cost where cost_code_id = 36  project_id = {project_id} and delete_time = 0 "+where);
+            return FindListBySql<ctt_contract_cost>($"SELECT * FROM ctt_contract_cost where cost_code_id = 36 and  project_id = {project_id} and delete_time = 0 "+where);
         }
 
        
