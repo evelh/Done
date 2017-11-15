@@ -12,10 +12,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// 活动处理（备注/待办等）
     /// </summary>
-    public class ActivityAjax : IHttpHandler, IRequiresSessionState
+    public class ActivityAjax : BaseAjax
     {
         private ActivityBLL bll = new ActivityBLL();
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new Tools.Serialize().SerializeJson(rtn));
                 return;
             }
-            bll.FastAddNote(long.Parse(account_id), pageType, int.Parse(type), desc, (context.Session["dn_session_user_info"] as sys_user).id);
+            bll.FastAddNote(long.Parse(account_id), pageType, int.Parse(type), desc, LoginUserId);
             rtn.Add("1");
             context.Response.Write(new Tools.Serialize().SerializeJson(rtn));
         }
@@ -102,7 +102,7 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(queryStr["project"]) && queryStr["project"].Equals("1"))
                 actTypeList.Add("project");
 
-            context.Response.Write(new Tools.Serialize().SerializeJson(bll.GetActivitiesHtml(actTypeList, long.Parse(id), type, order, (context.Session["dn_session_user_info"] as sys_user).id)));
+            context.Response.Write(new Tools.Serialize().SerializeJson(bll.GetActivitiesHtml(actTypeList, long.Parse(id), type, order, LoginUserId)));
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace EMT.DoneNOW.Web
         /// <param name="id"></param>
         private void DeleteActivity(HttpContext context, long id)
         {
-            context.Response.Write(new Tools.Serialize().SerializeJson(bll.DeleteActivity(id, (context.Session["dn_session_user_info"] as sys_user).id)));
+            context.Response.Write(new Tools.Serialize().SerializeJson(bll.DeleteActivity(id, LoginUserId)));
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace EMT.DoneNOW.Web
         /// <param name="id"></param>
         private void TodoSetCompleted(HttpContext context, long id)
         {
-            bll.TodoSetCompleted(id, (context.Session["dn_session_user_info"] as sys_user).id);
+            bll.TodoSetCompleted(id, LoginUserId);
             context.Response.Write(new Tools.Serialize().SerializeJson(true));
         }
 
@@ -150,16 +150,9 @@ namespace EMT.DoneNOW.Web
         /// <param name="id"></param>
         private void NoteSetScheduled(HttpContext context, long id)
         {
-            bll.NoteSetScheduled(id, (context.Session["dn_session_user_info"] as sys_user).id);
+            bll.NoteSetScheduled(id, LoginUserId);
             context.Response.Write(new Tools.Serialize().SerializeJson(true));
         }
 
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
     }
 }

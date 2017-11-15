@@ -1,0 +1,1 @@
+﻿document.write("<script src='../Scripts/Search/CompanyViewAttachment.js' type='text/javascript'></script>");

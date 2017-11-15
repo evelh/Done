@@ -747,11 +747,21 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Common\SearchBody.js" />
+    <Content Include="Scripts\Search\Company.js" />
+    <Content Include="Scripts\Search\CompanyViewAttachment.js" />
     <Content Include="Scripts\Search\CompanyViewContract.js" />
     <Content Include="Scripts\Search\CompanyViewInvoice.js" />
+    <Content Include="Scripts\Search\Contact.js" />
+    <Content Include="Scripts\Search\ContactCompanyView.js" />
     <Content Include="Scripts\Search\Contract.js" />
+    <Content Include="Scripts\Search\Contract_Charge.js" />
     <Content Include="Scripts\Search\CRMNote.js" />
+    <Content Include="Scripts\Search\InstalledProductView.js" />
     <Content Include="Scripts\Search\Invoice_History.js" />
+    <Content Include="Scripts\Search\OpportunityViewAttachment.js" />
+    <Content Include="Scripts\Search\SaleOrder.js" />
+    <Content Include="Scripts\Search\SalesOrderViewAttachment.js" />
+    <Content Include="Scripts\Search\Subscription.js" />
     <Content Include="Scripts\Search\Todos.js" />
     <Content Include="Scripts\SysSettingRoles.js" />
     <Content Include="Scripts\sysset_users.js" />
@@ -1892,6 +1902,9 @@
     <Compile Include="Tools\AttachmentAjax.ashx.cs">
       <DependentUpon>AttachmentAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\BaseAjax.ashx.cs">
+      <DependentUpon>BaseAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\CompanyAjax.ashx.cs">
       <DependentUpon>CompanyAjax.ashx</DependentUpon>
     </Compile>
@@ -2004,6 +2017,7 @@
     <Content Include="Tools\ProjectAjax.ashx" />
     <Content Include="Tools\ActivityAjax.ashx" />
     <Content Include="Tools\AttachmentAjax.ashx" />
+    <Content Include="Tools\BaseAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

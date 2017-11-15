@@ -24,6 +24,10 @@ namespace EMT.DoneNOW.Web
         protected int tableWidth = 1200;
         protected long objId = 0;
 
+        // 额外的参数(带入页面供js使用)
+        protected string param1;
+        protected string param2;
+
         protected DateTime searchTime = DateTime.Now;   // 合同服务查询的查询日期
 
         protected string isCheck = ""; //  用于控制是否显示checkBox
@@ -107,7 +111,10 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYS_DEPARTMENT:
                 case (int)DicEnum.QUERY_CATE.SYS_ROLE:
                 case (int)DicEnum.QUERY_CATE.CONFIGITEMTYPE:
-                case (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONE:              
+                case (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONE:
+                case (int)DicEnum.QUERY_CATE.COMPANY_VIEW_ATTACHMENT:
+                case (int)DicEnum.QUERY_CATE.SALES_ORDER_VIEW_ATTACHMENT:
+                case (int)DicEnum.QUERY_CATE.OPPORTUNITY_VIEW_ATTACHMENT:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -358,7 +365,7 @@ namespace EMT.DoneNOW.Web
                     dics = new CompanyBLL().GetField();
                     contextMenu.Add(new PageContextMenuDto { text = "修改客户", click_function = "EditCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "AddNote()" });
 
                     PageContextMenuDto classcate = new PageContextMenuDto { text = "设置类别", click_function = "" };
                     // 设置公司类别子菜单
@@ -385,7 +392,7 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.ContactCompanyView:
                     contextMenu.Add(new PageContextMenuDto { text = "修改联系人", click_function = "EditContact()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看联系人", click_function = "ViewContact()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "AddNote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除联系人", click_function = "DeleteContact()" });
                     break;
@@ -662,6 +669,21 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "作废发票", click_function = "VoidInvoice()" });
                     contextMenu.Add(new PageContextMenuDto { text = "作废发票并取消审批", click_function = "VoidInvoiceAndUnPost()" });
                     contextMenu.Add(new PageContextMenuDto { text = "发票设置", click_function = "InvoiceEdit()" });
+                    break;
+                case (long)QueryType.CompanyViewAttachment:
+                    param1 = ((int)DicEnum.ATTACHMENT_OBJECT_TYPE.COMPANY).ToString();
+                    param2 = Request.QueryString["con674"];
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.OpportunityViewAttachment:
+                    param1 = ((int)DicEnum.ATTACHMENT_OBJECT_TYPE.OPPORTUNITY).ToString();
+                    param2 = Request.QueryString["con976"];
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.SalesOrderViewAttachment:
+                    param1 = ((int)DicEnum.ATTACHMENT_OBJECT_TYPE.SALES_ORDER).ToString();
+                    param2 = Request.QueryString["con977"];
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;

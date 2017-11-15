@@ -44,6 +44,8 @@
     <Compile Include="AddChargeDto.cs" />
     <Compile Include="ApiResultDto.cs" />
     <Compile Include="ApprovePostDto.cs" />
+    <Compile Include="AuthSecurityLevelDto.cs" />
+    <Compile Include="AuthPermitDto.cs" />
     <Compile Include="CacheQuerySqlDto.cs" />
     <Compile Include="CloseOpportunity.cs" />
     <Compile Include="CloseOpportunityDto.cs" />

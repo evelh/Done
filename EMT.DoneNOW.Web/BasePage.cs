@@ -5,11 +5,15 @@ using System.Web;
 using EMT.Tools;
 using System.Reflection;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DTO;
+using EMT.DoneNOW.BLL;
 
 namespace EMT.DoneNOW.Web
 {
     public class BasePage : System.Web.UI.Page
     {
+        private UserInfoDto userInfo;   // 登录用户信息
+        private List<AuthPermitDto> userPermit;     // 用户单独的权限点信息
         public BasePage()
         {
             this.Load += new EventHandler(BasePage_Load);
@@ -21,6 +25,13 @@ namespace EMT.DoneNOW.Web
             if (!IsUserLogin())
             {
                 Response.Write("<script>parent.location.href='/login.aspx'</script>");
+                Response.End();
+            }
+
+            // 判断用户是否可以访问当前url
+            if (!CheckUserAccess())
+            {
+                Response.Write("<script>alert('您没有权限访问')</script>");
                 Response.End();
             }
         }
@@ -41,13 +52,15 @@ namespace EMT.DoneNOW.Web
             Server.ClearError();//清除异常(否则将引发全局的Application_Error事件)
         }
 
-        public bool IsUserLogin()
+        private bool IsUserLogin()
         {
-            sys_user user = new sys_user { id = 1, email = "liuhai_dsjt@shdsjt.cn", name="刘海", mobile_phone = "18217750743" };
+            //sys_user user = new sys_user { id = 1, email = "liuhai_dsjt@shdsjt.cn", name="刘海", mobile_phone = "18217750743" };
             //sys_user user = new sys_user { id = 2, email = "zhufei_dsjt@shdsjt.cn", name = "朱飞", mobile_phone = "12" };
-            Session["dn_session_user_info"] = user;
+            //Session["dn_session_user_info"] = user;
             if (Session["dn_session_user_info"] != null)
             {
+                userInfo = Session["dn_session_user_info"] as UserInfoDto;
+                userPermit = Session["dn_session_user_permits"] as List<AuthPermitDto>;
                 return true;
             }
             else
@@ -64,10 +77,48 @@ namespace EMT.DoneNOW.Web
             return false;
         }
 
+        /// <summary>
+        /// 判断用户是否有权限访问当前url
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckUserAccess()
+        {
+            return AuthBLL.CheckUrlAuth(userInfo.security_Level_id, userPermit, Request.RawUrl);
+        }
+
+        /// <summary>
+        /// 废弃，不再使用
+        /// </summary>
+        /// <returns></returns>
         public long GetLoginUserId()
         {
-            sys_user user = Session["dn_session_user_info"] as sys_user;
-            return user.id;
+            return userInfo.id;
+        }
+
+        /// <summary>
+        /// 获取登录用户id
+        /// </summary>
+        protected long LoginUserId
+        {
+            get { return userInfo.id; }
+        }
+
+        /// <summary>
+        /// 获取登录用户信息
+        /// </summary>
+        protected UserInfoDto LoginUser
+        {
+            get { return userInfo; }
+        }
+
+        /// <summary>
+        /// 判断是否有对应权限
+        /// </summary>
+        /// <param name="sn"></param>
+        /// <returns></returns>
+        protected bool CheckAuth(string sn)
+        {
+            return AuthBLL.CheckAuth(userInfo.security_Level_id, userPermit, sn);
         }
 
         #region 表单填充对象
