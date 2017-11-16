@@ -12,10 +12,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// QuoteTemplateAjax 的摘要说明
     /// </summary>
-    public class QuoteTemplateAjax : IHttpHandler, IRequiresSessionState
+    public class QuoteTemplateAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             try
             {
@@ -49,11 +49,10 @@ namespace EMT.DoneNOW.Web
 
             }
         }
-        public void DeleteQuoteTemplate(HttpContext context, long QuoteTemp_id) {
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
-            {
-                if (new QuoteTemplateBLL().quote_template_delete(user.id, QuoteTemp_id)==DTO.ERROR_CODE.SUCCESS)
+        public void DeleteQuoteTemplate(HttpContext context, long QuoteTemp_id)
+        {
+             
+                if (new QuoteTemplateBLL().quote_template_delete(LoginUserId, QuoteTemp_id)==DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("删除报价模板成功！");
                 }
@@ -61,14 +60,12 @@ namespace EMT.DoneNOW.Web
                 {
                     context.Response.Write("删除报价模板失败！");
                 }
-            }
+             
         }
         public void CopyQuoteTemplate(HttpContext context, long QuoteTemp_id)
         {
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
-            {
-                if (new QuoteTemplateBLL().copy_quote_template(user.id, ref QuoteTemp_id) == DTO.ERROR_CODE.SUCCESS)
+             
+                if (new QuoteTemplateBLL().copy_quote_template(LoginUserId, ref QuoteTemp_id) == DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write(QuoteTemp_id);
                 }
@@ -76,14 +73,12 @@ namespace EMT.DoneNOW.Web
                 {
                     context.Response.Write("error");
                 }
-            }
+          
         }
         public void DefaultQuoteTemplate(HttpContext context, long QuoteTemp_id)
         {
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
-            {
-                var result = new QuoteTemplateBLL().default_quote_template(user.id, QuoteTemp_id);
+             
+                var result = new QuoteTemplateBLL().default_quote_template(LoginUserId, QuoteTemp_id);
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("设为默认报价模板成功！");
@@ -96,14 +91,12 @@ namespace EMT.DoneNOW.Web
                 else {
                     context.Response.Write("设为默认报价模板失败！");
                 }
-            }
+             
         }
         public void ActiveQuoteTemplate(HttpContext context, long QuoteTemp_id)
         {
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
-            {
-                var result = new QuoteTemplateBLL().active_quote_template(user.id, QuoteTemp_id);
+             
+                var result = new QuoteTemplateBLL().active_quote_template(LoginUserId, QuoteTemp_id);
                 if (result == DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("设为激活状态报价模板成功！");
@@ -115,14 +108,12 @@ namespace EMT.DoneNOW.Web
                 else {
                     context.Response.Write("设为激活状态报价模板失败！");
                 }
-            }
+            
         }
         public void NOActiveQuoteTemplate(HttpContext context, long QuoteTemp_id)
         {
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
-            {
-                var result = new QuoteTemplateBLL().no_active_quote_template(user.id, QuoteTemp_id);
+             
+                var result = new QuoteTemplateBLL().no_active_quote_template(LoginUserId, QuoteTemp_id);
                 if (result==DTO.ERROR_CODE.SUCCESS)
                 {
                     context.Response.Write("设为停用状态报价模板成功！");
@@ -134,16 +125,10 @@ namespace EMT.DoneNOW.Web
                 else {
                     context.Response.Write("设为停用状态报价模板失败！");
                 }
-            }
+           
         }
 
 
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+ 
     }
 }

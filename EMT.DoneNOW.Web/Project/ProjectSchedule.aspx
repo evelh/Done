@@ -386,7 +386,7 @@
                                                 <span class="Icon Right vm" id="TableDropButton"></span>
                                             </div>
                                             <!--下拉框-->
-                                            <div class="DropDownButton" style="top: 53px; left: 10px; z-index: 20;" id="Down5">
+                                            <div class="DropDownButton" style="top: 50px; left: 10px; z-index: 20;" id="Down5">
                                                 <div class="DropDownButtonDiv">
                                                     <div class="Group">
                                                         <div class="Content">
@@ -443,15 +443,12 @@
                                 </td>
                                 <%} %>
 
-                                <%if (pageShowType == "phaseBudHours")
-                                    { %>
-                                <td width="100px">阶段预估时间</td>
-                                <%} %>
+                                
                             </tr>
                             <%
                                 foreach (var rslt in queryResult.result)
                                 {
-                                    bool IsContinue = false; // 对数据进行过滤
+                                   
                                     var thisTask = stDal.FindNoDeleteById(long.Parse(rslt["任务id"].ToString()));
                                     var thisType = "";
                                     if (thisTask != null)
@@ -469,67 +466,6 @@
                                             thisType = "taskTr";
                                         }
                                     }
-                                    //    switch (pageShowType)
-                                    //    {
-                                    //        case "phase":
-                                    //            if (thisTask.type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
-                                    //            {
-                                    //                IsContinue = true;
-                                    //            }
-                                    //            break;
-                                    //        case "TaskComplete":
-                                    //            if (thisTask.type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
-                                    //            {
-                                    //                if (thisTask.status_id != (int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE)
-                                    //                {
-                                    //                    IsContinue = true;
-                                    //                }
-                                    //            }
-                                    //            break;
-                                    //        case "TaskNoComplete":
-                                    //            if (thisTask.type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
-                                    //            {
-                                    //                if (thisTask.status_id == (int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE)
-                                    //                {
-                                    //                    IsContinue = true;
-                                    //                }
-                                    //            }
-                                    //            break;
-                                    //        case "ExpiredTask":
-                                    //            if (thisTask.type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
-                                    //            {
-                                    //                if ((DateTime)thisTask.estimated_end_date < DateTime.Now)
-                                    //                {
-                                    //                    IsContinue = true;
-                                    //                }
-                                    //            }
-                                    //            break;
-                                    //        case "Issues":
-                                    //            if (thisTask.type_id == (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_TASK)
-                                    //            {
-                                    //                IsContinue = true;
-                                    //            }
-                                    //            break;
-                                    //        case "phaseBudHours":
-                                    //              if (thisTask.type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
-                                    //            {
-                                    //                IsContinue = true;
-                                    //            }
-                                    //            break;
-                                    //        default:
-                                    //            break;
-                                    //    }
-
-                                    //}
-
-
-
-                                    //if (IsContinue)
-                                    //{
-                                    //    continue;
-                                    //}
-
-
 
                                     string id = "0";
                                     if (idPara != null)
@@ -2623,7 +2559,44 @@
     })
     // 减少缩进
     function Outdent() {
-
+        debugger;
+        var firTaskId = GetFirstChooseId();
+        if (firTaskId != "") {
+            var firstSortNum = "";
+            $(".HighImportance.Selected").each(function () {
+                firstSortNum = $(this).children().first().children().first().children().first().next().html();
+                if (firstSortNum != "") {
+                    return false;
+                }
+            })
+            if (firstSortNum != "") {
+                var firArr = firstSortNum.split('.');
+                if (Number(firArr.length) > Number(1)) {
+                    debugger;
+                    // requestData("../Tools/ProjectAjax.ashx?act=Outdent&taskId=" + firTaskId, null, function () { })
+                    $.ajax({
+                        type: "GET",
+                        async: false,
+                        url: "../Tools/ProjectAjax.ashx?act=Outdend&taskId=" + firTaskId,
+                        success: function (data) {
+                            history.go(0);
+                        },
+                    });
+                } 
+            }
+        } else {
+            LayerMsg("请选择相关任务");
+        }
+    }
+    function GetFirstChooseId() {
+        var firstTask = "";
+        $(".HighImportance.Selected").each(function () {
+            firstTask = $(this).data("val");
+            if (firstTask != "") {
+                return false;
+            }
+        })
+        return firstTask;
     }
     // 增加缩进
     function Indent() {
@@ -2634,13 +2607,15 @@
             var idsArr = ids.split(',');
             var firstSortNum = "";
             $(".HighImportance.Selected").each(function () {
-                alert(1);
-                console.log(1);
+               
                 firstSortNum = $(this).children().first().children().first().children().first().next().html();
+                if (firstSortNum != "") {
+                    return false;
+                }
             })
             if (firstSortNum != "") {
                 var firArr = firstSortNum.split('.');
-                if (Number(firArr[0]) > 1)  
+                if (Number(firArr[firArr.length-1]) > 1)  
                 {
                     $.ajax({
                         type: "GET",

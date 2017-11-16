@@ -884,11 +884,13 @@ namespace EMT.DoneNOW.BLL
                 if (thisSubTaskList != null && thisSubTaskList.Count > 0)
                 {
                     var nextNo = "";
+                    int num = 0;
                     foreach (var thisSubTask in thisSubTaskList)
                     {
 
                         var thisNoArr = thisSubTask.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-                        var thisNextNo = thisTask.sort_order + "." + (int.Parse(thisNoArr[thisNoArr.Length - 1]) + 1).ToString("#00");
+                        var thisNextNo = thisTask.sort_order + "." + (num + 1).ToString("#00");
+                        num++;
                         if (!thisSubTaskList.Any(_ => _.sort_order == thisNextNo))
                         {
                             nextNo = thisNextNo;
@@ -996,6 +998,7 @@ namespace EMT.DoneNOW.BLL
                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                     sort_order = oriTask.sort_order,
+                    parent_id = oriTask.parent_id,
                 };
                 _dal.Insert(newPhase);
                 OperLogBLL.OperLogAdd<sdk_task>(newPhase, newPhase.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "新增阶段");

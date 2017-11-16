@@ -14,10 +14,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// SecurityLevelAjax 的摘要说明
     /// </summary>
-    public class SecurityLevelAjax : IHttpHandler, IRequiresSessionState
+    public class SecurityLevelAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             var action = context.Request.QueryString["act"];
             var securitylevel_id = context.Request.QueryString["id"];
@@ -35,93 +35,81 @@ namespace EMT.DoneNOW.Web
                 case "noactive":
                     NoActiveSecurityLevel(context, Convert.ToInt64(securitylevel_id));//设置为停用状态
                     ; break;
-                default:break;
+                default: break;
             }
-            }
+        }
         public void CopySecurityLevel(HttpContext context, long securitylevel_id)
         {
             //此处写复制逻辑
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
+
+            int copy_id = -1;
+            if (new SecurityLevelBLL().CopySecurityLevel(LoginUserId, (int)securitylevel_id, out copy_id))
             {
-                int copy_id=-1;
-                if (new SecurityLevelBLL().CopySecurityLevel(user.id,(int)securitylevel_id,out copy_id))
-                {
-                    context.Response.Write(copy_id);
-                }
-                else
-                {
-                    context.Response.Write("error");
-                }
+                context.Response.Write(copy_id);
             }
+            else
+            {
+                context.Response.Write("error");
+            }
+
         }
         public void DeleteSecurityLevel(HttpContext context, long securitylevel_id)
         {
             //此处写删除逻辑
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
+
+            var result = new SecurityLevelBLL().DeleteSecurityLevel(LoginUserId, (int)securitylevel_id);
+            if (result == DTO.ERROR_CODE.SUCCESS)
             {
-                var result = new SecurityLevelBLL().DeleteSecurityLevel(user.id, (int)securitylevel_id);
-                if (result == DTO.ERROR_CODE.SUCCESS)
-                {
-                    context.Response.Write("删除安全等级成功！");
-                }
-                else if (result == DTO.ERROR_CODE.SYSTEM) {
-                    context.Response.Write("系统安全等级不能删除！");
-                }
-                else
-                {
-                    context.Response.Write("删除安全等级失败！");
-                }
+                context.Response.Write("删除安全等级成功！");
             }
+            else if (result == DTO.ERROR_CODE.SYSTEM)
+            {
+                context.Response.Write("系统安全等级不能删除！");
+            }
+            else
+            {
+                context.Response.Write("删除安全等级失败！");
+            }
+
         }
         public void ActiveSecurityLevel(HttpContext context, long securitylevel_id)
         {
             //此处激活逻辑
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
+
+            var result = new SecurityLevelBLL().ActiveSecurityLevel(LoginUserId, (int)securitylevel_id);
+            if (result == DTO.ERROR_CODE.SUCCESS)
             {
-                var result = new SecurityLevelBLL().ActiveSecurityLevel(user.id, (int)securitylevel_id);
-                if (result == DTO.ERROR_CODE.SUCCESS)
-                {
-                    context.Response.Write("激活安全等级成功！");
-                }
-                if(result== DTO.ERROR_CODE.ACTIVATION)
-                {
-                    context.Response.Write("激活状态的模板不可以进行该操作！");
-                }
-                if (result == DTO.ERROR_CODE.ERROR) {
-                    context.Response.Write("激活安全等级失败！");
-                }
+                context.Response.Write("激活安全等级成功！");
             }
+            if (result == DTO.ERROR_CODE.ACTIVATION)
+            {
+                context.Response.Write("激活状态的模板不可以进行该操作！");
+            }
+            if (result == DTO.ERROR_CODE.ERROR)
+            {
+                context.Response.Write("激活安全等级失败！");
+            }
+
         }
         public void NoActiveSecurityLevel(HttpContext context, long securitylevel_id)
         {
             //此处激活逻辑
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
+
+            var result = new SecurityLevelBLL().NOActiveSecurityLevel(LoginUserId, (int)securitylevel_id);
+            if (result == DTO.ERROR_CODE.SUCCESS)
             {
-                var result = new SecurityLevelBLL().NOActiveSecurityLevel(user.id, (int)securitylevel_id);
-                if (result == DTO.ERROR_CODE.SUCCESS)
-                {
-                    context.Response.Write("停用安全等级成功！");
-                }
-                if (result == DTO.ERROR_CODE.NO_ACTIVATION)
-                {
-                    context.Response.Write("停用状态的模板不可以进行该操作！");
-                }
-                if (result == DTO.ERROR_CODE.ERROR)
-                {
-                    context.Response.Write("停用安全等级失败！");
-                }
+                context.Response.Write("停用安全等级成功！");
             }
-        }
-        public bool IsReusable
-        {
-            get
+            if (result == DTO.ERROR_CODE.NO_ACTIVATION)
             {
-                return false;
+                context.Response.Write("停用状态的模板不可以进行该操作！");
             }
+            if (result == DTO.ERROR_CODE.ERROR)
+            {
+                context.Response.Write("停用安全等级失败！");
+            }
+
         }
+
     }
 }

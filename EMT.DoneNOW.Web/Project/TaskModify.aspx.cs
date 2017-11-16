@@ -388,7 +388,7 @@ namespace EMT.DoneNOW.Web.Project
                         foreach (var udf in udfTaskPara)                            // 循环添加
                         {
                             var new_udf = new UserDefinedFieldValue();
-
+                            // if(udf.data_type != (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST) // todo,根据类型去取值
                             new_udf.id = udf.id;
                             var thisvv = Request.Form[udf.id.ToString()];
                             if(thisvv== "多个值-保持不变")

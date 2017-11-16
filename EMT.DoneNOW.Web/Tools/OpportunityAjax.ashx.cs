@@ -13,10 +13,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// OpportunityAjax 的摘要说明
     /// </summary>
-    public class OpportunityAjax : IHttpHandler, IRequiresSessionState
+    public class OpportunityAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             try
             {
@@ -25,24 +25,24 @@ namespace EMT.DoneNOW.Web
                 {
                     case "delete":
                         var opportunity_id = context.Request.QueryString["id"];
-                        DeleteOpportunity(context,long.Parse(opportunity_id));
+                        DeleteOpportunity(context, long.Parse(opportunity_id));
                         break;
                     case "formTemplate":
                         var formTemp_id = context.Request.QueryString["id"];
-                        GetFormTemplate(context,Convert.ToInt64(formTemp_id));
+                        GetFormTemplate(context, Convert.ToInt64(formTemp_id));
                         break;
                     case "property":
                         var id = context.Request.QueryString["id"];
                         var propertyName = context.Request.QueryString["property"];
-                        GetOpportunityProperty(context,id,propertyName);
+                        GetOpportunityProperty(context, id, propertyName);
                         break;
                     case "returnMoney":
                         var oid = context.Request.QueryString["id"];
-                        GetQuoteItemMoney(context,long.Parse(oid));
+                        GetQuoteItemMoney(context, long.Parse(oid));
                         break;
                     case "GetAccOpp":
                         var oppAcccountId = context.Request.QueryString["account_id"];
-                        GetAccOpp(context,long.Parse(oppAcccountId));
+                        GetAccOpp(context, long.Parse(oppAcccountId));
                         break;
                     default:
                         break;
@@ -60,22 +60,20 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <param name="context"></param>
         /// <param name="opportunity_id"></param>
-        public void DeleteOpportunity(HttpContext context,long opportunity_id)
+        public void DeleteOpportunity(HttpContext context, long opportunity_id)
         {
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
+
+            var result = new OpportunityBLL().DeleteOpportunity(opportunity_id, LoginUserId);
+            if (result)
             {
-                var result = new OpportunityBLL().DeleteOpportunity(opportunity_id,user.id);
-                if (result)
-                {
-                    context.Response.Write("删除商机成功！");
-                }                               
-                else                            
-                {                               
-                    context.Response.Write("删除商机失败！");
-                }
+                context.Response.Write("删除商机成功！");
             }
-            
+            else
+            {
+                context.Response.Write("删除商机失败！");
+            }
+
+
         }
         /// <summary>
         /// 根据商机模板填充商机内容
@@ -95,8 +93,8 @@ namespace EMT.DoneNOW.Web
                     {
                         json = json.Substring(0, json.Length - 1);
                         json += ",\"ParentComoanyName\":\"" + companyName.name + "\"}";
-                    }                    
-                }                            
+                    }
+                }
                 context.Response.Write(json);
             }
         }
@@ -115,7 +113,7 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 商机计算
         /// </summary>
-        private void GetQuoteItemMoney(HttpContext context,long oid)
+        private void GetQuoteItemMoney(HttpContext context, long oid)
         {
             var oppo = new crm_opportunity_dal().FindNoDeleteById(oid);
             if (oppo != null)
@@ -124,7 +122,7 @@ namespace EMT.DoneNOW.Web
                 var priQuote = new crm_quote_dal().GetPriQuote(oid);
                 if (priQuote != null)
                 {
-                    decimal oneTimeRevenue = 0; 
+                    decimal oneTimeRevenue = 0;
                     decimal oneTimeCost = 0;
                     decimal monthRevenue = 0;
                     decimal monthCost = 0;
@@ -196,10 +194,10 @@ namespace EMT.DoneNOW.Web
 
 
                     }
-                    context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { oneTimeRevenue = oneTimeRevenue, oneTimeCost = oneTimeCost, monthRevenue = monthRevenue, monthCost = monthCost, quarterRevenue = quarterRevenue, quarterCost = quarterCost, halfRevenue = halfRevenue, halfCost = halfCost, yearRevenue = yearRevenue, yearCost = yearCost, shipRevenue = shipRevenue, shipCost = shipCost, discount = discount}));
+                    context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { oneTimeRevenue = oneTimeRevenue, oneTimeCost = oneTimeCost, monthRevenue = monthRevenue, monthCost = monthCost, quarterRevenue = quarterRevenue, quarterCost = quarterCost, halfRevenue = halfRevenue, halfCost = halfCost, yearRevenue = yearRevenue, yearCost = yearCost, shipRevenue = shipRevenue, shipCost = shipCost, discount = discount }));
                 }
             }
-               
+
 
             // quoteItemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional != 1&&_.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT).ToList();
         }
@@ -215,12 +213,6 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(op.ToString());
             }
         }
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+
     }
 }

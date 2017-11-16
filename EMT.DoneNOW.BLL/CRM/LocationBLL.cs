@@ -146,7 +146,10 @@ namespace EMT.DoneNOW.BLL
 
         public bool DeleteLocation(long location_id,long user_id)
         {
-            return _dal.SoftDelete(_dal.GetLocationById(location_id), user_id);
+            var location = _dal.GetLocationById(location_id);
+            var result= _dal.SoftDelete(location, user_id);
+            OperLogBLL.OperLogDelete<crm_location>(location,location.id,user_id,OPER_LOG_OBJ_CATE.CUSTOMER,"删除客户");
+            return result;
         }
 
     }

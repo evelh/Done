@@ -14,13 +14,11 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// AddressAjax 的摘要说明
     /// </summary>
-    public class AddressAjax : IHttpHandler, IRequiresSessionState
+    public class AddressAjax : BaseAjax
     {
-
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
-            //取得处理类型
-            string action = DNRequest.GetQueryString("act");            
+            string action = DNRequest.GetQueryString("act");
             switch (action)
             {
                 case "country": //国家
@@ -38,16 +36,12 @@ namespace EMT.DoneNOW.Web
                     break;
                 case "location":
                     var locaId = context.Request.QueryString["location_id"];
-                    GetLocation(context,long.Parse(locaId));
+                    GetLocation(context, long.Parse(locaId));
                     break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
-                    return;                 
+                    return;
             }
-
-            
-       
-
         }
 
         #region 获取地址信息
@@ -85,7 +79,7 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <param name="location_id"></param>
         /// <returns></returns>
-        public string DeleteLocation(HttpContext context,long location_id)
+        public string DeleteLocation(HttpContext context, long location_id)
         {
 
             var location = new LocationBLL().GetAllQuoteLocation(location_id);
@@ -95,47 +89,21 @@ namespace EMT.DoneNOW.Web
             }
             else
             {
-                var res = context.Session["dn_session_user_info"];
-                if (res != null)
+                var delete_location = new crm_location_dal().GetLocationById(location_id);
+                if (new LocationBLL().DeleteLocation(location_id, LoginUserId)) // 删除成功
                 {
-                    var user = res as sys_user;
-                    var delete_location = new crm_location_dal().GetLocationById(location_id);
-                    if (new LocationBLL().DeleteLocation(location_id, user.id)) // 删除成功
-                    {
-                        
-                        new sys_oper_log_dal().Insert(new sys_oper_log()
-                        {
-                            user_cate = "用户",
-                            user_id = user.id,
-                            name = user.name==null?"":user.name,
-                            phone = user.mobile_phone == null ? "" : user.mobile_phone,
-                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER,
-                            oper_object_id = location_id,
-                            oper_type_id = (int)DicEnum.OPER_LOG_TYPE.DELETE,
-                            oper_description = new crm_location_dal().AddValue(delete_location),
-                            remark = "删除客户信息",
-                        });
-
-                        return "Success";
-                    }
-                    else
-                    {
-                        return "Fail";
-                    }
+                    return "Success";
                 }
                 else
                 {
-                    return "LoseUser";
+                    return "Fail";
                 }
-                             
             }
-            
         }
         /// <summary>
         /// 根据地址ID去获取到地址信息
         /// </summary>
-        private void GetLocation(HttpContext context,long location_id)
+        private void GetLocation(HttpContext context, long location_id)
         {
             var location = new LocationBLL().GetLocation(location_id);
             if (location != null)
@@ -143,13 +111,9 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(location));
             }
         }
+
+
         #endregion
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+
     }
 }

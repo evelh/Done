@@ -14,27 +14,28 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// DepartmentAjax 的摘要说明
     /// </summary>
-    public class DepartmentAjax : IHttpHandler, IRequiresSessionState
+    public class DepartmentAjax : BaseAjax
     {
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
-            var action = context.Request.QueryString["act"];            
+            var action = context.Request.QueryString["act"];
             switch (action)
             {
-                case "delete": var departmen_id = context.Request.QueryString["id"];
-                    Delete(context, Convert.ToInt64(departmen_id));break;
+                case "delete":
+                    var departmen_id = context.Request.QueryString["id"];
+                    Delete(context, Convert.ToInt64(departmen_id)); break;
                 case "GetNameByIds":
                     var dIds = context.Request.QueryString["ids"];
-                    GetNameByIds(context,dIds);
+                    GetNameByIds(context, dIds);
                     break;
                 case "GetWorkType":   //
                     var dId = context.Request.QueryString["department_id"];
-                    GetWorkType(context,long.Parse(dId));
+                    GetWorkType(context, long.Parse(dId));
                     break;
                 case "IsHasRes":
                     var depId = context.Request.QueryString["department_id"];
                     var rId = context.Request.QueryString["resource_id"];
-                    IsHasRes(context,long.Parse(depId),long.Parse(rId));
+                    IsHasRes(context, long.Parse(depId), long.Parse(rId));
                     break;
                 default: break;
 
@@ -42,28 +43,26 @@ namespace EMT.DoneNOW.Web
         }
         public void Delete(HttpContext context, long departmen_id)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            if (res != null)
+
+            string returnvalue = string.Empty;
+            var result = new DepartmentBLL().Delete(departmen_id, LoginUserId, out returnvalue);
+            if (result == DTO.ERROR_CODE.SUCCESS)
             {
-                string returnvalue = string.Empty;
-                var result = new DepartmentBLL().Delete(departmen_id, res.id, out returnvalue);
-                if (result == DTO.ERROR_CODE.SUCCESS)
-                {
-                    context.Response.Write("删除成功！");
-                }
-                else if (result == DTO.ERROR_CODE.EXIST)
-                {
-                    context.Response.Write(returnvalue);
-                }
-                else
-                {
-                    context.Response.Write("删除失败！");
-                }
+                context.Response.Write("删除成功！");
             }
+            else if (result == DTO.ERROR_CODE.EXIST)
+            {
+                context.Response.Write(returnvalue);
+            }
+            else
+            {
+                context.Response.Write("删除失败！");
+            }
+
 
         }
 
-        private void GetNameByIds(HttpContext context,string ids)
+        private void GetNameByIds(HttpContext context, string ids)
         {
             if (!string.IsNullOrEmpty(ids))
             {
@@ -79,18 +78,18 @@ namespace EMT.DoneNOW.Web
                     }
                 }
             }
-          
-        } 
+
+        }
         /// <summary>
         /// 根据部门获取相对应的工作类型
         /// </summary>
-        private void GetWorkType(HttpContext context,long department_id)
+        private void GetWorkType(HttpContext context, long department_id)
         {
             var dccDal = new d_cost_code_dal();
-            var workTypeList = dccDal.GetCostCodeByWhere((int)DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE, " and department_id ="+department_id);
+            var workTypeList = dccDal.GetCostCodeByWhere((int)DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE, " and department_id =" + department_id);
             StringBuilder workTypeString = new StringBuilder();
             workTypeString.Append("<option value='0'>   </option>");
-            if(workTypeList!=null&& workTypeList.Count > 0)
+            if (workTypeList != null && workTypeList.Count > 0)
             {
                 foreach (var workType in workTypeList)
                 {
@@ -101,7 +100,7 @@ namespace EMT.DoneNOW.Web
             if (thisSet != null && thisSet.setting_value == "1")
             {
                 var noDepWorkTypeList = dccDal.GetCostCodeByWhere((int)DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE, " and department_id is null");
-                if(noDepWorkTypeList!=null&& noDepWorkTypeList.Count > 0)
+                if (noDepWorkTypeList != null && noDepWorkTypeList.Count > 0)
                 {
                     workTypeString.Append("<option value='0'>--------</option>");
                     foreach (var workType in noDepWorkTypeList)
@@ -115,10 +114,10 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 判断角色是否在部门中
         /// </summary>
-        private void IsHasRes(HttpContext context,long department_id,long res_id)
+        private void IsHasRes(HttpContext context, long department_id, long res_id)
         {
             // SELECT * from sys_resource_department where department_id = 876 and resource_id = 840 and is_active = 1
-            var resource = new sys_resource_department_dal().GetSinByDepIdResId(department_id,res_id);
+            var resource = new sys_resource_department_dal().GetSinByDepIdResId(department_id, res_id);
             context.Response.Write(resource == null);
         }
         public bool IsReusable

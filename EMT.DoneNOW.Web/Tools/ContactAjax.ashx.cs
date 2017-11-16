@@ -14,10 +14,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// ContactAjax 的摘要说明
     /// </summary>
-    public class ContactAjax : IHttpHandler, IRequiresSessionState
+    public class ContactAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             try
             {
@@ -26,15 +26,15 @@ namespace EMT.DoneNOW.Web
                 {
                     case "delete":
                         var contact_id = context.Request.QueryString["id"];
-                        DeleteContact(context,Convert.ToInt64(contact_id));
+                        DeleteContact(context, Convert.ToInt64(contact_id));
                         break;
                     case "GetConList":
                         var conIds = context.Request.QueryString["ids"];
-                        GetConList(context,conIds);
+                        GetConList(context, conIds);
                         break;
                     case "GetConName":
                         var conNameIds = context.Request.QueryString["ids"];
-                        GetConName(context,conNameIds);
+                        GetConName(context, conNameIds);
                         break;
                     default:
                         break;
@@ -52,27 +52,19 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <param name="context"></param>
         /// <param name="contact_id"></param>
-        public void DeleteContact(HttpContext context,long contact_id)
+        public void DeleteContact(HttpContext context, long contact_id)
         {
-            var res = context.Session["dn_session_user_info"];
-            if (res != null)
+            var result = new ContactBLL().DeleteContact(contact_id, LoginUserId);
+
+            if (result)
             {
-                var user = res as sys_user;
-                var result = new ContactBLL().DeleteContact(contact_id, user.id);
-
-                if (result)
-                {
-                    context.Response.Write("删除联系人成功！");
-                }
-                else
-                {
-                    context.Response.Write("删除联系人失败！");
-                }
-
+                context.Response.Write("删除联系人成功！");
             }
-          
+            else
+            {
+                context.Response.Write("删除联系人失败！");
+            }
         }
-
         private void GetConList(HttpContext context, string ids)
         {
             StringBuilder con = new StringBuilder();
@@ -99,14 +91,6 @@ namespace EMT.DoneNOW.Web
                 }
             }
             context.Response.Write(con.ToString());
-        }
-
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
         }
     }
 }

@@ -11,15 +11,15 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// TerritoryAjax 的摘要说明
     /// </summary>
-    public class TerritoryAjax : IHttpHandler, IRequiresSessionState
+    public class TerritoryAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             try
             {
                 var action = context.Request.QueryString["act"];
-                
+
                 switch (action)
                 {
                     case "delete":
@@ -38,28 +38,18 @@ namespace EMT.DoneNOW.Web
 
             }
         }
-        public void Delete(HttpContext context, long aid,long tid) {
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
-            {
-                if (new TerritoryBLL().DeleteAccount_Territory(aid, tid,user.id))
-                {
-                    context.Response.Write("yes");
-                }
-                else
-                {
-                    context.Response.Write("no");
-                }
-            }
-        }
-
-
-        public bool IsReusable
+        public void Delete(HttpContext context, long aid, long tid)
         {
-            get
+
+            if (new TerritoryBLL().DeleteAccount_Territory(aid, tid, LoginUserId))
             {
-                return false;
+                context.Response.Write("yes");
             }
+            else
+            {
+                context.Response.Write("no");
+            }
+
         }
     }
 }

@@ -14,10 +14,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// ContractAjax 的摘要说明
     /// </summary>
-    public class ContractAjax : IHttpHandler, IRequiresSessionState
+    public class ContractAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace EMT.DoneNOW.Web
                     case "RelieveIP":
                         var relieveCID = context.Request.QueryString["contract_id"];
                         var relieveIPID = context.Request.QueryString["InsProId"];
-                        RelieveInsProduct(context,long.Parse(relieveCID),long.Parse(relieveIPID));
+                        RelieveInsProduct(context, long.Parse(relieveCID), long.Parse(relieveIPID));
                         break;
                     case "RelationIP":
                         var relationCID = context.Request.QueryString["contract_id"];
@@ -43,7 +43,7 @@ namespace EMT.DoneNOW.Web
                         var service_id = context.Request.QueryString["service_id"];
                         if (!string.IsNullOrEmpty(service_id))
                         {
-                            RelationInsProduct(context,long.Parse(relationCID),long.Parse(relationIPID),long.Parse(service_id));
+                            RelationInsProduct(context, long.Parse(relationCID), long.Parse(relationIPID), long.Parse(service_id));
                         }
                         else
                         {
@@ -51,36 +51,36 @@ namespace EMT.DoneNOW.Web
                         }
                         break;
                     case "isService":
-                        var isSerContractId= context.Request.QueryString["contract_id"];
-                        isHasService(context,long.Parse(isSerContractId));
+                        var isSerContractId = context.Request.QueryString["contract_id"];
+                        isHasService(context, long.Parse(isSerContractId));
                         break;
                     case "property":
                         var proCID = context.Request.QueryString["contract_id"];
                         var propertyName = context.Request.QueryString["property"];
-                        GetContractProperty(context,long.Parse(proCID),propertyName);
+                        GetContractProperty(context, long.Parse(proCID), propertyName);
                         break;
                     case "updateCost":
                         var ccid = context.Request.QueryString["cost_id"];
                         var isbill = context.Request.QueryString["isbill"];
-                        ChangeChargeIsBilled(context,long.Parse(ccid),int.Parse(isbill));
+                        ChangeChargeIsBilled(context, long.Parse(ccid), int.Parse(isbill));
                         break;
                     case "updateCosts":
                         var ccids = context.Request.QueryString["ids"];
                         var isbills = context.Request.QueryString["isbill"];
-                        ChangeManyChargeIsBilled(context,ccids,int.Parse(isbills));
+                        ChangeManyChargeIsBilled(context, ccids, int.Parse(isbills));
                         break;
                     case "ChargeProperty":
                         var cost_id = context.Request.QueryString["cost_id"];
                         var costPropertyName = context.Request.QueryString["property"];
-                        GetContractCostoProperty(context,long.Parse(cost_id), costPropertyName);
+                        GetContractCostoProperty(context, long.Parse(cost_id), costPropertyName);
                         break;
                     case "GetContractCost":
                         var thisCID = context.Request.QueryString["cost_id"];
-                        GetContractCost(context,long.Parse(thisCID));
+                        GetContractCost(context, long.Parse(thisCID));
                         break;
                     case "deleteCost":
                         var deleteCostId = context.Request.QueryString["cost_id"];
-                        DeleteCost(context,long.Parse(deleteCostId));
+                        DeleteCost(context, long.Parse(deleteCostId));
                         break;
                     case "deleteCosts":
                         var deleteCostIds = context.Request.QueryString["ids"];
@@ -88,7 +88,7 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "deleteDefaultCost":
                         var cdcID = context.Request.QueryString["cdcID"];
-                        DeleteDefaultCost(context,long.Parse(cdcID));
+                        DeleteDefaultCost(context, long.Parse(cdcID));
                         break;
                     case "DeleteRate":
                         var rateId = context.Request.QueryString["rateId"];
@@ -99,7 +99,7 @@ namespace EMT.DoneNOW.Web
                         DeleteContractBlock(context, Convert.ToInt64(blockId));
                         break;
                     case "CanRenewContract":
-                        contractId= context.Request.QueryString["id"];
+                        contractId = context.Request.QueryString["id"];
                         IsServiceContract(context, Convert.ToInt64(contractId));
                         break;
                     case "AddService":
@@ -112,8 +112,8 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "GetDefaultCost":
                         var defCostConId = context.Request.QueryString["contract_id"];
-                        GetDefaultCost(context,long.Parse(defCostConId));
-						break;
+                        GetDefaultCost(context, long.Parse(defCostConId));
+                        break;
                     case "DeleteMilestone":
                         var milestoneId = context.Request.QueryString["milestoneId"];
                         DeleteMilestone(context, Convert.ToInt64(milestoneId));
@@ -135,7 +135,8 @@ namespace EMT.DoneNOW.Web
                         var purNo = context.Request.QueryString["purNo"];
                         var notes = context.Request.QueryString["notes"];
                         var pay_term = context.Request.QueryString["pay_term"];
-                        InvoiceDealDto param = new InvoiceDealDto() {
+                        InvoiceDealDto param = new InvoiceDealDto()
+                        {
                             invoice_template_id = int.Parse(invTempId),
                             invoice_date = DateTime.Parse(invoiceDate),
                             purchase_order_no = purNo,
@@ -154,7 +155,7 @@ namespace EMT.DoneNOW.Web
                         {
                             param.payment_term_id = int.Parse(pay_term);
                         }
-                        ProcessAll(context,param);
+                        ProcessAll(context, param);
                         break;
                     case "GetService":
                         GetService(context);
@@ -173,13 +174,13 @@ namespace EMT.DoneNOW.Web
                     case "ChecckCostCode":   // 校验物料代码是否在默认成本出现过
                         var ccccid = context.Request.QueryString["id"];
                         var cost_code_id = context.Request.QueryString["cost_code_id"];
-                        ChecckCostCode(context,long.Parse(ccccid),long.Parse(cost_code_id));
+                        ChecckCostCode(context, long.Parse(ccccid), long.Parse(cost_code_id));
                         break;
                     case "CheckResRole":
                         var crrcid = context.Request.QueryString["contract_id"];  // 合同Id
                         var crrrid = context.Request.QueryString["resource_id"];  // 员工Id
                         var crrRoleId = context.Request.QueryString["role_id"];   // 角色Id
-                        CheckResRole(context,long.Parse(crrcid), long.Parse(crrrid), long.Parse(crrRoleId));
+                        CheckResRole(context, long.Parse(crrcid), long.Parse(crrrid), long.Parse(crrRoleId));
                         break;
                     default:
                         break;
@@ -189,7 +190,7 @@ namespace EMT.DoneNOW.Web
             catch (Exception)
             {
                 context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
-                
+
             }
         }
 
@@ -200,8 +201,8 @@ namespace EMT.DoneNOW.Web
         /// <param name="id"></param>
         private void DeleteContract(HttpContext context, long id)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            context.Response.Write(new ContractBLL().DeleteContract(id, res.id));
+            
+            context.Response.Write(new ContractBLL().DeleteContract(id, LoginUserId));
         }
 
         /// <summary>
@@ -209,14 +210,9 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <param name="context"></param>
         /// <param name="cicId"></param>
-        private void DeleteConIntCost(HttpContext context,long cicId)
+        private void DeleteConIntCost(HttpContext context, long cicId)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            if (res != null)
-            {
-                context.Response.Write(new ContractBLL().DeleteConIntCost(cicId,res.id));
-            }
-
+            context.Response.Write(new ContractBLL().DeleteConIntCost(cicId, LoginUserId));
         }
 
         /// <summary>
@@ -226,8 +222,7 @@ namespace EMT.DoneNOW.Web
         /// <param name="rateId"></param>
         private void DeleteContractRate(HttpContext context, long rateId)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            new ContractRateBLL().DeleteRate(rateId, res.id);
+            new ContractRateBLL().DeleteRate(rateId, LoginUserId);
             context.Response.Write(true);
         }
 
@@ -237,14 +232,12 @@ namespace EMT.DoneNOW.Web
         /// <param name="context"></param>
         /// <param name="contract_id"></param>
         /// <param name="ipID"></param>
-        private void RelieveInsProduct(HttpContext context,long contract_id,long ipID)
+        private void RelieveInsProduct(HttpContext context, long contract_id, long ipID)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            if (res != null)
-            {
-                var result = new InstalledProductBLL().RelieveInsProduct(contract_id,ipID,res.id);
-                context.Response.Write(result);
-            }
+
+            var result = new InstalledProductBLL().RelieveInsProduct(contract_id, ipID, LoginUserId);
+            context.Response.Write(result);
+
         }
         /// <summary>
         /// 将配置项绑定到合同
@@ -252,14 +245,12 @@ namespace EMT.DoneNOW.Web
         /// <param name="context"></param>
         /// <param name="contract_id"></param>
         /// <param name="ipID"></param>
-        private void RelationInsProduct(HttpContext context, long contract_id, long ipID,long? service_id = null)
+        private void RelationInsProduct(HttpContext context, long contract_id, long ipID, long? service_id = null)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            if (res != null)
-            {
-                var result = new InstalledProductBLL().RelationInsProduct(contract_id, ipID, res.id,service_id);
-                context.Response.Write(result);
-            }
+
+            var result = new InstalledProductBLL().RelationInsProduct(contract_id, ipID, LoginUserId, service_id);
+            context.Response.Write(result);
+
         }
         /// <summary>
         /// 获取到合同的相关属性
@@ -305,35 +296,31 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 更该成本为是否可计费
         /// </summary>
-        public void ChangeChargeIsBilled(HttpContext context,long cid,int isBilled)
+        public void ChangeChargeIsBilled(HttpContext context, long cid, int isBilled)
         {
-            var res = context.Session["dn_session_user_info"];
-            if (res != null)
-            {
-               var user  = res as sys_user;
-                var result = new ContractCostBLL().UpdateBillStatus(cid,user.id,isBilled);
-                context.Response.Write(result);
-            }
+
+
+            var result = new ContractCostBLL().UpdateBillStatus(cid, LoginUserId, isBilled);
+            context.Response.Write(result);
+
         }
         /// <summary>
         /// 批量更该成本为是否可计费
         /// </summary>
-        public void ChangeManyChargeIsBilled(HttpContext context,string ccids,int isBilled)
+        public void ChangeManyChargeIsBilled(HttpContext context, string ccids, int isBilled)
         {
-            var res = context.Session["dn_session_user_info"];
-            if (res != null)
-            {
-                var user = res as sys_user;
-                var result = new ContractCostBLL().UpdateManyBillStatus(ccids, user.id, isBilled);
-                context.Response.Write(result);
-            }
+
+
+            var result = new ContractCostBLL().UpdateManyBillStatus(ccids, LoginUserId, isBilled);
+            context.Response.Write(result);
+
         }
         /// <summary>
         /// 获取到成本的属性
         /// </summary>
         /// <param name="context"></param>
         /// <param name="id"></param>
-        public void GetContractCostoProperty(HttpContext context,long id,string propertyName)
+        public void GetContractCostoProperty(HttpContext context, long id, string propertyName)
         {
             var cost = new ctt_contract_cost_dal().FindNoDeleteById(id);
             if (cost != null)
@@ -357,39 +344,33 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         public void DeleteCost(HttpContext context, long cid)
         {
-            var res = context.Session["dn_session_user_info"];
-            if (res != null)
-            {
-                var user = res as sys_user;
-                var result = new ContractCostBLL().DeleteContractCost(cid, user.id);
-                context.Response.Write(result);
-            }
+
+
+            var result = new ContractCostBLL().DeleteContractCost(cid, LoginUserId);
+            context.Response.Write(result);
+
         }
         /// <summary>
         /// 批量删除合同成本
         /// </summary>
-        public void DeleteCosts(HttpContext context,string ids)
+        public void DeleteCosts(HttpContext context, string ids)
         {
-            var res = context.Session["dn_session_user_info"];
-            if (res != null)
-            {
-                var user = res as sys_user;
-                var result = new ContractCostBLL().DeleteContractCosts(ids, user.id);
-                context.Response.Write(result);
-            }
+
+            var result = new ContractCostBLL().DeleteContractCosts(ids, LoginUserId);
+            context.Response.Write(result);
+
         }
         /// <summary>
         /// 删除合同默认成本
         /// </summary>
-        public void DeleteDefaultCost(HttpContext context,long cdcID)
+        public void DeleteDefaultCost(HttpContext context, long cdcID)
         {
-            var res = context.Session["dn_session_user_info"];
+
             bool result = false;
-            if (res != null)
-            {
-                var user = res as sys_user;
-                result = new ContractCostBLL().DeleteConDefCost(cdcID, user.id);
-            }
+
+
+            result = new ContractCostBLL().DeleteConDefCost(cdcID, LoginUserId);
+
             context.Response.Write(result);
         }
 
@@ -400,13 +381,12 @@ namespace EMT.DoneNOW.Web
         /// <param name="blockId"></param>
         public void DeleteContractBlock(HttpContext context, long blockId)
         {
-            var res = context.Session["dn_session_user_info"];
+
             bool result = false;
-            if (res != null)
-            {
-                var user = res as sys_user;
-                result = new ContractBlockBLL().DeletePurchase(blockId, user.id);
-            }
+
+
+            result = new ContractBlockBLL().DeletePurchase(blockId, LoginUserId);
+
             context.Response.Write(result);
         }
 
@@ -417,13 +397,11 @@ namespace EMT.DoneNOW.Web
         /// <param name="blockId"></param>
         public void SetBlockActive(HttpContext context, long blockId)
         {
-            var res = context.Session["dn_session_user_info"];
+
             bool result = false;
-            if (res != null)
-            {
-                var user = res as sys_user;
-                result = new ContractBlockBLL().SetBlockActive(blockId, user.id);
-            }
+
+            result = new ContractBlockBLL().SetBlockActive(blockId, LoginUserId);
+
             context.Response.Write(result);
         }
 
@@ -434,13 +412,11 @@ namespace EMT.DoneNOW.Web
         /// <param name="blockId"></param>
         public void SetBlockInactive(HttpContext context, long blockId)
         {
-            var res = context.Session["dn_session_user_info"];
+
             bool result = false;
-            if (res != null)
-            {
-                var user = res as sys_user;
-                result = new ContractBlockBLL().SetBlockInactive(blockId, user.id);
-            }
+
+            result = new ContractBlockBLL().SetBlockInactive(blockId, LoginUserId);
+
             context.Response.Write(result);
         }
 
@@ -458,12 +434,12 @@ namespace EMT.DoneNOW.Web
             {
                 // 获取供应商名称
                 string vendorName = "";
-                if (service.vendor_id!=null)
+                if (service.vendor_id != null)
                 {
                     var vendorDal = new ivt_product_vendor_dal();
                     var accountDal = new crm_account_dal();
                     var vendor = vendorDal.FindById((long)service.vendor_id);
-                    if (vendor.vendor_account_id!=null)
+                    if (vendor.vendor_account_id != null)
                     {
                         vendorName = accountDal.FindById((long)vendor.vendor_account_id).name;
                     }
@@ -490,7 +466,7 @@ namespace EMT.DoneNOW.Web
                 }
 
                 string unitCost = "";
-                if (service.unit_cost!=null)
+                if (service.unit_cost != null)
                 {
                     unitCost = "¥" + service.unit_cost.ToString();
                 }
@@ -511,7 +487,7 @@ namespace EMT.DoneNOW.Web
             result.Add(txt);
             result.Add(pricePerMonth);
             result.Add(service.id);
-            
+
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
 
@@ -574,14 +550,14 @@ namespace EMT.DoneNOW.Web
             {
                 unitCost = "¥" + serBun.unit_cost.ToString();
             }
-            
+
             txt += $"<tr id='service{serBun.id}'>";
             txt += $"<td style='white - space:nowrap; '><img src = '../Images/delete.png' onclick='RemoveServiceBundle({serBun.id})' alt = '' /></ td > ";
             txt += $"<td><span>{serBun.name}</span></td>";
             txt += $"<td nowrap>{vendorName}</td>";
             txt += $"<td nowrap><span>{period}</span></td>";
             txt += $"<td nowrap align='right'><span>{unitCost}</span></td>";
-            txt += $"<td nowrap align='right'>"+$"<input type='text' onblur='CalcService()' id='price{serBun.id}' name='price{serBun.id}' value = '{pricePerMonth}' >"+"</ td > ";
+            txt += $"<td nowrap align='right'>" + $"<input type='text' onblur='CalcService()' id='price{serBun.id}' name='price{serBun.id}' value = '{pricePerMonth}' >" + "</ td > ";
             txt += $"<td nowrap align='right'>" + $"<input type='text' onblur='CalcService()' id='num{serBun.id}' name='num{serBun.id}' value = '1' >" + "</ td > ";
             txt += $"<td nowrap align='right'>￥" + $"<input type='text' id='pricenum{serBun.id}' value = '{pricePerMonth}' disabled >" + "</ td > ";
             txt += "</tr>";
@@ -593,7 +569,7 @@ namespace EMT.DoneNOW.Web
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
 
-        private void GetDefaultCost(HttpContext context,long contract_id)
+        private void GetDefaultCost(HttpContext context, long contract_id)
         {
             var defCost = new ctt_contract_cost_default_dal().GetSinCostDef(contract_id);
             if (defCost != null)
@@ -610,25 +586,23 @@ namespace EMT.DoneNOW.Web
         /// <param name="id"></param>
         private void DeleteMilestone(HttpContext context, long id)
         {
-            var res = context.Session["dn_session_user_info"];
+
             bool result = false;
-            if (res != null)
-            {
-                var user = res as sys_user;
-                result = new ContractBLL().DeleteMilestone(id, user.id);
-            }
+
+
+            result = new ContractBLL().DeleteMilestone(id, LoginUserId);
+
             context.Response.Write(result);
         }
 
         private void ProcessAll(HttpContext context, InvoiceDealDto param)
-		{
-            var res = context.Session["dn_session_user_info"];
+        {
+
             bool result = false;
-            if (res != null)
-            {
-				var user = res as sys_user;
-				 result = new InvoiceBLL().ProcessInvoice(param, user.id);
-            }
+
+
+            result = new InvoiceBLL().ProcessInvoice(param, LoginUserId);
+
             context.Response.Write(result);
         }
 
@@ -681,13 +655,11 @@ namespace EMT.DoneNOW.Web
         /// <param name="serviceId"></param>
         private void DeleteService(HttpContext context, long serviceId)
         {
-            var res = context.Session["dn_session_user_info"];
+
             bool result = false;
-            if (res != null)
-            {
-                var user = res as sys_user;
-                result = new ContractServiceBLL().DeleteService(serviceId, user.id);
-            }
+
+            result = new ContractServiceBLL().DeleteService(serviceId, LoginUserId);
+
             context.Response.Write(result);
         }
 
@@ -698,13 +670,12 @@ namespace EMT.DoneNOW.Web
         /// <param name="serviceId"></param>
         private void IsServiceApproveAndPost(HttpContext context, long serviceId)
         {
-            var res = context.Session["dn_session_user_info"];
+
             bool result = false;
-            if (res != null)
-            {
-                var user = res as sys_user;
-                result = new ContractServiceBLL().IsServiceApproveAndPost(serviceId);
-            }
+
+
+            result = new ContractServiceBLL().IsServiceApproveAndPost(serviceId);
+
             context.Response.Write(result);
         }
 
@@ -720,19 +691,19 @@ namespace EMT.DoneNOW.Web
             context.Response.Write(result);
         }
 
-        private void ChecckCostCode(HttpContext context,long cid,long cost_code_id)
+        private void ChecckCostCode(HttpContext context, long cid, long cost_code_id)
         {
             var contract = new ctt_contract_dal().FindNoDeleteById(cid);
             var result = false;
             if (contract != null)
             {
-                var def_cha = new ctt_contract_cost_default_dal().GetSinCostDef(cid,cost_code_id);
+                var def_cha = new ctt_contract_cost_default_dal().GetSinCostDef(cid, cost_code_id);
                 if (def_cha != null)
                 {
                     context.Response.Write(new Tools.Serialize().SerializeJson(def_cha));
                 }
             }
-            
+
         }
         /// <summary>
         /// 用于添加内部成本时校验 合同-员工-角色 唯一性校验
@@ -741,9 +712,9 @@ namespace EMT.DoneNOW.Web
         /// <param name="cid">合同ID</param>
         /// <param name="rid">员工ID</param>
         /// <param name="role_id">角色ID</param>
-        private void CheckResRole(HttpContext context,long cid,long rid,long role_id)
+        private void CheckResRole(HttpContext context, long cid, long rid, long role_id)
         {
-            var int_cost = new ctt_contract_internal_cost_dal().GetCheckkSinIntCost(cid,rid,role_id);
+            var int_cost = new ctt_contract_internal_cost_dal().GetCheckkSinIntCost(cid, rid, role_id);
             if (int_cost != null)
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson(int_cost));
@@ -751,12 +722,6 @@ namespace EMT.DoneNOW.Web
 
         }
 
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+
     }
 }

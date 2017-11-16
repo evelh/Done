@@ -12,10 +12,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// SaleOrderAjax 的摘要说明
     /// </summary>
-    public class SaleOrderAjax : IHttpHandler, IRequiresSessionState
+    public class SaleOrderAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             string action = DNRequest.GetQueryString("act");
             switch (action)
@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.Web
                 case "status":
                     var soid = context.Request.QueryString["id"];
                     var status = context.Request.QueryString["status_id"];
-                    ChangeSaleOrderStatus(context,long.Parse(soid),int.Parse(status));
+                    ChangeSaleOrderStatus(context, long.Parse(soid), int.Parse(status));
                     break;
 
                 default:
@@ -37,19 +37,13 @@ namespace EMT.DoneNOW.Web
         /// <param name="context"></param>
         /// <param name="soid"></param>
         /// <param name="status_id"></param>
-        private void ChangeSaleOrderStatus(HttpContext context,long soid,int status_id)
+        private void ChangeSaleOrderStatus(HttpContext context, long soid, int status_id)
         {
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            var result = new SaleOrderBLL().UpdateSaleOrderStatus(soid,status_id,user.id);
+
+            var result = new SaleOrderBLL().UpdateSaleOrderStatus(soid, status_id, LoginUserId);
             context.Response.Write(result);
         }
 
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+
     }
 }

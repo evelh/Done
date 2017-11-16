@@ -13,10 +13,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// QuoteAjax 的摘要说明
     /// </summary>
-    public class QuoteAjax : IHttpHandler, IRequiresSessionState
+    public class QuoteAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             try
             {
@@ -75,10 +75,8 @@ namespace EMT.DoneNOW.Web
 
         public void DeleteQuote(HttpContext context, long quote_id)
         {
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
-            {
-                var result = new QuoteBLL().DeleteQuote(quote_id, user.id);
+             
+                var result = new QuoteBLL().DeleteQuote(quote_id, LoginUserId);
                 if (result)
                 {
                     context.Response.Write("删除报价成功！");
@@ -87,15 +85,13 @@ namespace EMT.DoneNOW.Web
                 {
                     context.Response.Write("删除报价失败！");
                 }
-            }
+             
         }
 
         public void DeleteQuoteItem(HttpContext context, long quote_item_id)
         {
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
-            {
-                var result = new QuoteItemBLL().DeleteQuoteItem(quote_item_id, user.id);
+            
+                var result = new QuoteItemBLL().DeleteQuoteItem(quote_item_id, LoginUserId);
                 if (result)
                 {
                     context.Response.Write("删除报价项成功！");
@@ -104,7 +100,7 @@ namespace EMT.DoneNOW.Web
                 {
                     context.Response.Write("删除报价项失败！");
                 }
-            }
+             
         }
 
         /// <summary>
@@ -114,10 +110,8 @@ namespace EMT.DoneNOW.Web
         /// <param name="quote_id"></param>
         public void SetPrimaryQuote(HttpContext context, long quote_id)
         {
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
-            {
-                if (new QuoteBLL().SetPrimaryQuote(user.id, quote_id))
+             
+                if (new QuoteBLL().SetPrimaryQuote(LoginUserId, quote_id))
                 {
                     context.Response.Write("设置主报价成功！");
                 }
@@ -125,7 +119,7 @@ namespace EMT.DoneNOW.Web
                 {
                     context.Response.Write("设置主报价失败！");
                 }
-            }
+             
 
         }
 
@@ -222,12 +216,6 @@ namespace EMT.DoneNOW.Web
         }
 
 
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        
     }
 }

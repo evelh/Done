@@ -16,10 +16,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// ProjectAjax 的摘要说明
     /// </summary>
-    public class ProjectAjax : IHttpHandler, IRequiresSessionState
+    public class ProjectAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             try
             {
@@ -64,46 +64,46 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "IsHasNoDoneTask":
                         var pId = context.Request.QueryString["project_id"];
-                        IsHasNoDoneTask(context,long.Parse(pId));
+                        IsHasNoDoneTask(context, long.Parse(pId));
                         break;
                     case "CompleteProject":
                         var cpId = context.Request.QueryString["project_id"];
                         var reason = context.Request.QueryString["reason"];
-                        CompleteProject(context,long.Parse(cpId),reason);
+                        CompleteProject(context, long.Parse(cpId), reason);
                         break;
                     case "UpdateProSet":  // 更改项目设置
                         UpdateProSet(context);
                         break;
                     case "RecalculateProject":
                         var rPid = context.Request.QueryString["project_id"];
-                        RecalculateProject(context,long.Parse(rPid));
+                        RecalculateProject(context, long.Parse(rPid));
                         break;
                     case "SaveAsBaseline":
                         var spId = context.Request.QueryString["project_id"];
-                        SaveAsBaseline(context,long.Parse(spId));
+                        SaveAsBaseline(context, long.Parse(spId));
                         break;
                     case "ChangeTaskTime":
                         var taskIds = context.Request.QueryString["ids"];
                         var sDays = context.Request.QueryString["days"];
-                        ChangeTaskTime(context,taskIds,int.Parse(sDays));
+                        ChangeTaskTime(context, taskIds, int.Parse(sDays));
                         break;
                     case "CompleteTask":
                         var comTaskIds = context.Request.QueryString["ids"];
                         var comReason = context.Request.QueryString["reason"];
-                        CompleteTask(context,comTaskIds,comReason);
+                        CompleteTask(context, comTaskIds, comReason);
                         break;
                     case "DeleteTasks":
                         var dTaskIds = context.Request.QueryString["taskIds"];
                         var isDelSub = context.Request.QueryString["delSub"];
-                        DeleteTasks(context,dTaskIds,string.IsNullOrEmpty(isDelSub));
+                        DeleteTasks(context, dTaskIds, string.IsNullOrEmpty(isDelSub));
                         break;
                     case "Indend":
                         var iTaskId = context.Request.QueryString["taskId"];
-                        Indend(context,long.Parse(iTaskId));
+                        Indend(context, long.Parse(iTaskId));
                         break;
                     case "Outdend":
                         var oTaskId = context.Request.QueryString["taskId"];
-                        Outdent(context,long.Parse(oTaskId));
+                        Outdent(context, long.Parse(oTaskId));
                         break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -173,7 +173,7 @@ namespace EMT.DoneNOW.Web
                     }
                     else
                     {
-                        showNo = interaction+ "." + (subList.IndexOf(sub) + 1).ToString();
+                        showNo = interaction + "." + (subList.IndexOf(sub) + 1).ToString();
                     }
                     var isParent = "";
                     var thisSubList = sdkList.Where(_ => _.parent_id == sub.id && (_.type_id == (int)TASK_TYPE.PROJECT_TASK || _.type_id == (int)TASK_TYPE.PROJECT_ISSUE || _.type_id == (int)TASK_TYPE.PROJECT_PHASE)).ToList();
@@ -183,7 +183,7 @@ namespace EMT.DoneNOW.Web
                     }
                     else
                     {
-                    
+
                     }
                     taskString.Append($"<tr class='HighImportance' id='{sub.id}' value='{sub.id}' data-val='{sub.id}'><td class='Interaction'><span class='Text'>{showNo}</span></td><td class='Nesting'><div data-depth='{data_depth}' class='DataDepth'><div class='Spacer' style='width:{data_depth * 11}px;min-width:{data_depth * 11}px;'></div><div class='IconContainer'>{isParent}</div><div class='Value'>{sub.title}</div></div></td>");
                     switch (showType)
@@ -199,7 +199,7 @@ namespace EMT.DoneNOW.Web
                             break;
                     }
                     taskString.Append("</tr>");
-               
+
                     AddSubTask(sub.id, sdkList, data_depth + 1, showNo, showType);
                 }
                 // data_depth += 1;     预留 以后task多之后判断使用
@@ -316,12 +316,11 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void DisProject(HttpContext context, long project_id)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
+
             bool result = false;
-            if (res != null)
-            {
-                result = new ProjectBLL().DisProject(project_id, res.id);
-            }
+
+            result = new ProjectBLL().DisProject(project_id, LoginUserId);
+
             context.Response.Write(result);
         }
 
@@ -330,84 +329,83 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void SaveAsTemp(HttpContext context)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
+
             bool result = false;
-            if (res != null)
+
+            var TranProjectId = context.Request.QueryString["TranProjectId"];
+            var name = context.Request.QueryString["name"];
+            var startDate = context.Request.QueryString["startDate"];
+            var endDate = context.Request.QueryString["endDate"];
+            var duration = context.Request.QueryString["duration"];
+            var lineBuss = context.Request.QueryString["lineBuss"];
+            var department_id = context.Request.QueryString["department_id"];
+            var proLead = context.Request.QueryString["proLead"];
+            var description = context.Request.QueryString["description"];
+            var TempChooseTaskids = context.Request.QueryString["TempChooseTaskids"];
+            var copyCalItem = context.Request.QueryString["copyCalItem"];
+            var copyProCha = context.Request.QueryString["copyProCha"];
+            var copyProTeam = context.Request.QueryString["copyProTeam"];
+            try
             {
-                var TranProjectId = context.Request.QueryString["TranProjectId"];
-                var name = context.Request.QueryString["name"];
-                var startDate = context.Request.QueryString["startDate"];
-                var endDate = context.Request.QueryString["endDate"];
-                var duration = context.Request.QueryString["duration"];
-                var lineBuss = context.Request.QueryString["lineBuss"];
-                var department_id = context.Request.QueryString["department_id"];
-                var proLead = context.Request.QueryString["proLead"];
-                var description = context.Request.QueryString["description"];
-                var TempChooseTaskids = context.Request.QueryString["TempChooseTaskids"];
-                var copyCalItem = context.Request.QueryString["copyCalItem"];
-                var copyProCha = context.Request.QueryString["copyProCha"];
-                var copyProTeam = context.Request.QueryString["copyProTeam"];
-                try
+                ProjectDto param = new ProjectDto();
+                var ppDal = new pro_project_dal();
+                var thisProject = ppDal.FindNoDeleteById(long.Parse(TranProjectId));
+                if (thisProject != null)
                 {
-                    ProjectDto param = new ProjectDto();
-                    var ppDal = new pro_project_dal();
-                    var thisProject = ppDal.FindNoDeleteById(long.Parse(TranProjectId));
-                    if (thisProject != null)
+                    if ((!string.IsNullOrEmpty(name)) && (!string.IsNullOrEmpty(startDate)) && (!string.IsNullOrEmpty(endDate)) && (!string.IsNullOrEmpty(duration)))
                     {
-                        if ((!string.IsNullOrEmpty(name)) && (!string.IsNullOrEmpty(startDate)) && (!string.IsNullOrEmpty(endDate)) && (!string.IsNullOrEmpty(duration)))
-                        {
-                            thisProject.name = name;
-                            thisProject.start_date = DateTime.Parse(startDate);
-                            thisProject.end_date = DateTime.Parse(endDate);
-                            thisProject.duration = int.Parse(duration);
-                            thisProject.end_date = ((DateTime)thisProject.start_date).AddDays(((double)thisProject.duration) - 1);
-                        }
-                        if ((!string.IsNullOrEmpty(lineBuss)) && lineBuss != "0")
-                        {
-                            thisProject.line_of_business_id = int.Parse(lineBuss);
-                        }
-                        if ((!string.IsNullOrEmpty(department_id)) && department_id != "0")
-                        {
-                            thisProject.department_id = int.Parse(department_id);
-                        }
-                        if ((!string.IsNullOrEmpty(proLead)) && proLead != "0")
-                        {
-                            thisProject.owner_resource_id = long.Parse(proLead);
-                        }
-                        thisProject.description = description;
-                        thisProject.template_id = null;
-                        thisProject.status_id = (int)DicEnum.PROJECT_STATUS.NEW;
-                        thisProject.type_id = (int)DicEnum.PROJECT_TYPE.TEMP;
-                        param.project = thisProject;
-                        var project_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PROJECTS);
-                        var udfValue = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.PROJECTS, thisProject.id, project_udfList);
-                        param.udf = udfValue;
-                        param.fromTempId = thisProject.id.ToString();
-                        param.tempChoTaskIds = TempChooseTaskids;
-
-
-                        param.IsCopyCalendarItem = copyCalItem == "true" ? "1" : "";
-                        param.IsCopyProjectCharge = copyProCha == "true" ? "1" : "";
-                        param.IsCopyTeamMember = copyProTeam == "true" ? "1" : "";
-                        if (!string.IsNullOrEmpty(param.IsCopyTeamMember))
-                        {
-                            param.resDepIds = ReturnResDepids(thisProject.id, "");
-                            param.contactIds = ReturnConIds(thisProject.id);
-                        }
-
-
-                        param.project.id = ppDal.GetNextIdCom();
-                        result = new ProjectBLL().AddPro(param, res.id);
+                        thisProject.name = name;
+                        thisProject.start_date = DateTime.Parse(startDate);
+                        thisProject.end_date = DateTime.Parse(endDate);
+                        thisProject.duration = int.Parse(duration);
+                        thisProject.end_date = ((DateTime)thisProject.start_date).AddDays(((double)thisProject.duration) - 1);
                     }
+                    if ((!string.IsNullOrEmpty(lineBuss)) && lineBuss != "0")
+                    {
+                        thisProject.line_of_business_id = int.Parse(lineBuss);
+                    }
+                    if ((!string.IsNullOrEmpty(department_id)) && department_id != "0")
+                    {
+                        thisProject.department_id = int.Parse(department_id);
+                    }
+                    if ((!string.IsNullOrEmpty(proLead)) && proLead != "0")
+                    {
+                        thisProject.owner_resource_id = long.Parse(proLead);
+                    }
+                    thisProject.description = description;
+                    thisProject.template_id = null;
+                    thisProject.status_id = (int)DicEnum.PROJECT_STATUS.NEW;
+                    thisProject.type_id = (int)DicEnum.PROJECT_TYPE.TEMP;
+                    param.project = thisProject;
+                    var project_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PROJECTS);
+                    var udfValue = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.PROJECTS, thisProject.id, project_udfList);
+                    param.udf = udfValue;
+                    param.fromTempId = thisProject.id.ToString();
+                    param.tempChoTaskIds = TempChooseTaskids;
+
+
+                    param.IsCopyCalendarItem = copyCalItem == "true" ? "1" : "";
+                    param.IsCopyProjectCharge = copyProCha == "true" ? "1" : "";
+                    param.IsCopyTeamMember = copyProTeam == "true" ? "1" : "";
+                    if (!string.IsNullOrEmpty(param.IsCopyTeamMember))
+                    {
+                        param.resDepIds = ReturnResDepids(thisProject.id, "");
+                        param.contactIds = ReturnConIds(thisProject.id);
+                    }
+
+
+                    param.project.id = ppDal.GetNextIdCom();
+                    result = new ProjectBLL().AddPro(param, LoginUserId);
                 }
-                catch (Exception msg)
-                {
-
-                    result = false;
-                }
-
-
             }
+            catch (Exception msg)
+            {
+
+                result = false;
+            }
+
+
+
             context.Response.Write(result);
 
         }
@@ -416,18 +414,17 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void ImportFromTemp(HttpContext context)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
+
             bool result = false;
-            if (res != null)
-            {
-                var tempId = context.Request.QueryString["project_temp_id"];
-                var copyCalItem = context.Request.QueryString["copyCalItem"];
-                var copyProCha = context.Request.QueryString["copyProCha"];
-                var copyProTeam = context.Request.QueryString["copyProTeam"];
-                var thisProjetcId = context.Request.QueryString["thisProjetcId"];
-                var choIds = context.Request.QueryString["choIds"];
-                new TaskBLL().ImportFromTemp(long.Parse(thisProjetcId), choIds,res.id,!string.IsNullOrEmpty(copyProTeam));
-            }
+
+            var tempId = context.Request.QueryString["project_temp_id"];
+            var copyCalItem = context.Request.QueryString["copyCalItem"];
+            var copyProCha = context.Request.QueryString["copyProCha"];
+            var copyProTeam = context.Request.QueryString["copyProTeam"];
+            var thisProjetcId = context.Request.QueryString["thisProjetcId"];
+            var choIds = context.Request.QueryString["choIds"];
+            new TaskBLL().ImportFromTemp(long.Parse(thisProjetcId), choIds, LoginUserId, !string.IsNullOrEmpty(copyProTeam));
+
             context.Response.Write(result);
         }
         /// <summary>
@@ -435,27 +432,25 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void DeletePro(HttpContext context, long project_id)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
+
             bool result = false;
             string reson = "";
-            if (res != null)
-            {
-                result = new ProjectBLL().DeletePro(project_id, res.id, out reson);
-            }
+
+            result = new ProjectBLL().DeletePro(project_id, LoginUserId, out reson);
+
             context.Response.Write(new { result = result, reason = reson });
         }
 
         /// <summary>
         /// 保存为基准（新建type为基准的项目）
         /// </summary>
-        private void SaveAsBaseline(HttpContext context,long project_id)
+        private void SaveAsBaseline(HttpContext context, long project_id)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
+
             bool result = false;
-            if (res != null)
-            {
-                result = new ProjectBLL().SaveAsBaseline(project_id, res.id);
-            }
+
+            result = new ProjectBLL().SaveAsBaseline(project_id, LoginUserId);
+
             context.Response.Write(result);
         }
         /// <summary>
@@ -474,9 +469,9 @@ namespace EMT.DoneNOW.Web
             // todo
             var stDal = new sdk_task_dal();
             var tBll = new TaskBLL();
-       
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            var user = UserInfoBLL.GetUserInfo(res.id);
+
+
+
             // 1.获取到要插入的位置，获取相关序号
             // 2.根据序号更改task排序号以及子节点相关排序号
             // 3.更改兄弟节点相关排序号以及兄弟节点的子节点的排序号
@@ -494,13 +489,13 @@ namespace EMT.DoneNOW.Web
                     var parentTask = stDal.FindNoDeleteById((long)parent_id);
                     if (parentTask.type_id != (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
                     {
-                        var returnID = tBll.InsertPhase((long)parent_id, user.id);
+                        var returnID = tBll.InsertPhase((long)parent_id, LoginUserId);
                         if (returnID != null)
                         {
                             parent_id = returnID;
                         }
                     }
-                    
+
                     foreach (var taskId in taskArr)
                     {
                         var thisTaskNewSortNo = "";
@@ -514,11 +509,11 @@ namespace EMT.DoneNOW.Web
                                     continue;
                                 }
                             }
-                            
+
                             thisTask.parent_id = parent_id;
                             stDal.Update(thisTask);
                             thisTaskNewSortNo = tBll.ReturnSortOrder(project_id, parent_id);
-                            tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, res.id);
+                            tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, LoginUserId);
                         }
                     }
                 }
@@ -537,12 +532,12 @@ namespace EMT.DoneNOW.Web
                         var thisTask = stDal.FindNoDeleteById(long.Parse(taskId));
                         if (thisTask != null)
                         {
-                            tBll.ChangBroTaskSortNoReduce(project_id,thisTask.parent_id, res.id);
+                            tBll.ChangBroTaskSortNoReduce(project_id, thisTask.parent_id, LoginUserId);
                         }
                     }
-                    tBll.ChangeBroTaskSortNoAdd((long)parent_id, taskArr.Count(), res.id);
+                    tBll.ChangeBroTaskSortNoAdd((long)parent_id, taskArr.Count(), LoginUserId);
                     long? reaParentId = null;  // 真正的父节点的id 
-                
+
                     if (parent_id != null)
                     {
                         var broTask = stDal.FindNoDeleteById((long)parent_id);
@@ -557,25 +552,14 @@ namespace EMT.DoneNOW.Web
                         if (thisTask != null)
                         {
                             thisTask.parent_id = reaParentId;
-                            
+
                             stDal.Update(thisTask);
                             var thisTaskNewSortNo = tBll.ReturnSortOrder(project_id, reaParentId);
-                            tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, res.id);
+                            tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, LoginUserId);
                         }
                     }
                 }
             }
-
-            //var thisTask = stDal.FindNoDeleteById(task_id);
-            //var res = context.Session["dn_session_user_info"] as sys_user;
-            //bool result = false;
-            //if (thisTask != null&&res!=null)
-            //{
-            //    thisTask.sort_order = new TaskBLL().ReturnSortOrder(project_id,parent_id);
-            //    OperLogBLL.OperLogUpdate<sdk_task>(thisTask, stDal.FindNoDeleteById(thisTask.id), thisTask.id, res.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
-            //    result = new sdk_task_dal().Update(thisTask);
-            //}
-         
         }
 
         /// <summary>
@@ -607,7 +591,7 @@ namespace EMT.DoneNOW.Web
             if (taskList != null && taskList.Count > 0)
             {
                 var noDoneList = taskList.Where(_ => _.status_id != (int)DicEnum.TICKET_STATUS.DONE).ToList();
-                if(noDoneList!=null&& noDoneList.Count > 0)
+                if (noDoneList != null && noDoneList.Count > 0)
                 {
                     isHas = true;
                 }
@@ -615,11 +599,11 @@ namespace EMT.DoneNOW.Web
 
             context.Response.Write(isHas);
         }
-        private void CompleteProject(HttpContext context, long project_id,string reason)
+        private void CompleteProject(HttpContext context, long project_id, string reason)
         {
             bool result = false;
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            result = new ProjectBLL().CompleteProject(project_id,reason,res.id);
+
+            result = new ProjectBLL().CompleteProject(project_id, reason, LoginUserId);
             context.Response.Write(result);
         }
 
@@ -627,9 +611,9 @@ namespace EMT.DoneNOW.Web
         {
             bool result = false;
             var pid = context.Request.QueryString["project_id"];
-            var res = context.Session["dn_session_user_info"] as sys_user;
+
             var thisPro = new pro_project_dal().FindNoDeleteById(long.Parse(pid));
-            if (thisPro != null&&res!=null)
+            if (thisPro != null)
             {
 
                 var resource_daily_hours = context.Request.QueryString["resource_daily_hours"];
@@ -642,7 +626,7 @@ namespace EMT.DoneNOW.Web
                 {
                     thisPro.resource_daily_hours = decimal.Parse(resource_daily_hours);
                 }
-                if (!string.IsNullOrEmpty(useResource_daily_hours)&& useResource_daily_hours=="true")
+                if (!string.IsNullOrEmpty(useResource_daily_hours) && useResource_daily_hours == "true")
                 {
                     thisPro.use_resource_daily_hours = 1;
                 }
@@ -680,15 +664,16 @@ namespace EMT.DoneNOW.Web
                 }
                 var old_project_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PROJECTS);
                 var old_project_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.PROJECTS, thisPro.id, old_project_udfList);
-                ProjectDto param = new ProjectDto() {
+                ProjectDto param = new ProjectDto()
+                {
                     udf = old_project_udfValueList,
                     project = thisPro,
                 };
-                result = new ProjectBLL().EditProject(param,res.id);
+                result = new ProjectBLL().EditProject(param, LoginUserId);
 
             }
-          
-            
+
+
 
 
             context.Response.Write(result);
@@ -696,25 +681,22 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 重新计算项目进度
         /// </summary>
-        private void RecalculateProject(HttpContext context,long project_id)
+        private void RecalculateProject(HttpContext context, long project_id)
         {
             var result = false;
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            if (res != null)
-            {
-                result = new ProjectBLL().RecalculateProject(project_id,res.id);
-            }
+
+            result = new ProjectBLL().RecalculateProject(project_id, LoginUserId);
+
             context.Response.Write(result);
         }
 
-        private void ChangeTaskTime(HttpContext context,string ids,int days)
+        private void ChangeTaskTime(HttpContext context, string ids, int days)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
+
             bool result = false;
-            if (res != null)
-            {
-                result = new TaskBLL().ChangeTaskTime(ids,days,res.id);
-            }
+
+            result = new TaskBLL().ChangeTaskTime(ids, days, LoginUserId);
+
             context.Response.Write(result);
         }
         /// <summary>
@@ -722,29 +704,28 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void CompleteTask(HttpContext context, string ids, string reason)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
+
             bool result = false;
-            if (res != null)
+
+            var tBll = new TaskBLL();
+            if (!string.IsNullOrEmpty(ids))
             {
-                var tBll = new TaskBLL();
-                if (!string.IsNullOrEmpty(ids))
+                var idArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                int wrongNum = 0;
+                foreach (var taskId in idArr)
                 {
-                    var idArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    int wrongNum = 0;
-                    foreach (var taskId in idArr)
+                    var thisResult = tBll.CompleteTask(long.Parse(taskId), reason, LoginUserId);
+                    if (!thisResult)
                     {
-                     var thisResult =  tBll.CompleteTask(long.Parse(taskId),reason,res.id);
-                        if (!thisResult)
-                        {
-                            wrongNum++;
-                        }
-                    }
-                    if (wrongNum == 0)
-                    {
-                        result = true;
+                        wrongNum++;
                     }
                 }
+                if (wrongNum == 0)
+                {
+                    result = true;
+                }
             }
+
             context.Response.Write(result);
         }
         /// <summary>
@@ -753,21 +734,21 @@ namespace EMT.DoneNOW.Web
         /// <param name="context"></param>
         /// <param name="taskIds">需要删除的任务id集合</param>
         /// <param name="isDelSub">是否删除子task</param>
-        private void DeleteTasks(HttpContext context, string taskIds,bool isDelSub)
+        private void DeleteTasks(HttpContext context, string taskIds, bool isDelSub)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
+
             bool result = false;
-            if (res != null&&!string.IsNullOrEmpty(taskIds))
+            if (!string.IsNullOrEmpty(taskIds))
             {
                 var stDal = new sdk_task_dal();
                 var tBll = new TaskBLL();
                 var tasArr = taskIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 var chooseTaskList = stDal.GetTaskByIds(taskIds);
-                if(chooseTaskList!=null&& chooseTaskList.Count > 0)
+                if (chooseTaskList != null && chooseTaskList.Count > 0)
                 {
                     foreach (var taskId in tasArr)
                     {
-                        var thisTask = chooseTaskList.FirstOrDefault(_=>_.id.ToString()==taskId);
+                        var thisTask = chooseTaskList.FirstOrDefault(_ => _.id.ToString() == taskId);
                         if (thisTask != null)
                         {
                             if (thisTask.parent_id != null)
@@ -777,51 +758,53 @@ namespace EMT.DoneNOW.Web
                                     continue;
                                 }
                             }
-                            tBll.DeleteTasks(thisTask.id, isDelSub, res.id);
+                            tBll.DeleteTasks(thisTask.id, isDelSub, LoginUserId);
                         }
                     }
                 }
-             
+
             }
             context.Response.Write(result);
         }
         /// <summary>
         /// 减少缩进
         /// </summary>
-        private void Outdent(HttpContext context,long taskId)
+        private void Outdent(HttpContext context, long taskId)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            bool result = false;
-            if (res != null)
-            {
-                var stDal = new sdk_task_dal();
-                var tBll = new TaskBLL();
-                var thisTask = stDal.FindNoDeleteById(taskId);
-                if (thisTask != null && thisTask.parent_id != null)
-                {
-                    var parTask = stDal.FindNoDeleteById((long)thisTask.parent_id);
-                    if (parTask != null)
-                    {
-                        // 减少缩进步骤
-                        // 1.改变原来的兄弟节点的位置
-                        // 2.获取到新的节点的位置，插入节点
-                        // 3.计算原来的，和新的父节点的开始时间和结束时间是否调整 // todo
 
-                        tBll.ChangBroTaskSortNoReduce((long)thisTask.project_id, thisTask.parent_id, res.id); // 1.
-                        string newNo = "";
-                        if (parTask.parent_id != null)
-                        {
-                            newNo = tBll.GetMinUserNoParSortNo((long)thisTask.project_id);
-                        }
-                        else
-                        {
-                            newNo = tBll.GetMinUserSortNo((long)parTask.parent_id);
-                        }
-                        tBll.ChangeTaskSortNo(newNo, thisTask.id, res.id);
-                        tBll.AdjustmentDate((long)thisTask.parent_id,res.id);
+            bool result = false;
+
+            var stDal = new sdk_task_dal();
+            var tBll = new TaskBLL();
+            var thisTask = stDal.FindNoDeleteById(taskId);
+            if (thisTask != null && thisTask.parent_id != null)
+            {
+                var parTask = stDal.FindNoDeleteById((long)thisTask.parent_id);
+                if (parTask != null)
+                {
+                    // 减少缩进步骤
+                    // 1.改变原来的兄弟节点的位置
+                    // 2.获取到新的节点的位置，插入节点
+                    // 3.计算原来的，和新的父节点的开始时间和结束时间是否调整 // todo
+                    var oldThisTaskParId = thisTask.parent_id;
+                    thisTask.parent_id = parTask.parent_id;
+                    OperLogBLL.OperLogUpdate<sdk_task>(thisTask, stDal.FindNoDeleteById(thisTask.id), thisTask.id, LoginUserId, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                    stDal.Update(thisTask);
+                    tBll.ChangBroTaskSortNoReduce((long)thisTask.project_id, oldThisTaskParId, LoginUserId); // 1.
+                    string newNo = "";
+                    if (parTask.parent_id != null)
+                    {
+                        newNo = tBll.GetMinUserSortNo((long)parTask.parent_id);
                     }
+                    else
+                    {
+                        newNo = tBll.GetMinUserNoParSortNo((long)thisTask.project_id);
+                    }
+                    tBll.ChangeTaskSortNo(newNo, thisTask.id, LoginUserId);
+                    tBll.AdjustmentDate((long)thisTask.parent_id, LoginUserId);
                 }
             }
+
             context.Response.Write(result);
         }
         /// <summary>
@@ -829,47 +812,48 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void Indend(HttpContext context, long taskId)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            bool result = false;
-            if (res != null)
-            {
-                var user = UserInfoBLL.GetUserInfo(res.id);
-                var stDal = new sdk_task_dal();
-                var tBll = new TaskBLL();
-                var lastTask = tBll.GetLastBroTask(taskId);
-                if (lastTask != null)
-                {
-                    // 补充原有位置
-                
-                  
 
-                    if (lastTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)  // 是阶段
+            bool result = false;
+
+
+            var stDal = new sdk_task_dal();
+            var tBll = new TaskBLL();
+            var lastTask = tBll.GetLastBroTask(taskId);
+            if (lastTask != null)
+            {
+                // 补充原有位置
+
+                var thisTask = stDal.FindNoDeleteById(taskId);
+                var oldTaskId = thisTask.parent_id;
+                if (lastTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)  // 是阶段
+                {
+                    var newNo = tBll.GetMinUserSortNo(lastTask.id);
+                    tBll.ChangeTaskSortNo(newNo, taskId, LoginUserId);
+                    thisTask.parent_id = lastTask.id;
+                    OperLogBLL.OperLogUpdate<sdk_task>(thisTask, stDal.FindNoDeleteById(thisTask.id), thisTask.id, LoginUserId, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                    stDal.Update(thisTask);
+                }
+                else
+                {
+                    var returnID = tBll.InsertPhase(lastTask.id, LoginUserId);
+                    if (returnID != null)
                     {
-                        var newNo = tBll.GetMinUserSortNo(lastTask.id);
-                        tBll.ChangeTaskSortNo(newNo,taskId, res.id);
-                    }
-                    else
-                    {
-                        var returnID = tBll.InsertPhase(lastTask.id, user.id);
-                        if (returnID != null)
-                        {
-                            var newNo = tBll.GetMinUserSortNo((long)returnID);
-                            var thisTask = stDal.FindNoDeleteById(taskId);
-                            thisTask.parent_id = returnID;
-                            OperLogBLL.OperLogUpdate<sdk_task>(thisTask, stDal.FindNoDeleteById(thisTask.id), thisTask.id, res.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
-                            stDal.Update(thisTask);
-                            tBll.ChangeTaskSortNo(newNo, taskId, res.id);
-                        }
-                    }
-                    tBll.ChangBroTaskSortNoReduce((long)lastTask.project_id, lastTask.parent_id, res.id);
-                    if (lastTask.parent_id != null)
-                    {
-                        tBll.AdjustmentDate((long)lastTask.parent_id, res.id);
+                        var newNo = tBll.GetMinUserSortNo((long)returnID);
+                        thisTask.parent_id = returnID;
+                        OperLogBLL.OperLogUpdate<sdk_task>(thisTask, stDal.FindNoDeleteById(thisTask.id), thisTask.id, LoginUserId, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                        stDal.Update(thisTask);
+                        tBll.ChangeTaskSortNo(newNo, taskId, LoginUserId);
                     }
                 }
-
-
+                tBll.ChangBroTaskSortNoReduce((long)lastTask.project_id, lastTask.parent_id, LoginUserId);
+                if (lastTask.parent_id != null)
+                {
+                    tBll.AdjustmentDate((long)lastTask.parent_id, LoginUserId);
+                }
             }
+
+
+
             context.Response.Write(result);
             // 执行顺序
             // 原有兄弟节点改变
@@ -881,12 +865,6 @@ namespace EMT.DoneNOW.Web
 
 
         }
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+
     }
 }

@@ -728,7 +728,7 @@
                             <td>
                                 <div class="clear">
                                     <label>安装人</label>
-                                    <% var user = Session["dn_session_user_info"] as EMT.DoneNOW.Core.sys_user;
+                                    <% 
                                         if (user != null)
                                         {%>
                                     <!-- todo 发送邮件？ -->

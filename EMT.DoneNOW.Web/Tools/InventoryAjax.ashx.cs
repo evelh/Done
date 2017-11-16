@@ -11,16 +11,16 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// InventoryAjax 的摘要说明
     /// </summary>
-    public class InventoryAjax : IHttpHandler, IRequiresSessionState
+    public class InventoryAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             var action = context.Request.QueryString["act"];
             var inven_id = context.Request.QueryString["id"];
             switch (action)
             {
-                case "delete": Delete(context, Convert.ToInt64(inven_id)); ; break;             
+                case "delete": Delete(context, Convert.ToInt64(inven_id)); ; break;
 
                 default: break;
 
@@ -28,30 +28,20 @@ namespace EMT.DoneNOW.Web
         }
         public void Delete(HttpContext context, long inven_id)
         {
-            var user = context.Session["dn_session_user_info"] as sys_user;
-            if (user != null)
+            var result = new ProductBLL().DeleteInventory(inven_id, LoginUserId);
+            if (result == DTO.ERROR_CODE.SUCCESS)
             {
-                var result = new ProductBLL().DeleteInventory(inven_id, user.id);
-                if (result == DTO.ERROR_CODE.SUCCESS)
-                {
-                    context.Response.Write("删除成功！");
-                }
-                else if (result == DTO.ERROR_CODE.SYSTEM)
-                {
-                    context.Response.Write("系统默认不能删除！");
-                }
-                else
-                {
-                    context.Response.Write("删除失败！");
-                }
+                context.Response.Write("删除成功！");
+            }
+            else if (result == DTO.ERROR_CODE.SYSTEM)
+            {
+                context.Response.Write("系统默认不能删除！");
+            }
+            else
+            {
+                context.Response.Write("删除失败！");
             }
         }
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+
     }
 }

@@ -174,7 +174,7 @@ namespace EMT.DoneNOW.Web
                 ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('模板名称未填写！');</script>");
             }
 
-            //var user=Session["dn_session_user_info"] as sys_user;
+            
             //qtbll.log(user);
 
             var result = qtb.update(data, GetLoginUserId());

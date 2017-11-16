@@ -12,10 +12,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// SubscriptionAjax 的摘要说明
     /// </summary>
-    public class SubscriptionAjax : IHttpHandler, IRequiresSessionState
+    public class SubscriptionAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             var action = context.Request.QueryString["act"];
             switch (action)
@@ -24,12 +24,12 @@ namespace EMT.DoneNOW.Web
 
                     var sid = context.Request.QueryString["sid"];
                     var status_id = context.Request.QueryString["status_id"];
-                    ActiveSubscription(context,long.Parse(sid),int.Parse(status_id));
+                    ActiveSubscription(context, long.Parse(sid), int.Parse(status_id));
                     break;
                 case "activeSubscripts":
                     var sids = context.Request.QueryString["sids"];
                     var thisStatuId = context.Request.QueryString["status_id"];
-                    ActiveSubscriptions(context,sids, int.Parse(thisStatuId));
+                    ActiveSubscriptions(context, sids, int.Parse(thisStatuId));
                     break;
                 case "property":
                     var psid = context.Request.QueryString["sid"];
@@ -38,7 +38,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case "deleteSubscriprion":
                     var dSid = context.Request.QueryString["sid"];
-                    DeleteSubscription(context,long.Parse(dSid));
+                    DeleteSubscription(context, long.Parse(dSid));
                     break;
                 case "deleteSubscriprions":
                     var dSids = context.Request.QueryString["sids"];
@@ -51,16 +51,16 @@ namespace EMT.DoneNOW.Web
         }
 
 
-        public void ActiveSubscription(HttpContext context,long sid,int status_id)
+        public void ActiveSubscription(HttpContext context, long sid, int status_id)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            var result = new InstalledProductBLL().ActiveSubsctiption(sid, res.id, status_id);
+
+            var result = new InstalledProductBLL().ActiveSubsctiption(sid, LoginUserId, status_id);
             context.Response.Write(result);
         }
         public void ActiveSubscriptions(HttpContext context, string sids, int status_id)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            var result = new InstalledProductBLL().ActiveSubsctiptions(sids, res.id, status_id);
+
+            var result = new InstalledProductBLL().ActiveSubsctiptions(sids, LoginUserId, status_id);
             context.Response.Write(result);
         }
 
@@ -75,24 +75,18 @@ namespace EMT.DoneNOW.Web
 
         public void DeleteSubscription(HttpContext context, long sid)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            var result = new InstalledProductBLL().DeleteSubsctiption(sid,res.id);
+
+            var result = new InstalledProductBLL().DeleteSubsctiption(sid, LoginUserId);
             context.Response.Write(result);
         }
 
         public void DeleteSubscriptions(HttpContext context, string sids)
         {
-            var res = context.Session["dn_session_user_info"] as sys_user;
-            var result = new InstalledProductBLL().DeleteSubsctiptions(sids, res.id);
+
+            var result = new InstalledProductBLL().DeleteSubsctiptions(sids, LoginUserId);
             context.Response.Write(result);
         }
 
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+
     }
 }

@@ -14,10 +14,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// AttachmentAjax 的摘要说明
     /// </summary>
-    public class AttachmentAjax : IHttpHandler, IRequiresSessionState
+    public class AttachmentAjax : BaseAjax
     {
         private AttachmentBLL bll = new AttachmentBLL();
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write("{\"code\": 'error', \"msg\": \"参数错误！\"}");
             }
         }
-        
+
         /// <summary>
         /// 删除附件
         /// </summary>
@@ -47,7 +47,7 @@ namespace EMT.DoneNOW.Web
         private void DeleteAttachment(HttpContext context)
         {
             long id = long.Parse(context.Request.QueryString["id"]);
-            bll.DeleteAttachment(id, (context.Session["dn_session_user_info"] as sys_user).id);
+            bll.DeleteAttachment(id, LoginUserId);
             context.Response.Write(new Tools.Serialize().SerializeJson(true));
         }
 
@@ -59,7 +59,7 @@ namespace EMT.DoneNOW.Web
         {
             long id = long.Parse(context.Request.QueryString["id"]);
             var att = bll.GetAttachment(id);
-            if (att.type_id==(int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
+            if (att.type_id == (int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
             {
                 FileStream fs = new FileStream(context.Server.MapPath(att.href), FileMode.Open);
                 byte[] bytes = new byte[(int)fs.Length];
@@ -74,13 +74,6 @@ namespace EMT.DoneNOW.Web
                 context.Response.Flush();
             }
         }
-        
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+
     }
 }
