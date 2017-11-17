@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 namespace EMT.DoneNOW.DTO
 {
     /// <summary>
-    /// 权限等级的权限点(sys_permit)信息
+    /// 权限等级的limit和权限点(sys_permit)信息
     /// </summary>
     public class AuthSecurityLevelDto
     {
+        public Dictionary<AuthLimitEnum, DicEnum.LIMIT_TYPE_VALUE> limitList { get; set; }
         /// <summary>
         /// 权限等级可用的权限点
         /// </summary>

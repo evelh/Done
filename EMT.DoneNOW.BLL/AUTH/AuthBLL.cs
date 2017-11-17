@@ -135,6 +135,8 @@ namespace EMT.DoneNOW.BLL
                 }
                 slDto.availablePermitList = available;
                 slDto.unAvailablePermitList = unAvailable;
+                var limits = new sys_security_level_limit_dal().GetLimitsBySecLevelId(sec.id).ToDictionary(d => (AuthLimitEnum)d.limit_id, d => (DicEnum.LIMIT_TYPE_VALUE)d.limit_type_value_id);
+                slDto.limitList = limits;
                 secLevelPermitDic.Add(sec.id, slDto);
             }
         }
@@ -419,6 +421,17 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             return !haveNotSatifyParam;
+        }
+
+        /// <summary>
+        /// 获取安全等级的一个limit值
+        /// </summary>
+        /// <param name="levelId"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        public static DicEnum.LIMIT_TYPE_VALUE GetLimitValue(long levelId, AuthLimitEnum limit)
+        {
+            return secLevelPermitDic[levelId].limitList[limit];
         }
         #endregion
 

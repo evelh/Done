@@ -76,6 +76,16 @@ namespace EMT.DoneNOW.Web
             //return AuthBLL.CheckAuth(userInfo.security_Level_id, userPermit, sn);
         }
 
+        /// <summary>
+        /// 获取一个limit权限值
+        /// </summary>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        protected DicEnum.LIMIT_TYPE_VALUE GetLimitValue(AuthLimitEnum limit)
+        {
+            return AuthBLL.GetLimitValue(userInfo.security_Level_id, limit);
+        }
+
         public bool IsReusable
         {
             get

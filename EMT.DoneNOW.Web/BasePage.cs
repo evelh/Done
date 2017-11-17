@@ -124,6 +124,16 @@ namespace EMT.DoneNOW.Web
         }
 
         /// <summary>
+        /// 获取一个limit权限值
+        /// </summary>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        protected DicEnum.LIMIT_TYPE_VALUE GetLimitValue(AuthLimitEnum limit)
+        {
+            return AuthBLL.GetLimitValue(userInfo.security_Level_id, limit);
+        }
+
+        /// <summary>
         /// 获取用户在指定搜索页的需要权限而没有权限的右键菜单
         /// </summary>
         /// <param name="queryType"></param>
