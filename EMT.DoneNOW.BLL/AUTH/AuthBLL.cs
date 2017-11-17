@@ -336,52 +336,50 @@ namespace EMT.DoneNOW.BLL
 
             // 没有完全匹配项，拆解url验证
             AuthUrlDto requestUrl = GetAuthUrl(url);
-
-            if (requestUrl.parms == null)    // 没有参数，且没有完全匹配到，说明不在权限点列表中
+            if (requestUrl.parms == null)    // 没有参数，且没有完全匹配到，说明不在不可用权限点列表中
                 return true;
 
-            // 匹配url和参数
-            foreach(var permit in userPermit)
-            {
-                if (permit.url == null)
-                    continue;
-                foreach(var u in permit.url)
-                {
-                    if (CheckUrlSatifyPermit(requestUrl, u))
-                        return true;
-                }
-            }
-            foreach (var permit in secLevelPermit.unAvailablePermitList)
+            // 从所有的权限点中找到匹配该url参数最多的
+            AuthPermitDto mostSatifyPermit = null;
+            AuthPermitDto permitTmp = null;
+            int permitParamCnt = -1;
+            foreach(var permit in allPermitsDtoList)
             {
                 if (permit.url == null)
                     continue;
                 foreach (var u in permit.url)
                 {
                     if (CheckUrlSatifyPermit(requestUrl, u))
-                        return false;
+                    {
+                        int paraCnt = 0;    // u的参数个数
+                        if (u.parms!=null)
+                        {
+                            paraCnt = u.parms.Count;
+                        }
+
+                        if (paraCnt > permitParamCnt)
+                        {
+                            mostSatifyPermit = permit;
+                            permitTmp = null;
+                            permitParamCnt = paraCnt;
+                        }
+                        else if(paraCnt == permitParamCnt)
+                        {
+                            permitTmp = permit;
+                        }
+                    }
                 }
             }
+            if (permitTmp != null)  // 匹配到最多的个数有多个
+                new EMT.DoneNOW.BLL.ErrorLogBLL().AddLog(0, url, "URL匹配异常警告", "");
 
+            if (mostSatifyPermit == null)   // 该url不做权限限制
+                return true;
 
-            //IEnumerable<AuthPermitDto> selUrl = from u in userPermit
-            //                                    where u.url != null && requestUrl.url.Equals(u.url.url) 
-            //                                    select u;
-            //foreach(var sel in selUrl)  // 验证参数完全匹配
-            //{
-            //    // 用户单独的权限点中匹配到，验证通过
-            //    if (CheckUrlSatifyPermit(requestUrl, sel.url))
-            //        return true;
-            //}
-
-            //selUrl = from u in secLevelPermit.unAvailablePermitList
-            //         where u.url != null && requestUrl.url.Equals(u.url.url) 
-            //         select u;
-            //foreach (var sel in selUrl)  // 验证参数完全匹配
-            //{
-            //    // 权限等级的不可访问权限点中匹配到，验证不通过
-            //    if (CheckUrlSatifyPermit(requestUrl, sel.url))
-            //        return false;
-            //}
+            if (userPermit.Exists(_ => _.permit.id == mostSatifyPermit.permit.id))
+                return true;
+            if (secLevelPermit.unAvailablePermitList.Exists(_ => _.permit.id == mostSatifyPermit.permit.id))
+                return false;
 
             return true;
         }

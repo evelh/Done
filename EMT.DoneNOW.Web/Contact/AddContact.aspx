@@ -36,7 +36,7 @@
         <div class="nav-title">
             <ul class="clear">
                 <li class="boders">常规信息</li>
-                <li>附件信息</li>
+                <li>附加信息</li>
                 <li>用户自定义信息</li>
                 <li>自助服务台</li>
             </ul>

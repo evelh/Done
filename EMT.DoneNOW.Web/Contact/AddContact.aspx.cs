@@ -148,12 +148,12 @@ namespace EMT.DoneNOW.Web
             {
                 if (dto.contact.id > 0)
                 {
-                    Response.Write("<script>alert('修改客户成功！');</script>");
+                    Response.Write("<script>alert('修改联系人成功！');</script>");
                     Response.Redirect("AddContact.aspx");
                 }
                 else
                 {
-                    Response.Write("<script>alert('添加客户成功！');</script>");  //  关闭添加页面的同时，刷新父页面
+                    Response.Write("<script>alert('添加联系人成功！');</script>");  //  关闭添加页面的同时，刷新父页面
                     Response.Redirect("AddContact.aspx");
                 }
 
