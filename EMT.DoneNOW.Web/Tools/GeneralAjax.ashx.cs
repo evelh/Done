@@ -11,10 +11,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// GeneralAjax 的摘要说明
     /// </summary>
-    public class GeneralAjax : IHttpHandler
+    public class GeneralAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             try
             {
@@ -108,13 +108,6 @@ namespace EMT.DoneNOW.Web
 
 
         }
-
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        
     }
 }

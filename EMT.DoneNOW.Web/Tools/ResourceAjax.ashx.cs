@@ -12,10 +12,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// ResourceAjax 的摘要说明
     /// </summary>
-    public class ResourceAjax : IHttpHandler, IRequiresSessionState
+    public class ResourceAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             try
             {
@@ -125,13 +125,6 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new Tools.Serialize().SerializeJson(resList));
             }
         }
-
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        
     }
 }

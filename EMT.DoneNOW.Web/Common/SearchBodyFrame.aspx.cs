@@ -381,8 +381,8 @@ namespace EMT.DoneNOW.Web
                     }
                     contextMenu.Add(classcate);
 
-                    contextMenu.Add(new PageContextMenuDto { text = "关闭商机向导", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "丢失商机向导", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "关闭商机向导", click_function = "CloseOpportunity()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "丢失商机向导", click_function = "LoseOpportunity()" });
                     contextMenu.Add(new PageContextMenuDto { text = "重新指定客户经理向导", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "注销客户向导", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
@@ -687,6 +687,13 @@ namespace EMT.DoneNOW.Web
                     break;
                 default:
                     break;
+            }
+            // 判断权限，用户不可访问的菜单移除
+            var menus = base.GetSearchContextMenu((QueryType)queryTypeId);  // 获取该用户不可见的菜单名称
+            for (int i = contextMenu.Count - 1; i >= 0; --i)
+            {
+                //if (menus.Exists(_ => contextMenu[i].text.Equals(_)))
+                //    contextMenu.RemoveAt(i);
             }
         }
 

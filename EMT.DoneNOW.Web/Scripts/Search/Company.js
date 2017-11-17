@@ -16,3 +16,9 @@ function View(id) {
 function AddNote() {
     OpenWindow("../Activity/Notes.aspx?accountId=" + entityid, windowObj.notes + windowType.add);
 }
+function CloseOpportunity() {
+    window.open('../Opportunity/CloseOpportunity.aspx?account_id=' + entityid, windowType.blank, 'left=200,top=200,width=900,height=750', false);
+}
+function LoseOpportunity() {
+    window.open('../Opportunity/LoseOpportunity.aspx?account_id=' + entityid, windowType.blank, 'left=200,top=200,width=900,height=750', false);
+}

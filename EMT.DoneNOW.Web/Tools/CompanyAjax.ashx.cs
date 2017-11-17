@@ -16,10 +16,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// CompanyAjax 的摘要说明
     /// </summary>
-    public class CompanyAjax : IHttpHandler
+    public class CompanyAjax : BaseAjax
     {
         private crm_account_dal _dal = new crm_account_dal();
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             //context.Response.ContentType = "text/plain";
             //context.Response.Write("Hello World");
@@ -344,13 +344,6 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(proText.ToString());
             }
         }
-
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        
     }
 }

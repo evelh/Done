@@ -52,16 +52,24 @@
                                 <!--第一级菜单-->
                                 <div class="ButtonContainer">
                                     <div class="GuideNavigation Button ButtonIcon SelectedState" id="HomePage">主页</div>
+                                    <%if (CheckAuth("MENU_CRM")) { %>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">CRM</div>
+                                    <%} %>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">目录</div>
+                                    <%if (CheckAuth("MENU_CONTRACT")) { %>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">合同</div>
+                                    <%} %>
+                                    <%if (CheckAuth("MENU_PROJECT")) { %>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">项目</div>
+                                    <%} %>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">服务台</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">工时</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">库存</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">报表</div>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">外包</div>
+                                    <%if (CheckAuth("MENU_SETTING")) { %>
                                     <div class="GuideNavigation Button ButtonIcon NormalState">系统设置</div>
+                                    <%} %>
                                 </div>
                                 <!--第二级菜单-->
                                 <div class="ModuleContainer">
@@ -70,6 +78,7 @@
                                         
                                     </div>
                                     <!--第二个-->
+                                    <%if (CheckAuth("MENU_CRM")) { %>
                                     <div class="Module">
                                         <div class="Normal ContextOverlayColumn">
                                             <div>
@@ -82,70 +91,92 @@
                                                     <div class="Heading">
                                                         <div class="Text">查看</div>
                                                     </div>
+                                                    <%if (CheckAuth("MENU_CRM_COMPANY")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>" target="PageFrame">
                                                             <span class="Text">客户管理</span>
                                                         </a>
                                                     </div>
+                                                    <%}%>
+                                                    <%if (CheckAuth("MENU_CRM_CONTACT")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT %>" target="PageFrame">
                                                             <span class="Text">联系人管理</span>
                                                         </a>
                                                     </div>
+                                                    <%}%>
+                                                    <%if (CheckAuth("MENU_CRM_CONFIGURATION_ITEM")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSTALLEDPRODUCT %>" target="PageFrame">
                                                             <span class="Text">配置项管理</span>
                                                         </a>
                                                     </div>
+                                                    <%}%>
+                                                    <%if (CheckAuth("MENU_CRM_NOTES")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CRM_NOTE_SEARCH %>" target="PageFrame">
                                                             <span class="Text">备注管理</span>
                                                         </a>
                                                     </div>
+                                                    <%}%>
+                                                    <%if (CheckAuth("MENU_CRM_OPPORTUNITY")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY %>" target="PageFrame">
                                                             <span class="Text">商机管理</span>
                                                         </a>
                                                     </div>
+                                                    <%}%>
+                                                    <%if (CheckAuth("MENU_CRM_SALESORDER")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SALEORDER %>" target="PageFrame">
                                                             <span class="Text">销售订单管理</span>
                                                         </a>
                                                     </div>
+                                                    <%}%>
+                                                    <%if (CheckAuth("MENU_CRM_QUOTE")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE %>" target="PageFrame">
                                                             <span class="Text">报价管理</span>
                                                         </a>
                                                     </div>
+                                                    <%}%>
+                                                    <%if (CheckAuth("MENU_CRM_SUBSCRIPTION")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUBSCRIPTION %>" target="PageFrame">
                                                             <span class="Text">订阅管理</span>
                                                         </a>
                                                     </div>
+                                                    <%}%>
+                                                    <%if (CheckAuth("MENU_CRM_TODOS")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS %>" target="PageFrame">
                                                             <span class="Text">待办管理</span>
                                                         </a>
                                                     </div>
+                                                    <%}%>
                                                 </div>
                                                 <div class="Group">
                                                     <div class="Heading">
                                                         <div class="Text">工具</div>
                                                     </div>
+                                                    <%if (CheckAuth("MENU_CRM_QUOTE_TEMPLATE")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE_TEMPLATE %>" target="PageFrame">
                                                             <span class="Text">报价模板管理</span>
                                                         </a>
                                                     </div>
+                                                    <%}%>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <%} %>
                                     <!--第三个-->
                                     <div class="Module">
                                         
                                     </div>
                                     <!--第四个-->
+                                    <%if (CheckAuth("MENU_CONTRACT")) { %>
                                     <div class="Module">
                                         <div class="Normal ContextOverlayColumn">
                                             <div>
@@ -158,93 +189,92 @@
                                                     <div class="Heading">
                                                         <div class="Text">搜索</div>
                                                     </div>
+                                                    <%if (CheckAuth("MENU_CONTRACT_CONTRACT")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT %>" target="PageFrame">
-                                                            <span class="Text">合同</span>
+                                                            <span class="Text">合同管理</span>
                                                         </a>
                                                     </div>
+                                                    <%} %>
                                                 </div>
                                                 <div class="Group">
                                                     <div class="Heading">
                                                         <div class="Text">审批并提交</div>
                                                     </div>
+                                                    <%if (CheckAuth("MENU_CONTRACT_APPROVE_CHARGES")) { %>
                                                     <div class="Content">
                                                          <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>" target="PageFrame"> 
                                                             <span class="Text">审批并提交</span>
                                                         </a>
                                                     </div>
+                                                    <%} %>
                                                 </div>
                                                    <div class="Group">
                                                     <div class="Heading">
                                                         <div class="Text">发票和工时调整</div>
                                                     </div>
+                                                    <%if (CheckAuth("MENU_CONTRACT_GENERATE_INVOICE")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Invoice/InvocieSearch.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.GENERATE_INVOICE %>" target="PageFrame"> 
                                                             <span class="Text">生成发票</span>
                                                         </a>
                                                     </div>
+                                                    <%} %>
                                                 </div>
                                                  <div class="Group">
                                                     <div class="Heading">
                                                         <div class="Text">工具</div>
                                                     </div>
+                                                    <%if (CheckAuth("MENU_CONTRACT_INVOICE_HISTORY")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_HISTORY %>" target="PageFrame"> 
                                                             <span class="Text">历史发票</span>
                                                         </a>
                                                     </div>
+                                                    <%} %>
+                                                    <%if (CheckAuth("MENU_CONTRACT_INVOICE_TEMPLATE")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_TEMPLATE %>" target="PageFrame"> 
                                                             <span class="Text">发票模板</span>
                                                         </a>
                                                     </div>
+                                                    <%} %>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <%}%>
                                     <!--第五个-->
+                                    <%if (CheckAuth("MENU_PROJECT")) { %>
                                     <div class="Module">
                                         <div class="Normal ContextOverlayColumn">
                                             <div>
                                                 <div class="Group">
                                                     <div class="Heading">
-                                                        <div class="Text">视图5</div>
-                                                    </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">LiveLinks Designer</span>
-                                                        </a>
+                                                        <div class="Text">视图</div>
                                                     </div>
                                                 </div>
                                                 <div class="Group">
                                                     <div class="Heading">
                                                         <div class="Text">搜索</div>
                                                     </div>
+                                                    <%if (CheckAuth("MENU_PROJECT_PROJECT")) { %>
                                                     <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">My Home Page</span>
+                                                        <a class="Button ButtonIcon NormalState" href="Project/ProjectSearch.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_SEARCH %>" target="PageFrame"> 
+                                                            <span class="Text">项目管理</span>
                                                         </a>
                                                     </div>
-                                                     <div class="Content">
-                               <a class="Button ButtonIcon NormalState" href="Project/ProjectSearch.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_SEARCH %>" target="PageFrame"> 
-                                                            <span class="Text">项目查询</span>
-                                                        </a>
-                                                    </div>
+                                                    <%}%>
                                                 </div>
                                                 <div class="Group">
                                                     <div class="Heading">
                                                         <div class="Text">工具</div>
                                                     </div>
-                                                    <div class="Content">
-                                                        <a class="Button ButtonIcon NormalState">
-                                                            <span class="Text">Co-Workers</span>
-                                                        </a>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
+                                    <%}%>
                                     <!--第六个-->
                                     <div class="Module">
                                         
@@ -266,6 +296,7 @@
                                         
                                     </div>
                                     <!--第11个-->
+                                    <%if (CheckAuth("MENU_SETTING")) { %>
                                     <div class="Module">
                                         <div class="Normal ContextOverlayColumn">
                                             <div>
@@ -273,11 +304,13 @@
                                                     <div class="Heading">
                                                         <div class="Text">视图</div>
                                                     </div>
+                                                    <%if (CheckAuth("MENU_SETTING_SETTING")) { %>
                                                     <div class="Content">
                                                         <a class="Button ButtonIcon NormalState" href="SysSetting/Admin" target="PageFrame">
                                                             <span class="Text">设置</span>
                                                         </a>
                                                     </div>
+                                                    <%}%>
                                                 </div>
                                                 <div class="Group">
                                                     <div class="Heading">
@@ -292,6 +325,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <%}%>
                                 </div>
                             </div>
                         </div>
@@ -573,7 +607,7 @@
             </div>
         </div>
         <div class="cont" style="display:none;">
-            <iframe id="PageFrame" name="PageFrame" style="width:100%;" src="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>"></iframe>
+            <iframe id="PageFrame" name="PageFrame" style="width:100%;" ></iframe>
         </div>
 	</body>
 	<script src="Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>

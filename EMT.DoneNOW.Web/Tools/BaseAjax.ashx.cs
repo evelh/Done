@@ -43,7 +43,8 @@ namespace EMT.DoneNOW.Web
         /// <returns></returns>
         private bool CheckUserAccess(string url)
         {
-            return AuthBLL.CheckUrlAuth(userInfo.security_Level_id, userPermit, url);
+            return true;
+            //return AuthBLL.CheckUrlAuth(userInfo.security_Level_id, userPermit, url);
         }
 
         public abstract void AjaxProcess(HttpContext context);
@@ -71,7 +72,8 @@ namespace EMT.DoneNOW.Web
         /// <returns></returns>
         protected bool CheckAuth(string sn)
         {
-            return AuthBLL.CheckAuth(userInfo.security_Level_id, userPermit, sn);
+            return true;
+            //return AuthBLL.CheckAuth(userInfo.security_Level_id, userPermit, sn);
         }
 
         public bool IsReusable

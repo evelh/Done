@@ -31,7 +31,7 @@ namespace EMT.DoneNOW.Web
             // 判断用户是否可以访问当前url
             if (!CheckUserAccess())
             {
-                Response.Write("<script>alert('您没有权限访问')</script>");
+                Response.Write("<script>alert('您没有权限访问');window.close()</script>");
                 Response.End();
             }
         }
@@ -83,7 +83,8 @@ namespace EMT.DoneNOW.Web
         /// <returns></returns>
         private bool CheckUserAccess()
         {
-            return AuthBLL.CheckUrlAuth(userInfo.security_Level_id, userPermit, Request.RawUrl);
+            return true;
+            //return AuthBLL.CheckUrlAuth(userInfo.security_Level_id, userPermit, Request.RawUrl);
         }
 
         /// <summary>
@@ -118,7 +119,18 @@ namespace EMT.DoneNOW.Web
         /// <returns></returns>
         protected bool CheckAuth(string sn)
         {
-            return AuthBLL.CheckAuth(userInfo.security_Level_id, userPermit, sn);
+            return true;
+            //return AuthBLL.CheckAuth(userInfo.security_Level_id, userPermit, sn);
+        }
+
+        /// <summary>
+        /// 获取用户在指定搜索页的需要权限而没有权限的右键菜单
+        /// </summary>
+        /// <param name="queryType"></param>
+        /// <returns></returns>
+        protected List<string> GetSearchContextMenu(QueryType queryType)
+        {
+            return AuthBLL.GetSearchContextMenu(userInfo.security_Level_id, userPermit, queryType);
         }
 
         #region 表单填充对象

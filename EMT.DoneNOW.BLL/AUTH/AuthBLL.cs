@@ -108,7 +108,7 @@ namespace EMT.DoneNOW.BLL
                 AuthPermitDto permit = new AuthPermitDto
                 {
                     permit = pmt,
-                    url = GetAuthUrl(pmt.url),
+                    url = GetAuthUrlList(pmt.url),
                 };
                 allPermitsDtoList.Add(permit);
             }
@@ -123,7 +123,7 @@ namespace EMT.DoneNOW.BLL
                 var unAvailable = new List<AuthPermitDto>();
 
                 // 查询sys_security_level对应的所有sys_permit的id
-                string sql = $"SELECT permit_id FROM sys_limit_permit WHERE limit_id IN (SELECT limit_id FROM sys_security_level_limit WHERE security_level_id={sec.id})";
+                string sql = $"SELECT permit_id FROM sys_limit_permit WHERE limit_id IN (SELECT limit_id FROM sys_security_level_limit WHERE security_level_id={sec.id} AND limit_type_value_id NOT IN (973,976,978,989,1242))";
                 var pmtIds = dal.FindListBySql<int>(sql);
 
                 foreach(var pmt in allPermitsDtoList)
@@ -144,11 +144,28 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        private static AuthUrlDto GetAuthUrl(string url)
+        private static List<AuthUrlDto> GetAuthUrlList(string url)
         {
             if (string.IsNullOrEmpty(url))
                 return null;
 
+            List<AuthUrlDto> list = new List<AuthUrlDto>();
+            var arr = url.Split(';');
+            foreach(var u in arr)
+            {
+                list.Add(GetAuthUrl(u));
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// 格式化url分割参数等
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        private static AuthUrlDto GetAuthUrl(string url)
+        {
             AuthUrlDto dto = new AuthUrlDto();
             int index = url.IndexOf('?');
             if (index == -1)
@@ -181,7 +198,45 @@ namespace EMT.DoneNOW.BLL
             return dto;
         }
 
+        /// <summary>
+        /// 获取用户在指定搜索页的需要权限而没有权限的右键菜单
+        /// </summary>
+        /// <param name="levelId"></param>
+        /// <param name="userPermit"></param>
+        /// <param name="queryType"></param>
+        /// <returns></returns>
+        public static List<string> GetSearchContextMenu(long levelId, List<AuthPermitDto> userPermit, QueryType queryType)
+        {
+            List<string> menus = new List<string>();
+            string sn = "SEARCH_" + queryType.ToString().ToUpper(); // 搜索页的sn
 
+            var list = secLevelPermitDic[levelId];
+            AuthPermitDto permit = userPermit.Find(_ => _.permit.sn.Equals(sn));    // 搜索页权限点
+            if (permit == null)
+            {
+                permit = list.availablePermitList.Find(_ => _.permit.sn.Equals(sn));
+            }
+            if (permit == null)     // 用户没有访问此搜索页的权限
+                return null;
+
+            List<string> ALLmenus = new List<string>();     // 该搜索页所有需要权限的右键菜单
+            List<string> availableMenus = new List<string>();   // 用户可用的右键菜单
+            IEnumerable<string> find = from pmt in allPermitsDtoList where pmt.permit.parent_id == permit.permit.id select permit.permit.name;
+            ALLmenus.AddRange(find);
+
+            find = from pmt in userPermit where pmt.permit.parent_id == permit.permit.id select permit.permit.name;
+            availableMenus.AddRange(find);
+            find = from pmt in list.availablePermitList where pmt.permit.parent_id == permit.permit.id select pmt.permit.name;
+            availableMenus.AddRange(find);
+
+            foreach(var m in ALLmenus)
+            {
+                if (!availableMenus.Exists(_ => _.Equals(m)))
+                    menus.Add(m);
+            }
+
+            return menus;
+        }
 
         /// <summary>
         /// 获取每个用户单独配置的权限
@@ -228,7 +283,7 @@ namespace EMT.DoneNOW.BLL
                 AuthPermitDto permit = new AuthPermitDto
                 {
                     permit = pmt,
-                    url = GetAuthUrl(pmt.url),
+                    url = GetAuthUrlList(pmt.url),
                 };
                 permits.Add(permit);
             }
@@ -283,26 +338,48 @@ namespace EMT.DoneNOW.BLL
             if (requestUrl.parms == null)    // 没有参数，且没有完全匹配到，说明不在权限点列表中
                 return true;
 
-            // 查找url相同且有参数的
-            IEnumerable<AuthPermitDto> selUrl = from u in userPermit
-                                                where url.Equals(u.url.url) && u.url.parms != null
-                                                select u;
-            foreach(var sel in selUrl)  // 验证参数完全匹配
+            // 匹配url和参数
+            foreach(var permit in userPermit)
             {
-                // 用户单独的权限点中匹配到，验证通过
-                if (CheckUrlSatifyPermit(requestUrl, sel.url))
-                    return true;
+                if (permit.url == null)
+                    continue;
+                foreach(var u in permit.url)
+                {
+                    if (CheckUrlSatifyPermit(requestUrl, u))
+                        return true;
+                }
+            }
+            foreach (var permit in secLevelPermit.unAvailablePermitList)
+            {
+                if (permit.url == null)
+                    continue;
+                foreach (var u in permit.url)
+                {
+                    if (CheckUrlSatifyPermit(requestUrl, u))
+                        return false;
+                }
             }
 
-            selUrl = from u in secLevelPermit.unAvailablePermitList
-                     where u.url != null && url.Equals(u.url.url) && u.url.parms != null
-                     select u;
-            foreach (var sel in selUrl)  // 验证参数完全匹配
-            {
-                // 权限等级的不可访问权限点中匹配到，验证不通过
-                if (CheckUrlSatifyPermit(requestUrl, sel.url))
-                    return false;
-            }
+
+            //IEnumerable<AuthPermitDto> selUrl = from u in userPermit
+            //                                    where u.url != null && requestUrl.url.Equals(u.url.url) 
+            //                                    select u;
+            //foreach(var sel in selUrl)  // 验证参数完全匹配
+            //{
+            //    // 用户单独的权限点中匹配到，验证通过
+            //    if (CheckUrlSatifyPermit(requestUrl, sel.url))
+            //        return true;
+            //}
+
+            //selUrl = from u in secLevelPermit.unAvailablePermitList
+            //         where u.url != null && requestUrl.url.Equals(u.url.url) 
+            //         select u;
+            //foreach (var sel in selUrl)  // 验证参数完全匹配
+            //{
+            //    // 权限等级的不可访问权限点中匹配到，验证不通过
+            //    if (CheckUrlSatifyPermit(requestUrl, sel.url))
+            //        return false;
+            //}
 
             return true;
         }
@@ -317,6 +394,9 @@ namespace EMT.DoneNOW.BLL
         {
             if (!requestUrl.url.Equals(conditionUrl.url))    // url不相等
                 return false;
+
+            if (conditionUrl.parms == null)
+                return true;
 
             bool haveNotSatifyParam = false;    // 是否查找到有不满足设定的参数
             foreach (var p in conditionUrl.parms)     // 验证url参数中是否包含条件url所有的参数

@@ -10,10 +10,10 @@ namespace EMT.DoneNOW.Web
     /// <summary>
     /// ServiceAjax 的摘要说明
     /// </summary>
-    public class ServiceAjax : IHttpHandler
+    public class ServiceAjax : BaseAjax
     {
 
-        public void ProcessRequest(HttpContext context)
+        public override void AjaxProcess(HttpContext context)
         {
             var action = context.Request.QueryString["act"];
             switch (action)
@@ -57,12 +57,6 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(service_bundle));
             }
         }
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        
     }
 }

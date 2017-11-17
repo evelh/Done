@@ -13,7 +13,7 @@ namespace EMT.DoneNOW.DTO
     public class AuthPermitDto
     {
         public sys_permit permit { get; set; }
-        public AuthUrlDto url { get; set; }
+        public List<AuthUrlDto> url { get; set; }
     }
 
     /// <summary>
