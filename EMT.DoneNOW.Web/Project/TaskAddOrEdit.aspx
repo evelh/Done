@@ -729,7 +729,7 @@
                                 </div>
                                 <div class="Editor SingleSelect" data-editor-id="WorkType" data-rdp="WorkType">
                                     <div class="InputField">
-                                        <select id="WorkType" name="WorkType">
+                                        <select id="WorkType" name="cost_code_id">
                                         </select>
                                     </div>
                                 </div>

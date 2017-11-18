@@ -241,6 +241,7 @@ namespace EMT.DoneNOW.Web.Project
                 param.predic = predic;
             }
             var pageTask = AssembleModel<sdk_task>();
+            pageTask.cost_code_id = pageTask.cost_code_id == 0 ? null : pageTask.cost_code_id;
             if (parTask != null)
             {
                 pageTask.parent_id = parTask.id;

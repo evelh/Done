@@ -77,6 +77,7 @@
     <Compile Include="PreferencesInvoiceDto.cs" />
     <Compile Include="ProcessInvoiceDto.cs" />
     <Compile Include="ProjectDto.cs" />
+    <Compile Include="SdkWorkEntryDto.cs" />
     <Compile Include="TaskSaveDto.cs" />
     <Compile Include="VendorDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

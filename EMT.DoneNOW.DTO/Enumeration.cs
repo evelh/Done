@@ -948,7 +948,15 @@ namespace EMT.DoneNOW.DTO
             FIXWORK = 1901,                     // 固定工作
             FIXDURATION = 1902,                 // 固定时间
         }
-
+        /// <summary>
+        /// 工时类型 - 145
+        /// </summary>
+        public enum WORK_ENTRY_TYPE
+        {
+            COMPAMY_IN_ENTRY = 2109,   // 公司内部工时
+            PROJECT_ENTRY = 2110,      // 项目工时
+            TICKET_ENTRY = 2111,       // 工单工时
+        }
         /// <summary>
         /// 发布类型 -- 146
         /// </summary>

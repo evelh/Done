@@ -206,15 +206,19 @@
     <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\EditServiceInvoiceDesc.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
+    <Content Include="Images\attachment.png" />
     <Content Include="Images\calendar.png" />
     <Content Include="Images\cancel1.png" />
     <Content Include="Images\contract.png" />
     <Content Include="Images\dailyGridContainer.png" />
     <Content Include="Images\forward_arrow.png" />
     <Content Include="Images\ganttsprite.png" />
+    <Content Include="Images\imgGridEdit.png" />
     <Content Include="Images\left2.png" />
     <Content Include="Images\LeftArrow.png" />
     <Content Include="Images\list-view.png" />
+    <Content Include="Images\MagnifyMinus.png" />
+    <Content Include="Images\MagnifyPlus.png" />
     <Content Include="Images\monthlyGridContainer.png" />
     <Content Include="Images\note.png" />
     <Content Include="Images\open.png" />
@@ -232,6 +236,8 @@
     <Content Include="Images\todayBarIndicator.png" />
     <Content Include="Images\weeklyGridContainer.png" />
     <Content Include="Images\todos.png" />
+    <Content Include="Images\zoom-in.png" />
+    <Content Include="Images\zoom-out.png" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempEdit.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempTop.aspx" />
@@ -327,6 +333,7 @@
     <Content Include="Project\TaskAddOrEdit.aspx" />
     <Content Include="Project\TaskModify.aspx" />
     <Content Include="Project\TaskView.aspx" />
+    <Content Include="Project\WorkEntry.aspx" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
     <Content Include="QuoteTemplate\Body_itemEdit.aspx" />
     <Content Include="Images\export.png" />
@@ -1533,6 +1540,13 @@
     </Compile>
     <Compile Include="Project\TaskView.aspx.designer.cs">
       <DependentUpon>TaskView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\WorkEntry.aspx.cs">
+      <DependentUpon>WorkEntry.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\WorkEntry.aspx.designer.cs">
+      <DependentUpon>WorkEntry.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\SearchConditionFrame.aspx.cs">

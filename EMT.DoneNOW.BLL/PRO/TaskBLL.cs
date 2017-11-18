@@ -1443,6 +1443,56 @@ namespace EMT.DoneNOW.BLL
                 }
             }
         }
+        /// <summary>
+        /// 新增工时
+        /// </summary>
+        public bool AddWorkEntry(SdkWorkEntryDto para,long user_id)
+        {
+            try
+            {
+                var newRecord = para.wordRecord;
+                newRecord.id = _dal.GetNextIdCom();
+                newRecord.create_user_id = user_id;
+                newRecord.update_user_id = user_id;
+                newRecord.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                newRecord.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                new sdk_work_record_dal().Insert(newRecord);
+                OperLogBLL.OperLogAdd<sdk_work_record>(newRecord, newRecord.id,user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "新增工作报表");
+
+                var newEntry = para.workEntry;
+                newEntry.id = _dal.GetNextIdCom();
+                newEntry.create_user_id = user_id;
+                newEntry.update_user_id = user_id;
+                newEntry.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                newEntry.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                new sdk_work_entry_dal().Insert(newEntry);
+                OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "新增工时");
+
+                var choTask = _dal.FindNoDeleteById(newEntry.task_id);
+                if (choTask != null)
+                {
+                    var v_task = new v_task_all_dal().FindById(choTask.id);
+                    if (v_task != null)
+                    {
+                        if (v_task.remain_hours != para.remain_hours || choTask.status_id != para.status_id)
+                        {
+                            choTask.status_id = para.status_id;
+                            choTask.projected_variance += para.remain_hours - (v_task.remain_hours == null ? 0 : (decimal)v_task.remain_hours);
+                            OperLogBLL.OperLogUpdate<sdk_task>(choTask, _dal.FindNoDeleteById(choTask.id), choTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "更改task");
+                            _dal.Update(choTask);
+
+                        }
+                    }
+                }
+
+            }
+            catch (Exception msg)
+            {
+                return false;
+            }
+            return true;
+        }
+
 
     }
 }

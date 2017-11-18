@@ -128,6 +128,7 @@
     <Compile Include="SDK\sdk_task_predecessor_dal.cs" />
     <Compile Include="SDK\sdk_task_resource_dal.cs" />
     <Compile Include="SDK\sdk_work_entry_dal.cs" />
+    <Compile Include="SDK\sdk_work_record_dal.cs" />
     <Compile Include="SDK\v_task_all_dal.cs" />
     <Compile Include="SYS\sys_department_dal.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email_dal.cs" />

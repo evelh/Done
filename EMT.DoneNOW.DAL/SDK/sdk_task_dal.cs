@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using EMT.DoneNOW.Core;
 using static EMT.DoneNOW.DTO.DicEnum;
+using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.DAL
 {
@@ -70,6 +71,26 @@ namespace EMT.DoneNOW.DAL
         public sdk_task GetSinTaskBySortNo(long project_id,string sortNo)
         {
             return FindSignleBySql<sdk_task>($"SELECT * from sdk_task where delete_time = 0 and project_id = {project_id} and sort_order = '{sortNo}'");
+        }
+        public List<sdk_task> GetTaskByRes(long rid, string showType, bool isShowCom, long project_id)
+        {
+            var show = "";
+            if (showType == "showMe")
+            {
+                show = $" and (s.create_user_id = {rid} or str.resource_id = {rid} or s.owner_resource_id ={rid} )";
+            }
+            else if (showType == "showMeDep")
+            {
+                show = $" and ((s.create_user_id = {rid} or str.resource_id = {rid} or s.owner_resource_id ={rid} )or (s.create_user_id in(SELECT DISTINCT(resource_id) from sys_resource_department where is_active = 1 and department_id  in(SELECT department_id from sys_resource_department where resource_id = {rid})) or s.department_id in (SELECT department_id from sys_resource_department where resource_id = {rid}) or str.resource_id in (SELECT DISTINCT(resource_id) from sys_resource_department where is_active = 1 and department_id  in(SELECT department_id from sys_resource_department where resource_id = {rid})) or s.owner_resource_id in(SELECT DISTINCT(resource_id) from sys_resource_department where is_active = 1 and department_id  in(SELECT department_id from sys_resource_department where resource_id = {rid}))))";
+            }
+
+            string sql = $"SELECT DISTINCT(s.id),s.title FROM  crm_account a INNER JOIN  pro_project p on p.account_id = a.id INNER JOIN sdk_task s on s.project_id = p.id LEFT JOIN sdk_task_resource str on s.id = str.task_id where p.delete_time = 0 and s.delete_time = 0 and a.delete_time = 0 and s.type_id <> {(int)DicEnum.TASK_TYPE.PROJECT_PHASE} and  p.type_id not in({(int)DicEnum.PROJECT_TYPE.TEMP},{(int)DicEnum.PROJECT_TYPE.BENCHMARK}) and p.id = {project_id}";
+            if (!isShowCom)
+            {
+                sql += $" and s.status_id <> {(int)DicEnum.TICKET_STATUS.DONE}";
+            }
+            sql += show;
+            return FindListBySql<sdk_task>(sql);
         }
     }
 }

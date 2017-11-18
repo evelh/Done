@@ -105,6 +105,12 @@ namespace EMT.DoneNOW.Web
                         var oTaskId = context.Request.QueryString["taskId"];
                         Outdent(context, long.Parse(oTaskId));
                         break;
+                    case "GetProByRes":
+                        GetProByRes(context, long.Parse(context.Request.QueryString["resource_id"]), context.Request.QueryString["showType"], !string.IsNullOrEmpty(context.Request.QueryString["isShowCom"]),long.Parse(context.Request.QueryString["account_id"]));
+                        break;
+                    case "GetTaskByRes":
+                        GetTaskByRes(context, long.Parse(context.Request.QueryString["resource_id"]), context.Request.QueryString["showType"], !string.IsNullOrEmpty(context.Request.QueryString["isShowCom"]), long.Parse(context.Request.QueryString["project_id"]));
+                        break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                         break;
@@ -865,6 +871,28 @@ namespace EMT.DoneNOW.Web
 
 
         }
-
+        /// <summary>
+        /// 根据条件删选项目
+        /// </summary>
+        private void GetProByRes(HttpContext context, long rId, string showType, bool isShowComp,long account_id)
+        {
+            var list = new pro_project_dal().GetAccByRes(rId, showType, isShowComp,account_id);
+            if (list != null && list.Count > 0)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(list));
+            }
+        }
+        /// <summary>
+        /// 根据条件筛选任务
+        /// </summary>
+        private void GetTaskByRes(HttpContext context, long rId, string showType, bool isShowComp, long project_id)
+        {
+            var list = new sdk_task_dal().GetTaskByRes(rId, showType, isShowComp, project_id);
+            if (list != null && list.Count > 0)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(list));
+            }
+        }
+        
     }
 }

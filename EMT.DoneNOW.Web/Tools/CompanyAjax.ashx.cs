@@ -76,6 +76,9 @@ namespace EMT.DoneNOW.Web
                     var pro_account_id = context.Request.QueryString["account_id"];
                     GetAccountProject(context,long.Parse(pro_account_id));
                     break;
+                case "GetAccByRes":
+                    GetAccByRes(context,long.Parse(context.Request.QueryString["resource_id"]),context.Request.QueryString["showType"],!string.IsNullOrEmpty(context.Request.QueryString["isShowCom"]));
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     return;
@@ -343,6 +346,19 @@ namespace EMT.DoneNOW.Web
                 }
                 context.Response.Write(proText.ToString());
             }
+        }
+        /// <summary>
+        /// 根据员工和相关条件获取相对应的客户
+        /// </summary>
+        private void GetAccByRes(HttpContext context,long rId,string showType,bool isShowComp)
+        {
+            var list = new crm_account_dal().GetAccByRes(rId,showType,isShowComp);
+            if (list != null && list.Count > 0)
+            {
+                // var accDic = list.GroupBy(_ => _.id).ToDictionary(_ => _.Key, _ => _.FirstOrDefault(f=>!string.IsNullOrEmpty(f.name)).name);
+                context.Response.Write(new Tools.Serialize().SerializeJson(list));
+            }
+          
         }
         
     }

@@ -29,6 +29,7 @@ namespace EMT.DoneNOW.BLL
             dic.Add("addressdistrict", new d_district_dal().GetDictionary());                 // 地址表（省市县区）
 
             dic.Add("org_location", new sys_organization_location_dal().GetLocList());  // 区域地址
+            dic.Add("role", new sys_role_dal().GetList());
             dic.Add("sys_resource", new sys_resource_dal().GetDictionary(true));  // 项目经理
             return dic;
         }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DAL;
+using System.Text;
+using EMT.DoneNOW.BLL;
 
 namespace EMT.DoneNOW.Web
 {
@@ -25,6 +27,10 @@ namespace EMT.DoneNOW.Web
                 case "service_bundle":
                     var service_bundle_id = context.Request.QueryString["service_bundle_id"];
                     GetServiceBundle(context,long.Parse(service_bundle_id));
+                    break;
+                case "GetSerList":
+                    var conId  = context.Request.QueryString["contract_id"];
+                    GetSerList(context,long.Parse(conId));
                     break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -57,6 +63,53 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(service_bundle));
             }
         }
-        
+        /// <summary>
+        ///  根据合同Id获取相关信息，用横线隔开
+        /// </summary>
+        public void GetSerList(HttpContext context,long contract_id)
+        {
+            var contract = new ctt_contract_dal().FindNoDeleteById(contract_id);
+            if (contract != null)
+            {
+                var serviceList = new ctt_contract_service_dal().GetConSerList(contract.id);
+                if (serviceList != null && serviceList.Count > 0)
+                {
+                    StringBuilder services = new StringBuilder();
+                    var oppBLL = new OpportunityBLL();
+
+                    var serList = serviceList.Where(_ => _.object_type == 1).ToList();
+                    var serBagList = serviceList.Where(_ => _.object_type == 2).ToList();
+                    if (serList != null && serList.Count > 0)
+                    {
+                        foreach (var item in serList)
+                        {
+                            var name = oppBLL.ReturnServiceName(item.object_id);
+                            services.Append("<option value='" + item.id + "'>" + name + "</option>");
+                        }
+                        if (serBagList != null && serBagList.Count > 0)
+                        {
+                            services.Append("<option>-------</option>");
+                        }
+                     
+                    }
+                    if (serBagList != null && serBagList.Count > 0)
+                    {
+                        foreach (var item in serBagList)
+                        {
+                            var name = oppBLL.ReturnServiceName(item.object_id);
+                            services.Append("<option value='" + item.id + "'>" + name + "</option>");
+                        }
+                        
+                    }
+
+
+
+                    context.Response.Write(services);
+                   
+                }
+            }
+        }
+
+
     }
 }
