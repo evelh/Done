@@ -113,8 +113,23 @@ namespace EMT.DoneNOW.BLL
             }
             else if (typeId == (int)DicEnum.ATTACHMENT_TYPE.URL)
             {
-                att.urlpath = attLink;
-                att.filename = @"http://" + attLink;
+                if (attLink.IndexOf(@"http://")==0)
+                {
+                    attLink = attLink.Remove(0, 7);
+                    att.urlpath = attLink;
+                    att.filename = @"http://" + attLink;
+                }
+                else if (attLink.IndexOf(@"https://") == 0)
+                {
+                    attLink = attLink.Remove(0, 8);
+                    att.urlpath = attLink;
+                    att.filename = @"https://" + attLink;
+                }
+                else
+                {
+                    att.urlpath = attLink;
+                    att.filename = @"http://" + attLink;
+                }
             }
             else if (typeId == (int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
             {

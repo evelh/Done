@@ -134,7 +134,29 @@
       } else if ($("#actType").val() ==<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_TYPE.URL %>){
         $("#attTypeTr").html("<td class='FieldLabel' width='50%'>URL<span style='color: Red;'>*</span><div><input type='text' id='att' name='attLink' style='width:250px;' /></div></td>");
       }
+      $("#att").change(function () {
+        attChange();
+      })
     })
+
+    $("#att").change(function () {
+      attChange();
+    })
+
+    function attChange() {
+      if ($("#actType").val() ==<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_TYPE.ATTACHMENT %>){
+        var file = $('#att').get(0).files[0];
+        if (file) {
+          if ($("#attName").val() == "") {
+            $("#attName").val(file.name);
+          }
+        }
+      } else {
+        if ($("#attName").val() == "") {
+          $("#attName").val($("#att").val());
+        }
+      }
+    }
 
     $("#SaveAndCloseButton").click(function () {
       subCheck("saveClose");

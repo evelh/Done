@@ -36,7 +36,7 @@ namespace EMT.DoneNOW.Web.Activity
             }
             else if (att.type_id == (int)DicEnum.ATTACHMENT_TYPE.URL)
             {
-                Response.RedirectLocation = att.urlpath;
+                Response.Redirect(att.filename);
             }
             else if (att.type_id == (int)DicEnum.ATTACHMENT_TYPE.FILE_LINK
                 || att.type_id == (int)DicEnum.ATTACHMENT_TYPE.FOLDER_LINK)
