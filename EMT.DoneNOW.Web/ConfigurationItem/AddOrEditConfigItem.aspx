@@ -1595,7 +1595,7 @@
     }
 
     function chooseContract() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_CALLBACK %>&field=contract_id&callBack=GetServiceByContract", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&field=contract_id&callBack=GetServiceByContract&con627=<%=account.id %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>', 'left=200,top=200,width=600,height=800', false);
     }
     // 如果选择的是服务的合同，那么服务包可选。是该服务下的服务包
     function GetServiceByContract() {
