@@ -8,3 +8,6 @@ function Delete() {
         })
     }, function () { })
 }
+function View(id) {
+    window.open("../Activity/OpenAttachment.aspx?id=" + id, windowType.blank, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
