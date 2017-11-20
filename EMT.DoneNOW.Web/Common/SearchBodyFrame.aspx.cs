@@ -217,6 +217,12 @@ namespace EMT.DoneNOW.Web
                     addBtn = "";
                     break;
             }
+
+            // 判断权限
+            if (!string.IsNullOrEmpty(addBtn))
+            {
+
+            }
         }
 
         /// <summary>

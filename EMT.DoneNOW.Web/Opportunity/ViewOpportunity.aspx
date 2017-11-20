@@ -29,47 +29,80 @@
     <div class="header">
       <i>
         <ul>
+          <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_ACTIVITY")) { %>
           <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=activity">活动</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_TODOS")) { %>
           <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=todo">待办</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_NOTES")) { %>
           <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=note">备注</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_TICKETS")) { %>
           <li>工单</li>
+          <%}%>
+          <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_ATTACHMENT")) { %>
           <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=att">附件</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_QUOTE_ITEM")) { %>
           <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=quoteItem">报价项</a></li>
+          <%}%>
         </ul>
       </i>
       查看商机-<%=opportunity.name %>(ID:<%=opportunity.oid %>)-<%=account.name %>
     </div>
     <div class="header-title" style="width:510px;">
       <ul>
+        <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_EDIT_OPPORTUNITY")) { %>
         <li onclick="window.open('OpportunityAddAndEdit.aspx?opportunity_id=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityEdit %>','left= 200, top = 200, width = 900, height = 750', false);">
           <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
           <input type="button" value="修改" />
         </li>
+        <%}%>
+        <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_ADD")) { %>
         <li>
           <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
           添加
 					<i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
           <ul>
+            <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_ADD_TODO")) { %>
             <li onclick="window.open('../Activity/Todos.aspx?opportunityId=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=730,height=750', false);"><a>待办</a></li>
+            <%} %>
+            <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_ADD_NOTE")) { %>
             <li onclick="window.open('../Activity/Notes.aspx?opportunityId=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=730,height=750', false);"><a>备注</a></li>
+            <%} %>
+            <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_ADD_TICKETS")) { %>
             <li>工单</li>
+            <%} %>
+            <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_ADD_ATTACHMENT")) { %>
             <li onclick="window.open('../Activity/AddAttachment?objId=<%=opportunity.id %>&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.OPPORTUNITY %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.AttachmentAdd %>','left=200,top=200,width=730,height=750', false);"><a>附件</a></li>
+            <%} %>
+            <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_ADD_QUOTE")) { %>
             <%if (quoteList == null || quoteList.Count == 0)
                 { %>
             <li onclick="window.open('../Quote/QuoteAddAndUpdate?quote_opportunity_id=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>','left=200,top=200,width=900,height=750', false);"><a>报价</a></li>
             <%} %>
+            <%} %>
             <%-- todo 如果商机已经有报价，则不显示  CloseOpportunity--%>
           </ul>
         </li>
+        <%}%>
+        <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_CLOSE_OPPORTUNITY")) { %>
         <li onclick="window.open('CloseOpportunity.aspx?id=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityClose %>','left=200,top=200,width=900,height=750', false);">
           <input type="button" value="关闭商机" />
         </li>
+        <%}%>
+        <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_CLOSE_OPPORTUNITY")) { %>
         <li onclick="window.open('LoseOpportunity.aspx?id=<%=opportunity.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityLose %>','left=200,top=200,width=900,height=750', false);">
           <input type="button" value="丢失商机" />
         </li>
+        <%}%>
+        <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_LIVELINK")) { %>
         <li><input type="button" value="LiveLink" /></li>
+        <%}%>
+        <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_PRINT")) { %>
         <li><input type="button" value="打印" /></li>
-
+        <%}%>
       </ul>
     </div>
     <%--<div class="text warn">eave these fields blank. All fields marked with a “1” apply to the Contact only.</div>--%>
@@ -157,6 +190,7 @@
           <%} %>
         </div>
 
+        <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_COMPANY")) { %>
         <div class="account address opportunityaddress viewleftTitle1 ">
           <p class="switch pr">
             <i class="switchicon switchicon1"></i>客户
@@ -216,7 +250,9 @@
           <p>(F) <%=account.fax %></p>
           <p><%=account.web_site %></p>
         </div>
+        <%} %>
 
+        <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_CONTACT")) { %>
         <%if (contact != null)
             {
         %>
@@ -286,10 +322,10 @@
         </div>
 
         <%} %>
+        <%} %>
 
 
-
-
+        <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_ADVANCED_FIELD")) { %>
         <hr class="viewleftTitle1hr" />
         <div class="viewleftTitle1">
           <%
@@ -352,16 +388,20 @@
 
 
         </div>
+        <%} %>
         <hr class="viewleftTitle1hr" />
 
+        <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_WHO_CAN_VIEW")) { %>
         <div class="viewleftTitle1">
           <p class="clear"><a href="javaScript:">谁可以看到</a></p>
         </div>
+        <%} %>
       </div>
       <input type="hidden" id="isAddQuote" value="" runat="server" />
       <div id="ShowOpportunity_Right" class="activityTitleright f1">
         <%if (type.Equals("activity")) { %>
         <div class="FeedHeader">
+          <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_QUICK_ADD_NOTE")) { %>
         <div class="NewRootNote">
           <textarea placeholder="添加一个备注..." id="insert"></textarea>
         </div>
@@ -372,19 +412,26 @@
           </asp:DropDownList>
             <input type="hidden" id="objectId" value="<%=opportunity.id %>" />
         </div>
+          <%} %>
         <div class="checkboxs clear">
+          <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_ACT_TODOS")) { %>
           <div class="clear">
             <asp:CheckBox ID="Todos" runat="server" />
             <label>待办</label>
           </div>
+          <%} %>
+          <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_ACT_NOTES")) { %>
           <div class="clear">
             <asp:CheckBox ID="Note" runat="server" />
             <label>备注</label>
           </div>
+          <%} %>
+          <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_ACT_TICKETS")) { %>
           <div class="clear">
             <asp:CheckBox ID="Tickets" runat="server" />
             <label>工单</label>
           </div>
+          <%} %>
         </div>
         <div class="addselect">
           <div class="clear">

@@ -184,7 +184,7 @@
                     </table>
                 </div>
             </div>
-            <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;min-width:600px;">
+            <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;min-width:700px;">
                 <ul class="clear fl">
                     <%if (!string.IsNullOrEmpty(addBtn))
                         {

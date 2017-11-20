@@ -143,6 +143,16 @@ namespace EMT.DoneNOW.Web
             return AuthBLL.GetSearchContextMenu(userInfo.security_Level_id, userPermit, queryType);
         }
 
+        /// <summary>
+        /// 判断用户在搜索页是否有新增按钮权限
+        /// </summary>
+        /// <param name="queryType"></param>
+        /// <returns></returns>
+        protected bool CheckAddAuth(QueryType queryType)
+        {
+            return AuthBLL.CheckAddAuth(userInfo.security_Level_id, userPermit, queryType);
+        }
+
         #region 表单填充对象
         /// <summary>
         /// 根据当前请求上下文自动填充对象

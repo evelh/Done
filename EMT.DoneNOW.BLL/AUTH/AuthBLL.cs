@@ -241,6 +241,19 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 判断用户在搜索页是否有新增按钮权限
+        /// </summary>
+        /// <param name="levelId"></param>
+        /// <param name="userPermit"></param>
+        /// <param name="queryType"></param>
+        /// <returns></returns>
+        public static bool CheckAddAuth(long levelId, List<AuthPermitDto> userPermit, QueryType queryType)
+        {
+            string sn = "SEARCH_" + queryType.ToString().ToUpper() + "_ADD";    // 新增按钮的sn
+            return CheckAuth(levelId, userPermit, sn);
+        }
+
+        /// <summary>
         /// 获取每个用户单独配置的权限
         /// </summary>
         /// <param name="userId"></param>

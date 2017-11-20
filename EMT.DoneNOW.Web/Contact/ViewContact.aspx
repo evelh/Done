@@ -32,13 +32,27 @@
         <div class="header">
             <i>
                 <ul>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=activity">活动</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=todo">待办</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=note">备注</a></li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=opportunity">商机</a></li>
+                  <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_ACTIVITY")) { %>
+                    <li onclick="window.location.href='ViewContact.aspx?id=<%=contact.id %>&type=activity'"><a>活动</a></li>
+                  <%}%>
+                  <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_TODOS")) { %>
+                    <li onclick="window.location.href='ViewContact.aspx?id=<%=contact.id %>&type=todo'"><a>待办</a></li>
+                  <%}%>
+                  <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_NOTES")) { %>
+                    <li onclick="window.location.href='ViewContact.aspx?id=<%=contact.id %>&type=note'"><a>备注</a></li>
+                  <%}%>
+                  <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_OPPORTUNITY")) { %>
+                    <li onclick="window.location.href='ViewContact.aspx?id=<%=contact.id %>&type=opportunity'"><a>商机</a></li>
+                  <%}%>
+                  <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_CONTACT_GROUP")) { %>
                     <li>联系人组</li>
+                  <%}%>
+                  <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_TICKETS")) { %>
                     <li>工单</li>
-                    <li><a href="ViewContact.aspx?id=<%=contact.id %>&type=configura">配置项</a></li>
+                  <%}%>
+                  <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_CONFIGURATION_ITEM")) { %>
+                    <li onclick="window.location.href='ViewContact.aspx?id=<%=contact.id %>&type=configura'"><a>配置项</a></li>
+                  <%}%>
                 </ul>
             </i>
             联系人-<%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %>|<%=contact.title %>-<%=account.name %>
@@ -50,16 +64,26 @@
                     <input type="button" id="Edit" value="修改" onclick="window.open('AddContact.aspx?id=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactEdit %>','left= 200, top = 200, width = 900, height = 750', false);" />
                     <%--  <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" />--%>
                 </li>
+              <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_ADD")) { %>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
                     添加
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
-                        <li><a href="#" onclick="window.open('../Activity/Todos.aspx?contactId=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=730,height=750', false);">待办</a></li>
-                        <li><a href="#" onclick="window.open('../Activity/Notes.aspx?contactId=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=730,height=750', false);">备注</a></li>
-                        <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_contact_id=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
+                      <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_ADD_TODOS")) { %>
+                      <li onclick="window.open('../Activity/Todos.aspx?contactId=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=730,height=750', false);"><a href="#">待办</a></li>
+                      <%}%>
+                      <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_ADD_NOTES")) { %>  
+                      <li onclick="window.open('../Activity/Notes.aspx?contactId=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=730,height=750', false);"><a href="#">备注</a></li>
+                      <%}%>
+                      <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_ADD_OPPORTUNITY")) { %>
+                      <li onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_contact_id=<%=contact.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);"><a href="#">商机</a></li>
+                    <%}%>
                     </ul>
                 </li>
+              <%}%>
+              <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_FRIEND_LINK")) { %>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>友情链接</li>
+              <%}%>
             </ul>
         </div>
 
@@ -208,6 +232,7 @@
         <div id="ShowContact_Right" class="activityTitleright f1">
           <%if (type.Equals("activity")) { %>
           <div class="FeedHeader">
+            <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_ADD_NOTE")) { %>
         <div class="NewRootNote">
           <textarea placeholder="添加一个备注..." id="insert"></textarea>
         </div>
@@ -218,31 +243,44 @@
           </asp:DropDownList>
             <input type="hidden" id="objectId" value="<%=contact.id %>" />
         </div>
+            <%}%>
         <div class="checkboxs clear">
+          <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_ACT_TODOS")) { %>
           <div class="clear">
             <asp:CheckBox ID="Todos" runat="server" />
             <label>待办</label>
           </div>
+          <%}%>
+          <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_ACT_NOTES")) { %>
           <div class="clear">
             <asp:CheckBox ID="Note" runat="server" />
             <label>备注</label>
           </div>
+          <%}%>
+          <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_ACT_OPPORTUNITY")) { %>
           <div class="clear">
             <asp:CheckBox ID="Opportunities" runat="server" />
             <label>商机</label>
           </div>
+          <%}%>
+          <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_ACT_SALES_ORDER")) { %>
           <div class="clear">
             <asp:CheckBox ID="SalesOrders" runat="server" />
             <label>销售单</label>
           </div>
+          <%}%>
+          <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_ACT_TICKETS")) { %>
           <div class="clear">
             <asp:CheckBox ID="Tickets" runat="server" />
             <label>工单</label>
           </div>
+          <%}%>
+          <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_ACT_PROJECT")) { %>
           <div class="clear">
             <asp:CheckBox ID="Projects" runat="server" />
             <label>项目</label>
           </div>
+          <%}%>
         </div>
         <div class="addselect">
           <div class="clear">

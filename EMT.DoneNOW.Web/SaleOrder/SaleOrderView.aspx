@@ -23,13 +23,27 @@
         <div class="header">
             <i>
                 <ul>
+                  <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_ACTIVITY")) { %>
                     <li><a href="SaleOrderView.aspx?id=<%=sale_order.id %>&type=activity">活动</a></li>
+                  <%}%>
+                  <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_TODOS")) { %>
                     <li><a href="SaleOrderView.aspx?id=<%=sale_order.id %>&type=todo">待办</a></li>
+                  <%}%>
+                  <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_NOTES")) { %>
                     <li><a href="SaleOrderView.aspx?id=<%=sale_order.id %>&type=note">备注</a></li>
+                  <%}%>
+                  <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_TICKETS")) { %>
                     <li>工单</li>
+                  <%}%>
+                  <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_ATTACHMENT")) { %>
                     <li><a href="SaleOrderView.aspx?id=<%=sale_order.id %>&type=attachment">附件</a></li>
+                  <%}%>
+                  <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_ENTRY")) { %>
                     <li><a href="SaleOrderView.aspx?id=<%=sale_order.id %>&type=entry">报价项</a></li>
+                  <%}%>
+                  <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_PURCHASE_ORDER")) { %>
                     <li>采购订单</li>
+                  <%}%>
                 </ul>
             </i>
             销售订单-<%=opportunity.name %>(ID:<%=opportunity.oid %>)-<%=account.name %>
@@ -37,20 +51,34 @@
 
         <div class="header-title">
             <ul>
+              <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_EDIT")) { %>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <input type="button" id="Edit" value="修改" onclick="window.open('SaleOrderEdit.aspx?id=<%=sale_order.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.SaleOrderEdit %>','left= 200, top = 200, width = 900, height = 750', false);" />
                 </li>
+              <%}%>
+              <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_ADD")) { %>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
                     添加
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
                     <ul>
+                      <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_ADD_TODOS")) { %>
                         <li><a href="#" onclick="window.open('../Activity/Todos.aspx?saleorderId=<%=sale_order.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=730,height=750', false);">待办</a></li>
+                      <%}%>
+                      <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_ADD_NOTES")) { %>
                         <li><a href="#" onclick="window.open('../Activity/Notes.aspx?saleorderId=<%=sale_order.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=730,height=750', false);">备注</a></li>
+                      <%}%>
+                      <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_ADD_TICKETS")) { %>
                         <li>工单</li>
+                      <%}%>
+                      <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_ADD_ATTACHMENT")) { %>
                         <li><a href="#" onclick="window.open('../Activity/AddAttachment.aspx?objId=<%=sale_order.id %>&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.SALES_ORDER %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.AttachmentAdd %>','left=200,top=200,width=730,height=750', false);">附件</a></li>
+                      <%}%>
                     </ul>
                 </li>
+              <%}%>
+              <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_FRIEND_LINK")) { %>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>友情链接</li>
+              <%}%>
             </ul>
         </div>
 
@@ -128,6 +156,7 @@
                         </span>
                     </p>
                 </div>
+              <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_OPPORTUNITY")) { %>
                 <div class="address opportunityaddress viewleftTitle1">
                     <p class="switch pr"><i class="switchicon switchicon1"></i>商机</p>
                     <p class="clear">
@@ -181,6 +210,8 @@
                         </span>
                     </p>
                 </div>
+              <%} %>
+              <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_COMPANY")) { %>
                 <div class="address opportunityaddress viewleftTitle1 allswitch">
                     <p class="switch pr"><i class="switchicon switchicon2"></i><a style="cursor: pointer;" onclick="window.open('../company/ViewCompany.aspx?id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyView %>','left=200,top=200,width=900,height=750', false);"><%=account.name %></a></p>
                     <%  var location = new EMT.DoneNOW.BLL.LocationBLL().GetLocationByAccountId(account.id);
@@ -218,6 +249,8 @@
                         </span>
                     </p>
                 </div>
+              <%} %>
+              <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_CONTACT")) { %>
                 <%if (contact != null)
                     { %>
                 <div class="address opportunityaddress viewleftTitle1 allswitch">
@@ -266,8 +299,10 @@
                     </p>
                 </div>
                 <%} %>
+              <%} %>
+              <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_WHO_CAN_VIEW")) { %>
                 <div><a class="linkButton" style="margin-left: 10px; cursor: pointer;">可以查看这个销售订单的员工</a></div>
-
+              <%} %>
             </div>
 
 
@@ -275,6 +310,7 @@
                 <%if (type.Equals("activity"))
                     { %>
                 <div class="FeedHeader">
+                  <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_QUICK_ADD_NOTE")) { %>
                     <div class="NewRootNote">
                         <textarea placeholder="添加一个备注..." id="insert"></textarea>
                     </div>
@@ -285,19 +321,26 @@
                         </asp:DropDownList>
                         <input type="hidden" id="objectId" value="<%=sale_order.id %>" />
                     </div>
+                  <%} %>
                     <div class="checkboxs clear">
+                        <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_ACT_TODOS")) { %>
                         <div class="clear">
                             <asp:CheckBox ID="Todos" runat="server" />
                             <label>待办</label>
                         </div>
+                      <%} %>
+                      <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_ACT_NOTES")) { %>
                         <div class="clear">
                             <asp:CheckBox ID="Note" runat="server" />
                             <label>备注</label>
                         </div>
+                      <%} %>
+                      <%if (CheckAuth("CRM_SALES_ORDER_VIEW_SALES_ORDER_VIEW_ACT_TICKETS")) { %>
                         <div class="clear">
                             <asp:CheckBox ID="Tickets" runat="server" />
                             <label>工单</label>
                         </div>
+                      <%} %>
                     </div>
                     <div class="addselect">
                         <div class="clear">

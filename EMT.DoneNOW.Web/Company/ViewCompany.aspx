@@ -31,43 +31,91 @@
     <div class="header">
       <i>
         <ul>
-          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=activity">活动</a></li>
-          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=todo">待办</a></li>
-          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=note">备注</a></li>
-          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=opportunity">商机</a></li>
-          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=saleOrder">销售订单</a></li>
-          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=contact">联系人</a></li>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_ACTIVITY")) { %>
+          <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=activity'"><a>活动</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_TODOS")) { %>
+          <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=todo'"><a>待办</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_NOTES")) { %>
+          <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=note'"><a>备注</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_OPPORTUNITY")) { %>
+          <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=opportunity'"><a href="ViewCompany.aspx?id=<%=account.id %>&type=opportunity">商机</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_SALES_ORDER")) { %>
+          <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=saleOrder'"><a href="ViewCompany.aspx?id=<%=account.id %>&type=saleOrder">销售订单</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_CONTACT")) { %>
+          <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=contact'"><a href="ViewCompany.aspx?id=<%=account.id %>&type=contact">联系人</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_CONTACT_GROUP")) { %>
           <li>联系人组</li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_TICKETS")) { %>
           <li>工单</li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_PROJECT")) { %>
           <li>项目</li>
-          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=confirgItem">配置项</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_CONFIGURATION_ITEM")) { %>
+          <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=confirgItem'"><a href="ViewCompany.aspx?id=<%=account.id %>&type=confirgItem">配置项</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_FINANCIAL")) { %>
           <li>财务</li>
-          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=contract">合同</a></li>
-          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=invoice">发票</a></li>
-          <li><a onclick="window.open('../Invoice/PreferencesInvoice.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREFERENCE %>','left=200,top=200,width=900,height=750', false);">发票参数设定</a></li>
-          <li><a onclick="window.open('../Quote/PreferencesQuote.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuotePreference %>','left=200,top=200,width=900,height=750', false);">报价参数设定</a></li>
-          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=attachment">附件</a></li>
-          <li><a href="ViewCompany.aspx?id=<%=account.id %>&type=Subsidiaries">子客户</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_CONTRACT")) { %>
+          <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=contract'"><a href="ViewCompany.aspx?id=<%=account.id %>&type=contract">合同</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_INVOICE")) { %>
+          <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=invoice'"><a href="ViewCompany.aspx?id=<%=account.id %>&type=invoice">发票</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_PREFERNCE_INVOICE")) { %>
+          <li onclick="window.open('../Invoice/PreferencesInvoice.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREFERENCE %>','left=200,top=200,width=900,height=750', false);"><a>发票参数设定</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_PREFERNCE_QUOTE")) { %>
+          <li onclick="window.open('../Quote/PreferencesQuote.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuotePreference %>','left=200,top=200,width=900,height=750', false);"><a>报价参数设定</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_ATTACHMENT")) { %>
+          <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=attachment'"><a href="ViewCompany.aspx?id=<%=account.id %>&type=attachment">附件</a></li>
+          <%}%>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_SUBSIDIARY")) { %>
+          <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=Subsidiaries'"><a href="ViewCompany.aspx?id=<%=account.id %>&type=Subsidiaries">子客户</a></li>
+          <%}%>
         </ul>
       </i>
       客户-<%=account.name %>(<%="ID:" + account.oid.ToString() %>)&nbsp;<%=account.is_active == 1 ? "激活" : "未激活" %>&nbsp;<%=account.type_id == null ? "" : company_type.FirstOrDefault(_ => _.val == account.type_id.ToString()).show %>
     </div>
     <div class="header-title" style="width:480px;">
       <ul>
+        <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_EDIT_COMPANY")) { %>
         <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
           <input type="button" id="Edit" value="修改" onclick="window.open('EditCompany.aspx?id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyEdit %>','left= 200, top = 200, width = 960, height = 750', false);" />
-          <%-- <asp:Button ID="Edit" runat="server" Text="修改" BorderStyle="None" OnClientClick="" />--%>
         </li>
+        <%}%>
         <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
           <%--  <asp:Button ID="tianjia" runat="server" Text="添加" BorderStyle="None" />--%>添加
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
           <ul>
-            <li><a href="#" onclick="window.open('AddCompany.aspx?id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=960,height=750', false);">客户</a></li>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_ADD_COMPANY")) { %>
+            <li onclick="window.open('AddCompany.aspx?id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyAdd %>','left=200,top=200,width=960,height=750', false);"><a href="#">客户</a></li>
+            <%}%>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_ADD_TICKETS")) { %>
             <li>工单</li>
-            <li><a href="#" onclick="window.open('../Activity/Todos.aspx?accountId=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=730,height=750', false);">待办</a></li>
-            <li><a href="#" onclick="window.open('../Activity/Notes.aspx?accountId=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=730,height=750', false);">客户备注</a></li>
-            <li><a href="#" onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);">商机</a></li>
-            <li><a href="#" onclick="window.open('../Contact/AddContact.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left=200,top=200,width=900,height=750', false);">联系人</a></li>
+            <%}%>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_ADD_TODOS")) { %>
+            <li onclick="window.open('../Activity/Todos.aspx?accountId=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>','left=200,top=200,width=730,height=750', false);"><a href="#">待办</a></li>
+            <%}%>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_ADD_NOTES")) { %>
+            <li onclick="window.open('../Activity/Notes.aspx?accountId=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.NoteAdd %>','left=200,top=200,width=730,height=750', false);"><a href="#">客户备注</a></li>
+            <%}%>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_ADD_OPPORTUNITY")) { %>
+            <li onclick="window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>','left=200,top=200,width=900,height=750', false);"><a href="#">商机</a></li>
+            <%}%>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_ADD_CONTACT")) { %>
+            <li onclick="window.open('../Contact/AddContact.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>','left=200,top=200,width=900,height=750', false);"><a href="#">联系人</a></li>
+            <%}%>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_ADD_SUB_COMPANY")) { %>
             <li><%if (account.parent_id == null)
                     { %>
               <a href="#" onclick="window.open('AddCompany.aspx?parent_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.Subsidiaries %>','left=200,top=200,width=900,height=750', false);">子客户</a>
@@ -76,27 +124,43 @@
                   { %>子客户
                             <%} %>
             </li>
-            <li><a href="#" onclick="window.open('../ConfigurationItem/AddOrEditConfigItem.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.AddInstalledProduct %>','left=200,top=200,width=900,height=750', false);">配置项</a></li>
-            <li><a href="#" onclick="window.open('../Activity/AddAttachment?objId=<%=account.id %>&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.COMPANY %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.AttachmentAdd %>','left=200,top=200,width=730,height=750', false);">附件</a></li>
+            <%}%>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_ADD_CONFIGURATION")) { %>
+            <li onclick="window.open('../ConfigurationItem/AddOrEditConfigItem.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.AddInstalledProduct %>','left=200,top=200,width=900,height=750', false);"><a href="#">配置项</a></li>
+            <%}%>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_ADD_ATTACHMENT")) { %>
+            <li onclick="window.open('../Activity/AddAttachment?objId=<%=account.id %>&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.COMPANY %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.AttachmentAdd %>','left=200,top=200,width=730,height=750', false);"><a href="#">附件</a></li>
+            <%}%>
           </ul>
         </li>
 
-        <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
-          <%--<asp:Button ID="Tools" runat="server" Text="工具" BorderStyle="None" />--%>工具
+        <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>工具
                     <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
           <ul>
-            <li><a onclick="window.open('../Opportunity/CloseOpportunity.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityClose %>','left=200,top=200,width=900,height=750', false);">关闭商机向导</a></li>
-            <li><a onclick="window.open('../Opportunity/LoseOpportunity.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityLose %>','left=200,top=200,width=900,height=750', false);">丢失商机向导</a></li>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_CLOSE_OPPORTUNITY")) { %>
+            <li onclick="window.open('../Opportunity/CloseOpportunity.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityClose %>','left=200,top=200,width=900,height=750', false);"><a>关闭商机向导</a></li>
+            <%}%>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_LOSE_OPPORTUNITY")) { %>
+            <li onclick="window.open('../Opportunity/LoseOpportunity.aspx?account_id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityLose %>','left=200,top=200,width=900,height=750', false);"><a>丢失商机向导</a></li>
+            <%}%>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_RESET_ACCOUNT_MANAGER")) { %>
             <li>重新分配商机所有人</li>
+            <%}%>
+            <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_CANCLE_COMPANY")) { %>
             <li>注销客户向导</li>
+            <%}%>
             <%--<li>Microsoft word merge wizard</li>--%>
             <%--<li>Reset quick books company mapping</li>--%>
           </ul>
         </li>
+        <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_REPORT")) { %>
         <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
           <asp:Button ID="Report" runat="server" Text="客户报告" BorderStyle="None" /></li>
+        <%}%>
+        <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_FRIEND_LINK")) { %>
         <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
           <asp:Button ID="LiveLink" runat="server" Text="友情链接" BorderStyle="None" /></li>
+        <%}%>
       </ul>
     </div>
     <% 
@@ -158,7 +222,9 @@
         <%--<p>(P) <%=location.postal_code %></p>--%>
         <p>(F) <%=account.fax %></p>
         <p><%=account.web_site %></p>
+        <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_SITE_MANAGE")) { %>
         <p><a href="#" onclick="window.open('CompanySiteManage.aspx?id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>','left=200,top=200,width=960,height=750', false);">站点配置</a></p>
+        <%}%>
       </div>
 
       <div class="viewleftTitle1">
@@ -321,15 +387,18 @@
         <p>客户标准产业分类代码</p>
       </div>
       <hr class="viewleftTitle1hr" />
+      <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_RESOURCE")) { %>
       <div class="viewleftTitle1">
         <p><a href="#" onclick="alert('暂未实现');return false;">可以查看本客户的员工</a></p>
       </div>
+      <%} %>
     </div>
 
     <div id="ShowCompany_Right" class="activityTitleright f1">
       <%if (type.Equals("activity"))
           { %>
       <div class="FeedHeader">
+        <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_ADD_NOTE")) { %>
         <div class="NewRootNote">
           <textarea placeholder="添加一个备注..." id="insert"></textarea>
         </div>
@@ -339,35 +408,50 @@
           <asp:DropDownList ID="noteType" runat="server" Width="100px" Height="24px">
           </asp:DropDownList>
         </div>
+        <%} %>
         <div class="checkboxs clear">
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS")) { %>
           <div class="clear">
             <asp:CheckBox ID="Todos" runat="server" />
             <label>待办</label>
           </div>
+          <%} %>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES")) { %>
           <div class="clear">
             <asp:CheckBox ID="Note" runat="server" />
             <label>备注</label>
           </div>
+          <%} %>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_OPPORTUNITY")) { %>
           <div class="clear">
             <asp:CheckBox ID="Opportunities" runat="server" />
             <label>商机</label>
           </div>
+          <%} %>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_SALES_ORDER")) { %>
           <div class="clear">
             <asp:CheckBox ID="SalesOrders" runat="server" />
             <label>销售单</label>
           </div>
+          <%} %>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TICKETS")) { %>
           <div class="clear">
             <asp:CheckBox ID="Tickets" runat="server" />
             <label>工单</label>
           </div>
+          <%} %>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_CONTRACT")) { %>
           <div class="clear">
             <asp:CheckBox ID="Contracts" runat="server" />
             <label>合同</label>
           </div>
+          <%} %>
+          <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_PROJECT")) { %>
           <div class="clear">
             <asp:CheckBox ID="Projects" runat="server" />
             <label>项目</label>
           </div>
+          <%} %>
         </div>
         <div class="addselect">
           <div class="clear">
@@ -382,171 +466,7 @@
         <hr class="activityTitlerighthr" />
 
       <div id='activityContent' style='margin-bottom:10px;'>
-        <div class='EntityFeedLevel1' style="display:none;">
-          <a href='#'>
-            <img src='../Images/Avatar/default.jpg' />
-          </a>
-          <div class='PostContent'>
-            <a href='#' class='PostContentName'>商机名称</a>
-            <div>
-              <span>Meeting: todo todo descriptionMeeting: todo todo descriptionMeeting: todo todo descriptionMeeting: todo todo description</span>
-            </div>
-            <div class='EntityDateTimeLinks'>
-              <span class='MostRecentPostedTime'>
-                <span>17/08/2017 05:50 PM</span>
-                <a href='#' class='CommentLink'>新增备注</a>
-              </span>
-            </div>
-          </div>
-        </div>
-        <hr class="activityTitlerighthr" style="display:none;" />
-        <div class='EntityFeedLevel1' style="display:none;">
-          <a href='#'>
-            <img src='../Images/Avatar/default.jpg' />
-          </a>
-          <div class='PostContent' style='width:auto;padding-right:10px;'>
-            <a href='#' class='PostContentName'>Hong Li</a>
-            <a href='mailto:hong.li@itcat.net.cn' class='smallLink'>send email</a>
-            <a title='1234'>
-              <img src='../Images/todos.png' />
-              <span style="cursor:pointer;">1234</span>
-            </a>
-            <div class='EntityDateTimeLinks'>
-              <span class='MostRecentPostedTime'>
-                <span>17/08/2017 05:50 PM</span>
-                <a href='#' class='CommentLink'>新增备注</a>
-                <a href='#' class='CommentLink'>新增附件</a>
-                <a href='#' class='CommentLink'>删除</a>
-              </span>
-            </div>
-          </div>
-          <a>
-            <img src='../Images/todos.png' />
-          </a>
-        </div>
-        <div class='EntityFeedLevel2' style="display:none;">
-          <a href='#'>
-            <img src='../Images/Avatar/default.jpg' style='float:left;' />
-          </a>
-          <div class='PostContent' style='padding-right:10px;'>
-            <a href='#' class='PostContentName'>Hong Li</a>
-            <a href='mailto:hong.li@itcat.net.cn' class='smallLink'>send email</a>
-            <a title='1234'>
-              <img src='../Images/todos.png' />
-              <span style="cursor:pointer;">1234</span>
-            </a>
-            <div class='EntityDateTimeLinks'>
-              <span class='MostRecentPostedTime'>
-                <span>17/08/2017 05:50 PM</span>
-                <a href='#' class='CommentLink'>新增备注</a>
-                <a href='#' class='CommentLink'>新增附件</a>
-                <a href='#' class='CommentLink'>删除</a>
-              </span>
-            </div>
-          </div>
-        </div>
-        <hr class="activityTitlerighthr" style="display:none;" />
-        <div class='EntityFeedLevel1' style="display:none;">
-          <a href='#'>
-            <img src='../Images/Avatar/default.jpg' />
-          </a>
-          <div class='PostContent'>
-            <a href='#' class='PostContentName'>Hong Li</a>
-            <a href='mailto:hong.li@itcat.net.cn' class='SmallLink'>send email</a>
-            <img src='../Images/todos.png' />
-            <span>
-              (联系人:
-              <a href='#' class='PostContentName'>lao li</a>
-              <a href='mailto:hong.li@itcat.net.cn' class='SmallLink'>send email</a>
-              )
-            </span>
-            <div>
-              <span>Meeting: todo todo description</span>
-              <span style='color:gray;'>(17/08/2017 05:49 PM - 06:04 PM)</span>
-            </div>
-            <div>
-              <span style='color:gray;'>Created/Modified by&nbsp</span>
-              <a style='color:gray;' href='#'>Hong Li</a>
-              <a href='mailto:hong.li@itcat.net.cn' class='SmallLink'>send email</a>
-            </div>
-            <div class='EntityDateTimeLinks'>
-              <span class='MostRecentPostedTime'>
-                <span>17/08/2017 05:50 PM</span>
-                <a href='#' class='CommentLink'>完成</a>
-                <a href='#' class='CommentLink'>编辑</a>
-                <a href='#' class='CommentLink'>删除</a>
-              </span>
-            </div>
-          </div>
-        </div>
-        <hr class="activityTitlerighthr" style="display:none;" />
-        <div class="EntityFeedLevel1" style="display:none;">
-          <a href="#">
-            <img src="../Images/Avatar/default.jpg" />
-          </a>
-          <div class="PostContent">
-            <a href="#" class="PostContentName">Hong Li</a>
-            <a href="mailto:hong.li@itcat.net.cn" class="SmallLink">send email</a>
-            <img src="../Images/todos.png" />
-            <span>
-              (联系人:
-              <a href="#" class="PostContentName">lao li</a>
-              <a href="mailto:hong.li@itcat.net.cn" class="SmallLink">send email</a>
-              )
-            </span>
-            <div>
-              <span>Meeting: todo todo descriptionMeeting: todo todo descriptionMeeting: todo todo descriptionMeeting: todo todo description</span>
-            </div>
-            <div>
-              <span style="color:gray;">Created/Modified by&nbsp</span>
-              <a style="color:gray;" href="#">Hong Li</a>
-              <a href="mailto:hong.li@itcat.net.cn" class="SmallLink">send email</a>
-            </div>
-            <div class="EntityDateTimeLinks">
-              <span class="MostRecentPostedTime">
-                <span>17/08/2017 05:50 PM</span>
-                <a href="#" class="CommentLink">添加备注</a>
-                <a href="#" class="CommentLink">添加附件</a>
-                <a href="#" class="CommentLink">编辑</a>
-                <a href="#" class="CommentLink">删除</a>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class='EntityFeedLevel2' style="display:none;" >
-          <a href="#" style="float:left;">
-            <img src="../Images/Avatar/default.jpg" />
-          </a>
-          <div class='PostContent'>
-            <a href='#' class='PostContentName'>Hong Li</a>
-            <a href='mailto:hong.li@itcat.net.cn' class='SmallLink'>send email</a>
-            <img src="../Images/note.png" />
-            <span>
-              (联系人:
-              <a href='#' class='PostContentName'>lao li</a>
-              <a href='mailto:hong.li@itcat.net.cn' class='SmallLink'>send email</a>
-              )
-            </span>
-            <div>
-              <span>Meeting: todo todo description</span>
-            </div>
-            <div>
-              <span style='color:gray;'>Created/Modified by&nbsp</span>
-              <a style='color:gray;' href='#'>Hong Li</a>
-              <a href='mailto:hong.li@itcat.net.cn' class='SmallLink'>send email</a>
-            </div>
-            <div class='EntityDateTimeLinks'>
-              <span class='MostRecentPostedTime'>
-                <span>17/08/2017 05:50 PM</span>
-                <a href='#' class="CommentLink">添加备注</a>
-                <a href='#' class="CommentLink">添加附件</a>
-                <a href='#' class="CommentLink">编辑</a>
-                <a href='#' class="CommentLink">删除</a>
-              </span>
-            </div>
-          </div>
-        </div>
-        <hr class="activityTitlerighthr" style="display:none;" />
+
       </div>
       <%}
         else
