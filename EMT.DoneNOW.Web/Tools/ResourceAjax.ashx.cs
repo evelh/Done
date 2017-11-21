@@ -38,6 +38,9 @@ namespace EMT.DoneNOW.Web
                     case "GetActiveRes":
                         GetActiveRes(context);
                         break;
+                    case "GetResAndWorkGroup":
+                        GetResAndWorkGroup(context);
+                        break;
                     default:
                         break;
                 }
@@ -125,6 +128,39 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new Tools.Serialize().SerializeJson(resList));
             }
         }
+        /// <summary>
+        /// 获取到员工和工作组
+        /// </summary>
+        private void GetResAndWorkGroup(HttpContext context)
+        {
+            var resAndworList = new List<ResAndWorkGroDto>();
+
+            var resList = new sys_resource_dal().GetSourceList();
+            if (resList != null && resList.Count > 0)
+            {
+                var thisLsit = from a in resList
+                               select new ResAndWorkGroDto() { id = a.id, name = a.name, email = a.email, type = "checkRes" };
+                resAndworList.AddRange(thisLsit);
+            }
+            var workList = new sys_workgroup_dal().GetList();
+            if(workList!=null&& workList.Count > 0)
+            {
+                var thisLsit = from a in workList
+                               select new ResAndWorkGroDto() { id = a.id, name = a.name, email = "", type = "checkWork" };
+                resAndworList.AddRange(thisLsit);
+            }
+
+            context.Response.Write(new Tools.Serialize().SerializeJson(resAndworList));
+        }
+
         
+        
+    }
+    public class ResAndWorkGroDto
+    {
+        public long id;
+        public string name;
+        public string email;
+        public string type;
     }
 }

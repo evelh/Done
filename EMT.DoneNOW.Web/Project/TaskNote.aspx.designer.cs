@@ -10,7 +10,7 @@
 namespace EMT.DoneNOW.Web.Project {
     
     
-    public partial class WorkEntry {
+    public partial class TaskNote {
         
         /// <summary>
         /// form1 控件。
@@ -31,40 +31,22 @@ namespace EMT.DoneNOW.Web.Project {
         protected global::System.Web.UI.WebControls.Button save_close;
         
         /// <summary>
-        /// resource_id 控件。
+        /// action_type_id 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList resource_id;
+        protected global::System.Web.UI.WebControls.DropDownList action_type_id;
         
         /// <summary>
-        /// cost_code_id 控件。
+        /// publish_type_id 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cost_code_id;
-        
-        /// <summary>
-        /// isBilled 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox isBilled;
-        
-        /// <summary>
-        /// ShowOnInv 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox ShowOnInv;
+        protected global::System.Web.UI.WebControls.DropDownList publish_type_id;
         
         /// <summary>
         /// status_id 控件。
@@ -76,6 +58,42 @@ namespace EMT.DoneNOW.Web.Project {
         protected global::System.Web.UI.WebControls.DropDownList status_id;
         
         /// <summary>
+        /// CKcreate 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CKcreate;
+        
+        /// <summary>
+        /// CKaccMan 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CKaccMan;
+        
+        /// <summary>
+        /// CKIncluDes 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CKIncluDes;
+        
+        /// <summary>
+        /// Cksys 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox Cksys;
+        
+        /// <summary>
         /// CCMe 控件。
         /// </summary>
         /// <remarks>
@@ -85,13 +103,13 @@ namespace EMT.DoneNOW.Web.Project {
         protected global::System.Web.UI.WebControls.CheckBox CCMe;
         
         /// <summary>
-        /// CCProRes 控件。
+        /// CKIncloAtt 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CCProRes;
+        protected global::System.Web.UI.WebControls.CheckBox CKIncloAtt;
         
         /// <summary>
         /// notify_id 控件。

@@ -65,9 +65,10 @@ namespace EMT.DoneNOW.Web.Project
                         }
                     }
                     thisTaskResList = new sdk_task_resource_dal().GetTaskResByTaskId(thisTask.id);
-
                     var roleList = dic.FirstOrDefault(_ => _.Key == "role").Value as List<sys_role>;
                     var sysList = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value as List<DictionaryEntryDto>;
+
+
                     var tasEntryList = new sdk_work_entry_dal().GetByTaskId(thisTask.id);
                     if (tasEntryList != null && tasEntryList.Count > 0)
                     {
@@ -79,7 +80,8 @@ namespace EMT.DoneNOW.Web.Project
 
                         tvdList.AddRange(newList);
                     }
-
+                    var conAttDal = new com_attachment_dal();
+                    var allTaskAttList = new List<com_attachment>();
                     var taskNoteList = new com_activity_dal().GetActiList($" and task_id={thisTask.id}");
                     if (taskNoteList != null && taskNoteList.Count > 0)
                     {
@@ -87,16 +89,29 @@ namespace EMT.DoneNOW.Web.Project
                                       join c in sysList on a.resource_id equals long.Parse(c.val)
                                       select new TaskViewDto { id = a.id, type = "note", time = Tools.Date.DateHelper.ConvertStringToDateTime(a.create_time), resouName = c.show, notTiltle = a.name, noteDescr  = a.description};
                         tvdList.AddRange(newList);
+
+                        foreach (var thisTaskNote in taskNoteList)
+                        {
+                            var thisNoteAttList = conAttDal.GetAttListByOid(thisTaskNote.id);
+                            if(thisNoteAttList!=null&& thisNoteAttList.Count > 0)
+                            {
+                                allTaskAttList.AddRange(thisNoteAttList);
+                            }
+                        }
                     }
-                    var taskAttList = new com_attachment_dal().GetAttListByOid(thisTask.id);
+                    var taskAttList = conAttDal.GetAttListByOid(thisTask.id);
                     if(taskAttList!=null&& taskAttList.Count > 0)
+                    {
+                        allTaskAttList.AddRange(taskAttList);
+                     
+                    }
+                    if (allTaskAttList.Count > 0)
                     {
                         var newList = from a in taskAttList
                                       join c in sysList on a.create_user_id equals long.Parse(c.val)
                                       select new TaskViewDto { id = a.id, type = "atach", time = Tools.Date.DateHelper.ConvertStringToDateTime(a.create_time), resouName = c.show, notTiltle = a.title, fileType = a.type_id };
                         tvdList.AddRange(newList);
                     }
-
                     if(tvdList!=null&& tvdList.Count > 0)
                     {
                         tvbOrder = Request.QueryString["tvbOrder"];

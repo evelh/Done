@@ -72,6 +72,7 @@ namespace EMT.DoneNOW.DTO
         INVOICE_TEMPLATE_BODY_GROUP_BY =141,      //发票模板主体-分组条件
         INVOICE_TEMPLATE_BODY_ITEMIZE =142,      //发票模板主体-逐项列出
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
+        NOTE_PUBLISH_TYPE = 146,                 // 合同/项目等备注发布类型
     }
 
     /// <summary>
@@ -247,15 +248,15 @@ namespace EMT.DoneNOW.DTO
             PROJECT_ATTACHMENT_ADDED = 123,                            // 项目附件-创建
             PROJECT_NOTE_CREATED_OR_EDITED =124,                       // 项目记录-创建或编辑
             TASK_CREATED_OR_EDITED=125,                                // task新建修改编辑 
-            //TASK - COPIED,                                      // 
-            //TASK ATTACHMENT - ADDED,                            // 
-            //TASK TIME ENTRY - CREATED OR EDITED,                // 
-            //TASK NOTE - CREATED OR EDITED,                      // 
-            //ISSUE - CREATED OR EDITED,                          // 
+            TASK_COPIED=126,                                      // 任务-复制
+            TASK_ATTACHMENT_ADDED =127,                           // 任务附件-创建
+            TASK_TIME_ENTRY_CREATED_EDITED=128,                   // 任务工时记录-创建或编辑
+            TASK_NOTE_CREATED_EDITED =129,                        // 任务记录-创建或编辑
+            ISSUE_CREATED_EDITED =130,                            // 问题 - 创建或编辑
             //TICKET - CREATED OR EDITED,                         // 
             //TICKET - FORWARDED,                                 // 
             //TICKET ATTACHMENT - ADDED,                          // 
-            //TICKET TIME ENTRY - CREATED OR EDITED,              // 
+            TICKET_TIME_ENTRY_CREATED_EDITED=134,              // 工单工时记录-创建或编辑
             //TICKET NOTE - CREATED OR EDITED,                    // 
             //RECURRENCE MASTER - CREATED OR EDITED,              // 
             //QUICK CALL - CREATED,                               // 
@@ -603,7 +604,7 @@ namespace EMT.DoneNOW.DTO
             FROMOPPORTUNITY = 767,                      // 商机表单模板
             OPPORTUNITY = 768,                          // 商机
             NOTIFY = 769,                               // 通知
-            ACTIVITY = 760,                             // 活动   // todo 数据库添加
+            ACTIVITY = 765,                             // 活动   // todo 数据库添加
             QUOTE = 770,                                // 报价   
             QUOTE_ITEM = 771,                           // 报价项 
             QUOTE_TEMP = 772,                           // 报价模板
@@ -645,6 +646,8 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TASK=1380,                          // 任务
             PROJECT_CALENDAR=1381,                      // 项目日历条目
             PROJECT_TASK_RESOURCE = 1382,               // 任务分配对象
+            SDK_WORK_RECORD=1383,                       // 工时记录
+            SDK_WORK_ENTRY=1384,                        // 工时
             ATTACHMENT = 1389,                          // 附件
             PROJECT_TASK_PREDECESSOR = 1393,            // 任务的前驱任务
             PROJECT_PHASE_WORK_HOURS = 1398,            // 项目阶段预估工时
@@ -971,7 +974,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TEAM = 2123,            //  项目-团队全部成员
         }
         /// <summary>
-        /// 工作类型计费方法
+        /// 工作类型计费方法-153
         /// </summary>
         public enum WORKTYPE_BILLING_METHOD
         {
@@ -980,6 +983,13 @@ namespace EMT.DoneNOW.DTO
             RIDE_ROLE_RATE = 2168,          // 在角色费率基础上乘以系数
             USE_UDF_ROLE_RATE = 2169,       // 使用自定义费率
             BY_TIMES = 2170,                // 按次收费
+        }
+        /// <summary>
+        /// 系统支持邮箱-156
+        /// </summary>
+        public enum SUPPORT_EMAIL
+        {
+            SYS_EMAIL=2185,        // 系统发送邮件邮箱地址
         }
     }
     /// <summary>
@@ -1253,6 +1263,14 @@ namespace EMT.DoneNOW.DTO
         TASKPHASE_CALLBACK,       // task阶段的查找带回
         TASKADD,                 // task新增
         TASKEDIT ,              // task修改
+
+        WORK_ENTRY_ADD,
+        WORK_ENTRY_EDIT,
+
+        TASK_NOTE_ADD,
+        TASK_NOTE_EDIT,
+
+        TASK_ATTACH,
 
     }
 }

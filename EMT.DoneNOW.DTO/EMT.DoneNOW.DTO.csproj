@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddChargeDto.cs" />
+    <Compile Include="AddFileDto.cs" />
     <Compile Include="ApiResultDto.cs" />
     <Compile Include="ApprovePostDto.cs" />
     <Compile Include="AuthSecurityLevelDto.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="ProcessInvoiceDto.cs" />
     <Compile Include="ProjectDto.cs" />
     <Compile Include="SdkWorkEntryDto.cs" />
+    <Compile Include="TaskNoteDto.cs" />
     <Compile Include="TaskSaveDto.cs" />
     <Compile Include="VendorDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

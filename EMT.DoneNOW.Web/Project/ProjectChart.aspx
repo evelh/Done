@@ -776,21 +776,21 @@
             if (str < _this.nextAll().eq(i).find('.Gantt_idFont').html().split(".").length - 1 && $(this).find('.Vertical').css('display') == 'block') {
                 //console.log(_this.nextAll().eq(i).find('.Gantt_idFont').html())
                 $(IndexIdAll).hide();
-                $(IndexIdAll).prev().children('.Gantt_phaseBar').children('.line').hide()
+                $(IndexIdAll).prev().children('.Gantt_General').children('.line').hide()
                 _this.nextAll().eq(i).hide();
                 _this.nextAll().eq(i).find('.Vertical').show();
                 Style();
                 lineShow()
                 if ($(IndexIdAll).prev().siblings('.Gantt_learnOver').css('display') == 'none') {
-                    $(IndexIdAll).prev().siblings().children('.Gantt_phaseBar').children('.line').hide()
+                    $(IndexIdAll).prev().siblings().children('.Gantt_General').children('.line').hide()
                 }
             } else if (str < _this.nextAll().eq(i).find('.Gantt_idFont').html().split(".").length - 1 && $(this).find('.Vertical').css('display') == 'none') {
                 $(IndexIdAll).show();
-                $(IndexIdAll).prev().children('.Gantt_phaseBar').children('.line').show()
+                $(IndexIdAll).prev().children('.Gantt_General').children('.line').show()
                 _this.nextAll().eq(i).show();
                 _this.nextAll().eq(i).find('.Vertical').hide();
                 if ($(IndexIdAll).prev().siblings('.Gantt_learnOver').css('display  ') != 'none') {
-                    $(IndexIdAll).prev().siblings().children('.Gantt_phaseBar').children('.line').show()
+                    $(IndexIdAll).prev().siblings().children('.Gantt_General').children('.line').show()
                 }
                 Style();
                 lineShow()

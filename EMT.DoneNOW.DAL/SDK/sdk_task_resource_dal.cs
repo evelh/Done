@@ -36,5 +36,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<sdk_task_resource>($"SELECT * from sdk_task_resource where task_id = {task_id} and resource_id = {res_id} and role_id = {role_id} and delete_time = 0");
         }
+        /// <summary>
+        /// 获取到任务的任务成员信息
+        /// </summary>
+        public List<sys_resource> GetSysResByTaskId(long task_id)
+        {
+            return FindListBySql<sys_resource>($"SELECT * from sys_resource where id in (SELECT resource_id from sdk_task_resource WHERE delete_time = 0  and task_id = {task_id} and contact_id is NULL) and delete_time = 0");
+        }
     }
 }

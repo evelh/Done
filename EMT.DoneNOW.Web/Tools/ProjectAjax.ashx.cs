@@ -111,6 +111,19 @@ namespace EMT.DoneNOW.Web
                     case "GetTaskByRes":
                         GetTaskByRes(context, long.Parse(context.Request.QueryString["resource_id"]), context.Request.QueryString["showType"], !string.IsNullOrEmpty(context.Request.QueryString["isShowCom"]), long.Parse(context.Request.QueryString["project_id"]));
                         break;
+                    case "DeleteEntry":
+                        var eId = context.Request.QueryString["entry_id"];
+                        DeleteEntry(context,long.Parse(eId));
+                        break;
+                    case "GetTaskFileSes":
+                        var stId = context.Request.QueryString["task_id"];
+                        GetTaskFileSes(context,long.Parse(stId));
+                        break;
+                    case "RemoveSess":
+                        var rstId = context.Request.QueryString["task_id"];
+                        var indNum = context.Request.QueryString["index"];
+                        RemoveSession(context,long.Parse(rstId),int.Parse(indNum));
+                        break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                         break;
@@ -893,6 +906,54 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new Tools.Serialize().SerializeJson(list));
             }
         }
-        
+        /// <summary>
+        /// 删除工时，返回结果和删除失败原因
+        /// </summary>
+        private void DeleteEntry(HttpContext context,long entry_id)
+        {
+            string reason = "";
+            var result = new TaskBLL().DeleteEntry(entry_id,LoginUserId,out reason);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new {result=result,reason = reason }));
+        }
+        /// <summary>
+        /// 读取这个task相对应的暂存文件
+        /// </summary>
+        private void GetTaskFileSes(HttpContext context,long taskId)
+        {
+            StringBuilder fileHtml = new StringBuilder();
+            var objAtt = context.Session[taskId.ToString() + "_Att"];
+            if (objAtt != null)
+            {
+                var attList = objAtt as List<AddFileDto>;
+                if(attList!=null&& attList.Count > 0)
+                {
+                    foreach (var att in attList)
+                    {
+                        fileHtml.Append($"<div class='Attachment'><div class='CloseButton' onclick=\"RemoveSess('{attList.IndexOf(att)}')\"></div><div class='Title'>{att.new_filename}</div><div class='Content'>{att.old_filename}</div></div>");
+                    }
+                }
+            }
+            context.Response.Write(fileHtml.ToString());
+        }
+        /// <summary>
+        /// 移除暂存文件
+        /// </summary>
+        private void RemoveSession(HttpContext context,long task_id,int indexNum)
+        {
+            var objAtt = context.Session[task_id.ToString() + "_Att"];
+            if (objAtt != null)
+            {
+                var attList = objAtt as List<AddFileDto>;
+                if (attList != null && attList.Count > 0)
+                {
+                    if(attList.Count> indexNum)
+                    {
+                        attList.Remove(attList[indexNum]);
+                        
+                        GetTaskFileSes(context,task_id);
+                    }
+                }
+            }
+        }
     }
 }

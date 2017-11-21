@@ -36,6 +36,10 @@ namespace EMT.DoneNOW.Web
                         var conNameIds = context.Request.QueryString["ids"];
                         GetConName(context, conNameIds);
                         break;
+                    case "GetContacts":
+                        var aId = context.Request.QueryString["account_id"];
+                        GetConAccAndPar(context,long.Parse(aId));
+                        break;
                     default:
                         break;
                 }
@@ -91,6 +95,39 @@ namespace EMT.DoneNOW.Web
                 }
             }
             context.Response.Write(con.ToString());
+        }
+        /// <summary>
+        /// 获取到客户和父客户的联系人
+        /// </summary>
+        private void GetConAccAndPar(HttpContext context,long account_id)
+        {
+            StringBuilder conHtml = new StringBuilder();
+            
+            var account = new crm_account_dal().FindNoDeleteById(account_id);
+            if (account != null)
+            {
+                var conList = new crm_contact_dal().GetContactByAccountId(account.id);
+                if (conList != null && conList.Count > 0)
+                {
+                    foreach (var con in conList)
+                    {
+                        conHtml.Append("<tr><td><input type='checkbox' value='" + con.id + "' class='checkCon' /></td><td>" + con.name + "</td><td><a href='mailto:" + con.email + "'>" + con.email + "</a></td></tr>");
+                    }
+                }
+                if (account.parent_id != null)
+                {
+                    var parConList = new crm_contact_dal().GetContactByAccountId((long)account.parent_id);
+                    if(parConList!=null&& parConList.Count > 0)
+                    {
+                        conHtml.Append("<tr><td colspan='3'>父客户联系人</td></tr>");
+                        foreach (var con in conList)
+                        {
+                            conHtml.Append("<tr><td><input type='checkbox' value='" + con.id + "' class='checkCon' /></td><td>" + con.name + "</td><td><a href='mailto:" + con.email + "'>" + con.email + "</a></td></tr>");
+                        }
+                    }
+                }
+            }
+            context.Response.Write(conHtml.ToString());
         }
     }
 }

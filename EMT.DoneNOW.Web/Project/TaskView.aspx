@@ -408,8 +408,9 @@
                     <div class="Content"  style="padding: 0 28px 35px 18px;">
                         <div id="timeEntryContentPanel" class="Content">
                             <div class="ButtonContainer">
+                               
+                                <a class="NormalState Button ButtonIcon Save" id="NewTimeEntry" tabindex="0" onclick="AddEntry()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">新增工时</span></a>
 
-                                <a class="NormalState Button ButtonIcon Save" id="NewTimeEntry" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">新增工时</span></a>
                                 <a class="NormalState Button ButtonIcon Save" id="NewNote" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">新增备注</span></a>
                                 <a class="NormalState Button ButtonIcon Save" id="NewAttach" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">新增附件</span></a>
                             </div>
@@ -443,7 +444,7 @@
                                                                 <% if (orderThArr != null && orderThArr[0] == tvbTH.val)
                                                                     {%>
 
-                                                                <img src="../Images/sort-<%=tvbTH.select==1?"descending":"ascending" %>.png" />
+                                                                <img src="../Images/sort-<%=tvbTH.select==1?"desc":"asc" %>.png" />
 
                                                                 <%} %>
                                                             </td>
@@ -460,7 +461,7 @@
 
                                                         <%if (thisTvbValue.type != "atach")
                                                             { %>
-                                                        <tr onclick="ShowTvbDetail('<%=thisTvbValue.id %>')">
+                                                        <tr onclick="ShowTvbDetail('<%=thisTvbValue.id %>')" class="<%=thisTvbValue.type == "note"?"noteTR":"entryTR" %>" data-val="<%=thisTvbValue.id %>">
                                                             <td>
                                                                 <img src="../Images/MagnifyMinus.png" id="<%=thisTvbValue.id %>_img" />
                                                                 <img src="../Images/imgGridEdit.png" onclick="EditThis('<%=thisTvbValue.type %>','<%=thisTvbValue.id %>')" />
@@ -571,7 +572,7 @@
                                                         <%}
                                                             else
                                                             { %>
-                                                        <tr onclick="OpenAttach('<%=thisTvbValue.id %>')">
+                                                        <tr onclick="OpenAttach('<%=thisTvbValue.id %>')" class="atachTR"  data-val="<%=thisTvbValue.id %>">
                                                             <td></td>
                                                             <td>
                                                                 <img src="../Images/attachment.png" />
@@ -595,13 +596,29 @@
                             </tbody>
                         </table>
                     </div>
+                     <div class="Content"  style="padding: 0 28px 35px 18px;">
+                          <div id="ExpenseContentPanel" class="Content">
+                               <div class="ButtonContainer">
+                                     <a class="NormalState Button ButtonIcon Save" id="NewExpense" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">新增费用</span></a>
+                               </div>
+                               <div id="ExpenseCheckBoxPanel" style="padding: 0px 0px 3px 10px; font-size: 12px; display: block;">
+                                   <span><input type="checkbox" id="CKExpDetail" />详情</span>
+                               </div>
+                          </div>
+                     </div>
                 </div>
             </div>
         </div>
     </div>
 
 
-
+    
+    <div id="entryMenu">
+        <ul style="width: 220px;">
+            <li id="" onclick="DeleteEntry()"><i class="menu-i1"></i>删除工时
+            </li>   
+        </ul>
+    </div>
 </body>
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
@@ -626,6 +643,57 @@
         $(this).parent().parent().css("background", colors[index3 % 2]);
         index3++;
     });
+    var entityid = "";
+    var Times = 0;
+    $(".entryTR").bind("contextmenu", function (event) {
+        clearInterval(Times);
+        debugger;
+        var oEvent = event;
+        var menu = document.getElementById("entryMenu");
+        entityid = $(this).data("val");
+        (function () {
+            menu.style.display = "block";
+            Times = setTimeout(function () {
+                menu.style.display = "none";
+            }, 1000);
+        }());
+        menu.onmouseenter = function () {
+            clearInterval(Times);
+            menu.style.display = "block";
+        };
+        menu.onmouseleave = function () {
+            Times = setTimeout(function () {
+                menu.style.display = "none";
+            }, 1000);
+        };
+        var Left = $(document).scrollLeft() + oEvent.clientX;
+        var Top = $(document).scrollTop() + oEvent.clientY;
+        var winWidth = window.innerWidth;
+        var winHeight = window.innerHeight;
+        var menuWidth = menu.clientWidth;
+        var menuHeight = menu.clientHeight;
+        var scrLeft = $(document).scrollLeft();
+        var scrTop = $(document).scrollTop();
+        var clientWidth = Left + menuWidth;
+        var clientHeight = Top + menuHeight;
+        var rightWidth = winWidth - oEvent.clientX;
+        var bottomHeight = winHeight - oEvent.clientY;
+        if (winWidth < clientWidth && rightWidth < menuWidth) {
+            menu.style.left = winWidth - menuWidth - 18 + scrLeft + "px";
+        } else {
+            menu.style.left = Left + "px";
+        }
+        if (winHeight < clientHeight && bottomHeight < menuHeight) {
+            menu.style.top = winHeight - menuHeight - 18 + scrTop + "px";
+        } else {
+            menu.style.top = Top + "px";
+        }
+        document.onclick = function () {
+            menu.style.display = "none";
+        }
+        return false;
+    });
+
 </script>
 <script>
     function OpenProject() {
@@ -652,7 +720,7 @@
         else {
             var orderArr = pageTvbOrder.split(",");
             if (orderArr[0] == order) {
-                if (orderArr[0] == "asc") {
+                if (orderArr[1] == "asc") {
                     order = order + ",desc";
                 } else {
                     order = order + ",asc";
@@ -668,31 +736,59 @@
         var display = $('#' + val + '_detail').css('display');
         if (display == 'none') {
             $('#' + val + '_detail').css('display', "");
-            $("#" + val + "_img").css("src", "../Images/MagnifyMinus.png");
+            $("#" + val + "_img").attr("src", "../Images/MagnifyMinus.png");
         } else {
             $('#' + val + '_detail').css('display', "none");
-            $("#" + val + "_img").css("src", "../Images/MagnifyPlus.png");
+            $("#" + val + "_img").attr("src", "../Images/MagnifyPlus.png");
         }
     }
     $("#tvbDetail").click(function () {
         if ($(this).is(":checked")) {
             $(".tvbClass").each(function () {
                 $(this).show();
-                $(this).prev().children().first().children().first().css("src", "../Images/MagnifyMinus.png");
+                $(this).prev().children().first().children().first().attr("src", "../Images/MagnifyMinus.png");
             })
         } else {
             $(".tvbClass").each(function () {
                 $(this).hide();
-                $(this).prev().children().first().children().first().css("src", "../Images/MagnifyPlus.png");
+                $(this).prev().children().first().children().first().attr("src", "../Images/MagnifyPlus.png");
             })
         }
     })
-
+    // 修改工时和备注
     function EditThis(type, id) {
         if (type == "entry") {
             // 修改工时
+            window.open("WorkEntry.aspx?id="+id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.WORK_ENTRY_EDIT %>', 'left=200,top=200,width=1080,height=800', false);
         } else if (type == "note") {
             // 修改备注
+        }
+    }
+    // 新增工时
+    function AddEntry()
+    {
+        window.open("WorkEntry.aspx?task_id=<%=thisTask.id %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.WORK_ENTRY_ADD %>', 'left=200,top=200,width=1080,height=800', false);
+    }
+    // 删除工时
+    function DeleteEntry() {
+        if (entityid != "")
+        {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ProjectAjax.ashx?act=DeleteEntry&entry_id=" + entityid,
+                async: false,
+                dataType: json,
+                success: function (data) {
+                    if (data != "") {
+                        if (data.result == "True") {
+                            LayerMsg("删除成功");
+                        } else {
+                            LayerMsg("删除失败。"+data.reason);
+                        }
+                    }
+                    history.go(0);
+                }
+            })
         }
     }
 </script>

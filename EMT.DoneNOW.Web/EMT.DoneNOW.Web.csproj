@@ -206,9 +206,11 @@
     <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\EditServiceInvoiceDesc.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
+    <Content Include="fonts\ContentAttachment.png" />
     <Content Include="Images\attachment.png" />
     <Content Include="Images\calendar.png" />
     <Content Include="Images\cancel1.png" />
+    <Content Include="Images\ContentAttachment.png" />
     <Content Include="Images\contract.png" />
     <Content Include="Images\dailyGridContainer.png" />
     <Content Include="Images\forward_arrow.png" />
@@ -312,6 +314,7 @@
     <Content Include="Opportunity\OpportunityWinReasons.aspx" />
     <Content Include="Opportunity\OppportunityAdvancedField.aspx" />
     <Content Include="Organization\LocationAddAndEdit.aspx" />
+    <Content Include="Project\AddTaskAttach.aspx" />
     <Content Include="Project\ProjectAddOrEdit.aspx" />
     <Content Include="Product\ProductAdd.aspx" />
     <Content Include="Product\ProductStock.aspx" />
@@ -332,6 +335,7 @@
     <Content Include="Project\RecipientSelector.aspx" />
     <Content Include="Project\TaskAddOrEdit.aspx" />
     <Content Include="Project\TaskModify.aspx" />
+    <Content Include="Project\TaskNote.aspx" />
     <Content Include="Project\TaskView.aspx" />
     <Content Include="Project\WorkEntry.aspx" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
@@ -1394,6 +1398,13 @@
     <Compile Include="Organization\LocationAddAndEdit.aspx.designer.cs">
       <DependentUpon>LocationAddAndEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Project\AddTaskAttach.aspx.cs">
+      <DependentUpon>AddTaskAttach.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\AddTaskAttach.aspx.designer.cs">
+      <DependentUpon>AddTaskAttach.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Project\ProjectAddOrEdit.aspx.cs">
       <DependentUpon>ProjectAddOrEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1533,6 +1544,13 @@
     </Compile>
     <Compile Include="Project\TaskModify.aspx.designer.cs">
       <DependentUpon>TaskModify.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\TaskNote.aspx.cs">
+      <DependentUpon>TaskNote.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\TaskNote.aspx.designer.cs">
+      <DependentUpon>TaskNote.aspx</DependentUpon>
     </Compile>
     <Compile Include="Project\TaskView.aspx.cs">
       <DependentUpon>TaskView.aspx</DependentUpon>

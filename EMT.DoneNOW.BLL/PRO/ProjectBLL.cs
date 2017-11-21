@@ -31,6 +31,8 @@ namespace EMT.DoneNOW.BLL
             dic.Add("org_location", new sys_organization_location_dal().GetLocList());  // 区域地址
             dic.Add("role", new sys_role_dal().GetList());
             dic.Add("sys_resource", new sys_resource_dal().GetDictionary(true));  // 项目经理
+            dic.Add("publish_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.NOTE_PUBLISH_TYPE)));   // task 状态 action_type_id
+            dic.Add("action_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACTION_TYPE)));
             return dic;
         }
         /// <summary>
@@ -272,7 +274,7 @@ namespace EMT.DoneNOW.BLL
                                 }
 
                             }
-                            List<sys_resource> toResList = null;
+                            List<sys_resource> toResList = new List<sys_resource>();
                             if (!string.IsNullOrEmpty(param.NoToResIds))
                             {
                                 var resList = new sys_resource_dal().GetListByIds(param.NoToResIds);

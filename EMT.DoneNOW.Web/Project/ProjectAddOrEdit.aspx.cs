@@ -28,6 +28,13 @@ namespace EMT.DoneNOW.Web.Project
         {
             try
             {
+                //var result = GetLimitValue(AuthLimitEnum.PROClientAdd);
+                //if (result == DicEnum.LIMIT_TYPE_VALUE.HAVE960)
+                //{
+
+                //}
+
+
                 isFromTemp = Request.QueryString["isFromTemp"];
                 isTemp = Request.QueryString["isTemp"];
                 if (!IsPostBack)

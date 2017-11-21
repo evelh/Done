@@ -43,7 +43,7 @@
                                                     var sDal = new EMT.DoneNOW.DAL.sys_resource_dal();
                                                     var gDal = new EMT.DoneNOW.DAL.d_general_dal();
                                                     var gtDal = new EMT.DoneNOW.DAL.d_general_table_dal();
-                                                    var statusList = gDal.GetDictionary(gtDal.GetById((int)EMT.DoneNOW.DTO.GeneralTableEnum.TICKET_SATUS));
+                                                    var statusList = gDal.GetDictionary(gtDal.GetById((int)EMT.DoneNOW.DTO.GeneralTableEnum.TICKET_STATUS));
                                                     var proBLL = new EMT.DoneNOW.BLL.ProjectBLL();
                                                     foreach (var actTask in actTaskList)
                                                     {%>
