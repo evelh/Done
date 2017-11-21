@@ -212,8 +212,12 @@ namespace EMT.DoneNOW.BLL
             List<string> menus = new List<string>();
             string sn = "SEARCH_" + queryType.ToString().ToUpper(); // 搜索页的sn
 
+            AuthPermitDto permit = allPermitsDtoList.Find(_ => _.permit.sn.Equals(sn));
+            if (permit == null)     // 该页不需要权限
+                return menus;
+
             var list = secLevelPermitDic[levelId];
-            AuthPermitDto permit = userPermit.Find(_ => _.permit.sn.Equals(sn));    // 搜索页权限点
+            permit = userPermit.Find(_ => _.permit.sn.Equals(sn));    // 搜索页权限点
             if (permit == null)
             {
                 permit = list.availablePermitList.Find(_ => _.permit.sn.Equals(sn));
@@ -250,6 +254,11 @@ namespace EMT.DoneNOW.BLL
         public static bool CheckAddAuth(long levelId, List<AuthPermitDto> userPermit, QueryType queryType)
         {
             string sn = "SEARCH_" + queryType.ToString().ToUpper() + "_ADD";    // 新增按钮的sn
+
+            AuthPermitDto permit = allPermitsDtoList.Find(_ => _.permit.sn.Equals(sn));
+            if (permit == null)     // 该按钮不需要权限
+                return true;
+
             return CheckAuth(levelId, userPermit, sn);
         }
 

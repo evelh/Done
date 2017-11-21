@@ -9,6 +9,10 @@
     <link href="../Content/Admin.css" rel="stylesheet" />
     <link href="../Content/ClassificationIcons.css" rel="stylesheet" />
     <title>管理系统</title>
+  <style>
+    .StandardText{display:none;}
+    .Large{margin-top:15px;}
+  </style>
 </head>
 <body>
     <form id="form1" runat="server" method="post">
@@ -43,6 +47,7 @@
                         </a>
                     </div>
                     <!--第三个框-->
+                  <%if (CheckAuth("SYS_FEATURES_RESOURCES")) { %>
                     <div class="Normal Section Collapsed Normal1" id="b3">
                         <div class="Heading">
                             <div class="Toggle Expand Toggle1" id="a3">
@@ -56,20 +61,26 @@
                             <div class="Large Column">
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
+                                      <%if (CheckAuth("SYS_FEATURES_RESOURCES_RESOURCE")) { %>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE %>" target="PageFrame1">员工/用户管理</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
+                                      <%if (CheckAuth("SYS_FEATURES_RESOURCES_ROLES")) { %>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_ROLE %>" target="PageFrame1">角色</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
                                         </div>
                                         <div class="PageNavigationLinkColumn">
+                                          <%if (CheckAuth("SYS_FEATURES_RESOURCES_DEPARTMENTS")) { %>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_DEPARTMENT %>" target="PageFrame1">部门</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                          <%}%>
                                     </div>
                                 </div>
                                 <div class="PageNavigationLinkGroup">
@@ -77,22 +88,28 @@
                                         <div class="Text">安全</div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
+                                      <%if (CheckAuth("SYS_FEATURES_RESOURCES_SECURITY_LEVEL")) { %>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SECURITY_LEVEL %>" target="PageFrame1">安全等级</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
                                          </div>
                                         <div class="PageNavigationLinkColumn">
+                                          <%if (CheckAuth("SYS_FEATURES_RESOURCES_PROTECTED_DATA")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="SysDataPermission.aspx" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">被保护数据权限设置</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                          <%}%>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                  <%}%>
                      <!--第四个框-->
+                  <%if (CheckAuth("SYS_FEATURES_COMPANY_CONTACT")) { %>
                     <div class="Normal Section Collapsed Normal1" id="b4">
                         <div class="Heading">
                             <div class="Toggle Expand Toggle1" id="a4">
@@ -106,42 +123,58 @@
                             <div class="Large Column">
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
+                                      <%if (CheckAuth("SYS_FEATURES_COMPANY_CONTACT_MARKET_SEGMENT")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MARKET %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">市场领域</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
+                                      <%if (CheckAuth("SYS_FEATURES_COMPANY_CONTACT_TERRITORY")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TERRITORY %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">地域</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
+                                      <%if (CheckAuth("SYS_FEATURES_COMPANY_CONTACT_REGION")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACCOUNTREGION %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">区域</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
+                                      <%if (CheckAuth("SYS_FEATURES_COMPANY_CONTACT_COUNTRY")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COUNTRY %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">国家</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
                                          </div>
                                         <div class="PageNavigationLinkColumn">
+                                          <%if (CheckAuth("SYS_FEATURES_COMPANY_CONTACT_COMPETITOR")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPETITOR %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">竞争对手</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                          <%}%>
+                                          <%if (CheckAuth("SYS_FEATURES_COMPANY_CONTACT_CLASSIFICATION_ICON")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACCOUNTTYPE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">客户类别</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                          <%}%>
+                                          <%if (CheckAuth("SYS_FEATURES_COMPANY_CONTACT_NAME_PREFIX_SUFFIX")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SUFFIXES %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">姓名后缀</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                          <%}%>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                  <%}%>
                      <!--第五个框-->
+                  <%if (CheckAuth("SYS_FEATURES_SALES_OPPS")) { %>
                     <div class="Normal Section Collapsed Normal1" id="b5">
                         <div class="Heading">
                             <div class="Toggle Expand Toggle1" id="a5">
@@ -155,33 +188,44 @@
                             <div class="Large Column">
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
+                                      <%if (CheckAuth("SYS_FEATURES_SALES_OPPS_ACTION_TYPE")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACTIONTYPE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">活动类型</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
+                                      <%if (CheckAuth("SYS_FEATURES_SALES_OPPS_OPP_STAGES")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITYAGES %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">商机阶段</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
+                                      <%if (CheckAuth("SYS_FEATURES_SALES_OPPS_OPP_SOURCE")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITYSOURCE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">商机来源</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
-                                       
+                                       <%}%>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
+                                      <%if (CheckAuth("SYS_FEATURES_SALES_OPPS_OPP_WIN_REASON")) { %>
                                          <div class="PageNavigationLink">
                                             <a  href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPPORTUNITYWINREASON %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">关闭商机的原因</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
+                                      <%if (CheckAuth("SYS_FEATURES_SALES_OPPS_OPP_LOSS_REASON")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPPORTUNITYLOSSREASON %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">丢失商机的原因</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
+                                      <%if (CheckAuth("SYS_FEATURES_SALES_OPPS_SALES_QUOTA_METRICS")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="OppoAdvancedField.aspx?id=<%=(int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD %>" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">销售指标度量</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
                                     </div>
                                 </div>
                                 <div class="PageNavigationLinkGroup">
@@ -189,16 +233,20 @@
                                         <div class="Text">报价</div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
+                                      <%if (CheckAuth("SYS_FEATURES_SALES_OPPS_QUOTE_TEMPLATE")) { %>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE_TEMPLATE %>" target="PageFrame1">报价模板</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
                                         </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                  <%}%>
                      <!--第六个框-->
+                  <%if (CheckAuth("SYS_FEATURES_CONTRACT")) { %>
                     <div class="Normal Section Collapsed Normal1" id="b6">
                         <div class="Heading">
                             <div class="Toggle Expand Toggle1" id="a6">
@@ -212,16 +260,20 @@
                             <div class="Large Column">
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
+                                      <%if (CheckAuth("SYS_FEATURES_CONTRACT_CATE")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_TYPE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">合同类别</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
+                                      <%if (CheckAuth("SYS_FEATURES_CONTRACT_BILLING_MILESTONE_STATUS")) { %>
                                         <div class="PageNavigationLink">
                                             <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_MILESTONE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">里程碑状态</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
                                     </div>
                                 </div>
                                 <div class="PageNavigationLinkGroup">
@@ -229,30 +281,40 @@
                                         <div class="Text">撤销审批</div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
+                                      <%if (CheckAuth("SYS_FEATURES_CONTRACT_UNPOST_RECURRING")) { %>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_RECURRING_SERVICES %>" target="PageFrame1">定期服务</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
+                                      <%if (CheckAuth("SYS_FEATURES_CONTRACT_UNPOST_CHARGES")) { %>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_CHARGES %>" target="PageFrame1">成本</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
                                     </div>
-                                    <div class="PageNavigationLinkColumn">                                        
+                                    <div class="PageNavigationLinkColumn"> 
+                                      <%if (CheckAuth("SYS_FEATURES_CONTRACT_UNPOST_MILESTONE")) { %>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_MILESTONES %>" target="PageFrame1">里程碑</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
+                                      <%if (CheckAuth("SYS_FEATURES_CONTRACT_UNPOST_SUBSCRIPTION")) { %>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_SUBSCRIPTIONS %>" target="PageFrame1">订阅</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                  <%}%>
                      <!--第七个框-->
+                  <%if (CheckAuth("SYS_FEATURES_PRODUCT_SERVICE")) { %>
                      <div class="Normal Section Collapsed Normal1" id="b7">
                         <div class="Heading">
                             <div class="Toggle Expand Toggle1" id="a7">
@@ -266,16 +328,20 @@
                             <div class="Large Column">
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
+                                      <%if (CheckAuth("SYS_FEATURES_PRODUCT_SERVICE_PRODUCT")) { %>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT %>" target="PageFrame1">产品</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                  <%}%>
                      <!--第八个框-->
+                  <%if (CheckAuth("SYS_FEATURES_CONFIG_ITEM")) { %>
                      <div class="Normal Section Collapsed Normal1" id="b8">
                         <div class="Heading">
                             <div class="Toggle Expand Toggle1" id="a8">
@@ -289,15 +355,18 @@
                             <div class="Large Column">
                                 <div class="PageNavigationLinkGroup">                                   
                                     <div class="PageNavigationLinkColumn">
+                                      <%if (CheckAuth("SYS_FEATURES_CONFIG_ITEM_TYPE")) { %>
                                         <div class="PageNavigationLink">
                                             <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONFIGITEMTYPE %>" target="PageFrame1">配置项类型</a>
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
+                                      <%}%>
                                     </div> 
                                 </div>
                             </div>
                         </div>
                     </div>
+                  <%}%>
                 </div>
                 <!--第二部分-->
                 <div class="TabContainer">

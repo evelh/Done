@@ -133,6 +133,7 @@ namespace EMT.DoneNOW.Web
             return AuthBLL.GetLimitValue(userInfo.security_Level_id, limit);
         }
 
+        #region 通用查询的相关权限
         /// <summary>
         /// 获取用户在指定搜索页的需要权限而没有权限的右键菜单
         /// </summary>
@@ -152,6 +153,7 @@ namespace EMT.DoneNOW.Web
         {
             return AuthBLL.CheckAddAuth(userInfo.security_Level_id, userPermit, queryType);
         }
+        #endregion
 
         #region 表单填充对象
         /// <summary>

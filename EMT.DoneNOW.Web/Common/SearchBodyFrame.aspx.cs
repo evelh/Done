@@ -221,7 +221,8 @@ namespace EMT.DoneNOW.Web
             // 判断权限
             if (!string.IsNullOrEmpty(addBtn))
             {
-
+                if (!CheckAddAuth((QueryType)queryTypeId))  // 没有权限，不显示新增按钮
+                    addBtn = "";
             }
         }
 
