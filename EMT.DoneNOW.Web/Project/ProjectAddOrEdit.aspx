@@ -1934,7 +1934,7 @@
             $("#AChoAcc").removeAttr("onclick");
             $("#AChoAcc").removeClass("DisabledState");
             $("#AChoossCon").removeAttr("onclick");
-            $("#AAddCon").removeAttr("onclick");// contract_id
+            $("#AAddCon").removeAttr("onclick");          // contract_id
             $("#contract_id").prop("disabled", true);
             $("#AChoossCon").addClass("DisabledState");
             $("#AAddCon").addClass("DisabledState");

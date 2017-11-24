@@ -23,6 +23,8 @@ namespace EMT.DoneNOW.Web.Project
                 thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(id));
                 if (thisProject != null)
                 {
+                    // todo 校验 是否有权限进行查看
+
                     var thisAccount = new CompanyBLL().GetCompany(thisProject.account_id);
                     ShowTitle.Text = "项目-"+thisProject.no+thisProject.name+"("+ thisAccount.name + ")";
                     var type = Request.QueryString["type"];
