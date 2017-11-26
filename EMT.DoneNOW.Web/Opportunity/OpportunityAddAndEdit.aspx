@@ -134,7 +134,14 @@
                                 <td>
                                     <div class="clear">
                                         <label>商机负责人<span class="red">*</span></label>
+                                      <%if (!isAdd && !CheckAuth("SEARCH_OPPORTUNITY_RESET_OPP_MANAGER")) { %>
+                                      <input type="hidden" name="resource_id" value="<%=opportunity.resource_id %>" />
+                                      <select disabled="disabled">
+                                        <option><%=new EMT.DoneNOW.BLL.UserResourceBLL().GetUserById(opportunity.resource_id).name %></option>
+                                      </select>
+                                      <%} else { %>
                                         <asp:DropDownList ID="resource_id" runat="server"></asp:DropDownList>
+                                      <%} %>
                                     </div>
                                 </td>
                                 <td>
@@ -452,6 +459,14 @@
 
                 <div>
                     <table border="none" cellspacing="" cellpadding="" style="width: 815px;">
+                      <%
+                          bool canEdit = false;
+                          bool canView = false;
+                          bool editP = CheckAuth("EDIT_OPPORTUNITY_PROTECT_UDF");
+                          bool editUP = CheckAuth("EDIT_OPPORTUNITY_UNPROTECT_UDF");
+                          bool viewP = CheckAuth("VIEW_OPPORTUNITY_PROTECT_UDF");
+                          bool viewUP = CheckAuth("VIEW_OPPORTUNITY_UNPROTECT_UDF");
+                              %>
 
                         <% if (opportunity_udfList != null && opportunity_udfList.Count > 0)
                             {
@@ -464,7 +479,24 @@
                             <td>
                                 <div class="clear">
                                     <label><%=udf.name %></label>
-                                    <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=(!isAdd)&&opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
+                                  <%
+                                      canEdit = false;
+                                      canView = false;
+                                      if (udf.is_protected==1 && editP)
+                                        canEdit = true;
+                                      if (udf.is_protected==1 && viewP)
+                                        canView = true;
+                                      if (udf.is_protected==0 && editUP)
+                                        canEdit = true;
+                                      if (udf.is_protected==0 && viewUP)
+                                        canView = true;
+                                      %>
+                                  <%if (!isAdd && !canView) { %>
+                                  <input type="hidden" name="<%=udf.id %>" value="<%=opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value %>" />
+                                  <input type="text" readonly="readonly" value="****" />
+                                  <%} else { %>
+                                  <input type="text" name="<%=udf.id %>" class="sl_cdt" <%if (!canEdit) { %> readonly="readonly" <%} %> value="<%=isAdd?"":opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                                  <%} %>
                                 </div>
 
                             </td>
@@ -476,7 +508,24 @@
                             <td>
                                 <div class="clear">
                                     <label><%=udf.name %></label>
-                                    <textarea name="<%=udf.id %>" rows="2" cols="20"><%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %></textarea>
+                                  <%
+                                      canEdit = false;
+                                      canView = false;
+                                      if (udf.is_protected==1 && editP)
+                                        canEdit = true;
+                                      if (udf.is_protected==1 && viewP)
+                                        canView = true;
+                                      if (udf.is_protected==0 && editUP)
+                                        canEdit = true;
+                                      if (udf.is_protected==0 && viewUP)
+                                        canView = true;
+                                      %>
+                                  <%if (!isAdd && !canView) { %>
+                                  <input type="hidden" name="<%=udf.id %>" value="<%=opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value %>" />
+                                  <textarea disabled="disabled">****</textarea>
+                                  <%} else { %>
+                                  <textarea name="<%=udf.id %>" <%if (!canEdit) { %> readonly="readonly" <%} %> rows="2" cols="20"><%=isAdd?"":opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %></textarea>
+                                  <%} %>
                                 </div>
 
                             </td>
@@ -487,8 +536,25 @@
                             <td>
                                 <div class="clear">
                                     <label><%=udf.name %></label>
+                                  <%
+                                      canEdit = false;
+                                      canView = false;
+                                      if (udf.is_protected==1 && editP)
+                                        canEdit = true;
+                                      if (udf.is_protected==1 && viewP)
+                                        canView = true;
+                                      if (udf.is_protected==0 && editUP)
+                                        canEdit = true;
+                                      if (udf.is_protected==0 && viewUP)
+                                        canView = true;
+                                      %>
+                                  <%if (!isAdd && !canView) { %>
+                                  <input type="hidden" name="<%=udf.id %>" value="<%=opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value %>" />
+                                  <input type="text" readonly="readonly" value="****" />
+                                  <%} else { %>
+                                  <input type="text" name="<%=udf.id %>" class="sl_cdt" <%if (!canEdit) { %> readonly="readonly" <%}else{ %> onclick="WdatePicker()" <%} %> value="<%=isAdd?"":opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                                  <%} %>
 
-                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value.ToString():"" %>" />
                                 </div>
 
                             </td>
@@ -500,7 +566,24 @@
                             <td>
                                 <div class="clear">
                                     <label><%=udf.name %></label>
-                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=opportunity_udfValueList!=null&&opportunity_udfValueList.Count>0?opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
+                                  <%
+                                      canEdit = false;
+                                      canView = false;
+                                      if (udf.is_protected==1 && editP)
+                                        canEdit = true;
+                                      if (udf.is_protected==1 && viewP)
+                                        canView = true;
+                                      if (udf.is_protected==0 && editUP)
+                                        canEdit = true;
+                                      if (udf.is_protected==0 && viewUP)
+                                        canView = true;
+                                      %>
+                                  <%if (!isAdd && !canView) { %>
+                                  <input type="hidden" name="<%=udf.id %>" value="<%=opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value %>" />
+                                  <input type="text" readonly="readonly" value="****" />
+                                  <%} else { %>
+                                  <input type="text" name="<%=udf.id %>" class="sl_cdt" <%if (!canEdit) { %> readonly="readonly" <%} else { %> maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" <%} %> value="<%=isAdd?"":opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                                  <%} %>
                                 </div>
                             </td>
                         </tr>

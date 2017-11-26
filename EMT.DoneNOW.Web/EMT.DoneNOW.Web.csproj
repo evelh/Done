@@ -206,7 +206,6 @@
     <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\EditServiceInvoiceDesc.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
-    <Content Include="fonts\ContentAttachment.png" />
     <Content Include="Images\attachment.png" />
     <Content Include="Images\calendar.png" />
     <Content Include="Images\cancel1.png" />
@@ -769,6 +768,7 @@
     <Content Include="Scripts\Search\Contract_Charge.js" />
     <Content Include="Scripts\Search\CRMNote.js" />
     <Content Include="Scripts\Search\InstalledProductView.js" />
+    <Content Include="Scripts\Search\InvoiceTemplate.js" />
     <Content Include="Scripts\Search\Invoice_History.js" />
     <Content Include="Scripts\Search\OpportunityViewAttachment.js" />
     <Content Include="Scripts\Search\SaleOrder.js" />

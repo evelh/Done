@@ -434,7 +434,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     contextMenu.Add(new PageContextMenuDto { text = "设为默认", click_function = "Default()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "未激活", click_function = "NoActive()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "NoActive()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
                     break;
                 case (long)QueryType.InvoiceTemplate:
@@ -442,7 +442,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     contextMenu.Add(new PageContextMenuDto { text = "设为默认", click_function = "Default()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "未激活", click_function = "NoActive()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "NoActive()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
                     break;
                 case (long)QueryType.InstalledProductView:
@@ -699,8 +699,8 @@ namespace EMT.DoneNOW.Web
             var menus = base.GetSearchContextMenu((QueryType)queryTypeId);  // 获取该用户不可见的菜单名称
             for (int i = contextMenu.Count - 1; i >= 0; --i)
             {
-                //if (menus.Exists(_ => contextMenu[i].text.Equals(_)))
-                //    contextMenu.RemoveAt(i);
+                if (menus.Exists(_ => contextMenu[i].text.Equals(_)))
+                    contextMenu.RemoveAt(i);
             }
         }
 
