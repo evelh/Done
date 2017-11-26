@@ -14,5 +14,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sdk_expense>($"SELECT * from sdk_expense where project_id = {project_id} and delete_time = 0");
         }
+        /// <summary>
+        /// 根据任务id获取相应费用信息
+        /// </summary>
+        public List<sdk_expense> GetExpByTaskId(long task_id)
+        {
+            return FindListBySql<sdk_expense>($"SELECT * from sdk_expense where task_id = {task_id} and delete_time = 0");
+        }
     }
 }

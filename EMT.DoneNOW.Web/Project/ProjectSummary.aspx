@@ -25,25 +25,96 @@
     </div>
     <div class="DropDownMenu" id="D1" style="top: 25px;">
         <ul>
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_EDIT_PROJECT"))
+                { %>
             <li><span class="DropDownMenuItemText" onclick="EditProject('<%=thisProject.id %>')">编辑项目</span></li>
-            <li><span class="DropDownMenuItemText">添加项目<%=isTemp?"模板":"" %>日历</span></li>
-            <li><span class="DropDownMenuItemText">添加项目<%=isTemp?"模板":"" %>备注</span></li>
+            <%} %>
+
+            <%if (isTemp)
+                { %>
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ADD_TEMP_CALENDAR"))
+                { %>
+            <li><span class="DropDownMenuItemText">添加项目模板日历</span></li>
+            <%} %>
+            <%}
+                else
+                { %>
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ADD_CALENDAR"))
+                { %>
+            <li><span class="DropDownMenuItemText">添加项目日历</span></li>
+            <%} %>
+            <%} %>
+
+            <%if (isTemp)
+                { %>
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ADD_TEMP_NOTE"))
+                { %>
+            <li><span class="DropDownMenuItemText">添加项目模板备注</span></li>
+            <%} %>
+            <%}
+                else
+                { %>
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ADD_NOTE"))
+                { %>
+            <li><span class="DropDownMenuItemText">添加项目备注</span></li>
+            <%} %>
+            <%} %>
+
+
             <% if (thisProject.status_id != (int)EMT.DoneNOW.DTO.DicEnum.PROJECT_STATUS.DONE)
                 { %>
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_COMPLETE"))
+                { %>
             <li><span class="DropDownMenuItemText">完成项目</span></li>
+            <%} %>
             <%} %>
 
             <%// DISABLE 
                 if (thisProject.status_id != (int)EMT.DoneNOW.DTO.DicEnum.PROJECT_STATUS.DISABLE)
                 {%>
-            <li onclick="DisProject('<%=thisProject.id %>')"><span class="DropDownMenuItemText">停用项目<%=isTemp?"模板":"" %></span></li>
+
+            <%if (isTemp)
+                { %>
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_DIS_PROJECT_TEMP"))
+                { %>
+            <li onclick="DisProject('<%=thisProject.id %>')"><span class="DropDownMenuItemText">停用项目模板</span></li>
             <%} %>
+            <%}
+                else
+                { %>
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_DIS_PROJECT"))
+                { %>
+            <li onclick="DisProject('<%=thisProject.id %>')"><span class="DropDownMenuItemText">停用项目</span></li>
+            <%} %>
+            <%} %>
+
+
+
+            <%} %>
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ACTIVE_PROJECT"))
+                { %>
             <li><span class="DropDownMenuItemText">激活项目</span></li>
+            <%} %>
             <%if (!isTemp)
+                { %>
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_SAVEAS_TEMP"))
                 { %>
             <li><span class="DropDownMenuItemText" onclick="SaveAsTemp()">保存项目模板</span></li>
             <%} %>
-            <li><span class="DropDownMenuItemText" onclick="DeletePro()">删除项目<%=isTemp?"模板":"" %></span></li>
+            <%} %>
+            <%if (isTemp)
+                { %>
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_DELETE_PROJECT_TEMP"))
+                { %>
+            <li><span class="DropDownMenuItemText" onclick="DeletePro()">删除项目模板</span></li>
+            <%} %>
+            <%}
+                else
+                { %>
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_DELETE_PROJECT")) { %>
+            <li><span class="DropDownMenuItemText" onclick="DeletePro()">删除项目</span></li>
+            <%} %>
+            <%} %>
         </ul>
     </div>
     <div class="DivScrollingContainer General" style="top: 34px;">
@@ -65,7 +136,9 @@
                                             <td class="FieldLabel" style="min-width: 200px; width: 200px;">客户名称
                                             </td>
                                             <td>
-                                                <a style="cursor: pointer;" onclick="window.open('../Company/ViewCompany.aspx?id=<%=thisProject.account_id %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=account==null?"":account.name %></a>
+                                                <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_VIEW_ACCOUNT")){ %>
+                                                <a style="cursor: pointer;" onclick="window.open('../Company/ViewCompany.aspx?id=<%=thisProject.account_id %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=account == null ? "" : account.name %></a>
+                                                <%} %>
                                             </td>
                                         </tr>
                                         <tr height="21">
@@ -78,7 +151,9 @@
                                             <td class="FieldLabel" style="min-width: 200px; width: 200px;">合同名称
                                             </td>
                                             <td>
+                                                <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_VIEW_CONTRACT")){ %>
                                                 <a style="cursor: pointer;" onclick="window.open('../Contract/ContractView.aspx?id=<%=contract==null?"":contract.id.ToString() %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=contract==null?"":contract.name %></a>
+                                                   <%} %>
                                             </td>
                                         </tr>
                                         <tr height="21">
@@ -232,7 +307,6 @@
                                             </td>
                                         </tr>
                                         <tr height="5">
-
                                         </tr>
                                         <tr height="21">
                                             <td class="FieldLabel" style="min-width: 200px; width: 200px;">完成任务 %
@@ -363,29 +437,37 @@
                                             <td class="FieldLabels">活动任务
                                             </td>
                                             <td>
-
-                                                <a><%=openTaskNum %></a>
+                                                  <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ACTIVE_TASK"))
+                                                      { %>
+                                                <a onclick="ToTaskList('<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_TASK_INCOMPLETE %>','TaskNoComplete')"><%=openTaskNum %></a>
+                                                <%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabels">过期任务
                                             </td>
                                             <td>
-                                                <a><%=overTaskNum %></a>
+                                                   <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_OVERDUE_TASK"))
+                                                       { %>
+                                                <a onclick="ToTaskList('<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_TASK_OVERDUE %>','ExpiredTask')"><%=overTaskNum %></a><%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabels">已完成任务
                                             </td>
                                             <td>
-                                                <a><%=comTaskNum %></a>
+                                                <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_COMPLETE_TASK"))
+                                                       { %>
+                                                <a onclick="ToTaskList('<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_TASK_COMPLETE %>','TaskComplete')"><%=comTaskNum %></a><%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabels">问题
                                             </td>
                                             <td>
-                                                <a><%=issuesNum %></a>
+                                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ISSUE"))
+                                                       { %>
+                                                <a onclick="ToTaskList('<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_ISSUE %>','Issues')"><%=issuesNum %></a><%} %>
                                             </td>
                                         </tr>
                                         <%--         <tr height="24px">
@@ -410,7 +492,7 @@
                                             var annNum = 0;
                                             var annList = new EMT.DoneNOW.DAL.com_activity_dal().GetActiList($" and object_id = {thisProject.id} and announce=1 ");
                                             var ciNum = 0;
-                                            var  ciList= new EMT.DoneNOW.DAL.ctt_contract_cost_dal().GetCostByProId(thisProject.id," and create_ci=1");
+                                            var ciList = new EMT.DoneNOW.DAL.ctt_contract_cost_dal().GetCostByProId(thisProject.id, " and create_ci=1");
                                             if (ciList != null && ciList.Count > 0)
                                             {
                                                 ciNum = ciList.Count;
@@ -440,42 +522,50 @@
                                             <td class="FieldLabels">成本
                                             </td>
                                             <td>
+                                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_COST"))
+                                                     { %>
                                                 <a><%=costNum %></a>
+                                                <%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabels">费率
                                             </td>
-                                            <td>
-                                                <a><%=rateNum %></a>
+                                            <td> <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_RATE"))
+                                                     { %>
+                                                <a><%=rateNum %></a> <%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabels">备注
                                             </td>
-                                            <td>
-                                                <a><%=noteNum %></a>
+                                            <td> <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_NOTE"))
+                                                     { %>
+                                                <a><%=noteNum %></a>  <%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabels">日历
                                             </td>
-                                            <td>
-                                                <a><%=caleNum %></a>
+                                            <td><%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_CALENDAR"))
+                                                     { %>
+                                                <a><%=caleNum %></a><%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabels">公告
                                             </td>
-                                            <td>
-                                                <a><%=annNum %></a>
+                                            <td><%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_NOTICE"))
+                                                     { %>
+                                                <a><%=annNum %></a><%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabels">配置项
                                             </td>
-                                            <td>
-                                                <a><%=ciNum %></a>
+                                            <td><%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_CONITEM"))
+                                                     { %>
+                                                <a><%=ciNum %></a><%} %>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -483,10 +573,10 @@
                             </div>
                         </div>
                     </td>
-                  
+
                 </tr>
                 <tr>
-                      <td colspan="2">
+                    <td colspan="2">
 
                         <div class="DivSectionWithHeader">
                             <div class="Heading">
@@ -502,21 +592,21 @@
                                                 foreach (var ann in annList)
                                                 {%>
                                         <tr height="20">
-                                            <td width="65%" valign="top" class="FieldLabels" style="font-size: 12px;color: #4F4F4F;font-weight: bold;"><%=ann.name %></td>
-                                            <td width="20%" valign="top" class="FieldLabels" style="font-size: 12px;color: #4F4F4F;font-weight: bold;"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(ann.start_date).ToString("yyyy-MM-dd") %></td>
-                                              <% var thisRes = sysresList.FirstOrDefault(_ => _.val == ann.create_user_id.ToString()); %>
-                                            <td width="15%" align="left" valign="top" class="FieldLabels" style="font-size: 12px;color: #4F4F4F;font-weight: bold;"><%=thisRes==null?"":thisRes.show %></td>
+                                            <td width="65%" valign="top" class="FieldLabels" style="font-size: 12px; color: #4F4F4F; font-weight: bold;"><%=ann.name %></td>
+                                            <td width="20%" valign="top" class="FieldLabels" style="font-size: 12px; color: #4F4F4F; font-weight: bold;"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(ann.start_date).ToString("yyyy-MM-dd") %></td>
+                                            <% var thisRes = sysresList.FirstOrDefault(_ => _.val == ann.create_user_id.ToString()); %>
+                                            <td width="15%" align="left" valign="top" class="FieldLabels" style="font-size: 12px; color: #4F4F4F; font-weight: bold;"><%=thisRes==null?"":thisRes.show %></td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" style="padding-left: 10px; padding-right: 10px;">
-                                              
+
                                                 <div style="color: #4F4F4F;"><%=ann.description %></div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td height="21" colspan="3">
-                                                <%if (annList.IndexOf(ann) != annList.Count-1)
-                                                 { %>
+                                                <%if (annList.IndexOf(ann) != annList.Count - 1)
+                                                    { %>
                                                 <hr />
                                                 <%} %>
                                             </td>
@@ -537,7 +627,7 @@
     </div>
 
 
-      
+
 
 
 </body>
@@ -584,7 +674,7 @@
         $("#Nav2").hide();
     })
     function EditProject(project_id) {
-        window.open("ProjectAddOrEdit.aspx?id=" + project_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECT_EDIT %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("ProjectAddOrEdit?id=" + project_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECT_EDIT %>', 'left=200,top=200,width=600,height=800', false);
     }
 
     function DisProject(project_id) {
@@ -615,7 +705,7 @@
             type: "GET",
             async: false,
             url: "../Tools/ProjectAjax.ashx?act=DeletePro&project_id=<%=thisProject.id %>",
-            dataType:"json",
+            dataType: "json",
             success: function (data) {
                 if (data != "") {
                     if (data.result == "True") {
@@ -628,5 +718,9 @@
                 self.parent.location.reload();
             },
         });
+    }
+    // 跳转到条目页面，传递相应的类型id
+    function ToTaskList(queryType,showType) {
+        location.href = "ProjectSchedule?project_id=<%=thisProject.id %>&pageShowType=" + showType + "&QeryTypeId=" + queryType;
     }
 </script>

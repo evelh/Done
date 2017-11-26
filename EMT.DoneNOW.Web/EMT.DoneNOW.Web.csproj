@@ -209,6 +209,7 @@
     <Content Include="Images\attachment.png" />
     <Content Include="Images\calendar.png" />
     <Content Include="Images\cancel1.png" />
+    <Content Include="Images\coin_gold.png" />
     <Content Include="Images\ContentAttachment.png" />
     <Content Include="Images\contract.png" />
     <Content Include="Images\dailyGridContainer.png" />
@@ -314,6 +315,7 @@
     <Content Include="Opportunity\OppportunityAdvancedField.aspx" />
     <Content Include="Organization\LocationAddAndEdit.aspx" />
     <Content Include="Project\AddTaskAttach.aspx" />
+    <Content Include="Project\ExpenseManage.aspx" />
     <Content Include="Project\ProjectAddOrEdit.aspx" />
     <Content Include="Product\ProductAdd.aspx" />
     <Content Include="Product\ProductStock.aspx" />
@@ -333,6 +335,7 @@
     <Content Include="Project\ProjectView.aspx" />
     <Content Include="Project\RecipientSelector.aspx" />
     <Content Include="Project\TaskAddOrEdit.aspx" />
+    <Content Include="Project\TaskHistory.aspx" />
     <Content Include="Project\TaskModify.aspx" />
     <Content Include="Project\TaskNote.aspx" />
     <Content Include="Project\TaskView.aspx" />
@@ -1405,6 +1408,13 @@
     <Compile Include="Project\AddTaskAttach.aspx.designer.cs">
       <DependentUpon>AddTaskAttach.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Project\ExpenseManage.aspx.cs">
+      <DependentUpon>ExpenseManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ExpenseManage.aspx.designer.cs">
+      <DependentUpon>ExpenseManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Project\ProjectAddOrEdit.aspx.cs">
       <DependentUpon>ProjectAddOrEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1537,6 +1547,13 @@
     </Compile>
     <Compile Include="Project\TaskAddOrEdit.aspx.designer.cs">
       <DependentUpon>TaskAddOrEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\TaskHistory.aspx.cs">
+      <DependentUpon>TaskHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\TaskHistory.aspx.designer.cs">
+      <DependentUpon>TaskHistory.aspx</DependentUpon>
     </Compile>
     <Compile Include="Project\TaskModify.aspx.cs">
       <DependentUpon>TaskModify.aspx</DependentUpon>

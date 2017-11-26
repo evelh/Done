@@ -1834,6 +1834,7 @@ namespace EMT.DoneNOW.BLL
                 thisAddNote.object_id = param.thisTask.id;
                 thisAddNote.object_type_id = (int)OBJECT_TYPE.TASK;
                 thisAddNote.account_id = project.account_id;
+                thisAddNote.task_id = param.thisTask.id;
                 if (contact != null)
                 {
                     thisAddNote.contact_id = contact.id;
@@ -2216,6 +2217,117 @@ namespace EMT.DoneNOW.BLL
                 return true;
             }
             return false;
+        }
+        /// <summary>
+        /// 新增费用，保存费用报表
+        /// </summary>
+        public bool AddExpense(ExpenseDto param,long user_id)
+        {
+            try
+            {
+                
+                var seDal = new sdk_expense_dal();
+                var serDal = new sdk_expense_report_dal();
+                var thisExp = param.thisExpense;
+                var thisExpRep = param.thisExpReport;
+                if (thisExpRep.id == 0)
+                {
+                    thisExpRep.id = serDal.GetNextIdCom();
+                    thisExpRep.status_id = (int)EXPENSE_REPORT_STATUS.HAVE_IN_HAND;
+                    thisExpRep.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisExpRep.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisExpRep.create_user_id = user_id;
+                    thisExpRep.update_user_id = user_id;
+                    serDal.Insert(thisExpRep);
+                    OperLogBLL.OperLogAdd<sdk_expense_report>(thisExpRep, thisExpRep.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE_REPORT, "新增费用报表");
+                }
+                thisExp.id = seDal.GetNextIdCom();
+                thisExp.expense_report_id = thisExpRep.id;
+                thisExp.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                thisExp.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                thisExp.create_user_id = user_id;
+                thisExp.update_user_id = user_id;
+                seDal.Insert(thisExp);
+                OperLogBLL.OperLogAdd<sdk_expense>(thisExp, thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "新增费用");
+                return true;
+            }
+            catch (Exception msg)
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// 修改费用
+        /// </summary>
+        public bool EditExpense(ExpenseDto param, long user_id)
+        {
+            try
+            {
+                var seDal = new sdk_expense_dal();
+                var serDal = new sdk_expense_report_dal();
+                var thisExp = param.thisExpense;
+                var thisExpRep = param.thisExpReport;
+                if (thisExpRep.id == 0)
+                {
+                    thisExpRep.id = serDal.GetNextIdCom();
+                    thisExpRep.status_id = (int)EXPENSE_REPORT_STATUS.HAVE_IN_HAND;
+                    thisExpRep.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisExpRep.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisExpRep.create_user_id = user_id;
+                    thisExpRep.update_user_id = user_id;
+                    serDal.Insert(thisExpRep);
+                    OperLogBLL.OperLogAdd<sdk_expense_report>(thisExpRep, thisExpRep.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE_REPORT, "新增费用报表");
+                }
+               
+                thisExp.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                thisExp.update_user_id = user_id;
+                thisExp.expense_report_id = thisExpRep.id;
+                OperLogBLL.OperLogUpdate<sdk_expense>(thisExp, seDal.FindNoDeleteById(thisExp.id), thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "修改费用");
+                seDal.Update(thisExp);
+                
+                return true;
+            }
+            catch (Exception msg)
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// 删除费用
+        /// </summary>
+        public bool DeleteExpense(long eId,long user_id,out string failReason)
+        {
+            failReason = "";
+            try
+            {
+                var seDal = new sdk_expense_dal();
+                var thisExp = seDal.FindNoDeleteById(eId);
+                if (thisExp != null)
+                {
+                    if (thisExp.approve_and_post_date == null && thisExp.approve_and_post_user_id == null)
+                    {
+                        seDal.SoftDelete(thisExp,user_id);
+                        OperLogBLL.OperLogDelete<sdk_expense>(thisExp, thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "删除费用");
+                        return true;
+                    }
+                    else
+                    {
+                        failReason = "不能删除已经审批提交的费用";
+                        return false;
+                    }
+                }
+                else
+                {
+                    failReason = "未找到该费用";
+                    return false;
+                }
+
+            }
+            catch (Exception msg)
+            {
+                failReason = msg.Message;
+                return false;
+            }
         }
     }
 }

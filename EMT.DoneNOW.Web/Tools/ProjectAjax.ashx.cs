@@ -124,6 +124,18 @@ namespace EMT.DoneNOW.Web
                         var indNum = context.Request.QueryString["index"];
                         RemoveSession(context,long.Parse(rstId),int.Parse(indNum));
                         break;
+                    case "GetProTaskList":
+                        var gpId = context.Request.QueryString["project_id"];
+                        GetProTaskList(context, long.Parse(gpId));
+                        break;
+                    case "DeleteExpense":
+                        var delEId = context.Request.QueryString["exp_id"];
+                        DeleteExpense(context,long.Parse(delEId));
+                        break;
+                    case "DeleteNote":
+                        var note_id = context.Request.QueryString["note_id"];
+                        DeleteNote(context,long.Parse(note_id));
+                        break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                         break;
@@ -954,6 +966,34 @@ namespace EMT.DoneNOW.Web
                     }
                 }
             }
+        }
+        /// <summary>
+        /// 返回这个项目的问题和任务
+        /// </summary>
+        private void GetProTaskList(HttpContext context,long project_id)
+        {
+            var taskList = new sdk_task_dal().GetProjectTask(project_id);
+            if(taskList!=null&& taskList.Count > 0)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(taskList));
+            }
+        }
+        /// <summary>
+        /// 删除费用
+        /// </summary>
+        private void DeleteExpense(HttpContext context,long exp_id)
+        {
+            string faileReason = "";
+            var result = new TaskBLL().DeleteExpense(exp_id,LoginUserId,out faileReason);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result, reason = faileReason }));
+        }
+        /// <summary>
+        /// 删除备注
+        /// </summary>
+        private void DeleteNote(HttpContext context, long exp_id)
+        {
+            var result = new TaskBLL().DeleteTaskNote(exp_id,LoginUserId);
+            context.Response.Write(result);
         }
     }
 }

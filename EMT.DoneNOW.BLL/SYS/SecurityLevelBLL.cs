@@ -34,7 +34,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public List<sys_module> GetSecurity_module(int id)
         {
-            return new sys_module_dal().FindListBySql($"select DISTINCT `name`  from sys_security_level_module a,sys_module b where security_level_id={id} and a.module_id=b.id").ToList();
+            return new sys_module_dal().FindListBySql($"SELECT name from sys_module where id in(  SELECT DISTINCT(sl.module_id) from  sys_limit as sl INNER JOIN  sys_security_level_limit as ssll  on sl.id=ssll.limit_id where  ssll.security_level_id = {id})").ToList();
         }
         /// <summary>
         /// 获取对应的权限类型
@@ -147,10 +147,13 @@ namespace EMT.DoneNOW.BLL
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }
+            var older = GetSecurityLevel(seclev.id);
             var old = GetSecurityLevel(seclev.id);
-            seclev.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            seclev.update_user_id = user_id;
-            bool k = new sys_security_level_dal().Update(seclev);
+            old.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            old.update_user_id = user_id;
+            old.name = seclev.name;
+            old.is_active = seclev.is_active;
+            bool k = new sys_security_level_dal().Update(old);
             if (k == false)
             {
                 return ERROR_CODE.ERROR;
@@ -165,7 +168,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.SECURITY_LEVEL,
                 oper_object_id = seclev.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = new sys_security_level_dal().CompareValue(old,seclev),
+                oper_description = new sys_security_level_dal().CompareValue(old, older),
                 remark = "修改权限点关联模板"
 
             };          // 创建日志

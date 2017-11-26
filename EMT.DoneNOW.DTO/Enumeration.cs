@@ -59,6 +59,7 @@ namespace EMT.DoneNOW.DTO
         QUOTE_GROUP_BY = 110,                    // 报价分组条件
         CONTRACT_TYPE=111,                     // 合同类型
         CONTRACT_CATE = 112,                    // 合同分类
+        EXPENSE_TYPE = 113,                     // 费用类型
         CHARGE_TYPE = 114,                      // 合同的成本类型
         CHARGE_STATUS = 115,                    // 合同的成本状态
         CONTRACT_MILESTONE=117,                  //合同里程碑
@@ -436,6 +437,7 @@ namespace EMT.DoneNOW.DTO
             NOTES = 711,            // 备注
             SALES_ORDER = 712,      // 销售订单
             PROJECT = 713,          // 项目
+            TASK = 714,             // 任务
             ATTACHMENT = 715,       // 附件
             COMPANY = 716,          // 客户
         }
@@ -543,7 +545,8 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TASK = 1539,                    // 项目详情，task列表
             OPPORTUNITY_VIEW_ATTACHMENT = 1540,     // 商机详情-附件查询
             SALES_ORDER_VIEW_ATTACHMENT = 1541,     // 销售订单详情-附件查询
-
+            PRO_EXPENSE_REPORT_CALLBACK = 1543,            // 费用报表查找带回 
+            PROJECT_CALLBACK = 1544,                // 项目查找带回
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
@@ -648,6 +651,8 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TASK_RESOURCE = 1382,               // 任务分配对象
             SDK_WORK_RECORD=1383,                       // 工时记录
             SDK_WORK_ENTRY=1384,                        // 工时
+            SDK_EXPENSE_REPORT = 1385,                  // 费用报表   
+            SDK_EXPENSE = 1386,                         // 费用
             ATTACHMENT = 1389,                          // 附件
             PROJECT_TASK_PREDECESSOR = 1393,            // 任务的前驱任务
             PROJECT_PHASE_WORK_HOURS = 1398,            // 项目阶段预估工时
@@ -802,6 +807,13 @@ namespace EMT.DoneNOW.DTO
             RETAINER = 1203,            // 预付费合同
             PER_TICKET = 1204,          // 事件合同
         }
+        public enum EXPENSE_TYPE
+        {
+            STANDARD = 1223,              // 标准
+            TOTAL_MILEAGE=1224,           // 总里程
+            ENTERTAINMENT_EXPENSES=1225,  // 招待费用
+        }
+
         /// <summary>
         /// 合同-成本类型 - 114
         /// </summary>
@@ -951,6 +963,15 @@ namespace EMT.DoneNOW.DTO
             FIXWORK = 1901,                     // 固定工作
             FIXDURATION = 1902,                 // 固定时间
         }
+
+        public enum EXPENSE_REPORT_STATUS
+        {
+            HAVE_IN_HAND=2101,            // 进行中
+            WAITING_FOR_APPROVAL =2102,   // 等待审批
+            PAYMENT_BEEN_APPROVED =2103,  // 付款已审批
+            REJECTED = 2104,              // 已拒绝
+            ALREADY_PAID =2105,           // 已支付
+        }
         /// <summary>
         /// 工时类型 - 145
         /// </summary>
@@ -973,6 +994,17 @@ namespace EMT.DoneNOW.DTO
             PROJECT_INTERNA_USER = 2122,            // 项目-团队中员工
             PROJECT_TEAM = 2123,            //  项目-团队全部成员
         }
+        /// <summary>
+        /// 费用超支政策 - 148
+        /// </summary>
+        public enum EXPENSE_OVERDRAFT_POLICY
+        {
+            ALLOW_ALL_WARNING=2138,          // 允许全部需警告
+            ALLOW_WITH_RECEIPT =2139,        // 允许需收据
+            NOT_OVERDRAFT =2140,             // 不允许透支
+            RECEIPT_REQUIRED_ALWAYS =2141,   // 总是要求回执
+        }
+
         /// <summary>
         /// 工作类型计费方法-153
         /// </summary>
@@ -1264,13 +1296,24 @@ namespace EMT.DoneNOW.DTO
         TASKADD,                 // task新增
         TASKEDIT ,              // task修改
 
-        WORK_ENTRY_ADD,
-        WORK_ENTRY_EDIT,
+        WORK_ENTRY_ADD,          // 工时新增修改
+        WORK_ENTRY_EDIT,         // 工时新增修改
 
-        TASK_NOTE_ADD,
-        TASK_NOTE_EDIT,
+        TASK_NOTE_ADD,         // 任务备注新增修改 
+        TASK_NOTE_EDIT,        // 任务备注新增修改 
 
         TASK_ATTACH,
 
+        TASK_EXPENSE_ADD,     // 任务费用新增修改
+        TASK_EXPENSE_EDIT,    // 任务费用新增修改
+
+    }
+    /// <summary>
+    /// 固定的物料代码
+    /// </summary>
+    public enum CostCode
+    {
+        ENTERTAINMENT_EXPENSE=17,    // 娱乐费用（招待费用）
+        MILEAGE=18,             // 总里程
     }
 }

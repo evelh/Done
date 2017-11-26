@@ -34,6 +34,10 @@ namespace EMT.DoneNOW.Web
                         var notiTempId = context.Request.QueryString["temp_id"];
                         GetNotiTempEmail(context,long.Parse(notiTempId));
                         break;
+                    case "costCodeRule":
+                        var cosId = context.Request.QueryString["code_id"];
+                        GetSinCodeRule(context,long.Parse(cosId));
+                        break;
                     default:
                         break;
                 }
@@ -105,9 +109,20 @@ namespace EMT.DoneNOW.Web
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson(tempEmailList[0]));
             }
-
+        }
+        /// <summary>
+        /// 获取到费用规则信息
+        /// </summary>
+        private void GetSinCodeRule(HttpContext context,long code_rule_id)
+        {
+            var codeRule = new d_cost_code_rule_dal().GetRuleByCodeId(code_rule_id);
+            if (codeRule != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(codeRule));
+            }
 
         }
-        
+
+
     }
 }

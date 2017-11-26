@@ -23,11 +23,13 @@ namespace EMT.DoneNOW.Web.Project
         protected List<UserDefinedFieldValue> task_udfValueList = null;
         protected List<sdk_task_resource> thisTaskResList = null;
         protected List<TaskViewDto> tvdList = new List<TaskViewDto>();
+        protected List<sdk_expense> taskExpList;
         protected string taskType = "";
         protected string tvbOrder = ""; // 排序方式
         protected string expOrder = ""; // 排序方式
         protected string serOrder = ""; // 排序方式
         protected List<DictionaryEntryDto> tvbDto =new List<DictionaryEntryDto>();
+        protected List<DictionaryEntryDto> expDto = new List<DictionaryEntryDto>();
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -44,7 +46,14 @@ namespace EMT.DoneNOW.Web.Project
                     tvbDto.Add(new DictionaryEntryDto("billabled", "是否计费", 0));
                     tvbDto.Add(new DictionaryEntryDto("billed", "已计费", 0));
 
-
+                    expDto.Add(new DictionaryEntryDto("type_id", "类型", 0));
+                    expDto.Add(new DictionaryEntryDto("add_date", "费用日期", 0));
+                    expDto.Add(new DictionaryEntryDto("create_user_id", "创建人", 0));
+                    expDto.Add(new DictionaryEntryDto("expense_cost_code_id", "费用类别", 0));
+                    expDto.Add(new DictionaryEntryDto("amount", "总额", 0));
+                    expDto.Add(new DictionaryEntryDto("is_billable", "计费的", 0));
+                    expDto.Add(new DictionaryEntryDto("approve_and_post_user_id", "已计费", 0));
+                    
 
                     v_task = new v_task_all_dal().FindById(thisTask.id);
                     if (thisTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_ISSUE)
@@ -68,26 +77,27 @@ namespace EMT.DoneNOW.Web.Project
                     var roleList = dic.FirstOrDefault(_ => _.Key == "role").Value as List<sys_role>;
                     var sysList = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value as List<DictionaryEntryDto>;
 
-
+                    #region 工时备注附件
                     var tasEntryList = new sdk_work_entry_dal().GetByTaskId(thisTask.id);
                     if (tasEntryList != null && tasEntryList.Count > 0)
                     {
                         
-                        var newList = from a in tasEntryList
+                        var newList = (from a in tasEntryList
                                       join  b in roleList on a.role_id equals b.id
                                       join c in sysList on a.resource_id equals long.Parse(c.val)
-                                      select new TaskViewDto {id=a.id,type="entry",time=Tools.Date.DateHelper.ConvertStringToDateTime((long)a.end_time),resouName = c.show+"("+b.name+")", workHours=a.hours_worked,notTiltle = a.summary_notes, billabled = a.is_billable==1?"✓":"",billed = a.approve_and_post_date==null?"": "✓", startDate= Tools.Date.DateHelper.ConvertStringToDateTime((long)a.start_time), workTypeId = a.cost_code_id, contractId = a.contract_id , showOnInv  = a.show_on_invoice==1,serviceId=a.service_id };
+                                      select new TaskViewDto {id=a.id,type="entry",time=Tools.Date.DateHelper.ConvertStringToDateTime((long)a.end_time),resouName = c.show+"("+b.name+")", workHours=a.hours_worked,notTiltle = a.summary_notes, billabled = a.is_billable==1?"✓":"",billed = a.approve_and_post_date==null?"": "✓", startDate= Tools.Date.DateHelper.ConvertStringToDateTime((long)a.start_time), workTypeId = a.cost_code_id, contractId = a.contract_id , showOnInv  = a.show_on_invoice==1,serviceId=a.service_id }).ToList();
 
                         tvdList.AddRange(newList);
                     }
                     var conAttDal = new com_attachment_dal();
                     var allTaskAttList = new List<com_attachment>();
-                    var taskNoteList = new com_activity_dal().GetActiList($" and task_id={thisTask.id}");
+                    var taskNoteList = new com_activity_dal().GetActiList($" and (task_id ={thisTask.id} or object_id={thisTask.id} )");
                     if (taskNoteList != null && taskNoteList.Count > 0)
                     {
-                        var newList = from a in taskNoteList
-                                      join c in sysList on a.resource_id equals long.Parse(c.val)
-                                      select new TaskViewDto { id = a.id, type = "note", time = Tools.Date.DateHelper.ConvertStringToDateTime(a.create_time), resouName = c.show, notTiltle = a.name, noteDescr  = a.description};
+                        var newList = (from a in taskNoteList
+                                      join c in sysList on a.resource_id equals long.Parse(c.val) into temp
+                                       from tt in temp.DefaultIfEmpty()
+                                       select new TaskViewDto { id = a.id, type = "note", time = Tools.Date.DateHelper.ConvertStringToDateTime(a.create_time), resouName = tt == null ? "" : tt.show, notTiltle = a.name, noteDescr  = a.description}).ToList();
                         tvdList.AddRange(newList);
 
                         foreach (var thisTaskNote in taskNoteList)
@@ -107,41 +117,80 @@ namespace EMT.DoneNOW.Web.Project
                     }
                     if (allTaskAttList.Count > 0)
                     {
-                        var newList = from a in taskAttList
-                                      join c in sysList on a.create_user_id equals long.Parse(c.val)
-                                      select new TaskViewDto { id = a.id, type = "atach", time = Tools.Date.DateHelper.ConvertStringToDateTime(a.create_time), resouName = c.show, notTiltle = a.title, fileType = a.type_id };
+                        var newList = (from a in allTaskAttList
+                                       join c in sysList on a.create_user_id equals long.Parse(c.val) into temp
+                                       from tt in temp.DefaultIfEmpty()
+                                       select new TaskViewDto { id = a.id, type = "atach", time = Tools.Date.DateHelper.ConvertStringToDateTime(a.create_time), resouName = tt==null?"":tt.show, notTiltle = a.title, fileType = a.type_id }).ToList();
                         tvdList.AddRange(newList);
                     }
                     if(tvdList!=null&& tvdList.Count > 0)
                     {
                         tvbOrder = Request.QueryString["tvbOrder"];
-                      
+                        tvdList = tvdList.OrderBy(_ => _.time).ToList();
                         if (!string.IsNullOrEmpty(tvbOrder))
                         {
-                            var tvbOrderArr = tvbOrder.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                            var tvbOrderArr = tvbOrder.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
                             var orderFile = tvbDto.FirstOrDefault(_ => _.val == tvbOrderArr[0]);
                             if (tvbOrderArr[1] == "desc")
                             {
-                                tvdList = (from a in tvdList
-                                           orderby tvbOrderArr[0] descending
-                                           select a).ToList();
+                                
+                                //tvdList = (from a in tvdList 
+                                //           orderby tvbOrderArr[0]  descending
+                                //           select a).ToList();
+                                tvdList.Sort(delegate (TaskViewDto t1, TaskViewDto t2) {
+                                    return GetObjectPropertyValue(t2, tvbOrderArr[0]).CompareTo(GetObjectPropertyValue(t1, tvbOrderArr[0]));
+                                });
                                 orderFile.select = orderFile != null ? 2 : orderFile.select;
                             }
                             else
                             {
-                                tvdList = (from a in tvdList
-                                           orderby tvbOrderArr[0] 
-                                           select a).ToList();
+                                //tvdList = (from a in tvdList
+                                //           orderby tvbOrderArr[0] 
+                                //           select a).ToList();
+                                tvdList.Sort(delegate (TaskViewDto t1, TaskViewDto t2) {
+                                    return GetObjectPropertyValue(t1, tvbOrderArr[0]).CompareTo(GetObjectPropertyValue(t2, tvbOrderArr[0]));
+                                });
                                 orderFile.select = orderFile != null ? 1 : orderFile.select;
                             }
-                        
                         }
-         
-
-
                     }
+                    #endregion
 
+                    #region 费用
+                    taskExpList = new sdk_expense_dal().GetExpByTaskId(thisTask.id);
+                    if(taskExpList!=null&& taskExpList.Count > 0)
+                    {
+                        taskExpList = taskExpList.OrderByDescending(_ => _.add_date).ToList();
+                        expOrder = Request.QueryString["expOrder"];
+                        if (!string.IsNullOrEmpty(expOrder))
+                        {
+                            var expOrderArr = expOrder.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                            var orderFile = expDto.FirstOrDefault(_ => _.val == expOrderArr[0]);
+                            if (expOrderArr[1] == "desc")
+                            {
+                                //taskExpList = (from a in taskExpList
+                                //           orderby expOrderArr[0] descending
+                                //           select a).ToList();
+                                taskExpList.Sort(delegate (sdk_expense t1, sdk_expense t2) {
+                                    return GetObjectPropertyValue(t2, expOrderArr[0]).CompareTo(GetObjectPropertyValue(t1, expOrderArr[0]));
+                                });
+                                orderFile.select = orderFile != null ? 2 : orderFile.select;
+                            }
+                            else
+                            {
+                                //taskExpList = (from a in taskExpList
+                                //           orderby expOrderArr[0]
+                                //           select a).ToList();
+                                taskExpList.Sort(delegate (sdk_expense t1, sdk_expense t2) {
+                                    return GetObjectPropertyValue(t1, expOrderArr[0]).CompareTo(GetObjectPropertyValue(t2, expOrderArr[0]));
+                                });
 
+                                orderFile.select = orderFile != null ? 1 : orderFile.select;
+                            }
+
+                        }
+                    }
+                    #endregion
                 }
                 else
                 {
@@ -154,7 +203,25 @@ namespace EMT.DoneNOW.Web.Project
                 Response.End();
             }
         }
+        public string GetObjectPropertyValue<T1>(T1 t, string filesname)
+        {
+            // T模板类型
+            Type type = typeof(T1);
+            // 获得属性
+            System.Reflection.FieldInfo file = type.GetField(filesname);
+            // 属性非空判断
+            if (file == null) return string.Empty;
+            // 获取Value
+            object o = file.GetValue(t);
+            // Value非空判断
+            if (o == null) return string.Empty;
+            // 返回Value
+            return o.ToString();
+        }
+
     }
+
+  
     public class TaskViewDto
     {
         public long id;

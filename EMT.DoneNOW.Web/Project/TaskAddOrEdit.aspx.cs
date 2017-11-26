@@ -21,11 +21,14 @@ namespace EMT.DoneNOW.Web.Project
         protected pro_project_dal ppdal = new pro_project_dal();
         protected sdk_task_dal sdDal = new sdk_task_dal();
         protected int type_id;                            // task 的类型
+        protected bool isPhase;                           // 判断是否是
         protected List<sdk_task> taskList = null;         // 该项目的task集合 用于任务的前驱任务的选择
         protected sdk_task parTask = null;                // 通过taskId进行新增
         protected List<UserDefinedFieldDto> task_udfList = null;     // task 自定义
         protected List<UserDefinedFieldValue> task_udfValueList = null;
         protected List<ctt_contract_rate> rateList = null;         // 合同角色费率  todo
+        protected List<com_activity> noteList = null;
+        protected ctt_contract thisProContract = null;            // 修改时使用，项目合同
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -87,6 +90,7 @@ namespace EMT.DoneNOW.Web.Project
                             thisProject = ppdal.FindNoDeleteById((long)thisTask.project_id);
                         }
                         task_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.TASK, thisTask.id, task_udfList);
+                        noteList = new com_activity_dal().GetActiList($" and (task_id ={thisTask.id} or object_id={thisTask.id} )");
                         if (!IsPostBack)
                         {
                             status_id.SelectedValue = thisTask.status_id.ToString();
@@ -132,6 +136,10 @@ namespace EMT.DoneNOW.Web.Project
                         }
                     }
                 }
+                if (type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
+                {
+                    isPhase = true;
+                }
 
                 if (thisProject == null)
                 {
@@ -141,6 +149,7 @@ namespace EMT.DoneNOW.Web.Project
                 {
                     if (thisProject.contract_id != null)
                     {
+                        thisProContract = new ctt_contract_dal().FindNoDeleteById((long)thisProject.contract_id);
                         rateList = new ctt_contract_rate_dal().GetRateByConId((long)thisProject.contract_id);
                     }
                 }

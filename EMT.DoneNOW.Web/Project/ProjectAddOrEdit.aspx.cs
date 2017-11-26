@@ -28,14 +28,38 @@ namespace EMT.DoneNOW.Web.Project
         {
             try
             {
-                //var result = GetLimitValue(AuthLimitEnum.PROClientAdd);
-                //if (result == DicEnum.LIMIT_TYPE_VALUE.HAVE960)
+                //var checkLimitType = Request.QueryString["type_id"];
+                //if (checkLimitType == ((int)DicEnum.PROJECT_TYPE.ACCOUNT_PROJECT).ToString() || checkLimitType == ((int)DicEnum.PROJECT_TYPE.IN_PROJECT).ToString())
                 //{
+                //    var result = GetLimitValue(AuthLimitEnum.PROClientAdd);
+                //    if (result == DicEnum.LIMIT_TYPE_VALUE.NO960)
+                //    {
+                //        Response.Write("alert(没有新增项目权限);window.close();");
+                //        return;
+                //    }
 
+                //}
+                //else if (checkLimitType == ((int)DicEnum.PROJECT_TYPE.PROJECT_DAY).ToString())
+                //{
+                //    var result = GetLimitValue(AuthLimitEnum.PROProposalAdd);
+                //    if (result == DicEnum.LIMIT_TYPE_VALUE.NO960)
+                //    {
+                //        Response.Write("alert(没有新增项目提案权限);window.close();");
+                //        return;
+                //    }
+                //}
+                //else if (checkLimitType == ((int)DicEnum.PROJECT_TYPE.TEMP).ToString())
+                //{
+                //    var result = GetLimitValue(AuthLimitEnum.PROTemplatesAdd);
+                //    if (result == DicEnum.LIMIT_TYPE_VALUE.NO960)
+                //    {
+                //        Response.Write("alert(没有新增项目模板权限);window.close();");
+                //        return;
+                //    }
                 //}
 
 
-                isFromTemp = Request.QueryString["isFromTemp"];
+                    isFromTemp = Request.QueryString["isFromTemp"];
                 isTemp = Request.QueryString["isTemp"];
                 if (!IsPostBack)
                 {
@@ -122,7 +146,12 @@ namespace EMT.DoneNOW.Web.Project
                 if (temp != null)
                 {
                     thisTypeList = new List<DictionaryEntryDto>() { temp };
+                    //if (GetLimitValue(AuthLimitEnum.PROTemplatesAdd) == DicEnum.LIMIT_TYPE_VALUE.NO960)
+                    //{
+                    //    thisTypeList.Remove(temp);
+                    //}
                 }
+
             }
             else
             {
@@ -136,6 +165,31 @@ namespace EMT.DoneNOW.Web.Project
                 {
                     thisTypeList.Remove(benchmark);
                 }
+                //if(GetLimitValue(AuthLimitEnum.PROClientAdd)== DicEnum.LIMIT_TYPE_VALUE.NO960)
+                //{
+                //    var cline = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.ACCOUNT_PROJECT).ToString());
+                //    if (cline != null)
+                //    {
+                //        thisTypeList.Remove(cline);
+                //    }
+                //    var inter = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.IN_PROJECT).ToString());
+                //    if (inter != null)
+                //    {
+                //        thisTypeList.Remove(inter);
+                //    }
+                //}
+                //if (GetLimitValue(AuthLimitEnum.PROProposalAdd) == DicEnum.LIMIT_TYPE_VALUE.NO960)
+                //{
+                //    var popal = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.PROJECT_DAY).ToString());
+                //    if (popal != null)
+                //    {
+                //        thisTypeList.Remove(popal);
+                //    }
+                //}
+
+
+
+
             }
 
             type_id.DataSource = thisTypeList;

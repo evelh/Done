@@ -28,11 +28,11 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 expense_report_id { get; set; }
         [DataMember]
-        public Int64 cost_code_id { get; set; }
+        public Int64? cost_code_id { get; set; }
         [DataMember]
         public Int32 payment_type_id { get; set; }
         [DataMember]
-        public Int32 type_id { get; set; }
+        public Int32? type_id { get; set; }
         [DataMember]
         public DateTime add_date { get; set; }
         [DataMember]
@@ -50,7 +50,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String purchase_order_no { get; set; }
         [DataMember]
-        public Int32? allocation_code_id { get; set; }
+        public Int32 expense_cost_code_id { get; set; }
         [DataMember]
         public SByte? reimbursable { get; set; }
         [DataMember]
@@ -58,9 +58,9 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String to_loc { get; set; }
         [DataMember]
-        public Decimal odometer_start { get; set; }
+        public Decimal? odometer_start { get; set; }
         [DataMember]
-        public Decimal odometer_end { get; set; }
+        public Decimal? odometer_end { get; set; }
         [DataMember]
         public Decimal? miles { get; set; }
         [DataMember]

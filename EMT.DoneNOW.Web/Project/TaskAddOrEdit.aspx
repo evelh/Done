@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -328,1019 +329,1281 @@
 
                     </div>
 
+                    <%if (!isAdd)
+                        {
+                            if (isPhase)
+                            {%>
+                    <a class="Button ButtonIcon New NormalState" id="AddNoteButton" tabindex="0"><span class="Icon"></span><span class="Text">新增备注</span></a>
+                    <%}
+                        else
+                        {%>
+                    <div class="DropDownButtonContainer A1">
+                        <div class="Left">
+                            <a class="NormalState Button ButtonIcon Save" id="" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">新增</span></a>
+                        </div>
+                        <div class="Right"><a class="NormalState Button ButtonIcon IconOnly DropDownArrow" id="" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -176px -48px; width: 15px;"></span><span class="Text"></span></a></div>
+                    </div>
+                    <div class="RightClickMenu" style="left: 10px; top: 36px; display: none; margin-top: 35px;" id="B1">
+
+                        <div class="RightClickMenuItem">
+                            <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
+                                <tbody>
+                                    <tr>
+                                        <td class="RightClickMenuItemText">
+                                            <span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">备注</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="RightClickMenuItem">
+                            <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
+                                <tbody>
+                                    <tr>
+                                        <td class="RightClickMenuItemText">
+                                            <span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">服务预定</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                    <a class="Button ButtonIcon NormalState" id="CancelTaskButton" tabindex="0"><span class="Icon"></span><span class="Text">取消任务</span></a>
+                    <%}
+                        } %>
+
                     <a class="NormalState Button ButtonIcon Cancel" id="CancelButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text">关闭</span></a>
                 </div>
             </div>
-            <div class="ScrollingContentContainer">
-                <div class="ScrollingContainer" id="za7dce764d22b4572aaf851391e3b7f6f" style="left: 0; overflow-x: auto; overflow-y: auto; position: fixed; right: 0; bottom: 0; top: 85px;">
-
-                    <div class="Normal Section">
-                        <div class="Heading">
-                            <div class="Left"><span class="Text">常规信息</span><span class="SecondaryText"></span></div>
-                            <div class="Spacer"></div>
-                        </div>
-                        <div class="Content">
-                            <div class="Normal Column">
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="title">任务标题</label><span class="Required">*</span>
-                                    </div>
-                                </div>
-                                <div class="Editor TextBox" data-editor-id="Title" data-rdp="Title">
-                                    <div class="InputField">
-                                        <input id="title" type="text" value="<%=isAdd?"":thisTask.title %>" name="title" /><span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly ProjectTask" id="TaskLibraryButton" tabindex="0" title="Task Library" onclick=""><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -16px -79px;"></span><span class="Text"></span></a></span>
-                                    </div>
-                                </div>
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="PhaseName">父阶段名称<span class="SecondaryText">(在此阶段内放置条目)</span></label>
-                                    </div>
-                                </div>
-                                <div class="Editor TextBox" data-editor-id="PhaseName" data-rdp="PhaseName">
-                                    <div class="InputField">
-                                        <%
-                                            EMT.DoneNOW.Core.sdk_task parPhase = null;
-                                            if (thisTask != null && thisTask.parent_id != null)
-                                            {
-                                                parPhase = sdDal.FindNoDeleteById((long)thisTask.parent_id);
-                                            }
-                                        %>
-                                        <input id="PhaseName" type="text" value="<%=parPhase==null?"":parPhase.title %>" name="PhaseName" disabled="disabled" />
-                                        <input type="hidden" name="parent_id" id="PhaseNameHidden" value="<%=parPhase == null ? "" : parPhase.id.ToString() %>" />
-                                        <span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PhaseSelectorButton" tabindex="0" title="选择阶段" onclick="ChoosePhase()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><a class="NormalState Button ButtonIcon IconOnly Delete" id="PhaseDeleteButton" tabindex="0" title="Clear the selected phase" onclick="CancelPhase()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -64px 0px;"></span><span class="Text"></span></a>
-                                            <input id="PhaseId" name="PhaseId" type="hidden" value="" /></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Normal Column">
-                                <div class="CustomLayoutContainer">
-
-                                    <div class="ProjectInfo_Inset">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <span class="ProjectInfo_TextBold">项目:</span>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <a class="ProjectInfo_Button" href="#" onclick="projectInfo.getProjectInfo(); return false;"><%=thisProject.name %></a>
-                                                    </div>
-                                                    <div class="ProjectInfo_Text"><%=((DateTime)thisProject.start_date).ToString("yyyy-MM-dd") %> - <%=((DateTime)thisProject.end_date).ToString("yyyy-MM-dd") %></div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><%
-                                                        EMT.DoneNOW.Core.crm_account proAccount = new EMT.DoneNOW.DAL.crm_account_dal().FindNoDeleteById(thisProject.account_id);
-
-                                                %>
-                                                    <span class="ProjectInfo_TextBold">客户:</span>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <a class="ProjectInfo_Button" onclick="window.open('../Company/ViewCompany.aspx?id=<%=proAccount.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyView %>','left=200,top=200,width=900,height=750', false);"><%=proAccount.name %></a>
-                                                    </div>
-                                                    <% var defaultLocation = new EMT.DoneNOW.BLL.LocationBLL().GetLocationByAccountId(proAccount.id);
-
-
-
-                                                    %>
-                                                    <div class="ProjectInfo_Text">
-                                                        <%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %>
-                                                        <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.province_id.ToString()).show  %>
-                                                        <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.city_id.ToString()).show  %>
-                                                        <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.district_id.ToString()).show  %>
-                                                    </div>
-                                                    <div class="ProjectInfo_Text"><%=defaultLocation.address %> <%=defaultLocation.additional_address %></div>
-                                                    <div class="ProjectInfo_Text"><%=proAccount.phone %></div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Large Column">
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="description">描述</label>
-                                    </div>
-                                </div>
-                                <div class="Editor TextArea" data-editor-id="Description" data-rdp="Description">
-                                    <div class="InputField">
-                                        <textarea class="Medium" id="description" name="description" placeholder=""><%=isAdd?"":thisTask.description %></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
-                                { %>
-                            <div class="Normal Column">
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="status_id">状态</label>
-                                    </div>
-                                </div>
-                                <div class="Editor SingleSelect" data-editor-id="Status" data-rdp="Status">
-                                    <div class="InputField">
-                                        <asp:DropDownList ID="status_id" runat="server"></asp:DropDownList>
-
-                                    </div>
-                                </div>
-                                <div class="Medium Column">
-                                    <div class="EditorLabelContainer">
-                                        <div class="Label">
-                                            <label for="priority">优先级</label>
-                                        </div>
-                                    </div>
-                                    <div class="Editor IntegerBox" data-editor-id="Priority" data-rdp="Priority">
-                                        <div class="InputField">
-                                            <input id="priority" type="text" value="<%=isAdd ? "" : thisTask.priority.ToString() %>" name="priority" maxlength="5" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="Medium Column">
-                                    <div class="EditorLabelContainer">
-                                        <div class="Label">
-                                            <label for="purchase_order_no">采购订单号</label>
-                                        </div>
-                                    </div>
-                                    <div class="Editor TextBox" data-editor-id="PurchaseOrderNumber" data-rdp="PurchaseOrderNumber">
-                                        <div class="InputField">
-                                            <input id="purchase_order_no" type="text" value="<%=isAdd ? "" : thisTask.purchase_order_no %>" name="purchase_order_no" maxlength="50" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="RadioButtonGroupContainer">
-                                    <div class="RadioButtonGroupLabel">
-                                        <div><span class="Label">显示在客户端</span></div>
-                                    </div>
-                                    <div class="Editor RadioButton" data-editor-id="DisplayInCapYes" data-rdp="DisplayInCapYes">
-                                        <div class="InputField">
-                                            <div>
-                                                <asp:RadioButton ID="DisplayInCapYes" runat="server" GroupName="DisplayInCap" />
-                                            </div>
-                                            <div class="EditorLabelContainer">
-                                                <div class="Label">
-                                                    <label for="DisplayInCapYes">是，允许客户端用户完成</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="Editor RadioButton" data-editor-id="DisplayInCapYesNoComplete" data-rdp="DisplayInCapYesNoComplete">
-                                        <div class="InputField">
-                                            <div>
-                                                <asp:RadioButton ID="DisplayInCapYesNoComplete" runat="server" GroupName="DisplayInCap" />
-                                            </div>
-                                            <div class="EditorLabelContainer">
-                                                <div class="Label">
-                                                    <label for="DisplayInCapYesNoComplete">是，不允许客户端用户完成</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="Editor RadioButton" data-editor-id="DisplayInCapNone" data-rdp="DisplayInCapNone">
-                                        <div class="InputField">
-                                            <div>
-                                                <asp:RadioButton ID="DisplayInCapNone" runat="server" GroupName="DisplayInCap" />
-
-                                            </div>
-                                            <div class="EditorLabelContainer">
-                                                <div class="Label">
-                                                    <label for="DisplayInCapNone">否</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="Editor CheckBox" data-editor-id="IsIssue" data-rdp="IsIssue">
-                                    <div class="InputField">
-                                        <div>
-                                            <asp:CheckBox ID="isProject_issue" runat="server" />
-
-                                        </div>
-                                        <div class="EditorLabelContainer">
-                                            <div class="Label">
-                                                <label for="IsIssue">标记为问题</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="IssueReportedBy">问题提出人</label>
-                                    </div>
-                                </div>
-                                <div class="Editor DataSelector" data-editor-id="IssueReportedBy" data-rdp="IssueReportedBy">
-                                    <div class="InputField">
-                                        <input id="issue_report_contact_id" type="text" value="" autocomplete="off" /><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="ChooseRc" tabindex="0"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="issue_report_contact_idHidden" name="issue_report_contact_id" type="hidden" value="" /><div class="ContextOverlayContainer" id="IssueReportedBy_ContextOverlay">
-                                            <div class="AutoComplete ContextOverlay">
-                                                <div class="Active LoadingIndicator"></div>
-                                                <div class="Content"></div>
-                                            </div>
-                                            <div class="AutoComplete ContextOverlay">
-                                                <div class="Active LoadingIndicator"></div>
-                                                <div class="Content"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Normal Column">
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="Predecessors">前驱任务</label>
-                                    </div>
-                                </div>
-                                <div class="Editor MultipleSelect" data-editor-id="Predecessors" data-rdp="Predecessors">
-                                    <div class="InputField">
-                                        <select id="Predecessors" multiple="multiple" name="Predecessors"></select><span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PredecessorSelectButton" tabindex="0" onclick="ChoosePreTask()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <%} %>
-                        </div>
-                    </div>
-                    <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
+            <%if (!isAdd)
+                { %>
+            <div class="nav-title">
+                <ul class="clear">
+                    <%if (!isPhase)
                         { %>
-                    <div class="Normal Section">
-                        <div class="Heading">
-                            <div class="Left"><span class="Text">日程表</span><span class="SecondaryText"></span></div>
-                            <div class="Spacer"></div>
-                        </div>
-                        <div class="DescriptionText">固定工作任务是所有员工参与的任务，持续天数和小时/员工不会自动计算，持续天数和预估小时数由用户指定。对于固定时间任务，工作量会平均分配给指定的员工（小时/员工=预估小时数/已分配的员工数量）。任务的持续天数是花费时间最长的员工持续天数（员工持续天数=（小时/员工）/员工日工作时间）。</div>
-                        <div class="Content">
-                            <div class="Normal Column">
-                                <div class="RadioButtonGroupContainer">
-                                    <div class="RadioButtonGroupLabel">
-                                        <div><span class="Label">任务类型</span></div>
-                                    </div>
-                                    <div class="Editor RadioButton" data-editor-id="TaskTypeFixedWork" data-rdp="TaskTypeFixedWork">
-                                        <div class="InputField">
-                                            <div>
-                                                <asp:RadioButton ID="TaskTypeFixedWork" runat="server" GroupName="TaskType" />
-                                            </div>
-                                            <div class="EditorLabelContainer">
-                                                <div class="Label">
-                                                    <label for="TaskTypeFixedWork">固定工作</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="Editor RadioButton" data-editor-id="TaskTypeFixedDuration" data-rdp="TaskTypeFixedDuration">
-                                        <div class="InputField">
-                                            <div>
-                                                <asp:RadioButton ID="TaskTypeFixedDuration" runat="server" GroupName="TaskType" />
-                                            </div>
-                                            <div class="EditorLabelContainer">
-                                                <div class="Label">
-                                                    <label for="TaskTypeFixedDuration">固定时间</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Normal Column">
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="EstimatedHours">预估时间</label>
-                                    </div>
-                                </div>
-                                <div class="Editor DecimalBox">
-                                    <div class="InputField">
-                                        <input id="estimated_hours" type="text" value="<%=isAdd ? "0.00" : thisTask.estimated_hours.ToString("#0.00") %>" name="estimated_hours" maxlength="10" class="To2Input" />
-                                    </div>
-                                </div>
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="Duration">持续时间</label>
-                                    </div>
-                                </div>
-                                <div class="Editor IntegerBox" data-editor-id="Duration" data-rdp="Duration">
-                                    <div class="InputField">
-                                        <input id="estimated_duration" type="text" value="<%=isAdd ? 1 : thisTask.estimated_duration %>" name="estimated_duration" maxlength="5" />
-                                    </div>
-                                </div>
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="HoursPerResource">每个员工小时</label>
-                                    </div>
-                                </div>
-                                <div class="Editor DecimalBox" data-editor-id="HoursPerResource" data-rdp="HoursPerResource">
-                                    <div class="InputField">
-                                        <input id="hours_per_resource" type="text" value="<%=(!isAdd)&&thisTask.hours_per_resource!=null?((decimal)thisTask.hours_per_resource).ToString("#0.00"):"0.00" %>" name="hours_per_resource" maxlength="12" class="To2Input" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Normal Column">
-                                <div class="Small Column">
-                                    <div class="EditorLabelContainer">
-                                        <div class="Label">
-                                            <label for="StartDateTime">开始时间</label><span class="Required">*</span>
-                                        </div>
-                                    </div>
-                                    <div class="Editor DateBox" data-editor-id="StartDateTime" data-rdp="StartDateTime">
-                                        <div class="InputField">
-                                            <div class="Container">
-                                                <% var startDate = (DateTime)thisProject.start_date;
-                                                    if (parTask != null)
-                                                    {
-                                                        startDate = EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)parTask.estimated_begin_time);
-                                                    }
-                                                %>
-                                                <input id="estimated_beginTime" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd HH:mm:ss") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("yyyy-MM-dd HH:mm:ss") %>" name="estimated_beginTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 150px" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="Small Column" style="margin-left: 50px;">
-                                    <div class="EditorLabelContainer">
-                                        <div class="Label">
-                                            <label for="EndDate">结束时间</label><span class="Required">*</span>
-                                        </div>
-                                    </div>
-                                    <div class="Editor DateBox" data-editor-id="EndDate" data-rdp="EndDate">
-                                        <div class="InputField">
-                                            <div class="Container">
-                                                <input id="estimated_end_date" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd") : ((DateTime)thisTask.estimated_end_date).ToString("yyyy-MM-dd") %>" name="estimated_end_date" onclick="WdatePicker()" style="width: 100px;" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Normal Column">
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="StartNoEarlierThanDate">开始时间不早于</label>
-                                    </div>
-                                </div>
-                                <div class="Editor DateBox" data-editor-id="StartNoEarlierThanDate" data-rdp="StartNoEarlierThanDate">
-                                    <div class="InputField">
-                                        <div class="Container">
-                                            <input id="start_no_earlier_than_date" type="text" value="<%=thisTask != null && thisTask.start_no_earlier_than_date != null ? ((DateTime)thisTask.start_no_earlier_than_date).ToString("yyyy-MM-dd") : "" %>" name="start_no_earlier_than_date" onclick="WdatePicker()" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="Normal Section" id="AssignSectionHeader">
-                        <div class="Heading" data-toggle-enabled="true">
-                            <div class="Toggle Collapse Toggle1">
-                                <div class="Vertical"></div>
-                                <div class="Horizontal"></div>
-                            </div>
-                            <div class="Left"><span class="Text">分配</span><span class="SecondaryText"></span></div>
-                            <div class="Spacer"></div>
-                        </div>
-                        <div class="Content">
-                            <div class="Normal Column">
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="department_id">部门</label>
-                                    </div>
-                                </div>
-                                <div class="Editor SingleSelect" data-editor-id="Department" data-rdp="Department">
-                                    <div class="InputField">
-                                        <asp:DropDownList ID="department_id" runat="server"></asp:DropDownList>
-                                        <span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly Report" id="WorkloadReportButton" tabindex="0" title="Workload Report"><span class="Icon"></span><span class="Text"></span></a></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Normal Column">
-                                <div class="Editor CheckBox" data-editor-id="FilterResourcesByProjectBillingRoles" data-rdp="FilterResourcesByProjectBillingRoles">
-                                    <div class="InputField">
-                                        <div>
-                                            <input id="FilterResByProBilRoles" type="checkbox" value="true" name="FilterResByProBilRoles" />
-                                        </div>
-                                        <div class="EditorLabelContainer">
-                                            <div class="Label">
-                                                <label for="FilterResourcesByProjectBillingRoles">通过项目计费角色过滤员工</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Normal Column">
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="WorkType">工作类型<span class="SecondaryText">(分配员工必填)</span></label>
-                                    </div>
-                                </div>
-                                <div class="Editor SingleSelect" data-editor-id="WorkType" data-rdp="WorkType">
-                                    <div class="InputField">
-                                        <select id="WorkType" name="cost_code_id">
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Normal Column">
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="PrimaryResource">主负责人</label>
-                                    </div>
-                                </div>
-                                <div class="Editor DataSelector" data-editor-id="PrimaryResource" data-rdp="PrimaryResource">
-                                    <div class="InputField">
-                                        <input id="owner_resource_id" type="text" value="" autocomplete="off" style="width: 250px;" />
-                                        <input type="hidden" name="owner_resource_id" id="owner_resource_idHidden" />
-                                        <a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PrimaryResource_Button" tabindex="0" onclick="ChoosePriRes()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a>
-                                        <div class="ContextOverlayContainer" id="PrimaryResource_ContextOverlay">
-                                            <div class="AutoComplete ContextOverlay">
-                                                <div class="Active LoadingIndicator"></div>
-                                                <div class="Content"></div>
-                                            </div>
-                                            <div class="AutoComplete ContextOverlay">
-                                                <div class="Active LoadingIndicator"></div>
-                                                <div class="Content"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="SecondaryResources">其他负责人</label>
-                                    </div>
-                                </div>
-                                <div class="Editor DataSelector" data-editor-id="SecondaryResources" data-rdp="SecondaryResources">
-                                    <div class="InputField">
-                                        <input id="SecondaryResources_DisplayTextBox" type="text" value="" autocomplete="off" style="width: 250px;" /><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="SecondaryResources_Button" tabindex="0" onclick="ChooseResDep()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="SecondaryResources" name="SecondaryResources" type="hidden" value="" /><div class="ContextOverlayContainer" id="SecondaryResources_ContextOverlay">
-                                            <input type="hidden" id="resDepIds" />
-                                            <input type="hidden" id="resDepIdsHidden" name="resDepList" />
-                                            <div class="AutoComplete ContextOverlay">
-                                                <div class="Active LoadingIndicator"></div>
-                                                <div class="Content"></div>
-                                            </div>
-                                            <div class="AutoComplete ContextOverlay">
-                                                <div class="Active LoadingIndicator"></div>
-                                                <div class="Content"></div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <%-- <select id="SecondaryResources_displayListBox" multiple="multiple"></select>--%>
-                                            <select multiple="multiple" style="width: 264px; min-height: 80px;" id="resDepList">
-                                                <%
-                                                    if (!isAdd)
-                                                    {
-
-                                                        var resList = new EMT.DoneNOW.DAL.sdk_task_resource_dal().GetResByTaskId(thisTask.id);
-                                                        if (resList != null && resList.Count > 0)
-                                                        {
-                                                            var syDal = new EMT.DoneNOW.DAL.sys_resource_dal();
-                                                            var srDal = new EMT.DoneNOW.DAL.sys_role_dal();
-                                                            foreach (var res in resList)
-                                                            {
-                                                                if (res.resource_id != null && res.role_id != null)
-                                                                {
-                                                                    var thisResou = syDal.FindNoDeleteById((long)res.resource_id);
-                                                                    var thisRole = srDal.FindNoDeleteById((long)res.role_id);
-                                                                    if (thisResou != null && thisRole != null)
-                                                                    {
-                                                %>
-                                                <option><%=thisResou.name + $"({thisRole.name})" %></option>
-                                                <%
-                                                                    }
-                                                                }
-
-                                                            }
-
-                                                        }
-                                                    }  %>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="Contacts">联系人</label>
-                                    </div>
-                                </div>
-                                <div class="Editor DataSelector" data-editor-id="Contacts" data-rdp="Contacts">
-                                    <div class="InputField">
-                                        <input id="Contacts_DisplayTextBox" type="text" value="" autocomplete="off" style="width: 250px;" /><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="Contacts_Button" tabindex="0" onclick="ChooseContact()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="Contacts" name="Contacts" type="hidden" value="" /><div class="ContextOverlayContainer" id="Contacts_ContextOverlay">
-                                            <div class="AutoComplete ContextOverlay">
-                                                <div class="Active LoadingIndicator"></div>
-                                                <div class="Content"></div>
-                                            </div>
-                                            <div class="AutoComplete ContextOverlay">
-                                                <div class="Active LoadingIndicator"></div>
-                                                <div class="Content"></div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <input type="hidden" id="contactID" />
-                                            <input type="hidden" id="contactIDHidden" name="conIds" />
-                                            <select multiple="multiple" style="width: 264px; min-height: 80px;" id="conIds">
-                                                <%
-                                                    if (!isAdd)
-                                                    {
-                                                        var conList = new EMT.DoneNOW.DAL.sdk_task_resource_dal().GetConByTaskId(thisTask.id);
-                                                        if (conList != null && conList.Count > 0)
-                                                        {
-                                                            var cDal = new EMT.DoneNOW.DAL.crm_contact_dal();
-                                                            foreach (var con in conList)
-                                                            {
-                                                                var thisContact = cDal.FindNoDeleteById((long)con.contact_id);
-                                                                if (thisContact != null)
-                                                                {%>
-                                                <option><%=thisContact.name %></option>
-                                                <%}
-                                                            }
-                                                        }
-                                                    } %>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="Normal Section" id="UdfSectionHeader">
-                        <div class="Heading" data-toggle-enabled="true">
-                            <div class="Toggle Collapse Toggle2">
-                                <div class="Vertical"></div>
-                                <div class="Horizontal"></div>
-                            </div>
-                            <div class="Left"><span class="Text">用户自定义字段</span><span class="SecondaryText"></span></div>
-                            <div class="Spacer"></div>
-                        </div>
-                        <div class="Content">
-                            <%if (task_udfList != null && task_udfList.Count > 0)
-                                {
-                                    foreach (var udf in task_udfList)
-                                    {
-
-                                        if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
-                                        {%>
-                            <div class="Normal Column">
-                                <div class="Udf EditorLabelContainer">
-                                    <div class="Label">
-                                        <label><%=udf.name %></label>
-                                    </div>
-                                </div>
-                                <div class="Editor DateBox Udf">
-                                    <div class="InputField">
-                                        <div class="Container">
-                                            <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=(!isAdd) && task_udfValueList != null && task_udfValueList.Count > 0 ? task_udfValueList.FirstOrDefault(_ => _.id == udf.id).value : "" %>" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
-                                {
-                            %>
-                            <div class="Normal Column">
-                                <div class="Udf EditorLabelContainer">
-                                    <div class="Label">
-                                        <label><%=udf.name %></label>
-                                    </div>
-                                </div>
-                                <div class="Editor DateBox Udf">
-                                    <div class="InputField">
-                                        <div class="Container">
-                                            <textarea name="<%=udf.id %>" rows="2" cols="20"><%=(!isAdd) && task_udfValueList != null && task_udfValueList.Count > 0 ? task_udfValueList.FirstOrDefault(_ => _.id == udf.id).value : "" %></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <%}
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)
-                                {
-                            %>
-                            <div class="Normal Column">
-                                <div class="Udf EditorLabelContainer">
-                                    <div class="Label">
-                                        <label><%=udf.name %></label>
-                                    </div>
-                                </div>
-                                <div class="Editor DateBox Udf">
-                                    <div class="InputField">
-                                        <div class="Container">
-                                            <%
-
-                                                string val = "";
-                                                if (!isAdd)
-                                                {
-                                                    object value = task_udfValueList.FirstOrDefault(_ => _.id == udf.id).value;
-                                                    if (value != null && (!string.IsNullOrEmpty(value.ToString())))
-                                                    {
-                                                        val = DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd");
-                                                    }
-                                                }
-                                            %>
-                                            <input type="text" onclick="WdatePicker()" name="<%=udf.id %>" class="sl_cdt" value="<%=val %>" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <% }
-                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)
-                                {
-                            %>
-                            <div class="Normal Column">
-                                <div class="Udf EditorLabelContainer">
-                                    <div class="Label">
-                                        <label><%=udf.name %></label>
-                                    </div>
-                                </div>
-                                <div class="Editor DateBox Udf">
-                                    <div class="InputField">
-                                        <div class="Container">
-                                            <input type="text" name="<%=udf.id %>" class="sl_cdt" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=(!isAdd) && task_udfValueList != null && task_udfValueList.Count > 0 ? task_udfValueList.FirstOrDefault(_ => _.id == udf.id).value : "" %>" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <%
-                                        }
-                                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)
-                                        {
-
-                                        }
-                                    }
-                                } %>
-                        </div>
-                    </div>
-
-                    <div class="Normal Section" id="notificationHeader">
-                        <div class="Heading" data-toggle-enabled="true">
-                            <div class="Toggle Collapse Toggle3">
-                                <div class="Vertical"></div>
-                                <div class="Horizontal"></div>
-                            </div>
-                            <div class="Left"><span class="Text">通知</span><span class="SecondaryText"></span></div>
-                            <div class="Spacer"></div>
-                        </div>
-                        <div class="Content">
-                            <div class="Normal Column">
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="Notifications_NotificationTemplate">通知模板</label>
-                                    </div>
-                                </div>
-                                <div class="Editor SingleSelect" data-editor-id="Notifications_NotificationTemplate" data-rdp="Notifications_NotificationTemplate">
-                                    <div class="InputField">
-                                        <asp:DropDownList ID="template_id" runat="server" Width="264px"></asp:DropDownList>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Large Column">
-                                <div class="CustomLayoutContainer">
-                                    <div class="NotificationRecipients_fromLine">
-                                        <span class="NotificationRecipients_text NotificationRecipients_label">发件人:&nbsp;&nbsp;</span>
-                                        <span class="NotificationRecipients_text" id="FromEmail"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Large Column">
-                                <div class="CustomLayoutContainer">
-                                    <div>
-                                        <span class="NotificationRecipients_text"><a onclick="OpenSelectPage('To')">收件人:</a></span>
-                                        <span class="NotificationRecipients_text">
-                                            <a id="to_me" onclick="ToMe()">自己</a>
-                                            <a id="teamMember" style="margin-left: 5px;" onclick="ToTeamMember()">团队成员</a>
-                                            <a id="ProLead" style="margin-left: 5px;" onclick="ToProjectLead()">项目主管</a>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="Notifications_ToEmailDisplay"></label>
-                                    </div>
-                                </div>
-                                <div class="Editor TextBox LabeledValue" data-editor-id="Notifications_ToEmailDisplay">
-                                    <span class="Value" id="To_Email" style="font-size: 9pt;"></span>
-                                </div>
-
-                            </div>
-                            <div class="Large Column">
-                                <div class="CustomLayoutContainer">
-                                    <div>
-                                        <span class="NotificationRecipients_text"><a onclick="OpenSelectPage('Cc')">抄送:</a></span>
-                                        <span class="NotificationRecipients_text">
-                                            <a id="cc_me" onclick="CcToMe()">自己</a>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="Notifications_CCEmailDisplay"></label>
-                                    </div>
-                                </div>
-                                <div class="Editor TextBox LabeledValue" data-editor-id="Notifications_CCEmailDisplay">
-                                    <span class="Value" id="Cc_Email" style="font-size: 9pt;"></span>
-                                </div>
-                            </div>
-                            <div class="Large Column">
-                                <div class="CustomLayoutContainer">
-                                    <div>
-                                        <span class="NotificationRecipients_text"><a onclick="OpenSelectPage('Bcc')">密送:</a></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="Large Column">
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="Notifications_BccEmailDisplay"></label>
-                                    </div>
-                                </div>
-                                <div class="Editor TextBox LabeledValue" data-editor-id="Notifications_BccEmailDisplay">
-                                    <span class="Value" id="Bcc_Email" style="font-size: 9pt;"></span>
-                                </div>
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="Notifications_Subject">主题</label>
-                                    </div>
-                                </div>
-                                <div class="Editor TextBox" data-editor-id="Notifications_Subject" data-rdp="Notifications_Subject">
-                                    <div class="InputField">
-                                        <input type="text" style="width: 696px;" id="subject" name="subject" value="" />
-                                    </div>
-                                </div>
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="Notifications_AdditionalEmailText">其他邮件文本</label>
-                                    </div>
-                                </div>
-                                <div class="Editor TextArea" data-editor-id="Notifications_AdditionalEmailText" data-rdp="Notifications_AdditionalEmailText">
-                                    <div class="InputField">
-                                        <textarea style="min-height: 100px; width: 610px;" id="otherEmail" name="otherEmail"></textarea>
-                                    </div>
-                                </div>
-                                <div class="CustomLayoutContainer">
-                                    <div class="NotificationRecipients_editDefaultSettingsContainer">
-                                        <a href="#" onclick="notificationRecipients.openDefaultSettings();" class="NotificationRecipients_links">修改默认设置</a>:
-				&nbsp;
-                                    </div>
-
-                                    <input type="hidden" name="NoToMe" id="NoToMe" />
-                                    <input type="hidden" name="NoToTeamMem" id="NoToTeamMem" />
-                                    <input type="hidden" name="NoToProlead" id="NoToProlead" />
-
-                                    <input type="hidden" name="NoToContactIds" id="NoToContactIds" />
-                                    <input type="hidden" name="NoToResIds" id="NoToResIds" />
-                                    <input type="hidden" name="NoToDepIds" id="NoToDepIds" />
-                                    <input type="hidden" name="NoToWorkIds" id="NoToWorkIds" />
-                                    <input type="hidden" name="NoToOtherMail" id="NoToOtherMail" />
-
-                                    <input type="hidden" name="NoCcMe" id="NoCcMe" />
-                                    <input type="hidden" name="NoCcContactIds" id="NoCcContactIds" />
-                                    <input type="hidden" name="NoCcResIds" id="NoCcResIds" />
-                                    <input type="hidden" name="NoCcDepIds" id="NoCcDepIds" />
-                                    <input type="hidden" name="NoCcWorkIds" id="NoCcWorkIds" />
-                                    <input type="hidden" name="NoCcOtherMail" id="NoCcOtherMail" />
-
-                                    <input type="hidden" name="NoBccContactIds" id="NoBccContactIds" />
-                                    <input type="hidden" name="NoBccResIds" id="NoBccResIds" />
-                                    <input type="hidden" name="NoBccDepIds" id="NoBccDepIds" />
-                                    <input type="hidden" name="NoBccWorkIds" id="NoBccWorkIds" />
-                                    <input type="hidden" name="NoBccOtherMail" id="NoBccOtherMail" />
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <li class="boders" id="general">常规信息</li>
+                    <li id="serCalls">服务预定</li>
+                    <li id="note">备注</li>
                     <%}
                         else
                         { %>
-                    <div class="Normal Section">
-                        <div class="Heading">
-                            <div class="Left"><span class="Text">日程表</span><span class="SecondaryText"></span></div>
-                            <div class="Spacer"></div>
+                    <li class="boders" id="general">常规信息</li>
+                    <li id="phaseNote">备注</li>
+                    <li id="milestones">里程碑</li>
+                    <%} %>
+                </ul>
+            </div>
+            <%} %>
+            <div class="ScrollingContentContainer">
+                <div class="ScrollingContainer" id="za7dce764d22b4572aaf851391e3b7f6f" style="left: 0; overflow-x: auto; overflow-y: auto; position: fixed; right: 0; bottom: 0; top: 85px;">
+                    <div class="IsShowDiv" id="generalDiv">
+                        <div class="Normal Section">
+                            <div class="Heading">
+                                <div class="Left"><span class="Text">常规信息</span><span class="SecondaryText"></span></div>
+                                <div class="Spacer"></div>
+                            </div>
+                            <div class="Content">
+                                <div class="Normal Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="title">任务标题</label><span class="Required">*</span>
+                                        </div>
+                                    </div>
+                                    <div class="Editor TextBox" data-editor-id="Title" data-rdp="Title">
+                                        <div class="InputField">
+                                            <input id="title" type="text" value="<%=isAdd?"":thisTask.title %>" name="title" /><span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly ProjectTask" id="TaskLibraryButton" tabindex="0" title="Task Library" onclick=""><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -16px -79px;"></span><span class="Text"></span></a></span>
+                                        </div>
+                                    </div>
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="PhaseName">父阶段名称<span class="SecondaryText">(在此阶段内放置条目)</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor TextBox" data-editor-id="PhaseName" data-rdp="PhaseName">
+                                        <div class="InputField">
+                                            <%
+                                                EMT.DoneNOW.Core.sdk_task parPhase = null;
+                                                if (thisTask != null && thisTask.parent_id != null)
+                                                {
+                                                    parPhase = sdDal.FindNoDeleteById((long)thisTask.parent_id);
+                                                }
+                                            %>
+                                            <input id="PhaseName" type="text" value="<%=parPhase==null?"":parPhase.title %>" name="PhaseName" disabled="disabled" />
+                                            <input type="hidden" name="parent_id" id="PhaseNameHidden" value="<%=parPhase == null ? "" : parPhase.id.ToString() %>" />
+                                            <span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PhaseSelectorButton" tabindex="0" title="选择阶段" onclick="ChoosePhase()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><a class="NormalState Button ButtonIcon IconOnly Delete" id="PhaseDeleteButton" tabindex="0" title="Clear the selected phase" onclick="CancelPhase()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -64px 0px;"></span><span class="Text"></span></a>
+                                                <input id="PhaseId" name="PhaseId" type="hidden" value="" /></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Normal Column">
+                                    <div class="CustomLayoutContainer">
+
+                                        <div class="ProjectInfo_Inset">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <span class="ProjectInfo_TextBold">项目:</span>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            <a class="ProjectInfo_Button" href="#" onclick="projectInfo.getProjectInfo(); return false;"><%=thisProject.name %></a>
+                                                        </div>
+                                                        <div class="ProjectInfo_Text"><%=((DateTime)thisProject.start_date).ToString("yyyy-MM-dd") %> - <%=((DateTime)thisProject.end_date).ToString("yyyy-MM-dd") %></div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><%
+                                                            EMT.DoneNOW.Core.crm_account proAccount = new EMT.DoneNOW.DAL.crm_account_dal().FindNoDeleteById(thisProject.account_id);
+
+                                                    %>
+                                                        <span class="ProjectInfo_TextBold">客户:</span>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            <a class="ProjectInfo_Button" onclick="window.open('../Company/ViewCompany.aspx?id=<%=proAccount.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanyView %>','left=200,top=200,width=900,height=750', false);"><%=proAccount.name %></a>
+                                                        </div>
+                                                        <% var defaultLocation = new EMT.DoneNOW.BLL.LocationBLL().GetLocationByAccountId(proAccount.id);
+
+
+
+                                                        %>
+                                                        <div class="ProjectInfo_Text">
+                                                            <%=country.First(_=>_.val.ToString()==defaultLocation.country_id.ToString()).show  %>
+                                                            <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.province_id.ToString()).show  %>
+                                                            <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.city_id.ToString()).show  %>
+                                                            <%=addressdistrict.First(_=>_.val.ToString()==defaultLocation.district_id.ToString()).show  %>
+                                                        </div>
+                                                        <div class="ProjectInfo_Text"><%=defaultLocation.address %> <%=defaultLocation.additional_address %></div>
+                                                        <div class="ProjectInfo_Text"><%=proAccount.phone %></div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Large Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="description">描述</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor TextArea" data-editor-id="Description" data-rdp="Description">
+                                        <div class="InputField">
+                                            <textarea class="Medium" id="description" name="description" placeholder=""><%=isAdd?"":thisTask.description %></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
+                                    { %>
+                                <div class="Normal Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="status_id">状态</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor SingleSelect" data-editor-id="Status" data-rdp="Status">
+                                        <div class="InputField">
+                                            <asp:DropDownList ID="status_id" runat="server"></asp:DropDownList>
+
+                                        </div>
+                                    </div>
+                                    <div class="Medium Column">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="priority">优先级</label>
+                                            </div>
+                                        </div>
+                                        <div class="Editor IntegerBox" data-editor-id="Priority" data-rdp="Priority">
+                                            <div class="InputField">
+                                                <input id="priority" type="text" value="<%=isAdd ? "" : thisTask.priority.ToString() %>" name="priority" maxlength="5" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="Medium Column">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="purchase_order_no">采购订单号</label>
+                                            </div>
+                                        </div>
+                                        <div class="Editor TextBox" data-editor-id="PurchaseOrderNumber" data-rdp="PurchaseOrderNumber">
+                                            <div class="InputField">
+                                                <input id="purchase_order_no" type="text" value="<%=isAdd ? "" : thisTask.purchase_order_no %>" name="purchase_order_no" maxlength="50" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="RadioButtonGroupContainer">
+                                        <div class="RadioButtonGroupLabel">
+                                            <div><span class="Label">显示在客户端</span></div>
+                                        </div>
+                                        <div class="Editor RadioButton" data-editor-id="DisplayInCapYes" data-rdp="DisplayInCapYes">
+                                            <div class="InputField">
+                                                <div>
+                                                    <asp:RadioButton ID="DisplayInCapYes" runat="server" GroupName="DisplayInCap" />
+                                                </div>
+                                                <div class="EditorLabelContainer">
+                                                    <div class="Label">
+                                                        <label for="DisplayInCapYes">是，允许客户端用户完成</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Editor RadioButton" data-editor-id="DisplayInCapYesNoComplete" data-rdp="DisplayInCapYesNoComplete">
+                                            <div class="InputField">
+                                                <div>
+                                                    <asp:RadioButton ID="DisplayInCapYesNoComplete" runat="server" GroupName="DisplayInCap" />
+                                                </div>
+                                                <div class="EditorLabelContainer">
+                                                    <div class="Label">
+                                                        <label for="DisplayInCapYesNoComplete">是，不允许客户端用户完成</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Editor RadioButton" data-editor-id="DisplayInCapNone" data-rdp="DisplayInCapNone">
+                                            <div class="InputField">
+                                                <div>
+                                                    <asp:RadioButton ID="DisplayInCapNone" runat="server" GroupName="DisplayInCap" />
+
+                                                </div>
+                                                <div class="EditorLabelContainer">
+                                                    <div class="Label">
+                                                        <label for="DisplayInCapNone">否</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="Editor CheckBox" data-editor-id="IsIssue" data-rdp="IsIssue">
+                                        <div class="InputField">
+                                            <div>
+                                                <asp:CheckBox ID="isProject_issue" runat="server" />
+
+                                            </div>
+                                            <div class="EditorLabelContainer">
+                                                <div class="Label">
+                                                    <label for="IsIssue">标记为问题</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="IssueReportedBy">问题提出人</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor DataSelector" data-editor-id="IssueReportedBy" data-rdp="IssueReportedBy">
+                                        <div class="InputField">
+                                            <input id="issue_report_contact_id" type="text" value="" autocomplete="off" /><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="ChooseRc" tabindex="0"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="issue_report_contact_idHidden" name="issue_report_contact_id" type="hidden" value="" /><div class="ContextOverlayContainer" id="IssueReportedBy_ContextOverlay">
+                                                <div class="AutoComplete ContextOverlay">
+                                                    <div class="Active LoadingIndicator"></div>
+                                                    <div class="Content"></div>
+                                                </div>
+                                                <div class="AutoComplete ContextOverlay">
+                                                    <div class="Active LoadingIndicator"></div>
+                                                    <div class="Content"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Normal Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="Predecessors">前驱任务</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor MultipleSelect" data-editor-id="Predecessors" data-rdp="Predecessors">
+                                        <div class="InputField">
+                                            <select id="Predecessors" multiple="multiple" name="Predecessors"></select><span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PredecessorSelectButton" tabindex="0" onclick="ChoosePreTask()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%} %>
+                            </div>
                         </div>
-                        <div class="Content">
-                            <div class="Large Column">
-                                <div class="Small Column">
-                                    <div class="EditorLabelContainer">
-                                        <div class="Label">
-                                            <label for="StartDate">开始时间</label><span class="Required">*</span>
+                        <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
+                            { %>
+                        <div class="Normal Section">
+                            <div class="Heading">
+                                <div class="Left"><span class="Text">日程表</span><span class="SecondaryText"></span></div>
+                                <div class="Spacer"></div>
+                            </div>
+                            <div class="DescriptionText">固定工作任务是所有员工参与的任务，持续天数和小时/员工不会自动计算，持续天数和预估小时数由用户指定。对于固定时间任务，工作量会平均分配给指定的员工（小时/员工=预估小时数/已分配的员工数量）。任务的持续天数是花费时间最长的员工持续天数（员工持续天数=（小时/员工）/员工日工作时间）。</div>
+                            <div class="Content">
+                                <div class="Normal Column">
+                                    <div class="RadioButtonGroupContainer">
+                                        <div class="RadioButtonGroupLabel">
+                                            <div><span class="Label">任务类型</span></div>
                                         </div>
-                                    </div>
-                                    <div class="Editor DateBox" data-editor-id="StartDate" data-rdp="StartDate">
-                                        <div class="InputField">
-                                            <div class="Container">
-                                                <% var startDate = (DateTime)thisProject.start_date;
-                                                    if (parTask != null)
-                                                    {
-                                                        startDate = EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)parTask.estimated_begin_time);
-                                                    }
-                                                %>
-                                                <input id="estimated_beginTime" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd HH:mm:ss") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("yyyy-MM-dd HH:mm:ss") %>" name="estimated_beginTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 150px" />
+                                        <div class="Editor RadioButton" data-editor-id="TaskTypeFixedWork" data-rdp="TaskTypeFixedWork">
+                                            <div class="InputField">
+                                                <div>
+                                                    <asp:RadioButton ID="TaskTypeFixedWork" runat="server" GroupName="TaskType" />
+                                                </div>
+                                                <div class="EditorLabelContainer">
+                                                    <div class="Label">
+                                                        <label for="TaskTypeFixedWork">固定工作</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Editor RadioButton" data-editor-id="TaskTypeFixedDuration" data-rdp="TaskTypeFixedDuration">
+                                            <div class="InputField">
+                                                <div>
+                                                    <asp:RadioButton ID="TaskTypeFixedDuration" runat="server" GroupName="TaskType" />
+                                                </div>
+                                                <div class="EditorLabelContainer">
+                                                    <div class="Label">
+                                                        <label for="TaskTypeFixedDuration">固定时间</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="Small Column" style="margin-left: 50px;">
-                                    <div class="EditorLabelContainer">
-                                        <div class="Label">
-                                            <label for="EndDate">结束时间</label><span class="Required">*</span>
-                                        </div>
-                                    </div>
-                                    <div class="Editor DateBox" data-editor-id="EndDate" data-rdp="EndDate">
-                                        <div class="InputField">
-                                            <div class="Container">
-                                                <input id="estimated_end_date" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd") : ((DateTime)thisTask.estimated_end_date).ToString("yyyy-MM-dd") %>" name="estimated_end_date" onclick="WdatePicker()" style="width: 100px;" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="Small Column">
+                                <div class="Normal Column">
                                     <div class="EditorLabelContainer">
                                         <div class="Label">
                                             <label for="EstimatedHours">预估时间</label>
                                         </div>
                                     </div>
-                                    <div class="Editor TextBox LabeledValue" data-editor-id="EstimatedHours">
-                                        <div class="InputField"><span class="Value"></span></div>
-                                        <input id="EstimatedHours" name="EstimatedHours" type="hidden" value="">
+                                    <div class="Editor DecimalBox">
+                                        <div class="InputField">
+                                            <input id="estimated_hours" type="text" value="<%=isAdd ? "0.00" : thisTask.estimated_hours.ToString("#0.00") %>" name="estimated_hours" maxlength="10" class="To2Input" />
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="Small Column">
                                     <div class="EditorLabelContainer">
                                         <div class="Label">
                                             <label for="Duration">持续时间</label>
                                         </div>
                                     </div>
-                                    <div class="Editor TextBox LabeledValue" data-editor-id="Duration">
+                                    <div class="Editor IntegerBox" data-editor-id="Duration" data-rdp="Duration">
                                         <div class="InputField">
-                                            <span class="Value">1</span><span class="CustomHtml"><div class="StandardText">days</div>
+                                            <input id="estimated_duration" type="text" value="<%=isAdd ? 1 : thisTask.estimated_duration %>" name="estimated_duration" maxlength="5" />
+                                        </div>
+                                    </div>
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="HoursPerResource">每个员工小时</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor DecimalBox" data-editor-id="HoursPerResource" data-rdp="HoursPerResource">
+                                        <div class="InputField">
+                                            <input id="hours_per_resource" type="text" value="<%=(!isAdd)&&thisTask.hours_per_resource!=null?((decimal)thisTask.hours_per_resource).ToString("#0.00"):"0.00" %>" name="hours_per_resource" maxlength="12" class="To2Input" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Normal Column">
+                                    <div class="Small Column">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="StartDateTime">开始时间</label><span class="Required">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="Editor DateBox" data-editor-id="StartDateTime" data-rdp="StartDateTime">
+                                            <div class="InputField">
+                                                <div class="Container">
+                                                    <% var startDate = (DateTime)thisProject.start_date;
+                                                        if (parTask != null)
+                                                        {
+                                                            startDate = EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)parTask.estimated_begin_time);
+                                                        }
+                                                    %>
+                                                    <input id="estimated_beginTime" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd HH:mm:ss") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("yyyy-MM-dd HH:mm:ss") %>" name="estimated_beginTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 150px" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="Small Column" style="margin-left: 50px;">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="EndDate">结束时间</label><span class="Required">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="Editor DateBox" data-editor-id="EndDate" data-rdp="EndDate">
+                                            <div class="InputField">
+                                                <div class="Container">
+                                                    <input id="estimated_end_date" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd") : ((DateTime)thisTask.estimated_end_date).ToString("yyyy-MM-dd") %>" name="estimated_end_date" onclick="WdatePicker()" style="width: 100px;" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Normal Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="StartNoEarlierThanDate">开始时间不早于</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor DateBox" data-editor-id="StartNoEarlierThanDate" data-rdp="StartNoEarlierThanDate">
+                                        <div class="InputField">
+                                            <div class="Container">
+                                                <input id="start_no_earlier_than_date" type="text" value="<%=thisTask != null && thisTask.start_no_earlier_than_date != null ? ((DateTime)thisTask.start_no_earlier_than_date).ToString("yyyy-MM-dd") : "" %>" name="start_no_earlier_than_date" onclick="WdatePicker()" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="Normal Section" id="AssignSectionHeader">
+                            <div class="Heading" data-toggle-enabled="true">
+                                <div class="Toggle Collapse Toggle1">
+                                    <div class="Vertical"></div>
+                                    <div class="Horizontal"></div>
+                                </div>
+                                <div class="Left"><span class="Text">分配</span><span class="SecondaryText"></span></div>
+                                <div class="Spacer"></div>
+                            </div>
+                            <div class="Content">
+                                <div class="Normal Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="department_id">部门</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor SingleSelect" data-editor-id="Department" data-rdp="Department">
+                                        <div class="InputField">
+                                            <asp:DropDownList ID="department_id" runat="server"></asp:DropDownList>
+                                            <span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly Report" id="WorkloadReportButton" tabindex="0" title="Workload Report"><span class="Icon"></span><span class="Text"></span></a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Normal Column">
+                                    <div class="Editor CheckBox" data-editor-id="FilterResourcesByProjectBillingRoles" data-rdp="FilterResourcesByProjectBillingRoles">
+                                        <div class="InputField">
+                                            <div>
+                                                <input id="FilterResByProBilRoles" type="checkbox" value="true" name="FilterResByProBilRoles" />
+                                            </div>
+                                            <div class="EditorLabelContainer">
+                                                <div class="Label">
+                                                    <label for="FilterResourcesByProjectBillingRoles">通过项目计费角色过滤员工</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Normal Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="WorkType">工作类型<span class="SecondaryText">(分配员工必填)</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor SingleSelect" data-editor-id="WorkType" data-rdp="WorkType">
+                                        <div class="InputField">
+                                            <select id="WorkType" name="cost_code_id">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Normal Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="PrimaryResource">主负责人</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor DataSelector" data-editor-id="PrimaryResource" data-rdp="PrimaryResource">
+                                        <div class="InputField">
+                                            <input id="owner_resource_id" type="text" value="" autocomplete="off" style="width: 250px;" />
+                                            <input type="hidden" name="owner_resource_id" id="owner_resource_idHidden" />
+                                            <a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PrimaryResource_Button" tabindex="0" onclick="ChoosePriRes()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a>
+                                            <div class="ContextOverlayContainer" id="PrimaryResource_ContextOverlay">
+                                                <div class="AutoComplete ContextOverlay">
+                                                    <div class="Active LoadingIndicator"></div>
+                                                    <div class="Content"></div>
+                                                </div>
+                                                <div class="AutoComplete ContextOverlay">
+                                                    <div class="Active LoadingIndicator"></div>
+                                                    <div class="Content"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="SecondaryResources">其他负责人</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor DataSelector" data-editor-id="SecondaryResources" data-rdp="SecondaryResources">
+                                        <div class="InputField">
+                                            <input id="SecondaryResources_DisplayTextBox" type="text" value="" autocomplete="off" style="width: 250px;" /><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="SecondaryResources_Button" tabindex="0" onclick="ChooseResDep()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="SecondaryResources" name="SecondaryResources" type="hidden" value="" /><div class="ContextOverlayContainer" id="SecondaryResources_ContextOverlay">
+                                                <input type="hidden" id="resDepIds" />
+                                                <input type="hidden" id="resDepIdsHidden" name="resDepList" />
+                                                <div class="AutoComplete ContextOverlay">
+                                                    <div class="Active LoadingIndicator"></div>
+                                                    <div class="Content"></div>
+                                                </div>
+                                                <div class="AutoComplete ContextOverlay">
+                                                    <div class="Active LoadingIndicator"></div>
+                                                    <div class="Content"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <%-- <select id="SecondaryResources_displayListBox" multiple="multiple"></select>--%>
+                                                <select multiple="multiple" style="width: 264px; min-height: 80px;" id="resDepList">
+                                                    <%
+                                                        if (!isAdd)
+                                                        {
+
+                                                            var resList = new EMT.DoneNOW.DAL.sdk_task_resource_dal().GetResByTaskId(thisTask.id);
+                                                            if (resList != null && resList.Count > 0)
+                                                            {
+                                                                var syDal = new EMT.DoneNOW.DAL.sys_resource_dal();
+                                                                var srDal = new EMT.DoneNOW.DAL.sys_role_dal();
+                                                                foreach (var res in resList)
+                                                                {
+                                                                    if (res.resource_id != null && res.role_id != null)
+                                                                    {
+                                                                        var thisResou = syDal.FindNoDeleteById((long)res.resource_id);
+                                                                        var thisRole = srDal.FindNoDeleteById((long)res.role_id);
+                                                                        if (thisResou != null && thisRole != null)
+                                                                        {
+                                                    %>
+                                                    <option><%=thisResou.name + $"({thisRole.name})" %></option>
+                                                    <%
+                                                                        }
+                                                                    }
+
+                                                                }
+
+                                                            }
+                                                        }  %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="Contacts">联系人</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor DataSelector" data-editor-id="Contacts" data-rdp="Contacts">
+                                        <div class="InputField">
+                                            <input id="Contacts_DisplayTextBox" type="text" value="" autocomplete="off" style="width: 250px;" /><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="Contacts_Button" tabindex="0" onclick="ChooseContact()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="Contacts" name="Contacts" type="hidden" value="" /><div class="ContextOverlayContainer" id="Contacts_ContextOverlay">
+                                                <div class="AutoComplete ContextOverlay">
+                                                    <div class="Active LoadingIndicator"></div>
+                                                    <div class="Content"></div>
+                                                </div>
+                                                <div class="AutoComplete ContextOverlay">
+                                                    <div class="Active LoadingIndicator"></div>
+                                                    <div class="Content"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <input type="hidden" id="contactID" />
+                                                <input type="hidden" id="contactIDHidden" name="conIds" />
+                                                <select multiple="multiple" style="width: 264px; min-height: 80px;" id="conIds">
+                                                    <%
+                                                        if (!isAdd)
+                                                        {
+                                                            var conList = new EMT.DoneNOW.DAL.sdk_task_resource_dal().GetConByTaskId(thisTask.id);
+                                                            if (conList != null && conList.Count > 0)
+                                                            {
+                                                                var cDal = new EMT.DoneNOW.DAL.crm_contact_dal();
+                                                                foreach (var con in conList)
+                                                                {
+                                                                    var thisContact = cDal.FindNoDeleteById((long)con.contact_id);
+                                                                    if (thisContact != null)
+                                                                    {%>
+                                                    <option><%=thisContact.name %></option>
+                                                    <%}
+                                                                }
+                                                            }
+                                                        } %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="Normal Section" id="UdfSectionHeader">
+                            <div class="Heading" data-toggle-enabled="true">
+                                <div class="Toggle Collapse Toggle2">
+                                    <div class="Vertical"></div>
+                                    <div class="Horizontal"></div>
+                                </div>
+                                <div class="Left"><span class="Text">用户自定义字段</span><span class="SecondaryText"></span></div>
+                                <div class="Spacer"></div>
+                            </div>
+                            <div class="Content">
+                                <%if (task_udfList != null && task_udfList.Count > 0)
+                                    {
+                                        foreach (var udf in task_udfList)
+                                        {
+
+                                            if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                                            {%>
+                                <div class="Normal Column">
+                                    <div class="Udf EditorLabelContainer">
+                                        <div class="Label">
+                                            <label><%=udf.name %></label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor DateBox Udf">
+                                        <div class="InputField">
+                                            <div class="Container">
+                                                <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=(!isAdd) && task_udfValueList != null && task_udfValueList.Count > 0 ? task_udfValueList.FirstOrDefault(_ => _.id == udf.id).value : "" %>" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%}
+                                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
+                                    {
+                                %>
+                                <div class="Normal Column">
+                                    <div class="Udf EditorLabelContainer">
+                                        <div class="Label">
+                                            <label><%=udf.name %></label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor DateBox Udf">
+                                        <div class="InputField">
+                                            <div class="Container">
+                                                <textarea name="<%=udf.id %>" rows="2" cols="20"><%=(!isAdd) && task_udfValueList != null && task_udfValueList.Count > 0 ? task_udfValueList.FirstOrDefault(_ => _.id == udf.id).value : "" %></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%}
+                                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)
+                                    {
+                                %>
+                                <div class="Normal Column">
+                                    <div class="Udf EditorLabelContainer">
+                                        <div class="Label">
+                                            <label><%=udf.name %></label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor DateBox Udf">
+                                        <div class="InputField">
+                                            <div class="Container">
+                                                <%
+
+                                                    string val = "";
+                                                    if (!isAdd)
+                                                    {
+                                                        object value = task_udfValueList.FirstOrDefault(_ => _.id == udf.id).value;
+                                                        if (value != null && (!string.IsNullOrEmpty(value.ToString())))
+                                                        {
+                                                            val = DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd");
+                                                        }
+                                                    }
+                                                %>
+                                                <input type="text" onclick="WdatePicker()" name="<%=udf.id %>" class="sl_cdt" value="<%=val %>" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }
+                                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)
+                                    {
+                                %>
+                                <div class="Normal Column">
+                                    <div class="Udf EditorLabelContainer">
+                                        <div class="Label">
+                                            <label><%=udf.name %></label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor DateBox Udf">
+                                        <div class="InputField">
+                                            <div class="Container">
+                                                <input type="text" name="<%=udf.id %>" class="sl_cdt" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=(!isAdd) && task_udfValueList != null && task_udfValueList.Count > 0 ? task_udfValueList.FirstOrDefault(_ => _.id == udf.id).value : "" %>" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%
+                                            }
+                                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)
+                                            {
+
+                                            }
+                                        }
+                                    } %>
+                            </div>
+                        </div>
+
+                        <div class="Normal Section" id="notificationHeader">
+                            <div class="Heading" data-toggle-enabled="true">
+                                <div class="Toggle Collapse Toggle3">
+                                    <div class="Vertical"></div>
+                                    <div class="Horizontal"></div>
+                                </div>
+                                <div class="Left"><span class="Text">通知</span><span class="SecondaryText"></span></div>
+                                <div class="Spacer"></div>
+                            </div>
+                            <div class="Content">
+                                <div class="Normal Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="Notifications_NotificationTemplate">通知模板</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor SingleSelect" data-editor-id="Notifications_NotificationTemplate" data-rdp="Notifications_NotificationTemplate">
+                                        <div class="InputField">
+                                            <asp:DropDownList ID="template_id" runat="server" Width="264px"></asp:DropDownList>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Large Column">
+                                    <div class="CustomLayoutContainer">
+                                        <div class="NotificationRecipients_fromLine">
+                                            <span class="NotificationRecipients_text NotificationRecipients_label">发件人:&nbsp;&nbsp;</span>
+                                            <span class="NotificationRecipients_text" id="FromEmail"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Large Column">
+                                    <div class="CustomLayoutContainer">
+                                        <div>
+                                            <span class="NotificationRecipients_text"><a onclick="OpenSelectPage('To')">收件人:</a></span>
+                                            <span class="NotificationRecipients_text">
+                                                <a id="to_me" onclick="ToMe()">自己</a>
+                                                <a id="teamMember" style="margin-left: 5px;" onclick="ToTeamMember()">团队成员</a>
+                                                <a id="ProLead" style="margin-left: 5px;" onclick="ToProjectLead()">项目主管</a>
                                             </span>
                                         </div>
-                                        <input id="Duration" name="Duration" type="hidden" value="1">
+                                    </div>
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="Notifications_ToEmailDisplay"></label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor TextBox LabeledValue" data-editor-id="Notifications_ToEmailDisplay">
+                                        <span class="Value" id="To_Email" style="font-size: 9pt;"></span>
+                                    </div>
+
+                                </div>
+                                <div class="Large Column">
+                                    <div class="CustomLayoutContainer">
+                                        <div>
+                                            <span class="NotificationRecipients_text"><a onclick="OpenSelectPage('Cc')">抄送:</a></span>
+                                            <span class="NotificationRecipients_text">
+                                                <a id="cc_me" onclick="CcToMe()">自己</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="Notifications_CCEmailDisplay"></label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor TextBox LabeledValue" data-editor-id="Notifications_CCEmailDisplay">
+                                        <span class="Value" id="Cc_Email" style="font-size: 9pt;"></span>
+                                    </div>
+                                </div>
+                                <div class="Large Column">
+                                    <div class="CustomLayoutContainer">
+                                        <div>
+                                            <span class="NotificationRecipients_text"><a onclick="OpenSelectPage('Bcc')">密送:</a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Large Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="Notifications_BccEmailDisplay"></label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor TextBox LabeledValue" data-editor-id="Notifications_BccEmailDisplay">
+                                        <span class="Value" id="Bcc_Email" style="font-size: 9pt;"></span>
+                                    </div>
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="Notifications_Subject">主题</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor TextBox" data-editor-id="Notifications_Subject" data-rdp="Notifications_Subject">
+                                        <div class="InputField">
+                                            <input type="text" style="width: 696px;" id="subject" name="subject" value="" />
+                                        </div>
+                                    </div>
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="Notifications_AdditionalEmailText">其他邮件文本</label>
+                                        </div>
+                                    </div>
+                                    <div class="Editor TextArea" data-editor-id="Notifications_AdditionalEmailText" data-rdp="Notifications_AdditionalEmailText">
+                                        <div class="InputField">
+                                            <textarea style="min-height: 100px; width: 610px;" id="otherEmail" name="otherEmail"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="CustomLayoutContainer">
+                                        <div class="NotificationRecipients_editDefaultSettingsContainer">
+                                            <a href="#" onclick="notificationRecipients.openDefaultSettings();" class="NotificationRecipients_links">修改默认设置</a>:
+				&nbsp;
+                                        </div>
+
+                                        <input type="hidden" name="NoToMe" id="NoToMe" />
+                                        <input type="hidden" name="NoToTeamMem" id="NoToTeamMem" />
+                                        <input type="hidden" name="NoToProlead" id="NoToProlead" />
+
+                                        <input type="hidden" name="NoToContactIds" id="NoToContactIds" />
+                                        <input type="hidden" name="NoToResIds" id="NoToResIds" />
+                                        <input type="hidden" name="NoToDepIds" id="NoToDepIds" />
+                                        <input type="hidden" name="NoToWorkIds" id="NoToWorkIds" />
+                                        <input type="hidden" name="NoToOtherMail" id="NoToOtherMail" />
+
+                                        <input type="hidden" name="NoCcMe" id="NoCcMe" />
+                                        <input type="hidden" name="NoCcContactIds" id="NoCcContactIds" />
+                                        <input type="hidden" name="NoCcResIds" id="NoCcResIds" />
+                                        <input type="hidden" name="NoCcDepIds" id="NoCcDepIds" />
+                                        <input type="hidden" name="NoCcWorkIds" id="NoCcWorkIds" />
+                                        <input type="hidden" name="NoCcOtherMail" id="NoCcOtherMail" />
+
+                                        <input type="hidden" name="NoBccContactIds" id="NoBccContactIds" />
+                                        <input type="hidden" name="NoBccResIds" id="NoBccResIds" />
+                                        <input type="hidden" name="NoBccDepIds" id="NoBccDepIds" />
+                                        <input type="hidden" name="NoBccWorkIds" id="NoBccWorkIds" />
+                                        <input type="hidden" name="NoBccOtherMail" id="NoBccOtherMail" />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%}
+                            else
+                            { %>
+                        <div class="Normal Section">
+                            <div class="Heading">
+                                <div class="Left"><span class="Text">日程表</span><span class="SecondaryText"></span></div>
+                                <div class="Spacer"></div>
+                            </div>
+                            <div class="Content">
+                                <div class="Large Column">
+                                    <div class="Small Column">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="StartDate">开始时间</label><span class="Required">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="Editor DateBox" data-editor-id="StartDate" data-rdp="StartDate">
+                                            <div class="InputField">
+                                                <div class="Container">
+                                                    <% var startDate = (DateTime)thisProject.start_date;
+                                                        if (parTask != null)
+                                                        {
+                                                            startDate = EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)parTask.estimated_begin_time);
+                                                        }
+                                                    %>
+                                                    <input id="estimated_beginTime" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd HH:mm:ss") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("yyyy-MM-dd HH:mm:ss") %>" name="estimated_beginTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 150px" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="Small Column" style="margin-left: 50px;">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="EndDate">结束时间</label><span class="Required">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="Editor DateBox" data-editor-id="EndDate" data-rdp="EndDate">
+                                            <div class="InputField">
+                                                <div class="Container">
+                                                    <input id="estimated_end_date" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd") : ((DateTime)thisTask.estimated_end_date).ToString("yyyy-MM-dd") %>" name="estimated_end_date" onclick="WdatePicker()" style="width: 100px;" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="Small Column">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="EstimatedHours">预估时间</label>
+                                            </div>
+                                        </div>
+                                        <div class="Editor TextBox LabeledValue" data-editor-id="EstimatedHours">
+                                            <div class="InputField"><span class="Value"></span></div>
+                                            <input id="EstimatedHours" name="EstimatedHours" type="hidden" value="">
+                                        </div>
+                                    </div>
+                                    <div class="Small Column">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="Duration">持续时间</label>
+                                            </div>
+                                        </div>
+                                        <div class="Editor TextBox LabeledValue" data-editor-id="Duration">
+                                            <div class="InputField">
+                                                <span class="Value">1</span><span class="CustomHtml"><div class="StandardText">days</div>
+                                                </span>
+                                            </div>
+                                            <input id="Duration" name="Duration" type="hidden" value="1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="Normal Section" id="BudgetSectionHeader">
+                            <div class="Heading" data-toggle-enabled="true">
+                                <div class="Toggle Collapse">
+                                    <div class="Vertical"></div>
+                                    <div class="Horizontal"></div>
+                                </div>
+                                <div class="Left"><span class="Text">预算</span><span class="SecondaryText"></span></div>
+                                <div class="Spacer"></div>
+                            </div>
+                            <div class="DescriptionText">与此项目关联的合同将决定这个项目可用的角色。</div>
+                            <div class="Content">
+                                <div class="Large Column">
+                                    <div class="CustomLayoutContainer">
+                                        <table class="PhaseEditor_BudgetTable">
+                                            <colgroup>
+                                                <col class="PhaseEditor_col1">
+                                                <col class="PhaseEditor_col2">
+                                                <col class="PhaseEditor_col3">
+                                                <col class="PhaseEditor_col4">
+                                                <col class="PhaseEditor_col5">
+                                            </colgroup>
+                                            <tbody>
+                                                <tr class="PhaseEditor_head">
+                                                    <td>
+                                                        <span class="PhaseEditor_HeadingText">角色</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="PhaseEditor_HeadingText">合同计费角色</span><br>
+                                                        <span class="PhaseEditor_smallHeadingText">（每小时）</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="PhaseEditor_HeadingText">预估时间</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="PhaseEditor_HeadingText">预算时间</span><br>
+                                                        <span class="PhaseEditor_smallHeadingText">（总数/剩余）</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="PhaseEditor_HeadingText">实际时间</span>
+                                                    </td>
+                                                </tr>
+                                                <%if (rateList != null && rateList.Count > 0)
+                                                    {
+                                                        var roleDal = new EMT.DoneNOW.DAL.sys_role_dal();
+                                                        var stbDal = new EMT.DoneNOW.DAL.sdk_task_budget_dal();
+                                                        var proBLL = new EMT.DoneNOW.BLL.ProjectBLL();
+                                                        var yuguTime = proBLL.ESTIMATED_HOURS(thisProject.id);
+                                                        var shijiTime = proBLL.ProWorkHours(thisProject.id);
+                                                        foreach (var rate in rateList)
+                                                        {
+                                                            EMT.DoneNOW.Core.sdk_task_budget stb = null;
+                                                            var thisrole = roleDal.FindNoDeleteById(rate.role_id);
+                                                            if (!isAdd && thisTask != null)
+                                                            {
+                                                                stb = stbDal.GetSinByTIdRid(thisTask.id, rate.id);
+                                                            }
+                                                %>
+                                                <tr>
+                                                    <td>
+                                                        <span class="PhaseEditor_Text"><%=thisrole==null?"":thisrole.name %></span>
+                                                        <input type="hidden" id="BudgetLineItems_0__RoleName" name="BudgetLineItems[0].RoleName" value="Administration">
+                                                    </td>
+                                                    <td class="PhaseEditor_numericInput">
+                                                        <span class="PhaseEditor_Text">¥<%=rate.rate!=null?((decimal)rate.rate).ToString("#0.00"):"" %>span>
+                                                    </td>
+                                                    <td class="PhaseEditor_numericInput">
+                                                        <span class="PhaseEditor_Text"><%=yuguTime.ToString("#0.00") %></span>
+                                                        <input type="hidden" id="BudgetLineItems_0__EstimatedHours" name="BudgetLineItems[0].EstimatedHours" value="0">
+                                                    </td>
+                                                    <td class="col4 PhaseEditor_numericInput">
+                                                        <input class="PhaseEditor_inputText" type="text" id="<%=rate.id %>_esHours" name="<%=rate.id %>_esHours" value="<%=stb==null?"":stb.estimated_hours.ToString("#0") %>" />
+                                                        <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;<%=stb==null?"":stb.estimated_hours.ToString("#0") %></div>
+                                                    </td>
+                                                    <td class="PhaseEditor_numericInput">
+                                                        <span class="PhaseEditor_Text"><%=shijiTime.ToString("#0.00") %></span>
+                                                        <input type="hidden" id="BudgetLineItems_0__ActualHours" name="BudgetLineItems[0].ActualHours" value="0">
+                                                    </td>
+                                                </tr>
+                                                <%}
+                                                    }
+                                                    else
+                                                    { %>
+
+                                                <%} %>
+
+
+                                                <tr>
+                                                    <td colspan="5" class="PhaseEditor_noBorder">&nbsp;</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="Normal Column">
+                                    <div class="Medium Column"><a class="Button ButtonIcon NormalState" id="RecalculateBudgetButton" tabindex="0"><span class="Icon"></span><span class="Text">Recalculate</span></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <%} %>
+                    </div>
+                    <%if (!isAdd)
+                        { %>
+                    <%if (!isPhase)
+                        { %>
+                    <div class="IsShowDiv" id="serCallsDiv">
+                    </div>
+
+                    <%}
+                        else
+                        { %>
+                    <div class="IsShowDiv" id="milestonesDiv">
+                        <div class="ScrollingContentContainer">
+                            <div class="ScrollingContainer" id="z5bc1074cedb74feba8b7539e6ef70863">
+                                <div class="Instructions">
+                                    <div class="InstructionItem">与固定价格合同相关的项目可以通过里程碑在项目进度的不同点通知客户。它们是通过固定价格合同直接创建和管理的（只适用于固定价格合同）。 </div>
+                                </div>
+
+
+                                <div class="Normal Section">
+                                    <div class="Heading">
+                                        <div class="Left"><span class="Text">项目合同</span><span class="SecondaryText"></span></div>
+                                        <div class="Spacer"></div>
+                                    </div>
+                                    <div class="Content">
+                                        <div class="Normal Column">
+                                            <div class="StandardText">名字</div>
+                                            <a class="Button ButtonIcon Link NormalState" id="ContractLinkButton" tabindex="0"><%=thisProContract==null?"":thisProContract.name %></a></div>
+                                        <div class="Normal Column">
+                                            <div class="StandardText">类型</div>
+                                            <div class="StandardText"><% if (thisProContract != null) { var thistype = new EMT.DoneNOW.DAL.d_general_dal().FindNoDeleteById(thisProContract.type_id); %><%=thistype==null?"":thistype.name %><%} %></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Normal Section">
+                                    <div class="Heading">
+                                        <div class="Left"><span class="Text">合同里程碑</span><span class="SecondaryText"></span></div>
+                                        <div class="Spacer"></div>
+                                    </div>
+                                    <div class="DescriptionText">与固定价格合同相关联的项目可以通过里程碑在项目进度不同阶段向客户收费。里程碑是通过固定价格合同直接创建和管理的。可以将一个或多个里程碑与此阶段相关联，但一个里程碑只能与一个项目阶段相关联。 .</div>
+                                    <div class="Content">
+                                        <div class="Large Column">
+                                            <div class="GridBar ButtonContainer"><a class="Button ButtonIcon DisabledState" id="AssociateListButton" tabindex="0"><span class="Icon"></span><span class="Text">关联</span></a><a class="Button ButtonIcon DisabledState" id="DisassociateListButton" tabindex="0"><span class="Icon"></span><span class="Text">取消关联</span></a><a class="Button ButtonIcon DisabledState" id="ReadyForBillingListButton" tabindex="0"><span class="Icon"></span><span class="Text">标记为准备计费</span></a></div>
+                                            <div class="Grid Small" id="PhaseMilestoneGrid">
+                                                <div class="HeaderContainer">
+                                                    <table cellpadding="0">
+                                                        <colgroup>
+                                                            <col class="Normal ToggleSelection">
+                                                            <col class=" Context">
+                                                            <col class=" Text DynamicSizing" data-persistence-key="Name" data-unique-css-class="U2" style="width: auto;">
+                                                            <col class="Normal Text" data-persistence-key="Status" data-unique-css-class="U3">
+                                                            <col class="Normal Currency" data-persistence-key="Amount" data-unique-css-class="U4">
+                                                            <col class="Normal Date" data-persistence-key="DueDate" data-unique-css-class="U5">
+                                                            <col class=" Boolean" data-persistence-key="IsAssociated" data-unique-css-class="U6">
+                                                        </colgroup>
+                                                        <tbody>
+                                                            <tr class="HeadingRow">
+                                                                <td class=" ToggleSelection">
+                                                                    <div class="Standard"><a class="Button ButtonIcon IconOnly CheckBox NormalState" id="PhaseMilestoneGrid_SelectionColumnButton" tabindex="0"><span class="Icon"></span><span class="Text"></span></a></div>
+                                                                </td>
+                                                                <td class=" Context">
+                                                                    <div class="Standard">
+                                                                        <div></div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class=" Text Dynamic">
+                                                                    <div class="Standard">
+                                                                        <div class="Heading">里程碑名称</div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="Normal Text">
+                                                                    <div class="Standard">
+                                                                        <div class="Heading">状态</div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class=" Currency">
+                                                                    <div class="Standard">
+                                                                        <div class="Heading">金额</div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class=" Date">
+                                                                    <div class="Standard">
+                                                                        <div class="Heading">到期日</div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class=" Boolean">
+                                                                    <div class="Standard">
+                                                                        <div class="Heading">关联</div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="ScrollBarSpacer" style="width: 17px;"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="ScrollingContentContainer">
+                                                    <div class="NoDataMessage">没有数据</div>
+                                                    <div class="RowContainer BodyContainer">
+                                                        <table cellpadding="0">
+                                                            <colgroup>
+                                                                <col class="Normal ToggleSelection">
+                                                                <col class=" Context">
+                                                                <col class=" Text DynamicSizing" style="width: auto;">
+                                                                <col class="Normal Text">
+                                                                <col class="Normal Currency">
+                                                                <col class="Normal Date">
+                                                                <col class=" Boolean">
+                                                            </colgroup>
+                                                            <tbody>
+                                                                <tr class="D" data-key-field-value="5|7814|True|True" data-prevent-editing="true" id="PhaseMilestoneGrid_5|7814|True|True">
+                                                                    <td class="ToggleSelection  U0">
+                                                                        <div class="Decoration Icon CheckBox"></div>
+                                                                    </td>
+                                                                    <td class="Context  U1"><a class="ButtonIcon Button ContextMenu NormalState">
+                                                                        <div class="Icon"></div>
+                                                                    </a></td>
+                                                                    <td class="Text  U2">last</td>
+                                                                    <td class="Text Normal U3">Ready to Bill</td>
+                                                                    <td class="Currency  U4">¥100.00</td>
+                                                                    <td class="Date  U5">13/08/2017</td>
+                                                                    <td class="Boolean  U6">
+                                                                        <div class="Decoration Icon CheckMark"></div>
+                                                                    </td>
+                                                                </tr>
+                                                               
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="ContextOverlayContainer" id="PhaseMilestoneGrid_ContextOverlay">
+                                                            <div class="ContextOverlay">
+                                                                <div class="Outline Arrow"></div>
+                                                                <div class="Arrow"></div>
+                                                                <div class="Active LoadingIndicator"></div>
+                                                                <div class="Content"></div>
+                                                            </div>
+                                                            <div class="ContextOverlay">
+                                                                <div class="Outline Arrow"></div>
+                                                                <div class="Arrow"></div>
+                                                                <div class="Active LoadingIndicator"></div>
+                                                                <div class="Content"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="DragIndicator">
+                                                            <div class="Bar"></div>
+                                                            <div class="LeftArrow"></div>
+                                                            <div class="RightArrow"></div>
+                                                        </div>
+                                                        <div class="DragStatus"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="FooterContainer"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="Normal Section" id="BudgetSectionHeader">
-                        <div class="Heading" data-toggle-enabled="true">
-                            <div class="Toggle Collapse">
-                                <div class="Vertical"></div>
-                                <div class="Horizontal"></div>
-                            </div>
-                            <div class="Left"><span class="Text">预算</span><span class="SecondaryText"></span></div>
-                            <div class="Spacer"></div>
-                        </div>
-                        <div class="DescriptionText">与此项目关联的合同将决定这个项目可用的角色。</div>
-                        <div class="Content">
-                            <div class="Large Column">
-                                <div class="CustomLayoutContainer">
-                                    <table class="PhaseEditor_BudgetTable">
-                                        <colgroup>
-                                            <col class="PhaseEditor_col1">
-                                            <col class="PhaseEditor_col2">
-                                            <col class="PhaseEditor_col3">
-                                            <col class="PhaseEditor_col4">
-                                            <col class="PhaseEditor_col5">
-                                        </colgroup>
-                                        <tbody>
-                                            <tr class="PhaseEditor_head">
-                                                <td>
-                                                    <span class="PhaseEditor_HeadingText">角色</span>
-                                                </td>
-                                                <td>
-                                                    <span class="PhaseEditor_HeadingText">合同计费角色</span><br>
-                                                    <span class="PhaseEditor_smallHeadingText">（每小时）</span>
-                                                </td>
-                                                <td>
-                                                    <span class="PhaseEditor_HeadingText">预估时间</span>
-                                                </td>
-                                                <td>
-                                                    <span class="PhaseEditor_HeadingText">预算时间</span><br>
-                                                    <span class="PhaseEditor_smallHeadingText">（总数/剩余）</span>
-                                                </td>
-                                                <td>
-                                                    <span class="PhaseEditor_HeadingText">实际时间</span>
-                                                </td>
-                                            </tr>
-                                            <%if (rateList != null && rateList.Count > 0)
-                                                {
-                                                    var roleDal = new EMT.DoneNOW.DAL.sys_role_dal();
-                                                    var stbDal = new EMT.DoneNOW.DAL.sdk_task_budget_dal();
-                                                    var proBLL = new EMT.DoneNOW.BLL.ProjectBLL();
-                                                    var yuguTime = proBLL.ESTIMATED_HOURS(thisProject.id);
-                                                    var shijiTime = proBLL.ProWorkHours(thisProject.id);
-                                                    foreach (var rate in rateList)
-                                                    {
-                                                        EMT.DoneNOW.Core.sdk_task_budget stb = null;
-                                                        var thisrole = roleDal.FindNoDeleteById(rate.role_id);
-                                                        if (!isAdd && thisTask != null)
-                                                        {
-                                                            stb = stbDal.GetSinByTIdRid(thisTask.id,rate.id);
-                                                        }
-                                                        %>
-                                               <tr>
-                                                <td>
-                                                    <span class="PhaseEditor_Text"><%=thisrole==null?"":thisrole.name %></span>
-                                                    <input type="hidden" id="BudgetLineItems_0__RoleName" name="BudgetLineItems[0].RoleName" value="Administration">
-                                                </td>
-                                                <td class="PhaseEditor_numericInput">
-                                                    <span class="PhaseEditor_Text">¥<%=rate.rate!=null?((decimal)rate.rate).ToString("#0.00"):"" %>span>
-                                                </td>
-                                                <td class="PhaseEditor_numericInput">
-                                                    <span class="PhaseEditor_Text"><%=yuguTime.ToString("#0.00") %></span>
-                                                    <input type="hidden" id="BudgetLineItems_0__EstimatedHours" name="BudgetLineItems[0].EstimatedHours" value="0">
-                                                </td>
-                                                <td class="col4 PhaseEditor_numericInput">
-                                                    <input class="PhaseEditor_inputText" type="text" id="<%=rate.id %>_esHours" name="<%=rate.id %>_esHours"  value="<%=stb==null?"":stb.estimated_hours.ToString("#0") %>" />
-                                                    <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;<%=stb==null?"":stb.estimated_hours.ToString("#0") %></div>
-                                                </td>
-                                                <td class="PhaseEditor_numericInput">
-                                                    <span class="PhaseEditor_Text"><%=shijiTime.ToString("#0.00") %></span>
-                                                    <input type="hidden" id="BudgetLineItems_0__ActualHours" name="BudgetLineItems[0].ActualHours" value="0">
-                                                </td>
-                                            </tr>
-                                                    <%}
-                                            }
-    else
-    { %>
-
-                                            <%} %>
-                                         
-                                            <tr>
-                                                <td>
-                                                    <span class="PhaseEditor_Text">Emergency Technician</span>
-                                                    <input type="hidden" id="BudgetLineItems_1__RoleName" name="BudgetLineItems[1].RoleName" value="Emergency Technician">
-                                                </td>
-                                                <td class="PhaseEditor_numericInput">
-                                                    <span class="PhaseEditor_Text">¥1,225.00</span>
-                                                    <input type="hidden" id="BudgetLineItems_1__BillingRate" name="BudgetLineItems[1].BillingRate" value="¥1,225.00">
-                                                </td>
-                                                <td class="PhaseEditor_numericInput">
-                                                    <span class="PhaseEditor_Text">0</span>
-                                                    <input type="hidden" id="BudgetLineItems_1__EstimatedHours" name="BudgetLineItems[1].EstimatedHours" value="0">
-                                                </td>
-                                                <td class="col4 PhaseEditor_numericInput">
-                                                    <!-- For the input, the name has to be done this way so that the item value is sent back with the post.  -->
-                                                    <input type="hidden" id="BudgetLineItems_1__RateId" name="BudgetLineItems[1].RateId" value="22">
-                                                    <input class="PhaseEditor_inputText" type="text" id="BudgetLineItems_1__BudgetedHours" name="BudgetLineItems[1].BudgetedHours" onchange="phaseEditor.budgetChanged(this)" value="0">
-                                                    <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;0</div>
-                                                </td>
-                                                <td class="PhaseEditor_numericInput">
-                                                    <span class="PhaseEditor_Text">0</span>
-                                                    <input type="hidden" id="BudgetLineItems_1__ActualHours" name="BudgetLineItems[1].ActualHours" value="0">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="PhaseEditor_Text">Engineer</span>
-                                                    <input type="hidden" id="BudgetLineItems_2__RoleName" name="BudgetLineItems[2].RoleName" value="Engineer">
-                                                </td>
-                                                <td class="PhaseEditor_numericInput">
-                                                    <span class="PhaseEditor_Text">¥1,150.00</span>
-                                                    <input type="hidden" id="BudgetLineItems_2__BillingRate" name="BudgetLineItems[2].BillingRate" value="¥1,150.00">
-                                                </td>
-                                                <td class="PhaseEditor_numericInput">
-                                                    <span class="PhaseEditor_Text">0</span>
-                                                    <input type="hidden" id="BudgetLineItems_2__EstimatedHours" name="BudgetLineItems[2].EstimatedHours" value="0">
-                                                </td>
-                                                <td class="col4 PhaseEditor_numericInput">
-                                                    <!-- For the input, the name has to be done this way so that the item value is sent back with the post.  -->
-                                                    <input type="hidden" id="BudgetLineItems_2__RateId" name="BudgetLineItems[2].RateId" value="23">
-                                                    <input class="PhaseEditor_inputText" type="text" id="BudgetLineItems_2__BudgetedHours" name="BudgetLineItems[2].BudgetedHours" onchange="phaseEditor.budgetChanged(this)" value="0">
-                                                    <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;0</div>
-                                                </td>
-                                                <td class="PhaseEditor_numericInput">
-                                                    <span class="PhaseEditor_Text">0</span>
-                                                    <input type="hidden" id="BudgetLineItems_2__ActualHours" name="BudgetLineItems[2].ActualHours" value="0">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="PhaseEditor_Text">Help Desk</span>
-                                                    <input type="hidden" id="BudgetLineItems_3__RoleName" name="BudgetLineItems[3].RoleName" value="Help Desk">
-                                                </td>
-                                                <td class="PhaseEditor_numericInput">
-                                                    <span class="PhaseEditor_Text">¥0.00</span>
-                                                    <input type="hidden" id="BudgetLineItems_3__BillingRate" name="BudgetLineItems[3].BillingRate" value="¥0.00">
-                                                </td>
-                                                <td class="PhaseEditor_numericInput">
-                                                    <span class="PhaseEditor_Text">0</span>
-                                                    <input type="hidden" id="BudgetLineItems_3__EstimatedHours" name="BudgetLineItems[3].EstimatedHours" value="0">
-                                                </td>
-                                                <td class="col4 PhaseEditor_numericInput">
-                                                    <!-- For the input, the name has to be done this way so that the item value is sent back with the post.  -->
-                                                    <input type="hidden" id="BudgetLineItems_3__RateId" name="BudgetLineItems[3].RateId" value="24">
-                                                    <input class="PhaseEditor_inputText" type="text" id="BudgetLineItems_3__BudgetedHours" name="BudgetLineItems[3].BudgetedHours" onchange="phaseEditor.budgetChanged(this)" value="0">
-                                                    <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;0</div>
-                                                </td>
-                                                <td class="PhaseEditor_numericInput">
-                                                    <span class="PhaseEditor_Text">0</span>
-                                                    <input type="hidden" id="BudgetLineItems_3__ActualHours" name="BudgetLineItems[3].ActualHours" value="0">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5" class="PhaseEditor_noBorder">&nbsp;</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                    <%} %>
+                    <div class="IsShowDiv" id="noteDiv">
+                        <div class="TabContainer Active" id="NotesTab">
+                            <div class="DynamicGridContainer">
+                                <div class="Grid Large" id="TaskNoteGrid">
+                                    <div class="HeaderContainer">
+                                        <table cellpadding="0">
+                                            <colgroup>
+                                                <col class=" Context">
+                                                <col class=" Text DynamicSizing" data-persistence-key="Title" data-unique-css-class="U1" style="width: auto;">
+                                                <col class="Normal Text" data-persistence-key="TaskNoteType" data-unique-css-class="U2">
+                                                <col class="Normal Text" data-persistence-key="PostedBy" data-unique-css-class="U3">
+                                                <col class="Normal Date" data-persistence-key="DatePosted" data-unique-css-class="U4">
+                                            </colgroup>
+                                            <tbody>
+                                                <tr class="HeadingRow">
+                                                    <td class=" Context">
+                                                        <div class="Standard">
+                                                            <div></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class=" Text Dynamic">
+                                                        <div class="Standard">
+                                                            <div class="Heading">标题</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="Normal Text">
+                                                        <div class="Standard">
+                                                            <div class="Heading">类型</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="Normal Text">
+                                                        <div class="Standard">
+                                                            <div class="Heading">发表人</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class=" Date">
+                                                        <div class="Standard">
+                                                            <div class="Heading">发表时间</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="ScrollBarSpacer" style="width: 17px;"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="ScrollingContentContainer">
+                                        <%if (noteList != null && noteList.Count > 0)
+                                        { %>
+                                        <div class="RowContainer BodyContainer">
+                                            <table cellpadding="0">
+                                                <colgroup>
+                                                    <col class=" Context">
+                                                    <col class=" Text DynamicSizing" style="width: auto;">
+                                                    <col class="Normal Text">
+                                                    <col class="Normal Text">
+                                                    <col class="Normal Date">
+                                                </colgroup>
+                                                <tbody>
+                                                    <%
+                                                        var sysList = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
+                                                        foreach (var thisNote in noteList)
+                                                        { %>
+                                                    <tr class="D" id="<%=thisNote.id %>" data-val="<%=thisNote.id %>">
+                                                        <td class="Context  U0"><a class="ButtonIcon Button ContextMenu NormalState">
+                                                            <div class="Icon"></div>
+                                                        </a></td>
+                                                        <td class="Text  U1"><%=thisNote.name %></td>
+                                                        <td class="Text Normal U2"><%="" %></td>
+                                                        <td class="Text Normal U3"><% var thisRes = sysList.FirstOrDefault(_ => _.val == thisNote.create_user_id.ToString()); %>
+                                                            <%=thisRes==null?"":thisRes.show %>
+                                                        </td>
+                                                        <td class="Date  U4"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisNote.create_time).ToString("yyyy-MM-dd") %></td>
+                                                    </tr>
+                                                    <%}%>
+                                                </tbody>
+                                            </table>
+                                            <div class="ContextOverlayContainer" id="TaskNoteGrid_ContextOverlay">
+                                                <div class="ContextOverlay" style="left: 6px; top: 166px;">
+                                                    <div class="Bottom Arrow Outline" style="left: 1px;"></div>
+                                                    <div class="Bottom Arrow" style="left: 1px;"></div>
+                                                    <div class="LoadingIndicator"></div>
+                                                    <div class="Content"></div>
+                                                </div>
+                                                <div class="ContextOverlay">
+                                                    <div class="Outline Arrow"></div>
+                                                    <div class="Arrow"></div>
+                                                    <div class="Active LoadingIndicator"></div>
+                                                    <div class="Content"></div>
+                                                </div>
+                                            </div>
+                                            <div class="DragIndicator">
+                                                <div class="Bar"></div>
+                                                <div class="LeftArrow"></div>
+                                                <div class="RightArrow"></div>
+                                            </div>
+                                            <div class="DragStatus"></div>
+                                        </div>
+                                        <%}
+                                        else
+                                        { %>
+                                        <div class="NoDataMessage">没有数据</div>
+                                        <%} %>
+                                    </div>
+                                    <div class="FooterContainer"></div>
                                 </div>
-                            </div>
-                            <div class="Normal Column">
-                                <div class="Medium Column"><a class="Button ButtonIcon NormalState" id="RecalculateBudgetButton" tabindex="0"><span class="Icon"></span><span class="Text">Recalculate</span></a></div>
+
                             </div>
                         </div>
                     </div>
@@ -1607,6 +1870,35 @@
         $(".f1").css("background", "-moz-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
         $(".f1").css("border-bottom", "1px solid #BCBCBC");
     });
+
+
+    $(".A1").on("mouseover", function () {
+        $(this).css("background", "white");
+        $(this).css("border-bottom", "none");
+        $("#B1").show();
+    });
+    $(".A1").on("mouseout", function () {
+        $("#B1").hide();
+        $(this).css("background", "linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+        $(this).css("background", "-ms-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+        $(this).css("background", "-webkit-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+        $(this).css("background", "-moz-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+        $(this).css("border-bottom", "1px solid #BCBCBC");
+    });
+    $("#B1").on("mouseover", function () {
+        $(this).show();
+        $(".A1").css("background", "white");
+        $(".A1").css("border-bottom", "none");
+    });
+    $("#B1").on("mouseout", function () {
+        $(this).hide();
+        $(".A1").css("background", "linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+        $(".A1").css("background", "-ms-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+        $(".A1").css("background", "-webkit-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+        $(".A1").css("background", "-moz-linear-gradient(to bottom,#fff 0,#d7d7d7 100%)");
+        $(".A1").css("border-bottom", "1px solid #BCBCBC");
+    });
+
     $(".lblNormalClass").on("mouseover", function () {
         $(this).parent().css("background", "#E9F0F8");
     });
@@ -2155,7 +2447,7 @@
     {%>
         userEmail = '<%=user.name %>';
         <%}%>
-            return userEmail;
+        return userEmail;
     }
     function GetLeadEmail() {
         var owner_resource_id = $("#owner_resource_idHidden").val();
@@ -2418,55 +2710,65 @@
             // status_id
                  <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
     { %>
-            var status_id = $("#status_id").val();
-            if (status_id == "" || status_id == "0" || status_id == undefined) {
-                LayerMsg("请选择状态！");
-                return false;
-            }
-            var DisplayInCapYes = $("#DisplayInCapYes").is(":checked");
-            var DisplayInCapYesNoComplete = $("#DisplayInCapYesNoComplete").is(":checked");
-            var DisplayInCapNone = $("#DisplayInCapNone").is(":checked");
-            if ((!DisplayInCapYes) && (!DisplayInCapYesNoComplete) && (!DisplayInCapNone)) {
-                LayerMsg("请选择显示在客户端！");
-                return false;
-            }
-            // template_id
-            var TaskTypeFixedWork = $("#TaskTypeFixedWork").is(":checked");
-            var TaskTypeFixedDuration = $("#TaskTypeFixedDuration").is(":checked");
+        var status_id = $("#status_id").val();
+        if (status_id == "" || status_id == "0" || status_id == undefined) {
+            LayerMsg("请选择状态！");
+            return false;
+        }
+        var DisplayInCapYes = $("#DisplayInCapYes").is(":checked");
+        var DisplayInCapYesNoComplete = $("#DisplayInCapYesNoComplete").is(":checked");
+        var DisplayInCapNone = $("#DisplayInCapNone").is(":checked");
+        if ((!DisplayInCapYes) && (!DisplayInCapYesNoComplete) && (!DisplayInCapNone)) {
+            LayerMsg("请选择显示在客户端！");
+            return false;
+        }
+        // template_id
+        var TaskTypeFixedWork = $("#TaskTypeFixedWork").is(":checked");
+        var TaskTypeFixedDuration = $("#TaskTypeFixedDuration").is(":checked");
 
-            if ((!TaskTypeFixedWork) && (!TaskTypeFixedDuration)) {
-                LayerMsg("请选择任务类型！");
+        if ((!TaskTypeFixedWork) && (!TaskTypeFixedDuration)) {
+            LayerMsg("请选择任务类型！");
+            return false;
+        }
+        var template_id = $("#template_id").val();
+        if (template_id == undefined || template_id == "" || template_id == "0") {
+            LayerMsg("请选择通知模板！");
+            return false;
+        }
+        //  选择团队，工作类型必填
+        var WorkType = $("#WorkType").val();
+        if (WorkType == "" || WorkType == "0") {
+            var owner_resource_idHidden = $("#owner_resource_idHidden").val();
+            var resDepIdsHidden = $("#resDepIdsHidden").val();
+            if (owner_resource_idHidden != "" || resDepIdsHidden != "") {
+                LayerMsg("请选择工作类型！");
                 return false;
             }
-            var template_id = $("#template_id").val();
-            if (template_id == undefined || template_id == "" || template_id == "0") {
-                LayerMsg("请选择通知模板！");
-                return false;
-            }
-            //  选择团队，工作类型必填
-            var WorkType = $("#WorkType").val();
-            if (WorkType == "" || WorkType == "0") {
-                var owner_resource_idHidden = $("#owner_resource_idHidden").val();
-                var resDepIdsHidden = $("#resDepIdsHidden").val();
-                if (owner_resource_idHidden != "" || resDepIdsHidden != "") {
-                    LayerMsg("请选择工作类型！");
-                    return false;
-                }
-            }
+        }
 
-            if (status_id == '<%=EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
+        if (status_id == '<%=EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
             // 系统设置
             <%var thisSet = new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.PRO_TASK_DONE_REASON);
     if (thisSet != null && thisSet.setting_value == "1")
     {%>
-                $("#CompletionReasonDialog").show();
-                $("#BackgroundOverLay").show();
+            $("#CompletionReasonDialog").show();
+            $("#BackgroundOverLay").show();
     <%}
     %>
 
             return false;
-            }
-                <%}%>
-            return true;
         }
+                <%}%>
+        return true;
+    }
+</script>
+<%--ss --%>
+<script>
+    $(".IsShowDiv").click(function () {
+        var thisId = $(this).attr("id");
+        $(".IsShowDiv").hide();
+        $("#" + thisId + "Div").show();
+    })
+
+
 </script>
