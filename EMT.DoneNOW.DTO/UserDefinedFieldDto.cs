@@ -26,6 +26,8 @@ namespace EMT.DoneNOW.DTO
         [DataMember]
         public int? display_format; // 显示样式(单行、多行等)
         [DataMember]
+        public SByte is_protected;  // 是否保护字段
+        [DataMember]
         public SByte required;      // 是否必填
         [DataMember]
         public int? decimal_length; // 小数位数

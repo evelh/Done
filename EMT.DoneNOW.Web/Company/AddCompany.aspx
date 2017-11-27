@@ -26,8 +26,10 @@
                 </li>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
                     <asp:Button ID="save_newAdd" runat="server" Text="保存并新建" OnClick="save_newAdd_Click" BorderStyle="None" /></li>
+              <%if (CheckAuth("CRM_COMPANY_ADD_COMPANY_ADD_OPPORTUNITY")) { %>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
                     <asp:Button ID="save_create_opportunity" runat="server" Text="保存并创建商机" OnClick="save_create_opportunity_Click" BorderStyle="None" /></li>
+              <%} %>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <asp:Button ID="close" runat="server" Text="关闭" BorderStyle="None" /></li>
             </ul>
@@ -36,8 +38,12 @@
         <div class="nav-title">
             <ul class="clear">
                 <li class="boders" id="general">常规</li>
+              <%if (CheckAuth("CRM_COMPANY_ADD_COMPANY_ADD_SUB_COMPANY")) { %>
                 <li id="Subsidiaries">子客户</li>
+              <%} %>
+              <%if (CheckAuth("CRM_COMPANY_ADD_COMPANY_EDIT_SITE")) { %>
                 <li id="accountUDF">站点信息</li>
+              <%} %>
             </ul>
         </div>
         <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:192px;">
@@ -349,7 +355,7 @@
                             <tr>
                                 <td>
                                     <label><%=udf.name %></label>
-                                    <input type="text" name="<%=udf.id %>" class="sl_cdt" />
+                                    <input type="text" name="<%=udf.id %>" <%if ((udf.is_protected==0 && !CheckAuth("EDIT_COMPANY_UNPROTECT_UDF"))||(udf.is_protected==1 && !CheckAuth("EDIT_COMPANY_PROTECT_UDF"))) { %> readonly="readonly" <%} %> class="sl_cdt" />
 
                                 </td>
                             </tr>
@@ -359,7 +365,7 @@
                             <tr>
                                 <td>
                                     <label><%=udf.name %></label>
-                                    <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
+                                    <textarea name="<%=udf.id %>" <%if ((udf.is_protected==0 && !CheckAuth("EDIT_COMPANY_UNPROTECT_UDF"))||(udf.is_protected==1 && !CheckAuth("EDIT_COMPANY_PROTECT_UDF"))) { %> readonly="readonly" <%} %> rows="2" cols="20"></textarea>
 
                                 </td>
                             </tr>
@@ -368,7 +374,7 @@
                                 {%><tr>
                                     <td>
                                         <label><%=udf.name %></label>
-                                        <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" />
+                                        <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" <%if ((udf.is_protected==0 && !CheckAuth("EDIT_COMPANY_UNPROTECT_UDF"))||(udf.is_protected==1 && !CheckAuth("EDIT_COMPANY_PROTECT_UDF"))) { %> readonly="readonly" <%} %> class="sl_cdt" />
                                     </td>
                                 </tr>
                             <%}
@@ -377,7 +383,7 @@
                             <tr>
                                 <td>
                                     <label><%=udf.name %></label>
-                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" <%if ((udf.is_protected==0 && !CheckAuth("EDIT_COMPANY_UNPROTECT_UDF"))||(udf.is_protected==1 && !CheckAuth("EDIT_COMPANY_PROTECT_UDF"))) { %> readonly="readonly" <%} %> class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
                                 </td>
                             </tr>
                             <%}
@@ -409,7 +415,7 @@
                             <tr>
                                 <td>
                                     <label><%=udf.name %></label>
-                                    <input type="text" name="<%=udf.id %>" class="sl_cdt" />
+                                    <input type="text" name="<%=udf.id %>" <%if ((udf.is_protected==0 && !CheckAuth("EDIT_CONTACT_UNPROTECT_UDF"))||(udf.is_protected==1 && !CheckAuth("EDIT_CONTACT_PROTECT_UDF"))) { %> readonly="readonly" <%} %> class="sl_cdt" />
 
                                 </td>
                             </tr>
@@ -419,7 +425,7 @@
                             <tr>
                                 <td>
                                     <label><%=udf.name %></label>
-                                    <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
+                                    <textarea name="<%=udf.id %>" <%if ((udf.is_protected==0 && !CheckAuth("EDIT_CONTACT_UNPROTECT_UDF"))||(udf.is_protected==1 && !CheckAuth("EDIT_CONTACT_PROTECT_UDF"))) { %> readonly="readonly" <%} %> rows="2" cols="20"></textarea>
 
                                 </td>
                             </tr>
@@ -428,7 +434,7 @@
                                 {%><tr>
                                     <td>
                                         <label><%=udf.name %></label>
-                                        <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" />
+                                        <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" <%if ((udf.is_protected==0 && !CheckAuth("EDIT_CONTACT_UNPROTECT_UDF"))||(udf.is_protected==1 && !CheckAuth("EDIT_CONTACT_PROTECT_UDF"))) { %> readonly="readonly" <%} %> class="sl_cdt" />
                                     </td>
                                 </tr>
                             <%}
@@ -437,7 +443,7 @@
                             <tr>
                                 <td>
                                     <label><%=udf.name %></label>
-                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" <%if ((udf.is_protected==0 && !CheckAuth("EDIT_CONTACT_UNPROTECT_UDF"))||(udf.is_protected==1 && !CheckAuth("EDIT_CONTACT_PROTECT_UDF"))) { %> readonly="readonly" <%} %> onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
                                 </td>
                             </tr>
                             <%}
@@ -578,7 +584,7 @@
             </div>--%>
 
         </div>
-
+          <%if (CheckAuth("CRM_COMPANY_ADD_COMPANY_ADD_SUB_COMPANY")) { %>
             <div class="content clear" style="display: none;">
 
                 <div class="searchSelected clear">
@@ -592,6 +598,8 @@
                 </div>
 
             </div>
+          <%} %>
+          <%if (CheckAuth("CRM_COMPANY_ADD_COMPANY_EDIT_SITE")) { %>
             <div class="content clear" style="display: none;">
 
             <div class="left fl">
@@ -604,7 +612,7 @@
                                 {%>
                     <li class="clear">
                         <label><%=udf.name %></label>
-                        <input type="text" name="<%=udf.id %>" class="sl_cdt" />
+                        <input type="text" name="<%=udf.id %>" <%if ((udf.is_protected==0 && !CheckAuth("EDIT_SITE_UNPROTECT_UDF"))||(udf.is_protected==1 && !CheckAuth("EDIT_SITE_PROTECT_UDF"))) { %> readonly="readonly" <%} %> class="sl_cdt" />
 
                     </li>
                     <%}
@@ -612,14 +620,14 @@
                         {%>
                     <li class="clear">
                         <label><%=udf.name %></label>
-                        <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
+                        <textarea name="<%=udf.id %>" <%if ((udf.is_protected==0 && !CheckAuth("EDIT_SITE_UNPROTECT_UDF"))||(udf.is_protected==1 && !CheckAuth("EDIT_SITE_PROTECT_UDF"))) { %> readonly="readonly" <%} %> rows="2" cols="20"></textarea>
 
                     </li>
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
                         {%><li class="clear">
                             <label><%=udf.name %></label>
-                            <input type="text" name="<%=udf.id %>" class="sl_cdt" onclick="WdatePicker()"/>
+                            <input type="text" name="<%=udf.id %>" <%if ((udf.is_protected==0 && !CheckAuth("EDIT_SITE_UNPROTECT_UDF"))||(udf.is_protected==1 && !CheckAuth("EDIT_SITE_PROTECT_UDF"))) { %> readonly="readonly" <%} %> class="sl_cdt" onclick="WdatePicker()"/>
                         </li>
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
@@ -627,7 +635,7 @@
                     <li class="clear">
                         <label><%=udf.name %></label>
 
-                        <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                        <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" <%if ((udf.is_protected==0 && !CheckAuth("EDIT_SITE_UNPROTECT_UDF"))||(udf.is_protected==1 && !CheckAuth("EDIT_SITE_PROTECT_UDF"))) { %> readonly="readonly" <%} %> maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
                     </li>
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
@@ -640,6 +648,8 @@
             </div>
 
         </div>
+          <%} %>
+
         </div>
         
 

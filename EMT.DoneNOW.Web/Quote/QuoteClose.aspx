@@ -857,6 +857,10 @@
 
 <script>
   $(function () {
+    <% if (!CheckAuth("SEARCH_QUOTE_CLOSE_QUOTE_CREATE_INVOICE")) { %>
+    $("input:radio[value=No]").attr('checked', 'true');
+    $("input:radio").attr('disabled', 'disabled');
+  <%}%>
     $(".ChooseCostCoseSelect").html($("#codeSelect").val());
     eval($("#jqueryCode").val());
     $(".ChooseDiscountCostCoseSelect").html($("#disCodeSelct").val());

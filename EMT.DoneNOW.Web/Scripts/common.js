@@ -220,6 +220,7 @@ var windowObj = {
     saleOrder: 'saleOrder',
     configurationItem: 'configurationItem',
     subscription: 'subscription',
+    quote: 'quote',
     contract: 'contract',
     contractCharge: 'contractCharge',
     notes: 'notes',
@@ -231,4 +232,6 @@ var windowType = {
     blank: '_blank',
     add: 'add',
     edit: 'edit',
+    view: 'view',
+    manage: 'manage',
 }

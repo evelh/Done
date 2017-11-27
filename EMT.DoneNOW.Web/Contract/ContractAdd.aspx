@@ -377,6 +377,11 @@
                             <td align="center">
                                 <table  cellspacing="1" cellpadding="0" width="100%">
                                     <tbody>
+                                      <%
+                                        bool canEdit = false;
+                                        bool editP = CheckAuth("EDIT_CONTRACT_PROTECT_UDF");
+                                        bool editUP = CheckAuth("EDIT_CONTRACT_UNPROTECT_UDF");
+                                            %>
                                         <% if (udfList != null && udfList.Count > 0)
                                             {
                                                 foreach (var udf in udfList)
@@ -387,7 +392,14 @@
                                             <td valign="top" class="FieldLabels">
                                                 <%=udf.name %>
                                                 <div>
-                                                    <input type="text" name="<%=udf.id %>" style="width:300px;" />
+                                                  <%
+                                                    canEdit = false;
+                                                    if (udf.is_protected==1 && editP)
+                                                      canEdit = true;
+                                                    if (udf.is_protected==0 && editUP)
+                                                      canEdit = true;
+                                                    %>
+                                                    <input type="text" <%if (!canEdit) { %> readonly="readonly" <%} %> name="<%=udf.id %>" style="width:300px;" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -395,19 +407,33 @@
                                             else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
                                             {%>
                                         <tr>
-                                            <td>
+                                            <td valign="top" class="FieldLabels">
                                                 <label><%=udf.name %></label>
-                                                <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
+                                              <%
+                                                    canEdit = false;
+                                                    if (udf.is_protected==1 && editP)
+                                                      canEdit = true;
+                                                    if (udf.is_protected==0 && editUP)
+                                                      canEdit = true;
+                                                    %>
+                                                <textarea name="<%=udf.id %>" <%if (!canEdit) { %> readonly="readonly" <%} %> rows="2" cols="20"></textarea>
 
                                             </td>
                                         </tr>
                                         <%}
                                             else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
                                             {%><tr>
-                                                <td>
+                                                <td valign="top" class="FieldLabels">
                                                     <label><%=udf.name %></label>
                                                     <div>
-                                                        <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt Wdate" style="width:100px;"/>
+                                                      <%
+                                                    canEdit = false;
+                                                    if (udf.is_protected==1 && editP)
+                                                      canEdit = true;
+                                                    if (udf.is_protected==0 && editUP)
+                                                      canEdit = true;
+                                                    %>
+                                                        <input onclick="WdatePicker()" <%if (!canEdit) { %> readonly="readonly" <%} %> type="text" name="<%=udf.id %>" class="sl_cdt Wdate" style="width:100px;"/>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -415,9 +441,16 @@
                                             else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
                                             {%>
                                         <tr>
-                                            <td>
+                                            <td valign="top" class="FieldLabels">
                                                 <label><%=udf.name %></label>
-                                                <input type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                                              <%
+                                                    canEdit = false;
+                                                    if (udf.is_protected==1 && editP)
+                                                      canEdit = true;
+                                                    if (udf.is_protected==0 && editUP)
+                                                      canEdit = true;
+                                                    %>
+                                                <input type="text" name="<%=udf.id %>" <%if (!canEdit) { %> readonly="readonly" <%} %> class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
                                             </td>
                                         </tr>
                                         <%}

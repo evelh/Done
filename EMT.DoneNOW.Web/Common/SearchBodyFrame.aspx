@@ -117,6 +117,7 @@
         </div>
         <div class="contentboby">
             <div class="RightClickMenu" style="left: 10px; top: 36px; display: none;">
+              <%if (CheckAuth("CTT_CONTRACT_ADD_SERVICE")) { %>
                 <div class="RightClickMenuItem">
                     <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
                         <tbody>
@@ -128,6 +129,8 @@
                         </tbody>
                     </table>
                 </div>
+              <%} %>
+              <%if (CheckAuth("CTT_CONTRACT_ADD_TIME_MATERIALS")) { %>
                 <div class="RightClickMenuItem">
                     <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
                         <tbody>
@@ -139,6 +142,8 @@
                         </tbody>
                     </table>
                 </div>
+              <%} %>
+              <%if (CheckAuth("CTT_CONTRACT_ADD_FIXED_PRICE")) { %>
                 <div class="RightClickMenuItem">
                     <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
                         <tbody>
@@ -150,6 +155,8 @@
                         </tbody>
                     </table>
                 </div>
+              <%} %>
+              <%if (CheckAuth("CTT_CONTRACT_ADD_BLOCK_HOURS")) { %>
                 <div class="RightClickMenuItem">
                     <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
                         <tbody>
@@ -161,6 +168,8 @@
                         </tbody>
                     </table>
                 </div>
+              <%} %>
+              <%if (CheckAuth("CTT_CONTRACT_ADD_RETAINER")) { %>
                 <div class="RightClickMenuItem">
                     <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
                         <tbody>
@@ -172,6 +181,8 @@
                         </tbody>
                     </table>
                 </div>
+              <%} %>
+              <%if (CheckAuth("CTT_CONTRACT_ADD_PER_TICKET")) { %>
                 <div class="RightClickMenuItem">
                     <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
                         <tbody>
@@ -183,12 +194,13 @@
                         </tbody>
                     </table>
                 </div>
+              <%} %>
             </div>
             <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;min-width:700px;">
                 <ul class="clear fl">
                     <%if (!string.IsNullOrEmpty(addBtn))
                         {
-                            if (addBtn.Equals("新增合同"))
+                            if (addBtn.Equals("新增合同") && CheckAuth("CTT_CONTRACT_ADD"))
                             {
                     %>
                     <li id="ToolsButton"><i style="background-image: url(../Images/new.png);"></i><span style="margin: 0;"><%=this.addBtn %></span><img src="../Images/dropdown.png" /></li>
@@ -467,46 +479,6 @@
             OpenWindow("../Opportunity/OpportunityAddAndEdit.aspx?oppo_contact_id=<%=objId%>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>');
         }
         <%}%>
-        <%}
-        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Quote)
-        {
-            %>
-        function Edit() {
-            OpenWindow("../Quote/QuoteAddAndUpdate.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteEdit %>');
-        }
-        function ViewOpp() {
-            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid, '_blank');
-        }
-        function ViewCompany(id) {
-            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '_blank');
-        }
-        function LossQuote() {
-            OpenWindow("../Quote/QuoteLost.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteLost %>');
-        }
-        function QuotePref() {
-            OpenWindow("../Quote/PreferencesQuote.aspx?quote_id=" + entityid, '_blank');
-        }
-        function QuoteManage() {
-            OpenWindow("../QuoteItem/QuoteItemManage.aspx?quote_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteItemManage %>');
-        }
-        function DeleteQuote() {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/QuoteAjax.ashx?act=delete&id=" + entityid,
-                success: function (data) {
-                    alert(data);
-                }
-            })
-        }
-        function View(id) {
-            OpenWindow("../QuoteItem/QuoteItemManage.aspx?quote_id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteItemManage %>');
-        }
-        function Add() {
-            OpenWindow("../Quote/QuoteAddAndUpdate.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>');
-        }
-        function ViewQuote() {
-            OpenWindow("../Quote/QuoteView.aspx?id=" + entityid, '_blank');
-        }
         <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.QuoteTemplate)
         {
@@ -918,16 +890,7 @@
                           } else if (data == "other") {
                               alert("其他原因使得删除失败！");
                           } else {
-                              if (confirm(data)) {
-                                  $.ajax({
-                                      type: "GET",
-                                      url: "../Tools/ConfigItemTypeAjax.ashx?act=delete&id=" + entityid,
-                                      success: function (data) {
-                                          alert(data);
-                                          history.go(0);
-                                      }
-                                  });
-                              }
+                              alert(data);
                           }
                       }
                   });
@@ -1538,80 +1501,6 @@
                 }
             })
         }
-         <%}//发票模板
-        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.InvoiceTemplate)
-        {%>
-        function Add() {
-            OpenWindow("../InvoiceTemplate/InvoiceTemplateAttr.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplateAttr %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        function View(id) {
-            OpenWindow("../InvoiceTemplate/InvoiceTempEdit.aspx?id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        function Edit() {
-            OpenWindow("../InvoiceTemplate/InvoiceTempEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplate %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        function Copy() {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/QuoteTemplateAjax.ashx?act=copy&id=" + entityid,
-                async: false,
-                success: function (data) {
-                    if (data == "error") {
-                        alert("发票模板复制失败！");
-                    } else {
-                        alert("发票模板复制成功，点击确定进入编辑界面！");
-                        OpenWindow("../InvoiceTemplate/InvoiceTempEdit.aspx?id=" + data, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InvoiceTemplateAttr %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-                    }                    
-                }
-            })
-        }
-        function Delete() {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/QuoteTemplateAjax.ashx?act=delete&id=" + entityid,
-                async: false,
-                success: function (data) {
-                    alert(data);
-                    history.go(0);
-                }
-            })
-        }
-        function Default() {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/QuoteTemplateAjax.ashx?act=default&id=" + entityid,
-                async: false,
-                success: function (data) {
-                    alert(data);
-                    history.go(0);
-                }
-            })
-        }
-        function Active() {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/QuoteTemplateAjax.ashx?act=active&id=" + entityid,
-                async: false,
-                success: function (data) {
-                    alert(data);
-                    history.go(0);
-                }
-            })
-        }
-        function NoActive() {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/QuoteTemplateAjax.ashx?act=noactive&id=" + entityid,
-                async: false,
-                success: function (data) {
-                    alert(data);
-                    history.go(0);
-                }
-            })
-        }
-
-
-
          <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ACCOUNTTYPE)
         { %>//客户类别

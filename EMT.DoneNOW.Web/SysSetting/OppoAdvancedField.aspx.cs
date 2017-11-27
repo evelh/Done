@@ -23,8 +23,11 @@ namespace EMT.DoneNOW.Web
         private void GetMenus()
         {
             contextMenu = new List<PageContextMenuDto>();
-            contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
-            contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+
+            if (CheckAuth("SEARCH_SALES_QUOTA_METRICS_EDIT"))
+                contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
+
+            //contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
         }
     }
 }

@@ -65,7 +65,7 @@
                           <tr>
                             <td class="FieldLabel">客户名称
                               <div>
-                                <a class="ButtonIcon Link NormalState" style="cursor:pointer;" onclick="javascript:window.open('../Company/ViewCompany.aspx?type=todo&id=' + <%=contract.contract.account_id %>, '_blank', 'left=0,top=0,location=no,status=no,width=900,height=750', false);"><%=contract.accountName %></a>
+                                <a class="ButtonIcon Link NormalState" style="cursor:pointer;" <%if (CheckAuth("CTT_CONTRACT_EDIT_VIEW_COMPANY")) { %> onclick="javascript:window.open('../Company/ViewCompany.aspx?type=todo&id=' + <%=contract.contract.account_id %>, '_blank', 'left=0,top=0,location=no,status=no,width=900,height=750', false);"<%} %> ><%=contract.accountName %></a>
                               </div>
                               <input type="hidden" name="id" value="<%=contract.contract.id %>" />
                             </td>
@@ -437,6 +437,14 @@
                           <td align="center">
                               <table  cellspacing="1" cellpadding="0" width="100%">
                                   <tbody>
+                                    <%
+                                        bool canEdit = false;
+                                        bool canView = false;
+                                        bool editP = CheckAuth("EDIT_CONTRACT_PROTECT_UDF");
+                                        bool editUP = CheckAuth("EDIT_CONTRACT_UNPROTECT_UDF");
+                                        bool viewP = CheckAuth("VIEW_CONTRACT_PROTECT_UDF");
+                                        bool viewUP = CheckAuth("VIEW_CONTRACT_UNPROTECT_UDF");
+                                            %>
                                       <% if (udfList != null && udfList.Count > 0)
                                           {
                                               foreach (var udf in udfList)
@@ -447,7 +455,24 @@
                                           <td valign="top" class="FieldLabels">
                                               <%=udf.name %>
                                               <div>
-                                                  <input type="text" name="<%=udf.id %>" value="<%=udfValues.FirstOrDefault(_=>_.id==udf.id).value %>" style="width:300px;" />
+                                                <%
+                                              canEdit = false;
+                                              canView = false;
+                                              if (udf.is_protected==1 && editP)
+                                                canEdit = true;
+                                              if (udf.is_protected==1 && viewP)
+                                                canView = true;
+                                              if (udf.is_protected==0 && editUP)
+                                                canEdit = true;
+                                              if (udf.is_protected==0 && viewUP)
+                                                canView = true;
+                                              %>
+                                                <%if (!canView) { %>
+                                              <input type="hidden" name="<%=udf.id %>" value="<%=udfValues.FirstOrDefault(_ => _.id == udf.id).value %>" />
+                                              <input type="text" readonly="readonly" value="****" />
+                                              <%} else { %>
+                                              <input type="text" name="<%=udf.id %>" class="sl_cdt" <%if (!canEdit) { %> readonly="readonly" <%} %> value="<%=udfValues.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                                              <%} %>
                                               </div>
                                           </td>
                                       </tr>
@@ -455,25 +480,58 @@
                                           else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
                                           {%>
                                       <tr>
-                                          <td>
+                                          <td valign="top" class="FieldLabels">
                                               <label><%=udf.name %></label>
-                                              <textarea name="<%=udf.id %>" rows="2" cols="20"><%=udfValues.FirstOrDefault(_=>_.id==udf.id).value %></textarea>
-
+                                            <%
+                                            canEdit = false;
+                                            canView = false;
+                                            if (udf.is_protected==1 && editP)
+                                              canEdit = true;
+                                            if (udf.is_protected==1 && viewP)
+                                              canView = true;
+                                            if (udf.is_protected==0 && editUP)
+                                              canEdit = true;
+                                            if (udf.is_protected==0 && viewUP)
+                                              canView = true;
+                                            %>
+                                            <%if (!canView) { %>
+                                              <input type="hidden" name="<%=udf.id %>" value="<%=udfValues.FirstOrDefault(_ => _.id == udf.id).value %>" />
+                                            <textarea readonly="readonly" rows="2" cols="20">****</textarea>
+                                              <%} else { %>
+                                            <textarea name="<%=udf.id %>" rows="2" <%if (!canEdit) { %> readonly="readonly" <%} %> cols="20"><%=udfValues.FirstOrDefault(_=>_.id==udf.id).value %></textarea>
+                                              <%} %>
                                           </td>
                                       </tr>
                                       <%}
                                           else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
                                           {%><tr>
-                                              <td>
+                                              <td valign="top" class="FieldLabels">
                                                   <label><%=udf.name %></label>
                                                   <div>
+                                                    <%
+                                                    canEdit = false;
+                                                    canView = false;
+                                                    if (udf.is_protected==1 && editP)
+                                                      canEdit = true;
+                                                    if (udf.is_protected==1 && viewP)
+                                                      canView = true;
+                                                    if (udf.is_protected==0 && editUP)
+                                                      canEdit = true;
+                                                    if (udf.is_protected==0 && viewUP)
+                                                      canView = true;
+                                                    %>
                                                     <%
                                                         object value = udfValues.FirstOrDefault(_ => _.id == udf.id).value;
                                                         string val = "";
                                                         if (value != null && (!string.IsNullOrEmpty(value.ToString())))
                                                             val = DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd");
                                                         %>
-                                                      <input onclick="WdatePicker()" type="text" value="<%=val %>" name="<%=udf.id %>" class="sl_cdt Wdate" style="width:100px;"/>
+                                                    <%if (!canView) { %>
+                                              <input type="hidden" name="<%=udf.id %>" value="<%=udfValues.FirstOrDefault(_ => _.id == udf.id).value %>" />
+                                              <input type="text" class="sl_cdt Wdate" readonly="readonly" value="****" />
+                                              <%} else { %>
+                                              <input type="text" name="<%=udf.id %>" class="sl_cdt Wdate" <%if (!canEdit) { %> readonly="readonly" <%} else { %> onclick="WdatePicker()" <%} %> value="<%=val %>" />
+                                              <%} %>
                                                   </div>
                                               </td>
                                           </tr>
@@ -481,9 +539,26 @@
                                           else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
                                           {%>
                                       <tr>
-                                          <td>
+                                          <td valign="top" class="FieldLabels">
                                               <label><%=udf.name %></label>
-                                              <input type="text" name="<%=udf.id %>" value="<%=udfValues.FirstOrDefault(_=>_.id==udf.id).value %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                                            <%
+                                            canEdit = false;
+                                            canView = false;
+                                            if (udf.is_protected==1 && editP)
+                                              canEdit = true;
+                                            if (udf.is_protected==1 && viewP)
+                                              canView = true;
+                                            if (udf.is_protected==0 && editUP)
+                                              canEdit = true;
+                                            if (udf.is_protected==0 && viewUP)
+                                              canView = true;
+                                            %>
+                                            <%if (!canView) { %>
+                                              <input type="hidden" name="<%=udf.id %>" value="<%=udfValues.FirstOrDefault(_ => _.id == udf.id).value %>" />
+                                              <input type="text" readonly="readonly" value="****" />
+                                              <%} else { %>
+                                              <input type="text" name="<%=udf.id %>" class="sl_cdt" <%if (!canEdit) { %> readonly="readonly" <%} else { %>  maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" <%} %> value="<%=udfValues.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                                              <%} %>
                                           </td>
                                       </tr>
                                       <%}

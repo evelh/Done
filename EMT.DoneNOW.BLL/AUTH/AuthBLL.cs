@@ -227,7 +227,7 @@ namespace EMT.DoneNOW.BLL
 
             List<string> ALLmenus = new List<string>();     // 该搜索页所有需要权限的右键菜单
             List<string> availableMenus = new List<string>();   // 用户可用的右键菜单
-            IEnumerable<string> find = from pmt in allPermitsDtoList where pmt.permit.parent_id == permit.permit.id select permit.permit.name;
+            IEnumerable<string> find = from pmt in allPermitsDtoList where pmt.permit.parent_id == permit.permit.id select pmt.permit.name;
             ALLmenus.AddRange(find);
 
             find = from pmt in userPermit where pmt.permit.parent_id == permit.permit.id select permit.permit.name;
