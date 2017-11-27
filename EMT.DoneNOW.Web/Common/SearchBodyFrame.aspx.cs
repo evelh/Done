@@ -123,6 +123,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PRODUCT:
                     addBtn = "新增产品";
                     break;
+                case (int)DicEnum.QUERY_CATE.INSTALLEDPRODUCT:
+                    addBtn = "新增配置项";
+                    break;
                 case (int)DicEnum.QUERY_CATE.RELATION_CONFIGITEM:
                     addBtn = "新增配置项";
 					break;

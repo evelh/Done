@@ -113,6 +113,7 @@
     <Compile Include="SDK\sdk_expense_report.cs" />
     <Compile Include="SDK\sdk_task.cs" />
     <Compile Include="SDK\sdk_task_budget.cs" />
+    <Compile Include="SDK\sdk_task_milestone.cs" />
     <Compile Include="SDK\sdk_task_predecessor.cs" />
     <Compile Include="SDK\sdk_task_resource.cs" />
     <Compile Include="SDK\sdk_work_entry.cs" />

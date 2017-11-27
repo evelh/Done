@@ -53,7 +53,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                 {
                     account = new CompanyBLL().GetCompany(long.Parse(account_id));
                 }
-                var contactList = new crm_contact_dal().GetContactByAccountId(account.id);
+                //var contactList = new crm_contact_dal().GetContactByAccountId(account.id);
                 //var serviceList = new ivt_service_dal().GetServiceList($" and vendor_id = {account.id}");
                 #region 配置下拉框数据源
                 installed_product_cate_id.DataTextField = "show";
@@ -62,11 +62,11 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                 installed_product_cate_id.DataBind();
                 installed_product_cate_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
 
-                contact_id.DataTextField = "name";
-                contact_id.DataValueField = "id";
-                contact_id.DataSource = contactList;
-                contact_id.DataBind();
-                contact_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                //contact_id.DataTextField = "name";
+                //contact_id.DataValueField = "id";
+                //contact_id.DataSource = contactList;
+                //contact_id.DataBind();
+                //contact_id.Items.Insert(0, new ListItem() { Value = "", Text = "   ", Selected = true });
 
                 // 
                 //service.DataTextField = "name";
@@ -122,7 +122,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                  result = new InstalledProductBLL().ConfigurationItemAdd(GetPara(), GetLoginUserId());
                 if (result)
                 {
-                    Response.Write("<script>alert('添加配置项成功！');location.href='AddOrEditConfigItem.aspx?id=" + param.id + "&account_id=" + account.id + "';self.opener.location.reload();</script>");
+                    Response.Write("<script>alert('添加配置项成功！');location.href='AddOrEditConfigItem.aspx?id=" + param.id + "&account_id=" + param.account_id + "';self.opener.location.reload();</script>");
                 }
                 
             }

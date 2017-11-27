@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddOrEditConfigItem.aspx.cs" Inherits="EMT.DoneNOW.Web.ConfigurationItem.AddOrEditConfigItem" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddOrEditConfigItem.aspx.cs" Inherits="EMT.DoneNOW.Web.ConfigurationItem.AddOrEditConfigItem" EnableEventValidation="false"  %>
 
 <!DOCTYPE html>
 
@@ -402,7 +402,7 @@
 
                 <li class="Button ButtonIcon Edit NormalState" id="SiteConfiguration" tabindex="0">
                     <span class="Icon" style="width: 0; margin: 0;"></span>
-                    <span class="Text" onclick="window.open('../Company/CompanySiteManage.aspx?id=<%=account.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>','left=200,top=200,width=960,height=750', false);">站点配置</span>
+                    <span class="Text" onclick="ViewAccountSite()">站点配置</span>
                 </li>
                 <li class="Button ButtonIcon Appendix NormalState" id="OtherConfigurationItems" tabindex="0">
                     <span class="Icon" style="width: 0; margin: 0;"></span>
@@ -532,8 +532,19 @@
                                                         </td>
                                                         <td class="FieldLabel" style="width: 330px;">所属客户
                                                     <div>
-                                                        <a href="../Company/ViewCompany.aspx?id=<%=account.id %>"><%=account.name %></a>
-                                                        <input type="hidden" name="account_id" id="account_id" value="<%=account.id %>" />
+                                                        <input type="text" id="account_id" value="<%=account!=null?account.name:"" %>"/>
+                                                        <%--<a href="../Company/ViewCompany.aspx?id=<%=account.id %>"><%=account.name %></a>--%>
+                                                        <input type="hidden" name="account_id" id="account_idHidden" value="<%=account!=null?account.id.ToString():"" %>" />
+                                                        <% if (account != null)
+                                                            { %>
+                                                             <a class="DataSelectorLinkIcon">
+                                                                    <img src="../Images/data-selector.png" alt="" /></a>
+                                                        <%}
+                                                        else
+                                                        { %>
+                                                           <a class="DataSelectorLinkIcon" onclick="ChooseAccount()">
+                                                                    <img src="../Images/data-selector.png" alt="" /></a>
+                                                        <%} %>
                                                     </div>
                                                         </td>
                                                     </tr>
@@ -699,199 +710,6 @@
                                 </tr>
                             </tbody>
                         </table>
-
-
-
-                        <%--                    <table class="Neweditsubsection" style="width: 720px;" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>产品<span class="red">*</span></label>
-                                    <input type="text" name="productName" id="product_id" value="" />
-                                    <i onclick="chooseProduct();" style="width: 20px; height: 20px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                                    <i onclick="EditProduct();" id="EditProduct" style="width: 20px; height: 20px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat; display: none;"></i>
-                                    <input type="hidden" name="product_id" id="product_idHidden" />
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>配置项类型</label>
-                                    <asp:DropDownList ID="installed_product_cate_id" runat="server"></asp:DropDownList>
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>安装人</label>
-                                    <% 
-                                        if (user != null)
-                                        {%>
-                                    <!-- todo 发送邮件？ -->
-                                    <p><%=user.name %><i onclick="" id="SendEmail" style="width: 20px; height: 20px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat; display: none;"></i> </p>
-                                    <%}
-                                    %>
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>安装日期</label>
-                                    <input type="text" name="start_date" id="start_date" value="<%=(!isAdd)&&iProduct.start_date!=null?((DateTime)iProduct.start_date).ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>质保过期日期</label>
-                                    <input type="text" name="through_date" id="through_date" value="<%=(!isAdd)&&iProduct.through_date!=null?((DateTime)iProduct.through_date).ToString("yyyy-MM-dd"):DateTime.Now.AddYears(1).ToString("yyyy-MM-dd") %>" />
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>序列号</label>
-                                    <input type="text" name="serial_number" id="serial_number" value="<%=(!isAdd)&&iProduct.serial_number!=null?iProduct.serial_number:"" %>" />
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>参考号</label>
-                                    <input type="text" name="reference_number" id="reference_number" value="<%=(!isAdd)&&iProduct.reference_number!=null?iProduct.reference_number:"" %>" />
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>参考名称</label>
-                                    <input type="text" name="reference_name" id="reference_name" value="<%=(!isAdd)&&iProduct.reference_name!=null?iProduct.reference_name:"" %>" />
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>用户数</label>
-                                    <input type="text" name="number_of_users" id="number_of_users" value="<%=(!isAdd)&&iProduct.number_of_users!=null?iProduct.number_of_users.ToString():"" %>" />
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td></td>
-
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <div class="clear">
-                                    <textarea></textarea>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-
-                    <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>激活</label>
-                                    <asp:CheckBox ID="is_active_" runat="server" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>所属客户</label>
-                                    <p><a href="../Company/ViewCompany.aspx?id=<%=account.id %>"><%=account.name %></a></p>
-                                    <input type="hidden" name="account_id" value="<%=account.id %>" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>联系人</label>
-                                    <asp:DropDownList ID="contact_id" runat="server"></asp:DropDownList>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>位置</label>
-                                    <input type="text" name="location" id="location" value="<%=(!isAdd)&&iProduct.location!=null?iProduct.location:"" %>" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>合同</label>
-                                    <input type="text" name="contract_name" id="contract_id" value="" />
-                                    <input type="hidden" name="contract_id" id="contract_idHidden" value="<%=(!isAdd)&&iProduct.contract_id!=null?iProduct.contract_id.ToString():"" %>" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>服务/服务包</label>
-                                   
-                                    <asp:DropDownList ID="service_id" runat="server"></asp:DropDownList>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>是否经过合同审核</label>
-                                    <asp:CheckBox ID="Reviewed_for_contract" runat="server" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>物料代码</label>
-                                    <p id="wuliaodaima"></p>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>供应商</label>
-                                    <asp:DropDownList ID="vendor_id" runat="server"></asp:DropDownList>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="clear">
-                                    <label>制造商</label>
-                                    <p id="zhizaoshang"></p>
-                                </div>
-                            </td>
-                        </tr>
-
-                    </table>--%>
                     </div>
                 </div>
                 <div class="DivSectionWithHeader">
@@ -1290,7 +1108,7 @@
 
     $(function () {
         debugger;
-
+        GetContactList();
          <%if (contract != null)
          { %>
             GetServiceByContract();
@@ -1387,9 +1205,9 @@
         //    return false;
         //}
         // account_id
-        var account_id = $("#account_id").val();
+        var account_id = $("#account_idHidden").val();
         if (account_id == "") {
-            alert('客户丢失！');
+            alert('请选择客户！');
             return false;
         }
         // userName
@@ -1470,6 +1288,33 @@
     function chooseProduct() { //PRODUCT_CALLBACK
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=product_id&callBack=GetDaraByProduct", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
+    function ChooseAccount() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=account_id&callBack=GetContactList", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+
+    function GetContactList() {
+        var account_id = $("#account_idHidden").val();
+        $("#contact_id").html("");
+        if (account_id != "") {
+            $("#contact_id").prop("disabled", false);
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#contact_id").append(data);
+                    }
+                },
+            });
+        } else {
+            $("#contact_id").prop("disabled",true);
+        }
+
+    }
+
+
     function GetDaraByProduct() {
         var product_id = $("#product_idHidden").val();
         if (product_id != "") {
@@ -1595,7 +1440,12 @@
     }
 
     function chooseContract() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&field=contract_id&callBack=GetServiceByContract&con627=<%=account.id %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>', 'left=200,top=200,width=600,height=800', false);
+        var account_id = $("#account_idHidden").val();
+        if (account_id != "") {
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&field=contract_id&callBack=GetServiceByContract&con627=" + account_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>', 'left=200,top=200,width=600,height=800', false);
+        } else {
+            LayerMsg("请先选择客户");
+        }
     }
     // 如果选择的是服务的合同，那么服务包可选。是该服务下的服务包
     function GetServiceByContract() {
@@ -1614,6 +1464,15 @@
                     }
                 }
             })
+        }
+    }
+
+    function ViewAccountSite() {
+        var account_id = $("#account_idHidden").val();
+        if (account_id != "") {
+            window.open('../Company/CompanySiteManage.aspx?id=' + account_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySiteConfiguration %>', 'left=200,top=200,width=960,height=750', false);
+        } else {
+            LayerMsg("请先选择客户");
         }
     }
 </script>

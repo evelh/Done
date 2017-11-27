@@ -31,8 +31,11 @@ namespace EMT.DoneNOW.Web.Opportunity
             {
                 callBackFiled = Request.QueryString["callBackFiled"];
 
-                 var opportunity_id = Request.QueryString["opportunity_id"];
-                opportunity = new crm_opportunity_dal().GetOpportunityById(Convert.ToInt64(opportunity_id));
+                var opportunity_id = Request.QueryString["opportunity_id"];
+                if (!string.IsNullOrEmpty(opportunity_id))
+                {
+                    opportunity = new crm_opportunity_dal().GetOpportunityById(Convert.ToInt64(opportunity_id));
+                }
                 dic = new OpportunityBLL().GetField();
 
                 #region 配置下拉框的数据源
@@ -103,12 +106,12 @@ namespace EMT.DoneNOW.Web.Opportunity
                 #endregion
 
                 spread_unit.SelectedValue = "Months";
-
+                opportunity_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
                 if (opportunity != null)
                 {
                     isAdd = false;
-                    //  opportunity_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
-                    company_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);
+                   
+                    //company_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);
             
 
                 }

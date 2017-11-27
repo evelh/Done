@@ -40,6 +40,10 @@ namespace EMT.DoneNOW.Web
                         var aId = context.Request.QueryString["account_id"];
                         GetConAccAndPar(context,long.Parse(aId));
                         break;
+                    case "GetParAndAccSelect":
+                        var saId = context.Request.QueryString["account_id"];
+                        GetParAndAccSelect(context,long.Parse(saId));
+                        break;
                     default:
                         break;
                 }
@@ -123,6 +127,39 @@ namespace EMT.DoneNOW.Web
                         foreach (var con in conList)
                         {
                             conHtml.Append("<tr><td><input type='checkbox' value='" + con.id + "' class='checkCon' /></td><td>" + con.name + "</td><td><a href='mailto:" + con.email + "'>" + con.email + "</a></td></tr>");
+                        }
+                    }
+                }
+            }
+            context.Response.Write(conHtml.ToString());
+        }
+        /// <summary>
+        /// 获取到下拉框中客户和父客户的联系人
+        /// </summary>
+        private void GetParAndAccSelect(HttpContext context, long account_id)
+        {
+            StringBuilder conHtml = new StringBuilder();
+
+            var account = new crm_account_dal().FindNoDeleteById(account_id);
+            if (account != null)
+            {
+                var conList = new crm_contact_dal().GetContactByAccountId(account.id);
+                if (conList != null && conList.Count > 0)
+                {
+                    foreach (var con in conList)
+                    {
+                        conHtml.Append($"<option value='{con.id}'>{con.name}</option>");
+                    }
+                }
+                if (account.parent_id != null)
+                {
+                    var parConList = new crm_contact_dal().GetContactByAccountId((long)account.parent_id);
+                    if (parConList != null && parConList.Count > 0)
+                    {
+                        conHtml.Append("<option value=''>-----</option>");
+                        foreach (var con in conList)
+                        {
+                            conHtml.Append($"<option value='{con.id}'>{con.name}</option>");
                         }
                     }
                 }

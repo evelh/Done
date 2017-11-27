@@ -136,6 +136,22 @@ namespace EMT.DoneNOW.Web
                         var note_id = context.Request.QueryString["note_id"];
                         DeleteNote(context,long.Parse(note_id));
                         break;
+                    case "AssMile":
+                        var assIds = context.Request.QueryString["mileIds"];
+                        var phaId = context.Request.QueryString["phaId"];
+                        if (!string.IsNullOrEmpty(phaId))
+                        {
+                            AssMile(context, assIds, long.Parse(phaId));
+                        }
+                        break;
+                    case "DisAssMile":
+                        var disAssIds = context.Request.QueryString["mileIds"];
+                        DisAssMile(context, disAssIds);
+                        break;
+                    case "ToReadyBill":
+                        var tbIds = context.Request.QueryString["mileIds"];
+                        ToReadyBill(context,tbIds);
+                        break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                         break;
@@ -993,6 +1009,30 @@ namespace EMT.DoneNOW.Web
         private void DeleteNote(HttpContext context, long exp_id)
         {
             var result = new TaskBLL().DeleteTaskNote(exp_id,LoginUserId);
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 关联里程碑
+        /// </summary>
+        private void AssMile(HttpContext context,string ids,long phaId)
+        {
+            var result = new TaskBLL().AssMiles(ids, phaId,LoginUserId);
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 解除关联里程碑
+        /// </summary>
+        private void DisAssMile(HttpContext context, string ids)
+        {
+            var result = new TaskBLL().DisMiles(ids,LoginUserId);
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 修改里程碑状态为准备计费
+        /// </summary>
+        private void ToReadyBill(HttpContext context,string ids)
+        {
+            var result = new TaskBLL().ReadyMiles(ids, LoginUserId);
             context.Response.Write(result);
         }
     }

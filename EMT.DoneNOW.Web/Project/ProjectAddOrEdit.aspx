@@ -1933,12 +1933,12 @@
             $("#account_id").prop("disabled", true);
             $("#AChoAcc").removeAttr("onclick");
             $("#AChoAcc").removeClass("DisabledState");
-            $("#AChoossCon").removeAttr("onclick");
+            //$("#AChoossCon").removeAttr("onclick");
             $("#AAddCon").removeAttr("onclick");          // contract_id
             $("#contract_id").prop("disabled", true);
-            $("#AChoossCon").addClass("DisabledState");
+            //$("#AChoossCon").addClass("DisabledState");
             $("#AAddCon").addClass("DisabledState");
-            $("#AChoossCon").css("display", "none");
+            //$("#AChoossCon").css("display", "none");
             $("#AAddCon").css("display", "none");
             $("#AChoC").css("display", "none");
             $("#AChoC").removeAttr("onclick");

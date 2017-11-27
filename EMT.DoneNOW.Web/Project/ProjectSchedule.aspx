@@ -137,6 +137,30 @@
             padding: 4px 0 4px 0;
             width: 836px;
         }
+
+        .cover {
+            position: absolute;
+            width: auto;
+            height: auto;
+            padding: 8px;
+            border-radius: 3px;
+            background: #eee;
+            border: 1px solid #ccc;
+            z-index: 999;
+            display: none;
+        }
+
+        .border_left {
+            width: 0;
+            height: 0;
+            border-width: 8px 0 8px 8px;
+            border-style: solid;
+            border-color: transparent transparent transparent #346a95; /*透明 透明 透明 灰*/
+            position: absolute;
+            display: none;
+            left: 0;
+            top: 0;
+        }
     </style>
     <title></title>
 </head>
@@ -442,13 +466,11 @@
                                     <%=para.name %>
                                 </td>
                                 <%} %>
-
-                                
                             </tr>
                             <%
                                 foreach (var rslt in queryResult.result)
                                 {
-                                   
+
                                     var thisTask = stDal.FindNoDeleteById(long.Parse(rslt["任务id"].ToString()));
                                     var thisType = "";
                                     if (thisTask != null)
@@ -619,9 +641,6 @@
                 <div class="Content"></div>
             </div>
         </div>
-
-
-
         <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100;" id="Nav2">
             <div>
                 <input type="hidden" id="DivChooseTaskIds" />
@@ -1546,12 +1565,13 @@
                                                 </div>
                                                 <div class="EditorLabelContainer">
                                                     <div class="Label">
-                                                        <label for="">保留所有任务和子阶段</label></div>
+                                                        <label for="">保留所有任务和子阶段</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="Confirmation ButtonContainer">
-                                            <a class="Button ButtonIcon NormalState" id="YesButton" tabindex="0" ><span class="Icon"></span><span class="Text">是</span></a><a class="Button ButtonIcon NormalState" id="NoButton" tabindex="0"><span class="Icon"></span><span class="Text">否</span></a>
+                                            <a class="Button ButtonIcon NormalState" id="YesButton" tabindex="0"><span class="Icon"></span><span class="Text">是</span></a><a class="Button ButtonIcon NormalState" id="NoButton" tabindex="0"><span class="Icon"></span><span class="Text">否</span></a>
 
                                         </div>
                                     </div>
@@ -1569,6 +1589,7 @@
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="../Scripts/Project.js"></script>
 <%--<script src="../Scripts/Common/SearchBody.js" type="text/javascript" charset="utf-8"></script>--%>
 <%//弹窗相关的js %>
 <script>
@@ -1714,180 +1735,7 @@
             });
         };
     })(jQuery);
-    $("#DownButton").on("mousemove", function () {
-        $("#Down1").show();
-        $(this).css("border-bottom", "1px solid white").css("background", "white");
-    }).on("mouseout", function () {
-        $("#Down1").hide();
-        $(this).css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
-    });
-    $("#Down1").on("mousemove", function () {
-        $(this).show();
-        $("#DownButton").css("border-bottom", "1px solid white").css("background", "white");
-    }).on("mouseout", function () {
-        $(this).hide();
-        $("#DownButton").css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
-    });
-    $("#ViewButton").on("mousemove", function () {
-        $("#Down2").show();
-        $(this).css("border-bottom", "1px solid white").css("background", "white");
-    }).on("mouseout", function () {
-        $("#Down2").hide();
-        $(this).css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
-    });
-    $("#Down2").on("mousemove", function () {
-        $(this).show();
-        $("#ViewButton").css("border-bottom", "1px solid white").css("background", "white");
-    }).on("mouseout", function () {
-        $(this).hide();
-        $("#ViewButton").css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
-    });
-    $("#ToolsButton").on("mousemove", function () {
-        $("#Down3").show();
-        $(this).css("border-bottom", "1px solid white").css("background", "white");
-    }).on("mouseout", function () {
-        $("#Down3").hide();
-        $(this).css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
-    });
-    $("#Down3").on("mousemove", function () {
-        $(this).show();
-        $("#ToolsButton").css("border-bottom", "1px solid white").css("background", "white");
-    }).on("mouseout", function () {
-        $(this).hide();
-        $("#ToolsButton").css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
-    });
-    $("#LinksButton").on("mousemove", function () {
-        $("#Down4").show();
-        $(this).css("border-bottom", "1px solid white").css("background", "white");
-    }).on("mouseout", function () {
-        $("#Down4").hide();
-        $(this).css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
-    });
-    $("#Down4").on("mousemove", function () {
-        $(this).show();
-        $("#LinksButton").css("border-bottom", "1px solid white").css("background", "white");
-    }).on("mouseout", function () {
-        $(this).hide();
-        $("#LinksButton").css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
-    });
-    $("#TableDropButton").on("mousemove", function () {
-        $("#Down5").show().css("border-top", "1px solid white");
-        $(this).addClass('DropDownButtonCss');
-    }).on("mouseout", function () {
-        $("#Down5").hide();
-        $(this).removeClass('DropDownButtonCss');
-    });
-    $("#Down5").on("mousemove", function () {
-        $(this).show().css("border-top", "1px solid white");
-        $("#TableDropButton").addClass('DropDownButtonCss');
-    }).on("mouseout", function () {
-        $(this).hide();
-        $("#TableDropButton").removeClass('DropDownButtonCss');
-    });
-
-    //日历的弹框
-    $(".calendar").on("click", function () {
-        $(".AlertMessage").show();
-        $("#BackgroundOverLay").show();
-        $("#yes").on("click", function () {
-            $(".AlertMessage").hide();
-            $("#BackgroundOverLay").hide();
-
-
-        });
-        $("#no").on("click", function () {
-            $(".AlertMessage").hide();
-            $("#BackgroundOverLay").hide();
-        });
-        $(".CancelDialogButton").on("click", function () {
-            $(".AlertMessage").hide();
-            $("#BackgroundOverLay").hide();
-        });
-    });
-    //第一级拖拽
-    function changeNum() {
-        $(".D").each(function () {
-            var indexNum = $(".D").index(this);
-            var a = indexNum + 1;
-            $(this).find(".Num").text(a);
-        });
-    }
-    $(function () {
-        $('.Drap').sortable().bind('sortupdate', function () {
-            //changeNum();
-        });
-    });
-
-    //选中及其子集
-    $(".Drap tr>.Interaction").on("click", function () {
-        var _this = $(this).parent();
-        _this.siblings().removeClass('Selected');
-        _this.addClass('Selected');
-        var _thisDataDepth = _this.find('.DataDepth').attr('data-depth');
-        $("#OutdentButton").on("click", function () {
-            if (_thisDataDepth > 1) {
-                var _thisDataDepthDec = _this.find('.DataDepth').attr('data-depth') - 1;
-                _this.find('.DataDepth').attr('data-depth', _thisDataDepthDec);
-                Style();
-            }
-        });
-        var str = _this.find('.DataDepth').attr('data-depth');
-        for (i in _this.nextAll()) {
-            if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth')) {
-                _this.addClass('Selected');
-                _this.nextAll().eq(i).addClass('Selected');
-
-                $("#OutdentButton").on("click", function () {
-                    for (j in _this.nextAll()) {
-                        var DataDepth = _this.nextAll().eq(j).find('.DataDepth').attr('data-depth');
-                        var DataDepthDec = DataDepth - 1;
-                        _this.nextAll().eq(j).find('.DataDepth').attr('data-depth', DataDepthDec);
-                        Style();
-                    }
-                });
-            } else {
-                return false;
-            }
-        }
-        Style();
-    });
-    //缩进
-    function Style() {
-        for (i in $(".Spacer")) {
-            var Width = $(".Spacer").eq(i).parent().attr('data-depth') * 22 + 'px';
-            $(".Spacer").eq(i).width(Width).css('min-width', Width);
-        }
-    }
-    Style();
-    //缩小展开
-    $(".IconContainer").on('click', function () {
-        $(this).find('.Vertical').toggle();
-        var _this = $(this).parent().parent().parent();
-        var str = _this.find('.DataDepth').attr('data-depth');
-        for (i in _this.nextAll()) {
-            if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth') && $(this).find('.Vertical').css('display') == 'block') {
-                _this.nextAll().eq(i).hide();
-                _this.nextAll().eq(i).find('.Vertical').show();
-            } else if (str < _this.nextAll().eq(i).find('.DataDepth').attr('data-depth') && $(this).find('.Vertical').css('display') == 'none') {
-                _this.nextAll().eq(i).show();
-                _this.nextAll().eq(i).find('.Vertical').hide();
-            } else if (str >= _this.nextAll().eq(i).find('.DataDepth').attr('data-depth')) {
-                return false;
-            }
-        }
-    });
-
-    //点击全选全部选
-    $("#LeftSelectButton").on("click", function () {
-        var _this = $(this);
-        if (_this.is(':checked')) {
-            $(".D").addClass('Selected');
-        } else {
-            $(".D").removeClass('Selected');
-        }
-    });
-
-
+   
 
 
     $(".Context").on("mouseover", function () {
@@ -2582,7 +2430,7 @@
                             history.go(0);
                         },
                     });
-                } 
+                }
             }
         } else {
             LayerMsg("请选择相关任务");
@@ -2602,12 +2450,12 @@
     function Indent() {
         // 判断第一个选中是否满足增加缩进条件（末位不等于1 ）
         debugger;
-        var ids = GetChooseTaskId(); 
+        var ids = GetChooseTaskId();
         if (ids != "") {
             var idsArr = ids.split(',');
             var firstSortNum = "";
             $(".HighImportance.Selected").each(function () {
-               
+
                 firstSortNum = $(this).children().first().children().first().children().first().next().html();
                 if (firstSortNum != "") {
                     return false;
@@ -2615,8 +2463,7 @@
             })
             if (firstSortNum != "") {
                 var firArr = firstSortNum.split('.');
-                if (Number(firArr[firArr.length-1]) > 1)  
-                {
+                if (Number(firArr[firArr.length - 1]) > 1) {
                     $.ajax({
                         type: "GET",
                         async: false,
@@ -2630,7 +2477,7 @@
                     });
                 }
             }
-         
+
         }
     }
 </script>

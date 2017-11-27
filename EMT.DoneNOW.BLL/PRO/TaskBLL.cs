@@ -489,6 +489,22 @@ namespace EMT.DoneNOW.BLL
             }
             return true;
         }
+        /// <summary>
+        /// 修改task
+        /// </summary>
+        public bool EditTask(TaskSaveDto param,long user_id)
+        {
+            // 需要执行的操作
+            // 1.修改前驱任务
+            // 前驱任务修改导致时间改变。需要更改task开始结束时间
+            // 2.修改task本身相关信息
+            // 3.修改自定义信息相关
+            // 4.修改task团队成员信息（员工，联系人）
+            // 5.如果时间落在项目时间外面，需要更改项目时间
+            // 
+
+            return false;
+        }
 
         /// <summary>
         /// 递归修改父Task 的时间
@@ -583,6 +599,10 @@ namespace EMT.DoneNOW.BLL
                         }
                     }
                 }
+            }
+            else
+            {
+
             }
 
             return thisDate;
@@ -2328,6 +2348,160 @@ namespace EMT.DoneNOW.BLL
                 failReason = msg.Message;
                 return false;
             }
+        }
+        /// <summary>
+        /// 关联多个里程碑
+        /// </summary>
+        public bool AssMiles(string ids,long phaId,long user_id)
+        {
+            try
+            {
+                var thisPha = _dal.FindNoDeleteById(phaId);
+                if (thisPha != null && thisPha.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE && (!string.IsNullOrEmpty(ids)))
+                {
+                    var idArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var thisId in idArr)
+                    {
+                        AssMile(long.Parse(thisId),phaId,user_id);
+                    }
+                }
+            }
+            catch (Exception msg)
+            {
+                return false;
+            }
+        
+            return true;
+        }
+        /// <summary>
+        /// 关联里程碑
+        /// </summary>
+        public bool AssMile(long conMiles,long phaId,long user_id)
+        {
+            try
+            {
+                var taskMile = new sdk_task_milestone()
+                {
+                    id = _dal.GetNextIdCom(),
+                    contract_milestone_id = conMiles,
+                    task_id = phaId,
+                    create_user_id = user_id,
+                    update_user_id = user_id,
+                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                };
+                new sdk_task_milestone_dal().Insert(taskMile);
+                OperLogBLL.OperLogAdd<sdk_task_milestone>(taskMile, taskMile.id, user_id, OPER_LOG_OBJ_CATE.SDK_MILESTONE, "关联合同里程碑");
+                return true;
+
+            }
+            catch (Exception msg)
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// 解除关联里程碑
+        /// </summary>
+        public bool DisMile(long stmId,long user_id)
+        {
+            try
+            {
+                var stmDal = new sdk_task_milestone_dal();
+                var thisTaskMile = stmDal.FindNoDeleteById(stmId);
+                if (thisTaskMile != null)
+                {
+                    stmDal.SoftDelete(thisTaskMile,user_id);
+                    OperLogBLL.OperLogDelete<sdk_task_milestone>(thisTaskMile, thisTaskMile.id, user_id, OPER_LOG_OBJ_CATE.SDK_MILESTONE, "解除关联里程碑");
+                }
+                return true;
+            }
+            catch (Exception msg)
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// 批量解除关联里程碑
+        /// </summary>
+        public bool DisMiles(string ids, long user_id)
+        {
+            try
+            {
+                if ( (!string.IsNullOrEmpty(ids)))
+                {
+                    var idArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var thisId in idArr)
+                    {
+                        DisMile(long.Parse(thisId), user_id);
+                    }
+                }
+            }
+            catch (Exception msg)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 批量将里程碑状态更改为准备计费
+        /// </summary>
+        public bool ReadyMiles(string ids,long user_id)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(ids))
+                {
+                    var idArr = ids.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var thisId in idArr)
+                    {
+                        ReadyMile(long.Parse(thisId),user_id);
+                    }
+                }
+            }
+            catch (Exception msg)
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 将里程碑状态更改为准备计费
+        /// </summary>
+        public bool ReadyMile(long mileId,long user_id)
+        {
+            try
+            {
+                var ccmDal = new ctt_contract_milestone_dal();
+                var stmDal = new sdk_task_milestone_dal();
+                var thisConMile = ccmDal.FindNoDeleteById(mileId);
+                if (thisConMile == null)
+                {
+                    var taskMile = stmDal.FindNoDeleteById(mileId);
+                    if (taskMile != null)
+                    {
+                        thisConMile = ccmDal.FindNoDeleteById(taskMile.contract_milestone_id);
+                    }
+                }
+                if (thisConMile != null && thisConMile.status_id != (int)DicEnum.MILESTONE_STATUS.READY_TO_BILL)
+                {
+                    thisConMile.status_id = (int)DicEnum.MILESTONE_STATUS.READY_TO_BILL;
+                    thisConMile.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisConMile.update_user_id = user_id;
+                    OperLogBLL.OperLogUpdate<ctt_contract_milestone>(thisConMile, ccmDal.FindNoDeleteById(thisConMile.id), thisConMile.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_MILESTONE, "修改里程碑状态");
+                    ccmDal.Update(thisConMile);
+                }
+
+            }
+            catch (Exception msg)
+            {
+
+                return false;
+            }
+           
+            return true;
         }
     }
 }

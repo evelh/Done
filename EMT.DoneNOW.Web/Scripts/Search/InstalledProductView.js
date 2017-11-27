@@ -155,6 +155,15 @@ $("#CheckAll").click(function () {
 function View(jdgshdfghsdfgsl) {
 
 }
+
+function Add() {
+    var url = "../ConfigurationItem/AddOrEditConfigItem.aspx";
+    var account_id = $("input[name = 'con358']").val();
+    if (account_id != undefined && account_id != "") {
+        url += "?account_id=" + account_id;
+    }
+    window.open(url, windowObj.configurationItem + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+}
 var entityid;
 var menu = document.getElementById("menu");
 var menu_i2_right = document.getElementById("menu-i2-right");

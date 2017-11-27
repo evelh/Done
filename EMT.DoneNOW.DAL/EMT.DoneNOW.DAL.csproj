@@ -127,6 +127,7 @@
     <Compile Include="SDK\sdk_expense_report_dal.cs" />
     <Compile Include="SDK\sdk_task_budget_dal.cs" />
     <Compile Include="SDK\sdk_task_dal.cs" />
+    <Compile Include="SDK\sdk_task_milestone_dal.cs" />
     <Compile Include="SDK\sdk_task_predecessor_dal.cs" />
     <Compile Include="SDK\sdk_task_resource_dal.cs" />
     <Compile Include="SDK\sdk_work_entry_dal.cs" />

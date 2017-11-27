@@ -10,6 +10,7 @@
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/NewConfigurationItem.css" rel="stylesheet" />
     <link href="../Content/DynamicContent.css" rel="stylesheet" />
+    <link href="../Content/style.css" rel="stylesheet" />
     <title><%="新增" %></title>
     <style>
         .RightClickMenu, .LeftClickMenu {
@@ -217,6 +218,35 @@
             top: -14px;
             width: 32px;
         }
+
+        .PhaseEditor_HeadingText {
+            color: #666;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .PhaseEditor_smallHeadingText {
+            font-size: 9px;
+            font-weight: normal;
+            color: #191919;
+        }
+
+        .PhaseEditor_BudgetTable > tbody > tr > td {
+            color: #333;
+            padding: 4px;
+            border: 1px solid #CCC;
+        }
+
+        .PhaseEditor_head {
+            background-color: #EBEBEB;
+            text-align: center;
+            font-weight: bold;
+            margin: 0;
+        }
+        .PhaseEditor_Text {
+    color: #333;
+    font-size: 11px;
+}
     </style>
 </head>
 <body class="Linen AutotaskBlueTheme">
@@ -383,21 +413,21 @@
                 <ul class="clear">
                     <%if (!isPhase)
                         { %>
-                    <li class="boders" id="general">常规信息</li>
-                    <li id="serCalls">服务预定</li>
-                    <li id="note">备注</li>
+                    <li class="boders IsShowDivLi" id="general" style="font-size: small;">常规信息</li>
+                    <li id="serCalls" style="font-size: small;" class="IsShowDivLi">服务预定</li>
+                    <li id="note" style="font-size: small;" class="IsShowDivLi">备注</li>
                     <%}
                         else
                         { %>
-                    <li class="boders" id="general">常规信息</li>
-                    <li id="phaseNote">备注</li>
-                    <li id="milestones">里程碑</li>
+                    <li class="boders IsShowDivLi" id="general" style="font-size: small;">常规信息</li>
+                    <li id="phaseNote" style="font-size: small;" class="IsShowDivLi">备注</li>
+                    <li id="milestones" style="font-size: small;" class="IsShowDivLi">里程碑</li>
                     <%} %>
                 </ul>
             </div>
             <%} %>
             <div class="ScrollingContentContainer">
-                <div class="ScrollingContainer" id="za7dce764d22b4572aaf851391e3b7f6f" style="left: 0; overflow-x: auto; overflow-y: auto; position: fixed; right: 0; bottom: 0; top: 85px;">
+                <div class="ScrollingContainer" id="za7dce764d22b4572aaf851391e3b7f6f" style="left: 0; overflow-x: auto; overflow-y: auto; position: fixed; right: 0; bottom: 0; top: <%=isAdd?85:130 %>px;">
                     <div class="IsShowDiv" id="generalDiv">
                         <div class="Normal Section">
                             <div class="Heading">
@@ -1253,7 +1283,7 @@
                             <div class="Content">
                                 <div class="Large Column">
                                     <div class="CustomLayoutContainer">
-                                        <table class="PhaseEditor_BudgetTable">
+                                        <table class="PhaseEditor_BudgetTable" style="710px;">
                                             <colgroup>
                                                 <col class="PhaseEditor_col1">
                                                 <col class="PhaseEditor_col2">
@@ -1300,22 +1330,19 @@
                                                 <tr>
                                                     <td>
                                                         <span class="PhaseEditor_Text"><%=thisrole==null?"":thisrole.name %></span>
-                                                        <input type="hidden" id="BudgetLineItems_0__RoleName" name="BudgetLineItems[0].RoleName" value="Administration">
                                                     </td>
                                                     <td class="PhaseEditor_numericInput">
-                                                        <span class="PhaseEditor_Text">¥<%=rate.rate!=null?((decimal)rate.rate).ToString("#0.00"):"" %>span>
+                                                        <span class="PhaseEditor_Text">¥<%=rate.rate!=null?((decimal)rate.rate).ToString("#0.00"):"" %></span>
                                                     </td>
                                                     <td class="PhaseEditor_numericInput">
                                                         <span class="PhaseEditor_Text"><%=yuguTime.ToString("#0.00") %></span>
-                                                        <input type="hidden" id="BudgetLineItems_0__EstimatedHours" name="BudgetLineItems[0].EstimatedHours" value="0">
                                                     </td>
                                                     <td class="col4 PhaseEditor_numericInput">
-                                                        <input class="PhaseEditor_inputText" type="text" id="<%=rate.id %>_esHours" name="<%=rate.id %>_esHours" value="<%=stb==null?"":stb.estimated_hours.ToString("#0") %>" />
-                                                        <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;<%=stb==null?"":stb.estimated_hours.ToString("#0") %></div>
+                                                        <input class="PhaseEditor_inputText" type="text" id="<%=rate.id %>_esHours" name="<%=rate.id %>_esHours" value="<%=stb==null?"":((int)stb.estimated_hours).ToString("#0.00") %>" />
+                                                        <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;<%=stb==null?"":stb.estimated_hours.ToString("#0.00") %></div>
                                                     </td>
                                                     <td class="PhaseEditor_numericInput">
                                                         <span class="PhaseEditor_Text"><%=shijiTime.ToString("#0.00") %></span>
-                                                        <input type="hidden" id="BudgetLineItems_0__ActualHours" name="BudgetLineItems[0].ActualHours" value="0">
                                                     </td>
                                                 </tr>
                                                 <%}
@@ -1344,13 +1371,13 @@
                         { %>
                     <%if (!isPhase)
                         { %>
-                    <div class="IsShowDiv" id="serCallsDiv">
+                    <div class="IsShowDiv" id="serCallsDiv" style="display: none;">
                     </div>
 
                     <%}
                         else
                         { %>
-                    <div class="IsShowDiv" id="milestonesDiv">
+                    <div class="IsShowDiv" id="milestonesDiv" style="display: none;">
                         <div class="ScrollingContentContainer">
                             <div class="ScrollingContainer" id="z5bc1074cedb74feba8b7539e6ef70863">
                                 <div class="Instructions">
@@ -1366,10 +1393,15 @@
                                     <div class="Content">
                                         <div class="Normal Column">
                                             <div class="StandardText">名字</div>
-                                            <a class="Button ButtonIcon Link NormalState" id="ContractLinkButton" tabindex="0"><%=thisProContract==null?"":thisProContract.name %></a></div>
+                                            <a class="Button ButtonIcon Link NormalState" id="ContractLinkButton" tabindex="0"><%=thisProContract==null?"":thisProContract.name %></a>
+                                        </div>
                                         <div class="Normal Column">
                                             <div class="StandardText">类型</div>
-                                            <div class="StandardText"><% if (thisProContract != null) { var thistype = new EMT.DoneNOW.DAL.d_general_dal().FindNoDeleteById(thisProContract.type_id); %><%=thistype==null?"":thistype.name %><%} %></div>
+                                            <div class="StandardText">
+                                                <% if (thisProContract != null)
+                                                    {
+                                                        var thistype = new EMT.DoneNOW.DAL.d_general_dal().FindNoDeleteById(thisProContract.type_id); %><%=thistype==null?"":thistype.name %><%} %>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1381,7 +1413,7 @@
                                     <div class="DescriptionText">与固定价格合同相关联的项目可以通过里程碑在项目进度不同阶段向客户收费。里程碑是通过固定价格合同直接创建和管理的。可以将一个或多个里程碑与此阶段相关联，但一个里程碑只能与一个项目阶段相关联。 .</div>
                                     <div class="Content">
                                         <div class="Large Column">
-                                            <div class="GridBar ButtonContainer"><a class="Button ButtonIcon DisabledState" id="AssociateListButton" tabindex="0"><span class="Icon"></span><span class="Text">关联</span></a><a class="Button ButtonIcon DisabledState" id="DisassociateListButton" tabindex="0"><span class="Icon"></span><span class="Text">取消关联</span></a><a class="Button ButtonIcon DisabledState" id="ReadyForBillingListButton" tabindex="0"><span class="Icon"></span><span class="Text">标记为准备计费</span></a></div>
+                                            <div class="GridBar ButtonContainer"><a class="Button ButtonIcon DisabledState" id="AssociateListButton" tabindex="0"  style="color: rgba(95,95,95,0.4);"><span class="Icon"></span><span class="Text">关联</span></a><a class="Button ButtonIcon DisabledState" id="DisassociateListButton" tabindex="0" style="color: rgba(95,95,95,0.4);"><span class="Icon"></span><span class="Text">取消关联</span></a><a class="Button ButtonIcon DisabledState" id="ReadyForBillingListButton" tabindex="0" style="color: rgba(95,95,95,0.4);"><span class="Icon"></span><span class="Text">标记为准备计费</span></a></div>
                                             <div class="Grid Small" id="PhaseMilestoneGrid">
                                                 <div class="HeaderContainer">
                                                     <table cellpadding="0">
@@ -1397,14 +1429,14 @@
                                                         <tbody>
                                                             <tr class="HeadingRow">
                                                                 <td class=" ToggleSelection">
-                                                                    <div class="Standard"><a class="Button ButtonIcon IconOnly CheckBox NormalState" id="PhaseMilestoneGrid_SelectionColumnButton" tabindex="0"><span class="Icon"></span><span class="Text"></span></a></div>
+                                                                    <div class="Standard"><a class="Button ButtonIcon IconOnly CheckBox NormalState" id="PhaseMilestoneGrid_SelectionColumnButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px -32px;"></span><span class="Text"></span></a></div>
                                                                 </td>
-                                                                <td class=" Context">
+                                                                <td class="Context">
                                                                     <div class="Standard">
                                                                         <div></div>
                                                                     </div>
                                                                 </td>
-                                                                <td class=" Text Dynamic">
+                                                                <td class="Text Dynamic">
                                                                     <div class="Standard">
                                                                         <div class="Heading">里程碑名称</div>
                                                                     </div>
@@ -1435,6 +1467,7 @@
                                                     </table>
                                                 </div>
                                                 <div class="ScrollingContentContainer">
+
                                                     <div class="NoDataMessage">没有数据</div>
                                                     <div class="RowContainer BodyContainer">
                                                         <table cellpadding="0">
@@ -1448,22 +1481,30 @@
                                                                 <col class=" Boolean">
                                                             </colgroup>
                                                             <tbody>
-                                                                <tr class="D" data-key-field-value="5|7814|True|True" data-prevent-editing="true" id="PhaseMilestoneGrid_5|7814|True|True">
+                                                                <%if (thisPhaMile != null && thisPhaMile.Count > 0)
+                                                                    {
+                                                                        foreach (var thisMile in thisPhaMile)
+                                                                        {%>
+                                                                <tr class="D" data-val="<%=thisMile.id %>">
                                                                     <td class="ToggleSelection  U0">
-                                                                        <div class="Decoration Icon CheckBox"></div>
+                                                                        <!--conMile   taskMile-->
+                                                                        <div class="Decoration Icon CheckBox">
+                                                                            <input type="checkbox" class="CheckMile <%=thisMile.type %> <%=thisMile.status_id %>"  value="<%=thisMile.id %>"/>
+                                                                        </div>
                                                                     </td>
                                                                     <td class="Context  U1"><a class="ButtonIcon Button ContextMenu NormalState">
                                                                         <div class="Icon"></div>
                                                                     </a></td>
-                                                                    <td class="Text  U2">last</td>
-                                                                    <td class="Text Normal U3">Ready to Bill</td>
-                                                                    <td class="Currency  U4">¥100.00</td>
-                                                                    <td class="Date  U5">13/08/2017</td>
+                                                                    <td class="Text  U2"><%=thisMile.name %></td>
+                                                                    <td class="Text Normal U3"><%=thisMile.status %></td>
+                                                                    <td class="Currency  U4"><%=thisMile.amount.ToString("#0.00") %></td>
+                                                                    <td class="Date  U5"><%=thisMile.dueDate.ToString("yyyy-MM-dd") %></td>
                                                                     <td class="Boolean  U6">
-                                                                        <div class="Decoration Icon CheckMark"></div>
+                                                                        <div class="Decoration Icon CheckMark"><%=thisMile.isAss %></div>
                                                                     </td>
                                                                 </tr>
-                                                               
+                                                                <%}
+                                                                    } %>
                                                             </tbody>
                                                         </table>
                                                         <div class="ContextOverlayContainer" id="PhaseMilestoneGrid_ContextOverlay">
@@ -1498,7 +1539,7 @@
                     </div>
 
                     <%} %>
-                    <div class="IsShowDiv" id="noteDiv">
+                    <div id="noteDiv" style="display: none;">
                         <div class="TabContainer Active" id="NotesTab">
                             <div class="DynamicGridContainer">
                                 <div class="Grid Large" id="TaskNoteGrid">
@@ -1545,7 +1586,7 @@
                                     </div>
                                     <div class="ScrollingContentContainer">
                                         <%if (noteList != null && noteList.Count > 0)
-                                        { %>
+                                            { %>
                                         <div class="RowContainer BodyContainer">
                                             <table cellpadding="0">
                                                 <colgroup>
@@ -1596,8 +1637,8 @@
                                             <div class="DragStatus"></div>
                                         </div>
                                         <%}
-                                        else
-                                        { %>
+                                            else
+                                            { %>
                                         <div class="NoDataMessage">没有数据</div>
                                         <%} %>
                                     </div>
@@ -1822,6 +1863,7 @@
 <%--<script src="../Scripts/jquery-3.2.1.min.js"></script>--%>
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 <%--<script src="../Scripts/NewProject.js"></script>--%>
 <script>
     var colors = ["#efefef", "white"];
@@ -1970,8 +2012,11 @@
             $("#hours_per_resource").prop("disabled", false);
         }
     })
+    <%if (!isPhase)
+    { %>
 
     $("#start_no_earlier_than_date").blur(function () {
+        debugger;
         var thanDateVal = $("#start_no_earlier_than_date").val();
         var startDateVal = $("#estimated_beginTime").val();
         if (thanDateVal != "" && startDateVal != "") {
@@ -1986,6 +2031,7 @@
         }
     })
     $("#estimated_beginTime").blur(function () {
+        debugger;
         var thanDateVal = $("#start_no_earlier_than_date").val();
         var startDateVal = $("#estimated_beginTime").val();
         if (thanDateVal != "" && startDateVal != "") {
@@ -1997,6 +2043,7 @@
             }
         }
     })
+    <%} %>
 
     $(".To2Input").blur(function () {
         var thisValue = $(this).val();
@@ -2708,8 +2755,8 @@
             return false;
         }
             // status_id
-                 <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
-    { %>
+       <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
+        { %>
         var status_id = $("#status_id").val();
         if (status_id == "" || status_id == "0" || status_id == undefined) {
             LayerMsg("请选择状态！");
@@ -2755,20 +2802,231 @@
             $("#BackgroundOverLay").show();
     <%}
     %>
-
             return false;
         }
                 <%}%>
+
+        var estimated_beginTime = $("#estimated_beginTime").val();
+        if (estimated_beginTime == "") {
+            LayerMsg("请填写开始时间");
+            return false;
+        }
+        var estimated_end_date = $("#estimated_end_date").val();
+        if (estimated_end_date == "") {
+            LayerMsg("请填写结束时间");
+            return false;
+        }
+        if (compareTime(estimated_beginTime, estimated_end_date)) {
+            LayerMsg("结束时间不能早于开始时间");
+            return false;
+        }
+
         return true;
     }
 </script>
 <%--ss --%>
 <script>
-    $(".IsShowDiv").click(function () {
+
+    $(".IsShowDivLi").click(function () {
+        debugger;
         var thisId = $(this).attr("id");
+        $(".IsShowDivLi").removeClass("boders");
+        $(this).addClass("boders");
         $(".IsShowDiv").hide();
         $("#" + thisId + "Div").show();
     })
 
 
+    $(".CheckMile").click(function () {
+        CanAss();
+        CanDisAss();
+        CanBillReady();
+    })
+    // 是否满足关联的条件（选择的checkbox均未关联）
+    function CanAss() {
+
+        var isHas = "";
+        $(".CheckMile").each(function () {
+            if ($(this).is(":checked")) {
+                if ($(this).hasClass("taskMile")) {
+                    isHas = "";
+                    return false;
+                } else {
+                    isHas += $(this).val() + ',';
+                }
+            }
+        })
+        if (isHas == "") {
+            // 禁用关联按钮     color: rgba(95,95,95,0.4);
+            // AssociateListButton
+            $("#AssociateListButton").removeAttr("onclick");
+            $("#AssociateListButton").css("color", "rgba(95,95,95,0.4)");
+        } else {
+            // 恢复关联按钮
+            $("#AssociateListButton").unbind('click').click(function () {
+                AssMile();
+            });
+            $("#AssociateListButton").css("color", "black");
+        }
+    }
+    // 是否满足解除关联的条件  conMile
+    function CanDisAss() {
+        var isHas = "";
+        $(".CheckMile").each(function () {
+            if ($(this).is(":checked")) {
+                if ($(this).hasClass("conMile")) {
+                    isHas = "";
+                    return false;
+                } else {
+                    isHas += $(this).val() + ',';
+                }
+            }
+        })
+        if (isHas == "") {
+            $("#DisassociateListButton").removeAttr("onclick");
+            $("#DisassociateListButton").css("color", "rgba(95,95,95,0.4)");
+        } else {
+            // 恢复关联按钮
+            $("#DisassociateListButton").unbind('click').click(function () {
+                DisAssMile();
+            });
+            $("#DisassociateListButton").css("color", "black");
+        }
+        // DisassociateListButton
+    }
+    // 是否满足标记为准备计费
+    function CanBillReady()
+    {
+        debugger;
+        var isHas = "";
+        $(".CheckMile").each(function () {
+            if ($(this).is(":checked")) {
+                if (($(this).hasClass("<%=(int)EMT.DoneNOW.DTO.DicEnum.MILESTONE_STATUS.BILLED %>") || $(this).hasClass("<%=(int)EMT.DoneNOW.DTO.DicEnum.MILESTONE_STATUS.READY_TO_BILL %>"))) {
+                    isHas = "";
+                    return false;
+                } else {
+                    isHas += $(this).val() + ',';
+                }
+            }
+        })
+        if (isHas == "") {
+            $("#ReadyForBillingListButton").removeAttr("onclick");
+            $("#ReadyForBillingListButton").css("color", "rgba(95,95,95,0.4)");
+        } else {
+            // 恢复关联按钮
+            $("#ReadyForBillingListButton").unbind('click').click(function () {
+                BillMile();
+            });
+            $("#ReadyForBillingListButton").css("color", "black");
+        }
+    }
+
+
+
+    // 关联事件
+    function AssMile() {
+       
+       debugger;
+        var ids = "";
+        $(".CheckMile").each(function () {
+            if ($(this).is(":checked")) {
+                if ($(this).hasClass("taskMile")) {
+                    ids = "";
+                    return false;
+                } else {
+                    ids += $(this).val() + ',';
+                }
+            }
+        })
+        if (ids == "") {
+
+        }
+        else {
+            ids = ids.substring(0, ids.length-1);
+            // 关联事件
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ProjectAjax.ashx?act=AssMile&mileIds=" + ids +"&phaId=<%=thisTask!=null?thisTask.id.ToString():"" %>",
+                async: false,
+                success: function (data) {
+                    debugger;
+                    if (data != "") {
+                        if (data == "True") {
+
+                        }
+
+                    }
+                    history.go(0);
+                }
+            })
+        }
+    }
+    // 取消关联事件
+    function DisAssMile() {
+        var ids = "";
+        $(".CheckMile").each(function () {
+            if ($(this).is(":checked")) {
+                if ($(this).hasClass("conMile")) {
+                    ids = "";
+                    return false;
+                } else {
+                    ids += $(this).val() + ',';
+                }
+            }
+        })
+        if (ids == "") {
+
+        }
+        else {
+            ids = ids.substring(0, ids.length - 1);
+            // 关联事件
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ProjectAjax.ashx?act=DisAssMile&mileIds=" + ids,
+                async: false,
+                success: function (data) {
+                    debugger;
+                    if (data != "") {
+                        if (data == "True") {
+
+                        }
+
+                    }
+                    history.go(0);
+                }
+            })
+        }
+    }
+    // 标记为准备计费
+    function BillMile() {
+        var ids = "";
+        $(".CheckMile").each(function () {
+            if ($(this).is(":checked")) {
+                if (($(this).hasClass("<%=(int)EMT.DoneNOW.DTO.DicEnum.MILESTONE_STATUS.BILLED %>") || $(this).hasClass("<%=(int)EMT.DoneNOW.DTO.DicEnum.MILESTONE_STATUS.READY_TO_BILL %>"))) {
+                    ids = "";
+                    return false;
+                } else {
+                    ids += $(this).val() + ',';
+                }
+            }
+        })
+        if (ids != "") {
+            ids = ids.substring(0, ids.length - 1);
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ProjectAjax.ashx?act=ToReadyBill&mileIds=" + ids,
+                async: false,
+                success: function (data) {
+                    debugger;
+                    if (data != "") {
+                        if (data == "True") {
+
+                        }
+
+                    }
+                    history.go(0);
+                }
+            })
+        }
+    }
 </script>

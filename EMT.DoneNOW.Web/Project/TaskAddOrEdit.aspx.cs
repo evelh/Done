@@ -29,6 +29,7 @@ namespace EMT.DoneNOW.Web.Project
         protected List<ctt_contract_rate> rateList = null;         // 合同角色费率  todo
         protected List<com_activity> noteList = null;
         protected ctt_contract thisProContract = null;            // 修改时使用，项目合同
+        protected List<PageMile> thisPhaMile =null;              // 修改阶段时使用，关联里程碑
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -134,6 +135,31 @@ namespace EMT.DoneNOW.Web.Project
 
                             department_id.SelectedValue = thisTask.department_id == null ? "0" : ((int)thisTask.department_id).ToString();
                         }
+
+                        //  判断是阶段，查询出相关项目的关联合同的里程碑  和自己的里程碑
+                        if (type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE && thisProject != null&&thisProject.contract_id!=null)
+                        {
+                            // 获取该项目合同下未被关联的里程碑
+                            var proConMilList = new ctt_contract_milestone_dal().GetListByProId(thisProject.id);
+                            // 获取该阶段下的所有里程碑
+                            var phaMilList = new sdk_task_milestone_dal().GetPhaMilList(thisTask.id);
+                            thisPhaMile = new List<PageMile>();
+                            if (proConMilList != null && proConMilList.Count > 0)
+                            {
+                                thisPhaMile.AddRange(proConMilList);
+                            }
+                            if(phaMilList!=null&& phaMilList.Count > 0)
+                            {
+                                thisPhaMile.AddRange(phaMilList);
+                            }
+                            if (thisPhaMile.Count > 0)
+                            {
+                                thisPhaMile = thisPhaMile.OrderBy(_ => _.dueDate).ToList();
+                            }
+
+
+                        }
+                        
                     }
                 }
                 if (type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
@@ -327,7 +353,8 @@ namespace EMT.DoneNOW.Web.Project
             }
             else
             {
-
+                thisTask
+                param.task = thisTask;
             }
 
             if (task_udfList != null && task_udfList.Count > 0)
@@ -355,4 +382,5 @@ namespace EMT.DoneNOW.Web.Project
             var result = SaveTask();
         }
     }
+    
 }

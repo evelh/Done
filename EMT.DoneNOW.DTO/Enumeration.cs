@@ -653,6 +653,7 @@ namespace EMT.DoneNOW.DTO
             SDK_WORK_ENTRY=1384,                        // 工时
             SDK_EXPENSE_REPORT = 1385,                  // 费用报表   
             SDK_EXPENSE = 1386,                         // 费用
+            SDK_MILESTONE=1388,                         // 阶段里程碑
             ATTACHMENT = 1389,                          // 附件
             PROJECT_TASK_PREDECESSOR = 1393,            // 任务的前驱任务
             PROJECT_PHASE_WORK_HOURS = 1398,            // 项目阶段预估工时

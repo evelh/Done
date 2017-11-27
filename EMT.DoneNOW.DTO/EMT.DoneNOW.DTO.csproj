@@ -76,6 +76,7 @@
     <Compile Include="LoseOpportunityDto.cs" />
     <Compile Include="OpportunityAddOrUpdateDto.cs" />
     <Compile Include="OpportunityConditionDto.cs" />
+    <Compile Include="PageMile.cs" />
     <Compile Include="PageQueryConditionNameDto.cs" />
     <Compile Include="PreferencesInvoiceDto.cs" />
     <Compile Include="ProcessInvoiceDto.cs" />
