@@ -66,6 +66,14 @@ namespace EMT.DoneNOW.Web
         }
 
         /// <summary>
+        /// 用户单独的权限
+        /// </summary>
+        protected List<AuthPermitDto> UserPermit
+        {
+            get { return userPermit; }
+        }
+
+        /// <summary>
         /// 判断是否有对应权限
         /// </summary>
         /// <param name="sn"></param>

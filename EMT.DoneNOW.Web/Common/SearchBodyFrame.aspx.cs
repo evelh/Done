@@ -221,8 +221,8 @@ namespace EMT.DoneNOW.Web
             // 判断权限
             if (!string.IsNullOrEmpty(addBtn))
             {
-                if (!CheckAddAuth((QueryType)queryTypeId))  // 没有权限，不显示新增按钮
-                    addBtn = "";
+                //if (!CheckAddAuth((QueryType)queryTypeId))  // 没有权限，不显示新增按钮
+                //    addBtn = "";
             }
         }
 
@@ -425,7 +425,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看报价", click_function = "ViewQuote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制报价", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "关闭报价", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "关闭报价", click_function = "CloseQuote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "丢失报价", click_function = "LossQuote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除报价", click_function = "DeleteQuote()" });
                     break;

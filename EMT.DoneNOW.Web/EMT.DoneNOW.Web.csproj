@@ -774,6 +774,7 @@
     <Content Include="Scripts\Search\InvoiceTemplate.js" />
     <Content Include="Scripts\Search\Invoice_History.js" />
     <Content Include="Scripts\Search\OpportunityViewAttachment.js" />
+    <Content Include="Scripts\Search\Quote.js" />
     <Content Include="Scripts\Search\SaleOrder.js" />
     <Content Include="Scripts\Search\SalesOrderViewAttachment.js" />
     <Content Include="Scripts\Search\Subscription.js" />

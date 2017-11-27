@@ -102,7 +102,7 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(queryStr["project"]) && queryStr["project"].Equals("1"))
                 actTypeList.Add("project");
 
-            context.Response.Write(new Tools.Serialize().SerializeJson(bll.GetActivitiesHtml(actTypeList, long.Parse(id), type, order, LoginUserId)));
+            context.Response.Write(new Tools.Serialize().SerializeJson(bll.GetActivitiesHtml(actTypeList, long.Parse(id), type, order, LoginUserId, LoginUser.security_Level_id, UserPermit)));
         }
 
         /// <summary>

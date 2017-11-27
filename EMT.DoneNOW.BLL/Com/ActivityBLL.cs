@@ -64,19 +64,21 @@ namespace EMT.DoneNOW.BLL
         /// <param name="objType"></param>
         /// <param name="order"></param>
         /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="userPermit"></param>
         /// <returns></returns>
-        public string GetActivitiesHtml(List<string> actTypeList, long objId, string objType, string order, long userId)
+        public string GetActivitiesHtml(List<string> actTypeList, long objId, string objType, string order, long userId, int secLevelId, List<AuthPermitDto> userPermit)
         {
             if (objType == null)
                 return "";
             if (objType.Equals("account"))
-                return GetAccountActivities(actTypeList, objId, order, userId);
+                return GetAccountActivities(actTypeList, objId, order, userId, secLevelId, userPermit);
             if (objType.Equals("contact"))
-                return GetContactActivities(actTypeList, objId, order, userId);
+                return GetContactActivities(actTypeList, objId, order, userId, secLevelId, userPermit);
             if (objType.Equals("opportunity"))
-                return GetOppActivities(actTypeList, objId, order, userId);
+                return GetOppActivities(actTypeList, objId, order, userId, secLevelId, userPermit);
             if (objType.Equals("salesorder"))
-                return GetSaleorderActivities(actTypeList, objId, order, userId);
+                return GetSaleorderActivities(actTypeList, objId, order, userId, secLevelId, userPermit);
 
             return "";
         }
@@ -88,8 +90,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="accountId">客户id</param>
         /// <param name="order">排序（1:时间从早到晚;否则:时间从晚到早</param>
         /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="userPermit"></param>
         /// <returns></returns>
-        public string GetAccountActivities(List<string> actTypeList, long accountId, string order, long userId)
+        public string GetAccountActivities(List<string> actTypeList, long accountId, string order, long userId, int secLevelId, List<AuthPermitDto> userPermit)
         {
             if (actTypeList == null || accountId == 0 || userId == 0)
                 return "";
@@ -97,7 +101,7 @@ namespace EMT.DoneNOW.BLL
             StringBuilder html = new StringBuilder();
 
             if (actTypeList.Exists(_ => "todo".Equals(_)))
-                html.Append(GetAccountTodosHtml(accountId, order, userId));
+                html.Append(GetAccountTodosHtml(accountId, order, userId, secLevelId, userPermit));
 
             string cate = "";
             if (actTypeList.Exists(_ => "crmnote".Equals(_)))
@@ -131,30 +135,32 @@ namespace EMT.DoneNOW.BLL
                 if (act.cate == 2)    // 备注和附件
                 {
                     if (act.act_cate != null && act.act_cate.Equals("act"))
-                        html.Append(GetNoteHtml(actList, act, act.cate, userId, 1));
+                        html.Append(GetNoteHtml(actList, act, act.cate, userId, 1, secLevelId, userPermit));
                     else if (act.act_cate != null && act.act_cate.Equals("att"))
-                        html.Append(GetAttachmentHtml(actList, act, act.cate, userId, 1));
+                        html.Append(GetAttachmentHtml(actList, act, act.cate, userId, 1, secLevelId, userPermit));
                     else    // 错误
                         return "";
                 }
                 else
                 {
-                    html.Append(GetObjectHtml(actList, act, userId, isAsc));
+                    html.Append(GetObjectHtml(actList, act, userId, isAsc, secLevelId, userPermit));
                 }
             }
 
             return html.ToString();
             
         }
-        
+
         /// <summary>
         /// 获取最多三个待办的html
         /// </summary>
         /// <param name="accountId"></param>
         /// <param name="order"></param>
         /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="userPermit"></param>
         /// <returns></returns>
-        private string GetAccountTodosHtml(long accountId, string order, long userId)
+        private string GetAccountTodosHtml(long accountId, string order, long userId, int secLevelId, List<AuthPermitDto> userPermit)
         {
             string sql = $"SELECT * FROM com_activity WHERE account_id={accountId} AND cate_id={(int)DicEnum.ACTIVITY_CATE.TODO} AND delete_time=0 ";
             if (order != null && order.Equals("1"))
@@ -176,7 +182,12 @@ namespace EMT.DoneNOW.BLL
                 if (todo.contact_id != null)
                 {
                     var contact = new crm_contact_dal().FindById((long)todo.contact_id);
-                    todoHtml.Append($"<span>(联系人:<a class='PostContentName'>{contact.name}</a>");
+
+                    if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_VIEW_CONTACT"))
+                        todoHtml.Append($"<span>(联系人:<a class='PostContentName' onclick='ViewContact({todo.contact_id})'>{contact.name}</a>");
+                    else
+                        todoHtml.Append($"<span>(联系人:<a class='PostContentName'>{contact.name}</a>");
+
                     if (!string.IsNullOrEmpty(contact.email))
                         todoHtml.Append($"<a href='mailto:{contact.email}' class='SmallLink'>发送邮件</a>");
                     todoHtml.Append($")</span>");
@@ -196,7 +207,13 @@ namespace EMT.DoneNOW.BLL
                     todoHtml.Append($"修改时间:&nbsp今天 {updateTime.ToString("hh:mm")}</span>");
                 else
                     todoHtml.Append($"修改时间:&nbsp{updateTime.ToString("yyyy-MM-dd hh:mm")}</span>");
-                todoHtml.Append($"<a onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a><a onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a><a onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
+
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_FINISH"))
+                    todoHtml.Append($"<a onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a>");
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_EDIT"))
+                    todoHtml.Append($"<a onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a>");
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_DELETE"))
+                    todoHtml.Append($"<a onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
                 todoHtml.Append("</div></div></div>");
 
                 todoHtml.Append("<hr class='activityTitlerighthr' />");
@@ -214,8 +231,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="contactId"></param>
         /// <param name="order"></param>
         /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="userPermit"></param>
         /// <returns></returns>
-        public string GetContactActivities(List<string> actTypeList, long contactId, string order, long userId)
+        public string GetContactActivities(List<string> actTypeList, long contactId, string order, long userId, int secLevelId, List<AuthPermitDto> userPermit)
         {
             if (actTypeList == null || contactId == 0 || userId == 0)
                 return "";
@@ -224,7 +243,7 @@ namespace EMT.DoneNOW.BLL
             DateTime t1 = DateTime.Now;
             // 先加入最多3个待办
             if (actTypeList.Exists(_ => "todo".Equals(_)))
-                html.Append(GetContactTodosHtml(contactId, order, userId));
+                html.Append(GetContactTodosHtml(contactId, order, userId, secLevelId, userPermit));
 
             string cate = "";
             if (actTypeList.Exists(_ => "crmnote".Equals(_)))
@@ -258,15 +277,15 @@ namespace EMT.DoneNOW.BLL
                 if (act.cate == 2)    // 备注和附件
                 {
                     if (act.act_cate != null && act.act_cate.Equals("act"))
-                        html.Append(GetNoteHtml(actList, act, act.cate, userId, 1));
+                        html.Append(GetNoteHtml(actList, act, act.cate, userId, 1, secLevelId, userPermit));
                     else if (act.act_cate != null && act.act_cate.Equals("att"))
-                        html.Append(GetAttachmentHtml(actList, act, act.cate, userId, 1));
+                        html.Append(GetAttachmentHtml(actList, act, act.cate, userId, 1, secLevelId, userPermit));
                     else    // 错误
                         return "";
                 }
                 else
                 {
-                    html.Append(GetObjectHtml(actList, act, userId, isAsc));
+                    html.Append(GetObjectHtml(actList, act, userId, isAsc, secLevelId, userPermit));
                 }
             }
             return html.ToString();
@@ -279,8 +298,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="contactId"></param>
         /// <param name="order"></param>
         /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="userPermit"></param>
         /// <returns></returns>
-        private string GetContactTodosHtml(long contactId, string order, long userId)
+        private string GetContactTodosHtml(long contactId, string order, long userId, int secLevelId, List<AuthPermitDto> userPermit)
         {
             string sql = $"SELECT * FROM com_activity WHERE object_id={contactId} AND object_type_id={(int)DicEnum.OBJECT_TYPE.CONTACT} AND cate_id={(int)DicEnum.ACTIVITY_CATE.TODO} AND delete_time=0 ";
             if (order != null && order.Equals("1"))
@@ -302,7 +323,12 @@ namespace EMT.DoneNOW.BLL
                 if (todo.contact_id != null)
                 {
                     var contact = new crm_contact_dal().FindById((long)todo.contact_id);
-                    todoHtml.Append($"<span>(联系人:<a class='PostContentName'>{contact.name}</a>");
+
+                    if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_VIEW_CONTACT"))
+                        todoHtml.Append($"<span>(联系人:<a class='PostContentName' onclick='ViewContact({todo.contact_id})'>{contact.name}</a>");
+                    else
+                        todoHtml.Append($"<span>(联系人:<a class='PostContentName'>{contact.name}</a>");
+                    
                     if (!string.IsNullOrEmpty(contact.email))
                         todoHtml.Append($"<a href='mailto:{contact.email}' class='SmallLink'>发送邮件</a>");
                     todoHtml.Append($")</span>");
@@ -322,7 +348,13 @@ namespace EMT.DoneNOW.BLL
                     todoHtml.Append($"修改时间:&nbsp今天 {updateTime.ToString("hh:mm")}</span>");
                 else
                     todoHtml.Append($"修改时间:&nbsp{updateTime.ToString("yyyy-MM-dd hh:mm")}</span>");
-                todoHtml.Append($"<a onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a><a onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a><a onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
+
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_FINISH"))
+                    todoHtml.Append($"<a onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a>");
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_EDIT"))
+                    todoHtml.Append($"<a onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a>");
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_DELETE"))
+                    todoHtml.Append($"<a onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
                 todoHtml.Append("</div></div></div>");
 
                 todoHtml.Append("<hr class='activityTitlerighthr' />");
@@ -341,8 +373,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="oppId">商机id</param>
         /// <param name="order">排序（1:时间从早到晚;否则:时间从晚到早</param>
         /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="userPermit"></param>
         /// <returns></returns>
-        public string GetOppActivities(List<string> actTypeList, long oppId, string order, long userId)
+        public string GetOppActivities(List<string> actTypeList, long oppId, string order, long userId, int secLevelId, List<AuthPermitDto> userPermit)
         {
             if (actTypeList == null || oppId == 0 || userId == 0)
                 return "";
@@ -350,7 +384,7 @@ namespace EMT.DoneNOW.BLL
             StringBuilder html = new StringBuilder();
 
             if (actTypeList.Exists(_ => "todo".Equals(_)))
-                html.Append(GetOppTodosHtml(oppId, order, userId));
+                html.Append(GetOppTodosHtml(oppId, order, userId, secLevelId, userPermit));
 
             string cate = "";
             if (actTypeList.Exists(_ => "crmnote".Equals(_)))
@@ -390,15 +424,15 @@ namespace EMT.DoneNOW.BLL
                 if (act.cate == 2)    // 备注和附件
                 {
                     if (act.act_cate != null && act.act_cate.Equals("act"))
-                        html.Append(GetNoteHtml(actList, act, act.cate, userId, 1));
+                        html.Append(GetNoteHtml(actList, act, act.cate, userId, 1, secLevelId, userPermit));
                     else if (act.act_cate != null && act.act_cate.Equals("att"))
-                        html.Append(GetAttachmentHtml(actList, act, act.cate, userId, 1));
+                        html.Append(GetAttachmentHtml(actList, act, act.cate, userId, 1, secLevelId, userPermit));
                     else    // 错误
                         return "";
                 }
                 else
                 {
-                    html.Append(GetObjectHtml(actList, act, userId, isAsc));
+                    html.Append(GetObjectHtml(actList, act, userId, isAsc, secLevelId, userPermit));
                 }
             }
 
@@ -412,8 +446,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="oppId"></param>
         /// <param name="order"></param>
         /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="userPermit"></param>
         /// <returns></returns>
-        private string GetOppTodosHtml(long oppId, string order, long userId)
+        private string GetOppTodosHtml(long oppId, string order, long userId, int secLevelId, List<AuthPermitDto> userPermit)
         {
             string sql = $"SELECT * FROM com_activity WHERE opportunity_id={oppId} AND cate_id={(int)DicEnum.ACTIVITY_CATE.TODO} AND delete_time=0 ";
             if (order != null && order.Equals("1"))
@@ -435,7 +471,12 @@ namespace EMT.DoneNOW.BLL
                 if (todo.contact_id != null)
                 {
                     var contact = new crm_contact_dal().FindById((long)todo.contact_id);
-                    todoHtml.Append($"<span>(联系人:<a class='PostContentName'>{contact.name}</a>");
+
+                    if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_VIEW_CONTACT"))
+                        todoHtml.Append($"<span>(联系人:<a class='PostContentName' onclick='ViewContact({todo.contact_id})'>{contact.name}</a>");
+                    else
+                        todoHtml.Append($"<span>(联系人:<a class='PostContentName'>{contact.name}</a>");
+                    
                     if (!string.IsNullOrEmpty(contact.email))
                         todoHtml.Append($"<a href='mailto:{contact.email}' class='SmallLink'>发送邮件</a>");
                     todoHtml.Append($")</span>");
@@ -455,7 +496,13 @@ namespace EMT.DoneNOW.BLL
                     todoHtml.Append($"修改时间:&nbsp今天 {updateTime.ToString("hh:mm")}</span>");
                 else
                     todoHtml.Append($"修改时间:&nbsp{updateTime.ToString("yyyy-MM-dd hh:mm")}</span>");
-                todoHtml.Append($"<a onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a><a onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a><a onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
+
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_FINISH"))
+                    todoHtml.Append($"<a onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a>");
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_EDIT"))
+                    todoHtml.Append($"<a onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a>");
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_DELETE"))
+                    todoHtml.Append($"<a onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
                 todoHtml.Append("</div></div></div>");
 
                 todoHtml.Append("<hr class='activityTitlerighthr' />");
@@ -473,8 +520,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="soId">销售订单id</param>
         /// <param name="order">排序（1:时间从早到晚;否则:时间从晚到早</param>
         /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="userPermit"></param>
         /// <returns></returns>
-        public string GetSaleorderActivities(List<string> actTypeList, long soId, string order, long userId)
+        public string GetSaleorderActivities(List<string> actTypeList, long soId, string order, long userId, int secLevelId, List<AuthPermitDto> userPermit)
         {
             if (actTypeList == null || soId == 0 || userId == 0)
                 return "";
@@ -482,7 +531,7 @@ namespace EMT.DoneNOW.BLL
             StringBuilder html = new StringBuilder();
 
             if (actTypeList.Exists(_ => "todo".Equals(_)))
-                html.Append(GetSalesOrderTodosHtml(soId, order, userId));
+                html.Append(GetSalesOrderTodosHtml(soId, order, userId, secLevelId, userPermit));
 
             string cate = "";
             if (actTypeList.Exists(_ => "crmnote".Equals(_)))
@@ -522,15 +571,15 @@ namespace EMT.DoneNOW.BLL
                 if (act.cate == 2)    // 备注和附件
                 {
                     if (act.act_cate != null && act.act_cate.Equals("act"))
-                        html.Append(GetNoteHtml(actList, act, act.cate, userId, 1));
+                        html.Append(GetNoteHtml(actList, act, act.cate, userId, 1, secLevelId, userPermit));
                     else if (act.act_cate != null && act.act_cate.Equals("att"))
-                        html.Append(GetAttachmentHtml(actList, act, act.cate, userId, 1));
+                        html.Append(GetAttachmentHtml(actList, act, act.cate, userId, 1, secLevelId, userPermit));
                     else    // 错误
                         return "";
                 }
                 else
                 {
-                    html.Append(GetObjectHtml(actList, act, userId, isAsc));
+                    html.Append(GetObjectHtml(actList, act, userId, isAsc, secLevelId, userPermit));
                 }
             }
 
@@ -544,8 +593,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="soId"></param>
         /// <param name="order"></param>
         /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="userPermit"></param>
         /// <returns></returns>
-        private string GetSalesOrderTodosHtml(long soId, string order, long userId)
+        private string GetSalesOrderTodosHtml(long soId, string order, long userId, int secLevelId, List<AuthPermitDto> userPermit)
         {
             string sql = $"SELECT * FROM com_activity WHERE object_id={soId} AND object_type_id={(int)DicEnum.OBJECT_TYPE.SALEORDER} AND cate_id={(int)DicEnum.ACTIVITY_CATE.TODO} AND delete_time=0 ";
             if (order != null && order.Equals("1"))
@@ -567,7 +618,12 @@ namespace EMT.DoneNOW.BLL
                 if (todo.contact_id != null)
                 {
                     var contact = new crm_contact_dal().FindById((long)todo.contact_id);
-                    todoHtml.Append($"<span>(联系人:<a class='PostContentName'>{contact.name}</a>");
+
+                    if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_VIEW_CONTACT"))
+                        todoHtml.Append($"<span>(联系人:<a class='PostContentName' onclick='ViewContact({todo.contact_id})'>{contact.name}</a>");
+                    else
+                        todoHtml.Append($"<span>(联系人:<a class='PostContentName'>{contact.name}</a>");
+                    
                     if (!string.IsNullOrEmpty(contact.email))
                         todoHtml.Append($"<a href='mailto:{contact.email}' class='SmallLink'>发送邮件</a>");
                     todoHtml.Append($")</span>");
@@ -587,7 +643,13 @@ namespace EMT.DoneNOW.BLL
                     todoHtml.Append($"修改时间:&nbsp今天 {updateTime.ToString("hh:mm")}</span>");
                 else
                     todoHtml.Append($"修改时间:&nbsp{updateTime.ToString("yyyy-MM-dd hh:mm")}</span>");
-                todoHtml.Append($"<a onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a><a onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a><a onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
+
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_FINISH"))
+                    todoHtml.Append($"<a onclick='TodoComplete({todo.id})' class='CommentLink'>完成</a>");
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_EDIT"))
+                    todoHtml.Append($"<a onclick='TodoEdit({todo.id})' class='CommentLink'>编辑</a>");
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_TODOS_DELETE"))
+                    todoHtml.Append($"<a onclick='ActDelete({todo.id})' class='CommentLink'>删除</a>");
                 todoHtml.Append("</div></div></div>");
 
                 todoHtml.Append("<hr class='activityTitlerighthr' />");
@@ -604,34 +666,57 @@ namespace EMT.DoneNOW.BLL
         /// <param name="obj"></param>
         /// <param name="userId"></param>
         /// <param name="isAsc"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="userPermit"></param>
         /// <returns></returns>
-        private string GetObjectHtml(List<v_activity> actList, v_activity obj, long userId, bool isAsc)
+        private string GetObjectHtml(List<v_activity> actList, v_activity obj, long userId, bool isAsc, int secLevelId, List<AuthPermitDto> userPermit)
         {
             long cate = obj.cate;
             int objType;
             int attObjType = 0;
             string logo;
+            bool canView = false;   // 是否可以
+            bool canAddNote = false;
+            bool canAddAtt = false;
             if (cate == 3)
             {
                 objType = (int)DicEnum.OBJECT_TYPE.OPPORTUNITY;
                 logo = "contract.png";
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_OPPORTUNITY_VIEW_OPP"))
+                    canView = true;
             }
             else if (cate == 4)
             {
                 objType = (int)DicEnum.OBJECT_TYPE.SALEORDER;
                 attObjType = (int)DicEnum.ATTACHMENT_OBJECT_TYPE.SALES_ORDER;
                 logo = "salesorder.png";
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_SALES_ORDER_VIEW_SALEORDER"))
+                    canView = true;
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_SALES_ORDER_ADD_NOTE"))
+                    canAddNote = true;
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_SALES_ORDER_ADD_ATTACHMENT"))
+                    canAddAtt = true;
             }
             else if (cate == 6)
             {
                 objType = (int)DicEnum.OBJECT_TYPE.CONTRACT;
                 logo = "contract.png";
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_CONTRACT_VIEW_CONTRACT"))
+                    canView = true;
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_CONTRACT_ADD_NOTE"))
+                    canAddNote = true;
             }
             else if (cate == 7)
             {
                 objType = (int)DicEnum.OBJECT_TYPE.PROJECT;
                 attObjType = (int)DicEnum.ATTACHMENT_OBJECT_TYPE.PROJECT;
                 logo = "project.png";
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_PROJECT_VIEW_PROJECT"))
+                    canView = true;
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_PROJECT_ADD_NOTE"))
+                    canAddNote = true;
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_PROJECT_ADD_ATTACHMENT"))
+                    canAddAtt = true;
             }
             else
                 return "";
@@ -641,11 +726,26 @@ namespace EMT.DoneNOW.BLL
             StringBuilder html = new StringBuilder();
             html.Append($"<div class='EntityFeedLevel1'><a style='float:left;cursor:pointer;'><img src='../Images/{logo}' /></a> ");
             if (cate == 3)
-                html.Append($"<div class='PostContent'><a class='PostContentName' onclick='ViewOpportunity({obj.id})'>{obj.pname}</a>");
+            {
+                if (canView)
+                    html.Append($"<div class='PostContent'><a class='PostContentName' onclick='ViewOpportunity({obj.id})'>{obj.pname}</a>");
+                else
+                    html.Append($"<div class='PostContent'><a class='PostContentName'>{obj.pname}</a>");
+            }
             else if (cate == 4)
-                html.Append($"<div class='PostContent'><a class='PostContentName' onclick='ViewSalesOrder({obj.id})'>{obj.pname}</a>");
+            {
+                if (canView)
+                    html.Append($"<div class='PostContent'><a class='PostContentName' onclick='ViewSalesOrder({obj.id})'>{obj.pname}</a>");
+                else
+                    html.Append($"<div class='PostContent'><a class='PostContentName'>{obj.pname}</a>");
+            }
             else if (cate == 6)
-                html.Append($"<div class='PostContent'><a class='PostContentName' onclick='ViewContract({obj.id})'>{obj.pname}</a>");
+            {
+                if (canView)
+                    html.Append($"<div class='PostContent'><a class='PostContentName' onclick='ViewContract({obj.id})'>{obj.pname}</a>");
+                else
+                    html.Append($"<div class='PostContent'><a class='PostContentName'>{obj.pname}</a>");
+            }
             else
                 html.Append($"<div class='PostContent'><a class='PostContentName'>{obj.pname}</a>");
             html.Append($"<div><span>{obj.act_desc}</span></div>");
@@ -653,9 +753,12 @@ namespace EMT.DoneNOW.BLL
             html.Append($"{obj.act_date}</span>");
             if (cate == 4 || cate == 7)
             {
-                html.Append($"<a onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({obj.id},{attObjType})' class='CommentLink'>添加附件</a>");
+                if (canAddNote)
+                    html.Append($"<a onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a>");
+                if(canAddAtt)
+                    html.Append($"<a onclick='NoteAddAttach({obj.id},{attObjType})' class='CommentLink'>添加附件</a>");
             }
-            if (cate == 6)
+            if (cate == 6 && canAddNote)
             {
                 html.Append($"<a onclick='NoteAddNote({cate},1,{objType},{obj.id})' class='CommentLink'>添加备注</a>");
             }
@@ -668,9 +771,9 @@ namespace EMT.DoneNOW.BLL
             foreach (var act in actList1)
             {
                 if (act.act_cate != null && act.act_cate.Equals("act"))
-                    html.Append(GetNoteHtml(actList, act, cate, userId, 2));
+                    html.Append(GetNoteHtml(actList, act, cate, userId, 2, secLevelId, userPermit));
                 else if (act.act_cate != null && act.act_cate.Equals("att"))
-                    html.Append(GetAttachmentHtml(actList, act, cate, userId, 2));
+                    html.Append(GetAttachmentHtml(actList, act, cate, userId, 2, secLevelId, userPermit));
             }
 
             html.Append("<hr class='activityTitlerighthr' />");
@@ -686,8 +789,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="cate"></param>
         /// <param name="userId"></param>
         /// <param name="level"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="userPermit"></param>
         /// <returns></returns>
-        private string GetNoteHtml(List<v_activity> actList, v_activity note, long cate, long userId, int level)
+        private string GetNoteHtml(List<v_activity> actList, v_activity note, long cate, long userId, int level, int secLevelId, List<AuthPermitDto> userPermit)
         {
             StringBuilder html = new StringBuilder();
             html.Append($"<div class='EntityFeedLevel{level}'><a style='float:left;cursor:pointer;'><img src='..{note.resource_avatar}' /></a> ");
@@ -697,7 +802,10 @@ namespace EMT.DoneNOW.BLL
             html.Append($"<img src='../Images/note.png' />");
             if (note.contact_id != null)
             {
-                html.Append($"<span>(联系人:<a class='PostContentName' onclick='ViewContact({note.contact_id})'>{note.contact_name}</a>");
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_VIEW_CONTACT"))
+                    html.Append($"<span>(联系人:<a class='PostContentName' onclick='ViewContact({note.contact_id})'>{note.contact_name}</a>");
+                else
+                    html.Append($"<span>(联系人:<a class='PostContentName'>{note.contact_name}</a>");
                 if (!string.IsNullOrEmpty(note.contact_email))
                     html.Append($"<a href='mailto:{note.contact_email}' class='SmallLink'>发送邮件</a>");
                 html.Append($")</span>");
@@ -714,7 +822,14 @@ namespace EMT.DoneNOW.BLL
 
             html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
             html.Append($"{note.act_date}</span>");
-            html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.NOTES},{note.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({note.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.NOTES})' class='CommentLink'>添加附件</a><a onclick='NoteEdit({note.id})' class='CommentLink'>编辑</a><a onclick='ActDelete({note.id})' class='CommentLink'>删除</a>");
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_NOTE"))
+                html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.NOTES},{note.id})' class='CommentLink'>添加备注</a>");
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_ATTACHMENT"))
+                html.Append($"<a onclick='NoteAddAttach({note.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.NOTES})' class='CommentLink'>添加附件</a>");
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_EDIT"))
+                html.Append($"<a onclick='NoteEdit({note.id})' class='CommentLink'>编辑</a>");
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_DELETE"))
+                html.Append($"<a onclick='ActDelete({note.id})' class='CommentLink'>删除</a>");
             html.Append("</div></div></div>");
 
             if (level == 3)
@@ -731,9 +846,9 @@ namespace EMT.DoneNOW.BLL
             foreach (var act in actList1)
             {
                 if (act.act_cate != null && act.act_cate.Equals("act"))
-                    html.Append(GetNoteHtml(actList, act, cate, userId, level + 1));
+                    html.Append(GetNoteHtml(actList, act, cate, userId, level + 1, secLevelId, userPermit));
                 else if (act.act_cate != null && act.act_cate.Equals("att"))
-                    html.Append(GetAttachmentHtml(actList, act, cate, userId, level + 1));
+                    html.Append(GetAttachmentHtml(actList, act, cate, userId, level + 1, secLevelId, userPermit));
             }
 
             if (level == 1)
@@ -750,8 +865,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="cate"></param>
         /// <param name="userId"></param>
         /// <param name="level"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="userPermit"></param>
         /// <returns></returns>
-        private string GetAttachmentHtml(List<v_activity> actList, v_activity att, long cate, long userId, int level)
+        private string GetAttachmentHtml(List<v_activity> actList, v_activity att, long cate, long userId, int level, int secLevelId, List<AuthPermitDto> userPermit)
         {
             StringBuilder html = new StringBuilder();
             html.Append($"<div class='EntityFeedLevel{level}'><a style='float:left;cursor:pointer;'><img src='..{att.resource_avatar}' /></a> ");
@@ -766,7 +883,14 @@ namespace EMT.DoneNOW.BLL
 
             html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
             html.Append($"{att.act_date}</span>");
-            html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.ATTACHMENT},{att.id})' class='CommentLink'>添加备注</a><a onclick='NoteAddAttach({att.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.ATTACHMENT})' class='CommentLink'>添加附件</a><a onclick='AttDelete({att.id})' class='CommentLink'>删除</a>");
+
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_NOTE"))
+                html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.ATTACHMENT},{att.id})' class='CommentLink'>添加备注</a>");
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_ATTACHMENT"))
+                html.Append($"<a onclick='NoteAddAttach({att.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.ATTACHMENT})' class='CommentLink'>添加附件</a>");
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_DELETE"))
+                html.Append($"<a onclick='AttDelete({att.id})' class='CommentLink'>删除</a>");
+
             html.Append("</div></div>");
             if (att.att_type_id == (int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
             {
@@ -793,9 +917,9 @@ namespace EMT.DoneNOW.BLL
             foreach (var act in actList1)
             {
                 if (act.act_cate != null && act.act_cate.Equals("act"))
-                    html.Append(GetNoteHtml(actList, act, cate, userId, level + 1));
+                    html.Append(GetNoteHtml(actList, act, cate, userId, level + 1, secLevelId, userPermit));
                 else if (act.act_cate != null && act.act_cate.Equals("att"))
-                    html.Append(GetAttachmentHtml(actList, act, cate, userId, level + 1));
+                    html.Append(GetAttachmentHtml(actList, act, cate, userId, level + 1, secLevelId, userPermit));
             }
 
             if (level == 1)

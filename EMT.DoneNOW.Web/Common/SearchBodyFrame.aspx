@@ -480,46 +480,6 @@
         }
         <%}%>
         <%}
-        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Quote)
-        {
-            %>
-        function Edit() {
-            OpenWindow("../Quote/QuoteAddAndUpdate.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteEdit %>');
-        }
-        function ViewOpp() {
-            OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid, '_blank');
-        }
-        function ViewCompany(id) {
-            OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, '_blank');
-        }
-        function LossQuote() {
-            OpenWindow("../Quote/QuoteLost.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteLost %>');
-        }
-        function QuotePref() {
-            OpenWindow("../Quote/PreferencesQuote.aspx?quote_id=" + entityid, '_blank');
-        }
-        function QuoteManage() {
-            OpenWindow("../QuoteItem/QuoteItemManage.aspx?quote_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteItemManage %>');
-        }
-        function DeleteQuote() {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/QuoteAjax.ashx?act=delete&id=" + entityid,
-                success: function (data) {
-                    alert(data);
-                }
-            })
-        }
-        function View(id) {
-            OpenWindow("../QuoteItem/QuoteItemManage.aspx?quote_id=" + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteItemManage %>');
-        }
-        function Add() {
-            OpenWindow("../Quote/QuoteAddAndUpdate.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.QuoteAdd %>');
-        }
-        function ViewQuote() {
-            OpenWindow("../Quote/QuoteView.aspx?id=" + entityid, '_blank');
-        }
-        <%}
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.QuoteTemplate)
         {
             %>
