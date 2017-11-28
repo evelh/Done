@@ -25,9 +25,10 @@ namespace EMT.DoneNOW.Web
             string _action = DNRequest.GetQueryString("action");
             if ("Logout".Equals(_action))
             {
-                Session["dn_session_user_info"] = null;
-                EMT.Tools.Common.WriteCookie("UserName", "DoneNOW", -14400);
-                EMT.Tools.Common.WriteCookie("UserPwd", "DoneNOW", -14400);
+                EMT.Tools.Common.WriteCookie("Token", "DoneNOW", -14400);
+                //Session["dn_session_user_info"] = null;
+                //EMT.Tools.Common.WriteCookie("UserName", "DoneNOW", -14400);
+                //EMT.Tools.Common.WriteCookie("UserPwd", "DoneNOW", -14400);
             }
         }
 
@@ -40,8 +41,29 @@ namespace EMT.DoneNOW.Web
 
             string ip = DNRequest.GetIP();
             string agent = HttpContext.Current.Request.UserAgent;
-            UserInfoDto user;
             var bll = new AuthBLL();
+
+            TokenDto token = new TokenDto();
+            var result = bll.Login(userName, userPwd, agent, ip, out token);
+            if (result == ERROR_CODE.SUCCESS)
+            {
+                Common.WriteCookie("Token", "DoneNOW", token.token);
+                Response.Redirect("index.aspx");
+            }
+            else
+            {
+                if (result == ERROR_CODE.PARAMS_ERROR)
+                    msgtip.InnerHtml = "请使用邮箱或手机号登录!";
+                if (result == ERROR_CODE.PASSWORD_ERROR)
+                    msgtip.InnerHtml = "密码错误!";
+                if (result == ERROR_CODE.USER_NOT_FIND)
+                    msgtip.InnerHtml = "输入用户不存在!";
+                if (result == ERROR_CODE.LOCK)
+                    msgtip.InnerHtml = "您的账户已被锁定，登录失败";
+                msgtip.Visible = true;
+            }
+
+            /*
             var result = bll.Login(userName, userPwd, ip, agent, out user);
             if (result== DTO.ERROR_CODE.SUCCESS)
             {
@@ -61,6 +83,7 @@ namespace EMT.DoneNOW.Web
                     msgtip.InnerHtml = "输入用户不存在!";
                 msgtip.Visible = true;
             }
+            */
         }
     }
 }

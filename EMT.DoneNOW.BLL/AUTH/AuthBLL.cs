@@ -674,10 +674,10 @@ namespace EMT.DoneNOW.BLL
         
         #region Token鉴权
         private readonly sys_user_dal _dal = new sys_user_dal();
-        private const int expire_time_mins = 60;//60 * 8;            // token过期时间(8小时)
-        private const int expire_time_mins_refresh = 60 * 16;     // refreshtoken过期时间(16小时)
-        private const int expire_time_secs= 60 * expire_time_mins;            // token过期时间(8小时)
-        private const int expire_time_secs_refresh = 60 * expire_time_mins_refresh;     // refreshtoken过期时间(16小时)
+        private const int expire_time_mins = 60 * 6;                // token过期时间分钟(6小时)
+        private const int expire_time_mins_refresh = 60 * 16;       // refreshtoken过期时间分钟(16小时)
+        private const int expire_time_secs= 60 * expire_time_mins;                  // token过期时间秒
+        private const int expire_time_secs_refresh = 60 * expire_time_mins_refresh;     // refreshtoken过期时间秒
         private const string secretKey = "GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrk";
 
         /// <summary>
@@ -720,21 +720,16 @@ namespace EMT.DoneNOW.BLL
 
 
             // TODO: user status判断
-
-            // TODO: 读resource信息用以下注释
-            sys_resource resource = new sys_resource();
-            resource.id = user[0].id;
-            resource.first_name = "A";
-            resource.last_name = "a";
-            /*
+            
+            
             // 根据user表信息进入租户数据库获取详细信息，以判断用户状态
             sys_resource resource = new sys_resource_dal().FindById(user[0].id);
             if (resource.is_locked == 1)
                 return ERROR_CODE.LOCK;
-            if (resource.active == 0)
+            if (resource.is_active == 0)
                 return ERROR_CODE.LOCK;
             // TODO: 更多校验及处理
-            */
+            
             var start = Math.Round((DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds);
             var exp = (long)(start + expire_time_secs);
             var random = new Random();
@@ -760,9 +755,13 @@ namespace EMT.DoneNOW.BLL
 
             UserInfoDto userinfo = new UserInfoDto();
             userinfo.id = resource.id;
-            userinfo.name = resource.last_name + resource.first_name;
+            userinfo.email = resource.email;
+            userinfo.mobile = resource.mobile_phone;
+            userinfo.name = resource.name;
+            userinfo.security_Level_id = (int)resource.security_level_id;
             CachedInfoBLL.SetUserInfo(token, userinfo, expire_time_mins);
             CachedInfoBLL.SetToken(refreshToken, token, expire_time_mins_refresh);
+            CachedInfoBLL.SetUserPermit(token + "_permit", new AuthBLL().GetUserPermit(resource.id), expire_time_mins);
 
             tokenDto = new TokenDto
             {
@@ -811,6 +810,21 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
             return ERROR_CODE.SUCCESS;
+        }
+
+        /// <summary>
+        /// 根据token获取用户信息
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static UserInfoDto GetLoginUserInfo(string token)
+        {
+            return CachedInfoBLL.GetUserInfo(token);
+        }
+
+        public static List<AuthPermitDto> GetLoginUserPermit(string token)
+        {
+            return CachedInfoBLL.GetUserPermit(token + "_permit");
         }
         
         /// <summary>

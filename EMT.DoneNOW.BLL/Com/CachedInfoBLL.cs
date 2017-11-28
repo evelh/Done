@@ -23,6 +23,16 @@ namespace EMT.DoneNOW.BLL
             redis.AddCache<UserInfoDto>(token, user, minites);
         }
 
+        public static List<AuthPermitDto> GetUserPermit(string key)
+        {
+            return redis.GetCache<List<AuthPermitDto>>(key);
+        }
+
+        public static void SetUserPermit(string key, List<AuthPermitDto> userPermit, int minites)
+        {
+            redis.AddCache<List<AuthPermitDto>>(key, userPermit, minites);
+        }
+
         public static string GetToken(string refreshToken)
         {
             return redis.GetCache<string>(refreshToken);

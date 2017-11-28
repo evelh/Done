@@ -17,14 +17,32 @@ namespace EMT.DoneNOW.Web
         private List<AuthPermitDto> userPermit;     // 用户单独的权限点信息
         public void ProcessRequest(HttpContext context)
         {
-            userInfo = context.Session["dn_session_user_info"] as UserInfoDto;
-            if (userInfo == null)   // 用户未登录
+            //userInfo = context.Session["dn_session_user_info"] as UserInfoDto;
+            //if (userInfo == null)   // 用户未登录
+            //{
+            //    context.Response.Write(new Tools.Serialize().SerializeJson("{\"status\": '1', \"msg\": \"用户未登录！\"}"));
+            //    context.Response.End();
+            //    return;
+            //}
+            //userPermit = context.Session["dn_session_user_permits"] as List<AuthPermitDto>;
+
+            string token = EMT.Tools.Common.GetCookie("Token", "DoneNOW");
+            if (string.IsNullOrEmpty(token))
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson("{\"status\": '1', \"msg\": \"用户未登录！\"}"));
                 context.Response.End();
                 return;
             }
-            userPermit = context.Session["dn_session_user_permits"] as List<AuthPermitDto>;
+
+            userInfo = AuthBLL.GetLoginUserInfo(token);
+            if (userInfo == null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson("{\"status\": '1', \"msg\": \"用户未登录！\"}"));
+                context.Response.End();
+                return;
+            }
+            userPermit = AuthBLL.GetLoginUserPermit(token);
+
 
             // 判断用户是否可以访问当前url
             if (!CheckUserAccess(context.Request.RawUrl))
