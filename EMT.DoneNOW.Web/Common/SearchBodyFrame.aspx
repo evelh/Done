@@ -87,6 +87,7 @@
     </style>
 </head>
 <body style="overflow-x: auto; overflow-y: auto;">
+  <%="" %>
     <form id="form1">
         <div id="search_list">
             <input type="hidden" id="page_num" name="page_num" <%if (queryResult != null)
@@ -226,9 +227,15 @@
                     <li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
                     <%}
                         } else if(queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) {%>
+                  <%if (CheckAuth("SEARCH_CONTRACTSERVICE_ADDSERVICE")) { %>
                   <li onclick="AddService()"><i style="background-image: url(../Images/new.png);"></i><span>新增服务</span></li>
+                  <%} %>
+                  <%if (CheckAuth("SEARCH_CONTRACTSERVICE_ADDSERVICEBUNDLE")) { %>
                   <li onclick="AddServiceBundle()"><i style="background-image: url(../Images/new.png);"></i><span>新增服务包</span></li>
+                  <%} %>
+                  <%if (CheckAuth("SEARCH_CONTRACTSERVICE_APPLYDISCOUNT")) { %>
                   <li onclick="ApplyDiscount()"><span>应用全部折扣</span></li>
+                  <%} %>
                   <%}%>
                     <li><i style="background-image: url(../Images/print.png);"></i></li>
                     <li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>

@@ -34,6 +34,12 @@ namespace EMT.DoneNOW.Web.Opportunity
                 var opportunity_id = Request.QueryString["opportunity_id"];
                 if (!string.IsNullOrEmpty(opportunity_id))
                 {
+                    if (AuthBLL.GetUserOppAuth(LoginUserId, LoginUser.security_Level_id, Convert.ToInt64(opportunity_id)).CanEdit == false)
+                    {
+                        Response.End();
+                        return;
+                    }
+
                     opportunity = new crm_opportunity_dal().GetOpportunityById(Convert.ToInt64(opportunity_id));
                 }
                 dic = new OpportunityBLL().GetField();

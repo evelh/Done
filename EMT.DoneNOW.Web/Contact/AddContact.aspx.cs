@@ -25,6 +25,16 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             bool is_edit = long.TryParse(Request.QueryString["id"], out id);
+
+            if (is_edit)
+            {
+                if (AuthBLL.GetUserContactAuth(LoginUserId, LoginUser.security_Level_id, id).CanEdit == false)
+                {
+                    Response.End();
+                    return;
+                }
+            }
+
             try
             {
                 var account_id = Request.QueryString["account_id"];

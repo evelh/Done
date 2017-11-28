@@ -10,6 +10,7 @@
 	</head>
 	<body>
         <!--导航栏-->
+    <%="" %>
         <div id="SiteNavigationBar">
             <div class="Left">
                 <div class="Logo Button ButtonIcon">

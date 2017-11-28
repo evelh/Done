@@ -89,6 +89,379 @@ namespace EMT.DoneNOW.BLL
         }
         #endregion
 
+        #region 判断数据权限
+
+        /// <summary>
+        /// 判断用户对客户的查看、修改、删除权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="companyId"></param>
+        /// <returns></returns>
+        public static AuthDetailDto GetUserCompanyAuth(long userId, long secLevelId, long companyId)
+        {
+            AuthDetailDto dto = new AuthDetailDto();
+            var limitViewCustomer = GetLimitValue(secLevelId, AuthLimitEnum.CRMCompanyViewCustomer);
+            var limitViewVerdor = GetLimitValue(secLevelId, AuthLimitEnum.CRMCompanyViewVerdor);
+            var limitViewPros = GetLimitValue(secLevelId, AuthLimitEnum.CRMCompanyViewProspect);
+
+            if (limitViewCustomer == DicEnum.LIMIT_TYPE_VALUE.NONE961 && limitViewPros == DicEnum.LIMIT_TYPE_VALUE.NONE961 && limitViewVerdor == DicEnum.LIMIT_TYPE_VALUE.NONE963)
+                return dto;
+
+            crm_account_dal dal = new crm_account_dal();
+            crm_account company = dal.FindById(companyId);
+            if (company == null)
+                return dto;
+
+            var limitEdit = GetLimitValue(secLevelId, AuthLimitEnum.CRMCompanyEdit);
+            var limitDel = GetLimitValue(secLevelId, AuthLimitEnum.CRMCompanyDelete);
+            if (company.type_id == (int)DicEnum.ACCOUNT_TYPE.MANUFACTURER || company.type_id == (int)DicEnum.ACCOUNT_TYPE.COOPERATIVE_PARTNER)  // 供应商或合作伙伴
+            {
+                if (limitViewVerdor == DicEnum.LIMIT_TYPE_VALUE.NONE963)
+                    return dto;
+
+                dto.CanView = true;
+                if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                    dto.CanEdit = true;
+
+                if (limitDel == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                    dto.CanDelete = true;
+
+                if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962 || limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)   // 编辑或删除权限是我的
+                {
+                    if (company.resource_id == userId)
+                    {
+                        if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                            dto.CanEdit = true;
+                        if (limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                            dto.CanDelete = true;
+                    }
+                    else
+                    {
+                        string sql = $"select 1 from crm_account_team where account_id={company.id} and resource_id={userId}";
+                        if (company.territory_id != null)
+                            sql = $"select 1 from crm_account_team where account_id={company.id} and resource_id={userId} or exists(select 1 from sys_resource_territory where delete_time=0 and territory_id={company.territory_id} and resource_id={userId}) ";
+                        if (!string.IsNullOrEmpty(dal.FindSignleBySql<string>(sql)))
+                        {
+                            if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                                dto.CanEdit = true;
+                            if (limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                                dto.CanDelete = true;
+                        }
+                    }
+                }
+            }
+            else    // 剩下五种处理方式相同
+            {
+                DicEnum.LIMIT_TYPE_VALUE limitValue;
+                if (company.type_id == (int)DicEnum.ACCOUNT_TYPE.CUSTOMER || company.type_id == (int)DicEnum.ACCOUNT_TYPE.CANCELLATION_OF_CUSTOMER)
+                    limitValue = limitViewCustomer;
+                else
+                    limitValue = limitViewPros;
+
+                if (limitValue == DicEnum.LIMIT_TYPE_VALUE.NONE961)
+                    return dto;
+
+                if (limitValue == DicEnum.LIMIT_TYPE_VALUE.ALL961)   // 查看全部
+                {
+                    dto.CanView = true;
+                    if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                        dto.CanEdit = true;
+
+                    if (limitDel == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                        dto.CanDelete = true;
+
+                    if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962 || limitDel== DicEnum.LIMIT_TYPE_VALUE.MINE962)   // 编辑或删除权限是我的
+                    {
+                        if (company.resource_id == userId)
+                        {
+                            if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                                dto.CanEdit = true;
+                            if (limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                                dto.CanDelete = true;
+                        }
+                        else
+                        {
+                            string sql = $"select 1 from crm_account_team where account_id={company.id} and resource_id={userId}";
+                            if (company.territory_id != null)
+                                sql = $"select 1 from crm_account_team where account_id={company.id} and resource_id={userId} or exists(select 1 from sys_resource_territory where delete_time=0 and territory_id={company.territory_id} and resource_id={userId}) ";
+                            if (!string.IsNullOrEmpty(dal.FindSignleBySql<string>(sql)))
+                            {
+                                if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                                    dto.CanEdit = true;
+                                if (limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                                    dto.CanDelete = true;
+                            }
+                        }
+                    }
+                }
+                else     // 查看我的/我的地域
+                {
+                    if (company.resource_id == userId)
+                        dto.CanView = true;
+                    else
+                    {
+                        string sql = $"select 1 from crm_account_team where account_id={company.id} and resource_id={userId}";
+                        if (limitValue == DicEnum.LIMIT_TYPE_VALUE.MY_TORRITORY961 && company.territory_id != null)
+                            sql = $"select 1 from crm_account_team where account_id={company.id} and resource_id={userId} or exists(select 1 from sys_resource_territory where delete_time=0 and territory_id={company.territory_id} and resource_id={userId}) ";
+                        if (!string.IsNullOrEmpty(dal.FindSignleBySql<string>(sql)))
+                            dto.CanView = true;
+                    }
+                    if (dto.CanView && limitEdit != DicEnum.LIMIT_TYPE_VALUE.NONE962)
+                        dto.CanEdit = true;
+                    if (dto.CanView && limitDel != DicEnum.LIMIT_TYPE_VALUE.NONE962)
+                        dto.CanDelete = true;
+                    
+                }
+            }
+
+            return dto;
+        }
+
+        /// <summary>
+        /// 判断用户对联系人的查看、修改、删除权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="contactId"></param>
+        /// <returns></returns>
+        public static AuthDetailDto GetUserContactAuth(long userId, long secLevelId, long contactId)
+        {
+            var contact = new crm_contact_dal().FindById(contactId);
+            if (contact == null)
+                return new AuthDetailDto();
+            return GetUserCompanyAuth(userId, secLevelId, contact.account_id);
+        }
+
+        /// <summary>
+        /// 判断用户对商机的查看、修改、删除权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="oppId"></param>
+        /// <returns></returns>
+        public static AuthDetailDto GetUserOppAuth(long userId, long secLevelId, long oppId)
+        {
+            AuthDetailDto dto = new AuthDetailDto();
+            crm_opportunity_dal dal = new crm_opportunity_dal();
+            crm_opportunity opp = dal.FindById(oppId);
+            if (opp == null)
+                return dto;
+
+            AuthDetailDto companyDto = GetUserCompanyAuth(userId, secLevelId, opp.account_id);
+            if (companyDto.CanView == false)
+                return dto;
+
+            var limitView = GetLimitValue(secLevelId, AuthLimitEnum.CRMOpportunityQuoteView);
+            var limitEdit = GetLimitValue(secLevelId, AuthLimitEnum.CRMOpportunityQuoteEdit);
+            var limitDel = GetLimitValue(secLevelId, AuthLimitEnum.CRMOpportunityQuoteDelete);
+            if (limitView == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                dto.CanView = true;
+            if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                dto.CanEdit = true;
+            if (limitDel == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                dto.CanDelete = true;
+
+            if (limitView == DicEnum.LIMIT_TYPE_VALUE.MINE962
+                || limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962
+                || limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)    // 查看、编辑和删除有权限为我的
+            {
+                if (opp.resource_id == userId)    // 是我的商机
+                {
+                    if (limitView == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                        dto.CanView = true;
+                    if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                        dto.CanEdit = true;
+                    if (limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                        dto.CanDelete = true;
+                }
+            }
+
+            return dto;
+        }
+
+        /// <summary>
+        /// 判断用户对报价的查看、修改、删除权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="saleorderId"></param>
+        /// <returns></returns>
+        public static AuthDetailDto GetUserQuoteAuth(long userId, long secLevelId, long quoteId)
+        {
+            var quote = new crm_quote_dal().FindById(quoteId);
+            if (quote == null)
+                return new AuthDetailDto();
+            return GetUserOppAuth(userId, secLevelId, quote.opportunity_id);
+        }
+
+        /// <summary>
+        /// 判断用户对销售订单的查看、修改、删除权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="saleorderId"></param>
+        /// <returns></returns>
+        public static AuthDetailDto GetUserSaleorderAuth(long userId, long secLevelId, long saleorderId)
+        {
+            var so = new crm_sales_order_dal().FindById(saleorderId);
+            AuthDetailDto dto = new AuthDetailDto();
+            if (so == null)
+                return dto;
+            var opp = new crm_opportunity_dal().FindById(so.opportunity_id);
+            if (opp == null)
+                return dto;
+            var companyAuth = GetUserCompanyAuth(userId, secLevelId, opp.account_id);   // 客户可见才能操作
+            if (companyAuth.CanView == false)
+                return dto;
+
+            var limitView = GetLimitValue(secLevelId, AuthLimitEnum.CRMSalesOrderView);
+            var limitEdit = GetLimitValue(secLevelId, AuthLimitEnum.CRMSalesOrderEdit);
+            var limitDel = GetLimitValue(secLevelId, AuthLimitEnum.CRMSalesOrderDelete);
+
+            if (limitView == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                dto.CanView = true;
+            if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                dto.CanEdit = true;
+            if (limitDel == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                dto.CanDelete = true;
+
+            if (limitView == DicEnum.LIMIT_TYPE_VALUE.MINE962
+                || limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962
+                || limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)    // 查看、编辑和删除有权限为我的
+            {
+                if (so.owner_resource_id == userId)    // 是我的销售订单
+                {
+                    if (limitView == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                        dto.CanView = true;
+                    if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                        dto.CanEdit = true;
+                    if (limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                        dto.CanDelete = true;
+                }
+            }
+
+            return dto;
+        }
+
+        /// <summary>
+        /// 判断用户对备注的查看、修改、删除权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public static AuthDetailDto GetUserNoteAuth(long userId,long secLevelId,long noteId)
+        {
+            AuthDetailDto dto = new AuthDetailDto();
+            var note = new com_activity_dal().FindById(noteId);
+            if (note == null || note.account_id == null)
+                return dto;
+
+            var companyAuth = GetUserCompanyAuth(userId, secLevelId, (long)note.account_id);   // 客户可见才能操作
+            if (companyAuth.CanView == false)
+                return dto;
+
+            dto.CanView = true;     // 客户可见备注就可见
+            var limitEdit = GetLimitValue(secLevelId, AuthLimitEnum.CRMNotesEdit);
+            var limitDel = GetLimitValue(secLevelId, AuthLimitEnum.CRMNotesDelete);
+            if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                dto.CanEdit = true;
+            if (limitDel == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                dto.CanDelete = true;
+
+            if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962 || limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)    // 编辑和删除有权限为我的
+            {
+                if (note.resource_id == userId)    // 是我的
+                {
+                    if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                        dto.CanEdit = true;
+                    if (limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                        dto.CanDelete = true;
+                }
+            }
+
+            return dto;
+        }
+
+        /// <summary>
+        /// 判断用户对待办的查看、修改、删除权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="todoId"></param>
+        /// <returns></returns>
+        public static AuthDetailDto GetUserTodoAuth(long userId, long secLevelId, long todoId)
+        {
+            AuthDetailDto dto = new AuthDetailDto();
+            var todo = new com_activity_dal().FindById(todoId);
+            if (todo == null || todo.account_id == null)
+                return dto;
+
+            var companyAuth = GetUserCompanyAuth(userId, secLevelId, (long)todo.account_id);   // 客户可见才能操作
+            if (companyAuth.CanView == false)
+                return dto;
+
+            dto.CanView = true;     // 客户可见备注就可见
+            var limitEdit = GetLimitValue(secLevelId, AuthLimitEnum.CRMTodoEdit);
+            var limitDel = GetLimitValue(secLevelId, AuthLimitEnum.CRMTodoDelete);
+            if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                dto.CanEdit = true;
+            if (limitDel == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                dto.CanDelete = true;
+
+            if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962 || limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)    // 编辑和删除有权限为我的
+            {
+                if (todo.resource_id == userId)    // 是我的
+                {
+                    if (limitEdit == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                        dto.CanEdit = true;
+                    if (limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+                        dto.CanDelete = true;
+                }
+            }
+
+            return dto;
+        }
+
+        /// <summary>
+        /// 判断用户对附件的查看、删除权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="attId"></param>
+        /// <returns></returns>
+        public static AuthDetailDto GetUserAttAuth(long userId, long secLevelId, long attId)
+        {
+            AuthDetailDto dto = new AuthDetailDto();
+
+            var limitView = GetLimitValue(secLevelId, AuthLimitEnum.CRMAttachmentView);
+            var limitDel = GetLimitValue(secLevelId, AuthLimitEnum.CRMAttachmentDelete);
+            if (limitView == DicEnum.LIMIT_TYPE_VALUE.NONE963)
+                return dto;
+
+            var att = new com_attachment_dal().FindById(attId);
+            if (att == null || att.account_id == null)
+                return dto;
+
+            var companyAuth = GetUserCompanyAuth(userId, secLevelId, (long)att.account_id);   // 客户可见才能操作
+            if (companyAuth.CanView == false)
+                return dto;
+
+            dto.CanView = true;
+            if (limitDel == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+                dto.CanDelete = true;
+            if (limitDel == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+            {
+                if (att.create_user_id == userId)
+                    dto.CanDelete = true;
+            }
+
+            return dto;
+        }
+
+        #endregion
+
         #region 新的权限
         private static List<AuthPermitDto> allPermitsDtoList;       // 所有的权限点信息集合
         private static Dictionary<long, AuthSecurityLevelDto> secLevelPermitDic;    // 所有权限等级的权限点信息字典

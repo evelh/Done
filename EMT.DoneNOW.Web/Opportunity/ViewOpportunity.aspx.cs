@@ -29,6 +29,12 @@ namespace EMT.DoneNOW.Web.Opportunity
             {
                 var id = Request.QueryString["id"];
 
+                if (AuthBLL.GetUserOppAuth(LoginUserId, LoginUser.security_Level_id, Convert.ToInt64(id)).CanView == false)
+                {
+                    Response.End();
+                    return;
+                }
+
                 opportunity = new crm_opportunity_dal().GetOpportunityByOtherId(Convert.ToInt64(id));
                 type = Request.QueryString["type"];
              

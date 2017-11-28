@@ -46,6 +46,7 @@
     <Compile Include="AddFileDto.cs" />
     <Compile Include="ApiResultDto.cs" />
     <Compile Include="ApprovePostDto.cs" />
+    <Compile Include="AuthDetailDto.cs" />
     <Compile Include="AuthSecurityLevelDto.cs" />
     <Compile Include="AuthPermitDto.cs" />
     <Compile Include="CacheQuerySqlDto.cs" />

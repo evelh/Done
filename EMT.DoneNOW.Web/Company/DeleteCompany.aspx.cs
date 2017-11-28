@@ -20,6 +20,12 @@ namespace EMT.DoneNOW.Web.Company
             var id = Request.QueryString["id"];
             if (id != null)
             {
+                if (AuthBLL.GetUserCompanyAuth(LoginUserId, LoginUser.security_Level_id, Convert.ToInt64(id)).CanDelete == false)  // 权限验证
+                {
+                    Response.End();
+                    return;
+                }
+
                 crm_account = new CompanyBLL().GetCompany(Convert.ToInt64(id));
                 dic = companyBll.GetField();
                 if (crm_account != null)

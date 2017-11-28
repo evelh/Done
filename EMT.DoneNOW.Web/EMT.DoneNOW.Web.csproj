@@ -154,7 +154,6 @@
     <Content Include="Company\ViewCompany.aspx" />
     <Content Include="Content\Admin.css" />
     <Content Include="Content\bootstrap.min2.2.2.css" />
-    <Content Include="Contact\EditContact.aspx" />
     <Content Include="Contact\ViewContact.aspx" />
     <Content Include="Content\base.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -255,7 +254,6 @@
     <Content Include="Contract\RoleRate.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Company\EditCompany.aspx" />
-    <Content Include="Contact\DeleteContact.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1014,13 +1012,6 @@
     <Compile Include="Contact\ViewContact.aspx.designer.cs">
       <DependentUpon>ViewContact.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Contact\EditContact.aspx.cs">
-      <DependentUpon>EditContact.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contact\EditContact.aspx.designer.cs">
-      <DependentUpon>EditContact.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Contract\AddCharges.aspx.cs">
       <DependentUpon>AddCharges.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1286,13 +1277,6 @@
     </Compile>
     <Compile Include="Company\EditCompany.aspx.designer.cs">
       <DependentUpon>EditCompany.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contact\DeleteContact.aspx.cs">
-      <DependentUpon>DeleteContact.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contact\DeleteContact.aspx.designer.cs">
-      <DependentUpon>DeleteContact.aspx</DependentUpon>
     </Compile>
     <Compile Include="ErrorHandlerModule.cs" />
     <Compile Include="Global.asax.cs">

@@ -62,6 +62,10 @@ namespace EMT.DoneNOW.Web
         /// <param name="opportunity_id"></param>
         public void DeleteOpportunity(HttpContext context, long opportunity_id)
         {
+            if (AuthBLL.GetUserOppAuth(LoginUserId, LoginUser.security_Level_id, opportunity_id).CanDelete == false)
+            {
+                return;
+            }
 
             var result = new OpportunityBLL().DeleteOpportunity(opportunity_id, LoginUserId);
             if (result)
