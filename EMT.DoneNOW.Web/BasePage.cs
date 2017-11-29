@@ -54,6 +54,7 @@ namespace EMT.DoneNOW.Web
 
         private bool IsUserLogin()
         {
+            /*
             //sys_user user = new sys_user { id = 1, email = "liuhai_dsjt@shdsjt.cn", name="刘海", mobile_phone = "18217750743" };
             //sys_user user = new sys_user { id = 2, email = "zhufei_dsjt@shdsjt.cn", name = "朱飞", mobile_phone = "12" };
             //Session["dn_session_user_info"] = user;
@@ -74,7 +75,19 @@ namespace EMT.DoneNOW.Web
                     return false;
                 }
             }
-            return false;
+            */
+
+            string token = EMT.Tools.Common.GetCookie("Token", "DoneNOW");
+            if (string.IsNullOrEmpty(token))
+                return false;
+
+            userInfo = AuthBLL.GetLoginUserInfo(token);
+            if (userInfo == null)
+                return false;
+
+            userPermit = AuthBLL.GetLoginUserPermit(token);
+
+            return true;
         }
 
         /// <summary>
@@ -83,8 +96,8 @@ namespace EMT.DoneNOW.Web
         /// <returns></returns>
         private bool CheckUserAccess()
         {
-            return true;
-            //return AuthBLL.CheckUrlAuth(userInfo.security_Level_id, userPermit, Request.RawUrl);
+            //return true;
+            return AuthBLL.CheckUrlAuth(userInfo.security_Level_id, userPermit, Request.RawUrl);
         }
 
         /// <summary>
@@ -119,8 +132,8 @@ namespace EMT.DoneNOW.Web
         /// <returns></returns>
         protected bool CheckAuth(string sn)
         {
-            return true;
-            //return AuthBLL.CheckAuth(userInfo.security_Level_id, userPermit, sn);
+            //return true;
+            return AuthBLL.CheckAuth(userInfo.security_Level_id, userPermit, sn);
         }
 
         /// <summary>

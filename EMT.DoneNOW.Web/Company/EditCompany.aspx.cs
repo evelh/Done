@@ -29,6 +29,11 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             var company_id = Convert.ToInt64(Request.QueryString["id"]);
+            if (AuthBLL.GetUserCompanyAuth(LoginUserId,LoginUser.security_Level_id,company_id).CanEdit==false)  // 权限验证
+            {
+                Response.End();
+                return;
+            }
             try
             {
                 company_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.COMPANY);

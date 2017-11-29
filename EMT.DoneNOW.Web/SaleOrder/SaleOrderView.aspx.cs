@@ -31,6 +31,12 @@ namespace EMT.DoneNOW.Web.SaleOrder
                 // todo - 商机的重新指派
 
                 var sid = Request.QueryString["id"];
+                if (AuthBLL.GetUserSaleorderAuth(LoginUserId, LoginUser.security_Level_id, Convert.ToInt64(sid)).CanView == false)
+                {
+                    Response.End();
+                    return;
+                }
+
                 type = Request.QueryString["type"];
                 sale_order = new crm_sales_order_dal().GetSingleSale(long.Parse(sid));
                 opportunity = new crm_opportunity_dal().GetOpportunityById(sale_order.opportunity_id);

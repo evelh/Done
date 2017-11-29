@@ -571,7 +571,7 @@
                                                     <span class="FieldLabel" style="font-weight: bold;">服务/包
                                                     </span>
                                                     <div>
-                                                        <select style="width: 150px;" name="service_id" id="service_id">
+                                                        <select <%if (!CheckAuth("SEARCH_CONTRACT_CHARGE_ADD_CHANGE_SERVICE")) { %> disabled="disabled" <%} %> style="width: 150px;" name="service_id" id="service_id">
                                                          
                                                         </select>
                                                     </div>

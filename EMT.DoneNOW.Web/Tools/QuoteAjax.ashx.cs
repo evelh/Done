@@ -79,17 +79,21 @@ namespace EMT.DoneNOW.Web
 
         public void DeleteQuote(HttpContext context, long quote_id)
         {
-             
-                var result = new QuoteBLL().DeleteQuote(quote_id, LoginUserId);
-                if (result)
-                {
-                    context.Response.Write("删除报价成功！");
-                }
-                else
-                {
-                    context.Response.Write("删除报价失败！");
-                }
-             
+            if (AuthBLL.GetUserQuoteAuth(LoginUserId, LoginUser.security_Level_id, quote_id).CanDelete == false)
+            {
+                return;
+            }
+
+            var result = new QuoteBLL().DeleteQuote(quote_id, LoginUserId);
+            if (result)
+            {
+                context.Response.Write("删除报价成功！");
+            }
+            else
+            {
+                context.Response.Write("删除报价失败！");
+            }
+
         }
 
         public void DeleteQuoteItem(HttpContext context, long quote_item_id)

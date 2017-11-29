@@ -68,6 +68,11 @@ namespace EMT.DoneNOW.Web.Quote
 
                 if (!string.IsNullOrEmpty(id))
                 {
+                    if (AuthBLL.GetUserQuoteAuth(LoginUserId, LoginUser.security_Level_id, Convert.ToInt64(id)).CanEdit == false)
+                    {
+                        Response.End();
+                        return;
+                    }
                     quote = new crm_quote_dal().GetQuote(Convert.ToInt64(id));
                     if (quote != null)
                     {

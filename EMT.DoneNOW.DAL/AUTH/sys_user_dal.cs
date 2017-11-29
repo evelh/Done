@@ -9,7 +9,7 @@ namespace EMT.DoneNOW.DAL
 {
     public class sys_user_dal : BaseDAL<sys_user>
     {
-        private const int max_loginNum = 2;//token中最大登陆限制人数
+        private const int max_loginNum = 0;//token中最大登陆限制人数
          
         /// <summary>
         /// 检测用户登录数量是否超出限制

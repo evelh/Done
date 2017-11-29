@@ -47,6 +47,11 @@ namespace EMT.DoneNOW.Web
         private void DeleteAttachment(HttpContext context)
         {
             long id = long.Parse(context.Request.QueryString["id"]);
+            if (AuthBLL.GetUserAttAuth(LoginUserId, LoginUser.security_Level_id, id).CanDelete == false)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(false));
+                return;
+            }
             bll.DeleteAttachment(id, LoginUserId);
             context.Response.Write(new Tools.Serialize().SerializeJson(true));
         }

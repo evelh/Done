@@ -62,6 +62,11 @@ namespace EMT.DoneNOW.Web
         /// <param name="contact_id"></param>
         public void DeleteContact(HttpContext context, long contact_id)
         {
+            if (AuthBLL.GetUserContactAuth(LoginUserId, LoginUser.security_Level_id, contact_id).CanDelete == false)
+            {
+                return;
+            }
+
             var result = new ContactBLL().DeleteContact(contact_id, LoginUserId);
 
             if (result)

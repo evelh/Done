@@ -26,6 +26,11 @@ namespace EMT.DoneNOW.Web.Company
                 type = Request.QueryString["type"];
                 if (id != null)
                 {
+                    if (AuthBLL.GetUserCompanyAuth(LoginUserId, LoginUser.security_Level_id, Convert.ToInt64(id)).CanView == false)     // 权限验证
+                    {
+                        Response.End();
+                        return;
+                    }
                     var src = Request.QueryString["src"];
                     if (!string.IsNullOrEmpty(src))
                         crm_account = companyBll.GetCompanyByOtherId(Convert.ToInt64(id), src);

@@ -29,7 +29,13 @@ namespace EMT.DoneNOW.Web
             {
                 // var account_id = Request.QueryString["account_id"];      // 客户ID
                 var contact_id = Request.QueryString["id"];      // 联系人ID
-                
+
+                if (AuthBLL.GetUserContactAuth(LoginUserId, LoginUser.security_Level_id, Convert.ToInt64(contact_id)).CanView == false)
+                {
+                    Response.End();
+                    return;
+                }
+
                 contact = contactBLL.GetContact(Convert.ToInt64(contact_id));
                 if (contact != null)
                 {
