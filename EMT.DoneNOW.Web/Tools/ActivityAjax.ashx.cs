@@ -129,7 +129,7 @@ namespace EMT.DoneNOW.Web
         /// <param name="id"></param>
         private void DeleteActivity(HttpContext context, long id)
         {
-            context.Response.Write(new Tools.Serialize().SerializeJson(bll.DeleteActivity(id, LoginUserId)));
+            context.Response.Write(new Tools.Serialize().SerializeJson(bll.DeleteActivity(id, LoginUserId, LoginUser.security_Level_id)));
         }
 
         /// <summary>

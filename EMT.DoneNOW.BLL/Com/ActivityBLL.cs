@@ -29,9 +29,20 @@ namespace EMT.DoneNOW.BLL
         /// <param name="id"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool DeleteActivity(long id, long userId)
+        public bool DeleteActivity(long id, long userId, long secLevelId)
         {
             var act = dal.FindById(id);
+            if (act.cate_id == (int)DicEnum.ACTIVITY_CATE.NOTE)
+            {
+                if (AuthBLL.GetUserNoteAuth(userId, secLevelId, id).CanDelete == false)
+                    return false;
+            }
+            else if (act.cate_id == (int)DicEnum.ACTIVITY_CATE.TODO)
+            {
+                if (AuthBLL.GetUserTodoAuth(userId, secLevelId, id).CanDelete == false)
+                    return false;
+            }
+
             act.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
             act.delete_user_id = userId;
 

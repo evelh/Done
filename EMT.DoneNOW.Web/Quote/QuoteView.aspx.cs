@@ -15,7 +15,7 @@ namespace EMT.DoneNOW.Web
 {
     public partial class QuoteView : BasePage
     {
-        public int id;
+        public long id;
         public int colsum = 1;                                   //显示列数
         private sys_quote_tmpl data = new sys_quote_tmpl();
         private QuoteBLL qd = new QuoteBLL();                    //qd获取报价项相关信息使用
@@ -35,7 +35,13 @@ namespace EMT.DoneNOW.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             //从URL地址获取报价id
-            id = Convert.ToInt32(Request.QueryString["id"]);
+            id = Convert.ToInt64(Request.QueryString["id"]);
+            if (AuthBLL.GetUserQuoteAuth(LoginUserId, LoginUser.security_Level_id, id).CanView == false)
+            {
+                Response.End();
+                return;
+            }
+
             //获取所有的报价模板
             datalist = new QuoteTemplateBLL().GetAllTemplate();
             //获取该报价信息

@@ -24,6 +24,12 @@ namespace EMT.DoneNOW.Web.SaleOrder
             try
             {
                 var soid = Request.QueryString["id"];
+                if (AuthBLL.GetUserSaleorderAuth(LoginUserId, LoginUser.security_Level_id, Convert.ToInt64(soid)).CanEdit == false)
+                {
+                    Response.End();
+                    return;
+                }
+
                 sale_order = new crm_sales_order_dal().GetSingleSalesOrderByWhere($" and id = {soid}");
                 if(sale_order!=null)
                 {

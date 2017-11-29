@@ -39,7 +39,13 @@ namespace EMT.DoneNOW.Web
         /// <param name="status_id"></param>
         private void ChangeSaleOrderStatus(HttpContext context, long soid, int status_id)
         {
-
+            if (status_id == 469)
+            {
+                if (AuthBLL.GetUserSaleorderAuth(LoginUserId, LoginUser.security_Level_id, soid).CanDelete == false)
+                {
+                    return;
+                }
+            }
             var result = new SaleOrderBLL().UpdateSaleOrderStatus(soid, status_id, LoginUserId);
             context.Response.Write(result);
         }

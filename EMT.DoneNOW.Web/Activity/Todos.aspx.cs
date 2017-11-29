@@ -37,6 +37,13 @@ namespace EMT.DoneNOW.Web.Activity
                 long noteid;
                 if (!string.IsNullOrEmpty(Request.QueryString["id"]) && long.TryParse(Request.QueryString["id"], out noteid))
                 {
+                    if (AuthBLL.GetUserTodoAuth(LoginUserId, LoginUser.security_Level_id, noteid).CanEdit == false)
+                    {
+                        Response.Write("<script>alert('您不能编辑此待办');</script>");
+                        Response.End();
+                        return;
+                    }
+
                     note = bll.GetActivity(noteid);
                     contactList = new ContactBLL().GetContactByCompany((long)note.account_id);
                     opportunityList = new OpportunityBLL().GetOpportunityByCompany((long)note.account_id);
