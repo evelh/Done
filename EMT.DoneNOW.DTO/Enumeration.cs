@@ -74,6 +74,7 @@ namespace EMT.DoneNOW.DTO
         INVOICE_TEMPLATE_BODY_ITEMIZE =142,      //发票模板主体-逐项列出
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
         NOTE_PUBLISH_TYPE = 146,                 // 合同/项目等备注发布类型
+        TASK_LIBRARY_CATE  = 149,                 // 任务库种类
     }
 
     /// <summary>
@@ -653,6 +654,7 @@ namespace EMT.DoneNOW.DTO
             SDK_WORK_ENTRY=1384,                        // 工时
             SDK_EXPENSE_REPORT = 1385,                  // 费用报表   
             SDK_EXPENSE = 1386,                         // 费用
+            SDK_TASK_LIBARY = 1387,                     // 任务库
             SDK_MILESTONE=1388,                         // 阶段里程碑
             ATTACHMENT = 1389,                          // 附件
             PROJECT_TASK_PREDECESSOR = 1393,            // 任务的前驱任务
@@ -1294,8 +1296,11 @@ namespace EMT.DoneNOW.DTO
         PROJECT_VIEW ,                         // 项目查看
 
         TASKPHASE_CALLBACK,       // task阶段的查找带回
-        TASKADD,                 // task新增
-        TASKEDIT ,              // task修改
+        TASKADD,                  // task新增
+        TASKEDIT ,                // task修改
+        TASKVIEW,                 // 查看task
+        TASK_MODIFY,              // task批量修改
+        TASK_TO_LIBARY,           // 添加到任务库
 
         WORK_ENTRY_ADD,          // 工时新增修改
         WORK_ENTRY_EDIT,         // 工时新增修改

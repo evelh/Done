@@ -992,5 +992,48 @@ namespace EMT.DoneNOW.BLL
         {
             return _dal.FindSignleBySql<crm_quote>($"select * from crm_quote where is_primary_quote = 1 and opportunity_id={oppo_id} and delete_time=0");
         }
+        /// <summary>
+        /// 报价是否可以进行关闭报价操作
+        /// </summary>
+        public bool CanCloseQuote(long quote_id,out string reason)
+        {
+            reason = "";
+            bool result = true;
+            try
+            {
+                var thisQuote = _dal.FindNoDeleteById(quote_id);
+                if (thisQuote != null)
+                {
+                    if (thisQuote.is_primary_quote != 1)
+                    {
+                        reason = "该报价不是主报价";
+                        return false;
+                    }
+                    var thisQuoItemList = new crm_quote_item_dal().GetQuoteItems($"and quote_id = {quote_id}");
+                    if(thisQuoItemList!=null&& thisQuoItemList.Count > 0)
+                    {
+                        var serItemList = thisQuoItemList.Where(_ => _.type_id == (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.SERVICE || _.type_id == (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.START_COST).ToList();
+                        if(serItemList!=null&& serItemList.Count > 0)
+                        {
+                            reason = "报价中包含服务/包、初始费用等";
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        result = true;
+                    }
+                }
+                else
+                {
+                    reason = "没有找到该报价";
+                }
+            }
+            catch (Exception msg)
+            {
+                return false;
+            }
+            return result;
+        }
     }
 }

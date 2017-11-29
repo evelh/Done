@@ -41,6 +41,15 @@ namespace EMT.DoneNOW.Web
                     case "GetResAndWorkGroup":
                         GetResAndWorkGroup(context);
                         break;
+                    case "CheckTeamRes":
+                        var teamIds = context.Request.QueryString["resDepIds"];
+                        CheckTeamRes(context,teamIds);
+                        break;
+                    case "CheckPriResInTeam":
+                        var priResId = context.Request.QueryString["resource_id"];
+                        var teaIds = context.Request.QueryString["resDepIds"];
+                        CheckPriResInTeam(context, teaIds,long.Parse(priResId));
+                        break;
                     default:
                         break;
                 }
@@ -101,7 +110,9 @@ namespace EMT.DoneNOW.Web
                 }
             }
         }
-
+        /// <summary>
+        /// 获取工作组名称
+        /// </summary>
         private void GetWorkName(HttpContext context, string ids)
         {
             var workList = new sys_workgroup_dal().GetList($" and id in ({ids})");
@@ -152,7 +163,52 @@ namespace EMT.DoneNOW.Web
 
             context.Response.Write(new Tools.Serialize().SerializeJson(resAndworList));
         }
+        /// <summary>
+        /// 校验是否有重复员工
+        /// </summary>
+        private void CheckTeamRes(HttpContext context,string ids)
+        {
+            var result = false;
+            var sdrDal = new sys_resource_department_dal();
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var resList = sdrDal.GetListByIds(ids);
+                if (resList != null && resList.Count > 0)
+                {
+                    var resArr = resList.Select(_ => _.resource_id).ToList();
+                    if(resArr!=null&& resArr.Count > 0)
+                    {
+                        if (resArr.Count!= resList.Count)
+                        {
+                            result = false;
+                        }
+                    }
+                }
+            }
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 校验员工id是否在关系表中出现
+        /// </summary>
+        private void CheckPriResInTeam(HttpContext context, string ids,long priResId)
+        {
+            var result = false;
+            var sdrDal = new sys_resource_department_dal();
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var resList = sdrDal.GetListByIds(ids);
+                if (resList != null && resList.Count > 0)
+                {
+                    var thisResList = resList.Where(_ => _.resource_id == priResId).ToList();
+                    if(thisResList!=null&& thisResList.Count > 0)
+                    {
+                        result = true;
+                    }
+                }
+            }
 
+            context.Response.Write(result);
+        }
         
         
     }

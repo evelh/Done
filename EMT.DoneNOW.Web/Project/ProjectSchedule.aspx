@@ -161,6 +161,66 @@
             left: 0;
             top: 0;
         }
+
+        .menu {
+            position: absolute;
+            z-index: 999;
+            display: none;
+        }
+
+            .menu ul {
+                margin: 0;
+                padding: 0;
+                position: relative;
+                width: 150px;
+                padding: 10px 0;
+            }
+
+                .menu ul li {
+                    padding-left: 20px;
+                    height: 25px;
+                    line-height: 25px;
+                    cursor: pointer;
+                }
+
+                    .menu ul li ul {
+                        display: none;
+                        position: absolute;
+                        right: -150px;
+                        top: -1px;
+                        background-color: #F5F5F5;
+                        min-height: 90%;
+                    }
+
+                        .menu ul li ul li:hover {
+                            background: #e5e5e5;
+                        }
+
+                    .menu ul li:hover {
+                        background: #e5e5e5;
+                    }
+
+                        .menu ul li:hover ul {
+                            display: block;
+                        }
+
+                    .menu ul li .menu-i1 {
+                        width: 20px;
+                        height: 100%;
+                        display: block;
+                        float: left;
+                    }
+
+                    .menu ul li .menu-i2 {
+                        width: 20px;
+                        height: 100%;
+                        display: block;
+                        float: right;
+                    }
+
+                .menu ul .disabled {
+                    color: #AAAAAA;
+                }
     </style>
     <title></title>
 </head>
@@ -420,7 +480,7 @@
                                                             <div class="Button1" id="IndentButton" tabindex="0" onclick="Indent()">
                                                                 <span class="Text">增加缩进</span>
                                                             </div>
-                                                            <div class="Button1" id="ForwardModifyButton" tabindex="0">
+                                                            <div class="Button1" id="ForwardModifyButton" tabindex="0" onclick="ModifyManyTask()">
                                                                 <span class="Text">前进/修改</span>
                                                             </div>
                                                             <%--  <div class="Button1" id="AddToMyWorkListButton" tabindex="0">
@@ -529,6 +589,8 @@
                                     </div>
                                 </td>
                                 <td class="Context  U1"><a class="ButtonIcon Button ContextMenu NormalState menu">
+                                    <input type="hidden" id="<%=id %>" value="<%=id %>" />
+                                    <input type="hidden" id="<%=id %>_sort_no" value="<%=fisrtKey.Value %>" />
                                     <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px; width: 15px;"></div>
                                 </a></td>
 
@@ -1583,6 +1645,145 @@
                 </div>
             </div>
         </div>
+
+        <div class="menu" id="projectMenu" style="background-color: white;">
+            <%--菜单--%>
+            <ul>
+                <li class="" style="top: 27px; left: 49px; height: 100px; background-color: white;" id="">
+                    <div class="DropDownButtonDiv">
+                        <div class="Group" style="float: left;">
+                            <div class="Heading">
+                                <div class="Text" style="font-weight: bold;">常规</div>
+                            </div>
+                            <div class="Content">
+                                <div class="Button1" id="" tabindex="0" onclick="EditObject('projetc')">
+                                    <span class="Text">修改</span>
+                                </div>
+                                <div class="Button1" id="" tabindex="0" onclick="CompleteProject()">
+                                    <span class="Text">完成</span>
+                                </div>
+                                <div class="Button1" id="" tabindex="0" onclick="DeleteProject()">
+                                    <span class="Text">删除</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="Group" style="float: left;">
+                            <div class="Heading">
+                                <div class="Text" style="font-weight: bold;">新建</div>
+                            </div>
+                            <div class="Content">
+                                <div class="Button1" id="ProNoteButton" tabindex="0" onclick="NewAddNote('projetc')">
+                                    <span class="Text">备注</span>
+                                </div>
+                                <div class="Button1" id="ProAttButton" tabindex="0" onclick="NewAddAtt()">
+                                    <span class="Text">附件</span>
+                                </div>
+                                <div class="Button1" id="ProCostButton" tabindex="0" onclick="NewAddCharge()">
+                                    <span class="Text">成本</span>
+                                </div>
+                                <div class="Button1" id="ProExpButton" tabindex="0" onclick="NewAddExpense('projetc')">
+                                    <span class="Text">费用</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        <div class="menu" id="taskMenu" style="background-color: white;">
+            <%--菜单--%>
+            <ul>
+                <li class="" style="top: 27px; left: 49px; height: 350px; background-color: white;width:600px;" id="">
+                    <div class="DropDownButtonDiv" style="width:500px;max-width:600px;">
+                        <div class="Group" style="float: left;">
+                            <div class="Heading">
+                                <div class="Text" style="font-weight: bold;">常规</div>
+                            </div>
+                            <div class="Content">
+                                <div class="Button1 TaskMenu OnlyTaskMenu" id="TaskViewDetails" tabindex="0" onclick="TaskViewDetails()">
+                                    <span class="Text">查看详情</span>
+                                </div>
+                                <div class="Button1 TaskMenu OnlyTaskMenu" id="TaskViewHistory" tabindex="0" onclick="TaskViewHistory()">
+                                    <span class="Text">查看任务历史</span>
+                                </div>
+                                <div class="Button1 TaskMenu" id="" tabindex="0" onclick="EditObject('task')">
+                                    <span class="Text">修改</span>
+                                </div>
+                                <div class="Button1 TaskMenu" id="CompleteTask" tabindex="0" onclick="CompleteSingTask()">
+                                    <span class="Text">完成</span>
+                                </div>
+                                <div class="Button1 TaskMenu" id="" tabindex="0" onclick="ModifySingTask()">
+                                    <span class="Text">前进/修改</span>
+                                </div>
+                                <div class="Button1 TaskMenu" id="" tabindex="0" onclick="">
+                                    <span class="Text">添加到我的工作清单</span>
+                                </div>
+                                <div class="Button1" id="" tabindex="0" onclick="">
+                                    <span class="Text">添加到主负责人的工作列表</span>
+                                </div>
+                                <div class="Button1" id="" tabindex="0" onclick="">
+                                    <span class="Text">添加到其它成员的工作列表</span>
+                                </div>
+                                <div class="Button1" id="" tabindex="0" onclick="DeleteTask()">
+                                    <span class="Text">删除</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="Group" style="float: left;">
+                            <div class="Heading">
+                                <div class="Text" style="font-weight: bold;">新建</div>
+                            </div>
+                            <div class="Content">
+                                <div class="Button1" id="" tabindex="0" onclick="NewAddWorkEntry('1')">
+                                    <span class="Text">工时</span>
+                                </div>
+                                <div class="Button1" id="" tabindex="0" onclick="NewAddWorkEntry('')">
+                                    <span class="Text">工时（输入开始/结束时间）</span>
+                                </div>
+                                <div class="Button1" id="TaskNoteButton" tabindex="0" onclick="NewAddNote('task')">
+                                    <span class="Text">备注</span>
+                                </div>
+                                <div class="Button1" id="TaskAttButton" tabindex="0" onclick="NewAddAtt()">
+                                    <span class="Text">附件</span>
+                                </div>
+
+                                <div class="Button1" id="TaskExpButton" tabindex="0" onclick="NewAddExpense('task')">
+                                    <span class="Text">费用</span>
+                                </div>
+                                <div class="Button1" id="" tabindex="0" onclick="AddChangeOrder()">
+                                    <span class="Text">变更单（成本）</span>
+                                </div>
+                                <div class="Button1 TaskMenu OnlyTaskMenu" id="" tabindex="0" onclick="CopThisTask()">
+                                    <span class="Text">任务副本</span>
+                                </div>
+                                <div class="Button1 TaskMenu OnlyTaskMenu" id="" tabindex="0" onclick="AddToLibary()">
+                                    <span class="Text">添加到任务库</span>
+                                </div>
+                                <div class="Button1 TaskMenu OnlyTaskMenu" id="" tabindex="0" onclick="">
+                                    <span class="Text">服务预定</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="Group" style="float: left;">
+                            <div class="Heading">
+                                <div class="Text" style="font-weight: bold;">移动</div>
+                            </div>
+                            <div class="Content">
+                                <div class="Button1" id="" tabindex="0" onclick="OutSingTask()">
+                                    <span class="Text">减少缩进</span>
+                                </div>
+                                <div class="Button1" id="" tabindex="0" onclick="InSingTask()">
+                                    <span class="Text">增加缩进</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
     </form>
 </body>
 </html>
@@ -1662,10 +1863,6 @@
 
 
     }
-    // 修改task
-    function EditTask() {
-
-    }
 </script>
 <%// 页面相关js %>
 <script>
@@ -1735,7 +1932,7 @@
             });
         };
     })(jQuery);
-   
+
 
 
     $(".Context").on("mouseover", function () {
@@ -2327,7 +2524,7 @@
     function ShowReason() {
         $("#ShowReason").show();
         $("#BackgroundOverLay").show();
-        $("#SaveAndCloseButton").click(function () {
+        $("#SaveAndCloseButton").unbind("click").click(function () {
             var ids = GetChooseTaskId();
             if (ids == "") {
                 LayerMsg("前选择任务");
@@ -2480,4 +2677,287 @@
 
         }
     }
+</script>
+
+<%--菜单事件相关--%>
+<script>
+    // MileContextMenu
+    var entityid = "";
+    var Times = 0;
+    $(".ContextMenu").bind("mouseover", function (event) {
+        //debugger;
+        clearInterval(Times);
+        //debugger;
+        var oEvent = event;
+        var menu = "";
+        //var thisClassName = $(this).prop("className"); attachMenuS expTR
+
+        if (!($(this).parent().parent().hasClass("HighImportance")))  // 代表是项目
+        {
+            menu = document.getElementById("projectMenu");
+        }
+        else {
+
+            menu = document.getElementById("taskMenu");
+        }
+
+
+        // else if ($(this).hasClass("noteTR")) {
+        //    menu = document.getElementById("noteMenu");
+        //} else if ($(this).hasClass("atachTR")) {
+        //    menu = document.getElementById("attachMenu");
+        //} else if ($(this).hasClass("expTR")) {
+        //    menu = document.getElementById("expMenu");
+        //}
+
+        entityid = $(this).children().first().val(); // data("val");
+        (function () {
+            menu.style.display = "block";
+            Times = setTimeout(function () {
+                menu.style.display = "none";
+            }, 600);
+        }());
+        menu.onmouseenter = function () {
+            clearInterval(Times);
+            menu.style.display = "block";
+        };
+        menu.onmouseleave = function () {
+            Times = setTimeout(function () {
+                menu.style.display = "none";
+            }, 600);
+        };
+        var Left = $(document).scrollLeft() + oEvent.clientX;
+        var Top = $(document).scrollTop() + oEvent.clientY;
+        var winWidth = window.innerWidth;
+        var winHeight = window.innerHeight;
+        var menuWidth = menu.clientWidth;
+        var menuHeight = menu.clientHeight;
+        var scrLeft = $(document).scrollLeft();
+        var scrTop = $(document).scrollTop();
+        var clientWidth = Left + menuWidth;
+        var clientHeight = Top + menuHeight;
+        var rightWidth = winWidth - oEvent.clientX;
+        var bottomHeight = winHeight - oEvent.clientY;
+        if (winWidth < clientWidth && rightWidth < menuWidth) {
+            menu.style.left = winWidth - menuWidth - 18 + 100 + scrLeft + "px";
+        } else {
+            menu.style.left = Left + "px";
+        }
+        if (winHeight < clientHeight && bottomHeight < menuHeight) {
+            menu.style.top = winHeight - menuHeight - 18 + 100 + scrTop + "px";
+        } else {
+            menu.style.top = Top - 25 + "px";
+        }
+        document.onclick = function () {
+            menu.style.display = "none";
+        }
+        return false;
+    });
+
+    function DeleteProject() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ProjectAjax.ashx?act=DisProject&project_id=<%=thisProject.id %>",
+            dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    if (data.result == "True") {
+
+                    } else {
+                        LayerMsg(data.reason);
+                    }
+                }
+
+                history.go(0);
+            },
+        });
+    }
+    function NewAddNote(type) {
+        if (entityid != "" && entityid != undefined) {
+            if (type == "projetc") {
+                window.open("TaskNote.aspx?project_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_NOTE_ADD %>', 'left=200,top=200,width=1080,height=800', false);
+            } else {
+                window.open("TaskNote.aspx?task_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_NOTE_ADD %>', 'left=200,top=200,width=1080,height=800', false);
+            }
+
+        }
+    }
+    function NewAddAtt() {
+        if (entityid != "" && entityid != undefined) {
+            window.open("../Activity/OpenAttachment.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_ATTACH %>', 'left=200,top=200,width=1080,height=800', false);
+        }
+    }
+    function NewAddCharge() {
+        if (entityid != "" && entityid != undefined) {
+            LayerMsg('待添加');
+        }
+    }
+    function NewAddExpense(type) {
+        if (entityid != "" && entityid != undefined) {
+            if (type == "projetc") {
+                window.open("ExpenseManage.aspx?project_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_EXPENSE_ADD %>', 'left=200,top=200,width=1080,height=800', false);
+            } else {
+                window.open("ExpenseManage.aspx?task_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_EXPENSE_ADD %>', 'left=200,top=200,width=1080,height=800', false);
+            }
+        }
+    }
+    // 修改
+    function EditObject(type) {
+        if (entityid != "" && entityid != undefined) {
+            if (type == "projetc") {
+                window.open("ProjectAddOrEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECT_EDIT %>', 'left=200,top=200,width=1080,height=800', false);
+            } else {
+                window.open("TaskAddOrEdit.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKEDIT %>', 'left=200,top=200,width=1080,height=800', false);
+            }
+        }
+    }
+    // 查看任务详情
+    function TaskViewDetails() {
+        if (entityid != "" && entityid != undefined) {
+            window.open("TaskView.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKVIEW %>', 'left=200,top=200,width=1080,height=800', false);
+        }
+    }
+    // 查看任务历史
+    function TaskViewHistory() {
+        if (entityid != "" && entityid != undefined) {
+            window.open("TaskHistory.aspx?task_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKVIEW %>', 'left=200,top=200,width=1080,height=800', false);
+        }
+    }
+    // 新增工时 是否需要输入时间
+    function NewAddWorkEntry(NoTime) {
+        if (entityid != "" && entityid != undefined) {
+            window.open("WorkEntry.aspx?task_id=" + entityid + "&NoTime" + NoTime, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKVIEW %>', 'left=200,top=200,width=1080,height=800', false);
+        }
+    }
+
+    // 复制任务
+    function CopThisTask() {
+        if (entityid != "" && entityid != undefined) {
+            window.open("TaskAddOrEdit.aspx?id=" + entityid + "&IsCopy=1", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKEDIT %>', 'left=200,top=200,width=1080,height=800', false);
+        }
+
+    }
+
+    // 添加到任务库 
+    function AddToLibary() {
+        if (entityid != "" && entityid != undefined) {
+            window.open("TaskToLibrary.aspx?task_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_TO_LIBARY %>', 'left=200,top=200,width=1080,height=800', false);
+        }
+    }
+
+    function DeleteTask() {
+        if (entityid != "" && entityid != undefined) {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ProjectAjax.ashx?act=DeleteTasks&taskIds=" + entityid,
+                success: function (data) {
+                    if (data == "True") {
+
+                    }
+                    history.go(0);
+                },
+            });
+        }
+    }
+    // 获取选中的task 批量修改
+    function ModifyManyTask() {
+        var ids = GetChooseTaskId();
+        if (ids != "") {
+            window.open("TaskModify.aspx?taskIds=" + ids, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_MODIFY %>', 'left=200,top=200,width=1080,height=800', false);
+        } else {
+            LayerMsg("请选择任务");
+        }
+    }
+    // 单个任务修改
+    function ModifySingTask() {
+        if (entityid != "" && entityid != undefined) {
+            window.open("TaskModify.aspx?taskIds=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_MODIFY %>', 'left=200,top=200,width=1080,height=800', false);
+        }
+    }
+    function CompleteSingTask() {
+        $("#ShowReason").show();
+        $("#BackgroundOverLay").show();
+        $("#SaveAndCloseButton").unbind("click").click(function () {
+
+            if (entityid == "" || entityid == undefined) {
+                LayerMsg("前选择任务");
+                return false;
+            }
+            var reason = $("#taskReason").val();
+            if (reason == "") {
+                LayerMsg("请填写任务完成原因");
+                return false;
+            }
+
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ProjectAjax.ashx?act=CompleteTask&ids=" + ids + "&reason=" + reason,
+                success: function (data) {
+                    if (data == "True") {
+
+                    }
+                    history.go(0);
+                },
+            });
+
+        })
+    }
+    // 单个task减少缩进
+    function OutSingTask() {
+        if (entityid != "" && entityid != undefined) {
+            var firstSortNum = $("#" + entityid + "_sort_no").val();
+            if (firstSortNum != "") {
+                var firArr = firstSortNum.split('.');
+                if (Number(firArr.length) > Number(1)) {
+                    debugger;
+                    // requestData("../Tools/ProjectAjax.ashx?act=Outdent&taskId=" + firTaskId, null, function () { })
+                    $.ajax({
+                        type: "GET",
+                        async: false,
+                        url: "../Tools/ProjectAjax.ashx?act=Outdend&taskId=" + entityid,
+                        success: function (data) {
+                            history.go(0);
+                        },
+                    });
+                } else {
+                    LayerMsg("不满足减少缩进条件");
+                }
+            }
+        }
+    }
+    // 单个task增加缩进
+    function InSingTask() {
+        if (entityid != "" && entityid != undefined) {
+            var firstSortNum = $("#" + entityid + "_sort_no").val();
+            if (firstSortNum != "") {
+                var firArr = firstSortNum.split('.');
+                if (Number(firArr[firArr.length - 1]) > 1) {
+                    $.ajax({
+                        type: "GET",
+                        async: false,
+                        url: "../Tools/ProjectAjax.ashx?act=Indend&taskId=" + entityid,
+                        success: function (data) {
+                            if (data == "True") {
+
+                            }
+                            history.go(0);
+                        },
+                    });
+                } else {
+                    LayerMsg("不满足增加缩进条件");
+                }
+            }
+        }
+
+    }
+
+    function AddChangeOrder() {
+        if (entityid != "" && entityid != undefined) {
+            window.open("../Contract/AddCharges.aspx?task_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConChargeAdd %>', 'left=200,top=200,width=1080,height=800', false);
+        }
+    }
+
 </script>

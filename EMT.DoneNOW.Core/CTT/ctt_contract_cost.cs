@@ -64,7 +64,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? project_id { get; set; }
         [DataMember]
-        public Int64? ticket_id { get; set; }
+        public Int64? task_id { get; set; }
         [DataMember]
         public Int64? opportunity_id { get; set; }
         [DataMember]
@@ -93,8 +93,6 @@ namespace EMT.DoneNOW.Core
         public DateTime? web_service_date { get; set; }
         [DataMember]
         public Decimal? change_order_hours { get; set; }
-        [DataMember]
-        public Int64? task_id { get; set; }
         [DataMember]
         public Int32 sub_cate_id { get; set; }
 

@@ -777,14 +777,68 @@ namespace EMT.DoneNOW.BLL
             {
                 var taskDal = new sdk_task_dal();
                 var taskList = taskDal.GetProjectTask(thisProject.id);
-                #region 工时校验
-                // todo
+                #region 工时,任务备注，任务附件校验
+                var sweDal = new sdk_work_entry_dal();
+                var caDal = new com_activity_dal();
+                var cattDal = new com_attachment_dal();
+                var stmDal = new sdk_task_milestone_dal();
+                var checkEntry = "";
+                var checkNote = "";
+                var checkAtt = "";
+                var checkMile = "";
+                foreach (var thisTask in taskList)
+                {
+                    var thisTaskEntryList = sweDal.GetByTaskId(thisTask.id);
+                    if(thisTaskEntryList!=null&& thisTaskEntryList.Count > 0)
+                    {
+                        checkEntry = "1";
+                        break;
+                    }
+                    var thisNoteTaskList = caDal.GetActiList($" and (task_id ={thisTask.id} or object_id={thisTask.id} ) and is_system_generate <> 1");  // 暂时只校验非系统备注
+                    if(thisNoteTaskList!=null&& thisNoteTaskList.Count > 0)
+                    {
+                        checkNote = "1";
+                        break;
+                    }
+                    var tnoList = cattDal.GetAttListByOid(thisTask.id);
+                    if (tnoList != null && tnoList.Count > 0)
+                    {
+                        checkAtt = "1";
+                        break;
+                    }
+                    var milList = stmDal.GetPhaMilList(thisTask.id);
+                    if(milList!=null&& milList.Count > 0)
+                    {
+                        checkMile = "1";
+                        break;
+                    }
+                }
+                if (!string.IsNullOrEmpty(checkEntry))
+                {
+                    reson = "任务中含有工时";
+                    return false;
+                }
+                if (!string.IsNullOrEmpty(checkNote))
+                {
+                    reson = "任务中存在备注";
+                    return false;
+                }
+                if (!string.IsNullOrEmpty(checkAtt))
+                {
+                    reson = "任务存在附件";
+                    return false;
+                }
+                if (!string.IsNullOrEmpty(checkMile))
+                {
+                    reson = "任务存在里程碑";
+                    return false;
+                }
                 #endregion
                 #region 成本校验
                 var costList = new ctt_contract_cost_dal().GetCostByProId(thisProject.id);
                 if (costList != null && costList.Count > 0)
                 {
-                    reson = "cost";
+                    reson = "项目存在成本";
                     return false;
                 }
                 #endregion
@@ -793,58 +847,30 @@ namespace EMT.DoneNOW.BLL
                 var expList = new sdk_expense_dal().GetExpByProId(thisProject.id);
                 if (expList != null && expList.Count > 0)
                 {
-                    reson = "expense";
+                    reson = "项目存在费用";
                     return false;
                 }
                 #endregion
                 #region 服务预定校验
                 // todo
                 #endregion
-                #region 备注校验（包括任务相关备注）
-                var caDal = new com_activity_dal();
-                var actList = caDal.GetActiListByOID(thisProject.id);
+                #region 备注校验
+                var actList = caDal.GetActiListByOID(thisProject.id, " and is_system_generate <> 1");
                 if (actList != null && actList.Count > 0)  // 项目备注校验
                 {
-                    reson = "proNote";
+                    reson = "项目存在备注";
                     return false;
                 }
-                if (taskList != null && taskList.Count > 0)  // 任务备注校验
-                {
-                    foreach (var task in taskList)
-                    {
-                        var tnoList = caDal.GetActiListByOID(task.id);
-                        if (tnoList != null && tnoList.Count > 0)
-                        {
-                            reson = "taskNote";
-                            return false;
-                        }
-                    }
-                }
                 #endregion
-                #region 附件校验（包括任务相关附件）
-                var cattDal = new com_attachment_dal();
+                #region 附件校验
                 var attList = cattDal.GetAttListByOid(thisProject.id);
-                if (attList != null && attList.Count > 0)  // 项目备注校验
+                if (attList != null && attList.Count > 0)  // 项目附件校验
                 {
-                    reson = "proAttachment";
+                    reson = "项目存在附件";
                     return false;
                 }
-                if (taskList != null && taskList.Count > 0)  // 任务备注校验
-                {
-                    foreach (var task in taskList)
-                    {
-                        var tnoList = cattDal.GetAttListByOid(task.id);
-                        if (tnoList != null && tnoList.Count > 0)
-                        {
-                            reson = "taskAttachment";
-                            return false;
-                        }
-                    }
-                }
                 #endregion
-                #region 里程碑校验
-                // todo
-                #endregion
+             
 
                 #region 删除项目处理逻辑
 
@@ -943,11 +969,10 @@ namespace EMT.DoneNOW.BLL
 
                 #endregion
 
-
             }
             else
             {
-                reson = "404";
+                reson = "未找到删除项目，请重新打开";
                 return false;
             }
 
@@ -1489,6 +1514,14 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             return result;
+        }
+        /// <summary>
+        /// 根据用户和用户的安全等级判断是否有权限查看
+        /// </summary>
+        public bool CanFindPro(long project_id,long user_id,long leve_id)
+        {
+            // AuthBLL.CheckAuth();
+            return true;
         }
     }
 }

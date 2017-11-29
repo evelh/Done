@@ -93,7 +93,8 @@ namespace EMT.DoneNOW.Web
             {
                 foreach (var workType in workTypeList)
                 {
-                    workTypeString.Append($"<option value='{workType.id}'>{workType.name}</option>");
+                    string billed = workType.show_on_invoice == (int)DicEnum.SHOW_ON_INVOICE.SHOW_DISBILLED ? "" : "(不计费)";
+                    workTypeString.Append($"<option value='{workType.id}'>{workType.name}{billed}</option>");
                 }
             }
             var thisSet = new SysSettingBLL().GetSetById(SysSettingEnum.ALL_USER_ASSIGN_NODE_TOTAASL);
@@ -105,7 +106,8 @@ namespace EMT.DoneNOW.Web
                     workTypeString.Append("<option value='0'>--------</option>");
                     foreach (var workType in noDepWorkTypeList)
                     {
-                        workTypeString.Append($"<option value='{workType.id}'>{workType.name}</option>");
+                        string billed = workType.show_on_invoice == (int)DicEnum.SHOW_ON_INVOICE.SHOW_DISBILLED ? "" : "(不计费)";
+                        workTypeString.Append($"<option value='{workType.id}'>{workType.name}{billed}</option>");
                     }
                 }
             }

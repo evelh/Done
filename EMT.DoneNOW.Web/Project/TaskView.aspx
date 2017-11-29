@@ -247,7 +247,7 @@
                                                         <span id="StatusATLabel" class="task_label" style="font-weight: bold;">状态:</span>
                                                     </td>
                                                     <td>
-                                                        <span id="StatusValueATLabel" class="task_label_value" style="font-weight: normal;"><%=statusList.FirstOrDefault(_=>_.val==thisTask.status_id.ToString()).show %></span>
+                                                        <span id="StatusValueATLabel" class="task_label_value" style="font-weight: normal;"><% var thisStatus = statusList.FirstOrDefault(_ => _.val == thisTask.status_id.ToString());if (thisStatus != null){ %><%=thisStatus.show %><%} %></span>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -263,7 +263,7 @@
                                                         <span id="CreatedByATLabel" class="task_label" style="font-weight: bold;">创建人:</span>
                                                     </td>
                                                     <td>
-                                                        <span id="CreatedByExpenditureNameATLabel" class="task_label_value" style="font-weight: normal;"><%=sysResList.FirstOrDefault(_=>_.val==thisTask.create_user_id.ToString()).show %></span>&nbsp;&nbsp;
+                                                        <span id="CreatedByExpenditureNameATLabel" class="task_label_value" style="font-weight: normal;"><% var thisCreateRes = sysResList.FirstOrDefault(_ => _.val == thisTask.create_user_id.ToString());if (thisCreateRes != null) {%><%=thisCreateRes.show %><%}%></span>&nbsp;&nbsp;
 							<span id="OnATLabel" class="task_label_value" style="font-weight: normal;"></span>&nbsp;&nbsp;&nbsp;
 							<span id="DateValueATLabel" class="task_label_value" style="font-weight: normal;"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("yyyy-MM-dd") %></span>
                                                     </td>

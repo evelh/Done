@@ -116,11 +116,11 @@ namespace EMT.DoneNOW.Web
                         DeleteEntry(context,long.Parse(eId));
                         break;
                     case "GetTaskFileSes":
-                        var stId = context.Request.QueryString["task_id"];
+                        var stId = context.Request.QueryString["object_id"];
                         GetTaskFileSes(context,long.Parse(stId));
                         break;
                     case "RemoveSess":
-                        var rstId = context.Request.QueryString["task_id"];
+                        var rstId = context.Request.QueryString["object_id"];
                         var indNum = context.Request.QueryString["index"];
                         RemoveSession(context,long.Parse(rstId),int.Parse(indNum));
                         break;
@@ -136,7 +136,7 @@ namespace EMT.DoneNOW.Web
                         var note_id = context.Request.QueryString["note_id"];
                         DeleteNote(context,long.Parse(note_id));
                         break;
-                    case "AssMile":
+                    case "AssMile":    // 关联里程碑
                         var assIds = context.Request.QueryString["mileIds"];
                         var phaId = context.Request.QueryString["phaId"];
                         if (!string.IsNullOrEmpty(phaId))
@@ -144,13 +144,27 @@ namespace EMT.DoneNOW.Web
                             AssMile(context, assIds, long.Parse(phaId));
                         }
                         break;
-                    case "DisAssMile":
+                    case "DisAssMile":     // 取消关联里程碑
                         var disAssIds = context.Request.QueryString["mileIds"];
                         DisAssMile(context, disAssIds);
                         break;
-                    case "ToReadyBill":
+                    case "ToReadyBill":     // 更改里程碑状态
                         var tbIds = context.Request.QueryString["mileIds"];
                         ToReadyBill(context,tbIds);
+                        break;
+                    case "CancelTask":   // 取消任务
+                        var canTaskId = context.Request.QueryString["task_id"];
+                        if (!string.IsNullOrEmpty(canTaskId))
+                        {
+                            CancelTask(context, long.Parse(canTaskId));
+                        }
+                        break;
+                    case "RecoveTask":   // 恢复任务
+                        var recTaskId = context.Request.QueryString["task_id"];
+                        if (!string.IsNullOrEmpty(recTaskId))
+                        {
+                            RecoveTask(context, long.Parse(recTaskId));
+                        }
                         break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -874,11 +888,12 @@ namespace EMT.DoneNOW.Web
                 var oldTaskId = thisTask.parent_id;
                 if (lastTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)  // 是阶段
                 {
-                    var newNo = tBll.GetMinUserSortNo(lastTask.id);
-                    tBll.ChangeTaskSortNo(newNo, taskId, LoginUserId);
                     thisTask.parent_id = lastTask.id;
                     OperLogBLL.OperLogUpdate<sdk_task>(thisTask, stDal.FindNoDeleteById(thisTask.id), thisTask.id, LoginUserId, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
                     stDal.Update(thisTask);
+                    var newNo = tBll.GetMinUserSortNo(lastTask.id);
+                    tBll.ChangeTaskSortNo(newNo, taskId, LoginUserId);
+                   
                 }
                 else
                 {
@@ -944,12 +959,12 @@ namespace EMT.DoneNOW.Web
             context.Response.Write(new Tools.Serialize().SerializeJson(new {result=result,reason = reason }));
         }
         /// <summary>
-        /// 读取这个task相对应的暂存文件
+        /// 读取这个对象相对应的暂存文件
         /// </summary>
-        private void GetTaskFileSes(HttpContext context,long taskId)
+        private void GetTaskFileSes(HttpContext context,long object_id)
         {
             StringBuilder fileHtml = new StringBuilder();
-            var objAtt = context.Session[taskId.ToString() + "_Att"];
+            var objAtt = context.Session[object_id.ToString() + "_Att"];
             if (objAtt != null)
             {
                 var attList = objAtt as List<AddFileDto>;
@@ -966,9 +981,9 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 移除暂存文件
         /// </summary>
-        private void RemoveSession(HttpContext context,long task_id,int indexNum)
+        private void RemoveSession(HttpContext context,long object_id,int indexNum)
         {
-            var objAtt = context.Session[task_id.ToString() + "_Att"];
+            var objAtt = context.Session[object_id.ToString() + "_Att"];
             if (objAtt != null)
             {
                 var attList = objAtt as List<AddFileDto>;
@@ -978,7 +993,7 @@ namespace EMT.DoneNOW.Web
                     {
                         attList.Remove(attList[indexNum]);
                         
-                        GetTaskFileSes(context,task_id);
+                        GetTaskFileSes(context, object_id);
                     }
                 }
             }
@@ -1033,6 +1048,22 @@ namespace EMT.DoneNOW.Web
         private void ToReadyBill(HttpContext context,string ids)
         {
             var result = new TaskBLL().ReadyMiles(ids, LoginUserId);
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 取消任务
+        /// </summary>
+        private void CancelTask(HttpContext context,long task_id)
+        {
+            var result = new TaskBLL().CancelTask(task_id,LoginUserId);
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 恢复任务
+        /// </summary>
+        private void RecoveTask(HttpContext context, long task_id)
+        {
+            var result = new TaskBLL().RecoveTask(task_id, LoginUserId);
             context.Response.Write(result);
         }
     }

@@ -31,5 +31,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<sys_resource_department>($"SELECT * from sys_resource_department where department_id = {department_id} and resource_id = {res_id} and is_active = 1");
         }
+        /// <summary>
+        /// 根据id集合获取相关信息
+        /// </summary>
+        public List<sys_resource_department> GetListByIds(string ids)
+        {
+            return FindListBySql<sys_resource_department>($"SELECT * from sys_resource_department where is_active = 1 and id in({ids})");
+        }
     }
 }

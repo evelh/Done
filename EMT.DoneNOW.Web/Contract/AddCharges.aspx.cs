@@ -16,6 +16,8 @@ namespace EMT.DoneNOW.Web.Contract
         protected bool isAdd = true;
         protected ctt_contract_cost conCost = null;
         protected ctt_contract contract = null;
+        protected pro_project thisProject = null;
+        protected sdk_task thisTask = null;
         protected Dictionary<string, object> dic = new ContractBLL().GetField();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -23,6 +25,8 @@ namespace EMT.DoneNOW.Web.Contract
             {
                 var cost_id = Request.QueryString["id"];
                 var contract_id = Request.QueryString["contract_id"];
+                var project_id = Request.QueryString["project_id"];
+                var task_id = Request.QueryString["task_id"];
                 #region 下拉框赋值
                 cost_type_id.DataTextField = "show";
                 cost_type_id.DataValueField = "val";
@@ -39,32 +43,59 @@ namespace EMT.DoneNOW.Web.Contract
                 status_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 status_id.SelectedValue = ((int)DicEnum.COST_STATUS.PENDING_DELIVERY).ToString();
                 #endregion
-                contract = new ctt_contract_dal().FindNoDeleteById(long.Parse(contract_id));
-                if (contract != null)
+                if (!string.IsNullOrEmpty(contract_id))
                 {
-                    if (!IsPostBack)
+                    contract = new ctt_contract_dal().FindNoDeleteById(long.Parse(contract_id));
+                    if (contract != null)
                     {
-                        isbillable.Checked = true;
-                    }
-                    if (!string.IsNullOrEmpty(cost_id))
-                    {
-                        conCost = new ctt_contract_cost_dal().FindNoDeleteById(long.Parse(cost_id));
-                        if (conCost != null)
+                        if (!IsPostBack)
                         {
-                            isAdd = false;
-                            cost_type_id.SelectedValue = conCost.cost_type_id == null ? ((int)DicEnum.COST_TYPE.OPERATIONA).ToString() : conCost.cost_type_id.ToString();
-                            status_id.SelectedValue = conCost.status_id.ToString();
-                            if (!IsPostBack)
-                            {
-                                isbillable.Checked = conCost.is_billable == 1;
-                                AddConfigItem.Checked = conCost.create_ci == 1;
-                            }
-
-                            
+                            isbillable.Checked = true;
                         }
                     }
-                  
                 }
+                if (!string.IsNullOrEmpty(cost_id))
+                {
+                    conCost = new ctt_contract_cost_dal().FindNoDeleteById(long.Parse(cost_id));
+                    if (conCost != null)
+                    {
+                        isAdd = false;
+                        cost_type_id.SelectedValue = conCost.cost_type_id == null ? ((int)DicEnum.COST_TYPE.OPERATIONA).ToString() : conCost.cost_type_id.ToString();
+                        status_id.SelectedValue = conCost.status_id.ToString();
+                        if (conCost.contract_id != null) {
+                            contract = new ctt_contract_dal().FindNoDeleteById((long)conCost.contract_id);
+                        }
+                        if (conCost.project_id != null)
+                        {
+                            thisProject = new pro_project_dal().FindNoDeleteById((long)conCost.project_id);
+                        }
+                        if (conCost.task_id != null)
+                        {
+                            thisTask = new sdk_task_dal().FindNoDeleteById((long)conCost.task_id);
+                        }
+
+                        if (!IsPostBack)
+                        {
+                            isbillable.Checked = conCost.is_billable == 1;
+                            AddConfigItem.Checked = conCost.create_ci == 1;
+                        }
+
+
+                    }
+                }
+                if (!string.IsNullOrEmpty(project_id))
+                {
+                    thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(project_id));
+                }
+                if (!string.IsNullOrEmpty(task_id))
+                {
+                    thisTask = new sdk_task_dal().FindNoDeleteById(long.Parse(task_id));
+                    if (thisTask != null&& thisTask.project_id!=null)
+                    {
+                        thisProject = new pro_project_dal().FindNoDeleteById((long)thisTask.project_id);
+                    }
+                }
+
             }
             catch (Exception)
             {
@@ -88,17 +119,40 @@ namespace EMT.DoneNOW.Web.Contract
                 thisConCost.id = conCost.id;
                 thisConCost.contract_block_id = conCost.contract_block_id;
                 thisConCost.project_id = conCost.project_id;
-                thisConCost.ticket_id = conCost.ticket_id;
+                thisConCost.task_id = conCost.task_id;
                 thisConCost.opportunity_id = conCost.opportunity_id;
                 thisConCost.quote_item_id = conCost.quote_item_id; 
                 thisConCost.creatorobjectid = conCost.creatorobjectid; 
                 thisConCost.create_time = conCost.create_time; 
                 thisConCost.create_user_id = conCost.create_user_id;
                 thisConCost.extended_price = thisConCost.unit_price * thisConCost.quantity;
+                thisConCost.contract_id = conCost.contract_id;
+                thisConCost.sub_cate_id = conCost.sub_cate_id;
 
 
             }
-            thisConCost.contract_id = contract.id;
+            if (contract != null)
+            {
+
+                thisConCost.contract_id = contract.id;
+                thisConCost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.CONTRACT_COST;
+                
+            }
+            if (thisTask != null)
+            {
+                thisConCost.task_id = thisTask.id;
+                if (thisConCost.changeorder != null&& thisConCost.changeorder !=0)
+                {
+                    thisTask.projected_variance += (decimal)thisConCost.changeorder;
+                    new TaskBLL().OnlyEditTask(thisTask,LoginUserId);  // 修改任务的预估偏差
+                }
+                thisConCost.change_order_hours = thisConCost.change_order_hours;
+                thisConCost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.TICKET_COST;
+            }
+            if (thisProject != null)
+            {
+                thisConCost.project_id = thisProject.id;
+            }
             param.cost = thisConCost;
             return param;
         }
@@ -123,7 +177,20 @@ namespace EMT.DoneNOW.Web.Contract
                   
                     if (param.isAddCongigItem)
                     {
-                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');window.close();window.open('../ConfigurationItem/ConfigItemWizard.aspx?contract_id=" + contract.id + "&cost_id=" + param.cost.id + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                        var url = "../ConfigurationItem/ConfigItemWizard.aspx?&cost_id=" + param.cost.id;
+                        if (contract != null)
+                        {
+                            url += "&contract_id="+contract.id;
+                        }
+                        if (thisTask != null)
+                        {
+                            url += "&task_id=" + thisTask.id;
+                        }
+                        if (thisProject != null)
+                        {
+                            url += "&project_id=" + thisProject.id;
+                        }
+                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');window.close();window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
                     }
                     else
                     {
@@ -163,7 +230,20 @@ namespace EMT.DoneNOW.Web.Contract
                    
                     if (param.isAddCongigItem)
                     {
-                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='AddCharges.aspx?contract_id=" + contract.id + "&id=" + param.cost.id + "';window.open('../ConfigurationItem/ConfigItemWizard.aspx?contract_id=" + contract.id + "&cost_id=" + param.cost.id + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                        var url = "../ConfigurationItem/ConfigItemWizard.aspx?&cost_id=" + param.cost.id;
+                        if (contract != null)
+                        {
+                            url += "&contract_id=" + contract.id;
+                        }
+                        if (thisTask != null)
+                        {
+                            url += "&task_id=" + thisTask.id;
+                        }
+                        if (thisProject != null)
+                        {
+                            url += "&project_id=" + thisProject.id;
+                        }
+                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='AddCharges.aspx?id=" + param.cost.id + "';window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
                     }
                     else
                     {
@@ -203,7 +283,21 @@ namespace EMT.DoneNOW.Web.Contract
                    
                     if (param.isAddCongigItem)
                     {
-                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='AddCharges.aspx?contract_id=" + contract.id + "';window.open('../ConfigurationItem/ConfigItemWizard.aspx?contract_id=" + contract.id + "&cost_id=" + param.cost.id + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                        var thisURL = Request.Url;
+                        var url = "../ConfigurationItem/ConfigItemWizard.aspx?&cost_id=" + param.cost.id;
+                        if (contract != null)
+                        {
+                            url += "&contract_id=" + contract.id;
+                        }
+                        if (thisTask != null)
+                        {
+                            url += "&task_id=" + thisTask.id;
+                        }
+                        if (thisProject != null)
+                        {
+                            url += "&project_id=" + thisProject.id;
+                        }
+                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='"+ thisURL + "';window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
                     }
                     else
                     {

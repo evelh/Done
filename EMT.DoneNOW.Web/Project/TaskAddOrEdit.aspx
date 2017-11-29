@@ -11,7 +11,7 @@
     <link href="../Content/NewConfigurationItem.css" rel="stylesheet" />
     <link href="../Content/DynamicContent.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
-    <title><%="新增" %></title>
+    <title><%=isAdd?"新增":"编辑" %></title>
     <style>
         .RightClickMenu, .LeftClickMenu {
             padding: 16px;
@@ -243,10 +243,73 @@
             font-weight: bold;
             margin: 0;
         }
+
         .PhaseEditor_Text {
-    color: #333;
-    font-size: 11px;
-}
+            color: #333;
+            font-size: 11px;
+        }
+
+        .menu {
+            position: absolute;
+            z-index: 999;
+            display: none;
+        }
+
+            .menu ul {
+                margin: 0;
+                padding: 0;
+                position: relative;
+                width: 150px;
+                border: 1px solid gray;
+                background-color: #F5F5F5;
+                padding: 10px 0;
+            }
+
+                .menu ul li {
+                    padding-left: 20px;
+                    height: 25px;
+                    line-height: 25px;
+                    cursor: pointer;
+                }
+
+                    .menu ul li ul {
+                        display: none;
+                        position: absolute;
+                        right: -150px;
+                        top: -1px;
+                        background-color: #F5F5F5;
+                        min-height: 90%;
+                    }
+
+                        .menu ul li ul li:hover {
+                            background: #e5e5e5;
+                        }
+
+                    .menu ul li:hover {
+                        background: #e5e5e5;
+                    }
+
+                        .menu ul li:hover ul {
+                            display: block;
+                        }
+
+                    .menu ul li .menu-i1 {
+                        width: 20px;
+                        height: 100%;
+                        display: block;
+                        float: left;
+                    }
+
+                    .menu ul li .menu-i2 {
+                        width: 20px;
+                        height: 100%;
+                        display: block;
+                        float: right;
+                    }
+
+                .menu ul .disabled {
+                    color: #AAAAAA;
+                }
     </style>
 </head>
 <body class="Linen AutotaskBlueTheme">
@@ -373,7 +436,7 @@
                         </div>
                         <div class="Right"><a class="NormalState Button ButtonIcon IconOnly DropDownArrow" id="" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -176px -48px; width: 15px;"></span><span class="Text"></span></a></div>
                     </div>
-                    <div class="RightClickMenu" style="left: 10px; top: 36px; display: none; margin-top: 35px;" id="B1">
+                    <div class="RightClickMenu" style="left: 110px; top: 36px; display: none; margin-top: 35px;" id="B1">
 
                         <div class="RightClickMenuItem">
                             <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
@@ -400,7 +463,15 @@
 
 
                     </div>
-                    <a class="Button ButtonIcon NormalState" id="CancelTaskButton" tabindex="0"><span class="Icon"></span><span class="Text">取消任务</span></a>
+                    <%if (thisTask.is_cancelled == 1)
+                        { %>
+                    <a class="Button ButtonIcon NormalState" id="RecoveryTaskButton" tabindex="0" onclick="RecoveTask()"><span class="Icon"></span><span class="Text">恢复任务</span></a>
+
+                    <%}
+                        else
+                        { %>
+                    <a class="Button ButtonIcon NormalState" id="CancelTaskButton" tabindex="0" onclick="CancelTask()"><span class="Icon"></span><span class="Text">取消任务</span></a>
+                    <%} %>
                     <%}
                         } %>
 
@@ -443,7 +514,7 @@
                                     </div>
                                     <div class="Editor TextBox" data-editor-id="Title" data-rdp="Title">
                                         <div class="InputField">
-                                            <input id="title" type="text" value="<%=isAdd?"":thisTask.title %>" name="title" /><span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly ProjectTask" id="TaskLibraryButton" tabindex="0" title="Task Library" onclick=""><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -16px -79px;"></span><span class="Text"></span></a></span>
+                                            <input id="title" type="text" value="<%=isAdd?"":isCopy?"(copy of)"+thisTask.title:thisTask.title %>" name="title" /><span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly ProjectTask" id="TaskLibraryButton" tabindex="0" title="Task Library" onclick=""><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -16px -79px;"></span><span class="Text"></span></a></span>
                                         </div>
                                     </div>
                                     <div class="EditorLabelContainer">
@@ -646,7 +717,8 @@
                                     </div>
                                     <div class="Editor MultipleSelect" data-editor-id="Predecessors" data-rdp="Predecessors">
                                         <div class="InputField">
-                                            <select id="Predecessors" multiple="multiple" name="Predecessors"></select><span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PredecessorSelectButton" tabindex="0" onclick="ChoosePreTask()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a></span>
+                                            <select id="Predecessors" multiple="multiple" name="Predecessors">
+                                            </select><span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PredecessorSelectButton" tabindex="0" onclick="ChoosePreTask()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a></span>
                                         </div>
                                     </div>
                                 </div>
@@ -822,7 +894,7 @@
                                             <label for="WorkType">工作类型<span class="SecondaryText">(分配员工必填)</span></label>
                                         </div>
                                     </div>
-                                    <div class="Editor SingleSelect" data-editor-id="WorkType" data-rdp="WorkType">
+                                    <div class="Editor SingleSelect">
                                         <div class="InputField">
                                             <select id="WorkType" name="cost_code_id">
                                             </select>
@@ -860,8 +932,7 @@
                                     <div class="Editor DataSelector" data-editor-id="SecondaryResources" data-rdp="SecondaryResources">
                                         <div class="InputField">
                                             <input id="SecondaryResources_DisplayTextBox" type="text" value="" autocomplete="off" style="width: 250px;" /><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="SecondaryResources_Button" tabindex="0" onclick="ChooseResDep()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="SecondaryResources" name="SecondaryResources" type="hidden" value="" /><div class="ContextOverlayContainer" id="SecondaryResources_ContextOverlay">
-                                                <input type="hidden" id="resDepIds" />
-                                                <input type="hidden" id="resDepIdsHidden" name="resDepList" />
+
                                                 <div class="AutoComplete ContextOverlay">
                                                     <div class="Active LoadingIndicator"></div>
                                                     <div class="Content"></div>
@@ -874,7 +945,7 @@
                                             <div>
                                                 <%-- <select id="SecondaryResources_displayListBox" multiple="multiple"></select>--%>
                                                 <select multiple="multiple" style="width: 264px; min-height: 80px;" id="resDepList">
-                                                    <%
+                                                    <%string repDepIds = "";
                                                         if (!isAdd)
                                                         {
 
@@ -883,10 +954,16 @@
                                                             {
                                                                 var syDal = new EMT.DoneNOW.DAL.sys_resource_dal();
                                                                 var srDal = new EMT.DoneNOW.DAL.sys_role_dal();
+                                                                var sdeDal = new EMT.DoneNOW.DAL.sys_resource_department_dal();
                                                                 foreach (var res in resList)
                                                                 {
                                                                     if (res.resource_id != null && res.role_id != null)
                                                                     {
+                                                                        var thisDepList = sdeDal.GetResDepByResAndRole((long)res.resource_id, (long)res.role_id);
+                                                                        if (thisDepList != null && thisDepList.Count > 0)
+                                                                        {
+                                                                            repDepIds += thisDepList[0].id.ToString() + ",";
+                                                                        }
                                                                         var thisResou = syDal.FindNoDeleteById((long)res.resource_id);
                                                                         var thisRole = srDal.FindNoDeleteById((long)res.role_id);
                                                                         if (thisResou != null && thisRole != null)
@@ -900,8 +977,15 @@
                                                                 }
 
                                                             }
-                                                        }  %>
+                                                        }
+                                                        if (repDepIds != "")
+                                                        {
+                                                            repDepIds = repDepIds.Substring(0, repDepIds.Length - 1);
+                                                        }
+                                                    %>
                                                 </select>
+                                                <input type="hidden" id="resDepIds" />
+                                                <input type="hidden" id="resDepIdsHidden" name="resDepList" value="<%=repDepIds %>" />
                                             </div>
                                         </div>
                                     </div>
@@ -923,10 +1007,9 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <input type="hidden" id="contactID" />
-                                                <input type="hidden" id="contactIDHidden" name="conIds" />
+
                                                 <select multiple="multiple" style="width: 264px; min-height: 80px;" id="conIds">
-                                                    <%
+                                                    <% string conIds = "";
                                                         if (!isAdd)
                                                         {
                                                             var conList = new EMT.DoneNOW.DAL.sdk_task_resource_dal().GetConByTaskId(thisTask.id);
@@ -937,13 +1020,22 @@
                                                                 {
                                                                     var thisContact = cDal.FindNoDeleteById((long)con.contact_id);
                                                                     if (thisContact != null)
-                                                                    {%>
+                                                                    {
+                                                                        conIds += thisContact.id.ToString() + ",";
+                                                    %>
                                                     <option><%=thisContact.name %></option>
                                                     <%}
                                                                 }
                                                             }
-                                                        } %>
+                                                        }
+                                                        if (conIds != "")
+                                                        {
+                                                            conIds = conIds.Substring(0, conIds.Length - 1);
+                                                        }
+                                                    %>
                                                 </select>
+                                                <input type="hidden" id="contactID" />
+                                                <input type="hidden" id="contactIDHidden" name="conIds" value="<%=conIds %>" />
                                             </div>
                                         </div>
                                     </div>
@@ -1413,7 +1505,7 @@
                                     <div class="DescriptionText">与固定价格合同相关联的项目可以通过里程碑在项目进度不同阶段向客户收费。里程碑是通过固定价格合同直接创建和管理的。可以将一个或多个里程碑与此阶段相关联，但一个里程碑只能与一个项目阶段相关联。 .</div>
                                     <div class="Content">
                                         <div class="Large Column">
-                                            <div class="GridBar ButtonContainer"><a class="Button ButtonIcon DisabledState" id="AssociateListButton" tabindex="0"  style="color: rgba(95,95,95,0.4);"><span class="Icon"></span><span class="Text">关联</span></a><a class="Button ButtonIcon DisabledState" id="DisassociateListButton" tabindex="0" style="color: rgba(95,95,95,0.4);"><span class="Icon"></span><span class="Text">取消关联</span></a><a class="Button ButtonIcon DisabledState" id="ReadyForBillingListButton" tabindex="0" style="color: rgba(95,95,95,0.4);"><span class="Icon"></span><span class="Text">标记为准备计费</span></a></div>
+                                            <div class="GridBar ButtonContainer"><a class="Button ButtonIcon DisabledState" id="AssociateListButton" tabindex="0" style="color: rgba(95,95,95,0.4);"><span class="Icon"></span><span class="Text">关联</span></a><a class="Button ButtonIcon DisabledState" id="DisassociateListButton" tabindex="0" style="color: rgba(95,95,95,0.4);"><span class="Icon"></span><span class="Text">取消关联</span></a><a class="Button ButtonIcon DisabledState" id="ReadyForBillingListButton" tabindex="0" style="color: rgba(95,95,95,0.4);"><span class="Icon"></span><span class="Text">标记为准备计费</span></a></div>
                                             <div class="Grid Small" id="PhaseMilestoneGrid">
                                                 <div class="HeaderContainer">
                                                     <table cellpadding="0">
@@ -1489,11 +1581,12 @@
                                                                     <td class="ToggleSelection  U0">
                                                                         <!--conMile   taskMile-->
                                                                         <div class="Decoration Icon CheckBox">
-                                                                            <input type="checkbox" class="CheckMile <%=thisMile.type %> <%=thisMile.status_id %>"  value="<%=thisMile.id %>"/>
+                                                                            <input type="checkbox" class="CheckMile <%=thisMile.type %> <%=thisMile.status_id %>" value="<%=thisMile.id %>" />
                                                                         </div>
                                                                     </td>
-                                                                    <td class="Context  U1"><a class="ButtonIcon Button ContextMenu NormalState">
-                                                                        <div class="Icon"></div>
+                                                                    <td class="Context  U1"><a class="ButtonIcon Button MileContextMenu ContextMenu NormalState">
+                                                                        <input type="hidden" value="<%=thisMile.id %>" />
+                                                                        <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px;"></div>
                                                                     </a></td>
                                                                     <td class="Text  U2"><%=thisMile.name %></td>
                                                                     <td class="Text Normal U3"><%=thisMile.status %></td>
@@ -1727,8 +1820,20 @@
                             </div>
                             <div class="Normal Section" style="height: 240px">
                                 <div class="Heading">
-                                    <input type="hidden" name="tempPreIds" id="tempPreIds" />
-                                    <input type="hidden" name="preIds" id="preIds" />
+                                    <% string preIds = "";
+                                        if (preList != null && preList.Count > 0)
+                                        {
+                                            preList.ForEach(_ => { preIds += _.predecessor_task_id.ToString() + ','; });
+                                            if (preIds != null)
+                                            {
+                                                preIds = preIds.Substring(0, preIds.Length - 1);
+                                            }
+                                        }
+                                    %>
+
+                                    <input type="hidden" name="tempPreIds" id="tempPreIds" value="<%=preIds %>" />
+                                    <input type="hidden" name="preIds" id="preIds" value="<%=preIds %>" />
+
                                     <!--用户在页面上选择的前驱任务Ids -->
                                     <div class="Left"><span class="Text">前驱任务</span><span class="SecondaryText"></span></div>
                                     <div class="Spacer"></div>
@@ -1785,6 +1890,28 @@
                                                                 <input class="LagInput" placeholder="Lag (days)" type="text" value=""></td>
                                                             <td class="PredecessorItemsSelectDialog_SizingSpacer" width="0"></td>
                                                         </tr>
+                                                        <%if (preList != null && preList.Count > 0)
+                                                            {
+                                                                var stDal = new EMT.DoneNOW.DAL.sdk_task_dal();
+                                                                foreach (var thisPre in preList)
+                                                                {
+                                                                    var thisPreTask = stDal.FindNoDeleteById(thisPre.predecessor_task_id);
+                                                        %>
+                                                        <tr id='<%=thisPre.predecessor_task_id %>_temp'>
+                                                            <td class='PredecessorItemsSelectDialog_OutlineId PredecessorItemsSelectDialog_Text'><%=thisPreTask.sort_order %></td>
+                                                            <td class='PredecessorItemsSelectDialog_Context' style='width: 30px;'><a class='PredecessorItemsSelectDialog_Delete PredecessorItemsSelectDialog_Button' onclick='RemoveThis("<%=thisPre.predecessor_task_id %>")'>
+                                                                <div class='PredecessorItemsSelectDialog_Icon'><span class='Icon' style='background: url(../Images/ButtonBarIcons.png) no-repeat -66px -2px;'>&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+                                                            </a></td>
+                                                            <td class='PredecessorItemsSelectDialog_Title PredecessorItemsSelectDialog_Text'><%=thisPreTask.title %></td>
+                                                            <td class='PredecessorItemsSelectDialog_Date'><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisPreTask.estimated_begin_time).ToString("yyyy-MM-dd") %></td>
+                                                            <td class='PredecessorItemsSelectDialog_Date'><%=((DateTime)thisPreTask.estimated_end_date).ToString("yyyy-MM-dd") %></td>
+                                                            <td class='PredecessorItemsSelectDialog_Text'>
+                                                                <input class='LagInput' placeholder='Lag (days)' type='text' id='<%=thisPreTask.id %>_lagDays' name='<%=thisPreTask.id %>_lagDays' value='<%=thisPre.dependant_lag %>'></td>
+                                                            <td class='PredecessorItemsSelectDialog_SizingSpacer' width='0'></td>
+                                                        </tr>
+                                                        <%} %>
+
+                                                        <%} %>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -1856,13 +1983,26 @@
             </div>
         </div>
 
+        <div id="AssMileMenu" class="menu">
+            <ul style="width: 220px;">
+                <li id="" onclick="AssSingMile()" style="font-size: 9pt;"><i class="menu-i1"></i>关联里程碑
+                </li>
+            </ul>
+        </div>
+        <div id="DisAssMileMenu" class="menu">
+            <ul style="width: 220px;">
+                <li id="" onclick="DisAssSingMile()" style="font-size: 9pt;"><i class="menu-i1"></i>取消关联
+                </li>
+            </ul>
+        </div>
+
 
     </form>
 </body>
 </html>
 <%--<script src="../Scripts/jquery-3.2.1.min.js"></script>--%>
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
-<script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
+<%--<script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>--%>
 <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 <%--<script src="../Scripts/NewProject.js"></script>--%>
 <script>
@@ -1984,6 +2124,16 @@
         }
         GetWorkTypeByDepId();
         <%} %>
+
+        <%if (!isAdd)
+    { %>GetPreSelectByIds();
+        GetResDep();
+        GetContact();
+        <%if (thisTask.cost_code_id != null)
+    { %>
+        $("#WorkType").val('<%=thisTask.cost_code_id %>');
+        <%}%>
+        <%}%>
     })
     $("#CancelButton").click(function () {
         window.close();
@@ -2129,7 +2279,12 @@
         $("#preIds").val(tempPreIds);
         $("#Nav2").hide();
         $("#BackgroundOverLay").hide();
+        GetPreSelectByIds();
+    })
 
+    function GetPreSelectByIds() {
+        var tempPreIds = $("#tempPreIds").val();   // 选择的前驱任务的Id赋值到界面
+        $("#preIds").val(tempPreIds);
         var appHtml = "";
         if (tempPreIds != "") {
             var tempPreIdArr = tempPreIds.split(',');
@@ -2144,10 +2299,7 @@
         } else {
             $("#Predecessors").html("");
         }
-
-
-
-    })
+    }
     $("#CloseStatusReson").click(function () {
         $("#CompletionReasonDialog").hide();
         $("#BackgroundOverLay").hide();
@@ -2264,7 +2416,12 @@
                         $(this).click(function () {
                             debugger;
                             var thisValue = $(this).parent().data("val");
-                            var test = $(this).parent().data("val");
+                            <% if (!isAdd && thisTask != null)
+    { %>
+                            if (thisValue == '<%=thisTask.id %>') {
+                                return false;
+                            }
+                            <%}%>
                             if (thisValue != undefined && thisValue != null && thisValue != "") {
                                 var tempPreIds = $("#tempPreIds").val();
                                 if (tempPreIds != "") {  // 
@@ -2318,6 +2475,10 @@
                 }
             },
         });
+        <%if (!isAdd && thisTask != null)
+    { %>
+        $("#" + "<%=thisTask.id %>").css("color", "grey");
+        <%}%>
 
 
     }
@@ -2756,7 +2917,7 @@
         }
             // status_id
        <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
-        { %>
+    { %>
         var status_id = $("#status_id").val();
         if (status_id == "" || status_id == "0" || status_id == undefined) {
             LayerMsg("请选择状态！");
@@ -2820,9 +2981,81 @@
             LayerMsg("结束时间不能早于开始时间");
             return false;
         }
-
+        if (!CheckTeamRes()) {
+            LayerMsg("同一员工不可在团队中分配多次");
+            return false;
+        }
+        if (!CheckPriResInTeam()) {
+            LayerMsg("主负责人不能分配多次");
+            return false;
+        }
         return true;
     }
+    // 校验主负责人是否在团队中出现
+    function CheckPriResInTeam() {
+        // resDepIdsHidden
+        // owner_resource_idHidden
+        var resource_id = $("#owner_resource_idHidden").val();
+        var resDepIdsHidden = $("#resDepIdsHidden").val();
+        if (resDepIdsHidden == "" || resource_id == "")
+        {
+            return false;
+        }
+        else {
+            var isHas = "";
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ResourceAjax.ashx?act=CheckPriResInTeam&resDepIds=" + resDepIdsHidden + "&resource_id=" + resource_id,
+                async: false,
+                success: function (data) {
+                    debugger;
+                    if (data != "") {
+                        if (data == "True") {
+                            isHas = "1";
+                        }
+
+                    }
+
+                }
+            })
+            if (isHas == "") {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+    // 校验团队成员中是有重复员工
+    function CheckTeamRes() {
+        var resDepIdsHidden = $("#resDepIdsHidden").val();
+        if (resDepIdsHidden == "") {
+            return false;
+        }
+        else {
+            var isHas = "";
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ResourceAjax.ashx?act=CheckTeamRes&resDepIds=" + resDepIdsHidden,
+                async: false,
+                success: function (data) {
+                    debugger;
+                    if (data != "") {
+                        if (data == "True") {
+                            isHas = "1";
+                        }
+
+                    }
+
+                }
+            })
+            if (isHas == "") {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
 </script>
 <%--ss --%>
 <script>
@@ -2835,8 +3068,6 @@
         $(".IsShowDiv").hide();
         $("#" + thisId + "Div").show();
     })
-
-
     $(".CheckMile").click(function () {
         CanAss();
         CanDisAss();
@@ -2895,8 +3126,7 @@
         // DisassociateListButton
     }
     // 是否满足标记为准备计费
-    function CanBillReady()
-    {
+    function CanBillReady() {
         debugger;
         var isHas = "";
         $(".CheckMile").each(function () {
@@ -2920,13 +3150,8 @@
             $("#ReadyForBillingListButton").css("color", "black");
         }
     }
-
-
-
     // 关联事件
     function AssMile() {
-       
-       debugger;
         var ids = "";
         $(".CheckMile").each(function () {
             if ($(this).is(":checked")) {
@@ -2942,7 +3167,7 @@
 
         }
         else {
-            ids = ids.substring(0, ids.length-1);
+            ids = ids.substring(0, ids.length - 1);
             // 关联事件
             $.ajax({
                 type: "GET",
@@ -2960,6 +3185,41 @@
                 }
             })
         }
+    }
+
+    function AssSingMile() {
+        $.ajax({
+            type: "GET",
+            url: "../Tools/ProjectAjax.ashx?act=AssMile&mileIds=" + entityid +"&phaId=<%=thisTask!=null?thisTask.id.ToString():"" %>",
+            async: false,
+            success: function (data) {
+                debugger;
+                if (data != "") {
+                    if (data == "True") {
+
+                    }
+
+                }
+                history.go(0);
+            }
+        })
+    }
+    function DisAssSingMile() {
+        $.ajax({
+            type: "GET",
+            url: "../Tools/ProjectAjax.ashx?act=DisAssMile&mileIds=" + entityid,
+            async: false,
+            success: function (data) {
+                debugger;
+                if (data != "") {
+                    if (data == "True") {
+
+                    }
+
+                }
+                history.go(0);
+            }
+        })
     }
     // 取消关联事件
     function DisAssMile() {
@@ -3029,4 +3289,112 @@
             })
         }
     }
+    // 取消任务
+    function CancelTask() {
+        $.ajax({
+            type: "GET",
+            url: "../Tools/ProjectAjax.ashx?act=CancelTask&task_id=<%=thisTask==null?"":thisTask.id.ToString() %>",
+            async: false,
+            success: function (data) {
+                debugger;
+                if (data != "") {
+                    if (data == "True") {
+
+                    }
+
+                }
+                history.go(0);
+            }
+        })
+    }
+    // 恢复任务
+    function RecoveTask() {
+        $.ajax({
+            type: "GET",
+            url: "../Tools/ProjectAjax.ashx?act=RecoveTask&task_id=<%=thisTask==null?"":thisTask.id.ToString() %>",
+            async: false,
+            success: function (data) {
+                debugger;
+                if (data != "") {
+                    if (data == "True") {
+
+                    }
+
+                }
+                history.go(0);
+            }
+        })
+    }
+</script>
+<%--菜单事件 --%>
+<script>
+    // MileContextMenu
+    var entityid = "";
+    var Times = 0;
+    $(".ContextMenu").bind("mouseover", function (event) {
+        debugger;
+        clearInterval(Times);
+        //debugger;
+        var oEvent = event;
+        var menu = "";
+        //var thisClassName = $(this).prop("className"); attachMenuS expTR
+        if ($(this).hasClass("MileContextMenu")) {
+            if ($(this).parent().prev().children().first().children().first().hasClass("conMile")) {
+                menu = document.getElementById("AssMileMenu");
+            } else {
+                menu = document.getElementById("DisAssMileMenu");
+            }
+
+        }
+        // else if ($(this).hasClass("noteTR")) {
+        //    menu = document.getElementById("noteMenu");
+        //} else if ($(this).hasClass("atachTR")) {
+        //    menu = document.getElementById("attachMenu");
+        //} else if ($(this).hasClass("expTR")) {
+        //    menu = document.getElementById("expMenu");
+        //}
+
+        entityid = $(this).children().first().val(); // data("val");
+        (function () {
+            menu.style.display = "block";
+            Times = setTimeout(function () {
+                menu.style.display = "none";
+            }, 600);
+        }());
+        menu.onmouseenter = function () {
+            clearInterval(Times);
+            menu.style.display = "block";
+        };
+        menu.onmouseleave = function () {
+            Times = setTimeout(function () {
+                menu.style.display = "none";
+            }, 600);
+        };
+        var Left = $(document).scrollLeft() + oEvent.clientX;
+        var Top = $(document).scrollTop() + oEvent.clientY;
+        var winWidth = window.innerWidth;
+        var winHeight = window.innerHeight;
+        var menuWidth = menu.clientWidth;
+        var menuHeight = menu.clientHeight;
+        var scrLeft = $(document).scrollLeft();
+        var scrTop = $(document).scrollTop();
+        var clientWidth = Left + menuWidth;
+        var clientHeight = Top + menuHeight;
+        var rightWidth = winWidth - oEvent.clientX;
+        var bottomHeight = winHeight - oEvent.clientY;
+        if (winWidth < clientWidth && rightWidth < menuWidth) {
+            menu.style.left = winWidth - menuWidth - 18 + 100 + scrLeft + "px";
+        } else {
+            menu.style.left = Left + "px";
+        }
+        if (winHeight < clientHeight && bottomHeight < menuHeight) {
+            menu.style.top = winHeight - menuHeight - 18 + 100 + scrTop + "px";
+        } else {
+            menu.style.top = Top - 25 + "px";
+        }
+        document.onclick = function () {
+            menu.style.display = "none";
+        }
+        return false;
+    });
 </script>

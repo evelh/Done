@@ -64,6 +64,10 @@ namespace EMT.DoneNOW.Web.Project
                     {
                         taskType = "任务";
                     }
+                    else
+                    {
+                        Response.End();
+                    }
                     thisProject = new pro_project_dal().FindNoDeleteById((long)thisTask.project_id);
                     if (thisProject != null)
                     {

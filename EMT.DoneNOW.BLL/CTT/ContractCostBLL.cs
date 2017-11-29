@@ -36,7 +36,7 @@ namespace EMT.DoneNOW.BLL
             param.cost.create_user_id = user.id;
             param.cost.update_user_id = user.id;
             param.cost.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            param.cost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.CONTRACT_COST;
+          
             _dal.Insert(param.cost);
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
@@ -76,6 +76,8 @@ namespace EMT.DoneNOW.BLL
             param.cost.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             param.cost.sub_cate_id = oldCost.sub_cate_id;
             param.cost.contract_id = oldCost.contract_id;
+            param.cost.task_id = oldCost.task_id;
+            param.cost.project_id = oldCost.project_id;
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
                 user_cate = "用户",

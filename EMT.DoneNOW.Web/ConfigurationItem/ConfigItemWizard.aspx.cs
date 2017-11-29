@@ -16,15 +16,25 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
         protected ctt_contract contract = null;
         protected ctt_contract_cost conCost = null;
         protected ivt_product product = null;
+        protected pro_project thisProject = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 var cid = Request.QueryString["contract_id"];
+                var project_id = Request.QueryString["project_id"];
                 var ccid = Request.QueryString["cost_id"];
-                contract = new ctt_contract_dal().FindNoDeleteById(long.Parse(cid));
+                if (!string.IsNullOrEmpty(cid))
+                {
+                    contract = new ctt_contract_dal().FindNoDeleteById(long.Parse(cid));
+                }
+                if (!string.IsNullOrEmpty(project_id))
+                {
+                    thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(project_id));
+                }
+                
                 conCost = new ctt_contract_cost_dal().FindNoDeleteById(long.Parse(ccid));
-                if (contract != null && conCost != null)
+                if (conCost != null)
                 {
                     if (conCost.product_id != null)
                     {
@@ -34,6 +44,11 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     {
                         product = new ivt_product_dal().GetDefaultProduct();
                     }
+                }
+
+                if(contract==null&& thisProject == null)
+                {
+                    Response.End();
                 }
             }
             catch (Exception)
@@ -76,8 +91,16 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
         protected ConfigurationItemAddDto GetParam()
         {
             var param = AssembleModel<ConfigurationItemAddDto>();
-            param.account_id = contract.account_id;
-            param.installed_by =(int) GetLoginUserId();
+            if (contract != null)
+            {
+                param.account_id = contract.account_id;
+            }
+            if (thisProject != null)
+            {
+                param.account_id = thisProject.account_id;
+            }
+            
+            param.installed_by = (int)LoginUserId;
             param.location = "";
             param.number_of_users = null;
             param.status = 1;

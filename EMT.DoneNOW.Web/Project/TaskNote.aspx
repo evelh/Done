@@ -104,6 +104,8 @@
                     <p class="informationTitle"><i></i>常规信息</p>
                     <div>
                         <table border="none" cellspacing="" cellpadding="" style="width: 690px;">
+                            <%if (!isProject)
+                                    { %>
                             <tr>
                                 <td>
                                     <div class="clear">
@@ -116,11 +118,11 @@
                                 <td>
                                     <div class="clear">
                                         <label>任务标题</label>
-                                        <span><%=thisTask.title+"-"+thisTask.title %></span>
+                                        <span><%=thisTask.title + "-" + thisTask.title %></span>
                                     </div>
                                 </td>
                             </tr>
-
+                            <%} %>
                             <tr>
                                 <td>
                                     <div class="clear">
@@ -134,6 +136,22 @@
                                     </div>
                                 </td>
                             </tr>
+                            <%if (isProject)
+                                { %>
+                                <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label>是否是公告<span class="red">*</span><asp:CheckBox ID="isAnnounce" runat="server" /></label>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <%}
+                            else
+                            { %>
+
+                            <%if (!isPhase)
+                                { %>
                             <tr>
                                 <td>
                                     <div class="clear">
@@ -142,6 +160,8 @@
                                 </td>
                                 <td></td>
                             </tr>
+                            <%} %>
+                           <%} %>
                             <tr>
                                 <td colspan="2">
                                     <label>标题<span class="red">*</span></label>
@@ -414,7 +434,7 @@
     })
 
     function AddAttch() {
-        window.open("AddTaskAttach.aspx?object_id=<%=thisTask.id %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_ATTACH %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("AddTaskAttach.aspx?object_id=<%=object_id %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_ATTACH %>', 'left=200,top=200,width=600,height=800', false);
     }
     // 重新显示session文件内容
     function ReloadSession() {
@@ -423,7 +443,7 @@
         $.ajax({
             type: "GET",
             async: false,
-            url: "../Tools/ProjectAjax.ashx?act=GetTaskFileSes&task_id=<%=thisTask.id %>",
+            url: "../Tools/ProjectAjax.ashx?act=GetTaskFileSes&object_id=<%=object_id %>",
             success: function (data) {
                 if (data != "") {
                     $("#AttachmentPanel").html(data);
@@ -436,7 +456,7 @@
         $.ajax({
             type: "GET",
             async: false,
-            url: "../Tools/ProjectAjax.ashx?act=RemoveSess&task_id=<%=thisTask.id %>&index=" + index,
+            url: "../Tools/ProjectAjax.ashx?act=RemoveSess&object_id=<%=object_id %>&index=" + index,
             success: function (data) {
                 $("#AttachmentPanel").html(data);
             },
@@ -529,11 +549,13 @@
             LayerMsg("请选择发布类型！");
             return false;
         }
+        <%if((!isProject)&&(!isPhase)){ %>
         var status_id = $("#status_id").val();
         if (status_id == "" || status_id == "0" || status_id == null) {
             LayerMsg("请选择任务类型！");
             return false;
         }
+        <%}%>
         var name = $("#name").val();
         if (name == "" || name == null) {
             LayerMsg("请填写标题！");

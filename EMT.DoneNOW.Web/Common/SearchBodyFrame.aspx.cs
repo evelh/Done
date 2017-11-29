@@ -428,7 +428,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看报价", click_function = "ViewQuote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制报价", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "关闭报价", click_function = "CloseQuote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "关闭报价", click_function = "CloseQuote()",id="CloQuoteMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "丢失报价", click_function = "LossQuote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除报价", click_function = "DeleteQuote()" });
                     break;

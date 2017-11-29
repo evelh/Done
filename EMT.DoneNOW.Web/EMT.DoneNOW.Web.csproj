@@ -332,12 +332,14 @@
     <Content Include="Project\ProjectSearchResult.aspx" />
     <Content Include="Project\ProjectSearchTable.aspx" />
     <Content Include="Project\ProjectSummary.aspx" />
+    <Content Include="Project\ProjectTeamManage.aspx" />
     <Content Include="Project\ProjectView.aspx" />
     <Content Include="Project\RecipientSelector.aspx" />
     <Content Include="Project\TaskAddOrEdit.aspx" />
     <Content Include="Project\TaskHistory.aspx" />
     <Content Include="Project\TaskModify.aspx" />
     <Content Include="Project\TaskNote.aspx" />
+    <Content Include="Project\TaskToLibrary.aspx" />
     <Content Include="Project\TaskView.aspx" />
     <Content Include="Project\WorkEntry.aspx" />
     <Content Include="QuoteItem\QuoteItemManage.aspx" />
@@ -1529,6 +1531,13 @@
     <Compile Include="Project\ProjectSummary.aspx.designer.cs">
       <DependentUpon>ProjectSummary.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Project\ProjectTeamManage.aspx.cs">
+      <DependentUpon>ProjectTeamManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectTeamManage.aspx.designer.cs">
+      <DependentUpon>ProjectTeamManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Project\ProjectView.aspx.cs">
       <DependentUpon>ProjectView.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1570,6 +1579,13 @@
     </Compile>
     <Compile Include="Project\TaskNote.aspx.designer.cs">
       <DependentUpon>TaskNote.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\TaskToLibrary.aspx.cs">
+      <DependentUpon>TaskToLibrary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\TaskToLibrary.aspx.designer.cs">
+      <DependentUpon>TaskToLibrary.aspx</DependentUpon>
     </Compile>
     <Compile Include="Project\TaskView.aspx.cs">
       <DependentUpon>TaskView.aspx</DependentUpon>
