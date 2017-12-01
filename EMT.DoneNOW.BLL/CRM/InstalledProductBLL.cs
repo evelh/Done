@@ -78,7 +78,7 @@ namespace EMT.DoneNOW.BLL
                 contract_id = param.contract_id == 0 ? null : param.contract_id,
                 location = param.location,
                 contact_id = param.contact_id == 0 ? null : param.contact_id,
-                vendor_id = param.vendor_id == 0 ? null : param.vendor_id,
+                vendor_account_id = param.vendor_id == 0 ? null : param.vendor_id,
                 is_active = (sbyte)param.status,
                 installed_resource_id = user.id,
                 remark = param.notes,
@@ -188,7 +188,7 @@ namespace EMT.DoneNOW.BLL
                 contract_id = param.contract_id == 0 ? null : (long?)param.contract_id,
                 location = param.location,
                 contact_id = param.contact_id == 0 ? null : (long?)param.contact_id,
-                vendor_id = param.vendor_id == 0 ? null : (long?)param.vendor_id,
+                vendor_account_id = param.vendor_id == 0 ? null : (long?)param.vendor_id,
                 is_active = (sbyte)param.status,
                 installed_resource_id = user.id,
                 // installed_contact_id = param.contact_id, // todo -- 安装人与联系人

@@ -179,8 +179,9 @@ namespace EMT.DoneNOW.BLL
                             var roleDep = srdDal.FindById(long.Parse(resDepId));
                             if (roleDep != null)
                             {
-                                var isHas = pptDal.GetSinProByIdResRol(thisProject.id, roleDep.resource_id, roleDep.role_id);
-                                if (isHas == null)
+                                var isHas = pptDal.GetListByRes(thisProject.id, roleDep.resource_id);
+                                long team_id = 0;
+                                if (isHas == null || isHas.Count == 0)
                                 {
                                     var item = new pro_project_team()
                                     {
@@ -195,11 +196,19 @@ namespace EMT.DoneNOW.BLL
                                     };
                                     pptDal.Insert(item);
                                     OperLogBLL.OperLogAdd<pro_project_team>(item, item.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM, "新增项目团队-添加员工");
+                                    team_id = item.id;
+                                }
+                                else
+                                {
+                                    team_id = isHas[0].id;
+                                }
 
+                                if (team_id != 0)
+                                {
                                     var item_role = new pro_project_team_role()
                                     {
                                         id = pptrDal.GetNextIdCom(),
-                                        project_team_id = item.id,
+                                        project_team_id = team_id,
                                         role_id = roleDep.role_id,
                                         create_user_id = user.id,
                                         update_user_id = user.id,
@@ -209,6 +218,7 @@ namespace EMT.DoneNOW.BLL
                                     pptrDal.Insert(item_role);
                                     OperLogBLL.OperLogAdd<pro_project_team_role>(item_role, item_role.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "新增项目团队角色");
                                 }
+
 
                             }
                         }
@@ -789,13 +799,13 @@ namespace EMT.DoneNOW.BLL
                 foreach (var thisTask in taskList)
                 {
                     var thisTaskEntryList = sweDal.GetByTaskId(thisTask.id);
-                    if(thisTaskEntryList!=null&& thisTaskEntryList.Count > 0)
+                    if (thisTaskEntryList != null && thisTaskEntryList.Count > 0)
                     {
                         checkEntry = "1";
                         break;
                     }
                     var thisNoteTaskList = caDal.GetActiList($" and (task_id ={thisTask.id} or object_id={thisTask.id} ) and is_system_generate <> 1");  // 暂时只校验非系统备注
-                    if(thisNoteTaskList!=null&& thisNoteTaskList.Count > 0)
+                    if (thisNoteTaskList != null && thisNoteTaskList.Count > 0)
                     {
                         checkNote = "1";
                         break;
@@ -807,7 +817,7 @@ namespace EMT.DoneNOW.BLL
                         break;
                     }
                     var milList = stmDal.GetPhaMilList(thisTask.id);
-                    if(milList!=null&& milList.Count > 0)
+                    if (milList != null && milList.Count > 0)
                     {
                         checkMile = "1";
                         break;
@@ -870,7 +880,7 @@ namespace EMT.DoneNOW.BLL
                     return false;
                 }
                 #endregion
-             
+
 
                 #region 删除项目处理逻辑
 
@@ -885,13 +895,17 @@ namespace EMT.DoneNOW.BLL
                 {
                     resList.ForEach(_ =>
                     {
-                        var teamRole = pptrDal.GetSinTeamRole(_.id);
-                        if (teamRole != null)
+                        var teamRoleList = pptrDal.GetListTeamRole(_.id);
+                        if (teamRoleList != null && teamRoleList.Count > 0)
                         {
-                            teamRole.delete_time = deleteTime;
-                            teamRole.delete_user_id = user.id;
-                            pptrDal.Update(teamRole);
-                            OperLogBLL.OperLogDelete(teamRole, teamRole.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "删除项目团队角色");
+                            foreach (var thisTeamRole in teamRoleList)
+                            {
+                                thisTeamRole.delete_time = deleteTime;
+                                thisTeamRole.delete_user_id = user.id;
+                                pptrDal.Update(thisTeamRole);
+                                OperLogBLL.OperLogDelete(thisTeamRole, thisTeamRole.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "删除项目团队角色");
+                            }
+
                         }
 
                         _.delete_user_id = user.id;
@@ -1088,7 +1102,7 @@ namespace EMT.DoneNOW.BLL
                                 {
                                     id = _dal.GetNextIdCom(),
                                     project_id = thisProject.id,
-                                    no= tBll.ReturnTaskNo(),
+                                    no = tBll.ReturnTaskNo(),
                                     create_user_id = user.id,
                                     update_user_id = user.id,
                                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -1148,8 +1162,10 @@ namespace EMT.DoneNOW.BLL
                                 var oldPreList = stpDal.GetRelList(oldAndNew.Key);
                                 if (oldPreList != null && oldPreList.Count > 0)
                                 {
-                                    oldPreList.ForEach(_ => {
-                                        var newSTP = new sdk_task_predecessor() {
+                                    oldPreList.ForEach(_ =>
+                                    {
+                                        var newSTP = new sdk_task_predecessor()
+                                        {
                                             id = stpDal.GetNextIdCom(),
                                             create_user_id = user.id,
                                             update_user_id = user.id,
@@ -1179,7 +1195,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 将项目设为完成
         /// </summary>
-        public bool CompleteProject(long project_id,string reason,long user_id)
+        public bool CompleteProject(long project_id, string reason, long user_id)
         {
             bool result = false;
             try
@@ -1202,7 +1218,7 @@ namespace EMT.DoneNOW.BLL
                     var stDal = new sdk_task_dal();
                     // var vtDal = new v_task_all_dal();
                     var thisTaskList = stDal.GetAllProTask(thisProejct.id);
-                    if(thisTaskList!=null&& thisTaskList.Count > 0)
+                    if (thisTaskList != null && thisTaskList.Count > 0)
                     {
                         foreach (var thisTask in thisTaskList)
                         {
@@ -1478,18 +1494,19 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 重新计算项目日程
         /// </summary>
-        public bool RecalculateProject(long projetc_id,long user_id)
+        public bool RecalculateProject(long projetc_id, long user_id)
         {
             var result = true;
             var user = UserInfoBLL.GetUserInfo(user_id);
             var tBll = new TaskBLL();
             var stDal = new sdk_task_dal();
             var taskList = stDal.GetAllProTask(projetc_id);
-            if (user!=null&&taskList != null && taskList.Count > 0)
+            if (user != null && taskList != null && taskList.Count > 0)
             {
                 try
                 {
-                    taskList.ForEach(_ => {
+                    taskList.ForEach(_ =>
+                    {
                         if (_.status_id != (int)DicEnum.TICKET_STATUS.DONE)
                         {
                             var preDate = tBll.GetPreMaxTime(_.id);
@@ -1518,10 +1535,479 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 根据用户和用户的安全等级判断是否有权限查看
         /// </summary>
-        public bool CanFindPro(long project_id,long user_id,long leve_id)
+        public bool CanFindPro(long project_id, long user_id, long leve_id)
         {
             // AuthBLL.CheckAuth();
             return true;
+        }
+        /// <summary>
+        /// 删除项目（同时删除任务中包含这个员工的任务成员）
+        /// </summary>
+        public bool DeleteProTeam(long project_id, long team_id, long user_id)
+        {
+            try
+            {
+                var pptDal = new pro_project_team_dal();
+                var pptrDal = new pro_project_team_role_dal();
+                var thisProTeam = pptDal.FindNoDeleteById(team_id);
+                var thisProject = _dal.FindNoDeleteById(project_id);
+                if (thisProTeam != null && thisProject != null)
+                {
+                    if (thisProTeam.resource_id != null)
+                    {
+                        // 主负责人是这个员工的task，移除负责人
+                        // 成员包括这个员工的，移除成员
+                        new TaskBLL().DeleteTeamRes(project_id, (long)thisProTeam.resource_id, user_id);
+
+                        var proResList = pptDal.GetListByRes(project_id, (long)thisProTeam.resource_id);
+                        if (proResList != null && proResList.Count > 0)
+                        {
+                            proResList.ForEach(_ =>
+                            {
+                                var thisRoleList = pptrDal.GetListTeamRole(_.id);
+                                if (thisRoleList != null&& thisRoleList.Count>0)
+                                {
+                                    foreach (var thisRole in thisRoleList)
+                                    {
+                                        pptrDal.SoftDelete(thisRole, user_id);
+                                        OperLogBLL.OperLogDelete<pro_project_team_role>(thisRole, thisRole.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "删除项目团队成员角色");
+                                    }
+                                    
+                                }
+
+                                pptDal.SoftDelete(_, user_id);
+                                OperLogBLL.OperLogDelete<pro_project_team>(_, _.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_ITEM, "删除项目团队成员");
+                            });
+                        }
+
+                        if (thisProject.owner_resource_id == thisProTeam.resource_id)
+                        {
+                            thisProject.owner_resource_id = null;
+                            OperLogBLL.OperLogUpdate<pro_project>(thisProject, _dal.FindNoDeleteById(thisProject.id), thisProject.id, user_id, OPER_LOG_OBJ_CATE.PROJECT, "修改项目");
+                            _dal.Update(thisProject);
+                        }
+                        // 找到项目中员工为这个的成员，移除
+                        // 项目本身主负责人是否是这个员工，是移除
+                    }
+                    if (thisProTeam.contact_id != null)
+                    {
+                        new TaskBLL().DeleteTeamCon(project_id, (long)thisProTeam.contact_id, user_id);
+
+
+                        var proConList = pptDal.GetListByCon(project_id, (long)thisProTeam.contact_id);
+                        if (proConList != null && proConList.Count > 0)
+                        {
+                            proConList.ForEach(_ =>
+                            {
+                                pptDal.SoftDelete(_, user_id);
+                                OperLogBLL.OperLogDelete<pro_project_team>(_, _.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_ITEM, "删除项目团队成员");
+                            });
+
+                        }
+                    }
+                }
+            }
+            catch (Exception msg)
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 查询项目团队中是否含有该员工
+        /// </summary>
+        public bool IsHasRes(long project_id, long resource_id)
+        {
+            var strList = new pro_project_team_dal().GetListByRes(project_id, resource_id);
+            if (strList != null && strList.Count > 0)
+            {
+                return true;
+            }
+            var thisProject = _dal.FindNoDeleteById(project_id);
+            if (thisProject != null && thisProject.owner_resource_id == resource_id)
+            {
+                return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// 判断联系人是否在成员中出现
+        /// </summary>
+        public bool IsHasContact(long project_id, long contact_id)
+        {
+            var conList = new pro_project_team_dal().GetListByCon(project_id, contact_id);
+            if (conList != null && conList.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// 新增项目成员
+        /// </summary>
+        public bool AddProjectTeam(pro_project_team param, string roleids, long user_id)
+        {
+            var pptDal = new pro_project_team_dal();
+            var pptrDal = new pro_project_team_role_dal();
+            param.id = _dal.GetNextIdCom();
+            param.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            param.create_user_id = user_id;
+            param.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            param.update_user_id = user_id;
+            if (param.resource_id != null)
+            {
+                if (IsHasRes(param.project_id, (long)param.resource_id))
+                {
+                    return false;
+                }
+            }
+            if (param.contact_id != null)
+            {
+                if (IsHasContact(param.project_id, (long)param.contact_id))
+                {
+                    return false;
+                }
+            }
+            pptDal.Insert(param);
+            OperLogBLL.OperLogAdd<pro_project_team>(param, param.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_ITEM, "新增项目成员");
+            if (param.resource_id != null && !string.IsNullOrEmpty(roleids))
+            {
+                var roleArr = roleids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var thisRoleId in roleArr)
+                {
+                    var item_role = new pro_project_team_role()
+                    {
+                        id = pptrDal.GetNextIdCom(),
+                        project_team_id = param.id,
+                        role_id = long.Parse(thisRoleId),
+                        create_user_id = user_id,
+                        update_user_id = user_id,
+                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    };
+                    pptrDal.Insert(item_role);
+                    OperLogBLL.OperLogAdd<pro_project_team_role>(item_role, item_role.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "新增项目团队角色");
+                }
+            }
+
+            return true;
+        }
+        /// <summary>
+        /// 修改项目成员
+        /// </summary>
+        public bool EditProjetcTeam(pro_project_team param, string roleids, long user_id)
+        {
+
+            var pptDal = new pro_project_team_dal();
+            var pptrDal = new pro_project_team_role_dal();
+            var oldTeam = pptDal.FindNoDeleteById(param.id);
+            if (oldTeam != null)
+            {
+                param.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                param.update_user_id = user_id;
+                OperLogBLL.OperLogUpdate<pro_project_team>(param, oldTeam, oldTeam.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_ITEM, "修改项目成员");
+                pptDal.Update(param);
+
+                if (param.resource_id != null && !string.IsNullOrEmpty(roleids))
+                {
+                    var oldRoleList = pptrDal.GetListTeamRole(param.id);
+                    if(oldRoleList!=null&& oldRoleList.Count > 0)
+                    {
+                        var newRoleIdArr = roleids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var newRoleId in newRoleIdArr)
+                        {
+                            var oldRole = oldRoleList.FirstOrDefault(_ => _.role_id == long.Parse(newRoleId));
+                            if (oldRole != null)
+                            {
+                                oldRoleList.Remove(oldRole);
+                            }
+                            else
+                            {
+                                var item_role = new pro_project_team_role()
+                                {
+                                    id = pptrDal.GetNextIdCom(),
+                                    project_team_id = param.id,
+                                    role_id = long.Parse(newRoleId),
+                                    create_user_id = user_id,
+                                    update_user_id = user_id,
+                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                };
+                                pptrDal.Insert(item_role);
+                                OperLogBLL.OperLogAdd<pro_project_team_role>(item_role, item_role.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "新增项目团队角色");
+                            }
+
+                        }
+                        if(oldRoleList!=null&& oldRoleList.Count > 0)
+                        {
+                            oldRoleList.ForEach(_ => {
+                                pptrDal.SoftDelete(_, user_id);
+                                OperLogBLL.OperLogDelete<pro_project_team_role>(_, _.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_ITEM_ROLE, "删除项目团队成员角色");
+                            });
+                        }
+                    }
+                    
+
+                }
+
+
+
+            }
+
+            return true;
+        }
+        /// <summary>
+        /// 给项目员工发送邮件
+        /// </summary>
+        public bool EmailProTeam(long project_id,string sendType,string subject,string message,long user_id)
+        {
+            try
+            {
+                var thisProject = _dal.FindNoDeleteById(project_id);
+                var user = UserInfoBLL.GetUserInfo(user_id);
+                StringBuilder toEmails = new StringBuilder();
+                if (thisProject != null&&user!=null)
+                {
+                    if (sendType == "both" || sendType == "interna")
+                    {
+                        #region 添加员工和主负责人邮箱
+                        #endregion
+                        var srDal = new sys_resource_dal();
+                        var resList = srDal.GetResByProTeam(project_id);
+                        if (resList != null && resList.Count > 0)
+                        {
+                            resList.ForEach(_ => { toEmails.Append(_.email+";"); });
+                        }
+                        if (thisProject.owner_resource_id != null)
+                        {
+                            if(!resList.Any(_=>_.id== thisProject.owner_resource_id))
+                            {
+                                var priRes = srDal.FindNoDeleteById((long)thisProject.owner_resource_id);
+                                if (priRes != null)
+                                {
+                                    toEmails.Append(priRes.email+";");
+                                }
+                            }
+                        }
+                    }
+                    if (sendType == "both" || sendType == "clinet")
+                    {
+                        var conList = new crm_contact_dal().GetListByProId(project_id);
+                        if (conList != null && conList.Count > 0)
+                        {
+                            conList.ForEach(_ => {
+                                if (!string.IsNullOrEmpty(_.email)){
+                                    toEmails.Append(_.email + ";");
+                                }});
+                        }
+                    }
+
+                    var toEmailString = toEmails.ToString();
+                    if (!string.IsNullOrEmpty(toEmailString))
+                    {
+                        bool isSuess = false;
+                        var nitify = new com_notify_email() {
+                            id=_dal.GetNextIdCom(),
+                            cate_id = (int)NOTIFY_CATE.OTHER_USES,
+                            event_id = (int)DicEnum.NOTIFY_EVENT.PROJECT_CREATED,
+                           
+                            to_email = toEmailString,
+                            from_email = user.email,
+                            from_email_name = user.name,
+                            subject = subject,
+                            body_text = message,
+                            // is_success = (sbyte)(isSuccess ? 1 : 0),
+                            is_html_format = 0,
+                            create_user_id = user.id,
+                            update_user_id = user.id,
+                            create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            r_id = project_id,
+                        };
+
+
+                        nitify.is_success = (sbyte)(isSuess ? 1 : 0);
+
+                        new com_notify_email_dal().Insert(nitify);
+                        OperLogBLL.OperLogAdd<com_notify_email>(nitify, nitify.id, user_id, OPER_LOG_OBJ_CATE.NOTIFY, "发送邮件给项目成员");
+                    }
+
+                }
+            }
+            catch (Exception msg)
+            {
+
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 查核内部团队
+        /// </summary>
+        public bool ReconcileRes(long project_id,long user_id)
+        {
+            try
+            {
+                var pptDal = new pro_project_team_dal();
+                var pptrDal = new pro_project_team_role_dal();
+                var taskBll = new TaskBLL();
+                var resList = pptDal.GetResListByProId(project_id);
+                if (resList!=null && resList.Count > 0)
+                {
+                    foreach (var thisTeamRes in resList)
+                    {
+                        if (!taskBll.ResIsInTask(project_id, (long)thisTeamRes.resource_id))
+                        {
+                            DeleteProTeam(project_id,thisTeamRes.id,user_id);
+                        }
+                    }
+                    
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 批量改变计费状态
+        /// </summary>
+        public bool BillExpenses(string ids,bool isBilled,long user_id)
+        {
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var idArr = ids.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                var ccBLL = new ContractCostBLL();
+                foreach (var thisId in idArr)
+                {
+                    var thisLongID = long.Parse(thisId);
+                    if (IsCost(thisLongID))
+                    {
+                        ccBLL.UpdateBillStatus(thisLongID,user_id,isBilled?1:0);
+                    }
+                    else
+                    {
+                        var reason = "";
+                        BillExp(long.Parse(thisId),isBilled, user_id,out reason);
+                    }
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// 设置成本是否可计费
+        /// </summary>
+        public bool BillExp(long exp_id,bool isBilled,long user_id,out string reason)
+        {
+            reason = "";
+            var seDal = new sdk_expense_dal();
+            var thisExp = seDal.FindNoDeleteById(exp_id);
+            if (thisExp != null)
+            {
+                if (thisExp.approve_and_post_date != null || thisExp.approve_and_post_user_id != null)
+                {
+                    reason = "费用已经审批，状态不可更改";
+                    return false;
+                }
+
+                if (thisExp.is_billable == (sbyte)(isBilled ? 1 : 0))
+                {
+                    reason = isBilled?"费用已经计费": "费用已经不计费";
+                    return false;
+                }
+                thisExp.is_billable = (sbyte)(isBilled ? 1 : 0);
+                OperLogBLL.OperLogUpdate<sdk_expense>(thisExp, seDal.FindNoDeleteById(exp_id), thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "修改费用状态");
+                seDal.Update(thisExp);
+
+            }
+            else
+            {
+                reason="费用已删除";
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 判断是否是成本
+        /// </summary>
+        public bool IsCost(long thisID)
+        {
+            var thisCost = new ctt_contract_cost_dal().FindNoDeleteById(thisID);
+            if (thisCost != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 批量删除费用或成本
+        /// </summary>
+        public bool DeleteExpense(string ids,long user_id)
+        {
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var idArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var ccBLL = new ContractCostBLL();
+                foreach (var thisId in idArr)
+                {
+                    var thisLongID = long.Parse(thisId);
+                    if (IsCost(thisLongID))
+                    {
+                        ccBLL.DeleteContractCost(thisLongID,user_id);
+                    }
+                    else
+                    {
+                        var reason = "";
+                        DeleteSinExp(thisLongID,user_id,out reason);
+                    }
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 删除单个费用
+        /// </summary>
+        public bool DeleteSinExp(long exp_id,long user_id,out string reason)
+        {
+            try
+            {
+                reason = "";
+                var seDal = new sdk_expense_dal();
+                var thisExp = seDal.FindNoDeleteById(exp_id);
+                if (thisExp != null)
+                {
+                    if (thisExp.approve_and_post_date != null || thisExp.approve_and_post_user_id != null)
+                    {
+                        reason = "费用已经审批，不可删除";
+                        return false;
+                    }
+                    seDal.SoftDelete(thisExp, user_id);
+
+                    OperLogBLL.OperLogUpdate<sdk_expense>(thisExp, seDal.FindNoDeleteById(exp_id), thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "修改费用状态");
+                }
+                else
+                {
+                    reason = "费用已删除";
+                    return false;
+                }
+            }
+            catch (Exception msg)
+            {
+                reason = msg.Message;
+                return false;
+            }
+         
+            return true; 
         }
     }
 }

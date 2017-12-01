@@ -172,22 +172,33 @@ namespace EMT.DoneNOW.BLL
                 }
                 else
                 {
-                    conCost.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                    conCost.delete_user_id = user.id;
-                    _dal.Update(conCost);
-                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                    if (conCost.create_ci == 1)
                     {
-                        user_cate = "用户",
-                        user_id = user.id,
-                        name = user.name,
-                        phone = user.mobile == null ? "" : user.mobile,
-                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST,
-                        oper_object_id = conCost.id,
-                        oper_type_id = (int)DicEnum.OPER_LOG_TYPE.DELETE,
-                        oper_description = _dal.AddValue(conCost),
-                        remark = "删除合同成本"
-                    });
+                        conCost.status_id = (int)DicEnum.COST_STATUS.CANCELED;
+                        OperLogBLL.OperLogUpdate<ctt_contract_cost>(conCost, _dal.FindNoDeleteById(conCost.id), conCost.id, user_id, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改成本状态");
+                        _dal.Update(conCost);
+
+                    }
+                    else
+                    {
+                        conCost.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        conCost.delete_user_id = user.id;
+                        _dal.Update(conCost);
+                        new sys_oper_log_dal().Insert(new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST,
+                            oper_object_id = conCost.id,
+                            oper_type_id = (int)DicEnum.OPER_LOG_TYPE.DELETE,
+                            oper_description = _dal.AddValue(conCost),
+                            remark = "删除合同成本"
+                        });
+                    }
+                    
                     return true;
                 }
             }

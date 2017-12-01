@@ -196,7 +196,7 @@ namespace EMT.DoneNOW.Web.Project
             }
            
             // 操作完成，清除session暂存
-            Session.Remove(thisTask.id + "_Att");
+            Session.Remove(object_id + "_Att");
             //if (result)
             //{
             ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>window.close();self.opener.location.reload();</script>");
@@ -239,7 +239,7 @@ namespace EMT.DoneNOW.Web.Project
             param.thisTask = thisTask;
             param.thisProjetc = thisProject;
             param.object_id = object_id;
-            param.filtList = GetSessAttList(thisTask.id);
+            param.filtList = GetSessAttList(object_id);
             param.taskNote = pageTaskNote;
             param.otherEmail = Request.QueryString["otherEmail"];
             param.subjects = Request.QueryString["subjects"];

@@ -211,6 +211,7 @@
     <Content Include="Images\coin_gold.png" />
     <Content Include="Images\ContentAttachment.png" />
     <Content Include="Images\contract.png" />
+    <Content Include="Images\costs.png" />
     <Content Include="Images\dailyGridContainer.png" />
     <Content Include="Images\forward_arrow.png" />
     <Content Include="Images\ganttsprite.png" />
@@ -313,6 +314,9 @@
     <Content Include="Opportunity\OppportunityAdvancedField.aspx" />
     <Content Include="Organization\LocationAddAndEdit.aspx" />
     <Content Include="Project\AddTaskAttach.aspx" />
+    <Content Include="Project\CompanyPolicy.aspx" />
+    <Content Include="Project\EmailProjectTeam.aspx" />
+    <Content Include="Project\ExpenseDetail.aspx" />
     <Content Include="Project\ExpenseManage.aspx" />
     <Content Include="Project\ProjectAddOrEdit.aspx" />
     <Content Include="Product\ProductAdd.aspx" />
@@ -323,6 +327,7 @@
     <Content Include="Project\ProjectChart.aspx" />
     <Content Include="Project\ProjectClosingReport.aspx" />
     <Content Include="Project\ProjectCompleteWizard.aspx" />
+    <Content Include="Project\ProjectNoteShow.aspx" />
     <Content Include="Project\ProjectReportDetail.aspx" />
     <Content Include="Project\ProjectSchedule.aspx" />
     <Content Include="Project\ProjectSearch.aspx" />
@@ -775,6 +780,8 @@
     <Content Include="Scripts\Search\InvoiceTemplate.js" />
     <Content Include="Scripts\Search\Invoice_History.js" />
     <Content Include="Scripts\Search\OpportunityViewAttachment.js" />
+    <Content Include="Scripts\Search\project_cost_expense.js" />
+    <Content Include="Scripts\Search\project_team.js" />
     <Content Include="Scripts\Search\Quote.js" />
     <Content Include="Scripts\Search\SaleOrder.js" />
     <Content Include="Scripts\Search\SalesOrderViewAttachment.js" />
@@ -1396,6 +1403,27 @@
     <Compile Include="Project\AddTaskAttach.aspx.designer.cs">
       <DependentUpon>AddTaskAttach.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Project\CompanyPolicy.aspx.cs">
+      <DependentUpon>CompanyPolicy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\CompanyPolicy.aspx.designer.cs">
+      <DependentUpon>CompanyPolicy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\EmailProjectTeam.aspx.cs">
+      <DependentUpon>EmailProjectTeam.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\EmailProjectTeam.aspx.designer.cs">
+      <DependentUpon>EmailProjectTeam.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ExpenseDetail.aspx.cs">
+      <DependentUpon>ExpenseDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ExpenseDetail.aspx.designer.cs">
+      <DependentUpon>ExpenseDetail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Project\ExpenseManage.aspx.cs">
       <DependentUpon>ExpenseManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1465,6 +1493,13 @@
     </Compile>
     <Compile Include="Project\ProjectCompleteWizard.aspx.designer.cs">
       <DependentUpon>ProjectCompleteWizard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectNoteShow.aspx.cs">
+      <DependentUpon>ProjectNoteShow.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectNoteShow.aspx.designer.cs">
+      <DependentUpon>ProjectNoteShow.aspx</DependentUpon>
     </Compile>
     <Compile Include="Project\ProjectReportDetail.aspx.cs">
       <DependentUpon>ProjectReportDetail.aspx</DependentUpon>

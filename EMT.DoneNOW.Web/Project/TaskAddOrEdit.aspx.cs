@@ -281,7 +281,7 @@ namespace EMT.DoneNOW.Web.Project
         {
             var result = SaveTask();
             var url = Request.Url;
-            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();location.href='"+url+"';</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();location.href='TaskAddOrEdit?project_id="+thisProject.id+"';</script>");
         }
 
         protected void save2_Click(object sender, EventArgs e)
@@ -362,6 +362,7 @@ namespace EMT.DoneNOW.Web.Project
             }
             var pageTask = AssembleModel<sdk_task>();
             pageTask.cost_code_id = pageTask.cost_code_id == 0 ? null : pageTask.cost_code_id;
+          
             if (parTask != null)
             {
                 pageTask.parent_id = parTask.id;
@@ -435,6 +436,7 @@ namespace EMT.DoneNOW.Web.Project
                 param.task = pageTask;
                 param.task.type_id = type_id;
                 param.task.project_id = thisProject.id;
+                param.task.account_id = thisProject.account_id;
             }
             else
             {

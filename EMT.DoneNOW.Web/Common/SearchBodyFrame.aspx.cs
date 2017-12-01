@@ -216,6 +216,12 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.TODOS:
                     addBtn = "新增待办";
                     break;
+                case (int)DicEnum.QUERY_CATE.PROJECT_TEAM:
+                    addBtn = "新增项目团队";
+                    break;
+                case (int)DicEnum.QUERY_CATE.PROJECT_COST_EXPENSE:
+                    addBtn = "新增成本或者费用";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -694,6 +700,22 @@ namespace EMT.DoneNOW.Web
                     param1 = ((int)DicEnum.ATTACHMENT_OBJECT_TYPE.SALES_ORDER).ToString();
                     param2 = Request.QueryString["con977"];
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.PROJECT_TEAM:
+                    contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" ,id= "EditTeamMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "移除", click_function = "DeleteRes()",id= "DeleteResMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "找相似", click_function = "FindSmilar()",id="SmilarMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "移除", click_function = "DeleteCon()", id = "DeleteConMenu" });
+                    break;
+                case (long)QueryType.PROJECT_COST_EXPENSE:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()", id = "EditMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看", click_function = "ShowDetailes()", id = "ViewMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "当前成本/费用设置为可计费",  id = "SingBillMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "选中成本/费用设置为可计费", id = "ChooseBillMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "当前成本/费用设置为不可计费", id = "SingNonBillMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "选中成本/费用设置为不可计费",id = "ChooseNonBillMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除当期成本/费用",id = "SingDeleteMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除选中成本/费用",id = "ChooseDeleteMenu" });
                     break;
                 default:
                     break;

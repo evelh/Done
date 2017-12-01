@@ -89,7 +89,7 @@ namespace EMT.DoneNOW.Web.Project
                 var project_id = Request.QueryString["project_id"];
                 if (!string.IsNullOrEmpty(project_id))
                 {
-                    thisProject = new pro_project_dal().FindNoDeleteById((long)thisTask.project_id);
+                    thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(project_id));
                     if (thisProject != null)
                     {
                         thisAccount = new crm_account_dal().FindNoDeleteById(thisProject.account_id);

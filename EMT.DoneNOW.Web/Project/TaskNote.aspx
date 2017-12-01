@@ -140,7 +140,7 @@
                                 { %>
                                 <tr>
                                 <td>
-                                    <div class="clear">
+                                    <div class="clear" style="padding-left: 72px;">
                                         <label>是否是公告<span class="red">*</span><asp:CheckBox ID="isAnnounce" runat="server" /></label>
                                     </div>
                                 </td>

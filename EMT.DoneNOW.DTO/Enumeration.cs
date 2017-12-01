@@ -224,6 +224,7 @@ namespace EMT.DoneNOW.DTO
             QUOTE_TEMPLATE_BODY = 106,  //报价模板-body           
             INVOICE_TEMPLATE_OTHERS=1967,//发票模板-其他
             INVOICE_TEMPLATE_BODY=1968,//发票模板body
+            OTHER_USES = 1969,         // 其他用途
 
         }
         /// <summary>
@@ -265,6 +266,7 @@ namespace EMT.DoneNOW.DTO
             //SERVICE CALL - CREATED OR EDITED,                   // 
             //BLOCK HOUR CONTRACT - NOTIFICATION RULE,            // 
             //PER TICKET CONTRACT - NOTIFICATION RULE,            // 
+            NONE=1972,                                       // 无
         }
 
         /// <summary>
@@ -548,6 +550,10 @@ namespace EMT.DoneNOW.DTO
             SALES_ORDER_VIEW_ATTACHMENT = 1541,     // 销售订单详情-附件查询
             PRO_EXPENSE_REPORT_CALLBACK = 1543,            // 费用报表查找带回 
             PROJECT_CALLBACK = 1544,                // 项目查找带回
+            PROJECT_TEAM = 1547,                    // 项目管理-项目详情-团队查询
+            PROJECT_COST_EXPENSE = 1548,            // 项目管理-项目详情-成本和费用查询
+            PROJETC_NOTE = 1552,                    // 项目管理-项目备注查询
+            //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
@@ -1123,8 +1129,9 @@ namespace EMT.DoneNOW.DTO
         PROJECT_BASELINE = 118,    // 项目详情-TASK列表-基准
         OpportunityViewAttachment = 119,// 商机详情-附件查询
         SalesOrderViewAttachment = 120, // 销售订单详情-附件查询
-
-
+        PROJECT_TEAM = 126,             // 项目管理-项目详情-团队查询
+        PROJECT_COST_EXPENSE = 127,     // 项目管理-项目详情-成本和费用查询
+        project_note = 131,             // 项目管理-项目详情-备注查询
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
         REVOKE_EXPENSE,                //撤销费用审批      
@@ -1312,6 +1319,7 @@ namespace EMT.DoneNOW.DTO
 
         TASK_EXPENSE_ADD,     // 任务费用新增修改
         TASK_EXPENSE_EDIT,    // 任务费用新增修改
+        RESOURCE_CALLBACK,    // 员工的查找带回
 
     }
     /// <summary>

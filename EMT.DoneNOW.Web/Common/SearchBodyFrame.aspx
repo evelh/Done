@@ -200,29 +200,46 @@
             <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;min-width:700px;">
                 <ul class="clear fl">
                     <%if (!string.IsNullOrEmpty(addBtn))
-                        {
-                            if (addBtn.Equals("新增合同") && CheckAuth("CTT_CONTRACT_ADD"))
-                            {
+    {
+        if (addBtn.Equals("新增合同") && CheckAuth("CTT_CONTRACT_ADD"))
+        {
                     %>
                     <li id="ToolsButton"><i style="background-image: url(../Images/new.png);"></i><span style="margin: 0;"><%=this.addBtn %></span><img src="../Images/dropdown.png" /></li>
                     <%
-                        } else if(addBtn=="审批并提交"){
+    }
+    else if (addBtn == "审批并提交")
+    {
   %>
                     <li onclick="Add()"><span style="margin: 0 10px;">审批并提交</span></li>
                      <li><a href="../Invoice/InvocieSearch" target="PageFrame" style="color:#333;text-decoration:none;"><span style="margin: 0 10px;">生成发票</span></a></li>
                                <%
-                        } else if(addBtn=="历史发票"){
+    }
+    else if (addBtn == "历史发票")
+    {
   %>
                     <li onclick="Add()"><span style="margin: 0 10px;">邮件发票</span></li>
                      <li><a href="../Invoice/InvocieSearch" target="PageFrame" style="color:#333;text-decoration:none;"><span style="margin: 0 10px;">发票查询</span></a></li>
                     <%
-                             } else if(addBtn=="完成"){
-  %>
+    }
+    else if (addBtn == "完成")
+    {
+                 %>
                     <li onclick="Add()"><span style="margin: 0 10px;">完成</span></li>
                     <%
-                        }
-                        else
-                        {
+    }
+    else if (catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_TEAM) {%>
+                    <li onclick="Add()"><span style="margin: 0 10px;">新建</span></li>
+                    <li onclick="EmailProjetcTeam()"><span style="margin: 0 10px;">通知项目团队</span></li>
+                    <li onclick=""><span style="margin: 0 10px;">工作量报表</span></li>
+                    <li onclick=""><span style="margin: 0 10px;">查找员工</span></li>
+                    <li onclick="ReconcileProject()"><span style="margin: 0 10px;">查核内部团队</span></li>
+                        <%}
+                            else if (catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_COST_EXPENSE) {%>
+                       <li onclick="AddCost()"><span style="margin: 0 10px;">新增成本</span></li>
+                       <li onclick="AddExpense()"><span style="margin: 0 10px;">新增费用</span></li>
+                            <%}
+                            else
+                            {
                     %>
                     <li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
                     <%}
@@ -237,9 +254,9 @@
                   <li onclick="ApplyDiscount()"><span>应用全部折扣</span></li>
                   <%} %>
                   <%}%>
-                    <li><i style="background-image: url(../Images/print.png);"></i></li>
-                    <li onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
-                    <li><i style="background-image: url(../Images/export.png);"></i></li>
+                    <li id="PrintLi" class="General"><i style="background-image: url(../Images/print.png);"></i></li>
+                    <li id="SelectLi" class="General" onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
+                    <li id="ExportLi" class="General"><i style="background-image: url(../Images/export.png);"></i></li>
                 </ul>
 
               <div class="fl" style="line-height:47px;margin-right:30px;">
@@ -314,7 +331,7 @@
                             order = strs[1].ToLower();
                         }
                 %>
-                <th title="点击按此列排序" width="<%=para.length*32 %>px" onclick="ChangeOrder('<%=para.name %>')">
+                <th title="点击按此列排序" width="<%=para.length*32 %>px" onclick="ChangeOrder('<%=para.name %>')" class="OrderTh">
                     <%=para.name %>
                     <%if (orderby != null && para.name.Equals(orderby))
                         { %><img src="../Images/sort-<%=order %>.png" />
@@ -342,7 +359,7 @@
                 <%} %>
                 <%if (!string.IsNullOrEmpty(isCheck))
                     { %>
-                <td style="width:22px;max-width:22px;">
+                <td style="width:22px;max-width:22px;" class="CheckTd">
                     <input type="checkbox" class="IsChecked" value="<%=id %>" /></td>
 
                 <%} %>
@@ -385,7 +402,7 @@
     <div id="menu">
         <%if (contextMenu.Count > 0)
             { %>
-        <ul style="width: 220px;">
+        <ul style="width: 220px;" id="menuUl">
             <%foreach (var menu in contextMenu)
                 { %>
             <li id="<%=menu.id %>" onclick="<%=menu.click_function %>"><i class="menu-i1"></i><%=menu.text %>

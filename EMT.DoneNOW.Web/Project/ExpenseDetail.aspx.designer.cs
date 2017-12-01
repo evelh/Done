@@ -10,7 +10,7 @@
 namespace EMT.DoneNOW.Web.Project {
     
     
-    public partial class ProjectTeamManage {
+    public partial class ExpenseDetail {
         
         /// <summary>
         /// form1 控件。
@@ -20,23 +20,5 @@ namespace EMT.DoneNOW.Web.Project {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
-        /// <summary>
-        /// save_close 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button save_close;
-        
-        /// <summary>
-        /// save_new 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button save_new;
     }
 }

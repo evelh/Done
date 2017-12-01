@@ -166,6 +166,49 @@ namespace EMT.DoneNOW.Web
                             RecoveTask(context, long.Parse(recTaskId));
                         }
                         break;
+                    case "GetSinProTeam":
+                        var ptId = context.Request.QueryString["team_id"];
+                        GetSinProTeam(context,long.Parse(ptId));
+                        break;
+                    case "DelProTeam":
+                        var dptId = context.Request.QueryString["team_id"];
+                        var dptPId = context.Request.QueryString["project_id"];
+                        DelProTeam(context,long.Parse(dptPId),long.Parse(dptId));
+                        break;
+                    case "ResIsInTask":
+                        var ritPId = context.Request.QueryString["project_id"];
+                        var ritRId = context.Request.QueryString["team_id"];
+                        ResIsInTask(context,long.Parse(ritPId),long.Parse(ritRId));
+                        break;
+                    case "ResInPro":
+                        var ripPid = context.Request.QueryString["project_id"];
+                        var ripRid = context.Request.QueryString["resource_id"];
+                        ResInPro(context,long.Parse(ripPid),long.Parse(ripRid));
+                        break;
+                    case "ReconcileProject":
+                        var rpId = context.Request.QueryString["project_id"];
+                        ReconcileProject(context,long.Parse(rpId));
+                        break;
+                    case "GetSinExpense":
+                        var exp_id = context.Request.QueryString["exp_id"];
+                        GetSinExpense(context,long.Parse(exp_id));
+                        break;
+                    case "BillExpense":
+                        var billExpIds = context.Request.QueryString["ids"];
+                        BillManyExpense(context,billExpIds, !string.IsNullOrEmpty(context.Request.QueryString["isbill"]));
+                        break;
+                    case "BillSingExp":
+                        var sinExpId = context.Request.QueryString["exp_id"];
+                        BillSingExp(context,long.Parse(sinExpId),!string.IsNullOrEmpty(context.Request.QueryString["isbill"]));
+                        break;
+                    case "DeleteSinExp":
+                        var dsExpId = context.Request.QueryString["exp_id"];
+                        DeleteSinExp(context,long.Parse(dsExpId));
+                        break;
+                    case "DeleteManyExp":
+                        var deIds = context.Request.QueryString["ids"];
+                        DeleteManyExp(context,deIds);
+                        break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                         break;
@@ -323,18 +366,26 @@ namespace EMT.DoneNOW.Web
                     }
                     proTeamList.ForEach(_ =>
                     {
-                        var teamRole = pptrDal.GetSinTeamRole(_.id);
-                        if (teamRole != null && teamRole.role_id != null)
+                        var teamRoleList = pptrDal.GetListTeamRole(_.id);
+                        if (teamRoleList != null && teamRoleList.Count>0)
                         {
-                            var resDepList = srdDal.GetResDepByResAndRole((long)_.resource_id, (long)teamRole.role_id);
-                            foreach (var resdep in resDepList)
+                            foreach (var thisTeamRole in teamRoleList)
                             {
-                                if (!idsList.Contains(resdep.id.ToString()))
+                                if (thisTeamRole.role_id != null)
                                 {
-                                    idsList.Add(resdep.id.ToString());
-                                    break;
+                                    var resDepList = srdDal.GetResDepByResAndRole((long)_.resource_id, (long)thisTeamRole.role_id);
+                                    foreach (var resdep in resDepList)
+                                    {
+                                        if (!idsList.Contains(resdep.id.ToString()))
+                                        {
+                                            idsList.Add(resdep.id.ToString());
+                                            break;
+                                        }
+                                    }
                                 }
+                            
                             }
+                            
                         }
                     });
                     if (idsList != null && idsList.Count > 0)
@@ -1066,5 +1117,100 @@ namespace EMT.DoneNOW.Web
             var result = new TaskBLL().RecoveTask(task_id, LoginUserId);
             context.Response.Write(result);
         }
+        /// <summary>
+        /// 获取单个的项目成员信息
+        /// </summary>
+        private void GetSinProTeam(HttpContext context, long team_id)
+        {
+            var thisTeam = new pro_project_team_dal().FindNoDeleteById(team_id);
+            if (thisTeam != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(thisTeam));
+            }
+        }
+        /// <summary>
+        /// 员工是否在任务中出现
+        /// </summary>
+        private void ResIsInTask(HttpContext context, long project_id,long team_id)
+        {
+            var result = false;
+            var thisTeam = new pro_project_team_dal().FindNoDeleteById(team_id);
+            if (thisTeam != null && thisTeam.resource_id != null)
+            {
+                result = new TaskBLL().ResIsInTask(project_id, (long)thisTeam.resource_id);
+            }
+            
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 删除项目成员
+        /// </summary>
+        private void DelProTeam(HttpContext context, long project_id, long team_id)
+        {
+            var result = new ProjectBLL().DeleteProTeam(project_id,team_id,LoginUserId);
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 判断该员工是否在项目中出现
+        /// </summary>
+        private void ResInPro(HttpContext context, long project_id,long resourcec_id)
+        {
+            var result = new ProjectBLL().IsHasRes(project_id,resourcec_id);
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 查核内部团队
+        /// </summary>
+        private void ReconcileProject(HttpContext context, long project_id)
+        {
+            var result = new ProjectBLL().ReconcileRes(project_id,LoginUserId);
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 获取单个的费用信息
+        /// </summary>
+        private void GetSinExpense(HttpContext context, long exp_id)
+        {
+            var thisExp = new sdk_expense_dal().FindNoDeleteById(exp_id);
+            if (thisExp != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(thisExp));
+            }
+        }
+        /// <summary>
+        /// 批量计费或者不计费 成本或者费用
+        /// </summary>
+        private void BillManyExpense(HttpContext context,string ids,bool IsBill)
+        {
+            var result = new ProjectBLL().BillExpenses(ids,IsBill,LoginUserId);
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 单个费用的计费操作
+        /// </summary>
+        private void BillSingExp(HttpContext context, long exp_id, bool IsBill)
+        {
+            string reason = "";
+            var result = new ProjectBLL().BillExp(exp_id,IsBill,LoginUserId,out reason);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result,reason=reason}));
+        }
+        /// <summary>
+        /// 删除单个费用
+        /// </summary>
+        private void DeleteSinExp(HttpContext context, long exp_id)
+        {
+            var reason = "";
+            var result = new ProjectBLL().DeleteSinExp(exp_id,LoginUserId,out reason);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result,reason=reason}));
+        }
+        /// <summary>
+        /// 批量删除费用或者成本
+        /// </summary>
+        private void DeleteManyExp(HttpContext context,string ids)
+        {
+            var result = new ProjectBLL().DeleteExpense(ids,LoginUserId);
+            context.Response.Write(result);
+        }
+
     }
 }

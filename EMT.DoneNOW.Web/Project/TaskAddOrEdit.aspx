@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <link href="../Content/reset.css" rel="stylesheet" />
-    <link href="../Content/NewConfigurationItem.css" rel="stylesheet" />
+    <link href="../Content/NewConfigurationItem.css" rel="stylesheetNormal" />
     <link href="../Content/DynamicContent.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />
     <title><%=isAdd?"新增":"编辑" %></title>

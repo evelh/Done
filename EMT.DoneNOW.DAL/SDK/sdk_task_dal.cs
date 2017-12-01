@@ -13,7 +13,7 @@ namespace EMT.DoneNOW.DAL
         /// <summary>
         /// 获取所有的task
         /// </summary>
-        public List<sdk_task> GetProTask(long project_id,string where ="")
+        public List<sdk_task> GetProTask(long project_id, string where ="")
         {
             return FindListBySql<sdk_task>($"select * from sdk_task where delete_time = 0 and project_id = {project_id} "+where); 
         }
@@ -91,6 +91,13 @@ namespace EMT.DoneNOW.DAL
             }
             sql += show;
             return FindListBySql<sdk_task>(sql);
+        }
+        /// <summary>
+        /// 根据项目和员工id 获取相应信息
+        /// </summary>
+        public List<sdk_task> GetListByProAndRes(long project_id,long resource_id)
+        {
+            return FindListBySql<sdk_task>($"SELECT st.* from sdk_task  st INNER JOIN pro_project pp on st.project_id = pp.id where pp.id = {project_id} and st.owner_resource_id = {resource_id} and pp.delete_time = 0 and st.delete_time = 0 ");
         }
     }
 }

@@ -146,12 +146,22 @@ namespace EMT.DoneNOW.Web.Contract
                     thisTask.projected_variance += (decimal)thisConCost.changeorder;
                     new TaskBLL().OnlyEditTask(thisTask,LoginUserId);  // 修改任务的预估偏差
                 }
-                thisConCost.change_order_hours = thisConCost.change_order_hours;
+                var change_order_hours = Request.Form["change_order_hours"];
+                if (!string.IsNullOrEmpty(change_order_hours))
+                {
+                    thisConCost.change_order_hours = decimal.Parse(change_order_hours);
+                }
+                else
+                {
+                    thisConCost.change_order_hours = 0;
+                }
+                //thisConCost.change_order_hours = thisConCost.change_order_hours;
                 thisConCost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.TICKET_COST;
             }
             if (thisProject != null)
             {
                 thisConCost.project_id = thisProject.id;
+                thisConCost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.PROJECT_COST;
             }
             param.cost = thisConCost;
             return param;
@@ -190,11 +200,11 @@ namespace EMT.DoneNOW.Web.Contract
                         {
                             url += "&project_id=" + thisProject.id;
                         }
-                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');window.close();window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');window.close();window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);self.opener.location.reload();</script>");
                     }
                     else
                     {
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close(); </script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close();self.opener.location.reload(); </script>");
                     }
                   
                     break;
@@ -243,11 +253,11 @@ namespace EMT.DoneNOW.Web.Contract
                         {
                             url += "&project_id=" + thisProject.id;
                         }
-                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='AddCharges.aspx?id=" + param.cost.id + "';window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='AddCharges.aspx?id=" + param.cost.id + "';window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);self.opener.location.reload();</script>");
                     }
                     else
                     {
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>debugger;alert('保存成功！');location.href='AddCharges.aspx?contract_id=" + contract.id + "&id=" + param.cost.id + "'; </script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>debugger;alert('保存成功！');location.href='AddCharges.aspx?contract_id=" + contract.id + "&id=" + param.cost.id + "';self.opener.location.reload(); </script>");
                     }
 
                     break;
@@ -297,11 +307,11 @@ namespace EMT.DoneNOW.Web.Contract
                         {
                             url += "&project_id=" + thisProject.id;
                         }
-                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='"+ thisURL + "';window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='"+ thisURL + "';window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);self.opener.location.reload();</script>");
                     }
                     else
                     {
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');location.href='AddCharges.aspx?contract_id=" + contract.id + "'; </script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');location.href='AddCharges.aspx?contract_id=" + contract.id + "';self.opener.location.reload(); </script>");
                     }
                     break;
                 case ERROR_CODE.PARAMS_ERROR:

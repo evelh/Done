@@ -36,5 +36,23 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<pro_project_team>($"SELECT ppt.* from pro_project_team  ppt INNER JOIN pro_project_team_role pptr on ppt.id = pptr.project_team_id where project_id = {project_id} and resource_id = {res_id} and pptr.role_id = {role_id} and ppt.delete_time = 0 AND pptr.delete_time = 0");
         }
+
+
+
+        /// <summary>
+        /// 获取到项目中是这个成员的信息
+        /// </summary>
+        public List<pro_project_team> GetListByRes(long project_id ,long resource_id)
+        {
+            return FindListBySql<pro_project_team>($"SELECT ppt.* from pro_project_team ppt INNER JOIN pro_project pp on ppt.project_id = pp.id where pp.id = {project_id}  and ppt.resource_id = {resource_id}  and pp.delete_time = 0 and ppt.delete_time = 0");
+        }
+        /// <summary>
+        /// 获取到项目中是这个联系人的信息
+        /// </summary>
+        public List<pro_project_team> GetListByCon(long project_id,long contact_id)
+        {
+            return FindListBySql<pro_project_team>($"SELECT * from pro_project_team ppt INNER JOIN pro_project pp on ppt.project_id = pp.id where pp.id = {project_id}  and ppt.contact_id = {contact_id}  and pp.delete_time = 0 and ppt.delete_time = 0");
+        }
+      
     }
 }

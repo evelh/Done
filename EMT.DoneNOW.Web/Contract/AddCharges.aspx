@@ -1022,11 +1022,11 @@
         }
         <%if (thisTask != null)
             { %>
-        var change_order_hours = $("#change_order_hours").val();
-        if (change_order_hours == "") {
-            alert("请填写变更时间！");
-            return false;
-        }
+        //var change_order_hours = $("#change_order_hours").val();
+        //if (change_order_hours == "") {
+        //    alert("请填写变更时间！");
+        //    return false;
+        //}
 
         <%}%>
         return true;

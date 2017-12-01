@@ -3267,5 +3267,86 @@ namespace EMT.DoneNOW.BLL
             }
             return true;
         }
+        /// <summary>
+        /// 删除任务成员是这个员工的成员信息，或者主负责人是这个员工的移除
+        /// </summary>
+        public bool DeleteTeamRes(long projetc_id,long resource_id,long user_id)
+        {
+            try
+            {
+                var strDal = new sdk_task_resource_dal();
+                var strList = strDal.GetListByProIdResId(projetc_id, resource_id);
+                var taskList = _dal.GetListByProAndRes(projetc_id, resource_id);
+                if (strList != null && strList.Count > 0)
+                {
+                    strList.ForEach(_ =>
+                    {
+                        strDal.SoftDelete(_, user_id);
+                        OperLogBLL.OperLogDelete<sdk_task_resource>(_, _.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK_RESOURCE, "删除任务团队成员");
+                    });
+                }
+
+                if (taskList != null && taskList.Count > 0)
+                {
+                    taskList.ForEach(_ =>
+                    {
+                        _.owner_resource_id = null;
+                        OnlyEditTask(_, user_id);
+                    });
+                }
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        
+            return true;
+        }
+        /// <summary>
+        /// 根据项目id和员工id查找员工是否在任务中出现
+        /// </summary>
+        public bool ResIsInTask(long project_id,long resource_id)
+        {
+            var strList = new sdk_task_resource_dal().GetListByProIdResId(project_id, resource_id);
+            if(strList!=null&& strList.Count > 0)
+            {
+                return true;
+            }
+            var taskList = _dal.GetListByProAndRes(project_id, resource_id);
+            if(taskList!=null&& taskList.Count > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 删除成员是这个联系人的信息
+        /// </summary>
+        public bool DeleteTeamCon(long project_id,long contact_id,long user_id)
+        {
+            try
+            {
+                var strDal = new sdk_task_resource_dal();
+                // GetListByConId
+                var strList = strDal.GetListByConId(project_id, contact_id);
+                if (strList != null && strList.Count > 0)
+                {
+                    strList.ForEach(_ =>
+                    {
+                        strDal.SoftDelete(_, user_id);
+                        OperLogBLL.OperLogDelete<sdk_task_resource>(_, _.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK_RESOURCE, "删除任务团队成员");
+                    });
+                }
+            }
+            catch (Exception msg)
+            {
+                return false;
+            }
+       
+            return true;
+        }
     }
 }

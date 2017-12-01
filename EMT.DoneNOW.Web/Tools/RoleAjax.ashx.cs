@@ -28,7 +28,8 @@ namespace EMT.DoneNOW.Web
                     break;
                 case "GetRoleList":
                     var source_id = context.Request.QueryString["source_id"];
-                    GetRoleList(context, long.Parse(source_id));
+                    var showNull = context.Request.QueryString["showNull"];
+                    GetRoleList(context, long.Parse(source_id),string.IsNullOrEmpty(showNull));
                     break;
                 case "delete":
                     var role_delete_id = context.Request.QueryString["id"];
@@ -70,11 +71,16 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <param name="context"></param>
         /// <param name="resource_id"></param>
-        public void GetRoleList(HttpContext context, long resource_id)
+        public void GetRoleList(HttpContext context, long resource_id, bool isShowNull = true)
         {
             // 查找出部门类型的角色
             var roleList = new sys_resource_department_dal().GetRolesBySource(resource_id, DEPARTMENT_CATE.DEPARTMENT);
-            StringBuilder roles = new StringBuilder("<option value='0'>     </option>");
+            StringBuilder roles = new StringBuilder();
+            if (isShowNull)
+            {
+                roles.Append("<option value='0'>     </option>");
+            }
+            
             if (roleList != null && roleList.Count > 0)
             {
                 var rDal = new sys_role_dal();
