@@ -29,6 +29,13 @@ namespace EMT.DoneNOW.Web.Project
                     {
                         thisAccount = new CompanyBLL().GetCompany(thisExpense.account_id);
                     }
+                    var ruleList = new d_cost_code_rule_dal().GetRuleByCodeId(thisExpense.expense_cost_code_id);
+                    long? accout_id = null;
+                    if (thisAccount != null)
+                    {
+                        accout_id = thisAccount.id;
+                    }
+                    thisRule = new TaskBLL().GetRule(ruleList, accout_id);
                 }
                 // 费用的cate 种类 在d_cost_code上，
                 // 相关规则在d_cost_code_rule上
@@ -37,6 +44,19 @@ namespace EMT.DoneNOW.Web.Project
                 if (thisAccount == null)
                 {
                     Response.End();
+                }
+                else
+                {
+                    var url = "../Common/SearchBodyFrame?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACCOUNT_POLICY + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.ACCOUNT_POLICY+"&con1057="+thisAccount.id+"&con1056="+ LoginUserId;
+                    var deaDep = new sys_resource_department_dal().GetDepByRes(LoginUserId);  // 员工的默认部门
+                    if (deaDep != null)
+                    {
+                        url += "&con1058="+deaDep.id;
+                    }
+
+
+
+                    AccountPolicy.Src = url;
                 }
                 
             }

@@ -3348,5 +3348,57 @@ namespace EMT.DoneNOW.BLL
        
             return true;
         }
+        /// <summary>
+        /// 获取到规则当中优先级高的一个并返回
+        /// </summary>
+        public d_cost_code_rule GetRule(List<d_cost_code_rule> ruleList,long? account_id=null)
+        {
+            d_cost_code_rule returnRule = null;
+            if (ruleList!=null&& ruleList.Count > 0)
+            {
+                if (account_id != null)
+                {
+                    returnRule = ruleList.FirstOrDefault(_ => _.resource_id != null && _.account_id == account_id);
+                }
+                else
+                {
+                    returnRule = ruleList.FirstOrDefault(_ => _.resource_id != null && _.account_id !=null);
+                }
+                if (returnRule == null)
+                {
+                    if (account_id != null)
+                    {
+                        returnRule = ruleList.FirstOrDefault(_ => _.department_id != null && _.account_id == account_id);
+                    }
+                    else
+                    {
+                        returnRule = ruleList.FirstOrDefault(_ => _.department_id != null && _.account_id != null);
+                    }
+                    if (returnRule == null)
+                    {
+                        if (account_id != null)
+                        {
+                            returnRule = ruleList.FirstOrDefault(_ => _.account_id == account_id);
+                        }
+                        else
+                        {
+                            returnRule = ruleList.FirstOrDefault(_ => _.account_id != null);
+                        }
+                        if (returnRule == null)
+                        {
+                            returnRule = ruleList.FirstOrDefault(_ => _.department_id != null);
+                            if (returnRule == null)
+                            {
+                                returnRule = ruleList[0];
+                            }
+                        }
+                            
+                    }
+                    
+                }
+                
+            }
+            return returnRule;
+        }
     }
 }

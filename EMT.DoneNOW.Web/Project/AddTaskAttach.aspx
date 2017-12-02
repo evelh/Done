@@ -27,7 +27,7 @@
                 </li>
                 <li id="SaveNew">
                     <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
-                    <input type="button" value="保存并新增" />
+                    <asp:Button ID="save_new" runat="server" Text="保存并新增" OnClick="save_new_Click" />
                 </li>
                 <li id="Close">
                     <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>

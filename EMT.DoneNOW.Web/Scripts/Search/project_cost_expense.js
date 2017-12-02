@@ -13,7 +13,7 @@
         //    $(this).prop("checked", true);
         //}
         //return false;
-        event.stopPropagation();
+        event.stopPropagation(); // 不执行上一元素的事件，阻止冒泡事件
     });
     $(".CheckTd :last").remove();
 })

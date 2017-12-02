@@ -32,7 +32,6 @@ namespace EMT.DoneNOW.Web.Project
                     {
                         case "Schedule":
                             viewProjectIframe.Src = "ProjectSchedule?project_id=" + thisProject.id;
-                          
                             break;
                         case "ScheduleTemp":
                             viewProjectIframe.Src = "ProjectSchedule?project_id=" + thisProject.id+ "&isTranTemp=1";
@@ -44,7 +43,7 @@ namespace EMT.DoneNOW.Web.Project
                             viewProjectIframe.Src = "../Common/SearchBodyFrame.aspx?id=" + thisProject.id + "&cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_COST_EXPENSE + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.PROJECT_COST_EXPENSE+ "&isCheck=1";
                             break;// project_cost_expense
                         case "Note":
-                            viewProjectIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJETC_NOTE + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.project_note+ "&con1054="+ thisProject.id+"&con1055=";
+                            viewProjectIframe.Src = "ProjectNoteShow?project_id="+thisProject.id;
                             break;
                         default:
                             viewProjectIframe.Src = "ProjectSummary?id=" + thisProject.id;

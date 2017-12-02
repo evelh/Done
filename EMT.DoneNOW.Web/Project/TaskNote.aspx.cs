@@ -213,6 +213,9 @@ namespace EMT.DoneNOW.Web.Project
         {
             TaskNoteDto param = new TaskNoteDto();
             var pageTaskNote = AssembleModel<com_activity>();
+            pageTaskNote.account_id = thisAccount.id;
+            pageTaskNote.resource_id = thisProject.owner_resource_id;
+            pageTaskNote.contract_id = thisProject.contract_id;
             if (isProject)
             {
                 pageTaskNote.announce = (sbyte)(isAnnounce.Checked ? 1 : 0);
@@ -224,6 +227,14 @@ namespace EMT.DoneNOW.Web.Project
             else
             {
                 param.attIds = Request.Form["attIds"];
+                thisNote.action_type_id = pageTaskNote.action_type_id;
+                thisNote.publish_type_id = pageTaskNote.publish_type_id;
+                thisNote.name = pageTaskNote.name;
+                thisNote.description = pageTaskNote.description;
+                if (isProject)
+                {
+                    thisNote.announce = pageTaskNote.announce;
+                }
             }
             var status_id = Request.Form["status_id"];
             if (!string.IsNullOrEmpty(status_id))
@@ -240,7 +251,16 @@ namespace EMT.DoneNOW.Web.Project
             param.thisProjetc = thisProject;
             param.object_id = object_id;
             param.filtList = GetSessAttList(object_id);
-            param.taskNote = pageTaskNote;
+            if (isAdd)
+            {
+                param.taskNote = pageTaskNote;
+            }
+            else
+            {
+                param.taskNote = thisNote;
+
+            }
+            
             param.otherEmail = Request.QueryString["otherEmail"];
             param.subjects = Request.QueryString["subjects"];
             param.AdditionalText = Request.QueryString["AdditionalText"];

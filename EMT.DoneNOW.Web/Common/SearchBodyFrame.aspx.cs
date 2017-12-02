@@ -222,6 +222,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PROJECT_COST_EXPENSE:
                     addBtn = "新增成本或者费用";
                     break;
+                case (int)DicEnum.QUERY_CATE.PROJECT_NOTE:
+                    addBtn = "新增备注";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -716,6 +719,11 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "选中成本/费用设置为不可计费",id = "ChooseNonBillMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除当期成本/费用",id = "SingDeleteMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除选中成本/费用",id = "ChooseDeleteMenu" });
+                    break;
+                case (long)QueryType.PROJECT_NOTE:
+                    contextMenu.Add(new PageContextMenuDto { text = "查看备注", click_function = "ViewNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑备注", click_function = "EditNote()"});
+                    contextMenu.Add(new PageContextMenuDto { text = "删除备注", click_function = "DeleteNote()"});
                     break;
                 default:
                     break;
