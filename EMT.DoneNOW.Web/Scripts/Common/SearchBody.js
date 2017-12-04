@@ -3,11 +3,28 @@ var entityid;
 var menu = document.getElementById("menu");
 var menu_i2_right = document.getElementById("menu-i2-right");
 var Times = 0;
+var oEvent;
 
 $(".dn_tr").bind("contextmenu", function (event) {
-    clearInterval(Times);
-    var oEvent = event;
     entityid = $(this).data("val");
+    oEvent = event;
+    if (typeof (RightClickFunc) != 'undefined') {
+        RightClickFunc();
+    }
+    else {
+        ShowContextMenu();
+    }
+    return false;
+});
+
+function ViewEntity(id) {
+    if (typeof (View) != 'undefined') {
+        View(id);
+    }
+}
+
+function ShowContextMenu() {
+    clearInterval(Times);
     (function () {
         menu.style.display = "block";
         Times = setTimeout(function () {
@@ -45,8 +62,8 @@ $(".dn_tr").bind("contextmenu", function (event) {
     }else {
         menu.style.top = Top + "px";
     }
-    return false;
-});
+
+}
 
 document.onclick = function () {
     menu.style.display = "none";

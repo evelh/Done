@@ -119,6 +119,7 @@
     <Compile Include="IVT\ivt_warehouse_dal.cs" />
     <Compile Include="IVT\ivt_warehouse_product_dal.cs" />
     <Compile Include="CTT\v_contract_summary_dal.cs" />
+    <Compile Include="IVT\ivt_warehouse_product_sn_dal.cs" />
     <Compile Include="PRO\pro_project_calendar_dal.cs" />
     <Compile Include="PRO\pro_project_dal.cs" />
     <Compile Include="PRO\pro_project_team_dal.cs" />

@@ -547,6 +547,8 @@ namespace EMT.DoneNOW.DTO
             SALES_ORDER_VIEW_ATTACHMENT = 1541,     // 销售订单详情-附件查询
             PRO_EXPENSE_REPORT_CALLBACK = 1543,            // 费用报表查找带回 
             PROJECT_CALLBACK = 1544,                // 项目查找带回
+            INVENTORY_LOCATION = 1549,              // 库存仓库查询
+            INVENTORY_ITEM = 1550,                  // 库存产品查询
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
@@ -655,7 +657,10 @@ namespace EMT.DoneNOW.DTO
             SDK_EXPENSE = 1386,                         // 费用
             SDK_MILESTONE=1388,                         // 阶段里程碑
             ATTACHMENT = 1389,                          // 附件
+            INVENTORY_LOCATION = 1390,                  // 库存仓库
+            INVENTORY_ITEM = 1391,                      // 库存产品
             PROJECT_TASK_PREDECESSOR = 1393,            // 任务的前驱任务
+            INVENTORY_ITEM_SN = 1394,                   // 库存产品串号
             PROJECT_PHASE_WORK_HOURS = 1398,            // 项目阶段预估工时
         }
 
@@ -1007,6 +1012,18 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
+        /// 采购订单状态 - 150
+        /// </summary>
+        public enum PURCHASE_ORDER_STATUS
+        {
+            NEW = 2147,                 // 新建
+            SUBMITTED = 2148,           // 已提交
+            RECEIVED_PARTIAL = 2149,    // 部分接收
+            RECEIVED_FULL = 2150,       // 全部接收
+            CANCELED = 2151,            // 已取消
+        }
+
+        /// <summary>
         /// 工作类型计费方法-153
         /// </summary>
         public enum WORKTYPE_BILLING_METHOD
@@ -1121,6 +1138,8 @@ namespace EMT.DoneNOW.DTO
         PROJECT_BASELINE = 118,    // 项目详情-TASK列表-基准
         OpportunityViewAttachment = 119,// 商机详情-附件查询
         SalesOrderViewAttachment = 120, // 销售订单详情-附件查询
+        InventoryLocation = 128,        // 库存仓库查询
+        InventoryItem = 129,            // 库存产品查询
 
 
         //以下是还没有配查询语句的枚举（系统管理）

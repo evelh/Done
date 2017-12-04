@@ -157,6 +157,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.TODOS:
                     currentQuery.page_name = "待办查询";
                     break;
+                case (int)DicEnum.QUERY_CATE.INVENTORY_ITEM:
+                    currentQuery.page_name = "库存产品查询";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;
