@@ -56,7 +56,7 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
-        /// 插入更新日志
+        /// 废弃
         /// </summary>
         /// <typeparam name="T">日志对象类</typeparam>
         /// <param name="entity">操作对象</param>
@@ -71,6 +71,14 @@ namespace EMT.DoneNOW.BLL
             OperLog(objId, userId, DicEnum.OPER_LOG_TYPE.UPDATE, cate, desc, remark);
         }
 
+        /// <summary>
+        /// 插入更新日志
+        /// </summary>
+        /// <param name="desc">更新对象的修改内容</param>
+        /// <param name="objId">操作对象id</param>
+        /// <param name="userId">userid</param>
+        /// <param name="cate">操作对象种类</param>
+        /// <param name="remark">备注</param>
         public static void OperLogUpdate(string desc, long objId, long userId, DicEnum.OPER_LOG_OBJ_CATE cate, string remark)
         {
             OperLog(objId, userId, DicEnum.OPER_LOG_TYPE.UPDATE, cate, desc, remark);
