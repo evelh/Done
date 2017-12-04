@@ -221,6 +221,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.INVENTORY_ITEM:
                     addBtn = "新增库存产品";
+                    break;
                 case (int)DicEnum.QUERY_CATE.PROJECT_TEAM:
                     addBtn = "新增项目团队";
                     break;
@@ -721,6 +722,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "库存转移", click_function = "Transfer()" });
                     contextMenu.Add(new PageContextMenuDto { text = "创建采购订单", click_function = "Order()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除库存产品", click_function = "Delete()" });
+                    break;
                 case (long)QueryType.PROJECT_TEAM:
                     contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" ,id= "EditTeamMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "移除", click_function = "DeleteRes()",id= "DeleteResMenu" });
