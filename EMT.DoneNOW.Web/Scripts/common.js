@@ -223,6 +223,7 @@ var windowObj = {
     subscription: 'subscription',
     quote: 'quote',
     contract: 'contract',
+    contractCost:"contractCost",
     contractCharge: 'contractCharge',
     notes: 'notes',
     todos: 'todos',
@@ -230,6 +231,9 @@ var windowObj = {
     invoice: 'invoice',
     inventoryLocation: 'inventoryLocation',
     inventoryItem: 'inventoryItem',
+    project: 'project',
+    projectTeam: 'projectTeam',
+    expense:"expense",
 }
 var windowType = {
     blank: '_blank',

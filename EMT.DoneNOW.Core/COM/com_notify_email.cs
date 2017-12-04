@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String to_email { get; set; }
         [DataMember]
-        public Int32 notify_tmpl_id { get; set; }
+        public Int32? notify_tmpl_id { get; set; }
         [DataMember]
         public String from_email { get; set; }
         [DataMember]
@@ -44,6 +44,8 @@ namespace EMT.DoneNOW.Core
         public String cc_email { get; set; }
         [DataMember]
         public String bcc_email { get; set; }
+        [DataMember]
+        public Int64? r_id { get; set; }
 
 
     }

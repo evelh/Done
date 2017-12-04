@@ -30,10 +30,13 @@ namespace EMT.DoneNOW.Web.Project
         protected List<com_activity> noteList = null;
         protected ctt_contract thisProContract = null;            // 修改时使用，项目合同
         protected List<PageMile> thisPhaMile =null;              // 修改阶段时使用，关联里程碑
+        protected List<sdk_task_predecessor> preList = null;
+        public bool isCopy = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+               
                 if (!IsPostBack)
                 {
                     ThisPageDataBind();
@@ -86,12 +89,19 @@ namespace EMT.DoneNOW.Web.Project
                     {
                         type_id = thisTask.type_id;
                         isAdd = false;
+                        var isCopyString = Request.QueryString["IsCopy"];
+                        if (!string.IsNullOrEmpty(isCopyString)&&thisTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_TASK)
+                        {
+                            isCopy = true;
+                        }
                         if (thisTask.project_id != null)
                         {
                             thisProject = ppdal.FindNoDeleteById((long)thisTask.project_id);
                         }
                         task_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.TASK, thisTask.id, task_udfList);
                         noteList = new com_activity_dal().GetActiList($" and (task_id ={thisTask.id} or object_id={thisTask.id} )");
+
+                        preList = new sdk_task_predecessor_dal().GetRelList(thisTask.id);
                         if (!IsPostBack)
                         {
                             status_id.SelectedValue = thisTask.status_id.ToString();
@@ -214,28 +224,89 @@ namespace EMT.DoneNOW.Web.Project
 
         protected void save_Click(object sender, EventArgs e)
         {
-            var result = SaveTask();
+            bool result = false;
+            var param = GetParam();
+            if (isAdd)
+            {
+                result = new TaskBLL().AddTask(param, GetLoginUserId());
+            }
+            else
+            {
+                if (isCopy)
+                {
+                    param.task.id = 0;
+                    param.task.oid = 0;
+                    result = new TaskBLL().AddTask(param, GetLoginUserId());
+                }
+                else
+                {
+                    result = new TaskBLL().EditTask(param, GetLoginUserId());
+                }
+            }
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();location.href='TaskAddOrEdit?id=" + param.task.id + "';</script>");
         }
 
         protected void save_close_Click(object sender, EventArgs e)
         {
             var result = SaveTask();
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close();self.opener.location.reload();</script>");
 
         }
 
         protected void save_view_Click(object sender, EventArgs e)
         {
-            var result = SaveTask();
+            bool result = false;
+            var param = GetParam();
+            if (isAdd)
+            {
+                result = new TaskBLL().AddTask(param, GetLoginUserId());
+            }
+            else
+            {
+                if (isCopy)
+                {
+                    param.task.id = 0;
+                    param.task.oid = 0;
+                    result = new TaskBLL().AddTask(param, GetLoginUserId());
+                }
+                else
+                {
+                    result = new TaskBLL().EditTask(param, GetLoginUserId());
+                }
+            }
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();location.href='TaskView?id=" + param.task.id + "';</script>");
         }
 
         protected void save_add_Click(object sender, EventArgs e)
         {
             var result = SaveTask();
+            var url = Request.Url;
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();location.href='TaskAddOrEdit?project_id="+thisProject.id+"';</script>");
         }
 
         protected void save2_Click(object sender, EventArgs e)
         {
-            var result = SaveTask();
+            bool result = false;
+            var param = GetParam();
+            if (isAdd)
+            {
+                result = new TaskBLL().AddTask(param, GetLoginUserId());
+            }
+            else
+            {
+                if (isCopy)
+                {
+                    param.task.id = 0;
+                    param.task.oid = 0;
+                    result = new TaskBLL().AddTask(param, GetLoginUserId());
+                }
+                else
+                {
+                    result = new TaskBLL().EditTask(param, GetLoginUserId());
+                }
+            }
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();location.href='TaskAddOrEdit?id="+ param.task.id+ "';</script>");
+
         }
 
         /// <summary>
@@ -248,6 +319,20 @@ namespace EMT.DoneNOW.Web.Project
             if (isAdd)
             {
                 result = new TaskBLL().AddTask(param, GetLoginUserId());
+            }
+            else
+            {
+                if (isCopy)
+                {
+                    param.task.id = 0;
+                    param.task.oid = 0;
+                    result = new TaskBLL().AddTask(param, GetLoginUserId());
+                }
+                else
+                {
+                    result = new TaskBLL().EditTask(param, GetLoginUserId());
+                }
+                
             }
 
             return false;
@@ -277,6 +362,7 @@ namespace EMT.DoneNOW.Web.Project
             }
             var pageTask = AssembleModel<sdk_task>();
             pageTask.cost_code_id = pageTask.cost_code_id == 0 ? null : pageTask.cost_code_id;
+          
             if (parTask != null)
             {
                 pageTask.parent_id = parTask.id;
@@ -298,7 +384,7 @@ namespace EMT.DoneNOW.Web.Project
             {
                 if (rateList != null && rateList.Count > 0)
                 {
-                    Dictionary<long, decimal> rateDic = null;
+                    Dictionary<long, decimal> rateDic = new Dictionary<long, decimal>();
                     foreach (var rate in rateList)
                     {
                         var hours = Request.Form[rate.id+ "_esHours"];
@@ -350,10 +436,36 @@ namespace EMT.DoneNOW.Web.Project
                 param.task = pageTask;
                 param.task.type_id = type_id;
                 param.task.project_id = thisProject.id;
+                param.task.account_id = thisProject.account_id;
             }
             else
             {
-                thisTask
+                // thisTask
+                thisTask.title = pageTask.title;
+                thisTask.parent_id = pageTask.parent_id;
+                thisTask.description = pageTask.description;
+                thisTask.estimated_begin_time = pageTask.estimated_begin_time;
+                thisTask.estimated_end_date = pageTask.estimated_end_date;
+                thisTask.estimated_duration = pageTask.estimated_duration;
+                if (!isPhase)
+                {
+                    thisTask.status_id = pageTask.status_id;
+                    thisTask.priority = pageTask.priority;
+                    thisTask.purchase_order_no = pageTask.purchase_order_no;
+                    thisTask.can_client_portal_user_complete_task = pageTask.can_client_portal_user_complete_task;
+                    thisTask.is_visible_in_client_portal = pageTask.is_visible_in_client_portal;
+                    thisTask.is_project_issue = pageTask.is_project_issue;
+                    thisTask.issue_report_contact_id = pageTask.issue_report_contact_id;
+                    thisTask.estimated_type_id = pageTask.estimated_type_id;
+                    thisTask.estimated_hours = pageTask.estimated_hours;
+                    thisTask.estimated_duration = pageTask.estimated_duration;
+                    thisTask.hours_per_resource = pageTask.hours_per_resource;
+                    thisTask.start_no_earlier_than_date = pageTask.start_no_earlier_than_date;
+                    thisTask.department_id = pageTask.department_id;
+                    thisTask.cost_code_id = pageTask.cost_code_id;
+                    thisTask.owner_resource_id = pageTask.owner_resource_id;
+                    thisTask.template_id = pageTask.template_id;
+                }
                 param.task = thisTask;
             }
 
@@ -380,6 +492,7 @@ namespace EMT.DoneNOW.Web.Project
         protected void save_close2_Click(object sender, EventArgs e)
         {
             var result = SaveTask();
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close();self.opener.location.reload();</script>");
         }
     }
     

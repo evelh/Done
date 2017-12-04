@@ -118,7 +118,7 @@ namespace EMT.DoneNOW.Web
             var codeRule = new d_cost_code_rule_dal().GetRuleByCodeId(code_rule_id);
             if (codeRule != null)
             {
-                context.Response.Write(new Tools.Serialize().SerializeJson(codeRule));
+                context.Response.Write(new Tools.Serialize().SerializeJson(codeRule[0]));
             }
 
         }

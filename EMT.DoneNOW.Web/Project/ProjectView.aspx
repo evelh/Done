@@ -80,7 +80,9 @@
             <ul class="ButtonBarVert">
                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>">摘要</a></li>
                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Schedule">列表</a></li>
-                
+                <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Team">团队</a></li>
+                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Cost">成本费用</a></li>
+                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Note">备注</a></li>
             </ul>
         </div>
         <div class="Right">

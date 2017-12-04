@@ -182,6 +182,10 @@ namespace EMT.DoneNOW.Web
                         var crrRoleId = context.Request.QueryString["role_id"];   // 角色Id
                         CheckResRole(context, long.Parse(crrcid), long.Parse(crrrid), long.Parse(crrRoleId));
                         break;
+                    case "GetSinCost":
+                        var costId = context.Request.QueryString["cost_id"];
+                        GetSinCost(context,long.Parse(costId));
+                        break;
                     default:
                         break;
                 }
@@ -721,7 +725,16 @@ namespace EMT.DoneNOW.Web
             }
 
         }
-
-
+        /// <summary>
+        /// 获取单个的成本信息
+        /// </summary>
+        private void GetSinCost(HttpContext context,long cost_id)
+        {
+            var thisCost = new ctt_contract_cost_dal().FindNoDeleteById(cost_id);
+            if (thisCost != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(thisCost));
+            }
+        }
     }
 }

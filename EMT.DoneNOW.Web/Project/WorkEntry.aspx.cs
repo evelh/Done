@@ -22,10 +22,18 @@ namespace EMT.DoneNOW.Web.Project
         protected crm_account thisAccount = null;
         protected sys_resource thisUser = null;
         protected Dictionary<string, object> dic = new ProjectBLL().GetField();
+        protected bool noTime = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                // todo 是否需要输入开始结束时间
+                var isNeedTimeString = Request.QueryString["NoTime"];
+                if (!string.IsNullOrEmpty(isNeedTimeString))
+                {
+                    noTime = true;
+                }
+
                 thisUser = new sys_resource_dal().FindNoDeleteById(GetLoginUserId());
                 if (!IsPostBack)
                 {

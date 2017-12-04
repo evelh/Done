@@ -265,7 +265,7 @@
                                                         <img src="../Images/check.png" style="vertical-align: middle;">
                                                     </span>
                                                     (<span id="sum">1</span>)
-                                                <span style="color: #333333; font-weight: normal;">配置项将从合同成本中创建
+                                                <span style="color: #333333; font-weight: normal;">配置项将从<%=contract!=null?"合同":thisProject!=null?"项目":"" %>成本中创建
                                                 </span>
                                                 </div>
                                             </td>

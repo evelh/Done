@@ -158,13 +158,14 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td rowspan="6" valign="bottom" style="padding-left: 20px; padding-bottom: 19px;">
-                                    <div id="tblStartStop" name="tblStartStop" style="position: relative; visibility: visible; display: block; background-color: rgb(240, 245, 251); border: 1px solid rgb(211, 211, 211); padding: 20px; width: 330px;">
+                                <td rowspan="6" valign="bottom" style="padding-left: 20px; padding-bottom: 19px;"> 
+                                     <% if (!noTime){%>
+                                    <div id="tblStartStop" name="tblStartStop" style="position: relative; visibility: visible; display:block; background-color: rgb(240, 245, 251); border: 1px solid rgb(211, 211, 211); padding: 20px; width: 330px;">
                                         <table border="0" cellspacing="0" cellpadding="0">
                                             <tbody>
                                                 <tr>
                                                     <td width="200px" class="FieldLabels" style="white-space: nowrap;">开始时间
-							<div>
+                            <div>
                                 <input type="text" size="8" name="startTime" id="startTime" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=thisWorkEntry!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisWorkEntry.start_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
                             </div>
                                                     </td>
@@ -223,6 +224,7 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <% }%>
                                 </td>
                             </tr>
                             <tr>
@@ -947,6 +949,7 @@
             LayerMsg("请选择角色！");
             return false;
         }
+        <% if (!noTime){ %>
         var startTime = $("#startTime").val();
         if (startTime == "" || startTime == null) {
             LayerMsg("请填写开始时间！");
@@ -967,6 +970,7 @@
             LayerMsg("请填写剩余时间！");
             return false;
         }
+        <%}%>
         var workSummary1 = $("#summary_notes").val();
         if (workSummary1 == "" || workSummary1 == null) {
             var noteValue = '<%=new EMT.DoneNOW.BLL.SysSettingBLL().GetValueById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_REQUIRED_SUMMAY_NOTE) %>';

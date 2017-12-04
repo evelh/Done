@@ -74,6 +74,7 @@ namespace EMT.DoneNOW.DTO
         INVOICE_TEMPLATE_BODY_ITEMIZE =142,      //发票模板主体-逐项列出
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
         NOTE_PUBLISH_TYPE = 146,                 // 合同/项目等备注发布类型
+        TASK_LIBRARY_CATE  = 149,                 // 任务库种类
     }
 
     /// <summary>
@@ -223,6 +224,7 @@ namespace EMT.DoneNOW.DTO
             QUOTE_TEMPLATE_BODY = 106,  //报价模板-body           
             INVOICE_TEMPLATE_OTHERS=1967,//发票模板-其他
             INVOICE_TEMPLATE_BODY=1968,//发票模板body
+            OTHER_USES = 1969,         // 其他用途
 
         }
         /// <summary>
@@ -264,6 +266,7 @@ namespace EMT.DoneNOW.DTO
             //SERVICE CALL - CREATED OR EDITED,                   // 
             //BLOCK HOUR CONTRACT - NOTIFICATION RULE,            // 
             //PER TICKET CONTRACT - NOTIFICATION RULE,            // 
+            NONE=1972,                                       // 无
         }
 
         /// <summary>
@@ -547,8 +550,13 @@ namespace EMT.DoneNOW.DTO
             SALES_ORDER_VIEW_ATTACHMENT = 1541,     // 销售订单详情-附件查询
             PRO_EXPENSE_REPORT_CALLBACK = 1543,            // 费用报表查找带回 
             PROJECT_CALLBACK = 1544,                // 项目查找带回
+            PROJECT_TEAM = 1547,                    // 项目管理-项目详情-团队查询
+            PROJECT_COST_EXPENSE = 1548,            // 项目管理-项目详情-成本和费用查询
             INVENTORY_LOCATION = 1549,              // 库存仓库查询
             INVENTORY_ITEM = 1550,                  // 库存产品查询
+            PROJECT_NOTE = 1552,                    // 项目管理-项目备注查询
+            ACCOUNT_POLICY = 1553,                  // 客户策略
+            //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
@@ -655,6 +663,7 @@ namespace EMT.DoneNOW.DTO
             SDK_WORK_ENTRY=1384,                        // 工时
             SDK_EXPENSE_REPORT = 1385,                  // 费用报表   
             SDK_EXPENSE = 1386,                         // 费用
+            SDK_TASK_LIBARY = 1387,                     // 任务库
             SDK_MILESTONE=1388,                         // 阶段里程碑
             ATTACHMENT = 1389,                          // 附件
             INVENTORY_LOCATION = 1390,                  // 库存仓库
@@ -1138,10 +1147,12 @@ namespace EMT.DoneNOW.DTO
         PROJECT_BASELINE = 118,    // 项目详情-TASK列表-基准
         OpportunityViewAttachment = 119,// 商机详情-附件查询
         SalesOrderViewAttachment = 120, // 销售订单详情-附件查询
+        PROJECT_TEAM = 126,             // 项目管理-项目详情-团队查询
+        PROJECT_COST_EXPENSE = 127,     // 项目管理-项目详情-成本和费用查询
         InventoryLocation = 128,        // 库存仓库查询
         InventoryItem = 129,            // 库存产品查询
-
-
+        PROJECT_NOTE = 131,             // 项目管理-项目详情-备注查询
+        ACCOUNT_POLICY = 132,            // 客户策略
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
         REVOKE_EXPENSE,                //撤销费用审批      
@@ -1313,8 +1324,11 @@ namespace EMT.DoneNOW.DTO
         PROJECT_VIEW ,                         // 项目查看
 
         TASKPHASE_CALLBACK,       // task阶段的查找带回
-        TASKADD,                 // task新增
-        TASKEDIT ,              // task修改
+        TASKADD,                  // task新增
+        TASKEDIT ,                // task修改
+        TASKVIEW,                 // 查看task
+        TASK_MODIFY,              // task批量修改
+        TASK_TO_LIBARY,           // 添加到任务库
 
         WORK_ENTRY_ADD,          // 工时新增修改
         WORK_ENTRY_EDIT,         // 工时新增修改
@@ -1326,6 +1340,7 @@ namespace EMT.DoneNOW.DTO
 
         TASK_EXPENSE_ADD,     // 任务费用新增修改
         TASK_EXPENSE_EDIT,    // 任务费用新增修改
+        RESOURCE_CALLBACK,    // 员工的查找带回
 
     }
     /// <summary>

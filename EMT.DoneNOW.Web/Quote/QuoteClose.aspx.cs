@@ -31,10 +31,10 @@ namespace EMT.DoneNOW.Web.Quote
                 {
                     Response.Write("<script>alert('关闭报价只针对主报价');window.close();</script>");
                 }
-                if (quote.project_id == null)
-                {
-                    Response.Write("<script>alert('请关联项目后进行关闭报价操作');window.close();</script>");
-                }
+                //if (quote.project_id == null)
+                //{
+                //    Response.Write("<script>alert('请关联项目后进行关闭报价操作');window.close();</script>");
+                //}
                 opportunity = new crm_opportunity_dal().GetOpportunityById(quote.opportunity_id);
                 win_reason_type_id.DataTextField = "show";
                 win_reason_type_id.DataValueField = "val";

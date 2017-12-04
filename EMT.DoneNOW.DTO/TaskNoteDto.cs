@@ -12,6 +12,8 @@ namespace EMT.DoneNOW.DTO
     {
         public com_activity taskNote;
         public sdk_task thisTask;
+        public pro_project thisProjetc;
+        public long object_id; 
         public int status_id;        // 任务状态
         public List<AddFileDto> filtList;
         public string attIds="";         // 这个备注的附件 ，修改时使用

@@ -11,9 +11,9 @@ namespace EMT.DoneNOW.DAL
         /// <summary>
         /// 根据员工团队ID，获取项目团队角色
         /// </summary>
-        public pro_project_team_role GetSinTeamRole(long team_id)
+        public List<pro_project_team_role> GetListTeamRole(long team_id)
         {
-            return FindSignleBySql<pro_project_team_role>($"SELECT * from pro_project_team_role where delete_time = 0 AND project_team_id = {team_id}");
+            return FindListBySql<pro_project_team_role>($"SELECT * from pro_project_team_role where delete_time = 0 AND project_team_id = {team_id}");
         }
     }
 }

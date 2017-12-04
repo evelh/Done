@@ -432,7 +432,7 @@ namespace EMT.DoneNOW.BLL
             cad.purchase_order_no = ccc.purchase_order_no;//采购订单号
             Dictionary<int, decimal> block = new Dictionary<int, decimal>();//存储预付id，和总价
                                                                             //工单(待整理) sdk_task
-            if (ccc.ticket_id != null)
+            if (ccc.task_id != null)
             {
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,sdk_task b,ctt_contract_cost c where c.ticket_id=b.id and a.id=b.account_id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and c.id={id}");//客户
             }//项目(待整理) pro_project
@@ -1231,7 +1231,7 @@ namespace EMT.DoneNOW.BLL
             cad.purchase_order_no = ccc.purchase_order_no;//采购订单号
             Dictionary<int, decimal> block = new Dictionary<int, decimal>();//存储预付id，和总价
                                                                             //工单(待整理) sdk_task
-            if (ccc.ticket_id != null)
+            if (ccc.task_id != null)
             {
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,sdk_task b,ctt_contract_cost c where c.ticket_id=b.id and a.id=b.account_id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and c.id={id}");//客户
             }//项目(待整理) pro_project
@@ -1555,7 +1555,7 @@ namespace EMT.DoneNOW.BLL
             ctt_contract cc = new ctt_contract();//合同
             var ccc = ccc_dal.FindNoDeleteById(id);//合同成本
             //工单(待整理) sdk_task
-            if (ccc.ticket_id != null)
+            if (ccc.task_id != null)
             {
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,sdk_task b,ctt_contract_cost c where c.ticket_id=b.id and a.id=b.account_id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and c.id={id}");//客户
             }//项目(待整理) pro_project

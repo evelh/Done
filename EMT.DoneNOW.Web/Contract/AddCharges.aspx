@@ -24,7 +24,7 @@
         }
 
             .TitleBar > .Title {
-                top: 93px;
+                top: 1px;
                 height: 36px;
                 left: -1px;
                 overflow: hidden;
@@ -34,7 +34,7 @@
                 white-space: nowrap;
                 width: 97%;
             }
-
+            
         .text2 {
             margin-left: 5px;
         }
@@ -431,7 +431,11 @@
                                     </table>
                                 </td>
 
-                                <% var defCost = new EMT.DoneNOW.DAL.ctt_contract_cost_default_dal().GetSinCostDef(contract.id);  %>
+                                <%  EMT.DoneNOW.Core.ctt_contract_cost_default defCost = null;
+                                    if (contract != null)
+                                    {
+                                      defCost = new EMT.DoneNOW.DAL.ctt_contract_cost_default_dal().GetSinCostDef(contract.id);
+                                    }  %>
                                 <td align="right" style="vertical-align: top;">
                                     <div class="DivSectionWithHeader" style="padding: 12px; background-color: #F0F5FB; margin-right: 0px;">
                                         <table width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -525,6 +529,19 @@
                                                         </table>
                                                     </td>
                                                 </tr>
+                                                <%if (thisTask != null)
+                                                    { %>
+                                                <tr >
+                                                    <td style="text-align:right;">
+                                                         <span class="FieldLabel" style="font-weight: bold;">变更单时间
+                                        <span class="errorSmallClass">*</span>
+                                                    </span>
+                                                    <div>
+                                                        <input type="text" name="change_order_hours" id="change_order_hours" style="width: 294px;" value="<%=conCost!=null&&conCost.change_order_hours!=null?((decimal)conCost.change_order_hours).ToString("#0.000"):"0.0000" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                                    </div>
+                                                    </td>
+                                                </tr>
+                                                <%} %>
                                             </tbody>
                                         </table>
                                     </div>
@@ -771,6 +788,18 @@
         }
         GetSumAmount();
     })
+    $("#change_order_hours").blur(function () {
+        var change_order_hours = $(this).val();
+        if (change_order_hours != "" && (!isNaN(change_order_hours))) {
+            change_order_hours = toDecimal4(change_order_hours);
+            $(this).val(change_order_hours);
+
+        }
+        else {
+            $(this).val("0.0000");
+        }
+       
+    })
 
     $("#extendedCost").blur(function () {
         var extendedCost = $(this).val();
@@ -818,7 +847,7 @@
         }
         return true;
     });
-    $("#save_close_Click").click(function () {
+    $("#save_close").click(function () {
         if (!SubmitCheck()) {
             return false;
         }
@@ -953,6 +982,7 @@
             alert("请通过查找带回选择物料代码！");
             return false;
         }
+        debugger;
         var name = $("#name").val();
         if (name == "") {
             alert("请填写成本名称！");
@@ -990,7 +1020,15 @@
             alert("请填写单价！");
             return false;
         }
+        <%if (thisTask != null)
+            { %>
+        //var change_order_hours = $("#change_order_hours").val();
+        //if (change_order_hours == "") {
+        //    alert("请填写变更时间！");
+        //    return false;
+        //}
 
+        <%}%>
         return true;
     }
 </script>

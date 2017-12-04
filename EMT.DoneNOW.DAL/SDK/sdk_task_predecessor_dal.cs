@@ -21,5 +21,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sdk_task_predecessor>($"SELECT * from sdk_task_predecessor where task_id = {taskId} AND delete_time = 0");
         }
+        /// <summary>
+        /// 根据任务和前驱任务的id去查找到唯一的前驱任务信息
+        /// </summary>
+        public sdk_task_predecessor GetSinByTaskAndPre(long task_id,long pre_task_id)
+        {
+            return FindSignleBySql<sdk_task_predecessor>($"SELECT * from sdk_task_predecessor  where delete_time = 0 and task_id={task_id} and predecessor_task_id = {pre_task_id}");
+        }
     }
 }

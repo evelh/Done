@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
@@ -65,7 +66,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? contact_id { get; set; }
         [DataMember]
-        public Int64? vendor_id { get; set; }
+        public Int64? vendor_account_id { get; set; }
         [DataMember]
         public SByte? is_swapped_out { get; set; }
         [DataMember]

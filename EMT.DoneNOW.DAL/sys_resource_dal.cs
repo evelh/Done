@@ -57,6 +57,13 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sys_resource>($"SELECT * from sys_resource where id in ( SELECT resource_id from sys_resource_department where department_id in ({ids}) and delete_time = 0)");
         }
+        /// <summary>
+        /// 根据项目Id 获取团队中的成员信息
+        /// </summary>
+        public List<sys_resource> GetResByProTeam(long project_id)
+        {
+            return FindListBySql<sys_resource>($"SELECT sr.* from pro_project_team ppt  INNER JOIN pro_project pp on ppt.project_id = pp.id inner JOIN sys_resource sr on ppt.resource_id = sr.id where pp.id = 5102 and ppt.delete_time = 0 and pp.delete_time = 0 and sr.delete_time = 0");
+        }
 
     }
 }

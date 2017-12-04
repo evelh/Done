@@ -24,38 +24,15 @@ namespace EMT.DoneNOW.Web.Project
         protected sys_resource thisAccManger;    // 客户经理
         protected d_general sys_email = new d_general_dal().FindNoDeleteById((int)DicEnum.SUPPORT_EMAIL.SYS_EMAIL);
         protected sys_resource task_creator = null;
+        protected long object_id;      // 传进来的对象ID （项目或者任务）
+        protected bool isProject = false;   // 是否是项目
+        protected bool isPhase = false;     // 是否是阶段
+        protected pro_project thisProject = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                if (!IsPostBack)
-                {
-                    publish_type_id.DataTextField = "name";
-                    publish_type_id.DataValueField = "id";
-                    var pushList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.NOTE_PUBLISH_TYPE);
-                    if(pushList!=null&& pushList.Count > 0)
-                    {
-                        pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
-                    }
-                    publish_type_id.DataSource = pushList;
-                    publish_type_id.DataBind();
-
-                    status_id.DataTextField = "show";
-                    status_id.DataValueField = "val";
-                    status_id.DataSource = dic.FirstOrDefault(_ => _.Key == "ticket_status").Value;
-                    status_id.DataBind();
-
-                    action_type_id.DataTextField = "name";
-                    action_type_id.DataValueField = "id";
-                    var actList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.ACTION_TYPE);
-                    if (actList != null && actList.Count > 0)
-                    {
-                        actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
-                    }
-                    action_type_id.DataSource = actList;
-                    action_type_id.DataBind();
-                    
-                }
+             
                 thisUser = new sys_resource_dal().FindNoDeleteById(GetLoginUserId());
                 var caDal = new com_activity_dal();
                 var stDal = new sdk_task_dal();
@@ -68,28 +45,52 @@ namespace EMT.DoneNOW.Web.Project
                     if (thisNote != null)
                     {
                         isAdd = false;
-                        thisTask = stDal.FindNoDeleteById(thisNote.object_id);
+                       
                         thisNoteAtt = new com_attachment_dal().GetAttListByOid(thisNote.id);
-                        if (!IsPostBack)
+                        
+                        thisTask = stDal.FindNoDeleteById(thisNote.object_id);
+                        if (thisTask != null)
                         {
-
-                            if (thisNote.publish_type_id != null)
-                            {
-                                publish_type_id.SelectedValue = thisNote.publish_type_id.ToString();
-                            }
-                            action_type_id.SelectedValue = thisNote.action_type_id.ToString();
+                            object_id = thisTask.id;
                         }
-
+                        else
+                        {
+                            thisProject = ppDal.FindNoDeleteById(thisNote.object_id);
+                            if (thisProject != null)
+                            {
+                                isProject = true;
+                                object_id = thisProject.id;
+                                thisAccount = accDal.FindNoDeleteById(thisProject.account_id);
+                            }
+                        }
 
                     }
                 }
                 var taskId = Request.QueryString["task_id"];
+                var project_id = Request.QueryString["project_id"];
                 if (!string.IsNullOrEmpty(taskId))
                 {
                     thisTask = stDal.FindNoDeleteById(long.Parse(taskId));
                 }
+                else if (!string.IsNullOrEmpty(project_id))
+                {
+                    thisProject = ppDal.FindNoDeleteById(long.Parse(project_id));
+                    if (thisProject != null)
+                    {
+                        isProject = true;
+                        object_id = thisProject.id;
+                        thisAccount = accDal.FindNoDeleteById(thisProject.account_id);
+                    }
+                }
+
+
                 if (thisTask != null)
                 {
+                    if (thisTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
+                    {
+                        isPhase = true;
+                    }
+
                     task_creator = new sys_resource_dal().FindNoDeleteById(thisTask.create_user_id);
                     if (!IsPostBack)
                     {
@@ -98,10 +99,10 @@ namespace EMT.DoneNOW.Web.Project
                     
                     if (thisTask.project_id != null)
                     {
-                        var project = ppDal.FindNoDeleteById((long)thisTask.project_id);
-                        if (project != null)
+                        thisProject = ppDal.FindNoDeleteById((long)thisTask.project_id);
+                        if (thisProject != null)
                         {
-                            thisAccount = accDal.FindNoDeleteById(project.account_id);
+                            thisAccount = accDal.FindNoDeleteById(thisProject.account_id);
                         }
                     }
                 }
@@ -116,6 +117,63 @@ namespace EMT.DoneNOW.Web.Project
                         thisAccManger = new sys_resource_dal().FindNoDeleteById((long)thisAccount.resource_id);
                     }
                 }
+
+                if (!IsPostBack)
+                {
+                    publish_type_id.DataTextField = "name";
+                    publish_type_id.DataValueField = "id";
+                    var pushList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.NOTE_PUBLISH_TYPE);
+                    if (pushList != null && pushList.Count > 0)
+                    {
+                        if (isProject)
+                        {
+                            pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE).ToString()).ToList();
+                        }
+                        else
+                        {
+                            pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
+                        }
+                        
+                    }
+                    publish_type_id.DataSource = pushList;
+                    publish_type_id.DataBind();
+
+                    status_id.DataTextField = "show";
+                    status_id.DataValueField = "val";
+                    status_id.DataSource = dic.FirstOrDefault(_ => _.Key == "ticket_status").Value;
+                    status_id.DataBind();
+
+                    action_type_id.DataTextField = "name";
+                    action_type_id.DataValueField = "id";
+                    var actList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.ACTION_TYPE);
+                    if (actList != null && actList.Count > 0)
+                    {
+                        if (isProject)
+                        {
+                            actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE).ToString()).ToList();
+                        }
+                        else
+                        {
+                            actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
+                        }
+                        
+                    }
+                    action_type_id.DataSource = actList;
+                    action_type_id.DataBind();
+                    if (thisNote != null)
+                    {
+                        if (!IsPostBack)
+                        {
+                            if (thisNote.publish_type_id != null)
+                            {
+                                publish_type_id.SelectedValue = thisNote.publish_type_id.ToString();
+                            }
+                            action_type_id.SelectedValue = thisNote.action_type_id.ToString();
+                            isAnnounce.Checked = thisNote.announce == 1;
+                        }
+                    }
+
+                }
             }
             catch (Exception msg)
             {
@@ -127,9 +185,18 @@ namespace EMT.DoneNOW.Web.Project
         protected void save_close_Click(object sender, EventArgs e)
         {
             var param = GetParam();
-            var result = new TaskBLL().AddTaskNote(param,GetLoginUserId());
+            var result = false;
+            if (isAdd)
+            {
+                result = new TaskBLL().AddTaskNote(param, GetLoginUserId());
+            }
+            else
+            {
+                result =  new TaskBLL().EditTaskNote(param, GetLoginUserId());
+            }
+           
             // 操作完成，清除session暂存
-            Session.Remove(thisTask.id + "_Att");
+            Session.Remove(object_id + "_Att");
             //if (result)
             //{
             ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>window.close();self.opener.location.reload();</script>");
@@ -146,7 +213,13 @@ namespace EMT.DoneNOW.Web.Project
         {
             TaskNoteDto param = new TaskNoteDto();
             var pageTaskNote = AssembleModel<com_activity>();
-          
+            pageTaskNote.account_id = thisAccount.id;
+            pageTaskNote.resource_id = thisProject.owner_resource_id;
+            pageTaskNote.contract_id = thisProject.contract_id;
+            if (isProject)
+            {
+                pageTaskNote.announce = (sbyte)(isAnnounce.Checked ? 1 : 0);
+            }
             if (isAdd)
             {
 
@@ -154,6 +227,19 @@ namespace EMT.DoneNOW.Web.Project
             else
             {
                 param.attIds = Request.Form["attIds"];
+                thisNote.action_type_id = pageTaskNote.action_type_id;
+                thisNote.publish_type_id = pageTaskNote.publish_type_id;
+                thisNote.name = pageTaskNote.name;
+                thisNote.description = pageTaskNote.description;
+                if (isProject)
+                {
+                    thisNote.announce = pageTaskNote.announce;
+                }
+            }
+            var status_id = Request.Form["status_id"];
+            if (!string.IsNullOrEmpty(status_id))
+            {
+                param.status_id = int.Parse(status_id);
             }
             param.incloNoteDes = CKIncluDes.Checked;
             param.incloNoteAtt = CKIncloAtt.Checked;
@@ -162,8 +248,19 @@ namespace EMT.DoneNOW.Web.Project
             param.ccMe = CCMe.Checked;
             param.fromSys = Cksys.Checked;
             param.thisTask = thisTask;
-            param.filtList = GetSessAttList(thisTask.id);
-            param.taskNote = pageTaskNote;
+            param.thisProjetc = thisProject;
+            param.object_id = object_id;
+            param.filtList = GetSessAttList(object_id);
+            if (isAdd)
+            {
+                param.taskNote = pageTaskNote;
+            }
+            else
+            {
+                param.taskNote = thisNote;
+
+            }
+            
             param.otherEmail = Request.QueryString["otherEmail"];
             param.subjects = Request.QueryString["subjects"];
             param.AdditionalText = Request.QueryString["AdditionalText"];

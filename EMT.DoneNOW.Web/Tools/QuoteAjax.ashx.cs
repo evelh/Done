@@ -57,6 +57,10 @@ namespace EMT.DoneNOW.Web
                         var isHasStartQuoteId = context.Request.QueryString["quote_id"];
                         ReturnStart(context,long.Parse(isHasStartQuoteId));
                         break;
+                    case "CanCloseQuote":
+                        var objId = context.Request.QueryString["objId"];
+                        CanCloseQuote(context,long.Parse(objId));
+                        break;
                     default:
                         break;
                 }
@@ -219,7 +223,12 @@ namespace EMT.DoneNOW.Web
             }
         }
 
+        public void CanCloseQuote(HttpContext context,long quote_id)
+        {
+            var reason = "";
+            var result = new QuoteBLL().CanCloseQuote(quote_id,out reason);
+            context.Response.Write(result);
+        }
 
-        
     }
 }

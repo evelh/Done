@@ -163,5 +163,12 @@ namespace EMT.DoneNOW.DAL
             }
             return false;
         }
+        /// <summary>
+        /// 获取项目团队中的联系人信息
+        /// </summary>
+        public List<crm_contact> GetListByProId(long project_id)
+        {
+            return FindListBySql<crm_contact>($"SELECT cc.* from pro_project_team ppt  INNER JOIN pro_project pp on ppt.project_id = pp.id inner JOIN crm_contact cc on ppt.contact_id = cc.id where pp.id = {project_id} and ppt.delete_time = 0 and pp.delete_time = 0 and cc.delete_time = 0");
+        }
     }
 }

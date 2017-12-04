@@ -1100,7 +1100,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 将报价项转换为计费项
         /// </summary>
-        public void InsertContract(Dictionary<long, string> costCodeList, crm_opportunity opportunity, UserInfoDto user, long? contract_id, out string ids, long? project_id = null, long? tickte_id = null)
+        public void InsertContract(Dictionary<long, string> costCodeList, crm_opportunity opportunity, UserInfoDto user, long? contract_id, out string ids, long? project_id = null, long? task_id = null)
         {
             ids = "";
             var qiDal = new crm_quote_item_dal();
@@ -1166,7 +1166,7 @@ namespace EMT.DoneNOW.BLL
                             update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                             project_id = project_id,
                             contract_id = contract_id,
-                            ticket_id = tickte_id,
+                            task_id = task_id,
                             sub_cate_id = subCateid,
                         };
                         cccDal.Insert(cost);
@@ -1199,7 +1199,7 @@ namespace EMT.DoneNOW.BLL
                             {
                                 sub_cate = BILLING_ENTITY_SUB_TYPE.PROJECT_COST;
                             }
-                            if (tickte_id != null)
+                            if (task_id != null)
                             {
                                 sub_cate = BILLING_ENTITY_SUB_TYPE.TICKET_COST;
                             }

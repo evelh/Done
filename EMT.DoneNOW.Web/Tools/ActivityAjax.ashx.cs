@@ -6,6 +6,7 @@ using System.Web.SessionState;
 using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
+using EMT.DoneNOW.DAL;
 
 namespace EMT.DoneNOW.Web
 {
@@ -43,6 +44,14 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "GetActivities":
                         GetActivities(context);
+                        break;
+                    case "GetNoteInfo":
+                        var note_id = context.Request.QueryString["note_id"];
+                        GetNoteInfo(context,long.Parse(note_id));
+                        break;
+                    case "GetNoteAtt":
+                        var attNoteId = context.Request.QueryString["note_id"];
+                        GetNoteAtt(context,long.Parse(attNoteId));
                         break;
                     default:
                         break;
@@ -153,6 +162,30 @@ namespace EMT.DoneNOW.Web
             bll.NoteSetScheduled(id, LoginUserId);
             context.Response.Write(new Tools.Serialize().SerializeJson(true));
         }
+        /// <summary>
+        /// 返回备注的相关信息
+        /// </summary>
+        private void GetNoteInfo(HttpContext context, long note_id)
+        {
+            var thisNote = new com_activity_dal().FindNoDeleteById(note_id);
+            if (thisNote != null)
+            {
+                var thisRes = new sys_resource_dal().FindNoDeleteById(thisNote.create_user_id);
+                var thisNoteType = new d_general_dal().FindNoDeleteById(thisNote.action_type_id);
+                context.Response.Write(new Tools.Serialize().SerializeJson(new {title = thisNote.name,createUser =thisRes!=null?thisRes.name:"",type= thisNoteType!=null?thisNoteType.name:"", createDate=Tools.Date.DateHelper.ConvertStringToDateTime(thisNote.create_time).ToString("yyyy-MM-dd"), description = thisNote.description}));
+            }
+        }
 
+        /// <summary>
+        /// 获取备注附件相关信息，在页面上显示
+        /// </summary>
+        private void GetNoteAtt(HttpContext context,long note_id)
+        {
+            var attList = new com_attachment_dal().GetAttListByOid(note_id);
+            if (attList != null && attList.Count > 0)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(attList));
+            }
+        }
     }
 }

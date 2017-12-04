@@ -101,6 +101,12 @@ namespace EMT.DoneNOW.Web.Project
             }
            
         }
+
+        protected void save_new_Click(object sender, EventArgs e)
+        {
+            SaveSession();
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>location.href='AddTaskAttach?object_id="+Request.QueryString["object_id"] +"';window.opener.ReloadSession();</script>");
+        }
     }
   
 }
