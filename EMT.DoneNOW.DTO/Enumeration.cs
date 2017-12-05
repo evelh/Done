@@ -557,6 +557,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT_NOTE = 1552,                    // 项目管理-项目备注查询
             ACCOUNT_POLICY = 1553,                  // 客户策略
             INVENTORY_TRANSFER = 1562,              // 库存转移查询
+            PURCHASE_APPROVAL = 1563,               // 采购审批查询
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
@@ -1161,6 +1162,8 @@ namespace EMT.DoneNOW.DTO
         PROJECT_NOTE = 131,             // 项目管理-项目详情-备注查询
         ACCOUNT_POLICY = 132,            // 客户策略
         InventoryTransfer = 141,        // 库存转移
+        PurchaseApproval = 142,         // 采购审批查询
+
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
         REVOKE_EXPENSE,                //撤销费用审批      

@@ -147,17 +147,56 @@ namespace EMT.DoneNOW.BLL
                 var col = list.Find(c => c.id == id);
                 if (col == null)
                     continue;
+
+                AuthUrlDto url = null;
+                if (!string.IsNullOrEmpty(col.link_url))
+                    url = GetAuthUrl(col.link_url);
                 QueryResultParaDto para = new QueryResultParaDto
                 {
                     id = id,
                     name = col.col_comment,
                     length = col.col_length,
-                    type = col.display_type_id
+                    type = col.display_type_id,
+                    url = url
                 };
                 result.Add(para);
             }
 
             return result;
+        }
+
+        private AuthUrlDto GetAuthUrl(string url)
+        {
+            AuthUrlDto dto = new AuthUrlDto();
+            int index = url.IndexOf('?');
+            if (index == -1)
+            {
+                dto.url = url;
+                dto.parms = null;
+            }
+            else
+            {
+                dto.url = url.Substring(0, index);
+                dto.parms = new List<UrlPara>();
+                var prms = url.Substring(index + 1).Split('&');
+                for (int i = 0; i <= prms.Length - 1; ++i)
+                {
+                    UrlPara prm = new UrlPara();
+                    prm.value = null;
+                    int valueIndex = prms[i].IndexOf('=');
+                    if (valueIndex == -1)
+                        prm.name = prms[i];
+                    else
+                    {
+                        prm.name = prms[i].Substring(0, valueIndex);
+                        if (valueIndex < prms[i].Length - 1)
+                            prm.value = prms[i].Substring(valueIndex + 1);
+                    }
+                    dto.parms.Add(prm);
+                }
+            }
+
+            return dto;
         }
         #endregion
 

@@ -369,19 +369,37 @@
                             || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
                             || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
                             continue;
-                        string tooltip = null;
-                        if (resultPara.Exists(_ => _.name.Equals(para.name + "tooltip")))
-                            tooltip = para.name + "tooltip";
                 %>
                 <%if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.PIC)
-                    { %>
+                    {
+                        string tooltip = null;
+                        if (resultPara.Exists(_ => _.name.Equals(para.name + "tooltip")))
+                            tooltip = para.name + "tooltip"; %>
                 <td <%if (tooltip != null)
                     { %>title="<%=rslt[tooltip] %>"
                     <%} %> style="background: url(..<%=rslt[para.name] %>) no-repeat center;"></td>
                 <%}
                     else
-                    { %>
+                    {
+                      string url = null;
+                      if(para.url!=null)
+                      {
+                        url = para.url.url;
+                        if (para.url.parms!=null&&para.url.parms.Count!=0)
+                        {
+                          url += "?";
+                          foreach(var urlPara in para.url.parms)
+                          {
+                            url += urlPara.name + "=" + rslt[urlPara.value] + "&";
+                          }
+                        }
+                      }
+                        %>
+              <%if (url == null) { %>
                 <td><%=rslt[para.name] %></td>
+              <%} else { %>
+              <td><span><a onclick="javascript:OpenWindow('<%=url %>','_blank')" ><%=rslt[para.name] %></a></span> </td>
+              <%} %>
                 <%} %>
                 <%} // foreach
                 %>

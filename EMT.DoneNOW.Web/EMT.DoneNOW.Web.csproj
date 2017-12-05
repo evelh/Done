@@ -792,6 +792,7 @@
     <Content Include="Scripts\Search\project_cost_expense.js" />
     <Content Include="Scripts\Search\project_team.js" />
     <Content Include="Scripts\Search\project_note.js" />
+    <Content Include="Scripts\Search\PurchaseApproval.js" />
     <Content Include="Scripts\Search\Quote.js" />
     <Content Include="Scripts\Search\SaleOrder.js" />
     <Content Include="Scripts\Search\SalesOrderViewAttachment.js" />
@@ -2105,6 +2106,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Purchase\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
