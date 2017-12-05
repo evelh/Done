@@ -561,6 +561,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT_ATTACH = 1558,                  // 项目管理-项目详情-附件查询
             PROJECT_UDF = 1559,                     // 项目管理-项目详情-自定义查询
             INVENTORY_TRANSFER = 1562,              // 库存转移查询
+            PURCHASE_APPROVAL = 1563,               // 采购审批查询
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
@@ -1168,8 +1169,9 @@ namespace EMT.DoneNOW.DTO
         PROJECT_CALENDAR = 136,         // 项目管理-项目详情-日历查询
         PROJECT_ATTACH = 137,           // 项目管理-项目详情-附件查询
         PROJECT_UDF = 138,              // 项目管理-项目详情-自定义查询
-        ACCOUNT_POLICY = 132,            // 客户策略
         InventoryTransfer = 141,        // 库存转移
+        PurchaseApproval = 142,         // 采购审批查询
+
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
         REVOKE_EXPENSE,                //撤销费用审批      

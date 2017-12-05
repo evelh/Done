@@ -13,6 +13,7 @@ namespace EMT.DoneNOW.Core
     public partial class d_query_result
     {
 
+        [Key]
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]
@@ -31,6 +32,12 @@ namespace EMT.DoneNOW.Core
         public Int32 display_type_id { get; set; }
         [DataMember]
         public SByte is_visible { get; set; }
+        [DataMember]
+        public String link_url { get; set; }
+        [DataMember]
+        public String tooltip { get; set; }
+        [DataMember]
+        public SByte is_require { get; set; }
 
 
     }

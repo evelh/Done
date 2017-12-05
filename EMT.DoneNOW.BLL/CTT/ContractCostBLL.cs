@@ -335,5 +335,47 @@ namespace EMT.DoneNOW.BLL
             }
             return false;
         }
+
+        /// <summary>
+        /// 采购审批通过
+        /// </summary>
+        /// <param name="costId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool PurchaseApproval(long costId,long userId)
+        {
+            var cost = _dal.FindById(costId);
+            if (cost == null || cost.status_id != (int)DicEnum.COST_STATUS.PENDING_APPROVAL)
+                return false;
+
+            var costOld = _dal.FindById(costId);
+            cost.status_id = (int)DicEnum.COST_STATUS.PENDING_PURCHASE;
+            cost.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            cost.update_user_id = userId;
+            _dal.Update(cost);
+            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost>(costOld, cost), cost.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "采购审批通过");
+            return true;
+        }
+
+        /// <summary>
+        /// 采购审批拒绝
+        /// </summary>
+        /// <param name="costId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool PurchaseReject(long costId, long userId)
+        {
+            var cost = _dal.FindById(costId);
+            if (cost == null || cost.status_id != (int)DicEnum.COST_STATUS.PENDING_APPROVAL)
+                return false;
+
+            var costOld = _dal.FindById(costId);
+            cost.status_id = (int)DicEnum.COST_STATUS.UNDETERMINED;
+            cost.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            cost.update_user_id = userId;
+            _dal.Update(cost);
+            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost>(costOld, cost), cost.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "采购审批拒绝");
+            return true;
+        }
     }
 }

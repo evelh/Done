@@ -315,7 +315,12 @@
                                                 </div>
                                                 <div class="Group">
                                                     <div class="Heading">
-                                                        <div class="Text">搜索</div>
+                                                        <div class="Text">采购与交付</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_APPROVAL %>&isCheck=1" target="PageFrame"> 
+                                                            <span class="Text">采购审批</span>
+                                                        </a>
                                                     </div>
                                                 </div>
                                                 <div class="Group">
