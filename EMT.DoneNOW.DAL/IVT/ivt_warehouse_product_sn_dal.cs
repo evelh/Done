@@ -5,7 +5,7 @@ using System.Text;
 using EMT.DoneNOW.Core;
 namespace EMT.DoneNOW.DAL
 {
-    public class ivt_inventory_transfer_dal : BaseDAL<ivt_inventory_transfer>
+    public class ivt_warehouse_product_sn_dal : BaseDAL<ivt_warehouse_product_sn>
     {
     }
 

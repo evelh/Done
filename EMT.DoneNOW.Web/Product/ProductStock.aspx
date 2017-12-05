@@ -29,8 +29,8 @@
             <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -48px 0;" class="icon-1"></i>
                 <asp:Button ID="Save_New" OnClientClick="return save_deal()" runat="server" Text="保存并新增" BorderStyle="None" OnClick="Save_New_Click"/>
             </li>
-            <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
-                <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" OnClick="Cancel_Click"/>
+            <li onclick="javascript:window.close()"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
+                <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" />
             </li>
         </ul>
     </div>

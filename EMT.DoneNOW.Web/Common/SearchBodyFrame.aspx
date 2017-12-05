@@ -383,7 +383,9 @@
             <%}
     else
     { %>
-            <tr onclick="View('<%=id %>')" title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
+
+            <tr onclick="ViewEntity('<%=id %>')" title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
+
                 <%} %>
                 <%if (!string.IsNullOrEmpty(isCheck))
                     { %>

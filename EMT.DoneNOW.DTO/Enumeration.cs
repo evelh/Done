@@ -552,13 +552,15 @@ namespace EMT.DoneNOW.DTO
             PROJECT_CALLBACK = 1544,                // 项目查找带回
             PROJECT_TEAM = 1547,                    // 项目管理-项目详情-团队查询
             PROJECT_COST_EXPENSE = 1548,            // 项目管理-项目详情-成本和费用查询
+            INVENTORY_LOCATION = 1549,              // 库存仓库查询
+            INVENTORY_ITEM = 1550,                  // 库存产品查询
             PROJECT_NOTE = 1552,                    // 项目管理-项目备注查询
             ACCOUNT_POLICY = 1553,                  // 客户策略
             PROJECT_RATE=1556,                      // 项目管理-项目详情-费率查询
             PROJECT_CALENDAR=1557,                  // 项目管理-项目详情-日历查询
             PROJECT_ATTACH = 1558,                  // 项目管理-项目详情-附件查询
             PROJECT_UDF = 1559,                     // 项目管理-项目详情-自定义查询
-
+            INVENTORY_TRANSFER = 1562,              // 库存转移查询
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
@@ -669,7 +671,12 @@ namespace EMT.DoneNOW.DTO
             SDK_TASK_LIBARY = 1387,                     // 任务库
             SDK_MILESTONE=1388,                         // 阶段里程碑
             ATTACHMENT = 1389,                          // 附件
+            INVENTORY_LOCATION = 1390,                  // 库存仓库
+            INVENTORY_ITEM = 1391,                      // 库存产品
             PROJECT_TASK_PREDECESSOR = 1393,            // 任务的前驱任务
+            INVENTORY_ITEM_SN = 1394,                   // 库存产品串号
+            INVENTORY_ITEM_TRANSFER = 1395,             // 库存转移
+            INVENTORY_ITEM_TRANSFER_SN = 1396,          // 库存转移序号
             PROJECT_PHASE_WORK_HOURS = 1398,            // 项目阶段预估工时
         }
 
@@ -932,6 +939,17 @@ namespace EMT.DoneNOW.DTO
             WAITING_CUSTOMERS = 1351,          // 等待客户
             DONE = 1352,                        // 等待客户
         }
+
+        /// <summary>
+        /// 库存转移类型 - 126
+        /// </summary>
+        public enum INVENTORY_TRANSFER_TYPE
+        {
+            INVENTORY = 1481,       // 库存
+            PROJECT = 1482,         // 项目
+            TICKETS = 1483,         // 工单
+        }
+
         /// <summary>
         /// 客户报价发票设置 - 127
         /// </summary>
@@ -1021,6 +1039,18 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
+        /// 采购订单状态 - 150
+        /// </summary>
+        public enum PURCHASE_ORDER_STATUS
+        {
+            NEW = 2147,                 // 新建
+            SUBMITTED = 2148,           // 已提交
+            RECEIVED_PARTIAL = 2149,    // 部分接收
+            RECEIVED_FULL = 2150,       // 全部接收
+            CANCELED = 2151,            // 已取消
+        }
+
+        /// <summary>
         /// 工作类型计费方法-153
         /// </summary>
         public enum WORKTYPE_BILLING_METHOD
@@ -1039,14 +1069,7 @@ namespace EMT.DoneNOW.DTO
             SYS_EMAIL=2185,        // 系统发送邮件邮箱地址
         }
     }
-    /// <summary>
-    /// 工单-126
-    /// </summary>
-    public enum TICKET {
-        INVENTORY=1481,               //库存1481
-        PROJECT=1482,                 //项目1482
-        TICKET=1483,                  //工单1483
-    }
+
     /// <summary>
     /// 查询分页面
     /// </summary>
@@ -1137,12 +1160,16 @@ namespace EMT.DoneNOW.DTO
         SalesOrderViewAttachment = 120, // 销售订单详情-附件查询
         PROJECT_TEAM = 126,             // 项目管理-项目详情-团队查询
         PROJECT_COST_EXPENSE = 127,     // 项目管理-项目详情-成本和费用查询
+        InventoryLocation = 128,        // 库存仓库查询
+        InventoryItem = 129,            // 库存产品查询
         PROJECT_NOTE = 131,             // 项目管理-项目详情-备注查询
         ACCOUNT_POLICY = 132,           // 客户策略
         PROJECT_RATE = 135,             // 项目管理-项目详情-费率查询
         PROJECT_CALENDAR = 136,         // 项目管理-项目详情-日历查询
         PROJECT_ATTACH = 137,           // 项目管理-项目详情-附件查询
         PROJECT_UDF = 138,              // 项目管理-项目详情-自定义查询
+        ACCOUNT_POLICY = 132,            // 客户策略
+        InventoryTransfer = 141,        // 库存转移
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
         REVOKE_EXPENSE,                //撤销费用审批      

@@ -143,8 +143,9 @@ function LayerAlert(msg, btn, btnFunc) {
     layer.confirm(msg, {
         btn: [btn]
     },
-        function () {
+        function (index) {
             btnFunc();
+            layer.close(index);
         });
 }
 // 弹层两个按钮
@@ -228,6 +229,8 @@ var windowObj = {
     todos: 'todos',
     attachment: 'attachment',
     invoice: 'invoice',
+    inventoryLocation: 'inventoryLocation',
+    inventoryItem: 'inventoryItem',
     project: 'project',
     projectTeam: 'projectTeam',
     projectCalendar: 'projectCalendar',

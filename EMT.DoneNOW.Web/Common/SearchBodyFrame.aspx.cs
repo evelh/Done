@@ -216,6 +216,12 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.TODOS:
                     addBtn = "新增待办";
                     break;
+                case (int)DicEnum.QUERY_CATE.INVENTORY_LOCATION:
+                    addBtn = "新增仓库";
+                    break;
+                case (int)DicEnum.QUERY_CATE.INVENTORY_ITEM:
+                    addBtn = "新增库存产品";
+                    break;
                 case (int)DicEnum.QUERY_CATE.PROJECT_TEAM:
                     addBtn = "新增项目团队";
                     break;
@@ -712,6 +718,19 @@ namespace EMT.DoneNOW.Web
                     param1 = ((int)DicEnum.ATTACHMENT_OBJECT_TYPE.SALES_ORDER).ToString();
                     param2 = Request.QueryString["con977"];
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.InventoryLocation:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑库存仓库", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活库存仓库", click_function = "", id = "activeBtn" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用库存仓库", click_function = "", id = "inactiveBtn" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设为默认", click_function = "", id = "defaultBtn" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "", id = "deleteBtn" });
+                    break;
+                case (long)QueryType.InventoryItem:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑库存产品", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "库存转移", click_function = "Transfer()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "创建采购订单", click_function = "Order()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除库存产品", click_function = "Delete()" });
                     break;
                 case (long)QueryType.PROJECT_TEAM:
                     contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" ,id= "EditTeamMenu" });

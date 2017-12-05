@@ -111,14 +111,16 @@
     <Compile Include="Dictionary\d_tax_region_cate_dal.cs" />
     <Compile Include="Dictionary\d_tax_region_cate_tax_dal.cs" />
     <Compile Include="Dictionary\d_time_zone_dal.cs" />
-    <Compile Include="IVT\ivt_inventory_transfer_dal.cs" />
+    <Compile Include="IVT\ivt_transfer_dal.cs" />
     <Compile Include="IVT\ivt_product_vendor_dal.cs" />
     <Compile Include="IVT\ivt_service_bundle_dal.cs" />
     <Compile Include="IVT\ivt_service_bundle_service_dal.cs" />
     <Compile Include="IVT\ivt_service_dal.cs" />
+    <Compile Include="IVT\ivt_transfer_sn_dal.cs" />
     <Compile Include="IVT\ivt_warehouse_dal.cs" />
     <Compile Include="IVT\ivt_warehouse_product_dal.cs" />
     <Compile Include="CTT\v_contract_summary_dal.cs" />
+    <Compile Include="IVT\ivt_warehouse_product_sn_dal.cs" />
     <Compile Include="PRO\pro_project_calendar_dal.cs" />
     <Compile Include="PRO\pro_project_dal.cs" />
     <Compile Include="PRO\pro_project_team_dal.cs" />

@@ -243,6 +243,9 @@
     <Content Include="Images\todos.png" />
     <Content Include="Images\zoom-in.png" />
     <Content Include="Images\zoom-out.png" />
+    <Content Include="Inventory\InventoryItem.aspx" />
+    <Content Include="Inventory\InventoryLocation.aspx" />
+    <Content Include="Inventory\TransferItem.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempEdit.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempTop.aspx" />
@@ -325,7 +328,6 @@
     <Content Include="Project\ProjectAddOrEdit.aspx" />
     <Content Include="Product\ProductAdd.aspx" />
     <Content Include="Product\ProductStock.aspx" />
-    <Content Include="Product\TransferProductStock.aspx" />
     <Content Include="Product\VendorAdd.aspx" />
     <Content Include="Project\ProjectBaseLine.aspx" />
     <Content Include="Project\ProjectCalendar.aspx" />
@@ -785,6 +787,9 @@
     <Content Include="Scripts\Search\Contract_Charge.js" />
     <Content Include="Scripts\Search\CRMNote.js" />
     <Content Include="Scripts\Search\InstalledProductView.js" />
+    <Content Include="Scripts\Search\InventoryItem.js" />
+    <Content Include="Scripts\Search\InventoryLocation.js" />
+    <Content Include="Scripts\Search\InventoryTransfer.js" />
     <Content Include="Scripts\Search\InvoiceTemplate.js" />
     <Content Include="Scripts\Search\Invoice_History.js" />
     <Content Include="Scripts\Search\OpportunityViewAttachment.js" />
@@ -1194,6 +1199,27 @@
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Inventory\InventoryItem.aspx.cs">
+      <DependentUpon>InventoryItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\InventoryItem.aspx.designer.cs">
+      <DependentUpon>InventoryItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\InventoryLocation.aspx.cs">
+      <DependentUpon>InventoryLocation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\InventoryLocation.aspx.designer.cs">
+      <DependentUpon>InventoryLocation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\TransferItem.aspx.cs">
+      <DependentUpon>TransferItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\TransferItem.aspx.designer.cs">
+      <DependentUpon>TransferItem.aspx</DependentUpon>
+    </Compile>
     <Compile Include="InvoiceTemplate\InvoiceTempBody.aspx.cs">
       <DependentUpon>InvoiceTempBody.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1470,13 +1496,6 @@
     </Compile>
     <Compile Include="Product\ProductStock.aspx.designer.cs">
       <DependentUpon>ProductStock.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Product\TransferProductStock.aspx.cs">
-      <DependentUpon>TransferProductStock.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Product\TransferProductStock.aspx.designer.cs">
-      <DependentUpon>TransferProductStock.aspx</DependentUpon>
     </Compile>
     <Compile Include="Product\VendorAdd.aspx.cs">
       <DependentUpon>VendorAdd.aspx</DependentUpon>
@@ -2066,6 +2085,9 @@
     <Compile Include="Tools\InventoryAjax.ashx.cs">
       <DependentUpon>InventoryAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\InventoryLocationAjax.ashx.cs">
+      <DependentUpon>InventoryLocationAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\OpportunityAjax.ashx.cs">
       <DependentUpon>OpportunityAjax.ashx</DependentUpon>
     </Compile>
@@ -2152,6 +2174,7 @@
     <Content Include="Tools\ActivityAjax.ashx" />
     <Content Include="Tools\AttachmentAjax.ashx" />
     <Content Include="Tools\BaseAjax.ashx" />
+    <Content Include="Tools\InventoryLocationAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
