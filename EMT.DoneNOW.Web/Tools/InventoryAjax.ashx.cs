@@ -20,9 +20,14 @@ namespace EMT.DoneNOW.Web
             var inven_id = context.Request.QueryString["id"];
             switch (action)
             {
-                case "delete": Delete(context, Convert.ToInt64(inven_id)); ; break;
-
-                default: break;
+                case "delete":
+                    Delete(context, Convert.ToInt64(inven_id));
+                    break;
+                case "deleteProduct":
+                    DeleteIvtProduct(context, Convert.ToInt64(inven_id));
+                    break;
+                default:
+                    break;
 
             }
         }
@@ -41,6 +46,17 @@ namespace EMT.DoneNOW.Web
             {
                 context.Response.Write("删除失败！");
             }
+        }
+
+        /// <summary>
+        /// 删除库存产品
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="pdtId"></param>
+        public void DeleteIvtProduct(HttpContext context,long pdtId)
+        {
+            var rslt = new InventoryProductBLL().DeleteIvtProduct(pdtId, LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(rslt));
         }
 
     }

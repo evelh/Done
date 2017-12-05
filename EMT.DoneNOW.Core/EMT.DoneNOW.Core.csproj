@@ -98,11 +98,12 @@
     <Compile Include="Dictionary\d_tax_region_cate.cs" />
     <Compile Include="Dictionary\d_tax_region_cate_tax.cs" />
     <Compile Include="Dictionary\d_time_zone.cs" />
-    <Compile Include="IVT\ivt_inventory_transfer.cs" />
+    <Compile Include="IVT\ivt_transfer.cs" />
     <Compile Include="IVT\ivt_product_vendor.cs" />
     <Compile Include="IVT\ivt_service.cs" />
     <Compile Include="IVT\ivt_service_bundle.cs" />
     <Compile Include="IVT\ivt_service_bundle_service.cs" />
+    <Compile Include="IVT\ivt_transfer_sn.cs" />
     <Compile Include="IVT\ivt_warehouse.cs" />
     <Compile Include="IVT\ivt_warehouse_product.cs" />
     <Compile Include="IVT\ivt_warehouse_product_sn.cs" />

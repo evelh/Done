@@ -245,6 +245,7 @@
     <Content Include="Images\zoom-out.png" />
     <Content Include="Inventory\InventoryItem.aspx" />
     <Content Include="Inventory\InventoryLocation.aspx" />
+    <Content Include="Inventory\TransferItem.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempEdit.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempTop.aspx" />
@@ -326,7 +327,6 @@
     <Content Include="Project\ProjectAddOrEdit.aspx" />
     <Content Include="Product\ProductAdd.aspx" />
     <Content Include="Product\ProductStock.aspx" />
-    <Content Include="Product\TransferProductStock.aspx" />
     <Content Include="Product\VendorAdd.aspx" />
     <Content Include="Project\ProjectBaseLine.aspx" />
     <Content Include="Project\ProjectChart.aspx" />
@@ -785,6 +785,7 @@
     <Content Include="Scripts\Search\InstalledProductView.js" />
     <Content Include="Scripts\Search\InventoryItem.js" />
     <Content Include="Scripts\Search\InventoryLocation.js" />
+    <Content Include="Scripts\Search\InventoryTransfer.js" />
     <Content Include="Scripts\Search\InvoiceTemplate.js" />
     <Content Include="Scripts\Search\Invoice_History.js" />
     <Content Include="Scripts\Search\OpportunityViewAttachment.js" />
@@ -1205,6 +1206,13 @@
     <Compile Include="Inventory\InventoryLocation.aspx.designer.cs">
       <DependentUpon>InventoryLocation.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Inventory\TransferItem.aspx.cs">
+      <DependentUpon>TransferItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\TransferItem.aspx.designer.cs">
+      <DependentUpon>TransferItem.aspx</DependentUpon>
+    </Compile>
     <Compile Include="InvoiceTemplate\InvoiceTempBody.aspx.cs">
       <DependentUpon>InvoiceTempBody.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1474,13 +1482,6 @@
     </Compile>
     <Compile Include="Product\ProductStock.aspx.designer.cs">
       <DependentUpon>ProductStock.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Product\TransferProductStock.aspx.cs">
-      <DependentUpon>TransferProductStock.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Product\TransferProductStock.aspx.designer.cs">
-      <DependentUpon>TransferProductStock.aspx</DependentUpon>
     </Compile>
     <Compile Include="Product\VendorAdd.aspx.cs">
       <DependentUpon>VendorAdd.aspx</DependentUpon>

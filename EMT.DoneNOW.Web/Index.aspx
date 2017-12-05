@@ -286,7 +286,45 @@
                                     </div>
                                     <!--第八个-->
                                     <div class="Module">
-                                        
+                                        <div class="Normal ContextOverlayColumn">
+                                            <div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">库存</div>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVENTORY_ITEM %>" target="PageFrame"> 
+                                                            <span class="Text">库存产品管理</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVENTORY_LOCATION %>" target="PageFrame"> 
+                                                            <span class="Text">仓库管理</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVENTORY_TRANSFER %>" target="PageFrame"> 
+                                                            <span class="Text">库存转移和更新</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="Content">
+                                                        <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT %>" target="PageFrame"> 
+                                                            <span class="Text">产品管理</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">搜索</div>
+                                                    </div>
+                                                </div>
+                                                <div class="Group">
+                                                    <div class="Heading">
+                                                        <div class="Text">工具</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <!--第九个-->
                                     <div class="Module">

@@ -111,18 +111,13 @@ namespace EMT.DoneNOW.Web
         protected void Save_Close_Click(object sender, EventArgs e)
         {
             save_deal();
-            Response.Write("<script>window.opener.parent.parent.refrekkk();window.close();</script>");
-        }
-
-        protected void Cancel_Click(object sender, EventArgs e)
-        {
-            Response.Write("<script>window.opener.parent.parent.refrekkk();window.close();</script>");
+            Response.Write("<script>self.opener.location.reload();window.close();</script>");
         }
 
         protected void Save_New_Click(object sender, EventArgs e)
         {
             save_deal();
-            Response.Write("<script>window.location.href='ProductStock.aspx';</script>");
+            Response.Write("<script>self.opener.location.reload();window.location.href='ProductStock.aspx';</script>");
         }
     }
 }

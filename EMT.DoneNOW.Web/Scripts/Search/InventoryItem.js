@@ -5,11 +5,19 @@ function Edit() {
     window.open('../Inventory/InventoryItem.aspx?id=' + entityid, windowObj.inventoryItem + windowType.add, 'left=0,top=0,location=no,status=no,width=400,height=500', false);
 }
 function Transfer() {
-
+    window.open('../Inventory/TransferItem.aspx?id=' + entityid, windowObj.inventoryItem + windowType.manage, 'left=0,top=0,location=no,status=no,width=400,height=500', false);
 }
 function Order() {
 
 }
 function Delete() {
-
+    LayerConfirm("删除不可恢复，请确认", "确定", "取消", function () {
+        requestData("../Tools/InventoryAjax.ashx?act=deleteProduct&id=" + entityid, null, function (data) {
+            if (data == true) {
+                window.location.reload();
+            } else {
+                LayerMsg("删除失败。采购中、拣货中库存产品不能删除！");
+            }
+        })
+    }, function () { })
 }

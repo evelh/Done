@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web {
+namespace EMT.DoneNOW.Web.Inventory {
     
     
-    public partial class TransferProductStock {
+    public partial class TransferItem {
         
         /// <summary>
         /// form1 控件。
@@ -22,42 +22,6 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// Save_Close 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Save_Close;
-        
-        /// <summary>
-        /// Cancel 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Cancel;
-        
-        /// <summary>
-        /// product_name 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label product_name;
-        
-        /// <summary>
-        /// warehouse 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label warehouse;
-        
-        /// <summary>
         /// remove_quantity 控件。
         /// </summary>
         /// <remarks>
@@ -67,24 +31,6 @@ namespace EMT.DoneNOW.Web {
         protected global::System.Web.UI.WebControls.TextBox remove_quantity;
         
         /// <summary>
-        /// quantity 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label quantity;
-        
-        /// <summary>
-        /// warehouse_id 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList warehouse_id;
-        
-        /// <summary>
         /// note 控件。
         /// </summary>
         /// <remarks>
@@ -92,5 +38,23 @@ namespace EMT.DoneNOW.Web {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox note;
+        
+        /// <summary>
+        /// pdtSnHidden 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField pdtSnHidden;
+        
+        /// <summary>
+        /// pdtSn 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField pdtSn;
     }
 }

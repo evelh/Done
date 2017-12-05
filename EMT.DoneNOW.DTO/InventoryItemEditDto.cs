@@ -33,6 +33,8 @@ namespace EMT.DoneNOW.DTO
         public String reserved_picked { get; set; }
         [DataMember]
         public String back_order { get; set; }
+        [DataMember]
+        public String picked { get; set; }
 
     }
 }

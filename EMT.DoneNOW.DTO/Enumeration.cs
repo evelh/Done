@@ -556,6 +556,7 @@ namespace EMT.DoneNOW.DTO
             INVENTORY_ITEM = 1550,                  // 库存产品查询
             PROJECT_NOTE = 1552,                    // 项目管理-项目备注查询
             ACCOUNT_POLICY = 1553,                  // 客户策略
+            INVENTORY_TRANSFER = 1562,              // 库存转移查询
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
@@ -670,6 +671,8 @@ namespace EMT.DoneNOW.DTO
             INVENTORY_ITEM = 1391,                      // 库存产品
             PROJECT_TASK_PREDECESSOR = 1393,            // 任务的前驱任务
             INVENTORY_ITEM_SN = 1394,                   // 库存产品串号
+            INVENTORY_ITEM_TRANSFER = 1395,             // 库存转移
+            INVENTORY_ITEM_TRANSFER_SN = 1396,          // 库存转移序号
             PROJECT_PHASE_WORK_HOURS = 1398,            // 项目阶段预估工时
         }
 
@@ -932,6 +935,17 @@ namespace EMT.DoneNOW.DTO
             WAITING_CUSTOMERS = 1351,          // 等待客户
             DONE = 1352,                        // 等待客户
         }
+
+        /// <summary>
+        /// 库存转移类型 - 126
+        /// </summary>
+        public enum INVENTORY_TRANSFER_TYPE
+        {
+            INVENTORY = 1481,       // 库存
+            PROJECT = 1482,         // 项目
+            TICKETS = 1483,         // 工单
+        }
+
         /// <summary>
         /// 客户报价发票设置 - 127
         /// </summary>
@@ -1051,14 +1065,7 @@ namespace EMT.DoneNOW.DTO
             SYS_EMAIL=2185,        // 系统发送邮件邮箱地址
         }
     }
-    /// <summary>
-    /// 工单-126
-    /// </summary>
-    public enum TICKET {
-        INVENTORY=1481,               //库存1481
-        PROJECT=1482,                 //项目1482
-        TICKET=1483,                  //工单1483
-    }
+
     /// <summary>
     /// 查询分页面
     /// </summary>
@@ -1153,6 +1160,7 @@ namespace EMT.DoneNOW.DTO
         InventoryItem = 129,            // 库存产品查询
         PROJECT_NOTE = 131,             // 项目管理-项目详情-备注查询
         ACCOUNT_POLICY = 132,            // 客户策略
+        InventoryTransfer = 141,        // 库存转移
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
         REVOKE_EXPENSE,                //撤销费用审批      
