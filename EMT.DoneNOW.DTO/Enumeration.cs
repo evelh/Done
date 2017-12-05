@@ -554,6 +554,11 @@ namespace EMT.DoneNOW.DTO
             PROJECT_COST_EXPENSE = 1548,            // 项目管理-项目详情-成本和费用查询
             PROJECT_NOTE = 1552,                    // 项目管理-项目备注查询
             ACCOUNT_POLICY = 1553,                  // 客户策略
+            PROJECT_RATE=1556,                      // 项目管理-项目详情-费率查询
+            PROJECT_CALENDAR=1557,                  // 项目管理-项目详情-日历查询
+            PROJECT_ATTACH = 1558,                  // 项目管理-项目详情-附件查询
+            PROJECT_UDF = 1559,                     // 项目管理-项目详情-自定义查询
+
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
@@ -1133,7 +1138,11 @@ namespace EMT.DoneNOW.DTO
         PROJECT_TEAM = 126,             // 项目管理-项目详情-团队查询
         PROJECT_COST_EXPENSE = 127,     // 项目管理-项目详情-成本和费用查询
         PROJECT_NOTE = 131,             // 项目管理-项目详情-备注查询
-        ACCOUNT_POLICY = 132,            // 客户策略
+        ACCOUNT_POLICY = 132,           // 客户策略
+        PROJECT_RATE = 135,             // 项目管理-项目详情-费率查询
+        PROJECT_CALENDAR = 136,         // 项目管理-项目详情-日历查询
+        PROJECT_ATTACH = 137,           // 项目管理-项目详情-附件查询
+        PROJECT_UDF = 138,              // 项目管理-项目详情-自定义查询
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
         REVOKE_EXPENSE,                //撤销费用审批      

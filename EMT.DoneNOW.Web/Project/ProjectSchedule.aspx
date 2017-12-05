@@ -221,6 +221,53 @@
                 .menu ul .disabled {
                     color: #AAAAAA;
                 }
+
+        .cover {
+            position: absolute;
+            width: auto;
+            height: auto;
+            padding: 8px;
+            border-radius: 3px;
+            background: #eee;
+            border: 1px solid #ccc;
+            z-index: 999;
+            display: none;
+        }
+
+        .border_left {
+            width: 0;
+            height: 0;
+            border-width: 8px 0 8px 8px;
+            border-style: solid;
+            border-color: transparent transparent transparent #346a95; /*透明 透明 透明 灰*/
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+
+        .border_right {
+            width: 0;
+            height: 0;
+            border-width: 8px 0 8px 8px;
+            border-style: solid;
+            transform: rotate(180deg);
+            border-color: transparent transparent transparent #346a95; /*透明 透明 透明 灰*/
+            position: absolute;
+            right: 0;
+            top: 0;
+            display: none;
+        }
+
+        .border-line {
+            width: 99.5%;
+            margin: 0 auto;
+            height: 3px;
+            background: #346a95;
+            display: none;
+            position: absolute;
+            left: 5px;
+        }
     </style>
     <title></title>
 </head>
@@ -242,7 +289,7 @@
                     <span class="Text" style="padding: 0;"></span>
                 </li>
                 <!--第一个下拉-->
-                <li class="DropDownButton" style="top: 27px; left: 49px;" id="Down1">
+                <li class="DropDownButton" style="top: 25px; left: 47px;" id="Down1">
                     <div class="DropDownButtonDiv">
                         <div class="Group">
                             <div class="Heading">
@@ -283,7 +330,7 @@
                     <span class="Icon Right"></span>
                 </li>
                 <!--第二个下拉-->
-                <li class="DropDownButton" style="top: 27px; left: 141px;" id="Down2">
+                <li class="DropDownButton" style="top: 25px; left: 141px;" id="Down2">
                     <div class="DropDownButtonDiv">
                         <div class="Group">
                             <div class="Content">
@@ -344,7 +391,7 @@
                     <span class="Icon Right"></span>
                 </li>
                 <!--第三个下拉-->
-                <li class="DropDownButton" style="top: 27px; left: 210px;" id="Down3">
+                <li class="DropDownButton" style="top: 25px; left: 210px;" id="Down3">
                     <div class="DropDownButtonDiv">
                         <div class="Group">
                             <div class="Heading">
@@ -453,57 +500,51 @@
 
                 <div class="RowContainer" style="height: 600px; top: 30px;">
                     <table cellpadding="0">
-                        <tbody id="Drap" class="Drap">
-                            <%if (queryResult != null && queryResult.count > 0)
-                                {
-                                    var idPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID);
-
-                            %>
-                            <tr class="HeadingRow">
-                                <td class="FirstRowPrevent" width="60px">
-                                    <div class="Standard">
-                                        <div class="DropDownButtonContainer">
-                                            <div class="Button ButtonIcon" tabindex="0" style="outline: none; z-index: 21; cursor: pointer;">
-                                                <span class="Text">
-                                                    <input type="checkbox" class="vm" id="LeftSelectButton">
-                                                </span>
-                                                <span class="Icon Right vm" id="TableDropButton"></span>
-                                            </div>
-                                            <!--下拉框-->
-                                            <div class="DropDownButton" style="top: 50px; left: 10px; z-index: 20;" id="Down5">
-                                                <div class="DropDownButtonDiv">
-                                                    <div class="Group">
-                                                        <div class="Content">
-                                                            <div class="Button1" id="OutdentButton" tabindex="0" onclick="Outdent()">
-                                                                <span class="Text">减少缩进</span>
-                                                            </div>
-                                                            <div class="Button1" id="IndentButton" tabindex="0" onclick="Indent()">
-                                                                <span class="Text">增加缩进</span>
-                                                            </div>
-                                                            <div class="Button1" id="ForwardModifyButton" tabindex="0" onclick="ModifyManyTask()">
-                                                                <span class="Text">前进/修改</span>
-                                                            </div>
-                                                            <%--  <div class="Button1" id="AddToMyWorkListButton" tabindex="0">
+                        <tr class="HeadingRow">
+                            <td class="FirstRowPrevent" width="60px">
+                                <div class="Standard">
+                                    <div class="DropDownButtonContainer">
+                                        <div class="Button ButtonIcon" tabindex="0" style="outline: none; z-index: 21; cursor: pointer;">
+                                            <span class="Text">
+                                                <input type="checkbox" class="vm" id="LeftSelectButton">
+                                            </span>
+                                            <span class="Icon Right vm" id="TableDropButton"></span>
+                                        </div>
+                                        <!--下拉框-->
+                                        <div class="DropDownButton" style="top: 50px; left: 10px; z-index: 20;" id="Down5">
+                                            <div class="DropDownButtonDiv">
+                                                <div class="Group">
+                                                    <div class="Content">
+                                                        <div class="Button1" id="OutdentButton" tabindex="0" onclick="Outdent()">
+                                                            <span class="Text">减少缩进</span>
+                                                        </div>
+                                                        <div class="Button1" id="IndentButton" tabindex="0" onclick="Indent()">
+                                                            <span class="Text">增加缩进</span>
+                                                        </div>
+                                                        <div class="Button1" id="ForwardModifyButton" tabindex="0" onclick="ModifyManyTask()">
+                                                            <span class="Text">前进/修改</span>
+                                                        </div>
+                                                        <%--  <div class="Button1" id="AddToMyWorkListButton" tabindex="0">
                                                                 <span class="Text">添加到我的工作列表中</span>
                                                             </div>--%>
-                                                            <div class="Button1" id="SlideButton" tabindex="0" onclick="Slide()">
-                                                                <span class="Text">滑动</span>
-                                                            </div>
-                                                            <div class="Button1" id="TableCompleteButton" tabindex="0" onclick="ShowReason()">
-                                                                <span class="Text">完成</span>
-                                                            </div>
-                                                            <div class="Button1" id="TableDeleteButton" tabindex="0" onclick="DeieteTask()">
-                                                                <span class="Text">删除</span>
-                                                            </div>
+                                                        <div class="Button1" id="SlideButton" tabindex="0" onclick="Slide()">
+                                                            <span class="Text">滑动</span>
+                                                        </div>
+                                                        <div class="Button1" id="TableCompleteButton" tabindex="0" onclick="ShowReason()">
+                                                            <span class="Text">完成</span>
+                                                        </div>
+                                                        <div class="Button1" id="TableDeleteButton" tabindex="0" onclick="DeieteTask()">
+                                                            <span class="Text">删除</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </td>
-                                <td width="40px"></td>
-                                <%foreach (var para in resultPara)
+                                </div>
+                            </td>
+                            <td width="40px"></td>
+                            <%foreach (var para in resultPara)
                                     {
                                         if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
                                             || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
@@ -521,12 +562,25 @@
                                         {
                                             continue;
                                         }
-                                %>
-                                <td width="<%=para.length * 32 %>px">
-                                    <%=para.name %>
-                                </td>
-                                <%} %>
-                            </tr>
+                            %>
+                            <td width="<%=para.length * 32 %>px">
+                                <%=para.name %>
+                            </td>
+                            <%} %>
+                        </tr>
+                           <div class="cover"></div>
+                        <tbody id="Drap" class="Drap">
+                                  <div class="border_left">
+                        </div>  
+                        <div class="border_right">
+                        </div> 
+                        <div class="border-line"></div> 
+                            <%if (queryResult != null && queryResult.count > 0)
+                                {
+                                    var idPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID);
+
+                            %>
+
                             <%
                                 foreach (var rslt in queryResult.result)
                                 {
@@ -1694,8 +1748,8 @@
         <div class="menu" id="taskMenu" style="background-color: white;">
             <%--菜单--%>
             <ul>
-                <li class="" style="top: 27px; left: 49px; height: 350px; background-color: white;width:600px;" id="">
-                    <div class="DropDownButtonDiv" style="width:500px;max-width:600px;">
+                <li class="" style="top: 27px; left: 49px; height: 350px; background-color: white; width: 600px;" id="">
+                    <div class="DropDownButtonDiv" style="width: 500px; max-width: 600px;">
                         <div class="Group" style="float: left;">
                             <div class="Heading">
                                 <div class="Text" style="font-weight: bold;">常规</div>
@@ -2691,7 +2745,7 @@
         var oEvent = event;
         var menu = "";
         //var thisClassName = $(this).prop("className"); attachMenuS expTR
-
+        // $(".menu").hide();
         if (!($(this).parent().parent().hasClass("HighImportance")))  // 代表是项目
         {
             menu = document.getElementById("projectMenu");
@@ -2960,4 +3014,41 @@
         }
     }
 
+</script>
+<%--拖拽相关js--%>
+<script>
+    function DragTask() {
+        var fromId = GetFirstChooseId();
+        if (fromId != "" && toId != "" && type != "" && fromId != toId)
+        {
+            var chooseId = GetChooseTaskId();  // 如果 toId 在选中的taskID中，则不进行操作
+
+            var choIdArr = chooseId.split(',');
+            var isHas = "";
+            for (var i = 0; i < choIdArr.length; i++) {
+                if (choIdArr[i] == toId) {
+                    isHas = "1";
+                    return false;
+                }
+            }
+
+            if (isHas == "") {
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: "../Tools/ProjectAjax.ashx?act=ChangeTaskParent&fromId=" + fromId + "&location=" + type + "&toId=" + toId +"&project_id=<%=thisProject.id %>",
+                    success: function (data) {
+                        if (data == "True") {
+
+                        }
+                        history.go(0);
+                    },
+                });
+            }
+            //alert(fromId);
+            //alert(toId);
+            //alert(type);
+        }
+        
+    }
 </script>

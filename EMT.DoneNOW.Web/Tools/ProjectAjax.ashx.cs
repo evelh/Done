@@ -106,23 +106,23 @@ namespace EMT.DoneNOW.Web
                         Outdent(context, long.Parse(oTaskId));
                         break;
                     case "GetProByRes":
-                        GetProByRes(context, long.Parse(context.Request.QueryString["resource_id"]), context.Request.QueryString["showType"], !string.IsNullOrEmpty(context.Request.QueryString["isShowCom"]),long.Parse(context.Request.QueryString["account_id"]));
+                        GetProByRes(context, long.Parse(context.Request.QueryString["resource_id"]), context.Request.QueryString["showType"], !string.IsNullOrEmpty(context.Request.QueryString["isShowCom"]), long.Parse(context.Request.QueryString["account_id"]));
                         break;
                     case "GetTaskByRes":
                         GetTaskByRes(context, long.Parse(context.Request.QueryString["resource_id"]), context.Request.QueryString["showType"], !string.IsNullOrEmpty(context.Request.QueryString["isShowCom"]), long.Parse(context.Request.QueryString["project_id"]));
                         break;
                     case "DeleteEntry":
                         var eId = context.Request.QueryString["entry_id"];
-                        DeleteEntry(context,long.Parse(eId));
+                        DeleteEntry(context, long.Parse(eId));
                         break;
                     case "GetTaskFileSes":
                         var stId = context.Request.QueryString["object_id"];
-                        GetTaskFileSes(context,long.Parse(stId));
+                        GetTaskFileSes(context, long.Parse(stId));
                         break;
                     case "RemoveSess":
                         var rstId = context.Request.QueryString["object_id"];
                         var indNum = context.Request.QueryString["index"];
-                        RemoveSession(context,long.Parse(rstId),int.Parse(indNum));
+                        RemoveSession(context, long.Parse(rstId), int.Parse(indNum));
                         break;
                     case "GetProTaskList":
                         var gpId = context.Request.QueryString["project_id"];
@@ -130,11 +130,11 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "DeleteExpense":
                         var delEId = context.Request.QueryString["exp_id"];
-                        DeleteExpense(context,long.Parse(delEId));
+                        DeleteExpense(context, long.Parse(delEId));
                         break;
                     case "DeleteNote":
                         var note_id = context.Request.QueryString["note_id"];
-                        DeleteNote(context,long.Parse(note_id));
+                        DeleteNote(context, long.Parse(note_id));
                         break;
                     case "AssMile":    // 关联里程碑
                         var assIds = context.Request.QueryString["mileIds"];
@@ -150,7 +150,7 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "ToReadyBill":     // 更改里程碑状态
                         var tbIds = context.Request.QueryString["mileIds"];
-                        ToReadyBill(context,tbIds);
+                        ToReadyBill(context, tbIds);
                         break;
                     case "CancelTask":   // 取消任务
                         var canTaskId = context.Request.QueryString["task_id"];
@@ -168,46 +168,62 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "GetSinProTeam":
                         var ptId = context.Request.QueryString["team_id"];
-                        GetSinProTeam(context,long.Parse(ptId));
+                        GetSinProTeam(context, long.Parse(ptId));
                         break;
                     case "DelProTeam":
                         var dptId = context.Request.QueryString["team_id"];
                         var dptPId = context.Request.QueryString["project_id"];
-                        DelProTeam(context,long.Parse(dptPId),long.Parse(dptId));
+                        DelProTeam(context, long.Parse(dptPId), long.Parse(dptId));
                         break;
                     case "ResIsInTask":
                         var ritPId = context.Request.QueryString["project_id"];
                         var ritRId = context.Request.QueryString["team_id"];
-                        ResIsInTask(context,long.Parse(ritPId),long.Parse(ritRId));
+                        ResIsInTask(context, long.Parse(ritPId), long.Parse(ritRId));
                         break;
                     case "ResInPro":
                         var ripPid = context.Request.QueryString["project_id"];
                         var ripRid = context.Request.QueryString["resource_id"];
-                        ResInPro(context,long.Parse(ripPid),long.Parse(ripRid));
+                        ResInPro(context, long.Parse(ripPid), long.Parse(ripRid));
                         break;
                     case "ReconcileProject":
                         var rpId = context.Request.QueryString["project_id"];
-                        ReconcileProject(context,long.Parse(rpId));
+                        ReconcileProject(context, long.Parse(rpId));
                         break;
                     case "GetSinExpense":
                         var exp_id = context.Request.QueryString["exp_id"];
-                        GetSinExpense(context,long.Parse(exp_id));
+                        GetSinExpense(context, long.Parse(exp_id));
                         break;
                     case "BillExpense":
                         var billExpIds = context.Request.QueryString["ids"];
-                        BillManyExpense(context,billExpIds, !string.IsNullOrEmpty(context.Request.QueryString["isbill"]));
+                        BillManyExpense(context, billExpIds, !string.IsNullOrEmpty(context.Request.QueryString["isbill"]));
                         break;
                     case "BillSingExp":
                         var sinExpId = context.Request.QueryString["exp_id"];
-                        BillSingExp(context,long.Parse(sinExpId),!string.IsNullOrEmpty(context.Request.QueryString["isbill"]));
+                        BillSingExp(context, long.Parse(sinExpId), !string.IsNullOrEmpty(context.Request.QueryString["isbill"]));
                         break;
                     case "DeleteSinExp":
                         var dsExpId = context.Request.QueryString["exp_id"];
-                        DeleteSinExp(context,long.Parse(dsExpId));
+                        DeleteSinExp(context, long.Parse(dsExpId));
                         break;
                     case "DeleteManyExp":
                         var deIds = context.Request.QueryString["ids"];
-                        DeleteManyExp(context,deIds);
+                        DeleteManyExp(context, deIds);
+                        break;
+                    case "DeleteCalendar":
+                        var calId = context.Request.QueryString["cal_id"];
+                        DeleteCalendar(context, long.Parse(calId));
+                        break;
+                    case "GetSinCal":
+                        var sinCalId = context.Request.QueryString["cal_id"];
+                        GetSinCal(context, long.Parse(sinCalId));
+                        break;
+                    case "ChangeTaskParent":
+
+                        var fromId = context.Request.QueryString["fromId"];
+                        var location = context.Request.QueryString["location"];
+                        var toId = context.Request.QueryString["toId"];
+                        var ctpId = context.Request.QueryString["project_id"];
+                        ChangeTaskParent(context, long.Parse(ctpId), long.Parse(toId), long.Parse(fromId), location);
                         break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -367,7 +383,7 @@ namespace EMT.DoneNOW.Web
                     proTeamList.ForEach(_ =>
                     {
                         var teamRoleList = pptrDal.GetListTeamRole(_.id);
-                        if (teamRoleList != null && teamRoleList.Count>0)
+                        if (teamRoleList != null && teamRoleList.Count > 0)
                         {
                             foreach (var thisTeamRole in teamRoleList)
                             {
@@ -383,9 +399,9 @@ namespace EMT.DoneNOW.Web
                                         }
                                     }
                                 }
-                            
+
                             }
-                            
+
                         }
                     });
                     if (idsList != null && idsList.Count > 0)
@@ -566,111 +582,83 @@ namespace EMT.DoneNOW.Web
             context.Response.Write(result);
         }
         /// <summary>
-        /// 任务父阶段的修改 （修改后刷新页面排序方式改变）
+        /// 任务阶段的修改
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="project_id">项目Id</param>
-        /// <param name="parent_id">父阶段ID</param>
-        /// <param name="task_id">选择的task</param>
-        /// <param name="location">位置（成为子节点或者兄弟节点）</param>
-        private void ChangeTaskParent(HttpContext context, long project_id, long? parent_id, string taskIds, string location)
+        private void ChangeTaskParent(HttpContext context, long project_id, long to_id, long from_id, string location)
         {
-            //  当父task是阶段，直接将parent_id指向阶段
-            //  当父task不是阶段时，创建指向Task命名的阶段，同时将指向的task和选择的task 移向阶段之下
-            //  没有父Task的时候直接放入项目下
-            // todo
+
             var stDal = new sdk_task_dal();
             var tBll = new TaskBLL();
-
-
-
             // 1.获取到要插入的位置，获取相关序号
             // 2.根据序号更改task排序号以及子节点相关排序号
             // 3.更改兄弟节点相关排序号以及兄弟节点的子节点的排序号
             // 4.更改插入位置的相关兄弟节点的排序号以及相关子节点的排序号
-
-            if (!string.IsNullOrEmpty(taskIds))
+            if (location == "in") // 插入节点里面成为子节点
             {
-                var taskArr = taskIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                taskArr = taskArr.Reverse().ToArray(); // 进行倒序处理
-
-                if (location == "in") // 插入节点里面成为子节点
+                // 放到里面的时候如果不是阶段，则需要新增阶段，并将原来的task转移到这个阶段下
+                // 此时需要创建新阶段并将新阶段ID作为parentID
+                var parentTask = stDal.FindNoDeleteById(to_id);
+                if (parentTask.type_id != (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
                 {
-                    // todo 放到里面的时候如果不是阶段，则需要新增阶段，并将原来的task转移到这个阶段下
-                    // 此时需要创建新阶段并将新阶段ID作为parentID
-                    var parentTask = stDal.FindNoDeleteById((long)parent_id);
-                    if (parentTask.type_id != (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
+                    var returnID = tBll.InsertPhase(to_id, LoginUserId);
+                    if (returnID != null)
                     {
-                        var returnID = tBll.InsertPhase((long)parent_id, LoginUserId);
-                        if (returnID != null)
-                        {
-                            parent_id = returnID;
-                        }
+                        to_id = (long)returnID;
                     }
-
-                    foreach (var taskId in taskArr)
+                    else
                     {
-                        var thisTaskNewSortNo = "";
-                        var thisTask = stDal.FindNoDeleteById(long.Parse(taskId));
-                        if (thisTask != null)
-                        {
-                            if (thisTask.parent_id != null)
-                            {
-                                if (taskArr.Contains(((long)thisTask.parent_id).ToString())) // 父节点已经处理，子节点不用处理
-                                {
-                                    continue;
-                                }
-                            }
-
-                            thisTask.parent_id = parent_id;
-                            stDal.Update(thisTask);
-                            thisTaskNewSortNo = tBll.ReturnSortOrder(project_id, parent_id);
-                            tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, LoginUserId);
-                        }
+                        return;
                     }
                 }
-                else if (location == "above") // 插入节点上面成为兄弟节点(回取代原有的位置)
+                var thisTaskNewSortNo = "";
+                var thisTask = stDal.FindNoDeleteById(from_id);
+                if (thisTask != null)
                 {
+                    var oldParentId = thisTask.parent_id;
+                    thisTask.parent_id = to_id;
+                    stDal.Update(thisTask);
+                    thisTaskNewSortNo = tBll.GetMinUserSortNo(to_id);
+                    tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, LoginUserId);
 
-                    // 类型为above,则parent_id为插入的兄弟节点的位置
-
-                    // 处理顺序--1.原有兄弟节点相关改变，相关子节点改变
-                    // 2.插入后的相关兄弟节点以及兄弟子节点的改变（倒序处理+1）
-
-                    // 3.移动的节点的改变。相关子节点的改变
-
-                    foreach (var taskId in taskArr)
-                    {
-                        var thisTask = stDal.FindNoDeleteById(long.Parse(taskId));
-                        if (thisTask != null)
-                        {
-                            tBll.ChangBroTaskSortNoReduce(project_id, thisTask.parent_id, LoginUserId);
-                        }
-                    }
-                    tBll.ChangeBroTaskSortNoAdd((long)parent_id, taskArr.Count(), LoginUserId);
-                    long? reaParentId = null;  // 真正的父节点的id 
-
-                    if (parent_id != null)
-                    {
-                        var broTask = stDal.FindNoDeleteById((long)parent_id);
-                        if (broTask != null && broTask.parent_id != null)
-                        {
-                            reaParentId = (long)broTask.parent_id;
-                        }
-                    }
-                    foreach (var taskId in taskArr)
-                    {
-                        var thisTask = stDal.FindNoDeleteById(long.Parse(taskId));
-                        if (thisTask != null)
-                        {
-                            thisTask.parent_id = reaParentId;
-
-                            stDal.Update(thisTask);
-                            var thisTaskNewSortNo = tBll.ReturnSortOrder(project_id, reaParentId);
-                            tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, LoginUserId);
-                        }
-                    }
+                    tBll.ChangBroTaskSortNoReduce(project_id, oldParentId, LoginUserId);
                 }
+            }
+            else if (location == "above") // 插入节点上面成为兄弟节点(回取代原有的位置)
+            {
+
+                // 类型为above,则to_id为插入的兄弟节点的位置
+                // 处理顺序--1.补出一个空位
+                // 2 更改移动节点的排序号和本身相关信息
+                // 3.修改移动节点原来父节点下的信息
+                long? reaParentId = null;  // 真正的父节点的id 
+                var broTask = stDal.FindNoDeleteById(to_id);
+                if (broTask != null && broTask.parent_id != null)
+                {
+                    reaParentId = (long)broTask.parent_id;
+                }
+
+                var thisTask = stDal.FindNoDeleteById(from_id);
+                if (thisTask != null)
+                {
+                    // 1
+                    tBll.ChangeBroTaskSortNoAdd(to_id, 1, LoginUserId);
+                    // 2
+                    var oldParID = thisTask.parent_id;
+                    //thisTask.parent_id = null;
+                    //new TaskBLL().OnlyEditTask(thisTask, LoginUserId);
+                    //  thisTask.sort_order = broTask.sort_order;
+                    thisTask.parent_id = broTask.parent_id;
+                    new TaskBLL().OnlyEditTask(thisTask, LoginUserId);
+                    tBll.ChangeTaskSortNo(broTask.sort_order, thisTask.id, LoginUserId);
+                    // 3
+                    tBll.ChangBroTaskSortNoReduce(project_id, oldParID, LoginUserId);
+                    
+                    //thisTask.parent_id = reaParentId;
+                    //stDal.Update(thisTask);
+                    //var thisTaskNewSortNo = tBll.ReturnSortOrder(project_id, reaParentId);
+                    //tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, LoginUserId);
+                }
+
             }
         }
 
@@ -898,11 +886,7 @@ namespace EMT.DoneNOW.Web
                     // 1.改变原来的兄弟节点的位置
                     // 2.获取到新的节点的位置，插入节点
                     // 3.计算原来的，和新的父节点的开始时间和结束时间是否调整 // todo
-                    var oldThisTaskParId = thisTask.parent_id;
-                    thisTask.parent_id = parTask.parent_id;
-                    OperLogBLL.OperLogUpdate<sdk_task>(thisTask, stDal.FindNoDeleteById(thisTask.id), thisTask.id, LoginUserId, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
-                    stDal.Update(thisTask);
-                    tBll.ChangBroTaskSortNoReduce((long)thisTask.project_id, oldThisTaskParId, LoginUserId); // 1.
+
                     string newNo = "";
                     if (parTask.parent_id != null)
                     {
@@ -912,8 +896,18 @@ namespace EMT.DoneNOW.Web
                     {
                         newNo = tBll.GetMinUserNoParSortNo((long)thisTask.project_id);
                     }
+                    var oldThisTaskParId = thisTask.parent_id;
+                    thisTask.parent_id = parTask.parent_id;
+                    OperLogBLL.OperLogUpdate<sdk_task>(thisTask, stDal.FindNoDeleteById(thisTask.id), thisTask.id, LoginUserId, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                    stDal.Update(thisTask);
+                    tBll.ChangBroTaskSortNoReduce((long)thisTask.project_id, oldThisTaskParId, LoginUserId); // 1.
+              
                     tBll.ChangeTaskSortNo(newNo, thisTask.id, LoginUserId);
-                    tBll.AdjustmentDate((long)thisTask.parent_id, LoginUserId);
+                    if (thisTask.parent_id != null)
+                    {
+                        tBll.AdjustmentDate((long)thisTask.parent_id, LoginUserId);
+                    }
+                    
                 }
             }
 
@@ -944,7 +938,7 @@ namespace EMT.DoneNOW.Web
                     stDal.Update(thisTask);
                     var newNo = tBll.GetMinUserSortNo(lastTask.id);
                     tBll.ChangeTaskSortNo(newNo, taskId, LoginUserId);
-                   
+
                 }
                 else
                 {
@@ -981,9 +975,9 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 根据条件删选项目
         /// </summary>
-        private void GetProByRes(HttpContext context, long rId, string showType, bool isShowComp,long account_id)
+        private void GetProByRes(HttpContext context, long rId, string showType, bool isShowComp, long account_id)
         {
-            var list = new pro_project_dal().GetAccByRes(rId, showType, isShowComp,account_id);
+            var list = new pro_project_dal().GetAccByRes(rId, showType, isShowComp, account_id);
             if (list != null && list.Count > 0)
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson(list));
@@ -1003,23 +997,23 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 删除工时，返回结果和删除失败原因
         /// </summary>
-        private void DeleteEntry(HttpContext context,long entry_id)
+        private void DeleteEntry(HttpContext context, long entry_id)
         {
             string reason = "";
-            var result = new TaskBLL().DeleteEntry(entry_id,LoginUserId,out reason);
-            context.Response.Write(new Tools.Serialize().SerializeJson(new {result=result,reason = reason }));
+            var result = new TaskBLL().DeleteEntry(entry_id, LoginUserId, out reason);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result, reason = reason }));
         }
         /// <summary>
         /// 读取这个对象相对应的暂存文件
         /// </summary>
-        private void GetTaskFileSes(HttpContext context,long object_id)
+        private void GetTaskFileSes(HttpContext context, long object_id)
         {
             StringBuilder fileHtml = new StringBuilder();
             var objAtt = context.Session[object_id.ToString() + "_Att"];
             if (objAtt != null)
             {
                 var attList = objAtt as List<AddFileDto>;
-                if(attList!=null&& attList.Count > 0)
+                if (attList != null && attList.Count > 0)
                 {
                     foreach (var att in attList)
                     {
@@ -1032,7 +1026,7 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 移除暂存文件
         /// </summary>
-        private void RemoveSession(HttpContext context,long object_id,int indexNum)
+        private void RemoveSession(HttpContext context, long object_id, int indexNum)
         {
             var objAtt = context.Session[object_id.ToString() + "_Att"];
             if (objAtt != null)
@@ -1040,10 +1034,10 @@ namespace EMT.DoneNOW.Web
                 var attList = objAtt as List<AddFileDto>;
                 if (attList != null && attList.Count > 0)
                 {
-                    if(attList.Count> indexNum)
+                    if (attList.Count > indexNum)
                     {
                         attList.Remove(attList[indexNum]);
-                        
+
                         GetTaskFileSes(context, object_id);
                     }
                 }
@@ -1052,10 +1046,10 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 返回这个项目的问题和任务
         /// </summary>
-        private void GetProTaskList(HttpContext context,long project_id)
+        private void GetProTaskList(HttpContext context, long project_id)
         {
             var taskList = new sdk_task_dal().GetProjectTask(project_id);
-            if(taskList!=null&& taskList.Count > 0)
+            if (taskList != null && taskList.Count > 0)
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson(taskList));
             }
@@ -1063,10 +1057,10 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 删除费用
         /// </summary>
-        private void DeleteExpense(HttpContext context,long exp_id)
+        private void DeleteExpense(HttpContext context, long exp_id)
         {
             string faileReason = "";
-            var result = new TaskBLL().DeleteExpense(exp_id,LoginUserId,out faileReason);
+            var result = new TaskBLL().DeleteExpense(exp_id, LoginUserId, out faileReason);
             context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result, reason = faileReason }));
         }
         /// <summary>
@@ -1074,15 +1068,15 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void DeleteNote(HttpContext context, long exp_id)
         {
-            var result = new TaskBLL().DeleteTaskNote(exp_id,LoginUserId);
+            var result = new TaskBLL().DeleteTaskNote(exp_id, LoginUserId);
             context.Response.Write(result);
         }
         /// <summary>
         /// 关联里程碑
         /// </summary>
-        private void AssMile(HttpContext context,string ids,long phaId)
+        private void AssMile(HttpContext context, string ids, long phaId)
         {
-            var result = new TaskBLL().AssMiles(ids, phaId,LoginUserId);
+            var result = new TaskBLL().AssMiles(ids, phaId, LoginUserId);
             context.Response.Write(result);
         }
         /// <summary>
@@ -1090,13 +1084,13 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void DisAssMile(HttpContext context, string ids)
         {
-            var result = new TaskBLL().DisMiles(ids,LoginUserId);
+            var result = new TaskBLL().DisMiles(ids, LoginUserId);
             context.Response.Write(result);
         }
         /// <summary>
         /// 修改里程碑状态为准备计费
         /// </summary>
-        private void ToReadyBill(HttpContext context,string ids)
+        private void ToReadyBill(HttpContext context, string ids)
         {
             var result = new TaskBLL().ReadyMiles(ids, LoginUserId);
             context.Response.Write(result);
@@ -1104,9 +1098,9 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 取消任务
         /// </summary>
-        private void CancelTask(HttpContext context,long task_id)
+        private void CancelTask(HttpContext context, long task_id)
         {
-            var result = new TaskBLL().CancelTask(task_id,LoginUserId);
+            var result = new TaskBLL().CancelTask(task_id, LoginUserId);
             context.Response.Write(result);
         }
         /// <summary>
@@ -1131,7 +1125,7 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 员工是否在任务中出现
         /// </summary>
-        private void ResIsInTask(HttpContext context, long project_id,long team_id)
+        private void ResIsInTask(HttpContext context, long project_id, long team_id)
         {
             var result = false;
             var thisTeam = new pro_project_team_dal().FindNoDeleteById(team_id);
@@ -1139,7 +1133,7 @@ namespace EMT.DoneNOW.Web
             {
                 result = new TaskBLL().ResIsInTask(project_id, (long)thisTeam.resource_id);
             }
-            
+
             context.Response.Write(result);
         }
         /// <summary>
@@ -1147,15 +1141,15 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void DelProTeam(HttpContext context, long project_id, long team_id)
         {
-            var result = new ProjectBLL().DeleteProTeam(project_id,team_id,LoginUserId);
+            var result = new ProjectBLL().DeleteProTeam(project_id, team_id, LoginUserId);
             context.Response.Write(result);
         }
         /// <summary>
         /// 判断该员工是否在项目中出现
         /// </summary>
-        private void ResInPro(HttpContext context, long project_id,long resourcec_id)
+        private void ResInPro(HttpContext context, long project_id, long resourcec_id)
         {
-            var result = new ProjectBLL().IsHasRes(project_id,resourcec_id);
+            var result = new ProjectBLL().IsHasRes(project_id, resourcec_id);
             context.Response.Write(result);
         }
         /// <summary>
@@ -1163,7 +1157,7 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void ReconcileProject(HttpContext context, long project_id)
         {
-            var result = new ProjectBLL().ReconcileRes(project_id,LoginUserId);
+            var result = new ProjectBLL().ReconcileRes(project_id, LoginUserId);
             context.Response.Write(result);
         }
         /// <summary>
@@ -1180,9 +1174,9 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 批量计费或者不计费 成本或者费用
         /// </summary>
-        private void BillManyExpense(HttpContext context,string ids,bool IsBill)
+        private void BillManyExpense(HttpContext context, string ids, bool IsBill)
         {
-            var result = new ProjectBLL().BillExpenses(ids,IsBill,LoginUserId);
+            var result = new ProjectBLL().BillExpenses(ids, IsBill, LoginUserId);
             context.Response.Write(result);
         }
         /// <summary>
@@ -1191,8 +1185,8 @@ namespace EMT.DoneNOW.Web
         private void BillSingExp(HttpContext context, long exp_id, bool IsBill)
         {
             string reason = "";
-            var result = new ProjectBLL().BillExp(exp_id,IsBill,LoginUserId,out reason);
-            context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result,reason=reason}));
+            var result = new ProjectBLL().BillExp(exp_id, IsBill, LoginUserId, out reason);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result, reason = reason }));
         }
         /// <summary>
         /// 删除单个费用
@@ -1200,16 +1194,30 @@ namespace EMT.DoneNOW.Web
         private void DeleteSinExp(HttpContext context, long exp_id)
         {
             var reason = "";
-            var result = new ProjectBLL().DeleteSinExp(exp_id,LoginUserId,out reason);
-            context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result,reason=reason}));
+            var result = new ProjectBLL().DeleteSinExp(exp_id, LoginUserId, out reason);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result, reason = reason }));
         }
         /// <summary>
         /// 批量删除费用或者成本
         /// </summary>
-        private void DeleteManyExp(HttpContext context,string ids)
+        private void DeleteManyExp(HttpContext context, string ids)
         {
-            var result = new ProjectBLL().DeleteExpense(ids,LoginUserId);
+            var result = new ProjectBLL().DeleteExpense(ids, LoginUserId);
             context.Response.Write(result);
+        }
+        private void DeleteCalendar(HttpContext context, long cal_id)
+        {
+            var result = new ProjectBLL().DeleteProCal(cal_id, LoginUserId);
+            context.Response.Write(result);
+        }
+
+        private void GetSinCal(HttpContext context, long cal_id)
+        {
+            var thisCal = new pro_project_calendar_dal().FindNoDeleteById(cal_id);
+            if (thisCal != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(thisCal));
+            }
         }
 
     }

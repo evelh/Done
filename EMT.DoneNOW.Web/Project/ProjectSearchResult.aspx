@@ -242,16 +242,11 @@
     </form>
     <%if (queryResult != null)
         { %>
-
+     <div class="cover"></div>
     <div class="searchcontent" id="searchcontent" style="margin-top: 56px; min-width: <%=tableWidth%>px; overflow: hidden;">
         <table border="" cellspacing="0" cellpadding="0" style="overflow: scroll; width: 100%; height: 100%;">
             <tr>
-                <%if (!string.IsNullOrEmpty(isCheck))
-                    { %>
-                <th style="padding-left: 4px; width: 22px; max-width: 22px;">
-                    <input id="CheckAll" type="checkbox" /></th>
-
-                <%} %>
+                
                 <%
                     string project_ids = "";
                     foreach (var para in resultPara)
@@ -517,5 +512,32 @@
     }
     function View(id) {
         window.open("ProjectView.aspx?id=" + id, '_blank', 'left=200,top=200,width=900,height=800', false);
+    }
+
+    function NewProNote() {
+        window.open("../Project/TaskNote.aspx?project_id=" + entityid, windowObj.notes + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+    }
+
+    function NewProCalendar() {
+        window.open("../Project/ProjectCalendar.aspx?project_id=" + entityid, windowObj.projectCalendar + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+    }
+    function Delete() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ProjectAjax.ashx?act=DeletePro&project_id=" + entityid,
+            dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    if (data.result == "True") {
+                        LayerMsg("删除项目成功！");
+                    } else if (data.result == "False") {
+                        LayerMsg("该项目不能被删除，因为有一个或多个时间条目，费用，费用，服务预定，备注，附件，里程碑！");
+                    }
+                }
+                window.close();
+                self.parent.location.reload();
+            },
+         });
     }
 </script>

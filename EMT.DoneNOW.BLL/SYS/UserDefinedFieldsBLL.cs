@@ -29,7 +29,7 @@ namespace EMT.DoneNOW.BLL
             {
                 if (udf.data_type == (int)DicEnum.UDF_DATA_TYPE.LIST)
                 {
-                    var valList = udfListDal.FindListBySql<DictionaryEntryDto>(udfListDal.QueryStringDeleteFlag($"SELECT id as 'val',name as 'show',is_default as 'select' FROM sys_udf_list WHERE udf_field_id={udf.id} status_id=0"));
+                    var valList = udfListDal.FindListBySql<DictionaryEntryDto>(udfListDal.QueryStringDeleteFlag($"SELECT id as 'val',name as 'show',is_default as 'select' FROM sys_udf_list WHERE udf_field_id={udf.id} and status_id=0"));
                     if (valList != null && valList.Count != 0)
                         udf.value_list = valList;
                 }
@@ -353,5 +353,34 @@ namespace EMT.DoneNOW.BLL
             
             return "col" + index.ToString().PadLeft(3, '0');
         }
+
+        /// <summary>
+        /// 修改自定义字段某个值
+        /// </summary>
+        public bool EditUdf(DicEnum.UDF_CATE cate, long objectId, int udfId, string value, string desc, long user_id, DicEnum.OPER_LOG_OBJ_CATE operType)
+        {
+            // 更新自定义字段值
+            var udfList = GetUdf(cate);
+            var udfValues = GetUdfValue(cate, objectId, udfList);
+            var user = new UserResourceBLL().GetSysUserSingle(user_id);
+            int index = udfValues.FindIndex(f => f.id == udfId);
+            object oldVal = udfValues[index].value;
+            udfValues[index].value = value;
+            UpdateUdfValue(cate, udfList, objectId, udfValues,
+            new UserInfoDto { id = user_id, name = user.name }, operType);
+            var colName = udfList.Find(f => f.id == udfId).name;
+            bool result = true;
+            switch (cate)
+            {
+                case DicEnum.UDF_CATE.PROJECTS:
+                    result = new ProjectBLL().AddUdfActivity(objectId, colName, oldVal, value, desc, user_id);
+                    break;
+                default:
+                    break;
+            }
+
+            return result;
+        }
+
     }
 }

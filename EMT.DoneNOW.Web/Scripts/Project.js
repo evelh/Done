@@ -102,7 +102,12 @@ $(".calendar").on("click",function(){
 //     });
 // });
 
+
+var toId = "";
+var type = "in";
+
 function drag() {
+    
     var obj = $('#Drap .HighImportance');
     obj.bind('mousedown', start);
     function start(e) {
@@ -110,7 +115,7 @@ function drag() {
         var ot = obj.offset().top;
         deltaX = e.pageX - ol;
         deltaY = e.pageY - ot;
-       
+        $(this).children('.Interaction').first().trigger("click");
         $(document).bind({
             'mousemove': move,
             'mouseup': stop
@@ -118,47 +123,83 @@ function drag() {
         return false;
     }
     function move(e) {
-        $.each(obj.siblings(),function(i){
-         var mX = obj.siblings().eq(i).offset().left;
-         var mY = obj.siblings().eq(i).offset().top;        
-             if(e.pageX>mX &&e.pageX<mX+obj.siblings().eq(i).width()&&e.pageY>mY && e.pageY<mY+obj.siblings().eq(i).height()){
-                 obj.css('cursor','move')
-                 obj.find('.Interaction').css('cursor','move')
-                 $('.border_left').show()
-                 $('.border_left').css({
-                      "left":obj.siblings().eq(i).children('.Interaction').offset().left ,
-                       "top":obj.siblings().eq(i).children('.Interaction').offset().top-108,
-                 })
-                 $('.cover').show()
-                  $('.cover').css({
-                    "left": (e.pageX+$('.cover').width()+10),
+        debugger;
+
+        $.each(obj.siblings(), function (i) {
+            var mX = obj.siblings().eq(i).offset().left;
+            var mY = obj.siblings().eq(i).offset().top;
+            if (e.pageX > mX && e.pageX < mX + obj.siblings().eq(i).width() && e.pageY > mY && e.pageY < mY + obj.siblings().eq(i).height()) {
+                obj.css('cursor', 'move')
+                obj.find('.Interaction').css('cursor', 'move')
+                $('.border_left').show()
+                $('.border_right').show()
+                type = "in";
+                $('.border-line').hide()
+                $('.border_left').css({
+                    "left": 0,
+                    "top": obj.siblings().eq(i).children('.Interaction').offset().top - $('.RowContainer').offset().top + obj.siblings().eq(i).height() / 2 - 8,
+                })
+                $('.border_right').css({
+                    "right": 0,
+                    "top": obj.siblings().eq(i).children('.Interaction').offset().top - $('.RowContainer').offset().top + obj.siblings().eq(i).height() / 2 - 8,
+                })
+                $('.cover').show()
+                $('.cover').css({
+                    "left": (e.pageX + $('.cover').width() + 10) - $('.RowContainer').offset().left,
                     "top": (e.pageY - $('.RowContainer').offset().top),
-                    "display":'block'
-                  })
-                  $('.cover').html(obj.siblings().eq(i).find('.Num').html())
-              }else{
-                obj.css('cursor','none')
-              }
+                    "display": 'block'
+                })
+                $('.cover').html(obj.siblings().eq(i).find('.Num').html());
+                toId = $(this).data("val");  // 代表将要放的位置的id
+
+            } else {
+                obj.css('cursor', 'none')
+            }
+            if (e.pageY > mY - 5 && e.pageY < mY + 5) {
+                type = "above";
+                $('.border-line').show()
+                $('.border-line').css({
+                    'top': mY - $('.RowContainer').offset().top
+                })
+                $('.border_left').css({
+                    "left": 0,
+                    "top": mY - $('.RowContainer').offset().top - 6
+                })
+                $('.border_right').css({
+                    "right": 0,
+                    "top": mY - $('.RowContainer').offset().top - 6
+                })
+                //obj.css('border-top','1px solid #346a95')
+                if (e.pageY < mY) {
+                    $('.cover').html(obj.siblings().eq(i).find('.Num').html());
+                    // toId = obj.data("val");
+                }
+            }
         })
-        
+
         // obj.css({
         //     "left": (e.pageX - deltaX),
         //     "top": (e.pageY - deltaY),
         //     "cursor":'move'
         // });
 
+
         return false;
     }
     function stop() {
+   
         $('.cover').hide()
-        $('.border_left').hide()        
-        obj.css('cursor','')
-        obj.find('.Interaction').css('cursor','')
+        $('.border_right').hide()
+        $('.border_left').hide()
+        $('.border-line').hide()
+        obj.css('cursor', '')
+        obj.find('.Interaction').css('cursor', '')
         $(document).unbind({
             'mousemove': move,
             'mouseup': stop,
-            "cursor":'pointer'
+            "cursor": 'pointer'
         });
+        DragTask();
     }
 }
 drag();

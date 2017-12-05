@@ -853,7 +853,7 @@
                 <% var idCrosNight = new EMT.DoneNOW.BLL.SysSettingBLL().GetValueById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_ALLOW_CROSS_NIGHT);
     if (idCrosNight != "1")
     {%>
-                LayerMsg("结束时间要大于开始时间");
+                LayerMsg("开始时间要早于结束时间");
                 return "0";
                  <%}
                  %>

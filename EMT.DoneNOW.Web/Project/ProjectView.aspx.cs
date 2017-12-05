@@ -45,6 +45,19 @@ namespace EMT.DoneNOW.Web.Project
                         case "Note":
                             viewProjectIframe.Src = "ProjectNoteShow?project_id="+thisProject.id;
                             break;
+                        case "Rate":
+                            viewProjectIframe.Src = "../Common/SearchBodyFrame.aspx?id=" + thisProject.id + "&cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_RATE + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.PROJECT_RATE;
+                            break;
+                        case "Calendar":
+                            //viewProjectIframe.Src = "../Common/SearchBodyFrame.aspx?id=" + thisProject.id + "&cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_CALENDAR + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.PROJECT_CALENDAR; project_udf
+                            viewProjectIframe.Src = "ProjectCalendarShow?project_id=" + thisProject.id;
+                            break;
+                        case "Attach":
+                            viewProjectIframe.Src = "../Common/SearchBodyFrame.aspx?id=" + thisProject.id + "&cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_ATTACH + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.PROJECT_ATTACH;
+                            break;
+                        case "UDF":
+                            viewProjectIframe.Src = "../Common/SearchBodyFrame.aspx?id=" + thisProject.id + "&cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_UDF + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.PROJECT_UDF;
+                            break;
                         default:
                             viewProjectIframe.Src = "ProjectSummary?id=" + thisProject.id;
                             break;

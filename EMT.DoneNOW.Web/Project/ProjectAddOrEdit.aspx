@@ -352,17 +352,26 @@
 
                                                                             foreach (var resou in resouList)
                                                                             {
-                                                                                var teamRole = pptrDal.GetSinTeamRole(resou.id);
-                                                                                if (teamRole != null)
+                                                                                var teamRoleList = pptrDal.GetListTeamRole(resou.id);
+                                                                                if (teamRoleList != null&&teamRoleList.Count>0)
                                                                                 {
                                                                                     var thisResou = syDal.FindNoDeleteById((long)resou.resource_id);
-                                                                                    var thisRole = srDal.FindNoDeleteById((long)teamRole.role_id);
-                                                                                    if (thisResou != null && thisRole != null)
+                                                                                    if (thisResou == null)
                                                                                     {
+                                                                                        continue;
+                                                                                    }
+
+                                                                                    foreach (var teamRole in teamRoleList)
+                                                                                    {
+                                                                                        var thisRole = srDal.FindNoDeleteById((long)teamRole.role_id);
+                                                                                        if ( thisRole != null)
+                                                                                        {
                                                                 %>
                                                                 <option><%=thisResou.name+$"({thisRole.name})" %></option>
                                                                 <%
                                                                                     }
+                                                                                    }
+                                                                                   
                                                                                 }
                                                                             }
                                                                         }

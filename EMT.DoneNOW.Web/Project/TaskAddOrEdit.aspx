@@ -426,7 +426,7 @@
                         {
                             if (isPhase)
                             {%>
-                    <a class="Button ButtonIcon New NormalState" id="AddNoteButton" tabindex="0"><span class="Icon"></span><span class="Text">新增备注</span></a>
+                    <a class="Button ButtonIcon New NormalState" id="AddNoteButton" tabindex="0" onclick="AddNote()"><span class="Icon"></span><span class="Text">新增备注</span></a>
                     <%}
                         else
                         {%>
@@ -442,7 +442,7 @@
                             <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
                                 <tbody>
                                     <tr>
-                                        <td class="RightClickMenuItemText">
+                                        <td class="RightClickMenuItemText"  onclick="AddNote()">
                                             <span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">备注</span>
                                         </td>
                                     </tr>
@@ -1632,7 +1632,7 @@
                     </div>
 
                     <%} %>
-                    <div id="noteDiv" style="display: none;">
+                    <div id="noteDiv" style="display: none;" class="IsShowDiv" >
                         <div class="TabContainer Active" id="NotesTab">
                             <div class="DynamicGridContainer">
                                 <div class="Grid Large" id="TaskNoteGrid">
@@ -1695,8 +1695,9 @@
                                                         foreach (var thisNote in noteList)
                                                         { %>
                                                     <tr class="D" id="<%=thisNote.id %>" data-val="<%=thisNote.id %>">
-                                                        <td class="Context  U0"><a class="ButtonIcon Button ContextMenu NormalState">
-                                                            <div class="Icon"></div>
+                                                        <td class="Context  U0"><a class="ButtonIcon Button NoteContextMenu ContextMenu NormalState">
+                                                            <input type="hidden" value="<%=thisNote.id %>"/>
+                                                            <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px;"></div>
                                                         </a></td>
                                                         <td class="Text  U1"><%=thisNote.name %></td>
                                                         <td class="Text Normal U2"><%="" %></td>
@@ -1932,7 +1933,7 @@
                 <div class="DialogContentContainer">
                     <div class="CancelDialogButton" id="CloseStatusReson"></div>
                     <div class="Active ThemePrimaryColor TitleBar">
-                        <div class="Title"><span class="Text">Complete Task Reason</span><span class="SecondaryText"></span></div>
+                        <div class="Title"><span class="Text">完成任务原因</span><span class="SecondaryText"></span></div>
                     </div>
                     <div class="DialogHeadingContainer">
                         <div class="ValidationSummary" id="z3ce7f40373d04055865c00c8e1805891">
@@ -1992,6 +1993,14 @@
         <div id="DisAssMileMenu" class="menu">
             <ul style="width: 220px;">
                 <li id="" onclick="DisAssSingMile()" style="font-size: 9pt;"><i class="menu-i1"></i>取消关联
+                </li>
+            </ul>
+        </div>
+         <div id="NoteManageMenu" class="menu">
+            <ul style="width: 220px;">
+                <li id="" onclick="EditNote()" style="font-size: 9pt;"><i class="menu-i1"></i>修改备注
+                </li>
+                <li id="" onclick="DeleteNote()" style="font-size: 9pt;"><i class="menu-i1"></i>删除备注
                 </li>
             </ul>
         </div>
@@ -2150,14 +2159,22 @@
     })
     $("#TaskTypeFixedWork").click(function () {
         if ($(this).is(":checked")) {
-            $("#hours_per_resource").val("0.00");
+            var hours_per_resource = $("#hours_per_resource").val();
+            if (hours_per_resource == "") {
+                $("#hours_per_resource").val("0.00");
+            }
+         
             $("#hours_per_resource").prop("disabled", true);
             $("#estimated_hours").prop("disabled", false);
         }
     })
     $("#TaskTypeFixedDuration").click(function () {
         if ($(this).is(":checked")) {
-            $("#estimated_hours").val("0.00");
+            var estimated_hours = $("#estimated_hours").val();
+            if (estimated_hours == "") {
+                $("#estimated_hours").val("0.00");
+            }
+            
             $("#estimated_hours").prop("disabled", true);
             $("#hours_per_resource").prop("disabled", false);
         }
@@ -2915,6 +2932,16 @@
             LayerMsg("请填写任务标题！");
             return false;
         }
+        var estimated_beginTime = $("#estimated_beginTime").val();
+        if (estimated_beginTime == "") {
+            LayerMsg("请填写开始时间");
+            return false;
+        }
+        var estimated_end_date = $("#estimated_end_date").val();
+        if (estimated_end_date == "") {
+            LayerMsg("请填写结束时间");
+            return false;
+        }
             // status_id
        <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
     { %>
@@ -2954,6 +2981,34 @@
             }
         }
 
+     
+        if (compareTime(estimated_beginTime, estimated_end_date)) {
+            LayerMsg("结束时间不能早于开始时间");
+            return false;
+        }
+        if (CheckTeamRes()) {
+            LayerMsg("同一员工不可在团队中分配多次");
+            return false;
+        }
+        if (CheckPriResInTeam()) {
+            LayerMsg("主负责人不能分配多次");
+            return false;
+        }
+        var resource_id = $("#owner_resource_idHidden").val();
+        var resDepIdsHidden = $("#resDepIdsHidden").val();
+        if (resource_id != "" || resDepIdsHidden != "") {
+            var department_id = $("#department_id").val();
+            if (department_id == "" || department_id == "0") {
+                   <%var thisDepSet = new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_DEPARTMENT_REQUIRE);
+                    if (thisDepSet != null && thisDepSet.setting_value == "1")
+                    {%>
+                LayerMsg("为任务分配员工时，部门为必填项");
+                return false;
+                    <%}%>
+        }
+        }
+    
+
         if (status_id == '<%=EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
             // 系统设置
             <%var thisSet = new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.PRO_TASK_DONE_REASON);
@@ -2967,28 +3022,7 @@
         }
                 <%}%>
 
-        var estimated_beginTime = $("#estimated_beginTime").val();
-        if (estimated_beginTime == "") {
-            LayerMsg("请填写开始时间");
-            return false;
-        }
-        var estimated_end_date = $("#estimated_end_date").val();
-        if (estimated_end_date == "") {
-            LayerMsg("请填写结束时间");
-            return false;
-        }
-        if (compareTime(estimated_beginTime, estimated_end_date)) {
-            LayerMsg("结束时间不能早于开始时间");
-            return false;
-        }
-        if (!CheckTeamRes()) {
-            LayerMsg("同一员工不可在团队中分配多次");
-            return false;
-        }
-        if (!CheckPriResInTeam()) {
-            LayerMsg("主负责人不能分配多次");
-            return false;
-        }
+      
         return true;
     }
     // 校验主负责人是否在团队中出现
@@ -3325,6 +3359,36 @@
             }
         })
     }
+
+    function EditNote() {
+        window.open("../Project/TaskNote.aspx?id=" + entityid, windowObj.notes + windowType.edit, 'left=200,top=200,width=1080,height=800', false);
+    }
+    function DeleteNote() {
+        LayerConfirm("删除不能恢复，是否继续？", "是", "否", function () {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ProjectAjax.ashx?act=DeleteNote&note_id=" + entityid,
+                async: false,
+                //dataType: json,
+                success: function (data) {
+
+                    if (data == "True") {
+                        LayerMsg("删除成功");
+                    } else {
+                        LayerMsg("删除失败");
+                    }
+
+                    history.go(0);
+                }
+            })
+        }, function () { });
+    }
+
+    function AddNote() {
+        <%if (thisTask != null) { %>
+        window.open("../Project/TaskNote.aspx?task_id=<%=thisTask.id %>", windowObj.notes + windowType.add, 'left=200,top=200,width=960,height=800', false);
+        <%}%>
+    }
 </script>
 <%--菜单事件 --%>
 <script>
@@ -3346,7 +3410,10 @@
             }
 
         }
-        // else if ($(this).hasClass("noteTR")) {
+        else if ($(this).hasClass("NoteContextMenu")){
+            menu = document.getElementById("NoteManageMenu");
+        }
+        // else if ($(this).hasClass("noteTR")) {  
         //    menu = document.getElementById("noteMenu");
         //} else if ($(this).hasClass("atachTR")) {
         //    menu = document.getElementById("attachMenu");

@@ -86,6 +86,7 @@ namespace EMT.DoneNOW.Web.Project
 
                 if (thisTask != null)
                 {
+                    object_id = thisTask.id;
                     if (thisTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
                     {
                         isPhase = true;

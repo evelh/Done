@@ -95,6 +95,11 @@ namespace EMT.DoneNOW.BLL
             {
                 att.account_id = att.object_id;
             }
+            else if (att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.PROJECT)
+            {
+                var project = new pro_project_dal().FindNoDeleteById(att.object_id);
+                att.account_id = project.account_id;
+            }
             else
                 return false;
 

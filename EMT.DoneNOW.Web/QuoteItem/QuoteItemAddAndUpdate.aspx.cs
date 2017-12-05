@@ -158,7 +158,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
             }
             else
             {
-                 result = new QuoteItemBLL().Update(quote_item, GetLoginUserId());
+                 result = new QuoteItemBLL().Update(param, GetLoginUserId());
             }
             switch (result)
             {
@@ -292,6 +292,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 quote_item.update_user_id = this.quote_item.update_user_id;
                 quote_item.id = this.quote_item.id;
                 quote_item.quote_id = this.quote_item.quote_id;
+                quote_item.oid = this.quote_item.oid;
             }
             switch (quote_item.type_id)
             {

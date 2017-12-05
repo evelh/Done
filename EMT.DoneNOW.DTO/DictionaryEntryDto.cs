@@ -8,6 +8,7 @@ namespace EMT.DoneNOW.DTO
 {
     public class DictionaryEntryDto
     {
+        public DictionaryEntryDto() { }
         public DictionaryEntryDto(string value, string display, int isDefault = 0)
         {
             val = value;

@@ -318,6 +318,7 @@
     <Content Include="Organization\LocationAddAndEdit.aspx" />
     <Content Include="Project\AddTaskAttach.aspx" />
     <Content Include="Project\CompanyPolicy.aspx" />
+    <Content Include="Project\CopyUdfToProject.aspx" />
     <Content Include="Project\EmailProjectTeam.aspx" />
     <Content Include="Project\ExpenseDetail.aspx" />
     <Content Include="Project\ExpenseManage.aspx" />
@@ -327,6 +328,8 @@
     <Content Include="Product\TransferProductStock.aspx" />
     <Content Include="Product\VendorAdd.aspx" />
     <Content Include="Project\ProjectBaseLine.aspx" />
+    <Content Include="Project\ProjectCalendar.aspx" />
+    <Content Include="Project\ProjectCalendarShow.aspx" />
     <Content Include="Project\ProjectChart.aspx" />
     <Content Include="Project\ProjectClosingReport.aspx" />
     <Content Include="Project\ProjectCompleteWizard.aspx" />
@@ -339,6 +342,7 @@
     <Content Include="Project\ProjectSearchTable.aspx" />
     <Content Include="Project\ProjectSummary.aspx" />
     <Content Include="Project\ProjectTeamManage.aspx" />
+    <Content Include="Project\ProjectUdf.aspx" />
     <Content Include="Project\ProjectView.aspx" />
     <Content Include="Project\RecipientSelector.aspx" />
     <Content Include="Project\TaskAddOrEdit.aspx" />
@@ -784,9 +788,12 @@
     <Content Include="Scripts\Search\InvoiceTemplate.js" />
     <Content Include="Scripts\Search\Invoice_History.js" />
     <Content Include="Scripts\Search\OpportunityViewAttachment.js" />
+    <Content Include="Scripts\Search\project_attach.js" />
+    <Content Include="Scripts\Search\project_calendar.js" />
     <Content Include="Scripts\Search\project_cost_expense.js" />
     <Content Include="Scripts\Search\project_team.js" />
     <Content Include="Scripts\Search\project_note.js" />
+    <Content Include="Scripts\Search\project_udf.js" />
     <Content Include="Scripts\Search\Quote.js" />
     <Content Include="Scripts\Search\SaleOrder.js" />
     <Content Include="Scripts\Search\SalesOrderViewAttachment.js" />
@@ -1415,6 +1422,13 @@
     <Compile Include="Project\CompanyPolicy.aspx.designer.cs">
       <DependentUpon>CompanyPolicy.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Project\CopyUdfToProject.aspx.cs">
+      <DependentUpon>CopyUdfToProject.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\CopyUdfToProject.aspx.designer.cs">
+      <DependentUpon>CopyUdfToProject.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Project\EmailProjectTeam.aspx.cs">
       <DependentUpon>EmailProjectTeam.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1477,6 +1491,20 @@
     </Compile>
     <Compile Include="Project\ProjectBaseLine.aspx.designer.cs">
       <DependentUpon>ProjectBaseLine.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectCalendar.aspx.cs">
+      <DependentUpon>ProjectCalendar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectCalendar.aspx.designer.cs">
+      <DependentUpon>ProjectCalendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectCalendarShow.aspx.cs">
+      <DependentUpon>ProjectCalendarShow.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectCalendarShow.aspx.designer.cs">
+      <DependentUpon>ProjectCalendarShow.aspx</DependentUpon>
     </Compile>
     <Compile Include="Project\ProjectChart.aspx.cs">
       <DependentUpon>ProjectChart.aspx</DependentUpon>
@@ -1561,6 +1589,13 @@
     </Compile>
     <Compile Include="Project\ProjectTeamManage.aspx.designer.cs">
       <DependentUpon>ProjectTeamManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectUdf.aspx.cs">
+      <DependentUpon>ProjectUdf.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectUdf.aspx.designer.cs">
+      <DependentUpon>ProjectUdf.aspx</DependentUpon>
     </Compile>
     <Compile Include="Project\ProjectView.aspx.cs">
       <DependentUpon>ProjectView.aspx</DependentUpon>

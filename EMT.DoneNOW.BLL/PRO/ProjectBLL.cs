@@ -1992,8 +1992,8 @@ namespace EMT.DoneNOW.BLL
                         return false;
                     }
                     seDal.SoftDelete(thisExp, user_id);
-
-                    OperLogBLL.OperLogUpdate<sdk_expense>(thisExp, seDal.FindNoDeleteById(exp_id), thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "修改费用状态");
+                    OperLogBLL.OperLogDelete<sdk_expense>(thisExp, thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "修改费用状态");
+                  
                 }
                 else
                 {
@@ -2008,6 +2008,160 @@ namespace EMT.DoneNOW.BLL
             }
          
             return true; 
+        }
+        /// <summary>
+        /// 新增项目日历
+        /// </summary>
+        public bool AddProCal(pro_project_calendar param,long user_id)
+        {
+            try
+            {
+                var ppcDal = new pro_project_calendar_dal();
+                param.id = ppcDal.GetNextIdCom();
+                param.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                param.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                param.create_user_id = user_id;
+                param.update_user_id = user_id;
+
+                ppcDal.Insert(param);
+                OperLogBLL.OperLogAdd<pro_project_calendar>(param, param.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_CALENDAR, "新增项目日历");
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 修改项目日历
+        /// </summary>
+        public bool EditProCal(pro_project_calendar param, long user_id)
+        {
+            try
+            {
+                var ppcDal = new pro_project_calendar_dal();
+                var oldCal = ppcDal.FindNoDeleteById(param.id);
+                if (oldCal != null)
+                {
+                    param.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    param.update_user_id = user_id;
+                    OperLogBLL.OperLogUpdate<pro_project_calendar>(param, oldCal, param.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_CALENDAR, "修改项目日历");
+                    ppcDal.Update(param);
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 删除项目日历
+        /// </summary>
+        public bool DeleteProCal(long cal_id ,long user_id)
+        {
+            try
+            {
+                var ppcDal = new pro_project_calendar_dal();
+                var oldCal = ppcDal.FindNoDeleteById(cal_id);
+                if (oldCal != null)
+                {
+                    ppcDal.SoftDelete(oldCal,user_id);
+                    OperLogBLL.OperLogDelete<pro_project_calendar>(oldCal, oldCal.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_CALENDAR, "删除项目日历");
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 修改
+        /// </summary>
+        public bool EditUdf(DicEnum.UDF_CATE cate, long objectId, int udfId, string value,string desc, long user_id, DicEnum.OPER_LOG_OBJ_CATE operType)
+        {
+            // 更新自定义字段值
+            var bll = new UserDefinedFieldsBLL();
+            var udfList = bll.GetUdf(cate);
+            var udfValues = bll.GetUdfValue(cate, objectId, udfList);
+            var user = new UserResourceBLL().GetSysUserSingle(user_id);
+            int index = udfValues.FindIndex(f => f.id == udfId);
+            object oldVal = udfValues[index].value;
+            udfValues[index].value = value;
+
+            bll.UpdateUdfValue(cate, udfList, objectId, udfValues,
+            new UserInfoDto { id = user_id, name = user.name }, operType);
+            var colName = udfList.Find(f => f.id == udfId).name;
+            bool result = true;
+            switch (cate)
+            {
+                case UDF_CATE.TASK:
+                    break;
+                case UDF_CATE.TICKETS:
+                    break;
+                case UDF_CATE.SITE:
+                    break;
+                case UDF_CATE.CONFIGURATION:
+                    break;
+                case UDF_CATE.PRODUCTS:
+                    break;
+                case UDF_CATE.CONTRACTS:
+                    break;
+                case UDF_CATE.COMPANY:
+                    break;
+                case UDF_CATE.CONTACT:
+                    break;
+                case UDF_CATE.OPPORTUNITY:
+                    break;
+                case UDF_CATE.SALES:
+                    break;
+                case UDF_CATE.ORDERS:
+                    break;
+                case UDF_CATE.PROJECTS:
+                    result = AddUdfActivity(objectId, colName, oldVal,value,desc, user_id);
+                    break;
+                case UDF_CATE.CONFIGURATION_ITEMS:
+                    break;
+                default:
+                    break;
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// 项目自定义信息修改-插入备注
+        /// </summary>
+        public bool AddUdfActivity(long project_id,string udfColName,object oldValue,object newValue,string desc,long user_id)
+        {
+            var project = _dal.FindById(project_id);
+            com_activity_dal actDal = new com_activity_dal();
+            com_activity act = new com_activity
+            {
+                id = actDal.GetNextIdCom(),
+                cate_id = (int)ACTIVITY_CATE.PROJECT_NOTE,
+                action_type_id = (int)ACTIVITY_TYPE.PROJECT_NOTE,
+                parent_id = null,
+                object_id = project_id,
+                object_type_id = (int)OBJECT_TYPE.PROJECT,
+                account_id = project.account_id,
+                //contact_id = project.contact_id,
+                resource_id = project.owner_resource_id,
+                contract_id = project.contract_id,
+                opportunity_id = project.opportunity_id,
+                ticket_id = null,
+                start_date = 0,
+                end_date = 0,
+                description = udfColName + "修改:" + oldValue + "→" + newValue + "。原因:" + desc,
+                create_user_id = user_id,
+                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                update_user_id = user_id,
+                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                is_system_generate = 1,
+            };
+            actDal.Insert(act);
+            OperLogBLL.OperLogAdd<com_activity>(act, act.id, user_id, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+            return true;
         }
     }
 }

@@ -35,3 +35,11 @@ function DeleteNote() {
     }, function () { });
 }
 
+function Add() {
+    var project_id = $("#id").val();
+    if (project_id != "") {
+        window.open("../Project/TaskNote.aspx?project_id=" + project_id, windowObj.notes + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+    }
+ 
+}
+

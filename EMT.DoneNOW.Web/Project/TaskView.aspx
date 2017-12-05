@@ -1207,7 +1207,7 @@
                 type: "GET",
                 url: "../Tools/AttachmentAjax.ashx?act=DeleteAttachment&id=" + entityid,
                 async: false,
-                dataType: json,
+                dataType: "json",
                 success: function (data) {
                     history.go(0);
                 }

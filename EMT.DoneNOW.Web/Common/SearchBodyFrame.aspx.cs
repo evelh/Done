@@ -225,6 +225,15 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PROJECT_NOTE:
                     addBtn = "新增备注";
                     break;
+                case (int)DicEnum.QUERY_CATE.PROJECT_CALENDAR:
+                    addBtn = "新增日历条目";
+                    break;
+                case (int)DicEnum.QUERY_CATE.PROJECT_ATTACH:
+                    addBtn = "新增";
+                    break;
+                case (int)DicEnum.QUERY_CATE.PROJECT_UDF:
+                    addBtn = "项目自定义";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -724,6 +733,14 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "查看备注", click_function = "ViewNote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑备注", click_function = "EditNote()"});
                     contextMenu.Add(new PageContextMenuDto { text = "删除备注", click_function = "DeleteNote()"});
+                    break;
+                case (long)QueryType.PROJECT_CALENDAR:
+                    //contextMenu.Add(new PageContextMenuDto { text = "查看日历条目", click_function = "ViewCalendar()" }); 
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "EditCalendar()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.PROJECT_ATTACH:
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;

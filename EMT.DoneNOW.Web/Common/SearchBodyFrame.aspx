@@ -57,6 +57,13 @@
             font-weight: normal;
             color: #4F4F4F;
         }
+        .DropDownMenu>ul>li{
+            min-height: 24px;
+            float: none;
+            margin: 6px;
+            background: linear-gradient(to bottom,#fff 0,#fff 100%);
+            border: 0px solid #bcbcbc;
+        }
           /*加载的css样式*/
 #BackgroundOverLay{
     width:100%;
@@ -238,8 +245,21 @@
                        <li onclick="AddCost()"><span style="margin: 0 10px;">新增成本</span></li>
                        <li onclick="AddExpense()"><span style="margin: 0 10px;">新增费用</span></li>
                             <%}
-                            else
-                            {
+                                else if (catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_UDF)
+                                {%>
+            <li class="Button ButtonIcon NormalState f1" id="options" tabindex="0">
+                <span class="Icon" style="width: 0; margin: 0;"></span>
+                <span class="Text">选项</span>
+                <img src="../Images/dropdown.png" alt="" class="ButtonRightImg1" />
+            </li>
+         <li class="Button ButtonIcon NormalState f1" id="tools" tabindex="0">
+                <span class="Icon" style="width: 0; margin: 0;"></span>
+                <span class="Text">工具</span>
+                <img src="../Images/dropdown.png" alt="" class="ButtonRightImg1" />
+            </li>
+                                <%}
+                                else
+                                {
                     %>
                     <li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
                     <%}
@@ -258,6 +278,14 @@
                     <li id="SelectLi" class="General" onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
                     <li id="ExportLi" class="General"><i style="background-image: url(../Images/export.png);"></i></li>
                 </ul>
+                <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_UDF) { %>
+                <div class="DropDownMenu" id="D1" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;border-top:white;display:none;">
+                    <ul><li><span class='DropDownMenuItemText' onclick='EditProject()'>编辑项目</span></li><li><span class='DropDownMenuItemText' onclick='AddProCalendar()'>新增项目日历条目</span></li><li><span class='DropDownMenuItemText' onclick='AddProjectNote()'>新增项目备注</span></li><li><span class='DropDownMenuItemText' onclick='CompleteProject()'>完成项目</span></li><li><span class='DropDownMenuItemText' onclick='SaveAsTemp()'>保存为项目模板</span></li></ul>
+                </div>
+                <div class="DropDownMenu" id="D2" style="background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;border-top:white;display:none;margin-left: 84px;">
+                     <ul><li><span class='DropDownMenuItemText' onclick='CopyFromOppo()'>从商机复制</span></li></ul>
+                </div>
+                <%} %>
 
               <div class="fl" style="line-height:47px;margin-right:30px;">
               <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
@@ -355,7 +383,7 @@
             <%}
     else
     { %>
-            <tr onclick="View(<%=id %>)" title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
+            <tr onclick="View('<%=id %>')" title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
                 <%} %>
                 <%if (!string.IsNullOrEmpty(isCheck))
                     { %>
@@ -2430,8 +2458,10 @@
          }
         <%}%>
         function openopenopen() {
-            //alert("暂未实现");
-        }
+            alert("暂未实现");
+         }
+
+             
     </script>
   <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
   <script type="text/javascript" src="../Scripts/Search/<%=(EMT.DoneNOW.DTO.QueryType)queryTypeId %>.js"></script>

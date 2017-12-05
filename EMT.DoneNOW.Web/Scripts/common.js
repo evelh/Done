@@ -230,6 +230,9 @@ var windowObj = {
     invoice: 'invoice',
     project: 'project',
     projectTeam: 'projectTeam',
+    projectCalendar: 'projectCalendar',
+    projectAttach: 'projectAttach',
+    projectUdf:'projectUdf',
     expense:"expense",
 }
 var windowType = {

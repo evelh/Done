@@ -7,6 +7,7 @@ using EMT.DoneNOW.Core;
 using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.DAL;
 using System.Text;
+using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.Web
 {
@@ -43,6 +44,14 @@ namespace EMT.DoneNOW.Web
                     case "GetAccOpp":
                         var oppAcccountId = context.Request.QueryString["account_id"];
                         GetAccOpp(context, long.Parse(oppAcccountId));
+                        break;
+                    case "GetOppByStatus":
+                        var sAccId = context.Request.QueryString["account_id"];
+                        GetOppByStatus(context,long.Parse(sAccId));
+                        break;
+                    case "GetPorUdfByOpp":
+                        var ppId = context.Request.QueryString["oppo_id"];
+                        GetPorUdfByOpp(context,long.Parse(ppId));
                         break;
                     default:
                         break;
@@ -217,6 +226,72 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(op.ToString());
             }
         }
+        /// <summary>
+        /// 根据状态，对商机进行分类
+        /// </summary>
+        public void GetOppByStatus(HttpContext context, long account_id)
+        {
+            var oppList = new crm_opportunity_dal().FindOpHistoryByAccountId(account_id);
+            if (oppList != null && oppList.Count > 0)
+            {
+                StringBuilder op = new StringBuilder();
+                op.Append("<option value=''>   </option>");
+                var activeOPList = oppList.Where(_ => _.status_id == (int)DTO.DicEnum.OPPORTUNITY_STATUS.ACTIVE).ToList();
+                var noActiveOPList = oppList.Where(_ => _.status_id != (int)DTO.DicEnum.OPPORTUNITY_STATUS.ACTIVE).ToList();
+                if(activeOPList!=null&& activeOPList.Count > 0)
+                {
+                    foreach (var thisOp in activeOPList)
+                    {
+                        op.Append($"<option value='{thisOp.id}'>{thisOp.name}</option>");
+                    }
+                }
+                if (noActiveOPList != null && noActiveOPList.Count > 0)
+                {
+                    op.Append("<option value=''>-------</option>");
+                    foreach (var thisOp in noActiveOPList)
+                    {
+                        op.Append($"<option value='{thisOp.id}'>{thisOp.name}</option>");
+                    }
+                }
+                context.Response.Write(op.ToString());
 
+            }
+        }
+        /// <summary>
+        /// 根据商机获取相应项目的值
+        /// </summary>
+        public void GetPorUdfByOpp(HttpContext context,long oppo_id)
+        {
+            var thisOpp = new crm_opportunity_dal().FindNoDeleteById(oppo_id);
+            if (thisOpp != null)
+            {
+                var projectUdfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PROJECTS);
+
+                var oppoUdfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
+                var oppoValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, thisOpp.id, oppoUdfList);
+
+                if(projectUdfList!=null&& projectUdfList.Count > 0)
+                {
+                    StringBuilder udfHtml = new StringBuilder();
+                    var sufDal = new sys_udf_field_dal();
+                    foreach (var thisProUdf in projectUdfList)
+                    {
+                        var thisSysProFile = sufDal.FindNoDeleteById(thisProUdf.id);
+                        if (thisSysProFile != null && thisSysProFile.crm_to_project_udf_id != null)
+                        {
+                            var thisSysOppFile = sufDal.FindNoDeleteById((long)thisSysProFile.crm_to_project_udf_id);
+                            var oppoValue = oppoValueList.FirstOrDefault(_ => _.id == thisSysProFile.crm_to_project_udf_id);
+                            if (oppoValue != null&& thisSysOppFile!=null && !string.IsNullOrEmpty(oppoValue.value.ToString()))
+                            {
+                                udfHtml.Append($"<tr height='21'><td id ='txtBlack8'>{thisSysProFile.col_comment}</td><td> {thisSysOppFile.col_comment} </td><td>{oppoValue.value.ToString()}<input type='hidden' name='{thisProUdf.id.ToString()}' id='{thisProUdf.id.ToString()}' value='{oppoValue.value.ToString()}' /></ td></ tr>");
+                            }
+                        }
+                    }
+
+                    context.Response.Write(udfHtml.ToString());
+                }
+            }
+            
+        }
     }
 }

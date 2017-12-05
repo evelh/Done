@@ -31,7 +31,15 @@ namespace EMT.DoneNOW.BLL
                 thisTask.department_id = thisTask.department_id == 0 ? null : thisTask.department_id;
                 thisTask.no = ReturnTaskNo();
                 thisTask.create_user_id = user.id;
-                thisTask.sort_order = ReturnSortOrder((long)thisTask.project_id, thisTask.parent_id);
+                if(thisTask.parent_id!=null)
+                {
+                    thisTask.sort_order = GetMinUserSortNo((long)thisTask.parent_id);
+                }
+                else
+                {
+                    thisTask.sort_order = GetMinUserNoParSortNo((long)thisTask.project_id);
+                }
+              
                 thisTask.update_user_id = user.id;
                 thisTask.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -1332,63 +1340,67 @@ namespace EMT.DoneNOW.BLL
             }
         }
 
-        /// <summary>
-        /// 返回新增的task的排序号
-        /// </summary>
-        public string ReturnSortOrder(long project_id, long? parTask_id)
-        {
-            string sorNo = "";
-            var taskList = _dal.GetProTask(project_id);
-            if (taskList != null && taskList.Count > 0)
-            {
-                if (parTask_id == null)
-                {
-                    var noParTaskList = taskList.Where(_ => _.parent_id == null).ToList();
-                    if (noParTaskList != null && noParTaskList.Count > 0)
-                    {
-                        sorNo = (int.Parse(noParTaskList.Max(_ => _.sort_order)) + 1).ToString("#00");
-                    }
-                    else
-                    {
-                        sorNo = "01";
-                    }
-                }
-                else
-                {
-                    var parTask = _dal.FindNoDeleteById((long)parTask_id);
-                    var parTaskList = taskList.Where(_ => _.parent_id == parTask_id).ToList();
-                    if (parTaskList != null && parTaskList.Count > 0)
-                    {
-                        var maxSortNo = parTaskList.Max(_ => _.sort_order);
-                        var maxSortNoArr = maxSortNo.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-                        var maxNo = (int.Parse(maxSortNoArr[maxSortNoArr.Length - 1]) + 1).ToString("#00");
-                        var thisMaxNo = "";
-                        for (int i = 0; i < maxSortNoArr.Length; i++)
-                        {
 
-                            if (i == maxSortNoArr.Length - 1)
-                            {
-                                thisMaxNo += maxNo;
-                            }
-                            else
-                            {
-                                thisMaxNo += maxSortNoArr[i] + ".";
-                            }
-                        }
-                        sorNo = thisMaxNo;
-                    }
-                    else
-                    {
-                        sorNo = parTask.sort_order + ".01";
-                    }
-                }
-            }
-            else
-            {
-                sorNo = "01";
-            }
-            return sorNo;
-        }
+        #region 获取排序号重复代码-备用
+        ///// <summary>
+        ///// 返回新增的task的排序号
+        ///// </summary>
+        //public string ReturnSortOrder(long project_id, long? parTask_id)
+        //{
+        //    string sorNo = "";
+        //    var taskList = _dal.GetProTask(project_id);
+        //    if (taskList != null && taskList.Count > 0)
+        //    {
+        //        if (parTask_id == null)
+        //        {
+        //            var noParTaskList = taskList.Where(_ => _.parent_id == null).ToList();
+        //            if (noParTaskList != null && noParTaskList.Count > 0)
+        //            {
+        //                sorNo = (int.Parse(noParTaskList.Max(_ => _.sort_order)) + 1).ToString("#00");
+        //            }
+        //            else
+        //            {
+        //                sorNo = "01";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            var parTask = _dal.FindNoDeleteById((long)parTask_id);
+        //            var parTaskList = taskList.Where(_ => _.parent_id == parTask_id).ToList();
+        //            if (parTaskList != null && parTaskList.Count > 0)
+        //            {
+        //                var maxSortNo = parTaskList.Max(_ => _.sort_order);
+        //                var maxSortNoArr = maxSortNo.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+        //                var maxNo = (int.Parse(maxSortNoArr[maxSortNoArr.Length - 1]) + 1).ToString("#00");
+        //                var thisMaxNo = "";
+        //                for (int i = 0; i < maxSortNoArr.Length; i++)
+        //                {
+
+        //                    if (i == maxSortNoArr.Length - 1)
+        //                    {
+        //                        thisMaxNo += maxNo;
+        //                    }
+        //                    else
+        //                    {
+        //                        thisMaxNo += maxSortNoArr[i] + ".";
+        //                    }
+        //                }
+        //                sorNo = thisMaxNo;
+        //            }
+        //            else
+        //            {
+        //                sorNo = parTask.sort_order + ".01";
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        sorNo = "01";
+        //    }
+        //    return sorNo;
+        //}
+        #endregion 
+
         /// <summary>
         /// 返回阶段的预估时间
         /// </summary>
@@ -1438,7 +1450,7 @@ namespace EMT.DoneNOW.BLL
 
         #region task排序号相关改变事件
         /// <summary>
-        /// 通过父节点改变兄弟节点的排序号(补足空余排序号，同时修改本身的字节点的排序号) parid为null代表项目下的节点
+        /// 通过父节点改变兄弟节点的排序号(补足空余排序号，同时修改本身的子节点的排序号) parid为null代表项目下的节点
         /// </summary>
         public void ChangBroTaskSortNoReduce(long project_id, long? par_task_id, long user_id)
         {
@@ -1524,7 +1536,7 @@ namespace EMT.DoneNOW.BLL
                 }
                 if (nextNo == "")
                 {
-                    nextNo = ReturnSortOrder(project_id, null);
+                    nextNo = GetMinUserNoParSortNo(project_id);
                 }
             }
             else
@@ -1564,7 +1576,7 @@ namespace EMT.DoneNOW.BLL
                     }
                     if (nextNo == "")
                     {
-                        sortNo = ReturnSortOrder((long)thisTask.project_id, thisTask.id);
+                        sortNo = thisTask.sort_order+"."+ (num + 1).ToString("#00");
                     }
                     else
                     {
@@ -1649,8 +1661,10 @@ namespace EMT.DoneNOW.BLL
                 {
                     id = _dal.GetNextIdCom(),
                     project_id = oriTask.project_id,
+                    status_id = (int)DicEnum.TICKET_STATUS.NEW,
                     type_id = (int)DicEnum.TASK_TYPE.PROJECT_PHASE,
                     title = oriTask.title,
+                    account_id = oriTask.account_id,
                     estimated_begin_time = oriTask.estimated_begin_time,
                     estimated_end_date = oriTask.estimated_end_date,
                     estimated_duration = oriTask.estimated_duration,
@@ -1672,7 +1686,7 @@ namespace EMT.DoneNOW.BLL
                 #endregion
 
                 #region 更改原来的task的相关信息
-                oriTask.sort_order = ReturnSortOrder((long)oriTask.project_id, newPhase.id);
+                oriTask.sort_order = GetMinUserSortNo(newPhase.id);
                 oriTask.parent_id = newPhase.id;
                 oriTask.update_user_id = user.id;
                 oriTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -1714,13 +1728,14 @@ namespace EMT.DoneNOW.BLL
                             if (thisTask.parent_id != null && taskIDArr.Contains(thisTask.parent_id.ToString()))
                             {
                                 var newParId = idDic.FirstOrDefault(_ => _.Key == (long)thisTask.parent_id).Value;
-                                var newSortNo = ReturnSortOrder(project_id, newParId);
+                                var newSortNo = GetMinUserSortNo(newParId);
                                 thisTask.parent_id = newParId;
                                 thisTask.sort_order = newSortNo;
                             }
+                            
                             else
                             {
-                                var newSortNo = ReturnSortOrder(project_id, null);
+                                var newSortNo = GetMinUserNoParSortNo(project_id);
                                 thisTask.project_id = thisProject.id;
                                 thisTask.sort_order = newSortNo;
                                 thisTask.parent_id = null;
