@@ -15,7 +15,7 @@
             color: #4F4F4F;
             font-weight: bold;
             line-height: 15px;
-                padding-left: 30px;
+            padding-left: 30px;
         }
 
         .DivSection .FieldLabels div, .DivSection td[class="fieldLabels"] div, .DivSectionWithHeader td[class="fieldLabels"] div {
@@ -80,15 +80,69 @@
                 font-size: 12px;
                 color: #333;
             }
-            .CheckboxLabels, .workspace .CheckboxLabels, div[class="checkbox"] span, div[class="radio"] span {
+
+        .CheckboxLabels, .workspace .CheckboxLabels, div[class="checkbox"] span, div[class="radio"] span {
+            font-size: 12px;
+            color: #333;
+            font-weight: normal;
+            vertical-align: middle;
+        }
+
+        .checkbox {
+        }
+
+        #AddEntryTable {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            width: 98%;
+        }
+
+        #AddEntryTable thead tr {
+            height: 30px;
+        }
+
+        #AddEntryTable tbody tr {
+            height: 25px;
+        }
+        #AddEntryTable tbody tr td{
+                border-width: 1px;
+    border-style: solid;
+    border-left-color: #F8F8F8;
+    border-right-color: #F8F8F8;
+    border-top-color: #e8e8e8;
+    border-bottom-width: 0;
     font-size: 12px;
     color: #333;
-    font-weight: normal;
-    vertical-align: middle;
-}
-            .checkbox{
-                
-            }
+    text-decoration: none;
+    vertical-align: top;
+    padding: 4px;
+    word-wrap: break-word;
+        }
+
+        #AddNewEntry {
+            font-size: 10pt;
+            font-weight: bold;
+            width: 75px;
+            height: 34px;
+        }
+
+        #PageAddNewEntry {
+            font-weight: bold;
+            width: 50px;
+            height: 25px;
+        }
+
+        #PageCancelNewEntry {
+            font-weight: bold;
+            width: 50px;
+            height: 25px;
+        }
+        #NewEntryAddDiv{
+            background-color: #dedddd;
+            width: 98%;
+                padding-top: 17px;
+        }
+
     </style>
 </head>
 <body>
@@ -148,7 +202,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="DivSection" style="margin-left: 0px; margin-right: 0px; width: 1080px; border: 1px solid #d3d3d3; margin: 0px 0px 22px 44px;">
+                <div class="DivSection" style="margin-left: 0px; margin-right: 0px; width: 1080px; border: 1px solid #d3d3d3; margin: 0px 0px 22px 44px; padding-left: 10px;">
                     <table class="searchareaborder" width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tbody>
                             <tr>
@@ -158,15 +212,16 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td rowspan="6" valign="bottom" style="padding-left: 20px; padding-bottom: 19px;"> 
-                                     <% if (!noTime){%>
-                                    <div id="tblStartStop" name="tblStartStop" style="position: relative; visibility: visible; display:block; background-color: rgb(240, 245, 251); border: 1px solid rgb(211, 211, 211); padding: 20px; width: 330px;">
+                                <td rowspan="6" valign="bottom" style="padding-left: 20px; padding-bottom: 19px;">
+                                    <% if (!noTime)
+                                        {%>
+                                    <div id="tblStartStop" name="tblStartStop" style="position: relative; visibility: visible; display: block; background-color: rgb(240, 245, 251); border: 1px solid rgb(211, 211, 211); padding: 20px; width: 330px;">
                                         <table border="0" cellspacing="0" cellpadding="0">
                                             <tbody>
                                                 <tr>
                                                     <td width="200px" class="FieldLabels" style="white-space: nowrap;">开始时间
                             <div>
-                                <input type="text" size="8" name="startTime" id="startTime" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=thisWorkEntry!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisWorkEntry.start_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
+                                <input type="text" size="8" name="startTime" id="startTime" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=thisWorkEntry!=null&&thisWorkEntry.end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisWorkEntry.start_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
                             </div>
                                                     </td>
                                                     <td class="FieldLabels" style="white-space: nowrap;">工作时长
@@ -178,7 +233,7 @@
                                                 <tr>
                                                     <td class="FieldLabels" style="white-space: nowrap;">结束时间
 							<div>
-                                <input type="text" name="endTime" id="endTime" size="8" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=thisWorkEntry!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisWorkEntry.end_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
+                                <input type="text" name="endTime" id="endTime" size="8" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=thisWorkEntry!=null&&thisWorkEntry.end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisWorkEntry.end_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
                             </div>
                                                     </td>
                                                     <td class="FieldLabels" style="white-space: nowrap;">偏移量
@@ -286,7 +341,7 @@
                                                     </div>
                                                 </td>
 
-                                                <td valign="middle" style="padding-bottom: 3px">
+                                                <td valign="middle" style="padding-bottom: 3px; padding-left: 33px;">
                                                     <asp:CheckBox ID="isBilled" runat="server" Checked="false" />不计费
                                                 </td>
 
@@ -326,20 +381,134 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="DivSection" style="margin-left: 0px; margin-right: 0px; width: 1080px; border: 1px solid #d3d3d3; margin: 0px 0px 22px 44px;" id="tblTextFields" name="tblTextFields">
-
-
-
+                <div class="DivSection" style="margin-left: 0px; margin-right: 0px; width: 1080px; border: 1px solid #d3d3d3; margin: 0px 0px 22px 44px;padding-left:10px;" id="tblTextFields" name="tblTextFields">
                     <table class="searchareaborder" width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tbody>
                             <tr>
                                 <td valign="top" align="center">
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0" id="Table6">
                                         <tbody>
+                                            <%if (noTime)
+                                                { %>
+
+                                            <tr>
+                                                <td colspan="2">
+                                                    <div style="position: relative; visibility: visible; display: block; background-color: rgb(240, 245, 251); border: 1px solid rgb(211, 211, 211); padding: 20px; width: 95%; margin-left: 30px;">
+                                                        <table border="0" cellspacing="0" cellpadding="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div style="float: left; margin-left: 20px; min-width: 100px;">
+                                                                            剩余时间
+							<span id="errorSmall">*</span>
+                                                                        </div>
+                                                                        <div style="float: left; margin-left: -10px; min-width: 100px;">
+                                                                            <input style="text-align: right;" type="text" name="remain_hours" id="remain_hours" class="decimal2" value="<%=v_task!=null&&v_task.remain_hours!=null?((decimal)v_task.remain_hours).ToString("#0.00"):"0.00" %>" /></div>
+                                                                        <div style="float: left; margin-left: 20px; min-width: 100px; margin-left: 50px;">
+                                                                            估算差异
+							<span id="errorSmall">*</span>
+                                                                        </div>
+                                                                        <div style="float: left; margin-left: 20px; min-width: 100px;">
+                                                                            <%
+                                                                                if (v_task != null)
+                                                                                {
+                                                                                    var esHours = v_task.remain_hours == null ? 0 : (decimal)v_task.remain_hours + v_task.worked_hours == null ? 0 : (decimal)v_task.worked_hours - v_task.change_Order_Hours == null ? 0 : (decimal)v_task.change_Order_Hours - v_task.estimated_hours == null ? 0 : (decimal)v_task.estimated_hours;
+                                                                            %><%=esHours.ToString("#0.00") %><%                                                                                                                                                                                                                                            }
+
+
+                                                                            %>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                                <%} %>
+                                            <tr>
+                                                <td width="50%" class="FieldLabels" colspan="2">
+                                                    <div>
+                                                        <input type="hidden" id="IsHasEntryAdd" value="" />
+                                                        <input type="button" name="AddNewEntry" id="AddNewEntry" onclick="AddEntry()" value="新增日期" />
+                                                        <table id="AddEntryTable">
+                                                            <thead style="background-color: #428bc5; color: white;">
+                                                                <tr>
+                                                                    <th style="width: 20px;text-align:center;"></th>
+                                                                    <th style="min-width: 100px;">日期</th>
+                                                                    <%if (noTime)
+                                                                        { %>
+                                                                    <th style="min-width: 100px;">工作时长</th>
+                                                                    <%} %>
+                                                                    <th style="min-width: 100px;">工作说明</th>
+                                                                    <th style="min-width: 100px;">内部说明</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="AddEntry">
+                                                                <%if (entryList != null && entryList.Count > 0)
+                                                                    {
+                                                                        foreach (var thisEnt in entryList)
+                                                                        {%>
+                                                                <tr data-val="<%=thisEnt.id %>" class="PageAddPage" id="entryAdd_<%=thisEnt.id %>" onclick="EditThis('<%=thisEnt.id %>')">
+                                                                    <td>
+                                                                        <input type='hidden' name='summ_<%=thisEnt.id %>' id='summ_<%=thisEnt.id %>' value='<%=thisEnt.summary_notes %>' /><input type='hidden' id='inter_<%=thisEnt.id %>' name='inter_<%=thisEnt.id %>' value='<%=thisEnt.internal_notes %>' />
+                                                                       <a class='RemoveThisTr'><img src="../Images/delete.png"/></a></td>
+                                                                    <td><span id='entry_date_span_<%=thisEnt.id %>'><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEnt.start_time).ToString("yyyy-MM-dd") %></span><input type='hidden' name='entry_date_<%=thisEnt.id %>' id='entry_date_<%=thisEnt.id %>' value='<%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEnt.start_time).ToString("yyyy-MM-dd") %>' /></td>
+                                                                      <%if (noTime)
+                                                                          { %>
+                                                                    <td><span id='entry_work_span_<%=thisEnt.id %>'><%=thisEnt.hours_worked != null ? ((decimal)thisEnt.hours_worked).ToString("#0.00") : "" %></span><input type='hidden' name='entry_work_hour_<%=thisEnt.id %>' id='entry_work_hour_<%=thisEnt.id %>' value='<%=thisEnt.hours_worked != null ? ((decimal)thisEnt.hours_worked).ToString("#0.00") : "" %>' /></td>
+                                                                    <%} %>
+                                                                    <td><span id='entry_sum_note_<%=thisEnt.id %>'><%=thisEnt.summary_notes %></span> </td>
+                                                                    <td><span id='entry_ine_note_<%=thisEnt.id %>'><%=thisEnt.internal_notes %></span></td>
+
+                                                                </tr>
+                                                                <%}
+                                                                } %>
+                                                            </tbody>
+
+                                                        </table>
+                                                        <div id="NewEntryAddDiv" style="display: none;">
+                                                            <table>
+                                                                <tr>
+                                                                    <td style="min-width: 15px;"></td>
+                                                                    <td style="min-width: 50px;"> 
+                                                                        <input type="text" id="AddNewEntryDate" value="" onclick="WdatePicker()" /></td>
+                                                                    <%if (noTime)
+                                                                        { %>
+                                                                    <td style="min-width: 50px;">
+                                                                        <input type="text" id="AddNewEntryWorkHour" value="" maxlength="5" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></td>
+                                                                    <%} %>
+                                                                    <td style="min-width: 100px;">
+                                                                        <textarea rows="3" id="AddNewEntrySumNote" style="resize: none;"></textarea> <img src="../Images/MagnifyPlus.png" id="img_AddNewEntrySumNote" class="ShowBigDiv" />
+                                                                    </td>
+                                                                    <td style="min-width: 100px;">
+                                                                        <textarea rows="3" id="AddNewEntryIneNote" style="resize: none;"></textarea><img src="../Images/MagnifyPlus.png"  id="img_AddNewEntryIneNote" class="ShowBigDiv"/>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <input type="button" id="PageAddNewEntry" onclick="SaveNewEntry()" value="保存" />
+                                                                        <input type="button" id="PageCancelNewEntry" onclick="CancelEntry()" value="取消" style="margin-left: 10px;" />
+                                                                    </td>
+                                                                    <td><input type="hidden" name="BidDivId" id="BidDivId"/></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                        <input type="hidden" id="PageMangeEntryId" value="" />
+                                                    </div>
+                                                    <input type="hidden" name="PageEntryIds" id="PageEntryIds" />
+                                                </td>
+
+                                            </tr>
+                                       
+
+                                 
+
                                             <tr>
                                                 <td width="50%" class="FieldLabels">工时说明&nbsp;<span id="sumNotes1" class="FieldLabels"></span><span id="errorSmall">*</span></td>
-                                                <td width="50%" style="text-align: right"><span title="Click to Expand" style="cursor: pointer;" onclick="javaScript:objPage.ViewAll('workSummary1','Summary Notes');">
-                                                    <img style="vertical-align: middle;" src="../Images/zoom-in.png?v=41154"></span></td>
+                                                <td width="50%" style="text-align: right"><span title="Click to Expand" style="cursor: pointer;">
+                                                    <img style="vertical-align: middle;" src="../Images/MagnifyPlus.png" id="img_summary_notes"  class="ShowBigDiv"/></span></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2" class="FieldLabels">
@@ -350,8 +519,8 @@
                                             </tr>
                                             <tr>
                                                 <td width="50%" class="FieldLabels">内部说明&nbsp;<span id="intNotes1"></span></td>
-                                                <td width="50%" style="text-align: right"><span title="Click to Expand" style="cursor: pointer;" onclick="javaScript:objPage.ViewAll('workNotes1','Internal Notes');">
-                                                    <img style="vertical-align: middle;" src="/graphics/icons/content/zoom-in.png?v=41154"></span></td>
+                                                <td width="50%" style="text-align: right"><span title="Click to Expand" style="cursor: pointer;">
+                                                    <img style="vertical-align: middle;" src="../Images/MagnifyPlus.png" class="ShowBigDiv" id="img_internal_notes"/></span></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2" class="FieldLabels">
@@ -367,9 +536,19 @@
                         </tbody>
                     </table>
                 </div>
+                <div id="noTimeAddManyEntryDiv" style="display: none;">
+                </div>
+            </div>
+            <div id="BigTextDiv" style="display:none;min-width:900px;min-height:800px;margin-left: 20px;
+    width: 95%;">
+                <div style="text-align: right;margin-right: -20px;"><img src="../Images/MagnifyMinus.png" id="CloseBigTextDiv"/></div>
+                <textarea id="BigTextArea" style="width:100%;height:100%;min-height: 600px;">
+
+                </textarea>
+          
             </div>
 
-            <div id="notification" style="display:none;">
+            <div id="notification" style="display: none;">
                 <div id="FormContent" class="DivSection NoneBorder" style="padding-left: 0px; padding-right: 12px; margin-left: 44px;">
                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
                         <tbody>
@@ -390,15 +569,15 @@
                                                                                 <tr>
                                                                                     <td width="369px" class="fieldLabels">
                                                                                         <div class="CheckBoxList">
-                                                                                            <div class="checkbox" style="padding-bottom:0px;">
+                                                                                            <div class="checkbox" style="padding-bottom: 0px;">
                                                                                                 <asp:CheckBox ID="CCMe" runat="server" />
                                                                                                 &nbsp;<span style="cursor: default;">抄送给我<%=thisUser != null?"("+thisUser.name+")":"" %></span>
                                                                                             </div>
 
-                                                                                            <div class="checkbox" style="padding-bottom:0px;">
+                                                                                            <div class="checkbox" style="padding-bottom: 0px;">
                                                                                                 <input type="CHECKBOX" name="chkResAssigned" id="chkResAssigned" origchecked="true">&nbsp;<span style="cursor: default;" onclick="document.form1.chkResAssigned.checked=!document.form1.chkResAssigned.checked">任务员工</span>
                                                                                             </div>
-                                                                                            <div class="checkbox" style="padding-bottom:0px;">
+                                                                                            <div class="checkbox" style="padding-bottom: 0px;">
                                                                                                 <asp:CheckBox ID="CCProRes" runat="server" />
                                                                                                 &nbsp;<span style="cursor: default;">项目负责人</span>
                                                                                             </div>
@@ -409,13 +588,13 @@
                                                                                     <td class="fieldLabels" width="357px" style="padding-left: 10px">
                                                                                         <div class="CheckBoxList">
 
-                                                                                            <div class="checkbox" style="padding-bottom:0px;">
+                                                                                            <div class="checkbox" style="padding-bottom: 0px;">
                                                                                                 <input type="checkbox" name="ccDetail" id="ccDetail" checked="" origchecked="true">&nbsp;<span style="cursor: default;" onclick="document.form1.ccDetail.checked=!document.form1.ccDetail.checked">Include  Details from Summary tab</span>
                                                                                             </div>
-                                                                                            <div class="checkbox" style="padding-bottom:0px;">
+                                                                                            <div class="checkbox" style="padding-bottom: 0px;">
                                                                                                 <input type="checkbox" name="ccNext" id="ccNext" checked="" origchecked="true">&nbsp;<span style="cursor: default;" onclick="document.form1.ccNext.checked=!document.form1.ccNext.checked">任务负责人</span>
                                                                                             </div>
-                                                                                            <div class="checkbox" style="padding-bottom:0px;">
+                                                                                            <div class="checkbox" style="padding-bottom: 0px;">
                                                                                                 <input type="checkbox" name="ccForResource" id="ccForResource" style="visibility: visible;" disabled="" origchecked="true">&nbsp;<span style="cursor: default;" id="ForResourceName" onclick="if(!this.disabled) document.form1.ccForResource.checked=!document.form1.ccForResource.checked">li, li</span>
                                                                                             </div>
 
@@ -438,7 +617,7 @@
                                      <tr>
                                          <td width='1%'>
                                              <%--<input type='checkbox' id='checkAll' />--%>
-                                             </td>
+                                         </td>
                                          <td width='33%'>联系人姓名</td>
                                          <td width='33%'>邮箱地址</td>
                                      </tr>
@@ -451,70 +630,70 @@
                  </div>
 
                                                                     </td>
-                                <td class="FieldLabels">员工
+                                                                    <td class="FieldLabels">员工
                                             <span class="FieldLevelInstructions">(<a style="color: #376597; cursor: pointer;" onclick="LoadRes()">Load</a>)</span>
-                                    <div id="reshtml" style="width: 350px; height: 170px; border: 1px solid #d7d7d7; margin-bottom: 20px;">
-                                    </div>
-                                </td>
+                                                                        <div id="reshtml" style="width: 350px; height: 170px; border: 1px solid #d7d7d7; margin-bottom: 20px;">
+                                                                        </div>
+                                                                    </td>
 
-                            </tr>
-                            <tr>
-                                <td class="FieldLabels" colspan="2">其他邮件地址
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="FieldLabels" colspan="2">其他邮件地址
 					<div>
                         <input type="text" style="width: 726px;" name="otherEmail" id="otherEmail" />
                     </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="FieldLabels" colspan="2">通知模板
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="FieldLabels" colspan="2">通知模板
 				<div>
                     <asp:DropDownList ID="notify_id" runat="server" Width="740px"></asp:DropDownList>
                 </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="FieldLabels" colspan="2">主题
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="FieldLabels" colspan="2">主题
 			<div>
                 <input type="text" id="subjects" name="subjects" value="" style="width: 726px" />
                 <input type="hidden" name="contact_ids" id="contact_ids" />
                 <input type="hidden" name="resIds" id="resIds" />
-                <input type="hidden" name="workGropIds" id="workGropIds"/>
+                <input type="hidden" name="workGropIds" id="workGropIds" />
             </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="FieldLabels" width="369px">附加信息</td>
-                                <td width="357px" style="text-align: right; padding-right: 1px;"><span title="Click to Expand" style="cursor: pointer;">
-                                    <img style="vertical-align: middle" src="/graphics/icons/content/zoom-in.png?v=41154"></span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="FieldLabels">
-                                    <div>
-                                        <textarea rows="6" style="width: 726px" name="AdditionalText" id="AdditionalText"></textarea>
-                                    </div>
-                                </td>
-                            </tr>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="FieldLabels" width="369px">附加信息</td>
+                                                                    <td width="357px" style="text-align: right; padding-right: 1px;"><span title="Click to Expand" style="cursor: pointer;">
+                                                                        <img style="vertical-align: middle" src="/graphics/icons/content/zoom-in.png?v=41154"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="FieldLabels">
+                                                                        <div>
+                                                                            <textarea rows="6" style="width: 726px" name="AdditionalText" id="AdditionalText"></textarea>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
 
-                            <tr>
-                                <td colspan="2" style="text-align: right;"><a href="#" class="PrimaryLink" onclick="defaultSettings();">修改默认设置</a>&nbsp;&nbsp;</td>
-                            </tr>
+                                                                <tr>
+                                                                    <td colspan="2" style="text-align: right;"><a href="#" class="PrimaryLink" onclick="defaultSettings();">修改默认设置</a>&nbsp;&nbsp;</td>
+                                                                </tr>
 
-                        </tbody>
-                    </table>
-                    </td>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
 
 
-                </div>
+                                    </div>
 
-                </td>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
             </div>
-        </div>
     </form>
 </body>
 </html>
@@ -524,7 +703,7 @@
 <script>
 
     $(function () {
-        debugger;
+
         GetCompanyList();
      <%if (thisProjetc != null)
     { %>
@@ -592,7 +771,7 @@
     })
     // 根据选择的权限查找相应的客户信息
     function GetCompanyList() {
-        debugger;
+
         // GetAccByRes
         var resId = $("#resource_id").val();
         var showType = $("#ShowTaskType").val();
@@ -610,7 +789,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (data != "") {
-                        debugger;
+
                         // var obj = JSON.parse(data);
                         for (var i = 0; i < data.length; i++) {
                             accSelect += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
@@ -727,9 +906,11 @@
                         if (data != "") {
                             $("#contract_idHidden").val(contract_id);
                             $("#contract_id").val(data);
+                            // 
                         }
                     }
                 })
+                GetServiceByContractID();
             }
         }
     }
@@ -757,7 +938,7 @@
     }
     $("#isBilled").click(function () {
         if ($(this).is(":checked")) {
-            $("#ShowOnInv").prop("checked", false);
+            // $("#ShowOnInv").prop("checked", false);
             $("#ShowOnInv").prop("disabled", false);
         } else {
             $("#ShowOnInv").prop("checked", true);
@@ -837,7 +1018,7 @@
     function JiSuanBillHour() {
         // hours_billed
         // 根据系统设置进行判断如何取整
-        debugger;
+
         var startDate = $("#startTime").val();
         var endDate = $("#endTime").val();
         var dayDate = $("#tmeDate").val();
@@ -949,7 +1130,8 @@
             LayerMsg("请选择角色！");
             return false;
         }
-        <% if (!noTime){ %>
+        <% if (!noTime)
+    { %>
         var startTime = $("#startTime").val();
         if (startTime == "" || startTime == null) {
             LayerMsg("请填写开始时间！");
@@ -965,21 +1147,40 @@
             LayerMsg("请填写日期！");
             return false;
         }
+
+        <%}%>
         var remain_hours = $("#remain_hours").val();
-        if (remain_hours == "" || remain_hours == null) {
+        if (remain_hours == "" || remain_hours == null || remain_hours == undefined) {
             LayerMsg("请填写剩余时间！");
             return false;
         }
-        <%}%>
         var workSummary1 = $("#summary_notes").val();
         if (workSummary1 == "" || workSummary1 == null) {
             var noteValue = '<%=new EMT.DoneNOW.BLL.SysSettingBLL().GetValueById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_REQUIRED_SUMMAY_NOTE) %>';
             if (noteValue == "1") {
+                  <%if(!noTime){ %>
                 LayerMsg("请填写工时说明！");
                 return false;
+                <%}%>
             }
         }
-        // workSummary1
+        // 
+        // PageAddPage
+   
+        // 判断是否有新增工时
+        var ids = "";
+        $(".PageAddPage").each(function () {
+            ids += $(this).data("val") + ',';
+        })
+        if (ids == "") {
+            <%if (isAdd)
+    { %>
+            LayerMsg("请添加工时日期！");
+            return false;
+            <%}%>
+        }
+        $("#PageEntryIds").val(ids);
+       
 
         return true;
     }
@@ -1087,4 +1288,189 @@
     $("#ClosePage").click(function () {
         window.close();
     })
+</script>
+
+<script>
+    function AddEntry() {
+        // 判断是否有新增
+        var isHas = $("#IsHasEntryAdd").val();
+        if (isHas != "") {
+            LayerMsg("请关闭当前保存项");
+            return false;
+        }
+        else {
+            $("#IsHasEntryAdd").val("1");
+            var AddNewEntryDate = $("#AddNewEntryDate").val();
+            if (AddNewEntryDate != "")
+            {
+                debugger;
+                var reg = /(\d{4})\-(\d{2})\-(\d{2})/;
+                var date = AddNewEntryDate.replace(reg, "$1/$2/$3");
+                var newDate = new Date(date);
+                newDate.setDate(newDate.getDate()+1);
+                $("#AddNewEntryDate").val(newDate.getFullYear() + "-" + Number(newDate.getMonth() + 1) + "-" + newDate.getDate());
+            }
+            else
+            {
+                $("#AddNewEntryDate").val("<%=DateTime.Now.ToString("yyyy-MM-dd") %>");
+            }
+
+            $("#NewEntryAddDiv").show();
+
+        }
+    }
+    var entryAddNum = 0;
+    function SaveNewEntry(saveType, TrId) {  // saveType 代表新增还是修改
+        var TrId = $("#PageMangeEntryId").val();
+        if (TrId != "") {
+            saveType = "Edit";
+        }
+        else {
+            saveType = "Add";
+        }
+        var AddNewEntryDate = $("#AddNewEntryDate").val();
+        if (AddNewEntryDate == "") {
+            LayerMsg("请填写工时时间");
+            return false;
+        }
+        var AddNewEntryWorkHour = $("#AddNewEntryWorkHour").val();
+        <%if (noTime)
+    { %>
+        if (AddNewEntryWorkHour == "") {
+            LayerMsg("请填写工作时长");
+            return false;
+        }
+        <%}%>
+        if (Number(AddNewEntryWorkHour) <= 0 || Number(AddNewEntryWorkHour) >= 24) {
+            LayerMsg("工作时长超出范围");
+            return false;
+        }
+        
+        var sumNoteVals = $("#AddNewEntrySumNote").val();
+
+        if (sumNoteVals == "") {
+            var noteValue = '<%=new EMT.DoneNOW.BLL.SysSettingBLL().GetValueById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_REQUIRED_SUMMAY_NOTE) %>';
+            if (noteValue == "1") {
+                LayerMsg("请填写工时说明");
+                return false;
+            }
+        }// 
+        var ineNoteVals = $("#AddNewEntryIneNote").val();
+        if (saveType == "Add") {
+            entryAddNum--;
+            // onclick=\"RemoveThis('" + entryAddNum + "')\"
+            var addNewHtml = "<tr data-val='" + entryAddNum + "' class='PageAddPage' id='entryAdd_" + entryAddNum + "' onclick=EditThis('" + entryAddNum + "') ><td><input type='hidden' name='summ_" + entryAddNum + "' id='summ_" + entryAddNum + "' value='" + sumNoteVals + "' /><input type='hidden' id='inter_" + entryAddNum + "' name='inter_" + entryAddNum + "' value='" + ineNoteVals + "' /> <a  class='RemoveThisTr' ><img src='../Images/delete.png' /></a></td><td> <span id='entry_date_span_" + entryAddNum + "'>" + AddNewEntryDate + "</span><input type='hidden' name='entry_date_" + entryAddNum + "' id='entry_date_" + entryAddNum + "' value='" + AddNewEntryDate + "' /></td>";
+            <%if (noTime)
+    { %>
+            addNewHtml+= "<td><span id='entry_work_span_" + entryAddNum + "'>" + AddNewEntryWorkHour + " </span><input type='hidden' name='entry_work_hour_" + entryAddNum + "' id='entry_work_hour_" + entryAddNum + "' value='" + AddNewEntryWorkHour + "' /></td>";
+            <%}%>
+            addNewHtml+= "<td><span id='entry_sum_note_" + entryAddNum + "'>" + sumNoteVals + "</span> </td > <td><span id='entry_ine_note_" + entryAddNum + "'>" + ineNoteVals + "</span></td></tr > ";
+            $("#AddEntry").append(addNewHtml);
+            $(".RemoveThisTr").click(function (event) {
+
+                var TrId = $(this).parent().parent().data("val");
+                RemoveThis(TrId);
+                event.stopPropagation();
+            })
+        }
+        else {
+            $("#summ_" + TrId).val(sumNoteVals);
+            $("#inter_" + TrId).val(ineNoteVals);
+            $("#entry_sum_note_" + TrId).html(sumNoteVals);
+            $("#entry_ine_note_" + TrId).html(ineNoteVals);
+            $("#entry_date_span_" + TrId).html(AddNewEntryDate);
+            $("#entry_date_" + TrId).val(AddNewEntryDate);
+            <%if (noTime)
+    { %>
+            $("#entry_work_span_" + TrId).html(AddNewEntryWorkHour);
+            $("#entry_work_hour_" + TrId).val(AddNewEntryWorkHour);
+            <%}%>
+            $("#entryAdd_" + TrId).show();
+        }
+        $(".PageAddPage").show();
+        $("#PageMangeEntryId").val("");
+        $("#IsHasEntryAdd").val("");
+        $("#NewEntryAddDiv").hide();
+        return true;
+    }
+    // 移除新增的工时
+    function RemoveThis(TrId) {
+        var thisId = $("#PageMangeEntryId").val();
+        if (thisId != "") {
+            LayerMsg("请先完成当前保存操作");
+           
+        }
+        else {
+            if (Number(TrId) > 0) {
+                LayerConfirm("删除不能恢复，是否继续？", "是", "否", function () { $("#entryAdd_" + TrId).remove();}, function () { });
+            } else {
+                $("#entryAdd_" + TrId).remove();
+            }
+        }
+        return false;
+
+    }
+    $(".RemoveThisTr").click(function (event) {
+
+        var TrId = $(this).parent().parent().data("val");
+        RemoveThis(TrId);
+        event.stopPropagation(); 
+    })
+    function EditThis(TrId) {
+        $("#PageMangeEntryId").val(TrId);
+        var isHas = $("#IsHasEntryAdd").val();
+        if (isHas != "") {
+
+        }
+        else {
+            $("#AddNewEntryDate").val($("#entry_date_" + TrId).val());
+            <%if (noTime)
+    { %>
+            $("#AddNewEntryWorkHour").val($("#entry_work_hour_" + TrId).val());
+            <%}%>
+            $("#AddNewEntrySumNote").val($("#summ_" + TrId).val());
+            $("#AddNewEntryIneNote").val($("#inter_" + TrId).val());
+
+            $("#entryAdd_" + TrId).hide();
+            $("#IsHasEntryAdd").val("1");
+            $("#NewEntryAddDiv").show();
+
+        }
+        return false;
+    }
+    // 取消显示保存工时的Div
+    function CancelEntry() {
+        $(".PageAddPage").show();
+        $("#NewEntryAddDiv").hide(); 
+        $("#IsHasEntryAdd").val("");
+        
+    }
+    //$("#SumOpenBigDiv").click(function () {
+    //    $("#BidDivId").val("AddNewEntrySumNote");
+    //    $("#Summary").hide();
+    //    $("#BigTextDiv").show();
+    //    $("#BigTextArea").val($("#AddNewEntrySumNote").val());
+    //})
+    $(".ShowBigDiv").click(function () {
+        debugger;
+        var thisID = $(this).eq(0).attr("id");
+
+        thisID = thisID.substring(4, thisID.length);
+        $("#BidDivId").val(thisID);
+        $("#Summary").hide();
+        $("#BigTextDiv").show();
+        $("#BigTextArea").val($("#" + thisID).val());
+    })
+
+    $("#CloseBigTextDiv").click(function () {
+        var txetId = $("#BidDivId").val();
+        if (txetId != "" && txetId != undefined) {
+            $("#" + txetId).val($("#BigTextArea").val());
+
+            $("#BidDivId").val("");
+        }
+        $("#Summary").show();
+        $("#BigTextDiv").hide();
+    })
+
 </script>

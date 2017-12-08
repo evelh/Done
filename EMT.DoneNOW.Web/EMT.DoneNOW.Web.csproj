@@ -217,6 +217,7 @@
     <Content Include="Images\folder.png" />
     <Content Include="Images\forward_arrow.png" />
     <Content Include="Images\ganttsprite.png" />
+    <Content Include="Images\Icons.png" />
     <Content Include="Images\imgGridEdit.png" />
     <Content Include="Images\left2.png" />
     <Content Include="Images\LeftArrow.png" />

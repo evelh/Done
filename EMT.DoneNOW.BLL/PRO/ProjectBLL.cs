@@ -1045,6 +1045,15 @@ namespace EMT.DoneNOW.BLL
                  thisProject.id, old_project_udfList, old_project_udfValueList, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_EXTENSION_INFORMATION);
 
                     var oldProject = _dal.FindNoDeleteById(oldId);
+                    if (oldProject.baseline_project_id != null)
+                    {
+                        var oldBase = _dal.FindNoDeleteById((long)oldProject.baseline_project_id);
+                        if (oldBase != null)
+                        {
+                            _dal.Delete(oldBase);  // 删除旧的基准
+                        }
+                        
+                    }
                     oldProject.baseline_project_id = basId;
                     oldProject.create_user_id = user.id;
                     oldProject.update_user_id = user.id;

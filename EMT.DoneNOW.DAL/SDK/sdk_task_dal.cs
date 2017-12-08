@@ -97,7 +97,24 @@ namespace EMT.DoneNOW.DAL
         /// </summary>
         public List<sdk_task> GetListByProAndRes(long project_id,long resource_id)
         {
-            return FindListBySql<sdk_task>($"SELECT st.* from sdk_task  st INNER JOIN pro_project pp on st.project_id = pp.id where pp.id = {project_id} and st.owner_resource_id = {resource_id} and pp.delete_time = 0 and st.delete_time = 0 ");
+            return FindListBySql<sdk_task>($"SELECT st.* from sdk_task  st INNER JOIN pro_project pp on st.project_id = pp.id where pp.id = {project_id} and st.owner_resource_id = {resource_id} and pp.delete_time = 0 and st.delete_time = 0  ");
+        }
+
+        public string GetContractSql(string contractSql)
+        {
+            if (string.IsNullOrEmpty(contractSql) || string.IsNullOrWhiteSpace(contractSql))
+            {
+                return "";
+            }
+            var obj = GetSingle("select "+contractSql);
+            if (obj != null)
+            {
+                return (string)obj;
+            }
+            else
+            {
+                return "";
+            }
         }
     }
 }

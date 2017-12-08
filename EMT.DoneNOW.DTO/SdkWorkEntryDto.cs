@@ -26,6 +26,19 @@ namespace EMT.DoneNOW.DTO
         public bool ToProLead;
         public bool ToTaskLead;
         public bool ToTab;
-        public int ToResId; 
+        public int ToResId;
+
+
+        public List<PageEntryDto> pagEntDtoList;
+    }
+
+    public class PageEntryDto
+    {
+        public long id;
+        public DateTime time;
+        public decimal workHours;
+        public string sumNote;
+        public string ineNote;
+
     }
 }

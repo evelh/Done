@@ -50,6 +50,9 @@ namespace EMT.DoneNOW.Web
                         var teaIds = context.Request.QueryString["resDepIds"];
                         CheckPriResInTeam(context, teaIds,long.Parse(priResId));
                         break;
+                    case "CheckResAvailability":
+                        CheckResAvailability(context);
+                        break;
                     default:
                         break;
                 }
@@ -209,9 +212,116 @@ namespace EMT.DoneNOW.Web
 
             context.Response.Write(result);
         }
-        
-        
+        /// <summary>
+        /// 检查员工的可用性
+        /// </summary>
+        private void CheckResAvailability(HttpContext context)
+        {
+            // 在同一项目下校验
+            try
+            {
+                var project_id = context.Request.QueryString["project_id"];
+                var resId = context.Request.QueryString["res_id"];
+                var startTime = context.Request.QueryString["startTime"];  // 开始时间
+                var endTime = context.Request.QueryString["endTime"];
+                var days = context.Request.QueryString["days"];  // 持续时间
+                var thisTaskRpeHour = context.Request.QueryString["thisTaskRpeHour"]; // 这个员工在这个任务中的日工作时间
+                if (!string.IsNullOrEmpty(project_id)&& !string.IsNullOrEmpty(resId) && !string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime)&& !string.IsNullOrEmpty(thisTaskRpeHour))
+                {
+                    var project = new pro_project_dal().FindNoDeleteById(long.Parse(project_id));
+                    var taskList = new sdk_task_dal().GetListByProAndRes(long.Parse(project_id),long.Parse(resId));
+                    int readDays = 0;
+                    var startDate = DateTime.Parse(startTime);
+                    var endDate = DateTime.Parse(endTime);
+                    if (!string.IsNullOrEmpty(days))
+                    {
+                        readDays = int.Parse(days);
+                        endDate = new BLL.TaskBLL().RetrunMaxTime(project.id, startDate, readDays);
+                    }
+                    else
+                    {
+
+                        readDays = new BLL.TaskBLL().GetDayByTime(Tools.Date.DateHelper.ToUniversalTimeStamp(startDate), Tools.Date.DateHelper.ToUniversalTimeStamp(endDate), long.Parse(project_id));
+                    }
+                    if (readDays != 0)
+                    {
+                        // 员工在这个项目中应该工作的时长
+                        var totalHours = readDays * (decimal)project.resource_daily_hours;
+
+                        if(taskList!=null&& taskList.Count > 0)
+                        {
+                            var thisList = taskList.Where(_ => (_.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_ISSUE || _.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_TASK) && (_.estimated_begin_time < Tools.Date.DateHelper.ToUniversalTimeStamp(endDate) && _.estimated_end_date > startDate)).ToList();
+                            if(thisList!=null&& thisList.Count > 0)
+                            {
+                                // 员工在这些天中已经分配的时长
+                                var taskTotalHours = thisList.Sum(_ => {
+
+                                    var thisDays = (decimal)_.hours_per_resource * GetDiffDays(startDate, endDate, Tools.Date.DateHelper.ConvertStringToDateTime((long)_.estimated_begin_time), (DateTime)_.estimated_end_date, project.id);
+                                    if (thisDays == 0|| _.hours_per_resource == null)
+                                    {
+                                        return 0;
+                                    }
+                                    else
+                                    {
+                                        // 计算员工平均工作时长
+                                        TimeSpan ts1 = new TimeSpan(Tools.Date.DateHelper.ConvertStringToDateTime((long)_.estimated_begin_time).Ticks);
+                                        TimeSpan ts2 = new TimeSpan(((DateTime)_.estimated_end_date).Ticks);
+                                        var allDays = ts1.Subtract(ts2).Duration().Days;
+                                        return ((decimal)_.hours_per_resource / allDays) * thisDays;
+                                    }
+                                 
+                                });
+                                // 员工的剩余时长
+                                 var shengyuHours = totalHours - taskTotalHours;
+                                var preHours = decimal.Parse(thisTaskRpeHour);
+                                var result = shengyuHours > preHours;
+                                context.Response.Write(new {result = result,reason = shengyuHours.ToString("#0.00")});
+
+                            }
+
+                        }
+                    }
+                    //pageTask.estimated_duration = ts.Days + 1;
+
+
+                }
+            }
+            catch (Exception)
+            {
+                
+            }
+        }
+        /// <summary>
+        /// 计算日期交叉天数
+        /// </summary>
+        public int GetDiffDays(DateTime firstStartDate, DateTime firstEndDate, DateTime secStartDate, DateTime secEndDate,long project_id)
+        {
+            // 四种情况
+
+            DateTime realStartDate = firstStartDate;
+            DateTime realEndDate = firstEndDate;
+
+            if (secStartDate<= firstStartDate)
+            {
+                if(secEndDate<= firstEndDate)
+                {
+                    realEndDate = secEndDate;
+                }
+            }
+            else
+            {
+                realStartDate = secStartDate;
+                if (secEndDate <= firstEndDate)
+                {
+                    realEndDate = secEndDate;
+                }
+            }
+
+            return new BLL.TaskBLL().GetDayByTime(Tools.Date.DateHelper.ToUniversalTimeStamp(realStartDate), Tools.Date.DateHelper.ToUniversalTimeStamp(realEndDate), project_id);
+         
+        }
     }
+   
     public class ResAndWorkGroDto
     {
         public long id;

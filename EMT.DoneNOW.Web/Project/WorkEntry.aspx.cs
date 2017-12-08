@@ -21,25 +21,41 @@ namespace EMT.DoneNOW.Web.Project
         protected ctt_contract thisContract = null;
         protected crm_account thisAccount = null;
         protected sys_resource thisUser = null;
+        protected List<sdk_work_entry> entryList = null;
         protected Dictionary<string, object> dic = new ProjectBLL().GetField();
-        protected bool noTime = false;
+        protected bool noTime = false;      // 可以不输入开始结束时间（根据系统设置进行判断）
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 // todo 是否需要输入开始结束时间
                 var isNeedTimeString = Request.QueryString["NoTime"];
+                var noTimeSet = new SysSettingBLL().GetSetById(SysSettingEnum.SDK_ENTRY_REQUIRED);
                 if (!string.IsNullOrEmpty(isNeedTimeString))
                 {
-                    noTime = true;
+                    if(noTimeSet!=null&& noTimeSet.setting_value == "0")
+                    {
+                        noTime = true;
+                    }
+                    
                 }
 
                 thisUser = new sys_resource_dal().FindNoDeleteById(GetLoginUserId());
+                var resList = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value as List<DictionaryEntryDto>;
                 if (!IsPostBack)
                 {
                     resource_id.DataTextField = "show";
                     resource_id.DataValueField = "val";
-                    resource_id.DataSource = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value;
+                    var entryProxySet = new SysSettingBLL().GetValueById(SysSettingEnum.SDK_ENTRY_PROXY);
+                    if(entryProxySet == ((int)DicEnum.PROXY_TIME_ENTRY.DISABLED).ToString())
+                    {
+                        if(resList!=null&& resList.Count > 0)
+                        {
+                            resList = resList.Where(_ => _.val == LoginUserId.ToString()).ToList();
+                        }
+                    }
+                    resource_id.DataSource = resList;
+
                     resource_id.DataBind();
 
                     var statusList = dic.FirstOrDefault(_ => _.Key == "ticket_status").Value as List<DictionaryEntryDto>;
@@ -73,6 +89,16 @@ namespace EMT.DoneNOW.Web.Project
                     thisWorkEntry = new sdk_work_entry_dal().FindNoDeleteById(long.Parse(id));
                     if (thisWorkEntry != null)
                     {
+                        if (!resList.Any(_ => _.val == thisWorkEntry.create_user_id.ToString()))
+                        {
+                            Response.Write("<script>alert('系统设置不能代理操作！')window.close();</script>");
+                            Response.End();
+                        }
+                        if(thisWorkEntry.end_time==null&& noTimeSet != null && noTimeSet.setting_value == "0")
+                        {
+                            noTime = true;
+                        }
+                        entryList = new sdk_work_entry_dal().GetBatchList(thisWorkEntry.batch_id);
                         isAdd = false;
                         thisTask = new sdk_task_dal().FindNoDeleteById(thisWorkEntry.task_id);
 
@@ -93,6 +119,11 @@ namespace EMT.DoneNOW.Web.Project
                                 ShowOnInv.Enabled = true;
                             }
                         }
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('工时已被删除！')window.close();</script>");
+                        Response.End();
                     }
                 }
                 if (thisTask != null)
@@ -118,35 +149,65 @@ namespace EMT.DoneNOW.Web.Project
         {
             SdkWorkEntryDto para = new SdkWorkEntryDto();
             var pageEntry = AssembleModel<sdk_work_entry>();
-            var pageRecord = AssembleModel<sdk_work_record>();
+            //var pageRecord = AssembleModel<sdk_work_record>();
             var startTime = Request.Form["startTime"];
             var endTime = Request.Form["endTime"];
             var date = Request.Form["tmeDate"];
-            var starString = date + " " + startTime;
-            var endString = date + " " + endTime;
-            var startDate = DateTime.Parse(starString);
-            var endDate = DateTime.Parse(endString);
-            if (endDate < startDate)
+            if(!string.IsNullOrEmpty(startTime)&& !string.IsNullOrEmpty(endTime) && !string.IsNullOrEmpty(date))
             {
-                endDate = endDate.AddDays(1);
+                var starString = date + " " + startTime;
+                var endString = date + " " + endTime;
+                var startDate = DateTime.Parse(starString);
+                var endDate = DateTime.Parse(endString);
+                if (endDate < startDate)
+                {
+                    endDate = endDate.AddDays(1);
+                }
+                var startLong = Tools.Date.DateHelper.ToUniversalTimeStamp(startDate);
+                var endLong = Tools.Date.DateHelper.ToUniversalTimeStamp(endDate);
+                pageEntry.start_time = startLong;
+                pageEntry.end_time = endLong;
+                //pageRecord.start_time = startLong;
+                //pageRecord.end_time = endLong;
             }
-            var startLong = Tools.Date.DateHelper.ToUniversalTimeStamp(startDate);
-            var endLong = Tools.Date.DateHelper.ToUniversalTimeStamp(endDate);
-            pageEntry.start_time = startLong;
-            pageEntry.end_time = endLong;
-            pageRecord.start_time = startLong;
-            pageRecord.end_time = endLong;
+            var PageEntryIds = Request.Form["PageEntryIds"];
+            if (!string.IsNullOrEmpty(PageEntryIds))
+            {
+                var entArr = PageEntryIds.Split(new char[] { ','},StringSplitOptions.RemoveEmptyEntries);
+                List<PageEntryDto> entDtoList = new List<PageEntryDto>();
+                var hours_worked = Request.Form["hours_worked"];
+                foreach (var thisEntArrId in entArr)
+                {
+                    var thisSum = Request.Form["summ_" + thisEntArrId];
+                    var thisIne = Request.Form["inter_" + thisEntArrId];
+                    var thisDate = Request.Form["entry_date_" + thisEntArrId];
+                    var thisHour = Request.Form["entry_work_hour_" + thisEntArrId];
+                    if ((!string.IsNullOrEmpty(thisHour)||!string.IsNullOrEmpty(hours_worked)) && !string.IsNullOrEmpty(thisDate))
+                    {
+                        entDtoList.Add(new PageEntryDto() {
+                            id = long.Parse(thisEntArrId),
+                            sumNote = thisSum,
+                            ineNote = thisIne,
+                            time = DateTime.Parse(thisDate),
+                            workHours = !string.IsNullOrEmpty(thisHour)? decimal.Parse(thisHour): decimal.Parse(hours_worked),
+                        });
+                    }
+                }
+                para.pagEntDtoList = entDtoList;
+            }
+
+
             var pageProject = new pro_project_dal().FindNoDeleteById(long.Parse(Request.Form["project_id"]));
             if (pageProject != null)
-            {
-                if (pageProject.type_id == (int)DicEnum.PROJECT_TYPE.IN_PROJECT)
-                {
-                    pageRecord.entry_type_id = (int)DicEnum.WORK_ENTRY_TYPE.COMPAMY_IN_ENTRY;
-                }
-                else
-                {
-                    pageRecord.entry_type_id = (int)DicEnum.WORK_ENTRY_TYPE.PROJECT_ENTRY;
-                }
+            {  
+                //if (pageProject.type_id == (int)DicEnum.PROJECT_TYPE.IN_PROJECT)
+                //{
+                //    //pageRecord.entry_type_id = (int)DicEnum.WORK_ENTRY_TYPE.COMPAMY_IN_ENTRY;
+                //}
+                //else
+                //{
+                //    pageRecord.entry_type_id = (int)DicEnum.WORK_ENTRY_TYPE.PROJECT_ENTRY;
+                //}
             }
             pageEntry.show_on_invoice = (sbyte)(ShowOnInv.Checked ? 1 : 0);
             pageEntry.is_billable = (sbyte)(isBilled.Checked?1:0);
@@ -168,28 +229,28 @@ namespace EMT.DoneNOW.Web.Project
                 thisWorkEntry.is_billable = pageEntry.is_billable;
                 thisWorkEntry.show_on_invoice = pageEntry.show_on_invoice;
                 para.workEntry = thisWorkEntry;
-                if (thisWorkEntry != null)
-                {
-                    var thisWorkRecord = new sdk_work_record_dal().FindNoDeleteById((long)thisWorkEntry.work_record_id);
-                    if (thisWorkRecord != null)
-                    {
-                        thisWorkRecord.contract_id = pageRecord.contract_id;
-                        thisWorkRecord.task_id = pageRecord.task_id;
-                        thisWorkRecord.resource_id = pageRecord.resource_id;
-                        thisWorkRecord.entry_type_id = pageRecord.entry_type_id;
-                        thisWorkRecord.role_id = pageRecord.role_id;
-                        thisWorkRecord.cost_code_id = pageRecord.cost_code_id;
-                        thisWorkRecord.start_time = pageRecord.start_time;
-                        thisWorkRecord.end_time = pageRecord.end_time;
-                        para.wordRecord = thisWorkRecord;
-                    }
-                }
+                //if (thisWorkEntry != null)
+                //{
+                //    var thisWorkRecord = new sdk_work_record_dal().FindNoDeleteById((long)thisWorkEntry.work_record_id);
+                //    if (thisWorkRecord != null)
+                //    {
+                //        //thisWorkRecord.contract_id = pageRecord.contract_id;
+                //        //thisWorkRecord.task_id = pageRecord.task_id;
+                //        //thisWorkRecord.resource_id = pageRecord.resource_id;
+                //        //thisWorkRecord.entry_type_id = pageRecord.entry_type_id;
+                //        //thisWorkRecord.role_id = pageRecord.role_id;
+                //        //thisWorkRecord.cost_code_id = pageRecord.cost_code_id;
+                //        //thisWorkRecord.start_time = pageRecord.start_time;
+                //        //thisWorkRecord.end_time = pageRecord.end_time;
+                //        //para.wordRecord = thisWorkRecord;
+                //    }
+                //}
                 
             }
             else
             {
                 para.workEntry = pageEntry;
-                para.wordRecord = pageRecord;
+                // para.wordRecord = pageRecord;
 
             }
         

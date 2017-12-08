@@ -560,6 +560,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT_CALENDAR=1557,                  // 项目管理-项目详情-日历查询
             PROJECT_ATTACH = 1558,                  // 项目管理-项目详情-附件查询
             PROJECT_UDF = 1559,                     // 项目管理-项目详情-自定义查询
+            TASK_HISTORY = 1560,                    // 任务操作历史
             INVENTORY_TRANSFER = 1562,              // 库存转移查询
             PURCHASE_APPROVAL = 1563,               // 采购审批查询
             //RESOURCE_CALLBACK,                      // 
@@ -788,6 +789,16 @@ namespace EMT.DoneNOW.DTO
             NEED_TYPE_DETAIL = 1018,    // 需要原因类型和详情
             NEED_NONE = 1019,           // 不需要
         }
+        /// <summary>
+        /// 系统管理：系统配置： 工时是否可以代理操作
+        /// </summary>
+        public enum PROXY_TIME_ENTRY
+        {
+            DISABLED = 1077,
+            ENABLED_TIMESHEET_APPROVERS=1078,
+            ENABLED_TIMESHEET_APPROVERS_ADMINISTRATORS=1079,
+        }
+
         /// <summary>
         /// 成本种类 106
         /// </summary>
@@ -1169,6 +1180,7 @@ namespace EMT.DoneNOW.DTO
         PROJECT_CALENDAR = 136,         // 项目管理-项目详情-日历查询
         PROJECT_ATTACH = 137,           // 项目管理-项目详情-附件查询
         PROJECT_UDF = 138,              // 项目管理-项目详情-自定义查询
+        TASK_HISTORY = 139,             // 任务操作历史
         InventoryTransfer = 141,        // 库存转移
         PurchaseApproval = 142,         // 采购审批查询
 

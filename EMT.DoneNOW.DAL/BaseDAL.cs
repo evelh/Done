@@ -341,6 +341,13 @@ namespace EMT.DoneNOW.DAL
             long.TryParse(obj.ToString(), out id);
             return id;
         }
+        /// <summary>
+        /// 工时添加批次
+        /// </summary>
+        public long GetEntryBat()
+        {
+            return GetNextId("seq_entry_batch");
+        }
 
         #endregion
 

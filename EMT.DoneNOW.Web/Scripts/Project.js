@@ -100,7 +100,7 @@ $(".calendar").on("click",function(){
 //     $('#Drap').sortable().bind('sortupdate',function() {
 //         //changeNum();
 //     });
-// });
+// }); //Interaction
 
 
 var toId = "";
@@ -108,14 +108,15 @@ var type = "in";
 
 function drag() {
     
-    var obj = $('#Drap .HighImportance');
+    // var obj = $('#Drap .HighImportance');
+    var obj = $('#Drap .Interaction');
     obj.bind('mousedown', start);
     function start(e) {
-        var ol = obj.offset().left;
-        var ot = obj.offset().top;
+        var ol = obj.parent().offset().left;
+        var ot = obj.parent().offset().top;
         deltaX = e.pageX - ol;
         deltaY = e.pageY - ot;
-        $(this).children('.Interaction').first().trigger("click");
+         $(this).trigger("click");
         $(document).bind({
             'mousemove': move,
             'mouseup': stop
@@ -123,25 +124,25 @@ function drag() {
         return false;
     }
     function move(e) {
-        debugger;
+     
 
-        $.each(obj.siblings(), function (i) {
-            var mX = obj.siblings().eq(i).offset().left;
-            var mY = obj.siblings().eq(i).offset().top;
-            if (e.pageX > mX && e.pageX < mX + obj.siblings().eq(i).width() && e.pageY > mY && e.pageY < mY + obj.siblings().eq(i).height()) {
+        $.each(obj.parent().siblings(), function (i) {
+            var mX = obj.parent().siblings().eq(i).offset().left;
+            var mY = obj.parent().siblings().eq(i).offset().top;
+            if (e.pageX > mX && e.pageX < mX + obj.parent().siblings().eq(i).width() && e.pageY > mY && e.pageY < mY + obj.parent().siblings().eq(i).height()) {
+                obj.parent().css('cursor', 'move')
                 obj.css('cursor', 'move')
-                obj.find('.Interaction').css('cursor', 'move')
                 $('.border_left').show()
                 $('.border_right').show()
                 type = "in";
                 $('.border-line').hide()
                 $('.border_left').css({
                     "left": 0,
-                    "top": obj.siblings().eq(i).children('.Interaction').offset().top - $('.RowContainer').offset().top + obj.siblings().eq(i).height() / 2 - 8,
+                    "top": obj.parent().siblings().eq(i).children('.Interaction').offset().top - $('.RowContainer').offset().top + obj.parent().siblings().eq(i).height() / 2 - 8,
                 })
                 $('.border_right').css({
                     "right": 0,
-                    "top": obj.siblings().eq(i).children('.Interaction').offset().top - $('.RowContainer').offset().top + obj.siblings().eq(i).height() / 2 - 8,
+                    "top": obj.parent().siblings().eq(i).children('.Interaction').offset().top - $('.RowContainer').offset().top + obj.parent().siblings().eq(i).height() / 2 - 8,
                 })
                 $('.cover').show()
                 $('.cover').css({
@@ -149,11 +150,12 @@ function drag() {
                     "top": (e.pageY - $('.RowContainer').offset().top),
                     "display": 'block'
                 })
-                $('.cover').html(obj.siblings().eq(i).find('.Num').html());
-                toId = $(this).data("val");  // 代表将要放的位置的id
+              
+                $('.cover').html(obj.parent().siblings().eq(i).find('.Num').html());
+                toId = obj.parent().siblings().eq(i).data("val");  // 代表将要放的位置的id
 
             } else {
-                obj.css('cursor', 'none')
+                obj.parent().css('cursor', 'none')
             }
             if (e.pageY > mY - 5 && e.pageY < mY + 5) {
                 type = "above";
@@ -171,7 +173,7 @@ function drag() {
                 })
                 //obj.css('border-top','1px solid #346a95')
                 if (e.pageY < mY) {
-                    $('.cover').html(obj.siblings().eq(i).find('.Num').html());
+                    $('.cover').html(obj.parent().siblings().eq(i).find('.Num').html());
                     // toId = obj.data("val");
                 }
             }
@@ -192,8 +194,8 @@ function drag() {
         $('.border_right').hide()
         $('.border_left').hide()
         $('.border-line').hide()
-        obj.css('cursor', '')
-        obj.find('.Interaction').css('cursor', '')
+        obj.parent().css('cursor', '')
+        obj.parent().find('.Interaction').css('cursor', '')
         $(document).unbind({
             'mousemove': move,
             'mouseup': stop,

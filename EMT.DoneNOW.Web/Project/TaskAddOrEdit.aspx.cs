@@ -87,6 +87,10 @@ namespace EMT.DoneNOW.Web.Project
                     thisTask = sdDal.FindNoDeleteById(long.Parse(id));
                     if (thisTask != null)
                     {
+                        if (thisTask.parent_id != null)
+                        {
+                            parTask = sdDal.FindNoDeleteById((long)thisTask.parent_id);
+                        }
                         type_id = thisTask.type_id;
                         isAdd = false;
                         var isCopyString = Request.QueryString["IsCopy"];
@@ -407,7 +411,7 @@ namespace EMT.DoneNOW.Web.Project
                     TimeSpan ts1 = new TimeSpan((DateTime.Parse(startString)).Ticks);
                     TimeSpan ts2 = new TimeSpan(((DateTime)pageTask.estimated_end_date).Ticks);
                     TimeSpan ts = ts1.Subtract(ts2).Duration();
-                    pageTask.estimated_duration = ts.Days + 1;
+                    //pageTask.estimated_duration = ts.Days + 1;
                 // }
                 // RetrunMaxTime 计算结束时间
                 if (thisProject.use_resource_daily_hours == 1)  // 用工作量为固定工作任务计算时间
@@ -429,7 +433,6 @@ namespace EMT.DoneNOW.Web.Project
 
                 }
             
-
             }
             if (isAdd)
             {
@@ -444,7 +447,12 @@ namespace EMT.DoneNOW.Web.Project
                 thisTask.title = pageTask.title;
                 thisTask.parent_id = pageTask.parent_id;
                 thisTask.description = pageTask.description;
-                thisTask.estimated_begin_time = pageTask.estimated_begin_time;
+                if(thisTask.estimated_begin_time!= pageTask.estimated_begin_time)
+                {
+                    thisTask.estimated_begin_time = pageTask.estimated_begin_time;
+                    thisTask.start_no_earlier_than_date = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time);
+                }
+                    
                 thisTask.estimated_end_date = pageTask.estimated_end_date;
                 thisTask.estimated_duration = pageTask.estimated_duration;
                 if (!isPhase)

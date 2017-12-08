@@ -32,8 +32,6 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? cost_code_id { get; set; }
         [DataMember]
-        public Int64? work_record_id { get; set; }
-        [DataMember]
         public Int64? entrytimestamp { get; set; }
         [DataMember]
         public DateTime? worked_date { get; set; }
@@ -91,6 +89,14 @@ namespace EMT.DoneNOW.Core
         public Int32? billing_approved_most_recent_level { get; set; }
         [DataMember]
         public Int32 paused_minutes { get; set; }
+        [DataMember]
+        public Decimal? hours_billed_deduction { get; set; }
+        [DataMember]
+        public Decimal? hours_rate_deduction { get; set; }
+        [DataMember]
+        public Int64? work_entry_record_id { get; set; }
+        [DataMember]
+        public Int64 batch_id { get; set; }
 
 
     }

@@ -277,7 +277,7 @@
             <ul>
                 <!--报表切换按钮-->
                 <li class="Button ButtonIcon" id="TableButton" tabindex="0" title="切换报表">
-                    <span class="Icon Table"></span>
+                    <span class="Icon Table" style="background: url(../Images/Icons.png) no-repeat -6px -113px;"></span>
                     <span class="Text" style="padding: 0;"></span>
                 </li>
                 <li class="Button ButtonIcon" id="AddButton" tabindex="0" title="新建" style="margin-right: -5px;">
@@ -498,7 +498,7 @@
                 <%} %>
             </div>--%>
 
-                <div class="RowContainer" style="height: 600px; top: 30px;">
+                <div class="RowContainer" style="height: 90%; top: 30px;">
                     <table cellpadding="0">
                         <tr class="HeadingRow">
                             <td class="FirstRowPrevent" width="60px">
@@ -642,7 +642,7 @@
                                         <div class="Num"><%=fisrtKey.Value %></div>
                                     </div>
                                 </td>
-                                <td class="Context  U1"><a class="ButtonIcon Button ContextMenu NormalState menu">
+                                <td class="Context  U1"><a class="ButtonIcon Button ContextMenu NormalState">
                                     <input type="hidden" id="<%=id %>" value="<%=id %>" />
                                     <input type="hidden" id="<%=id %>_sort_no" value="<%=fisrtKey.Value %>" />
                                     <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px; width: 15px;"></div>
@@ -1755,31 +1755,31 @@
                                 <div class="Text" style="font-weight: bold;">常规</div>
                             </div>
                             <div class="Content">
-                                <div class="Button1 TaskMenu OnlyTaskMenu" id="TaskViewDetails" tabindex="0" onclick="TaskViewDetails()">
+                                <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu" id="TaskViewDetails" tabindex="0" onclick="TaskViewDetails()">
                                     <span class="Text">查看详情</span>
                                 </div>
-                                <div class="Button1 TaskMenu OnlyTaskMenu" id="TaskViewHistory" tabindex="0" onclick="TaskViewHistory()">
-                                    <span class="Text">查看任务历史</span>
+                                <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu" id="TaskViewHistory" tabindex="0" onclick="TaskViewHistory()">
+                                    <span class="Text" id="ShowHistory">查看任务历史</span>
                                 </div>
-                                <div class="Button1 TaskMenu" id="" tabindex="0" onclick="EditObject('task')">
+                                <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu OnlyPharseMenu" id="" tabindex="0" onclick="EditObject('task')">
                                     <span class="Text">修改</span>
                                 </div>
-                                <div class="Button1 TaskMenu" id="CompleteTask" tabindex="0" onclick="CompleteSingTask()">
+                                <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu OnlyPharseMenu" id="CompleteTask" tabindex="0" onclick="CompleteSingTask()">
                                     <span class="Text">完成</span>
                                 </div>
-                                <div class="Button1 TaskMenu" id="" tabindex="0" onclick="ModifySingTask()">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="ModifySingTask()">
                                     <span class="Text">前进/修改</span>
                                 </div>
-                                <div class="Button1 TaskMenu" id="" tabindex="0" onclick="">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="">
                                     <span class="Text">添加到我的工作清单</span>
                                 </div>
-                                <div class="Button1" id="" tabindex="0" onclick="">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="">
                                     <span class="Text">添加到主负责人的工作列表</span>
                                 </div>
-                                <div class="Button1" id="" tabindex="0" onclick="">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="">
                                     <span class="Text">添加到其它成员的工作列表</span>
                                 </div>
-                                <div class="Button1" id="" tabindex="0" onclick="DeleteTask()">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu OnlyPharseMenu" id="" tabindex="0" onclick="DeleteTask()">
                                     <span class="Text">删除</span>
                                 </div>
                             </div>
@@ -1789,32 +1789,32 @@
                                 <div class="Text" style="font-weight: bold;">新建</div>
                             </div>
                             <div class="Content">
-                                <div class="Button1" id="" tabindex="0" onclick="NewAddWorkEntry('1')">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="AddNoTimeEntryId" tabindex="0" onclick="NewAddWorkEntry('1')">
                                     <span class="Text">工时</span>
                                 </div>
-                                <div class="Button1" id="" tabindex="0" onclick="NewAddWorkEntry('')">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="NewAddWorkEntry('')">
                                     <span class="Text">工时（输入开始/结束时间）</span>
                                 </div>
-                                <div class="Button1" id="TaskNoteButton" tabindex="0" onclick="NewAddNote('task')">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu OnlyPharseMenu" id="TaskNoteButton" tabindex="0" onclick="NewAddNote('task')">
                                     <span class="Text">备注</span>
                                 </div>
-                                <div class="Button1" id="TaskAttButton" tabindex="0" onclick="NewAddAtt()">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="TaskAttButton" tabindex="0" onclick="NewAddAtt()">
                                     <span class="Text">附件</span>
                                 </div>
 
-                                <div class="Button1" id="TaskExpButton" tabindex="0" onclick="NewAddExpense('task')">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="TaskExpButton" tabindex="0" onclick="NewAddExpense('task')">
                                     <span class="Text">费用</span>
                                 </div>
-                                <div class="Button1" id="" tabindex="0" onclick="AddChangeOrder()">
+                                <div class="Button1  TaskMenu  OnlyTaskMenu" id="" tabindex="0" onclick="AddChangeOrder()">
                                     <span class="Text">变更单（成本）</span>
                                 </div>
                                 <div class="Button1 TaskMenu OnlyTaskMenu" id="" tabindex="0" onclick="CopThisTask()">
                                     <span class="Text">任务副本</span>
                                 </div>
-                                <div class="Button1 TaskMenu OnlyTaskMenu" id="" tabindex="0" onclick="AddToLibary()">
+                                <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="AddToLibary()">
                                     <span class="Text">添加到任务库</span>
                                 </div>
-                                <div class="Button1 TaskMenu OnlyTaskMenu" id="" tabindex="0" onclick="">
+                                <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="">
                                     <span class="Text">服务预定</span>
                                 </div>
                             </div>
@@ -1849,7 +1849,7 @@
 <%//弹窗相关的js %>
 <script>
     $(function () {
-        debugger;
+       
         $("#Nav2").hide();
         $("#BackgroundOverLay").hide();
       <% if (isTransTemp)
@@ -1920,74 +1920,6 @@
 </script>
 <%// 页面相关js %>
 <script>
-    (function ($) {
-        var dragging, placeholders = $();
-        $.fn.sortable = function (options) {
-            options = options || {};
-            return this.each(function () {
-                if (/^enable|disable|destroy$/.test(options)) {
-                    var items = $(this).children($(this).data('items')).attr('draggable', options == 'enable');
-                    options == 'destroy' && items.add(this)
-                        .removeData('connectWith').removeData('items')
-                        .unbind('dragstart.h5s dragend.h5s selectstart.h5s dragover.h5s dragenter.h5s drop.h5s');
-                    return;
-                }
-                var index, items = $(this).children(options.items), connectWith = options.connectWith || false;
-                var placeholder = $('<' + items[0].tagName + ' class="sortable-placeholder">');
-                var handle = options.handle, isHandle;
-                items.find(handle).mousedown(function () {
-                    isHandle = true;
-                }).mouseup(function () {
-                    isHandle = false;
-                });
-                $(this).data('items', options.items)
-                placeholders = placeholders.add(placeholder);
-                if (connectWith) {
-                    $(connectWith).add(this).data('connectWith', connectWith);
-                }
-                items.attr('draggable', 'true').bind('dragstart.h5s', function (e) {
-                    if (handle && !isHandle) {
-                        return false;
-                    }
-                    isHandle = false;
-                    var dt = e.originalEvent.dataTransfer;
-                    dt.effectAllowed = 'move';
-                    dt.setData('Text', 'dummy');
-                    dragging = $(this).addClass('sortable-dragging');
-                    index = dragging.index();
-                }).bind('dragend.h5s', function () {
-                    dragging.removeClass('sortable-dragging').fadeIn();
-                    placeholders.detach();
-                    if (index != dragging.index()) {
-                        items.parent().trigger('sortupdate');
-                    }
-                    dragging = null;
-                }).not('a[href], img').bind('selectstart.h5s', function () {
-                    this.dragDrop && this.dragDrop();
-                    return false;
-                }).end().add([this, placeholder]).bind('dragover.h5s dragenter.h5s drop.h5s', function (e) {
-                    if (!items.is(dragging) && connectWith !== $(dragging).parent().data('connectWith')) {
-                        return true;
-                    }
-                    if (e.type == 'drop') {
-                        e.stopPropagation();
-                        placeholders.filter(':visible').after(dragging);
-                        return false;
-                    }
-                    e.preventDefault();
-                    e.originalEvent.dataTransfer.dropEffect = 'move';
-                    if (items.is(this)) {
-                        dragging.hide();
-                        $(this)[placeholder.index() < $(this).index() ? 'after' : 'before'](placeholder);
-                        placeholders.not(placeholder).detach();
-                    }
-                    return false;
-                });
-            });
-        };
-    })(jQuery);
-
-
 
     $(".Context").on("mouseover", function () {
 
@@ -2738,22 +2670,49 @@
     // MileContextMenu
     var entityid = "";
     var Times = 0;
-    $(".ContextMenu").bind("mouseover", function (event) {
+    $(".ContextMenu").bind("click", function (event) {
         //debugger;
         clearInterval(Times);
         //debugger;
         var oEvent = event;
+        entityid = $(this).children().first().val(); // data("val");
         var menu = "";
         //var thisClassName = $(this).prop("className"); attachMenuS expTR
-        // $(".menu").hide();
+         $(".menu").hide();
         if (!($(this).parent().parent().hasClass("HighImportance")))  // 代表是项目
         {
             menu = document.getElementById("projectMenu");
         }
         else {
-
+            $(".TaskMenu").hide();
+            if ($(this).parent().parent().hasClass("phaseTr")) {
+                // 修改 完成 删除
+                // 备注
+                $(".OnlyPharseMenu").show();
+            }
+            else if ($(this).parent().parent().hasClass("issueTr")) {
+                $(".OnlyIssMenu").show();
+                $("#ShowHistory").html("查看问题历史");
+            }
+            else if ($(this).parent().parent().hasClass("taskTr")) {
+                $(".OnlyTaskMenu").show();
+                $("#ShowHistory").html("查看任务历史");
+            }
             menu = document.getElementById("taskMenu");
+         }
+
+        var noTimeSetValue = '<%=new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_ENTRY_REQUIRED) %>';
+        if (noTimeSetValue == '0') {
+            $("#AddNoTimeEntryId").css("color", "black");
+            $("#AddNoTimeEntryId").click(function () {
+                NewAddWorkEntry('1');
+            })
         }
+        else if (noTimeSetValue == '1') {
+            $("#AddNoTimeEntryId").removeAttr("onclick");
+            $("#AddNoTimeEntryId").css("color", "grey");
+        }
+        
 
 
         // else if ($(this).hasClass("noteTR")) {
@@ -2764,7 +2723,7 @@
         //    menu = document.getElementById("expMenu");
         //}
 
-        entityid = $(this).children().first().val(); // data("val");
+   
         (function () {
             menu.style.display = "block";
             Times = setTimeout(function () {
@@ -2881,7 +2840,7 @@
     // 新增工时 是否需要输入时间
     function NewAddWorkEntry(NoTime) {
         if (entityid != "" && entityid != undefined) {
-            window.open("WorkEntry.aspx?task_id=" + entityid + "&NoTime" + NoTime, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKVIEW %>', 'left=200,top=200,width=1080,height=800', false);
+            window.open("WorkEntry.aspx?task_id=" + entityid + "&NoTime=" + NoTime, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKVIEW %>', 'left=200,top=200,width=1080,height=800', false);
         }
     }
 
@@ -3018,9 +2977,12 @@
 <%--拖拽相关js--%>
 <script>
     function DragTask() {
+   
         var fromId = GetFirstChooseId();
-        if (fromId != "" && toId != "" && type != "" && fromId != toId)
+        debugger;
+        if (fromId != "" && toId != "" && type != "" && fromId != toId && toId != null && toId != undefined)
         {
+          
             var chooseId = GetChooseTaskId();  // 如果 toId 在选中的taskID中，则不进行操作
 
             var choIdArr = chooseId.split(',');
@@ -3031,7 +2993,7 @@
                     return false;
                 }
             }
-
+            // alert(toId);
             if (isHas == "") {
                 $.ajax({
                     type: "GET",

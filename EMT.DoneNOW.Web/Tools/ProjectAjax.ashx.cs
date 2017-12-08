@@ -640,23 +640,27 @@ namespace EMT.DoneNOW.Web
                 var thisTask = stDal.FindNoDeleteById(from_id);
                 if (thisTask != null)
                 {
-                    // 1
-                    tBll.ChangeBroTaskSortNoAdd(to_id, 1, LoginUserId);
-                    // 2
-                    var oldParID = thisTask.parent_id;
-                    //thisTask.parent_id = null;
-                    //new TaskBLL().OnlyEditTask(thisTask, LoginUserId);
-                    //  thisTask.sort_order = broTask.sort_order;
-                    thisTask.parent_id = broTask.parent_id;
-                    new TaskBLL().OnlyEditTask(thisTask, LoginUserId);
-                    tBll.ChangeTaskSortNo(broTask.sort_order, thisTask.id, LoginUserId);
-                    // 3
-                    tBll.ChangBroTaskSortNoReduce(project_id, oldParID, LoginUserId);
-                    
-                    //thisTask.parent_id = reaParentId;
-                    //stDal.Update(thisTask);
-                    //var thisTaskNewSortNo = tBll.ReturnSortOrder(project_id, reaParentId);
-                    //tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, LoginUserId);
+
+                    if(thisTask.parent_id== broTask.parent_id)
+                    {
+                        tBll.ChangeSubTaskSort((long)thisTask.project_id,thisTask.parent_id, from_id,to_id,LoginUserId);
+                    }
+                    else
+                    {
+                        // 1
+                        tBll.ChangeBroTaskSortNoAdd(to_id, 1, LoginUserId);
+                        // 2
+                        var oldParID = thisTask.parent_id;
+
+                        thisTask.parent_id = broTask.parent_id;
+                        tBll.OnlyEditTask(thisTask, LoginUserId);
+                        tBll.ChangeTaskSortNo(broTask.sort_order, thisTask.id, LoginUserId);
+                        // 3
+                        tBll.ChangBroTaskSortNoReduce(project_id, oldParID, LoginUserId);
+
+                    }
+
+
                 }
 
             }

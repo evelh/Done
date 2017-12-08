@@ -31,7 +31,11 @@ namespace EMT.DoneNOW.BLL
                 thisTask.department_id = thisTask.department_id == 0 ? null : thisTask.department_id;
                 thisTask.no = ReturnTaskNo();
                 thisTask.create_user_id = user.id;
-                if(thisTask.parent_id!=null)
+                if (thisTask.estimated_duration == null)
+                {
+                    thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time, Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)thisTask.estimated_end_date), (long)thisTask.project_id);
+                }
+                if (thisTask.parent_id != null)
                 {
                     thisTask.sort_order = GetMinUserSortNo((long)thisTask.parent_id);
                 }
@@ -39,7 +43,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     thisTask.sort_order = GetMinUserNoParSortNo((long)thisTask.project_id);
                 }
-              
+
                 thisTask.update_user_id = user.id;
                 thisTask.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -515,6 +519,10 @@ namespace EMT.DoneNOW.BLL
                 return false;
             }
             var thisTask = param.task;
+            if (thisTask.estimated_duration == null)
+            {
+                thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time, Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)thisTask.estimated_end_date), (long)thisTask.project_id);
+            }
             var user = UserInfoBLL.GetUserInfo(user_id);
             bool isPhase = thisTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE;
             if (!isPhase)
@@ -641,8 +649,8 @@ namespace EMT.DoneNOW.BLL
                     newSortNo = GetMinUserNoParSortNo((long)thisTask.project_id);
                 }
                 //  
-                ChangeTaskSortNo(newSortNo,thisTask.id,user_id);
-                ChangBroTaskSortNoReduce((long)thisTask.project_id, oldTask.parent_id,user_id);
+                ChangeTaskSortNo(newSortNo, thisTask.id, user_id);
+                ChangBroTaskSortNoReduce((long)thisTask.project_id, oldTask.parent_id, user_id);
 
             }
 
@@ -733,7 +741,7 @@ namespace EMT.DoneNOW.BLL
                         {
                             foreach (var oldTaskRes in oldTaskResList)
                             {
-                                strDal.SoftDelete(oldTaskRes,user_id);
+                                strDal.SoftDelete(oldTaskRes, user_id);
                                 OperLogBLL.OperLogDelete<sdk_task_resource>(oldTaskRes, oldTaskRes.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK_RESOURCE, "删除任务团队成员");
                             }
                         }
@@ -754,7 +762,7 @@ namespace EMT.DoneNOW.BLL
                         var resDepList = param.resDepIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                         if (resDepList != null && resDepList.Count() > 0)
                         {
-                            
+
                             foreach (var resDepId in resDepList)
                             {
                                 var roleDep = srdDal.FindById(long.Parse(resDepId));
@@ -814,7 +822,7 @@ namespace EMT.DoneNOW.BLL
                     }
                 }
 
-                if(oldTaskConList!=null&& oldTaskConList.Count > 0)
+                if (oldTaskConList != null && oldTaskConList.Count > 0)
                 {
                     if (!string.IsNullOrEmpty(param.contactIds))
                     {
@@ -884,7 +892,7 @@ namespace EMT.DoneNOW.BLL
             #region 备注相关
             if (param.task.status_id == (int)DicEnum.TICKET_STATUS.DONE)
             {
-                InsActTaskDone(thisTask.id,user_id);
+                InsActTaskDone(thisTask.id, user_id);
             }
 
             #endregion
@@ -1107,7 +1115,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 不考虑其他因素，只更改task
         /// </summary>
-        public  bool OnlyEditTask(sdk_task thisTask,long user_id)
+        public bool OnlyEditTask(sdk_task thisTask, long user_id)
         {
             var oldTask = _dal.FindNoDeleteById(thisTask.id);
             if (oldTask == null)
@@ -1124,11 +1132,11 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 任务完成插入备注
         /// </summary>
-        public void InsActTaskDone(long task_id,long user_id)
+        public void InsActTaskDone(long task_id, long user_id)
         {
             var thisTask = _dal.FindNoDeleteById(task_id);
             var user = UserInfoBLL.GetUserInfo(user_id);
-            if (thisTask != null&&thisTask.status_id==(int)DicEnum.TICKET_STATUS.DONE&& user!=null)
+            if (thisTask != null && thisTask.status_id == (int)DicEnum.TICKET_STATUS.DONE && user != null)
             {
                 var activity = new com_activity()
                 {
@@ -1152,7 +1160,7 @@ namespace EMT.DoneNOW.BLL
                 new com_activity_dal().Insert(activity);
                 OperLogBLL.OperLogAdd<com_activity>(activity, activity.id, user.id, OPER_LOG_OBJ_CATE.NOTIFY, "修改项目状态-添加通知");
             }
-          
+
         }
 
         /// <summary>
@@ -1185,6 +1193,68 @@ namespace EMT.DoneNOW.BLL
                 }
             }
         }
+        /// <summary>
+        /// 根据开始时间结束时间计算任务的持续时间(当用户未填写持续时间时，根据这个进行计算)
+        /// </summary>
+        public int GetDayByTime(long start_time, long end_time, long project_id)
+        {
+            var thisProject = new pro_project_dal().FindNoDeleteById(project_id);
+            var startDate = Tools.Date.DateHelper.ConvertStringToDateTime(start_time);
+            var endDate = Tools.Date.DateHelper.ConvertStringToDateTime(end_time);
+            // 得出实际相差天数，筛选除去设置后，真是相差天数
+            TimeSpan ts1 = new TimeSpan(startDate.Ticks);
+            TimeSpan ts2 = new TimeSpan(endDate.Ticks);
+            var diffDays = ts1.Subtract(ts2).Duration().Days;   // 天数是否需要+1  todo //
+            var realDays = 0;
+            if (thisProject.exclude_weekend == 0)
+            {
+                for (int i = 0; i < diffDays; i++)
+                {
+                    var thisDate = startDate.AddDays(i);
+                    var thisWeekDays = thisDate.DayOfWeek;
+                    if (thisWeekDays != DayOfWeek.Saturday && thisWeekDays != DayOfWeek.Sunday)
+                    {
+                        realDays++;
+                    }
+                }
+            }
+            else
+            {
+                realDays = diffDays;
+            }
+
+            if (thisProject.exclude_holiday == 0 && thisProject.organization_location_id != null)
+            {
+                var holDays = 0;
+                var thisLocation = new sys_organization_location_dal().FindNoDeleteById((long)thisProject.organization_location_id);
+                if (thisLocation != null)
+                {
+                    var holiDays = new d_holiday_dal().GetHoliDays(thisLocation.holiday_set_id);
+                    if (holiDays != null && holiDays.Count > 0)
+                    {
+                        foreach (var thisHol in holiDays)
+                        {
+                            if (startDate < thisHol.hd && thisHol.hd < endDate)
+                            {
+                                if (thisHol.hd_type == 1)
+                                {
+                                    holDays -= 1;
+                                }
+                                else if (thisHol.hd_type == 0)
+                                {
+                                    holDays += 1;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (holDays != 0)
+                {
+                    realDays += holDays;
+                }
+            }
+            return realDays;
+        }
 
 
         /// <summary>
@@ -1197,18 +1267,18 @@ namespace EMT.DoneNOW.BLL
         public DateTime RetrunMaxTime(long project_id, DateTime thisDate, int days)
         {
             var starDate = new DateTime(thisDate.Year, thisDate.Month, thisDate.Day);
-
+            var newThisDate = thisDate;
             var thisProject = new pro_project_dal().FindNoDeleteById(project_id);
 
             if (days >= 0)
             {
                 if (thisProject.exclude_weekend == 0)    // 调整任务不包括非工作日（周末）
                 {
-                    thisDate = ReturnDateWtihWeek(thisDate, days, true);
+                    newThisDate = ReturnDateWtihWeek(thisDate, days, true);
                 }
                 else
                 {
-                    thisDate = thisDate.AddDays(days);
+                    newThisDate = thisDate.AddDays(days);
                 }
 
                 if (thisProject.exclude_holiday == 0 && thisProject.organization_location_id != null)
@@ -1222,7 +1292,7 @@ namespace EMT.DoneNOW.BLL
                         {
                             foreach (var thisHol in holiDays)
                             {
-                                if (starDate < thisHol.hd && thisHol.hd < thisDate)
+                                if (starDate < thisHol.hd && thisHol.hd < newThisDate)
                                 {
                                     if (thisHol.hd_type == 1)
                                     {
@@ -1240,68 +1310,143 @@ namespace EMT.DoneNOW.BLL
                     {
                         if (thisProject.exclude_weekend == 0)    // 调整任务不包括非工作日（周末）
                         {
-                            thisDate = ReturnDateWtihWeek(thisDate, holDays, true);
+                            newThisDate = ReturnDateWtihWeek(newThisDate, holDays, true);
                         }
                         else
                         {
-                            thisDate = thisDate.AddDays(holDays);
+                            newThisDate = newThisDate.AddDays(holDays);
                         }
                     }
                 }
             }
             else
             {
-
+                newThisDate = ReturnDateWtihWeek(thisDate, days, true);
+                if (thisProject.exclude_holiday == 0 && thisProject.organization_location_id != null)
+                {
+                    var holDays = 0;
+                    var thisLocation = new sys_organization_location_dal().FindNoDeleteById((long)thisProject.organization_location_id);
+                    if (thisLocation != null)
+                    {
+                        var holiDays = new d_holiday_dal().GetHoliDays(thisLocation.holiday_set_id);
+                        if (holiDays != null && holiDays.Count > 0)
+                        {
+                            foreach (var thisHol in holiDays)
+                            {
+                                if (starDate < thisHol.hd && thisHol.hd < newThisDate)
+                                {
+                                    if (thisHol.hd_type == 1)
+                                    {
+                                        holDays -= 1;
+                                    }
+                                    else if (thisHol.hd_type == 0)
+                                    {
+                                        holDays += 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (holDays != 0)
+                    {
+                        if (thisProject.exclude_weekend == 0)    // 调整任务不包括非工作日（周末）
+                        {
+                            newThisDate = ReturnDateWtihWeek(newThisDate, 0 - holDays, true);
+                        }
+                        else
+                        {
+                            newThisDate = newThisDate.AddDays(0 - holDays);
+                        }
+                    }
+                }
             }
 
-            return thisDate;
+            return newThisDate;
         }
 
         /// <summary>
-        /// 计算往后推迟几天的返回天数（是否包括周末）
+        /// 计算往后推迟(退前)几天的返回天数（是否包括周末）
         /// </summary>
         public DateTime ReturnDateWtihWeek(DateTime thisDate, int days, bool isCloWeekday)
         {
-            if (isCloWeekday)  // true 代表包括周末
+            var newDate = thisDate;
+            if (days >= 0)
             {
-                thisDate = thisDate.AddDays(days);
-            }
-            else
-            {
-                // 1.计算第一周
-                // 2.剩余添加天数除5 添加周
-                // 3.添加最后一周天数
-                // 1.
-                var firstWeek = (int)thisDate.DayOfWeek;    //计算开始时间是周几。。 
-                if (firstWeek > 0 || firstWeek <= 5)
+                if (isCloWeekday)  // true 代表包括周末
                 {
-                    if (days < 5 - firstWeek)
-                    {
-                        thisDate = thisDate.AddDays(days);
-                    }
-                    else
-                    {
-                        thisDate = thisDate.AddDays(7 - firstWeek + 1);
-                    }
-                    days -= (5 - firstWeek);
+                    newDate = thisDate.AddDays(days);
                 }
                 else
                 {
-                    thisDate = thisDate.AddDays(firstWeek == 0 ? 1 : 2); // 周末补到星期一去处理
-                }
-                if (days > 0)
-                {
-                    // 2.
-                    var weekNum = days / 5;
-                    thisDate = thisDate.AddDays(weekNum * 7);
-                    // 3.
-                    if (weekNum % 5 != 0)
+                    // 1.计算第一周
+                    // 2.剩余添加天数除5 添加周
+                    // 3.添加最后一周天数
+                    // 1.
+                    var firstWeek = (int)newDate.DayOfWeek;    //计算开始时间是周几。。 
+                    if (firstWeek > 0 || firstWeek <= 5)
                     {
-                        thisDate = thisDate.AddDays(weekNum % 5);
+                        if (days < 5 - firstWeek)
+                        {
+                            newDate = newDate.AddDays(days);
+                        }
+                        else
+                        {
+                            newDate = newDate.AddDays(7 - firstWeek + 1);
+                        }
+                        days -= (5 - firstWeek);
+                    }
+                    else
+                    {
+                        newDate = newDate.AddDays(firstWeek == 0 ? 1 : 2); // 周末补到星期一去处理
+                    }
+                    if (days > 0)
+                    {
+                        // 2.
+                        var weekNum = days / 5;
+                        newDate = newDate.AddDays(weekNum * 7);
+                        // 3.
+                        if (weekNum % 5 != 0)
+                        {
+                            newDate = newDate.AddDays(weekNum % 5);
+                        }
                     }
                 }
             }
-            return thisDate;
+            else
+            {
+                if (isCloWeekday)  // true 代表包括周末
+                {
+                    newDate = thisDate.AddDays(days);
+                }
+                else
+                {
+                    // 1.计算本周几天
+                    // 2.计算剩余几周
+                    // 3.剩余天数倒推算应该是哪一天
+                    var xuhuanDays = 0 - days;
+                    for (int i = 0; i < xuhuanDays; i++)
+                    {
+                        var thisDays = thisDate.AddDays(0 - i);
+                        var thisDayWeek = (int)thisDays.DayOfWeek;
+                        if (thisDayWeek == 0 || thisDayWeek == 6)
+                        {
+                            xuhuanDays++;
+                        }
+                        newDate = newDate.AddDays(-1);
+                    }
+                    var newDateDayWeek = (int)newDate.DayOfWeek;
+                    if (newDateDayWeek == 0)
+                    {
+                        newDate = newDate.AddDays(-2);
+                    }
+                    else if (newDateDayWeek == 6)
+                    {
+                        newDate = newDate.AddDays(-1);
+                    }
+                }
+            }
+            return newDate;
+
         }
 
         /// <summary>
@@ -1576,7 +1721,7 @@ namespace EMT.DoneNOW.BLL
                     }
                     if (nextNo == "")
                     {
-                        sortNo = thisTask.sort_order+"."+ (num + 1).ToString("#00");
+                        sortNo = thisTask.sort_order + "." + (num + 1).ToString("#00");
                     }
                     else
                     {
@@ -1697,6 +1842,115 @@ namespace EMT.DoneNOW.BLL
             }
             return id;
         }
+        /// <summary>
+        /// 两个兄弟节点位置互换
+        /// </summary>
+        public void ChangeSubTaskSort(long project_id, long? parent_id, long from_id, long to_id, long user_id)
+        {
+            List<sdk_task> subList = null;
+            sdk_task parentTask = null;
+            if (parent_id == null)
+            {
+                subList = _dal.GetNoParTaskByProId(project_id);
+            }
+            else
+            {
+                parentTask = _dal.FindNoDeleteById((long)parent_id);
+                subList = _dal.GetTaskByParentId((long)parent_id);
+            }
+
+            if (subList != null && subList.Count > 0)
+            {
+                var fromTask = subList.FirstOrDefault(_ => _.id == from_id);
+                var toTask = subList.FirstOrDefault(_ => _.id == to_id);
+                if (fromTask != null && toTask != null)
+                {
+                    var fromTaskSortArr = fromTask.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                    var toTaskSortArr = toTask.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (int.Parse(toTaskSortArr[toTaskSortArr.Length - 1]) > int.Parse(fromTaskSortArr[fromTaskSortArr.Length - 1]))
+                    {
+                        // 筛选出在两者之间的兄弟节点
+                        var needChangeTaskList = subList.Where(_ =>
+                        {
+                            var thisSortArr = _.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                            if (int.Parse(thisSortArr[thisSortArr.Length - 1]) > int.Parse(fromTaskSortArr[fromTaskSortArr.Length - 1]) && int.Parse(thisSortArr[thisSortArr.Length - 1]) < int.Parse(toTaskSortArr[toTaskSortArr.Length - 1]))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }).ToList();
+                        if (needChangeTaskList != null && needChangeTaskList.Count > 0)
+                        {
+                            needChangeTaskList = needChangeTaskList.OrderBy(_ => _.sort_order).ToList();
+                            var parentSort = "";
+                            if (parentTask != null)
+                            {
+                                parentSort = parentTask.sort_order + ".";
+                            }
+                            var lastSort = needChangeTaskList[needChangeTaskList.Count - 1].sort_order;
+                            foreach (var thisNeedChaTask in needChangeTaskList)
+                            {
+                                var thisLastSortArr = thisNeedChaTask.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                                var newSort = parentSort + (int.Parse(thisLastSortArr[thisLastSortArr.Length - 1]) - 1).ToString("#00");
+                                ChangeTaskSortNo(newSort, thisNeedChaTask.id, user_id);
+                            }
+                            ChangeTaskSortNo(lastSort, fromTask.id, user_id);
+                        }
+                        //else
+                        //{
+                        //    fromTask.sort_order = toTask.sort_order;
+                        //    toTask.sort_order = fromTask.sort_order;
+                        //    OnlyEditTask(fromTask,user_id);
+                        //    OnlyEditTask(toTask, user_id);
+                        //}
+                    }
+                    else
+                    {
+                        var needChangeTaskList = subList.Where(_ =>
+                        {
+                            var thisSortArr = _.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                            if (int.Parse(thisSortArr[thisSortArr.Length - 1]) < int.Parse(fromTaskSortArr[fromTaskSortArr.Length - 1]) && int.Parse(thisSortArr[thisSortArr.Length - 1]) >= int.Parse(toTaskSortArr[toTaskSortArr.Length - 1]))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }).ToList();
+                        if (needChangeTaskList != null && needChangeTaskList.Count > 0)
+                        {
+                            needChangeTaskList = needChangeTaskList.OrderBy(_ => _.sort_order).ToList();
+                            var parentSort = "";
+                            if (parentTask != null)
+                            {
+                                parentSort = parentTask.sort_order + ".";
+                            }
+                            var firstSort = needChangeTaskList[0].sort_order;
+                            foreach (var thisNeedChaTask in needChangeTaskList)
+                            {
+                                var thisLastSortArr = thisNeedChaTask.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                                var newSort = parentSort + (int.Parse(thisLastSortArr[thisLastSortArr.Length - 1]) + 1).ToString("#00");
+                                ChangeTaskSortNo(newSort, thisNeedChaTask.id, user_id);
+                            }
+                            ChangeTaskSortNo(firstSort, fromTask.id, user_id);
+                        }
+                        //else
+                        //{
+                        //    fromTask.sort_order = toTask.sort_order;
+                        //    toTask.sort_order = fromTask.sort_order;
+                        //    OnlyEditTask(fromTask, user_id);                                                                                                                                                                                                                                                                                                
+                        //    OnlyEditTask(toTask, user_id);
+                        //}
+                    }
+
+                }
+            }
+
+        }
 
         #endregion
 
@@ -1732,7 +1986,7 @@ namespace EMT.DoneNOW.BLL
                                 thisTask.parent_id = newParId;
                                 thisTask.sort_order = newSortNo;
                             }
-                            
+
                             else
                             {
                                 var newSortNo = GetMinUserNoParSortNo(project_id);
@@ -2129,24 +2383,51 @@ namespace EMT.DoneNOW.BLL
             try
             {
                 var user = UserInfoBLL.GetUserInfo(user_id);
-                var newRecord = para.wordRecord;
-                newRecord.id = _dal.GetNextIdCom();
-                newRecord.create_user_id = user_id;
-                newRecord.update_user_id = user_id;
-                newRecord.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                newRecord.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                new sdk_work_record_dal().Insert(newRecord);
-                OperLogBLL.OperLogAdd<sdk_work_record>(newRecord, newRecord.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_RECORD, "新增工作报表");
-
+                //var newRecord = para.wordRecord;
+                //newRecord.id = _dal.GetNextIdCom();
+                //newRecord.create_user_id = user_id;
+                //newRecord.update_user_id = user_id;
+                //newRecord.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                //newRecord.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                //new sdk_work_record_dal().Insert(newRecord);
+                //OperLogBLL.OperLogAdd<sdk_work_record>(newRecord, newRecord.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_RECORD, "新增工作报表");
+                var thisBatchId = _dal.GetEntryBat();
                 var newEntry = para.workEntry;
                 newEntry.id = _dal.GetNextIdCom();
-                newEntry.work_record_id = newRecord.id;
+                newEntry.batch_id = thisBatchId;
+                //newEntry.work_record_id = newRecord.id;
                 newEntry.create_user_id = user_id;
                 newEntry.update_user_id = user_id;
                 newEntry.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 newEntry.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                new sdk_work_entry_dal().Insert(newEntry);
-                OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
+                if (newEntry.hours_worked != null)
+                {
+                    new sdk_work_entry_dal().Insert(newEntry);
+                    OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
+                }
+
+
+                #region 页面批量新增操作
+
+                if (para.pagEntDtoList != null && para.pagEntDtoList.Count > 0)
+                {
+                    foreach (var thisEnt in para.pagEntDtoList)
+                    {
+                        newEntry.id = _dal.GetNextIdCom();
+                        newEntry.oid = 0;
+                        newEntry.hours_worked = thisEnt.workHours;
+                        newEntry.summary_notes = thisEnt.sumNote;
+                        newEntry.internal_notes = thisEnt.ineNote;
+                        newEntry.batch_id = thisBatchId;
+                        newEntry.start_time = Tools.Date.DateHelper.ToUniversalTimeStamp(thisEnt.time);
+                        newEntry.offset_hours = 0;
+                        newEntry.hours_billed = thisEnt.workHours;
+                        new sdk_work_entry_dal().Insert(newEntry);
+                        OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
+                    }
+                }
+                #endregion
+
 
                 var choTask = _dal.FindNoDeleteById(newEntry.task_id);
                 if (choTask != null)
@@ -2294,151 +2575,221 @@ namespace EMT.DoneNOW.BLL
             try
             {
                 var user = UserInfoBLL.GetUserInfo(user_id);
-                var swrDal = new sdk_work_record_dal();
+                //var swrDal = new sdk_work_record_dal();
                 var sweDal = new sdk_work_entry_dal();
-                var oldRecord = swrDal.FindNoDeleteById(para.wordRecord.id);
-                var oldEmtry = sweDal.FindNoDeleteById(para.workEntry.id);
-                if (oldEmtry != null && oldRecord != null)
+                //var oldRecord = swrDal.FindNoDeleteById(para.wordRecord.id);
+                //var oldEmtry = sweDal.FindNoDeleteById(para.workEntry.id);
+                //if (oldEmtry != null ) // && oldRecord != null
+                //{
+                //para.wordRecord.update_user_id = user_id;
+                //para.wordRecord.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                //OperLogBLL.OperLogUpdate<sdk_work_record>(para.wordRecord, oldRecord, oldRecord.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_RECORD, "工时报表修改");
+                //swrDal.Update(para.wordRecord);
+
+                //para.workEntry.update_user_id = user_id;
+                //para.workEntry.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                //OperLogBLL.OperLogUpdate<sdk_work_entry>(para.workEntry, oldEmtry, oldEmtry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "工时修改");
+                //swrDal.Update(para.wordRecord);
+                // sweDal.Update(para.workEntry);
+                var newEntry = para.workEntry;
+                var thisBatchId = para.workEntry.batch_id;
+                var oldBatchList = sweDal.GetBatchList(thisBatchId);
+                var pageStartTime = newEntry.start_time;
+                if (oldBatchList != null && oldBatchList.Count > 0)
                 {
-                    para.wordRecord.update_user_id = user_id;
-                    para.wordRecord.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                    OperLogBLL.OperLogUpdate<sdk_work_record>(para.wordRecord, oldRecord, oldRecord.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_RECORD, "工时报表修改");
-                    swrDal.Update(para.wordRecord);
-
-                    para.workEntry.update_user_id = user_id;
-                    para.workEntry.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                    OperLogBLL.OperLogUpdate<sdk_work_entry>(para.workEntry, oldEmtry, oldEmtry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "工时修改");
-                    //swrDal.Update(para.wordRecord);
-                    sweDal.Update(para.workEntry);
-
-                    var choTask = _dal.FindNoDeleteById(para.workEntry.task_id);
-                    if (choTask != null)
+                    if (para.pagEntDtoList != null && para.pagEntDtoList.Count > 0)
                     {
-                        var v_task = new v_task_all_dal().FindById(choTask.id);
-                        if (v_task != null)
+                        var editList = para.pagEntDtoList.Where(_ => _.id > 0).ToList();
+                        var addList = para.pagEntDtoList.Where(_ => _.id < 0).ToList();
+                        if(editList!=null&& editList.Count > 0)
                         {
-                            if (v_task.remain_hours != para.remain_hours || choTask.status_id != para.status_id)
+                            foreach (var thisEnt in editList)
                             {
-                                choTask.status_id = para.status_id;
-                                choTask.projected_variance += para.remain_hours - (v_task.remain_hours == null ? 0 : (decimal)v_task.remain_hours);
-                                OperLogBLL.OperLogUpdate<sdk_task>(choTask, _dal.FindNoDeleteById(choTask.id), choTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "更改task");
-                                _dal.Update(choTask);
+                                var thisEntry = oldBatchList.FirstOrDefault(_ => _.id == thisEnt.id);
+                                if (thisEntry != null)
+                                {
+                                    oldBatchList.Remove(thisEntry);
+                                    newEntry.id = thisEntry.id;
+                                    newEntry.oid = thisEntry.oid;
+                                    newEntry.create_time = thisEntry.create_time;
+                                    newEntry.create_user_id = thisEntry.create_user_id;
+                                    newEntry.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                                    newEntry.update_user_id = user_id;
+                                    newEntry.summary_notes = thisEnt.sumNote;
+                                    newEntry.internal_notes = thisEnt.ineNote;
+                                    newEntry.hours_worked = thisEnt.workHours;
+                                    newEntry.hours_billed = thisEntry.hours_worked;
+                                    if (pageStartTime == null)
+                                    {
+                                        newEntry.start_time = Tools.Date.DateHelper.ToUniversalTimeStamp(thisEnt.time);
+                                    }
+                                    sweDal.Update(newEntry);
+                                    OperLogBLL.OperLogUpdate<sdk_work_entry>(newEntry, thisEntry, thisEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "工时修改");
+                                }
+                            }
+                        }
+                      
 
+
+                        if (addList != null && addList.Count > 0)
+                        {
+                            foreach (var thisEnt in addList)
+                            {
+                                newEntry.id = _dal.GetNextIdCom();
+                                newEntry.oid = 0;
+                                newEntry.hours_worked = thisEnt.workHours;
+                                newEntry.summary_notes = thisEnt.sumNote;
+                                newEntry.internal_notes = thisEnt.ineNote;
+                                newEntry.batch_id = thisBatchId;
+                                newEntry.start_time = Tools.Date.DateHelper.ToUniversalTimeStamp(thisEnt.time);
+                                newEntry.offset_hours = 0;
+                                newEntry.hours_billed = thisEnt.workHours;
+                                new sdk_work_entry_dal().Insert(newEntry);
+                                OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
                             }
                         }
                     }
-
-
-                    #region 通知
-                    if (para.notify_id != 0)
+                    if (oldBatchList.Count > 0)
                     {
-                        var temp = new sys_notify_tmpl_dal().FindNoDeleteById((long)para.notify_id);
-                        if (temp != null)
+                        foreach (var thisOldBatch in oldBatchList)
                         {
-                            var srDal = new sys_resource_dal();
-                            var temp_email_List = new sys_notify_tmpl_email_dal().GetEmailByTempId(temp.id);
-                            if (temp_email_List != null && temp_email_List.Count > 0)
+                            sweDal.SoftDelete(thisOldBatch, user_id);
+                            OperLogBLL.OperLogDelete<sdk_work_entry>(thisOldBatch, thisOldBatch.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "删除工时");
+
+                        }
+                    }
+
+                }
+
+
+
+
+
+                var choTask = _dal.FindNoDeleteById(para.workEntry.task_id);
+
+                if (choTask != null)
+                {
+                    var v_task = new v_task_all_dal().FindById(choTask.id);
+                    if (v_task != null)
+                    {
+                        if (v_task.remain_hours != para.remain_hours || choTask.status_id != para.status_id)
+                        {
+                            choTask.status_id = para.status_id;
+                            choTask.projected_variance += para.remain_hours - (v_task.remain_hours == null ? 0 : (decimal)v_task.remain_hours);
+                            OperLogBLL.OperLogUpdate<sdk_task>(choTask, _dal.FindNoDeleteById(choTask.id), choTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "更改task");
+                            _dal.Update(choTask);
+                        }
+                    }
+                }
+
+                #region 通知
+                if (para.notify_id != 0)
+                {
+                    var temp = new sys_notify_tmpl_dal().FindNoDeleteById((long)para.notify_id);
+                    if (temp != null)
+                    {
+                        var srDal = new sys_resource_dal();
+                        var temp_email_List = new sys_notify_tmpl_email_dal().GetEmailByTempId(temp.id);
+                        if (temp_email_List != null && temp_email_List.Count > 0)
+                        {
+                            string toEmialString = "";
+                            string ccEmialString = "";
+                            if (choTask != null)
                             {
-                                string toEmialString = "";
-                                string ccEmialString = "";
-                                if (choTask != null)
+                                #region 接受邮件人列表
+                                var taskResList = new sdk_task_resource_dal().GetSysResByTaskId(choTask.id);
+                                if (taskResList != null && taskResList.Count > 0)
                                 {
-                                    #region 接受邮件人列表
-                                    var taskResList = new sdk_task_resource_dal().GetSysResByTaskId(choTask.id);
-                                    if (taskResList != null && taskResList.Count > 0)
+                                    taskResList.ForEach(_ => { toEmialString += _.email + ";"; });
+                                }
+                                var project = new pro_project_dal().FindNoDeleteById((long)choTask.project_id);
+                                if (project != null && project.owner_resource_id != null)
+                                {
+                                    var proLead = srDal.FindNoDeleteById((long)project.owner_resource_id);
+                                    if (proLead != null)
                                     {
-                                        taskResList.ForEach(_ => { toEmialString += _.email + ";"; });
+                                        toEmialString += proLead.email + ";";
                                     }
-                                    var project = new pro_project_dal().FindNoDeleteById((long)choTask.project_id);
-                                    if (project != null && project.owner_resource_id != null)
+                                }
+                                if (choTask.owner_resource_id != null)
+                                {
+                                    var taskLead = srDal.FindNoDeleteById((long)choTask.owner_resource_id);
+                                    if (taskLead != null)
                                     {
-                                        var proLead = srDal.FindNoDeleteById((long)project.owner_resource_id);
-                                        if (proLead != null)
-                                        {
-                                            toEmialString += proLead.email + ";";
-                                        }
+                                        toEmialString += taskLead.email + ";";
                                     }
-                                    if (choTask.owner_resource_id != null)
+                                }
+                                if (!string.IsNullOrEmpty(para.contact_ids))
+                                {
+                                    var conList = new crm_contact_dal().GetContactByIds(para.contact_ids);
+                                    if (conList != null && conList.Count > 0)
                                     {
-                                        var taskLead = srDal.FindNoDeleteById((long)choTask.owner_resource_id);
-                                        if (taskLead != null)
-                                        {
-                                            toEmialString += taskLead.email + ";";
-                                        }
+                                        conList.ForEach(_ => { if (!string.IsNullOrEmpty(_.email)) { toEmialString += _.email + ";"; } });
                                     }
-                                    if (!string.IsNullOrEmpty(para.contact_ids))
-                                    {
-                                        var conList = new crm_contact_dal().GetContactByIds(para.contact_ids);
-                                        if (conList != null && conList.Count > 0)
-                                        {
-                                            conList.ForEach(_ => { if (!string.IsNullOrEmpty(_.email)) { toEmialString += _.email + ";"; } });
-                                        }
-                                    }
-
-                                    List<sys_resource> toResList = new List<sys_resource>();
-                                    if (!string.IsNullOrEmpty(para.resIds))
-                                    {
-                                        var resList = new sys_resource_dal().GetListByIds(para.resIds);
-                                        if (resList != null && resList.Count > 0)
-                                        {
-                                            toResList.AddRange(resList);
-                                        }
-                                    }
-                                    if (!string.IsNullOrEmpty(para.workGropIds))
-                                    {
-                                        var workresList = new sys_workgroup_dal().GetResouListByWorkIds(para.workGropIds);
-                                        if (workresList != null && workresList.Count > 0)
-                                        {
-                                            toResList.AddRange(workresList);
-                                        }
-                                    }
-                                    if (toResList.Count > 0)
-                                    {
-                                        toResList = toResList.Distinct().ToList();
-                                        toResList.ForEach(_ => { toEmialString += _.email + ";"; });
-                                    }
-
-                                    #endregion
-
-                                    #region 抄送邮件人列表
-                                    if (para.CCMe)
-                                    {
-                                        ccEmialString += user.email;
-                                    }
-
-                                    #endregion
-
-
                                 }
 
-                                var notify = new com_notify_email()
+                                List<sys_resource> toResList = new List<sys_resource>();
+                                if (!string.IsNullOrEmpty(para.resIds))
                                 {
-                                    id = _dal.GetNextIdCom(),
-                                    cate_id = (int)NOTIFY_CATE.PROJECT,
-                                    event_id = (int)DicEnum.NOTIFY_EVENT.TICKET_TIME_ENTRY_CREATED_EDITED,
-                                    to_email = toEmialString,
-                                    cc_email = ccEmialString,
-                                    notify_tmpl_id = para.notify_id,
-                                    from_email = user.email,
-                                    from_email_name = user.name,
-                                    subject = para.subjects,
-                                    body_text = temp_email_List[0].body_text + para.otherEmail,
-                                    // is_success = (sbyte)(isSuccess ? 1 : 0),
-                                    is_html_format = 0,
-                                    create_user_id = user_id,
-                                    update_user_id = user_id,
-                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                };
-                                new com_notify_email_dal().Insert(notify);
-                                OperLogBLL.OperLogAdd<com_notify_email>(notify, notify.id, user.id, OPER_LOG_OBJ_CATE.NOTIFY, "修改工时-添加通知");
+                                    var resList = new sys_resource_dal().GetListByIds(para.resIds);
+                                    if (resList != null && resList.Count > 0)
+                                    {
+                                        toResList.AddRange(resList);
+                                    }
+                                }
+                                if (!string.IsNullOrEmpty(para.workGropIds))
+                                {
+                                    var workresList = new sys_workgroup_dal().GetResouListByWorkIds(para.workGropIds);
+                                    if (workresList != null && workresList.Count > 0)
+                                    {
+                                        toResList.AddRange(workresList);
+                                    }
+                                }
+                                if (toResList.Count > 0)
+                                {
+                                    toResList = toResList.Distinct().ToList();
+                                    toResList.ForEach(_ => { toEmialString += _.email + ";"; });
+                                }
+
+                                #endregion
+
+                                #region 抄送邮件人列表
+                                if (para.CCMe)
+                                {
+                                    ccEmialString += user.email;
+                                }
+
+                                #endregion
+
+
                             }
+
+                            var notify = new com_notify_email()
+                            {
+                                id = _dal.GetNextIdCom(),
+                                cate_id = (int)NOTIFY_CATE.PROJECT,
+                                event_id = (int)DicEnum.NOTIFY_EVENT.TICKET_TIME_ENTRY_CREATED_EDITED,
+                                to_email = toEmialString,
+                                cc_email = ccEmialString,
+                                notify_tmpl_id = para.notify_id,
+                                from_email = user.email,
+                                from_email_name = user.name,
+                                subject = para.subjects,
+                                body_text = temp_email_List[0].body_text + para.otherEmail,
+                                // is_success = (sbyte)(isSuccess ? 1 : 0),
+                                is_html_format = 0,
+                                create_user_id = user_id,
+                                update_user_id = user_id,
+                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            };
+                            new com_notify_email_dal().Insert(notify);
+                            OperLogBLL.OperLogAdd<com_notify_email>(notify, notify.id, user.id, OPER_LOG_OBJ_CATE.NOTIFY, "修改工时-添加通知");
                         }
                     }
-
-
-                    #endregion
                 }
+                #endregion
+                //}
             }
             catch (Exception)
             {
@@ -2462,14 +2813,15 @@ namespace EMT.DoneNOW.BLL
                 {
                     if (thisEntry.approve_and_post_user_id == null && thisEntry.approve_and_post_date == null)
                     {
-                        if (thisEntry.work_record_id != null)
-                        {
-                            var thisRecord = swrDal.FindNoDeleteById((long)thisEntry.work_record_id);
-                            swrDal.SoftDelete(thisRecord, user_id);
-                            OperLogBLL.OperLogDelete<sdk_work_record>(thisRecord, thisRecord.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_RECORD, "删除工时报表");
-                        }
+                        //if (thisEntry.work_record_id != null)
+                        //{
+                        //    var thisRecord = swrDal.FindNoDeleteById((long)thisEntry.work_record_id);
+                        //    swrDal.SoftDelete(thisRecord, user_id);
+                        //    OperLogBLL.OperLogDelete<sdk_work_record>(thisRecord, thisRecord.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_RECORD, "删除工时报表");
+                        //}
                         sweDal.SoftDelete(thisEntry, user_id);
                         OperLogBLL.OperLogDelete<sdk_work_entry>(thisEntry, thisEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "删除工时");
+
 
                     }
                     else
@@ -2515,7 +2867,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     thisAddNote.task_id = param.thisTask.id;
                 }
-                
+
                 if (contact != null)
                 {
                     thisAddNote.contact_id = contact.id;
@@ -2534,7 +2886,7 @@ namespace EMT.DoneNOW.BLL
                 #region 修改任务状态
                 if (param.thisTask != null)
                 {
-                    if(param.status_id!=0&& param.thisTask.status_id!= param.status_id)
+                    if (param.status_id != 0 && param.thisTask.status_id != param.status_id)
                     {
                         param.thisTask.status_id = param.status_id;
                         OperLogBLL.OperLogUpdate<sdk_task>(param.thisTask, _dal.FindNoDeleteById(param.thisTask.id), param.thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
@@ -2542,7 +2894,7 @@ namespace EMT.DoneNOW.BLL
 
                         if (param.status_id == (int)DicEnum.TICKET_STATUS.DONE)
                         {
-                            InsActTaskDone(param.thisTask.id,user_id);
+                            InsActTaskDone(param.thisTask.id, user_id);
                         }
                     }
                 }
@@ -2591,74 +2943,74 @@ namespace EMT.DoneNOW.BLL
                             #region 接收邮件人列表
 
                             if (!string.IsNullOrEmpty(param.contact_ids))
+                            {
+                                var conList = new crm_contact_dal().GetContactByIds(param.contact_ids);
+                                if (conList != null && conList.Count > 0)
                                 {
-                                    var conList = new crm_contact_dal().GetContactByIds(param.contact_ids);
-                                    if (conList != null && conList.Count > 0)
+                                    conList.ForEach(_ => { if (!string.IsNullOrEmpty(_.email)) { toEmialString += _.email + ";"; } });
+                                }
+                            }
+
+                            List<sys_resource> toResList = new List<sys_resource>();
+                            if (!string.IsNullOrEmpty(param.resIds))
+                            {
+                                var resList = new sys_resource_dal().GetListByIds(param.resIds);
+                                if (resList != null && resList.Count > 0)
+                                {
+                                    toResList.AddRange(resList);
+                                }
+                            }
+                            if (!string.IsNullOrEmpty(param.workGropIds))
+                            {
+                                var workresList = new sys_workgroup_dal().GetResouListByWorkIds(param.workGropIds);
+                                if (workresList != null && workresList.Count > 0)
+                                {
+                                    toResList.AddRange(workresList);
+                                }
+                            }
+                            if (toResList.Count > 0)
+                            {
+                                toResList = toResList.Distinct().ToList();
+                                toResList.ForEach(_ => { toEmialString += _.email + ";"; });
+                            }
+                            if (param.toCrea)
+                            {
+                                var creRes = srDal.FindNoDeleteById(create_id);
+                                if (creRes != null)
+                                {
+                                    toEmialString += creRes.email + ";";
+                                }
+                            }
+                            if (param.toAccMan)
+                            {
+                                if (account.resource_id != null)
+                                {
+                                    var accRes = srDal.FindNoDeleteById(create_id);
+                                    if (accRes != null)
                                     {
-                                        conList.ForEach(_ => { if (!string.IsNullOrEmpty(_.email)) { toEmialString += _.email + ";"; } });
+                                        toEmialString += accRes.email + ";";
                                     }
                                 }
-
-                                List<sys_resource> toResList = new List<sys_resource>();
-                                if (!string.IsNullOrEmpty(param.resIds))
-                                {
-                                    var resList = new sys_resource_dal().GetListByIds(param.resIds);
-                                    if (resList != null && resList.Count > 0)
-                                    {
-                                        toResList.AddRange(resList);
-                                    }
-                                }
-                                if (!string.IsNullOrEmpty(param.workGropIds))
-                                {
-                                    var workresList = new sys_workgroup_dal().GetResouListByWorkIds(param.workGropIds);
-                                    if (workresList != null && workresList.Count > 0)
-                                    {
-                                        toResList.AddRange(workresList);
-                                    }
-                                }
-                                if (toResList.Count > 0)
-                                {
-                                    toResList = toResList.Distinct().ToList();
-                                    toResList.ForEach(_ => { toEmialString += _.email + ";"; });
-                                }
-                                if (param.toCrea)
-                                {
-                                    var creRes = srDal.FindNoDeleteById(create_id);
-                                    if (creRes != null)
-                                    {
-                                        toEmialString += creRes.email + ";";
-                                    }
-                                }
-                                if (param.toAccMan)
-                                {
-                                    if (account.resource_id != null)
-                                    {
-                                        var accRes = srDal.FindNoDeleteById(create_id);
-                                        if (accRes != null)
-                                        {
-                                            toEmialString += accRes.email + ";";
-                                        }
-                                    }
-                                }
+                            }
 
 
-                                if (!string.IsNullOrEmpty(param.otherEmail))
-                                {
-                                    toEmialString += param.otherEmail + ";";
-                                }
+                            if (!string.IsNullOrEmpty(param.otherEmail))
+                            {
+                                toEmialString += param.otherEmail + ";";
+                            }
 
-                                #endregion
+                            #endregion
 
-                                #region 抄送邮件人列表
-                                if (param.ccMe)
-                                {
-                                    ccEmialString += user.email;
-                                }
+                            #region 抄送邮件人列表
+                            if (param.ccMe)
+                            {
+                                ccEmialString += user.email;
+                            }
 
-                                #endregion
+                            #endregion
 
 
-                          
+
                             var sysEmail = new d_general_dal().FindNoDeleteById((int)DicEnum.SUPPORT_EMAIL.SYS_EMAIL);
                             var fromEmail = user.email;
                             var from_email_name = user.name;
@@ -3190,13 +3542,13 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 取消任务
         /// </summary>
-        public bool CancelTask(long task_id,long user_id)
+        public bool CancelTask(long task_id, long user_id)
         {
             try
             {
                 var user = UserInfoBLL.GetUserInfo(user_id);
                 var thisTask = _dal.FindNoDeleteById(task_id);
-                if (thisTask != null&& user!=null)
+                if (thisTask != null && user != null)
                 {
                     thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     thisTask.update_user_id = user_id;
@@ -3205,7 +3557,7 @@ namespace EMT.DoneNOW.BLL
                     thisTask.estimated_hours = 0;
                     thisTask.hours_per_resource = 0;
                     OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "取消任务");
-                     _dal.Update(thisTask);
+                    _dal.Update(thisTask);
 
                     var activity = new com_activity()
                     {
@@ -3239,13 +3591,13 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 恢复任务
         /// </summary>
-        public bool RecoveTask(long task_id,long user_id)
+        public bool RecoveTask(long task_id, long user_id)
         {
             try
             {
                 var user = UserInfoBLL.GetUserInfo(user_id);
                 var thisTask = _dal.FindNoDeleteById(task_id);
-                if (thisTask != null && user != null&& thisTask.is_cancelled!=0)
+                if (thisTask != null && user != null && thisTask.is_cancelled != 0)
                 {
                     thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     thisTask.update_user_id = user_id;
@@ -3264,7 +3616,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 将任务添加到任务库
         /// </summary>
-        public bool AddTaskToLibary(sdk_task_library param,long user_id)
+        public bool AddTaskToLibary(sdk_task_library param, long user_id)
         {
             try
             {
@@ -3285,7 +3637,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 删除任务成员是这个员工的成员信息，或者主负责人是这个员工的移除
         /// </summary>
-        public bool DeleteTeamRes(long projetc_id,long resource_id,long user_id)
+        public bool DeleteTeamRes(long projetc_id, long resource_id, long user_id)
         {
             try
             {
@@ -3315,21 +3667,21 @@ namespace EMT.DoneNOW.BLL
 
                 return false;
             }
-        
+
             return true;
         }
         /// <summary>
         /// 根据项目id和员工id查找员工是否在任务中出现
         /// </summary>
-        public bool ResIsInTask(long project_id,long resource_id)
+        public bool ResIsInTask(long project_id, long resource_id)
         {
             var strList = new sdk_task_resource_dal().GetListByProIdResId(project_id, resource_id);
-            if(strList!=null&& strList.Count > 0)
+            if (strList != null && strList.Count > 0)
             {
                 return true;
             }
             var taskList = _dal.GetListByProAndRes(project_id, resource_id);
-            if(taskList!=null&& taskList.Count > 0)
+            if (taskList != null && taskList.Count > 0)
             {
                 return true;
             }
@@ -3340,7 +3692,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 删除成员是这个联系人的信息
         /// </summary>
-        public bool DeleteTeamCon(long project_id,long contact_id,long user_id)
+        public bool DeleteTeamCon(long project_id, long contact_id, long user_id)
         {
             try
             {
@@ -3360,16 +3712,16 @@ namespace EMT.DoneNOW.BLL
             {
                 return false;
             }
-       
+
             return true;
         }
         /// <summary>
         /// 获取到规则当中优先级高的一个并返回
         /// </summary>
-        public d_cost_code_rule GetRule(List<d_cost_code_rule> ruleList,long? account_id=null)
+        public d_cost_code_rule GetRule(List<d_cost_code_rule> ruleList, long? account_id = null)
         {
             d_cost_code_rule returnRule = null;
-            if (ruleList!=null&& ruleList.Count > 0)
+            if (ruleList != null && ruleList.Count > 0)
             {
                 if (account_id != null)
                 {
@@ -3377,7 +3729,7 @@ namespace EMT.DoneNOW.BLL
                 }
                 else
                 {
-                    returnRule = ruleList.FirstOrDefault(_ => _.resource_id != null && _.account_id !=null);
+                    returnRule = ruleList.FirstOrDefault(_ => _.resource_id != null && _.account_id != null);
                 }
                 if (returnRule == null)
                 {
@@ -3407,11 +3759,11 @@ namespace EMT.DoneNOW.BLL
                                 returnRule = ruleList[0];
                             }
                         }
-                            
+
                     }
-                    
+
                 }
-                
+
             }
             return returnRule;
         }

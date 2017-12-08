@@ -5,7 +5,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
+    <link rel="stylesheet" type="text/css" href="../Content/base.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/index.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/searchList.css" />
+    <title>任务操作历史</title>
+    <style>
+        .searchcontent {
+            width: 100%;
+            height: 100%;
+            min-width: 2200px;
+        }
+
+            .searchcontent table th {
+                background-color: #cbd9e4;
+                border-color: #98b4ca;
+                color: #64727a;
+                height: 28px;
+                line-height: 28px;
+                text-align: center;
+            }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -14,122 +35,152 @@
                 <div class="Active ThemePrimaryColor TitleBar EntityPage">
                     <div class="TitleBarItem Title"><span class="Text">任务历史</span><span class="SecondaryText">(<%=thisTask.no %> - <%=thisTask.title %>)</span></div>
                 </div>
-                <div class="ValidationSummary" id="zdf46c5e1b4a04571b221cb11c323342b">
-                    <div class="CustomValidation Valid"></div>
-                    <div class="FormValidation Valid">
-                        <div class="ErrorContent">
-                            <div class="TransitionContainer">
-                                <div class="IconContainer">
-                                    <div class="Icon"></div>
-                                </div>
-                                <div class="TextContainer"><span class="Count"></span><span class="Count Spacer"></span><span class="Message"></span></div>
-                            </div>
-                        </div>
-                        <div class="ChevronContainer">
-                            <div class="Up"></div>
-                            <div class="Down"></div>
-                        </div>
+                <div class="contentboby">
+                    <div class="RightClickMenu" style="left: 10px; top: 36px; display: none;">
                     </div>
-                </div>
-                <div class="ButtonContainer"><a class="Button ButtonIcon IconOnly Print NormalState" id="z81fb31c58114440294da124cfc896dc6" tabindex="0" title="Print"><span class="Icon"></span><span class="Text"></span></a><a class="Button ButtonIcon IconOnly Refresh NormalState" id="zbbe66a341b0e498cabd5b6a03558909f" tabindex="0" title="Refresh"><span class="Icon"></span><span class="Text"></span></a></div>
-            </div>
-            <div class="DynamicGridContainer">
-                <div class="Grid Small" id="ProjectTaskHistoryGrid">
-                    <div class="HeaderContainer">
-                        <table cellpadding="0">
-                            <colgroup>
-                                <col class="Normal DateTime" data-persistence-key="Date" data-unique-css-class="U0">
-                                <col class="Normal Text" data-persistence-key="Action" data-unique-css-class="U1">
-                                <col class=" Text DynamicSizing" data-persistence-key="Details" data-unique-css-class="U2" style="width: auto;">
-                                <col class="Normal Text" data-persistence-key="Person" data-unique-css-class="U3">
-                            </colgroup>
-                            <tbody>
-                                <tr class="HeadingRow">
-                                    <td class=" DateTime">
-                                        <div class="Standard">
-                                            <div class="Heading">操作时间</div>
-                                        </div>
-                                    </td>
-                                    <td class="Normal Text">
-                                        <div class="Standard">
-                                            <div class="Heading">操作</div>
-                                        </div>
-                                    </td>
-                                    <td class=" Text Dynamic">
-                                        <div class="Standard">
-                                            <div class="Heading">详情</div>
-                                        </div>
-                                    </td>
-                                    <td class="Normal Text">
-                                        <div class="Standard">
-                                            <div class="Heading">联系人</div>
-                                        </div>
-                                    </td>
-                                    <td class="ScrollBarSpacer" style="width: 17px;"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="ScrollingContentContainer">
-                        <div class="NoDataMessage">No items to display</div>
-                        <div class="RowContainer BodyContainer">
-                            <table cellpadding="0">
-                                <colgroup>
-                                    <col class="Normal DateTime">
-                                    <col class="Normal Text">
-                                    <col class=" Text DynamicSizing" style="width: auto;">
-                                    <col class="Normal Text">
-                                </colgroup>
-                                <tbody>
-                                    <%if (logList != null && logList.Count > 0)
+                    <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;">
+                        <ul class="clear fl">
+
+                            <li id="Print"><i style="background-image: url(../Images/print.png);"></i></li>
+
+
+                        </ul>
+                        <%if (queryResult != null && queryResult.count > 0)
+                            { %>
+                        <div class="page fl">
+                            <%
+                                int indexFrom = queryResult.page_size * (queryResult.page - 1) + 1;
+                                int indexTo = queryResult.page_size * queryResult.page;
+                                if (indexFrom > queryResult.count)
+                                    indexFrom = queryResult.count;
+                                if (indexTo > queryResult.count)
+                                    indexTo = queryResult.count;
+                            %>
+                            <span>第<%=indexFrom %>-<%=indexTo %>&nbsp;&nbsp;总数&nbsp;<%=queryResult.count %></span>
+                            <span>每页<%if (queryResult.page_size == 20)
                                         {
-                                            logList = logList.OrderByDescending(_ => _.oper_time).ToList();
-                                            var resList = new EMT.DoneNOW.DAL.sys_resource_dal().GetDictionary();
-                                            foreach (var thisLog in logList)
-                                            { %>
-                                            <tr class="D" >
-                                        <td class="DateTime  U0"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisLog.oper_time).ToString("yyyy-MM-dd HH:mm:ss") %></td>
-                                        <td class="Text Normal U1">Status Changed</td>
-                                        <td class="Text  U2">Status changed from Waiting Approval to Change Order</td>
-                                        <td class="Text Normal U3">
-                                            <%if (resList != null && resList.Count > 0)
+                            %>&nbsp;20&nbsp;<%}
+                                                else
                                                 {
-                                                    var thisRes = resList.FirstOrDefault(_ => _.val == thisLog.user_id.ToString()); %>
-                                           <%=thisRes==null?"":thisRes.show %>
-                                            <%} %>
-                                            </td>
-                                    </tr>
-                                    <%}} %>
-                            
-                                  
-                                </tbody>
-                            </table>
-                            <div class="ContextOverlayContainer" id="ProjectTaskHistoryGrid_ContextOverlay">
-                                <div class="ContextOverlay">
-                                    <div class="Outline Arrow"></div>
-                                    <div class="Arrow"></div>
-                                    <div class="Active LoadingIndicator"></div>
-                                    <div class="Content"></div>
-                                </div>
-                                <div class="ContextOverlay">
-                                    <div class="Outline Arrow"></div>
-                                    <div class="Arrow"></div>
-                                    <div class="Active LoadingIndicator"></div>
-                                    <div class="Content"></div>
-                                </div>
-                            </div>
-                            <div class="DragIndicator">
-                                <div class="Bar"></div>
-                                <div class="LeftArrow"></div>
-                                <div class="RightArrow"></div>
-                            </div>
-                            <div class="DragStatus"></div>
+                            %><a href="#" onclick="ChangePageSize(20)">20</a><%}
+                            %>|<%if (queryResult.page_size == 50)
+                                   {
+                            %>&nbsp;50&nbsp;<%}
+                                                else
+                                                {
+                            %><a href="#" onclick="ChangePageSize(50)">50</a><%}
+                            %>|<%if (queryResult.page_size == 100)
+                                   { %>&nbsp;100&nbsp;<%}
+                                                  else
+                                                  { %><a href="#" onclick="ChangePageSize(100)">100</a><%} %></span>
+                            <i onclick="ChangePage(1)"><<</i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page-1 %>)"><</i>
+                            <input type="text" style="width: 30px; text-align: center;" value="<%=queryResult.page %>" />
+                            <span>&nbsp;/&nbsp;<%=queryResult.page_count %></span>
+                            <i onclick="ChangePage(<%=queryResult.page+1 %>)">></i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page_count %>)">>></i>
                         </div>
+                        <%} %>
                     </div>
-                    <div class="FooterContainer"></div>
                 </div>
+              
+            </div>
+            <div class="searchcontent" id="searchcontent" style="margin-top: 56px; min-width: <%=tableWidth%>px; overflow: hidden;">
+
+                <table cellpadding="0">
+                   <tr>
+                        <%
+                  
+                    foreach (var para in resultPara)
+                    {
+                        if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
+                            || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
+                            || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
+                            continue;
+                        string orderby = null;
+                        string order = null;
+                        if (!string.IsNullOrEmpty(queryResult.order_by))
+                        {
+                            var strs = queryResult.order_by.Split(' ');
+                            orderby = strs[0];
+                            order = strs[1].ToLower();
+                        }
+                %>
+                <th  width="<%=para.length * 32 %>px" ><%=para.name %></th>
+                <%} %>
+                   </tr>
+                    <tbody>
+
+                        <%               
+                            if (queryResult != null && queryResult.count > 0)
+                            {
+                                var stDal = new EMT.DoneNOW.DAL.sdk_task_dal();
+                                var idPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID);
+                                foreach (var rslt in queryResult.result)
+                                {
+                                    string id = "0";
+                                    if (idPara != null)
+                                    {
+                                        id = rslt[idPara.name].ToString();
+                                    }
+                        %>
+                        <tr data-val="<%=id %>" class="dn_tr">
+                            
+                            <%foreach (var para in resultPara)
+                                {
+                                    if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
+                                        || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
+                                        || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
+                                        continue;
+                                    string tooltip = null;
+                                    if (resultPara.Exists(_ => _.name.Equals(para.name + "tooltip")))
+                                        tooltip = para.name + "tooltip";
+                            %>
+                            <%if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.PIC)
+                                { %>
+                            <td <%if (tooltip != null)
+                                { %>title="<%=rslt[tooltip] %>"
+                                <%} %> style="background: url(..<%=rslt[para.name] %>) no-repeat center;"></td>
+                            <%}
+                                else if (para.name == "详情")
+                                {%>
+                                  <td><%=stDal.GetContractSql(rslt[para.name].ToString()) %></td>
+                                <%}
+                                else
+                                { %>
+                            <td><%=rslt[para.name] %></td>
+                            <%} %>
+                            <%}
+                            %>
+                        </tr>
+                        <%}
+                            }
+                        %>
+                    </tbody>
+                </table>
+
             </div>
         </div>
+        <%--<input type="hidden" id="test"/>--%>
     </form>
 </body>
 </html>
+<script src="../Scripts/jquery-3.1.0.min.js"></script>
+<script src="../Scripts/Common/SearchBody.js"></script>
+<script src="../Scripts/common.js"></script>
+<script>
+    //$(function () {
+    //    debugger;
+    //    TTTT();
+
+    //    function TTTT() {
+    //        if ($("#test").val() != "1") {
+    //            LayerConfirm("1", "1", "1", function () { $("#test").val("1"); TTTT(); }, function () { ""});
+    //            return false;
+
+    //        }
+    //        alert("1");
+    //    }
+
+        
+       
+    //})
+</script>

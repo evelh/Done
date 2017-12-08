@@ -442,7 +442,7 @@
                             <table class="RightClickMenuItemTable" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;">
                                 <tbody>
                                     <tr>
-                                        <td class="RightClickMenuItemText"  onclick="AddNote()">
+                                        <td class="RightClickMenuItemText" onclick="AddNote()">
                                             <span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">备注</span>
                                         </td>
                                     </tr>
@@ -524,17 +524,11 @@
                                     </div>
                                     <div class="Editor TextBox" data-editor-id="PhaseName" data-rdp="PhaseName">
                                         <div class="InputField">
-                                            <%
-                                                EMT.DoneNOW.Core.sdk_task parPhase = null;
-                                                if (thisTask != null && thisTask.parent_id != null)
-                                                {
-                                                    parPhase = sdDal.FindNoDeleteById((long)thisTask.parent_id);
-                                                }
-                                            %>
-                                            <input id="PhaseName" type="text" value="<%=parPhase==null?"":parPhase.title %>" name="PhaseName" disabled="disabled" />
-                                            <input type="hidden" name="parent_id" id="PhaseNameHidden" value="<%=parPhase == null ? "" : parPhase.id.ToString() %>" />
-                                            <span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PhaseSelectorButton" tabindex="0" title="选择阶段" onclick="ChoosePhase()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><a class="NormalState Button ButtonIcon IconOnly Delete" id="PhaseDeleteButton" tabindex="0" title="Clear the selected phase" onclick="CancelPhase()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -64px 0px;"></span><span class="Text"></span></a>
-                                                <input id="PhaseId" name="PhaseId" type="hidden" value="" /></span>
+
+                                            <input id="PhaseName" type="text" value="<%=parTask==null?"":parTask.title %>" name="PhaseName" disabled="disabled" />
+                                            <input type="hidden" name="parent_id" id="PhaseNameHidden" value="<%=parTask == null ? "" : parTask.id.ToString() %>" />
+                                            <span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PhaseSelectorButton" tabindex="0" title="选择阶段" onclick="ChoosePhase()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><a class="NormalState Button ButtonIcon IconOnly Delete" id="PhaseDeleteButton" tabindex="0" title="清除选择的阶段" onclick="CancelPhase()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -64px 0px;"></span><span class="Text"></span></a>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -783,7 +777,7 @@
                                     </div>
                                     <div class="Editor IntegerBox" data-editor-id="Duration" data-rdp="Duration">
                                         <div class="InputField">
-                                            <input id="estimated_duration" type="text" value="<%=isAdd ? 1 : thisTask.estimated_duration %>" name="estimated_duration" maxlength="5" />
+                                            <input id="estimated_duration" type="text" value="<%=isAdd ? 1 : thisTask.estimated_duration %>" name="estimated_duration" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
                                         </div>
                                     </div>
                                     <div class="EditorLabelContainer">
@@ -1340,8 +1334,8 @@
                                             </div>
                                         </div>
                                         <div class="Editor TextBox LabeledValue" data-editor-id="EstimatedHours">
-                                            <div class="InputField"><span class="Value"></span></div>
-                                            <input id="EstimatedHours" name="EstimatedHours" type="hidden" value="">
+                                            <div class="InputField"><span class="Value"><%=isAdd ? "" : thisTask.estimated_hours.ToString("#0.00")  %></span></div>
+
                                         </div>
                                     </div>
                                     <div class="Small Column">
@@ -1352,10 +1346,9 @@
                                         </div>
                                         <div class="Editor TextBox LabeledValue" data-editor-id="Duration">
                                             <div class="InputField">
-                                                <span class="Value">1</span><span class="CustomHtml"><div class="StandardText">days</div>
+                                                <span class="Value"><%=isAdd ? "" : thisTask.estimated_hours.ToString("#0.00")  %></span><span class="CustomHtml"><div class="StandardText">days</div>
                                                 </span>
                                             </div>
-                                            <input id="Duration" name="Duration" type="hidden" value="1">
                                         </div>
                                     </div>
                                 </div>
@@ -1632,7 +1625,7 @@
                     </div>
 
                     <%} %>
-                    <div id="noteDiv" style="display: none;" class="IsShowDiv" >
+                    <div id="noteDiv" style="display: none;" class="IsShowDiv">
                         <div class="TabContainer Active" id="NotesTab">
                             <div class="DynamicGridContainer">
                                 <div class="Grid Large" id="TaskNoteGrid">
@@ -1696,7 +1689,7 @@
                                                         { %>
                                                     <tr class="D" id="<%=thisNote.id %>" data-val="<%=thisNote.id %>">
                                                         <td class="Context  U0"><a class="ButtonIcon Button NoteContextMenu ContextMenu NormalState">
-                                                            <input type="hidden" value="<%=thisNote.id %>"/>
+                                                            <input type="hidden" value="<%=thisNote.id %>" />
                                                             <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px;"></div>
                                                         </a></td>
                                                         <td class="Text  U1"><%=thisNote.name %></td>
@@ -1983,7 +1976,7 @@
                 </div>
             </div>
         </div>
-
+        <input type="hidden" id="IsCheckResHOurs" />
         <div id="AssMileMenu" class="menu">
             <ul style="width: 220px;">
                 <li id="" onclick="AssSingMile()" style="font-size: 9pt;"><i class="menu-i1"></i>关联里程碑
@@ -1996,7 +1989,7 @@
                 </li>
             </ul>
         </div>
-         <div id="NoteManageMenu" class="menu">
+        <div id="NoteManageMenu" class="menu">
             <ul style="width: 220px;">
                 <li id="" onclick="EditNote()" style="font-size: 9pt;"><i class="menu-i1"></i>修改备注
                 </li>
@@ -2107,6 +2100,8 @@
 
     $(function () {
 
+
+
         $("#Nav2").hide();
         $("#BackgroundOverLay").hide();
            <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
@@ -2135,13 +2130,19 @@
         <%} %>
 
         <%if (!isAdd)
-    { %>GetPreSelectByIds();
+    {
+        if (!isPhase)
+        {
+
+
+        %>GetPreSelectByIds();
         GetResDep();
         GetContact();
         <%if (thisTask.cost_code_id != null)
     { %>
         $("#WorkType").val('<%=thisTask.cost_code_id %>');
-        <%}%>
+        <%}
+    }%>
         <%}%>
     })
     $("#CancelButton").click(function () {
@@ -2163,7 +2164,7 @@
             if (hours_per_resource == "") {
                 $("#hours_per_resource").val("0.00");
             }
-         
+
             $("#hours_per_resource").prop("disabled", true);
             $("#estimated_hours").prop("disabled", false);
         }
@@ -2174,7 +2175,7 @@
             if (estimated_hours == "") {
                 $("#estimated_hours").val("0.00");
             }
-            
+
             $("#estimated_hours").prop("disabled", true);
             $("#hours_per_resource").prop("disabled", false);
         }
@@ -2981,7 +2982,7 @@
             }
         }
 
-     
+
         if (compareTime(estimated_beginTime, estimated_end_date)) {
             LayerMsg("结束时间不能早于开始时间");
             return false;
@@ -3000,14 +3001,58 @@
             var department_id = $("#department_id").val();
             if (department_id == "" || department_id == "0") {
                    <%var thisDepSet = new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_DEPARTMENT_REQUIRE);
-                    if (thisDepSet != null && thisDepSet.setting_value == "1")
-                    {%>
+    if (thisDepSet != null && thisDepSet.setting_value == "1")
+    {%>
                 LayerMsg("为任务分配员工时，部门为必填项");
                 return false;
                     <%}%>
+            }
         }
+        if (resource_id != "") {
+             <%var thisResWorkHourSet = new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_DEPARTMENT_REQUIRE);
+    if (thisResWorkHourSet != null && thisResWorkHourSet.setting_value == "1")
+    { %>
+            //  获取员工剩余时间进行比较
+            var estimated_duration = $("#estimated_duration").val();
+            if (estimated_duration == undefined || estimated_duration == null) {
+                estimated_duration = "";
+            }
+            var hours_per_resource = $("#hours_per_resource").val();
+            if (hours_per_resource == "" || hours_per_resource == undefined || hours_per_resource == null) {
+                $("#hours_per_resource").val("0.00");
+                hours_per_resource = "0.00";
+            }
+            if ($("#IsCheckResHOurs").val() != "1") {
+
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ResourceAjax.ashx?act=CheckResAvailability&project_id=<%=thisProject.id %>&res_id=" + resource_id + "&startTime=" + estimated_beginTime + "&endTime=" + estimated_end_date + "&days=" + estimated_duration + "&thisTaskRpeHour=" + hours_per_resource,
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data != "") {
+                        if (data.result == "False") {
+                            LayerConfirm("主负责人剩余工作时间为" + data.reason + "小时，没有足够的可用时间，是否继续", "是", "否", function () {
+                                $("#IsCheckResHOurs").val("1");
+
+                                SubmitCheck();
+                            }, function () {
+                                $("#IsCheckResHOurs").val("");
+
+                            });
+                            return false;
+                        }
+                    }
+
+                }
+                })
+
+            }
+            <%}%>
         }
-    
+
+
 
         if (status_id == '<%=EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
             // 系统设置
@@ -3022,7 +3067,7 @@
         }
                 <%}%>
 
-      
+
         return true;
     }
     // 校验主负责人是否在团队中出现
@@ -3031,8 +3076,7 @@
         // owner_resource_idHidden
         var resource_id = $("#owner_resource_idHidden").val();
         var resDepIdsHidden = $("#resDepIdsHidden").val();
-        if (resDepIdsHidden == "" || resource_id == "")
-        {
+        if (resDepIdsHidden == "" || resource_id == "") {
             return false;
         }
         else {
@@ -3385,7 +3429,8 @@
     }
 
     function AddNote() {
-        <%if (thisTask != null) { %>
+        <%if (thisTask != null)
+    { %>
         window.open("../Project/TaskNote.aspx?task_id=<%=thisTask.id %>", windowObj.notes + windowType.add, 'left=200,top=200,width=960,height=800', false);
         <%}%>
     }
@@ -3410,7 +3455,7 @@
             }
 
         }
-        else if ($(this).hasClass("NoteContextMenu")){
+        else if ($(this).hasClass("NoteContextMenu")) {
             menu = document.getElementById("NoteManageMenu");
         }
         // else if ($(this).hasClass("noteTR")) {  
