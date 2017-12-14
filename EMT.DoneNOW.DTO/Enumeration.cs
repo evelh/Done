@@ -215,7 +215,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT = 97,           // 项目
             SERVICE_DESK = 98,      // 服务台
             SERVICE_BOOK = 99,      // 服务预定
-            CONTACT = 100,          // 合同
+            CONTRACT = 100,          // 合同
             TIME_SHEET = 101,       // 工时表
             INVENTORY = 102,        // 库存
             TICKETS = 103,          // Taskfire工单
@@ -264,9 +264,10 @@ namespace EMT.DoneNOW.DTO
             //RECURRENCE MASTER - CREATED OR EDITED,              // 
             //QUICK CALL - CREATED,                               // 
             //SERVICE CALL - CREATED OR EDITED,                   // 
-            //BLOCK HOUR CONTRACT - NOTIFICATION RULE,            // 
-            //PER TICKET CONTRACT - NOTIFICATION RULE,            // 
-            NONE=1972,                                       // 无
+            BLOCK_CONTRACT_RULE,                                  // 预付时间合同通知规则
+            PER_CONTRACT_RULE,                                    // 事件合同通知规则    
+            RETAINER_CONTRACT_RULE,                               // 预付费合同通知规则
+            NONE =1972,                                       // 无
         }
 
         /// <summary>
@@ -550,25 +551,29 @@ namespace EMT.DoneNOW.DTO
             SALES_ORDER_VIEW_ATTACHMENT = 1541,     // 销售订单详情-附件查询
             PRO_EXPENSE_REPORT_CALLBACK = 1543,            // 费用报表查找带回 
             PROJECT_CALLBACK = 1544,                // 项目查找带回
+            APPROVE_EXPENSE = 1545,               //费用审批
             PROJECT_TEAM = 1547,                    // 项目管理-项目详情-团队查询
             PROJECT_COST_EXPENSE = 1548,            // 项目管理-项目详情-成本和费用查询
             INVENTORY_LOCATION = 1549,              // 库存仓库查询
             INVENTORY_ITEM = 1550,                  // 库存产品查询
             PROJECT_NOTE = 1552,                    // 项目管理-项目备注查询
             ACCOUNT_POLICY = 1553,                  // 客户策略
-            PROJECT_RATE=1556,                      // 项目管理-项目详情-费率查询
+            APPROVE_LABOUR = 1554,                //工时审批
+            PROJECT_RATE =1556,                      // 项目管理-项目详情-费率查询
             PROJECT_CALENDAR=1557,                  // 项目管理-项目详情-日历查询
             PROJECT_ATTACH = 1558,                  // 项目管理-项目详情-附件查询
             PROJECT_UDF = 1559,                     // 项目管理-项目详情-自定义查询
             TASK_HISTORY = 1560,                    // 任务操作历史
             INVENTORY_TRANSFER = 1562,              // 库存转移查询
             PURCHASE_APPROVAL = 1563,               // 采购审批查询
+            CONTRACT_NOTIFY_RULE=1566,          // 合同通知规则
+
+
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
             REVOKE_LABOUR,                 //撤销工时审批
             REVOKE_EXPENSE,                //撤销费用审批
-            APPROVE_LABOUR,                //工时审批
-            APPROVE_EXPENSE,               //费用审批
+  
             General,                       //general表的通用处理
             Line_Of_Business,              //系统管理：组织：业务条线
             Project_Status,                 //项目：项目状态
@@ -641,7 +646,9 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_SERVICE = 783,                     // 合同服务
             CONTRACT_MILESTONE = 784,                   // 合同里程碑
             CONTRACT_DEFAULT_COST = 785,                // 合同默认成本
-            CONTRACT_SERVICE_ADJUST=788,                //合同服务调整
+            CONTRACT_NOTIFY_RULE = 786,                 // 合同通知规则
+            CONTRACT_NOTIFY_RULE_RECIVED= 787,          // 合同通知规则邮件接收人
+            CONTRACT_SERVICE_ADJUST =788,                //合同服务调整
             CONTRACT_SERVICE_PERIOD = 789,                        //合同服务周期
             CONTRACT_RATE = 790,                        // 合同费率
             CONTRACT_INTERNAL_COST = 791,               // 合同内部成本
@@ -911,6 +918,7 @@ namespace EMT.DoneNOW.DTO
             LABOUR_AJUST=1319,           // 工时调整
             PREPAID_TIME_SELF_BILLING=1320, //预付时间自身计费
             CHARGE =1321,                //成本
+            EXPENSES=1322,               // 费用
             MILESTONES=1323,            //里程碑
             SUBSCRIPTIONS=1324,         //订阅
             SERVICE =1325,              //服务
@@ -982,7 +990,7 @@ namespace EMT.DoneNOW.DTO
             SERVICE_DESK_TICKET = 1809,        // IT服务请求
             COMPANY_TASK = 1810,               // 公司任务
             TRAVEL_TIME = 1811,                // 出差时间
-            PROJECT_PHASE = 1812,              // 项目类别
+            PROJECT_PHASE = 1812,              // 项目阶段
             CLIENT_TASK = 1813,                // 客户任务
             PERSONAL_TIME = 1814,              // 私人时间
             VACATION_TIME = 1815,              // 假期
@@ -1080,6 +1088,15 @@ namespace EMT.DoneNOW.DTO
         {
             SYS_EMAIL=2185,        // 系统发送邮件邮箱地址
         }
+        /// <summary>
+        /// 休假审批状态 - 158
+        /// </summary>
+        public enum TIMEOFF_REQUEST_STATUS
+        {
+            COMMIT=2195,        // 已提交
+            APPROVAL=2196,      // 已审批
+            REFUSE=2197,        // 已拒绝
+        }
     }
 
     /// <summary>
@@ -1170,12 +1187,14 @@ namespace EMT.DoneNOW.DTO
         PROJECT_BASELINE = 118,    // 项目详情-TASK列表-基准
         OpportunityViewAttachment = 119,// 商机详情-附件查询
         SalesOrderViewAttachment = 120, // 销售订单详情-附件查询
+        APPROVE_EXPENSE = 124,               //费用审批  approve_expense
         PROJECT_TEAM = 126,             // 项目管理-项目详情-团队查询
         PROJECT_COST_EXPENSE = 127,     // 项目管理-项目详情-成本和费用查询
         InventoryLocation = 128,        // 库存仓库查询
         InventoryItem = 129,            // 库存产品查询
         PROJECT_NOTE = 131,             // 项目管理-项目详情-备注查询
         ACCOUNT_POLICY = 132,           // 客户策略
+        APPROVE_LABOUR = 133,                //工时审批 approve_labour
         PROJECT_RATE = 135,             // 项目管理-项目详情-费率查询
         PROJECT_CALENDAR = 136,         // 项目管理-项目详情-日历查询
         PROJECT_ATTACH = 137,           // 项目管理-项目详情-附件查询
@@ -1183,12 +1202,12 @@ namespace EMT.DoneNOW.DTO
         TASK_HISTORY = 139,             // 任务操作历史
         InventoryTransfer = 141,        // 库存转移
         PurchaseApproval = 142,         // 采购审批查询
+        CONTRACT_NOTIFY_RULE=145,          // 合同通知规则
+
 
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
-        REVOKE_EXPENSE,                //撤销费用审批      
-        APPROVE_LABOUR,                //工时审批
-        APPROVE_EXPENSE,               //费用审批            
+        REVOKE_EXPENSE,                //撤销费用审批               
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线
         Project_Status,                 //项目：项目状态

@@ -15,11 +15,26 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql<sdk_task>($"SELECT * from sdk_task where id in( SELECT task_id from sdk_task_predecessor where predecessor_task_id = {preTaskId} and delete_time = 0)  and delete_time = 0");
         } 
         /// <summary>
+        /// 获取相关前驱Task信息
+        /// </summary>
+        public List<sdk_task> GetTaskByTaskId(long task_id)
+        {
+            return FindListBySql<sdk_task>($"SELECT * from sdk_task where id in( SELECT predecessor_task_id from sdk_task_predecessor where task_id = {task_id} and delete_time = 0)  and delete_time = 0");
+        }
+
+        /// <summary>
         /// 查找相关前驱任务
         /// </summary>
         public List<sdk_task_predecessor> GetRelList(long taskId)
         {
             return FindListBySql<sdk_task_predecessor>($"SELECT * from sdk_task_predecessor where task_id = {taskId} AND delete_time = 0");
+        }
+        /// <summary>
+        /// 查找将这个作为前驱的关系
+        /// </summary>
+        public List<sdk_task_predecessor> GetPreList(long taskId)
+        {
+            return FindListBySql<sdk_task_predecessor>($"SELECT * from sdk_task_predecessor where predecessor_task_id = {taskId} AND delete_time = 0");
         }
         /// <summary>
         /// 根据任务和前驱任务的id去查找到唯一的前驱任务信息

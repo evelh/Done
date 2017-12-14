@@ -146,10 +146,10 @@ namespace EMT.DoneNOW.Web.Project
                 if (temp != null)
                 {
                     thisTypeList = new List<DictionaryEntryDto>() { temp };
-                    //if (GetLimitValue(AuthLimitEnum.PROTemplatesAdd) == DicEnum.LIMIT_TYPE_VALUE.NO960)
-                    //{
-                    //    thisTypeList.Remove(temp);
-                    //}
+                    if (GetLimitValue(AuthLimitEnum.PROTemplatesAdd) == DicEnum.LIMIT_TYPE_VALUE.NO960)
+                    {
+                        thisTypeList.Remove(temp);
+                    }
                 }
 
             }
@@ -165,30 +165,28 @@ namespace EMT.DoneNOW.Web.Project
                 {
                     thisTypeList.Remove(benchmark);
                 }
-                //if(GetLimitValue(AuthLimitEnum.PROClientAdd)== DicEnum.LIMIT_TYPE_VALUE.NO960)
-                //{
-                //    var cline = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.ACCOUNT_PROJECT).ToString());
-                //    if (cline != null)
-                //    {
-                //        thisTypeList.Remove(cline);
-                //    }
-                //    var inter = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.IN_PROJECT).ToString());
-                //    if (inter != null)
-                //    {
-                //        thisTypeList.Remove(inter);
-                //    }
-                //}
-                //if (GetLimitValue(AuthLimitEnum.PROProposalAdd) == DicEnum.LIMIT_TYPE_VALUE.NO960)
-                //{
-                //    var popal = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.PROJECT_DAY).ToString());
-                //    if (popal != null)
-                //    {
-                //        thisTypeList.Remove(popal);
-                //    }
-                //}
-
-
-
+                // 权限过滤，部分不可新增则不显示。
+                if (GetLimitValue(AuthLimitEnum.PROClientAdd) == DicEnum.LIMIT_TYPE_VALUE.NO960)
+                {
+                    var cline = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.ACCOUNT_PROJECT).ToString());
+                    if (cline != null)
+                    {
+                        thisTypeList.Remove(cline);
+                    }
+                    var inter = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.IN_PROJECT).ToString());
+                    if (inter != null)
+                    {
+                        thisTypeList.Remove(inter);
+                    }
+                }
+                if (GetLimitValue(AuthLimitEnum.PROProposalAdd) == DicEnum.LIMIT_TYPE_VALUE.NO960)
+                {
+                    var popal = thisTypeList.FirstOrDefault(_ => _.val == ((int)DicEnum.PROJECT_TYPE.PROJECT_DAY).ToString());
+                    if (popal != null)
+                    {
+                        thisTypeList.Remove(popal);
+                    }
+                }
 
             }
 

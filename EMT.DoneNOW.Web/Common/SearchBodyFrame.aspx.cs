@@ -139,6 +139,8 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS://审批订阅
                 case (int)DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES://审批定期服务
                 case (int)DicEnum.QUERY_CATE.APPROVE_CHARGES://审批成本
+                case (int)DicEnum.QUERY_CATE.APPROVE_LABOUR://审批成本
+                case (int)DicEnum.QUERY_CATE.APPROVE_EXPENSE://审批成本
                     addBtn = "审批并提交";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_CHARGE:
@@ -239,6 +241,9 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.PROJECT_UDF:
                     addBtn = "项目自定义";
+                    break;
+                case (int)DicEnum.QUERY_CATE.CONTRACT_NOTIFY_RULE:
+                    addBtn = "新增通知规则";
                     break;
                 default:
                     addBtn = "";
@@ -761,11 +766,27 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.PROJECT_ATTACH:
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
+                case (long)QueryType.CONTRACT_NOTIFY_RULE:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑通知规则", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除通知规则", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.APPROVE_LABOUR:
+                    contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "PostSin()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑工时", click_function = "EditWorkEntry()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "工时详情", click_function = "EntryDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ContractDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "项目详情", click_function = "ProjectDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "工单详情", click_function = "TicketDetail()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "恢复初始值", click_function = "RestoreInitiall()" });
+                    break;
+                case (long)QueryType.APPROVE_EXPENSE:
+                    break;
                 default:
                     break;
             }
             // 判断权限，用户不可访问的菜单移除
-            var menus = base.GetSearchContextMenu((QueryType)queryTypeId);  // 获取该用户不可见的菜单名称
+            var menus = base.GetSearchContextMenu((QueryType)queryTypeId);  // 获取该用户不可见的菜单名称 PROJECT_UDF
             for (int i = contextMenu.Count - 1; i >= 0; --i)
             {
                 if (menus.Exists(_ => contextMenu[i].text.Equals(_)))

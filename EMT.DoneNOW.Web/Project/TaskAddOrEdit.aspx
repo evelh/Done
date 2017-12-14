@@ -310,6 +310,9 @@
                 .menu ul .disabled {
                     color: #AAAAAA;
                 }
+                .layui-layer-btn {
+                    font-size:10pt;
+                }
     </style>
 </head>
 <body class="Linen AutotaskBlueTheme">
@@ -1998,7 +2001,12 @@
             </ul>
         </div>
 
-
+        <input type="hidden" id="IsEditEsTime" name="IsEditEsTime" value=""/><!--ti   -->
+        <% EMT.DoneNOW.Core.v_task_all thisVTask = null;
+            if (!isAdd) {
+                thisVTask = new EMT.DoneNOW.DAL.v_task_all_dal().FindById(thisTask.id);            } %>
+        <input type="hidden" id="shengyuTime" value="<%=thisVTask!=null&&thisVTask.remain_hours!=null?((decimal)thisVTask.remain_hours).ToString("#0.00"):"" %>"/>
+        <input type="hidden" id="olfEsTime" name="olfEsTime" value="<%=thisTask!=null?thisTask.estimated_hours.ToString("#0.00"):"" %>"/>
     </form>
 </body>
 </html>
@@ -2200,6 +2208,7 @@
     })
     $("#estimated_beginTime").blur(function () {
         debugger;
+        // isStar = "";
         var thanDateVal = $("#start_no_earlier_than_date").val();
         var startDateVal = $("#estimated_beginTime").val();
         if (thanDateVal != "" && startDateVal != "") {
@@ -2210,6 +2219,9 @@
                 $(this).val("");
             }
         }
+    })
+    $("#estimated_end_date").blur(function () {
+        // isEnd = "";
     })
     <%} %>
 
@@ -2404,6 +2416,21 @@
                 $("#PhaseNameHidden").val("");
             }
         <%}%>
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ProjectAjax.ashx?act=GetTaskSubNum&task_id=" + choosePhaseId,
+                success: function (data) {
+                    if (data == "99") {
+                        LayerMsg("所选阶段子任务过多，请选择其他阶段！");
+                        $("#PhaseName").val("");
+                        $("#PhaseNameHidden").val("");
+                    }
+                },
+            });
+
+
+
         }
 
 
@@ -2926,8 +2953,11 @@
             $("Bcc_Email").html(thisEmailText);
         }
     }
-
+    var isStar = "";
+    var isEnd = "";
+    var isShowAlert = "";  // 修改预估时间
     function SubmitCheck() {
+        debugger;
         var title = $("#title").val();
         if (title == "") {
             LayerMsg("请填写任务标题！");
@@ -2943,6 +2973,65 @@
             LayerMsg("请填写结束时间");
             return false;
         }
+        debugger;
+
+
+
+        // 校验开始结束时间是否在节假日内或者周末内
+        if (isStar == "") {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ProjectAjax.ashx?act=CheckDate&project_id=<%=thisProject.id %>&date=" + estimated_beginTime,
+                async: false,
+                success: function (data) {
+                    if (data == "True") {
+                        LayerConfirm("开始时间在周末或者节假日内，是否继续", "是", "否", function () { isStar = "1"; if (SubmitCheck()) { return true; } else { return false;} }, function () { return false; });
+                    } else {
+                        isStar = "1";
+                    }
+                }
+            })
+        }
+
+        if (isStar != "1") {
+            return false;
+        }
+
+        if (isEnd == "") {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ProjectAjax.ashx?act=CheckDate&project_id=<%=thisProject.id %>&date=" + estimated_end_date,
+                async: false,
+                success: function (data) {
+                    if (data == "True") {
+                        LayerConfirm("结束时间在周末或者节假日内，是否继续", "是", "否", function () { isEnd = "1"; if (SubmitCheck()) { return true; } else { return false; } }, function () { return false; });
+                    }
+                    else {
+                        isEnd = "1";
+                    }
+                }
+            })
+        }
+
+        if (isEnd != "1") {
+            return false;
+        }
+        <%if (!isAdd&&type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE){ %>
+        var estimated_hours = $("#estimated_hours").val();
+        var oldTime = $("#olfEsTime").val();
+        var thisStatus = $("#status_id").val();
+        var shengyuTime = $("#shengyuTime").val();
+        <%if (thisTask != null && thisTask.projected_variance != 0)
+       { %>
+        if (status_id != '<%=EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>' && estimated_hours != oldTime && shengyuTime != "" && Number(shengyuTime) > 0) {
+            LayerConfirm("您正在修改预估时间，任务剩余时间为" + shengyuTime + "小时，将其保留，还是置为0", "保留", "置为0", function () { isShowAlert = "1"; if (SubmitCheck()) { return true; } else { return false; } }, function () { isShowAlert = "1"; $("#IsEditEsTime").val("0"); if (SubmitCheck()) { return true; } else { return false; }  });
+            if (isShowAlert != "1") {
+                return false;
+            }
+        }
+
+        <%}%>
+        <%}%>
             // status_id
        <%if (type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
     { %>
@@ -3027,25 +3116,25 @@
                 $.ajax({
                     type: "GET",
                     url: "../Tools/ResourceAjax.ashx?act=CheckResAvailability&project_id=<%=thisProject.id %>&res_id=" + resource_id + "&startTime=" + estimated_beginTime + "&endTime=" + estimated_end_date + "&days=" + estimated_duration + "&thisTaskRpeHour=" + hours_per_resource,
-                async: false,
-                dataType: "json",
-                success: function (data) {
-                    debugger;
-                    if (data != "") {
-                        if (data.result == "False") {
-                            LayerConfirm("主负责人剩余工作时间为" + data.reason + "小时，没有足够的可用时间，是否继续", "是", "否", function () {
-                                $("#IsCheckResHOurs").val("1");
+                    async: false,
+                    dataType: "json",
+                    success: function (data) {
+                        debugger;
+                        if (data != "") {
+                            if (data.result == "False") {
+                                LayerConfirm("主负责人剩余工作时间为" + data.reason + "小时，没有足够的可用时间，是否继续", "是", "否", function () {
+                                    $("#IsCheckResHOurs").val("1");
 
-                                SubmitCheck();
-                            }, function () {
-                                $("#IsCheckResHOurs").val("");
+                                    SubmitCheck();
+                                }, function () {
+                                    $("#IsCheckResHOurs").val("");
 
-                            });
-                            return false;
+                                });
+                                return false;
+                            }
                         }
-                    }
 
-                }
+                    }
                 })
 
             }

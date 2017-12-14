@@ -1541,14 +1541,7 @@ namespace EMT.DoneNOW.BLL
             }
             return result;
         }
-        /// <summary>
-        /// 根据用户和用户的安全等级判断是否有权限查看
-        /// </summary>
-        public bool CanFindPro(long project_id, long user_id, long leve_id)
-        {
-            // AuthBLL.CheckAuth();
-            return true;
-        }
+     
         /// <summary>
         /// 删除项目（同时删除任务中包含这个员工的任务成员）
         /// </summary>

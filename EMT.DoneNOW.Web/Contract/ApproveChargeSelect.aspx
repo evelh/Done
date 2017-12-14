@@ -92,12 +92,26 @@
                                 <table class="dataGridBody" cellspacing="0" style="width:100%;border-collapse:collapse;">
                                     <tbody>
                                     <tr class="dataGridHeader" style="height: 28px;">
+                                        <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+                                            { %>
+                                         <td style="width: auto;">
+                                            <span>类型</span>
+                                        </td>
+                                        <%} %>
+                                        <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+                                            { %>
                                         <td style="width: auto;">
                                             <span>成本名称</span>
-                                        </td>
+                                        </td><%} %>
                                         <td align="right" style="width: auto;">
                                             <span>客户</span>
                                         </td>
+                                          <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+                                            { %>
+                                         <td style="width: auto;">
+                                            <span>描述</span>
+                                        </td>
+                                        <%} %>
                                         <td style="width: 100px;text-align: right;">
                                             <span>计费金额</span>
                                         </td>
@@ -105,12 +119,26 @@
                                         <%if(list!=null&&list.Count>0) foreach (var i in list)
                                             {%>
                                     <tr class="dataGridBody">
+                                         <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+                                             { %>
+                                         <td style="width: auto;">
+                                            <span><%=i.type %></span>
+                                        </td>
+                                        <%} %>
+                                         <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+                                            { %>
                                         <td style="width: auto;">
                                             <span><%=i.costname %></span>
-                                        </td>
+                                        </td>    <%} %>
                                         <td align="right" style="width: auto;">
                                             <span><%=i.accountname %></span>
                                         </td>
+                                         <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+                                            { %>
+                                         <td align="right" style="width: auto;">
+                                            <span><%=i.description %></span>
+                                        </td>
+                                        <%} %>
                                         <td style="width: 100px;text-align: right;">
                                             <span><%=i.extendprice %></span>
                                         </td>

@@ -110,11 +110,12 @@
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS
                         ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER
                         ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
-                <li class="MenuLink">通知规则-暂未实现</li>
+                <li class="MenuLink"><a href="ContractView.aspx?type=rule&id=<%=contract.id %>">通知发送规则</a></li>
                 <%} %>
                 <% if (contract.type_id != (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
                 <li class="MenuLink">项目管理-暂未实现</li>
                 <%} %>
+                <li class="MenuLink"><a href="ContractView.aspx?type=note&id=<%=contract.id %>">备注</a></li>
                 <li class="MenuLink">工单-暂未实现</li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=udf&id=<%=contract.id %>">自定义字段</a></li>
             </ul>

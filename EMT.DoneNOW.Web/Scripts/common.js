@@ -225,6 +225,7 @@ var windowObj = {
     contract: 'contract',
     contractCost:"contractCost",
     contractCharge: 'contractCharge',
+    contractNotRule: 'contractNotRule',
     notes: 'notes',
     todos: 'todos',
     attachment: 'attachment',
@@ -236,7 +237,8 @@ var windowObj = {
     projectCalendar: 'projectCalendar',
     projectAttach: 'projectAttach',
     projectUdf:'projectUdf',
-    expense:"expense",
+    expense: "expense",
+    workEntry:"workEntry",
 }
 var windowType = {
     blank: '_blank',

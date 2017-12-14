@@ -877,5 +877,192 @@ namespace EMT.DoneNOW.BLL
         {
             return dal.FindSignleBySql<ctt_contract>($"SELECT * FROM ctt_contract WHERE renewed_contract_id={id} AND delete_time=0");
         }
+        /// <summary>
+        /// 新增通知规则
+        /// </summary>
+        public bool AddContractRule(ctt_contract_notify_rule param,string perIds,long user_id)
+        {
+            try
+            {
+                var thisContract = dal.FindNoDeleteById(param.contract_id);
+                if(thisContract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS || thisContract.type_id == (int)DicEnum.CONTRACT_TYPE.RETAINER || thisContract.type_id == (int)DicEnum.CONTRACT_TYPE.PER_TICKET)
+                {
+                    var ccnrDal = new ctt_contract_notify_rule_dal();
+                    var ccnrrDal = new ctt_contract_notify_rule_recipient_dal();
+                    param.id = dal.GetNextIdCom();
+                    param.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    param.update_time = param.create_time;
+                    param.create_user_id = user_id;
+                    param.update_user_id = user_id;
+                    if (thisContract.type_id == (int)DicEnum.CONTRACT_TYPE.RETAINER)
+                    {
+                        // param.rate = param.quantity;
+                        param.quantity = 1;
+                    }
+                    ccnrDal.Insert(param);
+                    OperLogBLL.OperLogAdd<ctt_contract_notify_rule>(param, param.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_NOTIFY_RULE, "新增合同通知规则");
+                    if (!string.IsNullOrEmpty(perIds))
+                    {
+                        var preArr = perIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var thisPreId in preArr)
+                        {
+                            var thisRecipient = new ctt_contract_notify_rule_recipient() {
+                                id= ccnrrDal.GetNextIdCom(),
+                                contract_id = param.contract_id,
+                                contract_notify_rule_id = param.id,
+                                person_id = long.Parse(thisPreId),
+                                create_time = param.create_time,
+                                update_time = param.update_time,
+                                create_user_id = user_id,
+                                update_user_id = user_id,
+                            };
+                            ccnrrDal.Insert(thisRecipient);
+                            OperLogBLL.OperLogAdd<ctt_contract_notify_rule_recipient>(thisRecipient, thisRecipient.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_NOTIFY_RULE_RECIVED, "新增合同通知规则接收人");
+                        }
+                    }
+
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 修改合同邮件通知规则
+        /// </summary>
+        public bool EditContractRule(ctt_contract_notify_rule param, string perIds, long user_id)
+        {
+            try
+            {
+                var thisContract = dal.FindNoDeleteById(param.contract_id);
+                if (thisContract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS || thisContract.type_id == (int)DicEnum.CONTRACT_TYPE.RETAINER || thisContract.type_id == (int)DicEnum.CONTRACT_TYPE.PER_TICKET)
+                {
+                    var ccnrDal = new ctt_contract_notify_rule_dal();
+                    var ccnrrDal = new ctt_contract_notify_rule_recipient_dal();
+                    var oldRule = ccnrDal.FindNoDeleteById(param.id);
+                    if (oldRule != null)
+                    {
+                        param.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        param.update_user_id = user_id;
+                        if (thisContract.type_id == (int)DicEnum.CONTRACT_TYPE.RETAINER)
+                        {
+                            // param.rate = param.quantity;
+                            param.quantity = 1;
+                        }
+                        ccnrDal.Update(param);
+                        OperLogBLL.OperLogUpdate<ctt_contract_notify_rule>(param, oldRule, oldRule.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_NOTIFY_RULE, "修改合同通知规则");
+
+                        var oldRecList = ccnrrDal.GetByRuleId(param.id);
+                        if(oldRecList!=null&& oldRecList.Count > 0)
+                        {
+                            if (!string.IsNullOrEmpty(perIds))
+                            {
+                                var preArr = perIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                                foreach (var thisPreId in preArr)
+                                {
+                                    var thisPre = oldRecList.FirstOrDefault(_=>_.person_id.ToString()== thisPreId);
+                                    if (thisPre != null)
+                                    {
+                                        oldRecList.Remove(thisPre);
+                                    }
+                                    else
+                                    {
+                                        var thisRecipient = new ctt_contract_notify_rule_recipient()
+                                        {
+                                            id = ccnrrDal.GetNextIdCom(),
+                                            contract_id = param.contract_id,
+                                            contract_notify_rule_id = param.id,
+                                            person_id = long.Parse(thisPreId),
+                                            create_time = param.create_time,
+                                            update_time = param.update_time,
+                                            create_user_id = user_id,
+                                            update_user_id = user_id,
+                                        };
+                                        ccnrrDal.Insert(thisRecipient);
+                                        OperLogBLL.OperLogAdd<ctt_contract_notify_rule_recipient>(thisRecipient, thisRecipient.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_NOTIFY_RULE_RECIVED, "新增合同通知规则接收人");
+                                    }
+                                }
+                            }
+
+                            oldRecList.ForEach(_ => {
+                                ccnrrDal.SoftDelete(_,user_id);
+                                OperLogBLL.OperLogDelete<ctt_contract_notify_rule_recipient>(_,_.id,user_id, OPER_LOG_OBJ_CATE.CONTRACT_NOTIFY_RULE_RECIVED, "删除合同通知规则接收人");
+                            });
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(perIds))
+                            {
+                                var preArr = perIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                                foreach (var thisPreId in preArr)
+                                {
+                                    var thisRecipient = new ctt_contract_notify_rule_recipient()
+                                    {
+                                        id = ccnrrDal.GetNextIdCom(),
+                                        contract_id = param.contract_id,
+                                        contract_notify_rule_id = param.id,
+                                        person_id = long.Parse(thisPreId),
+                                        create_time = param.create_time,
+                                        update_time = param.update_time,
+                                        create_user_id = user_id,
+                                        update_user_id = user_id,
+                                    };
+                                    ccnrrDal.Insert(thisRecipient);
+                                    OperLogBLL.OperLogAdd<ctt_contract_notify_rule_recipient>(thisRecipient, thisRecipient.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_NOTIFY_RULE_RECIVED, "新增合同通知规则接收人");
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 删除合同规则
+        /// </summary>
+        public bool DeleteContractRule(long rule_id,long user_id)
+        {
+            try
+            {
+                var ccnrDal = new ctt_contract_notify_rule_dal();
+                var ccnrrDal = new ctt_contract_notify_rule_recipient_dal();
+                var oldRule = ccnrDal.FindNoDeleteById(rule_id);
+                if (oldRule != null)
+                {
+                    var oldRecList = ccnrrDal.GetByRuleId(rule_id);
+
+                    ccnrDal.SoftDelete(oldRule,user_id);
+                    OperLogBLL.OperLogDelete<ctt_contract_notify_rule>(oldRule, oldRule.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_NOTIFY_RULE, "删除合同通知规则");
+                    if (oldRecList != null && oldRecList.Count > 0)
+                    {
+
+                        oldRecList.ForEach(_ => {
+                            ccnrrDal.SoftDelete(_, user_id);
+                            OperLogBLL.OperLogDelete<ctt_contract_notify_rule_recipient>(_, _.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_NOTIFY_RULE_RECIVED, "删除合同通知规则接收人");
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

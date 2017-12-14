@@ -17,7 +17,9 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sdk_task>($"select * from sdk_task where delete_time = 0 and project_id = {project_id} "+where); 
         }
-
+        /// <summary>
+        /// 根据id集合获取相应task
+        /// </summary>
         public List<sdk_task> GetTaskByIds(string ids,string where ="")
         {
             return FindListBySql<sdk_task>($"select * from sdk_task where delete_time = 0 and id in ({ids})"+where);
@@ -60,7 +62,9 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sdk_task>($"SELECT * from sdk_task where delete_time = 0 and parent_id = {task_id}");
         }
-
+        /// <summary>
+        /// 获取没有父阶段的task
+        /// </summary>
         public List<sdk_task> GetNoParTaskByProId(long project_id)
         {
             return FindListBySql<sdk_task>($"SELECT * from sdk_task where project_id = {project_id} and parent_id is NULL and delete_time = 0");
@@ -99,7 +103,9 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sdk_task>($"SELECT st.* from sdk_task  st INNER JOIN pro_project pp on st.project_id = pp.id where pp.id = {project_id} and st.owner_resource_id = {resource_id} and pp.delete_time = 0 and st.delete_time = 0  ");
         }
-
+        /// <summary>
+        /// 执行相应sql
+        /// </summary>
         public string GetContractSql(string contractSql)
         {
             if (string.IsNullOrEmpty(contractSql) || string.IsNullOrWhiteSpace(contractSql))

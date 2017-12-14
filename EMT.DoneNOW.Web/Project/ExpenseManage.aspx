@@ -64,8 +64,10 @@
                         <asp:Button ID="save_close" runat="server" Text="保存并关闭" OnClick="save_close_Click" /></span></a>
                     <a class="NormalState Button ButtonIcon Save" id="" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text">
                         <asp:Button ID="save_new" runat="server" Text="保存并新增" OnClick="save_new_Click" /></span></a>
+                     <%if (CheckAuth("PRO_PROJECT_VIEW_EXPENSES_ADD_EXPENSES_POLICY"))
+                         { %>
                     <a class="NormalState Button ButtonIcon Save" id="" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text">客户策略</span></a>
-
+                    <%} %>
                     <a class="NormalState Button ButtonIcon Cancel" id="CancelButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text">关闭</span></a>
                 </div>
             </div>

@@ -96,3 +96,25 @@ function CopyFromOppo() {
     //window.parent.location.href = "../Project/CopyUdfToProject?project_id=" + project_id;
     window.open("../Project/CopyUdfToProject.aspx?project_id=" + project_id, windowObj.projectUdf + windowType.blank, 'left=200,top=200,width=480,height=500', false);
 }
+// 删除项目
+function DeleteProject() {
+    var project_id = $("#id").val();
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "../Tools/ProjectAjax.ashx?act=DeletePro&project_id=" + project_id,
+        dataType: "json",
+        success: function (data) {
+            if (data != "") {
+                if (data.result == "True") {
+                    LayerMsg("删除项目成功！");
+                    window.close();
+                    self.parent.location.reload();
+                } else if (data.result == "False") {
+                    LayerMsg("该项目不能被删除，因为有一个或多个时间条目，费用，费用，服务预定，备注，附件，里程碑！");
+                }
+            }
+       
+        },
+    });
+}

@@ -20,6 +20,7 @@ namespace EMT.DoneNOW.Web.Contract
             {
                 var contract_id = Request.QueryString["id"];
                 contract = new ctt_contract_dal().FindNoDeleteById(long.Parse(contract_id));
+                var conAccount = new CompanyBLL().GetCompany(contract.account_id);
                 var type = Request.QueryString["type"];
                 switch (type)
                 {
@@ -74,6 +75,16 @@ namespace EMT.DoneNOW.Web.Contract
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_SERVICE + "&type=" + (int)QueryType.ContractService + "&id=" + contract.id;
                         second.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_SERVICE_TRANS_HISTORY + "&type=" + (int)QueryType.ContractServiceTransHistory + "&id=" + contract.id;
                         ShowTitle.Text = "服务-" + contract.name;
+                        break;
+                    case "note":
+                        
+                        ShowTitle.Text = "合同备注-" + contract.name+(conAccount==null?"":$"({conAccount.name})");
+                        viewContractIframe.Src = "ContractNoteShow?contract_id="+ contract.id;
+                        break;
+                    case "rule":
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_NOTIFY_RULE + "&type=" + (int)QueryType.CONTRACT_NOTIFY_RULE + "&id=" + contract.id;
+                        // 通知发送规则 - 合同名称（客户名称）； contract_notify_rule
+                        ShowTitle.Text = "通知发送规则-" + contract.name + (conAccount == null ? "" : $"({conAccount.name})");
                         break;
                     default:
                         ShowTitle.Text = "摘要-" + contract.name;

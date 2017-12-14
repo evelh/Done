@@ -32,6 +32,9 @@ namespace EMT.DoneNOW.Web
                 case "auto_block": auto_block(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
                 case "force": force(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
                 case "cost": Cost(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
+                case "GetLabourInfo":
+                    GetLabourInfo(context,long.Parse(id));
+                    break;
                 default: break;
 
             }
@@ -149,6 +152,16 @@ namespace EMT.DoneNOW.Web
             }
 
         }
-
+        /// <summary>
+        /// 获取工时信息
+        /// </summary>
+        public void GetLabourInfo(HttpContext context,long id)
+        {
+            var thisEntry = new DAL.sdk_work_entry_dal().FindNoDeleteById(id);
+            if (thisEntry != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(thisEntry));
+            }
+        }
     }
 }

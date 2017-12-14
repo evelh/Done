@@ -8,10 +8,10 @@ using System.Runtime.Serialization;
 
 namespace EMT.DoneNOW.Core
 {
-    [Table("ctt_contract_notify_rule")]
+    [Table("tst_timeoff_request")]
     [Serializable]
     [DataContract]
-    public partial class ctt_contract_notify_rule : SoftDeleteCore
+    public partial class tst_timeoff_request : SoftDeleteCore
     {
 
         [Key]
@@ -20,19 +20,19 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 oid { get; set; }
         [DataMember]
-        public Int64 contract_id { get; set; }
+        public Int64 request_resource_id { get; set; }
         [DataMember]
-        public String name { get; set; }
+        public Int32 status_id { get; set; }
         [DataMember]
-        public Decimal threshold { get; set; }
+        public Int64 task_id { get; set; }
         [DataMember]
-        public Decimal? quantity { get; set; }
+        public Decimal request_hours { get; set; }
         [DataMember]
-        public Decimal? rate { get; set; }
+        public String request_reason { get; set; }
         [DataMember]
-        public String additional_email_addresses { get; set; }
+        public Int64? approved_resource_id { get; set; }
         [DataMember]
-        public Int32 notify_tmpl_id { get; set; }
+        public String reject_reason { get; set; }
 
 
     }

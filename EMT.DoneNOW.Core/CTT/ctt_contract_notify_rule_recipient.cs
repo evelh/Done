@@ -8,10 +8,10 @@ using System.Runtime.Serialization;
 
 namespace EMT.DoneNOW.Core
 {
-    [Table("ctt_contract_notify_rule")]
+    [Table("ctt_contract_notify_rule_recipient")]
     [Serializable]
     [DataContract]
-    public partial class ctt_contract_notify_rule : SoftDeleteCore
+    public partial class ctt_contract_notify_rule_recipient : SoftDeleteCore
     {
 
         [Key]
@@ -22,17 +22,9 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 contract_id { get; set; }
         [DataMember]
-        public String name { get; set; }
+        public Int64 contract_notify_rule_id { get; set; }
         [DataMember]
-        public Decimal threshold { get; set; }
-        [DataMember]
-        public Decimal? quantity { get; set; }
-        [DataMember]
-        public Decimal? rate { get; set; }
-        [DataMember]
-        public String additional_email_addresses { get; set; }
-        [DataMember]
-        public Int32 notify_tmpl_id { get; set; }
+        public Int64 person_id { get; set; }
 
 
     }

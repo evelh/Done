@@ -143,6 +143,8 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.APPROVE_MILESTONES:
                 case (int)DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES:
                 case (int)DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS:
+                case (int)DicEnum.QUERY_CATE.APPROVE_LABOUR:
+                case (int)DicEnum.QUERY_CATE.APPROVE_EXPENSE:
                     currentQuery.page_name = "审批并提交";
                     break;
                 case (int)DicEnum.QUERY_CATE.GENERATE_INVOICE:
@@ -151,7 +153,7 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PROJECT_SEARCH:
                     currentQuery.page_name = "项目查询";
 					break;
-                case (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH:
+                case (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH:  
                     currentQuery.page_name = "备注查询";
                     break;
                 case (int)DicEnum.QUERY_CATE.TODOS:

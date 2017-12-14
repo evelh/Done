@@ -310,7 +310,7 @@
 					<div nowrap="">
                         <input type="text" id="contract_id" tabindex="7" style="width: 150px;" value="<%=thisContract==null?"":thisContract.name %>" readonly="">
                         <input type="hidden" name="contract_id" id="contract_idHidden" value="<%=thisContract==null?"":thisContract.id.ToString() %>" />
-                        <a title="Contract Search" onclick="ChooseContract()">
+                        <a id="ChosCon" onclick="ChooseContract()">
                             <img tabindex="8" src="../Images/data-selector.png" border="0" style="vertical-align: middle"></a>
 
                     </div>
@@ -755,6 +755,39 @@
         GetServiceByContractID();
         $("#service_id").val(<%=thisWorkEntry.service_id %>);
         <%}
+        // 工时权限过滤 部分字段不可以更改
+        if (GetLimitValue(EMT.DoneNOW.DTO.AuthLimitEnum.PROCanModifyContract) == EMT.DoneNOW.DTO.DicEnum.LIMIT_TYPE_VALUE.NO960)
+        {%>
+        // ChooseContract() contract_id
+        $("#ChosCon").removeAttr("onclick");
+        $("#contract_id").prop("disabled", true);
+       <% }
+         if (GetLimitValue(EMT.DoneNOW.DTO.AuthLimitEnum.PROCanModifyNonBillable) == EMT.DoneNOW.DTO.DicEnum.LIMIT_TYPE_VALUE.NO960)
+        {%>
+        // ChooseContract() contract_id
+        $("#isBilled").removeAttr("onclick");
+        $("#isBilled").prop("disabled", true);
+       <% }
+          if (GetLimitValue(EMT.DoneNOW.DTO.AuthLimitEnum.PROCanModifyShow) == EMT.DoneNOW.DTO.DicEnum.LIMIT_TYPE_VALUE.NO960)
+        {%>
+        // ChooseContract() contract_id
+        $("#ShowOnInv").removeAttr("onclick");
+        $("#ShowOnInv").prop("disabled", true);
+       <% }
+           if (GetLimitValue(EMT.DoneNOW.DTO.AuthLimitEnum.PROCanModifyWorkType) == EMT.DoneNOW.DTO.DicEnum.LIMIT_TYPE_VALUE.NO960)
+        {%>
+        // ChooseContract() contract_id
+       // $("#cost_code_id").removeAttr("onclick");
+        $("#cost_code_id").prop("disabled", true);
+       <% }
+           if (GetLimitValue(EMT.DoneNOW.DTO.AuthLimitEnum.PROCanModifyService) == EMT.DoneNOW.DTO.DicEnum.LIMIT_TYPE_VALUE.NO960)
+        {%>
+        // ChooseContract() contract_id
+        // $("#cost_code_id").removeAttr("onclick");
+        $("#service_id").prop("disabled", true);
+       <% }
+
+
     }%>
     })
 
@@ -872,7 +905,12 @@
     // 合同的查找带回
     function ChooseContract() {
         // contract_idHidden
+        // con626 合同状态 1 激活 0 未激活
         var url = "../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&con626=1&field=contract_id&callBack=GetServiceByContractID";
+           <%if (!isAdd && GetLimitValue(EMT.DoneNOW.DTO.AuthLimitEnum.PROCanModifyService) == EMT.DoneNOW.DTO.DicEnum.LIMIT_TYPE_VALUE.NO960)
+        { %>
+        url = "../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&con626=1&field=contract_id";
+        <%}%>
         var account_id = $("#account_id").val();
         if (account_id != "" && account_id != "0") {
             url += "&con627=" + account_id;
@@ -916,6 +954,7 @@
     }
     // 通过合同，生成服务包信息
     function GetServiceByContractID() {
+     
         var serHtml = "<option value=''> </option>";
         var contract_id = $("#contract_idHidden").val();
         if (contract_id != "") {
@@ -939,10 +978,16 @@
     $("#isBilled").click(function () {
         if ($(this).is(":checked")) {
             // $("#ShowOnInv").prop("checked", false);
+            <%if (GetLimitValue(EMT.DoneNOW.DTO.AuthLimitEnum.PROCanModifyShow) == EMT.DoneNOW.DTO.DicEnum.LIMIT_TYPE_VALUE.HAVE960) {%>
             $("#ShowOnInv").prop("disabled", false);
+            <%}%>
+            
         } else {
+            <%if (GetLimitValue(EMT.DoneNOW.DTO.AuthLimitEnum.PROCanModifyShow) == EMT.DoneNOW.DTO.DicEnum.LIMIT_TYPE_VALUE.HAVE960) {%>
             $("#ShowOnInv").prop("checked", true);
             $("#ShowOnInv").prop("disabled", true);
+            <%}%>
+           
         }
     })
 
