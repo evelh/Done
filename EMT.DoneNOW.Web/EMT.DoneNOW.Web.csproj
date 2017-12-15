@@ -805,6 +805,7 @@
     <Content Include="Scripts\Search\project_cost_expense.js" />
     <Content Include="Scripts\Search\project_team.js" />
     <Content Include="Scripts\Search\project_note.js" />
+    <Content Include="Scripts\Search\project_temp_search.js" />
     <Content Include="Scripts\Search\PurchaseApproval.js" />
     <Content Include="Scripts\Search\project_udf.js" />
     <Content Include="Scripts\Search\Quote.js" />

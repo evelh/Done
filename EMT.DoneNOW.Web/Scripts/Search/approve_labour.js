@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $(".General").hide();
+    // $(".General").hide();
     $(".CheckTd").click(function (event) {
         event.stopPropagation(); // 不执行上一元素的事件，阻止冒泡事件
     });
@@ -27,6 +27,9 @@ function Add() {
         var typeId = $("#type").val();
         OpenWindow('../Contract/ApproveChargeSelect.aspx?type=' + typeId + '&ids=' + ids, windowObj.workEntry + windowType.manage);
       
+    }
+    else {
+        LayerMsg("请选择需要审批的数据！");
     }
  
 }

@@ -87,7 +87,8 @@
             <div class="ButtonBar">
                 <ul>
                     <li><a class="ImgLink" id="HREF_btnClose" name="HREF_btnClose" title="Close">
-                        <img class="ButtonImg" title="Close" id="IMG_btnClose" border="0" /><span class="Text">关闭</span></a><span></span>
+                        <span class="icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
+                        <span class="Text">关闭</span></a><span></span>
 
                     </li>
                 </ul>
@@ -105,5 +106,7 @@
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script>
-
+    $("#HREF_btnClose").click(function () {
+        window.close();
+    })
 </script>

@@ -22,12 +22,12 @@ namespace EMT.DoneNOW.Web.Project
         {
             var bll = new BLL.QueryCommonBLL();
 
-            // catId = DNRequest.GetQueryInt("cat", 0);
-            catId = (int)DicEnum.QUERY_CATE.PROJECT_SEARCH;
+             catId = DNRequest.GetQueryInt("cat", 0);
+            // catId = (int)DicEnum.QUERY_CATE.PROJECT_SEARCH;
             int typeId = DNRequest.GetQueryInt("type", 0);
-            typeId = (int)QueryType.PROJECT_SEARCH;
+            // typeId = (int)QueryType.PROJECT_SEARCH;
             int groupId = DNRequest.GetQueryInt("group", 0);
-            groupId = 108;
+            // groupId = 108;
             isCheck = DNRequest.GetStringValue("isCheck", "");
             if (catId == 0)
             {

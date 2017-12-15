@@ -245,6 +245,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.CONTRACT_NOTIFY_RULE:
                     addBtn = "新增通知规则";
                     break;
+                case (int)DicEnum.QUERY_CATE.PROJECT_TEMP_SEARCH:
+                    addBtn = "新增项目模板";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -781,6 +784,18 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "恢复初始值", click_function = "RestoreInitiall()" });
                     break;
                 case (long)QueryType.APPROVE_EXPENSE:
+                    contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "PostSin()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ContractDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "项目详情", click_function = "ProjectDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设置为可计费", click_function = "MakeBill()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设置为不可计费", click_function = "MakeUnBill()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "恢复初始值", click_function = "RestoreInitiall()" });
+                    break;
+                case (long)QueryType.PROJECT_TEMP_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "查看", click_function = "ViewDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
+                    //contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "PostSin()" });   // project_temp_search
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;

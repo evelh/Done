@@ -66,7 +66,7 @@
                         <asp:Button ID="save_new" runat="server" Text="保存并新增" OnClick="save_new_Click" /></span></a>
                      <%if (CheckAuth("PRO_PROJECT_VIEW_EXPENSES_ADD_EXPENSES_POLICY"))
                          { %>
-                    <a class="NormalState Button ButtonIcon Save" id="" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text">客户策略</span></a>
+                    <a class="NormalState Button ButtonIcon Save" id="AccountPolicyButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text">客户策略</span></a>
                     <%} %>
                     <a class="NormalState Button ButtonIcon Cancel" id="CancelButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text">关闭</span></a>
                 </div>
@@ -616,6 +616,7 @@
         }
         <%}%>
         <%} %>
+        $("#expense_cost_code_id").trigger("change");
     })
 
     $("#CancelButton").click(function () {
@@ -642,6 +643,7 @@
                 url: "../Tools/GeneralAjax.ashx?act=costCodeRule&code_id=" + thisCodeId,
                 dataType: "json",
                 success: function (data) {
+                    debugger;
                     if (data != "") {
                         if (data.max != "" && data.max != null) {
                             $("#moneyDiv").show();
@@ -661,6 +663,12 @@
                         $("#moneyHidden").val("");
                         $("#overdraft_policy_id").val("");
                     }
+                },
+                error: function (data) {
+                    $("#moneyDiv").hide();
+                    $("#money").html("");
+                    $("#moneyHidden").val("");
+                    $("#overdraft_policy_id").val("");
                 },
             });
         }
@@ -769,7 +777,7 @@
     // 报表查找带回 135,122，1543
     function CallBackExpRep() {
         // expense_report_id
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRO_EXPENSE_REPORT_CALLBACK %>&field=expense_report_id", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKPHASE_CALLBACK %>&con993=<%=GetLoginUserId() %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRO_EXPENSE_REPORT_CALLBACK %>&field=expense_report_id&con993=<%=GetLoginUserId() %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.EXPENSE_REPORT_CALLBACK %>', 'left=200,top=200,width=600,height=800', false);
     }
     // 提交校验
     function SubmitCheck() {
@@ -898,7 +906,7 @@
     function CallBackPro() {
         var account_idHidden = $("#account_idHidden").val();
         if (account_idHidden != "") {
-            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_CALLBACK %>&field=project_id&con997=" + account_idHidden, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKPHASE_CALLBACK %>&con993=<%=GetLoginUserId() %>', 'left=200,top=200,width=600,height=800', false);
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_CALLBACK %>&field=project_id&con997=" + account_idHidden, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECTCALLBACK %>', 'left=200,top=200,width=600,height=800', false);
         }
         else {
             LayerMsg("请先选择关联客户");
@@ -907,7 +915,7 @@
     }
     // 客户查找带回
     function CallBackAcc() {
-        window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=account_id', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKPHASE_CALLBACK %>&con993=<%=GetLoginUserId() %>', 'left=200,top=200,width=600,height=800', false);
+        window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=account_id', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
     }
     // 当前项目的客户是否是查找带回的客户
     function ProIsAcc() {
@@ -957,6 +965,16 @@
         $("#task_id").html(taskHtml);
     }
 
+    $("#AccountPolicyButton").click(function () {
+        var account_idHidden = $("#account_idHidden").val();
+        if (account_idHidden != "" && account_idHidden != null && account_idHidden != undefined)
+        {
+            window.open('../Project/CompanyPolicy.aspx?account_id=' + account_idHidden, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ACCOUNT_POLICY %>', 'left=200,top=200,width=600,height=800', false);
+        }
+        else {
+            LayerMsg("请先选择客户");
+        }
+    })
 </script>
 
 

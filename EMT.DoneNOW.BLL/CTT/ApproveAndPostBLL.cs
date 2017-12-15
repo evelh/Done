@@ -2288,8 +2288,9 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool Restore_Initial(int id, int type, long user_id)
+        public bool Restore_Initial(int id, int type, long user_id,out string reason)
         {
+            reason = "";
             //订阅
             if (type == (long)QueryType.APPROVE_SUBSCRIPTIONS)
             {
@@ -2364,8 +2365,8 @@ namespace EMT.DoneNOW.BLL
                 var thisEntry = sweDal.FindNoDeleteById(id);
                 if (thisEntry != null)
                 {
-                    if (thisEntry.approve_and_post_date == null && thisEntry.approve_and_post_user_id == null)
-                    {
+                    //if (thisEntry.approve_and_post_date == null && thisEntry.approve_and_post_user_id == null)
+                    //{
                         if(thisEntry.hours_rate_deduction != null || thisEntry.work_entry_record_id != null)
                         {
                             var olsEntry = sweDal.FindNoDeleteById(id);
@@ -2377,15 +2378,51 @@ namespace EMT.DoneNOW.BLL
                             sweDal.Update(thisEntry);
                             OperLogBLL.OperLogUpdate<sdk_work_entry>(thisEntry, olsEntry, olsEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "工时恢复初始值");
                             return true;
-                        }
                     }
+                    else
+                    {
+                        reason = "工时已经是初始值，无需恢复";
+                        return false;
+                    }
+                    //}
                 }
-                return false;
+                else
+                {
+                    reason = "未查询到该工时";
+                    return false;
+                }
+                
             }
-            // 工时
+            // 费用
             if (type == (long)QueryType.APPROVE_EXPENSE)
             {
+                var seDal = new sdk_expense_dal();
+                var thisExp = seDal.FindNoDeleteById(id);
+                if (thisExp != null)
+                {
+                    if (thisExp.amount_deduction != null)
+                    {
+                        thisExp.amount_deduction = null;
+                        var oldExp = seDal.FindNoDeleteById(id);
 
+                        thisExp.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        thisExp.update_user_id = user_id;
+
+                        seDal.Update(thisExp);
+                        OperLogBLL.OperLogUpdate<sdk_expense>(thisExp, oldExp, oldExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "费用恢复初始值");
+                        return true;
+                    }
+                    else
+                    {
+                        reason = "费用已经是初始值，无需恢复";
+                        return false;
+                    }
+                }
+                else
+                {
+                    reason = "未查询到该费用";
+                    return false;
+                }
             }
 
 
@@ -2406,45 +2443,69 @@ namespace EMT.DoneNOW.BLL
                 // 查询不到用户，用户丢失
                 return false;
             }
-            var ccc = new ctt_contract_cost_dal().FindNoDeleteById(id);
-            var old = ccc;
-            if (ccc != null)
+            if (type == (int)QueryType.APPROVE_EXPENSE)
             {
-                if (ccc.is_billable == 0)
+                var seDal = new sdk_expense_dal();
+                var thisExp = seDal.FindNoDeleteById(id);
+                if (thisExp != null && thisExp.is_billable == 1)
                 {
-                    return false;
-                }
-                ccc.is_billable = 0;
-                if (ccc.quantity != null && ccc.unit_price != null)
-                {
-                    ccc.extended_price = (decimal)ccc.quantity * (decimal)ccc.unit_price;
+                    var oldExp = seDal.FindNoDeleteById(id);
+                    thisExp.is_billable = 0;
+                    thisExp.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisExp.update_user_id = user_id;
+                    seDal.Update(thisExp);
+                    OperLogBLL.OperLogUpdate<sdk_expense>(thisExp, oldExp, thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "修改费用计费状态");
+                    return true;
                 }
                 else
                 {
-                    ccc.extended_price = 0;
-                }
-                ccc.status_last_modified_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                ccc.status_last_modified_user_id = user.id;
-                ccc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                ccc.update_user_id = user.id;
-                if (new ctt_contract_cost_dal().Update(ccc))
-                {
-                    var add1_log = new sys_oper_log()
-                    {
-                        user_cate = "用户",
-                        user_id = (int)user.id,
-                        name = user.name,
-                        phone = user.mobile == null ? "" : user.mobile,
-                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,//合同成本
-                        oper_object_id = ccc.id,// 操作对象id
-                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                        oper_description = new ctt_contract_cost_dal().CompareValue(old, ccc),
-                        remark = "设置合同成本为不可计费"
-                    };          // 创建日志
-                    new sys_oper_log_dal().Insert(add1_log);       // 插入日志
+                    return false;
                 }
             }
+            else
+            {
+                var ccc = new ctt_contract_cost_dal().FindNoDeleteById(id);
+                var old = ccc;
+                if (ccc != null)
+                {
+                    if (ccc.is_billable == 0)
+                    {
+                        return false;
+                    }
+                    ccc.is_billable = 0;
+                    if (ccc.quantity != null && ccc.unit_price != null)
+                    {
+                        ccc.extended_price = (decimal)ccc.quantity * (decimal)ccc.unit_price;
+                    }
+                    else
+                    {
+                        ccc.extended_price = 0;
+                    }
+                    ccc.status_last_modified_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    ccc.status_last_modified_user_id = user.id;
+                    ccc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    ccc.update_user_id = user.id;
+                    if (new ctt_contract_cost_dal().Update(ccc))
+                    {
+                        var add1_log = new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = (int)user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,//合同成本
+                            oper_object_id = ccc.id,// 操作对象id
+                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                            oper_description = new ctt_contract_cost_dal().CompareValue(old, ccc),
+                            remark = "设置合同成本为不可计费"
+                        };          // 创建日志
+                        new sys_oper_log_dal().Insert(add1_log);       // 插入日志
+                    }
+                }
+            }
+
+           
             return true;
         }
         /// <summary>
@@ -2462,45 +2523,69 @@ namespace EMT.DoneNOW.BLL
                 // 查询不到用户，用户丢失
                 return false;
             }
-            var ccc = new ctt_contract_cost_dal().FindNoDeleteById(id);
-            var old = ccc;
-            if (ccc != null)
+            if (type == (int)QueryType.APPROVE_EXPENSE)
             {
-                if (ccc.is_billable == 1)
+                var seDal = new sdk_expense_dal();
+                var thisExp = seDal.FindNoDeleteById(id);
+                if (thisExp != null && thisExp.is_billable == 0)
                 {
-                    return false;
-                }
-                ccc.is_billable = 1;
-                if (ccc.quantity != null && ccc.unit_price != null)
-                {
-                    ccc.extended_price = (decimal)ccc.quantity * (decimal)ccc.unit_price;
+                    var oldExp = seDal.FindNoDeleteById(id);
+                    thisExp.is_billable = 1;
+                    thisExp.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisExp.update_user_id = user_id;
+                    seDal.Update(thisExp);
+                    OperLogBLL.OperLogUpdate<sdk_expense>(thisExp, oldExp, thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "修改费用计费状态");
+                    return true;
                 }
                 else
                 {
-                    ccc.extended_price = 0;
-                }
-                ccc.status_last_modified_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                ccc.status_last_modified_user_id = user.id;
-                ccc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                ccc.update_user_id = user.id;
-                if (new ctt_contract_cost_dal().Update(ccc))
-                {
-                    var add1_log = new sys_oper_log()
-                    {
-                        user_cate = "用户",
-                        user_id = (int)user.id,
-                        name = user.name,
-                        phone = user.mobile == null ? "" : user.mobile,
-                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,//合同成本
-                        oper_object_id = ccc.id,// 操作对象id
-                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                        oper_description = new ctt_contract_cost_dal().CompareValue(old, ccc),
-                        remark = "设置合同成本为可计费"
-                    };          // 创建日志
-                    new sys_oper_log_dal().Insert(add1_log);       // 插入日志
+                    return false;
                 }
             }
+            else
+            {
+                var ccc = new ctt_contract_cost_dal().FindNoDeleteById(id);
+                var old = ccc;
+                if (ccc != null)
+                {
+                    if (ccc.is_billable == 1)
+                    {
+                        return false;
+                    }
+                    ccc.is_billable = 1;
+                    if (ccc.quantity != null && ccc.unit_price != null)
+                    {
+                        ccc.extended_price = (decimal)ccc.quantity * (decimal)ccc.unit_price;
+                    }
+                    else
+                    {
+                        ccc.extended_price = 0;
+                    }
+                    ccc.status_last_modified_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    ccc.status_last_modified_user_id = user.id;
+                    ccc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    ccc.update_user_id = user.id;
+                    if (new ctt_contract_cost_dal().Update(ccc))
+                    {
+                        var add1_log = new sys_oper_log()
+                        {
+                            user_cate = "用户",
+                            user_id = (int)user.id,
+                            name = user.name,
+                            phone = user.mobile == null ? "" : user.mobile,
+                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,//合同成本
+                            oper_object_id = ccc.id,// 操作对象id
+                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                            oper_description = new ctt_contract_cost_dal().CompareValue(old, ccc),
+                            remark = "设置合同成本为可计费"
+                        };          // 创建日志
+                        new sys_oper_log_dal().Insert(add1_log);       // 插入日志
+                    }
+                }
+            }
+
+           
             return true;
         }
         /// <summary>
@@ -2977,6 +3062,7 @@ namespace EMT.DoneNOW.BLL
                                 }
                                 else
                                 {
+
                                     var thisBlockDed = new crm_account_deduction()
                                     {
                                         id = cad_dal.GetNextIdCom(),

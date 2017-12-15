@@ -543,6 +543,8 @@ namespace EMT.DoneNOW.DTO
             CRM_NOTE_SEARCH = 1531,                 // 客户备注查询
             TODOS = 1532,                           // 客户代办查询
             COMPANY_VIEW_CONTRACT = 1533,           // 客户详情-合同
+            PROJECT_TEMP_SEARCH = 1535,             // 项目模板查询
+            PROJECT_PROPOSAL_SEARCH = 1536,         // 项目提案查询
 			TASK_PHASE = 1538,                      // 任务父阶段的查找带回
             COMPANY_VIEW_INVOICE = 1534,            // 客户详情-发票查询
             COMPANY_VIEW_ATTACHMENT = 1537,         // 客户详情-附件
@@ -1174,6 +1176,8 @@ namespace EMT.DoneNOW.DTO
         Todos = 102,                    // 客户代办查询
         CompanyViewContract = 103,      // 客户详情-合同
         CompanyViewInvoice = 104,       // 客户详情-发票查询
+        PROJECT_TEMP_SEARCH = 105,      // 项目模板查询
+        PROJECT_PROPOSAL_SEARCH = 106,  // 项目提案查询
         CompanyViewAttachment = 107,    // 客户详情-附件
         PROJECT_TASK = 109,              // 项目详情-task列表
         PROJECT_PHASE=110,               // 项目详情-TASK列表-阶段
@@ -1391,6 +1395,9 @@ namespace EMT.DoneNOW.DTO
         TASK_EXPENSE_ADD,     // 任务费用新增修改
         TASK_EXPENSE_EDIT,    // 任务费用新增修改
         RESOURCE_CALLBACK,    // 员工的查找带回
+
+        ACCOUNT_POLICY,
+        EXPENSE_REPORT_CALLBACK,
 
     }
     /// <summary>

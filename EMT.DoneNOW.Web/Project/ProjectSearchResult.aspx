@@ -403,6 +403,7 @@
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script src="../Scripts/Common/SearchBody.js"></script>
+<script src="../Scripts/common.js"></script>
 <script>
              $(".f1").on("mouseover", function () {
                  $(this).css("background", "white");
@@ -513,6 +514,9 @@
     function View(id) {
         window.open("ProjectView.aspx?id=" + id, '_blank', 'left=200,top=200,width=900,height=800', false);
     }
+    function View() {
+        window.open("ProjectView.aspx?id=" + entityid, '_blank', 'left=200,top=200,width=900,height=800', false);
+    }
 
     function NewProNote() {
         window.open("../Project/TaskNote.aspx?project_id=" + entityid, windowObj.notes + windowType.add, 'left=200,top=200,width=1080,height=800', false);
@@ -522,22 +526,24 @@
         window.open("../Project/ProjectCalendar.aspx?project_id=" + entityid, windowObj.projectCalendar + windowType.add, 'left=200,top=200,width=1080,height=800', false);
     }
     function Delete() {
-        $.ajax({
-            type: "GET",
-            async: false,
-            url: "../Tools/ProjectAjax.ashx?act=DeletePro&project_id=" + entityid,
-            dataType: "json",
-            success: function (data) {
-                if (data != "") {
-                    if (data.result == "True") {
-                        LayerMsg("删除项目成功！");
-                    } else if (data.result == "False") {
-                        LayerMsg("该项目不能被删除，因为有一个或多个时间条目，费用，费用，服务预定，备注，附件，里程碑！");
+        if (confirm("确认删除该项目，删除不可恢复")) {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ProjectAjax.ashx?act=DeletePro&project_id=" + entityid,
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+                        if (data.result) {
+                            LayerMsg("删除项目成功！");
+                            history.go(0);
+                        } else if (!data.result) {
+                            LayerMsg("该项目模板不能被删除，因为有一个或多个时间条目，费用，费用，服务预定，备注，附件，里程碑！");
+                        }
                     }
-                }
-                window.close();
-                self.parent.location.reload();
-            },
-         });
+                },
+            });
+        }
+      
     }
 </script>

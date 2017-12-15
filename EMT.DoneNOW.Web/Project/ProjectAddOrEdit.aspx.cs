@@ -61,10 +61,7 @@ namespace EMT.DoneNOW.Web.Project
 
                     isFromTemp = Request.QueryString["isFromTemp"];
                 isTemp = Request.QueryString["isTemp"];
-                if (!IsPostBack)
-                {
-                    PageDataBind();
-                }
+               
 
                 var id = Request.QueryString["id"];
                 project_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PROJECTS);
@@ -77,30 +74,15 @@ namespace EMT.DoneNOW.Web.Project
                         {
                             contract = new ctt_contract_dal().FindNoDeleteById((long)thisProject.contract_id);
                         }
+                        if (thisProject.type_id == (int)DicEnum.PROJECT_TYPE.TEMP)
+                        {
+                            isTemp = "1";
+                        }
                         taskList = new sdk_task_dal().GetProTask(thisProject.id);
                         account = new crm_account_dal().FindNoDeleteById(thisProject.account_id);
                         project_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.PROJECTS, thisProject.id, project_udfList);
                         isAdd = false;
-                        #region 根据项目信息为页面数据赋值
-                        if (!IsPostBack)
-                        {
-                            line_of_business_id.SelectedValue = thisProject.line_of_business_id == null ? "0" : thisProject.line_of_business_id.ToString();
-                            type_id.SelectedValue = thisProject.type_id == null ? "0" : thisProject.type_id.ToString();
-                            status_id.SelectedValue = thisProject.status_id.ToString();
-                            department_id.SelectedValue = thisProject.department_id == null ? "0" : thisProject.department_id.ToString();
-                            organization_location_id.SelectedValue = thisProject.organization_location_id.ToString();
-                            template_id.SelectedValue = thisProject.template_id == null ? "0" : thisProject.template_id.ToString();
-                            useResource_daily_hours.Checked = thisProject.use_resource_daily_hours == 1;
-                            owner_resource_id.SelectedValue = thisProject.owner_resource_id == null ? "0" : thisProject.owner_resource_id.ToString();
-                            excludeWeekend.Checked = thisProject.exclude_weekend == 1;
-                            excludeHoliday.Checked = thisProject.exclude_holiday == 1;
-                            warnTime_off.Checked = thisProject.warn_time_off == 1;
-                            if (!string.IsNullOrEmpty(isTemp))
-                            {
-                                is_active.Checked = thisProject.status_id == (int)DicEnum.PROJECT_STATUS.NEW;
-                            }
-                        }
-                        #endregion
+                        
                     }
                 }
                 else
@@ -112,6 +94,34 @@ namespace EMT.DoneNOW.Web.Project
                         excludeHoliday.Checked = true;
                         warnTime_off.Checked = true;
                     }
+                }
+                if (!IsPostBack)
+                {
+                    PageDataBind();
+                }
+
+                if (thisProject != null)
+                {
+                    #region 根据项目信息为页面数据赋值
+                    if (!IsPostBack)
+                    {
+                        line_of_business_id.SelectedValue = thisProject.line_of_business_id == null ? "0" : thisProject.line_of_business_id.ToString();
+                        type_id.SelectedValue = thisProject.type_id == null ? "0" : thisProject.type_id.ToString();
+                        status_id.SelectedValue = thisProject.status_id.ToString();
+                        department_id.SelectedValue = thisProject.department_id == null ? "0" : thisProject.department_id.ToString();
+                        organization_location_id.SelectedValue = thisProject.organization_location_id.ToString();
+                        template_id.SelectedValue = thisProject.template_id == null ? "0" : thisProject.template_id.ToString();
+                        useResource_daily_hours.Checked = thisProject.use_resource_daily_hours == 1;
+                        owner_resource_id.SelectedValue = thisProject.owner_resource_id == null ? "0" : thisProject.owner_resource_id.ToString();
+                        excludeWeekend.Checked = thisProject.exclude_weekend == 1;
+                        excludeHoliday.Checked = thisProject.exclude_holiday == 1;
+                        warnTime_off.Checked = thisProject.warn_time_off == 1;
+                        if (!string.IsNullOrEmpty(isTemp))
+                        {
+                            is_active.Checked = thisProject.status_id == (int)DicEnum.PROJECT_STATUS.NEW;
+                        }
+                    }
+                    #endregion
                 }
             }
             catch (Exception msg)
@@ -346,7 +356,7 @@ namespace EMT.DoneNOW.Web.Project
                     TimeSpan ts1 = new TimeSpan(((DateTime)param.project.start_date).Ticks);
                     TimeSpan ts2 = new TimeSpan(((DateTime)param.project.end_date).Ticks);
                     TimeSpan ts = ts1.Subtract(ts2).Duration();
-                    param.project.duration = ts.Days;
+                    param.project.duration = ts.Days+1;
                 }
 
                 

@@ -594,7 +594,7 @@ namespace EMT.DoneNOW.Web
 
             result = new ProjectBLL().DeletePro(project_id, LoginUserId, out reson);
 
-            context.Response.Write(new { result = result, reason = reson });
+            context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result, reason = reson }));
         }
 
         /// <summary>

@@ -101,13 +101,17 @@
 
         /*表格图形部分*/
         #Gantt_gridBodyContainer {
-            overflow: scroll;
+             overflow: scroll;
             position: fixed;
             top: 62px;
             bottom: 0;
             left: 0;
             right: 0;
+            background-image: url(../Images/dailyGridContainer.png);
         }
+        /*#BigDiv{
+             overflow: scroll;
+        }*/
 
         .Gantt_divTableRow {
             display: table-row;

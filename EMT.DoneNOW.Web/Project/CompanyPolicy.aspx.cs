@@ -29,14 +29,29 @@ namespace EMT.DoneNOW.Web.Project
                     {
                         thisAccount = new CompanyBLL().GetCompany(thisExpense.account_id);
                     }
-                    var ruleList = new d_cost_code_rule_dal().GetRuleByCodeId(thisExpense.expense_cost_code_id);
+                   
                     long? accout_id = null;
                     if (thisAccount != null)
                     {
                         accout_id = thisAccount.id;
                     }
-                    thisRule = new TaskBLL().GetRule(ruleList, accout_id);
+                    if (thisExpense.expense_cost_code_id != null)
+                    {
+                        var ruleList = new d_cost_code_rule_dal().GetRuleByCodeId((long)thisExpense.expense_cost_code_id);
+                        if (ruleList!=null && ruleList.Count > 0)
+                        {
+                            thisRule = new TaskBLL().GetRule(ruleList, accout_id);
+                        }
+                    }
+                    
+                    
                 }
+                var account_id = Request.QueryString["account_id"];
+                if (!string.IsNullOrEmpty(account_id))
+                {
+                    thisAccount = new CompanyBLL().GetCompany(long.Parse(account_id));
+                }
+                
                 // 费用的cate 种类 在d_cost_code上，
                 // 相关规则在d_cost_code_rule上
                 // 放个iframe 使用通用查询
@@ -53,9 +68,11 @@ namespace EMT.DoneNOW.Web.Project
                     {
                         url += "&con1058="+deaDep.id;
                     }
+                    var cate_id = Request.QueryString["cate_id"];
+                    if (!string.IsNullOrEmpty(cate_id))
+                    {
 
-
-
+                    }
                     AccountPolicy.Src = url;
                 }
                 

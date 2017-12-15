@@ -50,7 +50,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String purchase_order_no { get; set; }
         [DataMember]
-        public Int32 expense_cost_code_id { get; set; }
+        public Int32? expense_cost_code_id { get; set; }
         [DataMember]
         public SByte? reimbursable { get; set; }
         [DataMember]
@@ -77,6 +77,8 @@ namespace EMT.DoneNOW.Core
         public DateTime? web_service_date { get; set; }
         [DataMember]
         public Int32? currency_id { get; set; }
+        [DataMember]
+        public Decimal? amount_deduction { get; set; }
 
 
     }
