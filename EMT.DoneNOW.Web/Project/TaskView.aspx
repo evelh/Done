@@ -202,10 +202,15 @@
                 </div>
             </div>
             <div class="ButtonContainer">
-
+                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_EDIT_TASK"))
+                     { %>
                 <a class="NormalState Button ButtonIcon Save" id="SaveDropDownButton_LeftButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">修改</span></a>
-
-                <a class="NormalState Button ButtonIcon Cancel" id="PrintButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text">打印</span></a><a class="NormalState Button ButtonIcon Cancel" id="TaskHistoryButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text"><%=taskType %>历史</span></a>
+                <%} %>
+                <a class="NormalState Button ButtonIcon Cancel" id="PrintButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text">打印</span></a>
+                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_SHOW_HISTORY"))
+                     { %>
+                <a class="NormalState Button ButtonIcon Cancel" id="TaskHistoryButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text"><%=taskType %>历史</span></a>
+                 <%} %>
                 <a class="NormalState Button ButtonIcon Cancel" id="CancelButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text">关闭</span></a>
             </div>
         </div>
@@ -518,11 +523,17 @@
                     <div class="Content" style="padding: 0 28px 35px 18px;">
                         <div id="timeEntryContentPanel" class="Content">
                             <div class="ButtonContainer">
-
+                                <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_ADD_ENTRY_NOTIME") || CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_ADD_ENTRY_TIME"))
+                                    { %>
                                 <a class="NormalState Button ButtonIcon Save" id="NewTimeEntry" tabindex="0" onclick="AddEntry()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">新增工时</span></a>
-
+                                <%} %>
+                                <%if (CheckAuth("PRO_PROJECT_VIEW_NOTE_ADD"))
+                                    { %>
                                 <a class="NormalState Button ButtonIcon Save" id="NewNote" tabindex="0" onclick="AddNote()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">新增备注</span></a>
-                                <a class="NormalState Button ButtonIcon Save" id="NewAttach" tabindex="0" onclick="AddAttach()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">新增附件</span></a>
+                                <%} %>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_ATTACH_ADD"))
+                                    { %>
+                                <a class="NormalState Button ButtonIcon Save" id="NewAttach" tabindex="0" onclick="AddAttach()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">新增附件</span></a>  <%} %>
                             </div>
                             <div id="timeEntryCheckBoxPanel" style="padding: 0px 0px 3px 10px; font-size: 12px; display: block;">
                                 <span id="timeEntryWorkFlow"><span class="txtBlack8Class">
@@ -732,9 +743,10 @@
                     <div class="Content" style="padding: 0 28px 35px 18px;">
                         <div id="ExpenseContentPanel" class="Content">
                             <div class="ButtonContainer">
-
+                                  <%if (CheckAuth("PRO_PROJECT_VIEW_EXPENSES_ADD_EXPENSES"))
+                                      { %>
                                 <a class="NormalState Button ButtonIcon Save" id="NewExpense" tabindex="0" onclick="AddExpense()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">新增费用</span></a>
-
+                                <%} %>
                             </div>
                             <div id="ExpenseCheckBoxPanel" style="padding: 0px 0px 3px 0px; font-size: 12px; display: block;">
                                 <span id="ExpenseDetails" style="margin-left: 1px;"><span class="txtBlack8Class">
@@ -1242,5 +1254,7 @@
             })
         }, function () { });
     }
-
+    $("#CancelButton").click(function () {
+        window.close();
+    })
 </script>

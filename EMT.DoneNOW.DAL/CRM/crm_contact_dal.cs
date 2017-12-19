@@ -170,5 +170,20 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<crm_contact>($"SELECT cc.* from pro_project_team ppt  INNER JOIN pro_project pp on ppt.project_id = pp.id inner JOIN crm_contact cc on ppt.contact_id = cc.id where pp.id = {project_id} and ppt.delete_time = 0 and pp.delete_time = 0 and cc.delete_time = 0");
         }
+        /// <summary>
+        /// 获取改合同通知规则内的员工信息
+        /// </summary>
+        public List<crm_contact> GetConRuleList(long rule_id)
+        {
+            return FindListBySql<crm_contact>($"SELECT id,name from crm_contact where id  in(SELECT person_id from ctt_contract_notify_rule_recipient where contract_notify_rule_id = {rule_id} and delete_time = 0) and delete_time = 0");
+        }
+        /// <summary>
+        /// 获取不在此规则内的员工信息
+        /// </summary>
+        public List<crm_contact> GetNotInConRuleList(long rule_id,long account_id)
+        {
+            return FindListBySql<crm_contact>($"SELECT id,name from crm_contact where id not in(SELECT person_id from ctt_contract_notify_rule_recipient where contract_notify_rule_id = {rule_id} and delete_time = 0) and delete_time = 0 and account_id = {account_id}");
+        }
+
     }
 }

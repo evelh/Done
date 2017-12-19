@@ -67,6 +67,7 @@ namespace EMT.DoneNOW.Web
                     }                 
 
                 }
+                
                 if (op == "post_b") {
                     if (id != 0)
                     {
@@ -86,6 +87,68 @@ namespace EMT.DoneNOW.Web
                         foreach (var idi in idList)
                         {
                             var result = aapbll.Post_Charges_b(Convert.ToInt32(idi), Convert.ToInt32(tt), GetLoginUserId());
+                            if (result != DTO.ERROR_CODE.SUCCESS)
+                            {
+                                Response.Write("<script>alert('" + idi + "审批失败！');</script>");
+                            }
+                        }
+                        Response.Write("<script>alert('批量审批结束！');window.close();self.opener.location.reload();</script>");
+                    }
+
+                }
+            }
+            else if(!string.IsNullOrEmpty(op) && type == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_LABOUR)
+            {
+                if (op == "post_a")
+                {
+                    if (id != 0)
+                    {
+                        var result = aapbll.PostWorkEntry(Convert.ToInt32(id), Convert.ToInt32(tt), GetLoginUserId(),"A");
+                        if (result == DTO.ERROR_CODE.ERROR)
+                        {
+                            Response.Write("<script>alert('" + id + "审批失败！');</script>");
+                        }
+                        else
+                        {
+                            Response.Write("<script>alert('审批成功！');window.close();self.opener.location.reload();</script>");
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(ids))
+                    {
+                        var idList = ids.Split(',');
+                        foreach (var idi in idList)
+                        {
+                            var result = aapbll.PostWorkEntry(Convert.ToInt32(idi), Convert.ToInt32(tt), GetLoginUserId(),"A");
+                            if (result != DTO.ERROR_CODE.SUCCESS)
+                            {
+                                Response.Write("<script>alert('" + idi + "审批失败！');</script>");
+                            }
+                        }
+                        Response.Write("<script>alert('批量审批结束！');window.close();self.opener.location.reload();</script>");
+                    }
+
+                }
+
+                if (op == "post_b")
+                {
+                    if (id != 0)
+                    {
+                        var result = aapbll.PostWorkEntry(Convert.ToInt32(id), Convert.ToInt32(tt), GetLoginUserId(),"B");
+                        if (result == DTO.ERROR_CODE.ERROR)
+                        {
+                            Response.Write("<script>alert('" + id + "审批失败！');</script>");
+                        }
+                        else
+                        {
+                            Response.Write("<script>alert('审批成功！');window.close();self.opener.location.reload();</script>");
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(ids))
+                    {
+                        var idList = ids.Split(',');
+                        foreach (var idi in idList)
+                        {
+                            var result = aapbll.PostWorkEntry(Convert.ToInt32(idi), Convert.ToInt32(tt), GetLoginUserId(),"B");
                             if (result != DTO.ERROR_CODE.SUCCESS)
                             {
                                 Response.Write("<script>alert('" + idi + "审批失败！');</script>");

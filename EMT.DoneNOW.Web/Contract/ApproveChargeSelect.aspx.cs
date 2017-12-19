@@ -38,17 +38,35 @@ namespace EMT.DoneNOW.Web
             //单个id审批
             if (id != 0)
             {
-                var result = aapbll.ChargeBlock(id);
-                if (result == DTO.ERROR_CODE.SUCCESS)
+                if (type==(int)QueryType.APPROVE_CHARGES)
                 {
-                    list.Add(aapbll.charge(id));
+                    var result = aapbll.ChargeBlock(id);
+                    if (result == DTO.ERROR_CODE.SUCCESS)
+                    {
+                        list.Add(aapbll.charge(id));
+                    }
+                    else if (result == ERROR_CODE.NOTIFICATION_RULE)
+                    {
+                        list.Add(aapbll.charge(Convert.ToInt32(id)));
+                        this.Radio2.Enabled = true;
+                        this.Label1.ForeColor = System.Drawing.Color.Gray;
+                    }
                 }
-                else if (result == ERROR_CODE.NOTIFICATION_RULE)
+                else  if(type == (int)QueryType.APPROVE_LABOUR)
                 {
-                    list.Add(aapbll.charge(Convert.ToInt32(id)));
-                    this.Radio2.Enabled = true;
-                    this.Label1.ForeColor = System.Drawing.Color.Gray;
+                    var result = aapbll.LabourBlock(id);
+                    if (result == DTO.ERROR_CODE.SUCCESS)
+                    {
+                         list.Add(aapbll.Labour(id));
+                    }
+                    else if (result == ERROR_CODE.NOTIFICATION_RULE)
+                    {
+                        list.Add(aapbll.Labour(id));
+                        this.Radio2.Enabled = true;
+                        this.Label1.ForeColor = System.Drawing.Color.Gray;
+                    }
                 }
+        
             }
 
             //批量审批
@@ -57,21 +75,41 @@ namespace EMT.DoneNOW.Web
                 var idList = ids.Split(',');
                 foreach (var idi in idList)
                 {
-                    var result = aapbll.ChargeBlock(Convert.ToInt32(idi));
-                    if (result == DTO.ERROR_CODE.SUCCESS)
+                    if (type == (int)QueryType.APPROVE_CHARGES)
                     {
-                        list.Add(aapbll.charge(Convert.ToInt32(idi)));
-                        ids1.Add(idi);
-                    }
-                    else if (result == ERROR_CODE.NOTIFICATION_RULE)
-                    {
-                        list.Add(aapbll.charge(Convert.ToInt32(idi)));
-                        this.Radio2.Enabled = true;
-                        this.Label1.ForeColor = System.Drawing.Color.Gray;
-                    }
-                    else {
+                        var result = aapbll.ChargeBlock(Convert.ToInt32(idi));
+                        if (result == DTO.ERROR_CODE.SUCCESS)
+                        {
+                            list.Add(aapbll.charge(Convert.ToInt32(idi)));
+                            ids1.Add(idi);
+                        }
+                        else if (result == ERROR_CODE.NOTIFICATION_RULE)
+                        {
+                            list.Add(aapbll.charge(Convert.ToInt32(idi)));
+                            this.Radio2.Enabled = true;
+                            this.Label1.ForeColor = System.Drawing.Color.Gray;
+                        }
+                        else
+                        {
 
+                        }
                     }
+                    else if (type == (int)QueryType.APPROVE_LABOUR)
+                    {
+                        var result = aapbll.LabourBlock(int.Parse(idi));
+                        if (result == DTO.ERROR_CODE.SUCCESS)
+                        {
+                            list.Add(aapbll.Labour(id));
+                            ids1.Add(idi);
+                        }
+                        else if (result == ERROR_CODE.NOTIFICATION_RULE)
+                        {
+                            list.Add(aapbll.Labour(int.Parse(idi)));
+                            this.Radio2.Enabled = true;
+                            this.Label1.ForeColor = System.Drawing.Color.Gray;
+                        }
+                    }
+                      
                 }
             }
             if (list == null || list.Count <= 0)

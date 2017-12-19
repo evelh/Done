@@ -16,6 +16,7 @@ namespace EMT.DoneNOW.Web.Project
     {
         protected crm_account thisAccount = null;
         protected sdk_task thisTask = null;
+        protected ctt_contract thisContract = null;
         protected com_activity thisNote = null;
         protected bool isAdd = true;
         protected List<com_attachment> thisNoteAtt = null;   // 这个备注的附件
@@ -27,6 +28,7 @@ namespace EMT.DoneNOW.Web.Project
         protected long object_id;      // 传进来的对象ID （项目或者任务）
         protected bool isProject = false;   // 是否是项目
         protected bool isPhase = false;     // 是否是阶段
+        protected bool isContract = false;  // 是否是合同
         protected pro_project thisProject = null;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -38,6 +40,7 @@ namespace EMT.DoneNOW.Web.Project
                 var stDal = new sdk_task_dal();
                 var ppDal = new pro_project_dal();
                 var accDal = new crm_account_dal();
+                var ccDal = new ctt_contract_dal();
                 var id = Request.QueryString["id"];
                 if (!string.IsNullOrEmpty(id))
                 {
@@ -62,12 +65,23 @@ namespace EMT.DoneNOW.Web.Project
                                 object_id = thisProject.id;
                                 thisAccount = accDal.FindNoDeleteById(thisProject.account_id);
                             }
+                            else
+                            {
+                                thisContract = ccDal.FindNoDeleteById(thisNote.object_id);
+                                if (thisContract != null)
+                                {
+                                    isContract = true;
+                                    object_id = thisContract.id;
+                                    thisAccount = accDal.FindNoDeleteById(thisContract.account_id);
+                                }
+                            }
                         }
 
                     }
                 }
                 var taskId = Request.QueryString["task_id"];
                 var project_id = Request.QueryString["project_id"];
+                var contract_id = Request.QueryString["contract_id"];
                 if (!string.IsNullOrEmpty(taskId))
                 {
                     thisTask = stDal.FindNoDeleteById(long.Parse(taskId));
@@ -80,6 +94,16 @@ namespace EMT.DoneNOW.Web.Project
                         isProject = true;
                         object_id = thisProject.id;
                         thisAccount = accDal.FindNoDeleteById(thisProject.account_id);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(contract_id))
+                {
+                    thisContract = ccDal.FindNoDeleteById(long.Parse(contract_id));
+                    if (thisContract != null)
+                    {
+                        object_id = thisContract.id;
+                        thisAccount = accDal.FindNoDeleteById(thisContract.account_id);
+                        isContract = true;
                     }
                 }
 
@@ -130,6 +154,10 @@ namespace EMT.DoneNOW.Web.Project
                         {
                             pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE).ToString()).ToList();
                         }
+                        else if (isContract)
+                        {
+                            pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.CONTRACT_NOTE).ToString()).ToList();
+                        }
                         else
                         {
                             pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
@@ -153,6 +181,10 @@ namespace EMT.DoneNOW.Web.Project
                         {
                             actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE).ToString()).ToList();
                         }
+                        else if (isContract)
+                        {
+                            actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.CONTRACT_NOTE).ToString()).ToList();
+                        }
                         else
                         {
                             actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
@@ -171,6 +203,13 @@ namespace EMT.DoneNOW.Web.Project
                             }
                             action_type_id.SelectedValue = thisNote.action_type_id.ToString();
                             isAnnounce.Checked = thisNote.announce == 1;
+                        }
+                    }
+                    else
+                    {
+                        if (isContract)
+                        {
+                            publish_type_id.SelectedValue = ((int)DicEnum.NOTE_PUBLISH_TYPE.CONTRACT_INTERNA_USER).ToString();
                         }
                     }
 
@@ -215,8 +254,18 @@ namespace EMT.DoneNOW.Web.Project
             TaskNoteDto param = new TaskNoteDto();
             var pageTaskNote = AssembleModel<com_activity>();
             pageTaskNote.account_id = thisAccount.id;
-            pageTaskNote.resource_id = thisProject.owner_resource_id;
-            pageTaskNote.contract_id = thisProject.contract_id;
+            if (thisProject != null)
+            {
+                pageTaskNote.resource_id = thisProject.owner_resource_id;
+                pageTaskNote.contract_id = thisProject.contract_id;
+            }
+            else if (thisContract != null)
+            {
+                //    pageTaskNote.resource_id = thisContract.res;
+                pageTaskNote.contract_id = thisContract.id;
+            }
+
+
             if (isProject)
             {
                 pageTaskNote.announce = (sbyte)(isAnnounce.Checked ? 1 : 0);
@@ -252,6 +301,21 @@ namespace EMT.DoneNOW.Web.Project
             param.thisProjetc = thisProject;
             param.object_id = object_id;
             param.filtList = GetSessAttList(object_id);
+            if (thisTask != null)
+            {
+                pageTaskNote.cate_id = (int)DicEnum.ACTIVITY_CATE.TASK_NOTE;
+                pageTaskNote.object_type_id = (int)DicEnum.OBJECT_TYPE.TASK;
+            }
+            else if (thisProject != null)
+            {
+                pageTaskNote.cate_id = (int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE;
+                pageTaskNote.object_type_id = (int)DicEnum.OBJECT_TYPE.PROJECT;
+            }
+            else if (thisContract != null)
+            {
+                pageTaskNote.cate_id = (int)DicEnum.ACTIVITY_CATE.CONTRACT_NOTE;
+                pageTaskNote.object_type_id = (int)DicEnum.OBJECT_TYPE.CONTRACT;
+            }
             if (isAdd)
             {
                 param.taskNote = pageTaskNote;
@@ -262,6 +326,7 @@ namespace EMT.DoneNOW.Web.Project
 
             }
             
+            
             param.otherEmail = Request.QueryString["otherEmail"];
             param.subjects = Request.QueryString["subjects"];
             param.AdditionalText = Request.QueryString["AdditionalText"];
@@ -269,6 +334,7 @@ namespace EMT.DoneNOW.Web.Project
             {
                 param.notify_id = int.Parse(Request.QueryString["notify_id"]);
             }
+            param.account_id = thisAccount.id;
             return param;
         }
 

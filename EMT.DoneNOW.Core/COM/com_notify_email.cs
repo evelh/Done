@@ -21,7 +21,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32 cate_id { get; set; }
         [DataMember]
-        public Int32 event_id { get; set; }
+        public Int32? event_id { get; set; }
         [DataMember]
         public String to_email { get; set; }
         [DataMember]

@@ -186,6 +186,10 @@ namespace EMT.DoneNOW.Web
                         var costId = context.Request.QueryString["cost_id"];
                         GetSinCost(context,long.Parse(costId));
                         break;
+                    case "DeleteContractRule":
+                        var rule_id = context.Request.QueryString["rule_id"];
+                        DeleteContractRule(context,long.Parse(rule_id));
+                        break;
                     default:
                         break;
                 }
@@ -735,6 +739,14 @@ namespace EMT.DoneNOW.Web
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson(thisCost));
             }
+        }
+        /// <summary>
+        /// 删除合同通知规则
+        /// </summary>
+        private void DeleteContractRule(HttpContext context, long rule_id)
+        {
+            var result = new ContractBLL().DeleteContractRule(rule_id,LoginUserId);
+            context.Response.Write(result);
         }
     }
 }

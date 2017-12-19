@@ -225,6 +225,34 @@ namespace EMT.DoneNOW.Web
                         var ctpId = context.Request.QueryString["project_id"];
                         ChangeTaskParent(context, long.Parse(ctpId), long.Parse(toId), long.Parse(fromId), location);
                         break;
+                    case "GetTaskSubNum":
+                        var gtId = context.Request.QueryString["task_id"];
+                        var isSub = context.Request.QueryString["is_sub"];
+                        GetTaskSubNum(context,long.Parse(gtId),!string.IsNullOrEmpty(isSub));
+                        break;
+                    case "DoneBeforePro": // 任务是否在前驱任务前完成
+                        var dbpId = context.Request.QueryString["task_id"];
+                        DoneBeforePro(context,long.Parse(dbpId));
+                        break;
+                    case "DisPreTask":  // 清除任务的（未完成的）前驱或者后续任务
+                        var dpId = context.Request.QueryString["task_id"];
+                        var clearBef = context.Request.QueryString["dis_bef"];
+                        var clearAft = context.Request.QueryString["dis_aft"];
+                        DisPreTask(context,long.Parse(dpId),!string.IsNullOrEmpty(clearBef),!string.IsNullOrEmpty(clearAft));
+                        break;
+                    case "ClearStartThan":
+                        var cstId = context.Request.QueryString["task_id"];
+                        ClearStartThan(context,long.Parse(cstId));
+                        break;
+                    case "CheckTask":
+                        var ctTaskId = context.Request.QueryString["task_id"];
+                        CheckTask(context,long.Parse(ctTaskId));
+                        break;
+                    case "CheckDate":
+                        var sdPId = context.Request.QueryString["project_id"];
+                        var thisDate = context.Request.QueryString["date"];
+                        CheckDate(context,long.Parse(sdPId),thisDate);
+                        break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                         break;
@@ -566,7 +594,7 @@ namespace EMT.DoneNOW.Web
 
             result = new ProjectBLL().DeletePro(project_id, LoginUserId, out reson);
 
-            context.Response.Write(new { result = result, reason = reson });
+            context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result, reason = reson }));
         }
 
         /// <summary>
@@ -886,6 +914,20 @@ namespace EMT.DoneNOW.Web
                 var parTask = stDal.FindNoDeleteById((long)thisTask.parent_id);
                 if (parTask != null)
                 {
+                    // 校验数量是否超限（99）
+                    var subList = new List<sdk_task>();
+                    if (parTask.parent_id != null)
+                    {
+                        subList = stDal.GetTaskByParentId((long)parTask.parent_id);
+                    }
+                    else
+                    {
+                        subList = stDal.GetAllProTask((long)parTask.project_id);
+                    }
+                    if (subList != null && subList.Count >= 99)
+                    {
+                        return;
+                    }
                     // 减少缩进步骤
                     // 1.改变原来的兄弟节点的位置
                     // 2.获取到新的节点的位置，插入节点
@@ -931,6 +973,11 @@ namespace EMT.DoneNOW.Web
             var lastTask = tBll.GetLastBroTask(taskId);
             if (lastTask != null)
             {
+                var subList = stDal.GetTaskByParentId(lastTask.id);
+                if(subList!=null&& subList.Count >= 99)
+                {
+                    return;
+                }
                 // 补充原有位置
 
                 var thisTask = stDal.FindNoDeleteById(taskId);
@@ -1209,12 +1256,17 @@ namespace EMT.DoneNOW.Web
             var result = new ProjectBLL().DeleteExpense(ids, LoginUserId);
             context.Response.Write(result);
         }
+        /// <summary>
+        /// 删除日历信息
+        /// </summary>
         private void DeleteCalendar(HttpContext context, long cal_id)
         {
             var result = new ProjectBLL().DeleteProCal(cal_id, LoginUserId);
             context.Response.Write(result);
         }
-
+        /// <summary>
+        /// 获取单个日历信息
+        /// </summary>
         private void GetSinCal(HttpContext context, long cal_id)
         {
             var thisCal = new pro_project_calendar_dal().FindNoDeleteById(cal_id);
@@ -1223,6 +1275,212 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new Tools.Serialize().SerializeJson(thisCal));
             }
         }
+        /// <summary>
+        /// 获取task下的数量，超过99不予新增
+        /// </summary>
+        public void GetTaskSubNum(HttpContext context, long task_id, bool isSub = false)
+        {
+            var num = 0;
+            var stDal = new sdk_task_dal();
+            var thisTask = stDal.FindNoDeleteById(task_id);
+            if (thisTask != null)
+            {
+                var subTaskList = new List<sdk_task>();
+                if (isSub)
+                {
+                    if (thisTask.parent_id != null)
+                    {
+                        subTaskList = stDal.GetTaskByParentId((long)thisTask.parent_id);
+                    }
+                    else
+                    {
+                        subTaskList = stDal.GetAllProTask((long)thisTask.project_id);
+                    }
+                }
+                else
+                {
+                    subTaskList = stDal.GetTaskByParentId(thisTask.id);
+                }
+                if (subTaskList != null)
+                {
+                    num = subTaskList.Count;
+                }
+            }
 
+            context.Response.Write(num);
+        }
+
+        /// <summary>
+        /// 判断任务是否在前驱任务之前完成
+        /// </summary>
+        public void DoneBeforePro(HttpContext context,long task_id)
+        {
+            var thisTask = new sdk_task_dal().FindNoDeleteById(task_id);
+            if (thisTask != null&&thisTask.status_id==(int)DicEnum.TICKET_STATUS.DONE)
+            {
+                var preList = new sdk_task_predecessor_dal().GetTaskByTaskId(thisTask.id);
+                if (preList != null && preList.Count > 0)
+                {
+                    if(preList.Any(_=>_.status_id!= (int)DicEnum.TICKET_STATUS.DONE))
+                    {
+                        context.Response.Write("1");
+                    }
+                }
+            }
+            
+        }
+
+        /// <summary>
+        /// 清除任务的前驱或者后续任务
+        /// </summary>
+        public void DisPreTask(HttpContext context, long task_id,bool isDisBef,bool IsDisAft)
+        {
+            var stpDal = new sdk_task_predecessor_dal();
+            // var taskBll = new TaskBLL();
+            if (isDisBef)
+            {
+                var befList = stpDal.GetRelList(task_id);
+                if(befList!=null&& befList.Count > 0)
+                {
+                    befList.ForEach(_ => { stpDal.SoftDelete(_,LoginUserId); OperLogBLL.OperLogDelete<sdk_task_predecessor>(_, _.id, LoginUserId, OPER_LOG_OBJ_CATE.PROJECT_TASK_PREDECESSOR, "删除前驱任务"); });
+                }
+            }
+
+            if (IsDisAft)
+            {
+                var aftList = stpDal.GetPreList(task_id);
+                if (aftList != null && aftList.Count > 0)
+                {
+                    aftList.ForEach(_ => { stpDal.SoftDelete(_, LoginUserId); OperLogBLL.OperLogDelete<sdk_task_predecessor>(_, _.id, LoginUserId, OPER_LOG_OBJ_CATE.PROJECT_TASK_PREDECESSOR, "删除后续任务"); });
+                }
+            }
+            context.Response.Write("1");
+        }
+        /// <summary>
+        /// 清除任务的开始时间不早于字段
+        /// </summary>
+        public void ClearStartThan(HttpContext context, long task_id)
+        {
+            var thisTask = new sdk_task_dal().FindNoDeleteById(task_id);
+            if (thisTask != null && thisTask.start_no_earlier_than_date != null)
+            {
+                thisTask.start_no_earlier_than_date = null;
+                var result = new TaskBLL().OnlyEditTask(thisTask,LoginUserId);
+                context.Response.Write(result);
+            }
+        }
+        /// <summary>
+        /// 检查任务的相关告警
+        /// </summary>
+        public void CheckTask(HttpContext context, long task_id)
+        {
+            var thisTask = new sdk_task_dal().FindNoDeleteById(task_id);
+            if (thisTask != null)
+            {
+                var thisProject = new pro_project_dal().FindNoDeleteById((long)thisTask.project_id);
+
+                bool staOrEnd = false;
+                DateTime? stDate = null;
+                DateTime? endDate = null;
+                bool hasIds = false;
+                string ids = "";
+                if (thisTask.estimated_begin_time != null && thisTask.estimated_end_date != null)
+                {
+                    var thisStartDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time);
+                    stDate = thisStartDate;
+                    var thisEndDate = (DateTime)thisTask.estimated_end_date;
+                    endDate = thisEndDate;
+                    // 判断开始结束时间是否在周末
+                    if (thisStartDate.DayOfWeek== DayOfWeek.Saturday|| thisStartDate.DayOfWeek== DayOfWeek.Sunday|| thisEndDate.DayOfWeek == DayOfWeek.Saturday || thisEndDate.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        staOrEnd = true;
+                    }
+                    // 判断开始结束时间是否在节假日内
+                    if (thisProject.organization_location_id != null&&(!staOrEnd)) // 周末和节假日共用一个告警，分别显示时取消 （！staOrEnd） 判断
+                    {
+                        var thisLocation = new sys_organization_location_dal().FindNoDeleteById((long)thisProject.organization_location_id);
+                        if (thisLocation != null)
+                        {
+                            var holiDays = new d_holiday_dal().GetHoliDays(thisLocation.holiday_set_id);
+                            if (holiDays != null && holiDays.Count > 0)
+                            {
+                                foreach (var thisHol in holiDays)
+                                {
+                                    if (thisStartDate == thisHol.hd || thisHol.hd == thisEndDate)
+                                    {
+                                        staOrEnd = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+
+                }
+                if (thisTask.status_id != (int)DicEnum.TICKET_STATUS.DONE)
+                {
+                    var thisPreList = new sdk_task_predecessor_dal().GetTaskByPreId(thisTask.id);
+                    if(thisPreList!=null&& thisPreList.Count > 0)
+                    {
+                        var noDoneTask = thisPreList.Where(_ => _.status_id != (int)DicEnum.TICKET_STATUS.DONE).ToList();
+                        if(noDoneTask!=null&& noDoneTask.Count > 0)
+                        {
+                            hasIds = true;
+                            thisPreList.ForEach(_ => { ids += _.sort_order + ',';  });
+                            if (!string.IsNullOrEmpty(ids))
+                            {
+                                ids = ids.Substring(0, ids.Length - 1);
+                            }
+                        }
+                     
+                    }
+                }
+
+                context.Response.Write(new Tools.Serialize().SerializeJson(new {staInWeek=staOrEnd,start = stDate==null?"":((DateTime)stDate).ToString("yyyy-MM-dd"), end = endDate == null ? "" : ((DateTime)endDate).ToString("yyyy-MM-dd"), ids= ids, hasIds = hasIds }));
+                
+            }
+        }
+        /// <summary>
+        /// 检查校验时间是否在周末或者节假日内
+        /// </summary>
+        public void CheckDate(HttpContext context,long project_id,string date)
+        {
+            var thisProject = new pro_project_dal().FindNoDeleteById(project_id);
+            if (thisProject != null)
+            {
+                bool isInHo = false;
+                var thisDate = DateTime.Parse(date);
+                if(thisDate.DayOfWeek== DayOfWeek.Sunday|| thisDate.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    isInHo = true;
+                }
+                if (!isInHo)
+                {
+                    if (thisProject.organization_location_id != null) 
+                    {
+                        var thisLocation = new sys_organization_location_dal().FindNoDeleteById((long)thisProject.organization_location_id);
+                        if (thisLocation != null)
+                        {
+                            var holiDays = new d_holiday_dal().GetHoliDays(thisLocation.holiday_set_id);
+                            if (holiDays != null && holiDays.Count > 0)
+                            {
+                                foreach (var thisHol in holiDays)
+                                {
+                                    if (thisDate == thisHol.hd )
+                                    {
+                                        isInHo = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                context.Response.Write(isInHo);
+            }
+        }
     }
 }

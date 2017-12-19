@@ -87,7 +87,7 @@
                 </li>
                 <li id="Close">
                     <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
-                    <input type="button" value="关闭" />
+                    <input type="button" id="CloseButton" value="关闭" />
                 </li>
             </ul>
         </div>
@@ -104,7 +104,7 @@
                     <p class="informationTitle"><i></i>常规信息</p>
                     <div>
                         <table border="none" cellspacing="" cellpadding="" style="width: 690px;">
-                            <%if (!isProject)
+                            <%if (!isProject&&!isContract)
                                     { %>
                             <tr>
                                 <td>
@@ -150,7 +150,7 @@
                             else
                             { %>
 
-                            <%if (!isPhase)
+                            <%if (!isPhase&&!isContract)
                                 { %>
                             <tr>
                                 <td>
@@ -378,8 +378,11 @@
                                                                     <td width="1%" style="min-width: 22px;">&nbsp;</td>
                                                                     <td width="30%">名称</td>
                                                                     <td width="29%">文件</td>
-                                                                    <%--   <td width="30%" align="center">Date</td>
-                                                                    <td width="10%" align="right">Size</td>--%>
+                                                                    <%if (isContract)
+                                                                        { %>
+                                                                     <td width="30%" align="center">日期</td>
+                                                                    <td width="10%" align="right">大小</td>
+                                                                    <%} %>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -393,8 +396,11 @@
                                                                         <img src="../Images/delete.png" style="height: 15px; width: 15px; display: unset;" /></a></td>
                                                                     <td><%=thisAtt.filename %></td>
                                                                     <td><a onclick="OpenAttach('<%=thisAtt.id %>')"><%=thisAtt.filename %></a></td>
-                                                                    <%--<td align="center"><span id="DisplayValueForDateTime">20/11/2017 04:55 PM</span></td>
-                                                                    <td align="right">26834</td>--%>
+                                                                    <%if (isContract)
+                                                                        { %>
+                                                                    <td align="center"><span id="DisplayValueForDateTime"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisAtt.create_time).ToString("yyyy-MM-dd") %></span></td>
+                                                                    <td align="right"><%=thisAtt.sizeinbyte %></td>
+                                                                    <%} %>
                                                                 </tr>
                                                                 <%
                                                                         }
@@ -431,6 +437,10 @@
 <script>
     $(function () {
         GetConByAccount();
+        <% if (isContract){%>
+
+        $("#publish_type_id").prop("disabled", true);
+        <%}%>
     })
 
     function AddAttch() {
@@ -549,7 +559,7 @@
             LayerMsg("请选择发布类型！");
             return false;
         }
-        <%if((!isProject)&&(!isPhase)){ %>
+        <%if((!isProject)&&(!isPhase)&&(!isContract)){ %>
         var status_id = $("#status_id").val();
         if (status_id == "" || status_id == "0" || status_id == null) {
             LayerMsg("请选择任务类型！");
@@ -577,6 +587,7 @@
         if (!SubmitCheck()) {
             return false;
         }
+        $("#publish_type_id").prop("disabled", false);
         return true;
     })
     // 获取旧的task的id集合，修改时删除不必要附件
@@ -595,4 +606,7 @@
         window.open("../Activity/OpenAttachment.aspx?id=" + attId, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_ATTACH %>', 'left=200,top=200,width=1080,height=800', false);
 
     }
+    $("#CloseButton").click(function () {
+        window.close();
+    })
 </script>

@@ -17,6 +17,7 @@ namespace EMT.DoneNOW.DTO
         public int status_id;        // 任务状态
         public List<AddFileDto> filtList;
         public string attIds="";         // 这个备注的附件 ，修改时使用
+        public long account_id;
 
         public bool incloNoteDes;  // 通知邮件中是否包含备注详情
         public bool incloNoteAtt;  // 通知邮件中是否包含备注附件

@@ -27,7 +27,7 @@ namespace EMT.DoneNOW.Web.Project
             catch (Exception)
             {
 
-                throw;
+                Response.End();
             }
         }
     }

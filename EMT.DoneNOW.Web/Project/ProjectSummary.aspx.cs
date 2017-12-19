@@ -25,6 +25,12 @@ namespace EMT.DoneNOW.Web.Project
                 thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(id));
                 if (thisProject != null)
                 {
+                    if (AuthBLL.GetUserProjectAuth(LoginUserId, LoginUser.security_Level_id, thisProject.id).CanView == false)
+                    {
+                        Response.Write("<script>alert('无权查看');window.close();</script>");
+                        Response.End();
+                        return;
+                    }
                     taskList = new sdk_task_dal().GetProjectTask(thisProject.id);
                     if (thisProject.type_id == (int)DicEnum.PROJECT_TYPE.TEMP)
                     {

@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/searchList.css" />
      <link href="../Content/ClassificationIcons.css" rel="stylesheet" />
     <title></title>
-    <style>
+    <style>APPROVE_CHARGES
         .searchcontent {
             width: 100%;
             height: 100%;
@@ -235,11 +235,17 @@
                     <%
     }
     else if (catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_TEAM) {%>
-                    <li onclick="Add()"><span style="margin: 0 10px;">新建</span></li>
-                    <li onclick="EmailProjetcTeam()"><span style="margin: 0 10px;">通知项目团队</span></li>
+                    <%if (CheckAuth("PRO_PROJECT_VIEW_TEAM_ADD"))
+                        { %>
+                    <li onclick="Add()"><span style="margin: 0 10px;">新建</span></li><%} %>
+                    <%if (CheckAuth("PRO_PROJECT_VIEW_TEAM_EMAIL_TEAM"))
+                        { %>
+                    <li onclick="EmailProjetcTeam()"><span style="margin: 0 10px;">通知项目团队</span></li><%} %>
                     <li onclick=""><span style="margin: 0 10px;">工作量报表</span></li>
                     <li onclick=""><span style="margin: 0 10px;">查找员工</span></li>
-                    <li onclick="ReconcileProject()"><span style="margin: 0 10px;">查核内部团队</span></li>
+                       <%if (CheckAuth("PRO_PROJECT_VIEW_TEAM_RECONLINE"))
+                        { %>
+                    <li onclick="ReconcileProject()"><span style="margin: 0 10px;">查核内部团队</span></li><%} %>
                         <%}
                             else if (catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_COST_EXPENSE) {%>
                        <li onclick="AddCost()"><span style="margin: 0 10px;">新增成本</span></li>
@@ -284,10 +290,23 @@
                 </ul>
                 <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_UDF) { %>
                 <div class="DropDownMenu" id="D1" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;border-top:white;display:none;">
-                    <ul><li><span class='DropDownMenuItemText' onclick='EditProject()'>编辑项目</span></li><li><span class='DropDownMenuItemText' onclick='AddProCalendar()'>新增项目日历条目</span></li><li><span class='DropDownMenuItemText' onclick='AddProjectNote()'>新增项目备注</span></li><li><span class='DropDownMenuItemText' onclick='CompleteProject()'>完成项目</span></li><li><span class='DropDownMenuItemText' onclick='SaveAsTemp()'>保存为项目模板</span></li></ul>
+                    <ul>
+                        <%if (CheckAuth("SEARCH_PROJECT_EDIT_PROJECT")) { %> <li><span class='DropDownMenuItemText' onclick='EditProject()'>编辑项目</span></li> <%}%>
+                         <%if (CheckAuth("PRO_PROJECT_VIEW_CALENDAR_ADD")) { %>
+                        <li><span class='DropDownMenuItemText' onclick='AddProCalendar()'>新增项目日历条目</span></li><%}%>
+                          <%if (CheckAuth("PRO_PROJECT_VIEW_NOTE_ADD")) { %>
+                        <li><span class='DropDownMenuItemText' onclick='AddProjectNote()'>新增项目备注</span></li><%}%>
+                         <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_COMPLETE")) { %>
+                        <li><span class='DropDownMenuItemText' onclick='CompleteProject()'>完成项目</span></li><%}%>
+                        <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_SAVE_TEMP")) { %>
+                        <li><span class='DropDownMenuItemText' onclick='SaveAsTemp()'>保存为项目模板</span></li><%}%>
+                        <%if (CheckAuth("PRO_PROJECT_DELETE")) { %>
+                        <li><span class='DropDownMenuItemText' onclick='DeleteProject()'>删除项目</span></li><%}%>
+
+                    </ul>
                 </div>
                 <div class="DropDownMenu" id="D2" style="background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;border-top:white;display:none;margin-left: 84px;">
-                     <ul><li><span class='DropDownMenuItemText' onclick='CopyFromOppo()'>从商机复制</span></li></ul>
+                     <ul>      <%if (CheckAuth("PRO_PROJECT_VIEW_UDF_COPY_OPPORTUNITY")) { %><li><span class='DropDownMenuItemText' onclick='CopyFromOppo()'>从商机复制</span></li><%}%></ul>
                 </div>
                 <%} %>
 

@@ -230,6 +230,11 @@ namespace EMT.DoneNOW.Web.Project
         {
             bool result = false;
             var param = GetParam();
+            if (param == null)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('项目下任务过多，不能保存！');</script>");
+                return;
+            }
             if (isAdd)
             {
                 result = new TaskBLL().AddTask(param, GetLoginUserId());
@@ -261,9 +266,15 @@ namespace EMT.DoneNOW.Web.Project
         {
             bool result = false;
             var param = GetParam();
+            if (param == null)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('项目下任务过多，不能保存！');</script>");
+                return;
+            }
             if (isAdd)
             {
                 result = new TaskBLL().AddTask(param, GetLoginUserId());
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();location.href='TaskView?id=" + param.task.id + "';</script>");
             }
             else
             {
@@ -277,8 +288,9 @@ namespace EMT.DoneNOW.Web.Project
                 {
                     result = new TaskBLL().EditTask(param, GetLoginUserId());
                 }
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();location.href='TaskView?id=" + param.task.id + "';</script>");
             }
-            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();location.href='TaskView?id=" + param.task.id + "';</script>");
+          
         }
 
         protected void save_add_Click(object sender, EventArgs e)
@@ -292,6 +304,11 @@ namespace EMT.DoneNOW.Web.Project
         {
             bool result = false;
             var param = GetParam();
+            if (param == null)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('项目下任务过多，不能保存！');</script>");
+                return;
+            }
             if (isAdd)
             {
                 result = new TaskBLL().AddTask(param, GetLoginUserId());
@@ -320,6 +337,10 @@ namespace EMT.DoneNOW.Web.Project
         {
             bool result = false;
             var param = GetParam();
+            if (param == null)
+            {
+                return false;
+            }
             if (isAdd)
             {
                 result = new TaskBLL().AddTask(param, GetLoginUserId());
@@ -346,6 +367,7 @@ namespace EMT.DoneNOW.Web.Project
         /// </summary>
         private TaskSaveDto GetParam()
         {
+
             TaskSaveDto param = AssembleModel<TaskSaveDto>();
             param.resDepIds = Request.Form["resDepList"];     // 员工角色 Id 
             param.contactIds = Request.Form["conIds"];        // 联系人 ID
@@ -366,11 +388,31 @@ namespace EMT.DoneNOW.Web.Project
             }
             var pageTask = AssembleModel<sdk_task>();
             pageTask.cost_code_id = pageTask.cost_code_id == 0 ? null : pageTask.cost_code_id;
-          
-            if (parTask != null)
+            if (pageTask.parent_id == null)
             {
-                pageTask.parent_id = parTask.id;
+                var subList = new sdk_task_dal().GetAllProTask(thisProject.id);
+                if(subList!=null&& subList.Count >= 99)
+                {
+                    if (isAdd)
+                    {
+                        Response.Write("<script>alert('项目下任务过多，不能添加！');window.close();</script>");
+                        return null;
+                    }
+                    else
+                    {
+                        if (!subList.Any(_=>_.id == thisTask.id))
+                        {
+                            Response.Write("<script>alert('项目下任务过多，不能保存！');window.close();</script>");
+                            return null;
+                        }
+                    }
+                   
+                }
             }
+            //if (parTask != null)
+            //{
+            //    pageTask.parent_id = parTask.id;
+            //}
             if (type_id != (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
             {
                 pageTask.is_visible_in_client_portal = (sbyte)(DisplayInCapNone.Checked ? 1 : 0);
@@ -411,6 +453,7 @@ namespace EMT.DoneNOW.Web.Project
                     TimeSpan ts1 = new TimeSpan((DateTime.Parse(startString)).Ticks);
                     TimeSpan ts2 = new TimeSpan(((DateTime)pageTask.estimated_end_date).Ticks);
                     TimeSpan ts = ts1.Subtract(ts2).Duration();
+                
                     //pageTask.estimated_duration = ts.Days + 1;
                 // }
                 // RetrunMaxTime 计算结束时间
@@ -452,9 +495,26 @@ namespace EMT.DoneNOW.Web.Project
                     thisTask.estimated_begin_time = pageTask.estimated_begin_time;
                     thisTask.start_no_earlier_than_date = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time);
                 }
-                    
-                thisTask.estimated_end_date = pageTask.estimated_end_date;
-                thisTask.estimated_duration = pageTask.estimated_duration;
+                if (thisTask.estimated_end_date!= pageTask.estimated_end_date)
+                {
+                    thisTask.estimated_end_date = pageTask.estimated_end_date;
+                    thisTask.estimated_duration = new TaskBLL().GetDayByTime((long)thisTask.estimated_begin_time,Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)pageTask.estimated_end_date),(long)thisTask.project_id);
+                }
+                else
+                {
+                    if (thisTask.estimated_duration != pageTask.estimated_duration)
+                    {
+                        thisTask.estimated_end_date = new TaskBLL().RetrunMaxTime(thisProject.id, DateTime.Parse(startString), (int)pageTask.estimated_duration);
+                    }
+                    else
+                    {
+                        thisTask.estimated_end_date = pageTask.estimated_end_date;
+                        thisTask.estimated_duration = pageTask.estimated_duration;
+                    }
+                }
+               
+
+
                 if (!isPhase)
                 {
                     thisTask.status_id = pageTask.status_id;
@@ -473,6 +533,18 @@ namespace EMT.DoneNOW.Web.Project
                     thisTask.cost_code_id = pageTask.cost_code_id;
                     thisTask.owner_resource_id = pageTask.owner_resource_id;
                     thisTask.template_id = pageTask.template_id;
+                    var IsEditEsTime = Request.Form["IsEditEsTime"];
+                    var thisVt = new v_task_all_dal().FindById(thisTask.id);
+                    if (!string.IsNullOrEmpty(IsEditEsTime))
+                    {
+                        thisTask.projected_variance = (thisVt.worked_hours == null ? 0 : (decimal)thisVt.worked_hours) - (thisTask.estimated_hours+(thisVt.change_Order_Hours==null?0:(decimal)thisVt.change_Order_Hours))+(thisVt.remain_hours==null?0:(decimal)thisVt.remain_hours);
+
+                    }
+                    else
+                    {
+                        thisTask.projected_variance = (thisVt.worked_hours == null ? 0 : (decimal)thisVt.worked_hours) - (thisTask.estimated_hours + (thisVt.change_Order_Hours == null ? 0 : (decimal)thisVt.change_Order_Hours));
+                    }
+
                 }
                 param.task = thisTask;
             }

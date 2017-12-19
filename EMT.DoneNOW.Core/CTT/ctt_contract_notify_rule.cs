@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
@@ -30,6 +31,8 @@ namespace EMT.DoneNOW.Core
         public Decimal? rate { get; set; }
         [DataMember]
         public String additional_email_addresses { get; set; }
+        [DataMember]
+        public Int32 notify_tmpl_id { get; set; }
 
 
     }

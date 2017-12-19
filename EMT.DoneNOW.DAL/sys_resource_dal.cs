@@ -9,7 +9,7 @@ namespace EMT.DoneNOW.DAL
 {
     public class sys_resource_dal : BaseDAL<sys_resource>
     {
-        public List<DictionaryEntryDto> GetDictionary(bool isOnlyActive=false)
+        public List<DictionaryEntryDto> GetDictionary(bool isOnlyActive = false)
         {
             var all = this.FindAll().OrderBy(_ => _.id).ToList();
             if (isOnlyActive)
@@ -63,6 +63,20 @@ namespace EMT.DoneNOW.DAL
         public List<sys_resource> GetResByProTeam(long project_id)
         {
             return FindListBySql<sys_resource>($"SELECT sr.* from pro_project_team ppt  INNER JOIN pro_project pp on ppt.project_id = pp.id inner JOIN sys_resource sr on ppt.resource_id = sr.id where pp.id = 5102 and ppt.delete_time = 0 and pp.delete_time = 0 and sr.delete_time = 0");
+        }
+        /// <summary>
+        /// 获取改合同通知规则内的员工信息
+        /// </summary>
+        public List<sys_resource> GetConRuleList(long rule_id)
+        {
+            return FindListBySql<sys_resource>($"SELECT id,name from sys_resource where id  in(SELECT person_id from ctt_contract_notify_rule_recipient where contract_notify_rule_id = {rule_id} and delete_time = 0) and delete_time = 0");
+        }
+        /// <summary>
+        /// 获取不在此规则内的员工信息
+        /// </summary>
+        public List<sys_resource> GetNotInConRuleList(long rule_id)
+        {
+            return FindListBySql<sys_resource>($"SELECT id,name from sys_resource where id not in(SELECT person_id from ctt_contract_notify_rule_recipient where contract_notify_rule_id = {rule_id} and delete_time = 0) and delete_time = 0");
         }
 
     }

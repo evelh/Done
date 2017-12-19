@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DAL;
+using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -87,5 +88,52 @@ namespace EMT.DoneNOW.BLL
             dal.Update(rate);
             OperLogBLL.OperLogDelete<ctt_contract_rate>(rate, rate.id, userId, DTO.DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_RATE, "删除合同费率");
         }
+        /// <summary>
+        /// 根据 物料代码Id 和 角色ID返回相关费率
+        /// </summary>
+        public decimal? GetRateByCodeAndRole(long cost_code_id,long role_id)
+        {
+            decimal? rate = null;
+            var dccDal = new d_cost_code_dal();
+            var srDal = new sys_role_dal();
+            var thisCostCode = dccDal.FindNoDeleteById(cost_code_id);
+            var thisRole = srDal.FindNoDeleteById(role_id);
+            if (thisCostCode != null && thisRole != null)
+            {
+                switch (thisCostCode.billing_method_id)
+                {
+                    case (int)DicEnum.WORKTYPE_BILLING_METHOD.USE_ROLE_RATE:
+                        rate = thisRole.hourly_rate;
+                        break;
+                    case (int)DicEnum.WORKTYPE_BILLING_METHOD.FLOAT_ROLE_RATE:
+                        if (thisCostCode.rate_adjustment != null)
+                        {
+                            rate = (thisRole.hourly_rate + thisCostCode.rate_adjustment);
+                        }
+                        break;
+                    case (int)DicEnum.WORKTYPE_BILLING_METHOD.RIDE_ROLE_RATE:
+                        if (thisCostCode.rate_multiplier != null)
+                        {
+                            rate = (thisRole.hourly_rate * thisCostCode.rate_multiplier);
+                        }
+                        break;
+                    case (int)DicEnum.WORKTYPE_BILLING_METHOD.USE_UDF_ROLE_RATE:
+                        if (thisCostCode.custom_rate != null)
+                        {
+                            rate =  thisCostCode.custom_rate;
+                        }
+                        break;
+                    case (int)DicEnum.WORKTYPE_BILLING_METHOD.BY_TIMES:
+                        if (thisCostCode.flat_rate != null)
+                        {
+                            rate = thisCostCode.flat_rate;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return rate;
+        } 
     }
 }

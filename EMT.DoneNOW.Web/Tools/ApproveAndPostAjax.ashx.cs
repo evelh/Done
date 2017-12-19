@@ -32,6 +32,12 @@ namespace EMT.DoneNOW.Web
                 case "auto_block": auto_block(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
                 case "force": force(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
                 case "cost": Cost(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
+                case "GetLabourInfo":
+                    GetLabourInfo(context,long.Parse(id));
+                    break;
+                case "GetExpInfo":
+                    GetExpInfo(context,long.Parse(id));
+                    break;
                 default: break;
 
             }
@@ -110,14 +116,21 @@ namespace EMT.DoneNOW.Web
         public void Init(HttpContext context, int id, int type)
         {
             ApproveAndPostBLL aapbll = new ApproveAndPostBLL();
-
-            if (aapbll.Restore_Initial(id, type, LoginUserId))
+            string reason = "";
+            if (aapbll.Restore_Initial(id, type, LoginUserId,out reason))
             {
                 context.Response.Write("已经恢复初始值！");
             }
             else
             {
-                context.Response.Write("失败！");
+                if (reason != "")
+                {
+                    context.Response.Write(reason);
+                }
+                else
+                {
+                    context.Response.Write("失败！");
+                }
             }
 
         }
@@ -149,6 +162,27 @@ namespace EMT.DoneNOW.Web
             }
 
         }
-
+        /// <summary>
+        /// 获取工时信息
+        /// </summary>
+        public void GetLabourInfo(HttpContext context,long id)
+        {
+            var thisEntry = new DAL.sdk_work_entry_dal().FindNoDeleteById(id);
+            if (thisEntry != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(thisEntry));
+            }
+        }
+        /// <summary>
+        /// 获取费用信息
+        /// </summary>
+        private void GetExpInfo(HttpContext context, long id)
+        {
+            var thisExp = new DAL.sdk_expense_dal().FindNoDeleteById(id);
+            if (thisExp != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(thisExp));
+            }
+        }
     }
 }

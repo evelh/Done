@@ -25,21 +25,21 @@
     </div>
     <div class="DropDownMenu" id="D1" style="top: 25px;">
         <ul>
-            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_EDIT_PROJECT"))
+            <%if (CheckAuth("SEARCH_PROJECT_EDIT_PROJECT"))
                 { %>
             <li><span class="DropDownMenuItemText" onclick="EditProject('<%=thisProject.id %>')">编辑项目</span></li>
             <%} %>
 
             <%if (isTemp)
                 { %>
-            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ADD_TEMP_CALENDAR"))
+            <%if (CheckAuth("PRO_PROJECT_VIEW_CALENDAR_ADD"))
                 { %>
             <li><span class="DropDownMenuItemText">添加项目模板日历</span></li>
             <%} %>
             <%}
                 else
                 { %>
-            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ADD_CALENDAR"))
+            <%if (CheckAuth("PRO_PROJECT_VIEW_CALENDAR_ADD"))
                 { %>
             <li><span class="DropDownMenuItemText">添加项目日历</span></li>
             <%} %>
@@ -47,14 +47,14 @@
 
             <%if (isTemp)
                 { %>
-            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ADD_TEMP_NOTE"))
+            <%if (CheckAuth("PRO_PROJECT_VIEW_NOTE_ADD"))
                 { %>
             <li><span class="DropDownMenuItemText">添加项目模板备注</span></li>
             <%} %>
             <%}
                 else
                 { %>
-            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ADD_NOTE"))
+            <%if (CheckAuth("PRO_PROJECT_VIEW_NOTE_ADD"))
                 { %>
             <li><span class="DropDownMenuItemText">添加项目备注</span></li>
             <%} %>
@@ -75,7 +75,7 @@
 
             <%if (isTemp)
                 { %>
-            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_DIS_PROJECT_TEMP"))
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_DIS_PROJECT"))
                 { %>
             <li onclick="DisProject('<%=thisProject.id %>')"><span class="DropDownMenuItemText">停用项目模板</span></li>
             <%} %>
@@ -91,7 +91,7 @@
 
 
             <%} %>
-            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ACTIVE_PROJECT"))
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_DIS_PROJECT"))
                 { %>
             <li><span class="DropDownMenuItemText">激活项目</span></li>
             <%} %>
@@ -104,14 +104,14 @@
             <%} %>
             <%if (isTemp)
                 { %>
-            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_DELETE_PROJECT_TEMP"))
+            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_SAVE_TEMP"))
                 { %>
             <li><span class="DropDownMenuItemText" onclick="DeletePro()">删除项目模板</span></li>
             <%} %>
             <%}
                 else
                 { %>
-            <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_DELETE_PROJECT")) { %>
+            <%if (CheckAuth("PRO_PROJECT_DELETE")) { %>
             <li><span class="DropDownMenuItemText" onclick="DeletePro()">删除项目</span></li>
             <%} %>
             <%} %>
@@ -136,8 +136,13 @@
                                             <td class="FieldLabel" style="min-width: 200px; width: 200px;">客户名称
                                             </td>
                                             <td>
-                                                <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_VIEW_ACCOUNT")){ %>
+                                                <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_VIEW_ACCOUNT"))
+                                                    { %>
                                                 <a style="cursor: pointer;" onclick="window.open('../Company/ViewCompany.aspx?id=<%=thisProject.account_id %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=account == null ? "" : account.name %></a>
+                                                <%}
+                                                             else
+                                                             { %>
+                                                <span><%=account == null?"":account.name %></span>
                                                 <%} %>
                                             </td>
                                         </tr>
@@ -151,9 +156,14 @@
                                             <td class="FieldLabel" style="min-width: 200px; width: 200px;">合同名称
                                             </td>
                                             <td>
-                                                <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_VIEW_CONTRACT")){ %>
-                                                <a style="cursor: pointer;" onclick="window.open('../Contract/ContractView.aspx?id=<%=contract==null?"":contract.id.ToString() %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=contract==null?"":contract.name %></a>
-                                                   <%} %>
+                                                <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_VIEW_CONTRACT"))
+                                                    { %>
+                                                <a style="cursor: pointer;" onclick="window.open('../Contract/ContractView.aspx?id=<%=contract == null ? "" : contract.id.ToString() %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=contract == null ? "" : contract.name %></a>
+                                                   <%}
+                                                                                                              else
+                                                                                                              { %>
+                                                <span><%=contract == null ? "" : contract.name %></span>
+                                                <%} %>
                                             </td>
                                         </tr>
                                         <tr height="21">
@@ -202,7 +212,14 @@
                                                 <%if (thisProject.opportunity_id != null)
                                                     {
                                                         var opp = new EMT.DoneNOW.DAL.crm_opportunity_dal().FindNoDeleteById((long)thisProject.opportunity_id);%>
-                                                <a style="cursor: pointer;" onclick="window.open('../Opportunity/ViewOpportunity.aspx.aspx?id=<%=opp==null?"":opp.id.ToString() %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=opp==null?"":opp.name %></a>
+                                                <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_VIEW_CONTRACT"))
+                                                    { %>
+                                                <a style="cursor: pointer;" onclick="window.open('../Opportunity/ViewOpportunity.aspx.aspx?id=<%=opp == null ? "" : opp.id.ToString() %>', '_blank', 'left=200,top=200,width=600,height=800', false);"><%=opp == null ? "" : opp.name %></a>
+                                                <%}
+                                                else
+                                                { %>
+                                                <span><%=opp==null ? "" : opp.name %></span>
+                                                <%} %>
                                                 <%} %> 
                                             </td>
                                         </tr>

@@ -31,6 +31,7 @@ namespace EMT.DoneNOW.BLL
                 thisTask.department_id = thisTask.department_id == 0 ? null : thisTask.department_id;
                 thisTask.no = ReturnTaskNo();
                 thisTask.create_user_id = user.id;
+                thisTask.oid = 0;
                 if (thisTask.estimated_duration == null)
                 {
                     thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time, Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)thisTask.estimated_end_date), (long)thisTask.project_id);
@@ -42,7 +43,7 @@ namespace EMT.DoneNOW.BLL
                 else
                 {
                     thisTask.sort_order = GetMinUserNoParSortNo((long)thisTask.project_id);
-                }
+                } 
 
                 thisTask.update_user_id = user.id;
                 thisTask.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -656,6 +657,15 @@ namespace EMT.DoneNOW.BLL
 
             thisTask.update_user_id = user_id;
             thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            if (thisTask.status_id == (int)DicEnum.TICKET_STATUS.DONE)
+            {
+                var thisVt = new v_task_all_dal().FindById(thisTask.id);
+                if (thisVt != null&&!isPhase)
+                {
+                    // 预估偏差将会变更为：实际时间 - （预估时间+变更单时间）+剩余时间
+                    thisTask.projected_variance = (thisVt.worked_hours == null ? 0 : (decimal)thisVt.worked_hours) - (thisTask.estimated_hours + (thisVt.change_Order_Hours == null ? 0 : (decimal)thisVt.change_Order_Hours));
+                }
+            }
             OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
             _dal.Update(thisTask);
 
@@ -886,6 +896,7 @@ namespace EMT.DoneNOW.BLL
                     }
                 }
 
+               
             }
             #endregion
 
@@ -1272,9 +1283,10 @@ namespace EMT.DoneNOW.BLL
 
             if (days >= 0)
             {
-                if (thisProject.exclude_weekend == 0)    // 调整任务不包括非工作日（周末）
+                if (thisProject.exclude_weekend == 1)    // 调整任务不包括非工作日（周末）
                 {
-                    newThisDate = ReturnDateWtihWeek(thisDate, days, true);
+                    newThisDate = ReturnDateWtihWeek(thisDate, days, false);
+                    //newThisDate = newThisDate.AddDays(-1);
                 }
                 else
                 {
@@ -1369,9 +1381,11 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         public DateTime ReturnDateWtihWeek(DateTime thisDate, int days, bool isCloWeekday)
         {
+           
             var newDate = thisDate;
             if (days >= 0)
             {
+                days = days - 1;
                 if (isCloWeekday)  // true 代表包括周末
                 {
                     newDate = thisDate.AddDays(days);
@@ -1405,15 +1419,16 @@ namespace EMT.DoneNOW.BLL
                         var weekNum = days / 5;
                         newDate = newDate.AddDays(weekNum * 7);
                         // 3.
-                        if (weekNum % 5 != 0)
+                        if (days % 5 != 0)
                         {
-                            newDate = newDate.AddDays(weekNum % 5);
+                            newDate = newDate.AddDays(days % 5);
                         }
                     }
                 }
             }
             else
             {
+                days = days + 1;
                 if (isCloWeekday)  // true 代表包括周末
                 {
                     newDate = thisDate.AddDays(days);
@@ -2097,7 +2112,7 @@ namespace EMT.DoneNOW.BLL
                                 case (int)DicEnum.WORKTYPE_BILLING_METHOD.BY_TIMES:
                                     if (thisCostCode.flat_rate != null)
                                     {
-                                        totalMoney += (decimal)thisCostCode.flat_rate;
+                                        totalMoney += (billHours * (decimal)thisCostCode.flat_rate);
                                     }
                                     break;
                                 default:
@@ -2857,12 +2872,12 @@ namespace EMT.DoneNOW.BLL
                     thisAddNote.id = _dal.GetNextIdCom();
                 }
                 var project = param.thisProjetc;
-                var account = new crm_account_dal().FindNoDeleteById(project.account_id);
-                var contact = new ContactBLL().GetDefaultByAccountId(project.account_id);
-                thisAddNote.cate_id = (int)DicEnum.ACTIVITY_CATE.TASK_NOTE;
+                var account = new crm_account_dal().FindNoDeleteById(param.account_id);
+                var contact = new ContactBLL().GetDefaultByAccountId(account.id);
+                // thisAddNote.cate_id = (int)DicEnum.ACTIVITY_CATE.TASK_NOTE;
                 thisAddNote.object_id = param.object_id;
-                thisAddNote.object_type_id = (int)OBJECT_TYPE.TASK;
-                thisAddNote.account_id = project.account_id;
+                // thisAddNote.object_type_id = (int)OBJECT_TYPE.TASK;
+                thisAddNote.account_id = account.id;
                 if (param.thisTask != null)
                 {
                     thisAddNote.task_id = param.thisTask.id;
@@ -2872,8 +2887,8 @@ namespace EMT.DoneNOW.BLL
                 {
                     thisAddNote.contact_id = contact.id;
                 }
-                thisAddNote.resource_id = project.owner_resource_id;
-                thisAddNote.contract_id = project.contract_id;
+                //thisAddNote.resource_id = project.owner_resource_id;
+                //thisAddNote.contract_id = project.contract_id;
                 thisAddNote.create_user_id = user_id;
                 thisAddNote.update_user_id = user_id;
                 thisAddNote.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -2923,129 +2938,150 @@ namespace EMT.DoneNOW.BLL
                 #endregion
 
                 #region 通知相关
+                var notiContract = new ctt_contract_dal().FindNoDeleteById(thisAddNote.object_id);
+
+                var srDal = new sys_resource_dal();
+                string htmlBody = "";
                 if (param.notify_id != 0)
                 {
                     var temp = new sys_notify_tmpl_dal().FindNoDeleteById((long)param.notify_id);
                     if (temp != null)
                     {
-                        var srDal = new sys_resource_dal();
+                       
                         var temp_email_List = new sys_notify_tmpl_email_dal().GetEmailByTempId(temp.id);
                         if (temp_email_List != null && temp_email_List.Count > 0)
                         {
-
-                            string toEmialString = "";
-                            string ccEmialString = "";
-                            var create_id = param.thisProjetc.create_user_id;
-                            if (param.thisTask != null)
-                            {
-                                create_id = param.thisTask.create_user_id;
-                            }
-                            #region 接收邮件人列表
-
-                            if (!string.IsNullOrEmpty(param.contact_ids))
-                            {
-                                var conList = new crm_contact_dal().GetContactByIds(param.contact_ids);
-                                if (conList != null && conList.Count > 0)
-                                {
-                                    conList.ForEach(_ => { if (!string.IsNullOrEmpty(_.email)) { toEmialString += _.email + ";"; } });
-                                }
-                            }
-
-                            List<sys_resource> toResList = new List<sys_resource>();
-                            if (!string.IsNullOrEmpty(param.resIds))
-                            {
-                                var resList = new sys_resource_dal().GetListByIds(param.resIds);
-                                if (resList != null && resList.Count > 0)
-                                {
-                                    toResList.AddRange(resList);
-                                }
-                            }
-                            if (!string.IsNullOrEmpty(param.workGropIds))
-                            {
-                                var workresList = new sys_workgroup_dal().GetResouListByWorkIds(param.workGropIds);
-                                if (workresList != null && workresList.Count > 0)
-                                {
-                                    toResList.AddRange(workresList);
-                                }
-                            }
-                            if (toResList.Count > 0)
-                            {
-                                toResList = toResList.Distinct().ToList();
-                                toResList.ForEach(_ => { toEmialString += _.email + ";"; });
-                            }
-                            if (param.toCrea)
-                            {
-                                var creRes = srDal.FindNoDeleteById(create_id);
-                                if (creRes != null)
-                                {
-                                    toEmialString += creRes.email + ";";
-                                }
-                            }
-                            if (param.toAccMan)
-                            {
-                                if (account.resource_id != null)
-                                {
-                                    var accRes = srDal.FindNoDeleteById(create_id);
-                                    if (accRes != null)
-                                    {
-                                        toEmialString += accRes.email + ";";
-                                    }
-                                }
-                            }
-
-
-                            if (!string.IsNullOrEmpty(param.otherEmail))
-                            {
-                                toEmialString += param.otherEmail + ";";
-                            }
-
-                            #endregion
-
-                            #region 抄送邮件人列表
-                            if (param.ccMe)
-                            {
-                                ccEmialString += user.email;
-                            }
-
-                            #endregion
-
-
-
-                            var sysEmail = new d_general_dal().FindNoDeleteById((int)DicEnum.SUPPORT_EMAIL.SYS_EMAIL);
-                            var fromEmail = user.email;
-                            var from_email_name = user.name;
-                            if (param.fromSys)
-                            {
-                                if (sysEmail != null && !string.IsNullOrEmpty(sysEmail.name))
-                                {
-                                    fromEmail = sysEmail.name;
-                                    from_email_name = sysEmail.remark;
-                                }
-                            }
-                            var notify = new com_notify_email()
-                            {
-                                id = _dal.GetNextIdCom(),
-                                cate_id = (int)NOTIFY_CATE.PROJECT,
-                                event_id = (int)DicEnum.NOTIFY_EVENT.TICKET_TIME_ENTRY_CREATED_EDITED,
-                                to_email = toEmialString,
-                                cc_email = ccEmialString,
-                                notify_tmpl_id = param.notify_id,
-                                from_email = fromEmail,
-                                from_email_name = from_email_name,
-                                subject = param.subjects,
-                                body_text = temp_email_List[0].body_text + param.otherEmail + (param.incloNoteAtt ? thisAddNote.description : ""),
-                                // is_success = (sbyte)(isSuccess ? 1 : 0),
-                                is_html_format = 0,
-                                create_user_id = user_id,
-                                update_user_id = user_id,
-                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            };
-                            new com_notify_email_dal().Insert(notify);
-                            OperLogBLL.OperLogAdd<com_notify_email>(notify, notify.id, user_id, OPER_LOG_OBJ_CATE.NOTIFY, "新增任务备注-添加通知");
+                            htmlBody = temp_email_List[0].body_text;
                         }
                     }
                 }
+                if (param.notify_id == 0&&notiContract == null)
+                    return true;
+
+                string toEmialString = "";
+                string ccEmialString = "";
+                var create_id = param.thisProjetc.create_user_id;
+                if (param.thisTask != null)
+                {
+                    create_id = param.thisTask.create_user_id;
+                }
+                #region 接收邮件人列表
+
+                if (!string.IsNullOrEmpty(param.contact_ids))
+                {
+                    var conList = new crm_contact_dal().GetContactByIds(param.contact_ids);
+                    if (conList != null && conList.Count > 0)
+                    {
+                        conList.ForEach(_ => { if (!string.IsNullOrEmpty(_.email)) { toEmialString += _.email + ";"; } });
+                    }
+                }
+
+                List<sys_resource> toResList = new List<sys_resource>();
+                if (!string.IsNullOrEmpty(param.resIds))
+                {
+                    var resList = new sys_resource_dal().GetListByIds(param.resIds);
+                    if (resList != null && resList.Count > 0)
+                    {
+                        toResList.AddRange(resList);
+                    }
+                }
+                if (!string.IsNullOrEmpty(param.workGropIds))
+                {
+                    var workresList = new sys_workgroup_dal().GetResouListByWorkIds(param.workGropIds);
+                    if (workresList != null && workresList.Count > 0)
+                    {
+                        toResList.AddRange(workresList);
+                    }
+                }
+                if (toResList.Count > 0)
+                {
+                    toResList = toResList.Distinct().ToList();
+                    toResList.ForEach(_ => { toEmialString += _.email + ";"; });
+                }
+                if (param.toCrea)
+                {
+                    var creRes = srDal.FindNoDeleteById(create_id);
+                    if (creRes != null)
+                    {
+                        toEmialString += creRes.email + ";";
+                    }
+                }
+                if (param.toAccMan)
+                {
+                    if (account.resource_id != null)
+                    {
+                        var accRes = srDal.FindNoDeleteById(create_id);
+                        if (accRes != null)
+                        {
+                            toEmialString += accRes.email + ";";
+                        }
+                    }
+                }
+
+
+                if (!string.IsNullOrEmpty(param.otherEmail))
+                {
+                    toEmialString += param.otherEmail + ";";
+                }
+
+                #endregion
+
+                #region 抄送邮件人列表
+                if (param.ccMe)
+                {
+                    ccEmialString += user.email;
+                }
+
+                #endregion
+
+                var sysEmail = new d_general_dal().FindNoDeleteById((int)DicEnum.SUPPORT_EMAIL.SYS_EMAIL);
+                var fromEmail = user.email;
+                var from_email_name = user.name;
+                if (param.fromSys)
+                {
+                    if (sysEmail != null && !string.IsNullOrEmpty(sysEmail.name))
+                    {
+                        fromEmail = sysEmail.name;
+                        from_email_name = sysEmail.remark;
+                    }
+                }
+                var cate_id = (int)NOTIFY_CATE.PROJECT;
+                int? event_id = (int)NOTIFY_EVENT.PROJECT_NOTE_CREATED_OR_EDITED;
+                var thisTaks = _dal.FindNoDeleteById(thisAddNote.object_id);
+                if (thisTaks != null)
+                {
+                    event_id = (int)NOTIFY_EVENT.TASK_NOTE_CREATED_EDITED;
+                }
+                else
+                {
+                    if (notiContract != null)
+                    {
+                        cate_id = (int)NOTIFY_CATE.CONTRACT;
+                        event_id = null;
+                    }
+                }
+                var notify = new com_notify_email()
+                {
+                    id = _dal.GetNextIdCom(),
+                    cate_id = cate_id,
+                    event_id = event_id,
+                    to_email = toEmialString,
+                    cc_email = ccEmialString,
+                    notify_tmpl_id = param.notify_id,
+                    from_email = fromEmail,
+                    from_email_name = from_email_name,
+                    subject = param.subjects,
+                    body_text = htmlBody + param.otherEmail + (param.incloNoteAtt ? thisAddNote.description : ""),
+                    // is_success = (sbyte)(isSuccess ? 1 : 0),
+                    is_html_format = 0,
+                    create_user_id = user_id,
+                    update_user_id = user_id,
+                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                };
+                new com_notify_email_dal().Insert(notify);
+                OperLogBLL.OperLogAdd<com_notify_email>(notify, notify.id, user_id, OPER_LOG_OBJ_CATE.NOTIFY, "新增备注-添加通知");
+
                 #endregion
 
             }
@@ -3064,7 +3100,7 @@ namespace EMT.DoneNOW.BLL
             {
                 var cacDal = new com_activity_dal();
                 var user = UserInfoBLL.GetUserInfo(user_id);
-                var account = new crm_account_dal().FindNoDeleteById(param.thisProjetc.account_id);
+                var account = new crm_account_dal().FindNoDeleteById(param.account_id);
                 var thisAddNote = param.taskNote;
                 #region 修改备注
                 param.taskNote.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -3113,129 +3149,151 @@ namespace EMT.DoneNOW.BLL
 
 
                 #region 通知相关
+                var notiContract = new ctt_contract_dal().FindNoDeleteById(thisAddNote.object_id);
+
+                var srDal = new sys_resource_dal();
+                string htmlBody = "";
                 if (param.notify_id != 0)
                 {
                     var temp = new sys_notify_tmpl_dal().FindNoDeleteById((long)param.notify_id);
                     if (temp != null)
                     {
-                        var srDal = new sys_resource_dal();
+                       
                         var temp_email_List = new sys_notify_tmpl_email_dal().GetEmailByTempId(temp.id);
                         if (temp_email_List != null && temp_email_List.Count > 0)
                         {
-
-                            string toEmialString = "";
-                            string ccEmialString = "";
-                            var create_id = param.thisProjetc.create_user_id;
-                            if (param.thisTask != null)
-                            {
-                                create_id = param.thisTask.create_user_id;
-                            }
-                            #region 接收邮件人列表
-
-                            if (!string.IsNullOrEmpty(param.contact_ids))
-                            {
-                                var conList = new crm_contact_dal().GetContactByIds(param.contact_ids);
-                                if (conList != null && conList.Count > 0)
-                                {
-                                    conList.ForEach(_ => { if (!string.IsNullOrEmpty(_.email)) { toEmialString += _.email + ";"; } });
-                                }
-                            }
-
-                            List<sys_resource> toResList = new List<sys_resource>();
-                            if (!string.IsNullOrEmpty(param.resIds))
-                            {
-                                var resList = new sys_resource_dal().GetListByIds(param.resIds);
-                                if (resList != null && resList.Count > 0)
-                                {
-                                    toResList.AddRange(resList);
-                                }
-                            }
-                            if (!string.IsNullOrEmpty(param.workGropIds))
-                            {
-                                var workresList = new sys_workgroup_dal().GetResouListByWorkIds(param.workGropIds);
-                                if (workresList != null && workresList.Count > 0)
-                                {
-                                    toResList.AddRange(workresList);
-                                }
-                            }
-                            if (toResList.Count > 0)
-                            {
-                                toResList = toResList.Distinct().ToList();
-                                toResList.ForEach(_ => { toEmialString += _.email + ";"; });
-                            }
-                            if (param.toCrea)
-                            {
-                                var creRes = srDal.FindNoDeleteById(create_id);
-                                if (creRes != null)
-                                {
-                                    toEmialString += creRes.email + ";";
-                                }
-                            }
-                            if (param.toAccMan)
-                            {
-                                if (account.resource_id != null)
-                                {
-                                    var accRes = srDal.FindNoDeleteById(create_id);
-                                    if (accRes != null)
-                                    {
-                                        toEmialString += accRes.email + ";";
-                                    }
-                                }
-                            }
-
-
-                            if (!string.IsNullOrEmpty(param.otherEmail))
-                            {
-                                toEmialString += param.otherEmail + ";";
-                            }
-
-                            #endregion
-
-                            #region 抄送邮件人列表
-                            if (param.ccMe)
-                            {
-                                ccEmialString += user.email;
-                            }
-
-                            #endregion
-
-
-
-                            var sysEmail = new d_general_dal().FindNoDeleteById((int)DicEnum.SUPPORT_EMAIL.SYS_EMAIL);
-                            var fromEmail = user.email;
-                            var from_email_name = user.name;
-                            if (param.fromSys)
-                            {
-                                if (sysEmail != null && !string.IsNullOrEmpty(sysEmail.name))
-                                {
-                                    fromEmail = sysEmail.name;
-                                    from_email_name = sysEmail.remark;
-                                }
-                            }
-                            var notify = new com_notify_email()
-                            {
-                                id = _dal.GetNextIdCom(),
-                                cate_id = (int)NOTIFY_CATE.PROJECT,
-                                event_id = (int)DicEnum.NOTIFY_EVENT.TICKET_TIME_ENTRY_CREATED_EDITED,
-                                to_email = toEmialString,
-                                cc_email = ccEmialString,
-                                notify_tmpl_id = param.notify_id,
-                                from_email = fromEmail,
-                                from_email_name = from_email_name,
-                                subject = param.subjects,
-                                body_text = temp_email_List[0].body_text + param.otherEmail + (param.incloNoteAtt ? thisAddNote.description : ""),
-                                // is_success = (sbyte)(isSuccess ? 1 : 0),
-                                is_html_format = 0,
-                                create_user_id = user_id,
-                                update_user_id = user_id,
-                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            };
-                            new com_notify_email_dal().Insert(notify);
-                            OperLogBLL.OperLogAdd<com_notify_email>(notify, notify.id, user_id, OPER_LOG_OBJ_CATE.NOTIFY, "新增任务备注-添加通知");
+                            htmlBody = temp_email_List[0].body_text;
                         }
                     }
                 }
+                if (param.notify_id == 0 && notiContract == null)
+                    return true;
+                string toEmialString = "";
+                string ccEmialString = "";
+                var create_id = param.thisProjetc.create_user_id;
+                if (param.thisTask != null)
+                {
+                    create_id = param.thisTask.create_user_id;
+                }
+                #region 接收邮件人列表
+
+                if (!string.IsNullOrEmpty(param.contact_ids))
+                {
+                    var conList = new crm_contact_dal().GetContactByIds(param.contact_ids);
+                    if (conList != null && conList.Count > 0)
+                    {
+                        conList.ForEach(_ => { if (!string.IsNullOrEmpty(_.email)) { toEmialString += _.email + ";"; } });
+                    }
+                }
+
+                List<sys_resource> toResList = new List<sys_resource>();
+                if (!string.IsNullOrEmpty(param.resIds))
+                {
+                    var resList = new sys_resource_dal().GetListByIds(param.resIds);
+                    if (resList != null && resList.Count > 0)
+                    {
+                        toResList.AddRange(resList);
+                    }
+                }
+                if (!string.IsNullOrEmpty(param.workGropIds))
+                {
+                    var workresList = new sys_workgroup_dal().GetResouListByWorkIds(param.workGropIds);
+                    if (workresList != null && workresList.Count > 0)
+                    {
+                        toResList.AddRange(workresList);
+                    }
+                }
+                if (toResList.Count > 0)
+                {
+                    toResList = toResList.Distinct().ToList();
+                    toResList.ForEach(_ => { toEmialString += _.email + ";"; });
+                }
+                if (param.toCrea)
+                {
+                    var creRes = srDal.FindNoDeleteById(create_id);
+                    if (creRes != null)
+                    {
+                        toEmialString += creRes.email + ";";
+                    }
+                }
+                if (param.toAccMan)
+                {
+                    if (account.resource_id != null)
+                    {
+                        var accRes = srDal.FindNoDeleteById(create_id);
+                        if (accRes != null)
+                        {
+                            toEmialString += accRes.email + ";";
+                        }
+                    }
+                }
+
+
+                if (!string.IsNullOrEmpty(param.otherEmail))
+                {
+                    toEmialString += param.otherEmail + ";";
+                }
+
+                #endregion
+
+                #region 抄送邮件人列表
+                if (param.ccMe)
+                {
+                    ccEmialString += user.email;
+                }
+
+                #endregion
+
+
+
+                var sysEmail = new d_general_dal().FindNoDeleteById((int)DicEnum.SUPPORT_EMAIL.SYS_EMAIL);
+                var fromEmail = user.email;
+                var from_email_name = user.name;
+                if (param.fromSys)
+                {
+                    if (sysEmail != null && !string.IsNullOrEmpty(sysEmail.name))
+                    {
+                        fromEmail = sysEmail.name;
+                        from_email_name = sysEmail.remark;
+                    }
+                }
+                var cate_id = (int)NOTIFY_CATE.PROJECT;
+                int? event_id = (int)NOTIFY_EVENT.PROJECT_NOTE_CREATED_OR_EDITED;
+                var thisTaks = _dal.FindNoDeleteById(thisAddNote.object_id);
+                if (thisTaks != null)
+                {
+                    event_id = (int)NOTIFY_EVENT.TASK_NOTE_CREATED_EDITED;
+                }
+                else
+                {
+                    var thisContract = new ctt_contract_dal().FindNoDeleteById(thisAddNote.object_id);
+                    if (thisContract != null)
+                    {
+                        cate_id = (int)NOTIFY_CATE.CONTRACT;
+                        event_id = null;
+                    }
+                }
+                var notify = new com_notify_email()
+                {
+                    id = _dal.GetNextIdCom(),
+                    cate_id = cate_id,
+                    event_id = event_id,
+                    to_email = toEmialString,
+                    cc_email = ccEmialString,
+                    notify_tmpl_id = param.notify_id,
+                    from_email = fromEmail,
+                    from_email_name = from_email_name,
+                    subject = param.subjects,
+                    body_text = htmlBody + param.otherEmail + (param.incloNoteAtt ? thisAddNote.description : ""),
+                    // is_success = (sbyte)(isSuccess ? 1 : 0),
+                    is_html_format = 0,
+                    create_user_id = user_id,
+                    update_user_id = user_id,
+                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                };
+                new com_notify_email_dal().Insert(notify);
+                OperLogBLL.OperLogAdd<com_notify_email>(notify, notify.id, user_id, OPER_LOG_OBJ_CATE.NOTIFY, "修改备注-添加通知");
                 #endregion
             }
             catch (Exception msg)
@@ -3767,5 +3825,5 @@ namespace EMT.DoneNOW.BLL
             }
             return returnRule;
         }
-    }
+    } 
 }

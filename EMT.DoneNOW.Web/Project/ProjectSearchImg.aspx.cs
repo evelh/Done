@@ -65,8 +65,9 @@ namespace EMT.DoneNOW.Web.Project
                                         int s;
                                         for (s = start_date.Day; s <= monthDayNum; s++)
                                         {
-                                            headInfo.Append($"<div class='Gantt_divTableColumn Gantt_header Gantt_date'>{s}</div>");
+                                            headInfo.Append($"<div class='Gantt_divTableColumn Gantt_header Gantt_date' style='min-width:{DayWidth-10}px;max-width:{DayWidth-10}px; '>{s}</div>");
                                         }
+                                       
                                     }
                                     else if (i == monthNum - 1)
                                     {
@@ -76,7 +77,7 @@ namespace EMT.DoneNOW.Web.Project
                                         headInfo.Append($"<div class='Gantt_monthHolder' style='width: {thisMonthWidth}px;'>{end_date.Year.ToString() + '.' + end_date.Month.ToString()}</div>");
                                         for (int s = 1; s <= surplusDays; s++)
                                         {
-                                            headInfo.Append($"<div class='Gantt_divTableColumn Gantt_header Gantt_date'>{s}</div>");
+                                            headInfo.Append($"<div class='Gantt_divTableColumn Gantt_header Gantt_date'  style='min-width:{DayWidth-10}px;max-width:{DayWidth-10}px; '>{s}</div>");
                                         }
                                     }
 
@@ -88,7 +89,7 @@ namespace EMT.DoneNOW.Web.Project
                                     headInfo.Append($"<div class='Gantt_monthHolder' style='width: {thisMonthWidth}px;'>{start_date.AddMonths(i).Year.ToString() + '.' + start_date.AddMonths(i).Month.ToString()}</div>");
                                     for (int s = 1; s <= monthDayNum; s++)
                                     {
-                                        headInfo.Append($"<div class='Gantt_divTableColumn Gantt_header Gantt_date'>{s}</div>");
+                                        headInfo.Append($"<div class='Gantt_divTableColumn Gantt_header Gantt_date'  style='min-width:{DayWidth-10}px;max-width:{DayWidth-10}px; '>{s}</div>");
                                     }
                                 }
                                 headInfo.Append("</div>");
@@ -108,14 +109,14 @@ namespace EMT.DoneNOW.Web.Project
                                         var monthDayNum = RetuenMonthDay(start_date);  // 开始日期的月份的总天数
                                         var surplusDays = (monthDayNum - start_date.Day + 1);  // 开始结束时间 --剩余天数
                                         var thisMonthWidth = surplusDays * DayWidth;  // 计算出这个月份占的宽度
-                                        headInfo.Append($"<td colspan='{surplusDays}' class='TextUppercase'>{start_date.Year+"."+ start_date.Month}</ td>");
+                                        headInfo.Append($"<td colspan='{surplusDays}' class='TextUppercase' style='width:{thisMonthWidth}px;'>{start_date.Year+"."+ start_date.Month}</ td>");
                                     }
                                     else if (i == monthNum - 1)
                                     {
                                         var monthDayNum = RetuenMonthDay(end_date);  // 开始日期的月份的总天数
                                         var surplusDays = end_date.Day;  // 开始结束时间
                                         var thisMonthWidth = surplusDays * DayWidth;  // 计算出这个月份占的宽度
-                                        headInfo.Append($"<td colspan='{end_date.Day}' class='TextUppercase'>{end_date.Year.ToString() + '.' + end_date.Month.ToString()}</ td>");
+                                        headInfo.Append($"<td colspan='{end_date.Day}' class='TextUppercase' style='width:{thisMonthWidth}px;'>{end_date.Year.ToString() + '.' + end_date.Month.ToString()}</ td>");
                                     }
 
                                 }
@@ -123,7 +124,7 @@ namespace EMT.DoneNOW.Web.Project
                                 {
                                     var monthDayNum = RetuenMonthDay(start_date.AddMonths(i));  // 开始日期的月份的总天数
                                     var thisMonthWidth = monthDayNum * DayWidth;
-                                    headInfo.Append($"<td colspan='{monthDayNum}' class='TextUppercase'>{start_date.AddMonths(i).Year.ToString() + '.' + start_date.AddMonths(i).Month.ToString()}</ td>");
+                                    headInfo.Append($"<td colspan='{monthDayNum}' class='TextUppercase' style='width:{thisMonthWidth}px;'>{start_date.AddMonths(i).Year.ToString() + '.' + start_date.AddMonths(i).Month.ToString()}</ td>");
 
                                 }
                             }
@@ -136,11 +137,12 @@ namespace EMT.DoneNOW.Web.Project
                             {
                                 if (s != (weekNum - 1))
                                 {
-                                    headInfo.Append($"<td colspan='7'><div class='TimelineSecondaryHeader' style='width: 49px;'>{start_date.AddDays(s * 7).Day}-{start_date.AddDays((s + 1) * 7-1).Day}</div></td>");
+                                    headInfo.Append($"<td colspan='7'><div class='TimelineSecondaryHeader' style='width: {7* DayWidth}px;'>{start_date.AddDays(s * 7).Day}-{start_date.AddDays((s + 1) * 7-1).Day}</div></td>");
                                 }
                                 else
                                 {
-                                    headInfo.Append($"<td colspan='7'><div class='TimelineSecondaryHeader' style='width: 49px;'>{start_date.AddDays(s * 7).Day}-{end_date.Day}</div></td>");
+                                    var diffDay = GetDateDiffMonth(start_date.AddDays(s * 7), end_date,"day");
+                                    headInfo.Append($"<td colspan='7'><div class='TimelineSecondaryHeader' style='width: {7 * DayWidth}px;'>{start_date.AddDays(s * 7).Day}-{end_date.Day}</div></td>");
                                 }
                                 
                             }
@@ -209,7 +211,7 @@ namespace EMT.DoneNOW.Web.Project
                         
                         var proDays = GetDateDiffMonth((DateTime)pro.start_date, (DateTime)pro.end_date, "day"); // 项目持续的时间
                         proDays += 1;
-                        bodyInfo.Append($"<div class='Gantt_divTableRow'><div class='{proTypeClass}' style='width: {proDays* DayWidth}px; left:{diffDays*DayWidth}px;'><div style = 'width: 0%;'></div></div></div>");
+                        bodyInfo.Append($"<div class='Gantt_divTableRow'><div class='{proTypeClass}' style='width: {proDays* DayWidth+ (dateType=="week"?16:0)}px; left:{diffDays*DayWidth+ (dateType=="day"?diffDays:0)}px;'><div style = 'width: 0%;'></div></div></div>");
                     }
                     bodyInfo.Append($"</div>");
                     bodyText.Text = bodyInfo.ToString();

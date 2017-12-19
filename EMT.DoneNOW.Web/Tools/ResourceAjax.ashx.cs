@@ -53,6 +53,10 @@ namespace EMT.DoneNOW.Web
                     case "CheckResAvailability":
                         CheckResAvailability(context);
                         break;
+                    case "CheckResTimeOff":
+                        var crtTaskId = context.Request.QueryString["task_id"];
+                        CheckResTimeOff(context,long.Parse(crtTaskId));
+                        break;
                     default:
                         break;
                 }
@@ -319,6 +323,34 @@ namespace EMT.DoneNOW.Web
 
             return new BLL.TaskBLL().GetDayByTime(Tools.Date.DateHelper.ToUniversalTimeStamp(realStartDate), Tools.Date.DateHelper.ToUniversalTimeStamp(realEndDate), project_id);
          
+        }
+        /// <summary>
+        /// 校验员工在任务计划期间是否有审批通过的请假记录，有，则告警
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="task_id"></param>
+        
+        private void CheckResTimeOff(HttpContext context,long task_id)
+        {
+            var thisTask = new sdk_task_dal().FindNoDeleteById(task_id);
+            if (thisTask != null && thisTask.owner_resource_id != null)
+            {
+                var timeList = new tst_timeoff_request_dal().GetListByTaskAndRes(thisTask.id,(long)thisTask.owner_resource_id);
+                if (timeList != null && timeList.Count > 0)
+                {
+                    string timeInfo = "";
+                    timeList.ForEach(_=> {
+                        timeInfo += $"{Tools.Date.DateHelper.ConvertStringToDateTime(_.create_time).ToString("yyyy-MM-dd")} ({_.request_hours.ToString("#0.00")} 小时)"+",";
+                    });
+                    if (!string.IsNullOrEmpty(timeInfo)&& thisTask.estimated_end_date!=null)
+                    {
+                        timeInfo = timeInfo.Substring(0, timeInfo.Length-1);
+                        context.Response.Write(new Tools.Serialize().SerializeJson(new {time=timeInfo,doneTime=((DateTime)thisTask.estimated_end_date).ToString("yyyy-MM-dd")}));
+
+                    }
+                }
+            }
+            
         }
     }
    

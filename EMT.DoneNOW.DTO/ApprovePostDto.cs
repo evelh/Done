@@ -12,6 +12,8 @@ namespace EMT.DoneNOW.DTO
             public string costname;
             public string accountname;
             public string extendprice;
+            public string type;
+            public string description;
         }
     }
 }

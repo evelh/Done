@@ -276,10 +276,13 @@
         <div class="ButtonContainer">
             <ul>
                 <!--报表切换按钮-->
+                <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_GANTT_CHART")) { %>
                 <li class="Button ButtonIcon" id="TableButton" tabindex="0" title="切换报表">
                     <span class="Icon Table" style="background: url(../Images/Icons.png) no-repeat -6px -113px;"></span>
                     <span class="Text" style="padding: 0;"></span>
                 </li>
+                <%} %>
+                <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_ADD")) { %>
                 <li class="Button ButtonIcon" id="AddButton" tabindex="0" title="新建" style="margin-right: -5px;">
                     <span class="Icon Add"></span>
                     <span class="Text">新建</span>
@@ -288,6 +291,7 @@
                     <span class="Icon Down"></span>
                     <span class="Text" style="padding: 0;"></span>
                 </li>
+                <%} %>
                 <!--第一个下拉-->
                 <li class="DropDownButton" style="top: 25px; left: 47px;" id="Down1">
                     <div class="DropDownButtonDiv">
@@ -296,31 +300,36 @@
                                 <div class="Text">在下面打开</div>
                             </div>
                             <div class="Content">
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_ADD_TASK_IN")) { %>
                                 <div class="Button1" id="NewTaskButton" tabindex="0">
                                     <span class="Text">任务</span>
-                                </div>
+                                </div> <%} %>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_ADD_PHASE_IN")) { %>
                                 <div class="Button1" id="NewPhaseButton" tabindex="0">
                                     <span class="Text">阶段</span>
-                                </div>
+                                </div><%} %>
+                                   <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_ADD_ISSUE_IN")) { %>
                                 <div class="Button1" id="NewIssueButton" tabindex="0">
                                     <span class="Text">问题</span>
-                                </div>
+                                </div><%} %>
                             </div>
                         </div>
                         <div class="Group">
                             <div class="Heading">
                                 <div class="Text">在新的弹窗打开</div>
                             </div>
-                            <div class="Content">
+                            <div class="Content">  <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_ADD_TASK")) { %>
                                 <div class="Button1" id="NewTaskInCurrentPageButton" tabindex="0" onclick="AddNewTask('<%=(int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_TASK %>')">
                                     <span class="Text">任务</span>
-                                </div>
+                                </div><%} %>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_ADD_PHASE")) { %>
                                 <div class="Button1" id="NewPhaseInCurrentPageButton" tabindex="0" onclick="AddNewTask('<%=(int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE %>')">
                                     <span class="Text">阶段</span>
-                                </div>
+                                </div><%} %>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_ADD_ISSUE")) { %>
                                 <div class="Button1" id="NewIssueInCurrentPageButton" tabindex="0" onclick="AddNewTask('<%=(int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_ISSUE %>')">
                                     <span class="Text">问题</span>
-                                </div>
+                                </div><%} %>
                             </div>
                         </div>
                     </div>
@@ -386,10 +395,12 @@
                         </div>
                     </div>
                 </li>
+                <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_TOOL")) { %>
                 <li class="Button ButtonIcon" id="ToolsButton" tabindex="0">
                     <span class="Text">工具</span>
                     <span class="Icon Right"></span>
                 </li>
+                <%} %>
                 <!--第三个下拉-->
                 <li class="DropDownButton" style="top: 25px; left: 210px;" id="Down3">
                     <div class="DropDownButtonDiv">
@@ -398,12 +409,16 @@
                                 <div class="Text">导入</div>
                             </div>
                             <div class="Content">
+                                    <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_TOOL_IMPORT_CSV"))
+                                        { %>
                                 <div class="Button1" id="ImportFromExcelButton" tabindex="0">
                                     <span class="Text">.CSV文件</span>
-                                </div>
+                                </div><%} %>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_TOOL_IMPORT_TEMP"))
+                                     { %>
                                 <div class="Button1" id="ImportFromAutotaskTemplateButton" tabindex="0" onclick="ImportFromTemp()">
                                     <span class="Text">从模板导入</span>
-                                </div>
+                                </div><%} %>
                             </div>
                         </div>
                         <div class="Group">
@@ -411,12 +426,17 @@
                                 <div class="Text">将项目保存为……</div>
                             </div>
                             <div class="Content">
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_TOOL_SAVE_BASELINE"))
+                                     { %>
                                 <div class="Button1" id="SaveAsBaselineButton" tabindex="0" onclick="SaveAsBusiLine()">
                                     <span class="Text">保存为基准</span>
                                 </div>
+                                <%} %>
+                                   <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_SAVE_TEMP"))
+                                       { %>
                                 <div class="Button1" id="SaveAsTemplateButton" tabindex="0" onclick="SaveAsTemp()">
                                     <span class="Text">保存为模板</span>
-                                </div>
+                                </div> <%} %>
                             </div>
                         </div>
                         <div class="Group">
@@ -424,18 +444,26 @@
                                 <div class="Text">其他</div>
                             </div>
                             <div class="Content">
+                                  <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_TOOL_COMPLETE"))
+                                      { %>
                                 <div class="Button1" id="CompleteProjectButton" tabindex="0" onclick="CompleteProject()">
                                     <span class="Text">项目标记为完成</span>
-                                </div>
+                                </div><%} %>
+                                    <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_TOOL_VIEW_REPORT"))
+                                        { %>
                                 <div class="Button1" id="WorkloadReport" tabindex="0">
                                     <span class="Text">查看工作报告</span>
-                                </div>
+                                </div><%} %>
+                                    <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_TOOL_RECALCULATE"))
+                                        { %>
                                 <div class="Button1" id="RecalculateProjectScheduleButton" tabindex="0" onclick="RecalculateProject()">
                                     <span class="Text">重新计算项目进度</span>
-                                </div>
+                                </div><%} %>
+                                <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_TOOL_EDIT_SET"))
+                                    { %>
                                 <div class="Button1" id="ScheduleSettingsButton" tabindex="0" onclick="ProjectSet()">
                                     <span class="Text">编辑项目设置</span>
-                                </div>
+                                </div><%} %>
                             </div>
                         </div>
                     </div>
@@ -459,10 +487,13 @@
                     </div>
                 </li>
                 <!--下载按钮-->
+                   <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_OTHER_EXPORT"))
+                       { %>
                 <li class="Button ButtonIcon" id="ExportButton" tabindex="0" title="导出">
                     <span class="Icon Export"></span>
                     <span class="Text" style="padding: 0;"></span>
                 </li>
+                <%} %>
                 <%--      <li class="Button ButtonIcon" id="UseResourceCapacityForLevelingButton" tabindex="0">
                     <span class="Icon" style="margin: 0 0 3px 0; width: 12px;">
                         <input type="checkbox" style="vertical-align: middle;">
@@ -502,6 +533,7 @@
                     <table cellpadding="0">
                         <tr class="HeadingRow">
                             <td class="FirstRowPrevent" width="60px">
+                                <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_OTHER_EXPORT")){ %>
                                 <div class="Standard">
                                     <div class="DropDownButtonContainer">
                                         <div class="Button ButtonIcon" tabindex="0" style="outline: none; z-index: 21; cursor: pointer;">
@@ -515,66 +547,79 @@
                                             <div class="DropDownButtonDiv">
                                                 <div class="Group">
                                                     <div class="Content">
+                                                         <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_OUTDENT"))
+                                                             { %>
                                                         <div class="Button1" id="OutdentButton" tabindex="0" onclick="Outdent()">
                                                             <span class="Text">减少缩进</span>
-                                                        </div>
+                                                        </div><%} %>
+                                                         <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_INDENT"))
+                                                             { %>
                                                         <div class="Button1" id="IndentButton" tabindex="0" onclick="Indent()">
                                                             <span class="Text">增加缩进</span>
-                                                        </div>
+                                                        </div><%} %>
+                                                         <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_MODIFY"))
+                                                             { %>
                                                         <div class="Button1" id="ForwardModifyButton" tabindex="0" onclick="ModifyManyTask()">
                                                             <span class="Text">前进/修改</span>
-                                                        </div>
+                                                        </div><%} %>
                                                         <%--  <div class="Button1" id="AddToMyWorkListButton" tabindex="0">
                                                                 <span class="Text">添加到我的工作列表中</span>
                                                             </div>--%>
+                                                          <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_SLIDE"))
+                                                             { %>
                                                         <div class="Button1" id="SlideButton" tabindex="0" onclick="Slide()">
                                                             <span class="Text">滑动</span>
-                                                        </div>
+                                                        </div><%} %>
+                                                         <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_COMPLETE"))
+                                                             { %>
                                                         <div class="Button1" id="TableCompleteButton" tabindex="0" onclick="ShowReason()">
                                                             <span class="Text">完成</span>
-                                                        </div>
+                                                        </div><%} %>
+                                                         <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_DELETE"))
+                                                             { %>
                                                         <div class="Button1" id="TableDeleteButton" tabindex="0" onclick="DeieteTask()">
                                                             <span class="Text">删除</span>
-                                                        </div>
+                                                        </div><%} %>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <%} %>
                             </td>
                             <td width="40px"></td>
                             <%foreach (var para in resultPara)
+                                {
+                                    if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
+                                        || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
+                                        || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
+                                        continue;
+                                    string orderby = null;
+                                    string order = null;
+                                    if (!string.IsNullOrEmpty(queryResult.order_by))
                                     {
-                                        if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
-                                            || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
-                                            || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
-                                            continue;
-                                        string orderby = null;
-                                        string order = null;
-                                        if (!string.IsNullOrEmpty(queryResult.order_by))
-                                        {
-                                            var strs = queryResult.order_by.Split(' ');
-                                            orderby = strs[0];
-                                            order = strs[1].ToLower();
-                                        }
-                                        if (para.name == "'#'" || para.name == "sort_order")
-                                        {
-                                            continue;
-                                        }
+                                        var strs = queryResult.order_by.Split(' ');
+                                        orderby = strs[0];
+                                        order = strs[1].ToLower();
+                                    }
+                                    if (para.name == "'#'" || para.name == "sort_order")
+                                    {
+                                        continue;
+                                    }
                             %>
                             <td width="<%=para.length * 32 %>px">
                                 <%=para.name %>
                             </td>
                             <%} %>
                         </tr>
-                           <div class="cover"></div>
+                        <div class="cover"></div>
                         <tbody id="Drap" class="Drap">
-                                  <div class="border_left">
-                        </div>  
-                        <div class="border_right">
-                        </div> 
-                        <div class="border-line"></div> 
+                            <div class="border_left">
+                            </div>
+                            <div class="border_right">
+                            </div>
+                            <div class="border-line"></div>
                             <%if (queryResult != null && queryResult.count > 0)
                                 {
                                     var idPara = resultPara.FirstOrDefault(_ => _.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID);
@@ -653,17 +698,23 @@
                                     { continue; }
                                     else if (para.name == "告警")
                                     {
+                                        if (CheckAuth(""))
+                                        {
+
+                                        
                                         if (rslt[para.name].ToString() == "0")
                                         {
                                 %>
-                                <td></td>
+                                <td>
+                                    <div class="Icon" style="background: url(../Images/Icons.png) no-repeat -86px -32px; height: 16px; width: 16px;" onclick="ShowAlarm('<%=id %>')"></div>
+                                </td>
                                 <%
                                     }
                                     else if (rslt[para.name].ToString() == "1")
                                     {
                                 %>
                                 <td>
-                                    <div><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px -32px;"></span></div>
+                                    <div class="Icon" style="background: url(../Images/Icons.png) no-repeat -70px -112px; height: 16px; width: 16px;" onclick="ShowAlarm('<%=id %>')"></div>
                                 </td>
                                 <%
                                     }
@@ -671,7 +722,7 @@
                                     {
                                 %>
                                 <td>
-                                    <div><span class="Icon" style="background: url(<%=rslt[para.name] %>)"></span></div>
+                                    <%--<div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px -32px;"></div>--%>
                                 </td>
                                 <%
                                     }
@@ -679,6 +730,10 @@
                                     {%>
                                 <td></td>
                                 <%}
+                                        }
+                                        else
+                                        {%><td></td>
+                                 <%}
                                     }
                                     else if (para.name == " ")
                                     {%>
@@ -1700,6 +1755,120 @@
             </div>
         </div>
 
+        <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; display: none; width: 650px;" id="ShowTaslAlarm">
+            <div>
+                <input type="hidden" id="ShowAlertTaskId" value="" />
+                <div class="DialogContentContainer">
+                    <div class="CancelDialogButton" onclick="CloseTaskAlarm()"></div>
+                    <div class="Active ThemePrimaryColor TitleBar">
+                        <div class="Title">
+                            <span class="text">项目条目告警</span>
+                        </div>
+                    </div>
+                    <div id="qianquAlarm" style="display:none;" class="ShowAlarm">
+                        <!--前驱任务预警 -->
+                        <div class="DialogHeadingContainer">
+                            <div class="ValidationSummary" id="">
+                                <div class="CustomValidation Valid"></div>
+                                <div class="FormValidation Valid">
+                                    <div class="ErrorContent">
+                                        <div class="TransitionContainer">
+                                            <div class="IconContainer">
+                                                <div class="Icon"></div>
+                                            </div>
+                                            <div class="TextContainer"><span class="Count"></span><span class="Count Spacer"></span><span class="Message"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="ChevronContainer">
+                                        <div class="Up"></div>
+                                        <div class="Down"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Instructions" style="margin-left: 35px;">
+                                <div class="InstructionItem">此任务在其一个或多个前驱任务之前完成。其开始和结束日期仍会根据前驱任务的修改而调整。如果此任务是其他任务的前驱，则对其结束日期的调整将影响关联的后继任务的开始日期。 要结束这些联动，请删除任务的关联。</div>
+                                <div>
+                                    <span style="display:block;margin: 10px 0px;"><input type="checkbox" id="DisBeforTask"/>将此任务与未完成的前驱任务脱离关系</span>
+                                    <span style="display:block;margin: 10px 0px;"><input type="checkbox" id="DisAfterTask"/>将此任务与后续任务脱离关系</span>
+                                </div>
+                                <div>
+                                    <input  class="Button" type="button" id="ChangePreTask" value="确认更改"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="clearEarilyThan" style="display:none;" class="ShowAlarm">
+                          <!--清除任务的开始时间不早于字段 -->
+                         <div class="DialogHeadingContainer">
+                            <div class="ValidationSummary" id="">
+                                <div class="CustomValidation Valid"></div>
+                                <div class="FormValidation Valid">
+                                    <div class="ErrorContent">
+                                        <div class="TransitionContainer">
+                                            <div class="IconContainer">
+                                                <div class="Icon"></div>
+                                            </div>
+                                            <div class="TextContainer"><span class="Count"></span><span class="Count Spacer"></span><span class="Message"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="ChevronContainer">
+                                        <div class="Up"></div>
+                                        <div class="Down"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Instructions" style="margin-left: 35px;">
+                                <div class="InstructionItem">任务设置了开始时间不早于日期</div>
+                                <div>
+                                    该任务开始日期不能早于开始时间不早于<span id="taskStratThanSpan"></span>。
+                                </div>
+                                <div>
+                                    <input  class="Button" type="button" id="ClearStartThanButton" value="清除开始日期不早于"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="dateNotInWeek" style="display:none;margin:15px 0px;" class="ShowAlarm">
+                             <div class="Instructions" style="margin-left: 35px;">
+                                <div class="InstructionItem"></div>
+                                <div>
+                                   任务的开始或者结束时间不在工作日内
+                                </div>
+                                <div>
+                                    
+                                </div>
+                            </div>
+                    </div>
+                    <div id="NoDoneOnTimeDiv" style="display:none;margin:15px 0px;" class="ShowAlarm">
+                         <!--前驱任务未能及时完成 将会影响一个或多个任务开始 -->
+                        <div class="Instructions" style="margin-left: 35px;">
+                                <div class="InstructionItem"></div>
+                                <div>
+                                   此任务会影响一个或多个任务（任务编号如<span id="TaskIdsSpan"></span>）的开始，并且可能无法及时完成。 预期结束日期是根据此任务的剩余时间（估计小时数 - 实际小时数）和项目设置计算的。 如果估计的小时数等于0，系统将根据持续时间和分配的资源计算估计的小时数。
+                            <p>预计开始/结束日期：<span id="thisTaskStartSpan"></span> - <span id="thisTaskEndSpan"></span></p>
+
+                                </div>
+                                <div>
+                                    
+                                </div>
+                            </div>
+                    </div>
+                     <div id="resTimeOffDiv" style="display:none;margin:15px 0px;" class="ShowAlarm">
+                             <div class="Instructions" style="margin-left: 35px;">
+                                <div class="InstructionItem"></div>
+                                <div>
+                                  任务或者问题不能及时完成
+                                </div>
+                                <div>
+                                    任务的主负责人在此期间有请假，且已审批通过（<span id="timeOffSpan"></span>），任务可能无法在<span id="doneTimeSpan"></span>完成。
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="menu" id="projectMenu" style="background-color: white;">
             <%--菜单--%>
             <ul>
@@ -1710,15 +1879,21 @@
                                 <div class="Text" style="font-weight: bold;">常规</div>
                             </div>
                             <div class="Content">
+                                  <%if (CheckAuth("SEARCH_PROJECT_EDIT_PROJECT"))
+                                      { %>
                                 <div class="Button1" id="" tabindex="0" onclick="EditObject('projetc')">
                                     <span class="Text">修改</span>
-                                </div>
+                                </div><%} %>
+                                  <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_COMPLETE"))
+                                      { %>
                                 <div class="Button1" id="" tabindex="0" onclick="CompleteProject()">
                                     <span class="Text">完成</span>
-                                </div>
+                                </div><%} %>
+                                   <%if (CheckAuth("PRO_PROJECT_DELETE"))
+                                      { %>
                                 <div class="Button1" id="" tabindex="0" onclick="DeleteProject()">
                                     <span class="Text">删除</span>
-                                </div>
+                                </div><%} %>
                             </div>
                         </div>
                         <div class="Group" style="float: left;">
@@ -1726,18 +1901,26 @@
                                 <div class="Text" style="font-weight: bold;">新建</div>
                             </div>
                             <div class="Content">
+                                  <%if (CheckAuth("PRO_PROJECT_VIEW_NOTE_ADD"))
+                                      { %>
                                 <div class="Button1" id="ProNoteButton" tabindex="0" onclick="NewAddNote('projetc')">
                                     <span class="Text">备注</span>
-                                </div>
+                                </div><%} %>
+                                      <%if (CheckAuth("PRO_PROJECT_VIEW_ATTACH_ADD"))
+                                      { %>
                                 <div class="Button1" id="ProAttButton" tabindex="0" onclick="NewAddAtt()">
                                     <span class="Text">附件</span>
-                                </div>
+                                </div><%} %>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_EXPENSES_ADD_CHANGE"))
+                                      { %>
                                 <div class="Button1" id="ProCostButton" tabindex="0" onclick="NewAddCharge()">
                                     <span class="Text">成本</span>
-                                </div>
+                                </div><%} %>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_EXPENSES_ADD_EXPENSES"))
+                                      { %>
                                 <div class="Button1" id="ProExpButton" tabindex="0" onclick="NewAddExpense('projetc')">
                                     <span class="Text">费用</span>
-                                </div>
+                                </div><%} %>
                             </div>
                         </div>
                     </div>
@@ -1750,86 +1933,120 @@
             <ul>
                 <li class="" style="top: 27px; left: 49px; height: 350px; background-color: white; width: 600px;" id="">
                     <div class="DropDownButtonDiv" style="width: 500px; max-width: 600px;">
-                        <div class="Group" style="float: left;">
+                        <div class="Group" style="float: left; min-width: 100px;">
                             <div class="Heading">
                                 <div class="Text" style="font-weight: bold;">常规</div>
                             </div>
                             <div class="Content">
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_DETAILS"))
+                                      { %>
                                 <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu" id="TaskViewDetails" tabindex="0" onclick="TaskViewDetails()">
                                     <span class="Text">查看详情</span>
-                                </div>
+                                </div><%} %>
+                                  <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_SHOW_HISTORY"))
+                                      { %>
                                 <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu" id="TaskViewHistory" tabindex="0" onclick="TaskViewHistory()">
                                     <span class="Text" id="ShowHistory">查看任务历史</span>
-                                </div>
+                                </div><%} %>
+                                  <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_EDIT_PHASE")||CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_EDIT_TASK"))
+                                      { %>
                                 <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu OnlyPharseMenu" id="" tabindex="0" onclick="EditObject('task')">
                                     <span class="Text">修改</span>
-                                </div>
+                                </div><%} %>
+                                   <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_COMPLETE"))
+                                      { %>
                                 <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu OnlyPharseMenu" id="CompleteTask" tabindex="0" onclick="CompleteSingTask()">
                                     <span class="Text">完成</span>
-                                </div>
+                                </div><%} %>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_MODIFY"))
+                                      { %>
                                 <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="ModifySingTask()">
                                     <span class="Text">前进/修改</span>
-                                </div>
+                                </div><%} %>
+                                   <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_ADD_WORK_LIST"))
+                                      { %>
                                 <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="">
                                     <span class="Text">添加到我的工作清单</span>
-                                </div>
+                                </div><%} %>
                                 <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="">
                                     <span class="Text">添加到主负责人的工作列表</span>
                                 </div>
                                 <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="">
                                     <span class="Text">添加到其它成员的工作列表</span>
                                 </div>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_DELETE"))
+                                      { %>
                                 <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu OnlyPharseMenu" id="" tabindex="0" onclick="DeleteTask()">
                                     <span class="Text">删除</span>
-                                </div>
+                                </div><%} %>
                             </div>
                         </div>
-                        <div class="Group" style="float: left;">
+                        <div class="Group" style="float: left; min-width: 100px;">
                             <div class="Heading">
                                 <div class="Text" style="font-weight: bold;">新建</div>
                             </div>
                             <div class="Content">
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_ADD_ENTRY_NOTIME"))
+                                     { %>
                                 <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="AddNoTimeEntryId" tabindex="0" onclick="NewAddWorkEntry('1')">
                                     <span class="Text">工时</span>
                                 </div>
+                                <%} %>
+                                <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_ADD_ENTRY_TIME"))
+                                     { %>
                                 <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="NewAddWorkEntry('')">
                                     <span class="Text">工时（输入开始/结束时间）</span>
-                                </div>
+                                </div>     <%} %>
+                                  <%if (CheckAuth("PRO_PROJECT_VIEW_NOTE_ADD"))
+                                     { %>
                                 <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu OnlyPharseMenu" id="TaskNoteButton" tabindex="0" onclick="NewAddNote('task')">
                                     <span class="Text">备注</span>
-                                </div>
+                                </div> <%} %>
+                                   <%if (CheckAuth("PRO_PROJECT_VIEW_ATTACH_ADD"))
+                                     { %>
                                 <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="TaskAttButton" tabindex="0" onclick="NewAddAtt()">
                                     <span class="Text">附件</span>
-                                </div>
-
+                                </div><%} %>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_EXPENSES_ADD_EXPENSES"))
+                                     { %>
                                 <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="TaskExpButton" tabindex="0" onclick="NewAddExpense('task')">
                                     <span class="Text">费用</span>
-                                </div>
+                                </div><%} %>
+                                  <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_ADD_CHANGE_ORDER"))
+                                     { %>
                                 <div class="Button1  TaskMenu  OnlyTaskMenu" id="" tabindex="0" onclick="AddChangeOrder()">
                                     <span class="Text">变更单（成本）</span>
-                                </div>
+                                </div><%} %>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_COPY_TASK"))
+                                     { %>
                                 <div class="Button1 TaskMenu OnlyTaskMenu" id="" tabindex="0" onclick="CopThisTask()">
                                     <span class="Text">任务副本</span>
-                                </div>
+                                </div><%} %>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_ADD_TASK_TO_LIBARY"))
+                                     { %>
                                 <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="AddToLibary()">
                                     <span class="Text">添加到任务库</span>
-                                </div>
+                                </div><%} %>
                                 <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="">
                                     <span class="Text">服务预定</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="Group" style="float: left;">
+                        <div class="Group" style="float: left; min-width: 100px;">
                             <div class="Heading">
                                 <div class="Text" style="font-weight: bold;">移动</div>
                             </div>
                             <div class="Content">
+                                <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_OUTDENT"))
+                                     { %>
                                 <div class="Button1" id="" tabindex="0" onclick="OutSingTask()">
                                     <span class="Text">减少缩进</span>
-                                </div>
+                                </div><%} %>
+                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_INDENT"))
+                                     { %>
                                 <div class="Button1" id="" tabindex="0" onclick="InSingTask()">
                                     <span class="Text">增加缩进</span>
-                                </div>
+                                </div><%} %>
 
                             </div>
                         </div>
@@ -1849,7 +2066,7 @@
 <%//弹窗相关的js %>
 <script>
     $(function () {
-       
+
         $("#Nav2").hide();
         $("#BackgroundOverLay").hide();
       <% if (isTransTemp)
@@ -2678,7 +2895,7 @@
         entityid = $(this).children().first().val(); // data("val");
         var menu = "";
         //var thisClassName = $(this).prop("className"); attachMenuS expTR
-         $(".menu").hide();
+        $(".menu").hide();
         if (!($(this).parent().parent().hasClass("HighImportance")))  // 代表是项目
         {
             menu = document.getElementById("projectMenu");
@@ -2699,7 +2916,7 @@
                 $("#ShowHistory").html("查看任务历史");
             }
             menu = document.getElementById("taskMenu");
-         }
+        }
 
         var noTimeSetValue = '<%=new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_ENTRY_REQUIRED) %>';
         if (noTimeSetValue == '0') {
@@ -2712,7 +2929,7 @@
             $("#AddNoTimeEntryId").removeAttr("onclick");
             $("#AddNoTimeEntryId").css("color", "grey");
         }
-        
+
 
 
         // else if ($(this).hasClass("noteTR")) {
@@ -2723,7 +2940,7 @@
         //    menu = document.getElementById("expMenu");
         //}
 
-   
+
         (function () {
             menu.style.display = "block";
             Times = setTimeout(function () {
@@ -2977,12 +3194,11 @@
 <%--拖拽相关js--%>
 <script>
     function DragTask() {
-   
+
         var fromId = GetFirstChooseId();
         debugger;
-        if (fromId != "" && toId != "" && type != "" && fromId != toId && toId != null && toId != undefined)
-        {
-          
+        if (fromId != "" && toId != "" && type != "" && fromId != toId && toId != null && toId != undefined) {
+
             var chooseId = GetChooseTaskId();  // 如果 toId 在选中的taskID中，则不进行操作
 
             var choIdArr = chooseId.split(',');
@@ -2995,6 +3211,23 @@
             }
             // alert(toId);
             if (isHas == "") {
+                var checkNumUrl = "../Tools/ProjectAjax.ashx?act=GetTaskSubNum&task_id=" + toId;
+                if (type != "") {
+                    checkNumUrl += "&is_sub=1";
+                }
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: checkNumUrl,
+                    success: function (data) {
+                        if (data == "99") {
+                            LayerMsg("所选任务子任务过多，请选择其他任务！");
+                            return;
+                        }
+                    },
+                });
+
+
                 $.ajax({
                     type: "GET",
                     async: false,
@@ -3011,6 +3244,151 @@
             //alert(toId);
             //alert(type);
         }
-        
+
     }
+    // 显示进度预警
+    function ShowAlarm(task_id) {
+       
+        var isShow = 0;
+        debugger;
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ProjectAjax.ashx?act=DoneBeforePro&task_id=" + task_id,
+            success: function (data) {
+                if (data == "1") {
+                    isShow += 1;
+                    $("#qianquAlarm").show();
+                }
+            },
+         });
+        
+         $.ajax({
+             type: "GET",
+             async: false,
+             url: "../Tools/ProjectAjax.ashx?act=GetSinTask&task_id=" + task_id,
+             dataType:"json",
+             success: function (data) {
+                 if (data != "" && data.start_no_earlier_than_date != null && data.start_no_earlier_than_date != "")
+                 {
+                     var thisDate = new Date(data.start_no_earlier_than_date);
+                     $("#taskStratThanSpan").html(thisDate.getFullYear() + "-" + Number(thisDate.getMonth() + 1) + "-" + thisDate.getDat());
+                     isShow += 1;
+                     $("#clearEarilyThan").show();
+                 }
+                
+             },
+           
+        });
+
+         $.ajax({
+             type: "GET",
+             async: false,
+             url: "../Tools/ProjectAjax.ashx?act=CheckTask&task_id=" + task_id,
+             dataType: "json",
+             success: function (data) {
+                 debugger;
+                 if (data != "") {
+                     debugger;
+                     if (data.staInWeek) {
+                         $("#dateNotInWeek").show();
+                         isShow += 1;
+                     }
+                     if (data.hasIds) {
+                         $("#NoDoneOnTimeDiv").show();
+                         $("#thisTaskStartSpan").html(data.start);
+                         $("#thisTaskEndSpan").html(data.end);
+                         $("#TaskIdsSpan").html(data.ids);
+                         isShow += 1;
+                     }
+
+                }
+
+             },
+             
+         });
+         $.ajax({
+             type: "GET",
+             async: false,
+             url: "../Tools/ResourceAjax.ashx?act=CheckResTimeOff&task_id=" + task_id,
+             dataType: "json",
+             success: function (data) {
+                 if (data != "") {
+                     isShow += 1;
+                     $("#resTimeOffDiv").show();
+                     $("#timeOffSpan").html(data.time);
+                     $("#doneTimeSpan").html(data.doneTime);
+                 }
+             }
+         });
+         if (Number(isShow) >= 1) {
+             $("#ShowTaslAlarm").show();
+             $("#BackgroundOverLay").show();
+             $("#ShowAlertTaskId").val(task_id);
+         }
+        
+
+       
+    }
+    function CloseTaskAlarm() {
+        $("#ShowTaslAlarm").hide();
+        $("#BackgroundOverLay").hide();
+        $("#ShowAlertTaskId").val("");
+        $("#qianquAlarm").hide();
+        $("#clearEarilyThan").hide();
+        $(".ShowAlarm").hide();
+    }
+    $("#ChangePreTask").click(function () {
+        var ShowAlertTaskId = $("#ShowAlertTaskId").val();
+        if (ShowAlertTaskId != "") {
+            var disBef = $("#DisBeforTask").is(":checked");
+            var disAft = $("#DisAfterTask").is(":checked");
+            if (disBef || disAft) {
+                var ChangeUrl = "../Tools/ProjectAjax.ashx?act=DisPreTask&task_id=" + ShowAlertTaskId;
+                if (disBef) {
+                    ChangeUrl += "&dis_bef=1";
+                }
+                if (disAft) {
+                    ChangeUrl += "&dis_aft=1";
+                }
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: ChangeUrl,
+                    dataType: "json",
+                    success: function (data) {
+                       
+                        $("#ShowTaslAlarm").hide();
+                        $("#BackgroundOverLay").hide();
+                        $("#ShowAlertTaskId").val("");
+                        $("#qianquAlarm").hide();
+                        $("#clearEarilyThan").hide();
+                    },
+                });
+            }
+        }
+       
+        // CloseTaskAlarm();
+    })
+
+    $("#ClearStartThanButton").click(function () {
+        var ShowAlertTaskId = $("#ShowAlertTaskId").val();
+        if (ShowAlertTaskId != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ProjectAjax.ashx?act=ClearStartThan&task_id=" + ShowAlertTaskId,
+                dataType: "json",
+                success: function (data) {
+
+                    $("#ShowTaslAlarm").hide();
+                    $("#BackgroundOverLay").hide();
+                    $("#ShowAlertTaskId").val("");
+                    $("#qianquAlarm").hide();
+                    $("#clearEarilyThan").hide();
+                },
+            });
+        }
+        // CloseTaskAlarm();
+    })
 </script>

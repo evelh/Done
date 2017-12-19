@@ -78,15 +78,34 @@
                 <span>菜单</span>
             </div>
             <ul class="ButtonBarVert">
+                <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY"))
+                    { %>
                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>">摘要</a></li>
-                <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Schedule">列表</a></li>
-                <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Team">团队</a></li>
-                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Cost">成本费用</a></li>
-                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Note">备注</a></li>
-                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Rate">费率</a></li>
-                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Calendar">日历条目</a></li>
-                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Attach">附件</a></li>
-                     <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=UDF">自定义字段</a></li>
+                <%} %>
+                <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE"))
+                    { %>
+                <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Schedule">列表</a></li>   <%} %>
+                   <%if (CheckAuth("PRO_PROJECT_TEAM"))
+                    { %>
+                <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Team">团队</a></li> <%} %>
+                  <%if (CheckAuth("PRO_PROJECT_COST_EXPENSE"))
+                    { %>
+                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Cost">成本费用</a></li><%} %>
+                 <%if (CheckAuth("PRO_PROJECT_NOTE"))
+                    { %>
+                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Note">备注</a></li><%} %>
+                 <%if (CheckAuth("PRO_PROJECT_VIEW__RATE_SEARCH"))
+                    { %>
+                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Rate">费率</a></li><%} %>
+                  <%if (CheckAuth("PRO_PROJECT_CALENDAR"))
+                    { %>
+                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Calendar">日历条目</a></li><%} %>
+                 <%if (CheckAuth("PRO_PROJECT_ATTACH"))
+                    { %>
+                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Attach">附件</a></li><%} %>
+                  <%if (CheckAuth("PRO_PROJECT_UDF"))
+                    { %>
+                     <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=UDF">自定义字段</a></li><%} %>
             </ul>
         </div>
         <div class="Right">

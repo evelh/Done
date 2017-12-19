@@ -36,9 +36,19 @@ function DeleteNote() {
 }
 
 function Add() {
-    var project_id = $("#id").val();
-    if (project_id != "") {
-        window.open("../Project/TaskNote.aspx?project_id=" + project_id, windowObj.notes + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+    debugger;
+    var object_id = $("#id").val();
+    if (object_id != "") {
+        debugger;
+        var parAddType = $("#AddNoteType", parent.document).val();
+        if (parAddType == "contract") {
+            var contract_id = $("#contract_id", parent.document).val();
+            window.open("../Project/TaskNote.aspx?contract_id=" + contract_id, windowObj.notes + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+        } else {
+
+            window.open("../Project/TaskNote.aspx?project_id=" + object_id, windowObj.notes + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+        }
+
     }
  
 }

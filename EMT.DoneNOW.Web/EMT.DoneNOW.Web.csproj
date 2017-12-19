@@ -195,6 +195,7 @@
     <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Contract\ContractCopy.aspx" />
     <Content Include="Contract\ContractMilestone.aspx" />
+    <Content Include="Contract\ContractNoteShow.aspx" />
     <Content Include="Contract\ContractRenew.aspx" />
     <Content Include="Contract\ContractSummary.aspx" />
     <Content Include="Contract\ContractEdit.aspx" />
@@ -205,6 +206,7 @@
     <Content Include="Contract\EditRetainerPurchase.aspx" />
     <Content Include="Contract\EditServiceInvoiceDesc.aspx" />
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
+    <Content Include="Contract\NotiRuleManage.aspx" />
     <Content Include="Images\attachment.png" />
     <Content Include="Images\calendar.png" />
     <Content Include="Images\cancel1.png" />
@@ -327,6 +329,7 @@
     <Content Include="Project\CompanyPolicy.aspx" />
     <Content Include="Project\CopyUdfToProject.aspx" />
     <Content Include="Project\EmailProjectTeam.aspx" />
+    <Content Include="Project\EntryDetail.aspx" />
     <Content Include="Project\ExpenseDetail.aspx" />
     <Content Include="Project\ExpenseManage.aspx" />
     <Content Include="Project\ProjectAddOrEdit.aspx" />
@@ -785,6 +788,8 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Common\SearchBody.js" />
     <Content Include="Scripts\Search\account_policy.js" />
+    <Content Include="Scripts\Search\approve_expense.js" />
+    <Content Include="Scripts\Search\approve_labour.js" />
     <Content Include="Scripts\Search\Company.js" />
     <Content Include="Scripts\Search\CompanyViewAttachment.js" />
     <Content Include="Scripts\Search\CompanyViewContract.js" />
@@ -793,6 +798,7 @@
     <Content Include="Scripts\Search\ContactCompanyView.js" />
     <Content Include="Scripts\Search\Contract.js" />
     <Content Include="Scripts\Search\Contract_Charge.js" />
+    <Content Include="Scripts\Search\contract_notify_rule.js" />
     <Content Include="Scripts\Search\CRMNote.js" />
     <Content Include="Scripts\Search\InstalledProductView.js" />
     <Content Include="Scripts\Search\InventoryItem.js" />
@@ -806,6 +812,7 @@
     <Content Include="Scripts\Search\project_cost_expense.js" />
     <Content Include="Scripts\Search\project_team.js" />
     <Content Include="Scripts\Search\project_note.js" />
+    <Content Include="Scripts\Search\project_temp_search.js" />
     <Content Include="Scripts\Search\PurchaseApproval.js" />
     <Content Include="Scripts\Search\project_udf.js" />
     <Content Include="Scripts\Search\Quote.js" />
@@ -1138,6 +1145,13 @@
     <Compile Include="Contract\ContractMilestone.aspx.designer.cs">
       <DependentUpon>ContractMilestone.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\ContractNoteShow.aspx.cs">
+      <DependentUpon>ContractNoteShow.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractNoteShow.aspx.designer.cs">
+      <DependentUpon>ContractNoteShow.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contract\ContractRenew.aspx.cs">
       <DependentUpon>ContractRenew.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1221,6 +1235,13 @@
     </Compile>
     <Compile Include="Inventory\AddPurchaseOrder.aspx.designer.cs">
       <DependentUpon>AddPurchaseOrder.aspx</DependentUpon>
+	</Compile>
+    <Compile Include="Contract\NotiRuleManage.aspx.cs">
+      <DependentUpon>NotiRuleManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\NotiRuleManage.aspx.designer.cs">
+      <DependentUpon>NotiRuleManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Inventory\InventoryItem.aspx.cs">
       <DependentUpon>InventoryItem.aspx</DependentUpon>
@@ -1491,6 +1512,13 @@
     </Compile>
     <Compile Include="Project\EmailProjectTeam.aspx.designer.cs">
       <DependentUpon>EmailProjectTeam.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\EntryDetail.aspx.cs">
+      <DependentUpon>EntryDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\EntryDetail.aspx.designer.cs">
+      <DependentUpon>EntryDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="Project\ExpenseDetail.aspx.cs">
       <DependentUpon>ExpenseDetail.aspx</DependentUpon>

@@ -616,7 +616,7 @@
                                                     <td>
                                                         <div class="clear">
                                                             <label><%=udf.name %></label>
-                                                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=project_udfValueList!=null&&project_udfValueList.Count>0?project_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
+                                                            <input type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=project_udfValueList!=null&&project_udfValueList.Count>0?project_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
                                                         </div>
                                                     </td>
                                                 </tr>

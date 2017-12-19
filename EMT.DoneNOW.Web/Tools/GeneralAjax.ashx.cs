@@ -116,7 +116,7 @@ namespace EMT.DoneNOW.Web
         private void GetSinCodeRule(HttpContext context,long code_rule_id)
         {
             var codeRule = new d_cost_code_rule_dal().GetRuleByCodeId(code_rule_id);
-            if (codeRule != null)
+            if (codeRule != null&& codeRule.Count>0)
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson(codeRule[0]));
             }
