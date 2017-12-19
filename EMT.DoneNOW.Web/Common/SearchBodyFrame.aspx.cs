@@ -240,6 +240,13 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PROJECT_UDF:
                     addBtn = "项目自定义";
                     break;
+                case (int)DicEnum.QUERY_CATE.PURCHASING_FULFILLMENT:
+                    addBtn = "创建采购订单";
+                    break;
+                case (int)DicEnum.QUERY_CATE.PURCHASE_ORDER:
+                case (int)DicEnum.QUERY_CATE.PURCHASE_ITEM:
+                    addBtn = "新增";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -383,6 +390,51 @@ namespace EMT.DoneNOW.Web
                 queryPara.page_size = pageSize;
 
                 queryResult = bll.GetResult(GetLoginUserId(), queryPara);
+
+                if (queryTypeId==(int)QueryType.PurchaseItem)
+                {
+                    var items = Session["PurchaseOrderItem"] as PurchaseOrderItemManageDto;
+                    if (items != null && items.items.Count > 0)
+                    {
+                        queryResult.page_count += items.items.Count;
+                        queryResult.count += items.items.Count;
+                        queryResult.page_size = queryResult.page_size == 0 ? 20 : queryResult.page_size;
+                        queryResult.page = queryResult.page == 0 ? 1 : queryResult.page;
+                        foreach (var item in items.items)
+                        {
+                            Dictionary<string, object> oi = new Dictionary<string, object>();
+                            foreach (var rsltClmn in resultPara)
+                            {
+                                if (rsltClmn.name == "采购项id")
+                                    oi.Add("采购项id", item.id);
+                                else if (rsltClmn.name == "产品名称")
+                                    oi.Add("产品名称", item.product);
+                                else if (rsltClmn.name == "仓库")
+                                    oi.Add("仓库", item.locationName);
+                                else if (rsltClmn.name == "成本")
+                                    oi.Add("成本", item.unit_cost);
+                                else if (rsltClmn.name == "库存数")
+                                    oi.Add("库存数", item.quantity);
+                                else
+                                    oi.Add(rsltClmn.name, "");
+                            }
+                            if (queryResult.result == null)
+                                queryResult.result = new List<Dictionary<string, object>>();
+                            queryResult.result.Add(oi);
+                        }
+                    }
+                    decimal totalSale = 0;
+                    if (queryResult.count > 0 && resultPara.Exists(_ => _.name == "成本") && resultPara.Exists(_ => _.name == "库存数"))
+                    {
+                        foreach (var item in queryResult.result)
+                        {
+                            int quantity = int.Parse(item["库存数"].ToString());
+                            decimal cost = decimal.Parse(item["成本"].ToString());
+                            totalSale += (quantity * cost);
+                        }
+                    }
+                    param1 = totalSale.ToString();
+                }
             }
         }
 
@@ -761,6 +813,21 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.PROJECT_ATTACH:
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
+                case (long)QueryType.PurchaseOrder:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "提交", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "收货/取消收货", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看/打印", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "发送邮件", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "取消", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.PurchaseItem:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑采购项", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑关联成本", click_function = "EditCost()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看/添加备注", click_function = "EditNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
                 default:
                     break;
             }
@@ -768,8 +835,8 @@ namespace EMT.DoneNOW.Web
             var menus = base.GetSearchContextMenu((QueryType)queryTypeId);  // 获取该用户不可见的菜单名称
             for (int i = contextMenu.Count - 1; i >= 0; --i)
             {
-                if (menus.Exists(_ => contextMenu[i].text.Equals(_)))
-                    contextMenu.RemoveAt(i);
+                //if (menus.Exists(_ => contextMenu[i].text.Equals(_)))
+                //    contextMenu.RemoveAt(i);
             }
         }
 

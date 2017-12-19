@@ -75,6 +75,7 @@
     <Compile Include="CTT\ContractServiceBLL.cs" />
     <Compile Include="CTT\InvoiceBLL.cs" />
     <Compile Include="IVT\InventoryLocationBLL.cs" />
+    <Compile Include="IVT\InventoryOrderBLL.cs" />
     <Compile Include="IVT\InventoryProductBLL.cs" />
     <Compile Include="IVT\ProductBLL.cs" />
     <Compile Include="IVT\ServiceBLL.cs" />

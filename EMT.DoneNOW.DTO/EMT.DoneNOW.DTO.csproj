@@ -83,6 +83,7 @@
     <Compile Include="PreferencesInvoiceDto.cs" />
     <Compile Include="ProcessInvoiceDto.cs" />
     <Compile Include="ProjectDto.cs" />
+    <Compile Include="PurchaseOrderItemManageDto.cs" />
     <Compile Include="SdkWorkEntryDto.cs" />
     <Compile Include="TaskNoteDto.cs" />
     <Compile Include="TaskSaveDto.cs" />

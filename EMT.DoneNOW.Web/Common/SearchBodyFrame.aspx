@@ -274,6 +274,10 @@
                   <li onclick="ApplyDiscount()"><span>应用全部折扣</span></li>
                   <%} %>
                   <%}%>
+                  <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_APPROVAL) { %>
+                    <li onclick="Approval()"><span style="margin: 0 10px;">通过</span></li>
+                    <li onclick="ApprovalReject()"><span style="margin: 0 10px;">拒绝</span></li>
+                  <%} %>
                     <li id="PrintLi" class="General"><i style="background-image: url(../Images/print.png);"></i></li>
                     <li id="SelectLi" class="General" onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
                     <li id="ExportLi" class="General"><i style="background-image: url(../Images/export.png);"></i></li>
@@ -287,7 +291,7 @@
                 </div>
                 <%} %>
 
-              <div class="fl" style="line-height:47px;margin-right:30px;">
+              <div class="fl" id="addDiv" style="line-height:47px;margin-right:30px;">
               <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
                 <span>显示数据</span><input type="text" name="serviceTime" style="margin-left:8px;" value="<%=searchTime.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
                 <a onclick="editTime()" style="width:16px;height:16px;"><img src="../Images/search.png" /></a>
@@ -346,18 +350,20 @@
                 <%} %>
                 <%foreach (var para in resultPara)
                     {
-                        if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
-                            || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
-                            || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
-                            continue;
-                        string orderby = null;
-                        string order = null;
-                        if (!string.IsNullOrEmpty(queryResult.order_by))
-                        {
-                            var strs = queryResult.order_by.Split(' ');
-                            orderby = strs[0];
-                            order = strs[1].ToLower();
-                        }
+                      if (para.visible != 1)
+                        continue;
+                      if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
+                          || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
+                          || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
+                        continue;
+                      string orderby = null;
+                      string order = null;
+                      if (!string.IsNullOrEmpty(queryResult.order_by))
+                      {
+                        var strs = queryResult.order_by.Split(' ');
+                        orderby = strs[0];
+                        order = strs[1].ToLower();
+                      }
                 %>
                 <th title="点击按此列排序" width="<%=para.length*32 %>px" onclick="ChangeOrder('<%=para.name %>')" class="OrderTh">
                     <%=para.name %>
@@ -395,6 +401,8 @@
                 <%} %>
                 <%foreach (var para in resultPara)
                     {
+                        if (para.visible != 1)
+                            continue;
                         if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
                             || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
                             || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
@@ -420,7 +428,25 @@
                           url += "?";
                           foreach(var urlPara in para.url.parms)
                           {
-                            url += urlPara.name + "=" + rslt[urlPara.value] + "&";
+                            if (rslt.ContainsKey(urlPara.value))
+                              url += urlPara.name + "=" + rslt[urlPara.value] + "&";
+                            else
+                              url += urlPara.name + "=" + urlPara.value + "&";
+                          }
+                        }
+                        if(para.url.url=="/ContractProjectTicket" && rslt.ContainsKey("parent_type"))
+                        {
+                          if (rslt["parent_type"].ToString()=="contract")
+                          {
+                            url = "/Contract/ContractView?id=" + rslt["contract_id"];
+                          }
+                          else if (rslt["parent_type"].ToString()=="project")
+                          {
+                            url = "/Project/ProjectView?id=" + rslt["project_id"];
+                          }
+                          else if (rslt["parent_type"].ToString()=="ticket")
+                          {
+                            url = "";
                           }
                         }
                       }

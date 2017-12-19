@@ -160,6 +160,18 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.INVENTORY_ITEM:
                     currentQuery.page_name = "库存产品查询";
                     break;
+                case (int)DicEnum.QUERY_CATE.PURCHASE_APPROVAL:
+                    currentQuery.page_name = "采购审批";
+                    break;
+                case (int)DicEnum.QUERY_CATE.INVENTORY_TRANSFER:
+                    currentQuery.page_name = "库存转移与更新";
+                    break;
+                case (int)DicEnum.QUERY_CATE.PURCHASING_FULFILLMENT:
+                    currentQuery.page_name = "待采购产品查询";
+                    break;
+                case (int)DicEnum.QUERY_CATE.PURCHASE_ORDER:
+                    currentQuery.page_name = "采购订单查询";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

@@ -56,6 +56,11 @@ namespace EMT.DoneNOW.Web
                     var propertyName = context.Request.QueryString["property"];
                     GetCompanyProperty(context, property_account_id, propertyName);
                     break;
+                case "propertyJson":
+                    property_account_id = context.Request.QueryString["account_id"];
+                    propertyName = context.Request.QueryString["property"];
+                    GetCompanyPropertyJson(context, property_account_id, propertyName);
+                    break;
                 case "Location":
                     var location_account_id = context.Request.QueryString["account_id"];
                     GetCompanyDefaultLocation(context, location_account_id);
@@ -280,6 +285,14 @@ namespace EMT.DoneNOW.Web
             if (account != null)
             {
                 context.Response.Write(BaseDAL<Core.crm_account>.GetObjectPropertyValue(account, propertyName));
+            }
+        }
+        private void GetCompanyPropertyJson(HttpContext context, string account_id, string propertyName)
+        {
+            var account = new CompanyBLL().GetCompany(long.Parse(account_id));
+            if (account != null)
+            {
+                context.Response.Write(new Serialize().SerializeJson(BaseDAL<Core.crm_account>.GetObjectPropertyValue(account, propertyName)));
             }
         }
 
