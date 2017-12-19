@@ -106,9 +106,15 @@ namespace EMT.DoneNOW.BLL
                 //  根据开始时间和结束时间计算最终时间
                 param.task.estimated_end_date = RetrunMaxTime((long)param.task.project_id, startDate, (int)param.task.estimated_duration);
 
-                // 修改task的开始结束时间相关
-                OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
-                _dal.Update(thisTask);
+                var oldTask = _dal.FindNoDeleteById(thisTask.id);
+                if(oldTask!=null&&oldTask.estimated_end_date!= param.task.estimated_end_date)
+                {
+                    oldTask.estimated_end_date = param.task.estimated_end_date;
+                    // 修改task的开始结束时间相关
+                    OperLogBLL.OperLogUpdate<sdk_task>(oldTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");    
+                    _dal.Update(oldTask);
+                }
+              
 
 
                 // 递归修改父阶段相关数据
@@ -1215,7 +1221,7 @@ namespace EMT.DoneNOW.BLL
             // 得出实际相差天数，筛选除去设置后，真是相差天数
             TimeSpan ts1 = new TimeSpan(startDate.Ticks);
             TimeSpan ts2 = new TimeSpan(endDate.Ticks);
-            var diffDays = ts1.Subtract(ts2).Duration().Days;   // 天数是否需要+1  todo //
+            var diffDays = ts1.Subtract(ts2).Duration().Days+1;   // 天数需要+1  //
             var realDays = 0;
             if (thisProject.exclude_weekend == 0)
             {
@@ -1399,7 +1405,7 @@ namespace EMT.DoneNOW.BLL
                     var firstWeek = (int)newDate.DayOfWeek;    //计算开始时间是周几。。 
                     if (firstWeek > 0 || firstWeek <= 5)
                     {
-                        if (days < 5 - firstWeek)
+                        if (days <= 6 - firstWeek)
                         {
                             newDate = newDate.AddDays(days);
                         }

@@ -89,6 +89,12 @@ namespace EMT.DoneNOW.Web.Project
                     thisWorkEntry = new sdk_work_entry_dal().FindNoDeleteById(long.Parse(id));
                     if (thisWorkEntry != null)
                     {
+                        if (thisWorkEntry.approve_and_post_date != null || thisWorkEntry.approve_and_post_user_id != null)
+                        {
+                            Response.Write("<script>alert('审批提交的工时不可以更改！')window.close();</script>");
+                            Response.End();
+                        }
+
                         if (!resList.Any(_ => _.val == thisWorkEntry.create_user_id.ToString()))
                         {
                             Response.Write("<script>alert('系统设置不能代理操作！')window.close();</script>");

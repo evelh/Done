@@ -75,6 +75,23 @@ namespace EMT.DoneNOW.Web
                     var delete_product_id = context.Request.QueryString["product_id"];
                     DeleteProduct(context, long.Parse(delete_product_id));
                     break;
+                case "GetPageWare":
+                    var pid = context.Request.QueryString["product_id"];
+                    GetPageWare(context,long.Parse(pid));
+                    break;
+                case "GetSnListByIds":
+                    var snIds = context.Request.QueryString["snIds"];
+                    GetSnListByIds(context,snIds);
+                    break;
+                case "PickProduct":
+                    var ppId = context.Request.QueryString["product_id"];
+                    var ppWareId = context.Request.QueryString["ware_id"];
+                    var pickNum = context.Request.QueryString["pickNum"];
+                    var ppSerNumIds = context.Request.QueryString["serNumIds"];
+                    var tranType = context.Request.QueryString["tranType"];
+                    var ppCostId = context.Request.QueryString["cost_id"];
+                    PickProduct(context,long.Parse(ppId),long.Parse(ppWareId),int.Parse(pickNum),ppSerNumIds,tranType,long.Parse(ppCostId));
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;
@@ -107,7 +124,9 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { avg = product.unit_cost, max = product.unit_price }));
             }
         }
-
+        /// <summary>
+        /// 批量新增产品相关报价项
+        /// </summary>
         public void AddQuoteItemByProduct(HttpContext context, string ids, int quote_id)
         {
 
@@ -163,7 +182,9 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write("false");
             }
         }
-
+        /// <summary>
+        /// 获取供应商相关信息
+        /// </summary>
         public void GetVendorInfo(HttpContext context, long product_id)
         {
             var vendor = new ivt_product_dal().FindSignleBySql<ivt_product>($"SELECT a.name as name,v.vendor_product_no as vendor_product_no from crm_account a INNER join ivt_product_vendor v on a.id = v.vendor_account_id where product_id={product_id}");
@@ -270,7 +291,58 @@ namespace EMT.DoneNOW.Web
 
 
         }
+        /// <summary>
+        /// 根据产品Id获取相应的库存信息
+        /// </summary>
+        public void GetPageWare(HttpContext context, long product_id)
+        {
+            var wareList = new ivt_product_dal().GetPageWareList(product_id);
+            if(wareList!=null&& wareList.Count > 0)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(wareList));
+            }
+        }
+        /// <summary>
+        /// 根据Id 回去相应的sn
+        /// </summary>
+        public void GetSnListByIds(HttpContext context, string ids)
+        {
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var snList = new ivt_warehouse_product_sn_dal().GetSnByIds(ids);
+                if(snList!=null&& snList.Count > 0)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(snList));
+                }
+            }
+            
+        }
+        /// <summary>
+        /// 拣货操作
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="product_id">产品</param>
+        /// <param name="ware_id">仓库</param>
+        /// <param name="pickNum">拣货数量</param>
+        /// <param name="serNumIds">序列号</param>
+        /// <param name="tranType">库存转移方式</param>
+        public void PickProduct(HttpContext context,long product_id,long ware_id,int pickNum,string serNumIds,string tranType,long cost_id)
+        {
+            // tranType  ---  wareHouse    toMe   toItem
+            var ccBll = new ContractCostBLL();
+            var result = ccBll.AddCostProduct(cost_id,product_id,ware_id,pickNum,tranType, serNumIds,LoginUserId);
+            ccBll.ChangCostStatus(cost_id,LoginUserId);
+            // 是否完成销售订单（返回页面进行处理）
+            var isDoneOrder = false;
+            new SaleOrderBLL().ChangeSaleOrderStatus(cost_id,LoginUserId,out isDoneOrder);
+            if (tranType == "toMe")
+            {
 
+            }
+            else if (tranType == "toItem")
+            {
 
+            }
+        }
     }
 }

@@ -274,7 +274,7 @@
                                         &nbsp;&nbsp;<%=addressdistrict.FirstOrDefault(_ => _.val == contactLocation.city_id.ToString()).show %>
                                         &nbsp;&nbsp;<%=addressdistrict.FirstOrDefault(_ => _.val == contactLocation.district_id.ToString()).show %>
                             <br />
-                            <%=location.address %>&nbsp;&nbsp;<%=location.additional_address %>&nbsp;&nbsp;<%=location.postal_code %><br />
+                            <%=contactLocation.address %>&nbsp;&nbsp;<%=contactLocation.additional_address %>&nbsp;&nbsp;<%=contactLocation.postal_code %><br />
                         </span>
                         <%} %>
                     </p>

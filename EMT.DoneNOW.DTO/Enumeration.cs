@@ -293,7 +293,7 @@ namespace EMT.DoneNOW.DTO
         public enum SALES_ORDER_STATUS
         {
             OPEN = 465,                // 打开
-            IN_PROGRESS = 466,         // 未实施
+            IN_PROGRESS = 466,         // 进行中
             PARTIALLY_FULFILLED = 467, // 部分实施
             FULFILLED = 468,           // 完成
             CANCELED = 469,            // 取消
@@ -569,6 +569,7 @@ namespace EMT.DoneNOW.DTO
             INVENTORY_TRANSFER = 1562,              // 库存转移查询
             PURCHASE_APPROVAL = 1563,               // 采购审批查询
             CONTRACT_NOTIFY_RULE=1566,          // 合同通知规则
+            SERNUM_CALLBACK = 1569,                 // 库存管理-产品序列号查找带回
 
 
             //RESOURCE_CALLBACK,                      // 
@@ -688,7 +689,10 @@ namespace EMT.DoneNOW.DTO
             INVENTORY_ITEM_SN = 1394,                   // 库存产品串号
             INVENTORY_ITEM_TRANSFER = 1395,             // 库存转移
             INVENTORY_ITEM_TRANSFER_SN = 1396,          // 库存转移序号
+            WAREHOUSE_RESERVE=1397,                     // 库存预留
             PROJECT_PHASE_WORK_HOURS = 1398,            // 项目阶段预估工时
+            CTT_CONTRACT_COST_PRODUCT = 1400,           // 成本关联产品
+            CTT_CONTRACT_COST_PRODUCT_SN = 1401,        // 成本关联产品的串号
         }
 
         /// <summary>
@@ -1071,6 +1075,17 @@ namespace EMT.DoneNOW.DTO
             RECEIVED_FULL = 2150,       // 全部接收
             CANCELED = 2151,            // 已取消
         }
+        /// <summary>
+        /// 成本关联产品状态 - 151
+        /// </summary>
+        public enum CONTRACT_COST_PRODUCT_STATUS
+        {
+            NEW = 2155,                  // 新建
+            ON_ORDER=2156,               // 采购中
+            PICKED=2157,                 // 已拣货
+            PENDING_DISTRIBUTION=2158,   // 待配送
+            DISTRIBUTION=2159,           // 已配送
+        }
 
         /// <summary>
         /// 工作类型计费方法-153
@@ -1398,6 +1413,7 @@ namespace EMT.DoneNOW.DTO
 
         ACCOUNT_POLICY,
         EXPENSE_REPORT_CALLBACK,
+        SERNUM_CALLBACK,       // 产品序列号查找带回
 
     }
     /// <summary>

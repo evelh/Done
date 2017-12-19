@@ -37,6 +37,12 @@ namespace EMT.DoneNOW.Web.Project
                     thisExpense = seDal.FindNoDeleteById(long.Parse(eId));
                     if (thisExpense != null)
                     {
+                        if (thisExpense.approve_and_post_date != null || thisExpense.approve_and_post_user_id!=null)
+                        {
+                            Response.Write("<script>alert('审批提交的费用不可以更改！')window.close();</script>");
+                            Response.End();
+                        }
+
                         isAdd = false;
 
                         if (!IsPostBack)

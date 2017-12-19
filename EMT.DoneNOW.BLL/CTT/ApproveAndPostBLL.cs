@@ -2891,7 +2891,7 @@ namespace EMT.DoneNOW.BLL
         /// 审批提交工时
         /// </summary>
         public ERROR_CODE PostWorkEntry(long id, int date, long user_id, string postType = "")
-        {
+         {
             try
             {
                 var sweDal = new sdk_work_entry_dal();
@@ -2971,7 +2971,7 @@ namespace EMT.DoneNOW.BLL
 
                             var thisEntryRate = new ContractRateBLL().GetRateByCodeAndRole((long)oldEntry.cost_code_id, (long)oldEntry.role_id);
                             var totalMoney = oldEntry.hours_billed * thisEntryRate;  // 这个工时的总额
-                            var block_hours = sweDal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status=1 ORDER BY b.start_date");
+                            var block_hours = sweDal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 ORDER BY b.start_date");
                             foreach (DataRow i in block_hours.Rows)
                             {
                                 if (i[1] != null && Convert.ToDecimal(i[1]) > 0)
@@ -3166,6 +3166,7 @@ namespace EMT.DoneNOW.BLL
                                                 ccb1.create_user_id = ccb1.update_user_id = user_id;
                                                 ccb1.update_time = ccb1.create_time;
                                                 ccb1.update_user_id = user_id;
+                                                ccb1.is_billed = 1;
                                                 ccb_dal.Insert(ccb1);
                                                 OperLogBLL.OperLogAdd<ctt_contract_block>(ccb1, ccb1.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "新增(自动续费功能)合同成本预付时间或费用");
 
@@ -3217,6 +3218,7 @@ namespace EMT.DoneNOW.BLL
                                                 ccb2.create_user_id = ccb2.update_user_id = user_id;
                                                 ccb2.update_time = ccb2.create_time;
                                                 ccb2.update_user_id = user_id;
+                                                ccb2.is_billed = 1;
                                                 ccb_dal.Insert(ccb2);
                                                 OperLogBLL.OperLogAdd<ctt_contract_block>(ccb2, ccb2.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "新增(自动续费功能)合同成本预付时间或费用");
 

@@ -17,11 +17,21 @@ namespace EMT.DoneNOW.Web.QuoteItem
         protected bool isAdd = true;
         protected string type = "";
         protected Dictionary<string, object> dic = null;
+        protected bool isSaleOrder = false;
+        protected List<ivt_reserve> thisReserList = null;
+        protected long? saleOrderId = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
-
             {
+                isSaleOrder = !string.IsNullOrEmpty(Request.QueryString["isSaleOrder"]); 
+                var sId = Request.QueryString["sale_order_id"];
+                if (!string.IsNullOrEmpty(sId))
+                {
+                    saleOrderId = long.Parse(sId);
+                }
+
+
                 type = Request.QueryString["type_id"];             // 报价项类型
                 var quote_id = Request.QueryString["quote_id"];    // 报价ID 需要根据报价ID 添加报价项
                 var quote_item_id = Request.QueryString["id"];
@@ -135,6 +145,10 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     {
                         period_type_id.SelectedValue = quote_item.period_type_id.ToString();
                     }
+                    if (quote_item.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT)
+                    {
+                        thisReserList = new ivt_reserve_dal().GetListByItemId(quote_item.id);
+                    }
                 }
 
             }
@@ -150,15 +164,32 @@ namespace EMT.DoneNOW.Web.QuoteItem
         /// <param name="e"></param>
         protected void save_close_Click(object sender, EventArgs e)
         {
-            var param = GetParam();
+            Dictionary<long, int> wareDic = null;
+            var param = GetParam(out wareDic);
             var result = DTO.ERROR_CODE.SUCCESS;
             if (isAdd)
             {
-                 result = new QuoteItemBLL().Insert(param, GetLoginUserId());
+                if (isSaleOrder)
+                {
+                    result = new QuoteItemBLL().Insert(param, wareDic, GetLoginUserId(),true,saleOrderId);
+                }
+                else
+                {
+                    result = new QuoteItemBLL().Insert(param, wareDic,GetLoginUserId());
+                }
+                 
             }
             else
             {
-                 result = new QuoteItemBLL().Update(param, GetLoginUserId());
+                if (isSaleOrder)
+                {
+                    result = new QuoteItemBLL().Update(param, wareDic, GetLoginUserId(),true, saleOrderId);
+                }
+                else
+                {
+                    result = new QuoteItemBLL().Update(param, wareDic,GetLoginUserId());
+                }
+                
             }
             switch (result)
             {
@@ -184,16 +215,32 @@ namespace EMT.DoneNOW.Web.QuoteItem
 
         protected void save_new_Click(object sender, EventArgs e)
         {
-
-            var param = GetParam();
+            Dictionary<long, int> wareDic = null;
+            var param = GetParam(out wareDic);
             var result = DTO.ERROR_CODE.SUCCESS;
             if (isAdd)
             {
-                result = new QuoteItemBLL().Insert(param, GetLoginUserId());
+                if (isSaleOrder)
+                {
+                    result = new QuoteItemBLL().Insert(param, wareDic, GetLoginUserId(), true, saleOrderId);
+                }
+                else
+                {
+                    result = new QuoteItemBLL().Insert(param, wareDic, GetLoginUserId());
+                }
+                
             }
             else
             {
-                result = new QuoteItemBLL().Update(param, GetLoginUserId());
+                if (isSaleOrder)
+                {
+                    result = new QuoteItemBLL().Update(param, wareDic, GetLoginUserId(),true, saleOrderId);
+                }
+                else
+                {
+                    result = new QuoteItemBLL().Update(param, wareDic, GetLoginUserId());
+                }
+                
             }
 
             switch (result)
@@ -214,66 +261,12 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     break;
             }
 
-            //var quote_item = AssembleModel<crm_quote_item>();
-            //quote_item.optional = Convert.ToUInt64(_optional.Checked ? 1 : 0);
-            //if (isAdd)
-            //{
-            //    //quote_item.type_id = int.Parse(Request.QueryString["type_id"]);
-            //    quote_item.type_id = int.Parse(ItemTypeId.Value);
-            //    quote_item.quote_id = int.Parse(Request.QueryString["quote_id"]);
-            //    var result = new QuoteItemBLL().Insert(quote_item, GetLoginUserId());
-            //    switch (result)
-            //    {
-            //        case DTO.ERROR_CODE.SUCCESS:
-            //            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加报价项成功');self.opener.location.reload();location.href = 'QuoteItemAddAndUpdate.aspx?type_id=" + quote_item.type_id + "&quote_id=" + quote_item.quote_id+"';</script>");
-            //            break;
-            //        case DTO.ERROR_CODE.ERROR:
-            //            break;
-            //        case DTO.ERROR_CODE.PARAMS_ERROR:
-            //            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
-            //            break;
-            //        case DTO.ERROR_CODE.USER_NOT_FIND:
-            //            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('用户信息丢失');</script>");
-            //            Response.Redirect("../login.aspx");
-            //            break;
-            //        default:
-            //            break;
-            //    }
-            //}
-            //else
-            //{
-            //    quote_item.type_id = this.quote_item.type_id;
-            //    quote_item.create_time = this.quote_item.create_time;
-            //    quote_item.create_user_id = this.quote_item.create_user_id;
-            //    quote_item.update_time = this.quote_item.update_time;
-            //    quote_item.update_user_id = this.quote_item.update_user_id;
-            //    quote_item.id = this.quote_item.id;
-            //    quote_item.quote_id = this.quote_item.quote_id;
-            //    var result = new QuoteItemBLL().Update(quote_item, GetLoginUserId());
-            //    switch (result)
-            //    {
-            //        case DTO.ERROR_CODE.SUCCESS:
-            //            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('修改报价项成功');</script>");
-            //            Response.Write("QuoteItemAddAndUpdate.aspx?type_id=" + type+"&id="+quote_item.id + "&quote_id" + quote_item.quote_id);
-            //            break;
-            //        case DTO.ERROR_CODE.ERROR:
-            //            break;
-            //        case DTO.ERROR_CODE.PARAMS_ERROR:
-            //            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('必填参数丢失，请重新填写');</script>");
-            //            break;
-            //        case DTO.ERROR_CODE.USER_NOT_FIND:
-            //            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('用户信息丢失');</script>");
-            //            Response.Redirect("../login.aspx");
-            //            break;
-            //        default:
-            //            break;
-            //    }
-            //}
+            
 
         }
 
 
-        private crm_quote_item GetParam()
+        private crm_quote_item GetParam(out Dictionary<long, int> wareDic)
         {
             var quote_item = AssembleModel<crm_quote_item>();
             quote_item.optional = Convert.ToUInt64(_optional.Checked ? 1 : 0);
@@ -294,6 +287,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 quote_item.quote_id = this.quote_item.quote_id;
                 quote_item.oid = this.quote_item.oid;
             }
+            wareDic = new Dictionary<long, int>();
             switch (quote_item.type_id)
             {
                 case (int)QUOTE_ITEM_TYPE.WORKING_HOURS:
@@ -309,7 +303,21 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     
                     break;
                 case (int)QUOTE_ITEM_TYPE.PRODUCT:
-                    
+                    var wareIds = Request.Form["wareIds"];
+                    if (!string.IsNullOrEmpty(wareIds))
+                    {
+                        var wareIdArr = wareIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var wareId in wareIdArr)
+                        {
+                            var thisAvailable = Request.Form[wareId+"_available"];
+                            var hand = Request.Form[wareId + "_hand"];
+                            var use = Request.Form[wareId + "_use"];
+                            if (!string.IsNullOrEmpty(thisAvailable))
+                            {
+                                wareDic.Add(long.Parse(wareId),int.Parse(thisAvailable));
+                            }
+                        }
+                    }
                     break;
                 case (int)QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES:
                     

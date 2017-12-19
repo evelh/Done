@@ -460,6 +460,56 @@ namespace EMT.DoneNOW.BLL
             return dto;
         }
 
+        /// <summary>
+        /// 判断用户对项目的查看，编辑、删除权限
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="secLevelId"></param>
+        /// <param name="project_id"></param>
+        /// <returns></returns>
+        public static AuthDetailDto GetUserProjectAuth(long userId, long secLevelId, long project_id)
+        {
+            AuthDetailDto dto = new AuthDetailDto();
+            var project = new pro_project_dal().FindNoDeleteById(project_id);
+            if (project == null)
+            {
+                return dto;
+            }
+            // 项目当中我的，（我在团队中，我是创建人，我是主负责人）
+            // 项目中 查看/编辑/删除 权限相同，通用一个limit
+            var limitView = DicEnum.LIMIT_TYPE_VALUE.NONE962;
+            if (project.type_id == (int)DicEnum.PROJECT_TYPE.ACCOUNT_PROJECT || project.type_id == (int)DicEnum.PROJECT_TYPE.IN_PROJECT)
+            {
+                limitView = GetLimitValue(secLevelId, AuthLimitEnum.PROClientView);
+            }
+            else if (project.type_id == (int)DicEnum.PROJECT_TYPE.PROJECT_DAY)
+            {
+                limitView = GetLimitValue(secLevelId, AuthLimitEnum.PROProposalView);
+            }
+            else if (project.type_id == (int)DicEnum.PROJECT_TYPE.TEMP)
+            {
+                limitView = GetLimitValue(secLevelId, AuthLimitEnum.PROTemplatesView);
+            }
+            if (limitView == DicEnum.LIMIT_TYPE_VALUE.ALL962)
+            {
+                dto.CanDelete = true;
+                dto.CanEdit = true;
+                dto.CanView = true;
+            }
+            else if (limitView == DicEnum.LIMIT_TYPE_VALUE.MINE962)
+            {
+                string sql = $"select 1 from pro_project pp INNER JOIN crm_account acc on pp.account_id = acc.id where pp.delete_time = 0 and acc.delete_time = 0 and (exists(select 1 from pro_project_team where delete_time=0 and project_id=pp.id and resource_id={userId})or exists(select 1  from sys_resource_department where is_lead=1 and department_id=pp.department_id and resource_id={userId}) or acc.resource_id={userId}  or pp.owner_resource_id={userId}  or exists(select 1 from crm_opportunity where delete_time=0 and id=pp.opportunity_id and resource_id={userId})  or exists(select 1 from sys_workgroup_resouce x,sys_workgroup y,sys_workgroup_resouce z where x.workgroup_id=y.id and y.delete_time=0 and(FIND_IN_SET(x.resource_id, (select GROUP_CONCAT(resource_id) from pro_project_team where delete_time = 0 and project_id = pp.id)) > 0 or x.resource_id = pp.owner_resource_id) and y.id = z.workgroup_id and z.is_leader = 1 and z.resource_id = {userId})) and pp.id = {project_id}";
+                if (!string.IsNullOrEmpty(dal.FindSignleBySql<string>(sql)))
+                {
+                    dto.CanDelete = true;
+                    dto.CanEdit = true;
+                    dto.CanView = true;
+                }
+            }
+
+            return dto;
+        }
+
         #endregion
 
         #region 新的权限

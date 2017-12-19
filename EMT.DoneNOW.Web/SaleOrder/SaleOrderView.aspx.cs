@@ -71,7 +71,7 @@ namespace EMT.DoneNOW.Web.SaleOrder
                         break;
                     case "entry":
                         actType = "报价项";
-                        iframeSrc = "../QuoteItem/QuoteItemManage.aspx?isShow=1&quote_id=" + quote.id;
+                        iframeSrc = "../QuoteItem/QuoteItemManage.aspx?isShow=1&quote_id=" + quote.id+ "&isSaleOrder=1&sale_order_id="+ sale_order.id;
                         break;
                     case "purchaseOrder":
                         actType = "采购订单";

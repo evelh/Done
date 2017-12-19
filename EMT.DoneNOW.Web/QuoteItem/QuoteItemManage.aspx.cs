@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
         protected List<crm_quote_item> oneTimeList = null;         // 一次性配置项
         protected List<crm_quote_item> optionalItemList = null;    // 可选  配置项
         protected List<crm_quote_item> discountQIList = null;      // 计算出来的折扣数
-
+        protected List<d_general> costStatus = new d_general_dal().GetGeneralByTableId((int)DTO.GeneralTableEnum.CHARGE_STATUS); // 销售订单使用（显示成本状态）
         //  显示的内容
         // 1）  无选中：只在最后显示总税
         // 2)	选中第一个：按照周期分组时起作用，每个周期后显示税   最后的汇总也有税）
@@ -33,12 +33,16 @@ namespace EMT.DoneNOW.Web.QuoteItem
 
         protected Dictionary<string, object> dic = new QuoteItemBLL().GetField();  // 获取报价项相关字典项
         public string isShow = "";
+        protected bool IssaleOrder = false;    // 是否从销售订单进行操作 （两种操作） 
+        protected long? sale_order_id = null;
+        protected ctt_contract_cost_dal cccDal = new ctt_contract_cost_dal();
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+              
                 // quote_group_by
-                
+
                 groupBy.DataTextField = "show";
                 groupBy.DataValueField = "val";
                 groupBy.DataSource = dic.FirstOrDefault(_ => _.Key == "quote_group_by").Value;
@@ -46,6 +50,14 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 
 
                 isShow = Request.QueryString["isShow"];
+                IssaleOrder = !string.IsNullOrEmpty(Request.QueryString["isSaleOrder"]);
+                var sid = Request.QueryString["sale_order_id"];
+                if (!string.IsNullOrEmpty(sid))
+                {
+                    sale_order_id = long.Parse(sid);
+                }
+
+
                 var quote_id = Request.QueryString["quote_id"];
                 if (!string.IsNullOrEmpty(quote_id))
                 {

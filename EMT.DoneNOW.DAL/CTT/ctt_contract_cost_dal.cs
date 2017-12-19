@@ -26,8 +26,23 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<ctt_contract_cost>($"SELECT * FROM ctt_contract_cost where cost_code_id = 36 and  project_id = {project_id} and delete_time = 0 "+where);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public ctt_contract_cost GetSinBuQuoteItem(long quote_item_id)
+        {
+            return FindSignleBySql<ctt_contract_cost>($"SELECT * from ctt_contract_cost where delete_time = 0 and quote_item_id = {quote_item_id}");
+        }
+        /// <summary>
+        /// 根据销售订单获取相应成本状态
+        /// </summary>
+        public List<ctt_contract_cost> GetListBySaleOrderId(long sale_order_id)
+        {
+            return FindListBySql<ctt_contract_cost>($"SELECT ccc.* from ctt_contract_cost ccc inner join crm_sales_order cso on ccc.opportunity_id = cso.opportunity_id where ccc.delete_time = 0 and cso.delete_time = 0 and cso.id = {sale_order_id}");
+        }
+// 
 
-       
+
     }
 
 }

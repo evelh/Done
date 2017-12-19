@@ -1121,6 +1121,14 @@ namespace EMT.DoneNOW.BLL
                     {
                         product_id = quote_item.object_id;
                         status_id = (int)COST_STATUS.PENDING_PURCHASE;
+                        var appSet = new SysSettingBLL().GetSetById(DTO.SysSettingEnum.CTT_COST_APPROVAL_VALUE);
+                        if (appSet != null && !string.IsNullOrEmpty(appSet.setting_value))
+                        {
+                            if (((decimal)quote_item.quantity * (decimal)quote_item.unit_price) > decimal.Parse(appSet.setting_value)) // 金额超出（待审批）
+                            {
+                                status_id = (int)COST_STATUS.PENDING_APPROVAL;
+                            }
+                        }
                     }
                     else
                     {
@@ -1139,14 +1147,23 @@ namespace EMT.DoneNOW.BLL
                     {
                         subCateid = (int)BILLING_ENTITY_SUB_TYPE.PROJECT_COST;
                     }
-
+                    long? quoteItemId = null;
+                    var oldCost = cccDal.GetSinBuQuoteItem(item.Key);
+                    if (oldCost != null)
+                    {
+                        quoteItemId = null;
+                    }
+                    else
+                    {
+                        quoteItemId = item.Key;
+                    }
                     if (quote_item.type_id != (int)QUOTE_ITEM_TYPE.DISCOUNT)
                     {
                         ctt_contract_cost cost = new ctt_contract_cost()
                         {
                             id = _dal.GetNextIdCom(),
                             opportunity_id = (int)opportunity.id,
-                            quote_item_id = (int)item.Key,
+                            quote_item_id = quoteItemId,
                             cost_code_id = long.Parse(item.Value),
                             product_id = product_id,
                             name = quote_item.name,

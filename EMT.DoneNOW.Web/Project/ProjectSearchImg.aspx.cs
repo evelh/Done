@@ -211,7 +211,7 @@ namespace EMT.DoneNOW.Web.Project
                         
                         var proDays = GetDateDiffMonth((DateTime)pro.start_date, (DateTime)pro.end_date, "day"); // 项目持续的时间
                         proDays += 1;
-                        bodyInfo.Append($"<div class='Gantt_divTableRow'><div class='{proTypeClass}' style='width: {proDays* DayWidth+ (dateType=="week"?16:0)}px; left:{diffDays*DayWidth+ (dateType=="day"?diffDays:0)}px;'><div style = 'width: 0%;'></div></div></div>");
+                        bodyInfo.Append($"<div class='Gantt_divTableRow'><div class='{proTypeClass}' style='width: {proDays* DayWidth+ (dateType=="week"?0: dateType == "day"?proDays:0)}px; left:{diffDays*DayWidth+ (dateType=="day"?diffDays: dateType == "week"? (diffDays) * (1.55571): 0)}px;'><div style = 'width: 0%;'></div></div></div>");
                     }
                     bodyInfo.Append($"</div>");
                     bodyText.Text = bodyInfo.ToString();

@@ -92,7 +92,7 @@
                                 <table class="dataGridBody" cellspacing="0" style="width:100%;border-collapse:collapse;">
                                     <tbody>
                                     <tr class="dataGridHeader" style="height: 28px;">
-                                        <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+                                        <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_LABOUR)
                                             { %>
                                          <td style="width: auto;">
                                             <span>类型</span>
@@ -106,7 +106,7 @@
                                         <td align="right" style="width: auto;">
                                             <span>客户</span>
                                         </td>
-                                          <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+                                          <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_LABOUR)
                                             { %>
                                          <td style="width: auto;">
                                             <span>描述</span>
@@ -119,7 +119,7 @@
                                         <%if(list!=null&&list.Count>0) foreach (var i in list)
                                             {%>
                                     <tr class="dataGridBody">
-                                         <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+                                         <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_LABOUR)
                                              { %>
                                          <td style="width: auto;">
                                             <span><%=i.type %></span>
@@ -133,7 +133,7 @@
                                         <td align="right" style="width: auto;">
                                             <span><%=i.accountname %></span>
                                         </td>
-                                         <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+                                         <%if (type == (int)EMT.DoneNOW.DTO.QueryType.APPROVE_LABOUR)
                                             { %>
                                          <td align="right" style="width: auto;">
                                             <span><%=i.description %></span>
