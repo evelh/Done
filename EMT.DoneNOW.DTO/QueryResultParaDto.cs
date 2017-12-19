@@ -15,6 +15,7 @@ namespace EMT.DoneNOW.DTO
         public string name;     // 列显示名称 d_query_result col_comment
         public int length;      // 列长度 d_query_result col_length
         public int type;        // 列数据显示类型 d_query_result display_type_id
+        public int visible;     // 是否可见
         public AuthUrlDto url;  // 链接 link_url
     }
 }

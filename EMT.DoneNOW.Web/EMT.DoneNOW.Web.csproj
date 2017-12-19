@@ -246,8 +246,11 @@
     <Content Include="Images\todos.png" />
     <Content Include="Images\zoom-in.png" />
     <Content Include="Images\zoom-out.png" />
+    <Content Include="Inventory\AddPurchaseItem.aspx" />
+    <Content Include="Inventory\AddPurchaseOrder.aspx" />
     <Content Include="Inventory\InventoryItem.aspx" />
     <Content Include="Inventory\InventoryLocation.aspx" />
+    <Content Include="Inventory\RejectPurchase.aspx" />
     <Content Include="Inventory\TransferItem.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempEdit.aspx" />
@@ -404,6 +407,10 @@
     <Content Include="RichText\js\third-party\video-js\font\vjs.eot" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.ttf" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.woff" />
+    <Content Include="Scripts\Search\PurchaseFulfillment.js" />
+    <Content Include="Scripts\Search\PurchaseItem.js" />
+    <Content Include="Scripts\Search\PurchaseOrder.js" />
+    <Content Include="Tools\PurchaseOrderAjax.ashx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
     <Content Include="Images\at16.png" />
@@ -1215,6 +1222,20 @@
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Inventory\AddPurchaseItem.aspx.cs">
+      <DependentUpon>AddPurchaseItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\AddPurchaseItem.aspx.designer.cs">
+      <DependentUpon>AddPurchaseItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\AddPurchaseOrder.aspx.cs">
+      <DependentUpon>AddPurchaseOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\AddPurchaseOrder.aspx.designer.cs">
+      <DependentUpon>AddPurchaseOrder.aspx</DependentUpon>
+	</Compile>
     <Compile Include="Contract\NotiRuleManage.aspx.cs">
       <DependentUpon>NotiRuleManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1235,6 +1256,13 @@
     </Compile>
     <Compile Include="Inventory\InventoryLocation.aspx.designer.cs">
       <DependentUpon>InventoryLocation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\RejectPurchase.aspx.cs">
+      <DependentUpon>RejectPurchase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\RejectPurchase.aspx.designer.cs">
+      <DependentUpon>RejectPurchase.aspx</DependentUpon>
     </Compile>
     <Compile Include="Inventory\TransferItem.aspx.cs">
       <DependentUpon>TransferItem.aspx</DependentUpon>
@@ -1730,6 +1758,9 @@
     </Compile>
     <Compile Include="Common\SelectCallBack.aspx.designer.cs">
       <DependentUpon>SelectCallBack.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\PurchaseOrderAjax.ashx.cs">
+      <DependentUpon>PurchaseOrderAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="QuoteItem\QuoteItemManage.aspx.cs">
       <DependentUpon>QuoteItemManage.aspx</DependentUpon>

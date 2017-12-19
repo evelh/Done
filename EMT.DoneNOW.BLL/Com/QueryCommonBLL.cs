@@ -157,6 +157,7 @@ namespace EMT.DoneNOW.BLL
                     name = col.col_comment,
                     length = col.col_length,
                     type = col.display_type_id,
+                    visible = col.is_visible,
                     url = url
                 };
                 result.Add(para);

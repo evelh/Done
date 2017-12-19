@@ -635,15 +635,15 @@ namespace EMT.DoneNOW.BLL
             List<string> menus = new List<string>();
             string sn = "SEARCH_" + queryType.ToString().ToUpper(); // 搜索页的sn
 
-            AuthPermitDto permit = allPermitsDtoList.Find(_ => _.permit.sn.Equals(sn));
+            AuthPermitDto permit = allPermitsDtoList.Find(_ => sn.Equals(_.permit.sn));
             if (permit == null)     // 该页不需要权限
                 return menus;
 
             var list = secLevelPermitDic[levelId];
-            permit = userPermit.Find(_ => _.permit.sn.Equals(sn));    // 搜索页权限点
+            permit = userPermit.Find(_ => sn.Equals(_.permit.sn));    // 搜索页权限点
             if (permit == null)
             {
-                permit = list.availablePermitList.Find(_ => _.permit.sn.Equals(sn));
+                permit = list.availablePermitList.Find(_ => sn.Equals(_.permit.sn));
             }
             if (permit == null)     // 用户没有访问此搜索页的权限
                 return null;

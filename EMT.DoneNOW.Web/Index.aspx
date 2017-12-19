@@ -329,13 +329,13 @@
                                                     </a>
                                                 </div>
                                                 <div class="Content">
-                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVENTORY_LOCATION %>" target="PageFrame">
-                                                        <span class="Text">仓库管理</span>
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVENTORY_TRANSFER %>" target="PageFrame">
+                                                        <span class="Text">库存转移和更新</span>
                                                     </a>
                                                 </div>
                                                 <div class="Content">
-                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVENTORY_TRANSFER %>" target="PageFrame">
-                                                        <span class="Text">库存转移和更新</span>
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVENTORY_LOCATION %>" target="PageFrame">
+                                                        <span class="Text">仓库管理</span>
                                                     </a>
                                                 </div>
                                                 <div class="Content">
@@ -351,6 +351,16 @@
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_APPROVAL %>&isCheck=1" target="PageFrame">
                                                         <span class="Text">采购审批</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASING_FULFILLMENT %>&isCheck=1" target="PageFrame"> 
+                                                        <span class="Text">待采购产品管理</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_ORDER %>" target="PageFrame"> 
+                                                        <span class="Text">采购订单</span>
                                                     </a>
                                                 </div>
                                             </div>

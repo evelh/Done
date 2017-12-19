@@ -75,6 +75,7 @@ namespace EMT.DoneNOW.DTO
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
         NOTE_PUBLISH_TYPE = 146,                 // 合同/项目等备注发布类型
         TASK_LIBRARY_CATE  = 149,                 // 任务库种类
+        ITEM_DESC_DISPLAY_TYPE = 155,               // 采购项描述信息显示内容类型
     }
 
     /// <summary>
@@ -568,8 +569,15 @@ namespace EMT.DoneNOW.DTO
             TASK_HISTORY = 1560,                    // 任务操作历史
             INVENTORY_TRANSFER = 1562,              // 库存转移查询
             PURCHASE_APPROVAL = 1563,               // 采购审批查询
+            PURCHASING_FULFILLMENT = 1564,          // 库存管理-待采购产品查询
+            RESERVED_PICKED = 1565,                 // 库存管理-预留和拣货详单
             CONTRACT_NOTIFY_RULE=1566,          // 合同通知规则
+            PURCHASE_ORDER = 1567,                  // 采购订单查询
+            PURCHASE_ITEM = 1568,                   // 采购订单采购项
             SERNUM_CALLBACK = 1569,                 // 库存管理-产品序列号查找带回
+
+
+          
 
 
             //RESOURCE_CALLBACK,                      // 
@@ -685,14 +693,19 @@ namespace EMT.DoneNOW.DTO
             ATTACHMENT = 1389,                          // 附件
             INVENTORY_LOCATION = 1390,                  // 库存仓库
             INVENTORY_ITEM = 1391,                      // 库存产品
+            INVENTORY_ORDER = 1392,                     // 采购订单
             PROJECT_TASK_PREDECESSOR = 1393,            // 任务的前驱任务
             INVENTORY_ITEM_SN = 1394,                   // 库存产品串号
             INVENTORY_ITEM_TRANSFER = 1395,             // 库存转移
             INVENTORY_ITEM_TRANSFER_SN = 1396,          // 库存转移序号
             WAREHOUSE_RESERVE=1397,                     // 库存预留
             PROJECT_PHASE_WORK_HOURS = 1398,            // 项目阶段预估工时
+            PURCHASE_ORDER_ITEM = 1399,                 // 采购项
             CTT_CONTRACT_COST_PRODUCT = 1400,           // 成本关联产品
             CTT_CONTRACT_COST_PRODUCT_SN = 1401,        // 成本关联产品的串号
+
+
+
         }
 
         /// <summary>
@@ -722,6 +735,18 @@ namespace EMT.DoneNOW.DTO
             NUMBER_EQUAL = 816,     // 数值(做等于判断)
             TIMESPAN = 817,         // 日期-时间戳
             UN_EQUAL = 818,         // 不等于
+        }
+
+        /// <summary>
+        /// 地址类型-71
+        /// </summary>
+        public enum LOCATION_CATE
+        {
+            REGISTER_ADDR = 821,    // 注册地址
+            RECIEVE_ADDR = 822,     // 收货地址
+            INVOICE_ADDR = 823,     // 发票地址
+            WORK_ADDR = 824,        // 办公地址
+            BILLING = 825,          // billing
         }
 
         /// <summary>
@@ -1098,6 +1123,27 @@ namespace EMT.DoneNOW.DTO
             USE_UDF_ROLE_RATE = 2169,       // 使用自定义费率
             BY_TIMES = 2170,                // 按次收费
         }
+
+        /// <summary>
+        /// 采购订单地址类型-154
+        /// </summary>
+        public enum INVENTORY_ORDER_SHIP_ADDRESS_TYPE
+        {
+            WORK_ADDRESS = 2173,            // 办公地点
+            OTHER_ADDRESS = 2174,           // 其他地址
+            SELECTED_COMPANY = 2175,        // 指定客户
+        }
+
+        /// <summary>
+        /// 采购项描述信息显示类别
+        /// </summary>
+        public enum INVENTORY_ORDER_ITEM_DISPLAY_TYPE
+        {
+            PRODUCT_NOTE = 2178,        // 产品备注
+            QUOTE_NOTE = 2179,          // 报价项备注
+            CHARGE_NOTE = 2180,         // 成本备注
+        }
+
         /// <summary>
         /// 系统支持邮箱-156
         /// </summary>
@@ -1221,8 +1267,10 @@ namespace EMT.DoneNOW.DTO
         TASK_HISTORY = 139,             // 任务操作历史
         InventoryTransfer = 141,        // 库存转移
         PurchaseApproval = 142,         // 采购审批查询
+        PurchaseFulfillment = 143,      // 待采购产品查询
         CONTRACT_NOTIFY_RULE=145,          // 合同通知规则
-
+        PurchaseOrder = 146,            // 采购订单查询
+        PurchaseItem = 147,             // 采购订单采购项
 
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批

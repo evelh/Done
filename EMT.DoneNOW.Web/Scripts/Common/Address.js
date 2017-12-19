@@ -41,7 +41,7 @@ function InitArea() {
     document.getElementById(s[1]).onchange = new Function("change(1)");
     requestData("Tools/AddressAjax.ashx?act=district", "", function (data) {
         if (data.code !== 0) {
-            show_alert(data.msg);
+            LayerMsg(data.msg);
         } else {
             for (i = 0; i < data.data.length; i++) {
                 var option = $("<option>").val(data.data[i].val).text(data.data[i].show);
