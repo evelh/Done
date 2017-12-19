@@ -248,6 +248,7 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PURCHASE_ORDER:
                 case (int)DicEnum.QUERY_CATE.PURCHASE_ITEM:
                     addBtn = "新增";
+                    break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_NOTIFY_RULE:
                     addBtn = "新增通知规则";
                     break;
