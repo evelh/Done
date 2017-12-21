@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte is_active { get; set; }
         [DataMember]
-        public Int32? resource_id { get; set; }
+        public Int64? resource_id { get; set; }
 
 
     }

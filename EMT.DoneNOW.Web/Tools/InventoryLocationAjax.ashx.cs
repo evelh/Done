@@ -32,6 +32,9 @@ namespace EMT.DoneNOW.Web
                 case "setInactive":
                     SetInactive(context, Convert.ToInt64(inven_id));
                     break;
+                case "GetLocationList":
+                    GetLocationList(context);
+                    break;
                 default:
                     break;
 
@@ -61,6 +64,24 @@ namespace EMT.DoneNOW.Web
         private void SetInactive(HttpContext context, long id)
         {
             context.Response.Write(new Tools.Serialize().SerializeJson(bll.SetLocationIsActive(id, false, LoginUserId)));
+        }
+
+        private void GetLocationList(HttpContext context)
+        {
+            var wareList = bll.GetLocationListUnResource();
+            if (wareList != null && wareList.Count > 0)
+            {
+                var wareID = context.Request.QueryString["ware_id"];
+                if (!string.IsNullOrEmpty(wareID))
+                {
+                    var thisWare = wareList.FirstOrDefault(_ => _.id.ToString() == wareID);
+                    if (thisWare != null)
+                    {
+                        wareList.Remove(thisWare);
+                    }
+                }
+                context.Response.Write(new Tools.Serialize().SerializeJson(wareList));
+            }
         }
     }
 }

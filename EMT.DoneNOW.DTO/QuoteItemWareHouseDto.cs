@@ -43,5 +43,33 @@ namespace EMT.DoneNOW.DTO
         /// 可用数
         /// </summary>
         public int available;
+        /// <summary>
+        /// sn相关信息
+        /// </summary>
+        public string sn;
+        /// <summary>
+        /// 供应商编号
+        /// </summary>
+        public string vendorNo;
+        /// <summary>
+        /// 成本产品状态
+        /// </summary>
+        public string statusName;
+        /// <summary>
+        /// 成本产品状态Id
+        /// </summary>
+        public long statusId;
+        /// <summary>
+        /// 数量
+        /// </summary>
+        public long quantity;
+        /// <summary>
+        /// 成本产品Id
+        /// </summary>
+        public long cost_pro_id;
+        /// <summary>
+        /// 配送描述
+        /// </summary>
+        public string ShiDetail;
     }
 }

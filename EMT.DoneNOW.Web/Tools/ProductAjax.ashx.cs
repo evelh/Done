@@ -83,6 +83,16 @@ namespace EMT.DoneNOW.Web
                     var snIds = context.Request.QueryString["snIds"];
                     GetSnListByIds(context,snIds);
                     break;
+                case "CheckProductStock":  // 检查产品的库存信息。是否需要显示显示拣货，或者其余信息
+                      break;
+                case "GetCostPickedInfo":   // 获取该产品的已拣货的相关信息
+                    var pickCostId = context.Request.QueryString["cost_id"];
+                    GetCostPicked(context,long.Parse(pickCostId));
+                    break;
+                case "GetWareSnByCostWare":
+                    var gwscostProId = context.Request.QueryString["cost_pro_id"];
+                    GetWareSnByCostWare(context,long.Parse(gwscostProId));
+                    break;
                 case "PickProduct":
                     var ppId = context.Request.QueryString["product_id"];
                     var ppWareId = context.Request.QueryString["ware_id"];
@@ -91,6 +101,36 @@ namespace EMT.DoneNOW.Web
                     var tranType = context.Request.QueryString["tranType"];
                     var ppCostId = context.Request.QueryString["cost_id"];
                     PickProduct(context,long.Parse(ppId),long.Parse(ppWareId),int.Parse(pickNum),ppSerNumIds,tranType,long.Parse(ppCostId));
+                    break;
+                case "UnPickProduct":
+                    var uppPid = context.Request.QueryString["product_id"];
+                    var uppWareId = context.Request.QueryString["ware_id"];
+                    var uppPickNum = context.Request.QueryString["unPickNum"];
+                    var uppSerSnIds = context.Request.QueryString["SerSnIds"];
+                    var uppCostId = context.Request.QueryString["costId"];
+                    var uppCostProId = context.Request.QueryString["costProId"];
+                    UnPickProduct(context,long.Parse(uppPid),long.Parse(uppWareId),int.Parse(uppPickNum),uppSerSnIds,long.Parse(uppCostId),long.Parse(uppCostProId));
+                    break;
+                case "TransferPro":
+                    var tpPid = context.Request.QueryString["product_id"];
+                    var tpWareId = context.Request.QueryString["ware_id"];
+                    var tpPickNum = context.Request.QueryString["tranNum"];
+                    var tpSerSnIds = context.Request.QueryString["SerSnIds"];
+                    var tpCostId = context.Request.QueryString["costId"];
+                    var tpAccount = context.Request.QueryString["account_id"];
+                    var tpLocation = context.Request.QueryString["location_id"];
+                    var tpTranType = context.Request.QueryString["tranType"];
+                    var tpCostProId = context.Request.QueryString["costProId"];
+                    TransferPro(context,long.Parse(tpPid),long.Parse(tpWareId),int.Parse(tpPickNum),tpSerSnIds,tpTranType,long.Parse(tpCostId),long.Parse(tpAccount),long.Parse(tpLocation), long.Parse(tpCostProId));
+                    break;
+                case "ShipItem":
+                    ShipItem(context);
+                    break;
+                case "UnShipItem":
+                    UnShipItem(context);
+                    break;
+                case "DoneCostSale":
+                    DoneCostSale(context);
                     break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -303,6 +343,35 @@ namespace EMT.DoneNOW.Web
             }
         }
         /// <summary>
+        /// 获取成本已拣货的相关信息
+        /// </summary>
+        public void GetCostPicked(HttpContext context,long cost_id)
+        {
+            var pickedList = new ivt_product_dal().GetCostWareNoNeed(cost_id);
+            if(pickedList!=null&& pickedList.Count > 0)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(pickedList));
+            }
+            
+        }
+        /// <summary>
+        /// 根据成本Id 和仓库Id 获取相应的 仓库SN 信息
+        /// </summary>
+        public void GetWareSnByCostWare(HttpContext context,long cost_pro_id)
+        {
+            // cost_pro_id
+            var thisCostPro = new ctt_contract_cost_product_dal().FindNoDeleteById(cost_pro_id);
+            if (thisCostPro != null)
+            {
+                var thisSnlist = new ivt_warehouse_product_sn_dal().GetListByCostProId(thisCostPro.id);
+                if(thisSnlist!=null&& thisSnlist.Count > 0)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(thisSnlist));
+                }
+            }
+        }
+
+        /// <summary>
         /// 根据Id 回去相应的sn
         /// </summary>
         public void GetSnListByIds(HttpContext context, string ids)
@@ -334,15 +403,133 @@ namespace EMT.DoneNOW.Web
             ccBll.ChangCostStatus(cost_id,LoginUserId);
             // 是否完成销售订单（返回页面进行处理）
             var isDoneOrder = false;
+            
             new SaleOrderBLL().ChangeSaleOrderStatus(cost_id,LoginUserId,out isDoneOrder);
             if (tranType == "toMe")
             {
-
+                result = ccBll.TransToMe(product_id,pickNum,ware_id,serNumIds,LoginUserId);
             }
             else if (tranType == "toItem")
             {
-
+                result = ccBll.TranToItem(product_id, pickNum, ware_id, serNumIds,cost_id, LoginUserId);
             }
+            context.Response.Write(new Tools.Serialize().SerializeJson(new { result  = result ,reason= isDoneOrder }));
+        }
+
+        /// <summary>
+        /// 取消拣货
+        /// </summary>
+        public void UnPickProduct(HttpContext context,long product_id,long ware_id,int unPickNum,string SerSnIds,long cost_id,long costProId)
+        {
+            var result = new ContractCostBLL().UnPick(cost_id,product_id,ware_id,unPickNum,SerSnIds,LoginUserId, costProId);
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 库存转移
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="product_id"></param>
+        /// <param name="ware_id"></param>
+        /// <param name="transNum"></param>
+        /// <param name="serSnIds"></param>
+        /// <param name="transType"></param>
+        /// <param name="cost_id"></param>
+        /// <param name="account_id"></param>
+        /// <param name="toLocaId"></param>
+        public void TransferPro(HttpContext context,long product_id,long ware_id,int transNum,string serSnIds,string transType,long cost_id,long account_id,long toLocaId,long costProId)
+        {
+            var result = false;
+
+            var ccBll = new ContractCostBLL();
+            if (transType == "ToAccount")
+            {
+                result = ccBll.TransferToAccount(cost_id, product_id,ware_id,account_id, transNum, serSnIds,LoginUserId, costProId);
+            }
+            else if (transType == "ToMe")
+            {
+                // todo 库存数量未完全转移 未转移完成  
+                result = ccBll.TransToMe(product_id, transNum, ware_id, serSnIds, LoginUserId);
+            }
+            else if (transType == "ToLocation")
+            {
+                result = ccBll.TransToLocation(product_id, transNum, ware_id, serSnIds,toLocaId, LoginUserId, cost_id, costProId);
+            }
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 配送产品
+        /// </summary>
+        private void ShipItem(HttpContext context)
+        {
+            var result = true;
+            try
+            {
+                
+                #region  获取相关参数
+                var costId = long.Parse(context.Request.QueryString["cost_id"]);
+                var wareId = long.Parse(context.Request.QueryString["wareId"]);
+                var productId = long.Parse(context.Request.QueryString["productId"]);
+                var ShipNum = int.Parse(context.Request.QueryString["ShipNum"]);
+                var shipSerIds = context.Request.QueryString["shipSerIds"];
+                var ShipDate = DateTime.Parse(context.Request.QueryString["ShipDate"]);
+                int? shipping_type_id = null;
+                if (!string.IsNullOrEmpty(context.Request.QueryString["shipping_type_id"]))
+                {
+                    shipping_type_id = int.Parse(context.Request.QueryString["shipping_type_id"]);
+                }
+                long? ShipCostCodeId = null;
+                if (!string.IsNullOrEmpty(context.Request.QueryString["ShipCostCodeId"]))
+                {
+                    ShipCostCodeId = long.Parse(context.Request.QueryString["ShipCostCodeId"]);
+                }
+                var shipping_reference_number = context.Request.QueryString["shipping_reference_number"];
+                decimal? BillMoney = null;
+                if (!string.IsNullOrEmpty(context.Request.QueryString["BillMoney"]))
+                {
+                    BillMoney = decimal.Parse(context.Request.QueryString["BillMoney"]);
+                }
+                decimal? BillCost = null;
+                if (!string.IsNullOrEmpty(context.Request.QueryString["BillCost"]))
+                {
+                    BillCost = decimal.Parse(context.Request.QueryString["BillCost"]);
+                }
+                var costProId = long.Parse(context.Request.QueryString["costProId"]);
+                #endregion
+
+                 result = new ContractCostBLL().ShipItem(costId, productId, wareId, ShipNum, shipSerIds, ShipDate, shipping_type_id, shipping_reference_number,LoginUserId, costProId, ShipCostCodeId, BillMoney, BillCost);
+               
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 取消配送
+        /// </summary>
+        private void UnShipItem(HttpContext context)
+        {
+            var thisCostId = context.Request.QueryString["costProId"];
+            if (!string.IsNullOrEmpty(thisCostId))
+            {
+                var isDelete = true; // 配送成本是否删除
+                var result = new ContractCostBLL().UnShipItem(long.Parse(thisCostId),LoginUserId,out isDelete);
+               //  isDelete = false; 代表有运费成本 并且已经审核无法删除
+                context.Response.Write(new Tools.Serialize().SerializeJson(new { result=result,reason= isDelete }));
+            }
+            
+        }
+
+        private void DoneCostSale(HttpContext context)
+        {
+            var result = true;
+            var thisCostId = context.Request.QueryString["costId"];
+            if (!string.IsNullOrEmpty(thisCostId))
+            {
+                result = new SaleOrderBLL().DoneSaleByCost(long.Parse(thisCostId),LoginUserId);
+            }
+            context.Response.Write(result);
         }
     }
 }

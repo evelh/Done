@@ -165,8 +165,8 @@ namespace EMT.DoneNOW.BLL
                         }
                     }
                 }
-
-                if(oldOrderStatus!= thisOrder.status_id)
+                // 如果销售订单下的产品部分已配送，且销售订单状态为“进行中”/“新建”，则将其状态置为“部分发货”
+                if (oldOrderStatus != thisOrder.status_id)
                 {
                     var oldOrder = _dal.FindNoDeleteById(thisOrder.id);
 
@@ -174,10 +174,33 @@ namespace EMT.DoneNOW.BLL
                     OperLogBLL.OperLogUpdate<crm_sales_order>(thisOrder, oldOrder, thisOrder.id, user_id, OPER_LOG_OBJ_CATE.SALE_ORDER, "修改销售订单状态");
 
                 }
-
+                return true;
 
             }
             return false;
+        }
+        /// <summary>
+        /// 通过成本完成销售订单
+        /// </summary>
+        public bool DoneSaleByCost(long costId,long user_id)
+        {
+            var thisSale = _dal.GetOrderByCostId(costId);
+            if (thisSale == null)
+            {
+                return false;
+            }
+            if (thisSale.status_id != (int)DicEnum.SALES_ORDER_STATUS.FULFILLED)
+            {
+                var oldSale = _dal.FindNoDeleteById(thisSale.id);
+                thisSale.status_id = (int)DicEnum.SALES_ORDER_STATUS.FULFILLED;
+                thisSale.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                thisSale.update_user_id = user_id;
+                _dal.Update(thisSale);
+                OperLogBLL.OperLogUpdate<crm_sales_order>(thisSale, oldSale, thisSale.id, user_id, OPER_LOG_OBJ_CATE.SALE_ORDER, "修改销售订单状态");
+            }
+
+
+            return true;
         }
 
     }
