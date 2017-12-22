@@ -107,10 +107,8 @@ function RestoreInitiall() {
     });
     window.location.reload();
 }
-// 右键菜单相关事件
-function RightClickFunc() {
 
-
-
-    ShowContextMenu();
+// 修改费用信息
+function ChangePrice() {
+    OpenWindow("../Contract/AdjustEntryPrice.aspx?id=" + entityid, windowObj.workEntry + windowType.edit);
 }

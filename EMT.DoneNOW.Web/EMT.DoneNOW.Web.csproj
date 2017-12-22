@@ -187,6 +187,8 @@
     <Content Include="Contract\AddDefaultCharge.aspx" />
     <Content Include="Contract\AddRetainerPurchase.aspx" />
     <Content Include="Contract\AddService.aspx" />
+    <Content Include="Contract\AdjustEntryPrice.aspx" />
+    <Content Include="Contract\AdjustExpensePrice.aspx" />
     <Content Include="Contract\AdjustExtendedPrice.aspx" />
     <Content Include="Contract\AdjustService.aspx" />
     <Content Include="Contract\ApproveAndPost.aspx" />
@@ -407,6 +409,7 @@
     <Content Include="RichText\js\third-party\video-js\font\vjs.eot" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.ttf" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.woff" />
+    <Content Include="Scripts\Search\contract_project.js" />
     <Content Include="Scripts\Search\PurchaseFulfillment.js" />
     <Content Include="Scripts\Search\PurchaseItem.js" />
     <Content Include="Scripts\Search\PurchaseOrder.js" />
@@ -1089,6 +1092,20 @@
     <Compile Include="Contract\AddService.aspx.designer.cs">
       <DependentUpon>AddService.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contract\AdjustEntryPrice.aspx.cs">
+      <DependentUpon>AdjustEntryPrice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AdjustEntryPrice.aspx.designer.cs">
+      <DependentUpon>AdjustEntryPrice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\AdjustExpensePrice.aspx.cs">
+      <DependentUpon>AdjustExpensePrice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AdjustExpensePrice.aspx.designer.cs">
+      <DependentUpon>AdjustExpensePrice.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contract\AdjustExtendedPrice.aspx.cs">
       <DependentUpon>AdjustExtendedPrice.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1235,7 +1252,7 @@
     </Compile>
     <Compile Include="Inventory\AddPurchaseOrder.aspx.designer.cs">
       <DependentUpon>AddPurchaseOrder.aspx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Contract\NotiRuleManage.aspx.cs">
       <DependentUpon>NotiRuleManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

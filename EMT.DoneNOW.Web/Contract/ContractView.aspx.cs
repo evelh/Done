@@ -86,9 +86,14 @@ namespace EMT.DoneNOW.Web.Contract
                         // 通知发送规则 - 合同名称（客户名称）； contract_notify_rule
                         ShowTitle.Text = "通知发送规则-" + contract.name + (conAccount == null ? "" : $"({conAccount.name})");
                         break;
+                    case "project":
+                        viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_PROJECT + "&type=" + (int)QueryType.CONTRACT_PROJECT + "&con1175=" + contract.id;
+                        ShowTitle.Text = "合同项目-" + contract.name + (conAccount == null ? "" : $"({conAccount.name})");
+                        break;
                     default:
                         ShowTitle.Text = "摘要-" + contract.name;
                         viewContractIframe.Src = "ContractSummary.aspx?id=" + contract.id;
+
                         break;
                 }
             }

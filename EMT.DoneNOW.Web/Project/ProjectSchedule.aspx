@@ -560,7 +560,7 @@
                                                          <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_MODIFY"))
                                                              { %>
                                                         <div class="Button1" id="ForwardModifyButton" tabindex="0" onclick="ModifyManyTask()">
-                                                            <span class="Text">前进/修改</span>
+                                                            <span class="Text">转发/修改</span>
                                                         </div><%} %>
                                                         <%--  <div class="Button1" id="AddToMyWorkListButton" tabindex="0">
                                                                 <span class="Text">添加到我的工作列表中</span>
@@ -1961,7 +1961,7 @@
                                  <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_MODIFY"))
                                       { %>
                                 <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="ModifySingTask()">
-                                    <span class="Text">前进/修改</span>
+                                    <span class="Text">转发/修改</span>
                                 </div><%} %>
                                    <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_ADD_WORK_LIST"))
                                       { %>

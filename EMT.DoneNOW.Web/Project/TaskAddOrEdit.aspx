@@ -313,6 +313,23 @@
                 .layui-layer-btn {
                     font-size:10pt;
                 }
+                   #BackgroundOverLay {
+            width: 100%;
+            height: 100%;
+            background: black;
+            opacity: 0.6;
+            z-index: 25;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+                     .Dialog.Large {
+            position: fixed;
+            background-color: #ffffff;
+            border: solid 4px #b9b9b9;
+            display: none;
+        }
     </style>
 </head>
 <body class="Linen AutotaskBlueTheme">
@@ -1743,7 +1760,7 @@
             </div>
         </div>
 
-        <div class="Dialog Large" style="margin-left: -442px; margin-top: -340px; z-index: 100; height: 650px;" id="Nav2">
+        <div class="Dialog Large" style="margin-left: 100px; margin-top: 100px; z-index: 100; height: 650px;" id="Nav2">
             <div>
                 <div class="DialogContentContainer">
                     <div class="CancelDialogButton"></div>
@@ -1924,7 +1941,7 @@
         </div>
         <!--黑色幕布-->
         <div id="BackgroundOverLay"></div>
-        <div class="Dialog Large" style="margin-left: -442px; margin-top: -340px; z-index: 100; height: 650px; display: none;" id="CompletionReasonDialog">
+        <div class="Dialog Large" style="margin-left: 100px; margin-top: 100px; z-index: 100; height: 650px; display: none;" id="CompletionReasonDialog">
             <div>
                 <div class="DialogContentContainer">
                     <div class="CancelDialogButton" id="CloseStatusReson"></div>
@@ -1950,7 +1967,7 @@
                             </div>
                         </div>
                         <div class="ButtonContainer">
-                            <a class="Button ButtonIcon Save NormalState" id="SaveAndCloseCompleteButton" tabindex="0"><span class="Icon"></span><span class="Text">
+                            <a class="Button ButtonIcon Save NormalState" id="SaveAndCloseCompleteButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">
                                 <asp:Button ID="save_close2" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="save_close2_Click" /></span></a>
                         </div>
                     </div>
@@ -2241,7 +2258,7 @@
         // 判断主负责人是否在该部门中  todo
         var res_id = $("#owner_resource_idHidden").val();
         var dId = $(this).val();
-        if (res_id != "" && dId != "0") {
+        if (res_id != "" && dId != "0" && dId!="") {
             $.ajax({
                 type: "GET",
                 url: "../Tools/DepartmentAjax.ashx?act=IsHasRes&department_id=" + dId + "&resource_id=" + res_id,
@@ -3143,7 +3160,7 @@
 
 
 
-        if (status_id == '<%=EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
+        if (status_id == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
             // 系统设置
             <%var thisSet = new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.PRO_TASK_DONE_REASON);
     if (thisSet != null && thisSet.setting_value == "1")

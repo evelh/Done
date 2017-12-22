@@ -141,6 +141,18 @@ namespace EMT.DoneNOW.Web.Project
                         thisAccount = new crm_account_dal().FindNoDeleteById(thisProjetc.account_id);
                     }
                 }
+                // 项目关联合同，并且合同中设置-工时录入需要输入开始结束时间
+                if (thisProjetc != null && thisProjetc.contract_id != null)
+                {
+                    var thisCttContract = new ctt_contract_dal().FindNoDeleteById((long)thisProjetc.contract_id);
+                    if (thisCttContract != null)
+                    {
+                        if (thisCttContract.timeentry_need_begin_end == 1)
+                        {
+                            noTime = false;
+                        }
+                    }
+                }
 
 
             }

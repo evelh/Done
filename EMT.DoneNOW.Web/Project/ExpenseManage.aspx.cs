@@ -42,6 +42,11 @@ namespace EMT.DoneNOW.Web.Project
                             Response.Write("<script>alert('审批提交的费用不可以更改！')window.close();</script>");
                             Response.End();
                         }
+                        if(!new TaskBLL().CanEditExpense(thisExpense.id))
+                        {
+                            Response.Write("<script>alert('相关报表状态已经更改，不可以进行编辑！')window.close();</script>");
+                            Response.End();
+                        }
 
                         isAdd = false;
 

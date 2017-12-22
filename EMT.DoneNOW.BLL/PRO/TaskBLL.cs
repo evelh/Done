@@ -2412,6 +2412,12 @@ namespace EMT.DoneNOW.BLL
                 //newRecord.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 //new sdk_work_record_dal().Insert(newRecord);
                 //OperLogBLL.OperLogAdd<sdk_work_record>(newRecord, newRecord.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_RECORD, "新增工作报表");
+                // 根据合同的 bill_post_type_id 判断是否立刻审批提交  PostWorkEntry
+                ctt_contract thisContract = null;
+                if (para.workEntry.contract_id != null)
+                {
+                    thisContract = new ctt_contract_dal().FindNoDeleteById((long)para.workEntry.contract_id);
+                }
                 var thisBatchId = _dal.GetEntryBat();
                 var newEntry = para.workEntry;
                 newEntry.id = _dal.GetNextIdCom();
@@ -2425,6 +2431,10 @@ namespace EMT.DoneNOW.BLL
                 {
                     new sdk_work_entry_dal().Insert(newEntry);
                     OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
+                    if(thisContract!=null&& thisContract.bill_post_type_id != null)
+                    {
+                        new ApproveAndPostBLL().PostWorkEntry(newEntry.id,Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")),user_id,"A");
+                    }
                 }
 
 
@@ -2445,6 +2455,10 @@ namespace EMT.DoneNOW.BLL
                         newEntry.hours_billed = thisEnt.workHours;
                         new sdk_work_entry_dal().Insert(newEntry);
                         OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
+                        if (thisContract != null && thisContract.bill_post_type_id != null)
+                        {
+                            new ApproveAndPostBLL().PostWorkEntry(newEntry.id, Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")), user_id, "A");
+                        }
                     }
                 }
                 #endregion
@@ -2612,6 +2626,13 @@ namespace EMT.DoneNOW.BLL
                 //OperLogBLL.OperLogUpdate<sdk_work_entry>(para.workEntry, oldEmtry, oldEmtry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "工时修改");
                 //swrDal.Update(para.wordRecord);
                 // sweDal.Update(para.workEntry);
+
+                ctt_contract thisContract = null;
+                if (para.workEntry.contract_id != null)
+                {
+                    thisContract = new ctt_contract_dal().FindNoDeleteById((long)para.workEntry.contract_id);
+                }
+
                 var newEntry = para.workEntry;
                 var thisBatchId = para.workEntry.batch_id;
                 var oldBatchList = sweDal.GetBatchList(thisBatchId);
@@ -2646,6 +2667,10 @@ namespace EMT.DoneNOW.BLL
                                     }
                                     sweDal.Update(newEntry);
                                     OperLogBLL.OperLogUpdate<sdk_work_entry>(newEntry, thisEntry, thisEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "工时修改");
+                                    if (thisContract != null && thisContract.bill_post_type_id != null&& newEntry.approve_and_post_date==null&& newEntry.approve_and_post_user_id==null)
+                                    {
+                                        new ApproveAndPostBLL().PostWorkEntry(newEntry.id, Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")), user_id, "A");
+                                    }
                                 }
                             }
                         }
@@ -2667,6 +2692,10 @@ namespace EMT.DoneNOW.BLL
                                 newEntry.hours_billed = thisEnt.workHours;
                                 new sdk_work_entry_dal().Insert(newEntry);
                                 OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
+                                if (thisContract != null && thisContract.bill_post_type_id != null )
+                                {
+                                    new ApproveAndPostBLL().PostWorkEntry(newEntry.id, Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")), user_id, "A");
+                                }
                             }
                         }
                     }
@@ -3412,6 +3441,27 @@ namespace EMT.DoneNOW.BLL
             }
         }
         /// <summary>
+        /// 是否可以编辑费用
+        /// </summary>
+        public bool CanEditExpense(long eid)
+        {
+            var seDal = new sdk_expense_dal();
+            var serDal = new sdk_expense_report_dal();
+            var thisExp = seDal.FindNoDeleteById(eid);
+            if (thisExp != null)
+            {
+                if(thisExp.approve_and_post_date==null&& thisExp.approve_and_post_user_id == null)
+                {
+                    var thisReport = serDal.FindNoDeleteById(thisExp.expense_report_id);
+                    if (thisReport != null&& (thisReport.status_id==(int)DicEnum.EXPENSE_REPORT_STATUS.HAVE_IN_HAND|| thisReport.status_id == (int)DicEnum.EXPENSE_REPORT_STATUS.REJECTED))
+                    {
+                        return true;
+                    }
+                }
+            }
+             return false;
+        }
+        /// <summary>
         /// 删除费用
         /// </summary>
         public bool DeleteExpense(long eId, long user_id, out string failReason)
@@ -3423,17 +3473,26 @@ namespace EMT.DoneNOW.BLL
                 var thisExp = seDal.FindNoDeleteById(eId);
                 if (thisExp != null)
                 {
-                    if (thisExp.approve_and_post_date == null && thisExp.approve_and_post_user_id == null)
+                    if (CanEditExpense(eId))
                     {
-                        seDal.SoftDelete(thisExp, user_id);
-                        OperLogBLL.OperLogDelete<sdk_expense>(thisExp, thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "删除费用");
-                        return true;
+                        if (thisExp.approve_and_post_date == null && thisExp.approve_and_post_user_id == null)
+                        {
+                            seDal.SoftDelete(thisExp, user_id);
+                            OperLogBLL.OperLogDelete<sdk_expense>(thisExp, thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "删除费用");
+                            return true;
+                        }
+                        else
+                        {
+                            failReason = "不能删除已经审批提交的费用";
+                            return false;
+                        }
                     }
                     else
                     {
-                        failReason = "不能删除已经审批提交的费用";
+                        failReason = "费用已经审批或者相关报表状态不可以删除";
                         return false;
                     }
+                   
                 }
                 else
                 {

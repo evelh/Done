@@ -107,3 +107,7 @@ function RestoreInitiall() {
     window.location.reload();
 
 }
+// 修改费用信息
+function ChangePrice() {
+    OpenWindow("../Contract/AdjustExpensePrice.aspx?id=" + entityid, windowObj.expense + windowType.edit);
+}

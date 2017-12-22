@@ -147,7 +147,7 @@ namespace EMT.DoneNOW.Web.Project
 
                             }
 
-                            department_id.SelectedValue = thisTask.department_id == null ? "0" : ((int)thisTask.department_id).ToString();
+                            department_id.SelectedValue = thisTask.department_id == null ? "" : ((int)thisTask.department_id).ToString();
                         }
 
                         //  判断是阶段，查询出相关项目的关联合同的里程碑  和自己的里程碑
@@ -215,7 +215,7 @@ namespace EMT.DoneNOW.Web.Project
             department_id.DataValueField = "id";
             department_id.DataSource = dic.FirstOrDefault(_ => _.Key == "department").Value;
             department_id.DataBind();
-            department_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+            department_id.Items.Insert(0, new ListItem() { Value = "", Text = "   ", Selected = true });
 
             template_id.DataTextField = "name";
             template_id.DataValueField = "id";

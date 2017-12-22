@@ -575,7 +575,7 @@ namespace EMT.DoneNOW.DTO
             PURCHASE_ORDER = 1567,                  // 采购订单查询
             PURCHASE_ITEM = 1568,                   // 采购订单采购项
             SERNUM_CALLBACK = 1569,                 // 库存管理-产品序列号查找带回
-
+            CONTRACT_PROJECT=1570,                  // 合同查看 - 项目
 
           
 
@@ -1047,7 +1047,9 @@ namespace EMT.DoneNOW.DTO
             FIXWORK = 1901,                     // 固定工作
             FIXDURATION = 1902,                 // 固定时间
         }
-
+        /// <summary>
+        /// 费用报表状态 - 144
+        /// </summary>
         public enum EXPENSE_REPORT_STATUS
         {
             HAVE_IN_HAND=2101,            // 进行中
@@ -1271,7 +1273,7 @@ namespace EMT.DoneNOW.DTO
         CONTRACT_NOTIFY_RULE=145,          // 合同通知规则
         PurchaseOrder = 146,            // 采购订单查询
         PurchaseItem = 147,             // 采购订单采购项
-
+        CONTRACT_PROJECT=149,           // 合同查看 - 项目        
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
         REVOKE_EXPENSE,                //撤销费用审批               

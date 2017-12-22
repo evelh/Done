@@ -253,6 +253,10 @@ namespace EMT.DoneNOW.Web
                         var thisDate = context.Request.QueryString["date"];
                         CheckDate(context,long.Parse(sdPId),thisDate);
                         break;
+                    case "CheckExpenEdit":
+                        var ceId = context.Request.QueryString["expense_id"];
+                        CheckExpenEdit(context,long.Parse(ceId));
+                        break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                         break;
@@ -1482,5 +1486,14 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(isInHo);
             }
         }
+        /// <summary>
+        /// 检查费用是否可以编辑
+        /// </summary>
+        public void CheckExpenEdit(HttpContext context,long eid)
+        {
+            var result = new TaskBLL().CanEditExpense(eid);
+            context.Response.Write(result);
+        }
+        
     }
 }
