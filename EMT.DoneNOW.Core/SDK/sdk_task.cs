@@ -64,7 +64,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? cost_code_id { get; set; }
         [DataMember]
-        public Int32? department_id { get; set; }
+        public Int64? department_id { get; set; }
         [DataMember]
         public Int64? parent_id { get; set; }
         [DataMember]
@@ -92,13 +92,13 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public DateTime? last_activity_date { get; set; }
         [DataMember]
-        public Int32? contact_id { get; set; }
+        public Int64? contact_id { get; set; }
         [DataMember]
         public Int64? recurring_ticket_id { get; set; }
         [DataMember]
         public DateTime? first_activity_date { get; set; }
         [DataMember]
-        public Int32? sla_id { get; set; }
+        public Int64? sla_id { get; set; }
         [DataMember]
         public UInt64? has_met_service_level_agreement { get; set; }
         [DataMember]
@@ -154,7 +154,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32? automatic_leveling_end_date_offset_days { get; set; }
         [DataMember]
-        public Int64? template_id { get; set; }
+        public Int32? template_id { get; set; }
         [DataMember]
         public Decimal projected_variance { get; set; }
         [DataMember]
@@ -183,6 +183,8 @@ namespace EMT.DoneNOW.Core
         public Int64? entrydate { get; set; }
         [DataMember]
         public Decimal? budgeted_hours { get; set; }
+        [DataMember]
+        public Int64? installed_product_id { get; set; }
 
 
     }

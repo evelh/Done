@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.Web.Project
         protected string displayWayValue;      // 显示方式 在页面上显示的值
         protected string fixTypeValue;         //  在页面上显示的值
         protected decimal? estHoursValue;       //  在页面上显示的值
-        protected int? depValue = null;                //  部门在页面上显示的值
+        protected long? depValue = null;                //  部门在页面上显示的值
         protected int workTypeValue;           // 工作类型在页面上显示的值
         protected long? priResValue;             // 主要负责人 在页面上显示的值
         protected List<UserDefinedFieldDto> udfTaskPara =  new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TASK);
@@ -247,6 +247,7 @@ namespace EMT.DoneNOW.Web.Project
                     }
                     if (depValue == null)
                     {
+                        department_id.ClearSelection();
                         department_id.Items.Insert(0, new ListItem() { Value = "0", Text = "多个选择-保持不变", Selected = true });
                     }
                     else

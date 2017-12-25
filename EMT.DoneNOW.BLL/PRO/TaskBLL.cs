@@ -36,6 +36,10 @@ namespace EMT.DoneNOW.BLL
                 {
                     thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time, Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)thisTask.estimated_end_date), (long)thisTask.project_id);
                 }
+                else
+                {
+                    thisTask.estimated_end_date = RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time), (int)thisTask.estimated_duration);
+                }
                 if (thisTask.parent_id != null)
                 {
                     thisTask.sort_order = GetMinUserSortNo((long)thisTask.parent_id);
@@ -133,6 +137,10 @@ namespace EMT.DoneNOW.BLL
                     {
                         thisProject.end_date = param.task.estimated_end_date;
                     }
+                    TimeSpan ts1 = new TimeSpan(((DateTime)thisProject.start_date).Ticks);
+                    TimeSpan ts2 = new TimeSpan(((DateTime)thisProject.end_date).Ticks);
+                    TimeSpan ts = ts1.Subtract(ts2).Duration();
+                    thisProject.duration = ts.Days + 1;
                     OperLogBLL.OperLogUpdate<pro_project>(thisProject, ppDal.FindNoDeleteById(thisProject.id), thisProject.id, user_id, OPER_LOG_OBJ_CATE.PROJECT, "修改项目时间");
                     ppDal.Update(thisProject);
                 }
@@ -676,6 +684,13 @@ namespace EMT.DoneNOW.BLL
             _dal.Update(thisTask);
 
             var thisProject = new pro_project_dal().FindNoDeleteById((long)thisTask.project_id);
+
+            // 修改相关父任务 和 项目的开始结束时间
+            if (thisTask.parent_id != null)
+            {
+                AdjustmentDate((long)thisTask.parent_id, user_id);
+            }
+            AdjustProDate((long)thisTask.project_id, user_id);
             #region 团队成员相关操作
             // 获取到原有的员工，联系人（）
             var strDal = new sdk_task_resource_dal();
@@ -1223,7 +1238,7 @@ namespace EMT.DoneNOW.BLL
             TimeSpan ts2 = new TimeSpan(endDate.Ticks);
             var diffDays = ts1.Subtract(ts2).Duration().Days+1;   // 天数需要+1  //
             var realDays = 0;
-            if (thisProject.exclude_weekend == 0)
+            if (thisProject.exclude_weekend == 1)
             {
                 for (int i = 0; i < diffDays; i++)
                 {
@@ -1413,7 +1428,7 @@ namespace EMT.DoneNOW.BLL
                         {
                             newDate = newDate.AddDays(7 - firstWeek + 1);
                         }
-                        days -= (5 - firstWeek);
+                        days -= (6 - firstWeek);
                     }
                     else
                     {
@@ -1597,6 +1612,8 @@ namespace EMT.DoneNOW.BLL
                 var dateNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 var oldSortNo = thisTask.sort_order;
                 thisTask.sort_order = sortNo;
+                thisTask.update_time = dateNow;
+                thisTask.update_user_id = user_id;
                 OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
                 _dal.Update(thisTask);
 
@@ -1629,7 +1646,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     // 上一兄弟节点找不到，补到最小的可用的节点
                     var nextNo = GetMinUserNoParSortNo(project_id);
-
+                    noParTaskList = noParTaskList.OrderBy(_ => _.sort_order).ToList();
                     foreach (var noParTask in noParTaskList)
                     {
                         if (int.Parse(noParTask.sort_order) > int.Parse(nextNo))
@@ -1687,7 +1704,7 @@ namespace EMT.DoneNOW.BLL
             if (noParTaskList != null && noParTaskList.Count > 0)
             {
                 // 上一兄弟节点找不到，补到最小的可用的节点
-
+                noParTaskList = noParTaskList.OrderBy(_ => _.sort_order).ToList();
                 foreach (var noParTask in noParTaskList)
                 {
                     var thisNextNo = (int.Parse(noParTask.sort_order) + 1).ToString("#00");
@@ -1797,13 +1814,20 @@ namespace EMT.DoneNOW.BLL
                     }).ToList();
                     if (shoChaList != null && shoChaList.Count > 0)
                     {
+                        shoChaList = shoChaList.OrderBy(_ => _.sort_order).ToList();
                         shoChaList.Reverse();
                         foreach (var shooChaTask in shoChaList)
                         {
                             var shooChaTaskNoArr = shooChaTask.sort_order.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-                            var lastshooChaTaskNo = shooChaTaskNoArr[shooChaTaskNoArr.Length - 1]; // 获取到末尾加一
-                            var thisNoChaNo = shooChaTask.sort_order.Substring(0, lastshooChaTaskNo.Length - 1);  // 获取到不会改变的部分 todo 临界值测试
-                            var newNo = thisNoChaNo + (int.Parse(lastshooChaTaskNo) + num).ToString("#0.00");
+                            var lastshooChaTaskNo = shooChaTaskNoArr[0]; // 获取到开始数字加一
+
+                            var noChange = "";
+                            if (shooChaTask.sort_order.Length > 3)
+                            {
+                                noChange = shooChaTask.sort_order.Substring(2);
+                            }
+                            // var thisNoChaNo = shooChaTask.sort_order.Substring(0, lastshooChaTaskNo.Length );  // 获取到不会改变的部分 todo 临界值测试
+                            var newNo =  (int.Parse(lastshooChaTaskNo) + num).ToString("#00")+ noChange;
                             ChangeTaskSortNo(newNo, shooChaTask.id, user_id);
                         }
                     }
@@ -2385,10 +2409,11 @@ namespace EMT.DoneNOW.BLL
                     {
                         thisTask.estimated_end_date = maxEndDate;
                     }
+                    thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time,Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)thisTask.estimated_end_date),(long)thisTask.project_id);
                     thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     thisTask.update_user_id = user_id;
                     OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "更改task时间");
-
+                    _dal.Update(thisTask);
                     if (thisTask.parent_id != null)
                     {
                         AdjustmentDate((long)thisTask.parent_id, user_id);
@@ -2396,6 +2421,65 @@ namespace EMT.DoneNOW.BLL
                 }
             }
         }
+        /// <summary>
+        /// 调整项目的开始结束时间
+        /// </summary>
+        public void AdjustProDate(long project_id, long user_id)
+        {
+            var ppDal = new pro_project_dal();
+            var stDal = new sdk_task_dal();
+            var thisPro = ppDal.FindNoDeleteById(project_id);
+            if (thisPro != null)
+            {
+                var taskList = stDal.GetAllProTask(project_id);
+                if(taskList!=null&& taskList.Count > 0)
+                {
+                    var minStartDate = taskList.Min(_ => (long)_.estimated_begin_time);
+                    var maxEndDate = taskList.Max(_ => (DateTime)_.estimated_end_date);
+
+                    if(thisPro.start_date!=null&& thisPro.end_date != null)
+                    {
+                        var proStartDate = Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)thisPro.start_date);
+                        var proEndDate = (DateTime)thisPro.end_date;
+                        if (((DateTime)thisPro.start_date > Tools.Date.DateHelper.ConvertStringToDateTime(minStartDate)) || ((DateTime)thisPro.end_date < maxEndDate))
+                        {
+                            if(((DateTime)thisPro.start_date > Tools.Date.DateHelper.ConvertStringToDateTime(minStartDate)))
+                            {
+                                thisPro.start_date = Tools.Date.DateHelper.ConvertStringToDateTime(minStartDate);
+                            }
+                            if((DateTime)thisPro.end_date < maxEndDate)
+                            {
+                                thisPro.end_date = maxEndDate;
+                            }
+                            TimeSpan ts1 = new TimeSpan(((DateTime)thisPro.start_date).Ticks);
+                            TimeSpan ts2 = new TimeSpan(((DateTime)thisPro.end_date).Ticks);
+                            TimeSpan ts = ts1.Subtract(ts2).Duration();
+                            thisPro.duration = ts.Days + 1;
+                            var oldPro = ppDal.FindNoDeleteById(project_id);
+                            ppDal.Update(thisPro);
+                            OperLogBLL.OperLogUpdate<pro_project>(thisPro, oldPro, thisPro.id, user_id, OPER_LOG_OBJ_CATE.PROJECT, "修改项目");
+                        }
+
+
+                    }
+                    else
+                    {
+                        var oldPro = ppDal.FindNoDeleteById(project_id);
+                        thisPro.start_date = Tools.Date.DateHelper.ConvertStringToDateTime(minStartDate);
+                        thisPro.end_date = maxEndDate;
+                        //thisPro.duration = GetDayByTime(minStartDate, Tools.Date.DateHelper.ToUniversalTimeStamp(maxEndDate),project_id);TimeSpan ts1 = new TimeSpan(((DateTime)param.project.start_date).Ticks);
+                        TimeSpan ts1 = new TimeSpan(((DateTime)thisPro.start_date).Ticks);
+                        TimeSpan ts2 = new TimeSpan(((DateTime)thisPro.end_date).Ticks);
+                        TimeSpan ts = ts1.Subtract(ts2).Duration();
+                        thisPro.duration = ts.Days + 1;
+                        ppDal.Update(thisPro);
+                        OperLogBLL.OperLogUpdate<pro_project>(thisPro, oldPro, thisPro.id, user_id, OPER_LOG_OBJ_CATE.PROJECT, "修改项目");
+                    }
+                   
+                }
+            }
+        }
+
         /// <summary>
         /// 新增工时
         /// </summary>

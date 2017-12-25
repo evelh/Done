@@ -613,8 +613,9 @@ namespace EMT.DoneNOW.Web
 
             context.Response.Write(result);
         }
+
         /// <summary>
-        /// 任务阶段的修改
+        /// 任务阶段的修改-(拖拽相关处理)
         /// </summary>
         private void ChangeTaskParent(HttpContext context, long project_id, long to_id, long from_id, string location)
         {
@@ -647,13 +648,19 @@ namespace EMT.DoneNOW.Web
                 if (thisTask != null)
                 {
                     var oldParentId = thisTask.parent_id;
-                    thisTask.parent_id = to_id;
-                    stDal.Update(thisTask);
-                    thisTaskNewSortNo = tBll.GetMinUserSortNo(to_id);
-                    tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, LoginUserId);
+                    if (thisTask.parent_id != to_id)
+                    {
+                        thisTask.parent_id = to_id;
+                        stDal.Update(thisTask);
+                        thisTaskNewSortNo = tBll.GetMinUserSortNo(to_id);
+                        tBll.ChangeTaskSortNo(thisTaskNewSortNo, thisTask.id, LoginUserId);
 
-                    tBll.ChangBroTaskSortNoReduce(project_id, oldParentId, LoginUserId);
+                        tBll.ChangBroTaskSortNoReduce(project_id, oldParentId, LoginUserId);
+                    }
                 }
+                // 调整相关任务和项目的开始结束时间
+                tBll.AdjustmentDate(to_id, LoginUserId);
+                tBll.AdjustProDate((long)thisTask.project_id, LoginUserId);
             }
             else if (location == "above") // 插入节点上面成为兄弟节点(回取代原有的位置)
             {
@@ -692,6 +699,14 @@ namespace EMT.DoneNOW.Web
 
                     }
 
+                    // 调整相关任务和项目的开始结束时间
+                    if (reaParentId != null)
+                    {
+                        tBll.AdjustmentDate((long)reaParentId, LoginUserId);
+                    }
+                    
+                    tBll.AdjustProDate((long)thisTask.project_id,LoginUserId);
+                    
 
                 }
 
@@ -953,10 +968,14 @@ namespace EMT.DoneNOW.Web
                     tBll.ChangBroTaskSortNoReduce((long)thisTask.project_id, oldThisTaskParId, LoginUserId); // 1.
               
                     tBll.ChangeTaskSortNo(newNo, thisTask.id, LoginUserId);
+                    // 调整相关项目和任务的开始结束时间
                     if (thisTask.parent_id != null)
                     {
                         tBll.AdjustmentDate((long)thisTask.parent_id, LoginUserId);
                     }
+                    
+                    tBll.AdjustProDate((long)thisTask.project_id, LoginUserId);
+                    
                     
                 }
             }
@@ -1012,6 +1031,9 @@ namespace EMT.DoneNOW.Web
                 {
                     tBll.AdjustmentDate((long)lastTask.parent_id, LoginUserId);
                 }
+                
+                tBll.AdjustProDate((long)thisTask.project_id, LoginUserId);
+                
             }
 
 

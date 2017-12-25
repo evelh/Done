@@ -576,8 +576,8 @@ namespace EMT.DoneNOW.DTO
             PURCHASE_ITEM = 1568,                   // 采购订单采购项
             SERNUM_CALLBACK = 1569,                 // 库存管理-产品序列号查找带回
             CONTRACT_PROJECT=1570,                  // 合同查看 - 项目
+            PURCHASE_ORDER_HISTORY=1574,            // 库存管理-采购订单历史-查询
 
-          
 
 
             //RESOURCE_CALLBACK,                      // 
@@ -1273,7 +1273,8 @@ namespace EMT.DoneNOW.DTO
         CONTRACT_NOTIFY_RULE=145,          // 合同通知规则
         PurchaseOrder = 146,            // 采购订单查询
         PurchaseItem = 147,             // 采购订单采购项
-        CONTRACT_PROJECT=149,           // 合同查看 - 项目        
+        CONTRACT_PROJECT=149,           // 合同查看 - 项目    
+        PURCHASE_ORDER_HISTORY=153,     // 库存管理-采购订单历史-查询
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批
         REVOKE_EXPENSE,                //撤销费用审批               

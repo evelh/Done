@@ -296,8 +296,8 @@ namespace EMT.DoneNOW.Web.Project
         protected void save_add_Click(object sender, EventArgs e)
         {
             var result = SaveTask();
-            var url = Request.Url;
-            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();location.href='TaskAddOrEdit?project_id="+thisProject.id+"';</script>");
+             //  var url = Request.Url;
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();location.href='TaskAddOrEdit?project_id="+thisProject.id+ "&type_id="+type_id+ "&par_task_id=" + Request.QueryString["par_task_id"] + "';</script>");
         }
 
         protected void save2_Click(object sender, EventArgs e)
@@ -526,9 +526,9 @@ namespace EMT.DoneNOW.Web.Project
                     thisTask.issue_report_contact_id = pageTask.issue_report_contact_id;
                     thisTask.estimated_type_id = pageTask.estimated_type_id;
                     thisTask.estimated_hours = pageTask.estimated_hours;
-                    thisTask.estimated_duration = pageTask.estimated_duration;
+                     //      thisTask.estimated_duration = pageTask.estimated_duration;
                     thisTask.hours_per_resource = pageTask.hours_per_resource;
-                    thisTask.start_no_earlier_than_date = pageTask.start_no_earlier_than_date;
+             //       thisTask.start_no_earlier_than_date = pageTask.start_no_earlier_than_date;
                     thisTask.department_id = pageTask.department_id;
                     thisTask.cost_code_id = pageTask.cost_code_id;
                     thisTask.owner_resource_id = pageTask.owner_resource_id;
@@ -572,7 +572,15 @@ namespace EMT.DoneNOW.Web.Project
         protected void save_close2_Click(object sender, EventArgs e)
         {
             var result = SaveTask();
-            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close();self.opener.location.reload();</script>");
+            if (result)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close();self.opener.location.reload();</script>");
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存失败！');window.close();self.opener.location.reload();</script>");
+            }
+            // ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');window.close();self.opener.location.reload();</script>");
         }
     }
     

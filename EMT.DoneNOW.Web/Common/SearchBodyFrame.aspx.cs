@@ -863,8 +863,11 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.PROJECT_TEMP_SEARCH:
                     contextMenu.Add(new PageContextMenuDto { text = "查看", click_function = "ViewDetail()" });
                     contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
-                    //contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "PostSin()" });   // project_temp_search
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.PURCHASE_ORDER_HISTORY:
+                    contextMenu.Add(new PageContextMenuDto { text = "查看采购订单", click_function = "ViewDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "修改采购订单", click_function = "Edit()" });
                     break;
                 default:
                     break;

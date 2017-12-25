@@ -1188,11 +1188,21 @@
             return false;
         }
         var tmeDate = $("#tmeDate").val();
-        if (tmeDate == "" || tmeDate == null) {
+        if (tmeDate == "" || tmeDate == null)
+        {
             LayerMsg("请填写日期！");
             return false;
         }
 
+        var hours_worked = $("#hours_worked").val();
+        if (hours_worked == "") {
+            LayerMsg("请填写工作时长！");
+            return false;
+        }
+        if (isNaN(hours_worked) || Number(hours_worked) <= 0) {
+            LayerMsg("工作时长要大于0！");
+            return false;
+        }
         <%}%>
         var remain_hours = $("#remain_hours").val();
         if (remain_hours == "" || remain_hours == null || remain_hours == undefined) {
@@ -1209,6 +1219,9 @@
                 <%}%>
             }
         }
+
+
+
         // 
         // PageAddPage
    

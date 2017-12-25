@@ -413,6 +413,7 @@
     <Content Include="Scripts\Search\PurchaseFulfillment.js" />
     <Content Include="Scripts\Search\PurchaseItem.js" />
     <Content Include="Scripts\Search\PurchaseOrder.js" />
+    <Content Include="Scripts\Search\purchase_order_history.js" />
     <Content Include="Tools\PurchaseOrderAjax.ashx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
